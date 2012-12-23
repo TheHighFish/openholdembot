@@ -82,7 +82,7 @@ void COpenHoldemStatusbar::OnUpdateStatusbar()
 	}
 	// Update this info only for advanced statusbar
 	ComputeCurrentStatus();
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_READY), "Ready"); //!!!
+	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_READY), "Ready"); 
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
@@ -132,7 +132,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	}
 	else 
 	{
-		// !!! redundant code! card_player_for_display is for userchair
+		// !! redundant code! card_player_for_display is for userchair
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
 			if (p_scraper->card_player_for_display(i) != CARD_BACK && 

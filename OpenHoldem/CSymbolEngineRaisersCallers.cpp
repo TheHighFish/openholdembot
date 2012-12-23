@@ -9,6 +9,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineHistory.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
@@ -20,6 +21,9 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
+	// Also using p_symbol_engine_history one time,
+	// but because we use "old" information here
+	// there is no dependency on this cycle.
 }
 
 CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
@@ -73,16 +77,15 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	// Don't start searching for the highest bet at the button.
 	// This method will fail, if a player in late raises and a player in early coldcalls.
 	// Start searching at the last known raiser; and only at the button when we have a new betting-round.
-	if (_raischair_previous_frame == k_undefined)
+	if (p_symbol_engine_history->DidAct())
 	{
-		// Start with the first player after the dealer
-		FirstPossibleRaiser = _dealerchair + 1;
-		last_bet = 0;
+		// Counting raises behind me
+		FirstPossibleRaiser = _userchair + 1;
 	}
 	else
 	{
 		// Start with the player after last known raiser
-		FirstPossibleRaiser = _raischair_previous_frame + 1;
+		FirstPossibleRaiser = _dealerchair + 1;
 		last_bet = p_scraper->player_bet(_raischair_previous_frame);
 	}
 	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
@@ -97,50 +100,10 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 			last_bet = current_players_bet;
 			_raischair = i % p_tablemap->nchairs();
 			int new_raisbits = _raisbits[_betround] | k_exponents[i%p_tablemap->nchairs()];
-			_raisbits[betround] = new_raisbits;
+			_raisbits[_betround] = new_raisbits;
 		}
 	}
 }
-
-/*
-    // nopponentsraising
-    int userchair = p_symbol_engine_userchair->userchair();
-    int first_possible_raiser;
-	int last_possible_raiser;
-	//if (DidAct())
-	{
-		// Counting raises behind me
-		first_possible_raiser = userchair + 1;
-		last_possible_raiser  = userchair - 1;
-	}
-	/*else
-	{
-		//if (p_symbols->sym()->currentbet[10] )
-		//{
-		first_possible_raiser = p_symbol_engine_dealerchair->dealerchair() + 1;
-		last_possible_raiser  = 0; //!!! ???
-		}
-		else
-		{
-		}
-	}/////
-//     = userchair + p_tablemap->nchairs() - 1;
-    int opponents_raising = 0;
-
-    double current_maximum_bet = 0;
-    if (DidAct()){current_maximum_bet = p_scraper->player_bet(userchair);}
-
-    for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
-    {
-        int current_players_chair = i % p_tablemap->nchairs();
-        double current_players_bet = p_scraper->player_bet(current_players_chair);
-        if (current_players_bet > current_maximum_bet)
-        {
-            current_maximum_bet = current_players_bet;
-            opponents_raising++;
-        }
-    }
-    set_sym_nopponentsraising(opponents_raising);*/
 
 void CSymbolEngineRaisersCallers::CalculateCallers()
 {
@@ -196,7 +159,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 			// Nothing more to do
 			continue;
 		}
-		if (current_players_bet > 0) //!!!
+		if (current_players_bet > 0) 
 		{
 			_nopponentsbetting++;
 		}

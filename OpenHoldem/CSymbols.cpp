@@ -8,6 +8,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
+#include "CBetroundCalculator.h"
 #include "CFlagsToolbar.h"
 #include "inlines/eval.h"
 #include "CGameState.h"
@@ -36,12 +37,6 @@
 
 CSymbols			*p_symbols = NULL;
 
-//weighted prwin lookup tables for non-suited and suited cards
-int pair2ranko[170] = {0}, pair2ranks[170] = {0};
-//used to resolve ascii cards to numbers for init of above
-char ctonum[14]="23456789TJQKA";
-int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0;
-
 
 CSymbols::CSymbols()
 {}
@@ -49,110 +44,7 @@ CSymbols::CSymbols()
 CSymbols::~CSymbols()
 {
 }
-/* !!!
-void CSymbols::InitHandranktTableForPrwin()
-{
-	int		i = 0, j = 0, k = 0; 
-	int		vndx = 0;
-	char	*ptr = NULL;
 
-	//Initialise the handrank tables used by prwin
-	vndx=0; //used to provide an offset into the vanilla table
-	for (i=0;i<169;i++)
-	{
-		//normal weighted prwin table
-		ptr=prwhandrank169[i];
-		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
-		if (*(ptr+2)=='s')pair2ranks[j]=i+1;
-		else pair2ranko[j]=i+1;
-		//prw1326 vanilla table
-		j=strchr(ctonum,*ptr)-ctonum;
-		k=strchr(ctonum,*(ptr+1))-ctonum;
-		for(;;)
-		{
-			//I originally had an algorithm to do this, but it was obscure and impenetrable
-			//so now I have switched to the clumsy but simple approach.
-			if(j==k)//pair
-			{
-				_prw1326.vanilla_chair.rankhi[vndx]=j;	//h
-				_prw1326.vanilla_chair.rankhi[vndx+1]=j;	//h
-				_prw1326.vanilla_chair.rankhi[vndx+2]=j; //h
-				_prw1326.vanilla_chair.rankhi[vndx+3]=j+13; //d
-				_prw1326.vanilla_chair.rankhi[vndx+4]=j+13; //d
-				_prw1326.vanilla_chair.rankhi[vndx+5]=j+26; //c
-				_prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
-				_prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
-				_prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
-				_prw1326.vanilla_chair.ranklo[vndx+3]=k+26;	//c	
-				_prw1326.vanilla_chair.ranklo[vndx+4]=k+39;	//s
-				_prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
-				vndx+=6;
-				break;
-			}
-		
-			if (*(ptr+2)=='s') //suited
-			{
-				_prw1326.vanilla_chair.rankhi[vndx]=j;		//h
-				_prw1326.vanilla_chair.rankhi[vndx+1]=j+13;	//d
-				_prw1326.vanilla_chair.rankhi[vndx+2]=j+26;	//c
-				_prw1326.vanilla_chair.rankhi[vndx+3]=j+39;	//s
-				_prw1326.vanilla_chair.ranklo[vndx]=k;		//h
-				_prw1326.vanilla_chair.ranklo[vndx+1]=k+13;	//d
-				_prw1326.vanilla_chair.ranklo[vndx+2]=k+26;	//c
-				_prw1326.vanilla_chair.ranklo[vndx+3]=k+39;	//s
-				vndx+=4;
-				break;
-			}
-		
-			//only unsuited non-pairs left
-			_prw1326.vanilla_chair.rankhi[vndx]=j;		//h
-			_prw1326.vanilla_chair.rankhi[vndx+1]=j;		//h
-			_prw1326.vanilla_chair.rankhi[vndx+2]=j;		//h
-			_prw1326.vanilla_chair.rankhi[vndx+3]=j+13;	//d
-			_prw1326.vanilla_chair.rankhi[vndx+4]=j+13;	//d
-			_prw1326.vanilla_chair.rankhi[vndx+5]=j+13;	//d
-			_prw1326.vanilla_chair.rankhi[vndx+6]=j+26;	//c
-			_prw1326.vanilla_chair.rankhi[vndx+7]=j+26;	//c
-			_prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
-			_prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
-			_prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
-			_prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s Matrix corrected typo
-			_prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
-			_prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
-			_prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
-			_prw1326.vanilla_chair.ranklo[vndx+3]=k;		//h
-			_prw1326.vanilla_chair.ranklo[vndx+4]=k+26;	//c
-			_prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
-			_prw1326.vanilla_chair.ranklo[vndx+6]=k;		//h
-			_prw1326.vanilla_chair.ranklo[vndx+7]=k+13;	//d
-			_prw1326.vanilla_chair.ranklo[vndx+8]=k+39;	//s
-			_prw1326.vanilla_chair.ranklo[vndx+9]=k;		//h
-			_prw1326.vanilla_chair.ranklo[vndx+10]=k+13;	//d
-			_prw1326.vanilla_chair.ranklo[vndx+11]=k+26;	//c
-			vndx+=12;
-			break;
-		}
-	}
-
-	_prw1326.vanilla_chair.level=1024;
-	_prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
-
-	// now assign a weight table. Assume upper third fully probable, next third reducing
-	// probability, lowest third not played.
-	for(i=0;i<442;i++)
-		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level;
-	for(i=442;i<884;i++)
-		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level*(884-i)/442;
-	for(i=884;i<1326;i++)
-		_prw1326.vanilla_chair.weight[i]=0;
-
-	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
-	//experimentally does not cause a crash
-	for(i=0;i<10;i++)
-		_prw1326.chair[i]=_prw1326.vanilla_chair ;
-
-	//end of handrank initialisation
-}*/
 
 void CSymbols::ResetSymbolsFirstTime(void)
 {
@@ -255,6 +147,8 @@ void CSymbols::ResetSymbolsFirstTime(void)
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
+	_userchair = p_symbol_engine_userchair->userchair();
+
 	/*
 	p_tablelimits->ResetOnHandreset();
 
@@ -272,13 +166,12 @@ void CSymbols::ResetSymbolsNewHand(void)
 /*void CSymbols::ResetSymbolsNewRound(void)
 {
 	
-	set_sym_raischair_previous_frame(-1);
-	set_sym_raischair(-1);
 	
 }*/
 
 void CSymbols::ResetSymbolsEveryCalc(void)
 {
+	_betround = p_betround_calculator->betround();
 	/*
 	p_tablelimits->ResetEachHeartBeatCycle();
 
@@ -451,7 +344,6 @@ void CSymbols::CalcSymbols(void)
 {
 	int					i = 0;
 	char title[512] = {0};
-	unsigned int		player_card_cur[k_number_of_cards_per_player] = {0};
 	char				card0[k_max_number_of_players] = {0}; 
 	char				card1[k_max_number_of_players] = {0};	
 
@@ -462,15 +354,6 @@ void CSymbols::CalcSymbols(void)
 	// Things to do when we have a new hand
 	// Get current userchair's cards
 	// !!! should become an extra function
-	if (_user_chair_confirmed)
-	{
-		player_card_cur[0] = p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), 0);
-		player_card_cur[1] = p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), 1);
-	}
-	else
-	{
-		player_card_cur[0] = player_card_cur[1] = CARD_NOCARD;
-	}
 
 	if (p_handreset_detector->IsHandreset())
 	{
@@ -481,13 +364,14 @@ void CSymbols::CalcSymbols(void)
 		ResetSymbolsNewHand();
 		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 
+		int player_card_cur[2] = {0}; //!!! init
 		// log new hand
 		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[1]==CARD_NOCARD)
 		{
 			strcpy_s(card0, 10, "NONE");
 			strcpy_s(card1, 10, "");
 		}
-		else if (player_card_cur[0]==CARD_BACK || player_card_cur[1]==CARD_BACK)
+		else if (player_card_cur[0]==CARD_BACK || player_card_cur[ 1]==CARD_BACK)
 		{
 			strcpy_s(card0, 10, "BACKS");
 			strcpy_s(card1, 10, "");
@@ -504,18 +388,7 @@ void CSymbols::CalcSymbols(void)
 				  p_handreset_detector->GetHandNumber(), 
 				  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	if (_user_chair_confirmed && p_scraper_access->UserHasCards())
-	{
-		
-		//!!!p_versus->GetCounts();			// calculate versus values
-		//!!!set_sym_originaldealposition(_sym.dealposition); //remember dealposition
 	}
-
-	//CalcHistory();						// history symbols
-
-	}
-
 }
 
 const double CSymbols::GetSymbolVal(const char *a, int *e)
@@ -929,7 +802,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "originaldealposition", 20)==0 && strlen(a)==20)		return _sym.originaldealposition; //Matrix 2008-05-09
 
 	//CHIP AMOUNTS 2(2)
-	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(p_symbol_engine_userchair->userchair()); //!!!
+	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(_userchair); 
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==8)						return p_symbol_engine_chip_amounts->balance(a[7]-'0');
 	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_symbol_engine_chip_amounts->maxbalance();
 	if (memcmp(a, "balanceatstartofsession", 23)==0 && strlen(a)==24)	return p_symbol_engine_chip_amounts->balanceatstartofsession();
@@ -1003,7 +876,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return iter_vars.nit(); //!!!
+	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return 42; //iter_vars.nit(); //!!!
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return p_symbol_engine_autoplayer->myturnbits();
@@ -1027,7 +900,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	write_log(prefs.debug_symbolengine(), "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
 	set_prevaction(action);
 
-	// !!! Most things temporary disabled, as this causes only problems
+	// !! Most things temporary disabled, as this causes only problems
 	// Only needed for Gecko
 
 	int user_chair = p_symbol_engine_userchair->userchair();
@@ -1089,7 +962,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
 			// Bets and pot
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
-			new_bet = _sym.currentbet[k_max_number_of_players]; // f$swag(); // !!! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_bet = _sym.currentbet[k_max_number_of_players]; // f$swag(); // !! That's not correct, but will be for OH 2.2.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
 			new_pot = _sym.pot + p_autoplayer_functions->f$betsize() - _sym.currentbet[10];
 			break;

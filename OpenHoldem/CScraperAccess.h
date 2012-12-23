@@ -23,6 +23,8 @@ public:
 	bool	IsKnownCard(int card);
 	bool	IsCardOrCardBack(int card);
 	bool	UserHasCards();
+public:
+	bool	IsMyTurn()	{ return (NumberOfVisibleButtons() >= k_min_buttons_needed_for_my_turn); }
 
 public:
 	bool get_betpot_button_visible(int numerator, int denominator);

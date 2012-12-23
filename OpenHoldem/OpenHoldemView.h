@@ -38,12 +38,12 @@ private:
 
 	CString			_handnumber_last;
 	double			_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
-	unsigned int	_iterator_thread_progress_last, 
-	unsigned int	_card_common_last[k_number_of_community_cards], 
+	unsigned int	_iterator_thread_progress_last;
+	unsigned int	_card_common_last[k_number_of_community_cards];
 	unsigned int	_card_player_last[k_max_number_of_players][k_number_of_cards_per_player];
 	CString			_seated_last[k_max_number_of_players];
 	CString			_active_last[k_max_number_of_players];
-	Cstring			_playername_last[k_max_number_of_players];
+	CString			_playername_last[k_max_number_of_players];
 	bool			_dealer_last[k_max_number_of_players]; 
 	bool			_istournament_last; 
 	double			_playerbalance_last[k_max_number_of_players]; 

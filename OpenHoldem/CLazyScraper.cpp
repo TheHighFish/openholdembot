@@ -24,11 +24,11 @@ void CLazyScraper::DoScrape()
 	// execute only partial scrapes (aka "Lazy Scraping").
 	// Please see the manual for more info about that.
 	p_scraper->DoBasicScrapeButtons();
-	if (1 /* CardScrapeNeeded()!!!*/)
+	if (1 /* CardScrapeNeeded()!!*/)
 	{
 		write_log(3, "CLazyScraper: CardScrape needed\n");
 		p_scraper->DoBasicScrapeAllPlayerCards();
-		if (1 /*CompleteScrapeNeeded()!!!*/)
+		if (1 /*CompleteScrapeNeeded()!!*/)
 		{
 			write_log(3, "CLazyScraper: CompleteScrape needed\n");
 			p_scraper->CompleteBasicScrapeToFullScrape();

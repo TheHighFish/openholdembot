@@ -214,11 +214,10 @@ bool CVersus::GetCounts(void)
 
 		wintemp = lostemp = 0;
 
-		for (i=0; i<50; i++) //!!!
+		for (i=0; i<(k_number_of_cards_per_deck - 1); i++)
 		{
-			for (j=i+1; j<=51; j++)
+			for (j=i+1; j<k_number_of_cards_per_deck; j++)
 			{
-
 				if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1])
 				{
 					_read(_versus_fh, &byte, sizeof(byte));

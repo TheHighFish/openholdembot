@@ -9,6 +9,7 @@
 #include "inlines/eval.h"
 #include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
+#include "Numericalfunctions.h"
 
 CSymbolEngineCards *p_symbol_engine_cards = NULL;
 
@@ -770,9 +771,7 @@ bool CSymbolEngineCards::IsHand(const char *a, int *e)
 	plcardrank[1] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1))+2;
 	if (plcardrank[1] > plcardrank[0])
 	{
-		temp = plcardrank[0];
-		plcardrank[0] = plcardrank[1];
-		plcardrank[1] = temp;
+		SwapInts(&plcardrank[0], &plcardrank[1]);
 	}
 	if (Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)) == 
 		Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)))

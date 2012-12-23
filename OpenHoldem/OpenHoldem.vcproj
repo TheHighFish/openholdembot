@@ -409,6 +409,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NumericalFunctions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OH_MessageBox.cpp"
 				>
 			</File>
@@ -418,6 +422,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemDoc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ScraperOverride.cpp"
 				>
 			</File>
 			<File
@@ -1239,6 +1247,10 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ScraperOverride.h"
 				>
 			</File>
 			<File

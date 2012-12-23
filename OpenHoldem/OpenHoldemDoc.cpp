@@ -136,7 +136,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->CreateHandListMatrices();
 
 		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(NULL); //!!!PMainframe()->GetSafeHwnd());
+		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 
 		p_dll_extension->LoadDll("");
 		if (prefs.simple_window_title() && theApp.m_pMainWnd)

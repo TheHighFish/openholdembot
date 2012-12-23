@@ -2,7 +2,7 @@
 #define INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
+#include "NumericalFunctions.h"
 
 extern class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine
 {

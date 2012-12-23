@@ -13,10 +13,19 @@
 #include "CSymbols.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
+#include "Numericalfunctions.h"
+
 
 CIteratorThread		*p_iterator_thread = NULL;
 
 CIteratorVars		iter_vars;
+
+//weighted prwin lookup tables for non-suited and suited cards
+int pair2ranko[170] = {0}, pair2ranks[170] = {0};
+//used to resolve ascii cards to numbers for init of above
+char ctonum[14]="23456789TJQKA";
+//int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
+sprw1326	_prw1326;								//prwin 1326 data structure Matrix 2008-04-29
 
 CIteratorVars::CIteratorVars()
 {
@@ -60,6 +69,7 @@ CIteratorThread::CIteratorThread()
 
 	// Initialize variables
 	InitIteratorLoop();
+	InitHandranktTableForPrwin();
 
 	// FIRST mark thread as running,
 	// THEN start thread.
@@ -103,7 +113,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
 	int				dummy = 0;
-	unsigned int	deck[52] = {0}, x = 0, swap = 0;
+	int				deck[k_number_of_cards_per_deck] = {0}, x = 0;
 	int				numberOfCards = 0;
 
 	int				betround = p_betround_calculator->betround();
@@ -151,7 +161,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 
 
-		if (p_symbols->prw1326()->useme==1326 && (betround>=k_betround_flop || p_symbols->prw1326()->preflop==1326))
+		if (_prw1326.useme==1326 && (betround>=k_betround_flop || _prw1326.preflop==1326))
 		{
 			write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
 
@@ -171,8 +181,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// first deal with the special non-weighted cases
 				// player who is marked 'ignore' or one who is BB and has not VPIP'd
-				if ( p_symbols->prw1326()->chair[i].ignore || 
-					(p_symbols->prw1326()->bblimp && sym_nbetsround<1.1 && (sym_bblindbits&(1<<i))) )
+				if (_prw1326.chair[i].ignore || 
+					(_prw1326.bblimp && sym_nbetsround<1.1 && (sym_bblindbits&(1<<i))) )
 				{
 					do 
 					{
@@ -195,7 +205,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					continue;
 				} // end of special non-weighted cases
 
-				randfix=(RAND_MAX/p_symbols->prw1326()->chair[i].limit) * p_symbols->prw1326()->chair[i].limit;
+				randfix=(RAND_MAX/_prw1326.chair[i].limit) * _prw1326.chair[i].limit;
 
 
 				while (true)
@@ -205,17 +215,17 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 						j=rand();
 					} while (j>=randfix);
 
-					j = j % p_symbols->prw1326()->chair[i].limit; //j is now any one of the allowed hands
+					j = j % _prw1326.chair[i].limit; //j is now any one of the allowed hands
 
-					if(CardMask_CARD_IS_SET(usedCards, p_symbols->prw1326()->chair[i].rankhi[j] ))
+					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].rankhi[j] ))
 						continue; //hand contains dead card
 
-					if(CardMask_CARD_IS_SET(usedCards, p_symbols->prw1326()->chair[i].ranklo[j] ))
+					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].ranklo[j] ))
 						continue; //hand contains dead card
 
 //					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
 
-					if(p_symbols->prw1326()->chair[i].level <= p_symbols->prw1326()->chair[i].weight[j])
+					if(_prw1326.chair[i].level <= _prw1326.chair[i].weight[j])
 						break; //hand marked as always uae
 
 					//check if we want a player who is BB and has not VPIP'd to be analysed further
@@ -226,14 +236,14 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
 					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
-					if(rand() % p_symbols->prw1326()->chair[i].level < p_symbols->prw1326()->chair[i].weight[j])
+					if(rand() % _prw1326.chair[i].level < _prw1326.chair[i].weight[j])
 						break; //allowable
 
 					//if we reach here we will loop again to find a suitable hand
 				} //end of possible hand find
 
-				ocard[k++] = p_symbols->prw1326()->chair[i].rankhi[j];
-				ocard[k++] = p_symbols->prw1326()->chair[i].ranklo[j];
+				ocard[k++] = _prw1326.chair[i].rankhi[j];
+				ocard[k++] = _prw1326.chair[i].ranklo[j];
 
 				CardMask_SET(usedCards, ocard[k-2]);
 				CardMask_SET(usedCards, ocard[k-1]);
@@ -340,9 +350,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 					numberOfCards--;
 					if (x != numberOfCards)
 					{
-						swap = deck[x];
-						deck[x] = deck[numberOfCards];
-						deck[numberOfCards] = swap;
+						SwapInts(&deck[x], &deck[numberOfCards]);
 					}
 				}
 
@@ -517,11 +525,11 @@ void CIteratorThread::InitIteratorLoop()
 	_topclip = (int) gram.CalcF$symbol(p_formula, "f$topclip", &e);
 
 	// Call prw1326 callback if needed
-	if (p_symbols->prw1326()->useme==1326 && 
-		p_symbols->prw1326()->usecallback==1326 && 
-		(p_betround_calculator->betround()!=1 || p_symbols->prw1326()->preflop==1326) )
+	if (_prw1326.useme==1326 && 
+		_prw1326.usecallback==1326 && 
+		(p_betround_calculator->betround()!=1 || _prw1326.preflop==1326) )
 	{
-		p_symbols->prw1326()->prw_callback(); //Matrix 2008-05-09
+		_prw1326.prw_callback(); //Matrix 2008-05-09
 	}
 }
 
@@ -589,4 +597,108 @@ int CIteratorThread::InRange(const int card1, const int card2, const int willpla
 		return 1; //OK
 
 	return 0; //no good
+}
+
+void CIteratorThread::InitHandranktTableForPrwin()
+{
+	int		i = 0, j = 0, k = 0; 
+	int		vndx = 0;
+	char	*ptr = NULL;
+
+	//Initialise the handrank tables used by prwin
+	vndx=0; //used to provide an offset into the vanilla table
+	for (i=0;i<169;i++)
+	{
+		//normal weighted prwin table
+		//!!!!!ptr=prwhandrank169[i];
+		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
+		if (*(ptr+2)=='s')pair2ranks[j]=i+1;
+		else pair2ranko[j]=i+1;
+		//prw1326 vanilla table
+		j=strchr(ctonum,*ptr)-ctonum;
+		k=strchr(ctonum,*(ptr+1))-ctonum;
+		for(;;)
+		{
+			//I originally had an algorithm to do this, but it was obscure and impenetrable
+			//so now I have switched to the clumsy but simple approach.
+			if(j==k)//pair
+			{
+				_prw1326.vanilla_chair.rankhi[vndx]=j;	//h
+				_prw1326.vanilla_chair.rankhi[vndx+1]=j;	//h
+				_prw1326.vanilla_chair.rankhi[vndx+2]=j; //h
+				_prw1326.vanilla_chair.rankhi[vndx+3]=j+13; //d
+				_prw1326.vanilla_chair.rankhi[vndx+4]=j+13; //d
+				_prw1326.vanilla_chair.rankhi[vndx+5]=j+26; //c
+				_prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+				_prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+				_prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+				_prw1326.vanilla_chair.ranklo[vndx+3]=k+26;	//c	
+				_prw1326.vanilla_chair.ranklo[vndx+4]=k+39;	//s
+				_prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+				vndx+=6;
+				break;
+			}
+		
+			if (*(ptr+2)=='s') //suited
+			{
+				_prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+				_prw1326.vanilla_chair.rankhi[vndx+1]=j+13;	//d
+				_prw1326.vanilla_chair.rankhi[vndx+2]=j+26;	//c
+				_prw1326.vanilla_chair.rankhi[vndx+3]=j+39;	//s
+				_prw1326.vanilla_chair.ranklo[vndx]=k;		//h
+				_prw1326.vanilla_chair.ranklo[vndx+1]=k+13;	//d
+				_prw1326.vanilla_chair.ranklo[vndx+2]=k+26;	//c
+				_prw1326.vanilla_chair.ranklo[vndx+3]=k+39;	//s
+				vndx+=4;
+				break;
+			}
+		
+			//only unsuited non-pairs left
+			_prw1326.vanilla_chair.rankhi[vndx]=j;		//h
+			_prw1326.vanilla_chair.rankhi[vndx+1]=j;		//h
+			_prw1326.vanilla_chair.rankhi[vndx+2]=j;		//h
+			_prw1326.vanilla_chair.rankhi[vndx+3]=j+13;	//d
+			_prw1326.vanilla_chair.rankhi[vndx+4]=j+13;	//d
+			_prw1326.vanilla_chair.rankhi[vndx+5]=j+13;	//d
+			_prw1326.vanilla_chair.rankhi[vndx+6]=j+26;	//c
+			_prw1326.vanilla_chair.rankhi[vndx+7]=j+26;	//c
+			_prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
+			_prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
+			_prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
+			_prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s Matrix corrected typo
+			_prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
+			_prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
+			_prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
+			_prw1326.vanilla_chair.ranklo[vndx+3]=k;		//h
+			_prw1326.vanilla_chair.ranklo[vndx+4]=k+26;	//c
+			_prw1326.vanilla_chair.ranklo[vndx+5]=k+39;	//s
+			_prw1326.vanilla_chair.ranklo[vndx+6]=k;		//h
+			_prw1326.vanilla_chair.ranklo[vndx+7]=k+13;	//d
+			_prw1326.vanilla_chair.ranklo[vndx+8]=k+39;	//s
+			_prw1326.vanilla_chair.ranklo[vndx+9]=k;		//h
+			_prw1326.vanilla_chair.ranklo[vndx+10]=k+13;	//d
+			_prw1326.vanilla_chair.ranklo[vndx+11]=k+26;	//c
+			vndx+=12;
+			break;
+		}
+	}
+
+	_prw1326.vanilla_chair.level=1024;
+	_prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
+
+	// now assign a weight table. Assume upper third fully probable, next third reducing
+	// probability, lowest third not played.
+	for(i=0;i<442;i++)
+		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level;
+	for(i=442;i<884;i++)
+		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level*(884-i)/442;
+	for(i=884;i<1326;i++)
+		_prw1326.vanilla_chair.weight[i]=0;
+
+	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
+	//experimentally does not cause a crash
+	for(i=0;i<10;i++)
+		_prw1326.chair[i]=_prw1326.vanilla_chair ;
+
+	//end of handrank initialisation
 }

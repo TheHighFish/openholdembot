@@ -115,10 +115,10 @@ void CDllExtension::LoadDll(const char * path)
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
 	// pass "load" message
 
-	// To do !!!
+	// To do !! Create a function if necessary
 	//pass "history" message (address of history structure)
 	//  2010-01-23 Demonthus
-	(_process_message) ("history", p_handhistory->history());
+	//(_process_message) ("history", p_handhistory->history());
 }
 
 void CDllExtension::UnloadDll(void)
@@ -223,7 +223,7 @@ extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
 	va_list args;
 
 	va_start(args, fmt);
-	// !!! should true be replaced by an option?
+	// !! should true be replaced by an option?
 	write_log_vl(true, fmt, args);
 	va_end(args);
 }

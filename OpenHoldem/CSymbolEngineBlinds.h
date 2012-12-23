@@ -2,9 +2,9 @@
 #define INC_CSYMBOLENGINEBLINDS_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
 
 #include "CSymbolengineUserChair.h"
+#include "NumericalFunctions.h"
 
 extern class CSymbolEngineBlinds: public CVirtualSymbolEngine
 {

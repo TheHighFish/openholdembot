@@ -12,6 +12,7 @@ public:
 	// public functions
 	CIteratorVars();
 	~CIteratorVars();
+public:
 	void ResetVars();
 
 public:
@@ -62,6 +63,7 @@ private:
 
 } iter_vars;
 
+extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29
 
 extern class CIteratorThread
 {
@@ -69,13 +71,18 @@ public:
 	// public functions
 	CIteratorThread();
 	~CIteratorThread();
-
+public:
+	#define ENT //!!!
+	void	set_prw1326_useme(const int i)	{ ENT _prw1326.useme = i;}
+	const	sprw1326 *prw1326()	            { return &_prw1326; }
+#undef ENT
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
 	int InRange(const int card1, const int card2, const int willplay, 
 				const int wontplay, const int topclip, const int mustplay);
 	void InitIteratorLoop(void);
+	void InitHandranktTableForPrwin();
 
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
@@ -85,7 +92,6 @@ private:
 
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
-
 } *p_iterator_thread;
 
 

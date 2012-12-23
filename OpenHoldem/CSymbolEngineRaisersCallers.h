@@ -2,7 +2,7 @@
 #define INC_CSYMBOLENGINERAISERSCALLERS_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
+#include "NumericalFunctions.h"
 
 extern class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
 {
@@ -60,7 +60,7 @@ public:
 	}
 public:
 	int nplayerscallshort()		{ return _nplayerscallshort; }
-	int nopponentsraising()		{ return _nopponentsraising; }
+	int nopponentsraising()		{ return bitcount(_raisbits[_betround]); }
 	int nopponentsbetting()		{ return _nopponentsbetting; }
 	int nopponentsfolded()		{ return _nopponentsfolded; }
 	int nopponentscalling()		{ return _nopponentscalling; }
@@ -74,14 +74,15 @@ private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
-	int _nopponentsraising; //!!!
 	int _nopponentsfolded;
 	int _nopponentscalling;
 	int _nopponentschecking;
 private:
+	// Indices 1..4 are for the betrounds preflop..river.
+	// Index 0 is unused.
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
-	int _callbits[k_number_of_betrounds + 1]; //!!!
+	int _callbits[k_number_of_betrounds + 1]; 
 private:
 	int _dealerchair; 
 	int _userchair;

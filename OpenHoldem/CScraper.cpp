@@ -64,7 +64,7 @@ void CScraper::ClearScrapeAreas(void)
 	set_button_label(2, "raise");
 	set_button_label(3, "allin");
 
-	set_istournament(false); // !!! duplicated code?
+	set_istournament(false); // !! duplicated code?
 	set_handnumber(0);
 	set_sblind(0);
 	set_bblind(0);

@@ -14,7 +14,15 @@ public:
 public:
 	void OnNewHeartbeat();
 public:
-	int betround()			{ return _betround; }
+	int betround()			
+	{ 
+		// Betround is very important and gets used as an index at various places
+		// so we always make sure that it is not out of range.
+		assert(_betround >= k_betround_preflop);
+		assert(_betround <= k_betround_river);
+		return _betround; 
+	}
+public:
 	bool IsNewBetround()	{ return (_betround != _betround_previous_heartbeat); }
 private:
 	int _betround;

@@ -37,8 +37,6 @@ CCasinoInterface::CCasinoInterface()
 CCasinoInterface::~CCasinoInterface()
 {}
 
-// !!! todo? debug-preferences?
-
 bool CCasinoInterface::TableLostFocus()
 {
 	return (GetForegroundWindow() != p_autoconnector->attached_hwnd());
@@ -216,8 +214,8 @@ bool CCasinoInterface::EnterChatMessage(CString &message)
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_chatbox, message, false, GetFocus(), cur_pos);
 
 	// Clear old chat_message to allow new ones.
-	_the_chat_message = NULL;
-	ComputeFirstPossibleNextChatTime();
+	//!!_the_chat_message = NULL;
+	//ComputeFirstPossibleNextChatTime();
 	return true;
 }
 
@@ -321,10 +319,6 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
 	
-
-	// if we are swagging allin then set the swag value to be our balance (spew)
-	// !!! To be handled in allin
-
 	// SWAG AMOUNT ENTRY
 	double swag_adjusted = SwagAmountAdjusted(p_autoplayer_functions->f$betsize());
 

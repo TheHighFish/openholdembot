@@ -16,6 +16,8 @@
 #include "CPreferences.h"
 #include "CTableLimits.h"
 #include "MagicNumbers.h"
+#include "Numericalfunctions.h"
+
 
 CGameState			*p_game_state = NULL;
 
@@ -475,21 +477,18 @@ const double CGameState::OHSymHist(const char * sym, const int round)
 const double CGameState::SortedBalance(const int rank)
 {
 	double	stacks[k_max_number_of_players] = {0.};
-	double	temp = 0.;
 
 	for (int i=0; i<k_max_number_of_players; i++)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
-	// bubble sort stacks
+	// bubble sort stacks //!! duplicate code?
 	for (int i=0; i<(k_max_number_of_players-1); i++)
 	{
 		for (int n=i+1; n<k_max_number_of_players; n++)
 		{
 			if (stacks[i] < stacks[n])
 			{
-				temp = stacks[i];
-				stacks[i] = stacks[n];
-				stacks[n] = temp;
+				SwapDoubles(&stacks[i], &stacks[n]);
 			}
 		}
 	}
@@ -548,8 +547,7 @@ bool CGameState::ProcessThisFrame (void)
 		&& _safe_to_process_state 
 		&& balance_stability 
 		&& card_stability) 
-		// !!! hand-reset: better use the hand-reset-detector?
-		|| _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair != _m_holdem_state[(_m_ndx-1)&0xff].m_dealer_chair); 
+		|| p_handreset_detector->IsHandreset());
 }
 
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
