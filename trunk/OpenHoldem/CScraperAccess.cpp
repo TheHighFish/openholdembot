@@ -322,7 +322,7 @@ int CScraperAccess::NumberOfVisibleButtons()
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
-
+		//button_label.MakeLower() == "swag"))
 	return number_of_visible_buttons;
 }
 
@@ -340,6 +340,10 @@ bool CScraperAccess::PlayerHasKnownCards(int player)
 
 bool CScraperAccess::PlayerHasCards(int player)
 {
+	// We do no longer check for cardbacks,
+	// but for cardbacks or cards.
+	// This way we can play all cards face-up at PokerAcademy.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
 	if (p_scraper->card_player(player, 0) == CARD_NOCARD 
 		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
 	{

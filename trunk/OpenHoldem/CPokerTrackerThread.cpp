@@ -116,8 +116,6 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_m_wait_thread = NULL;
 	SetStatGroups();
 	SetStatTypes();
-
-	// !!! Not present if PT-development?
 	_pgconn = NULL; 
 }
 
@@ -1119,10 +1117,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	clock_t			iterStart, iterEnd;
 	int				iterDurationMS;
 
-	// !!! removed in PT-dev
-	//bool sym_issittingin = (bool) p_symbols->sym()->issittingin;
-	//bool sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
-
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
 		iterStart = clock();
@@ -1151,7 +1145,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		//Define sleeptime for current ptrhead iteration
 		if (players > 1)
 		{
-			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!!*/ 30 * 1000) / (double)(pt_max * players));
+			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!*/ 30 * 1000) / (double)(pt_max * players));
 			write_log_pokertracker(2, "sleepTime set to %d\n", sleepTime);
 		}
 		else

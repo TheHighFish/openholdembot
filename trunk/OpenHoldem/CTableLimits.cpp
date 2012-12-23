@@ -11,6 +11,7 @@
 #include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
 #include "Median.h"
+#include "Numericalfunctions.h"
 
 
 CTableLimits	*p_tablelimits = NULL;
@@ -296,9 +297,7 @@ void CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
 		&& (tablelimit_unreliable_input.bblind >= 0.01))
 	{
 		write_log(3, "CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero swap neccessary\n");
-		double temp = tablelimit_unreliable_input.sblind;
-		tablelimit_unreliable_input.sblind = tablelimit_unreliable_input.bblind;
-		tablelimit_unreliable_input.bblind = temp;
+		SwapDoubles(&tablelimit_unreliable_input.sblind, &tablelimit_unreliable_input.bblind);
 	}
 }
 
@@ -620,7 +619,6 @@ double CTableLimits::ante()
 
 double CTableLimits::bet(int betround)
 {
-	// !!! make sure, that betround gets calculated before the table-limit.
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
 	return (_betsizes_for_all_bettingrounds[betround]);

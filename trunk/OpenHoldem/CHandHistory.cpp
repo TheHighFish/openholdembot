@@ -179,7 +179,7 @@ void CHandHistory::checkBetround()
 		{
 			if(allChecks[0]==true) SetAction(_history.bblindpos, 2, 0, 1);
 			_history.whosturn=postflopstart;
-			_history.lpta = -5; // !!! WTF is lpta?
+			_history.lpta = -5; // !! WTF is lpta?
 			flopSeen=true;
 			passChecks=false;
 			maxBet=0;
@@ -657,10 +657,10 @@ void CHandHistory::resetVars()
 		_history.chair[i].calls=0;
 		_history.chair[i].actionCount=0;
 		middleBet[i]=0;
-		for(int j=0;j<4;j++) // should be 1..4 !!!
+		for(int j=0;j<4;j++) // should be 1..4 !!
 		{
 			_history.chair[i].totalIn[j]=0;
-			for(int k=0;k<8;k++) // !!! WTF is 8?
+			for(int k=0;k<8;k++) // !! WTF is 8?
 			{
 				_history.chair[i].bet[j][k]=0;
 				_history.chair[i].action[j][k]=0;
@@ -675,7 +675,7 @@ void CHandHistory::SetAction(int pnum, int action, double amount, int br)
 	int				count = _history.chair[pnum].actionCount;
 	br--;
 
-	if(br>3) // should be 1..4 !!!
+	if(br>3) // should be 1..4 !!
 		br=3;
 	else if(br<0)
 		br=0;

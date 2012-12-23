@@ -18,6 +18,7 @@
 #include "CSymbols.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
+#include "Numericalfunctions.h"
 #include "OH_MessageBox.h"
 #include "UnknownSymbols.h"
 
@@ -349,8 +350,8 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	
 	int				$$pc0 = p_symbol_engine_cards->$$pc(0);
 	int				$$pc1 = p_symbol_engine_cards->$$pc(1);
-	int				rank0 = ($$pc0>>4)&0x0f; //!!!
-	int				rank1 = ($$pc1>>4)&0x0f;
+	int				rank0 = RankOfCard($$pc0);
+	int				rank1 = RankOfCard($$pc1);
 	bool			sym_issuited = p_symbol_engine_cards->issuited();
 
 	// "e" literal
@@ -364,9 +365,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	{
 		if (rank1>rank0)
 		{
-			rank_temp=rank0;
-			rank0=rank1;
-			rank1=rank_temp;
+			SwapInts(&rank0, &rank1);
 		}
 
 		// Which form of f$$ is being called determines nature of resultant udf call
@@ -549,7 +548,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 		{
 			if (strcmp(f->formula()->mFunction[i].func, symbol)==0)
 			{
-				if (f->formula()->mFunction[i].fresh == true && !skipCache) // !!! skipcache?
+				if (f->formula()->mFunction[i].fresh == true && !skipCache) // !! skipcache?
 				{
 					ret = f->formula()->mFunction[i].cache;
 

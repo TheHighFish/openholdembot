@@ -164,8 +164,8 @@ const int CPokerAction::PreflopRaisPos (void)
 								sym_dealpositionrais==3 ? 6 : 0):
 		sym_nplayersdealt==2  ? (
 								// reversed blinds - dealer is BB
-								// !!! Bad code. We should get rid of hard-coded constants
-								// !!! does also not work with new PT3 constants
+								// !! Bad code. We should get rid of hard-coded constants
+								// !! does also not work with new PT3 constants
 								(pt_lookup.GetSiteId()==11) ?
 								(sym_dealpositionrais==1 ? 1 :
 								sym_dealpositionrais==2 ? 6 : 0 ) :
@@ -301,7 +301,7 @@ const int CPokerAction::DealPosition (const int chairnum)
 
 const int CPokerAction::AggressorChair (void)
 {
-	// !!! Plain superfluos code!
+	// !! Plain superfluos code!
 	int		betround = p_betround_calculator->betround();
 	int		sym_raischair = p_symbol_engine_raisers_callers->raischair();
 

@@ -20,7 +20,7 @@
 
 //#include <vld.h>			// visual leak detector
 
-// !!! ToDo: better debug-format (especially summary)
+// !! ToDo: better debug-format (especially summary)
 
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
@@ -249,8 +249,7 @@ void start_log(void)
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
 		write_log(k_always_log_basic_information, "! log file open\n");
-		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n"); //!!! nit
-		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n"); //!! nit		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 		fflush(log_fp);
 	}
 
@@ -328,8 +327,7 @@ void write_logautoplay(const char * action)
     CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
     char		*card;
     CardMask	Cards;
-    int			i, nCards;
-    HandVal		hv;
+    int			nCards;
     CString		fcra_formula_status;
 
 	int			sym_userchair = (int) p_symbol_engine_userchair->userchair();
@@ -370,7 +368,7 @@ void write_logautoplay(const char * action)
 		// player cards
 		if (p_symbol_engine_userchair->userchair_confirmed()) 
 		{
-			for (i=0; i<=1; i++) 
+			for (int i=0; i<=1; i++) 
 			{
 				card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
 				temp.Format("%s", card);
@@ -388,7 +386,7 @@ void write_logautoplay(const char * action)
 		comcards = "";
 		if (betround >= k_betround_flop) 
 		{
-			for (i=0; i<=2; i++) 
+			for (int i=0; i<=2; i++) 
 			{
 				if (p_scraper->card_common(i) != CARD_BACK && 
 					p_scraper->card_common(i) != CARD_NOCARD) 

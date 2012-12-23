@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CHandresetDetector.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -143,9 +144,10 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines()
 
 void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 {
-	p_tablelimits->CalcTableLimits();
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
+	// table-limits depend on betround
+	p_tablelimits->CalcTableLimits();
 
 	// ResetOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
@@ -161,7 +163,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 	{
 		ResetOnNewRound();
 	}
-	if (1) //!!!
+	if (p_scraper_access->IsMyTurn())
 	{
 		ResetOnMyTurn();
 	}

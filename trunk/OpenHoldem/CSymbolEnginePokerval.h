@@ -5,8 +5,8 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CTableLimits.h"
-#include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
+#include "NumericalFunctions.h"
 
 extern class CSymbolEnginePokerval: public CVirtualSymbolEngine
 {

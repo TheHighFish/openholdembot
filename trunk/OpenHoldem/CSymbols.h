@@ -185,7 +185,6 @@ public:
 	// public accessors
 	const bool			user_chair_confirmed() { return _user_chair_confirmed; }
 	const double		bigbet()	{ return p_tablelimits->bbet(); }
-	const sprw1326		*prw1326()	{ return &_prw1326; }
 	const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
 	const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
 	const SSymbols		*sym() { return &_sym; }
@@ -194,7 +193,6 @@ public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
 	void	set_user_chair_confirmed(const bool b) { ENT _user_chair_confirmed = b;}
-	void	set_prw1326_useme(const int i)	{ ENT _prw1326.useme = i;}
 	void	logsymbols_collection_add(const char *s)	{ ENT _logsymbols_collection.Add(s);}
 	void	logsymbols_collection_removeall()			{ ENT _logsymbols_collection.RemoveAll();}
 	void	symboltrace_collection_add(const char *s)	{ ENT _symboltrace_collection.Add(s);}
@@ -217,7 +215,6 @@ private:
 	
 	CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
 	CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
-	sprw1326	_prw1326;								//prwin 1326 data structure Matrix 2008-04-29
 
 private:
 	// private functions and variables - not available via accessors or mutators
@@ -240,7 +237,7 @@ private:
 
 	CCritSec			m_critsec;
 private:
-	int _betround; //!!!
+	int _betround; 
 	int _userchair;
 private:/*
 	CSymbolEngineRandom			symbol_engine_random;

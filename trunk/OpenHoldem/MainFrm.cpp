@@ -98,7 +98,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
-	// Main toolbar //!!!
+	// Main toolbar 
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDCIRCLE, &CMainFrame::OnBnClickedRedCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
@@ -173,7 +173,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
 
 	// Set toolbar button status
-	// !!! To be removed in OH 5.0
+	// !! To be removed in OH 5.0
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 

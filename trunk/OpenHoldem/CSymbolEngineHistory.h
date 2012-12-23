@@ -30,7 +30,6 @@ public:
 			|| didswag(_betround) || didrais(_betround));
 	}
 public:
-	// !!! range-check
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
 	double nbetsround(int betround)		{ return _nbetsround[betround]; }

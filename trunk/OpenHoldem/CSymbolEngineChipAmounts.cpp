@@ -130,8 +130,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	}
 	for (int i=0; i<_nchairs; i++)
 	{
-		assert(_stack[i] >= 0);
-		_stack[i] = _stack[i];									
+		assert(_stack[i] >= 0);									
 	}
 	for (int i=_nchairs; i<k_max_number_of_players; i++)
 	{
@@ -251,13 +250,3 @@ double CSymbolEngineChipAmounts::Largestbet()
 	return largest_bet;
 }
 
-/*!!!
-
-		// We do no longer check for cardbacks,
-		// but for cardbacks or cards.
-		// This way we can play all cards face-up at PokerAcademy.
-		// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
-		if (p_scraper->card_player(i, 0) != CARD_NOCARD 
-			&& p_scraper->card_player(i, 1) != CARD_NOCARD 
-			&& i != p_symbol_engine_userchair->userchair())
-			*/

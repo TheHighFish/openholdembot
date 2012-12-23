@@ -131,7 +131,7 @@ bool CAutoplayer::DoBetPot(void)
 			}
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
-				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !!! */ 1);
+				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !! */ 400);
 			}
 			else 
 			{
@@ -192,7 +192,10 @@ bool CAutoplayer::ExecutePrimaryFormulas()
 		}
 		// Else continue with swag and betpot
 	}
-	// !!! Swag
+	if (DoSwag())
+	{
+		return true;
+	}
 	if (DoBetPot())
 	{
 		return true;
@@ -279,7 +282,6 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
-	//!!!
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 }
 
@@ -358,7 +360,7 @@ void CAutoplayer::DoAutoplayer(void)
 	CheckBringKeyboard();
 
 	p_scraper_access->GetNeccessaryTablemapObjects();
-	/* [TODO] better log-file format !!! 	
+	/* [TODO] better log-file format !! 	
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
 		allin_option_available ? 'A' : '.',
@@ -393,11 +395,6 @@ bool CAutoplayer::DoSwag(void)
 	return false;
 }
 
-
-void CAutoplayer::DoSlider(void) 
-{
-	// !!!	
-}
 
 void CAutoplayer::DoPrefold(void) 
 {
