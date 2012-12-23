@@ -34,16 +34,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0040")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol originaldealposition")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("originaldealposition") >= 1) && (gws("originaldealposition") <= gws("nplayersdealt")))
-    SYMBOLS_POSSIBLY_AFFECTED ("originaldealposition, nplayersdealt")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0041")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol callposition")

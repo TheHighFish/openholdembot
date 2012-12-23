@@ -153,7 +153,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 	if (strcmp (str, "cmd$recalc") == 0)
 	{
 		// restart iterator thread
-		if (p_symbols->sym()->nit==0)
+		if (p_symbol_engine_prwin->nopponents_for_prwin() == 0)
 		{
 			iter_vars.set_iterator_thread_complete(true);
 		}

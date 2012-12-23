@@ -27,6 +27,32 @@ char ctonum[14]="23456789TJQKA";
 //int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
 sprw1326	_prw1326;								//prwin 1326 data structure Matrix 2008-04-29
 
+
+//handrank table used to prime weighted prwin lookup table.
+//reflects incidence of cards people actually play to flop.
+//left in this form for ease of developer modification.
+//converted at startup to the tables actually used by prwin calculation
+char *prwin_handrank_table_169[k_number_of_starting_hands] =
+{
+	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
+	"JTs","QJs","QTs","99 ","ATs","KTs","88 ","T9s","AK ","J9s",
+	"77 ","98s","Q9s","66 ","A9s","K9s","T8s","55 ","A5s","54s",
+	"44 ","A8s","87s","33 ","65s","22 ","AQ ","A4s","J8s","A3s",
+	"76s","97s","A7s","KQ ","A2s","Q8s","86s","K8s","A6s","75s",
+	"T7s","53s","64s","K7s","AJ ","KJ ","43s","QJ ","96s","JT ",
+	"J7s","K6s","K5s","QT ","85s","Q7s","KT ","AT ","K4s","K3s",
+	"K2s","74s","T6s","52s","Q6s","63s","Q5s","Q4s","42s","Q3s",
+	"95s","J6s","J5s","32s","Q2s","T9 ","J4s","84s","T5s","J3s",
+	"T4s","73s","J2s","J9 ","T3s","T2s","62s","94s","93s","92s",
+	"83s","Q9 ","A9 ","98 ","82s","T8 ","K9 ","72s","54 ","87 ",
+	"A8 ","A5 ","65 ","A4 ","76 ","J8 ","97 ","A3 ","A7 ","A2 ",
+	"86 ","A6 ","Q8 ","75 ","53 ","K8 ","T7 ","64 ","K7 ","43 ",
+	"96 ","K6 ","J7 ","85 ","K5 ","Q7 ","K4 ","K3 ","74 ","52 ",
+	"T6 ","Q6 ","K2 ","Q5 ","42 ","63 ","Q4 ","95 ","Q3 ","J6 ",
+	"J5 ","32 ","Q2 ","J4 ","T5 ","84 ","J3 ","J2 ","T4 ","73 ",
+	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
+};
+
 CIteratorVars::CIteratorVars()
 {
 	ResetVars();
@@ -117,7 +143,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	int				numberOfCards = 0;
 
 	int				betround = p_betround_calculator->betround();
-	int				sym_playersplayingbits = p_symbols->sym()->playersplayingbits;
+	int				sym_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
 	double			sym_nbetsround = p_symbol_engine_history->nbetsround(betround);
 	int				sym_bblindbits = p_symbol_engine_blinds->bblindbits();
 	bool			sym_didcall = p_symbol_engine_history->didcall(betround);
@@ -474,9 +500,9 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_running(true);
 	iter_vars.set_iterator_thread_complete(false);
 	iter_vars.set_iterator_thread_progress(0);
-	iter_vars.set_nit((int) p_symbols->sym()->nit);
-	iter_vars.set_f$p((int) p_symbol_engine_prwin->nopponents_for_prwin());
-	iter_vars.set_br((int) p_betround_calculator->betround());
+	iter_vars.set_nit(10000); //!! f$prwin_number_of_iterations")
+	iter_vars.set_f$p(p_symbol_engine_prwin->nopponents_for_prwin());
+	iter_vars.set_br(p_betround_calculator->betround());
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), i));
@@ -610,7 +636,7 @@ void CIteratorThread::InitHandranktTableForPrwin()
 	for (i=0;i<169;i++)
 	{
 		//normal weighted prwin table
-		//!!!!!ptr=prwhandrank169[i];
+		ptr = prwin_handrank_table_169[i];
 		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
 		if (*(ptr+2)=='s')pair2ranks[j]=i+1;
 		else pair2ranko[j]=i+1;

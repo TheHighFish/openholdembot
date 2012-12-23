@@ -276,6 +276,10 @@ MAINTENANCE:
   worked only on the first orbit preflop, because that task can be done with other symbols
   and finally we have the OpenPPL-library, so there is really no longer any need for that.
   [THF]
+- Removing the symbol originaldealposition which was meant to keep the value of dealposition
+  till the end of the hand. But there is a better way to achieve the same behaviour:
+  we do no longer reset dealposition, so that symbol became superfluous.
+  [THF]
   
   
 v2.1.9.4 2012-06-14

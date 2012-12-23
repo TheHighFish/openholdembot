@@ -481,16 +481,16 @@ void write_logautoplay(const char * action)
 			rank.GetString(), 
 			pokerhand.GetString());
         fprintf(log_fp, "%4d %4d %4d ", 
-			(int) (p_symbols->sym()->prwin*1000),
-			(int) (p_symbols->sym()->prlos*1000), 
-			(int) (p_symbols->sym()->prtie*1000));
+			(iter_vars.prwin() * 1000),
+			(iter_vars.prlos() * 1000), 
+			(iter_vars.prtie() * 1000));
         fprintf(log_fp, "%2d %8d %-10s - ", 
-			(int) p_symbol_engine_prwin->nopponents_for_prwin(),
-			(int) p_symbols->sym()->nit,
+			p_symbol_engine_prwin->nopponents_for_prwin(),
+			iter_vars.nit(),
 			bestaction.GetString());
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
 			action, 
-			p_symbols->sym()->call, 
+			p_symbol_engine_chip_amounts->call(), 
 			p_tablelimits->bet(), 
 			p_symbol_engine_chip_amounts->pot());
 		int userchair = p_symbol_engine_userchair->userchair();
