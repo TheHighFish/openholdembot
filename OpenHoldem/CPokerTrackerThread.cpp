@@ -264,7 +264,7 @@ void CPokerTrackerThread::WarnAboutInvalidPTSymbol(CString s)
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)
 {
-	int		sym_raischair = (int) p_symbols->sym()->raischair;
+	int		sym_raischair = p_symbol_engine_raisers_callers->raischair();
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 	{

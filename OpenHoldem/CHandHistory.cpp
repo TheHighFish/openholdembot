@@ -76,10 +76,10 @@ void CHandHistory::WriteHistory()
 }
 void CHandHistory::UpdateSymbols()
 {
-	int	nchairs   = (int) p_symbols->sym()->nchairs;
-	int	betround  = (int) p_betround_calculator->betround();
-	int	userchair = (int) p_symbol_engine_userchair->userchair();
-	int	players_playing_bits = (int) p_symbols->sym()->playersplayingbits; 
+	int	nchairs   = p_tablemap->nchairs();
+	int	betround  = p_betround_calculator->betround();
+	int	userchair = p_symbol_engine_userchair->userchair();
+	int	players_playing_bits = p_symbol_engine_active_dealt_playing->playersplayingbits(); 
 	
 
 	// Reset pot
@@ -115,7 +115,7 @@ void CHandHistory::roundStart()
 {
 	double			bblind = p_tablelimits->bblind();
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
-	int				nchairs = (int)p_symbols->sym()->nchairs;
+	int				nchairs = (int)p_tablemap->nchairs();
 	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 
 	resetVars();
@@ -156,7 +156,7 @@ void CHandHistory::roundStart()
 void CHandHistory::checkBetround()
 {
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 	char			card_common[5][5];
 
@@ -243,9 +243,9 @@ void CHandHistory::scanPlayerChanges()
 {
 	double			bblind = p_tablelimits->bblind();
 	double			potplayer = p_symbol_engine_chip_amounts->potplayer();
-	int				betround = (int) p_betround_calculator->betround();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
-	int				raischair = (int) p_symbols->sym()->raischair;
+	int				betround  = p_betround_calculator->betround();
+	int				nchairs   = p_tablemap->nchairs();
+	int				raischair = p_symbol_engine_raisers_callers->raischair();
 
 	//Iterates through all chairs
 	for(int i=0;i<nchairs;i++) 
@@ -384,7 +384,7 @@ const int k_betround_turn		= 3;
 void CHandHistory::SetPreviousActions()
 {
 	int				betround = (int) p_betround_calculator->betround();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 
 	prevdealerchair = dealerchair;
@@ -421,7 +421,7 @@ const string CHandHistory::setDate()
 const bool CHandHistory::isShowdown()
 {
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 	int				betround = (int) p_betround_calculator->betround();
 
 	//If a player other than the user has cards showing, it is showdown
@@ -474,7 +474,7 @@ const int CHandHistory::DealPosition (const int chairnum)
 	int		dealposchair = 0 ;
 	int		e = SUCCESS;
 	int		sym_dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
-	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
+	int		sym_playersdealtbits = (int) p_symbol_engine_active_dealt_playing->playersdealtbits();
 
 	if (chairnum<0 || chairnum>9)
 		return dealposchair;
@@ -491,8 +491,8 @@ const int CHandHistory::DealPosition (const int chairnum)
 }
 void CHandHistory::processShowdown()
 {
-	int				nchairs = (int)p_symbols->sym()->nchairs;
-	int				nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
+	int	nchairs         = p_tablemap->nchairs();
+	int	nplayersplaying	= p_symbol_engine_active_dealt_playing->nplayersplaying();
 
 	for(int i=0;i<nchairs;i++)
 	{
@@ -540,7 +540,7 @@ const bool CHandHistory::isBigBlind(const int i)
 }
 const bool CHandHistory::cardsDealt()
 {
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 	int				playersdealt = 0;
 
 	//If any cardbacks are showing, cards have been dealt
@@ -565,7 +565,7 @@ const string CHandHistory::findLimit()
 }
 const bool CHandHistory::isPlaying(const int i)
 {
-	int				dbits = (int) p_symbols->sym()->playersdealtbits;
+	int				dbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
 	int				playersdealtbits = (dbits>>i)&1;
 
 	if(playersdealtbits==1&&_history.chair[i].currentBalance>=0)
@@ -586,7 +586,7 @@ const bool CHandHistory::hasMucked(const int i)
 }
 void CHandHistory::checkSeats(const int i, int j)
 {
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 
 	do
 	{
@@ -615,7 +615,7 @@ void CHandHistory::checkAllin(const int i)
 void CHandHistory::resetVars()
 {
 	double			bblind = p_tablelimits->bblind();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 
 	SBfound=true;
 	newRoundFlag=false;
@@ -706,7 +706,7 @@ void CHandHistory::ReconstructHand(bool contested)
 	double			bblind = p_tablelimits->bblind();
 	double			calculatedPot = 0;
 	int				userchair = (int) p_symbol_engine_userchair->userchair();
-	int				nchairs = (int) p_symbols->sym()->nchairs;
+	int				nchairs = p_tablemap->nchairs();
 	int				dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
 	int				betround = 0;
 	int				prevround = 0;

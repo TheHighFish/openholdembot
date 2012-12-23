@@ -21,7 +21,7 @@ double MaximumSwagAmountForPotLimit()
 {
 	// ToDo: Preflop
 	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
-		+ p_symbol_engine_chip_amounts->pot()); // !!!???
+		+ p_symbol_engine_chip_amounts->pot()); // !!???
 	write_log(3, "SwagAdjustment: MaximumSwagAmountForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
 	assert(maximum_swag_amount_for_pot_limit >= 0);
 	return maximum_swag_amount_for_pot_limit;

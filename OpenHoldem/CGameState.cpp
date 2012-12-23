@@ -842,10 +842,10 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 {
 	double			sym_elapsed         = p_symbol_engine_time->elapsed();
 	double			sym_nbetsround1     = p_symbol_engine_history->nbetsround(k_betround_preflop);
-	int				sym_nplayersdealt   = p_symbols->sym()->nplayersdealt;
+	int				sym_nplayersdealt   = p_symbol_engine_active_dealt_playing->nplayersdealt();
 	int				betround            = p_betround_calculator->betround();
 	int				ncommoncardsknown   = p_symbol_engine_cards->ncommoncardsknown();
-	int				sym_nplayersplaying = p_symbols->sym()->nplayersplaying;
+	int				sym_nplayersplaying = p_symbol_engine_active_dealt_playing->nplayersplaying();
 
 	// if a new hand has started setup the next element in the ftr tracker array
 	if (pstate->m_dealer_chair != _ftr_dealer_chair_last)

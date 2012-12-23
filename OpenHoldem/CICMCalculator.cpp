@@ -80,12 +80,12 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	prizes[4] = prefs.icm_prize5();
 
 	int			sym_userchair = p_symbol_engine_userchair->userchair();
-	int			sym_opponentsplayingbits = p_symbols->sym()->opponentsplayingbits;
+	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
 	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	int			sym_nplayersseated = p_symbols->sym()->nplayersseated;
-	int			sym_playersseatedbits = p_symbols->sym()->playersseatedbits;
+	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
+	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
 	double		sym_pot = p_symbol_engine_chip_amounts->pot();
-	double		sym_call = p_symbols->sym()->call;
+	double		sym_call = p_symbol_engine_chip_amounts->call();
 	double		sym_currentbet[MAX_PLAYERS]={0};
 
 	for (i = 0; i < MAX_PLAYERS; i++)
@@ -356,7 +356,7 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 	double ICM = 0.;
 	int i = 0;
 
-	int			sym_opponentsseatedbits = (int) p_symbols->sym()->opponentsseatedbits;
+	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
 
 	for (i = 0; i < playerNB; i++)
 	{
@@ -402,8 +402,8 @@ double CICMCalculator::GetPlayerCurrentBet(int pos)
 
 int CICMCalculator::GetChairFromDealPos(const char* pquery)
 {
-	int	sym_playersseatedbits =	p_symbols->sym()->playersseatedbits;
-	int	sym_nplayersseated =	p_symbols->sym()->nplayersseated;
+	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
+	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
 	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
 	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
 	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;

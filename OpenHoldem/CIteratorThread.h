@@ -72,8 +72,7 @@ public:
 	CIteratorThread();
 	~CIteratorThread();
 public:
-	#define ENT //!!!
-	void	set_prw1326_useme(const int i)	{ ENT _prw1326.useme = i;}
+	void	set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
 	const	sprw1326 *prw1326()	            { return &_prw1326; }
 #undef ENT
 private:

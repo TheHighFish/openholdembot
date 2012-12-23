@@ -173,6 +173,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 
 void CEngineContainer::ResetOnConnection()
 {
+	p_tablelimits->ResetOnConnection();
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnConnection();

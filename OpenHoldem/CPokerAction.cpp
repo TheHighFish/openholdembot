@@ -4,6 +4,8 @@
 #include "CBetroundCalculator.h"
 #include "CGameState.h"
 #include "CPokerTrackerThread.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
@@ -33,8 +35,8 @@ const double CPokerAction::ProcessQuery(const char * pquery, int *e)
 
 const int CPokerAction::PreflopPos (void)
 {
-	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
-	int		sym_dealposition = (int) p_symbols->sym()->dealposition;
+	int		sym_nplayersdealt = p_symbol_engine_active_dealt_playing->nplayersdealt();
+	int		sym_dealposition  = p_symbol_engine_positions->dealposition();
 	
 
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
@@ -105,8 +107,8 @@ const int CPokerAction::PreflopPos (void)
 const int CPokerAction::PreflopRaisPos (void)
 {
 	int		e = SUCCESS;
-	int		sym_nplayersdealt = (int) p_symbols->sym()->nplayersdealt;
-	int		sym_dealpositionrais = (int) p_symbols->sym()->dealpositionrais;
+	int		sym_nplayersdealt    = p_symbol_engine_active_dealt_playing->nplayersdealt();
+	int		sym_dealpositionrais = p_symbol_engine_positions->dealpositionrais();
 	
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
 	return
@@ -177,8 +179,8 @@ const int CPokerAction::PreflopRaisPos (void)
 const int CPokerAction::PostflopPos (void)
 {
 	int		e = SUCCESS;
-	int		sym_nplayersplaying = (int) p_symbols->sym()->nplayersplaying;
-	int		sym_betposition = (int) p_symbols->sym()->betposition;
+	int		sym_nplayersplaying = p_symbol_engine_active_dealt_playing->nplayersplaying();
+	int		sym_betposition     = p_symbol_engine_positions->betposition();
 
 	//first=1 early=2 middle=3 late=4 last=5
 	return
@@ -257,8 +259,8 @@ const int CPokerAction::BetPosition (const int chairnum)
 	int		i = 0;
 	int		betpos = 0;
 	int		e = SUCCESS;
-	int		sym_dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
-	int		sym_playersplayingbits = (int) p_symbols->sym()->playersplayingbits;
+	int		sym_dealerchair        = p_symbol_engine_dealerchair->dealerchair();
+	int		sym_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
 
 	if (chairnum<0 || chairnum>9)
 		return betpos;
@@ -282,8 +284,8 @@ const int CPokerAction::DealPosition (const int chairnum)
 {
 	int		dealposchair = 0 ;
 	int		e = SUCCESS;
-	int		sym_dealerchair = (int) p_symbol_engine_dealerchair->dealerchair();
-	int		sym_playersdealtbits = (int) p_symbols->sym()->playersdealtbits;
+	int		sym_dealerchair      = p_symbol_engine_dealerchair->dealerchair();
+	int		sym_playersdealtbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
 
 	if (chairnum<0 || chairnum>9)
 		return dealposchair;
@@ -349,7 +351,7 @@ const bool CPokerAction::AgchairAfter (void)
 		result = false;
 
 	if (AggressorChair()>=0)
-		result = BetPosition(AggressorChair()) > p_symbols->sym()->betposition;
+		result = BetPosition(AggressorChair()) > p_symbol_engine_positions->betposition();
 
 	else
 		result = false ;

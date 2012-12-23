@@ -48,295 +48,22 @@ CSymbols::~CSymbols()
 
 void CSymbols::ResetSymbolsFirstTime(void)
 {
-	// Table-limits
-	/*
-	p_tablelimits->ResetOnConnection();
-
-	// formula
-	set_sym_nit(0);
-
-	// limits
-	set_sym_sraiprev(0);
-	set_sym_sraimin(0);
-	set_sym_sraimax(0);
-
-	set_sym_raischair_previous_frame(-1);
-	set_sym_raischair(-1);
-
-	set_user_chair_confirmed(false);
-
-	// rounds positions
-	set_sym_betposition(0);
-	set_sym_dealposition(0);
-	set_sym_callposition(0);
-	set_sym_dealpositionrais(1);
-	set_sym_betpositionrais(1);
-
-	set_sym_prwin(0);
-	set_sym_prlos(0);
-	set_sym_prtie(0);
-
-	set_sym_call(0);
-
-	// number of bets
-	set_sym_nbetstocall(0);
-	set_sym_nbetstorais(0);
-	set_sym_ncallbets(0);
-	set_sym_nraisbets(0);
-
-	// players, opponents
-	set_sym_nopponents(0);
-	set_sym_nopponentschecking(0);
-	set_sym_nopponentscalling(0);
-	set_sym_nopponentsraising(0);
-	set_sym_nopponentsfolded(0);
-	set_sym_nplayerscallshort(0);
-	set_sym_nchairsdealtright(0);
-	set_sym_nchairsdealtleft(0);
-	set_sym_playersdealtbits(0);
-
-	// rank bits
-	set_sym_rankbits(0);
-	set_sym_rankbitscommon(0);
-	set_sym_rankbitsplayer(0);
-	set_sym_rankbitspoker(0);
-	set_sym_srankbits(0);
-	set_sym_srankbitscommon(0);
-	set_sym_srankbitsplayer(0);
-	set_sym_srankbitspoker(0);
-
-	// vs$
-	set_sym_vs$nhands(0);
-	set_sym_vs$nhandshi(0);
-	set_sym_vs$nhandsti(0);
-	set_sym_vs$nhandslo(0);
-	set_sym_vs$prwin(0);
-	set_sym_vs$prtie(0);
-	set_sym_vs$prlos(0);
-	set_sym_vs$prwinhi(0);
-	set_sym_vs$prtiehi(0);
-	set_sym_vs$prloshi(0);
-	set_sym_vs$prwinti(0);
-	set_sym_vs$prtieti(0);
-	set_sym_vs$prlosti(0);
-	set_sym_vs$prwinlo(0);
-	set_sym_vs$prtielo(0);
-	set_sym_vs$prloslo(0);
-
-	set_sym_vs$nhandshinow(0);
-	set_sym_vs$nhandstinow(0);
-	set_sym_vs$nhandslonow(0);
-	set_sym_vs$prwinhinow(0);
-	set_sym_vs$prtiehinow(0);
-	set_sym_vs$prloshinow(0);
-	set_sym_vs$prwintinow(0);
-	set_sym_vs$prtietinow(0);
-	set_sym_vs$prlostinow(0);
-	set_sym_vs$prwinlonow(0);
-	set_sym_vs$prtielonow(0);
-	set_sym_vs$prloslonow(0);
-
-	// action symbols
-	p_autoplayer_functions->Reset();
-
-	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
-	*/
 }
 
 void CSymbols::ResetSymbolsNewHand(void)
 {
 	_userchair = p_symbol_engine_userchair->userchair();
-
-	/*
-	p_tablelimits->ResetOnHandreset();
-
-	// action symbols
-	p_tablelimits->ResetOnConnection();
-	p_autoplayer_functions->Reset();
-
-	// icm
-
-	set_sym_raischair_previous_frame(-1);
-	set_sym_raischair(-1);
-	*/
 }
 
-/*void CSymbols::ResetSymbolsNewRound(void)
-{
-	
-	
-}*/
 
 void CSymbols::ResetSymbolsEveryCalc(void)
 {
 	_betround = p_betround_calculator->betround();
-	/*
-	p_tablelimits->ResetEachHeartBeatCycle();
-
-	// general
-	set_sym_isbring(0);
-
-	// limits
-	set_sym_sraiprev(0);
-	set_sym_sraimin(0);
-	set_sym_sraimax(0);
-
-	// handrank // Why here?
-	set_sym_handrankp(0);
-
-	// chairs
-	set_sym_raischair_previous_frame(_sym.raischair);
-
-	// rounds positions
-	set_sym_betposition(1);
-	set_sym_dealposition(1);
-	set_sym_callposition(1);
-	set_sym_dealpositionrais(1);
-	set_sym_betpositionrais(1);
-
-	// chip amounts
-	// Index k_max_number_of_players+1 is for hero
-	write_log(prefs.debug_symbolengine(), "Resetting currentbets for all players\n");
-	set_sym_call(0);
-
-	// number of bets
-	set_sym_nbetstocall(0);
-	set_sym_nbetstorais(0);
-	set_sym_ncallbets(0);
-	set_sym_nraisbets(0);
-
-	// poker values
-	set_sym_pokerval(0);
-	set_sym_pokervalcommon(0);
-	set_sym_pcbits(0);
-	set_sym_npcbits(0);
-
-	// hand tests
-	set_sym_ishandup(0);
-	set_sym_ishandupcommon(0);
-	set_sym_ishicard(0);
-	set_sym_isonepair(0);
-	set_sym_istwopair(0);
-	set_sym_isthreeofakind(0);
-	set_sym_isstraight(0);0;
-	set_sym_isflush(0);
-	set_sym_isfullhouse(0);
-	set_sym_isfourofakind(0);
-	set_sym_isstraightflush(0);
-	set_sym_isroyalflush(0);
-
-	// pocket tests
-	set_sym_ispair(0);
-	set_sym_issuited(0);
-	set_sym_isconnector(0);
-
-	// pocket/common tests
-	set_sym_ishipair(0);
-	set_sym_islopair(0);
-	set_sym_ismidpair(0);
-	set_sym_ishistraight(0);
-	set_sym_ishiflush(0);
-
-	// players, opponents
-	set_sym_nopponents(0);
-	set_sym_nopponentschecking(0);
-	set_sym_nopponentscalling(0);
-	set_sym_nopponentsraising(0); 
-	set_sym_nopponentsfolded(0);
-	set_sym_nplayerscallshort(0);
-	set_sym_nchairsdealtleft(0);
-
-	// (un)known cards
-	set_sym_ncardsknown(0);
-	set_sym_ncardsunknown(0);
-	set_sym_ncardsbetter(0);
-
-	// flushes straights sets
-	set_sym_nsuited(0);
-	set_sym_nsuitedcommon(0);
-	set_sym_tsuit(0);
-	set_sym_tsuitcommon(0);
-	set_sym_nranked(0);
-	set_sym_nrankedcommon(0);
-	set_sym_trank(0);
-	set_sym_trankcommon(0);
-	//straightfill inits changed from 0 to 5; 2008-03-25 Matrix
-	set_sym_nstraight(0);
-	set_sym_nstraightcommon(0);
-	set_sym_nstraightflush(0);
-	set_sym_nstraightflushcommon(0);
-	set_sym_nstraightfill(5);
-	set_sym_nstraightfillcommon(5);
-	set_sym_nstraightflushfill(5);
-	set_sym_nstraightflushfillcommon(5);
-
-	// rank bits
-	set_sym_rankbits(0);
-	set_sym_rankbitscommon(0);
-	set_sym_rankbitsplayer(0);
-	set_sym_rankbitspoker(0);
-	set_sym_srankbits(0);
-	set_sym_srankbitscommon(0);
-	set_sym_srankbitsplayer(0);
-	set_sym_srankbitspoker(0);
-
-	// rank hi
-	set_sym_rankhi(0);
-	set_sym_rankhicommon(0);
-	set_sym_rankhiplayer(0);
-	set_sym_rankhipoker(0);
-	set_sym_srankhi(0);
-	set_sym_srankhicommon(0);
-	set_sym_srankhiplayer(0);
-	set_sym_srankhipoker(0);
-
-	// rank lo
-	set_sym_ranklo(0);
-	set_sym_ranklocommon(0);
-	set_sym_rankloplayer(0);
-	set_sym_ranklopoker(0);
-	set_sym_sranklo(0);
-	set_sym_sranklocommon(0);
-	set_sym_srankloplayer(0);
-	set_sym_sranklopoker(0);
-
-	// vs$
-	set_sym_vs$nhands(0);
-	set_sym_vs$nhandshi(0);
-	set_sym_vs$nhandsti(0);
-	set_sym_vs$nhandslo(0);
-	set_sym_vs$prwin(0);
-	set_sym_vs$prtie(0);
-	set_sym_vs$prlos(0);
-	set_sym_vs$prwinhi(0);
-	set_sym_vs$prtiehi(0);
-	set_sym_vs$prloshi(0);
-	set_sym_vs$prwinti(0);
-	set_sym_vs$prtieti(0);
-	set_sym_vs$prlosti(0);
-	set_sym_vs$prwinlo(0);
-	set_sym_vs$prtielo(0);
-	set_sym_vs$prloslo(0);
-
-	set_sym_vs$nhandshinow(0);
-	set_sym_vs$nhandstinow(0);
-	set_sym_vs$nhandslonow(0);
-	set_sym_vs$prwinhinow(0);
-	set_sym_vs$prtiehinow(0);
-	set_sym_vs$prloshinow(0);
-	set_sym_vs$prwintinow(0);
-	set_sym_vs$prtietinow(0);
-	set_sym_vs$prlostinow(0);
-	set_sym_vs$prwinlonow(0);
-	set_sym_vs$prtielonow(0);
-	set_sym_vs$prloslonow(0);
-
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
-	*/
 }
 
 
@@ -353,7 +80,7 @@ void CSymbols::CalcSymbols(void)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Things to do when we have a new hand
 	// Get current userchair's cards
-	// !!! should become an extra function
+	// !! should become an extra function
 
 	if (p_handreset_detector->IsHandreset())
 	{
@@ -364,14 +91,16 @@ void CSymbols::CalcSymbols(void)
 		ResetSymbolsNewHand();
 		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 
-		int player_card_cur[2] = {0}; //!!! init
+		int player_card_cur[2] = {0};
+		player_card_cur[0] = p_scraper->card_player(_userchair, 0);
+		player_card_cur[0] = p_scraper->card_player(_userchair, 1);
 		// log new hand
 		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[1]==CARD_NOCARD)
 		{
 			strcpy_s(card0, 10, "NONE");
 			strcpy_s(card1, 10, "");
 		}
-		else if (player_card_cur[0]==CARD_BACK || player_card_cur[ 1]==CARD_BACK)
+		else if (player_card_cur[0]==CARD_BACK || player_card_cur[1]==CARD_BACK)
 		{
 			strcpy_s(card0, 10, "BACKS");
 			strcpy_s(card1, 10, "");
@@ -402,7 +131,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// PLAYERS OPPONENTS 1(7)
 	if (memcmp(a, "nopponents", 10)==0)
 	{
-		if (memcmp(a, "nopponents", 10)==0 && strlen(a)==10)				return _sym.nopponents;
+		if (memcmp(a, "nopponents", 10)==0 && strlen(a)==10)				return p_symbol_engine_prwin->nopponents_for_prwin();
 		if (memcmp(a, "nopponentsseated", 16)==0 && strlen(a)==16)			return p_symbol_engine_active_dealt_playing->nopponentsseated();
 		if (memcmp(a, "nopponentsactive", 16)==0 && strlen(a)==16)			return p_symbol_engine_active_dealt_playing->nopponentsactive();
 		if (memcmp(a, "nopponentsdealt", 15)==0 && strlen(a)==15)			return p_symbol_engine_active_dealt_playing->nopponentsdealt();
@@ -530,35 +259,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	// Versus
 	if (memcmp(a, "vs$", 3) == 0)
 	{
-		if (memcmp(a, "vs$nhands", 10)==0 && strlen(a)==10)					return _sym.vs$nhands;
-		if (memcmp(a, "vs$nhandshi", 10)==0 && strlen(a)==10)				return _sym.vs$nhandshi;
-		if (memcmp(a, "vs$nhandsti", 10)==0 && strlen(a)==10)				return _sym.vs$nhandsti;
-		if (memcmp(a, "vs$nhandslo", 10)==0 && strlen(a)==10)				return _sym.vs$nhandslo;
-		if (memcmp(a, "vs$prwin", 8)==0 && strlen(a)==8)  					return _sym.vs$prwin;
-		if (memcmp(a, "vs$prtie", 8)==0 && strlen(a)==8)  					return _sym.vs$prtie;
-		if (memcmp(a, "vs$prlos", 8)==0 && strlen(a)==8)  					return _sym.vs$prlos;
-		if (memcmp(a, "vs$prwinhi", 10)==0 && strlen(a)==10)				return _sym.vs$prwinhi;
-		if (memcmp(a, "vs$prtiehi", 10)==0 && strlen(a)==10)  				return _sym.vs$prtiehi;
-		if (memcmp(a, "vs$prloshi", 10)==0 && strlen(a)==10)  				return _sym.vs$prloshi;
-		if (memcmp(a, "vs$prwinti", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinti;
-		if (memcmp(a, "vs$prtieti", 10)==0 && strlen(a)==10)  				return _sym.vs$prtieti;
-		if (memcmp(a, "vs$prlosti", 10)==0 && strlen(a)==10)  				return _sym.vs$prlosti;
-		if (memcmp(a, "vs$prwinlo", 10)==0 && strlen(a)==10)  				return _sym.vs$prwinlo;
-		if (memcmp(a, "vs$prtielo", 10)==0 && strlen(a)==10)  				return _sym.vs$prtielo;
-		if (memcmp(a, "vs$prloslo", 10)==0 && strlen(a)==10)  				return _sym.vs$prloslo;
-
-	   if (memcmp(a, "vs$nhandshinow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandshinow;
-	   if (memcmp(a, "vs$nhandstinow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandstinow;
-	   if (memcmp(a, "vs$nhandslonow", 14)==0 && strlen(a)==14)	return _sym.vs$nhandslonow;
-	   if (memcmp(a, "vs$prwinhinow", 13)==0 && strlen(a)==13)	return _sym.vs$prwinhinow;
-	   if (memcmp(a, "vs$prtiehinow", 13)==0 && strlen(a)==13)	return _sym.vs$prtiehinow;
-	   if (memcmp(a, "vs$prloshinow", 13)==0 && strlen(a)==13)	return _sym.vs$prloshinow;
-	   if (memcmp(a, "vs$prwintinow", 13)==0 && strlen(a)==13)	return _sym.vs$prwintinow;
-	   if (memcmp(a, "vs$prtietinow", 13)==0 && strlen(a)==13)	return _sym.vs$prtietinow;
-	   if (memcmp(a, "vs$prlostinow", 13)==0 && strlen(a)==13)	return _sym.vs$prlostinow;
-	   if (memcmp(a, "vs$prwinlonow", 13)==0 && strlen(a)==13)	return _sym.vs$prwinlonow;
-	   if (memcmp(a, "vs$prtielonow", 13)==0 && strlen(a)==13)	return _sym.vs$prtielonow;
-	   if (memcmp(a, "vs$prloslonow", 13)==0 && strlen(a)==13)	return _sym.vs$prloslonow;
+		return p_versus->GetSymbol(a, e);
 	}
 
 	// Probabilities
@@ -793,13 +494,12 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "raischair", 9)==0 && strlen(a)==9)					return p_symbol_engine_raisers_callers->raischair();
 
 	//ROUND&POSITIONS
-	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return _sym.betround;
+	if (memcmp(a, "betround", 8)==0 && strlen(a)==8)					return p_betround_calculator->betround();
 	if (memcmp(a, "betposition", 11)==0 && strlen(a)==11)				return p_symbol_engine_positions->betposition();
 	if (memcmp(a, "dealposition", 12)==0 && strlen(a)==12)				return p_symbol_engine_positions->dealposition();
 	if (memcmp(a, "callposition", 12)==0 && strlen(a)==12)				return p_symbol_engine_positions->callposition();
 	if (memcmp(a, "dealpositionrais", 16)==0 && strlen(a)==16)			return p_symbol_engine_positions->dealpositionrais();
 	if (memcmp(a, "betpositionrais", 15)==0 && strlen(a)==15)			return p_symbol_engine_positions->betpositionrais();
-	if (memcmp(a, "originaldealposition", 20)==0 && strlen(a)==20)		return _sym.originaldealposition; //Matrix 2008-05-09
 
 	//CHIP AMOUNTS 2(2)
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(_userchair); 
@@ -876,7 +576,7 @@ const double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return 42; //iter_vars.nit(); //!!!
+	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return 42; //iter_vars.nit(); //!!
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return p_symbol_engine_autoplayer->myturnbits();

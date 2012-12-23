@@ -36,31 +36,6 @@ char handrank_table_169[k_max_number_of_players][k_number_of_starting_hands][4] 
 	{"AAo", "KKo", "QQo", "AKs", "JJo", "AQs", "KQs", "AJs", "TTo", "KJs", "AKo", "ATs", "QJs", "KTs", "QTs", "JTs", "99o", "AQo", "A9s", "KQo", "88o", "K9s", "T9s", "A8s", "J9s", "Q9s", "77o", "AJo", "A5s", "A7s", "A4s", "KJo", "A3s", "66o", "A6s", "QJo", "K8s", "A2s", "T8s", "98s", "J8s", "ATo", "Q8s", "55o", "K7s", "JTo", "KTo", "44o", "33o", "22o", "QTo", "87s", "K6s", "97s", "K5s", "76s", "T7s", "K4s", "K3s", "Q7s", "K2s", "J7s", "86s", "65s", "54s", "Q6s", "75s", "Q5s", "96s", "Q4s", "Q3s", "64s", "T9o", "Q2s", "A9o", "T6s", "53s", "J6s", "85s", "J9o", "K9o", "43s", "J5s", "Q9o", "74s", "J4s", "J3s", "J2s", "95s", "63s", "A8o", "T5s", "52s", "42s", "T4s", "T3s", "84s", "98o", "T2s", "A5o", "T8o", "A7o", "73s", "32s", "A4o", "94s", "93s", "62s", "A3o", "K8o", "J8o", "92s", "A6o", "87o", "Q8o", "83s", "A2o", "82s", "97o", "72s", "K7o", "76o", "T7o", "65o", "K6o", "86o", "54o", "K5o", "J7o", "Q7o", "75o", "K4o", "K3o", "96o", "64o", "K2o", "53o", "Q6o", "85o", "T6o", "Q5o", "43o", "Q4o", "Q3o", "74o", "Q2o", "J6o", "63o", "J5o", "95o", "52o", "J4o", "42o", "J3o", "J2o", "84o", "T5o", "32o", "T4o", "T3o", "73o", "T2o", "62o", "94o", "93o", "92o", "83o", "82o", "72o"}
 };
 
-//handrank table used to prime weighted prwin lookup table.
-//reflects incidence of cards people actually play to flop.
-//left in this form for ease of developer modification.
-//converted at startup to the tables actually used by prwin calculation
-char *prwin_handrank_table_169[k_number_of_starting_hands] =
-{
-	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
-	"JTs","QJs","QTs","99 ","ATs","KTs","88 ","T9s","AK ","J9s",
-	"77 ","98s","Q9s","66 ","A9s","K9s","T8s","55 ","A5s","54s",
-	"44 ","A8s","87s","33 ","65s","22 ","AQ ","A4s","J8s","A3s",
-	"76s","97s","A7s","KQ ","A2s","Q8s","86s","K8s","A6s","75s",
-	"T7s","53s","64s","K7s","AJ ","KJ ","43s","QJ ","96s","JT ",
-	"J7s","K6s","K5s","QT ","85s","Q7s","KT ","AT ","K4s","K3s",
-	"K2s","74s","T6s","52s","Q6s","63s","Q5s","Q4s","42s","Q3s",
-	"95s","J6s","J5s","32s","Q2s","T9 ","J4s","84s","T5s","J3s",
-	"T4s","73s","J2s","J9 ","T3s","T2s","62s","94s","93s","92s",
-	"83s","Q9 ","A9 ","98 ","82s","T8 ","K9 ","72s","54 ","87 ",
-	"A8 ","A5 ","65 ","A4 ","76 ","J8 ","97 ","A3 ","A7 ","A2 ",
-	"86 ","A6 ","Q8 ","75 ","53 ","K8 ","T7 ","64 ","K7 ","43 ",
-	"96 ","K6 ","J7 ","85 ","K5 ","Q7 ","K4 ","K3 ","74 ","52 ",
-	"T6 ","Q6 ","K2 ","Q5 ","42 ","63 ","Q4 ","95 ","Q3 ","J6 ",
-	"J5 ","32 ","Q2 ","J4 ","T5 ","84 ","J3 ","J2 ","T4 ","73 ",
-	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
-};
-
 CSymbolEngineHandrank::CSymbolEngineHandrank()
 {
 	// The values of some symbol-engines depend on other engines.
