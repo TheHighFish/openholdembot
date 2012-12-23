@@ -126,7 +126,7 @@ void CDllExtension::UnloadDll(void)
 	if (_hmod_dll==NULL)
 		return;
 
-	p_symbols->set_prw1326_useme(0);
+	p_iterator_thread->set_prw1326_useme(0);
 	(_process_message) ("event", "unload");
 	if (FreeLibrary(_hmod_dll))
 	{
@@ -207,7 +207,7 @@ extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 {
-	return (void *)(p_symbols->prw1326());
+	return (void *)(p_iterator_thread->prw1326());
 }
 
 extern "C" __declspec(dllexport) CString __stdcall GetHandnumberFromDll()
