@@ -62,7 +62,7 @@ void CSymbolEnginePrwin::RestartIteratorThread()
 
 void CSymbolEnginePrwin::CalculateProbabilities()
 {
-	RestartIteratorThread();
+	//!!!RestartIteratorThread();
 	CalculateNhands();
 }
 

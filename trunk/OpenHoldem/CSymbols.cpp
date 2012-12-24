@@ -26,8 +26,22 @@
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineCards.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineHandrank.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEngineLists.h"
+#include "CSymbolEnginePokerval.h"
+#include "CSymbolEnginePositions.h"
+#include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineRandom.h"
+#include "CSymbolEngineTime.h"
+#include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
@@ -39,26 +53,40 @@ CSymbols			*p_symbols = NULL;
 
 
 CSymbols::CSymbols()
-{}
-
-CSymbols::~CSymbols()
 {
+	// userchair needs to be initialized very early to a reasonable value
+	// because the history-engine will need it as an index into some arrays.
+	_userchair = k_betround_preflop;
 }
 
+CSymbols::~CSymbols()
+{}
 
-void CSymbols::ResetSymbolsFirstTime(void)
+void CSymbols::InitOnStartup()
 {
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
 }
 
-void CSymbols::ResetSymbolsNewHand(void)
+void CSymbols::ResetOnConnection()
+{}
+
+void CSymbols::ResetOnHandreset()
 {
 	_userchair = p_symbol_engine_userchair->userchair();
+	LogHandReset();
 }
 
 
-void CSymbols::ResetSymbolsEveryCalc(void)
+void CSymbols::ResetOnNewRound()
+{}
+
+
+void CSymbols::ResetOnMyTurn()
+{}
+
+
+void CSymbols::ResetOnHeartbeat()
 {
 	_betround = p_betround_calculator->betround();
 	// log$ symbols
@@ -67,60 +95,46 @@ void CSymbols::ResetSymbolsEveryCalc(void)
 }
 
 
-void CSymbols::CalcSymbols(void)
+// !! CSymbols: not really the right place for that
+void CSymbols::LogHandReset()
 {
-	int					i = 0;
-	char title[512] = {0};
-	char				card0[k_max_number_of_players] = {0}; 
-	char				card1[k_max_number_of_players] = {0};	
+	// Update game_state so it knows that a new hand has happened
+	p_game_state->set_new_hand(true);
 
-	// Clear em, before we start
-	ResetSymbolsEveryCalc();
+	// Reset display
+	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Things to do when we have a new hand
-	// Get current userchair's cards
-	// !! should become an extra function
-
-	if (p_handreset_detector->IsHandreset())
+	int player_card_cur[2] = {0};
+	player_card_cur[0] = p_scraper->card_player(_userchair, 0);
+	player_card_cur[0] = p_scraper->card_player(_userchair, 1);
+	char card0[10];
+	char card1[10];
+	// log new hand
+	if (player_card_cur[0]==CARD_NOCARD || player_card_cur[1]==CARD_NOCARD)
 	{
-		// Update game_state so it knows that a new hand has happened
-		p_game_state->set_new_hand(true);
-
-		// Reset symbols and display
-		ResetSymbolsNewHand();
-		InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
-
-		int player_card_cur[2] = {0};
-		player_card_cur[0] = p_scraper->card_player(_userchair, 0);
-		player_card_cur[0] = p_scraper->card_player(_userchair, 1);
-		// log new hand
-		if (player_card_cur[0]==CARD_NOCARD || player_card_cur[1]==CARD_NOCARD)
-		{
-			strcpy_s(card0, 10, "NONE");
-			strcpy_s(card1, 10, "");
-		}
-		else if (player_card_cur[0]==CARD_BACK || player_card_cur[1]==CARD_BACK)
-		{
-			strcpy_s(card0, 10, "BACKS");
-			strcpy_s(card1, 10, "");
-		}
-		else
-		{
-			StdDeck_cardToString(player_card_cur[0], card0);
-			StdDeck_cardToString(player_card_cur[1], card1);
-		}
-		GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
-		write_log(k_always_log_basic_information, "\n*************************************************************\n"
-					 "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n"
-					 "*************************************************************\n",
-				  p_handreset_detector->GetHandNumber(), 
-				  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
-
+		strcpy_s(card0, 10, "NONE");
+		strcpy_s(card1, 10, "");
 	}
+	else if (player_card_cur[0]==CARD_BACK || player_card_cur[1]==CARD_BACK)
+	{
+		strcpy_s(card0, 10, "BACKS");
+		strcpy_s(card1, 10, "");
+	}
+	else
+	{
+		StdDeck_cardToString(player_card_cur[0], card0);
+		StdDeck_cardToString(player_card_cur[1], card1);
+	}
+	char title[512] = "!!!Missing title is a bug!!!";
+	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
+	write_log(k_always_log_basic_information, "\n*************************************************************\n"
+				 "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n"
+				 "*************************************************************\n",
+			  p_handreset_detector->GetHandNumber(), 
+			  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
 }
 
-const double CSymbols::GetSymbolVal(const char *a, int *e)
+double CSymbols::GetSymbolVal(const char *a, int *e)
 {
 	// Look up a symbol value.
 	// As a long series of string comparisions is not efficient

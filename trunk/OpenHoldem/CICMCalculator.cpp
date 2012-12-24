@@ -14,17 +14,19 @@
 */
 
 #include "stdafx.h"
+#include "CICMCalculator.h"
 
 #include "CScraper.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CPreferences.h"
-
-#include "CICMCalculator.h"
+#include "MagicNumbers.h"
 
 
 double P(int i, int n, double *s, int N)
@@ -87,6 +89,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	double		sym_pot = p_symbol_engine_chip_amounts->pot();
 	double		sym_call = p_symbol_engine_chip_amounts->call();
 	double		sym_currentbet[MAX_PLAYERS]={0};
+
+	if (sym_userchair = k_undefined)
+	{
+		return 0.0;
+	}
 
 	for (i = 0; i < MAX_PLAYERS; i++)
 	{

@@ -6,10 +6,12 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEnginePokerval.h"
+#include "CSymbolEnginePrwin.h"
 #include "CSymbols.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -442,7 +444,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				pParent->_tie++;
 		}
 
-		if ((nit/1000 == (int) nit/1000) && nit>=1000)
+		// Update display once every 1000 iterations
+		if ((nit % 1000 == 0) && nit >= 1000)
 		{
 			write_log(prefs.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
 			iter_vars.set_iterator_thread_progress(nit);

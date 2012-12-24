@@ -247,12 +247,12 @@ void CTableLimits::CalcTableLimits_NL_PL()
 bool CTableLimits::IsCalculationNeccessary()
 {
 	write_log(3, "CTableLimits::IsCalculationNeccessary()\n");
-	if (tablelimit_unreliable_input.sblind==0)
+	if (tablelimit_unreliable_input.sblind <= 0)
 	{
 		write_log(3, "CTableLimits: sblind=0, calculation neccessary.\n");
 		return true;
 	}
-	if (tablelimit_unreliable_input.bblind==0)
+	if (tablelimit_unreliable_input.bblind <= 0)
 	{
 		write_log(3, "CTableLimits: bblind=0, calculation neccessary.\n");
 		return true;
@@ -486,8 +486,8 @@ void CTableLimits::CalcBetsizesForEveryStreet()
 	// Use the best  known values here, not tablelimit_unreliable_input
 	SetBet(k_betround_preflop, bblind());															
 	SetBet(k_betround_flop,    bblind());															
-	SetBet(k_betround_turn,    bbet()>=0.01 ? bbet() : (isnl() || ispl() ? bblind() : bblind()*2));	
-	SetBet(k_betround_river,   bbet()>=0.01 ? bbet() : (isnl() || ispl() ? bblind() : bblind()*2));	
+	SetBet(k_betround_turn,    bigbet()>=0.01 ? bigbet() : (isnl() || ispl() ? bblind() : bblind()*2));	
+	SetBet(k_betround_river,   bigbet()>=0.01 ? bigbet() : (isnl() || ispl() ? bblind() : bblind()*2));	
 }
 
 void CTableLimits::CalcTableLimits()
@@ -596,7 +596,7 @@ double CTableLimits::bblind()
 	}
 }
 
-double CTableLimits::bbet()
+double CTableLimits::bigbet()
 {
 	if (blinds_locked_for_complete_session)
 	{

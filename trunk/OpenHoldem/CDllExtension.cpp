@@ -8,7 +8,7 @@
 #include "CHandHistory.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
-#include "CSymbols.h"
+#include "CSymbolEnginePrWin.h"
 #include "Cversus.h"
 #include "debug.h"
 #include "OH_MessageBox.h"

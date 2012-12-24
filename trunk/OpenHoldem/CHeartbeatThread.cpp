@@ -6,6 +6,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "CEngineContainer.h"
 #include "CFormula.h"
 #include "CGameState.h"
@@ -18,8 +19,11 @@
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "ScraperOverride.h"
 #include "CStableFramesCounter.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CValidator.h"
@@ -108,6 +112,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 			OverriderScraperStateByScraperPreprocessorDLLIfNecessary();
 
+			// Necessary to pre-compute some info 
+			// which is needed by the symbol-engines.
+			p_scraper_access->GetNeccessaryTablemapObjects();
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Caclulate symbols
 

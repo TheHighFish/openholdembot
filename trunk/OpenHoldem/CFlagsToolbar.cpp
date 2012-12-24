@@ -2,8 +2,8 @@
 #include "CFlagsToolbar.h"
 
 #include <afxwin.h>
-#include "Cautoplayer.h"
-#include "CSymbols.h"
+#include "CAutoplayer.h"
+#include "CEngineContainer.h"
 #include "MyCtoolbar.h"
 
 
@@ -214,7 +214,7 @@ void CFlagsToolbar::OnClickedFlags()
 	SetFlag(18, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER18));
 	SetFlag(19, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER19));
 
-	p_symbols->CalcSymbols();
+	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
 }
 
 void CFlagsToolbar::CreateMainToolbar(void)

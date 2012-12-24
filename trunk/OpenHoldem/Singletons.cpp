@@ -30,7 +30,6 @@
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
 #include "CStringMatch.h"
-#include "CSymbols.h"
 #include "CTableLimits.h"
 #include "CTableMaploader.h"
 #include "CTablePositioner.h"
@@ -62,8 +61,6 @@ void InstantiateAllSingletons()
 		p_scraper_access = new CScraperAccess;
 	if (!p_lazyscraper)	
 		p_lazyscraper = new CLazyScraper;
-	if (!p_symbols)  
-		p_symbols = new CSymbols;
 	if (!p_tablemap) 
 		p_tablemap = new CTablemap;
 	if (!p_tablemap_access)  
@@ -188,8 +185,6 @@ void DeleteAllSingletons()
 		{ delete p_tablemap_access; p_tablemap_access = NULL; }
 	if (p_tablemap)  
 		{ delete p_tablemap; p_tablemap = NULL; }
-	if (p_symbols)              
-		{ delete p_symbols; p_symbols = NULL; }
 	if (p_lazyscraper)	        
 		{ delete p_lazyscraper; p_lazyscraper = NULL; }
 	if (p_scraper_access)       

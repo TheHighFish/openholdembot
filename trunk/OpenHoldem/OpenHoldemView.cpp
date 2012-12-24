@@ -404,7 +404,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
 				  sym_lim == k_gametype_FL ? "FL" : "?L"),
 				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_symbols->bigbet());
+				 sym_sblind, sym_bblind, p_tablelimits->bigbet());
 	}
 	else 
 	{
@@ -412,7 +412,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
 				  sym_lim == k_gametype_FL ? "FL" : "?L"),
 				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_symbols->bigbet());
+				 sym_sblind, sym_bblind, p_tablelimits->bigbet());
 	}
 	t.Append(s);
 

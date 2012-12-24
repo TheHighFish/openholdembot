@@ -23,12 +23,12 @@ public:
 	void ResetOnHandreset();
 	void ResetEachHeartBeatCycle();
 	void CalcTableLimits();
-	void LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype);
+	void LockBlindsManually(double small_blind, double big_blind, double big_bet, double ante, int gametype); //!!!
 public:
 	// public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
-	double bbet();
+	double bigbet();
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round

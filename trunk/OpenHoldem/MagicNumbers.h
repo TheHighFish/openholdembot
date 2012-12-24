@@ -13,6 +13,7 @@
 
 // Used for bit-calculations: 2^N
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 
 // Undefined (-1)
 const int k_undefined = -1;

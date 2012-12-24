@@ -8,6 +8,7 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
@@ -15,6 +16,7 @@
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbols.h"
 #include "DialogHandList.h"
 #include "DialogNew.h"
@@ -2427,7 +2429,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_formula->ParseAllFormula(this->GetSafeHwnd());
 
 	// Re-calc symbols
-	p_symbols->CalcSymbols();
+	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
 
 	// Rewrite f$debug log header, if required
 	m_wrote_fdebug_header = false;
@@ -2439,51 +2441,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 
 void CDlgFormulaScintilla::OnBnClickedOk() 
 {
-	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-
-	// If autoplayer is engaged, dis-engage it
-	if (p_autoplayer->autoplayer_engaged())
-	{
-		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();		
-	}
-
-	// Re-calc working set hand lists
-	m_wrk_formula.CreateHandListMatrices();
-
-	// Parse working set
-	LastChangeToFormula(&m_wrk_formula);
-
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-	{
-		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
-					   "Would you still like to apply changes in the working set to the main set "
-					   "and exit the formula editor?\n\n"
-					   "Note that if you choose yes here, then the main formula set will\n"
-					   "contain errors, will likely not act as you expect, and may cause you\n"
-					   "to lose money at the tables.\n\n"
-					   "Please only click 'Yes' if you really know what you are doing.",
-					   "PARSE ERROR", 
-					   MB_YESNO) != IDYES)
-		{
-			return;
-		}
-	}
-
-	// Copy working set to global set
-	p_formula->CopyFormulaFrom(&m_wrk_formula);
-
-	pDoc->SetModifiedFlag(true);
-	m_dirty = false;
-
-	// Re-calc global set hand lists
-	p_formula->CreateHandListMatrices();
-
-	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd());
-
-	// Re-calc symbols
-	p_symbols->CalcSymbols();
-
+	OnBnClickedApply();
 	DestroyWindow();
 }
 
@@ -2496,41 +2454,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 				   MB_YESNOCANCEL);
 	if (response == IDYES)
 	{
-		// Re-calc working set hand lists
-		m_wrk_formula.CreateHandListMatrices();
-
-		// Parse working set
-		LastChangeToFormula(&m_wrk_formula);
-
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-		{
-			if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
-						   "Would you still like to apply changes in the working set to the main set "
-						   "and exit the formula editor?\n\n"
-						   "Note that if you choose yes here, then the main formula set will\n"
-						   "contain errors, will likely not act as you expect, and may cause you\n"
-						   "to lose money at the tables.\n\n"
-						   "Please only click 'Yes' if you really know what you are doing.",
-						   "PARSE ERROR", 
-						   MB_YESNO) != IDYES)
-			{
-				return false;
-			}
-		}
-	
-		// Copy working set to global set
-		p_formula->CopyFormulaFrom(&m_wrk_formula);
-
-		pDoc->SetModifiedFlag(true);
-
-		// Re-calc global set hand lists
-		p_formula->CreateHandListMatrices();
-
-		// Re-parse global set
-		p_formula->ParseAllFormula(this->GetSafeHwnd());
-
-		m_dirty = false;
-
+		OnBnClickedOk();
 		return true;
 	}
 	

@@ -7,6 +7,9 @@
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -214,13 +217,13 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 {
 	CString player_info, text;
 	
-	// Table header for: SFABD (seated, friend, active, button, dealt, playing),
+	// Table header for: SFABD (seated, active, button, dealt, playing),
 	// hand, bet, balance, name
 	player_info += "<table border=4 cellpadding=1 cellspacing=1>\n";
 	player_info += "  <thead>\n";
 	player_info += "    <tr>\n";
 	player_info += "      <th>#</th>\n";
-	player_info += "      <th>SFABDP</th>\n";  // seated, friend, active, button, dealt, playing
+	player_info += "      <th>SABDP</th>\n";  // seated, active, button, dealt, playing
 	player_info += "      <th>hand</th>\n";
 	player_info += "      <th>bet</th>\n";
 	player_info += "      <th>balance</th>\n";
@@ -230,7 +233,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 	// Table footer for explanations
 	player_info += "  <tfoot>\n";
 	player_info += "    <tr\n";
-	player_info += "      <td colspan=6>SFABDP = seated / friend / active / button / dealt / playing</td>\n";
+	player_info += "      <td colspan=5>SABDP = seated / active / button / dealt / playing</td>\n";
 	player_info += "    </tr>\n";
 	player_info += "  </tfoot>\n";
 	
@@ -243,14 +246,14 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		// Chair number
 		text.Format("      <td>%d</td>\n", i);   
 		player_info += text;
-		// seated, friend, active, button, dealt, playing
-		text.Format("      <td>%s%s%s%s%s%s</td>\n",
-			(p_symbol_engine_active_dealt_playing->playersseatedbits() & (1<<i) ? "s" : "-",
-			p_symbol_engine_userchair->userchair() == i ? "f" : "-",
-			(p_symbol_engine_active_dealt_playing->playersactivebits()) & (1<<i) ? "a" : "-",
-			p_symbol_engine_dealerchair->dealerchair()== i ? "b" : "-",
-			(p_symbol_engine_active_dealt_playing->playersdealtbits()) & (1<<i) ? "d" : "-",
-			(p_symbol_engine_active_dealt_playing->playersplayingbits()) & (1<<i) ? "p" : "-"));
+		// seated, active, button, dealt, playing
+		text = "      <td>";
+		text +=	(p_symbol_engine_active_dealt_playing->playersseatedbits() & (1<<i)) ? "s" : "-";
+		text +=	(p_symbol_engine_active_dealt_playing->playersactivebits() & (1<<i)) ? "a" : "-";
+		text +=	(p_symbol_engine_dealerchair->dealerchair() == i) ? "b" : "-";
+		text +=	(p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<i)) ? "d" : "-";
+		text +=	(p_symbol_engine_active_dealt_playing->playersplayingbits() & (1<<i)) ? "p" : "-";
+		text += "</td>\n";
 		player_info += text;  
 		// Cards
 		text.Format("      <td>%s%s</td>\n",
@@ -311,7 +314,7 @@ CString CReplayFrame::GetBlindInfoAsHTML()
 	blind_info += text;
 	text.Format("  <tr><th>bb</th><td>%11.2f</td></tr>\n", p_tablelimits->bblind());
 	blind_info += text;
-	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_tablelimits->bbet());
+	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_tablelimits->bigbet());
 	blind_info += text;
 	text.Format("</table>\n");
 	blind_info += text;
