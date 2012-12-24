@@ -169,7 +169,7 @@ BEGIN_TESTCASE
     REASONING ("Range check for symbol nchairsdealtright")
     PRECONDITION (true)
     POSTCONDITION ((gws("nchairsdealtright") >= 0) && (gws("nchairsdealtright") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("")
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairsdealtright")
 END_TESTCASE
 
 

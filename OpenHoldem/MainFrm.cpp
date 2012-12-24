@@ -21,6 +21,7 @@
 #include "CProblemSolver.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTransform\CTransform.h"

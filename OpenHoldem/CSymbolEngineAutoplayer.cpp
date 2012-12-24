@@ -138,7 +138,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	// [IMPERFECT CODE] Updates stable-frames-counter as a side-effect
 	// and should therefore only get called once per heartbeat.
 
-	bool _isfinalanswer = true;
+	_isfinalanswer = true;
 	// check factors that affect isFinalAnswer status
 	if (iter_vars.iterator_thread_running())
 	{

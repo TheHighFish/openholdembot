@@ -59,6 +59,7 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat()
 	CalculateStacks();
 	CalculateCurrentbets();
 	CalculatePots();
+	CalculateBetsToCallToRaise();
 }
 
 void CSymbolEngineChipAmounts::SetBalance(const int player, const double d) 
@@ -218,7 +219,6 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 			_sraimax = 0;
 		}
 	}
-	
 }
 
 void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() 

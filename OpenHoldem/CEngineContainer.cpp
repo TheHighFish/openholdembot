@@ -21,6 +21,7 @@
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
 
@@ -117,12 +118,13 @@ void CEngineContainer::CreateSymbolEngines()
 	p_symbol_engine_handrank = new CSymbolEngineHandrank();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_handrank;
 	_number_of_symbol_engines_loaded++;
-
-	/*// 
-	 = new ();
-	_symbol_engines[_number_of_symbol_engines_loaded] = ;
+	// Csymbols
+	// Deals with symbol-lookups and depends on all the other ones.
+	// Therefore it should has to be the very last one.
+	p_symbols = new CSymbols();
+	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbols;
 	_number_of_symbol_engines_loaded++;
-	*/
+
 	// Avoiding overflows
 	assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
 }

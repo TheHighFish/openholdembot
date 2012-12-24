@@ -24,6 +24,8 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
+	
+	_betround = k_betround_preflop;
 }
 
 CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
@@ -36,6 +38,7 @@ void CSymbolEngineRaisersCallers::ResetOnConnection()
 {
 	_nchairs = p_tablemap->nchairs();
 	_raischair_previous_frame = k_undefined;
+	_userchair = p_symbol_engine_userchair->userchair();
 }
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
@@ -71,7 +74,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
 	int FirstPossibleRaiser;
 	int LastPossibleRaiser;
-	int last_bet;
+	int last_bet = 0;
 	// Raischair, nopponentsraising, raisbits
 	//
 	// Don't start searching for the highest bet at the button.

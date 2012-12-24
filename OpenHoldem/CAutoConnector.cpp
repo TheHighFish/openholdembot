@@ -6,6 +6,7 @@
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
@@ -241,7 +242,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_scraper->ClearScrapeAreas();
 
 			// Reset symbols
-			p_symbols->ResetSymbolsFirstTime();
+			p_engine_container->ResetOnConnection();
 
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
@@ -441,7 +442,7 @@ void CAutoConnector::Disconnect()
 	p_scraper->ClearScrapeAreas();
 
 	// Reset symbols
-	p_symbols->ResetSymbolsFirstTime();
+	p_engine_container->ResetOnConnection();
 
 	// Change window title
 	PMainframe()->UpdateWindowTitle();

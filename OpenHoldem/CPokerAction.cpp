@@ -5,8 +5,12 @@
 #include "CGameState.h"
 #include "CPokerTrackerThread.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 

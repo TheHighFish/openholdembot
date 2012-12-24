@@ -102,16 +102,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0266")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol ac_pf_bets")
-    PRECONDITION (gws("betround") == 1)
-    POSTCONDITION ((gws("ac_pf_bets") >= 1) && (gws("ac_pf_bets") <= 5))
-    SYMBOLS_POSSIBLY_AFFECTED ("ac_pf_bets, betround")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0267")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_first_into_pot")

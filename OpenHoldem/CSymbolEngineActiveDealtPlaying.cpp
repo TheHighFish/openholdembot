@@ -9,6 +9,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "NumericalFunctions.h"
 
 CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing = NULL;
 
@@ -25,11 +26,18 @@ CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
 {}
 
 void CSymbolEngineActiveDealtPlaying::InitOnStartup()
-{}
+{
+	ResetOnConnection();
+}
 
 void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
 {
 	_nchairs = p_tablemap->nchairs();
+
+	_playersactivebits  = 0;
+	_playersplayingbits = 0;
+	_playersdealtbits   = 0;
+	_playersseatedbits  = 0;
 }
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
@@ -155,7 +163,8 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		}
 		if (this_player_got_dealt)
 		{
-		_playersdealtbits |= 1 << chair_to_consider;
+			_playersdealtbits |= 1 << chair_to_consider;
+			AssertRange(_playersdealtbits, 0, k_bits_all_ten_players_1_111_111_111);
 		}
 	}
 }

@@ -4,12 +4,14 @@
 #include <assert.h>
 #include <process.h>
 #include <comdef.h>
-#include "CSymbols.h"
 #include "CPreferences.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
+#include "CSymbolEngineUserchair.h"
+#include "CSymbols.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
