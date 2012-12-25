@@ -90,7 +90,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	double		sym_call = p_symbol_engine_chip_amounts->call();
 	double		sym_currentbet[MAX_PLAYERS]={0};
 
-	if (sym_userchair = k_undefined)
+	if (sym_userchair == k_undefined)
 	{
 		return 0.0;
 	}

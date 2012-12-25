@@ -83,7 +83,10 @@ void CSymbols::ResetOnNewRound()
 
 
 void CSymbols::ResetOnMyTurn()
-{}
+{
+	// !! Better make it a symbol-engine
+	p_versus->GetCounts();
+}
 
 
 void CSymbols::ResetOnHeartbeat()

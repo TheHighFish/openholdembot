@@ -56,6 +56,9 @@ void CSymbolEnginePositions::ResetOnHeartbeat()
 
 void CSymbolEnginePositions::CalculateNChairsDealtLeftRight()
 {
+	_nchairsdealtright = 0;
+	_nchairsdealtleft  = 0;
+
 	bool found_userchair = false;
 	for (int i=_dealerchair+1; 
 		i<=_dealerchair+p_tablemap->nchairs() 
@@ -80,10 +83,15 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight()
 			}
 		}
 	}
+	AssertRange(_nchairsdealtright, 0, (k_max_number_of_players - 1));
+	AssertRange(_nchairsdealtleft,  0, (k_max_number_of_players - 1));
 }
 
 void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 {
+	_betpositionrais  = 0;
+	_dealpositionrais = 0;
+
 	for (int i=_dealerchair+1; 
 		i<=(_dealerchair+p_tablemap->nchairs()) 
 			&& (i%p_tablemap->nchairs())!=_raischair; 
@@ -98,10 +106,16 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 			_dealpositionrais++;
 		}
 	}
+	AssertRange(_betpositionrais,  k_undefined, k_max_number_of_players);
+	AssertRange(_dealpositionrais, k_undefined, k_max_number_of_players);
 }
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 {
+	_betposition  = 0;
+	_dealposition = 0;
+	_callposition = 0;
+
 	for (int i=_dealerchair+1; 
 		i<=_dealerchair+p_tablemap->nchairs() 
 			&& (i%p_tablemap->nchairs())!=_userchair; 
@@ -124,4 +138,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 			_callposition++;
 		}
 	}
+	AssertRange(_betposition,  k_undefined, k_max_number_of_players);
+	AssertRange(_dealposition, k_undefined, k_max_number_of_players);
+	AssertRange(_callposition, k_undefined, k_max_number_of_players);
 }

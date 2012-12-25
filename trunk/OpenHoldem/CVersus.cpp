@@ -169,13 +169,13 @@ bool CVersus::GetCounts(void)
 
 	_nwin = _ntie = _nlos = _nhands = 0;
 	_nhandshi = _nhandsti = _nhandslo = 0;
-   _nhandshinow = _nhandstinow = _nhandslonow = 0;
-   _vsprwinhi = _vsprtiehi = _vsprloshi = 0;
-   _vsprwinti = _vsprtieti = _vsprlosti = 0;
-   _vsprwinlo = _vsprtielo = _vsprloslo = 0;
-   _vsprwinhinow = _vsprtiehinow = _vsprloshinow = 0;
-   _vsprwintinow = _vsprtietinow = _vsprlostinow = 0;
-   _vsprwinlonow = _vsprtielonow = _vsprloslonow = 0;
+	_nhandshinow = _nhandstinow = _nhandslonow = 0;
+	_vsprwinhi = _vsprtiehi = _vsprloshi = 0;
+	_vsprwinti = _vsprtieti = _vsprlosti = 0;
+	_vsprwinlo = _vsprtielo = _vsprloslo = 0;
+	_vsprwinhinow = _vsprtiehinow = _vsprloshinow = 0;
+	_vsprwintinow = _vsprtietinow = _vsprlostinow = 0;
+	_vsprwinlonow = _vsprtielonow = _vsprloslonow = 0;
 	nhiwin = nhitie = nhilos = ntiwin = ntitie = ntilos = nlowin = nlotie = nlolos = 0;
 
 	// Clear counters

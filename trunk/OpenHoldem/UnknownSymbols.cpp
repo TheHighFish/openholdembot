@@ -10,10 +10,10 @@ char *title_unknown_symbol = "ERROR: unknown symbol";
 
 char *outdated_symbols_br_ncps_nflopc_chair =
 	"The following symbols got removed from the code-base:\n"
-	"  * br       (betround)\n"
-	"  * ncps     (nclockspersecond)\n"
-	"  * nflopc   (ncommoncardsknown)\n"
-	"  * chair    (userchair)\n"
+	"  * br (betround)\n"
+	"  * ncps (nclockspersecond)\n"
+	"  * nflopc (ncommoncardsknown)\n"
+	"  * chair (userchair)\n"
 	"  * oppdealt (nopponentsdealt)\n"
 	"because duplicate functionality is bad software-engineering.\n"
 	"Please use their verbose equivalents.\n";

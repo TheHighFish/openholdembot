@@ -111,7 +111,6 @@ void CSymbolEngineCards::ResetOnHandreset()
 void CSymbolEngineCards::ResetOnNewRound()
 {
 	betround = p_betround_calculator->betround();
-	CalcUnknownCards();
 }
 
 void CSymbolEngineCards::ResetOnMyTurn()
@@ -123,6 +122,7 @@ void CSymbolEngineCards::ResetOnHeartbeat()
 	CalculateCommonCards();
 	CalculateHandTests();
 	CalcFlushesStraightsSets();
+	CalcUnknownCards();
 }
 
 bool CSymbolEngineCards::BothPocketCardsKnown()
@@ -135,6 +135,10 @@ bool CSymbolEngineCards::BothPocketCardsKnown()
 
 void CSymbolEngineCards::CalcPocketTests()
 {
+	_ispair      = false;
+	_issuited    = false;
+	_isconnector = false;
+
 	if (!BothPocketCardsKnown())
 	{
 		return;
@@ -164,6 +168,23 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask		heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 	int				max = 0;
 	unsigned int	strbits = 0;
+
+	_tsuit   = k_undefined;
+	_nsuited = 0;
+	_tsuitcommon   = k_undefined;
+	_nsuitedcommon = 0;
+	_nranked = 0;
+	_trank = k_undefined;
+	_nrankedcommon = 0;
+	_trankcommon   = k_undefined;
+	_nstraight     = 0;
+	_nstraightfill = k_cards_needed_for_straight;
+	_nstraightcommon     = 0;
+	_nstraightfillcommon = k_cards_needed_for_straight;
+	_nstraightflush     = 0;
+	_nstraightflushfill = k_cards_needed_for_straight;
+	_nstraightflushcommon     = 0;
+	_nstraightflushfillcommon = k_cards_needed_for_straight;
 
 	// Set up some suit masks
 	CardMask_RESET(heartsCards);
@@ -281,132 +302,132 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	_nsuited = max;															
 
-		// nsuitedcommon, tsuitcommon
-		max = 0;
-		CardMask_AND(suittestCards, comCards, spadesCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
-			_tsuitcommon = WH_SUIT_SPADES;
-		}
-		CardMask_AND(suittestCards, comCards, heartsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
-			_tsuitcommon = WH_SUIT_HEARTS;
-		}
-		CardMask_AND(suittestCards, comCards, diamondsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
-			_tsuitcommon = WH_SUIT_DIAMONDS;
-		}
-		CardMask_AND(suittestCards, comCards, clubsCards);
-		n = StdDeck_numCards(suittestCards);
-		if ( n>max && n>0)
-		{
-			max = n;
-			_tsuitcommon = WH_SUIT_CLUBS;												
-		}
-		_nsuitedcommon = max;															
+	// nsuitedcommon, tsuitcommon
+	max = 0;
+	CardMask_AND(suittestCards, comCards, spadesCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
+		_tsuitcommon = WH_SUIT_SPADES;
+	}
+	CardMask_AND(suittestCards, comCards, heartsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
+		_tsuitcommon = WH_SUIT_HEARTS;
+	}
+	CardMask_AND(suittestCards, comCards, diamondsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
+		_tsuitcommon = WH_SUIT_DIAMONDS;
+	}
+	CardMask_AND(suittestCards, comCards, clubsCards);
+	n = StdDeck_numCards(suittestCards);
+	if ( n>max && n>0)
+	{
+		max = n;
+		_tsuitcommon = WH_SUIT_CLUBS;												
+	}
+	_nsuitedcommon = max;															
 
-		// nranked, trank
-		max = 0;
-		for (i=12; i>=0; i--)
+	// nranked, trank
+	max = 0;
+	for (i=12; i>=0; i--)
+	{
+		n = CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*0)) +
+			CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*1)) +
+			CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*2)) +
+			CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*3));
+		if (n>max && n>0)
 		{
-			n = CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*0)) +
-				CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*1)) +
-				CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*2)) +
-				CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*3));
-			if (n>max && n>0)
-			{
-				max = n;
-				_trank = i + 2;															// trank
-			}
+			max = n;
+			_trank = i + 2;															// trank
 		}
-		_nranked = max;																// nranked
+	}
+	_nranked = max;																// nranked
 
-		// nrankedcommon, trankcommon
-		max = 0;
-		for (i=12; i>=0; i--)
+	// nrankedcommon, trankcommon
+	max = 0;
+	for (i=12; i>=0; i--)
+	{
+		n = CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*0)) +
+			CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*1)) +
+			CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*2)) +
+			CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*3));
+		if (n>max && n>0)
 		{
-			n = CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*0)) +
-				CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*1)) +
-				CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*2)) +
-				CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*3));
-			if (n>max && n>0)
-			{
-				max = n;
-				_trankcommon = i + 2;													// trankcommon
-			}
+			max = n;
+			_trankcommon = i + 2;													// trankcommon
 		}
+	}
 	_nrankedcommon = max;															// nrankedcommon
 
-		// nstraight, nstraightfill
-		strbits = 0;
-		for (i=0; i<Rank_COUNT; i++)
+	// nstraight, nstraightfill
+	strbits = 0;
+	for (i=0; i<Rank_COUNT; i++)
+	{
+		if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+i) ||
+			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+i) ||
+			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*2)+i) ||
+			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*3)+i))
 		{
-			if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+i) ||
-				CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+i) ||
-				CardMask_CARD_IS_SET(plCards, (Rank_COUNT*2)+i) ||
-				CardMask_CARD_IS_SET(plCards, (Rank_COUNT*3)+i))
+			strbits |= (1<<(i+2));
+		}
+	}
+	if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+Rank_ACE) ||
+		CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+Rank_ACE) ||
+		CardMask_CARD_IS_SET(plCards, (Rank_COUNT*2)+Rank_ACE) ||
+		CardMask_CARD_IS_SET(plCards, (Rank_COUNT*3)+Rank_ACE))
+	{
+		strbits |= (1<<1);
+	}
+
+	// Checking for T-low-strsight down to Ace-low-straight
+	for (i=10; i>=1; i--)
+	{
+		if (((strbits>>i)&0x1f) == 0x1f)
+		{
+			_nstraight = (_nstraight<5 ? 5 : _nstraight);
+		}
+		else if (((strbits>>i)&0x1e) == 0x1e ||
+				 ((strbits>>i)&0x0f) == 0x0f)
+		{
+			_nstraight = _nstraight<4 ? 4 : _nstraight;
+		}
+		else if (((strbits>>i)&0x1c) == 0x1c ||
+				 ((strbits>>i)&0x0e) == 0x0e ||
+				 ((strbits>>i)&0x07) == 0x07)
+		{
+			_nstraight = _nstraight<3 ? 3 : _nstraight;
+		}
+		else if (((strbits>>i)&0x18) == 0x18 ||
+				 ((strbits>>i)&0x0c) == 0x0c ||
+				 ((strbits>>i)&0x06) == 0x06 ||
+				 ((strbits>>i)&0x3) == 0x03)
+		{
+			_nstraight = _nstraight<2 ? 2 : _nstraight;
+		}
+		else 
+		{
+			_nstraight = _nstraight<1 ? 1 : _nstraight;					// nstraight
+		}
+
+		n = bitcount(((strbits>>i)&0x1f));
+		if (5-n < _nstraightfill)
 			{
-				strbits |= (1<<(i+2));
+				_nstraightfill = 5-n;													// nstraightfill
 			}
 		}
-		if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+Rank_ACE) ||
-			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+Rank_ACE) ||
-			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*2)+Rank_ACE) ||
-			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*3)+Rank_ACE))
+
+		// nstraightcommon, nstraightfillcommon
+		if (_ncommoncardsknown < 1)
 		{
-			strbits |= (1<<1);
+			_nstraightfillcommon = 5;
 		}
-
-		// Checking for T-low-strsight down to Ace-low-straight
-		for (i=10; i>=1; i--)
-		{
-			if (((strbits>>i)&0x1f) == 0x1f)
-			{
-				_nstraight = (_nstraight<5 ? 5 : _nstraight);
-			}
-			else if (((strbits>>i)&0x1e) == 0x1e ||
-					 ((strbits>>i)&0x0f) == 0x0f)
-			{
-				_nstraight = _nstraight<4 ? 4 : _nstraight;
-			}
-			else if (((strbits>>i)&0x1c) == 0x1c ||
-					 ((strbits>>i)&0x0e) == 0x0e ||
-					 ((strbits>>i)&0x07) == 0x07)
-			{
-				_nstraight = _nstraight<3 ? 3 : _nstraight;
-			}
-			else if (((strbits>>i)&0x18) == 0x18 ||
-					 ((strbits>>i)&0x0c) == 0x0c ||
-					 ((strbits>>i)&0x06) == 0x06 ||
-					 ((strbits>>i)&0x3) == 0x03)
-			{
-				_nstraight = _nstraight<2 ? 2 : _nstraight;
-			}
-			else 
-			{
-				_nstraight = _nstraight<1 ? 1 : _nstraight;					// nstraight
-			}
-
-			n = bitcount(((strbits>>i)&0x1f));
-			if (5-n < _nstraightfill)
-				{
-					_nstraightfill = 5-n;													// nstraightfill
-				}
-			}
-
-			// nstraightcommon, nstraightfillcommon
-			if (_ncommoncardsknown < 1)
-			{
-				_nstraightfillcommon = 5;
-			}
 		else
 		{
 			strbits = 0;
@@ -539,44 +560,44 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 				if (CardMask_CARD_IS_SET(comCards, (Rank_COUNT*j)+Rank_ACE))
 				{
 					strbits |= (1<<1);
-				}
+			}
 
-				for (i=10; i>=1; i--)
+			for (i=10; i>=1; i--)
+			{
+				if (((strbits>>i)&0x1f) == 0x1f)
 				{
-					if (((strbits>>i)&0x1f) == 0x1f)
-					{
 					_nstraightflushcommon = _nstraightflushcommon<5 ? 5 : _nstraightflushcommon;
-					}
-					else if (((strbits>>i)&0x1e) == 0x1e ||
-							 ((strbits>>i)&0x0f) == 0x0f)
-					{
+				}
+				else if (((strbits>>i)&0x1e) == 0x1e ||
+						 ((strbits>>i)&0x0f) == 0x0f)
+				{
 					_nstraightflushcommon = _nstraightflushcommon<4 ? 4 : _nstraightflushcommon;
-					}
-					else if (((strbits>>i)&0x1c) == 0x1c ||
-							 ((strbits>>i)&0x0e) == 0x0e ||
-							 ((strbits>>i)&0x07) == 0x07)
-					{
+				}
+				else if (((strbits>>i)&0x1c) == 0x1c ||
+						 ((strbits>>i)&0x0e) == 0x0e ||
+						 ((strbits>>i)&0x07) == 0x07)
+				{
 					_nstraightflushcommon = _nstraightflushcommon<3 ? 3 : _nstraightflushcommon;
-					}
-					else if (((strbits>>i)&0x18) == 0x18 ||
-							 ((strbits>>i)&0x0c) == 0x0c ||
-							 ((strbits>>i)&0x06) == 0x06 ||
-							 ((strbits>>i)&0x03) == 0x03)
-					{
+				}
+				else if (((strbits>>i)&0x18) == 0x18 ||
+						 ((strbits>>i)&0x0c) == 0x0c ||
+						 ((strbits>>i)&0x06) == 0x06 ||
+						 ((strbits>>i)&0x03) == 0x03)
+				{
 					_nstraightflushcommon = _nstraightflushcommon<2 ? 2 : _nstraightflushcommon;
-					}
-					else
-					{
+				}
+				else
+				{
 					_nstraightflushcommon = _nstraightflushcommon<1 ? 1 : _nstraightflushcommon;		// nstraightflushcommon
-					}
-					n = bitcount(((strbits>>i)&0x1f));
+				}
+				n = bitcount(((strbits>>i)&0x1f));
 				if (5-n < _nstraightflushfillcommon )
-					{
+				{
 					_nstraightflushfillcommon = 5-n;							
-					}
 				}
 			}
 		}
+	}
 }
 
 int GetRankFromCard(int scraper_card);
@@ -662,6 +683,8 @@ void CSymbolEngineCards::CalcUnknownCards()
 	_ncardsunknown = k_number_of_cards_per_deck - _ncardsknown;
 
 	handval_std = Hand_EVAL_N(stdCards, nstdCards);
+	_nouts = 0;
+	_ncardsbetter = 0;
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
@@ -700,6 +723,10 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
+	AssertRange(_ncardsknown,   0, k_number_of_cards_per_deck);
+	AssertRange(_ncardsunknown, 0, k_number_of_cards_per_deck);
+	AssertRange(_nouts,         0, k_number_of_cards_per_deck);
+	AssertRange(_ncardsbetter,  0, k_number_of_cards_per_deck);
 }
 
 bool CSymbolEngineCards::IsHand(const char *a, int *e)

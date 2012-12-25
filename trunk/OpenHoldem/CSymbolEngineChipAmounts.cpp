@@ -60,6 +60,7 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat()
 	CalculateCurrentbets();
 	CalculatePots();
 	CalculateBetsToCallToRaise();
+	CalculateAmountsToCallToRaise();
 }
 
 void CSymbolEngineChipAmounts::SetBalance(const int player, const double d) 
