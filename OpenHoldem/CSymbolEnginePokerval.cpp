@@ -27,7 +27,9 @@ void CSymbolEnginePokerval::InitOnStartup()
 {}
 
 void CSymbolEnginePokerval::ResetOnConnection()
-{}
+{
+	betround = k_betround_preflop;
+}
 
 void CSymbolEnginePokerval::ResetOnHandreset()
 {
@@ -46,12 +48,13 @@ void CSymbolEnginePokerval::ResetOnNewRound()
 {}
 
 void CSymbolEnginePokerval::ResetOnMyTurn()
-{}
-
-void CSymbolEnginePokerval::ResetOnHeartbeat()
 {
 	betround = p_betround_calculator->betround();
+	CalcPokerValues();
 }
+
+void CSymbolEnginePokerval::ResetOnHeartbeat()
+{}
 
 
 void CSymbolEnginePokerval::CalcPokerValues()

@@ -28,7 +28,6 @@ public:
 	int callposition()			{ return _callposition;			}
 private:
 	void CalculateNChairsDealtLeftRight();
-	void CalculateNOpponentsCheckingBettingFolded();
 	void CalculatePositionForTheRaiser();
 	void CalculatePositionsForTheUserchair();
 private:

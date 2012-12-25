@@ -42,16 +42,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0260")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol oppdealt")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("oppdealt") >= 0) && (gws("oppdealt") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("oppdealt")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0261")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_aggressor")

@@ -101,6 +101,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits()
 			_playersseatedbits |= 1<<i;			
 		}
 	}
+	AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()

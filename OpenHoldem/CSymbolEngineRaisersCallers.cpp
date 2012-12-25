@@ -38,7 +38,8 @@ void CSymbolEngineRaisersCallers::ResetOnConnection()
 {
 	_nchairs = p_tablemap->nchairs();
 	_raischair_previous_frame = k_undefined;
-	_userchair = p_symbol_engine_userchair->userchair();
+	
+	ResetOnHandreset();
 }
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
@@ -68,10 +69,16 @@ void CSymbolEngineRaisersCallers::ResetOnMyTurn()
 }
 
 void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
-{}
+{
+	CalculateNOpponentsCheckingBettingFolded();
+	CalculateFoldBits();
+}
 
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
+	_raischair = k_undefined;
+	_raisbits[_betround] = 0;
+
 	int FirstPossibleRaiser;
 	int LastPossibleRaiser;
 	int last_bet = 0;
@@ -106,6 +113,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 			_raisbits[_betround] = new_raisbits;
 		}
 	}
+	AssertRange(_raischair, k_undefined, k_last_chair);
 }
 
 void CSymbolEngineRaisersCallers::CalculateCallers()
@@ -148,10 +156,15 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 
 void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 {
+	_nplayerscallshort  = 0;
+	_nopponentsbetting  = 0;
+	_nopponentsfolded   = 0;
+	_nopponentschecking = 0;
+
 	for (int i=0; i<_nchairs; i++)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
-		if (current_players_bet < p_symbol_engine_chip_amounts->currentbet(_raischair)
+		if (current_players_bet < RaisersBet()
 			&& p_scraper_access->PlayerHasCards(i))
 		{
 			_nplayerscallshort++;
@@ -180,6 +193,27 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 			_nopponentschecking++;
 		}
 	}
+	AssertRange(_nplayerscallshort,  0, k_max_number_of_opponents_at_full_ring_table);
+	AssertRange(_nopponentsbetting,  0, k_max_number_of_opponents_at_full_ring_table);
+	AssertRange(_nopponentsfolded,   0, k_max_number_of_opponents_at_full_ring_table);
+	AssertRange(_nopponentschecking, 0, k_max_number_of_opponents_at_full_ring_table);
+}
+
+double CSymbolEngineRaisersCallers::RaisersBet()
+{
+	// The raisers bet is simply the largest bet at the table.
+	// So we don't have to know the raisers chair for that.
+	double result = 0;
+	for (int i=0; i<p_tablemap->nchairs(); i++)
+	{
+		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		if (current_players_bet > result
+			&& p_scraper_access->PlayerHasCards(i))
+		{
+			result = current_players_bet;
+		}
+	}
+	return result;
 }
 
 void CSymbolEngineRaisersCallers::CalculateFoldBits()

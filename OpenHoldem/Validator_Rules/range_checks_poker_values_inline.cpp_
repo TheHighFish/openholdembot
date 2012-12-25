@@ -53,6 +53,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol npcbits")
     PRECONDITION (true)
-    POSTCONDITION ((gws("npcbits") == 0) || (gws("npcbits") == 1) || (gws("npcbits") == 2))
+    POSTCONDITION ((gws("npcbits") >= 0) && (gws("npcbits") <= 5))
     SYMBOLS_POSSIBLY_AFFECTED ("npcbits")
 END_TESTCASE

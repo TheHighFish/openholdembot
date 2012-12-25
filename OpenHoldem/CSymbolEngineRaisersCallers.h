@@ -66,10 +66,12 @@ public:
 	int nopponentscalling()		{ return _nopponentscalling; }
 	int nopponentschecking()	{ return _nopponentschecking; }
 private:
-	void CalculateNOpponentsCheckingBettingFolded();
 	void CalculateRaisers();
 	void CalculateCallers();
 	void CalculateFoldBits();
+	void CalculateNOpponentsCheckingBettingFolded();
+private:
+	double RaisersBet();
 private:
 	int _raischair;
 	int _nplayerscallshort;
