@@ -70,7 +70,7 @@ char * keywords = // Standard functions
 				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
 				  // Hand Tests
 				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush isfiveofakind "
+				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush"
 				  // Pocket Tests
 				  "ispair issuited isconnector "
 				  // Pocket / Common Tests
@@ -128,7 +128,7 @@ char * keywords = // Standard functions
 				  "foldbits1 foldbits2 foldbits3 foldbits4 "
 				  "oppdealt "
 				  "ac_aggressor ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
-				  "ac_postflop_pos ac_pf_bets ac_first_into_pot "
+				  "ac_postflop_pos ac_first_into_pot "
 				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
 				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
 				  // Logging
@@ -2839,7 +2839,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
-	AddSymbol(parent, "site", "0=user 1=scraped");
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
 	AddSymbol(parent, "session", "the current logging instance (0-9)");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
@@ -3147,13 +3146,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ac_preflop_pos", "preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
 	AddSymbol(parent, "ac_prefloprais_pos", "preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
 	AddSymbol(parent, "ac_postflop_pos", "postflop position of the userchair (first=1 early=2 middle=3 late=4 last=5)");
-	AddSymbol(parent, "ac_pf_bets", "preflop betting action\n" 
-		"1 for no callers or blinds only\n" 
-		"2 for Called Pot - 1 bet to call\n"
-		"3 for Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised\n" 
-		"4 for Raised Pot - 2 bets to call\n"
-		"5 for Reraised Pot - 3+ bets to call\n"
-		"Valif preflop only.");
 	AddSymbol(parent, "ac_first_into_pot", "returns true if you are first into the pot (first to act or checked to you)");
 	AddSymbol(parent, "ac_betposx (x=0-9)", "returns bet position of specified chair");
 	AddSymbol(parent, "ac_dealposx (x=0-9)", "returns deal position of specified chair");

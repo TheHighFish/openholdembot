@@ -69,7 +69,7 @@ public:
 	int srankhiplayer()		{ return GetRankHi(_srankbitsplayer); }
 	int srankhipoker()		{ return GetRankHi(_srankbitspoker);  }
 	//RANK LO
-	int ranklo()				{ return GetRankLo(_rankbitsplayer & _rankbitscommon); }
+	int ranklo()			{ return GetRankLo(_rankbitsplayer & _rankbitscommon); }
 	int ranklocommon()		{ return GetRankLo(_rankbitscommon); }
 	int rankloplayer()		{ return GetRankLo(_rankbitsplayer); }
 	int ranklopoker()		{ return GetRankLo(_rankbitspoker); }

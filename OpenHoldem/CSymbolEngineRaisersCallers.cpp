@@ -79,29 +79,13 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	_raischair = k_undefined;
 	_raisbits[_betround] = 0;
 
-	int FirstPossibleRaiser;
-	int LastPossibleRaiser;
-	int last_bet = 0;
 	// Raischair, nopponentsraising, raisbits
 	//
-	// Don't start searching for the highest bet at the button.
-	// This method will fail, if a player in late raises and a player in early coldcalls.
-	// Start searching at the last known raiser; and only at the button when we have a new betting-round.
-	if (p_symbol_engine_history->DidAct())
-	{
-		// Counting raises behind me
-		FirstPossibleRaiser = _userchair + 1;
-	}
-	else
-	{
-		// Start with the player after last known raiser
-		FirstPossibleRaiser = _dealerchair + 1;
-		last_bet = p_scraper->player_bet(_raischair_previous_frame);
-	}
-	// For technical reasons (for-loop) we handle the modulo-operation inside the loop
-	LastPossibleRaiser = FirstPossibleRaiser + p_tablemap->nchairs() - 1;
+	int first_possible_raiser = FirstPossibleRaiser();
+	int last_possible_raiser  = LastPossibleRaiser();
+	double last_bet = p_scraper->player_bet(_raischair_previous_frame);
 
-	for (int i=FirstPossibleRaiser; i<=LastPossibleRaiser; i++)
+	for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i%p_tablemap->nchairs());
 
@@ -123,6 +107,10 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	// Take the first player with the smallest non-zero balance 
 	// after the aggressor as the first bettor.
 	// Then start a circular search for callers.
+
+	_callbits[_betround] = 0;
+	_nopponentscalling = 0;
+
 	int FirstBettor = _raischair;
 	double SmallestBet = p_scraper->player_bet(FirstBettor);
 	for (int i=_raischair+1; 
@@ -138,7 +126,9 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	}
 
 	double CurrentBet = p_scraper->player_bet(FirstBettor);
-	for (int i=FirstBettor+1; i<=FirstBettor+p_tablemap->nchairs()-1; i++)
+	for (int i=FirstBettor+1; 
+		i<=FirstBettor+p_tablemap->nchairs()-1; 
+		i++)
 	{
 		// Exact match required. Players being allin don't count as callers.
 		if ((p_scraper->player_bet(i%p_tablemap->nchairs()) == CurrentBet) && (CurrentBet > 0))
@@ -152,6 +142,35 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 			CurrentBet = p_scraper->player_bet(i%p_tablemap->nchairs());
 		}
 	}
+
+	AssertRange(_callbits[_betround], 0, k_bits_all_ten_players_1_111_111_111);
+	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
+}
+
+int CSymbolEngineRaisersCallers::FirstPossibleRaiser()
+{
+	int first_possible_raiser;
+	// Don't start searching for the highest bet at the button.
+	// This method will fail, if a player in late raises and a player in early coldcalls.
+	// Start searching at the last known raiser; and only at the button when we have a new betting-round.
+	if (p_symbol_engine_history->DidAct())
+	{
+		// Counting raises behind me
+		first_possible_raiser = (_userchair + 1) % p_tablemap->nchairs();
+	}
+	else
+	{
+		// Start with the player after last known raiser
+		first_possible_raiser = (_dealerchair + 1) % p_tablemap->nchairs();
+	}
+	return first_possible_raiser;
+}
+
+int CSymbolEngineRaisersCallers::LastPossibleRaiser()
+{
+	// For technical reasons (for-loop) we handle the modulo-operation 
+	// inside the loop and not here.
+	return (FirstPossibleRaiser() + p_tablemap->nchairs() - 1);
 }
 
 void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()

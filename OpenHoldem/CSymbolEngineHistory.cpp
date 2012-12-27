@@ -22,10 +22,14 @@ CSymbolEngineHistory::~CSymbolEngineHistory()
 {}
 
 void CSymbolEngineHistory::InitOnStartup()
-{}
+{
+	ResetOnConnection();
+}
 
 void CSymbolEngineHistory::ResetOnConnection()
-{}
+{
+	ResetOnHandreset();
+}
 
 void CSymbolEngineHistory::ResetOnHandreset()
 {

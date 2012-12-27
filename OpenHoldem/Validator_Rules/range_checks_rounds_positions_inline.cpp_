@@ -48,7 +48,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol dealpositionrais")
     PRECONDITION (true)
-    POSTCONDITION ((gws("dealpositionrais") >= 1) && (gws("dealpositionrais") <= 10))
+    POSTCONDITION ((gws("dealpositionrais") >= 0) && (gws("dealpositionrais") <= 10))
     SYMBOLS_POSSIBLY_AFFECTED ("dealpositionrais")
 END_TESTCASE
 
@@ -58,6 +58,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol betpositionrais")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betpositionrais") >= 1) && (gws("betpositionrais") <= 10))
+    POSTCONDITION ((gws("betpositionrais") >= 0) && (gws("betpositionrais") <= 10))
     SYMBOLS_POSSIBLY_AFFECTED ("betpositionrais")
 END_TESTCASE

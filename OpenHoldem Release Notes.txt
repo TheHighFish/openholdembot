@@ -20,6 +20,8 @@ NEW STUFF:
   There will be a warning on old formulae and the user will need to make
   some small changes to his formula set. 
   [THF]
+- New f$close-function that clicks the [X] in the titlebar of the table.
+  [THF]
 - f$swag has been quite a messy concept for a long time.
   f$swag and its supporting functions  (f$srai, sraimin, sraimax, swagtextmethod and f$swag_adjust)
   got replaced by a single function f$betsize  and OH does automatically care about all the rest. 
@@ -40,8 +42,6 @@ NEW STUFF:
   [Strikles]
 - New all-in method for using the slider (allinmethod 3) 
   [Strikles]
-- New f$close-function that clicks the [X] in the titlebar of the table.
-  [THF]
 - Support for betpotmethod and betpot_X_Y_button (e.g. X=1, Y=2 represents 1/2 pot)
   Available are:
   f$betpot_2_1, f$betpot_1_1, f$betpot_3_4, f$betpot_2_3,
@@ -65,11 +65,6 @@ NEW STUFF:
   and no longer from the registry.
   The ini-file has to be placed in the OpenHoldem-directory.
   The filename does not matter, but there must be only one such file.
-  [THF]
-- We do no longer stop the PT-thread if we are not playing, etc.
-  Stopping the thread won't happen that often in production mode
-  and this optimization is not needed for development-mode,
-  but only confused beginners in the past.
   [THF]
   
   
@@ -97,6 +92,11 @@ BUG FIXES:
 
 
 MAINTENANCE:
+- We do no longer stop the PT-thread if we are not playing, etc.
+  Stopping the thread won't happen that often in production mode
+  and this optimization is not needed for development-mode,
+  but only confused beginners in the past.
+  [THF]
 - Removed the default-bot from the code-base, because it is more easy 
   to keep it as an extra file in the bot folder. 
   Menu->File->New will now create an empty bot with the main autoplayer functions.
@@ -123,7 +123,7 @@ MAINTENANCE:
   [THF]  
 - Always using symbol-caching. There is no need to disable it,
   as all functions are paramater-less, so the result will always be the same
-  (as long as no randomization is used).
+  (as long as no true randomization is used).
   Disabled symbol-caching just caused slow evaluations and confusingly large log-files
   (we have seen 5 MB for a single action).
   [THF]

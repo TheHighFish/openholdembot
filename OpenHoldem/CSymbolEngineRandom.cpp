@@ -2,6 +2,7 @@
 #include "CSymbolEngineRandom.h"
 
 #include "MagicNumbers.h"
+#include "NumericalFunctions.h"
 
 CSymbolEngineRandom *p_symbol_engine_random = NULL;
 
@@ -31,7 +32,8 @@ void CSymbolEngineRandom::ResetOnHandreset()
 {
 	_randomhand      = Random_0_1();
 	_randomheartbeat = k_undefined;
-	_randomround     = k_undefined;
+
+	ResetOnNewRound();
 }
 
 void CSymbolEngineRandom::ResetOnNewRound()
@@ -49,7 +51,9 @@ void CSymbolEngineRandom::ResetOnHeartbeat()
 
 double CSymbolEngineRandom::Random_0_1()
 {
-	return ((double) rand() / (double) RAND_MAX);
+	double result = ((double) rand() / (double) RAND_MAX);
+	AssertRange(result, 0, 1);
+	return result;
 }
 
 

@@ -188,7 +188,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// PLAYERS OPPONENTS 5(7)
 	if (memcmp(a, "players", 7)==0)
 	{
-		if (memcmp(a, "playersseatedbits", 17)==0 && strlen(a)==17)			return p_symbol_engine_active_dealt_playing->nplayersseated();
+		if (memcmp(a, "playersseatedbits", 17)==0 && strlen(a)==17)			return p_symbol_engine_active_dealt_playing->playersseatedbits();
 		if (memcmp(a, "playersactivebits", 17)==0 && strlen(a)==17)			return p_symbol_engine_active_dealt_playing->playersactivebits();
 		if (memcmp(a, "playersdealtbits", 16)==0 && strlen(a)==16)			return p_symbol_engine_active_dealt_playing->playersdealtbits();
 		if (memcmp(a, "playersplayingbits", 18)==0 && strlen(a)==18)		return p_symbol_engine_active_dealt_playing->playersplayingbits();

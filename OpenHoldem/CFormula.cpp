@@ -346,7 +346,9 @@ void CFormula::AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionNam
 	// Formula not found.
 	// Add the standard one.
 	SFunction func;
-	func.func_text = ""; 
+	// The function-text should contain at least one space.
+	// The editor does somehow not work for completely emptyy formulas.
+	func.func_text = " "; 
 	func.dirty = true; 
 	func.func = FunctionName; 
 	_formula.mFunction.Add(func); 
