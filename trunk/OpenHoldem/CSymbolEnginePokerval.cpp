@@ -8,6 +8,8 @@
 #include "CSymbolEngineCards.h"
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
+#include "MagicNumbers.h"
+
 
 CSymbolEnginePokerval *p_symbol_engine_pokerval = NULL;
 
@@ -50,11 +52,14 @@ void CSymbolEnginePokerval::ResetOnNewRound()
 void CSymbolEnginePokerval::ResetOnMyTurn()
 {
 	betround = p_betround_calculator->betround();
-	CalcPokerValues();
 }
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()
-{}
+{
+	CalculateRankBits();
+	CalcPokerValues();
+	CalculateHandType();
+}
 
 
 void CSymbolEnginePokerval::CalcPokerValues()
@@ -276,6 +281,13 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	CardMask_RESET(comCards);
 	CardMask_RESET(plcomCards);
 
+	_rankbitsplayer  = 0;
+	_rankbitscommon  = 0;
+	_rankbitspoker   = 0;
+	_srankbitsplayer = 0;
+	_srankbitscommon = 0;
+	_srankbitspoker  = 0;
+
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
@@ -356,6 +368,13 @@ void CSymbolEnginePokerval::CalculateRankBits()
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, plcomsuit)) ?
 		 (1<<((_pokerval>>0)&0xf)) : 0);
 	_srankbitspoker += ((_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
+
+	AssertRange(_rankbitsplayer,  0, k_rankbits_all_cards_111_111_111_111_110);
+	AssertRange(_rankbitscommon,  0, k_rankbits_all_cards_111_111_111_111_110); 
+	AssertRange(_rankbitspoker,   0, k_rankbits_all_cards_111_111_111_111_110);  
+	AssertRange(_srankbitsplayer, 0, k_rankbits_all_cards_111_111_111_111_110);  
+	AssertRange(_srankbitscommon, 0, k_rankbits_all_cards_111_111_111_111_110); 
+	AssertRange(_srankbitspoker,  0, k_rankbits_all_cards_111_111_111_111_110); 
 }
 
 
@@ -368,7 +387,7 @@ int CSymbolEnginePokerval::GetRankHi(int rankbits)
 			return i;
 		}
 	}
-	return k_undefined;
+	return 0;
 }
 
 int CSymbolEnginePokerval::GetRankLo(int rankbits)
@@ -380,7 +399,7 @@ int CSymbolEnginePokerval::GetRankLo(int rankbits)
 			return i;
 		}
 	}
-	return k_undefined;
+	return 0;
 }
 
 void CSymbolEnginePokerval::SetRankBit(int* rankbits, int rank)

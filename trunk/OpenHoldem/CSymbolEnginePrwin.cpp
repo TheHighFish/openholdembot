@@ -44,8 +44,9 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
+	//!!!RestartIteratorThread(); ?
 	CalculateNOpponents();
-	CalculateProbabilities();
+	CalculateNhands();
 }
 
 void CSymbolEnginePrwin::ResetOnHeartbeat()
@@ -60,19 +61,17 @@ void CSymbolEnginePrwin::RestartIteratorThread()
 	p_iterator_thread = new CIteratorThread;
 }
 
-void CSymbolEnginePrwin::CalculateProbabilities()
-{
-	//!!!RestartIteratorThread();
-	CalculateNhands();
-}
-
 void CSymbolEnginePrwin::CalculateNhands()
 {
 	CardMask		plCards = {0}, comCards = {0}, oppCards = {0}, playerEvalCards = {0}, opponentEvalCards = {0};
 	HandVal			hv_player = 0, hv_opponent = 0;
 	unsigned int	pl_pokval = 0, opp_pokval = 0;
 	int				dummy = 0;
-	int				nplCards = 0, ncomCards = 0;
+	int				nplCards, ncomCards;
+
+	_nhandshi = 0;
+	_nhandsti = 0;
+	_nhandslo = 0;
 
 	// player cards
 	CardMask_RESET(plCards);
@@ -139,8 +138,18 @@ void CSymbolEnginePrwin::CalculateNhands()
 			}
 		}
 	}
+
+	AssertRange(_nhandshi, 0, nhands());
+	AssertRange(_nhandsti, 0, nhands());
+	AssertRange(_nhandslo, 0, nhands());
+	assert((_nhandshi + _nhandsti + _nhandslo) == nhands());
+
+
 	_prwinnow = pow(((double)_nhandslo/nhands()), _nopponents_for_prwin);
 	_prlosnow = 1 - pow((((double)_nhandslo + _nhandsti)/nhands()), _nopponents_for_prwin);
+
+	AssertRange(_prwinnow, 0, 1);
+	AssertRange(_prlosnow, 0, 1);
 }
 
 void CSymbolEnginePrwin::CalculateNOpponents()

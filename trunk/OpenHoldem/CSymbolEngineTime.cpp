@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CSymbolEngineTime.h"
 
+#include "NumericalFunctions.h"
+
 CSymbolEngineTime *p_symbol_engine_time = NULL;
 
 CSymbolEngineTime::CSymbolEngineTime()
@@ -29,6 +31,7 @@ void CSymbolEngineTime::InitOnStartup()
 
 void CSymbolEngineTime::ResetOnConnection()
 {
+	time(&_elapsedhold);
 	time(&_elapsedhandhold);
 	time(&_elapsedautohold);
 }
@@ -63,7 +66,12 @@ void CSymbolEngineTime::ResetOnHeartbeat()
 	_elapsed     = t_now_time - _elapsedhold;
 	_elapsedhand = t_now_time - _elapsedhandhold;									
 	_elapsedauto = t_now_time - _elapsedautohold;	
-}
+
+	assert(_elapsed < 1000000);				// Heuristic: about 300 hours up-time
+	AssertRange(_elapsedhand, 0, (10 * 60));	// Heuristic: 10 minutes
+	AssertRange(_elapsedauto, 0, _elapsed);
+	AssertRange(_elapsedtoday, 0, (24 * 3600));
+}	
 
 void CSymbolEngineTime::ResetOnAutoPlayerAction()
 {

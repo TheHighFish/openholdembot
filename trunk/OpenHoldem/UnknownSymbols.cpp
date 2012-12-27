@@ -110,17 +110,67 @@ char *outdated_symbols_randomround =
 	"Please use randomround, randomhand,\n"
 	"randomheartbeat or random instead.\n";
 
-char* outdated_symbols_callshort_raisshort =
+char *outdated_symbols_callshort_raisshort =
 	"The symbols \"callshort\" and \"raisshort\"\n"
 	"got removed from the code-base\n"
 	"because they got designed for Fixed-Limit\n"
 	"no-foldem Hold'em only.\n"
 	"Better use a function to estimate future pot-sizes.\n";
 
+char *outdated_list_symbols =
+	"The following list-symbols got removed from the code-base\n"
+	"because they were mis-conceptions and nobody used them:\n"
+	" *islistcall\n"
+	" *islistrais\n"
+	" *islistalli\n"
+	" *isemptylistcall\n"
+	" *isemptylistrais\n"
+	" *isemptylistalli\n"
+	" *nlistmax\n"
+	" *nlistmin\n";
+
+char *outdated_various_symbols =
+	"The following list-symbols got removed from the code-base\n"
+	"because they were not needed at all:\n"
+	" *isfiveofakind\n"
+	" *bankroll\n"
+	" *rake\n"
+	" *defcon\n" 
+	" *isaggmode\n" 
+	" *isdefmode\n"
+	" *nopponentsmax\n"
+	" *elapsed1970\n";
+
+char *outdated_symbol_ncommoncardspresent =
+	"The symbol \"ncommoncardspresent\" got removed from the code base\n"
+	"because it was never implemented correctly,\n"
+	"but always had the same value as \"ncommoncardsknown\".\n" 
+	"Furthermore its value would only differ at some casinos and at showdown,\n"
+	"but this point of time is pretty meaningless for both OH-script and OpenPPL,\n"
+	"whereas DLLers still have access to all info.\n";
+
+char *outdated_symbol_originaldealposition =
+	"The symbol \"originaldealposition\" got removed from the code base\n"
+	"because there was no longer any need for it\n"
+	"after making dealposition persistent.\n";
 	
 void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 {
-	if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc")
+	if ((symbol == "islistcall") || (symbol == "islistrais") 
+		|| (symbol == "islistalli") || (symbol == "isemptylistcall") 
+		|| (symbol == "isemptylistrais") || (symbol == "isemptylistalli") 
+		|| (symbol == "nlistmax") || (symbol == "nlistmin"))
+	{
+		OH_MessageBox(outdated_list_symbols, title_outdated_symbol, 0);
+	}
+	if ((symbol == "isfiveofakind") || (symbol == "bankroll") 
+		|| (symbol == "rake") || (symbol == "defcon") 
+		|| (symbol == "isaggmode") || (symbol == "isdefmode") 
+		|| (symbol == "nopponentsmax") || (symbol == "elapsed1970"))
+	{
+		OH_MessageBox(outdated_various_symbols, title_outdated_symbol, 0);
+	}
+	else if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc")
 		|| (symbol == "chair") || (symbol == "oppdealt"))
 	{
 		OH_MessageBox(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol, 0);
@@ -140,6 +190,14 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	else if (symbol == "NIT")
 	{
 		OH_MessageBox(outdated_symbol_NIT, title_outdated_symbol, 0);
+	}
+	else if (symbol == "originaldealposition")
+	{
+		OH_MessageBox(outdated_symbol_originaldealposition, title_outdated_symbol, 0);
+	}
+	else if (symbol == "ncommoncardspresent")
+	{
+		OH_MessageBox(outdated_symbol_ncommoncardspresent, title_outdated_symbol, 0);
 	}
 	else if (symbol == "handrank")
 	{

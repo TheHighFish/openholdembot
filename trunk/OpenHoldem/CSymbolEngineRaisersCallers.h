@@ -71,6 +71,9 @@ private:
 	void CalculateFoldBits();
 	void CalculateNOpponentsCheckingBettingFolded();
 private:
+	int FirstPossibleRaiser();
+	int LastPossibleRaiser();
+private:
 	double RaisersBet();
 private:
 	int _raischair;

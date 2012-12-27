@@ -30,8 +30,30 @@ CSymbolEngineCards::~CSymbolEngineCards()
 
 void CSymbolEngineCards::InitOnStartup()
 {
-	ResetOnHandreset();
+	ResetOnConnection();
+}
 
+void CSymbolEngineCards::ResetOnConnection()
+{
+	ResetOnHandreset();
+}
+
+void CSymbolEngineCards::ResetOnHandreset()
+{
+	// hand tests
+	for (int i=0; i<k_number_of_cards_per_player; i++)
+	{
+		_$$pc[i] = WH_NOCARD;
+		_$$pr[i] = 0;
+		_$$ps[i] = 0;
+	}
+
+	for (int i=0; i<k_number_of_community_cards; i++)
+	{
+		_$$cc[i] = WH_NOCARD;
+		_$$cs[i] = 0;
+		_$$cr[i] = 0;
+	}
 	_ishandup = 0;
 	_ishandupcommon = 0;
 	_ishicard = 0;
@@ -85,29 +107,6 @@ void CSymbolEngineCards::InitOnStartup()
 	_nstraightflushfillcommon = k_cards_needed_for_flush;
 }
 
-void CSymbolEngineCards::ResetOnConnection()
-{}
-
-void CSymbolEngineCards::ResetOnHandreset()
-{
-	_userchair = p_symbol_engine_userchair->userchair();
-
-	// hand tests
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		_$$pc[i] = WH_NOCARD;
-		_$$pr[i] = 0;
-		_$$ps[i] = 0;
-	}
-
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		_$$cc[i] = WH_NOCARD;
-		_$$cs[i] = 0;
-		_$$cr[i] = 0;
-	}
-}
-
 void CSymbolEngineCards::ResetOnNewRound()
 {
 	betround = p_betround_calculator->betround();
@@ -118,6 +117,7 @@ void CSymbolEngineCards::ResetOnMyTurn()
 
 void CSymbolEngineCards::ResetOnHeartbeat()
 {
+	_userchair = p_symbol_engine_userchair->userchair();
 	CalcPocketTests();
 	CalculateCommonCards();
 	CalculateHandTests();
@@ -169,14 +169,14 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	int				max = 0;
 	unsigned int	strbits = 0;
 
-	_tsuit   = k_undefined;
+	_tsuit   = 0;
 	_nsuited = 0;
-	_tsuitcommon   = k_undefined;
+	_tsuitcommon   = 0;
 	_nsuitedcommon = 0;
 	_nranked = 0;
-	_trank = k_undefined;
+	_trank = 0;
 	_nrankedcommon = 0;
-	_trankcommon   = k_undefined;
+	_trankcommon   = 0;
 	_nstraight     = 0;
 	_nstraightfill = k_cards_needed_for_straight;
 	_nstraightcommon     = 0;
@@ -614,6 +614,9 @@ void CSymbolEngineCards::CalculateHandTests()
 			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
 			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
 
+			AssertRange(rank, 0, k_rank_ace);
+			AssertRange(suit, 0, WH_SUIT_SPADES);
+
 			_$$pc[i] = (rank<<4) | suit;								  
 			_$$pr[i] = rank;						
 			_$$ps[i] = suit;	
@@ -853,7 +856,7 @@ int GetRankFromCard(int scraper_card)
 
 int GetSuitFromCard(int scraper_card)
 {
-	switch(scraper_card)
+	switch StdDeck_SUIT(scraper_card)
 	{
 		case StdDeck_Suit_CLUBS:  
 			return WH_SUIT_CLUBS;

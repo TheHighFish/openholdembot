@@ -29,7 +29,6 @@ private:
 	double _elapsedhand;
 	double _elapsedauto;
 	double _elapsedtoday;
-	double _elapsed1970;
 private:
 	time_t _elapsedautohold;	// The last time autoplayer acted
 	time_t _elapsedhold;		// The time we "sat down"

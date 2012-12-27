@@ -119,8 +119,14 @@ const int k_number_of_flags = 20;
 // Suits and ranks
 const int k_number_of_suits_per_deck  =  4;
 const int k_number_of_ranks_per_deck  = 13;
+const int k_rank_ace                  = 14; 
+const int k_rankbits_all_cards_111_111_111_111_110 = 0x7FFE;
+
+// straingts and flushes
 const int k_cards_needed_for_flush    =  5;
 const int k_cards_needed_for_straight =  5;
+
+
 
 // Regions for the region cloner of OpenScrape
 // may be used for players, pots, community-cards, etc.
