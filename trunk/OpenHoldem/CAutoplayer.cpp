@@ -208,7 +208,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	if (p_autoplayer_functions->f$rais())
 	{
-		if (p_casino_interface->ClickButton(k_button_raise))
+		if (p_casino_interface->ClickButton(k_autoplayer_function_raise))
 		{
 			return true;
 		}
