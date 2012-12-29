@@ -44,7 +44,7 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
-	//!!!RestartIteratorThread(); ?
+	RestartIteratorThread();
 	CalculateNOpponents();
 	CalculateNhands();
 }
