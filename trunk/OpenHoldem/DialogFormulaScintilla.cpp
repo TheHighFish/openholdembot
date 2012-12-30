@@ -271,6 +271,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[1].Add("f$chat");
 	m_standard_functions[1].Add("f$rebuy");
 	m_standard_functions[1].Add("f$prwin_number_of_opponents");
+	m_standard_functions[1].Add("f$prwin_number_of_iterations");
 	m_standard_functions[1].Add("f$sitin");
 	m_standard_functions[1].Add("f$sitout");
 	m_standard_functions[1].Add("f$leave");
