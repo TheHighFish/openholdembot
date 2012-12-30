@@ -220,6 +220,7 @@ bool CFormula::IsStandardFormula(CString formula_name)
 		|| (formula_name == "f$prefold")    || (formula_name == "f$rebuy") 
 		|| (formula_name == "f$delay")	    || (formula_name == "f$chat")	
 		|| (formula_name == "f$prwin_number_of_opponents")		
+		|| (formula_name == "f$prwin_number_of_iterations")		
 		|| (formula_name == "f$sitin")	    || (formula_name == "f$sitout")	
 		|| (formula_name == "f$leave")	    || (formula_name == "f$close")	
 		|| (formula_name == "f$test")	    || (formula_name == "f$debug"));
@@ -376,6 +377,7 @@ void CFormula::CheckForDefaultFormulaEntries()
 	AddEmptyFunctionIfFunctionDoesNotExist("f$delay");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$chat");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_opponents");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_iterations");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitin");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitout");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$leave");
