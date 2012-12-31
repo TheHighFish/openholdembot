@@ -79,8 +79,8 @@ static void gws(const char *the_Symbol, double* the_Result)
 //	
 static void gwt(char* the_ResultString)
 {
-	//	We assume a buffer of 80 chars on Perl side.
-	sprintf_s(the_ResultString, 80, "%s", p_scraper->title());
+	//	We assume a buffer of 180 chars on Perl side.
+	sprintf_s(the_ResultString, 180, "%s", p_scraper->title());
 }
 
 
