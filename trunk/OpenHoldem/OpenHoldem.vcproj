@@ -1880,6 +1880,46 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Documents"
+			>
+			<File
+				RelativePath="..\Checklist_Release.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Checklist_Release_OpenPPL.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\HeaderCopyrightDocumentation.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\ManualMode Release Notes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\OHReplay Release Notes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\OpenHoldem Release Notes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\OpenPPL Release Notes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\OpenScrape Release Notes.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\sources of code.txt"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
