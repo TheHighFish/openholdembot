@@ -163,7 +163,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			equality_operator       = str_p("=");
 			inequality_operator		= str_p("!=");
 			relational_operator     = longest_d[(equality_operator | inequality_operator| str_p("<=") | ">=" | "<" | ">")];
-			binary_boolean_operator = keyword_and | keyword_or | keyword_xor;
+			binary_boolean_operator = keyword_and | keyword_or | keyword_xor | keyword_bitand | keyword_bitor | keyword_bitxor | keyword_bitnot;
 			binary_operator         = (multiplicative_operator | additive_operator | relational_operator | binary_boolean_operator)[print_operator()];
 			
 			// Expressions
