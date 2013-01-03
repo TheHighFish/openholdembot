@@ -296,9 +296,10 @@ while (<>)
 	s/c\)heck/\) CHECK/ig;
 	s/a\)llin/\) ALLIN/ig;
 	# Add opening and closing brackets to not-expressions with equality-operator,
-	# also with smaller / larger comparisons.
-	#s/([ (]+not[ ]+[a-zA-Z0-9_]+[ ]*=[ ]*[a-zA-Z0-9_]+)/\ ($1\)/ig;	
+	# also with smaller / larger comparisons.	
 	s/([ (]+not[ ]+)([a-zA-Z0-9_]+[ ]*[=<>]+[ ]*[a-zA-Z0-9_]+)/$1 \($2\)/ig;
+	# halh-made general solution
+	#s/([ (]+(not)*(and)*(or)*[ ]+)([a-zA-Z0-9_]+[ ]*[=<>]+[ ]*[a-zA-Z0-9_]+)[ ]+(not)*(and)*(or)*[ ()]+/$1 \($2 $3\)/ig;
 	# Finally beautify some keywords
 	# Standalone words only. with spaces or brackets on both sides (except "FORCE").
 	# 1) AND
