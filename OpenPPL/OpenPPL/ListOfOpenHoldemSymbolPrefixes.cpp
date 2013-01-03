@@ -60,10 +60,10 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	// Hand Rank
 	"handrank",
 	// Chairs
-	"chair",		"userchair",	"dealerchair",	"raischair",
+	"userchair",	"dealerchair",	"raischair",
 	// Rounds / Positions
 	"betround",		"betposition",	"dealposition",	"original",
-	"callposition",	"seatposition",	
+	"callposition",	
 	// Probabilities
 	"prwin",		"prlos",		"prtie",		"random",
 	// Formulas
@@ -90,9 +90,9 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	// Pocket / Common Tests
 	"ishipair",		"islopair",		"ismidpair",	"ishistraight",
 	"ishiflush",
-	// Players, Friends, Opponents
-	"nopponents",	"nplayers",		"nfriends",		"opponents",
-	"players",		"friends",
+	// Players, Opponents
+	"nopponents",	"nplayers",		"opponents",
+	"players",	
 	// Flags
 	"f0",			"f1",			"f2",			"f3",			
 	"f4",			"f5",			"f6",			"f7",
