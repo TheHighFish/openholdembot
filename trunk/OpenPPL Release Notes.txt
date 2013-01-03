@@ -1,4 +1,17 @@
-v1.3.0 2012-11-10
+v4.0.0 2013-01-xx
+=================
+NEW STUFF:
+- Adding support for bitwise operations (BitAnd, BitOr, BitNot, BitXor).
+  Thanks to Termitapalahermita for providing the patch.
+  [THF]
+  
+BUG FIXES:   
+- Making DLL-symbols work in combination with OpenPPL.
+  In the past they had been rejected as "unknown".
+  Thanks to Termitapalahermita for providing the patch.
+  [THF]
+
+v1.3.1 2012-11-10
 =================
 BUG FIXES: 
 - The uploaded version of bracketify did print some debug-output that made the generated code unusable.
