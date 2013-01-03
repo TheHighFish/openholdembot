@@ -41,6 +41,12 @@ keyword_xor = (str_p("xor") | "Xor" | "XOr" | "XOR") | invalid_symbol;
 keyword_or = (str_p("or") | "Or" | "OR") | invalid_symbol;			
 keyword_not = (str_p("not") | "Not" | "NOT") | invalid_symbol;
 
+// Bit operators
+keyword_bitand = (str_p("bitand") | "BitAnd" | "BITAND") | invalid_symbol;
+keyword_bitor = (str_p("bitor") | "BitOr" | "BITOR") | invalid_symbol;
+keyword_bitxor = (str_p("bitxor") | "BitXor" | "BITXOR") | invalid_symbol;
+keyword_bitnot = (str_p("bitnot") | "BitNot" | "BITNOT") | invalid_symbol;
+
 // Hand- and board-expressions
 keyword_suited = str_p("suited") | "Suited" | "SUITED" | invalid_symbol;	
 keyword_board = str_p("board") | "Board" | "BOARD" | invalid_symbol;

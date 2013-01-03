@@ -7,7 +7,7 @@
 ListOfOpenHoldemSymbolPrefixes *p_list_of_openholdem_symbol_prefixes = NULL;
 
 const int k_max_length_of_symbol_prefix = 17;
-const int k_number_of_symbol_prefixes = 168;
+const int k_number_of_symbol_prefixes = 169;
 
 extern const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_of_symbol_prefix];
 
@@ -148,5 +148,7 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	"$6",			"$5",			"$4",			"$3",
 	"$2",
 	// Card Symbols
-	"$$p",			"$$c"
+	"$$p",			"$$c",
+	// DLL call symbols
+	"dll$"
 };
