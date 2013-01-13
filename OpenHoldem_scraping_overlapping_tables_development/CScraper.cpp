@@ -265,8 +265,62 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	ScrapeLimits();		// limits
 
 	write_log(prefs.debug_scraper(), "[CScraper] ...ending Scraper cadence, changed: %d\n", _scrape_something_changed);
-
+/* !!!???
+	DeleteDC(hdcCompatible);
+	DeleteDC(hdcScreen);
+	DeleteDC(hdcCurrentScreen);
+	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
+*/
 	return _scrape_something_changed;
+}
+
+int CScraper::GetEncoderClsid (const WCHAR* format, CLSID* pClsid)
+{
+  UINT  num = 0;          // number of image encoders
+  UINT  size = 0;         // size of the image encoder array
+                          // in bytes
+
+  Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+
+   Gdiplus::GetImageEncodersSize(&num, &size);
+  if(size == 0)
+    return -1;
+
+  pImageCodecInfo = ( Gdiplus::ImageCodecInfo*)(malloc(size));
+  if(pImageCodecInfo == NULL)
+    return -1;
+
+  GetImageEncoders(num, size, pImageCodecInfo);
+
+  for(UINT j = 0; j < num; ++j)
+  {
+    if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
+    {
+      *pClsid = pImageCodecInfo[j].Clsid;
+      free(pImageCodecInfo);
+      return j;  // Success
+    }
+  }
+
+  free(pImageCodecInfo);
+  return -1;
+}
+
+void CScraper::DumpBitmap(Gdiplus::Bitmap* pBitmap) {
+	/*UINT h = pBitmap->GetHeight();
+	UINT w = pBitmap->GetWidth();
+	CLSID  jpgEncoderClsid;
+	GetEncoderClsid(L"image/jpeg", &jpgEncoderClsid);
+	CString fileName;
+	fileName.Format("c:\\temp\\test%d.jpg", GetTickCount());
+	
+	//".jpg";
+	
+USES_CONVERSION;
+	wchar_t* wstr_name = T2W(fileName.GetBuffer());
+	Gdiplus::Status status = pBitmap->Save(wstr_name, &jpgEncoderClsid, NULL);
+	//delete bit;
+	*/
 }
 
 bool CScraper::ProcessRegion(RMapCI r_iter)
