@@ -260,7 +260,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
 	{
-		button_name.Format("i%dbutton", k_button_i86*k_max_number_of_i86X_buttons + i);
+		button_name.Format("i86%dbutton", i);
 		_i86X_button_name[i] = button_name;
 	}
 
@@ -312,7 +312,6 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &p_casino_interface->i86X_button[i]);
 		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
 	}
-
 
 	// ALLIN POSSIBLE
 	allin_option_available = false;
