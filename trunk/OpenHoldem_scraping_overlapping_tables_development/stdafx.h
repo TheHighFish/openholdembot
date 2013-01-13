@@ -56,6 +56,10 @@
 
 // ======================================================================================
 
+// For scraping (printing) occluded windows
+// http://www.codeproject.com/Messages/2586032/New-bug-unresolved-external-symbol-_GdipGetImageEn.aspx
+#pragma comment(lib, "GdiPlus") 
+
 #include <afxtempl.h>
 #include <afxpriv.h>
 #include <afxdlgs.h>
@@ -83,5 +87,5 @@
 #include "..\StructsDefines\structs_defines.h"
 #include "MagicNumbers.h"
 
-
+#include "gdiplus.h"
 #endif //INC_STDAFX_H
