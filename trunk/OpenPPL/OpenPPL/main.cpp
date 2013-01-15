@@ -11,12 +11,12 @@
 #include <iostream> 
 #include <sstream> 
 #include <stdio.h>
+#include "AddingOfIncludeFiles.h"
 #include "Board.h"
 #include "CodeSnippets.h"
 #include "CSymbolTable.h"
 #include "ErrorMessages.h"
 #include "ListOfOpenHoldemSymbolPrefixes.h"
-#include "SwagFunctionForOpenHoldem_2_1_x.h"
 
 using namespace boost::spirit;
 using namespace std;
@@ -170,7 +170,14 @@ int main(int argc, char *argv[])
 	else
 	{
 		// Translation sucessfully finished.
-		// Last step: add swag-functions for OH 2.1.x if necessary.
-		AddSwagFunctionsForOH_2_1_x_IfExistent();
+		// Last step: add include files
+		// Swag-functions are depricated now, as OH 4.0.0s f$betsize-function
+		// cares about that
+
+		/*
+		AppendFileToOHFOutputIfFileExists(CString k_swag_file_name, true);
+		*/
+		AppendFileToOHFOutputIfFileExists(k_hand_strength_library_file_name, true);
+		AppendFileToOHFOutputIfFileExists(k_custom_OHF_file_name, false);
 	}
 } 
