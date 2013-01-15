@@ -10,6 +10,18 @@ BUG FIXES:
   In the past they had been rejected as "unknown".
   Thanks to Termitapalahermita for providing the patch.
   [THF]
+  
+MAINTENANCE:
+- OpenPPL does no longer make use of the file
+  "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
+  because that is now built-in functionality of OpenHoldem 4.0.0.
+  [THF]
+- As we moved OpenHoldems hand-strength-symbols to a text-based library
+  OpenPPL does now need the file "mh_str_Handstrength_Library.ohf", which gets shipped as part of the release.
+  [THF]
+- Optionally adding "My_Custom_OH_Script_Code.ohf" if you have custom OH-script-code
+  that you want to use in combination with OpenPPL.
+  [THF]
 
 v1.3.1 2012-11-10
 =================
