@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnUpdateViewUngroupregions)
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
+static UINT openscrape_indicators[] =
 {
 	ID_SEPARATOR,           // status line indicator
 //	ID_INDICATOR_CAPS,
@@ -99,7 +99,8 @@ bool CMainFrame::CreateToolbar()
 bool CMainFrame::CreateStatusBar()
 {
 	return (m_wndStatusBar.Create(this) 
-		&& m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT)));
+		&& m_wndStatusBar.SetIndicators(openscrape_indicators, 
+			sizeof(openscrape_indicators)/sizeof(UINT)));
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
