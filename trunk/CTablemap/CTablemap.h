@@ -118,8 +118,7 @@ public:
 	CTablemap(void);
 	~CTablemap(void);
 	void ClearTablemap();
-	int LoadTablemap(const char *_filename, const char *version, int *linenum, 
-					 CString *loaded_version=NULL);
+	int LoadTablemap(const char *_filename);
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");
 	int UpdateHashes(const HWND hwnd, const char *startup_path);
@@ -266,6 +265,7 @@ public:
 private:
 	// private functions
 	void ClearIMap();
+	void WarnAboutGeneralTableMapError(int error_code, int line);
 
 private:
 	// private variables - use public accessors and public mutators to address these

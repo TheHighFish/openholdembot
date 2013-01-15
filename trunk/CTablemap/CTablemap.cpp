@@ -64,13 +64,18 @@ void CTablemap::ClearTablemap()
 	ClearIMap();
 }
 
-int CTablemap::LoadTablemap(const char *_filename, const char *version, int *linenum, 
-							CString *loaded_version) 
+void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
 {
-	CString				strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
-	CString				MaxFontGroup = "", MaxHashGroup = "";
-	int					pos = 0, x = 0, y = 0;
-	bool				supported_version = false;
+	CString error;
+	error.Format("Error code: %d  line: %d", error_code, line);
+	OH_MessageBox_Error_Warning(error, "Table map load error");
+}
+
+int CTablemap::LoadTablemap(const char *_filename) 
+{
+	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
+	CString		MaxFontGroup = "", MaxHashGroup = "";
+	int			pos = 0, x = 0, y = 0;
 
 	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
 	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
@@ -98,61 +103,45 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 	// Read the first line of the CArchive into strLine
 	strLine = "";
-	*linenum = 1;
+	int linenum = 1;
 
 	// Failed, so quit
 	if (!ar.ReadString(strLine))
+	{
+		WarnAboutGeneralTableMapError(linenum, ERR_EOF);
 		return ERR_EOF;
+	}
 
 	// skip any blank lines
 	while (strLine.GetLength() == 0) 
 	{
-		(*linenum)++;
+		linenum++;
 
 		// Failed, so quit
 		if (!ar.ReadString(strLine)) 
+		{
+			WarnAboutGeneralTableMapError(linenum, ERR_EOF);
 			return ERR_EOF;
+		}
 	}
 
 	
 	//
-	// Validate file version, if passed in
-	// check the "/".ohdb1"/".ohdb2"/".osdb1"/".osdb2" line
-	if (strlen(version)) 
+	// Validate file version (always first line).
+	// It should always be version 2.
+	//
+	if ((memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 
+		&& memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) != 0))
 	{
-		if (memcmp(version, VER_OPENSCRAPE_1, strlen(version)) == 0 ||
-			memcmp(version, VER_OPENSCRAPE_2, strlen(version)) == 0)
-		{
-			if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 &&
-				memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) != 0 &&
-				memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) != 0)
-			{
-				return ERR_VERSION;
-			}
-		}
-		else
-		{
-			if (memcmp(strLine.GetString(), version, strlen(version)) != 0)
-			{
-				return ERR_VERSION;
-			}
-		}
-	}
-
-	// Save the version of the file we are loading
-	if (loaded_version != NULL)
-	{
-		if (memcmp(strLine.GetString(), VER_OPENHOLDEM_1, strlen(VER_OPENHOLDEM_1)) == 0)
-			loaded_version->Format("%s", VER_OPENHOLDEM_1);
-
-		else if (memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) == 0)
-			loaded_version->Format("%s", VER_OPENHOLDEM_2);
-
-		else if (memcmp(strLine.GetString(), VER_OPENSCRAPE_1, strlen(VER_OPENSCRAPE_1)) == 0)
-			loaded_version->Format("%s", VER_OPENSCRAPE_1);
-
-		else if (memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) == 0)
-			loaded_version->Format("%s", VER_OPENSCRAPE_2);
+		OH_MessageBox_Error_Warning("This is a version 1 table map.\n\n"\
+			   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
+			   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
+			   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
+			   "have been made to autoplayer settings and region sizes.\n\n"\
+			   "Please do not use this table map prior to updating it to version 2 in\n"\
+			   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
+			   "Table map load warning");
+		return ERR_VERSION;
 	}
 
 	// Repeat while there are lines in the file left to process
@@ -191,14 +180,20 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			// width
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_size.width = atol(token.GetString());
 
 			// height
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_size.height = atol(token.GetString());
 
@@ -209,11 +204,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				if (z_iter != _z$.end())
 				{
 					t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox(t.GetString(), "ERROR adding size record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding size record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding size record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding size record");			
 				}
 			}
 		}
@@ -228,7 +223,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			hold_symbol.text = strLine.Mid(strLineType.GetLength());
 			hold_symbol.text.Trim();
 			if (hold_symbol.text.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			// Skip _s$hXtype lines
 			if (strLineType.Left(3) == "s$h" && strLineType.Mid(4,4) == "type")
@@ -249,11 +247,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 					if (s_iter != _s$.end())
 					{
 						t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
-						OH_MessageBox(t.GetString(), "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
+						OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding string/symbol record");			
 					}
 					else
 					{
-						OH_MessageBox(strLine, "ERROR adding string/symbol record", MB_OK | MB_TOPMOST);			
+						OH_MessageBox_Error_Warning(strLine, "ERROR adding string/symbol record");			
 					}
 				}
 			}
@@ -268,49 +266,70 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			// left
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.left = atol(token.GetString());
 
 			// top
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.top = atol(token.GetString());
 
 			// right
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.right = atol(token.GetString());
 
 			// bottom
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.bottom = atol(token.GetString());
 
 			// color
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.color = strtoul(token.GetString(), 0, 16);
 
 			// radius
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_region.radius = atol(token.GetString());
 
 			// transform
 			hold_region.transform = strLine.Tokenize(" \t", pos);
 			if (hold_region.transform.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			// flags
 			//token = strLine.Tokenize(" \t", pos);
@@ -323,11 +342,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				if (r_iter != _r$.end())
 				{
 					t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox(t.GetString(), "ERROR adding region record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding region record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding region record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding region record");			
 				}
 			}
 		}
@@ -349,7 +368,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 
 			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
 			{
-				OH_MessageBox(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]", MB_OK | MB_TOPMOST);
+				OH_MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -370,11 +389,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				{
 					t.Format("'%s' skipped, as this character already exists in group %d as '%c'.\nYou have to fix that tablemap.",
 						strLine, font_group, t_iter->second.ch);
-					OH_MessageBox(t.GetString(), "ERROR adding font record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding font record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding font record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding font record");			
 				}
 			}
 		}
@@ -391,20 +410,26 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 
-				OH_MessageBox(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]", MB_OK | MB_TOPMOST);
+				OH_MessageBox_Error_Warning(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
 			// x
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_hash_point.x = atol(token.GetString());
 
 			// y
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			token = strLine.Tokenize(" \t", pos);
 			hold_hash_point.y = atol(token.GetString());
@@ -417,11 +442,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				{
 					t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_point.x, hold_hash_point.y, hashpoint_group);
-					OH_MessageBox(t.GetString(), "ERROR adding hash point record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash point record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding hash point record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash point record");			
 				}
 			}
 		}
@@ -436,7 +461,7 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			int hash_group = strLineType.GetString()[1] - '0';
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
-				OH_MessageBox(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]", MB_OK | MB_TOPMOST);
+				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -446,7 +471,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			// value
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_hash_value.hash = strtoul(token.GetString(), 0, 16);
 
@@ -458,11 +486,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				{
 					t.Format("'%s' skipped, as hash %08x already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_value.hash, hash_group);
-					OH_MessageBox(t.GetString(), "ERROR adding hash record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding hash record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash record");			
 				}
 
 			}
@@ -477,20 +505,29 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			// width
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_image.width = atol(token.GetString());
 
 			// height
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
+			}
 
 			hold_image.height = atol(token.GetString());
 
 			// Check size of region
 			if (hold_image.width * hold_image.height > MAX_IMAGE_WIDTH*MAX_IMAGE_HEIGHT)
+			{
+				WarnAboutGeneralTableMapError(linenum, ERR_REGION_SIZE);
 				return ERR_REGION_SIZE;
+			}
 
 			// Allocate space for "RGBAImage"
 			t = hold_image.name + ".ppm";
@@ -499,9 +536,10 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 			// read next "height" lines
 			for (y=0; y < (int) hold_image.height; y++) 
 			{
-				(*linenum)++;
+				linenum++;
 				if (!ar.ReadString(strLine)) 
 				{
+					WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 					return ERR_SYNTAX;
 				}
 				// scan across "width" of line to get values
@@ -526,11 +564,11 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 				{
 					t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.\nYou have to fix that tablemap.", 
 						strLineType, i_iter->second.name);
-					OH_MessageBox(t.GetString(), "ERROR adding image record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding image record");			
 				}
 				else
 				{
-					OH_MessageBox(strLine, "ERROR adding image record", MB_OK | MB_TOPMOST);			
+					OH_MessageBox_Error_Warning(strLine, "ERROR adding image record");			
 				}
 			}
 			// Delete images later, when they are no longer needed,
@@ -542,13 +580,15 @@ int CTablemap::LoadTablemap(const char *_filename, const char *version, int *lin
 		// Unknown line type
 		else 
 		{
-			OH_MessageBox(strLine, 
-				"ERROR Unknown Line Type\nSome line in your tablemap is completely wrong and can't be processed at all.", 
-				MB_OK | MB_TOPMOST);
+			CString error;
+			error.Format("Unknown Line Type.\n"
+				"Some line in your tablemap is completely wrong\n"
+				"and can't be processed at all:\n%s", strLine);
+			OH_MessageBox_Error_Warning(error, "TABLEMAP ERROR");
 			return ERR_UNK_LN_TYPE;
 		}
 
-		(*linenum)++;
+		linenum++;
 	}
 	while (ar.ReadString(strLine));
 
@@ -719,7 +759,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
 	{
-		OH_MessageBox("No i$ records found - is this a master?", "'Profile' Error", MB_OK);
+		OH_MessageBox_Error_Warning("No i$ records found - is this a master?", "'Profile' Error");
 		return ERR_NOTMASTER;
 	}
 
@@ -780,12 +820,12 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			fclose(fp);
 		}
 
-		OH_MessageBox("Could not complete conversion of this table map, due to missing Image\n"\
+		OH_MessageBox_Error_Warning("Could not complete conversion of this table map, due to missing Image\n"\
 				   "records. Please see the \"tablemap conversion log.txt\" file for details.\n\n"\
 				   "The Image records will need to be recreated and the Hash records\n"\
 				   "will need to be updated (Edit/Update Hashes) before this table map\n"\
 				   "can be used in OpenHoldem.", 
-				   "Conversion Error", MB_OK);
+				   "Conversion Error");
 
 		return ERR_INCOMPLETEMASTER;
 	}
@@ -840,7 +880,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 								hold_hash_value.name,
 								hold_hash_value.hash, new_hashes[i].GetAt(j).hash
 								); 
-							OH_MessageBox(e, "Hash collision", MB_OK);
+							OH_MessageBox_Error_Warning(e, "Hash collision");
 							return ERR_HASH_COLL;
 						}
 					}
@@ -864,7 +904,7 @@ int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path)
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
-				OH_MessageBox(e, "ERROR adding hash value record: " + new_hashes[i].GetAt(j).name, MB_OK | MB_TOPMOST);	
+				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + new_hashes[i].GetAt(j).name);	
 			}
 		}
 	}
@@ -890,7 +930,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
 	{
-		OH_MessageBox("No images found - cannot create hashes.", "Table Map Error", MB_OK);
+		OH_MessageBox_Error_Warning("No images found - cannot create hashes.", "Table Map Error");
 		return ERR_NOTMASTER;
 	}
 
@@ -938,9 +978,9 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fclose(fp);
 		}
 
-		OH_MessageBox("Could not complete hash creation, due to missing images.\n"\
+		OH_MessageBox_Error_Warning("Could not complete hash creation, due to missing images.\n"\
 				   "Please see the \"hash creation log.txt\" file for details.", 
-				   "Hash Creation Error", MB_OK);
+				   "Hash Creation Error");
 	}
 
 	// Init new hash array
@@ -1002,7 +1042,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
 								i_iter->second.name.GetString(), 
 								new_hashes[i].GetAt(j).name.GetString()); 
-							OH_MessageBox(e, "Hash collision", MB_OK);
+							OH_MessageBox_Error_Warning(e, "Hash collision");
 							return ERR_HASH_COLL;
 						}
 					}
@@ -1026,12 +1066,16 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
-				OH_MessageBox(e, "ERROR adding hash value record: " + hold_hash_value.name, MB_OK | MB_TOPMOST);	
+				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
 			}
 		}
 	}
 
-	if (!all_i$_found)  return ERR_INCOMPLETEMASTER;
+	if (!all_i$_found)
+	{
+		WarnAboutGeneralTableMapError(0, ERR_INCOMPLETEMASTER);	
+		return ERR_INCOMPLETEMASTER;
+	}
 
 	return SUCCESS;
 }
