@@ -1,4 +1,4 @@
-v 2.2.0 2012-xx-yy 
+v 4.0.0 2013-01-xx 
 ==================
 NEW STUFF:
 - Implementing a table-positioner that optionally moves the poker-tables 
@@ -123,7 +123,6 @@ MAINTENANCE:
   [THF]  
 - Always using symbol-caching. There is no need to disable it,
   as all functions are paramater-less, so the result will always be the same
-  (as long as no true randomization is used).
   Disabled symbol-caching just caused slow evaluations and confusingly large log-files
   (we have seen 5 MB for a single action).
   [THF]
@@ -261,7 +260,7 @@ MAINTENANCE:
   because they got designed for Fixed-Limit	no-foldem Hold'em only.
   Better use a function to estimate future pot-sizes.
   [THF]
-- Removing the symbol seatposition which ocunted both active and inactive players
+- Removing the symbol seatposition which counted both active and inactive players
   and was of no real use for practical play.
   [THF]
 - Removing the symbol elapsed1970 because there was no real use for it.
@@ -270,7 +269,7 @@ MAINTENANCE:
   but always had the same value as "ncommoncardsknown". 
   Furthermore its value would only differ at some casinos and at showdown,
   but this point of time is pretty meaningless for both OH-script and OpenPPL,
-  whereas DLLers still have access to all info. 
+  which evaluate mainly on the users turn, whereas DLLers still have access to all info. 
   [THF]
 - Removed the symbols ac_pf_bets, because it was for fixed limit only,
   worked only on the first orbit preflop, because that task can be done with other symbols

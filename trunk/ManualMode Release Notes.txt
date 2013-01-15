@@ -1,5 +1,15 @@
-v2.2.0 2012-xx-yy
+v4.0.0 2013-01-yy
 =================
+NEW STUFF:
+- Added a tool to clone regions (Menu -> Tools -> Region Cloner).
+  This tool simplifies the task of creating a tablemap.
+  Once you have all regions for player0 and the first common-card defined
+  just use the region-cloner to create regions with equal properties
+  for all other chairs and cards. The regions will even get moved
+  to somewhat reasonable places at the table.
+  All you have to do: fine-tune the positions.
+  [THF]
+
 MAINTENANCE:
 - Switching default mode to no-limit.
   Thanks to BotForSale for the patch.
@@ -8,7 +18,7 @@ MAINTENANCE:
 v2.1.9.2 2011-12-24
 ===================
 BUG FIXES: 
-- allin-bug: sum of bets and balances should be no correct. 
+- allin-bug: sum of bets and balances should be now correct. 
   Thanks to Pingvvino for reporting. [THF]
 
 v2.0.0 2009-05-22
