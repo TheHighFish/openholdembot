@@ -36,7 +36,10 @@ private:
 		{
 			_is_list[list] = is_list;
 		}
-		ErrorListNumberOutOfRange(list);
+		else
+		{
+			ErrorListNumberOutOfRange(list);
+		}
 	}
 	void ErrorListNumberOutOfRange(int list);
 private:
