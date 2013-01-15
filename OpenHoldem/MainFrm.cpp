@@ -441,33 +441,7 @@ void CMainFrame::OnFileLoadTableMap()
 	if (cfd.DoModal() == IDOK)
 	{
 		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, &loaded_version);
-		
-		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
-		{
-			e.Format("This is an OpenHoldem v1 profile (.ohdb1).\n"
-					 "OpenHoldem versions 1.2.0 and higher require v2 Profiles (.ohdb2),\n"
-					 "or OpenScrape Table Maps.\n");
-			OH_MessageBox(e, "Table map load error", MB_OK);
-		}
-
-		else if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2) )
-		{
-			OH_MessageBox("This is a version 1 table map.\n\n"\
-					   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
-					   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-					   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
-					   "have been made to autoplayer settings and region sizes.\n\n"\
-					   "Please do not use this table map prior to updating it to version 2 in\n"\
-					   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
-					   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);		
-		}
-
-		else if (ret != SUCCESS)
-		{
-			e.Format("Error code: %d  line: %d", ret, line);
-			OH_MessageBox(e, "Table map load error", MB_OK);
-		}
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile);
 		
 		if (ret == SUCCESS)
 		{

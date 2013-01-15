@@ -16,6 +16,8 @@ CSymbolEngineHistory::CSymbolEngineHistory()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_userchair != NULL);
+
+	_betround = k_betround_preflop;
 }
 
 CSymbolEngineHistory::~CSymbolEngineHistory()

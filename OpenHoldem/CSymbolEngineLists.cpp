@@ -85,5 +85,5 @@ void CSymbolEngineLists::ErrorListNumberOutOfRange(int list)
 	CString message;
 	message.Format("List out of range.\n"
 		"%i should be in the range [0..999]", list);
-	OH_MessageBox(message, "ERROR", 0);
+	OH_MessageBox_Error_Warning(message, "ERROR");
 }

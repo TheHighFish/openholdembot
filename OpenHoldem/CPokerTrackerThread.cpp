@@ -261,7 +261,7 @@ void CPokerTrackerThread::StopThread()
 void CPokerTrackerThread::WarnAboutInvalidPTSymbol(CString s)
 {
 	CString error_message = "Error: Invalid PT-symbol: " + s;
-	OH_MessageBox(error_message, "Error", 0);
+	OH_MessageBox_Error_Warning(error_message, "Error");
 }
 
 const double CPokerTrackerThread::ProcessQuery (const char * s)
@@ -270,9 +270,21 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 	{
-		OH_MessageBox("Not connected to PokerTracker database.\n"
-			"Can't use PokerTracker symbols.", "Error", 0);
-		return -1.0;
+		if (!p_symbol_engine_userchair->userchair_confirmed())
+		{
+			// We are not yet seated.
+			// Symbol-lookup happens, because of Formula-validation.
+			// Not a problem, if we do not yet have a DB-connection.
+			// Don't throw a warning here.
+		}
+		else
+		{
+			// We are seated and playing.
+			// Serious problem, if we do not have a DB-connection.
+			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
+				"Can't use PokerTracker symbols.", "ERROR");
+		}
+		return k_undefined;
 	}
 
 	// ATTENTION!

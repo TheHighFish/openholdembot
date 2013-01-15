@@ -87,7 +87,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				if (DoesFormulaAlreadyExist(list.list))
 				{
 					CString ErrorMessage = "Handlist does already exist: " + list.list;
-					OH_MessageBox(ErrorMessage, "Error", 0);
+					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
 				}
 				else
 				{
@@ -100,7 +100,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				if (DoesFormulaAlreadyExist(func.func))
 				{
 					CString ErrorMessage = "Function does already exist: " + func.func;
-					OH_MessageBox(ErrorMessage, "Error", 0);
+					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
 				}
 				else
 				{
@@ -133,7 +133,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
 					+ strOneLine + "\n"
 					+ "Trying to continue...";
-				OH_MessageBox(the_ErrorMessage, "Syntax Error", MB_OK | MB_ICONEXCLAMATION);
+				OH_MessageBox_Error_Warning(the_ErrorMessage, "Syntax Error");
 			}
 
 			else 
@@ -186,7 +186,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		if (DoesFormulaAlreadyExist(list.list))
 		{
 			CString ErrorMessage = "Handlist does already exist: " + list.list;
-			OH_MessageBox(ErrorMessage, "Error", 0);
+			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
 		}
 		else
 		{
@@ -199,7 +199,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 		if (DoesFormulaAlreadyExist(func.func))
 		{
 			CString ErrorMessage = "Function does already exist: " + func.func;
-			OH_MessageBox(ErrorMessage, "Error", 0);
+			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
 		}
 		else
 		{
@@ -309,7 +309,7 @@ void CFormula::CreateHandListMatrices()
 		int listnum = atoi(_formula.mHandList[i].list.Mid(4).GetString());
 		if (listnum>=MAX_HAND_LISTS)			
 		{
-			OH_MessageBox("List number too high.", "Error", 0);
+			OH_MessageBox_Error_Warning("List number too high.", "Error");
 			break;
 		}
 		ParseHandList(_formula.mHandList[i].list_text, _formula.inlist[listnum]);
@@ -540,7 +540,7 @@ void CFormula::CopyFormulaFrom(CFormula *f)
 		if (DoesFormulaAlreadyExist(list.list))
 		{
 			CString ErrorMessage = "Handlist does already exist: " + list.list;
-			OH_MessageBox(ErrorMessage, "Error", 0);
+			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
 		}
 		else
 		{
@@ -635,7 +635,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 					 data->pParent->formula()->mFunction[i].func.GetString(),
 					 linenum, colnum,
 					 data->pParent->formula()->mFunction[i].func_text.Mid(stopchar, 40).GetString());
-				OH_MessageBox(s, "PARSE ERROR", MB_OK);
+				OH_MessageBox_Error_Warning(s, "PARSE ERROR");
 
 				data->all_parsed = false;
 			}
@@ -650,7 +650,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 					s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());
 					s.Append("\n");
 				}
-				OH_MessageBox(s, "PARSE ERROR", MB_OK);
+				OH_MessageBox_Error_Warning(s, "PARSE ERROR");
 
 				data->all_parsed = false;
 			}
@@ -702,22 +702,22 @@ void CFormula::WarnAboutOutdatedConcepts()
 {
 	if (DoesFormulaAlreadyExist("f$play"))
 	{
-		OH_MessageBox("Your formula set contains a function f$play.\n"
+		OH_MessageBox_Error_Warning("Your formula set contains a function f$play.\n"
 			"The play-formula is an outdated messy concept,\n"
-			"that got abolished in OpenHoldem 2.2.0.\n"
+			"that got abolished in OpenHoldem 4.0.0.\n"
 			"It got replaced by three separate functions:\n"
 			"  * f$sitin\n"
 			"  * f$sitout\n"
 			"  * f$leave\n"
 			"Please refer to the manual about how to adapt\n"
 			"your formula set.",
-			"Error", 0);
+			"Error");
 	}
 	if (DoesFormulaAlreadyExist("f$swag") 
 		|| DoesFormulaAlreadyExist("f$srai")
 		|| DoesFormulaAlreadyExist("f$swag_adjust"))
 	{
-		OH_MessageBox("Your formula set contains old \"swag\"-functions.\n"
+		OH_MessageBox_Error_Warning("Your formula set contains old \"swag\"-functions.\n"
 			"\"Swagging\" is an outdated messy concept,\n"
 			"where the user had to care about everything.\n\n"
 			"f$swag and its supporting functions and symbols\n"
@@ -726,13 +726,13 @@ void CFormula::WarnAboutOutdatedConcepts()
 			"(as long as you define the s$betsizemethod correctly).\n\n"
 			"Please refer to the manual about how to adapt\n"
 			"your formula set.",
-			"Error", 0);
+			"Error");
 	}
 	if (DoesFormulaAlreadyExist("f$P"))
 	{
-		OH_MessageBox("Your formula set contains old \"prwin\"-functions.\n"
+		OH_MessageBox_Error_Warning("Your formula set contains old \"prwin\"-functions.\n"
 			"\"f$P\" got replaced by \"f$number_of_opponents_for_prwin\".",
-			"Error", 0);
+			"Error");
 	}
 
 }

@@ -140,10 +140,10 @@ void CConfigurationCheck::CheckColourDepth()
 	CWindowDC dc(NULL);
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 	if (nBitsPerPixel < 24)
-		OH_MessageBox("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+		OH_MessageBox_Error_Warning("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
 				"24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
 				"For more info, look at the manual and the user forums",
-				"Caution: Color Depth Too Low", MB_OK|MB_ICONWARNING);
+				"Caution: Color Depth Too Low");
 }
 
 void CConfigurationCheck::CheckInputSettings()
@@ -153,7 +153,7 @@ void CConfigurationCheck::CheckInputSettings()
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{
-		OH_MessageBox("You seem to have non-english keyboard settings.\n"
+		OH_MessageBox_Error_Warning("You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"
 				"If you continue, OpenHoldem may or may not work as expected.\n"
@@ -161,7 +161,7 @@ void CConfigurationCheck::CheckInputSettings()
 				"you may turn this warning off.\n"
 				"If you are new to OpenHoldem or encounter problems\n"
 				"you should fix your keyboard settings\n",
-				"Caution: Improper keyboard settings", MB_OK|MB_ICONWARNING);
+				"Caution: Improper keyboard settings");
 	}
 }
 
@@ -179,7 +179,7 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 
 	if (SwapBtns == true)
 	{
-		OH_MessageBox("It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
+		OH_MessageBox_Error_Warning("It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
 			
 			"The autoplayer has to generate mouse-events via a very low-level system-interface,\n"
 			"and windows might/will swap these hardware-events for their inverse logical responses.\n\n"
@@ -187,7 +187,7 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 			"Please Disable the - Swap Mouse Buttons - option in :\n\n"
 			"Control Panel-> Mouse.\n\n"
 			"and restart your user session in order to proceed\n",
-			"Caution: Swap Mouse Buttons Activated", MB_OK|MB_ICONWARNING);
+			"Caution: Swap Mouse Buttons Activated");
 	}
 }
 
@@ -218,12 +218,12 @@ void CConfigurationCheck::CheckForClassicalTheme()
 
 	if (classic_theme == false)
 	{
-		OH_MessageBox("Classical Theme Not Found\n"
+		OH_MessageBox_Error_Warning("Classical Theme Not Found\n"
 			"Settings deviate from recommended defaults.\n"
 			"\n"
 			"Please enable windows classical theme.\n"
 			"for optimum compatibility \n",
-			"Caution: Classical Theme Disabled", MB_OK|MB_ICONWARNING);
+			"Caution: Classical Theme Disabled");
 	}
 }
 
@@ -252,22 +252,22 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 			if (FontSmoothType == 2)
 			{
-				OH_MessageBox("It appears that Cleartype font smoothing is enabled.\n"
+				OH_MessageBox_Error_Warning("It appears that Cleartype font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
 							"you should disable Font Smoothing.",
-							"Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+							"Caution: Font smoothing is enabled");
 			}
 
 			else if (FontSmoothType == 1)
 			{
-				OH_MessageBox("It appears that Standard font smoothing is enabled.\n"
+				OH_MessageBox_Error_Warning("It appears that Standard font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
 							"you should disable Font Smoothing.",
-							"Caution: Font smoothing is enabled", MB_OK|MB_ICONWARNING);
+							"Caution: Font smoothing is enabled");
 			}
 		}
 	}
@@ -287,13 +287,13 @@ void CConfigurationCheck::CheckForMissingMSVCRT()
 
 	if (installed == false)
 	{
-		OH_MessageBox("Unable to detect\n"
+		OH_MessageBox_Error_Warning("Unable to detect\n"
 			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
 			"\n"
 			"This library is necessary for Perl users.\n"
 			"if you don't use Perl you may turn this warning off\n"
 			"by not loading the perl interpreter by default.",
-			"Caution: MSVCRT 8.0 missing", MB_OK|MB_ICONWARNING);
+			"Caution: MSVCRT 8.0 missing");
 	}
 }
 
@@ -303,13 +303,13 @@ void CConfigurationCheck::CheckForMissingActivePerl()
 
 	if (!OpenKey("HKLM", p_szKeyAP))
 	{
-		OH_MessageBox("Unable to detect\n"
+		OH_MessageBox_Error_Warning("Unable to detect\n"
 			"ActiveState ActivePerl.\n"
 			"\n"
 			"This version is required for Perl users.\n"
 			"if you don't use Perl you may turn this warning off\n"
 			"by not loading the perl interpreter by default.",
-			"Caution: ActivePerl missing", MB_OK|MB_ICONWARNING);
+			"Caution: ActivePerl missing");
 	}
 }
 
@@ -322,11 +322,11 @@ void CConfigurationCheck::CheckForPerlPath()
 
 	if (path.Find("Perl") == k_undefined)
 	{
-		OH_MessageBox("Path\n"
+		OH_MessageBox_Error_Warning("Path\n"
 			"Perl was not correctly detected in your Path.\n"
 			"\n"
 			"If you don't use Perl you may turn this warning off\n"
 			"by not loading the perl interpreter by default.",
-			"Caution: Perl not found in %PATH%", MB_OK|MB_ICONWARNING);
+			"Caution: Perl not found in %PATH%");
 	}
 }

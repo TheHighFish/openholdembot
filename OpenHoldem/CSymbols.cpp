@@ -54,9 +54,10 @@ CSymbols			*p_symbols = NULL;
 
 CSymbols::CSymbols()
 {
-	// userchair needs to be initialized very early to a reasonable value
-	// because the history-engine will need it as an index into some arrays.
-	_userchair = k_betround_preflop;
+	// userchair and betround need to be initialized very early to reasonable values
+	// because the history-engine will need them as indices into some arrays.
+	_userchair = 0;
+	_betround = k_betround_preflop;
 }
 
 CSymbols::~CSymbols()
@@ -679,7 +680,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);
 			// Bets and pot
 			// Disabled till OH 2.2 as it causes bad side-effects for the call symbol.
-			new_bet = _sym.currentbet[k_max_number_of_players]; // f$swag(); // !! That's not correct, but will be for OH 2.2.0 because of swagadjustment
+			new_bet = _sym.currentbet[k_max_number_of_players]; // f$swag(); // !! That's not correct, but will be for OH 4.0.0 because of swagadjustment
 			new_number_of_bets = new_bet / bet; 
 			new_pot = _sym.pot + p_autoplayer_functions->f$betsize() - _sym.currentbet[10];
 			break;

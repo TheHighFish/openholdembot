@@ -534,7 +534,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 			"Stopping autoplayer.\n"
 			"\n"
 			"Last function: ") + symbol;
-		OH_MessageBox(error_message, "ERROR", 0);
+		OH_MessageBox_Error_Warning(error_message, "ERROR");
 		p_autoplayer->set_autoplayer_engaged(false);
 		_RecursionDepth--;
 		return 0.0;

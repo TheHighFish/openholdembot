@@ -103,9 +103,9 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 		// Check for memory overflow
 		if (next_free_slot >= k_max_number_of_memory_symbols)
 		{
-			OH_MessageBox("Too many memory symbols.\n"
+			OH_MessageBox_Error_Warning("Too many memory symbols.\n"
 						  "Stopping autoplayer.", 
-						  "Error", 0);
+						  "Error");
 			p_autoplayer->set_autoplayer_engaged(false);
 			return;
 		}
