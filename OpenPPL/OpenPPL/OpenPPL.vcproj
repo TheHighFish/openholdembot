@@ -37,6 +37,9 @@
 				Name="VCMIDLTool"
 			/>
 			<Tool
+				Name="VCCLCompilerTool"
+			/>
+			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
@@ -148,6 +151,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AddingOfIncludeFiles.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Board.cpp"
 				>
 			</File>
@@ -169,10 +176,6 @@
 			</File>
 			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwagFunctionForOpenHoldem_2_1_x.cpp"
 				>
 			</File>
 			<File
@@ -270,6 +273,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\AddingOfIncludeFiles.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Board.h"
 				>
 			</File>
@@ -295,10 +302,6 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwagFunctionForOpenHoldem_2_1_x.h"
 				>
 			</File>
 		</Filter>

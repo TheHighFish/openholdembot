@@ -14,7 +14,7 @@ static const char *k_code_snippet_license =
 	"// The original PPL (Poker Programming Language) got invented by          \n"
 	"//   Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl \n"
 	"//                                                                        \n"
-	"// Required OpenHoldem version: 2.2.0 or later                            \n"
+	"// Required OpenHoldem version: 4.0.0 or later                            \n"
 	"//   Symbols not working with 2.1.x:                                      \n"
 	"//     * isfinaltable                                                     \n"
 	"//                                                                        \n"
