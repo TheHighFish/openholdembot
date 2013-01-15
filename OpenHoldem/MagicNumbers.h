@@ -19,6 +19,11 @@ const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 const int k_undefined = -1;
 const int k_not_found = -1;
 
+// CString compare results
+// http://msdn.microsoft.com/en-us/library/aa314313(v=vs.60).aspx
+// http://www.cplusplus.com/reference/cstring/strcmp/
+const int k_CString_identical = 0;
+
 // Betting rounds
 // Some data-structures use an additional value for the current round.
 // This is IMO (THF) superfluous and  dangerous, but lots of work

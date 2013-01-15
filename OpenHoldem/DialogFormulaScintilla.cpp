@@ -943,16 +943,19 @@ void CDlgFormulaScintilla::OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CDlgFormulaScintilla::SelectFunctionTab(CScintillaWnd *pCurScin)
 {
-	int iSel = -1;
-	for (int iWnd=0;iWnd<m_ScinArray.GetSize();iWnd++)
+	int iSel = k_not_found;
+	for (int iWnd=0; iWnd<m_ScinArray.GetSize(); iWnd++)
 	{
-		if (m_ScinArray[iWnd]._pWnd == pCurScin) {
+		if (m_ScinArray[iWnd]._pWnd == pCurScin) 
+		{
 			iSel = iWnd;
 			break;
 		}
 	}
-	if (iSel != -1)
+	if (iSel != k_not_found)
+	{
 		m_FunctionTab.SetCurSel(iSel);
+	}
 }
 
 void CDlgFormulaScintilla::OnTvnExpandedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
@@ -1185,10 +1188,15 @@ void CDlgFormulaScintilla::OnNew()
 
 	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
-	if (s == "Hand Lists" || (s.Find("list") != -1 && s.Find("f$") == k_undefined))
+	if (s == "Hand Lists" 
+		|| (s.Find("list") != k_not_found && s.Find("f$") == k_not_found))
+	{
 		newdlg.type = 0;
+	}
 	else
+	{
 		newdlg.type = 1;
+	}
 
 	if (newdlg.DoModal() == IDOK) 
 	{
@@ -1442,7 +1450,7 @@ void CDlgFormulaScintilla::OnRename()
 
 void CDlgFormulaScintilla::OnDelete() 
 {
-	int ret = 0, i = 0;
+	/*
 	HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
 	CString s = m_FormulaTree.GetItemText(hItem);
 	CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
@@ -1457,11 +1465,12 @@ void CDlgFormulaScintilla::OnDelete()
 
 	bool bDeleted = false;
 	// Delete a UDF
-	if (s.Find("f$") != -1) 
+	if (s.Find("f$") != k_not_found) 
 	{
-		for (i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
+		for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
 		{
-			if (!m_wrk_formula.formula()->mFunction[i].func.Compare(s)) {
+			if (m_wrk_formula.formula()->mFunction[i].func.Compare(s) != k_CString_identical) 
+			{
 				bDeleted = true;
 				m_wrk_formula.set_func_remove(i);
 
@@ -1479,11 +1488,11 @@ void CDlgFormulaScintilla::OnDelete()
 	}
 
 	// Delete a list
-	else if (s.Find("list") != -1) 
+	else if (s.Find("list") != k_not_found) 
 	{
-		for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
-		{
-			if (!m_wrk_formula.formula()->mHandList[i].list.Compare(s)) 
+		for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
+		{			
+			if (m_wrk_formula.formula()->mHandList[i].list.Compare(s) != k_CString_identical) 
 			{
 				bDeleted = true;
 				m_wrk_formula.set_list_remove(i);
@@ -1493,7 +1502,8 @@ void CDlgFormulaScintilla::OnDelete()
 			}
 		}
 	}
-	if (bDeleted) {
+	if (bDeleted) 
+	{
 		m_dirty = true;
 		m_FormulaTree.SetFocus();
 		SetWindowText("Formula - ");
@@ -1510,6 +1520,75 @@ void CDlgFormulaScintilla::OnDelete()
 	UpdateAllScintillaKeywords();
 
 	HandleEnables(true);
+	*/
+
+	int ret, N, i;
+		HTREEITEM h = m_FormulaTree.GetSelectedItem();
+		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+		CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
+
+		StopAutoButton();
+
+		ret = MessageBox("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", 
+			"Confirm Delete", MB_YESNO | MB_ICONWARNING);
+
+		if (ret == IDYES) {
+
+			// Delete a UDF
+			if (s.Find("f$") != -1) {
+				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
+				for (i=0; i<N; i++) {
+					if (m_wrk_formula.formula()->mFunction[i].func == s) 
+					{
+						// Update the dialog
+						//m_FormulaTree.SelectItem(NULL);
+						m_FormulaTree.SetFocus();
+						SetWindowText("Formula - ");
+						m_pActiveScinCtrl->SetText("");
+						m_pActiveScinCtrl->EnableWindow(false);
+						m_FormulaApply.EnableWindow(true);
+						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+						m_FormulaOK.EnableWindow(true);
+						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+						m_ButtonCalc.EnableWindow(false);
+						// Remove it from the CArray working set
+						//m_wrk_formula.formula()->mFunction. RemoveAt(i, 1);
+						m_wrk_formula.set_func_remove(i);
+						// Update the tree
+						m_FormulaTree.DeleteItem(h);
+						m_dirty = true;
+						i=N+1;
+					}
+				}
+			}
+
+			// Delete a list
+			else if (s.Find("list") != -1) {
+				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
+				for (i=0; i<N; i++) {
+					if (m_wrk_formula.formula()->mHandList[i].list == s) {
+						// Update the dialog
+						//m_FormulaTree.SelectItem(NULL);
+						m_FormulaTree.SetFocus();
+						SetWindowText("Formula - ");
+						m_pActiveScinCtrl->SetText("");
+						m_pActiveScinCtrl->EnableWindow(false);
+						m_FormulaApply.EnableWindow(true);
+						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
+						m_FormulaOK.EnableWindow(true);
+						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
+						m_ButtonCalc.EnableWindow(false);
+						// Remove it from the CArray working set
+						//m_wrk_formula.formula()->mHandList.RemoveAt(i, 1);
+						m_wrk_formula.set_list_remove(i);
+						// Update the tree
+						m_FormulaTree.DeleteItem(h);
+						m_dirty = true;
+						i=N+1;
+					}
+				}
+			}
+		}
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
@@ -1652,7 +1731,7 @@ void CDlgFormulaScintilla::OnHandList()
 	CString				token = "", hand = "", newstring = "";
 	
 	// Find appropriate list in the internal structure
-	list_index = -1;
+	list_index = k_not_found;
 	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
 	{
 		if (m_wrk_formula.formula()->mHandList[i].list == s)
@@ -1661,7 +1740,7 @@ void CDlgFormulaScintilla::OnHandList()
 			break;
 		}
 	}
-	if (list_index == k_undefined)  return;
+	if (list_index == k_not_found)  return;
 
 	m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
 
@@ -2686,7 +2765,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	bool bFormulaVisible = true;
 	bool bTreeHeadingSelected = false;
 	bool bTreeValidLeafSelected = false;
-	int  iWhichTypeSelected = -1; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
+	int  iWhichTypeSelected = k_undefined; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
 	bool bFindInfo = false;
 	bool bDebugActive = false;
 	bool bNotesOrDllActive = false;
