@@ -55,12 +55,12 @@ CString CFilenames::IniFilename()
 	if (FindNextFile(h_find, &find_file_data))
 	{
 		FindClose(h_find);
-		OH_MessageBox(
+		OH_MessageBox_Error_Warning(
 			"More than one ini-file in OpenHoldem-directory.\n"
 			"Don't know which one to use.\n"
 			"\n"
 			"Going to terminate...",
-			"ERROR", 0);
+			"ERROR");
 		PostQuitMessage(-1);
 		return "a_result_to_make_the_compiler_happy.ini";
 	}

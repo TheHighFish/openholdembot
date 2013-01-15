@@ -57,7 +57,7 @@ char *outdated_symbol_friends =
 	"but now it is time to get rid of that WinHoldem-shit.\n";
 
 char *outdated_symbol_NIT =
-	"OpenHoldem 2.2.0 replaced \"NIT\" by\n"
+	"OpenHoldem 4.0.0 replaced \"NIT\" by\n"
 	"\"f$prwin_number_of_iterations\".\n"
 	"\n"
 	"This requires one little change to your formula.\n";
@@ -102,7 +102,7 @@ char *outdated_symbols_tablemap =
 	"  * potmethod\n"
 	"  * activemethod\n"
 	"because there is no need to use them at the formula-level.\n"
-	"OpenHoldem 2.2.0 cares about betsize-adaption automatically.\n";
+	"OpenHoldem 4.0.0 cares about betsize-adaption automatically.\n";
 
 char*outdated_symbols_handstrength =
    "The handstrength-symbols (\"mh_...\") got removed from the code-base\n"
@@ -176,86 +176,86 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 		|| (symbol == "isemptylistrais") || (symbol == "isemptylistalli") 
 		|| (symbol == "nlistmax") || (symbol == "nlistmin"))
 	{
-		OH_MessageBox(outdated_list_symbols, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_list_symbols, title_outdated_symbol);
 	}
 	if ((symbol == "isfiveofakind") || (symbol == "bankroll") 
 		|| (symbol == "rake") || (symbol == "defcon") 
 		|| (symbol == "isaggmode") || (symbol == "isdefmode") 
 		|| (symbol == "nopponentsmax") || (symbol == "elapsed1970"))
 	{
-		OH_MessageBox(outdated_various_symbols, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_various_symbols, title_outdated_symbol);
 	}
 	else if ((symbol == "br") || (symbol == "ncps") || (symbol == "nflopc")
 		|| (symbol == "chair") || (symbol == "oppdealt"))
 	{
-		OH_MessageBox(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	}
 	else if ((symbol == "isbring") || (symbol == "ismanual"))
 	{
-		OH_MessageBox(outdated_symbols_isbring_ismanual, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_isbring_ismanual, title_outdated_symbol);
 	}
 	else if ((symbol == "bankroll") || (symbol == "rake") || (symbol == "defcon"))
 	{
-		OH_MessageBox(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
 	}
 	else if ((symbol.Left(7) == "friends") || (symbol.Left(8) == "nfriends"))
 	{
-		OH_MessageBox(outdated_symbol_friends, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_friends, title_outdated_symbol);
 	}
 	else if (symbol == "NIT")
 	{
-		OH_MessageBox(outdated_symbol_NIT, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_NIT, title_outdated_symbol);
 	}
 	else if (symbol == "originaldealposition")
 	{
-		OH_MessageBox(outdated_symbol_originaldealposition, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_originaldealposition, title_outdated_symbol);
 	}
 	else if (symbol == "ncommoncardspresent")
 	{
-		OH_MessageBox(outdated_symbol_ncommoncardspresent, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_ncommoncardspresent, title_outdated_symbol);
 	}
 	else if (symbol == "handrank")
 	{
-		OH_MessageBox(outdated_symbol_handrank, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_handrank, title_outdated_symbol);
 	}
 	else if ((symbol == "clocks") || (symbol == "nclockspersecond")
 		|| (symbol == "ron$clocks") || (symbol == "run$clocks"))
 	{
-		OH_MessageBox(outdated_symbol_clocks, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbol_clocks, title_outdated_symbol);
 	}
 	else if (symbol.Left(4) == "ptt_")
 	{
-		OH_MessageBox(outdated_symbols_ptt, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_ptt, title_outdated_symbol);
 	}
 	else if ((symbol.Left(6) == "islist") || (symbol.Left(6) == "isemptylist")
 		|| (symbol.Left(5) == "nlist"))
 	{
-		OH_MessageBox(outdated_symbols_lists, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_lists, title_outdated_symbol);
 	}
 	else if ((symbol.Left(9) == "swagdelay") || (symbol.Left(9) == "allidelay")
 		|| (symbol.Left(8) == "potdelay") || (symbol.Left(14) == "swagtextmethod")
 		|| (symbol.Left(12) == "activemethod"))
 	{
-		OH_MessageBox(outdated_symbols_tablemap, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_tablemap, title_outdated_symbol);
 	}
 	else if (symbol.Left(3) == "mh_")
 	{
-		OH_MessageBox(outdated_symbols_handstrength, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_handstrength, title_outdated_symbol);
 	}
 	else if ((symbol.Left(4) == "run$") || (symbol.Left(4) == "ron$")) 
 	{
-		OH_MessageBox(outdated_symbols_runron, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_runron, title_outdated_symbol);
 	}
 	else if ((symbol.Left(12) == "randomround1") 
 		|| (symbol.Left(12) == "randomround2")
 		|| (symbol.Left(12) == "randomround3")
 		|| (symbol.Left(12) == "randomround4"))
 	{
-		OH_MessageBox(outdated_symbols_randomround, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_randomround, title_outdated_symbol);
 	}
 	else if ((symbol.Left(9) == "callshort") || (symbol.Left(9) == "raisshort"))
 	{
-		OH_MessageBox(outdated_symbols_callshort_raisshort, title_outdated_symbol, 0);
+		OH_MessageBox_Error_Warning(outdated_symbols_callshort_raisshort, title_outdated_symbol);
 	}
 	else
 	{
@@ -263,7 +263,7 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 		CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
 			+ symbol + CString("\"\nThat is most probably a typo in the symbols name.\n")
 			+ CString("Please check your formula and your DLL or Perl-script.");
-		OH_MessageBox(error_message, title_unknown_symbol, 0);
+		OH_MessageBox_Error_Warning(error_message, title_unknown_symbol);
 	}
 
 }

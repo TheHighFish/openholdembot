@@ -184,23 +184,23 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		{
 			if (cySize != 18 && cyMenuSize != 19)
 			{
-				OH_MessageBox(
+				OH_MessageBox_Error_Warning(
 					"Cannot find table.\n\n"
 					"It appears that your settings are not configured according to OpenHoldem specifications.\n"
 					"You must ensure that XP themes are not used (Use Windows Classic style) and\n"
 					"font size is set to normal.\n\n"
 					"For more info, read the manual and visit the user forums.", 
-					"Cannot find table", MB_OK);
+					"Cannot find table");
 			}
 			else
 			{
-				OH_MessageBox(
+				OH_MessageBox_Error_Warning(
 					"No valid tables found\n\n"
 					"There seems to be no unserved table open\n"
 					"or your table does not match the size and titlestring\n"
 					"defined in your tablemaps.\n"
 					"For more info, read the manual and visit the user forums.",
-					"Cannot find table", MB_OK);
+					"Cannot find table");
 			}
 		}
 	}
@@ -219,21 +219,8 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
-			CString loaded_version;
-			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), 
-				VER_OPENSCRAPE_2, &line, &loaded_version);
 
-			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2))
-			{
-				OH_MessageBox("You have loaded a version 1 table map for this poker table.\n\n"\
-						   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
-						   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-						   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
-						   "have been made to autoplayer settings and region sizes.\n\n"\
-						   "Please do not use this table map prior to updating it to version 2 in\n"\
-						   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
-						   "Table map load warning", MB_OK | MB_ICONEXCLAMATION);
-			}
+			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString());
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();
@@ -332,7 +319,7 @@ void CAutoConnector::LoadScraperDLL()
 		CString	error_message = "";
 		error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
 			"Error-code: %d", filename, GetLastError());
-		OH_MessageBox(error_message, "Error", 0);
+		OH_MessageBox_Error_Warning(error_message, "Error");
 		return;
 	}
 
@@ -341,7 +328,7 @@ void CAutoConnector::LoadScraperDLL()
 
 	if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
 	{
-		OH_MessageBox("Unable to find all symbols in scraper.dll", "Error", 0);
+		OH_MessageBox_Error_Warning("Unable to find all symbols in scraper.dll", "Error");
 		theApp.UnloadScraperDLL();
 	}
 	else
@@ -369,7 +356,7 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 		CString error_message = "";
 		error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
 			"Error-code: %d", filename, GetLastError());
-		OH_MessageBox(error_message, "OpenHoldem scraperpre.dll WARNING", MB_OK | MB_TOPMOST);
+		OH_MessageBox_Error_Warning(error_message, "OpenHoldem scraperpre.dll WARNING");
 		return;
 	}
 	theApp._dll_scraperpreprocessor_process_message = (scraperpreprocessor_process_message_t) GetProcAddress(theApp._scraperpreprocessor_dll, "ProcessMessage");
@@ -377,7 +364,7 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 	{
 		CString	error_message = "";
 		error_message.Format("Unable to find symbols in scraper_preprocessor.dll");
-		OH_MessageBox(error_message, "OpenHoldem scraperpreprocessor.dll ERROR", MB_OK | MB_TOPMOST);
+		OH_MessageBox_Error_Warning(error_message, "OpenHoldem scraperpreprocessor.dll ERROR");
 		theApp.Unload_ScraperPreprocessor_DLL();
 	}
 	else

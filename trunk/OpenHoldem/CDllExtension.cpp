@@ -91,7 +91,7 @@ void CDllExtension::LoadDll(const char * path)
 		CString error_message;
 		error_message.Format("Unable to load DLL from:\n%s, error=%d\n",
 			 dll_path.GetString(), dll_error);
-		OH_MessageBox(error_message, "DLL Load Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
 		return;
 	}
 
@@ -104,7 +104,7 @@ void CDllExtension::LoadDll(const char * path)
 	{
 		CString error_message;
 		error_message.Format("Unable to find process_message in dll");
-		OH_MessageBox(error_message, "DLL Load Error", MB_OK | MB_TOPMOST);
+		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
 
 		FreeLibrary(_hmod_dll);
 		_hmod_dll = NULL;

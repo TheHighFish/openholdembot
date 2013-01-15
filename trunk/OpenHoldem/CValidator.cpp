@@ -95,8 +95,7 @@ void CValidator::ValidateSingleRule()
 			    + "SYMBOLS AFFECTED: " 
 				+ Symbols_And_Values(_symbols_possibly_affected); 
 			// Show error message, if appropriate
-			OH_MessageBox(the_ErrorMessage, "Validator Error", 
-				MB_OK | MB_TOPMOST | MB_ICONEXCLAMATION); 
+			OH_MessageBox_Error_Warning(the_ErrorMessage, "VALIDATOR ERROR"); 
 			// Log error message
 			the_ErrorMessage.Replace("\n\n", ". ");
 			the_ErrorMessage.Replace("\n", " ");

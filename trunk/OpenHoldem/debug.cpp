@@ -118,13 +118,13 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
-	OH_MessageBox(
+	OH_MessageBox_Error_Warning(
 		"OpenHoldem is about to crash.\n"
 		"A minidump has been created in your\n"
 		"OpenHoldem startup directory.\n"
 		"\n"
 		"OpenHoldem will shut down when you click OK.",
-		"FATAL ERROR", MB_OK | MB_ICONEXCLAMATION | MB_TOPMOST);
+		"FATAL ERROR");
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
