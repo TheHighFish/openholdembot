@@ -332,9 +332,8 @@ void CScraper::ScrapeCommonCards()
 		// try r$c0cardfaceX region first
 		s.Format("c0cardface%d", i);
 		r_iter1 = p_tablemap->r$()->find(s.GetString());
-		if (r_iter1 != p_tablemap->r$()->end())
+		if (r_iter1 != p_tablemap->r$()->end() && ProcessRegion(r_iter1))
 		{
-			ProcessRegion(r_iter1);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -372,7 +371,8 @@ void CScraper::ScrapeCommonCards()
 		t.Format("c0cardface%dsuit", i);
 		r_iter2 = p_tablemap->r$()->find(t.GetString());
 
-		if (r_iter1 != p_tablemap->r$()->end() && r_iter2 != p_tablemap->r$()->end() && card==CARD_NOCARD)
+		if (r_iter1 != p_tablemap->r$()->end() && r_iter2 != p_tablemap->r$()->end() && card==CARD_NOCARD && 
+			( ProcessRegion(r_iter1) || ProcessRegion(r_iter2) ) )
 		{
 			// Get rank
 			ProcessRegion(r_iter1);
@@ -573,9 +573,8 @@ void CScraper::ScrapePlayerCards(int chair)
 	// Player card backs pXcardback
 	s.Format("p%dcardback", chair);
 	r_iter1 = p_tablemap->r$()->find(s.GetString());
-	if (r_iter1 != p_tablemap->r$()->end() && card==CARD_NOCARD)
+	if (r_iter1 != p_tablemap->r$()->end() && card==CARD_NOCARD && ProcessRegion(r_iter1))
 	{
-		ProcessRegion(r_iter1);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 		trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -625,14 +624,13 @@ void CScraper::ScrapeSeated(int chair)
 
 	__HDC_HEADER
 
-	set_seated(chair, "false");
 
 	// try p region first pXseated
 	s.Format("p%dseated", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end())
+	if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
+		set_seated(chair, "false");
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -653,9 +651,8 @@ void CScraper::ScrapeSeated(int chair)
 	// but only if we didn't get a positive result from the p region
 	s.Format("u%dseated", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !p_string_match->IsStringSeated(_seated[chair]))
+	if (r_iter != p_tablemap->r$()->end() && !p_string_match->IsStringSeated(_seated[chair]) && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -845,9 +842,8 @@ void CScraper::ScrapeName(int chair)
 	// Player name uname
 	s.Format("uname");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -867,9 +863,8 @@ void CScraper::ScrapeName(int chair)
 	// Player name uXname
 	s.Format("u%dname", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -889,9 +884,8 @@ void CScraper::ScrapeName(int chair)
 	// Player name pXname
 	s.Format("p%dname", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -952,9 +946,8 @@ void CScraper::ScrapeBalance(int chair)
 	// Player balance ubalance
 	s.Format("ubalance");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1010,9 +1003,8 @@ void CScraper::ScrapeBalance(int chair)
 	// Player name uXbalance
 	s.Format("u%dbalance", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter)) 
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1068,9 +1060,8 @@ void CScraper::ScrapeBalance(int chair)
 	// Player balance pXbalance
 	s.Format("p%dbalance", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1155,14 +1146,14 @@ void CScraper::ScrapeBet(int chair)
 
 	__HDC_HEADER
 
-	set_player_bet(chair, 0);
 
 	// Player bet pXbet
 	s.Format("p%dbet", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end())
+	if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
+		set_player_bet(chair, 0);
+
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1187,9 +1178,8 @@ void CScraper::ScrapeBet(int chair)
 	// uXbet
 	s.Format("u%dbet", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
+	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0 && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1522,16 +1512,13 @@ void CScraper::ScrapePots()
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
 	for (j=0; j<=9; j++)
-		set_pot(j, 0);
-
-	for (j=0; j<=9; j++)
 	{
 		// r$c0potX
 		s.Format("c0pot%d", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end())
+		if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
 		{
-			ProcessRegion(r_iter);
+			set_pot(j, 0);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
