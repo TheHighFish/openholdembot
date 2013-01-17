@@ -323,7 +323,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page20, "Debugging");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
-	dlg.AddPage(page19, "Handhistory generator");
+	dlg.AddPage(page19, "Handhistory Generator");
 	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");

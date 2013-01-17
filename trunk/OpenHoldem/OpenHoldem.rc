@@ -725,10 +725,10 @@ IDD_SAPREFS11 DIALOGEX 0, 0, 219, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
+	CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,10
+    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,92,76,8
     CONTROL         "Enable Log Symbols",IDC_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,94,10
     EDITTEXT        IDC_MAXIMUM_LOG,163,90,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,10
-    LTEXT           "Maximum symbol amount to log ",IDC_STATIC,6,92,76,8
     CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,137,157,8
     LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,158,116,8
