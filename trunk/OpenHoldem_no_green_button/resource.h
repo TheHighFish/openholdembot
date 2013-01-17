@@ -22,7 +22,6 @@
 #define IDR_FORMULA                     139
 #define IDR_FORMULA_BAR                 139
 #define IDR_FORMULA_MENU                139
-#define IDD_SELECTTABLE                 145
 #define IDR_FLAGS                       148
 #define IDR_FORMULA_EDIT_ACC            148
 #define IDD_FORMULA_SCINTILLA           155
@@ -353,9 +352,7 @@
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES 1313
 #define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
-#define IDC_RADIO_AUTOCONNECTOR_1       1318
 #define IDC_SEARCH_ED                   1318
-#define IDC_RADIO_AUTOCONNECTOR_2       1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
 #define IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS 1321
 #define IDC_GUI_START_MINIMIZED         1322
@@ -426,8 +423,6 @@
 #define ID_BUTTON32791                  32791
 #define ID_BUTTON32792                  32792
 #define ID_FILE_LOADTABLEMAP            32805
-#define ID_MAIN_TOOLBAR_GREENCIRCLE     32810
-#define ID_MAIN_TOOLBAR_REDCIRCLE       32819
 #define ID_NUMBER0                      32824
 #define ID_NUMBER1                      32826
 #define ID_NUMBER2                      32828

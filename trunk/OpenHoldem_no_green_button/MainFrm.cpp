@@ -81,8 +81,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
 	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
-	ON_COMMAND(ID_FILE_CONNECT, &CMainFrame::OnBnClickedGreenCircle)
-	ON_COMMAND(ID_FILE_DISCONNECT, &CMainFrame::OnBnClickedRedCircle)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
@@ -100,8 +98,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
 	// Main toolbar 
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnBnClickedGreenCircle)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDCIRCLE, &CMainFrame::OnBnClickedRedCircle)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_AUTOPLAYER, &CMainFrame::OnAutoplayer)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_FORMULA, &CMainFrame::OnEditFormula)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_VALIDATOR, &CMainFrame::OnValidator)
@@ -172,11 +168,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// Status bar
 	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
-
-	// Set toolbar button status
-	// !! To be removed in OH 5.0
-	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 
 	// Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
@@ -457,17 +448,6 @@ void CMainFrame::OnFileLoadTableMap()
 	}
 }
 
-void CMainFrame::OnBnClickedGreenCircle() 
-{
-	p_autoconnector->Connect(NULL);
-}
-
-void CMainFrame::OnBnClickedRedCircle() 
-{
-	p_autoconnector->Disconnect();
-	_autoplay_pressed = false;
-}
-
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
 	RECT			att_rect = {0}, wrect = {0};
@@ -477,7 +457,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (!IsWindow(p_autoconnector->attached_hwnd()))
 		{
 			// Table disappeared
-			OnBnClickedRedCircle();
+			p_autoconnector->Disconnect();
+			_autoplay_pressed = false;
 		}
 	}
 
@@ -485,9 +466,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
-		if ((p_symbol_engine_userchair != NULL
-			&& p_symbol_engine_userchair->userchair_confirmed() 
-			&& p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE)))
+		if (p_symbol_engine_userchair != NULL
+			&& p_symbol_engine_userchair->userchair_confirmed())
 		{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -498,7 +478,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Automatically start autoplayer, if set in preferences
 		if (prefs.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbol_engine_userchair->userchair_confirmed() && p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE))))
+				((p_symbol_engine_userchair->userchair_confirmed() 
+				&& !p_autoplayer->autoplayer_engaged())))
 		{
 			if (!_autoplay_pressed)
 			{
@@ -773,30 +754,27 @@ void CMainFrame::OnPerlCheckSyntax()
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateFileConnect(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(!p_autoconnector->attached_hwnd());
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateFileDisconnect(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(p_autoconnector->attached_hwnd()!=NULL);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
@@ -807,8 +785,7 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 	else
 		pCmdUI->SetText("&Load\tF4");
 
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-		!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
@@ -830,21 +807,18 @@ void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 	else 
 		pCmdUI->SetText("&Load Formula\tF7");
 
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) ||
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)) ? false : true);
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable((p_perl->IsAFormulaLoaded() &&
-					!p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_REDCIRCLE) &&
-					p_flags_toolbar->IsButtonEnabled(ID_MAIN_TOOLBAR_GREENCIRCLE)));
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded() &&
+		p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 

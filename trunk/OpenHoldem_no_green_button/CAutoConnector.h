@@ -19,7 +19,6 @@ public:
 	const HWND attached_hwnd()    { return _attached_hwnd; }
 private:
 	int SelectTableMapAndWindow(int Choices);
-	int SelectTableMapAndWindowManually(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
 	void LoadScraperDLL();
 	void LoadScraperPreprocessorDLL();

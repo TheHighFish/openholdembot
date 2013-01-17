@@ -41,8 +41,6 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 	CreateFlagsToolbar();
 	AlignToolbars();
 
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 	bool to_be_enabled_or_not = p_autoplayer->autoplayer_engaged();
 	//p_flags_toolbar->
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
@@ -100,16 +98,12 @@ void CFlagsToolbar::DisableButtonsOnConnect()
 	// Disable buttons, menu items
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, true);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 }
 
 void CFlagsToolbar::EnableButtonsOnDisconnect()
 {
 	// Reset toolbar/menu button state
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_REDCIRCLE, false);
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
