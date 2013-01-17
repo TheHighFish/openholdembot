@@ -683,32 +683,6 @@ void CDlgFormulaScintilla::GroupUDFs()
 	RemoveSingleItemGroups();
 }
 
-void CDlgFormulaScintilla::UngroupUDFs()
-{
-	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
-	HTREEITEM hGroupedUDFItem = NULL, hNextItem = NULL;
-
-	while (hUDFChildItem != NULL)
-	{
-		if (!m_FormulaTree.ItemHasChildren(hUDFChildItem)) 
-		{
-			hUDFChildItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
-			continue;
-		}
-
-		hGroupedUDFItem = m_FormulaTree.GetChildItem(hUDFChildItem);
-		while (hGroupedUDFItem) 
-		{
-			hNextItem = m_FormulaTree.GetNextSiblingItem(hGroupedUDFItem);
-			MoveTreeItem(hGroupedUDFItem, hUDFItem, NULL, false);
-			hGroupedUDFItem = hNextItem;
-		}
-		hNextItem = m_FormulaTree.GetNextSiblingItem(hUDFChildItem);
-		m_FormulaTree.DeleteItem(hUDFChildItem);
-		hUDFChildItem = hNextItem;
-	}
-}
-
 void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const CString &content, const CString &filter, HTREEITEM hParent)
 {
 	HTREEITEM hItem;
