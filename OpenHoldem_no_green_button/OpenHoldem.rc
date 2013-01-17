@@ -72,8 +72,8 @@ IDI_ICON1               ICON                    "res\\OpenHoldem.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
-IDR_FORMULA_BAR         BITMAP                  "res\\toolbar1.bmp"
-IDR_FLAGS               BITMAP                  "res\\bmp00001.bmp"
+IDR_FORMULA_BAR         BITMAP                  "res\\toolbar_formula_list.bmp"
+IDR_FLAGS               BITMAP                  "res\\bitmap_flags.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -86,10 +86,7 @@ BEGIN
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
     SEPARATOR
-    BUTTON      ID_MAIN_TOOLBAR_GREENCIRCLE
-    BUTTON      ID_MAIN_TOOLBAR_REDCIRCLE
     BUTTON      ID_MAIN_TOOLBAR_AUTOPLAYER
-    SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_FORMULA
     BUTTON      ID_MAIN_TOOLBAR_VALIDATOR
     SEPARATOR
@@ -340,16 +337,6 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,45,42,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,99,42,50,14
     LTEXT           "New xxx name:",IDC_DESC,7,7,51,8
-END
-
-IDD_SELECTTABLE DIALOGEX 0, 0, 289, 127
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Select table to connect to:"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LISTBOX         IDC_LIST_SELECT_TABLE,7,7,275,95,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "OK",IDOK,92,106,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,147,106,50,14
 END
 
 IDD_FORMULA_SCINTILLA DIALOGEX 0, 0, 332, 232
@@ -772,11 +759,8 @@ IDD_SAPREFS14 DIALOGEX 0, 0, 253, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Manual choice",IDC_RADIO_AUTOCONNECTOR_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,20,74,8
-    CONTROL         "Automatical choice",IDC_RADIO_AUTOCONNECTOR_2,"Button",BS_AUTORADIOBUTTON,8,36,75,8
-    GROUPBOX        "Window-Selection",IDC_STATIC,4,4,201,47
     GROUPBOX        "Auto-Connect",IDC_STATIC,4,64,201,64
-    CONTROL         "Never",IDC_RADIO_AUTOCONNECTOR_3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,78,187,10
+    CONTROL         "Never (by messages)",IDC_RADIO_AUTOCONNECTOR_3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,78,187,10
     CONTROL         "Once on start",IDC_RADIO_AUTOCONNECTOR_4,"Button",BS_AUTORADIOBUTTON,8,95,177,9
     CONTROL         "Permanent",IDC_RADIO_AUTOCONNECTOR_5,"Button",BS_AUTORADIOBUTTON,8,112,146,8
     CONTROL         "Close OH when table disappears",IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS,
@@ -951,13 +935,6 @@ BEGIN
         BOTTOMMARGIN, 56
     END
 
-    IDD_SELECTTABLE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 282
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 120
-    END
 
     IDD_FORMULA_SCINTILLA, DIALOG
     BEGIN
@@ -1324,7 +1301,6 @@ END
 STRINGTABLE 
 BEGIN
     ID_FILE_LOADTABLEMAP    "Load a table map\nLoad"
-    ID_MAIN_TOOLBAR_GREENCIRCLE "Connect to a table\nConnect"
 END
 
 STRINGTABLE 
@@ -1336,11 +1312,6 @@ END
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_VALIDATOR "Enable validator\nValidator"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_MAIN_TOOLBAR_REDCIRCLE "Disconnect from a table\nDisconnect"
 END
 
 STRINGTABLE 

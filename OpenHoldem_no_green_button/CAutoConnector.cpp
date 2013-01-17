@@ -21,7 +21,6 @@
 #include "CTableMapLoader.h"
 #include "CTablePositioner.h"
 #include "DialogScraperOutput.h"
-#include "DialogSelectTable.h"
 #include "MagicNumbers.h"
 #include "MainFrm.h"
 #include "OH_MessageBox.h"
@@ -180,9 +179,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		int cySize = GetSystemMetrics(SM_CYSIZE);
 		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
 
-		if (prefs.autoconnector_when_to_connect() != k_AutoConnector_Connect_Permanent)
+		if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 		{
-			if (cySize != 18 && cyMenuSize != 19)
+			if (cySize != 18 || cyMenuSize != 19)
 			{
 				OH_MessageBox_Error_Warning(
 					"Cannot find table.\n\n"
@@ -465,66 +464,8 @@ void CAutoConnector::Disconnect()
 int CAutoConnector::SelectTableMapAndWindow(int Choices)
 {
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindow(..)\n");
-	if (prefs.autoconnector_connection_method() == k_AutoConnector_Connect_Manually)
-	{
-		return SelectTableMapAndWindowManually(Choices);
-	}
-	else // k_AutoConnector_Connect_Automatically
-	{
-		return SelectTableMapAndWindowAutomatically(Choices);
-	}
-}
-
-
-int CAutoConnector::SelectTableMapAndWindowManually(int Choices)
-{
-	STableList			tablelisthold;
-	CDlgSelectTable		cstd;
-	int					result = 0;
-
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowManually()\n");
-	for (int i=0; i<Choices; i++) 
-	{
-		// Build list of tables, that do not yet get served.
-		assert(!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd));
-		tablelisthold.hwnd = g_tlist[i].hwnd;
-		tablelisthold.title = g_tlist[i].title;
-		tablelisthold.path = g_tlist[i].path;
-		tablelisthold.crect.left = g_tlist[i].crect.left;
-		tablelisthold.crect.top = g_tlist[i].crect.top;
-		tablelisthold.crect.right = g_tlist[i].crect.right;
-		tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
-		cstd.tlist.Add(tablelisthold);
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Adding window to the list [%s], [%i]\n",
-		g_tlist[i].title, g_tlist[i].hwnd);
-	}
-	int NumberOfNonAttachedTables = cstd.tlist.GetSize(); 
-	if (NumberOfNonAttachedTables == 0)
-	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowManually(): all windows served; exiting\n");
-		return -1;
-	}
-	else if (NumberOfNonAttachedTables == 1)
-	{
-		// Exactly one window, not yet served.
-		// First (and only) item selected
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowManually(): exactly one free table; choosing that one\n");
-		// We have to return the index in the original list,
-		// not the index (0) in the temporary list of the dialog.
-		const int k_original_index_for_list_with_single_non_served_window = 0;
-		return k_original_index_for_list_with_single_non_served_window;
-	}
-	// Display table select dialog
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowManually(): multiple free tables; going to display a dialog\n");
-	result = cstd.DoModal();
-	if (result == IDOK) 
-	{
-		return cstd.selected_item;
-	}
-	else
-	{
-		return -1;
-	}
+	// Always connecting automatically
+	return SelectTableMapAndWindowAutomatically(Choices);
 }
 
 
