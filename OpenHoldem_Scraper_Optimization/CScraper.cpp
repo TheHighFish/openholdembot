@@ -924,6 +924,7 @@ void CScraper::ScrapeName(int chair)
 void CScraper::ScrapeBalance(int chair)
 {
 	bool				got_new_scrape = false;
+	bool                got_new_transform = false;
 	CString				text = "";
 	int					ret = 0;
 	bool				is_seated = p_string_match->IsStringSeated(_seated[chair]);
@@ -948,6 +949,7 @@ void CScraper::ScrapeBalance(int chair)
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated && ProcessRegion(r_iter))
 	{
+		got_new_transform = true;
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1005,6 +1007,7 @@ void CScraper::ScrapeBalance(int chair)
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter)) 
 	{
+		got_new_transform = true;
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1062,6 +1065,7 @@ void CScraper::ScrapeBalance(int chair)
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter))
 	{
+		got_new_transform = true;
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1118,6 +1122,9 @@ void CScraper::ScrapeBalance(int chair)
 	{
 		set_balance_good_scrape(chair, true);
 		set_player_balance(chair, trans.StringToMoney(text));
+	}
+	else if (got_new_transform == false ) { //there is no new scrape, because no *balance regions have been processed
+		set_balance_good_scrape(chair,_balance_good_scrape[chair]);
 	}
 	else
 	{
