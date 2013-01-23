@@ -18,7 +18,7 @@ void AppendFileToOHFOutputIfFileExists(CString file_name, bool error_on_failure)
 	{
 		while (!file_to_append.eof())
 		{
-			swag_file.getline(next_line, max_line_length);
+			file_to_append.getline(next_line, max_line_length);
 			cout << next_line << endl;
 		}
 	}
