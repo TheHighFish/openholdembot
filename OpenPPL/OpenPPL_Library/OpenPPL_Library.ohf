@@ -11,7 +11,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 2.2.0 or later
+// Required OpenHoldem version: 4.0.0 or later
 //   Symbols not working with 2.1.x:
 //     * isfinaltable
 //
@@ -2715,7 +2715,7 @@ f$OpenPPL_Had2ndOverPairOnFlop && (($$cr3==f$OpenPPL_TopFlopCard)|| ($$cr3<f$Ope
 && !ispair
 
 ##f$OpenPPL_Have2ndBestKicker##
-(mh_kickerbetter == 1)
+(f$mh_kickerbetter == 1)
 
 ##f$OpenPPL_Have2ndBestKickerOrBetter##
 f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
@@ -2889,7 +2889,7 @@ f$OpenPPL_RankBitsCommonWithoutTopTwoBits & ~f$OpenPPL_3rdTopBitOfRankBitsCommon
 f$OpenPPL_RankBitsCommonWithoutTopThreeBits & ~f$OpenPPL_4thTopBitOfRankBitsCommon
 
 ##f$OpenPPL_Have3rdBestKicker##
-(mh_kickerbetter == 2)
+(f$mh_kickerbetter == 2)
 
 ##f$OpenPPL_Have3rdBestKickerOrBetter##
 f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
@@ -3040,7 +3040,7 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_4thBestBoardCard) && (f$Ope
 || f$OpenPPL_HaveBackDoor2ndNutFlushDraw
 
 ##f$OpenPPL_HaveBestKicker##
-(mh_kickerbetter == 0)
+(f$mh_kickerbetter == 0)
 
 ##f$OpenPPL_HaveBestKickerOrBetter##
 (f$OpenPPL_HaveBestKicker || f$OpenPPL_HavePair  || f$OpenPPL_HaveOverPairOrBetter)
