@@ -1,4 +1,4 @@
-v 4.0.0 2013-01-xx 
+v 4.0.0 2013-01-26
 ==================
 NEW STUFF:
 - Implementing a table-positioner that optionally moves the poker-tables 
@@ -152,7 +152,7 @@ MAINTENANCE:
 - Simplified the GUI and removed lots of superfluous options:
   show/hide main toolbar / flags toolbar / status bar.
   [THF]
-- Remving View-menu in formula-editor.
+- Removing View-menu in formula-editor.
   That was simply over-configuration,
   Sort UDFs / Groups UDF / Show Line Numbers / Syntax-highlighting, etc.
   are very useful features. There is no need to disable them.
