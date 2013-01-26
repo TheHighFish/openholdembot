@@ -235,6 +235,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 {
+	// !!! Once every N seconds
 	if (!AnySecondaryFormulaTrue())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
@@ -369,17 +370,20 @@ void CAutoplayer::DoAutoplayer(void)
 		check_button_available ? 'K' : '.',
 		fold_button_available  ? 'F' : '.');*/
 
-	// Care about sitin, sitout, leave, etc.
-	p_autoplayer_functions->CalcSecondaryFormulas();
-	ExecuteSecondaryFormulasIfNecessary();
-  
-	// Care about I86 regions as well
-	HandleInterfacebuttonsI86();
-
-	if(p_symbol_engine_autoplayer->isfinalanswer())
+	// Care about I86 regions first, because they are usually used 
+	// to handle popups which occlude the table (unstable input)
+	if (!HandleInterfacebuttonsI86())
 	{
-		p_autoplayer_functions->CalcPrimaryFormulas();
-		ExecutePrimaryFormulas();
+		// Care about sitin, sitout, leave, etc.
+		p_autoplayer_functions->CalcSecondaryFormulas();
+		if (!ExecuteSecondaryFormulasIfNecessary())	
+		{
+			if(p_symbol_engine_autoplayer->isfinalanswer())
+			{
+				p_autoplayer_functions->CalcPrimaryFormulas();
+				ExecutePrimaryFormulas();
+			}
+		}
 	}
 	FinishActionSequenceIfNecessary();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
@@ -411,8 +415,6 @@ void CAutoplayer::DoPrefold(void)
 	p_autoplayer_functions->CalcAutoTrace();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
 }
-
-
 
 
 bool CAutoplayer::HandleInterfacebuttonsI86(void) 
