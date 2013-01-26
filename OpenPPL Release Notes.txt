@@ -1,4 +1,4 @@
-v4.0.0 2013-01-xx
+v4.0.0 2013-01-26
 =================
 NEW STUFF:
 - Adding support for bitwise operations (BitAnd, BitOr, BitNot, BitXor).
