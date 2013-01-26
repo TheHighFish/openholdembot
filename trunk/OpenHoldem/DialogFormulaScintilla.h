@@ -170,7 +170,6 @@ protected:
 	void	  GetGroupName(const char *functionName, CString &groupName);
 	void	  RemoveSingleItemGroups();
 	void	  GroupUDFs();
-	void	  UngroupUDFs();
 	HTREEITEM hUDFItem;
 
 	void HandleEnables(bool All);
