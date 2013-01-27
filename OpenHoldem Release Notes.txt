@@ -34,6 +34,13 @@ NEW STUFF:
   [THF]
 - new symbol: balanceatstartofsession, which remebers the balance at the start of a session. 
   [THF]
+- Improved possibilities to communicate between hopper and OH.
+  Is is now possible to set the flags of the flags-toolbar
+  by sending window-messages to OpenHoldem.
+  This works like connecting to a poker-table (see USB-Freaks tutorial),
+  but with 0x8005 as message-ID for setting a flag and 0x8006 for resetting a flag
+  and with the flags number as parameter.
+  [THF]
 - display state of the buttons sitin, sitout, leave, autopost and prefold in the GUI. 
   [THF]
 - allow copy operation on formulas tree nodes via context menu. 
