@@ -783,10 +783,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DialogSelectTable.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\OpenHoldemView.cpp"
 					>
 				</File>
@@ -1609,10 +1605,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DialogSelectTable.h"
-					>
-				</File>
-				<File
 					RelativePath=".\OpenHoldemView.h"
 					>
 				</File>
@@ -1852,7 +1844,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\bmp00001.bmp"
+				RelativePath=".\res\bitmap_flags.bmp"
 				>
 			</File>
 			<File
@@ -1876,7 +1868,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\res\toolbar1.bmp"
+				RelativePath=".\res\toolbar_formula_list.bmp"
 				>
 			</File>
 		</Filter>
