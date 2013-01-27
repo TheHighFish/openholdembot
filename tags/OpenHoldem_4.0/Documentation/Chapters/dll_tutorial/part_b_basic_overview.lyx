@@ -1,0 +1,1097 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Basic overview over the dll structure & examples
+\end_layout
+
+\begin_layout Standard
+If you are not following my guide 
+\begin_inset Quotes eld
+\end_inset
+
+Compiling the first dll
+\begin_inset Quotes erd
+\end_inset
+
+ there might be slight differences in the basic files you use, since i already
+ added some code, which is needed anyway.
+\end_layout
+
+\begin_layout Subsection
+The OH-DLL.cpp
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define WHUSER_EXPORTS 
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "OH-DLL.h" #include <windows.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+/////////////////////////////////////  //card macros  #define RANK(c)	 
+        ((c>>4)&0x0f)  #define SUIT(c)          ((c>>0)&0x0f)  #define ISCARDBAC
+K(c)	 (c==0xff)  #define ISUNKNOWN(c)	 (c==0)  /////////////////////////////////
+//// 
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //consecutive states  holdem_state
+    m_holdem_state[256];  unsigned char   m_ndx;  //////////////////////////////
+//////
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //versus list & prwin phl1k_t m_phl1k;
+ pp13 prw1326; ////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //WH symbols pfgws_t m_pget_winholdem_symb
+ol; ////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+double gws(int chair, const char* name, bool& iserr){  	return (*m_pget_winholde
+m_symbol)(chair,name,iserr);  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+double gws(const char* name){  	bool iserr;  	int mychair = (int)gws(0,"userchai
+r",iserr);  	return gws(mychair,name,iserr);  }
+\end_layout
+
+\begin_layout Plain Layout
+
+bool hlset( int rank0, int rank1, int listnum, bool onoff ){    return ((*m_phl1
+k)[listnum][rank0-2][rank1-2] = onoff); }
+\end_layout
+
+\begin_layout Plain Layout
+
+bool hlget( int rank0, int rank1, int listnum ){    return ((*m_phl1k)[listnum][
+rank0-2][rank1-2]); }
+\end_layout
+
+\begin_layout Plain Layout
+
+double process_query(const char* pquery){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pquery==NULL) 		return 0; 	//example 	if(strcmp(pquery,"dll$test")==0)
+ 		return 101;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+double process_state(holdem_state* pstate){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pstate!=NULL)       m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+} /////////////////////////////////////////////////////  //WINHOLDEM RUNTIME
+ ENTRY POINT  /////////////////////////////////////////////////////  WHUSER_API
+ double process_message(const char* pmessage, const void* param){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pmessage==NULL){ 		return 0; 	} 	if(param==NULL){ 		return 0; 	} 	if(strcmp(
+pmessage,"state")==0){ 		return process_state( (holdem_state*)param ); 	}
+ 	if(strcmp(pmessage,"phl1k")==0){    		m_phl1k = (phl1k_t)param; 		return
+ 0; 	} 	if(strcmp(pmessage,"prw1326")==0){	 		prw1326 = (pp13)param; 		return
+ 0; 	} 	if(strcmp(pmessage,"query")==0){  		return process_query((const
+ char*)param); 	} 	if(strcmp(pmessage,"pfgws")==0){ 		m_pget_winholdem_symbol
+ = (pfgws_t)param; 		return 0; 	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+} /////////////////////////////////  //DLLMAIN  ////////////////////////////////
+/  BOOL APIENTRY DllMain( HANDLE hModule, DWORD ul_reason_for_call, LPVOID
+ lpReserved){
+\end_layout
+
+\begin_layout Plain Layout
+
+	switch(ul_reason_for_call){ 		case DLL_PROCESS_ATTACH: 			break;  		case
+ DLL_THREAD_ATTACH: 			break;  		case DLL_THREAD_DETACH: 			break;  		case
+ DLL_PROCESS_DETACH: 			break; 	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	return TRUE;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+gws function
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double gws(const char* name){  	bool iserr;  	int mychair = (int)gws(0,"userchai
+r",iserr);  	return gws(mychair,name,iserr);  }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This function you see here, is very important, because you can access all
+ symbols, which are available for Openholdem with it.
+ E.g: gws("userchair") returns the value of the userchair symbol.
+ 
+\end_layout
+
+\begin_layout Subsection
+hlset & hlget
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bool hlset( int rank0, int rank1, int listnum, bool onoff ){    return ((*m_phl1
+k)[listnum][rank0-2][rank1-2] = onoff); }
+\end_layout
+
+\begin_layout Plain Layout
+
+bool hlget( int rank0, int rank1, int listnum ){    return ((*m_phl1k)[listnum][
+rank0-2][rank1-2]); }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These functions can be used to access and dynamically modify versus lists
+ during play e.g:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+hlset( 14, 13, 5, 1);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+this sets AKs on list 5 to true.
+ More details can be found here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=Phl1k
+\end_layout
+
+\end_inset
+
+.!!!
+\end_layout
+
+\begin_layout Subsection
+process_query function
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double process_query(const char* pquery){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pquery==NULL) 		return 0; 	//example 	if(strcmp(pquery,"dll$test")==0)
+ 		return 101;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Inside this scope you can define symbols which you can access with the OH
+ formula editor.
+\end_layout
+
+\begin_layout Standard
+E.g: If you add " = dll$test" in the OH formula editor in the debug tab,
+ you'll get the value "101".
+ You can experiment with it if you want and try some values from the gws
+ function, but remember to recompile each time you change something in the
+ code.
+ 
+\end_layout
+
+\begin_layout Subsection
+process_state function
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double process_state(holdem_state* pstate){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pstate!=NULL)       m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+The OH-DLL.h Header
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#ifndef _whuser_h_ #define _whuser_h_
+\end_layout
+
+\begin_layout Plain Layout
+
+#ifdef WHUSER_EXPORTS #define WHUSER_API __declspec(dllexport) #else #define
+ WHUSER_API __declspec(dllimport) #endif
+\end_layout
+
+\begin_layout Plain Layout
+
+struct holdem_player{
+\end_layout
+
+\begin_layout Plain Layout
+
+    char            m_name[16]          ;	//player name if known     double
+          m_balance           ;	//player balance      double          m_currentb
+et        ;	//player current bet     unsigned char   m_cards[2]        
+  ;	//player cards
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_name_known    : 1 ;	//0=no 1=yes     unsigned char
+   m_balance_known : 1 ;	//0=no 1=yes     unsigned char   m_fillerbits 
+   : 6 ;	//filler bits     unsigned char   m_fillerbyte        ;	//filler
+ bytes
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+struct holdem_state{
+\end_layout
+
+\begin_layout Plain Layout
+
+    char            m_title[64]         ;	//table title     double     
+     m_pot[10]           ;	//total in each pot
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_cards[5]          ;	//common cards
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_is_playing    : 1 ;	//0=sitting-out, 1=sitting-in
+     unsigned char   m_is_posting    : 1 ;	//0=autopost-off, 1=autopost-on
+     unsigned char   m_fillerbits    : 6 ;	//filler bits
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_fillerbyte        ;	//filler byte     unsigned char
+   m_dealer_chair      ;	//0-9
+\end_layout
+
+\begin_layout Plain Layout
+
+    holdem_player   m_player[10]        ;	//player records
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+struct sprw1326_chair{
+\end_layout
+
+\begin_layout Plain Layout
+
+	int	level;		//indicates weighting level for 'always consider' 	int	limit;		//ma
+x index into weight array - used for computational efficiency 	int	ignore;		//if
+ non-zero no weighting will be applied to this chair 	int	rankhi[1326];	//higher
+ ranked card number in pocket cards 	int	ranklo[1326];	//lower ranked card
+ number in pocket cards 	int	weight[1326];	//the significance value for
+ this hand 	double	scratch;	//for future reference 
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+struct sprw1326{
+\end_layout
+
+\begin_layout Plain Layout
+
+	int	useme;		//unless set to 1326 the normal OH prwin will be used 	int	preflop;
+	//unless set to 1326 the normal OH prwin will be used pre-flop 	int	usecallback
+;	//unless set to 1326 the callback function will not be invoked 	double	(*prw_c
+allback)(void); //if enabled will be invoked before the prwin calculation
+ pass 	double	scratch;	//for future reference 	int	bblimp;		//if non-zero
+ no weighting will be applied if a chair has put nothing in the pot 	sprw1326_ch
+air	vanilla_chair;	   //will be precalculated by OH at startup - convenience
+ values 	sprw1326_chair  chair[10];  //structures for each chair
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+typedef double (*process_message_t)(const char* message, const void* param
+ ); WHUSER_API double process_message( const char* message, const void*
+ param );
+\end_layout
+
+\begin_layout Plain Layout
+
+typedef double (*pfgws_t)( int c, const char* psym, bool& iserr ); typedef
+ bool hl1k_t[1000][13][13];  // list number, rank0, rank1 - rank0>=rank1
+ == suited, rank0<rank1 == unsuited typedef hl1k_t* phl1k_t; typedef sprw1326*
+ pp13;
+\end_layout
+
+\begin_layout Plain Layout
+
+#endif
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here you have some definitions of datatypes.
+ The important definitions are the two structs, you can basically compare
+ a "struct"-datatype to an object with some attributes, these attributes
+ are accessed by using the "." operator, look in the examples section below.
+\end_layout
+
+\begin_layout Subsection
+The struct holdem_state
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+struct holdem_state{
+\end_layout
+
+\begin_layout Plain Layout
+
+    char            m_title[64]         ;	//table title     double     
+     m_pot[10]           ;	//total in each pot
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_cards[5]          ;	//common cards
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_is_playing    : 1 ;	//0=sitting-out, 1=sitting-in
+     unsigned char   m_is_posting    : 1 ;	//0=autopost-off, 1=autopost-on
+     unsigned char   m_fillerbits    : 6 ;	//filler bits
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_fillerbyte        ;	//filler byte     unsigned char
+   m_dealer_chair      ;	//0-9
+\end_layout
+
+\begin_layout Plain Layout
+
+    holdem_player   m_player[10]        ;	//player records
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+What you basically have here is the information of a OH state which was
+ scraped.
+ 
+\end_layout
+
+\begin_layout Itemize
+You can access information like the tabletitle/potsize/dealerchair etc.
+ Ofcourse that is nothing new, as you have symbols formost of that at the
+ formula level.
+ 
+\end_layout
+
+\begin_layout Itemize
+It also holds information about the players which is saved in the "struct"
+ "holdem_player".
+\end_layout
+
+\begin_layout Subsection
+The struct holdem_player
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+struct holdem_player{
+\end_layout
+
+\begin_layout Plain Layout
+
+    char            m_name[16]          ;	//player name if known     double
+          m_balance           ;	//player balance      double          m_currentb
+et        ;	//player current bet     unsigned char   m_cards[2]        
+  ;	//player cards
+\end_layout
+
+\begin_layout Plain Layout
+
+    unsigned char   m_name_known    : 1 ;	//0=no 1=yes     unsigned char
+   m_balance_known : 1 ;	//0=no 1=yes     unsigned char   m_fillerbits 
+   : 6 ;	//filler bits     unsigned char   m_fillerbyte        ;	//filler
+ bytes
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pretty obvious that this contains information about the players at the table.
+ You can access balances/currentbets/cards/names.
+\end_layout
+
+\begin_layout Subsection
+prw1326 Datastructures
+\end_layout
+
+\begin_layout Standard
+You can find all information and examples on it in these articles: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=Prw1326
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=Enhanced_Prwin
+\end_layout
+
+\end_inset
+
+.!!!
+\end_layout
+
+\begin_layout Subsection
+Examples
+\end_layout
+
+\begin_layout Subsubsection
+Acessing information from the "struct" "holdem_state"
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double process_query(const char* pquery){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pquery==NULL) 		return 0; 	//example 	if(strcmp(pquery,"dll$test")==0)
+ 		return 101; 	if(strcmp(pquery,"dll$dealerchair")==0) 		return m_holdem_state[
+(m_ndx)&0xff].m_dealer_chair; 	if(strcmp(pquery,"dll$currentbet3")==0) 		return
+ m_holdem_state[(m_ndx)&0xff].m_player[3].m_currentbet;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can see in the code example above, how you have to use the point operator
+ on a struct to access the information stored in the struct of the scraped
+ state.
+\end_layout
+
+\begin_layout Subsubsection
+A function returning the flush rank of the player
+\end_layout
+
+\begin_layout Standard
+For convinience we restructure the code, by adding another header file:
+ 
+\end_layout
+
+\begin_layout Itemize
+Click on project -> Add New Item -> select "Header File (.h)" -> name it
+ "OH-general", you can also do it in the solution explorer by clicking on
+ the "Header Files" folder.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/////////////////////////////////////  //card macros  #define RANK(c)	 
+        ((c>>4)&0x0f)  #define SUIT(c)          ((c>>0)&0x0f)  #define ISCARDBAC
+K(c)	 (c==0xff)  #define ISUNKNOWN(c)	 (c==0)  /////////////////////////////////
+//// 
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //consecutive states  holdem_state
+    m_holdem_state[256];  unsigned char   m_ndx;  //////////////////////////////
+//////
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //versus list & prwin phl1k_t m_phl1k;
+ pp13 prw1326; ////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+////////////////////////////////////  //WH symbols pfgws_t m_pget_winholdem_symb
+ol; ////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+double gws(int chair, const char* name, bool& iserr){  	return (*m_pget_winholde
+m_symbol)(chair,name,iserr);  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+double gws(const char* name){  	bool iserr;  	int mychair = (int)gws(0,"userchai
+r",iserr);  	return gws(mychair,name,iserr);  }
+\end_layout
+
+\begin_layout Plain Layout
+
+bool hlset( int rank0, int rank1, int listnum, bool onoff ){    return ((*m_phl1
+k)[listnum][rank0-2][rank1-2] = onoff); }
+\end_layout
+
+\begin_layout Plain Layout
+
+bool hlget( int rank0, int rank1, int listnum ){    return ((*m_phl1k)[listnum][
+rank0-2][rank1-2]); }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Cut / paste the code above from the "OH-DLL.cpp" file to the "OH-general.h"
+ header file.
+\end_layout
+
+\begin_layout Itemize
+We will also need another include now, its a standart library of c++, wich
+ contains a datatype called bitset.
+ 
+\end_layout
+
+\begin_layout Itemize
+The bitset datatype converts integer values to their binary representation,
+ we will need this because we are going to work with "srankbits".
+\end_layout
+
+\begin_layout Itemize
+You can read more about how rankbit values are obtained in the chapter about
+ OpenHoldem symbols; look at the very bottom of the page.
+\end_layout
+
+\begin_layout Itemize
+You can find documentation on the C++ library here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.cppreference.com/wiki/stl/bitset/start
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+After you're done with cut-pasting add the "bitset" include and also "using
+ namespace std;" this is neccessary line, don't think much about it, but
+ the include would not work without it.
+ Your OH-DLL.cpp 
+\begin_inset Quotes eld
+\end_inset
+
+#includes
+\begin_inset Quotes erd
+\end_inset
+
+ section should look like this now:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define WHUSER_EXPORTS 
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "OH-DLL.h" #include <windows.h> #include <bitset>
+\end_layout
+
+\begin_layout Plain Layout
+
+using namespace std;
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "OH-general.h"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we can begin with the actual coding, in the next step open "OH-general.h"
+ and add the following code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int srankhiplayer; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int srankbits; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int flushrank;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int set_flush_rank(){
+\end_layout
+
+\begin_layout Plain Layout
+
+bitset<16> srb( srankbits ); 
+\end_layout
+
+\begin_layout Plain Layout
+
+srb = (~srb ) >>= srankhiplayer; 
+\end_layout
+
+\begin_layout Plain Layout
+
+return (int)srb.count();  }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This function will determine the flush rank via some bitset operations,
+ 1 = nutflush, 2 = 2nd nutflush, etc.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void int_oh_symbols(){
+\end_layout
+
+\begin_layout Plain Layout
+
+	srankbits = (int)gws("srankbits"); 	srankhiplayer = (int)gws("srankhiplayer");
+ 	flushrank = set_flush_rank();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This function will update the values each time a new state is scraped.
+\end_layout
+
+\begin_layout Standard
+You also need to modify the "OH-DLL.cpp" to include this new symbol: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double process_query(const char* pquery){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pquery==NULL) 		return 0; 	//example 	if(strcmp(pquery,"dll$test")==0)
+ 		return 101; 	if(strcmp(pquery,"dll$dealerchair")==0) 		return m_holdem_state[
+(m_ndx)&0xff].m_dealer_chair; 	if(strcmp(pquery,"dll$currentbet3")==0) 		return
+ m_holdem_state[(m_ndx)&0xff].m_player[3].m_currentbet; 	if(strcmp(pquery,"dll$flu
+shrank")==0) 		return flushrank;
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+double process_state(holdem_state* pstate){
+\end_layout
+
+\begin_layout Plain Layout
+
+	if(pstate!=NULL){m_holdem_state[ (++m_ndx)&0xff ] = *pstate;}
+\end_layout
+
+\begin_layout Plain Layout
+
+	int_oh_symbols();
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If all went well you can access the flush rank with "dll$flushrank" on formula
+ level now.
+\end_layout
+
+\begin_layout Subsection
+Files
+\end_layout
+
+\begin_layout Standard
+The files for this tutorial can be found here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-B.rar
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_body
+\end_document

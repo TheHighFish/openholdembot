@@ -1,0 +1,33 @@
+//
+// Chairs
+//
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0033")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol userchair")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("userchair") >= 0) && (gws("userchair") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("userchair")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0034")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol dealerchair")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("dealerchair") >= 0) && (gws("dealerchair") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("dealerchair")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0035")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol raischair")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("raischair") >= -1) && (gws("raischair") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("raischair")
+END_TESTCASE

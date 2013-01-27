@@ -1,0 +1,16 @@
+custom
+
+preflop
+When (Random < 50) Call Force
+when others Raise force
+
+flop
+when (BotsActionsOnThisRound = 0) Raise force
+when (BotsActionsOnThisRound = 1) call force
+when Others Fold force
+
+turn
+when others Fold force
+
+river
+when others Fold force

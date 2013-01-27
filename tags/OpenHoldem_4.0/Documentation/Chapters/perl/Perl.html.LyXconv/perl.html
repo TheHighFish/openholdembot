@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Perl.tex"> 
+<meta name="date" content="2009-11-13 19:03:00"> 
+<link rel="stylesheet" type="text/css" href="Perl.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+
+
+   <h2 class="chapterHead"><span class="titlemark"></span><br /><a 
+ id="x1-10001"></a>Perl </h2>
+<!--l. 25--><p class="noindent" >The purpose of the Perl option is to provide a scripting language for beginners that is
+possibly easier to get productive with, if you either already familiar with Perl, or have a
+strong disposition for not using OH-Script.
+   <h3 class="sectionHead"><span class="titlemark">1.1. </span> <a 
+ id="x1-20001.1"></a>Advantages of Perl </h3>
+           <ul class="itemize1">
+        <li class="itemize">Suitability for rapid prototyping
+           </li>
+        <li class="itemize">Wide-spread usage
+           </li>
+        <li class="itemize">Many libraries available and an active community at <a 
+href="http://cpan.org" class="url" ><span 
+class="ectt-1000">http://cpan.org</span></a>
+           </li>
+        <li class="itemize">Really good interfacing, e.g. to C.
+           </li>
+        <li class="itemize">Syntax similar to C and some other script languages (bash, awk, tcl)</li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.2. </span> <a 
+ id="x1-30001.2"></a>Disadvantages of Perl </h3>
+           <ul class="itemize1">
+        <li class="itemize">Performance: Perl compiles to intermediate code (similar to bytecode),
+        which gets executed by the interpreter. This is slower than compiled binary
+        code, however some built-in functions (e.g. string- and list-operations) are
+        said to be faster than C.
+           </li>
+        <li class="itemize">Clarity.  Perl  is  a  language,  which  bought  good  ideas  from  nearly
+        everywhere.  You  can  write  clear  and  understandable  programs,  if  you
+        want; but most Perl "gurus" are famous for the opposite. It is quite easy
+        to write non-maintainable obfuscated Perl code.</li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.3. </span> <a 
+ id="x1-40001.3"></a>Installation and configuration of Perl </h3>
+           <ul class="itemize1">
+        <li class="itemize">Download                                ActivePerl                                from
+        <a 
+href="http://www.activestate.com/Products/activeperl " class="url" ><span 
+class="ectt-1000">http://www.activestate.com/Products/activeperl</span></a> and install.
+           </li>
+        <li class="itemize">Perl needs the package "Win32::API" to interact with the callback DLL.
+        Download this package using Perl&#8217;s package manager. Type at the command
+        line (case sensitive; you should have administrator privileges to do this):
+        <!--l. 63-->
+<a 
+ id="x1-4001"></a>
+           <span 
+class="ectt-1000">stlisting</span><div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-4002r1"></a></span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">item</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">OpenHoldem</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">must</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">be</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">able</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">to</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">find</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">textquotedbl</span><span 
+class="ectt-1000">{}</span><span 
+class="ectt-1000">PerlEz</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">dll</span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">textquotedbl</span><span 
+class="ectt-1000">{}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-4003r2"></a></span><span 
+class="ectt-1000">which</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">contains</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">our</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">embedded</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">interpreter</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">You</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">must</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">change</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">the</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">DLL</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">search</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-4004r3"></a></span><span 
+class="ectt-1000">path</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">from</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">the</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">DOS</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">prompt</span><span 
+class="ectt-1000">:</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-4005r4"></a></span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">begin</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">lstlisting</span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-4006r5"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">set</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">PATH</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">C</span><span 
+class="ectt-1000">:\</span><span 
+class="ectt-1000">Programs</span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">Perl</span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">Bin</span><span 
+class="ectt-1000">;%</span><span 
+class="ectt-1000">PATH</span><span 
+class="ectt-1000">%</span>
+           </div>
+
+           </li>
+        <li class="itemize"><span 
+class="ectt-1000">You need Visual C++ 2005 redist. package from Microsoft</span>
+        <span 
+class="ectt-1000">(SP1), especially msvcrt.dll, otherwise Perl can&#8217;t load</span>
+        <span 
+class="ectt-1000">correctly (you will get a message: "PerlEz.dll not found or not</span>
+        <span 
+class="ectt-1000">accessible").</span></li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.4. </span> <a 
+ id="x1-50001.4"></a>Perl usage </h3>
+<!--l. 78--><p class="noindent" >All symbols beginning with "pl_" (e.g. "pl_call") in your formula will be treated as
+Perl symbols and requested from OpenHoldem&#8217;s built-in Perl interpreter. The
+same for gws-calls inside the dll. All symbols are expected to be either double
+constants, double variables or functions without parameters returning a double
+value.
+<!--l. 85--><p class="indent" >   Perl for OpenHoldem has a built-in function "gws" (get_WinHoldem_Symbol),
+allowing you to request OpenHoldem symbols or DLL symbols in your Perl formulas.
+(Therefore you have full interoperability of OH script, DLL and Perl. You can further use
+all your existing code)<span class="marginpar"><img 
+src="Perl0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="Perl0x.png" src="C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Hint.jpg\Gin@ext "  
+--></span>. This function
+"gws" resides in a package called "Perl_OH_Interaction.pm", which you have to include
+in your bot: use Perl_OH_Interaction;
+<!--l. 95--><p class="indent" >   The table name can be accessed using the function gwt(). To get a player name for a
+given chair use gwp(N), where N is the chair number. Load a Perl file via the menu or
+using the preferences.
+   <h3 class="sectionHead"><span class="titlemark">1.5. </span> <a 
+ id="x1-60001.5"></a>Perl recommended Resources</h3>
+           <ul class="itemize1">
+        <li class="itemize"><a 
+href="http://en.wikipedia.org/wiki/Perl " class="url" ><span 
+class="ectt-1000">http://en.wikipedia.org/wiki/Perl</span></a>
+           </li>
+        <li class="itemize">Wainwright: Professional Perl Programing
+           </li>
+        <li class="itemize">Schwartz: Learning Perl, Intermediate Perl, Mastering
+           </li>
+        <li class="itemize">Perl Conway: Perl hacks, tips and tools for programing, debugging and
+        surviving
+           </li>
+        <li class="itemize">Till: Teach yourself Perl in 21 days</li></ul>
+
+   <h3 class="sectionHead"><span class="titlemark">1.6. </span> <a 
+ id="x1-70001.6"></a>Perl editors </h3>
+<!--l. 112--><p class="noindent" >You may need an editor with syntax-highlighting for Perl.
+           <ul class="itemize1">
+        <li class="itemize">emacs (<a 
+href="ftp://ftp.gnu.org/gnu/emacs/windows/" class="url" ><span 
+class="ectt-1000">ftp://ftp.gnu.org/gnu/emacs/windows/</span></a> Take the bin.tar.gz.)
+        Wonderful editor from the UNIX world; for windows and free.
+           </li>
+        <li class="itemize">Komodo-Edit (recommended by <a 
+href="http://www.activestate.com" class="url" ><span 
+class="ectt-1000">http://www.activestate.com</span></a>)</li></ul>
+   <h3 class="sectionHead"><span class="titlemark">1.7. </span> <a 
+ id="x1-80001.7"></a>Perl demo bot </h3>
+<!--l. 121--><p class="noindent" >You will find an extremely simple demo bot at <a 
+href="http://www.maxinmontreal.com/forums/viewtopic.php?p=20129 " class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/forums/viewtopic.php?p=20129</span></a>.
+It contains including:
+           <ul class="itemize1">
+        <li class="itemize">A classic formula, redirecting some symbols to Perl functions
+           </li>
+        <li class="itemize">A nearly empty Perl bot, giving you a start
+           </li>
+        <li class="itemize">The module Perl_OH_Interaction.pm, providing the "gws" function</li></ul>
+<!--l. 129--><p class="noindent" >To use it, you have to adapt the following lines according to your system settings:
+           <ul class="itemize1">
+        <li class="itemize">  <!--l. 136-->
+<a 
+ id="x1-8001"></a>
+           <span 
+class="ectt-1000">stlisting</span><div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-8002r1"></a></span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">item</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">texttt</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-8003r2"></a></span><span 
+class="ectt-1000">\</span><span 
+class="ectt-1000">begin</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">lstlisting</span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-8004r3"></a></span><span 
+class="ectt-1000">use</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">constant</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">the_DebugFile</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=&#x003E;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">"..."</span>
+           </div>
+           </li></ul>
+    
+</body></html> 
+
+
+

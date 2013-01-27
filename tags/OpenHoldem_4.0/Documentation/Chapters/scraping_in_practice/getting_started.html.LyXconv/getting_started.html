@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="getting_started.tex"> 
+<meta name="date" content="2010-05-10 00:42:00"> 
+<link rel="stylesheet" type="text/css" href="getting_started.css"> 
+</head><body bgcolor="#EEFFEE" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Getting started</h3>
+<!--l. 28--><p class="noindent" >This tutorial got written by !!! for the Wiki
+(<a 
+href="http://www.maxinmontreal.com/wiki/index.php5?title=Walkthrough" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Walkthrough</span></a>).
+<!--l. 30--><p class="indent" >   It describes a general roadmap for creating a tablemap from scratch given
+only openscrape and the target site/table window and nothing else. In this
+example we will pretend you are mapping a 10 chair Limit Holdem table at Pacific
+Poker.
+           <ul class="itemize1">
+        <li class="itemize">download openscrape (OH PC) and save it into a folder of its own , maybe
+        "OpenScrape" .
+           </li>
+        <li class="itemize">download Pacific poker (Casino PC) (<a 
+href="http://setupspcp1.888.com/setups/support/full/en/3.509/pacificpokersetup.exe" class="url" ><span 
+class="ectt-1000">http://setupspcp1.888.com/setups/support/full/en/3.509/pacificpokersetup.exe</span></a>),
+        create an account and open a Limit 10 seat Holdem Table.</li></ul>
+<!--l. 40--><p class="noindent" >The first step is to check the settings of the table, removing animations and other things that
+can be heavy or hinder the operation of OpenHoldem.
+
+<!--l. 43--><p class="indent" >   <img 
+src="getting_started0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wkt2.eps"  
+-->
+<!--l. 45--><p class="indent" >   The next images shows some regions that will be used.
+
+<!--l. 47--><p class="indent" >   <img 
+src="getting_started1x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started1x.png" src="1E__Dokumente_und_Einstellungen_Development_Des___g_in_practice_images_getting_started_Wht3_4.eps"  
+-->
+<!--l. 49--><p class="indent" >   The player0 should always be the first to left of the dealer, which sits usually at the
+top of the table. The other players should be numbered clock-wise.
+<!--l. 53--><p class="indent" >   Now open a bring client (OH PC) with the target site/table you want to map
+(Pacific 10 seat Limit). Bring will show you a table like the image below:
+
+<!--l. 57--><p class="indent" >   <img 
+src="getting_started2x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started2x.png" src="2E__Dokumente_und_Einstellungen_Development_Des___in_practice_images_getting_started_Pactable.eps"  
+-->
+<!--l. 59--><p class="indent" >   Once you have a bring-window open all operations can be executed savely at your
+OpenHoldem machine.
+<!--l. 62--><p class="indent" >   The next image shows OpenScrape running.
+
+<!--l. 64--><p class="indent" >   <img 
+src="getting_started3x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started3x.png" src="3E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wht5.eps"  
+-->
+<!--l. 66--><p class="indent" >   As a first step we will create a new TM and name it. Just click File &#8211;&#x003E; New File &#8211;&#x003E;
+Save As. Good naming conventions are:
+           <ul class="itemize1">
+        <li class="itemize">first the name of the casino &#8212; in our example &#8220;Pacific&#8221;
+           </li>
+        <li class="itemize">then the game type, as different game types do usually require different
+        maps
+           </li>
+        <li class="itemize">then the number of players
+           </li>
+        <li class="itemize">then the version of the tablemap or the date of creation</li></ul>
+<!--l. 75--><p class="noindent" >In our example we will name the tablemap Pacific_NL_10_v0.1.tm.
+<!--l. 77--><p class="indent" >   Now press the green button in OpenScrape and connect to the poker table.
+
+<!--l. 80--><p class="indent" >   <img 
+src="getting_started4x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started4x.png" src="4E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wkt6.eps"  
+-->
+<!--l. 82--><p class="indent" >   You should see openscrape changing to a copy of the poker window.
+<!--l. 84--><p class="indent" >   Now we have to organize the windows on our desktop.
+
+<!--l. 86--><p class="indent" >   <img 
+src="getting_started5x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started5x.png" src="5E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wht7.eps"  
+-->
+<!--l. 88--><p class="indent" >   You can always use the refresh icon to shoot a new image of the poker window when
+you need to.
+<!--l. 91--><p class="indent" >   Now click the view menu and note the current size of the table. The table size is one
+of the key factors for connecting to a window.
+
+<!--l. 94--><p class="indent" >   <img 
+src="getting_started6x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started6x.png" src="6E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wkt8.eps"  
+-->
+<!--l. 96--><p class="indent" >   Now expand the Sizes Tree in openscrape, highlight clientsize and hit Edit. Now add
+this information to your TM and press OK.
+
+<!--l. 99--><p class="indent" >   <img 
+src="getting_started7x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="getting_started7x.png" src="7E__Dokumente_und_Einstellungen_Development_Des___ing_in_practice_images_getting_started_Wkt9.eps"  
+-->
+
+<!--l. 101--><p class="indent" >   Remember to always save your TM after each modification. To create a complete
+map, we would now have to edit all symbols and regions. We will deal with this process
+in another tutorial in this manual.  
+</body></html> 
+
+
+
