@@ -1,3 +1,15 @@
+v4.0.0 2013-01-26
+=================
+NEW STUFF:
+- Added a tool to clone regions (Menu -> Tools -> Region Cloner).
+  This tool simplifies the task of creating a tablemap.
+  Once you have all regions for player0 and the first common-card defined
+  just use the region-cloner to create regions with equal properties
+  for all other chairs and cards. The regions will even get moved
+  to somewhat reasonable places at the table.
+  All you have to do: fine-tune the positions.
+  [THF]
+
 v2.1.8 2011-01-15
 =================
 BUG FIXES:
