@@ -1,4 +1,4 @@
-v 4.0.0 2013-01-26
+v4.0.0 2013-01-26
 ==================
 NEW STUFF:
 - Implementing a table-positioner that optionally moves the poker-tables 
