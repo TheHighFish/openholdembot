@@ -4,9 +4,6 @@
 #include "..\CCritSec\CCritSec.h"
 
 // global preferences constants
-const int k_AutoConnector_Connect_Manually		= 0;
-const int k_AutoConnector_Connect_Automatically	= 1;
-
 const int k_AutoConnector_Connect_Never		= 0;
 const int k_AutoConnector_Connect_Once		= 1;
 const int k_AutoConnector_Connect_Permanent	= 2;
@@ -128,7 +125,6 @@ public:
 	const bool validator_use_heuristic_rules() { return _validator_use_heuristic_rules; }
 	const bool validator_shoot_replayframe_on_error() { return _validator_shoot_replayframe_on_error; }
 	// Auto-connector
-	const int autoconnector_connection_method() { return _autoconnector_connection_method; }
 	const int autoconnector_when_to_connect() { return _autoconnector_when_to_connect; }
 	const bool autoconnector_close_when_table_disappears() { return _autoconnector_close_when_table_disappears; }
 	// GUI
@@ -280,7 +276,6 @@ public:
 	void set_validator_shoot_replayframe_on_error(const bool b) { ENT _validator_shoot_replayframe_on_error = b; WriteReg("validator_shoot_replayframe_on_error", b); }
 
 	// Auto-connector
-	void set_autoconnector_connection_method(const int i) { ENT _autoconnector_connection_method = i; WriteReg("autoconnector_connection_method", i); }
 	void set_autoconnector_when_to_connect(const int i) { ENT _autoconnector_when_to_connect = i; WriteReg("autoconnector_when_to_connect", i); }
 	void set_autoconnector_close_when_table_disappears(const bool b) { ENT _autoconnector_close_when_table_disappears = b; WriteReg("autoconnector_close_when_table_disappears", b); }
 
@@ -438,7 +433,6 @@ private:
 	bool			_validator_shoot_replayframe_on_error;
 
 	// Auto-connector
-	int				_autoconnector_connection_method;
 	int				_autoconnector_when_to_connect;
 	bool			_autoconnector_close_when_table_disappears;
 
