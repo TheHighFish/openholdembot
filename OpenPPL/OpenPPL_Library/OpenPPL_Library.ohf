@@ -1655,16 +1655,16 @@ me_re_MemMissingSmallBlind
 
 ##f$OpenPPL_OpponentStacksizeHeadsUp##
 bblind==0 ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
-[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && chair!=0] ? balance0/bblind:
-[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && chair!=1] ? balance1/bblind:
-[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && chair!=2] ? balance2/bblind:
-[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && chair!=3] ? balance3/bblind:
-[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && chair!=4] ? balance4/bblind:
-[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && chair!=5] ? balance5/bblind:
-[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && chair!=6] ? balance6/bblind:
-[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && chair!=7] ? balance7/bblind:
-[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && chair!=8] ? balance8/bblind:
-[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && chair!=9] ? balance9/bblind:
+[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && userchair!=0] ? balance0/bblind:
+[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && userchair!=1] ? balance1/bblind:
+[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && userchair!=2] ? balance2/bblind:
+[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && userchair!=3] ? balance3/bblind:
+[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && userchair!=4] ? balance4/bblind:
+[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && userchair!=5] ? balance5/bblind:
+[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && userchair!=6] ? balance6/bblind:
+[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && userchair!=7] ? balance7/bblind:
+[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && userchair!=8] ? balance8/bblind:
+[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && userchair!=9] ? balance9/bblind:
 -1
 
 
@@ -4655,16 +4655,16 @@ f$OpenPPL_PT_LastCaller_Chair==9 && pt_hands9>=f$OpenPPL_ConstMinHandsFor_PT_VPI
 -1
 
 ##f$OpenPPL_PT_OpponentVPIPHeadsUp##
-[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && chair!=0] ? pt_vpip0:
-[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && chair!=1] ? pt_vpip1:
-[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && chair!=2] ? pt_vpip2:
-[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && chair!=3] ? pt_vpip3:
-[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && chair!=4] ? pt_vpip4:
-[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && chair!=5] ? pt_vpip5:
-[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && chair!=6] ? pt_vpip6:
-[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && chair!=7] ? pt_vpip7:
-[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && chair!=8] ? pt_vpip8:
-[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && chair!=9] ? pt_vpip9:
+[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && userchair!=0] ? pt_vpip0:
+[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && userchair!=1] ? pt_vpip1:
+[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && userchair!=2] ? pt_vpip2:
+[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && userchair!=3] ? pt_vpip3:
+[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && userchair!=4] ? pt_vpip4:
+[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && userchair!=5] ? pt_vpip5:
+[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && userchair!=6] ? pt_vpip6:
+[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && userchair!=7] ? pt_vpip7:
+[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && userchair!=8] ? pt_vpip8:
+[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && userchair!=9] ? pt_vpip9:
 -1
 //*****************************************************************************
 //
