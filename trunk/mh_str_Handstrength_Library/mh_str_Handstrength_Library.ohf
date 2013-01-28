@@ -524,7 +524,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 //2P with paired board all cider
 //From HTC
 
-br==2 ? (
+betround==2 ? (
 (!(ispair) && pokerval&threeofakind && nrankedcommon==2                     ? 4 : 0)+
 
 //Set outs cider
@@ -644,7 +644,7 @@ br==2 ? (
 ) :
 
 
-br==3 ? ( //************TURN BELOW********************
+betround==3 ? ( //************TURN BELOW********************
 
 //2P OUTS cider
 (pokerval&twopair && nrankedcommon==1                                       ? 4 :
@@ -744,9 +744,9 @@ br==3 ? ( //************TURN BELOW********************
 ##f$mh_bottomsd##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=6578&start=60&hilit=%2Abottomsd%2A
 // f$bottomsd
-(br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)==1 && pcbits<4)
-|| (br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 2 && pcbits<10)
-|| (br==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 3 && pcbits<=5)
+(betround==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)==1 && pcbits<4)
+|| (betround==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 2 && pcbits<10)
+|| (betround==2 && nstraight==4 && nstraightfillcommon - nstraightfill==1 && (rankhiplayer-rankloplayer)==1 && (rankhiplayer-rankloplayer)== 3 && pcbits<=5)
 &&
 ( (rankbits >> rankloplayer&0x1f)==0xf &&
 !(rankhiplayer==$$cr0 ||
