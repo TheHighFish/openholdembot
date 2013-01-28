@@ -354,8 +354,11 @@ bool CPerl::LoadDLL(void)
 		DWORD ErrorCode = GetLastError();
 		CString ErrorMessage;
 		ErrorMessage.Format("%s%d%s",
-			"PerlEz.DLL not found. \nPlease check your installation and your systems PATH variable\n\nErrorCode: [",
-			ErrorCode, "]");
+			"PerlEz.DLL not found. \n"
+			"Please check your installation of ActiveState-Perl\n"
+			"and your systems PATH variable.\n"
+			"\n"
+			"ErrorCode: [", ErrorCode, "]");
 		OH_MessageBox_Error_Warning(ErrorMessage, "Perl Error");
 		return false;
 	}
