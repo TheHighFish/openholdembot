@@ -101,23 +101,19 @@ CPerl::CPerl()
 	_formula_loaded = false;
 	_interpreter_not_loaded = true;
 
-	if (!LoadDLL())
-	{
-		//  DLL not found or invalid
-		return;
-	}
-
 	if (prefs.perl_default_formula() == "")
 	{
 		// For people who don't need perl.
 		return;
 	}
-	else
+	if (!LoadDLL())
 	{
-		//  Load file and create new instance of the interpreter.
-		LoadFormulaFile(string(prefs.perl_default_formula()));
-		//  _interpreter_not_loaded and _formula_loaded set automatically.
+		//  DLL not found or invalid
+		return;
 	}
+	//  Load file and create new instance of the interpreter.
+	LoadFormulaFile(string(prefs.perl_default_formula()));
+	//  _interpreter_not_loaded and _formula_loaded set automatically.
 
 	if ((_interpreter == NULL) || _interpreter_not_loaded)
 	{
