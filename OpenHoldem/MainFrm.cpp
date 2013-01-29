@@ -752,7 +752,7 @@ void CMainFrame::OnPerlCheckSyntax()
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoconnector->IsConnected());
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
