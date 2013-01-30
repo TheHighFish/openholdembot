@@ -37,14 +37,7 @@ struct holdem_state {
 
 typedef double (*process_message_t)(const char* message, const void* param );
 USERDLL_API double process_message( const char* message, const void* param );
-typedef double	(*p_getsym_t)( int c, const char* psym, bool& iserr );
-typedef void	(*p_send_chat_t) (const char* message);
 
-extern	p_getsym_t		p_get_symbol;
-extern	p_send_chat_t	p_sendchat;
-
-
-double getsym( const char* name );
 double process_state(holdem_state* pstate);
 double process_query(const char* pquery);
 
@@ -54,10 +47,10 @@ double process_query(const char* pquery);
 
 // Functions exported by OpenHoldem
 extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
-extern "C" __declspec(dllimport) void __stdcall   SendChatMessageFomDll(const char *msg);
-extern "C" __declspec(dllimport) void* __stdcall  GetPhl1kFromDll();
-extern "C" __declspec(dllimport) void* __stdcall  GetPrw1326FromDll();
-extern "C" __declspec(dllimport) void __stdcall   WriteLogFromDll(char* fmt, ...);
+extern "C" __declspec(dllimport) void   __stdcall SendChatMessageFomDll(const char *msg);
+extern "C" __declspec(dllimport) void*  __stdcall GetPhl1kFromDll();
+extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
+extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 
 // To make use of it write:
 //FnPtrT FnPtr = (FnPtrT)::GetProcAddress(GetModuleHandle(NULL),"write_log_export");
@@ -65,5 +58,11 @@ extern "C" __declspec(dllimport) void __stdcall   WriteLogFromDll(char* fmt, ...
 //{
 //  (*FnPtr)("Message From The DLL");
 //}
+
+double getsym(const char* name)	
+{ 
+	bool error_flag;
+	return GetSymbolFromDll(0, name, error_flag);
+}
 
 #endif
