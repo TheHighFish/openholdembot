@@ -17,25 +17,6 @@ holdem_state	m_holdem_state[256];
 unsigned char	m_ndx;
 ////////////////////////////////////
 
-p_getsym_t		p_get_symbol = NULL;
-p_send_chat_t	p_send_chat  = NULL;
-
-double getsym( int chair, const char* name, bool& iserr ) 
-{
-   return (*p_get_symbol)(chair,name,iserr);
-}
-
-double getsym( const char* name ) 
-{
-   bool iserr;
-   int mychair = (int) getsym(0,"userchair",iserr);
-   return getsym(mychair,name,iserr);
-}
-
-void send_chat(char* message)
-{
-	(*p_send_chat)(message);
-}
 
 double process_query( const char* pquery ) 
 {
@@ -97,20 +78,6 @@ USERDLL_API double process_message (const char* pmessage, const void* param)
 	{ 
 //		MessageBox(NULL, (LPCSTR) param, "query", MB_OK);
 		return process_query( (const char*)param ); 
-	}
-
-	if (strcmp(pmessage,"pfgws")==0) 
-	{	
-//		MessageBox(NULL, "pfgws", "MESSAGE", MB_OK);
-		p_get_symbol = (p_getsym_t)param;
-		return 0;
-	}
-
-	if (strcmp(pmessage,"p_send_chat_message")==0) 
-	{	
-//		MessageBox(NULL, "p_send_chat_message", "MESSAGE", MB_OK);
-		p_send_chat = (p_send_chat_t)param;
-		return 0;
 	}
 
 	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "load")==0) 
