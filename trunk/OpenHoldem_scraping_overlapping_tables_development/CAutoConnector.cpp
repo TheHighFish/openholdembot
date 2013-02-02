@@ -220,8 +220,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
 			CString loaded_version;
-			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString(), 
-				VER_OPENSCRAPE_2, &line, &loaded_version);
+			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString());
 
 			if ( (loaded_version == VER_OPENSCRAPE_1 || loaded_version == VER_OPENHOLDEM_2))
 			{

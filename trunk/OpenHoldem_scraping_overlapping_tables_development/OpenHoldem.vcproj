@@ -377,6 +377,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CScreenshotEngine.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CStringMatch.cpp"
 				>
 			</File>
@@ -1195,6 +1199,10 @@
 			</File>
 			<File
 				RelativePath=".\CScraperAccess.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CScreenshotEngine.h"
 				>
 			</File>
 			<File

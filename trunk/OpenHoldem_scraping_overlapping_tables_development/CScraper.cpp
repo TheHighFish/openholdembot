@@ -6,6 +6,7 @@
 #include "..\..\Reference Scraper-Preprocessor DLL\scraper_preprocessor_dll.h"
 #include "CAutoconnector.h"
 #include "CPreferences.h"
+#include "CScreenshotEngine.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
@@ -14,15 +15,6 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
-
-#define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
-	HDC				hdc = GetDC(p_autoconnector->attached_hwnd()); \
-	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); \
-	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen);
-
-#define __HDC_FOOTER	DeleteDC(hdcCompatible); \
-	DeleteDC(hdcScreen); \
-	ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 
 CScraper *p_scraper = NULL;
 
@@ -161,7 +153,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 {
 	write_log(prefs.debug_scraper(), "[CScraper] Starting Scraper cadence...\n");
 	
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	// Get bitmap of whole window
 	RECT		cr = {0};
@@ -211,7 +203,7 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	if (_ucf_last != p_symbol_engine_userchair->userchair_confirmed())
 		_ucf_last = p_symbol_engine_userchair->userchair_confirmed();
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 
 	// flag for detecting if anything useful has changed - used downstream to decide whether or not to
 	// update symbols, etc.
@@ -265,67 +257,13 @@ int CScraper::CompleteBasicScrapeToFullScrape()
 	ScrapeLimits();		// limits
 
 	write_log(prefs.debug_scraper(), "[CScraper] ...ending Scraper cadence, changed: %d\n", _scrape_something_changed);
-/* !!!???
-	DeleteDC(hdcCompatible);
-	DeleteDC(hdcScreen);
-	DeleteDC(hdcCurrentScreen);
-	ReleaseDC(pMyMainWnd->attached_hwnd(), hdc);
-*/
+
 	return _scrape_something_changed;
-}
-
-int CScraper::GetEncoderClsid (const WCHAR* format, CLSID* pClsid)
-{
-  UINT  num = 0;          // number of image encoders
-  UINT  size = 0;         // size of the image encoder array
-                          // in bytes
-
-  Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
-
-   Gdiplus::GetImageEncodersSize(&num, &size);
-  if(size == 0)
-    return -1;
-
-  pImageCodecInfo = ( Gdiplus::ImageCodecInfo*)(malloc(size));
-  if(pImageCodecInfo == NULL)
-    return -1;
-
-  GetImageEncoders(num, size, pImageCodecInfo);
-
-  for(UINT j = 0; j < num; ++j)
-  {
-    if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
-    {
-      *pClsid = pImageCodecInfo[j].Clsid;
-      free(pImageCodecInfo);
-      return j;  // Success
-    }
-  }
-
-  free(pImageCodecInfo);
-  return -1;
-}
-
-void CScraper::DumpBitmap(Gdiplus::Bitmap* pBitmap) {
-	/*UINT h = pBitmap->GetHeight();
-	UINT w = pBitmap->GetWidth();
-	CLSID  jpgEncoderClsid;
-	GetEncoderClsid(L"image/jpeg", &jpgEncoderClsid);
-	CString fileName;
-	fileName.Format("c:\\temp\\test%d.jpg", GetTickCount());
-	
-	//".jpg";
-	
-USES_CONVERSION;
-	wchar_t* wstr_name = T2W(fileName.GetBuffer());
-	Gdiplus::Status status = pBitmap->Save(wstr_name, &jpgEncoderClsid, NULL);
-	//delete bit;
-	*/
 }
 
 bool CScraper::ProcessRegion(RMapCI r_iter)
 {
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	// Get "current" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
@@ -337,7 +275,6 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 	// If the bitmaps are different, then continue on
 	if (!BitmapsSame(r_iter->second.last_bmp, r_iter->second.cur_bmp))
 	{
-
 		// Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
@@ -345,24 +282,24 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		__HDC_FOOTER
+		//!!!__HDC_FOOTER
 		return true;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 	return false;
 }
 
 void CScraper::ScrapeCommonCards()
 {
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 	unsigned int	card = CARD_NOCARD;
 	CString			cardstr = "", rankstr = "", suitstr = "";
 	CTransform		trans;
 	CString			s = "", t = "";
 	RMapCI			r_iter1 = p_tablemap->r$()->end(), r_iter2 = p_tablemap->r$()->end();
 
-	for (int i=0; i<=4; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		card = CARD_NOCARD;
 
@@ -455,7 +392,7 @@ void CScraper::ScrapeCommonCards()
 		}
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapePlayerCards(int chair)
@@ -471,7 +408,7 @@ void CScraper::ScrapePlayerCards(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
@@ -646,7 +583,7 @@ void CScraper::ScrapePlayerCards(int chair)
 			_scrape_something_changed |= PL_CARD_CHANGED;
 		}
 	}
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeSeated(int chair)
@@ -660,7 +597,7 @@ void CScraper::ScrapeSeated(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	set_seated(chair, "false");
 
@@ -715,7 +652,7 @@ void CScraper::ScrapeSeated(int chair)
 		_scrape_something_changed |= SEATED_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeActive(int chair)
@@ -729,7 +666,7 @@ void CScraper::ScrapeActive(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	set_active(chair, "false");
 
@@ -782,7 +719,7 @@ void CScraper::ScrapeActive(int chair)
 		_scrape_something_changed |= ACTIVE_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeDealer(int chair)
@@ -797,7 +734,7 @@ void CScraper::ScrapeDealer(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	set_dealer(chair, false);
 
@@ -855,7 +792,7 @@ void CScraper::ScrapeDealer(int chair)
 		_scrape_something_changed |= DEALER_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeName(int chair) 
@@ -873,7 +810,7 @@ void CScraper::ScrapeName(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	int	sym_chair = p_symbol_engine_userchair->userchair();
 
@@ -961,7 +898,7 @@ void CScraper::ScrapeName(int chair)
 		_scrape_something_changed |= NAME_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeBalance(int chair)
@@ -978,7 +915,7 @@ void CScraper::ScrapeBalance(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	int	sym_chair = p_symbol_engine_userchair->userchair();
 
@@ -1176,7 +1113,7 @@ void CScraper::ScrapeBalance(int chair)
 		_scrape_something_changed |= BALANCE_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeBet(int chair)
@@ -1190,7 +1127,7 @@ void CScraper::ScrapeBet(int chair)
 	if (chair < 0 || chair >= p_tablemap->nchairs())
 		return;
 
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	set_player_bet(chair, 0);
 
@@ -1275,12 +1212,12 @@ void CScraper::ScrapeBet(int chair)
 		_scrape_something_changed |= PLAYERBET_CHANGED;
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::DoBasicScrapeButtons()
 {
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 
 	int					j = 0, k = 0;
 	CString				text = "";
@@ -1536,7 +1473,7 @@ void CScraper::DoBasicScrapeButtons()
 		write_log(prefs.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::DoBasicScrapeAllPlayerCards()
@@ -1551,7 +1488,7 @@ void CScraper::DoBasicScrapeAllPlayerCards()
 
 void CScraper::ScrapePots()
 {
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 	int					j = 0;
 	CString				text = "";
 	CTransform			trans;
@@ -1641,12 +1578,12 @@ void CScraper::ScrapePots()
 		}
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 void CScraper::ScrapeLimits()
 {
-	__HDC_HEADER
+	//!!!__HDC_HEADER
 	int					j = 0;
 	CString				handnumber = "";
 	bool				istournament = false;
@@ -2090,7 +2027,7 @@ void CScraper::ScrapeLimits()
 				  _s_limit_info.bbet, _s_limit_info.ante);
 	}
 
-	__HDC_FOOTER
+	//!!!__HDC_FOOTER
 }
 
 const CString CScraper::GetHandnumFromString(CString t)
@@ -2526,5 +2463,5 @@ const bool CScraper::GetButtonState(int button_index)
 }
 
 
-#undef __HDC_HEADER
-#undef __HDC_FOOTER
+#undef //!!!__HDC_HEADER
+#undef //!!!__HDC_FOOTER

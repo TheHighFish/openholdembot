@@ -160,8 +160,6 @@ private:
 	// misc
 	HBITMAP				_entire_window_cur;
 
-	LARGE_INTEGER		_clocks_hold;			// used for "clocks" symbol
-	ULONG_PTR _gdiplusToken;
 private:
 	// private functions and variables - not available via accessors or mutators
 	void ScrapeCommonCards();
@@ -178,8 +176,7 @@ private:
 	bool ProcessRegion(RMapCI r_iter);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
 	const double DoChipScrape(RMapCI r_iter);
-	void DumpBitmap(Gdiplus::Bitmap* pBitmap);
-	int CScraper::GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
+
 	// for change detection
 	bool			_ucf_last;
 

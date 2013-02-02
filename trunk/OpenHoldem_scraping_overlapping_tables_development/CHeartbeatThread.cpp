@@ -14,13 +14,12 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
-#include "CopenHoldemHopperCommunication.h"
+#include "COpenHoldemHopperCommunication.h"
 #include "CopenHoldemStatusbar.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
-#include "ScraperOverride.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
@@ -30,7 +29,7 @@
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
-#include "CHandHistory.h"
+#include "ScraperOverride.h"
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
