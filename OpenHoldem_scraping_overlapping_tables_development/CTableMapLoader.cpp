@@ -92,8 +92,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
 		{
-			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString(), 
-				VER_OPENSCRAPE_2, &line);
+			int ret = p_tablemap->LoadTablemap((char *) hFile.GetFilePath().GetString());
 			if (ret == SUCCESS)
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);

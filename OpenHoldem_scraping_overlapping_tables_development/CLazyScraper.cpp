@@ -1,8 +1,10 @@
 #include "stdafx.h"
+#include "CAutoconnector.h"
 #include "CLazyScraper.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CScreenshotEngine.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "debug.h"
@@ -24,6 +26,7 @@ void CLazyScraper::DoScrape()
 	// of the heartbeat-cycle, we do optionally
 	// execute only partial scrapes (aka "Lazy Scraping").
 	// Please see the manual for more info about that.
+	p_screenshot_engine->TakeScreenshotOfWindow(p_autoconnector->attached_hwnd());
 	p_scraper->DoBasicScrapeButtons();
 	if (1 /* CardScrapeNeeded()!!*/)
 	{
@@ -35,6 +38,7 @@ void CLazyScraper::DoScrape()
 			p_scraper->CompleteBasicScrapeToFullScrape();
 		}
 	}
+	p_screenshot_engine->ReleaseBitmap();
 }
 
 bool CLazyScraper::IsMyTurn()

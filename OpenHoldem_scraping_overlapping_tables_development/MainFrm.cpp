@@ -441,7 +441,7 @@ void CMainFrame::OnFileLoadTableMap()
 	if (cfd.DoModal() == IDOK)
 	{
 		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile, VER_OPENSCRAPE_2, &line, &loaded_version);
+		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile);
 		
 		if (loaded_version == VER_OPENHOLDEM_1 && ret == ERR_VERSION && !prefs.disable_msgbox())
 		{

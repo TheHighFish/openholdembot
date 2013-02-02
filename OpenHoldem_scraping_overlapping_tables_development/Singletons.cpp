@@ -26,6 +26,7 @@
 #include "CRebuyManagement.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CScreenshotEngine.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
@@ -55,6 +56,8 @@ void InstantiateAllSingletons()
 		p_stableframescounter = new CStableFramesCounter;
 	if (!p_tablelimits) 
 		p_tablelimits = new CTableLimits;
+	if (!p_screenshot_engine)
+		p_screenshot_engine = new CScreenshotEngine;
 	if (!p_scraper) 
 		p_scraper = new CScraper;
 	if (!p_scraper_access)  
@@ -191,6 +194,8 @@ void DeleteAllSingletons()
 		{ delete p_scraper_access; p_scraper_access = NULL; }
 	if (p_scraper)              
 		{ delete p_scraper; p_scraper = NULL; }
+	if (p_screenshot_engine)
+		{ delete p_screenshot_engine; p_screenshot_engine = NULL; }
 	if (p_tablelimits)          
 		{ delete p_tablelimits; p_tablelimits = NULL; }
 	if (p_stableframescounter)  

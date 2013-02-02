@@ -2,13 +2,18 @@
 #include "OH_MessageBox.h"
 #include "CPreferences.h"
 
-
-void OH_MessageBox(CString Message, CString Title, int Flags)
+// !!! To be removed
+void OH_MessageBox_Error_Warning(CString message, CString title)
 {
-	MessageBox(0, Message, Title, Flags);
+	OH_MessageBox(message, title, 0);
 }
 
-int OH_MessageBox_Interactive(CString Message, CString Title, int Flags)
+void OH_MessageBox(CString message, CString title, int flags)
 {
-	return MessageBox(0, Message, Title, Flags);
+	MessageBox(0, message, title, flags);
+}
+
+int OH_MessageBox_Interactive(CString message, CString title, int flags)
+{
+	return MessageBox(0, message, title, flags);
 }
