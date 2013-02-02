@@ -72,12 +72,17 @@ public:
 	CIteratorThread();
 	~CIteratorThread();
 public:
+	static void StopIteratorThread();
+	void	RestartIteratorThreadIfNotRunning();
 	void	set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
 	const	sprw1326 *prw1326()	            { return &_prw1326; }
 #undef ENT
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
+	static void AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent);
+private:
+	void RestartIteratorThread();
 	int InRange(const int card1, const int card2, const int willplay, 
 				const int wontplay, const int topclip, const int mustplay);
 	void InitIteratorLoop(void);

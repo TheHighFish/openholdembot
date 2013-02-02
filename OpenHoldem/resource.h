@@ -422,7 +422,6 @@
 #define ID_BUTTON32790                  32790
 #define ID_BUTTON32791                  32791
 #define ID_BUTTON32792                  32792
-#define ID_FILE_LOADTABLEMAP            32805
 #define ID_NUMBER0                      32824
 #define ID_NUMBER1                      32826
 #define ID_NUMBER2                      32828

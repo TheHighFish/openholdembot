@@ -291,10 +291,16 @@ void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not)
 
 bool CAutoplayer::DoChat(void)
 {
-	if ((p_autoplayer_functions->f$chat() == 0) || (_the_chat_message == NULL))
-		return false;
 	if (!IsChatAllowed())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
+	}
+	if ((p_autoplayer_functions->f$chat() == 0) || (_the_chat_message == NULL))
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
+		return false;
+	}
 
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
@@ -378,10 +384,16 @@ void CAutoplayer::DoAutoplayer(void)
 		p_autoplayer_functions->CalcSecondaryFormulas();
 		if (!ExecuteSecondaryFormulasIfNecessary())	
 		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
 			if(p_symbol_engine_autoplayer->isfinalanswer())
 			{
 				p_autoplayer_functions->CalcPrimaryFormulas();
 				ExecutePrimaryFormulas();
+			}
+			else
+			{
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
 			}
 		}
 	}
@@ -396,16 +408,16 @@ bool CAutoplayer::DoSwag(void)
 	{
 		return p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
 	}
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
 }
 
 
 void CAutoplayer::DoPrefold(void) 
 {
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoPrefold...\n");
-
 	if (p_autoplayer_functions->f$prefold() == 0)  
 	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't prefold, because f$prefold evaluates to false.\n");
 		return;
 	}
 	p_casino_interface->ClickButton(k_autoplayer_function_prefold);
@@ -413,7 +425,7 @@ void CAutoplayer::DoPrefold(void)
 	p_symbols->RecordPrevAction(k_action_fold);
 	write_logautoplay(ActionConstantNames(k_action_fold));
 	p_autoplayer_functions->CalcAutoTrace();
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoPrefold.\n");
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 }
 
 
@@ -426,5 +438,6 @@ bool CAutoplayer::HandleInterfacebuttonsI86(void)
 			return true;
 		}
 	}
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
 	return false;
 }

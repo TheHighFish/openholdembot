@@ -1,12 +1,13 @@
 #include "StdAfx.h"
 #include "CTableMaploader.h"
 
-#include "..\CTablemap\CTablemapAccess.h"
-#include "..\CTransform\CTransform.h"
+#include "CAutoConnector.h"
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
+#include "..\CTablemap\CTablemapAccess.h"
+#include "..\CTransform\CTransform.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
@@ -303,8 +304,23 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 void CTableMapLoader::ReloadAllTablemapsIfChanged()
 {
 	if (p_filesystem_monitor->AnyChanges())
-	{
+	{		
+		// Since OpenHoldem 4.0.0 there is no longer any possibility 
+		// for manual connection; i.e. no possibility for re-connection.
+		// Therefore the file-system-monitor does now dis-connect
+		// if it finds a new/changed tablemap and the auto-connector-thread 
+		// will thereafter reload the TMs and connect again.
+		//
+		// Note: This solution might lose some game-history (reset),
+		// but that is perfectly acceptable for development
+		// and hot-plugging of TMs won't happen in production.
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] Tablemaps changed; going to reload.\n");
+		p_autoconnector->Disconnect();
 		ParseAllTableMapsToLoadConnectionData();
+	}
+	else
+	{
+		write_log(prefs.debug_tablemap_loader(), "[CTablemapLoader] All tablemaps unchanged; nothing to do.\n");
 	}
 }
 
