@@ -1,3 +1,35 @@
+v4.0.1 2013-02-02
+==================
+BUG FIXES: 
+- Making it possible to (un)load formula and DLL while connected.
+  Only the autoplayer has to be turned off, as that is critical.
+  [THF]
+- Several minor fixes to the GUI.
+  [THF]
+- Added a default ini-file with reasonable settings to the release.
+  [THF]
+- OpenHoldem did incorrectly require activeState-Perl to be installed,
+  even when the user did not want to load a Perl-formula.
+  This should now have been fixed.
+  Thanks to Topic7 and Brass Knuckles for reporting.
+  [THF]
+- Since OpenHoldem 4.0.0 there is no longer any possibility 
+  for manual connection; i.e. no possibility for re-connection.
+  Therefore the file-system-monitor does now disconnect
+  if it finds a new/changed tablemap and the auto-connector-thread 
+  will thereafter reload the TMs and connect again.
+  Note: 
+  This solution might lose some game-history (reset),
+  but that is perfectly acceptable for development
+  and hot-plugging of TMs won't happen in production.
+  [THF]
+- The prwin-calculations got restarted once per heart-beat
+  with the consequence that they never got finished on time on some systems
+  and the autoplayer didn't act.
+  Thanks to R2D2 for reporting that problem.
+  [THF]
+
+
 v4.0.0 2013-01-26
 ==================
 NEW STUFF:
@@ -285,6 +317,13 @@ MAINTENANCE:
 - Removing the symbol originaldealposition which was meant to keep the value of dealposition
   till the end of the hand. But there is a better way to achieve the same behaviour:
   we do no longer reset dealposition, so that symbol became superfluous.
+- Removing the green and red button for manual connection,
+  because this is a bot with an auto-connector;
+  there simply is no need to press any buttons manually.
+  Just start OH and a casino and OH will connect.
+  When you are finished you close/minimize one or both of them.
+  However OpenHoldem still supports the ability to connect by Window-messages
+  as described in the manual for the people whos hopper cares about connections.
   [THF]
   
   
