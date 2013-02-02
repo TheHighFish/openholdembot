@@ -66,7 +66,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	// Menu updates
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, &CMainFrame::OnUpdateMenuFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
-	ON_UPDATE_COMMAND_UI(ID_FILE_LOADTABLEMAP, &CMainFrame::OnUpdateMenuFileLoadProfile)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
@@ -78,7 +77,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
-	ON_COMMAND(ID_FILE_LOADTABLEMAP, &CMainFrame::OnFileLoadTableMap)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
@@ -417,34 +415,6 @@ void CMainFrame::OnFileOpen()
 	}
 }
 
-void CMainFrame::OnFileLoadTableMap() 
-{
-	CFileDialog			cfd(true);
-	int					line = 0, ret = 0;
-	CString				e = "";
-
-	cfd.m_ofn.lpstrInitialDir = prefs.path_tm();
-	cfd.m_ofn.lpstrFilter = "OpenScrape Table Maps (.tm)\0*.tm\0All files (*.*)\0*.*\0\0";
-	cfd.m_ofn.lpstrTitle = "Select OpenScrape table map to OPEN";
-
-	if (cfd.DoModal() == IDOK)
-	{
-		CString loaded_version;
-		ret = p_tablemap->LoadTablemap(cfd.m_ofn.lpstrFile);
-		
-		if (ret == SUCCESS)
-		{
-			// Reset "ScraperOutput" dialog, if it is live
-			if (m_ScraperOutputDlg) 
-			{
-				m_ScraperOutputDlg->AddListboxItems();
-				m_ScraperOutputDlg->UpdateDisplay();
-			}
-
-			prefs.set_path_tm(cfd.GetPathName());
-		}
-	}
-}
 
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
@@ -752,19 +722,13 @@ void CMainFrame::OnPerlCheckSyntax()
 
 void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
-
-void CMainFrame::OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
-}
-
 
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 {
@@ -774,12 +738,13 @@ void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
 	else
 		pCmdUI->SetText("&Load\tF4");
 
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(p_dll_extension->IsDllLoaded() ? false : true);
+	pCmdUI->Enable(p_dll_extension->IsDllLoaded()
+		&& !p_autoplayer->autoplayer_engaged());
 }
 
 
@@ -791,23 +756,26 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
 {
 	if (p_perl->IsAFormulaLoaded()) 
+	{
 		pCmdUI->SetText("&Unload Formula\tF7");
-
+	}
 	else 
+	{
 		pCmdUI->SetText("&Load Formula\tF7");
+	}
 
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(!p_autoconnector->IsConnected());
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded() &&
-		p_autoconnector->IsConnected());
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded() 
+		&& !p_autoplayer->autoplayer_engaged());
 }
 
 void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
@@ -817,7 +785,8 @@ void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI)
 
 void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
+	pCmdUI->Enable(p_perl->IsAFormulaLoaded()
+		&& !p_autoplayer->autoplayer_engaged());
 }
 
 

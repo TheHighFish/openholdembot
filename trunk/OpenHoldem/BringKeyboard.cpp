@@ -20,6 +20,13 @@ void CheckBringKeyboard(void)
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 
+	if (!p_symbol_engine_autoplayer->isbring())
+	{
+		write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
+		return;
+	}
+
+	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Connected to bring.\n");
 	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 
 	// Init locals
@@ -63,7 +70,7 @@ void CheckBringKeyboard(void)
 		GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
 	}
 
-	if (!(mii.fState&MFS_CHECKED) && p_symbol_engine_autoplayer->isbring()) 
+	if (!(mii.fState&MFS_CHECKED)) 
 	{
 
 		input_count = 0;

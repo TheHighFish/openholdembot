@@ -44,22 +44,13 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
-	RestartIteratorThread();
+	p_iterator_thread->RestartIteratorThreadIfNotRunning();
 	CalculateNOpponents();
 	CalculateNhands();
 }
 
 void CSymbolEnginePrwin::ResetOnHeartbeat()
 {}
-
-void CSymbolEnginePrwin::RestartIteratorThread()
-{
-	if (p_iterator_thread)
-	{
-		delete p_iterator_thread;
-	}
-	p_iterator_thread = new CIteratorThread;
-}
 
 void CSymbolEnginePrwin::CalculateNhands()
 {

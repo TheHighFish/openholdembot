@@ -123,9 +123,58 @@ CIteratorThread::~CIteratorThread()
 	::CloseHandle(_m_stop_thread);
 	::CloseHandle(_m_wait_thread);
 
-	p_iterator_thread = NULL;
+	StopIteratorThread();
 
 	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
+}
+
+void CIteratorThread::StopIteratorThread()
+{
+	if (p_iterator_thread)
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
+		delete p_iterator_thread;
+		p_iterator_thread = NULL;
+	}
+}
+
+void CIteratorThread::RestartIteratorThread()
+{
+	StopIteratorThread();
+	write_log(prefs.debug_prwin(), "[PrWinThread] Restarting iterator thread.\n");
+	p_iterator_thread = new CIteratorThread;
+}
+
+void CIteratorThread::RestartIteratorThreadIfNotRunning()
+{
+	if (p_iterator_thread)
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");
+	}
+	else
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
+		RestartIteratorThread();
+	}
+}
+
+void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent)
+{
+	// Cut off from IteratorThreadFunction
+	// Also moved outside of the loop.
+
+	int	sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+	//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
+	if (pParent->_willplay && (pParent->_willplay < 2 * sym_nopponents + 1))
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
+		pParent->_willplay = 2 * sym_nopponents + 1; //too low a value can give lockup
+	}
+	if (pParent->_wontplay < pParent->_willplay)
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
+		pParent->_wontplay = pParent->_willplay; //wontplay cannot safely be less than willplay
+	}
 }
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
@@ -151,7 +200,6 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	bool			sym_didcall = p_symbol_engine_history->didcall(betround);
 	int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 
-	int				nopp = sym_nopponents <= MAX_OPPONENTS ? sym_nopponents : MAX_OPPONENTS;
 	bool			hand_lost;
 
 	// Seed the RNG
@@ -165,6 +213,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	// "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
 	unsigned int nit;
+	AdjustPrwinVariablesIfNecessary(pParent);
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
 		// Check event for thread stop signal
@@ -176,25 +225,13 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		}
 
 		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
-		//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
-		if (pParent->_willplay && (pParent->_willplay<nopp*2+1) )
-		{
-			write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
-			pParent->_willplay=nopp*2+1; //too low a value can give lockup
-		}
-		if (pParent->_wontplay<pParent->_willplay)
-		{
-			write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
-			pParent->_wontplay=pParent->_willplay; //wontplay cannot safely be less than willplay
-		}
-
-
+		
 		if (_prw1326.useme==1326 && (betround>=k_betround_flop || _prw1326.preflop==1326))
 		{
 			write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
 
 			//prw1326 active  Matrix 2008-05-08
-			k = nopp = 0; //k is used as an index into ocard[] 
+			k = sym_nopponents = 0; //k is used as an index into ocard[] 
 
 			// loop through active opponents
 			for(int i=0; i<k_max_number_of_players; i++) 
@@ -205,7 +242,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 				if (!((sym_playersplayingbits) & (1<<i)))
 					continue; //skip inactive chairs 
 
-				nopp++; //we have to use actual opponents for prw1326 calculations
+				sym_nopponents++; //we have to use actual opponents for prw1326 calculations
 
 				// first deal with the special non-weighted cases
 				// player who is marked 'ignore' or one who is BB and has not VPIP'd
@@ -298,16 +335,16 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
 
 			// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
-			if (nopp <= 13)
+			if (sym_nopponents <= 13)
 			{
 				write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 				// random replacement algorithm
 				// opponent cards
-				if (nopp < 1)
+				if (sym_nopponents < 1)
 				{
 					write_log(prefs.debug_prwin(), "[PrWinThread] No opponents.\n");
 				}
-				for (int i=0; i<nopp*2; i+=2)
+				for (int i=0; i<sym_nopponents*2; i+=2)
 				{
 					temp_usedCards=usedCards;
 					do
@@ -384,7 +421,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 				// opponent cards
 				x = 0;
-				for (int i=0; i<nopp*2; i++)
+				for (int i=0; i<sym_nopponents*2; i++)
 				{
 					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
 						x++;
@@ -415,7 +452,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		// - for win/tie, we need to wait until we scan them all
 		opp_pokvalmax = 0;
 		hand_lost = false;
-		for (int i=0; i<nopp; i++)
+		for (int i=0; i<sym_nopponents; i++)
 		{
 			CardMask_RESET(opp_evalCards);
 			CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
@@ -487,8 +524,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
-	delete p_iterator_thread;
-	p_iterator_thread = NULL;
+	StopIteratorThread();
 
 	return 0;
 }

@@ -32,7 +32,6 @@ public:
 	int nopponents_for_prwin()	{ return _nopponents_for_prwin; }
 private:
 	void CalculateNOpponents();
-	void RestartIteratorThread();
 	void CalculateNhands();
 private:
 	int _nhandshi;

@@ -150,7 +150,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	CFileFind			hFile;
 
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
-	p_tablemap_loader->ReloadAllTablemapsIfChanged();
 
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");

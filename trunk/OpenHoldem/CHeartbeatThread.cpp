@@ -26,6 +26,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableMapLoader.h"
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
@@ -99,34 +100,35 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Measure cycle time
 		QueryPerformanceCounter(&cycle_start);
 
+		p_tablemap_loader->ReloadAllTablemapsIfChanged();
 
 		// This critical section lets other threads know that the internal state is being updated
 		EnterCriticalSection(&pParent->cs_update_in_progress);
 
-			////////////////////////////////////////////////////////////////////////////////////////////
-			// Scrape window
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// Scrape window
 
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-			new_scrape = !NOTHING_CHANGED;
-			p_lazyscraper->DoScrape();
+		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+		new_scrape = !NOTHING_CHANGED;
+		p_lazyscraper->DoScrape();
 
-			OverriderScraperStateByScraperPreprocessorDLLIfNecessary();
+		OverriderScraperStateByScraperPreprocessorDLLIfNecessary();
 
-			// Necessary to pre-compute some info 
-			// which is needed by the symbol-engines.
-			p_scraper_access->GetNeccessaryTablemapObjects();
-			////////////////////////////////////////////////////////////////////////////////////////////
-			// Caclulate symbols
+		// Necessary to pre-compute some info 
+		// which is needed by the symbol-engines.
+		p_scraper_access->GetNeccessaryTablemapObjects();
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// Caclulate symbols
 
-			p_handreset_detector->OnNewHeartbeat();
+		p_handreset_detector->OnNewHeartbeat();
 
-			// mark symbol result cache as stale
-			p_formula->MarkCacheStale();
+		// mark symbol result cache as stale
+		p_formula->MarkCacheStale();
 
-			if (new_scrape!=NOTHING_CHANGED)
-			{
-				p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
-			}
+		if (new_scrape!=NOTHING_CHANGED)
+		{
+			p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+		}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
 
@@ -146,12 +148,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_NOCARD || 
 			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_BACK))
 		{
-			if (p_iterator_thread)
-			{
-				write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Stopping iterator thread.\n");
-				delete p_iterator_thread;
-				p_iterator_thread = NULL;
-			}
+			p_iterator_thread->StopIteratorThread();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
