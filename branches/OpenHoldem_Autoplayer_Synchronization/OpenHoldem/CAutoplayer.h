@@ -6,6 +6,7 @@
 #include "../CTablemap/CTablemap.h"
 #include "../CTablemap/CTableMapAccess.h"
 #include "OpenHoldem.h"
+#include "CSyncServerLink.h" //2/2/2013 TripleSeven  SyncServer changes
 
 extern class CAutoplayer 
 {
@@ -58,7 +59,8 @@ private:
 	bool	action_sequence_needs_to_be_finished;
 
 	// Mutex used for cross-instance autoplayer coordination
-	CMutex		_mutex;
+	//CMutex		_mutex; //2/2/2013 TripleSeven  SyncServer changes
+	CSyncServerLink _mutex; //2/2/2013 TripleSeven  SyncServer changes
 
 	CCritSec	m_critsec;
 } *p_autoplayer;
