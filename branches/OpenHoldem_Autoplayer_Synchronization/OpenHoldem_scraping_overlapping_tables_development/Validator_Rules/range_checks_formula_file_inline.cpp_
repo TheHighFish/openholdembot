@@ -1,0 +1,17 @@
+
+//
+// Formula file
+//
+
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0013")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol nit")
+    PRECONDITION (true)
+    POSTCONDITION (gws("f$prwin_number_of_iterations") >= 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("f$prwin_number_of_iterations")
+END_TESTCASE
+
+

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="rebuys.tex"> 
+<meta name="date" content="2010-04-05 22:30:00"> 
+<link rel="stylesheet" type="text/css" href="rebuys.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Rebuys</h3>
+<!--l. 32--><p class="noindent" >OpenHoldem is able to control external rebuy-scripts with the bot, as this provides
+several advantages compared to hoppers:
+           <ul class="itemize1">
+        <li class="itemize">easy  synchronisation  with  other  bots  due  to  built-in  mutex-handling
+        (avoiding mouse- and keyboard-conflicts).
+           </li>
+        <li class="itemize">perfect timing, e.g. only when it is not your turn or between two hands.
+           </li>
+        <li class="itemize">no need for the hopper to take care about your balance and simplified
+        hopper-architecture in general.</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>The rebuy-script</h4>
+<!--l. 45--><p class="noindent" >The process to rebuy is still very specific for each casino (similar to TableMaps and
+lobby-handling), so there is no way to provide a built-in method that works for every
+casino. This casino-specific part of the job has to be done by an external rebuy-script,
+provided by the user. But this rebuy-script will usually become quite simple: some
+mouse-clicks and maybe keyboard-input are usually everything that needs to be done.
+For an example and possible starting-point see &#8220;RebuyDemo&#8221; in the source-tree at
+GoogleCode..
+   <h4 class="subsectionHead"><a 
+ id="x1-3000"></a>Sanity-checks</h4>
+<!--l. 57--><p class="noindent" >Many things can go wrong, when you try to rebuy, be it incorrect timing or a rebuy to
+the wrong value. To avoid such cases OpenHoldem does provide some security
+measures:
+           <ul class="itemize1">
+        <li class="itemize">always acquire the autoplayer-mutex before executing the rebuy-script
+           </li>
+        <li class="itemize">optionally   (as   specified   in   the   preferences)   require   a   change   in
+        hand-number between two rebuys
+           </li>
+        <li class="itemize">optionally rebuy only, when the user doesn&#8217;t hold cards
+           </li>
+        <li class="itemize">optionally test heuristically for occlusion and sane balances
+           </li>
+        <li class="itemize">optionally wait for a user-defined time between two attempts to rebuy</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-4000"></a>Calling the rebuy-script</h4>
+<!--l. 71--><p class="noindent" >Once all necessary conditions are met, OpenHoldem will execute the rebuy-script,
+that got specified in the preferences, and pass the necessary information as
+command-line-parameters:
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-1"  
+class="td11">Commandline-parameters                       </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-1"  
+class="td11">Casino (name as specified in the TableMap)</td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-1"  
+class="td11">Windowhandle of the pokertable (HWND)  </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-4-1"  
+class="td11">UserChair (0-9)                                     </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-5-1"  
+class="td11">Balance (in dollars)                                </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-6-1"  
+class="td11">SmallBlind (in dollars)                            </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-7-1"  
+class="td11">BigBlind (in dollars)                               </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-8-1"  
+class="td11">BigBet (in dollars)                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-9-1"  
+class="td11">Target-amount (in dollars)                       </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-10-1"  
+class="td11">                                     </td> </tr></table></div>
+<!--l. 99--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+
+<a 
+ id="x1-40011"></a>
+
+<!--l. 100--><p class="noindent" ><img 
+src="rebuys0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="rebuys0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___rs_automation_Images_pokerstars_poker_table.eps"  
+-->
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.0.1: </span><span  
+class="content">Rebuy</span></div><!--tex4ht:label?: x1-40011 -->
+
+<!--l. 104--><p class="indent" >   </div><hr class="endfigure">
+    
+</body></html> 
+
+
+

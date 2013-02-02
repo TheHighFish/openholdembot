@@ -1,0 +1,251 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Configuring the operating system 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem requires specific system settings in order to correctly intuit
+ the game state from the pixels on-screen, and to correctly take poker actions.
+ They have to be configured the right way before you can start working at
+ your bot.
+ Newer versions of OpenHoldem help you with this task; they execute automatical
+ configuration checks and diagnose incorrect settings.
+ However: you shouldn't rely completely on these configuration checks.
+ Better get things right in advance.
+ And be extra careful, if you use a two-computer-stealth-setup: then it
+ is a must to setup both PCs in absolutely the same way.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+color depth
+\end_layout
+
+\end_inset
+
+Color depth 
+\end_layout
+
+\begin_layout Standard
+The display color depth must be set to 24-bit or 32-bit.
+ Most Table Maps are designed for 32-bit color depth, so your display should
+ be set to that for maximum compatibility with others’ work.
+\end_layout
+
+\begin_layout Subsection
+Display 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+resolution
+\end_layout
+
+\end_inset
+
+resolution 
+\end_layout
+
+\begin_layout Standard
+You need enough display resolution to contain both the poker client window
+ and OpenHoldem at its smallest size (i.e.
+ table view off).
+ In general, the minimum acceptable display resolution is 1024x768.
+ The smaller resolutions 800x600 and 640x480 do not have enough real estate
+ to show both the poker client and OpenHoldem without overlapping windows.
+ 
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+font smoothing
+\end_layout
+
+\end_inset
+
+Font smoothing 
+\end_layout
+
+\begin_layout Standard
+Font smoothing must be turned off in order to interpret font pixels correctly.
+ Our objective is to interpret the pixels as presented by the poker client,
+ and not post-mangled by the operating system.
+ To disable font smoothing: right click the desktop, and choose Properties-->App
+earance-->Effects.
+ Disable smoothed fonts in this dialog.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+Window style
+\end_layout
+
+\end_inset
+
+Window style (
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+themes
+\end_layout
+
+\end_inset
+
+themes)
+\end_layout
+
+\begin_layout Standard
+Windows 2000 only has one window style.
+ There are no themes, there is no candy blue coloring around windows, so
+ you are OK if you use Windows 2000.
+ With Windows XP (or later), it is suggested to use the 
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+Classic theme
+\end_layout
+
+\end_inset
+
+“Classic” theme, which will present windows in the same style as Windows
+ 2000.
+ You are of course free to use whatever theme you want, but be aware that
+ public Table Maps usually do not work unless they are used with the same
+ theme that they were designed for.
+ Most OpenHoldem botters use Windows 2000 or the Windows XP Classic theme.
+\end_layout
+
+\begin_layout Subsection
+Windows XP and 
+\begin_inset Index
+status collapsed
+
+\begin_layout Plain Layout
+ClearType
+\end_layout
+
+\end_inset
+
+ClearType 
+\end_layout
+
+\begin_layout Standard
+If you use Windows XP, it is recommended that you disable ClearType (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/ClearType
+\end_layout
+
+\end_inset
+
+) fonts, for the same reason that we suggest you disable font smoothing.
+ Here is the link to the Microsoft web page on how to do this: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.microsoft.com/typography/cleartype/tuner/Step1.aspx 
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Language settings
+\end_layout
+
+\begin_layout Standard
+Your language settings affect the behaviour of your system in several ways:
+ 
+\end_layout
+
+\begin_layout Itemize
+how to display special characters 
+\end_layout
+
+\begin_layout Itemize
+what to use as the decimal separator: dot or comma.
+\end_layout
+
+\begin_layout Itemize
+the language used by your poker-client
+\end_layout
+
+\begin_layout Standard
+Language settings may seem to be nearly irrelevant if you are a newbie,
+ but incorrect settings can affect the scraper engine and the autoplayer
+ severly, even up to complete failure.
+ The only settings, that are guaranteed to work are english ones.
+ Others may or may not be compatible.
+ If you are new to botting be smart and stay on the safe side; there have
+ been more than enough lengthy threads by desperate newbies --- mostly caused
+ by incorrect settings.
+\end_layout
+
+\end_body
+\end_document
