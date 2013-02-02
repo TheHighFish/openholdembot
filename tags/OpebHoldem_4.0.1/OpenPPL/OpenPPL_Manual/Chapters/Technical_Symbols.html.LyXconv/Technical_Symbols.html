@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Technical_Symbols.tex"> 
+<meta name="date" content="2012-09-19 23:48:00"> 
+<link rel="stylesheet" type="text/css" href="Technical_Symbols.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>Technical Symbols</h2>
+<!--l. 31--><p class="noindent" >While building the OpenPPL library the developers had to create lots of internal
+supporting functions. Most of them are so technical that they are of no use for the
+end-user. However some of them might be helpful for people who want to extent the
+OpenPPL library with their own symbols. A function like SmallBlindChair
+might for example be useful for the development of PokerTracker symbols like
+PT_SmallBlind_VPIP.
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><colgroup id="TBL-1-3g"><col 
+id="TBL-1-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
+class="td11"> <!--l. 40--><p class="noindent" >Symbol                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 41--><p class="noindent" >Explanation                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-3"  
+class="td11"> <!--l. 42--><p class="noindent" >Remarks            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
+class="td11"> <!--l. 45--><p class="noindent" >Chair0StartingStackSize
+  ...
+  Chair9StartingStackSize              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 46--><p class="noindent" >Starting
+  stacksize
+  of
+  Chair
+  N
+  at
+  the
+  beginning
+  of
+  the
+  hand
+  (balance
+  +
+  currentbet).
+  Measured
+  in
+  bets,
+  not
+  in
+  dollars.                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-3"  
+class="td11"> <!--l. 48--><p class="noindent" >Mainly
+  for
+  preflop.
+  In
+  other
+  betting
+  rounds
+  it
+  returns
+  the
+  starting
+  stack
+  at
+  the
+  beginning
+  of
+  that
+  round.               </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
+class="td11"> <!--l. 51--><p class="noindent" >BigBlindCurrentBet,
+  SmallBlindCurrentBet                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 52--><p class="noindent" >Current
+  bets
+  of
+  the
+  blind
+  posters,
+  measured
+  in
+  dollars                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-3"  
+class="td11"> <!--l. 53--><p class="noindent" >Mainly
+  used
+  to
+  detect,
+  if
+  the
+  blinds
+  are
+  truely
+  raising
+  or
+  if
+  they
+  are
+  &#8220;blind
+  raisers&#8221;.             </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
+class="td11"> <!--l. 56--><p class="noindent" >ConstCardTwo
+  ...
+  ConstCardAce                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 57--><p class="noindent" >Named
+  card
+  constants
+  to
+  improve
+  readability
+  and
+  maintenability.
+  Useful
+  if
+  you
+  want
+  to
+  access
+  OpenHoldems
+  card
+  symbols
+  $$pr0,
+  $$pr1,
+  $$cr0
+  ...
+  $$cr4.                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-3"  
+class="td11"> <!--l. 60--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
+class="td11"> <!--l. 62--><p class="noindent" >ConstBetRoundPreflop,
+  ConstBetRoundFlop,
+  ConstBetRoundTurn,
+  ConstBetRoundRiver                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 63--><p class="noindent" >Named
+  constants
+  for
+  the
+  four
+  betting
+  rounds.
+  To
+  be
+  used
+  with
+  OpenHoldems
+  &#8220;betround&#8221;
+  symbol                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-3"  
+class="td11"> <!--l. 65--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
+class="td11"> <!--l. 67--><p class="noindent" >CommonCard0Paired
+  ...
+  CommonCard4Paired                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 68--><p class="noindent" >True,
+  if
+  the
+  rank
+  of
+  common
+  card
+  N
+  is
+  equal
+  to
+  the
+  rank
+  of
+  another
+  common
+  card.                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-3"  
+class="td11"> <!--l. 70--><p class="noindent" >Postflop
+  only                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
+class="td11"> <!--l. 72--><p class="noindent" >MaximumPossibleBetsizeIndollars </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
+class="td11"> <!--l. 73--><p class="noindent" >Maximum
+  Possible
+  bet
+  size
+  in
+  dollars
+  considering
+  our
+  current
+  bet
+  and
+  balance                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-3"  
+class="td11"> <!--l. 75--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
+class="td11"> <!--l. 77--><p class="noindent" >PT_LastCaller_Chair                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+class="td11"> <!--l. 78--><p class="noindent" >Last
+  Caller
+  Chair
+  number                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-3"  
+class="td11"> <!--l. 79--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
+class="td11"> <!--l. 81--><p class="noindent" >RankOfSetOnBoard                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-2"  
+class="td11"> <!--l. 82--><p class="noindent" >Rank
+  of
+  the
+  set
+  on
+  board                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-3"  
+class="td11"> <!--l. 83--><p class="noindent" >Valid
+  only,
+  if
+  there
+  are
+  3
+  or
+  4
+  cards
+  of
+  the
+  same
+  rank,
+  undefined
+  otherwise           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-1"  
+class="td11"> <!--l. 86--><p class="noindent" >RankOfSpareCardWhenTwoPairOnBoard </td> <td  style="white-space:wrap; text-align:left;" id="TBL-1-10-2"  
+class="td11"> <!--l. 87--><p class="noindent" >returns
+  rank
+  of
+  the
+  spare
+  card
+  when
+  two
+  pair
+  on
+  board
+  on
+  the
+  river                                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-10-3"  
+class="td11"> <!--l. 88--><p class="noindent" >River
+  only                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-1"  
+class="td11"> <!--l. 90--><p class="noindent" >RankOfTopPairOnBoard             </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-2"  
+class="td11"> <!--l. 91--><p class="noindent" >returns
+  rank
+  of
+  the
+  highest
+  pair
+  on
+  board
+  (true
+  also
+  if
+  set
+  or
+  twopair
+  or
+  fullhouse
+  on
+  board)                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-11-3"  
+class="td11"> <!--l. 93--><p class="noindent" >Postflop
+  only                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-1"  
+class="td11"> <!--l. 95--><p class="noindent" >SidePot                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-2"  
+class="td11"> <!--l. 96--><p class="noindent" >Pot
+  size
+  (in
+  number
+  of
+  blinds)
+  we
+  are
+  not
+  participating
+  in
+  due
+  to
+  opponents
+  bet
+  being
+  bigger
+  than
+  the
+  sum
+  of
+  our
+  balance
+  plus
+  currentbet.
+  PotSize
+  returns
+  effective
+  pot
+  size
+  because
+  SidePot
+  amount
+  is
+  subtracted
+  from
+  it.                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-12-3"  
+class="td11"> <!--l. 100--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-1"  
+class="td11"> <!--l. 102--><p class="noindent" >SidePotInDollars                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-2"  
+class="td11"> <!--l. 103--><p class="noindent" >Pot
+  size
+  (in
+  dollars)
+  we
+  are
+  not
+  partecipating
+  in
+  due
+  to
+  opponents
+  bet
+  being
+  bigger
+  than
+  the
+  sum
+  of
+  our
+  balance
+  plus
+  currentbet                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-13-3"  
+class="td11"> <!--l. 105--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-1"  
+class="td11"> <!--l. 107--><p class="noindent" >EarlyPosition1Chair
+  ...
+  MiddlePosition3Chair,
+  CutOffChair,
+  ButtonChair,
+  SmallBlindChair,
+  BigBlindChair                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-2"  
+class="td11"> <!--l. 109--><p class="noindent" >Chair
+  numbers
+  of
+  the
+  specific
+  players.
+  Could
+  be
+  used
+  e.g.
+  for
+  symbols
+  like
+  PT_SmallBlind_VPIP              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-14-3"  
+class="td11"> <!--l. 111--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-1"  
+class="td11"> <!--l. 113--><p class="noindent" >AggressorChair                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-2"  
+class="td11"> <!--l. 114--><p class="noindent" >Same
+  meaning
+  as
+  ac_aggressor,
+  but
+  more
+  reliable.
+  ac_aggressor
+  alone
+  is
+  somewhat
+  unreliable,
+  as
+  it
+  gets
+  scraped
+  (by
+  bets).
+  But
+  if
+  we
+  raise
+  and
+  there
+  are
+  super-fast
+  calls
+  behind
+  us
+  (e.g.
+  at
+  PokerAcademy),
+  then
+  we
+  don&#8217;t
+  have
+  stable
+  frames
+  and
+  soon
+  we
+  will
+  switch
+  to
+  the
+  next
+  betting
+  round,
+  so
+  OpenHoldem
+  might
+  miss
+  the
+  aggressor.
+  This
+  symbol
+  also
+  considers
+  our
+  last
+  action
+  and
+  the
+  amount
+  to
+  call
+  to
+  overcome
+  this
+  problem.                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-15-3"  
+class="td11"> <!--l. 120--><p class="noindent" >None                </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-1"  
+class="td11"> <!--l. 122--><p class="noindent" >SmallBlindRaising
+  ...
+  ButtonRaising                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-2"  
+class="td11"> <!--l. 123--><p class="noindent" >True,
+  if
+  the
+  chair
+  in
+  question
+  is
+  betting
+  or
+  raising.
+  Contrary
+  to
+  OpenHoldems
+  conventions
+  &#8220;blind
+  raisers&#8221;
+  are
+  not
+  counted
+  preflop;
+  only
+  if
+  they
+  truely
+  raise.                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-16-3"  
+class="td11"> <div class="multicolumn"  style="white-space:wrap; text-align:left;">Meant
+  for
+  preflop,
+  also
+  working
+  postflop,
+  though
+  it
+  counts
+  betters
+  to.</div>
+</td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-17-1"  
+class="td11">                              </td> </tr></table>
+
+</div>  
+</body></html> 
+
+
+
