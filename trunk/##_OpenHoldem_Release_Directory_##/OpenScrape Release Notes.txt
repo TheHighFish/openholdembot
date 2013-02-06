@@ -1,3 +1,11 @@
+v4.0.2 2013-xx-yy
+=================
+BUG FIXES:
+- One function had an IO-parameter instead of a local variable.
+  The input got never set and the output never used.
+  This caused a an exception and has now been fixed.
+  [THF]
+
 v4.0.0 2013-01-26
 =================
 NEW STUFF:
