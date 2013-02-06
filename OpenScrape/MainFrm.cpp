@@ -237,7 +237,6 @@ void CMainFrame::OnViewConnecttowindow()
 	CDlgSelectTable		cstd;
 	STableList			tablelisthold;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	RECT				newrect;
 
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
@@ -277,7 +276,7 @@ void CMainFrame::OnViewConnecttowindow()
 			pDoc->attached_rect.bottom = g_tlist[cstd.selected_item].crect.bottom;
 
 			SaveBmpPbits();
-			ResizeWindow(pDoc, newrect);	
+			ResizeWindow(pDoc);	
 		}
 	}
 	ForceRedraw();
@@ -469,8 +468,9 @@ void CMainFrame::BringOpenScrapeBackToFront()
 	::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
 }
 
-void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect)
+void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc)
 {
+	RECT newrect;
 	::GetClientRect(pDoc->attached_hwnd, &newrect);
 	AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
 	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
@@ -479,7 +479,7 @@ void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect)
 void CMainFrame::OnViewRefresh()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	RECT				crect, newrect;
+	RECT				crect;
 
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
@@ -497,7 +497,7 @@ void CMainFrame::OnViewRefresh()
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
 
-		ResizeWindow(pDoc, newrect);			
+		ResizeWindow(pDoc);			
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
@@ -515,7 +515,7 @@ void CMainFrame::OnViewRefresh()
 void CMainFrame::OnViewPrev()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	RECT				crect, newrect;
+	RECT				crect;
 
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
@@ -573,7 +573,7 @@ void CMainFrame::OnViewPrev()
 		pDoc->attached_rect.right = crect.right;
 		pDoc->attached_rect.bottom = crect.bottom;
 
-		ResizeWindow(pDoc, newrect);	
+		ResizeWindow(pDoc);	
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
@@ -590,7 +590,7 @@ void CMainFrame::OnViewPrev()
 void CMainFrame::OnViewNext()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	RECT				crect, newrect;
+	RECT				crect;
 
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
@@ -636,7 +636,7 @@ void CMainFrame::OnViewNext()
 		int size_y = crect.bottom - crect.top + 1;
 		SetTablemapSizeIfUnknown(size_x, size_y);
 
-		ResizeWindow(pDoc, newrect);	
+		ResizeWindow(pDoc);	
 
 		// Instruct table-map dialog to update
 		theApp.m_TableMapDlg->update_display();
