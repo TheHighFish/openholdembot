@@ -48,7 +48,7 @@ private:
 	bool CreateToolbar();
 	bool CreateStatusBar();
 	void ForceRedraw();
-	void ResizeWindow(COpenScrapeDoc *pDoc, RECT newrect);
+	void ResizeWindow(COpenScrapeDoc *pDoc);
 	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
 
