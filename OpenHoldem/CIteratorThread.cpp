@@ -1,9 +1,23 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose:
+//
+//*****************************************************************************
+
 #include "stdafx.h"
 #include "CIteratorThread.h"
 
 #include <process.h>
 #include "CBetroundCalculator.h"
 #include "CGrammar.h"
+#include "CiteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -19,8 +33,6 @@
 
 
 CIteratorThread		*p_iterator_thread = NULL;
-
-CIteratorVars		iter_vars;
 
 //weighted prwin lookup tables for non-suited and suited cards
 int pair2ranko[170] = {0}, pair2ranks[170] = {0};
@@ -55,37 +67,6 @@ char *prwin_handrank_table_169[k_number_of_starting_hands] =
 	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
 };
 
-CIteratorVars::CIteratorVars()
-{
-	ResetVars();
-}
-
-CIteratorVars::~CIteratorVars()
-{
-}
-
-void CIteratorVars::ResetVars()
-{
-	write_log(prefs.debug_prwin(), "[PrWinThread] Reset variables\n");
-	_nit = 0;
-	_f$p = 0;
-	_br = 0;
-
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-		_pcard[i] = CARD_NOCARD;
-
-	for (int i=0; i<k_number_of_community_cards; i++)
-		_ccard[i] = CARD_NOCARD;
-
-	_prwin = 0;
-	_prtie = 0;
-	_prlos = 0;
-	_iterator_thread_running = false;
-	_iterator_thread_complete = true;
-	_iterator_thread_progress = 0;
-}
-
-
 
 CIteratorThread::CIteratorThread()
 {
@@ -113,17 +94,19 @@ CIteratorThread::~CIteratorThread()
 {
 	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
 
-	// Trigger thread to die
-	::SetEvent(_m_stop_thread);
+	if (_m_stop_thread)
+	{
+		// Trigger thread to die
+		::SetEvent(_m_stop_thread);
 
-	// Wait until thread finished
-	::WaitForSingleObject(_m_wait_thread, INFINITE);
+		// Wait until thread finished
+		::WaitForSingleObject(_m_wait_thread, INFINITE);
 
-	// Close handles
-	::CloseHandle(_m_stop_thread);
-	::CloseHandle(_m_wait_thread);
-
-	StopIteratorThread();
+		// Close handles
+		::CloseHandle(_m_stop_thread);
+		::CloseHandle(_m_wait_thread);
+	}
+	p_iterator_thread = NULL;
 
 	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
@@ -133,8 +116,9 @@ void CIteratorThread::StopIteratorThread()
 	if (p_iterator_thread)
 	{
 		write_log(prefs.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
+		// Delete does implicitly call the destructor.
+		// All other stuff gets handled there.
 		delete p_iterator_thread;
-		p_iterator_thread = NULL;
 	}
 }
 
@@ -145,7 +129,7 @@ void CIteratorThread::RestartIteratorThread()
 	p_iterator_thread = new CIteratorThread;
 }
 
-void CIteratorThread::RestartIteratorThreadIfNotRunning()
+void CIteratorThread::StartIteratorThreadIfNeeded()
 {
 	if (p_iterator_thread)
 	{
@@ -510,7 +494,6 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		iter_vars.set_iterator_thread_progress(0);
 		iter_vars.set_nit(0);
 		iter_vars.set_f$p(0);
-		iter_vars.set_br(0);
 
 		for (int i=0; i<k_number_of_cards_per_player; i++)
 			iter_vars.set_pcard(i, CARD_NOCARD);
@@ -524,7 +507,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
-	StopIteratorThread();
+	//!!!StopIteratorThread();
 
 	return 0;
 }
@@ -541,7 +524,6 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_progress(0);
 	iter_vars.set_nit(10000); //!! f$prwin_number_of_iterations")
 	iter_vars.set_f$p(p_symbol_engine_prwin->nopponents_for_prwin());
-	iter_vars.set_br(p_betround_calculator->betround());
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), i));
