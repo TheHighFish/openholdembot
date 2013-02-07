@@ -1,3 +1,15 @@
+v4.0.2 2013-02-07
+==================
+BUG FIXES: 
+- The refactoring of the iterator-thread led to an endless-recursion
+  and finally stack-overflow. Thanks to Krishot for finding that problem.
+  [THF]
+  
+MAINTENANCE:
+- Sepatating CIteratorThread and CIteratorVars classes,
+  as code was a chaos.
+  [THF]
+
 v4.0.1 2013-02-02
 ==================
 BUG FIXES: 
