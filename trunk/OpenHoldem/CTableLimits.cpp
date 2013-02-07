@@ -7,6 +7,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineIsTournament.h"
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
@@ -80,8 +81,8 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
 	write_log(3, "CTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
 	write_log(3, "CTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
-	write_log(3, "CTableLimits: istournament: %d\n", IsTrue(p_tablelimits->istournament()));
-	if (blinds_locked_for_complete_session || p_tablelimits->istournament())
+	write_log(3, "CTableLimits: istournament: %d\n", IsTrue(p_symbol_engine_istournament->istournament()));
+	if (blinds_locked_for_complete_session || p_symbol_engine_istournament->istournament())
 	{
 		write_log(3, "CTableLimits: blinds_locked_for_complete_session or istournament\n");
 		write_log(3, "CTableLimits: Leaving CTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
@@ -516,7 +517,6 @@ void CTableLimits::CalcTableLimits()
 		SetGametype(p_scraper->s_limit_info()->limit);									// lim
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
-	_istournament = p_scraper->s_limit_info()->istournament;	
 
 	write_log(3, "CTableLimits: input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(3, "CTableLimits: input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);

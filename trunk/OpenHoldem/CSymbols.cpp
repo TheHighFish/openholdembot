@@ -17,6 +17,7 @@
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "MainFrm.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
@@ -34,6 +35,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
@@ -352,7 +354,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return p_tablelimits->isnl();
 		if (memcmp(a, "ispl", 4)==0 && strlen(a)==4)						return p_tablelimits->ispl();
 		if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return p_tablelimits->isfl();
-		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return p_tablelimits->istournament();
+		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return p_symbol_engine_istournament->istournament();
 
 		// HAND TESTS 2(2)
 		if (memcmp(a, "ishandup", 8)==0 && strlen(a)==8)					return p_symbol_engine_pokerval->ishandup(); 

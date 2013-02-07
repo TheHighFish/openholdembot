@@ -11,6 +11,7 @@
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolengineChipAmounts.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbols.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -179,7 +180,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	double		sym_sblind = p_tablelimits->sblind();
 	double		sym_ante = p_tablelimits->ante();
 	int			sym_lim = p_tablelimits->gametype();
-	bool		sym_istournament = p_tablelimits->istournament();
+	bool		sym_istournament = p_symbol_engine_istournament->istournament();
 	double		sym_pot = p_symbol_engine_chip_amounts->pot();
 
 	// Get size of current client window
@@ -348,7 +349,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_ante			= p_tablelimits->ante();
 	int sym_lim				= p_tablelimits->gametype();
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
-	bool sym_istournament	= p_tablelimits->istournament();
+	bool sym_istournament	= p_symbol_engine_istournament->istournament();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
 	bool sym_playing		= p_scraper_access->UserHasCards();
 

@@ -4,6 +4,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
