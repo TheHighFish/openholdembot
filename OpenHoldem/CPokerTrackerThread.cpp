@@ -8,6 +8,7 @@
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
@@ -947,7 +948,7 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 
 void CPokerTrackerThread::SetHandsStat()
 {
-	int tourney = p_tablelimits->istournament();
+	int tourney = p_symbol_engine_istournament->istournament();
 	if (tourney)
 	{
 		_m_handsStats = ptt_hands;

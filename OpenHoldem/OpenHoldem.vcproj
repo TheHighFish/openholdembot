@@ -333,10 +333,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CIteratorThread.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CLazyScraper.cpp"
 				>
 			</File>
@@ -967,6 +963,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CSymbolEngineIsTournament.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CSymbolEngineLists.cpp"
 					>
 				</File>
@@ -1107,6 +1107,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PrWin"
+				>
+				<File
+					RelativePath=".\CIteratorThread.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CIteratorVars.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1143,10 +1155,6 @@
 			</File>
 			<File
 				RelativePath=".\CHeartbeatThread.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CIteratorThread.h"
 				>
 			</File>
 			<File
@@ -1525,6 +1533,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CSymbolEngineIsTournament.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CSymbolEngineLists.h"
 					>
 				</File>
@@ -1833,6 +1845,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PrWin"
+				>
+				<File
+					RelativePath=".\CIteratorThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CIteratorVars.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -1876,41 +1900,58 @@
 			Name="Documents"
 			>
 			<File
-				RelativePath="..\Checklist_Release.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Checklist_Release_OpenPPL.txt"
-				>
-			</File>
-			<File
 				RelativePath=".\HeaderCopyrightDocumentation.txt"
 				>
 			</File>
 			<File
-				RelativePath="..\ManualMode Release Notes.txt"
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm"
+				DeploymentContent="true"
 				>
 			</File>
 			<File
-				RelativePath="..\OHReplay Release Notes.txt"
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI"
 				>
 			</File>
 			<File
-				RelativePath="..\OpenHoldem Release Notes.txt"
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\sources of code.txt"
 				>
 			</File>
-			<File
-				RelativePath="..\OpenPPL Release Notes.txt"
+			<Filter
+				Name="Release Notes"
 				>
-			</File>
-			<File
-				RelativePath="..\OpenScrape Release Notes.txt"
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Checklist for Releases"
 				>
-			</File>
-			<File
-				RelativePath="..\sources of code.txt"
-				>
-			</File>
+				<File
+					RelativePath="..\Checklist_Release.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Checklist_Release_OpenPPL.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

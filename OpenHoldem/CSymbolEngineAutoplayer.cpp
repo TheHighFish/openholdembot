@@ -6,6 +6,7 @@
 #include "CCasinoInterface.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"

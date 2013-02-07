@@ -11,6 +11,7 @@
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
+#include "CIteratorVars.h"
 #include "CIteratorThread.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -247,7 +248,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
-			// reset iterator vars
+			// reset iterator vars !!! not here!
 			iter_vars.ResetVars();
 
 			// Send "connect" and HWND to scraper DLL, if loaded

@@ -7,6 +7,7 @@
 #include "CBetroundCalculator.h"
 #include "CFilenames.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"

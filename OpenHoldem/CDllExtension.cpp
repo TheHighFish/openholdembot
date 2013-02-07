@@ -7,6 +7,7 @@
 #include "CHandresetDetector.h"
 #include "CHandHistory.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"
 #include "Cversus.h"
@@ -159,10 +160,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		}
 		else
 		{
-			if (p_iterator_thread)
-				delete p_iterator_thread;
-
-			p_iterator_thread = new CIteratorThread;
+			p_iterator_thread->RestartIteratorThread();
 		}
 
 		// Recompute versus tables
