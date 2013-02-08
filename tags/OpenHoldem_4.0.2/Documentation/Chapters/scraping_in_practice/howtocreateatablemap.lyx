@@ -1,0 +1,1359 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Scraping
+\end_layout
+
+\end_inset
+
+Scraping In Practice
+\end_layout
+
+\begin_layout Section
+How Do I Make A Map
+\end_layout
+
+\begin_layout Standard
+This tutorial has been contributed by Ares® at 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=6547
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Here I will show you how I make a map from start to finish, do not know
+ if is the right way but so is what I do.
+\end_layout
+
+\begin_layout Standard
+checking the version
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/VersionDialog.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Version Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+changing the settings(always disable useless things like Animation)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/PreferencesDialog.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+choosing the type of table
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/TableviewDialog.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Dialog Tableview
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+table after the settings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table01.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Table with changed settings
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A quickly checked, I can see some things that have to do
+\end_layout
+
+\begin_layout Standard
+- fonts are two colors, I have to use pXname
+\backslash
+uXname to the names and pXbalance
+\backslash
+uXbalance for the balance - dealer is large and well positioned - the cards
+ can be hash, Image or Fonts Fuzzy, but I will use hash easier and faster
+ - possible oclusion in pXcardback
+\end_layout
+
+\begin_layout Subsection
+Scraping Cards
+\end_layout
+
+\begin_layout Standard
+there are 3 methods to collect cards
+\end_layout
+
+\begin_layout Standard
+scraping cards using hash scraping cards using fuzzy scraping cards using
+ Image(URL)
+\end_layout
+
+\begin_layout Standard
+In this example we are using "hash" to check the other methods, visit the
+ links above.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table02.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+x!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+see I created 5 regions for the common cards, but to know the exact size
+ of the region I'm using my card.
+\end_layout
+
+\begin_layout Standard
+height 431 - 395 = 36 width 381 - 368 = 13
+\end_layout
+
+\begin_layout Standard
+see that the arrow 3 in one hand I hold the line in the black but up 1 space
+ left, so I will use to align the common cards
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/table03.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+x!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What do I do now is take the measures that have 36x13 and put in each region.
+\end_layout
+
+\begin_layout Standard
+All regions will appear in the upper left corner, see the blue arrow
+\end_layout
+
+\begin_layout Standard
+now is so click and drag to the right place
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table04.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+x!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Always make sure that we stay the same alignment for the cards
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Alignment01.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+checking alignment
+\end_layout
+
+\begin_layout Standard
+all regions should have the same height.
+\end_layout
+
+\begin_layout Standard
+the space between one region and another should be equal.
+\end_layout
+
+\begin_layout Standard
+when the fourth card is not aligned, examples Ipoker, CakePoker should use
+ fuzzy
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Alignment02.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+after I have aligned the common cards, I will create and align the cards
+ from each player.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Player0.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After I have done it, I will seek a table of play money very loose.
+\end_layout
+
+\begin_layout Standard
+this is one of the secrets to make a TM very quick, I already managed to
+ get 20 cards at once.
+\end_layout
+
+\begin_layout Standard
+Now I will create the regions pXcardface0/pXcardface1
+\end_layout
+
+\begin_layout Standard
+in OpenSrape I create the region for the first player, see that I put the
+ size 36x13 and transform hash0, save and close the OpenSrape
+\end_layout
+
+\begin_layout Standard
+here I opened the file in a text editor, here is the 2 regions that created
+ the first player
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor01.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+what I do is copy the region's first player and paste several times,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor02.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now it's just changing the numbers of the Player
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor03.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+here all the regions of players ready to drag and drop 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/RegionsReadyToBeAligned.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Be careful
+\end_layout
+
+\begin_layout Standard
+a gift from Ultimatebet
+\end_layout
+
+\begin_layout Standard
+Today the client has been updated.
+\end_layout
+
+\begin_layout Standard
+but it was only updates internal nothing to be concerned about
+\end_layout
+
+\begin_layout Standard
+Always be aware of this
+\end_layout
+
+\begin_layout Standard
+(Drag e Drop) Select the region you want to move, in the example "p7cardface0"
+ the region will be flashing in yellow press the "Shift" put the mouse pointer
+ over the region and click and hold the region
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table05.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+see the cards marked with arrows, not used to be collected
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table06.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+see all regions is aligned
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/RegionsAligned.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Rest of images!!!!!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+giving back alignment
+\end_layout
+
+\begin_layout Standard
+pay close attention, because if one region is misaligned, all their work
+ of collecting cards will be wrong
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table07.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Openscrape showing aligned regions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+collecting a card 1- select the region 2- click "Create Image" 3 - put name
+ 4 - click "OK"
+\end_layout
+
+\begin_layout Standard
+Creat Hash - step 1
+\end_layout
+
+\begin_layout Enumerate
+select image (8s) 
+\end_layout
+
+\begin_layout Enumerate
+click "Creat Hash" 
+\end_layout
+
+\begin_layout Enumerate
+select "Hash 0" 
+\end_layout
+
+\begin_layout Enumerate
+click "OK"
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table08.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Creat Hash - step 2
+\end_layout
+
+\begin_layout Enumerate
+click menu "Edit" 
+\end_layout
+
+\begin_layout Enumerate
+click " Update Hashes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table09.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now OpenScrape already recognizes the card "8s"
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table10.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+test12345#fdfdsfdsfsdgg
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+My next step is to create the regions "pXbet", but the picture below shows
+ an occlusion of "bets" between the players2 and player3.
+\end_layout
+
+\begin_layout Standard
+Scraping the bet-amounts??? is the preferred solution, as it is easy and
+ doesn't utilize the CPU much.
+ Scraping bet-amounts??? is not applicable in our case, as the numbers can
+ be occluded by the chip-stacks.
+ Therefore we have to use the alternative "chip scraping", i.e.
+ recognizing and counting chip-stacks.
+\end_layout
+
+\begin_layout Standard
+We will use the regions pXchip00, pXchip01 and pXchip10 for players, and
+ c0potXchip00, c0potXchip01, c0potXchip10 for pots.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table11.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table12.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+the timer of this Player8 covering the chip, I will reduce the size to 7x22
+\end_layout
+
+\begin_layout Standard
+open the TM in a text editor and create the new regions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor04.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The best place to align the pXchipXX is in blinds, because you get to see
+ here usually single chips
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table13.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+- chip should be collected as a image - the name of the picture must have
+ a "$" at the beginning (examples: $0.01, $0.25, $1, $5, $100000)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table14.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Hash Points
+\end_layout
+
+\begin_layout Standard
+To use any other kind of hash, excluding "hash0" must create new hash points.
+ To this we must use the "Hash Point Graphical Editor"
+\end_layout
+
+\begin_layout Standard
+1 - click Hash Points 2 - click edit 3 - select the hash 4 - select one
+ chip image 5 - zoom to 16x
+\end_layout
+
+\begin_layout Standard
+click where it marked with arrows
+\end_layout
+
+\begin_layout Standard
+see created two new hash points to the "hash1" click "OK"
+\end_layout
+
+\begin_layout Standard
+I was forced to change the position of the hash point, the chip of One Dollar
+ was causing error.
+\end_layout
+
+\begin_layout Standard
+Re: How do I make a map PostPosted: Sat Dec 06, 2008 7:27 pm Offline Posts
+ Too Much User avatar
+\end_layout
+
+\begin_layout Standard
+Joined: Wed Jan 02, 2008 5:04 am Posts: 1311 Location: Portugal direction
+ of increased chip
+\end_layout
+
+\begin_layout Standard
+order of alignment
+\end_layout
+
+\begin_layout Standard
+pXchip00 is the first, pXchip01 always on top and pXchip10 always in the
+ direction of increase
+\end_layout
+
+\begin_layout Standard
+pXchipXX aligned
+\end_layout
+
+\begin_layout Standard
+Connecting the table
+\end_layout
+
+\begin_layout Standard
+to connect a table need only 2 things - clientsize - titletext
+\end_layout
+
+\begin_layout Standard
+clientsize
+\end_layout
+
+\begin_layout Standard
+OpenScrape provides the size of table, create the "clientsize" and define
+ the size
+\end_layout
+
+\begin_layout Standard
+titletext
+\end_layout
+
+\begin_layout Standard
+here we see 3 title NL, FL, PL Always look for a string that is in every
+ title the strig "Holdem" is equal in all
+\end_layout
+
+\begin_layout Standard
+we add the string "Holdem"
+\end_layout
+
+\begin_layout Standard
+to verify that the "bets" work properly we need to add the number of players
+\end_layout
+
+\begin_layout Standard
+Re: How do I make a map
+\end_layout
+
+\begin_layout Standard
+Common Pots
+\end_layout
+
+\begin_layout Standard
+for the "common pots" are used these 3 symbols c0potXchip00, c0potXchip01
+ and c0potXchip10.
+\end_layout
+
+\begin_layout Standard
+most sites has 3 pots
+\end_layout
+
+\begin_layout Standard
+This site has 5 pots
+\end_layout
+
+\begin_layout Standard
+*the fifth pot does not appear in the picture, only show the location
+\end_layout
+
+\end_body
+\end_document

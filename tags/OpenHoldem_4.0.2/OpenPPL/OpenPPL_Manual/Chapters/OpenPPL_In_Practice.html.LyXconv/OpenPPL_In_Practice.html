@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="OpenPPL_In_Practice.tex"> 
+<meta name="date" content="2012-01-22 01:24:00"> 
+<link rel="stylesheet" type="text/css" href="OpenPPL_In_Practice.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>OpenPPL In Practice</h2>
+<!--l. 27--><p class="noindent" >If you have read this manual up to this point you have some basic understanding of
+OpenPPL: syntactical rules, symbols, etc. But the main thing &#8212; turning your
+poker-knowledge into bot-logic &#8212; may look like a different kind of beast, if you have no
+programming experience at all. So let us take some small examples and see how
+OpenPPL is used in practice.
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Folding Trash</h3>
+   <!--l. 38-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-2001r1"></a></span>NEW&#x00A0;LIST&#x00A0;000&#x00A0;<br /><span class="label"><a 
+ id="x1-2002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Trashy&#x00A0;hands.&#x00A0;<br /><span class="label"><a 
+ id="x1-2003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Never&#x00A0;to&#x00A0;be&#x00A0;played,&#x00A0;except&#x00A0;we&#x00A0;are&#x00A0;in&#x00A0;the&#x00A0;blinds&#x00A0;<br /><span class="label"><a 
+ id="x1-2004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;K8s&#x00A0;K7s&#x00A0;K6s&#x00A0;K5s&#x00A0;K4s&#x00A0;K3s&#x00A0;K2s&#x00A0;Q7s...&#x00A0;<br /><span class="label"><a 
+ id="x1-2005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;K8o&#x00A0;...&#x00A0;32o&#x00A0;<br /><span class="label"><a 
+ id="x1-2006r6"></a></span>END&#x00A0;LIST&#x00A0;<br /><span class="label"><a 
+ id="x1-2007r7"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-2008r8"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-2009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Make&#x00A0;life&#x00A0;easy&#x00A0;and&#x00A0;get&#x00A0;rid&#x00A0;of&#x00A0;the&#x00A0;greatest&#x00A0;trash&#x00A0;<br /><span class="label"><a 
+ id="x1-2010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(NOT&#x00A0;In&#x00A0;BigBlind&#x00A0;AND&#x00A0;islist000)&#x00A0;FOLD&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-3000"></a>Open-Raising On The Button</h3>
+   <!--l. 56-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-3001r1"></a></span>WHEN&#x00A0;(StillToAct&#x00A0;=&#x00A0;2&#x00A0;AND&#x00A0;Calls&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;0)&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;AA)&#x00A0;OR&#x00A0;(Hand&#x00A0;=&#x00A0;KK)&#x00A0;OR&#x00A0;...)&#x00A0;RAISE&#x00A0;3&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-4000"></a>Threebetting A Steal-Raiser</h3>
+   <!--l. 66-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-4001r1"></a></span>//&#x00A0;LastRaiserPosition&#x00A0;&#x003C;=&#x00A0;3&#x00A0;means:&#x00A0;CO,&#x00A0;BU&#x00A0;or&#x00A0;SB&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>WHEN&#x00A0;(calls&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;1&#x00A0;AND&#x00A0;LastRaiserPosition&#x00A0;&#x003C;=&#x00A0;3)&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(AmountToCall&#x00A0;&#x003C;=&#x00A0;3&#x00A0;AND&#x00A0;islist...)&#x00A0;RAISE&#x00A0;9&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-5000"></a>Contibetting</h3>
+   <!--l. 77-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-5001r1"></a></span>FLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-5002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Bets&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;BotIsLastRaiser)&#x00A0;<br /><span class="label"><a 
+ id="x1-5003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Opponents&#x00A0;=&#x00A0;1&#x00A0;AND&#x00A0;Random&#x00A0;&#x003C;&#x00A0;80)&#x00A0;BETHALFPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-5004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Opponents&#x00A0;=&#x00A0;2&#x00A0;AND&#x00A0;Position&#x00A0;=&#x00A0;Last)&#x00A0;BET&#x00A0;66%&#x00A0;FORCE
+   </div>
+
+   <h3 class="sectionHead"><a 
+ id="x1-6000"></a>Effective StackSize</h3>
+   <!--l. 89-->
+   <div class="lstlisting" id="listing-5"><span class="label"><a 
+ id="x1-6001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;EffectiveStacksize&#x00A0;<br /><span class="label"><a 
+ id="x1-6002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;First&#x00A0;orbit&#x00A0;preflop&#x00A0;only,&#x00A0;as&#x00A0;it&#x00A0;uses&#x00A0;MaxStillToActStackSize&#x00A0;<br /><span class="label"><a 
+ id="x1-6003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(StackSize&#x00A0;&#x003E;&#x00A0;MaxStillToActStackSize)&#x00A0;RETURN&#x00A0;MaxStillToActStackSize&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-6004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;StackSize&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-6005r5"></a></span>END&#x00A0;SYMBOL
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-7000"></a>Push/Folding In A SNG</h3>
+   <!--l. 102-->
+   <div class="lstlisting" id="listing-6"><span class="label"><a 
+ id="x1-7001r1"></a></span>//&#x00A0;Going&#x00A0;into&#x00A0;push<span 
+class="cmsy-10">-</span>fold<span 
+class="cmsy-10">-</span>mode&#x00A0;when&#x00A0;stacksizes&#x00A0;are&#x00A0;small&#x00A0;<br /><span class="label"><a 
+ id="x1-7002r2"></a></span>//&#x00A0;But&#x00A0;be&#x00A0;careful!&#x00A0;<br /><span class="label"><a 
+ id="x1-7003r3"></a></span>//&#x00A0;We&#x00A0;don&#8217;t&#x00A0;want&#x00A0;to&#x00A0;push&#x00A0;loosely&#x00A0;if&#x00A0;something&#x00A0;is&#x00A0;wrong&#x00A0;with&#x00A0;the&#x00A0;stacksize,&#x00A0;<br /><span class="label"><a 
+ id="x1-7004r4"></a></span>//&#x00A0;e.g.&#x00A0;because&#x00A0;the&#x00A0;table&#x00A0;was&#x00A0;occluded,&#x00A0;so&#x00A0;we&#x00A0;check,&#x00A0;if&#x00A0;it&#x00A0;is&#x00A0;non<span 
+class="cmsy-10">-</span>zero.&#x00A0;<br /><span class="label"><a 
+ id="x1-7005r5"></a></span>WHEN&#x00A0;((EffectiveStacksize&#x00A0;&#x003E;&#x00A0;0)&#x00A0;AND&#x00A0;(EffectiveStacksize&#x00A0;&#x003C;=&#x00A0;13)&#x00A0;<br /><span class="label"><a 
+ id="x1-7006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(Calls&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;(Hand=&#x00A0;...))&#x00A0;RAISEMAX&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-8000"></a>Detecting A Limp-Raise</h3>
+   <!--l. 116-->
+   <div class="lstlisting" id="listing-7"><span class="label"><a 
+ id="x1-8001r1"></a></span>//&#x00A0;First&#x00A0;action&#x00A0;preflop&#x00A0;<br /><span class="label"><a 
+ id="x1-8002r2"></a></span>WHEN&#x00A0;(BotsActionsOnThisRound&#x00A0;=&#x00A0;0&#x00A0;AND&#x00A0;Calls&#x00A0;&#x003E;=&#x00A0;1&#x00A0;AND&#x00A0;Raises&#x00A0;=&#x00A0;0)&#x00A0;<br /><span class="label"><a 
+ id="x1-8003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;FirstCallerPosition&#x00A0;is&#x00A0;limited&#x00A0;to&#x00A0;first&#x00A0;orbit&#x00A0;preflop&#x00A0;only,&#x00A0;<br /><span class="label"><a 
+ id="x1-8004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;so&#x00A0;we&#x00A0;remember&#x00A0;it,&#x00A0;making&#x00A0;use&#x00A0;of&#x00A0;advanced&#x00A0;memory&#x00A0;symbols&#x00A0;<br /><span class="label"><a 
+ id="x1-8005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;me_st_MemFirstCallerPosition_FirstCallerPosition&#x00A0;<br /><span class="label"><a 
+ id="x1-8006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Then&#x00A0;continue&#x00A0;with&#x00A0;normal&#x00A0;bot<span 
+class="cmsy-10">-</span>logic&#x00A0;<br /><span class="label"><a 
+ id="x1-8007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;....&#x00A0;<br /><span class="label"><a 
+ id="x1-8008r8"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-8009r9"></a></span>//&#x00A0;After&#x00A0;that&#x00A0;we&#x00A0;can&#x00A0;detect&#x00A0;a&#x00A0;limp<span 
+class="cmsy-10">-</span>raise&#x00A0;like&#x00A0;that&#x00A0;<br /><span class="label"><a 
+ id="x1-8010r10"></a></span>//&#x00A0;(assuming,&#x00A0;there&#x00A0;are&#x00A0;no&#x00A0;other&#x00A0;raisers&#x00A0;in&#x00A0;the&#x00A0;pot)&#x00A0;<br /><span class="label"><a 
+ id="x1-8011r11"></a></span>WHEN&#x00A0;(LastRaiserPosition&#x00A0;=&#x00A0;me_re_MemFirstCallerPosition)&#x00A0;...
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-9000"></a>Counting Outs </h3>
+   <!--l. 135-->
+   <div class="lstlisting" id="listing-8"><span class="label"><a 
+ id="x1-9001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;MySimpleOutsCounter&#x00A0;<br /><span class="label"><a 
+ id="x1-9002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveNutFlushDraw&#x00A0;AND&#x00A0;HaveNutStraightDraw)&#x00A0;<br /><span class="label"><a 
+ id="x1-9003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;We&#x00A0;already&#x00A0;have&#x00A0;9&#x00A0;+&#x00A0;8&#x00A0;<span 
+class="cmsy-10">-</span>&#x00A0;2&#x00A0;duplicates&#x00A0;<br /><span class="label"><a 
+ id="x1-9004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Plus&#x00A0;up&#x00A0;to&#x00A0;6&#x00A0;undiscounted&#x00A0;outs&#x00A0;for&#x00A0;Overcards&#x00A0;<br /><span class="label"><a 
+ id="x1-9005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;but&#x00A0;some&#x00A0;may&#x00A0;be&#x00A0;already&#x00A0;counted&#x00A0;for&#x00A0;the&#x00A0;flush&#x00A0;<br /><span class="label"><a 
+ id="x1-9006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;(if&#x00A0;we&#x00A0;want&#x00A0;to&#x00A0;make&#x00A0;it&#x00A0;extra&#x00A0;good,&#x00A0;we&#x00A0;should&#x00A0;check&#x00A0;the&#x00A0;colours&#x00A0;<br /><span class="label"><a 
+ id="x1-9007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;of&#x00A0;our&#x00A0;hole&#x00A0;cards&#x00A0;with&#x00A0;OpenHoldems&#x00A0;symbols&#x00A0;$$ps0&#x00A0;and&#x00A0;$$ps1)&#x00A0;<br /><span class="label"><a 
+ id="x1-9008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;The&#x00A0;others&#x00A0;should&#x00A0;be&#x00A0;discounted&#x00A0;a&#x00A0;bit&#x00A0;<br /><span class="label"><a 
+ id="x1-9009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(OverCards&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;18&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-9010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(OverCards&#x00A0;=&#x00A0;1)&#x00A0;RETURN&#x00A0;16.5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-9011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(OverCards&#x00A0;=&#x00A0;0)&#x00A0;RETURN&#x00A0;15&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-9012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveNutFlushDraw)&#x00A0;//&#x00A0;AND&#x00A0;NOT&#x00A0;HaveNutStraightDraw&#x00A0;<br /><span class="label"><a 
+ id="x1-9013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveInsideStraightDraw&#x00A0;AND&#x00A0;OverCards&#x00A0;=&#x00A0;2)...&#x00A0;<br /><span class="label"><a 
+ id="x1-9014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;...&#x00A0;<br /><span class="label"><a 
+ id="x1-9015r15"></a></span>END&#x00A0;SYMBOL
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-10000"></a>Calling According To Odds And Outs</h3>
+   <!--l. 158-->
+   <div class="lstlisting" id="listing-9"><span class="label"><a 
+ id="x1-10001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;CardsLeft&#x00A0;<br /><span class="label"><a 
+ id="x1-10002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(betround&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;47&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-10003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(betround&#x00A0;=&#x00A0;3)&#x00A0;RETURN&#x00A0;46&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-10004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Drawing&#x00A0;at&#x00A0;other&#x00A0;betrounds&#x00A0;doesn&#8217;t&#x00A0;make&#x00A0;much&#x00A0;sense&#x00A0;<br /><span class="label"><a 
+ id="x1-10005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;<span 
+class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-10006r6"></a></span>END&#x00A0;SYMBOL&#x00A0;<br /><span class="label"><a 
+ id="x1-10007r7"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-10008r8"></a></span>WHEN&#x00A0;(AmountToCall&#x00A0;/&#x00A0;(AmountToCall&#x00A0;+&#x00A0;PotSize)&#x00A0;&#x003E;&#x00A0;Outs&#x00A0;/&#x00A0;CardsLeft)&#x00A0;CALL&#x00A0;FORCE
+   </div>
+
+   <h3 class="sectionHead"><a 
+ id="x1-11000"></a>Playing Fit-Or-Fold Multiway</h3>
+   <!--l. 174-->
+   <div class="lstlisting" id="listing-10"><span class="label"><a 
+ id="x1-11001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;HaveStrongDraw&#x00A0;<br /><span class="label"><a 
+ id="x1-11002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveStraightDraw&#x00A0;OR&#x00A0;HaveFlushDraw)&#x00A0;RETURN&#x00A0;True&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveInsideStraightDraw&#x00A0;AND&#x00A0;Overcards&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;True&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;False&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11005r5"></a></span>END&#x00A0;SYMBOL&#x00A0;<br /><span class="label"><a 
+ id="x1-11006r6"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-11007r7"></a></span>NEW&#x00A0;SYMBOL&#x00A0;HaveTopPairOrBetter&#x00A0;<br /><span class="label"><a 
+ id="x1-11008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveTopPair)&#x00A0;RETURN&#x00A0;True&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveOverPair)&#x00A0;RETURN&#x00A0;True&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(HaveBestOverpairOrBetter)&#x00A0;RETURN&#x00A0;True&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;False&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11012r12"></a></span>END&#x00A0;SYMBOL&#x00A0;<br /><span class="label"><a 
+ id="x1-11013r13"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-11014r14"></a></span>FLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-11015r15"></a></span>WHEN&#x00A0;(Opponents&#x00A0;&#x003E;=&#x00A0;3&#x00A0;AND&#x00A0;NOT&#x00A0;(HaveTopPairOrBetter&#x00A0;OR&#x00A0;HaveStrongDraw)&#x00A0;<br /><span class="label"><a 
+ id="x1-11016r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(AmountToCall&#x00A0;=&#x00A0;0)&#x00A0;CHECK&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-11017r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;FOLD&#x00A0;FORCE
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-12000"></a>Leaving Tight Tables</h3>
+   <!--l. 199-->
+   <div class="lstlisting" id="listing-11"><span class="label"><a 
+ id="x1-12001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;InUTG&#x00A0;<br /><span class="label"><a 
+ id="x1-12002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;(dealposition&#x00A0;=&#x00A0;3)&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-12003r3"></a></span>END&#x00A0;SYMBOL&#x00A0;<br /><span class="label"><a 
+ id="x1-12004r4"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-12005r5"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-12006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;SitOut&#x00A0;FORCE&#x00A0;will&#x00A0;first&#x00A0;fold&#x00A0;and&#x00A0;then&#x00A0;sitout.&#x00A0;<br /><span class="label"><a 
+ id="x1-12007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;handsplayed&#x00A0;and&#x00A0;floppct&#x00A0;are&#x00A0;OpenHoldem&#x00A0;symbols&#x00A0;<br /><span class="label"><a 
+ id="x1-12008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;that&#x00A0;can&#x00A0;be&#x00A0;used&#x00A0;like&#x00A0;any&#x00A0;other&#x00A0;OpenPPL&#x00A0;symbol.&#x00A0;<br /><span class="label"><a 
+ id="x1-12009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;We&#x00A0;wait&#x00A0;until&#x00A0;the&#x00A0;orbit&#x00A0;is&#x00A0;finished&#x00A0;and&#x00A0;leave&#x00A0;the&#x00A0;table&#x00A0;<br /><span class="label"><a 
+ id="x1-12010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;before&#x00A0;we&#x00A0;have&#x00A0;to&#x00A0;post&#x00A0;the&#x00A0;big&#x00A0;blind&#x00A0;again.&#x00A0;<br /><span class="label"><a 
+ id="x1-12011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(handsplayed&#x00A0;&#x003E;&#x00A0;15&#x00A0;AND&#x00A0;floppct&#x00A0;&#x003C;&#x00A0;0.20&#x00A0;AND&#x00A0;HaveTrash&#x00A0;AND&#x00A0;InUTG)&#x00A0;SitOut&#x00A0;Force
+   </div>
+<!--l. 214--><p class="indent" >   <span 
+class="ecti-1000">Now it&#8217;s up to you. Let the fun begin! </span> 
+</body></html> 
+
+
+
