@@ -30,7 +30,7 @@ char * const r$strings[358] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"c0cardface0suit", "c0cardface1suit", "c0cardface2suit", "c0cardface3suit", "c0cardface4suit", 
 								"c0handnumber", "c0handnumber1", "c0handnumber2", "c0handnumber3", "c0handnumber4", "c0handnumber5", "c0handnumber6",
 								"c0handnumber7", "c0handnumber8", "c0handnumber9",
-								"c0istournament", "c0smallblind", "c0bigblind", "c0bigbet", "c0ante",
+								"c0isfinaltable", "c0smallblind", "c0bigblind", "c0bigbet", "c0ante",
 								"c0pot0", "c0pot1", "c0pot2", "c0pot3", "c0pot4", 
 								"c0pot0chip00", "c0pot0chip01", "c0pot0chip10",
 								"c0pot1chip00", "c0pot1chip01", "c0pot1chip10",

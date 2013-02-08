@@ -3456,7 +3456,7 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			else if (regionName.Find("chip")!=-1)
 				groupName = "chip";
 
-			else if (regionName.Find("c0istournament")!=-1 || regionName.Find("c0smallblind")!=-1 || 
+			else if (regionName.Find("c0isfinaltable")!=-1 || regionName.Find("c0smallblind")!=-1 || 
 					 regionName.Find("c0bigblind")!=-1 || regionName.Find("c0bigbet")!=-1 ||
 					 regionName.Find("c0ante")!=-1)
 				groupName = "c0misc";
