@@ -31,9 +31,9 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 
 const int k_lowest_bigblind_ever_seen_in_tournament = 10;
 
-const int k_number_of_tournament_identifiers = 17;
+const int k_number_of_tournament_identifiers = 19;
 // Partial tournament strings of various casinos
-// Sources: PokerStars, Winamax.fr, various unnamed casinos (by PM)
+// Sources: PokerStars, Winamax.fr, UniBet, various unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=16104
 const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
@@ -54,6 +54,8 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	" sng",
 	"sng ",
 	"freeroll",
+	"qualif ",
+	"qualification",
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament()
@@ -164,7 +166,7 @@ bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament()
 
 void CSymbolEngineIsTournament::TryToDetectTournament()
 {
-	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = ", Bool2CString(_istournament), "\n");
+	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s%s", Bool2CString(_istournament), "\n");
 	// Don't do anything if we are already sure.
 	// Don't mix things up.
 	if (_decision_locked)
