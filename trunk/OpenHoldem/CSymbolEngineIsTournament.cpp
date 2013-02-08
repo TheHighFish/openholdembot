@@ -32,31 +32,45 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 19;
+const int k_number_of_tournament_identifiers = 33;
 // Partial tournament strings of various casinos
-// Sources: PokerStars, Winamax.fr, UniBet, various unnamed casinos (by PM)
+// Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=16104
 const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
-{	"tournament ",	
-	" ante ",		
-	" ante:",	
+{	" ante ",		
+	" ante:",
 	"buy-in:",		
 	"buyin:"
 	"buy-in ",
 	"buyin ",
+	"double ",
+	"double-",
+	"freeroll",
+	"garantis",			// french for "guaranteed"
+	"gratuit ",			// french for "free"
+	"guaranteed",
+	"miniroll",
+	"mise initiale"		// french for "ante"
+	" nothing",
+	"-nothing",
+	"qualif ",			// french abbreviation
+	"qualificatif",		// french for "qualifier"
+	"qualification",
+	"qualifier",
+	"rebuy",
+	"sit and go",
+	"sit&go",
+	"sit & go",
+	"sit 'n go",
+	"sit'n go",
+	" sng",
+	"sng ",
 	"super turbo",
 	"superturbo",
 	"super-turbo",
-	"double ",
-	"double-",
-	" nothing",
-	"-nothing",
-	" sng",
-	"sng ",
-	"freeroll",
-	"qualif ",
-	"qualification",
+	"ticket ",
+	"tournament ",		
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament()
