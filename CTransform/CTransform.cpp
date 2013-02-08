@@ -855,7 +855,7 @@ const void CTransform::CalcHexmash(const int left, const int right, const int to
 
 const void CTransform::ParseStringBSL(const CString text, const CString format, 
 									  CString *results, CString *handnumber, double *sblind, double *bblind, double *bbet, 
-									  double *ante, int *limit, double *sb_bb, double *bb_BB, bool *istournament,
+									  double *ante, int *limit, double *sb_bb, double *bb_BB, bool *isfinaltable,
 									  bool *found_handnumber, bool *found_sblind, bool *found_bblind, bool *found_bbet,
 									  bool *found_ante, bool *found_limit, bool *found_sb_bb, bool *found_bb_BB) 
 {

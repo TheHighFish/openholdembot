@@ -38,7 +38,7 @@ public:
 							 CString *separation, bool background[], bool (*character)[MAX_CHAR_HEIGHT]);
 	const void ParseStringBSL(const CString text, const CString format, CString *results=NULL, 	
 							  CString *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
-							  double *ante=NULL, int *limit=NULL, double *sb_bb=NULL, double *bb_BB=NULL, bool *istournament=NULL,
+							  double *ante=NULL, int *limit=NULL, double *sb_bb=NULL, double *bb_BB=NULL, bool *isfinaltable=NULL,
 							  bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL, bool *found_bbet=NULL,
 							  bool *found_ante=NULL, bool *found_limit=NULL, bool *found_sb_bb=NULL, bool *found_bb_BB=NULL);
 	const bool IsInARGBColorCube(const int center_a, const int center_r, const int center_g, const int center_b, 
