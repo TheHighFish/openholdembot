@@ -1,12 +1,24 @@
-v4.0.2 2013-02-07
+v4.0.2 2013-02-08
 ==================
 BUG FIXES: 
 - The refactoring of the iterator-thread led to an endless-recursion
   and finally stack-overflow. Thanks to Krishot for finding that problem.
   [THF]
   
+NEW STUFF: 
+- OpenHoldem computes istournament now from the title-string
+  and the bets and balances of the table. So it works automatically 
+  without any co$istournament-region in the tablemap. 
+  This improves especially automatic blind-locking,
+  be it for the current hand (tournament) or for the entire session (cash-game).
+  A nice side-effect: most (if not all) tablemaps should now work
+  for both cash-games and tournaments without any special measures.
+  A big thank you to Rominus, Qwerty, Nik0, R2D2 and GUI,
+  who provided lots of helpful title-strings of real casinos.
+  [THF]
+  
 MAINTENANCE:
-- Sepatating CIteratorThread and CIteratorVars classes,
+- Separating CIteratorThread and CIteratorVars classes,
   as code was a chaos.
   [THF]
 
