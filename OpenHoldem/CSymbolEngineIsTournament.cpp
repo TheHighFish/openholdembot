@@ -29,7 +29,8 @@
 
 CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 
-const int k_lowest_bigblind_ever_seen_in_tournament = 10;
+const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
+const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
 const int k_number_of_tournament_identifiers = 19;
 // Partial tournament strings of various casinos
@@ -78,7 +79,7 @@ void CSymbolEngineIsTournament::InitOnStartup()
 
 void CSymbolEngineIsTournament::ResetOnConnection()
 {
-	_istournament   = false;
+	_istournament    = false;
 	_decision_locked = false;
 }
 
@@ -187,7 +188,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament))
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
-		_istournament   = false;
+		_istournament    = false;
 		_decision_locked = true;
 		return;
 	}
@@ -195,7 +196,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	if (TitleStringLooksLikeTournament())
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
-		_istournament   = true;
+		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
@@ -203,7 +204,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	if (AntesPresent())
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
-		_istournament   = true;
+		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
@@ -211,10 +212,35 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	if (BetsAndBalancesAreTournamentLike())
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Bets and balances look like tournament\n");
-		_istournament   = true;
+		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
-	// Everything else is a cash-game until we know better.
-	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Not yet sure; probably cash-game\n");
+	// Not yet sure, but we have handled so far:
+	// * all lower stakes cash-games
+	// * all SNGs / MTTs with good title-string
+	// * all SNGs and starting tables of MTTs (by bets and balances)
+	// * some later tables of MTTs (by antes)
+	// * some more later tables of MTTs (if no reconnection is necessary)
+	// This leaves us with only 2 cases
+	// * medium and high-stakes cash-games ($5/$10 and above)
+	// * some (very few) later tables of MTTs
+	if (bigblind > k_large_bigblind_probably_later_table_in_tournament)
+	{
+		// Probably tournament, but not really sure yet,
+		// so don't lock the decision.
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] bigblind very large; probably tournament\n");
+		_istournament = true;
+		return;
+	}
+	// Smaller bigblinds (< $500) will be considered cash-games, 
+	// because they are too small for later tables of tournaments
+	_istournament    = false;
+	_decision_locked = true;
+	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] high-stakes cash-game up to $200\$400.n");
+	// The only case that can go wrong now:
+	// High-stakes cash-games ($250/$500 and above) can be recognized 
+	// as tournaments. 
+	// Main consequence: blinds won't be locked for the entire session,
+	// but only for the current hand. Does this hurt much?
 }
