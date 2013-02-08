@@ -140,6 +140,7 @@ void CPreferences::InitDefaults(void)
 	_debug_tablemap_loader = false;
 	_debug_filesystem_monitor = false;
 	_debug_table_positioner = false;
+	_debug_istournament = false;
 	_debug_alltherest = false;
 
 	// Validator
@@ -307,6 +308,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_tablemap_loader", &_debug_tablemap_loader);
 		ReadReg("debug_filesystem_monitor", &_debug_filesystem_monitor);
 		ReadReg("debug_table_positioner", &_debug_table_positioner);
+		ReadReg("debug_istournament", &_debug_istournament);
 		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator

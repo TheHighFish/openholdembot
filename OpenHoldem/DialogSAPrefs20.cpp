@@ -2,11 +2,10 @@
 //
 
 #include "stdafx.h"
-
-#include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs20.h"
-#include "CPreferences.h"
 
+#include "CPreferences.h"
+#include "SAPrefsSubDlg.h"
 
 // CDlgSAPrefs20 dialog
 
@@ -55,6 +54,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_TABLEMAP_LOADER, prefs.debug_tablemap_loader() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_FILESYSTEM_MONITOR, prefs.debug_filesystem_monitor() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_TABLE_POSITIONER, prefs.debug_table_positioner() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_ISTOURNAMENT, prefs.debug_istournament() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, prefs.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -80,6 +80,7 @@ void CDlgSAPrefs20::OnOK()
 	prefs.set_debug_tablemap_loader(IsDlgButtonChecked(IDC_DEBUG_TABLEMAP_LOADER));
 	prefs.set_debug_filesystem_monitor(IsDlgButtonChecked(IDC_DEBUG_FILESYSTEM_MONITOR));
 	prefs.set_debug_table_positioner(IsDlgButtonChecked(IDC_DEBUG_TABLE_POSITIONER));
+	prefs.set_debug_istournament(IsDlgButtonChecked(IDC_DEBUG_ISTOURNAMENT));
 	prefs.set_debug_alltherest(IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
 	CSAPrefsSubDlg::OnOK();
 }

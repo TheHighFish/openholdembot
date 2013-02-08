@@ -1,8 +1,23 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose: Detecting if we play a tournament, especially
+//   to enable / disable automatic blind-locking (stability) 
+//
+//*****************************************************************************
+
 #include "stdafx.h"
 #include "CSymbolEngineIsTournament.h"
 
 #include <assert.h>
 #include "CGameState.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -10,27 +25,35 @@
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
+#include "StringFunctions.h"
 
 CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 
 const int k_lowest_bigblind_ever_seen_in_tournament = 10;
 
-const int k_number_of_tournament_identifiers = 13;
+const int k_number_of_tournament_identifiers = 17;
+// Partial tournament strings of various casinos
+// Sources: PokerStars, Winamax.fr, various unnamed casinos (by PM)
+// These strings have to be lower-cases for comparison
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=16104
 const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
-{	"tournament ",	// PokerStars
-	" ante ",		// PokerStars
+{	"tournament ",	
+	" ante ",		
 	" ante:",	
-	"buy-in:",		// Winamax.fr
+	"buy-in:",		
 	"buyin:"
 	"buy-in ",
 	"buyin ",
 	"super turbo",
 	"superturbo",
 	"super-turbo",
-	"double up",
-	"double-up",
+	"double ",
+	"double-",
+	" nothing",
+	"-nothing",
 	" sng",
 	"sng ",
+	"freeroll",
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament()
@@ -53,7 +76,7 @@ void CSymbolEngineIsTournament::InitOnStartup()
 
 void CSymbolEngineIsTournament::ResetOnConnection()
 {
-	_is_tournament   = false;
+	_istournament   = false;
 	_decision_locked = false;
 }
 
@@ -141,48 +164,55 @@ bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament()
 
 void CSymbolEngineIsTournament::TryToDetectTournament()
 {
+	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = ", Bool2CString(_istournament), "\n");
 	// Don't do anything if we are already sure.
 	// Don't mix things up.
 	if (_decision_locked)
 	{
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
 	// If we have more than 2 hands played we should be sure
-	// and stick to our decision (probably cash-game).
+	// and stick to our decision, whatever it is (probably cash-game).
 	if (p_game_state->hands_played() > 2)
 	{
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
 		_decision_locked = true;
 		return;
 	}
 	// If the blinds are "too low" then we play a cash-game.
-	double bigblind = p_tablelimits->sblind();
+	double bigblind = p_tablelimits->bblind();
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament))
 	{
-		_is_tournament   = false;
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
+		_istournament   = false;
 		_decision_locked = true;
 		return;
 	}
 	// If the title-string looks like a tournament then it is a tournament.
 	if (TitleStringLooksLikeTournament())
 	{
-		_is_tournament   = true;
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
+		_istournament   = true;
 		_decision_locked = true;
 		return;
 	}
 	// If there are antes then it is a tournament.
 	if (AntesPresent())
 	{
-		_is_tournament   = true;
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
+		_istournament   = true;
 		_decision_locked = true;
 		return;
 	}
 	// If bets and balances are "tournament-like", then it is a tournament
 	if (BetsAndBalancesAreTournamentLike())
 	{
-		_is_tournament   = true;
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Bets and balances look like tournament\n");
+		_istournament   = true;
 		_decision_locked = true;
 		return;
 	}
 	// Everything else is a cash-game until we know better.
+	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Not yet sure; probably cash-game\n");
 }
-
