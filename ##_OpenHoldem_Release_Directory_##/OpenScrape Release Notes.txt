@@ -6,6 +6,14 @@ BUG FIXES:
   This caused a an exception and has now been fixed.
   [THF]
 
+NEW STUFF: 
+- Support for new symbol isfinaltable (OH 4.0.0)
+  [THF]
+
+MAINTENANCE:
+- Removed support for now unused symbol istournament.
+  [THF]
+  
 v4.0.0 2013-01-26
 =================
 NEW STUFF:
