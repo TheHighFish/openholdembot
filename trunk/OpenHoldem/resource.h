@@ -414,6 +414,7 @@
 #define IDC_ENABLE_DLL_LOGGiNG          1373
 #define IDC_LOG_BASIC_INFO              1374
 #define IDC_DEBUG_TABLEMAP_LOADER       1375
+#define IDC_DEBUG_ISTOURNAMENT          1376
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -530,7 +531,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32997
-#define _APS_NEXT_CONTROL_VALUE         1376
+#define _APS_NEXT_CONTROL_VALUE         1377
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

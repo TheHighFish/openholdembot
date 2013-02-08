@@ -97,6 +97,7 @@ public:
 	const bool	debug_filesystem_monitor() { return _debug_filesystem_monitor; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
 	const bool  debug_table_positioner() { return _debug_table_positioner; }
+	const bool  debug_istournament() { return _debug_istournament; }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -242,7 +243,7 @@ public:
 	void set_debug_filesystem_monitor(const bool b) { ENT _debug_filesystem_monitor = b; WriteReg("debug_filesystem_monitor", b); }
 	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 	void set_debug_table_positioner(const bool b) { ENT _debug_table_positioner = b; WriteReg("debug_table_positioner", b); }
-
+	void set_debug_istournament(const bool b) { ENT _debug_istournament = b; WriteReg("debug_istournament", b); }
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -400,6 +401,7 @@ private:
 	bool			_debug_filesystem_monitor;
 	bool			_debug_alltherest;
 	bool			_debug_table_positioner;
+	bool			_debug_istournament;
 
 	// Formula window location
 	int			_formula_x;	
