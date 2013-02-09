@@ -32,7 +32,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 36;
+const int k_number_of_tournament_identifiers = 40;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -53,6 +53,10 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"guaranteed",
 	"miniroll",
 	"mise initiale"		// french for "ante"
+	" mtt",
+	"mtt ",
+	"multitable",
+	"multi-table",
 	" nothing",
 	"-nothing",
 	"qualif ",			// french abbreviation
