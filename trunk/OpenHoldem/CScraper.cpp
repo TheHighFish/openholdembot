@@ -100,9 +100,6 @@ void CScraper::ClearScrapeAreas(void)
 	set_found_sb_bb(false);
 	set_found_bb_BB(false);
 
-	set_card_player_for_display(0, CARD_NOCARD);
-	set_card_player_for_display(1, CARD_NOCARD);
-
 	// change detection
 	_ucf_last=false;
 	for (int i=0; i<k_number_of_community_cards; i++)
@@ -469,11 +466,7 @@ void CScraper::ScrapePlayerCards(int chair)
 					_card_player_last[chair][j] = card;
 					_scrape_something_changed |= PL_CARD_CHANGED;
 				}
-
 				set_card_player(chair, j, card);
-
-				if (chair==sym_userchair)
-					set_card_player_for_display(j, card);
 			}
 
 			write_log(prefs.debug_scraper(), "[CScraper] u%dcardface%d, result %s\n", chair, j, cardstr.GetString());
@@ -506,9 +499,6 @@ void CScraper::ScrapePlayerCards(int chair)
 				}
 
 				set_card_player(chair, j, card);
-
-				if (chair==sym_userchair)
-					set_card_player_for_display(j,  card);
 			}
 
 			write_log(prefs.debug_scraper(), "[CScraper] p%dcardface%d, result %s\n", chair, j, cardstr.GetString());
@@ -559,11 +549,7 @@ void CScraper::ScrapePlayerCards(int chair)
 					_card_player_last[chair][j] = card;
 					_scrape_something_changed |= PL_CARD_CHANGED;
 				}
-
 				set_card_player(chair, j, card);
-
-				if (chair==sym_userchair)
-					set_card_player_for_display(j, card);
 			}
 
 			write_log(prefs.debug_scraper(), "[CScraper] p%dcardface%drank/p%dcardface%dsuit, result %s%s", chair, j, chair, j, rankstr.GetString(), suitstr.GetString());

@@ -32,7 +32,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 40;
+const int k_number_of_tournament_identifiers = 45;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -40,6 +40,8 @@ const int k_number_of_tournament_identifiers = 40;
 const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 {	" ante ",		
 	" ante:",
+	"(ante ",		
+	"(ante:",
 	"buy-in:",		
 	"buyin:"
 	"buy-in ",
@@ -55,6 +57,7 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"mise initiale"		// french for "ante"
 	" mtt",
 	"mtt ",
+	"(mtt",
 	"multitable",
 	"multi-table",
 	" nothing",
@@ -72,6 +75,8 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"sit'n go",
 	" sng",
 	"sng ",
+	"(sng",
+	"sup turbo",
 	"super turbo",
 	"superturbo",
 	"super-turbo",

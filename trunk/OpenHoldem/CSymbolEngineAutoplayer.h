@@ -30,6 +30,8 @@ public:
 	bool isfinaltable()		{ return _isfinaltable; }
 	bool isbring()			{ return _isbring; }
 	bool ismanual()			{ return _ismanual; }
+public:
+	CString GetFCKRAString();
 private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();

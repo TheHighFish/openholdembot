@@ -48,9 +48,6 @@ void PopulateScraperStateWithScrapedValues()
 		ss.bet[i] = p_scraper->player_bet(i);
 	}
 
-	ss.card_player_for_display[0] = p_scraper->card_player_for_display(0);
-	ss.card_player_for_display[1] = p_scraper->card_player_for_display(1);
-
 	for (int i=0; i<k_max_number_of_pots; i++)
 	{
 		ss.pot[i] = p_scraper->pot(i);
@@ -111,9 +108,6 @@ void PropagateChangedValuesBackToScraper()
 		p_scraper->set_balance_good_scrape(i, ss.balance_good_scrape[i]);
 		p_scraper->set_player_bet(i, ss.bet[i]);
 	}
-
-	p_scraper->set_card_player_for_display(0, ss.card_player_for_display[0]);
-	p_scraper->set_card_player_for_display(1, ss.card_player_for_display[1]);
 
 	for (int i=0; i<k_max_number_of_pots; i++)
 	{

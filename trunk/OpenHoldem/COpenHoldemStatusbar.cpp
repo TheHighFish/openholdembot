@@ -104,48 +104,53 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	{
 		// Very early phase of initialization
 		// Can't continue here.
+		_status_action = "Not playing";
 		return;
 	}
+	if (!p_symbol_engine_userchair->userchair_confirmed())
+	{
+		_status_action = "Not playing";
+		return;
+	}
+	int userchair = p_symbol_engine_userchair->userchair();
 	
-	// Figure out if I am "notplaying"
-	bool playing = p_scraper_access->UserHasCards();
-
 	// Player cards
 	CardMask_RESET(Cards);
 	int nCards = 0;
 	_status_plcards = "";
-	if (p_symbol_engine_userchair->userchair_confirmed() 
-		&& playing) 
+	 
+	if (p_scraper_access->UserHasCards())
 	{
-		int sym_userchair = p_symbol_engine_userchair->userchair();
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
 			// This condition got already checked: "playing"
-			assert(p_scraper->card_player(sym_userchair, i) != CARD_BACK);
-			assert(p_scraper->card_player(sym_userchair, i) != CARD_NOCARD); 
+			assert(p_scraper->card_player(userchair, i) != CARD_BACK);
+			assert(p_scraper->card_player(userchair, i) != CARD_NOCARD); 
 
-			char *card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
+
+			char *card = StdDeck_cardString(p_scraper->card_player(userchair, i));
 			temp.Format("%s ", card);
 			_status_plcards.Append(temp);
-			CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
+			CardMask_SET(Cards, p_scraper->card_player(userchair, i));
 			nCards++;
 		}
+		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
 	}
 	else 
 	{
-		// !! redundant code! card_player_for_display is for userchair
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
-			if (p_scraper->card_player_for_display(i) != CARD_BACK && 
-				p_scraper->card_player_for_display(i) != CARD_NOCARD) 
+			if (p_scraper_access->UserHasCards())
 			{
-				char *card = StdDeck_cardString(p_scraper->card_player_for_display(i));
+				char *card = StdDeck_cardString(p_scraper_access->GetPlayerCards(userchair, i));
 				temp.Format("%s ", card);
 				_status_plcards.Append(temp);
-				CardMask_SET(Cards, p_scraper->card_player_for_display(i));
+				CardMask_SET(Cards, p_scraper_access->GetPlayerCards(userchair, i));
 				nCards++;
 			}
 		}
+		// Not playing, therefore no opponents to be considered for prwin.
+		_status_nopp = "";
 	}
 
 	// Common cards
@@ -173,15 +178,9 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	// Always use handrank169 here
 	_status_handrank.Format("%.0f/169", p_symbol_engine_handrank->handrank169());
 
-	// nopponents
-	if (playing)
-		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
-
-	else
-		_status_nopp = "";
-
 	// Always update prwin/nit
-	if (p_symbol_engine_userchair->userchair_confirmed() && playing)
+	if (p_symbol_engine_userchair->userchair_confirmed() 
+		&& p_scraper_access->UserHasCards())
 	{
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (iter_vars.prwin()*1000), 
@@ -200,14 +199,10 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	}
 
 	// action
-	if (!p_symbol_engine_userchair->userchair_confirmed() || !playing)
-		_status_action = "Notplaying";
-
-	else if (p_autoplayer_functions->f$prefold())
+	if (p_autoplayer_functions->f$prefold())
 	{
 		_status_action = "Pre-fold";
 	}
-
 	else if (p_symbol_engine_userchair->userchair_confirmed() && iter_vars.iterator_thread_complete())
 	{
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	_status_action = "N/A";
@@ -220,7 +215,6 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 
 	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0)
 		_status_action = "Idle (f$prwin_number_of_opponents==0)";
-
 	else
 		_status_action = "Thinking";
 }

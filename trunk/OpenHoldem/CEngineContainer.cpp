@@ -60,11 +60,11 @@ void CEngineContainer::CreateSymbolEngines()
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_time;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEngineDealerchair
-	p_symbol_engine_dealerchair= new CSymbolEngineDealerchair();
+	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_dealerchair;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEngineUserchair
-	p_symbol_engine_userchair= new CSymbolEngineUserchair();
+	p_symbol_engine_userchair = new CSymbolEngineUserchair();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_userchair;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEngineAutoplayer
@@ -84,7 +84,7 @@ void CEngineContainer::CreateSymbolEngines()
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_active_dealt_playing;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEnginePositions
-	p_symbol_engine_positions= new CSymbolEnginePositions();
+	p_symbol_engine_positions = new CSymbolEnginePositions();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_positions;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEngineBlinds

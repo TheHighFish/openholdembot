@@ -368,6 +368,10 @@ bool CScraperAccess::PlayerHasCards(int player)
 
 bool CScraperAccess::UserHasCards()
 {
+	if (p_symbol_engine_userchair == NULL)
+	{
+		return false;
+	}
 	int userchair = p_symbol_engine_userchair->userchair();
 	return PlayerHasCards(userchair);
 }
