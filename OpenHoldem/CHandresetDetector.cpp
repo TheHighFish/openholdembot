@@ -105,6 +105,11 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair)
 
 void CHandresetDetector::OnNewHeartbeat()
 {
+	if (p_symbol_engine_dealerchair == NULL)
+	{
+		// Very early initialization phase
+		return;
+	}
 	// Store old values...
 	last_dealerchair = dealerchair;
 	for (int i=0; i<k_number_of_cards_per_player; i++)

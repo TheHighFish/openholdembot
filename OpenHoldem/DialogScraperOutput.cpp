@@ -149,7 +149,7 @@ BOOL CDlgScraperOutput::DestroyWindow()
 
 void CDlgScraperOutput::PostNcDestroy()
 {
-   delete m_ScraperOutputDlg;
+	delete m_ScraperOutputDlg;
 	m_ScraperOutputDlg	=	NULL;
 
 	CDialog::PostNcDestroy();
@@ -205,9 +205,6 @@ void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy)
 
 void CDlgScraperOutput::AddListboxItems()
 {
-	int			i = 0;
-	CString		s = "";
-
 	m_RegionList.ResetContent();
 	m_RegionList.SetCurSel(-1);
 

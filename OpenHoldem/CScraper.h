@@ -70,7 +70,6 @@ public:
 	const char *		title() { return _title; }
 	const unsigned int	card_common(int n) { if (n>=0 && n<=4) return _card_common[n]; else return CARD_NOCARD; }
 	const unsigned int	card_player(int s, int n) { if (s>=0 && s<=9 && n>=0 && n<=1) return _card_player[s][n]; else return CARD_NOCARD; }
-	const unsigned int	card_player_for_display(int n) { if (n>=0 && n<=1) return _card_player_for_display[n]; else return CARD_NOCARD; }
 	const CString		seated(int n) { if (n>=0 && n<=9) return _seated[n]; else return "false"; }
 	const CString		active(int n) { if (n>=0 && n<=9) return _active[n]; else return "false"; }
 	const bool			dealer(int n) { if (n>=0 && n<=9) return _dealer[n]; else return false; }
@@ -98,7 +97,6 @@ public:
 	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE);}
 	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c;}
 	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c;}
-	void	set_card_player_for_display(const int n, const unsigned int c) { ENT if (n>=0 && n<=1) _card_player_for_display[n] = c;}
 	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s;}
 	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
@@ -144,7 +142,6 @@ private:
 	unsigned int		_card_common[k_number_of_community_cards];
 	// player cards
 	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player];
-	unsigned int		_card_player_for_display[k_number_of_cards_per_player];
 	// dealer
 	bool				_dealer[k_max_number_of_players];
 

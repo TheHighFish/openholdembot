@@ -29,10 +29,19 @@ CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer()
 {}
 
 void CSymbolEngineAutoplayer::InitOnStartup()
-{}
+{
+	_myturnbits    = 0;
+	_issittingin   = false;
+	_isautopost    = false;
+	_isfinalanswer = false;
+}
 
 void CSymbolEngineAutoplayer::ResetOnConnection()
 {
+	_myturnbits    = 0;
+	_issittingin   = false;
+	_isautopost    = false;
+	_isfinalanswer = false;
 	DetectSpecialConnectionLikeBringAndManualMode();
 }
 
@@ -60,6 +69,7 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat()
 
 void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 {
+	write_log(prefs.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
 	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		if (p_scraper->GetButtonState(i))
@@ -92,6 +102,7 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 			}
 		}
 	}
+	write_log(prefs.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
 }
 
 void CSymbolEngineAutoplayer::CalculateSitInState()
@@ -184,4 +195,19 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
 		_isfinalanswer = false;
 	}
+}
+
+CString CSymbolEngineAutoplayer::GetFCKRAString()
+{
+	// Buttons visible (Fold, Call, Check, Raise, Allin)
+	CString fckra_seen;
+	fckra_seen.Format("%s%s%s%s%s",
+		_myturnbits&0x01 ? "F" : ".",
+		_myturnbits&0x02 ? "C" : ".",
+		// Check button out of order to stay consistent
+		// with button order in manual mode.
+		_myturnbits&0x10 ? "K" : ".",
+		_myturnbits&0x04 ? "R" : ".",
+		_myturnbits&0x08 ? "A" : ".");
+	return fckra_seen;
 }

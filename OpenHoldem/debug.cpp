@@ -329,7 +329,7 @@ void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...)
 void write_logautoplay(const char * action) 
 {
     char		nowtime[26];
-    CString		pcards, comcards, temp, rank, pokerhand, bestaction, fcra_seen;
+    CString		pcards, comcards, temp, rank, pokerhand, bestaction;
     char		*card;
     CardMask	Cards;
     int			nCards;
@@ -460,15 +460,7 @@ void write_logautoplay(const char * action)
         }
 
         // fcra_seen
-		int sym_myturnbits = p_symbol_engine_autoplayer->myturnbits();
-        fcra_seen.Format("%s%s%s%s%s",
-                         sym_myturnbits&0x01 ? "F" : ".",
-                         sym_myturnbits&0x02 ? "C" : ".",
-						 // Check button out of order to stay consistent
-						 // with button order in manual mode.
-						 sym_myturnbits&0x10 ? "K" : ".",
-                         sym_myturnbits&0x04 ? "R" : ".",
-                         sym_myturnbits&0x08 ? "A" : ".");
+		CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
 
         // fcra formula status
 		fcra_formula_status.Format("%s%s%s%s",

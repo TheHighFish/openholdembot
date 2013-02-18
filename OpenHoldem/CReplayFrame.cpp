@@ -280,22 +280,14 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 
 CString CReplayFrame::GetButtonStatesAsHTML()
 {
-	CString button_states, fckra_seen;
+	CString button_states;
 
 	// Table header for: FCKRA
 	button_states += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	button_states += "  <tr><th>FCKRA</th></tr>\n";
 	button_states += "  <tr>\n";
 	// Buttons
-	int sym_myturnbits = p_symbol_engine_autoplayer->myturnbits();
-	fckra_seen.Format("%s%s%s%s%s",
-		sym_myturnbits&0x01 ? "F" : ".",
-		sym_myturnbits&0x02 ? "C" : ".",
-		// Check button out of order to stay consistent
-		// with button order in manual mode.
-		sym_myturnbits&0x10 ? "K" : ".",
-		sym_myturnbits&0x04 ? "R" : ".",
-		sym_myturnbits&0x08 ? "A" : ".");
+	CString fckra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
 	// Table footer
 	button_states += "    <td>";
 	button_states += fckra_seen.GetString();
