@@ -1,3 +1,11 @@
+v4.0.3 2013-xx-yy
+=================
+BUG FIXES: 
+- f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
+  did not consider a missing small blind and therefore "Raises" was wrong.
+  Thanks to Bimmer for finding the problem.
+  [THF]
+
 v4.0.0 2013-01-26
 =================
 NEW STUFF:
