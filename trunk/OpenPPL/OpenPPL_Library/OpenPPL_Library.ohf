@@ -11,7 +11,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 4.0.0 or later
+// Required OpenHoldem version: 4.0.3 or later
 //   Symbols not working with 2.1.x:
 //     * isfinaltable
 //
@@ -1775,7 +1775,9 @@ me_re_MemRaises
 ##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
 // There are (usually) 2 blindraisers which should not get countet
 // And we also have to care about potential antes
-[(nopponentsraising - 2) - (f$OpenPPL_AntesPresent ? 1 : 0)]
+[ (nopponentsraising - 2) 
+- (f$OpenPPL_AntesPresent ? 1 : 0)
++ (f$OpenPPL_MissingSmallBlind? 1 : 0)]
 
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
