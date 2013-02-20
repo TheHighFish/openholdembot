@@ -11,7 +11,7 @@
 //   and searching the directory only once on startup,
 //   as the old solution enumerated all files in the replay-directory
 //   for every single replay-frame, which lead to performance issues
-//   for some people: http://!!!
+//   for some people: http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16135
 //
 //*****************************************************************************
 
