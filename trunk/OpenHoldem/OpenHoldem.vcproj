@@ -361,10 +361,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CReplayFrame.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CScraper.cpp"
 				>
 			</File>
@@ -1119,6 +1115,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="ReplayFrames"
+				>
+				<File
+					RelativePath=".\CReplayFrame.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CReplayFramesCounter.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1187,10 +1195,6 @@
 			</File>
 			<File
 				RelativePath=".\crc32hash.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CReplayFrame.h"
 				>
 			</File>
 			<File
@@ -1854,6 +1858,18 @@
 				</File>
 				<File
 					RelativePath=".\CIteratorVars.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ReplayFrames"
+				>
+				<File
+					RelativePath=".\CReplayFrame.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CReplayFramesCounter.h"
 					>
 				</File>
 			</Filter>

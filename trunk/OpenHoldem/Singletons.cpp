@@ -24,6 +24,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
+#include "CReplayFramesCounter.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
@@ -65,6 +66,8 @@ void InstantiateAllSingletons()
 		p_tablemap = new CTablemap;
 	if (!p_tablemap_access)  
 		p_tablemap_access = new CTablemapAccess;
+	if (!p_replayframes_counter)
+		p_replayframes_counter = new CReplayFramesCounter;
 	if (!p_formula) 
 		p_formula = new CFormula;
 	if (!p_autoplayer) 
@@ -181,6 +184,8 @@ void DeleteAllSingletons()
 		{ delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_formula)  
 		{ delete p_formula; p_formula = NULL; }
+	if (p_replayframes_counter)
+		{ delete p_replayframes_counter; p_replayframes_counter = NULL; }
 	if (p_tablemap_access)  
 		{ delete p_tablemap_access; p_tablemap_access = NULL; }
 	if (p_tablemap)  

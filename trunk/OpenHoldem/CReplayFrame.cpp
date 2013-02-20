@@ -4,6 +4,7 @@
 #include "CFilenames.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
+#include "CReplayFramesCounter.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -26,41 +27,7 @@ const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;
 
 CReplayFrame::CReplayFrame(void)
 {
-    CTime		time = 0, latest_time = 0;
-    int			last_frame_num = -1, frame_num = 0;
-    CString		path, filename, current_path;
-    CFileFind	hFile;
-    BOOL		bFound = false;
-
-	CSLock lock(m_critsec);
-
-	// Find next replay frame number
-    _next_replay_frame = -1;
-
-    path = p_filenames->ReplayBitmapFilename(_next_replay_frame);
-    bFound = hFile.FindFile(path.GetString());
-    while (bFound)
-    {
-        bFound = hFile.FindNextFile();
-        if (!hFile.IsDots() && !hFile.IsDirectory())
-        {
-            filename = hFile.GetFileName();
-            hFile.GetLastWriteTime(time);
-            sscanf_s(filename.GetString(), "frame%d.bmp", &frame_num);
-
-            if (time>latest_time)
-            {
-                last_frame_num = frame_num;
-                latest_time = time;
-            }
-        }
-    }
-
-    _next_replay_frame = last_frame_num + 1;
-    if (_next_replay_frame >= prefs.replay_max_frames())
-        _next_replay_frame = 0;
-	write_log(prefs.debug_replayframes(), "[CReplayFrame] Next frame number: %d\n", 
-		_next_replay_frame);
+	_next_replay_frame = p_replayframes_counter->GetNumberOfNextReplayFrame();
 }
 
 CReplayFrame::~CReplayFrame(void)
