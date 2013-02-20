@@ -1355,6 +1355,12 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 ##f$OpenPPL_Bets##
 me_re_MemBets
 
+##f$OpenPPL_BigBlindSittingOut##
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_SmallBlindSittingOut##
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
 ##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
 
@@ -4228,8 +4234,6 @@ f$OpenPPL_InLatePosition
 
 ##f$OpenPPL_InLatePosition##
 (f$OpenPPL_InCutOff || f$OpenPPL_InButton)
-
-
 
 ##f$OpenPPL_InButton##
 f$OpenPPL_Button
