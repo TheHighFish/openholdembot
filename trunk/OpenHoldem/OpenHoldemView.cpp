@@ -342,8 +342,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	RECT		cr = {0};
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
-	int			height = 50;
-	
+		
 	double sym_bblind		= p_tablelimits->bblind();
 	double sym_sblind		= p_tablelimits->sblind();
 	double sym_ante			= p_tablelimits->ante();
@@ -353,8 +352,17 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
 	bool sym_playing		= p_scraper_access->UserHasCards();
 
+	// "White box" in the OpenHoldem-GUI with basic important info
+	const int k_basic_height = 2;				// pixels
+	const int k_extra_height_per_line = 16;	// pixels
+	const int k_number_of_default_lines = 3;	// hand-number, game-type, pot
+	int height = k_basic_height 
+		+ k_extra_height_per_line * k_number_of_default_lines;
 	if (prefs.log_symbol_enabled())
-		height += 16*prefs.log_symbol_max_log();
+	{
+		// Extra lines for symbol-logging
+		height += k_extra_height_per_line * prefs.log_symbol_max_log();
+	}
 
 	// Get size of current client window
 	GetClientRect(&cr);
