@@ -54,7 +54,7 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 #include "Singletons.h"
-
+#include "StringFunctions.h"
 
 // CMainFrame
 
@@ -250,24 +250,41 @@ void CMainFrame::OnEditFormula()
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 }
 
+// Menu -> Edit -> View Scraper Output
 void CMainFrame::OnScraperOutput() 
 {
 	if (m_ScraperOutputDlg) 
 	{
+		write_log(prefs.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
+		write_log(prefs.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
+
 		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
+		write_log(prefs.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
 		m_ScraperOutputDlg->DestroyWindow();
 		delete m_ScraperOutputDlg;
 		m_ScraperOutputDlg = NULL;
 
 		if (bWasShown)
+		{
+			write_log(prefs.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
+		}
+	}
+	else
+	{
+		write_log(prefs.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 
+	write_log(prefs.debug_gui(), "[GUI] Going to create scraper output dialog\n");
 	m_ScraperOutputDlg = new CDlgScraperOutput(this);
+	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
 	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
+	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
 	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
+	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
+	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
 void CMainFrame::OnViewShootreplayframe()

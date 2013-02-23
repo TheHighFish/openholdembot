@@ -355,7 +355,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
 	const int k_extra_height_per_line = 16;	// pixels
-	const int k_number_of_default_lines = 3;	// hand-number, game-type, pot
+	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
 	int height = k_basic_height 
 		+ k_extra_height_per_line * k_number_of_default_lines;
 	if (prefs.log_symbol_enabled())

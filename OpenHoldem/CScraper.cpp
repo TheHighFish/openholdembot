@@ -1239,7 +1239,7 @@ void CScraper::DoBasicScrapeButtons()
 	RMapCI				r_iter = p_tablemap->r$()->end(), slider = p_tablemap->r$()->end(), handleCI = p_tablemap->r$()->end();
 	RMapI				handleI = p_tablemap->set_r$()->end();
 
-	write_log(3, "CScraper::DoBasicScrapeButtons()\n");
+	write_log(prefs.debug_scraper(), "CScraper::DoBasicScrapeButtons()\n");
 
 	set_button_label(0, "fold");
 	set_button_label(1, "call");
@@ -1490,10 +1490,10 @@ void CScraper::DoBasicScrapeButtons()
 
 void CScraper::DoBasicScrapeAllPlayerCards()
 {
-	write_log(3, "CScraper::DoBasicScrapeAllPlayerCards()\n");
+	write_log(prefs.debug_scraper(), "CScraper::DoBasicScrapeAllPlayerCards()\n");
 	for (int i=0; i<=9; i++)
 	{
-		write_log(3, "Calling ScrapePlayerCards, chair %d.\n", i);
+		write_log(prefs.debug_scraper(), "Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}
 }

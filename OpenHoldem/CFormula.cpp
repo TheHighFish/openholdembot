@@ -258,7 +258,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	WriteStandardFunction(ar, "f$betpot_1_1");
 	WriteStandardFunction(ar, "f$betpot_3_4");
 	WriteStandardFunction(ar, "f$betpot_2_3");
-	WriteStandardFunction(ar, "f$betpot_1_1");
+	WriteStandardFunction(ar, "f$betpot_1_2");
 	WriteStandardFunction(ar, "f$betpot_1_3");
 	WriteStandardFunction(ar, "f$betpot_1_4");
 	WriteStandardFunction(ar, "f$rais");
@@ -731,7 +731,7 @@ void CFormula::WarnAboutOutdatedConcepts()
 	if (DoesFormulaAlreadyExist("f$P"))
 	{
 		OH_MessageBox_Error_Warning("Your formula set contains old \"prwin\"-functions.\n"
-			"\"f$P\" got replaced by \"f$number_of_opponents_for_prwin\".",
+			"\"f$P\" got replaced by \"f$prwin_number_of_opponents\".",
 			"Error");
 	}
 

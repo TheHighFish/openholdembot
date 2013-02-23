@@ -141,6 +141,10 @@ void CPreferences::InitDefaults(void)
 	_debug_filesystem_monitor = false;
 	_debug_table_positioner = false;
 	_debug_istournament = false;
+	_debug_gui = false;
+	_debug_table_limits = false;
+	_debug_lazy_scraper = false;
+	_debug_betsize_adjustment = false;
 	_debug_alltherest = false;
 
 	// Validator
@@ -309,6 +313,10 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_filesystem_monitor", &_debug_filesystem_monitor);
 		ReadReg("debug_table_positioner", &_debug_table_positioner);
 		ReadReg("debug_istournament", &_debug_istournament);
+		ReadReg("debug_gui", &_debug_gui);
+		ReadReg("debug_table_limits", &_debug_table_limits);
+		ReadReg("debug_lazy_scraper", &_debug_lazy_scraper);
+		ReadReg("debug_betsize_adjustment", &_debug_betsize_adjustment);
 		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator

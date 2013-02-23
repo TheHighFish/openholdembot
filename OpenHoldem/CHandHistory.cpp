@@ -318,7 +318,7 @@ void CHandHistory::scanPlayerChanges()
 					else
 					{
 						int br = prevround -1;
-const int k_betround_turn		= 3;
+						const int k_betround_turn		= 3;
 						if(br>k_betround_turn)
 							br=k_betround_turn;
 						SetAction(i, 2, (maxBet-_history.chair[i].totalIn[br]), prevround);

@@ -55,6 +55,10 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_FILESYSTEM_MONITOR, prefs.debug_filesystem_monitor() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_TABLE_POSITIONER, prefs.debug_table_positioner() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ISTOURNAMENT, prefs.debug_istournament() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_GUI, prefs.debug_gui() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_TABLE_LIMITS, prefs.debug_table_limits() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_LAZY_SCRAPER, prefs.debug_lazy_scraper() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_BETSIZE_ADJUSTMENT, prefs.debug_betsize_adjustment() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, prefs.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -81,6 +85,10 @@ void CDlgSAPrefs20::OnOK()
 	prefs.set_debug_filesystem_monitor(IsDlgButtonChecked(IDC_DEBUG_FILESYSTEM_MONITOR));
 	prefs.set_debug_table_positioner(IsDlgButtonChecked(IDC_DEBUG_TABLE_POSITIONER));
 	prefs.set_debug_istournament(IsDlgButtonChecked(IDC_DEBUG_ISTOURNAMENT));
+	prefs.set_debug_gui(IsDlgButtonChecked(IDC_DEBUG_GUI));
+	prefs.set_debug_table_limits(IsDlgButtonChecked(IDC_DEBUG_TABLE_LIMITS));
+	prefs.set_debug_lazy_scraper(IsDlgButtonChecked(IDC_DEBUG_LAZY_SCRAPER));
+	prefs.set_debug_betsize_adjustment(IsDlgButtonChecked(IDC_DEBUG_BETSIZE_ADJUSTMENT));
 	prefs.set_debug_alltherest(IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
 	CSAPrefsSubDlg::OnOK();
 }

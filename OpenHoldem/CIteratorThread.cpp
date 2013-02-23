@@ -493,7 +493,6 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		iter_vars.set_iterator_thread_complete(false);
 		iter_vars.set_iterator_thread_progress(0);
 		iter_vars.set_nit(0);
-		iter_vars.set_f$p(0);
 
 		for (int i=0; i<k_number_of_cards_per_player; i++)
 			iter_vars.set_pcard(i, CARD_NOCARD);
@@ -523,7 +522,6 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_complete(false);
 	iter_vars.set_iterator_thread_progress(0);
 	iter_vars.set_nit(10000); //!! f$prwin_number_of_iterations")
-	iter_vars.set_f$p(p_symbol_engine_prwin->nopponents_for_prwin());
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), i));
