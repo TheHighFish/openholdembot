@@ -1,3 +1,27 @@
+v4.0.3 2013-xx-yy
+==================
+BUG FIXES: 
+- ismyturn did not always work, because the symbol myturnbits
+  was undefined at some point.
+  Thanks to AlCapown3d for reporting.
+  [THF]
+- There was a problem accessing certain scraper-data.
+  However this was duplicate data, so we could simply fix the problem
+  by cleaning up the data-structure.
+  Thanks to R2D2 for reporting the problem and providing us some helpful screenshots.
+  !!!
+  !!! Attention! This change affects the interface to custom scraper-preprocessor-DLLs. 
+  !!! For details see: http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=16140
+  !!! 
+  [THF]
+- The height of the "white-box" of the OH-GUI does automatically adapt
+  to the numbers of log-symbols to be displayed, but was a bit too small.
+  Thanks to SuperBlak for reporting.
+  [THF]
+- Various minor fixes (typos in symbol names, forgotten debug-preferences for some modules, etc...)
+  Thanks to Nik0 for reporting.
+  [THF]
+
 v4.0.2 2013-02-08
 ==================
 BUG FIXES: 
@@ -1309,7 +1333,7 @@ NEW STUFF:
   When executed, they add your specified text to the log.
   
   For example if you have:
-  [ br == 2 && (nsuited == 3 || nstraight == 3) && log$ItLives ]
+  [ betround == 2 && (nsuited == 3 || nstraight == 3) && log$ItLives ]
   in your f$rais formula and you flop a backdoor flush draw,
   then OpenHoldem will raise and also add the text "ItLives" to the log file,
   just before the RAIS line. Everytime a log$ symbol is accessed it will be flagged for logging.
