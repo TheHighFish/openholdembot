@@ -52,7 +52,7 @@ char * keywords = // Standard functions
 				  // Chairs
 				  "chair userchair dealerchair raischair chair$ chairbit$ "
 				  // Rounds / Positions
-				  "betround br betposition dealposition callposition dealpositionrais betpositionrais "
+				  "betround betposition dealposition callposition dealpositionrais betpositionrais "
 				  // Probabilities
 				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround "
 				  // Chip Amounts

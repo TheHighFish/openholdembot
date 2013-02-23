@@ -98,6 +98,10 @@ public:
 	const bool	debug_alltherest() { return _debug_alltherest; }
 	const bool  debug_table_positioner() { return _debug_table_positioner; }
 	const bool  debug_istournament() { return _debug_istournament; }
+	const bool  debug_gui() { return _debug_gui; }
+	const bool  debug_table_limits() { return _debug_table_limits; }
+	const bool  debug_lazy_scraper() { return _debug_lazy_scraper; }
+	const bool  debug_betsize_adjustment() { return _debug_betsize_adjustment;  }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -244,6 +248,10 @@ public:
 	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 	void set_debug_table_positioner(const bool b) { ENT _debug_table_positioner = b; WriteReg("debug_table_positioner", b); }
 	void set_debug_istournament(const bool b) { ENT _debug_istournament = b; WriteReg("debug_istournament", b); }
+	void set_debug_gui(const bool b) { ENT _debug_gui = b; WriteReg("debug_gui", b); }
+	void set_debug_table_limits(const bool b) { ENT _debug_table_limits = b; WriteReg("debug_table_limits", b); }
+	void set_debug_lazy_scraper(const bool b) { ENT _debug_lazy_scraper = b; WriteReg("debug_lazy_scraper", b); }
+	void set_debug_betsize_adjustment(const bool b) { ENT _debug_betsize_adjustment = b; WriteReg("debug_betsize_adjustment", b); }
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -402,6 +410,10 @@ private:
 	bool			_debug_alltherest;
 	bool			_debug_table_positioner;
 	bool			_debug_istournament;
+	bool			_debug_gui;
+	bool			_debug_table_limits;
+	bool			_debug_lazy_scraper;
+	bool			_debug_betsize_adjustment;
 
 	// Formula window location
 	int			_formula_x;	

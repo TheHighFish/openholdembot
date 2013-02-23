@@ -2,6 +2,7 @@
 
 #include "SwagAdjustment.h"
 #include <assert.h>
+#include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
@@ -12,7 +13,7 @@ double MinimumSwagAmount()
 {
 	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
 		+ p_symbol_engine_chip_amounts->sraiprev());
-	write_log(3, "SwagAdjustment: MinimumSwagAmount: %f\n", minimums_swag_amount);
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MinimumSwagAmount: %f\n", minimums_swag_amount);
 	assert(minimums_swag_amount > 0);
 	return minimums_swag_amount;
 }
@@ -22,7 +23,7 @@ double MaximumSwagAmountForPotLimit()
 	// ToDo: Preflop
 	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
 		+ p_symbol_engine_chip_amounts->pot()); // !!???
-	write_log(3, "SwagAdjustment: MaximumSwagAmountForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MaximumSwagAmountForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
 	assert(maximum_swag_amount_for_pot_limit >= 0);
 	return maximum_swag_amount_for_pot_limit;
 }
@@ -40,7 +41,7 @@ double MaximumSwagAmount()
 		maximum_swag_amount = (p_symbol_engine_chip_amounts->currentbet(userchair)
 			+ p_symbol_engine_chip_amounts->balance(userchair));
 	}
-	write_log(3, "SwagAdjustment: MaximumSwagAmount: %f\n", maximum_swag_amount);
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MaximumSwagAmount: %f\n", maximum_swag_amount);
 	assert(maximum_swag_amount >= 0);
 	return maximum_swag_amount;
 }
@@ -57,7 +58,7 @@ double SwagAmountAjustedToMinimumAndMaximum(double amount_to_raise_to)
 	{
 		adjusted_swag_amount = MaximumSwagAmount();
 	}
-	write_log(3, "SwagAdjustment: SwagAmountAjustedToMinimumAndMaximum: %f\n",
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAjustedToMinimumAndMaximum: %f\n",
 		adjusted_swag_amount);
 	return adjusted_swag_amount;
 }
@@ -89,7 +90,7 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 			- p_symbol_engine_chip_amounts->currentbet(userchair)
 			- p_symbol_engine_chip_amounts->call();
 	}
-	write_log(3, "SwagAdjustment: SwagAmountAjustedToCasino %f\n",
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAjustedToCasino %f\n",
 		swag_amount_ajusted_to_casino);
 	return swag_amount_ajusted_to_casino;
 }
@@ -99,7 +100,7 @@ double SwagAmountAdjusted(double amount_to_raise_to)
 	assert(amount_to_raise_to >= 0);
 	double swag_amount_adjusted = SwagAmountAjustedToMinimumAndMaximum(amount_to_raise_to);
 	swag_amount_adjusted = SwagAmountAjustedToCasino(swag_amount_adjusted);
-	write_log(3, "SwagAdjustment: SwagAmountAdjusted (finally): %f\n",
+	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAdjusted (finally): %f\n",
 		swag_amount_adjusted);
 	return swag_amount_adjusted;
 }

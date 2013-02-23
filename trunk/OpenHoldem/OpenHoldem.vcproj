@@ -385,6 +385,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Debug_Database.cpp_"
+				>
+			</File>
+			<File
 				RelativePath=".\MagicNumbers.cpp"
 				>
 			</File>
@@ -1026,6 +1030,10 @@
 					RelativePath=".\CProblemSolver.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\CVersionInfo.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="AutoPlayer"
@@ -1215,6 +1223,10 @@
 			</File>
 			<File
 				RelativePath=".\CValidator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\debug.h"
 				>
 			</File>
 			<File
@@ -1846,6 +1858,10 @@
 				</File>
 				<File
 					RelativePath=".\CProblemSolver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CVersionInfo.h"
 					>
 				</File>
 			</Filter>
