@@ -1271,6 +1271,34 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 || [f$OpenPPL_DecisionIsPercentagedPotsizedBet 
     && f$OpenPPL_BetSizeForPercentagedPotsizeBet >= f$OpenPPL_MaximumBetsizeInDollars]
+
+	
+// Betpot functions
+// OpenPPL knows only the following action-command:
+//   * BetPot
+//   * BetHalfPot
+// However we support all betpot-functions as backup-actions.
+
+##f$betpot_2_1##
+f$alli
+	
+##f$betpot_1_1##
+[f$alli  || (f$OpenPPL_Decision == f$OpenPPL_BetPot)]
+
+##f$betpot_3_4##
+f$betpot_1_1
+
+##f$betpot_2_3##
+f$betpot_1_1
+
+##f$betpot_1_2##
+(f$betpot_1_1 || (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)]
+
+##f$betpot_1_3##
+f$betpot_1_2
+
+##f$betpot_1_4##
+f$betpot_1_2
 	
 ##f$OpenPPL_MaximumBetsizeInDollars##
 f$OpenPPL_MaximumPossibleBetsizeIndollars
