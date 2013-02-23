@@ -1,8 +1,13 @@
 v4.0.3 2013-xx-yy
 =================
+NEW STUFF:
+- Support for OpenHoldems new betpot-functions and betpot-buttons.
+  [THF]
+
 BUG FIXES: 
-- f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
-  did not consider a missing small blind and therefore "Raises" was wrong.
+- The technical function 
+  f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
+  did not consider a missing small blind and therefore "Raises" could be wrong.
   Thanks to Bimmer for finding the problem.
   [THF]
 
