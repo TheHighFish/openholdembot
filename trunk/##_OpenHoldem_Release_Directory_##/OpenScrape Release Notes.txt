@@ -1,4 +1,4 @@
-v4.0.2 2013-xx-yy
+v4.0.2 2013-02-08
 =================
 BUG FIXES:
 - One function had an IO-parameter instead of a local variable.
