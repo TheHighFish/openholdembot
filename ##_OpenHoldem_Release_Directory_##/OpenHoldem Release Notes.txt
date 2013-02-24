@@ -1,9 +1,9 @@
-v4.0.3 2013-xx-yy
+v4.0.3 2013-02-24
 ==================
 BUG FIXES: 
 - ismyturn did not always work, because the symbol myturnbits
   was undefined at some point.
-  Thanks to AlCapown3d for reporting.
+  Thanks to AlCapown3d for finding the problem.
   [THF]
 - There was a problem accessing certain scraper-data.
   However this was duplicate data, so we could simply fix the problem
@@ -20,6 +20,15 @@ BUG FIXES:
   [THF]
 - Various minor fixes (typos in symbol names, forgotten debug-preferences for some modules, etc...)
   Thanks to Nik0 for reporting.
+  [THF]
+- MicroSofts window-positioning functions did rearrange the complete desktop
+  when called with an empty list of windows. This behaviour was not desired 
+  and has now been fixed.
+  [THF]
+  
+MAINTENANCE:
+- Improving the log-file-format (version-info, loaded DLL and TM)
+  for better trouble-shooting.
   [THF]
 
 v4.0.2 2013-02-08
