@@ -3,8 +3,8 @@
 // mh_str_Handstrength_Library got originally developed by Winngy
 //   for a FL-bot in the time of FL-FR-no-fold'em-Hold'em.
 //   It got released to the public in 2008:
-//   http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=5799 
-//   And some symbols got developed by SingleMalt for his DLL 
+//   http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=5799
+//   And some symbols got developed by SingleMalt for his DLL
 //   http://forum.winholdem.net/wbb//viewtopic.php?f=41&t=11555
 //
 // Opinions may differ about handstrength,
@@ -27,49 +27,49 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-// Interface and range-checks, 
+// Interface and range-checks,
 //   as some values can be out of range due to discounts
 //
 /////////////////////////////////////////////////////////////////////////////////
 
 ##f$mh_straightflush##
-(isstraightflush || isroyalflush) ? 
-(f$strength_straightflush < 1 ? 1 : f$strength_straightflush) : 
+(isstraightflush || isroyalflush) ?
+(f$strength_straightflush < 1 ? 1 : f$strength_straightflush) :
 0
 
 ##f$mh_quads##
-isfourofakind ? 
-(f$strength_quads < 1 ? 1 : f$strength_quads) : 
+isfourofakind ?
+(f$strength_quads < 1 ? 1 : f$strength_quads) :
 0
 
 ##f$mh_fullhouse##
-isfullhouse ? 
-(f$strength_fullhouse < 1 ? 1 : f$strength_fullhouse) : 
+isfullhouse ?
+(f$strength_fullhouse < 1 ? 1 : f$strength_fullhouse) :
 0
 
 ##f$mh_flush##
-isflush ? 
-(f$strength_flush < 1 ? 1 : f$strength_flush) : 
+isflush ?
+(f$strength_flush < 1 ? 1 : f$strength_flush) :
 0
 
 ##f$mh_straight##
-isstraight ? 
-(f$strength_straight < 1 ? 1 : f$strength_straight) : 
+isstraight ?
+(f$strength_straight < 1 ? 1 : f$strength_straight) :
 0
 
 ##f$mh_trips##
-isthreeofakind ? 
-(f$strength_trips < 1 ? 1 : f$strength_trips ) : 
+isthreeofakind ?
+(f$strength_trips < 1 ? 1 : f$strength_trips ) :
 0
 
 ##f$mh_twopair##
-istwopair ? 
-(f$strength_twopair < 1 ? 1 : f$strength_twopair) : 
+istwopair ?
+(f$strength_twopair < 1 ? 1 : f$strength_twopair) :
 0
 
 ##f$mh_onepair##
-isonepair ? 
-(f$strength_onepair < 1 ? 1 : f$strength_onepair) : 
+isonepair ?
+(f$strength_onepair < 1 ? 1 : f$strength_onepair) :
 0
 
 ##f$mh_hicard##
@@ -77,13 +77,13 @@ isonepair ?
 0
 
 ##f$mh_kicker_rank##
-(nranked==2 && nrankedcommon==1) ? 
-  (trank==rankhiplayer? 
-   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
-   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 
-(nranked==3 && nrankedcommon==2) ? 
-  (trank==rankhiplayer? 
-   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
+(nranked==2 && nrankedcommon==1) ?
+  (trank==rankhiplayer?
+   `((~rankbits&0x7ffe)>>rankloplayer)+1:
+   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) :
+(nranked==3 && nrankedcommon==2) ?
+  (trank==rankhiplayer?
+   `((~rankbits&0x7ffe)>>rankloplayer)+1:
    `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
 
 
@@ -95,10 +95,10 @@ isonepair ?
 (isthreeofakind && nrankedcommon==3) ?
 	`((~(rankbits)&0x7ffe)>>(rankhiplayer))+1 :
 (isthreeofakind && nrankedcommon==2) ?
-	[(trank==rankhiplayer) ? 
+	[(trank==rankhiplayer) ?
 		`((~(rankbits)&0x7ffe)>>(rankloplayer))+1 :
 		`((~(rankbits)&0x7ffe)>>(rankhiplayer))+1
-	] :	
+	] :
 
 // trips, board not paired
 // in this case, both hole cards participate in the set, thus kicker is shared
@@ -108,10 +108,10 @@ isonepair ?
 	`((~(rankbits)&0x7ffe)>>(rankhiplayer))+1 :
 // two pair, board paired
 (istwopair && !((pokervalcommon)&(twopair)) && nrankedcommon==2) ?
-	[((pcbits)&1) ? 
-		[(($$pr0)==((pokerval)&0xf)) ? 
+	[((pcbits)&1) ?
+		[(($$pr0)==((pokerval)&0xf)) ?
 			`((~(rankbits)&0x7ffe)>>($$pr0))+1 :
-		(($$pr1)==((pokerval)&0xf)) ? 
+		(($$pr1)==((pokerval)&0xf)) ?
 			`((~(rankbits)&0x7ffe)>>($$pr1))+1 :
 			0
 		] :
@@ -126,7 +126,7 @@ isonepair ?
 	`((~(rankbits)&0x7ffe)>>(rankhiplayer))+1 :
 // one pair, board not paired
 (npcbits==2 && !ispair && isonepair && nrankedcommon==1) ?
-	[(trank==rankhiplayer) ? 
+	[(trank==rankhiplayer) ?
 		`((~(rankbits)&0x7ffe)>>(rankloplayer))+1 :
 		`((~(rankbits)&0x7ffe)>>(rankhiplayer))+1
 	] :
@@ -146,7 +146,7 @@ isonepair ?
 ##f$strength_straightflush##
 // Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
 isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
-isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
+isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts
 isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
 isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I may not have the highest, board does have a str8flush
 isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
@@ -163,14 +163,14 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 ##f$strength_fullhouse##
 ((0
-// TwoPair on Board, I have Top Set with the spare card    
+// TwoPair on Board, I have Top Set with the spare card
 // e.g. 66/22336
-// NOT_YET_IMPLEMENTED 
-// Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
+// NOT_YET_IMPLEMENTED
+// Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards
 // e.g. QQ/QTT53
 || [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
   && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank==((pokervalcommon>>8)&0xf) ]
-// Board paired, I have pocket pair and top side full house, pocket pair is lower than non-participating board cards  
+// Board paired, I have pocket pair and top side full house, pocket pair is lower than non-participating board cards
 // e.g. QQ/QTTA3
 || [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
   && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank<((pokervalcommon>>8)&0xf) ]
@@ -189,7 +189,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 // e.g. QJ/QQJ53
 || [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
   && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)==((pokervalcommon>>8)&0xf) ]
-// Board paired, I don't have pocket pair, I have top side full house, pair is lower than non-participating board cards  
+// Board paired, I don't have pocket pair, I have top side full house, pair is lower than non-participating board cards
 // e.g. QJ/QQJA3
 || [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
   && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ]
@@ -200,10 +200,10 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 // Board paired, I don't have pocket pair, I have bottom side full house, pair is lower than non-participating board cards
 // e.g. QJ/QJJ53
 || [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
-  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ] 
-// Board has two pair, I have top trips 
-// e.g. QT/QQJJ8 
-|| [ isfullhouse && (pokervalcommon&twopair) && 
+  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ]
+// Board has two pair, I have top trips
+// e.g. QT/QQJJ8
+|| [ isfullhouse && (pokervalcommon&twopair) &&
   ( ((pokervalcommon>>16)&0x0f)==$$pr0 || ((pokervalcommon>>16)&0x0f)==$$pr1 ) ]
 ) ? 4 :
 
@@ -235,7 +235,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 // Big raise
 ((
 0
-|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon==1 
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon==1
      && nstraightflushfillcommon>=3 ]  // nuts
 ) ? 5 :
 
@@ -243,7 +243,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 (
 0
 || [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=1 && nrankedcommon==1 && nsuitedcommon<=4 ] // one card can beat my flush
-|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon<=2 
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon<=2
      && nstraightflushfillcommon>=2 ]
 ) ? 4 :
 
@@ -270,7 +270,7 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 0)
 
 // FlushDiscount
-- ( 
+- (
 0
 + (pokervalcommon&twopair?2:0)
 )
@@ -300,22 +300,24 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 {0
 //Board 3 to a straight, cards in rank 1 and rank 5
-|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>0)&0xf) || ($$pr1==14 && (((pokerval>>0)&0xf)==1))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>0)&0xf) || ($$pr0==14 && (((pokerval>>0)&0xf)==1))))))]
 //Board 3 to a straight, cards in rank 2 and rank 3
+//nik0: this sounds like it's nuts, shall we move it to value 5 ?
 || [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>8)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
 //Board 3 to a straight, cards in rank 2 and rank 4
+//nik0: same here, probably nuts depending on the board
 || [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
 } ? 4 :
 
 {0
 //Board 3 to a straight, cards in rank 2 and rank 5
-|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>0)&0xf) || ($$pr1==14 && (((pokerval>>0)&0xf)==1)))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>0)&0xf) || ($$pr0==14 && (((pokerval>>0)&0xf)==1)))))]
 //Board 3 to a straight, cards in rank 3 and rank 4
 || [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
 //Board 3 to a straight, cards in rank 3 and rank 5
-|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>0)&0xf) || ($$pr1==14 && (((pokerval>>0)&0xf)==1)))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>0)&0xf) || ($$pr0==14 && (((pokerval>>0)&0xf)==1)))))]
 //Board 3 to a straight, cards in rank 4 and rank 5 (idiot end)
-|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>4)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr1==((pokerval>>0)&0xf) || ($$pr1==14 && (((pokerval>>0)&0xf)==1)))) || (($$pr1==((pokerval>>4)&0xf))&&($$pr0==((pokerval>>0)&0xf) || ($$pr0==14 && (((pokerval>>0)&0xf)==1)))))]
 //Board 4 to a straight, card used in rank 1
 || [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>16)&0xf)) || ($$pr1==((pokerval>>16)&0xf))) ]
 //Board 4 to a straight, card used in rank 2
@@ -331,20 +333,20 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 {0
 //Board 4 to a straight, card used in rank 5
-|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>0)&0xf)) || ($$pr1==((pokerval>>0)&0xf))) ]
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>0)&0xf) || ($$pr0==14 && (((pokerval>>0)&0xf)==1))) || ($$pr1==((pokerval>>0)&0xf) || ($$pr1==14 && (((pokerval>>0)&0xf)==1)))) ]
 //Board has straight
 || [ isstraight && nstraightfillcommon==0 ]
 } ? 1 : 0)
 
 // StraightDiscount
-- ( 
+- (
 0
-+(nsuitedcommon>=3)*2 
-+(nsuitedcommon>=4) 
-+(nrankedcommon>=2) 
-+(nrankedcommon>=3) 
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(nrankedcommon>=2)
++(nrankedcommon>=3)
 +(pokervalcommon&twopair?2:0)
-// Negate flush discount if we have a good flush draw 
+// Negate flush discount if we have a good flush draw
 - ( nsuitedcommon==3 && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 )
 )
 
@@ -358,25 +360,25 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 {0
 //Board has No Pair and you have middle set
-|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer<rankhicommon && rankhiplayer>ranklocommon ] 
- 
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer<rankhicommon && rankhiplayer>ranklocommon ]
+
 //Board has Pair and you have Trips w/ good kicker (used as 4th ranked card)
-|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>4)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>4)&0xf))) ] 
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>4)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>4)&0xf))) ]
 } ? 4 :
 
 {0
 //Board has Pair and you have Trips w/ moderate kicker (used as 5th ranked card)
-|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>0)&0xf))) ] 
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>0)&0xf))) ]
 
 //Board has No Pair and you have bottom set
-|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==ranklocommon ] 
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==ranklocommon ]
 //Board not paired catch all
 || [ isthreeofakind && nrankedcommon==1 ]
 } ? 3 :
 
 {0
 //Board has Pair and you have Trips w/ poor kicker (not used)
-|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1<((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0<((pokerval>>0)&0xf))) ] 
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1<((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0<((pokerval>>0)&0xf))) ]
 //Board has 3OAK good kickers
 || [ isthreeofakind && nrankedcommon==3 && rankhiplayer>=13 && rankloplayer>=10 ]
 //Board has pair catch all
@@ -401,12 +403,12 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 ##f$strength_twopair##
 ({0
  //Board has No Pair and you have Top two pairs
-|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ] 
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ]
 } ? 5 :
 
 {0
 //Board has No Pair and you have Top and bottom pair
-|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>16)&15) && (pokerval&15)>((pokerval>>4)&15) ] 
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>16)&15) && (pokerval&15)>((pokerval>>4)&15) ]
 //Board has No Pair and you have Middle two pairs
 || [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>8)&15) && (pokerval&15)>((pokerval>>4)&15) && !(rankloplayer==ranklocommon) ]
 //Rainbow board
@@ -415,28 +417,28 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 {0
 //Board has Pair and you have Overpair
-|| [ nrankedcommon==2 && istwopair && ($$pr0==((pokerval>>16)&0xf) || $$pr1==((pokerval>>16)&0xf)) ] 
+|| [ nrankedcommon==2 && istwopair && ($$pr0==((pokerval>>16)&0xf) || $$pr1==((pokerval>>16)&0xf)) ]
 
-|| [ nrankedcommon==2 && istwopair && ispair && $$pr0>trankcommon ] 
+|| [ nrankedcommon==2 && istwopair && ispair && $$pr0>trankcommon ]
 //Board has No Pair and you have Bottom two pairs
-|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>16)&15) ] 
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>16)&15) ]
 } ? 3 :
 
 {0
 //Board has Pair and you have Underpair
-|| [ nrankedcommon==2 && istwopair && ispair && (pokervalcommon < twopair) && $$pr0<trankcommon ] 
+|| [ nrankedcommon==2 && istwopair && ispair && (pokervalcommon < twopair) && $$pr0<trankcommon ]
 //Board has Pair and you have Two pairs w/ good kicker (A-T)
-|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)>=10 ] 
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)>=10 ]
 } ? 2 :
 
 {0
 //Board has two pair and you have only two pair
 || [ nrankedcommon==2 && istwopair && (pokervalcommon & twopair) ]
 //Board has Pair and you have Two pairs w/ poor kicker (9-2)
-|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)<=9 ] 
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)<=9 ]
 //Catch all
 || [ istwopair ]
-} ? 1 : 0) 
+} ? 1 : 0)
 
 // TwoPairDiscount
 - (
@@ -452,59 +454,59 @@ isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Bo
 
 ((0
 //Board has No Pair and you have Overpair 10's or better
-|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon && rankloplayer>9] 
-//Board has No Pair and you have Top pair Ace w/ good kicker (K-T) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
-//Board has No Pair and you have Top pair King w/ good kicker (A-T) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon && rankloplayer>9]
+//Board has No Pair and you have Top pair Ace w/ good kicker (K-T)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ]
+//Board has No Pair and you have Top pair King w/ good kicker (A-T)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ]
 ) ? 5 :
 
 (0
-//Board has No Pair and you have Overpair 
-|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon ] 
-//Board has No Pair and you have Top pair Queen or lower w/ good kicker (A-T) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
-//Board has No Pair and you have Top pair Ace w/ poor kicker (9-2) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+//Board has No Pair and you have Overpair
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon ]
+//Board has No Pair and you have Top pair Queen or lower w/ good kicker (A-T)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ]
+//Board has No Pair and you have Top pair Ace w/ poor kicker (9-2)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ]
 ) ? 4 :
 
 (0
-//Board has No Pair and you have Midpair 1 overcard 
-|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank ] 
-//Board has No Pair and you have Top pair King w/ poor kicker (9-2) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
-//Board has No Pair and you have Middle pair w/ overcard kicker 
-|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
+//Board has No Pair and you have Midpair 1 overcard
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank ]
+//Board has No Pair and you have Top pair King w/ poor kicker (9-2)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ]
+//Board has No Pair and you have Middle pair w/ overcard kicker
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ]
 ) ? 3 :
 
 (0
-//Board has No Pair and you have Top pair Queen or lower w/ poor kicker (9-2) 
-|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
-//Board has No Pair and you have Midpair 2 overcard 
-|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank ] 
-//Board has No Pair and you have Bottom pair w/ overcard kicker 
-|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
-//Board has Pair and you have "Two overcards w/Ace" 
-|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==14 && rankloplayer>=10 && !ispair ] 
-//Board has Pair and you have "Two overcards w/ King" 
-|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==13 && rankloplayer>=10 && !ispair ] 
+//Board has No Pair and you have Top pair Queen or lower w/ poor kicker (9-2)
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ]
+//Board has No Pair and you have Midpair 2 overcard
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank ]
+//Board has No Pair and you have Bottom pair w/ overcard kicker
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ]
+//Board has Pair and you have "Two overcards w/Ace"
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==14 && rankloplayer>=10 && !ispair ]
+//Board has Pair and you have "Two overcards w/ King"
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==13 && rankloplayer>=10 && !ispair ]
 ) ? 2 :
 
 (0
-//Board has No Pair and you have Underpair 
-|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank<(pokerval&15) ] 
-//Board has No Pair and you have Middle pair w/ poor kicker 
-|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
-//Board has No Pair and you have Bottom pair w/ poor kicker 
-|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
+//Board has No Pair and you have Underpair
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank<(pokerval&15) ]
+//Board has No Pair and you have Middle pair w/ poor kicker
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ]
+//Board has No Pair and you have Bottom pair w/ poor kicker
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ]
 //Board has Pair and you have Two overcards
-|| [ nrankedcommon==2 && rankloplayer>rankhicommon ] 
-//Board has Pair and you have "One overcard w/Ace (A9-A2)" 
-|| [ nrankedcommon==2 && rankhiplayer==14 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
-//Board has Pair and you have "One overcard w/ King (K9-K2)" 
-|| [ nrankedcommon==2 && rankhiplayer==13 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
-//Board has Pair and you have Two small cards 
-|| [ nrankedcommon==2 && !ispair && pokerval<twopair && rankhiplayer<=9 ] 
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon ]
+//Board has Pair and you have "One overcard w/Ace (A9-A2)"
+|| [ nrankedcommon==2 && rankhiplayer==14 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ]
+//Board has Pair and you have "One overcard w/ King (K9-K2)"
+|| [ nrankedcommon==2 && rankhiplayer==13 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ]
+//Board has Pair and you have Two small cards
+|| [ nrankedcommon==2 && !ispair && pokerval<twopair && rankhiplayer<=9 ]
 ) ? 1 : 0)
 
 // OnePairDiscount
@@ -532,14 +534,14 @@ betround==2 ? (
 
 //2P OUTS cider
 (pokerval&twopair && nrankedcommon==1                                       ? 4 :
- pokerval&twopair && pokervalcommon<twopair && !(ispair) && nouts==4   
+ pokerval&twopair && pokervalcommon<twopair && !(ispair) && nouts==4
                                                                             ? 4 : 0)+
 
 //FLUSH OUTS
 (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=4 ? 9 :
  nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer) >4 ? 8 :
  nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer)<=1 ? 9 :
- nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1 
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1
                                 && `((~srankbits&0x7ffe)>>srankhiplayer) <4 ? 4 : 0)+
 
 
@@ -552,7 +554,7 @@ betround==2 ? (
   ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)   )              ? 8 :
  nstraightfill==1 && nstraightfillcommon>=2 && !((ranklocommon>8 &&
  f$bothcards==1) && (islopair || ismidpair))                                ? 4 : 0)+
- 
+
 //OVERCARD OUTS
 (rankloplayer>rankhicommon && rankloplayer>=11 && nopponentsplaying==1 &&
  (nsuitedcommon<=2 && nsuited==nsuitedcommon ? 0 : 1) &&
@@ -579,7 +581,7 @@ betround==2 ? (
   rankloplayer<rankhicommon && nstraightfillcommon>=2)                      ?1.5:
  (nsuited==3 && nsuited>nsuitedcommon && nstraightfillcommon>2 &&
   rankloplayer>rankhicommon && rankloplayer>=12)                            ? 2 : 0 )+
-   
+
   //Pair to 2P out ALL cider or Ispair to set
 (nrankedcommon==1 && !(ispair) && pokerval&onepair && rankhiplayer>
  rankhicommon                                                               ? 4 :
@@ -587,9 +589,9 @@ betround==2 ? (
  f$rankmidflop && rankhiplayer==rankhicommon                                ? 4 :
  nopponentsplaying==1 && pokerval&onepair && !(ispair) && nrankedcommon==1
  && (islopair || ismidpair)                                                 ? 3 :
- ispair                                                                     ? 2 : 
+ ispair                                                                     ? 2 :
  pokerval&onepair && nrankedcommon==1 && (nsuitedcommon==1 || nsuited==3)
-   && !(f$rankmidflop>=9)                                                   ? 2 : 0) +       
+   && !(f$rankmidflop>=9)                                                   ? 2 : 0) +
 
 //BACKDOOR OUTS
 (issuited && rankhiplayer==14 && nsuited==3 && nsuitedcommon==1             ?1.5:
@@ -608,7 +610,7 @@ betround==2 ? (
 
 
 //All cider  flush board
-((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||                       
+((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||
  (nsuitedcommon==2 && nsuited<3 && pokerval<twopair) && !(nstraightfill==1) ? -2 : 0) +
 
 //ALL cider  my high end for OESD will fill hi straight or big chance of tie
@@ -616,7 +618,7 @@ betround==2 ? (
   rankbits&8196)  && rankloplayer>=8 && !(rankloplayer>rankhicommon)        ? -2 : 0) +
 
 //discount gut for possible FD cider
- 
+
 ( nsuitedcommon==2 && nstraightfill==1                                      ? -1 : 0) +
 
 //discount OES that is ass end and lots of overs
@@ -626,7 +628,7 @@ betround==2 ? (
 //discount draw to 2P that might fill a st8 draw  cider
 (rankloplayer>8 && nrankedcommon==1 && f$rankmidflop>8 && pokerval&onepair
  && nopponents>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
- 
+
 (rankloplayer>rankhicommon && rankloplayer>=12 &&
  ( (nsuitedcommon==nsuited)||(nstraightcommon==nstraight) )                   ?
             -(nsuitedcommon>1||nstraightcommon>1?nsuitedcommon+nstraightcommon:0): 0)+
@@ -655,7 +657,7 @@ betround==3 ? ( //************TURN BELOW********************
 (nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer)<=4 ? 9 :
  nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7ffe)>>srankhiplayer) >4 ? 8 :
  nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer)<=1 ? 9 :
- nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1 
+ nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7ffe)>>srankhiplayer) >1
                                 && `((~srankbits&0x7ffe)>>srankhiplayer) <4 ? 3 : 0)+
 
 //STRAIGHT OUTS
@@ -692,9 +694,9 @@ betround==3 ? ( //************TURN BELOW********************
                              //Turn
 
 (!(ispair) && pokerval&threeofakind && nrankedcommon==2                     ? 4 : 0)+
- 
+
 (ispair && pokerval&threeofakind                                            ? 8 : 0)+
- 
+
            //Pair to 2P out ALL cider or Ispair to trips
 (nrankedcommon==1 && !(ispair) && pokerval&onepair && rankhiplayer>
  rankhicommon                                                               ? 4 :
@@ -710,7 +712,7 @@ betround==3 ? ( //************TURN BELOW********************
  nrankedcommon==3                                                           ?-12 : 0)+
 
 //All cider
-((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||                       
+((nsuitedcommon==3 && nsuited==3 && pokerval<twopair) ||
  (nsuitedcommon==2 && nsuited<3 && pokerval<twopair) && !(nstraightfill==1) ? -2 : 0) +
 
 //ALL cider my high end for OESD will fill hi straight or big chance of tie
@@ -801,20 +803,20 @@ rankloplayer==$$cr4)
 
 ##f$mh_no_easy_straight_draw##
 //NO EASY STRAIGHT DRAW
-(nstraightcommon<=2 && nstraightfillcommon>=3) 
-|| (nbetsround1>=2 
-    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+(nstraightcommon<=2 && nstraightfillcommon>=3)
+|| (nbetsround1>=2
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543
           || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
-       ) 
+       )
    )
 
 
 ##f$mh_safe_board##
-  [nrankedcommon<2 
-&& nsuitedcommon<3 
-&& nstraightcommon<3 
+  [nrankedcommon<2
+&& nsuitedcommon<3
+&& nstraightcommon<3
 && nstraightfillcommon>1 ]
-&& !(betround>2 && rankhicommon==14 && rankhicommon>rankhiplayer)   
+&& !(betround>2 && rankhicommon==14 && rankhicommon>rankhiplayer)
 
 
 ##f$bothcards##
@@ -832,7 +834,7 @@ rankloplayer==$$cr4)
       (
        ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
        ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
-       ($$pr1==$$cr4)                                    ) 
+       ($$pr1==$$cr4)                                    )
 
 
        ? 2 :
@@ -850,11 +852,11 @@ rankloplayer==$$cr4)
       (
        ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
        ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
-       ($$pr1==$$cr4)                                    ) 
+       ($$pr1==$$cr4)                                    )
 
        ? 1 :  0
-	   
-	   
+
+
 ##f$rankmidflop##
 $$cr0>$$cr1 && $$cr0<$$cr2 ?
 $$cr0 :
@@ -881,7 +883,7 @@ $$cr0 :
 $$cr1<$$cr0 && $$cr1<$$cr2 ?
 $$cr1 :
 $$cr2
-   
+
 /////////////////////////////////////////////////////////////////////////////////
 //
 // End of mh_str_Handstrength_Library.ohf
