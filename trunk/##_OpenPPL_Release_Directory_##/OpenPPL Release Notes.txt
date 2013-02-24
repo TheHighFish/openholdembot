@@ -1,4 +1,4 @@
-v4.0.3 2013-02-23
+v4.0.3 2013-02-24
 =================
 NEW STUFF:
 - Support for OpenHoldems new betpot-functions and betpot-buttons.
@@ -10,6 +10,8 @@ BUG FIXES:
   did not consider a missing small blind and therefore "Raises" could be wrong.
   Thanks to Bimmer for finding the problem.
   [THF]
+- Small fixes to the mh_handstrength_library
+  [Nik0]
 
 v4.0.0 2013-01-26
 =================
