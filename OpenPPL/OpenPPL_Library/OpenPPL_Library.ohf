@@ -1292,7 +1292,7 @@ f$betpot_1_1
 f$betpot_1_1
 
 ##f$betpot_1_2##
-(f$betpot_1_1 || (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)]
+[f$betpot_1_1 || (f$OpenPPL_Decision == f$OpenPPL_BetHalfPot)]
 
 ##f$betpot_1_3##
 f$betpot_1_2
