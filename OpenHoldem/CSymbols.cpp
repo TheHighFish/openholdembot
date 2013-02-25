@@ -47,20 +47,15 @@
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
+#include "CVersionInfo.h"
 #include "CVersus.h"
 #include "OH_MessageBox.h"
-
 
 CSymbols			*p_symbols = NULL;
 
 
 CSymbols::CSymbols()
-{
-	// userchair and betround need to be initialized very early to reasonable values
-	// because the history-engine will need them as indices into some arrays.
-	_userchair = 0;
-	_betround = k_betround_preflop;
-}
+{}
 
 CSymbols::~CSymbols()
 {}
@@ -76,7 +71,6 @@ void CSymbols::ResetOnConnection()
 
 void CSymbols::ResetOnHandreset()
 {
-	_userchair = p_symbol_engine_userchair->userchair();
 	LogHandReset();
 }
 
@@ -94,7 +88,6 @@ void CSymbols::ResetOnMyTurn()
 
 void CSymbols::ResetOnHeartbeat()
 {
-	_betround = p_betround_calculator->betround();
 	// log$ symbols
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
@@ -111,8 +104,8 @@ void CSymbols::LogHandReset()
 	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 
 	int player_card_cur[2] = {0};
-	player_card_cur[0] = p_scraper->card_player(_userchair, 0);
-	player_card_cur[0] = p_scraper->card_player(_userchair, 1);
+	player_card_cur[0] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0);
+	player_card_cur[0] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1);
 	char card0[10];
 	char card1[10];
 	// log new hand
@@ -133,11 +126,13 @@ void CSymbols::LogHandReset()
 	}
 	char title[512] = "!!!Missing title is a bug!!!";
 	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
-	write_log(k_always_log_basic_information, "\n*************************************************************\n"
-				 "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n"
-				 "*************************************************************\n",
-			  p_handreset_detector->GetHandNumber(), 
-			  p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
+	write_log(k_always_log_basic_information, "\n");
+	write_log(k_always_log_basic_information, "*************************************************************\n");
+	write_log(k_always_log_basic_information, "%s\n", p_version_info->GetVersionInfo());
+	write_log(k_always_log_basic_information, "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n",
+		p_handreset_detector->GetHandNumber(),  
+		p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
+	write_log(k_always_log_basic_information, "*************************************************************\n");
 }
 
 double CSymbols::GetSymbolVal(const char *a, int *e)
@@ -177,7 +172,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "nplayerscallshort", 17)==0 && strlen(a)==17)			return p_symbol_engine_raisers_callers->nplayerscallshort();
 
 		// HISTORY 2(3)
-		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return p_symbol_engine_history->nplayersround(_betround);
+		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==13)				return p_symbol_engine_history->nplayersround(p_betround_calculator->betround());
 		if (memcmp(a, "nplayersround", 13)==0 && strlen(a)==14)				return p_symbol_engine_history->nplayersround(a[13]-'0');
 	}
 
@@ -296,10 +291,10 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// Part 1(3): did...-symbols
 	if (memcmp(a, "did", 3) == 0)
 	{
-		if (memcmp(a, "didchec", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didchec(_betround);
-		if (memcmp(a, "didcall", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didcall(_betround);
-		if (memcmp(a, "didrais", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didrais(_betround);
-		if (memcmp(a, "didswag", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didswag(_betround);
+		if (memcmp(a, "didchec", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didchec(p_betround_calculator->betround());
+		if (memcmp(a, "didcall", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didcall(p_betround_calculator->betround());
+		if (memcmp(a, "didrais", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didrais(p_betround_calculator->betround());
+		if (memcmp(a, "didswag", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didswag(p_betround_calculator->betround());
 		if (memcmp(a, "didchecround", 12)==0 && strlen(a)==13)				return p_symbol_engine_history->didchec(a[12]-'0');
 		if (memcmp(a, "didcallround", 12)==0 && strlen(a)==13)				return p_symbol_engine_history->didcall(a[12]-'0');
 		if (memcmp(a, "didraisround", 12)==0 && strlen(a)==13)				return p_symbol_engine_history->didrais(a[12]-'0');
@@ -522,12 +517,12 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "betpositionrais", 15)==0 && strlen(a)==15)			return p_symbol_engine_positions->betpositionrais();
 
 	//CHIP AMOUNTS 2(2)
-	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(_userchair); 
+	if (memcmp(a, "balance", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->balance(p_symbol_engine_userchair->userchair()); 
 	if (memcmp(a, "balance", 7)==0 && strlen(a)==8)						return p_symbol_engine_chip_amounts->balance(a[7]-'0');
 	if (memcmp(a, "maxbalance", 10)==0 && strlen(a)==10)  				return p_symbol_engine_chip_amounts->maxbalance();
 	if (memcmp(a, "balanceatstartofsession", 23)==0 && strlen(a)==24)	return p_symbol_engine_chip_amounts->balanceatstartofsession();
 	if (memcmp(a, "stack", 5)==0 && strlen(a)==6)						return p_symbol_engine_chip_amounts->stack(a[5]-'0');
-	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return p_symbol_engine_chip_amounts->currentbet(_userchair);
+	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return p_symbol_engine_chip_amounts->currentbet(p_symbol_engine_userchair->userchair());
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->currentbet(a[10]-'0');
 	if (memcmp(a, "call", 4)==0 && strlen(a)==4)						return p_symbol_engine_chip_amounts->call();
 	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return p_tablelimits->bet();
@@ -577,7 +572,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// HISTORY S
 	// Part 3(3)
 	if (memcmp(a, "prevaction", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->prevaction();
-	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->nbetsround(_betround);
+	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==10)				return p_symbol_engine_history->nbetsround(p_betround_calculator->betround());
 	if (memcmp(a, "nbetsround", 10)==0 && strlen(a)==11)				return p_symbol_engine_history->nbetsround(a[10]-'0');
 
 	// GENERAL

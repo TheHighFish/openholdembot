@@ -125,15 +125,18 @@ HWND *CSharedMem::GetDenseListOfConnectedPokerWindows()
 
 void CSharedMem::CreateDenseListOfConnectedPokerWindows()
 {
+	write_log(prefs.debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
 	int size_of_list = 0;
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		if (attached_poker_windows[i] != NULL)
 		{
+			write_log(prefs.debug_table_positioner(), "[CSharedMem] First HWND: %i\n", attached_poker_windows[i]);
 			dense_list_of_attached_poker_windows[size_of_list] = attached_poker_windows[i];
 			size_of_list++;
 		}
 	}
+	write_log(prefs.debug_table_positioner(), "[CSharedMem] Total tables %i\n", size_of_list);
 	// Only at the very end update the size of the list.
 	// This helps to avoid potential race-conditions,
 	// if another application uses the list at the same time,

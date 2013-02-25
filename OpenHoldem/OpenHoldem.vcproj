@@ -1003,10 +1003,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CSymbols.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CTableLimits.cpp"
 					>
 				</File>
