@@ -1,3 +1,11 @@
+v4.0.3 2013-xx-yy
+==================
+BUG FIXES: 
+- The symbol-engine did not look up some values correctly,
+  as the userchair was not initialized correctly.
+  This has now been fixed.
+  [Nik0]
+
 v4.0.3 2013-02-24
 ==================
 BUG FIXES: 
