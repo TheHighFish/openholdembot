@@ -1,0 +1,24 @@
+* Change the version
+* Choose the correct build option (debug or release)
+* Choose the correct build option (optimized for OH, debug for the rest)
+* Rebuild everything
+* Test "everything", at least that OH "works"
+* Commit everything
+* Tag the release on googlecode
+* Copy all files to a new directory
+* Add dbdhelp.dll
+* Add the scraper directory and double-check it (TM for ManualMode, Universal TM)
+* Add the OpenPPL library
+* Add the Documentation
+* Add ReleaseNotes (make sure, they are complete and release date is set)
+* Add "sources of code.txt"
+* Add Matrix' PlayBot as default bot.
+* Add the license-file
+* Remove the *.lib, *.exp and *.pdb files.
+* Remove replay-direcoty (if existent), logs and other private data
+* Create a rar-archive
+* Upload the rar-file to google-code.
+  Please dont forget Summary and description.
+  Labels: Featured, Type-Executable, OpSys-Windows
+* Remove the label "Featured" from the last release of OpenHoldem
+* Announce the new download in "OpenHoldem Stickies" and post the release-notes.

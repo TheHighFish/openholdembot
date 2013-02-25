@@ -1,0 +1,342 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Subsection
+OpenHoldem References
+\end_layout
+
+\begin_layout Itemize
+Binary package download site:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source code download:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/source
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source instructions: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?f=113&t=3542
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source license, GPL v3:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.gnu.org/copyleft/gpl.html 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Discussion forums:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Issue tracker:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/issues 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Wiki:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Other open source projects used in the OpenHoldem project 
+\end_layout
+
+\begin_layout Itemize
+Spirit parser library; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.boost.org
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+HScrollListBox; Nebula Technologies, Inc.; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.nebutech.com
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Dynamic window resizing class; Paul DiLascia; MSDN Magazine -- July 2001
+\end_layout
+
+\begin_layout Itemize
+PokerEval library; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://gna.org/projects/pokersource/
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Hashing algorithm from Bob Jenkins; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://burtleburtle.net/bob/hash/doobs.html
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Visual Leak Detector; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://dmoulding.googlepages.com/vld 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Normalized random distribution Java class; Indiana; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://pokerai.org/pj2/index.php
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Scintilla source code editing component;
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+ http://www.scintilla.org
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Progress Indicator Dialog; P.
+ GopalaKrishna; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.codeproject.com/win32/UPDialog.asp
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Netscape-style preferences dialog; Chris Losinger; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.codeproject.com/KB/tabs/saprefs.aspx
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Fast median search algorithm; Nicolas Devillard; Niklas Wirth; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://ndevilla.free.fr/median/median/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Commercial projects used in OpenHoldem
+\end_layout
+
+\begin_layout Itemize
+ActiveState Perl (ActiveState Perl is free for personal use); 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.activestate.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

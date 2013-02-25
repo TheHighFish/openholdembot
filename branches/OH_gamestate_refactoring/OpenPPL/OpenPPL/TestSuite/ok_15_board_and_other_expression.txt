@@ -1,0 +1,18 @@
+// combinations of board and other expressions got mixed up
+// in an earlier version, as we worked with 2 output-streams.
+// Just checking...
+
+custom
+
+preflop
+when others fold force
+
+flop
+When (Position = Last And (Board = 345) And StackSize < 50) RaiseMax Force
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force

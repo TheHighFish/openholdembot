@@ -1,0 +1,1894 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+VMWare
+\end_layout
+
+\end_inset
+
+VMWare
+\end_layout
+
+\begin_layout Standard
+This is a guide to show you how to get OpenHoldem running securely on a
+ single computer using the VMware Server application as a second, "virtual"
+ computer.
+ Original post by Tammelinn: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=11894
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The guide assumes no special knowledge, but you will need some basic computer
+ skills.
+ You will need to know how to install software, how to rename files, how
+ to navigate folders and so on.
+ 
+\end_layout
+
+\begin_layout Standard
+I am also assuming that you are using the same operating system as me.
+ If you are using Windows XP Media Centre Edition or Windows XP Professional,
+ you can use this guide.
+ If you are using some other brand of Windows (including Vista), the guide
+ might not be reliable.
+ I have only tested these instructions with XP.
+ 
+\end_layout
+
+\begin_layout Standard
+Much of this information is already available elsewhere.
+ In many cases, all I have done is to reword it a little.
+ 
+\end_layout
+
+\begin_layout Subsection
+Definitions 
+\end_layout
+
+\begin_layout Standard
+The "real" computer is the one that is sitting on your desk or on your lap.
+ It has its own operating system.
+ The "virtual" computer is the one we are going to create using VMware Server.
+ We can think of the "virtual" computer as a separate computer with its
+ own operating system, even though it is physically part of the "real" computer.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 1 - Download VMware Server 
+\end_layout
+
+\begin_layout Standard
+VMware Server is a free download from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.vmware.com
+\end_layout
+
+\end_inset
+
+.
+ You will need to provide VMware with a valid e-mail address to get a serial
+ number.
+ I used version 1.0.3 while writing this guide.
+ 
+\end_layout
+
+\begin_layout Standard
+You will also need a Windows installation disk or an ISO-image of e.g.
+ TinyXP.
+ I am using a Windows XP Professional installation DVD, which I'm going
+ to install as my "virtual" operating system.
+ 
+\end_layout
+
+\begin_layout Standard
+While you wait for the download to finish, you should read the whole of
+ this guide and make sure that you understand it.
+ It would be a good idea to print it out, if you can.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Do not install any software
+\emph default
+ until you are told to.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 2 - Install VMware Server on your real computer 
+\end_layout
+
+\begin_layout Standard
+Double-click on the VMware Server file you downloaded and it will begin
+ installing itself.
+ When you are asked if you want a "complete" or "custom" installation, choose
+ "complete".
+ A big window with some warnings about "IIS" might appear.
+ We don't need IIS, so just click “OK”.
+ When the installer asks for Internet access, grant it.
+ Wait for the installation to complete before moving on to the next step.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 3 - Configure VMware Player 
+\end_layout
+
+\begin_layout Standard
+Double-click on the "VMware Server" icon that should have appeared on the
+ desktop of your real computer.
+ VMware Server will start for the first time.
+ A Pop-up window asks you to choose between a local host and a remote host.
+ Choose "local host" and click "OK".
+ 
+\end_layout
+
+\begin_layout Standard
+Click the "New Virtual Machine" icon and a window will appear.
+ Choose "typical" and click "next".
+ Now choose which operating system you want to install on your virtual computer.
+ Here, I selected the "Microsoft Windows" option, and the version I selected
+ was "Windows XP, Professional".
+ if you want to install from a CD-image and not from a real CD then just
+ point VMware to the location of the ISO-image.
+\end_layout
+
+\begin_layout Standard
+The next window gives you two boxes to fill in.
+ The first box gives you a chance to name your new virtual computer.
+ Choose any name you like.
+ 
+\end_layout
+
+\begin_layout Standard
+The second box ("Location") allows you to choose where the Virtual computer
+ will be saved on your hard drive.
+ You probably don't need to change the contents of this box.
+ (The virtual computer is actually a single file which exists on the hard
+ drive of your real computer.
+ If you want this file to be in a different folder or even on a different
+ partition, you can tell VMware now.) 
+\end_layout
+
+\begin_layout Standard
+Next you must choose the type of 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+network
+\end_layout
+
+\end_inset
+
+network.
+ Choose "Use bridged networking".
+ 
+\end_layout
+
+\begin_layout Standard
+The next window asks you to decide how big the virtual computer's virtual
+ hard drive is going to be.
+ The suggested 8GB is quite enough for the purposes of playing poker.
+ Click "Finish" when you are ready.
+ Some operating-systems like Windows 2000 or TinyXP will be satisfied with
+ a bit less disk space, but don't forget that you also need space for casino-sof
+tware, hand-histories and maybe PokerTracker.
+ Better safe than sorry.
+\end_layout
+
+\begin_layout Standard
+VMware will thereafter spend quite a few minutes creating the virtual computer.
+ Wait until the installation is complete.
+ You should be looking at a brand-new installation of Windows XP.
+ If you can run Solitaire (click "Start - All Programs - Games - Solitaire")
+ then you are ready to move on to the next step.
+\end_layout
+
+\begin_layout Subsection
+Step 4 - Install an 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+operating system
+\end_layout
+
+\end_inset
+
+operating system on the virtual computer
+\end_layout
+
+\begin_layout Standard
+When VMware is ready, you'll see a new window with some details about the
+ virtual computer.
+ Find "Start this virtual machine" on the left and click it.
+ VMware will now look for the Windows installation disk in your CD/DVD drive.
+ Put the installation disk in the drive and Windows will begin installing
+ onto your virtual computer.
+ 
+\end_layout
+
+\begin_layout Standard
+Soon, Windows will ask you if you want to format your hard drive.
+ Only the virtual hard drive of the virtual computer is going to get formatted,
+ so you don't need to worry about the data on your real hard drive.
+ It is perfectly safe.
+ If you asked how you want to format the virtual hard drive, make sure you
+ choose one of the NTFS options.
+ (Do not choose any option with FAT16 or FAT32).
+ 
+\end_layout
+
+\begin_layout Standard
+Eventually, Windows will ask you to enter your full name.
+ We are going to create three seperate users, so choose a name for the first
+ user ("Jessica", for example) and enter it here.
+ This user will have permanent administrator privileges.
+ 
+\end_layout
+
+\begin_layout Standard
+Next, enter an administrator password for this user.
+ Write down the name and password now.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Administrator name and password
+\emph default
+ _________________________ 
+\end_layout
+
+\begin_layout Standard
+Later, Windows will ask you to enter up to five user names.
+ The first user - the box labelled "your name" - should be the same as the
+ user you entered above ("Jessica").
+ Don't fill in the other boxes yet.
+ 
+\end_layout
+
+\begin_layout Standard
+Wait until the installation is complete.
+ You should be looking at a brand-new installation of Windows XP.
+ If you can run Solitaire (click "Start - All Programs - Games - Solitaire")
+ then you are ready to move on to the next step.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 5 - Install VMTools, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Firewall
+\end_layout
+
+\end_inset
+
+Firewall and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Antivirus
+\end_layout
+
+\end_inset
+
+Antivirus on virtual computer 
+\end_layout
+
+\begin_layout Standard
+VMTools is a package which, among other things, gets the mouse to move smoothly
+ between the real and the virtual computer.
+ You need to install it now, so press CTRL+ALT to restore mouse control
+ to the real computer.
+ Then, on the VMware Server window, click on the menu option VM, and then
+ choose "Install VMTools..." VMTools will now install itself inside the virtual
+ computer.
+ The virtual computer will need to reboot.
+ 
+\end_layout
+
+\begin_layout Standard
+After the reboot, find the VMTools icon in the system tray, next to the
+ clock.
+ It looks like three small interlinked squares.
+ When you have found it, double-click on it.
+ 
+\end_layout
+
+\begin_layout Standard
+A window appears and the "Options" tab is already showing.
+ Find the line "Show VMware Tools in the taskbar" and click on it, so that
+ there is no longer a tick next to it.
+ Click “OK” to save your changes.
+ This measure prevents the casino from seeing that you're using VMware -
+ just in case they take a screenshot of your desktop.
+ 
+\end_layout
+
+\begin_layout Standard
+Now, your virtual computer is connected to the Internet, so it needs firewall
+ software and antivirus software, just as your real computer does.
+ Install the software (connect to the Internet to download it, if you have
+ to), and then run a scan to check that your virtual computer is free from
+ viruses.
+ 
+\end_layout
+
+\begin_layout Standard
+(You could use AVG Antivirus (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://free.grisoft.com
+\end_layout
+
+\end_inset
+
+), and Zonealarm Firewall (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.zonealarm.com
+\end_layout
+
+\end_inset
+
+)) 
+\end_layout
+
+\begin_layout Subsection
+Step 6 - Check that the real and virtual computers can communicate
+\end_layout
+
+\begin_layout Standard
+If the real computer and the virtual computer can't communicate with each
+ other, all your efforts in securing them will be wasted.
+ Let's check the communications now.
+ 
+\end_layout
+
+\begin_layout Standard
+The traditional way to test a network is to have one computer "ping" the
+ other.
+ A ping is a short signal which one computer sends to another.
+ The signal will get bounced back if the network is running as it should.
+ 
+\end_layout
+
+\begin_layout Standard
+Before pinging anything, you need to turn off the firewalls on both computers.
+ If you have installed a firewall such as Zonealarm, switch it off.
+ Now click "Start - Control Panel - Security Centre".
+ At the bottom of the window is an option to "Manage security settings for:
+ Windows Firewall".
+ Click on "Windows Firewall" and make sure it is off.
+ Do this on both computers.
+ 
+\end_layout
+
+\begin_layout Standard
+Now you need to find out the IP address for both computers.
+ (An IP address is a numerical address which computers on a network use
+ to identify each other.) 
+\end_layout
+
+\begin_layout Standard
+On your real computer, click "Start - Run".
+ Type "cmd" in the box and press return.
+ 
+\end_layout
+
+\begin_layout Standard
+A new window appears.
+ Type “ipconfig" and press return.
+ You will see a series of numbers, some of which are marked "IP address".
+ Find the one that corresponds to the type of Internet connection you have
+ - for example, the one labeled "wireless connection" if you connect to
+ the Internet through a wireless router.
+ 
+\end_layout
+
+\begin_layout Standard
+The IP address of my real computer is 192.168.1.4 - yours probably looks almost
+ the same.
+ Write it down now.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Real computer IP address
+\emph default
+_________________________ 
+\end_layout
+
+\begin_layout Standard
+Now do the same thing on your virtual computer.
+ Find the IP address and write it down.
+ The IP address of my virtual computer is 192.168.1.7 - yours will be similar.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Virtual computer IP address
+\emph default
+ _________________________ 
+\end_layout
+
+\begin_layout Standard
+On your real computer, find the new window again and type "ping x.x.x.x", then
+ press return.
+ Replace x.x.x.x with the IP address of your virtual computer.
+ You should see something like this...
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Pinging 192.168.1.7 with 32 bytes of data: 
+\end_layout
+
+\begin_layout Plain Layout
+
+Reply from 192.168.1.7: bytes=32 time<1ms TTL=128
+\end_layout
+
+\begin_layout Plain Layout
+
+Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
+\end_layout
+
+\begin_layout Plain Layout
+
+Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
+\end_layout
+
+\begin_layout Plain Layout
+
+Reply from 192.168.1.7: bytes=32 time<1ms TTL=128 
+\end_layout
+
+\begin_layout Plain Layout
+
+Ping statistics for 192.168.1.7: (and so on) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This dialogue means that the real computer sent a signal to the virtual
+ computer four times, and each time it got a response.
+ 
+\end_layout
+
+\begin_layout Standard
+If the network isn't set up properly, you will see something like this...
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Pinging 192.168.1.7 with 32 bytes of data: 
+\end_layout
+
+\begin_layout Plain Layout
+
+Request timed out.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Request timed out.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Request timed out.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Request timed out.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+Ping statistics for 192.168.1.7: (and so on) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This dialogue means that the real computer sent a signal to the virtual
+ computer four times, but received no response.
+ 
+\end_layout
+
+\begin_layout Standard
+Go to your virtual computer and do the same thing.
+ This time, type "ping x.x.x.x" replacing x.x.x.x with the IP address of your
+ real computer.
+ If you get a response, your network is set up properly and you can continue
+ to the next step.
+ If the network isn't set up properly, you should seek help from someone
+ who understands networks.
+ 
+\end_layout
+
+\begin_layout Standard
+Don't forget to 
+\emph on
+turn your firewalls back on again
+\emph default
+ when you finish this step.
+ If you have a good firewall such as Zonealarm, you can leave the less powerful
+ Windows firewall turned off permanently (on your real computer as well
+ as your virtual computer).
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 7 - Set up user accounts on virtual computer 
+\end_layout
+
+\begin_layout Standard
+Click "Start - Control Panel - User Accounts".
+ 
+\end_layout
+
+\begin_layout Standard
+You had already set up one user while installing Windows.
+ This user already has admin privileges.
+ We'll call it the "admin" user.
+ We need to give this user a password.
+ It can be the same password you used in step 4.
+ Click on the user, then click on "create a password".
+ Enter the password into the boxes and click on "create password".
+ The next window asks you if you want to make your files and folders private.
+ You certainly do, so click "Yes, make private".
+ Click on "Back" to return to the user accounts window.
+ 
+\end_layout
+
+\begin_layout Standard
+Now we'll set up two new users with fewer privileges.
+ You will be logged in as the second user whenever you connect to a casino.
+ We'll call this the "casino" user.
+ The third user will be created to hide things from the casino.
+ We'll call this the "stealth" user.
+ 
+\end_layout
+
+\begin_layout Standard
+Choose names and passwords for these users, and write them all down now.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Admin user
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_________________________
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Casino user
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_________________________
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Stealth user
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_________________________
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The casino user will have restricted privileges initially.
+ Click "create a new account", enter the name of the casino user and click
+ "next".
+ Click on "limited" and then click on "create account".
+ The casino user will appear next to the admin user.
+ Click on the casino user and give it a password.
+ 
+\end_layout
+
+\begin_layout Standard
+The stealth user will have restricted privileges permanently.
+ Click "create a new account" and set up the stealth user in the same way
+ you set up the casino user.
+ 
+\end_layout
+
+\begin_layout Standard
+Click "create a new account".
+ Choose a name and then click on "limited account".
+ 
+\end_layout
+
+\begin_layout Standard
+That completes this step.
+ If there is a "guest" user shown, you can ignore it.
+ Close the "user accounts" window.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 8 - Create a protected folder on virtual computer 
+\end_layout
+
+\begin_layout Standard
+You should still be logged in as the admin user.
+ Stay logged in as this user throughout step 8.
+ 
+\end_layout
+
+\begin_layout Standard
+We need to create a folder to hide some sensitive information.
+ The best place for this folder is inside the root folder (click Start -
+ My Computer - Local Disk C:.
+ Then click on "show contents of this folder").
+ 
+\end_layout
+
+\begin_layout Standard
+Create a new folder in this window and give it an innocent name.
+ ("Files" would be a good name.) From now on, this folder will be referred
+ to as the "Ninja" folder.
+ 
+\end_layout
+
+\begin_layout Standard
+Click "Start - Control Panel - (Appearances and Themes) - Folder Options".
+ Click the "View" tab.
+ In the "Advanced Settings" window, find the line "Use simple file sharing
+ (recommended)".
+ If there is a green tick on this line, click on it to remove it.
+ Click on the big "OK" button to save your changes.
+ 
+\end_layout
+
+\begin_layout Standard
+Now, right click on the Ninja folder and choose "Properties".
+ Click on the "Security" tab.
+ In the "Group or user names" box you will see a list of users, but the
+ stealth user should not be one of them.
+ 
+\end_layout
+
+\begin_layout Standard
+We want to change the folder's settings so that the stealth user is the
+ only user who can see inside it.
+ (Not even users with admin privileges should be able to see inside.) Click
+ the “Add" button.
+ In the "Enter the object names to select" box, type in the name of the
+ stealth user (for example, my stealth user is called James).
+ Click the "OK" button.
+ There should now be a new entry in the list.
+ My stealth user shows up as “James (XPPRO/James)" in that list.
+ 
+\end_layout
+
+\begin_layout Standard
+Now we need to remove every user except the stealth user from the list.
+ Click the "Advanced" button.
+ Find the line which says "Inherit from parent the permission entries..." and
+ click on it.
+ A warning pop-up appears; click on the "Remove" button.
+ The line which says "Inherit from parent the permission entries..." should
+ no longer have a tick next to it.
+ Click the “OK” button.
+ Another warning pop-up might appear.
+ If it does, click "Remove", then “OK”.
+ The list of users should now have only one user in it, the stealth user.
+ 
+\end_layout
+
+\begin_layout Standard
+Find the "Full control" line.
+ In the "allow" column, there is a small box.
+ Click on it, and a column full of ticks will appear.
+ If everything has gone to plan, there will be one user with full control
+ over the Ninja folder.
+ If you're happy, click "OK".
+ If something seems to be wrong, click "Cancel" and go through the last
+ two paragraphs again.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 9 - Take charge of the protected folder
+\end_layout
+
+\begin_layout Standard
+Log out from the admin user account and login as the stealth user (click
+ Start - Log off - Switch User).
+ Go to "My Computer" again and find the Ninja folder.
+ Right click on the folder and choose "Properties".
+ Click on the "Security" tab.
+ Check that the stealth user is still the only user in the list.
+ 
+\end_layout
+
+\begin_layout Standard
+Click the "Advanced" button and click the "Owner" tab.
+ Left click once on the stealth user so that it changes colour to blue.
+ Find the "Replace owner..." line and click on it, so that a green tick appears
+ next to it.
+ Then click on "Apply".
+ 
+\end_layout
+
+\begin_layout Standard
+The user in the box "Current owner of this item" should have changed to
+ the stealth user.
+ 
+\end_layout
+
+\begin_layout Standard
+Now click on the "Permissions" tab.
+ Find the "Inherit from the parent permission entries..." line; there should
+ still be no tick next to it.
+ Just below, find the "Replace permission entries on all child objects..."
+ line; click on it so that there is a green tick next to it.
+ Click the "Apply" button.
+ A warning pop-up appears; click the "Yes" button.
+ Click on the “OK” buttons twice to save your changes.
+ 
+\end_layout
+
+\begin_layout Standard
+Let's check that everything is set up correctly.
+ The stealth user is the only one who should be able to see the Ninja folder
+ and 
+\emph on
+anything
+\emph default
+ it contains.
+ 
+\end_layout
+
+\begin_layout Standard
+Open the Ninja folder (by double clicking on it) and create a folder called
+ "test" inside it.
+ Right click on the "test" folder, choose "Properties" and click on the
+ "Security" tab.
+ If the stealth user is the only person in the list, everything is as it
+ should be.
+ 
+\end_layout
+
+\begin_layout Standard
+Close all the windows and log out from the stealth user account.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 10 - One more check 
+\end_layout
+
+\begin_layout Standard
+Log in as the admin user.
+ Find the Ninja folder, and try to look inside it.
+ Your attempt to see inside this protected folder should be denied.
+ When you run casino software, it will not be able to see inside this folder
+ (unless it tries to take ownership of the folder - but this would be a
+ 
+\emph on
+criminal
+\emph default
+ act.) 
+\end_layout
+
+\begin_layout Standard
+This setup is not 100% secure, but it is probably secure enough.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 11 - Install 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Bring
+\end_layout
+
+\end_inset
+
+Bring on your virtual computer
+\end_layout
+
+\begin_layout Standard
+You now have a real computer and a virtual computer.
+ OpenHoldem is going to run on the real computer.
+ The casino software is going to run on the virtual computer.
+ 
+\end_layout
+
+\begin_layout Standard
+Now you need to install some software that will allow OpenHoldem (on the
+ real computer) to see what the casino software (on the virtual computer)
+ is doing.
+ There are several ways of doing this.
+ We are going to use a piece of software called "Bring".
+ 
+\end_layout
+
+\begin_layout Standard
+On the virtual computer, log in as the stealth user.
+ Now go to the official WinHoldem site (See {Bring}) and download "bring.exe"
+ (from the "stealth" page).
+ Download it directly into the Ninja folder: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.winholdem.net/bring/
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The casino software can't see inside the Ninja folder, but it will be able
+ to see Bring being run as a process.
+ (If you want to see all the processes your computer is running, press CTRL+ALT+
+DEL and then click on the "processes" tab.) 
+\end_layout
+
+\begin_layout Standard
+The solution is to rename Bring to something more innocent.
+ Then, if the casino software looks at the processes you are running, it
+ won't be able to find out anything incriminating about Bring.
+ 
+\end_layout
+
+\begin_layout Standard
+Rename Bring now.
+ For example, you could rename it to "notepad" or “paint".
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 12 - Install 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+software
+\end_layout
+
+\end_inset
+
+software on your real computer
+\end_layout
+
+\begin_layout Standard
+You can now install Bring on your real computer.
+ You don't need to rename it; the casino cannot see what is happening on
+ your real computer.
+ 
+\end_layout
+
+\begin_layout Standard
+Open a folder on the desktop, call it "Bring", and download into it the
+ files "bring.exe" and “bring.ini".
+ 
+\end_layout
+
+\begin_layout Standard
+Click "Start - Control Panel - Folder Options".
+ Click the "View" tab.
+ In the box labeled "Advanced Settings", scroll down and find the line "Hide
+ extensions for known file types".
+ If there is a green tick next to this line, click on it to make the tick
+ disappear.
+ Click "OK” to save your changes.
+ 
+\end_layout
+
+\begin_layout Standard
+You should also install OpenHoldem on your real computer now if you haven't
+ already.
+ 
+\emph on
+Do not install OpenHoldem on your virtual computer.
+\end_layout
+
+\begin_layout Subsection
+Step 13 - Configure Bring 
+\end_layout
+
+\begin_layout Standard
+Do you remember the IP address of your virtual computer? You're going to
+ need it again now.
+ 
+\end_layout
+
+\begin_layout Standard
+On your real computer, go into the "Bring" folder you just created and open
+ the file "bring.ini" in a text editor.
+ (Right-click on “bring.ini”, choose "Open with..." and select "Notepad".) 
+\end_layout
+
+\begin_layout Standard
+Find the following lines: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# remotehost      port  password  
+\end_layout
+
+\begin_layout Plain Layout
+
+-------------------------------- 
+\end_layout
+
+\begin_layout Plain Layout
+
+a 192.168.x.x     ????  prompt 
+\end_layout
+
+\begin_layout Plain Layout
+
+b 192.168.x.x     ????  prompt 
+\end_layout
+
+\begin_layout Plain Layout
+
+--------------------------------
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Change them to this: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# remotehost      port  password  
+\end_layout
+
+\begin_layout Plain Layout
+
+-------------------------------- 
+\end_layout
+
+\begin_layout Plain Layout
+
+a x.x.x.x         eeee  secret
+\end_layout
+
+\begin_layout Plain Layout
+
+--------------------------------
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+x.x.x.x should be the IP address of your virtual computer.
+ 
+\end_layout
+
+\begin_layout Itemize
+eeee is the "port" number.
+ It can be a number of your own choice.
+ 80 would be a good choice, and so would 800, 5000 or 8080.
+ 
+\end_layout
+
+\begin_layout Itemize
+"secret" is a password.
+ It's not good password, but it is fine for the purposes of testing Bring.
+ 
+\end_layout
+
+\begin_layout Standard
+Here are the changes I made to my bring.ini file: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# remotehost port password
+\end_layout
+
+\begin_layout Plain Layout
+
+-------------------------------- 
+\end_layout
+
+\begin_layout Plain Layout
+
+a 192.168.1.7 80 secret 
+\end_layout
+
+\begin_layout Plain Layout
+
+-------------------------------- 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Step 14 - Start Bring 
+\end_layout
+
+\begin_layout Standard
+Now we're going to test Bring by playing a game of solitaire on the virtual
+ computer, and by attempting to control it from the real computer.
+ 
+\end_layout
+
+\begin_layout Standard
+Go to the virtual computer.
+ You should still be logged in as the stealth user.
+ Start the Solitaire programme ("Start - All Programs - Games - Solitaire").
+ 
+\end_layout
+
+\begin_layout Standard
+Now open another command prompt (click "Start - Run", type "cmd" and press
+ enter).
+ 
+\end_layout
+
+\begin_layout Standard
+The command prompt window is currently looking at the "My Documents" folder.
+ You need to move into the Ninja folder.
+ If you followed the earlier suggestion, the location of your Ninja folder
+ will be "C:
+\backslash
+files".
+ To move into this folder, simply type “CD C:
+\backslash
+files" and press return.
+ (If this doesn't work you will need to learn how to use the command prompt.
+ Do an Internet search for "DOS command prompt".) 
+\end_layout
+
+\begin_layout Standard
+Now type the following command and press return.
+ Instead of bring, you should type the name of your renamed file.
+ Instead of 80, you should type the port number you chose in the previous
+ step, and instead of "secret" you should type the password you chose.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bring -s 80 secret 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A small pop-up will appear to show you that Bring has started on your virtual
+ computer.
+ Click "OK".
+ 
+\end_layout
+
+\begin_layout Standard
+Now go to your real computer.
+ Go into the Bring folder and double click on "bring.exe".
+ 
+\end_layout
+
+\begin_layout Standard
+Another pop-up appears to show you that Bring has started on your real computer.
+ Click “OK”.
+ 
+\end_layout
+
+\begin_layout Standard
+Another window appears labeled "Select remote connection".
+ You should see a line that looks exactly like the line you entered in the
+ "bring.ini" file.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+a 192.168.1.7 80 secret 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click on this line so that it turns blue, and click the "OK" button.
+ 
+\end_layout
+
+\begin_layout Standard
+Another window appears with a list of programs that are currently running
+ on your virtual computer.
+ One of them should be solitaire, so click on it so that it turns blue and
+ then click the "OK" button.
+ Solitaire will launch on your real computer, and if everything is set up
+ correctly, you will be able to play it and watch your mouse clicks affecting
+ both computers at once! 
+\end_layout
+
+\begin_layout Standard
+If you are unable to control solitaire from your real computer you definitely
+ won't be able to control a poker table.
+ Before you continue, seek help from someone who understands networks.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 15 - Stop running Bring 
+\end_layout
+
+\begin_layout Standard
+When you have had enough of playing solitaire, you should shut down Bring.
+ 
+\end_layout
+
+\begin_layout Standard
+On the real computer, just close the solitaire window.
+ 
+\end_layout
+
+\begin_layout Standard
+On the virtual computer, there are three ways to stop Bring.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Log off 
+\end_layout
+
+\begin_layout Enumerate
+Stop the Bring process.
+ Press CTRL+ALT+DEL.
+ Two task manager windows will appear, one for the real computer and one
+ for the virtual computer.
+ Find the task manager on the virtual computer and click the "Processes"
+ tab, find “bring.exe" (however you renamed it), click on it to turn it blue,
+ and then click on "End Process".
+ 
+\end_layout
+
+\begin_layout Enumerate
+Lock the desktop.
+ This doesn't actually close Bring, but it does halt it and prevent your
+ real computer from communicating with it.
+ 
+\end_layout
+
+\begin_layout Standard
+Stop Bring on both computers before you move on to the next step.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 16 - Set up the "run as a different user" facility 
+\end_layout
+
+\begin_layout Standard
+When you connect to the casino's Internet site you should always be logged
+ into your virtual computer as the casino user.
+ However, you will be running Bring 
+\emph on
+as if
+\emph default
+ you will logged on as the stealth user.
+ In this way, the casino won't be able to detect that you are using Bring.
+ Here's how to do it.
+ 
+\end_layout
+
+\begin_layout Standard
+On the virtual computer, log in as the casino user.
+ Right-click on the desktop and choose "New", then choose "Shortcut".
+ A window will appear.
+ In the box, type "cmd".
+ Click "Next" and then click "Finish".
+ 
+\end_layout
+
+\begin_layout Standard
+A new icon, “cmd.exe", will have appeared on your desktop.
+ It's actually a shortcut to the command prompt that you have used a few
+ times before.
+ Right-click on this shortcut and choose "Properties".
+ A window appears and the "Shortcut" tab should already be showing.
+ Click the "Advanced" button.
+ Find the line which reads "Run with different credentials".
+ Click on it so that a tick appears next to it.
+ Click the "OK" buttons twice.
+ "Run with different credentials" actually means "run this program as a
+ different user".
+ 
+\end_layout
+
+\begin_layout Standard
+Start solitaire again.
+ Double click the “cmd.exe" shortcut and a window will appear, asking you
+ which user you want to use to run the program.
+ Click on the line "The following user".
+ Then, enter the stealth user's name and password, and click “OK".
+ 
+\end_layout
+
+\begin_layout Standard
+The command prompt window appears.
+ It is running as if you were logged in as the stealth user.
+ We can safely run Bring from this window.
+ Go into the Ninja folder (perhaps by typing "CD C:
+\backslash
+files”).
+ Type the following command, changing the words "bring", "80" and "secret"
+ exactly as you did in step 14.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bring -s 80 secret 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bring's pop-up window appears, so click the “OK” button.
+ 
+\end_layout
+
+\begin_layout Standard
+Now go to the real computer and start Bring there.
+ Try to open the solitaire window, just as you did before.
+ 
+\end_layout
+
+\begin_layout Standard
+Go back to the virtual computer.
+ Press CTRL+ALT+DEL to make the task manager appear in both windows.
+ Find the virtual computer's task manager and select the "Properties" tab.
+ Check that "bring.exe" (however you renamed it) is running under the stealth
+ user, even though you are logged in as the casino user.
+ Check that "sol.exe" - the solitaire process - is running under the casino
+ user.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 17 - Check security with 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Gaze
+\end_layout
+
+\end_inset
+
+Gaze 
+\end_layout
+
+\begin_layout Standard
+We're going to make one more security check using the program Gaze.
+ It can be downloaded from the forums at the WinHoldem official site.
+ (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=1114
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Still on the virtual computer and still logged in as the casino user, go
+ to the WinHoldem site.
+ There should be two files - "gaze.cpp" and “gaze.exe".
+ Download both of them to the virtual computer's desktop.
+ 
+\end_layout
+
+\begin_layout Standard
+Double click on “gaze.exe” to run it.
+ A window will appear, and shortly afterwards a pop-up labeled "Windows
+ - no disk" will appear.
+ Click the "Cancel" button, and close the Gaze window.
+ 
+\end_layout
+
+\begin_layout Standard
+The results of the test have been saved to a file on the desktop called
+ "gaze”.
+ Confusingly, there are now two text files on the desktop with the same
+ name.
+ Double click one of them to open it in a text editor.
+ If the first few lines don't look like this, you've got the wrong file.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Sat Jun 23 17:40:42 2007 
+\end_layout
+
+\begin_layout Plain Layout
+
+== 
+\end_layout
+
+\begin_layout Plain Layout
+
+PROCESSES 
+\end_layout
+
+\begin_layout Plain Layout
+
+== 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+== 
+\end_layout
+
+\begin_layout Plain Layout
+
+PROCESS NAME: [System Process] 
+\end_layout
+
+\begin_layout Plain Layout
+
+-- WARNING: OpenProcess failed with error 87 (The parameter is incorrect)
+\end_layout
+
+\begin_layout Plain Layout
+
+process ID = 0x00000000 
+\end_layout
+
+\begin_layout Plain Layout
+
+thread count = 1 parent 
+\end_layout
+
+\begin_layout Plain Layout
+
+process ID = 0x00000000 
+\end_layout
+
+\begin_layout Plain Layout
+
+Priority Base = 0 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You want to read the report on “bring.exe" (however you renamed it).
+ Press CTRL+F to do a search for this file.
+ When you find it, it should look like this...
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+== 
+\end_layout
+
+\begin_layout Plain Layout
+
+PROCESS NAME: bring.exe 
+\end_layout
+
+\begin_layout Plain Layout
+
+-- WARNING: OpenProcess failed with error 5 (Access is denied) 
+\end_layout
+
+\begin_layout Plain Layout
+
+process ID = 0x00000EE8 
+\end_layout
+
+\begin_layout Plain Layout
+
+thread count = 1 
+\end_layout
+
+\begin_layout Plain Layout
+
+parent process ID = 0x00000EDC 
+\end_layout
+
+\begin_layout Plain Layout
+
+Priority Base = 8 
+\end_layout
+
+\begin_layout Plain Layout
+
+WARNING: CreateToolhelp32Snapshot (of modules) failed with error 5 (Access
+ is denied) 
+\end_layout
+
+\begin_layout Plain Layout
+
+THREAD ID = 0x00000EEC
+\end_layout
+
+\begin_layout Plain Layout
+
+base priority = 8 
+\end_layout
+
+\begin_layout Plain Layout
+
+delta priority = 0 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you can see the message "OpenProcess failed with error 5 (Access is denied)",
+ then you will know for sure that the casino user can't find out anything
+ incriminating about Bring.
+ Your security checks are now complete.
+ 
+\end_layout
+
+\begin_layout Standard
+Close Notepad, solitaire and the “cmd.exe" shortcut.
+ Delete Gaze from your desktop and empty the recycle bin.
+ Terminate the Bring process.
+ Reboot the virtual computer.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 18 - Install the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+casino software
+\end_layout
+
+\end_inset
+
+casino software 
+\end_layout
+
+\begin_layout Standard
+You can now install the casino software.
+ On the virtual computer, log in as the casino user.
+ Create a new folder on the desktop called "poker".
+ It's a good idea to install all your casino software in a single folder.
+ 
+\end_layout
+
+\begin_layout Standard
+The casino user currently has restricted privileges.
+ Some casinos insist that you install their software when logged in as a
+ user with administrative privileges.
+ Some casinos also insist that you run their software when logged in as
+ a user with administrative privileges.
+ Preferably, we would like to install and run the software while logged
+ in as a user has restricted privileges.
+ 
+\end_layout
+
+\begin_layout Standard
+Here is how to set up a typical casino's poker software.
+ 
+\end_layout
+
+\begin_layout Standard
+Still logged in as the casino user, go to the casino web site.
+ Download their software directly into the poker folder you created moments
+ ago.
+ Go into the folder and double click on the software.
+ It will begin installing.
+ When the install asks where you would like to install the software, choose
+ the "poker" folder you created moments ago.
+ Don't let the install the use the default folder.
+ 
+\end_layout
+
+\begin_layout Standard
+If the installation completes without complaints, all is well.
+ However, if the installation complaints that it needs administrative privileges
+, this is what you must do: 
+\end_layout
+
+\begin_layout Standard
+Log out from the casino user's account and log in to the admin user's account.
+ Open the "User Accounts" window just as you did before.
+ Click on the casino user act and then click on "Change the account type".
+ Click on "Computer Administrator" and then click the "Change Account Type"
+ button.
+ Log out from the admin user's account and log back into the casino user's
+ account.
+ 
+\end_layout
+
+\begin_layout Standard
+Try to install the software again.
+ This time it should install without complaints.
+ Now log out of the casino user's account and go back to the admin user
+ account.
+ Change the casino user's account type back to "limited".
+ Log out of the admin user account and log back into the casino user's account.
+ 
+\end_layout
+
+\begin_layout Standard
+Now try running the software.
+ If the software complaints that it needs administrative privileges to run,
+ change the casino user's account to "Computer Administrator" just as you
+ did above.
+ It's unfortunate that you have to run the software with administrative
+ privileges, but it's not the end of the world.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 19 - Change your video 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+settings
+\end_layout
+
+\end_inset
+
+settings 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is quite fussy about which desktop theme you are using.
+ Currently, only the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows XP
+\end_layout
+
+\end_inset
+
+Windows XP default style and the 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 2000
+\end_layout
+
+\end_inset
+
+Windows 2000 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+classic style
+\end_layout
+
+\end_inset
+
+classic style are supported.
+ You must change your desktop theme to one of these styles on both the real
+ computer and the virtual computer.
+ Click "Start - Control Panel - (Appearances and Themes) - Change the computer's
+ theme" to do this.
+ 
+\end_layout
+
+\begin_layout Subsection
+Step 20 - Start playing poker 
+\end_layout
+
+\begin_layout Standard
+On the virtual computer, start Bring by using the “cmd.exe" shortcut.
+ Start the casino software and choose the table.
+ Make sure the table's window is not obscured by any other Windows.
+ 
+\end_layout
+
+\begin_layout Standard
+Now go to your real computer, start Bring and try to get the table to appear
+ in a window.
+ If everything has been set up properly, you should be able to control the
+ table from your real computer.
+ 
+\end_layout
+
+\begin_layout Standard
+Now start OpenHoldem.
+ Press OpenHoldem’s “Green Circle Button” button and you're ready to make
+ money! 
+\end_layout
+
+\begin_layout Subsection
+Step 21 - How to play in the future
+\end_layout
+
+\begin_layout Standard
+Every time you use OpenHoldem to play poker for you, you must follow this
+ simple checklist.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Boot up your real computer.
+ Start OpenHoldem.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Boot up your virtual computer and log in as the casino user.
+ 
+\end_layout
+
+\begin_layout Enumerate
+On the virtual computer, use the “cmd.exe” shortcut to run Bring.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Start the casino software.
+ Select a table.
+ Make sure this window isn't obscured by any other windows.
+ 
+\end_layout
+
+\begin_layout Enumerate
+On the real computer, start Bring.
+ Find the window with the poker table.
+\end_layout
+
+\end_body
+\end_document
