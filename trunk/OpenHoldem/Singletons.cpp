@@ -35,6 +35,7 @@
 #include "CTableMaploader.h"
 #include "CTablePositioner.h"
 #include "CValidator.h"
+#include "CVersionInfo.h"
 #include "CVersus.h"
 
 void InstantiateAllSingletons()
@@ -92,7 +93,9 @@ void InstantiateAllSingletons()
 		p_filesystem_monitor = new CFileSystemMonitor;
 	if (!p_tablemap_loader)
 		p_tablemap_loader = new CTableMapLoader;
-	if (!p_autoconnector) 
+	if (!p_version_info)
+		p_version_info = new CVersionInfo;
+	if (!p_autoconnector)
 		p_autoconnector = new CAutoConnector;
 	if (!p_engine_container)
 		p_engine_container = new CEngineContainer;
@@ -162,6 +165,8 @@ void DeleteAllSingletons()
 		{ delete p_engine_container; p_engine_container = NULL; }
 	if (p_autoconnector) 
 		{ delete p_autoconnector; p_autoconnector = NULL; }
+	if (p_version_info)
+		{ delete p_version_info; p_version_info = NULL; }
 	if (p_tablemap_loader)
 		{ delete p_tablemap_loader; p_tablemap_loader = NULL; }
 	if (p_filesystem_monitor)

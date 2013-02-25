@@ -35,7 +35,7 @@
 CIteratorThread		*p_iterator_thread = NULL;
 
 //weighted prwin lookup tables for non-suited and suited cards
-int pair2ranko[170] = {0}, pair2ranks[170] = {0};
+int pair2rank_offsuited[170] = {0}, pair2rank_suited[170] = {0};
 //used to resolve ascii cards to numbers for init of above
 char ctonum[14]="23456789TJQKA";
 //int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
@@ -600,7 +600,7 @@ int CIteratorThread::InRange(const int card1, const int card2, const int willpla
 	 mustplay and topclip are debatable constructs at the best of times 2008-01-29)
 	*/
 	
-	extern int pair2ranko[170], pair2ranks[170];
+	extern int pair2rank_offsuited[170], pair2rank_suited[170];
 	int i = card1%13;
 	int j = card2%13;
 	int	hrank=0;
@@ -613,9 +613,9 @@ int CIteratorThread::InRange(const int card1, const int card2, const int willpla
 	i=i*13+j; //offset into handrank table
 
 	if (card1/13==card2/13)  //same suit
-		hrank=pair2ranks[i]; //suited
+		hrank=pair2rank_suited[i]; //suited
 	else
-		hrank=pair2ranko[i]; //not suited
+		hrank=pair2rank_offsuited[i]; //not suited
 
 	if (hrank>=wontplay)return 0; //no good, never play these
 
@@ -657,8 +657,8 @@ void CIteratorThread::InitHandranktTableForPrwin()
 		//normal weighted prwin table
 		ptr = prwin_handrank_table_169[i];
 		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
-		if (*(ptr+2)=='s')pair2ranks[j]=i+1;
-		else pair2ranko[j]=i+1;
+		if (*(ptr+2)=='s')pair2rank_suited[j]=i+1;
+		else pair2rank_offsuited[j]=i+1;
 		//prw1326 vanilla table
 		j=strchr(ctonum,*ptr)-ctonum;
 		k=strchr(ctonum,*(ptr+1))-ctonum;

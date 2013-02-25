@@ -49,8 +49,6 @@ private:
 private:
 	CCritSec	m_critsec;
 private:
-	int _betround; 
-	int _userchair;
 } *p_symbols;
 
 #endif /* INC_CSYMBOLS_H */

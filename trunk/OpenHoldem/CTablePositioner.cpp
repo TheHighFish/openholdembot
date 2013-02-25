@@ -23,6 +23,15 @@ void CTablePositioner::PositionMyWindow()
 	HWND *HWNDs_of_child_windows = p_sharedmem->GetDenseListOfConnectedPokerWindows();
 	int number_of_child_windows  = p_sharedmem->SizeOfDenseListOfAttachedPokerWindows();
 
+	if (number_of_child_windows <= 0)
+	{
+		// Do nothing if there are 0 tables connected.
+		// Actually an empty list of tables consists of only NULLs,
+		// but if MicroSofts table-arranging functions see a NULL
+		// they will arrange all windows at the desktop.
+		// That's not what we want.
+		return;
+	}
 	if (prefs.table_positioner_options() == k_position_tables_tiled)
 	{
 		write_log(prefs.debug_table_positioner(), "[CTablePositioner] Going to tile %d windows...\n", number_of_child_windows);

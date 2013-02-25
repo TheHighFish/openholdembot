@@ -27,13 +27,7 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
-
 CAutoConnector						*p_autoconnector = NULL;
-
-
-
-
-
 
 CAutoConnector::CAutoConnector()
 {
@@ -285,11 +279,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 				site = site_i->second.text;
 
 			CString formula = p_formula->formula_name();
-			write_log(k_always_log_basic_information, 
-				"\n*************************************************************\n"
-				"TABLE RESET %s - %s(%s)\n"
-				"*************************************************************\n",
+			write_log(k_always_log_basic_information, "*************************************************************\n");
+			write_log(k_always_log_basic_information, "TABLE RESET %s - %s(%s)\n",
 				formula.GetString(), site.GetString(), title);
+			write_log(k_always_log_basic_information, "*************************************************************\n");
 		}
 	}
 	p_table_positioner->PositionMyWindow();
