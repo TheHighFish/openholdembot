@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
@@ -98,7 +99,12 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	_pcbits = 0;
 	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
 	  	p_scraper->card_player(userchair, 0), 
-		p_scraper->card_player(userchair, 1));	
+		p_scraper->card_player(userchair, 1));
+
+	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] handval = %i\n", handval);
+	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] pokerval] = %i\n", _pokerval);
+	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] nCards = %i\n", nCards);
+	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[betround-1] = _pokerval & 0xff000000; 
 

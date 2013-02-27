@@ -740,10 +740,11 @@ void CIteratorThread::InitHandranktTableForPrwin()
 	for(i=884;i<1326;i++)
 		_prw1326.vanilla_chair.weight[i]=0;
 
+	//!!!CloneVanillaChair();
 	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
 	//experimentally does not cause a crash
 	for(i=0;i<10;i++)
-		_prw1326.chair[i]=_prw1326.vanilla_chair ;
+		_prw1326.chair[i]=_prw1326.vanilla_chair;
 
 	//end of handrank initialisation
 }
