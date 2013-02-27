@@ -78,33 +78,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 		_nopponentsplaying_last = sym_nopponentsplaying;
 
 	// see if the new pstate has changed in an interesting way
-	pstate_changed = false;
-	if (pstate->m_dealer_chair != _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair)
-		pstate_changed = true;
-
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (pstate->m_player[i].m_balance != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance)
-			pstate_changed = true;
-
-		if (pstate->m_player[i].m_currentbet != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet)
-			pstate_changed = true;
-
-		if (pstate->m_player[i].m_cards[0] != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0])
-			pstate_changed = true;
-
-		if (pstate->m_player[i].m_cards[1] != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1])
-			pstate_changed = true;
-
-		if (pstate->m_player[i].m_balance_known != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known &&
-				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
-			pstate_changed = true;
-	}
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		if (pstate->m_cards[i] != _m_holdem_state[(_m_ndx)&0xff].m_cards[i])
-			pstate_changed = true;
-	}
+	pstate_changed = IsStateChanged(pstate, &_m_holdem_state[(_m_ndx)&0xff]);
 
 	// only process wh state if something interesting within the structure changes
 	if (pstate!=NULL && (pstate_changed || sym_ismyturn))
@@ -249,12 +223,14 @@ const int CGameState::LastRaised(const int round)
 	if (round<1 || round>4)
 		return last_raised;
 
+	double max_bet = 0;
 	for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 	{
 		int index_normalized = i%k_max_number_of_players;
-		if (_chair_actions[index_normalized][round-1][w_reraised])
+		if (_chair_actions[index_normalized][round-1][w_reraised] > max_bet)
 		{
 			last_raised=index_normalized;
+			max_bet = _chair_actions[index_normalized][round-1][w_reraised];
 		}
 	}
 
@@ -637,7 +613,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 		}
 
 		// 2. it's my turn
-		if ((sym_ismyturn && pstate_changed) 
+		if ((sym_ismyturn && (pstate_changed || IsStateChanged(pstate, &_m_game_state[ (_m_game_ndx)&0xff ]))) 
 			|| (sym_ismyturn && _my_first_action_this_round == true) 
 			|| (((betround == k_betround_preflop && _m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_currentbet == sym_sblind) 
 			|| (betround == k_betround_preflop 
@@ -716,10 +692,10 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				}
 
 			}
-			// if it is not my first action this round, then iterate from mychair+1 to mychair-1+10
+			// if it is not my first action this round, then iterate from mychair to mychair-1+10
 			else
 			{
-				from_chair = sym_userchair+1;
+				from_chair = sym_userchair;
 				to_chair = sym_userchair-1+k_max_number_of_players;
 			}
 
@@ -777,7 +753,8 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					}
 					else
 					{
-						_chair_actions[index_normalized][betround-1][w_reraised] = true;
+						_chair_actions[index_normalized][betround-1][w_reraised] = 
+							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
 						write_log(k_always_log_basic_information, ">>> Chair %d (%s) re-raised to $%.2f\n", index_normalized,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
 								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
@@ -967,3 +944,54 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 
 const int CGameState::hands_played() 
 { return _hands_played; }
+
+bool CGameState::IsStateChanged( const SHoldemState *pstate_left, const SHoldemState *pstate_right )
+{
+	if (pstate_left == NULL || pstate_right == NULL)
+	{
+		return false;
+	}
+
+	if (pstate_left->m_dealer_chair != pstate_right->m_dealer_chair)
+	{
+		return true;
+	}
+
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
+		if (pstate_left->m_player[i].m_balance != pstate_right->m_player[i].m_balance)
+		{
+			return true;
+		}
+
+		if (pstate_left->m_player[i].m_currentbet != pstate_right->m_player[i].m_currentbet)
+		{
+			return true;
+		}
+
+		if (pstate_left->m_player[i].m_cards[0] != pstate_right->m_player[i].m_cards[0])
+		{
+			return true;
+		}
+
+		if (pstate_left->m_player[i].m_cards[1] != pstate_right->m_player[i].m_cards[1])
+		{
+			return true;
+		}
+
+		if (pstate_left->m_player[i].m_balance_known != pstate_right->m_player[i].m_balance_known &&
+			pstate_left->m_player[i].m_cards[0] != 0 && pstate_left->m_player[i].m_cards[1] != 0)
+		{
+			return true;
+		}
+	}
+	for (int i=0; i<k_number_of_community_cards; i++)
+	{
+		if (pstate_left->m_cards[i] != pstate_right->m_cards[i])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

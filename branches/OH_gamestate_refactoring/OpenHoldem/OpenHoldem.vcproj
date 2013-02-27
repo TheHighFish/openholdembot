@@ -1030,10 +1030,6 @@
 					RelativePath=".\CProblemSolver.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\CVersionInfo.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="AutoPlayer"
@@ -1858,10 +1854,6 @@
 				</File>
 				<File
 					RelativePath=".\CProblemSolver.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CVersionInfo.h"
 					>
 				</File>
 			</Filter>

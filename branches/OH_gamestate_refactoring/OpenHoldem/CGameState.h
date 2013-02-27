@@ -50,6 +50,7 @@ private:
 	void ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed) ;
 	void ProcessFtrEngine(const SHoldemState *pstate) ;
 	void DumpState(void) ;
+	bool IsStateChanged(const SHoldemState *pstate_left, const SHoldemState *pstate_right);
 
 	SHoldemState		_m_holdem_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_m_ndx;
@@ -71,7 +72,7 @@ private:
 
 	SHoldemState		_m_game_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_m_game_ndx;
-	bool				_chair_actions[k_max_number_of_players][k_number_of_betrounds][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
+	double				_chair_actions[k_max_number_of_players][k_number_of_betrounds][w_num_action_types];   // 10 chairs, 4 rounds, number of action types
 	int					_ftr_dealer_chair_last;
 	int					_ftr_ncommoncardsknown_last;
 	int					_ftr_nplayersdealt_last;
