@@ -397,6 +397,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MD5_Checksum.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Median.cpp"
 				>
 			</File>
@@ -1231,6 +1235,10 @@
 			</File>
 			<File
 				RelativePath=".\MagicNumbers.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MD5_Checksum.h"
 				>
 			</File>
 			<File
