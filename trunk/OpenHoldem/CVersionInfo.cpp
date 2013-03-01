@@ -21,8 +21,10 @@
 
 #include <assert.h>
 #include "CDllExtension.h"
+#include "CFilenames.h"
 #include "CFormula.h"
 #include "..\CTablemap\CTablemap.h"
+#include "MD5_Checksum.h"
 
 CVersionInfo *p_version_info = NULL;
 
@@ -31,8 +33,8 @@ CVersionInfo::CVersionInfo()
 
 CVersionInfo::~CVersionInfo()
 {
-	// Getting the file-size only once on start-up
-	_openholdem_file_size = GetFileSize();
+	// Getting the check-sum only once on start-up
+	_openholdem_MD5 = CalculateMD5(p_filenames->PathOfExecutable());
 }
 
 CString CVersionInfo::GetVersionInfo()
@@ -45,15 +47,9 @@ CString CVersionInfo::GetVersionInfo()
 
 	version_info.Format("OpenHoldem version [%s, %li], formula [%s], tablemap [%s], DLL [%s]",
 		VERSION_TEXT,
-		GetFileSize(),
+		CalculateMD5(p_filenames->PathOfExecutable()),
 		p_formula->formula_name(),
 		p_tablemap->filename(),
 		p_dll_extension->GetDLLSpecifiedInFormula());
 	return version_info;
-}
-
-long int CVersionInfo::GetFileSize()
-{
-	//!!!
-	return 0;
 }

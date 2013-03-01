@@ -27,9 +27,7 @@ public:
 public:
 	CString GetVersionInfo();
 private:
-	long int GetFileSize();
-private:
-	long int _openholdem_file_size;
+	CString _openholdem_MD5;
 } *p_version_info;
 
 #endif INC_CVERSIONINFO_H

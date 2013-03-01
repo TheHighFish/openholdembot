@@ -15,6 +15,8 @@ public:
 	CString ReplaySessionDirectory();
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
+	CString PathOfExecutable();
+public:
 	void SwitchToOpenHoldemDirectory();
 private:
 	CString IniFilename();

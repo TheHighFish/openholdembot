@@ -152,3 +152,12 @@ CString CFilenames::MiniDumpFilename()
 		GetCurrentProcessId(), GetCurrentThreadId());
 	return szFileName;
 }
+
+CString CFilenames::PathOfExecutable()
+{
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
+	// http://stackoverflow.com/questions/124886/how-to-get-the-application-executable-name-in-windows-c-win32-or-c-cli
+	TCHAR exe_path[MAX_PATH+1];
+	GetModuleFileName(0, exe_path, MAX_PATH+1);
+	return exe_path;
+}
