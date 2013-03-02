@@ -7,6 +7,7 @@
 * Tag the release on googlecode
 * Copy all files to a new directory
 * Add dbdhelp.dll
+* Add OpenHoldem.lib to support DLL-linking
 * Add the scraper directory and double-check it (TM for ManualMode, Universal TM)
 * Add the OpenPPL library
 * Add the Documentation
@@ -14,7 +15,7 @@
 * Add "sources of code.txt"
 * Add Matrix' PlayBot as default bot.
 * Add the license-file
-* Remove the *.lib, *.exp and *.pdb files.
+* Remove the *.exp and *.pdb files.
 * Remove replay-direcoty (if existent), logs and other private data
 * Create a rar-archive
 * Upload the rar-file to google-code.
