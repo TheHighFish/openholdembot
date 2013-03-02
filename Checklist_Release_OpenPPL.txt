@@ -16,7 +16,7 @@
 * Tag the release (OpenPPL only) on googlecode: Turtoise-SVN -> Branch / Tag
   (Message: "Tagging OpenPPL 1.x.y for release")
   Use tags/OpenPPL_1.x.y as directory.
-* Create a new temporary directory "OpenPPL_1.x.y" (on your desktop, not in the sources).
+* Create a new temporary directory "OpenPPL_4.x.y" (on your desktop, not in the sources).
 * Add the executable OpenPPL.exe to the new directory (check time of creation)
 * Add "Bracketify.pl"
 * Add Relhbys OHF-optimizer
