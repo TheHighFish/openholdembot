@@ -419,6 +419,7 @@
 #define IDC_DEBUG_TABLE_LIMITS          1378
 #define IDC_DEBUG_LAZY_SCRAPER          1379
 #define IDC_DEBUG_BETSIZE_ADJUSTMENT	1380 
+#define IDC_DEBUG_HANDRESET_DETECTOR    1381
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -535,7 +536,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32997
-#define _APS_NEXT_CONTROL_VALUE         1381
+#define _APS_NEXT_CONTROL_VALUE         1382
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
