@@ -102,6 +102,7 @@ public:
 	const bool  debug_table_limits() { return _debug_table_limits; }
 	const bool  debug_lazy_scraper() { return _debug_lazy_scraper; }
 	const bool  debug_betsize_adjustment() { return _debug_betsize_adjustment;  }
+	const bool  debug_handreset_detector() { return _debug_handreset_detector; }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -245,13 +246,14 @@ public:
 	void set_debug_memorysymbols(const bool b) { ENT _debug_memorysymbols = b; WriteReg("debug_memorysymbols", b); }
 	void set_debug_tablemap_loader(const bool b) { ENT _debug_tablemap_loader = b; WriteReg("debug_tablemap_loader", b); }
 	void set_debug_filesystem_monitor(const bool b) { ENT _debug_filesystem_monitor = b; WriteReg("debug_filesystem_monitor", b); }
-	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 	void set_debug_table_positioner(const bool b) { ENT _debug_table_positioner = b; WriteReg("debug_table_positioner", b); }
 	void set_debug_istournament(const bool b) { ENT _debug_istournament = b; WriteReg("debug_istournament", b); }
 	void set_debug_gui(const bool b) { ENT _debug_gui = b; WriteReg("debug_gui", b); }
 	void set_debug_table_limits(const bool b) { ENT _debug_table_limits = b; WriteReg("debug_table_limits", b); }
 	void set_debug_lazy_scraper(const bool b) { ENT _debug_lazy_scraper = b; WriteReg("debug_lazy_scraper", b); }
 	void set_debug_betsize_adjustment(const bool b) { ENT _debug_betsize_adjustment = b; WriteReg("debug_betsize_adjustment", b); }
+	void set_debug_handreset_detector(const bool b) { ENT _debug_handreset_detector = b; WriteReg("debug_handreset_detector", b); }
+	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -414,6 +416,7 @@ private:
 	bool			_debug_table_limits;
 	bool			_debug_lazy_scraper;
 	bool			_debug_betsize_adjustment;
+	bool			_debug_handreset_detector;
 
 	// Formula window location
 	int			_formula_x;	
