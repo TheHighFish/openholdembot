@@ -1,7 +1,32 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose: Very simple user-DLL as a starting-point
+//
+//*****************************************************************************
+
+
+// #define OPT_DEMO_OUTPUT if you are a beginner 
+// who wants to see some message-boxes with output of game-states, etc.
+// It is disabled per request, 
+//   * as it is not really needed
+//   * as some DLL-users don't have MFC (atlstr.h) installed)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16232
+#undef OPT_DEMO_OUTPUT
+
 #include "user.h"
-#include <windows.h>
-#include <atlstr.h>
 #include <conio.h>
+#include <windows.h>
+
+#ifdef OPT_DEMO_OUTPUT
+#include <atlstr.h>
+#endif OPT_DEMO_OUTPUT
 
 /////////////////////////////////////
 //card macros
@@ -61,33 +86,43 @@ USERDLL_API double process_message (const char* pmessage, const void* param)
 	if (strcmp(pmessage,"state")==0) 
 	{ 
 		holdem_state *state = (holdem_state*) param;
-//		CString s; 
-//		s.Format("<%s>\nPOTS: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\nCOMMON: %d %d %d %d %d\n%d %d %d\n<%s> %d %.2f %d", 
-//			state->m_title,
-//			state->m_pot[0], state->m_pot[1], state->m_pot[2], state->m_pot[3], state->m_pot[4], 
-//			state->m_pot[5], state->m_pot[6], state->m_pot[7], state->m_pot[8], state->m_pot[9],
-//			state->m_cards[0], state->m_cards[1], state->m_cards[2], state->m_cards[3], state->m_cards[4],
-//			state->m_is_playing, state->m_is_posting, state->m_dealer_chair,
-//			state->m_player[4].m_name, state->m_player[4].m_name_known, state->m_player[4].m_balance, state->m_player[4].m_balance_known);
-//		MessageBox(NULL, s, "state", MB_OK);
+
+#ifdef OPT_DEMO_OUTPUT
+		CString s; 
+		s.Format("<%s>\nPOTS: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\nCOMMON: %d %d %d %d %d\n%d %d %d\n<%s> %d %.2f %d", 
+			state->m_title,
+			state->m_pot[0], state->m_pot[1], state->m_pot[2], state->m_pot[3], state->m_pot[4], 
+			state->m_pot[5], state->m_pot[6], state->m_pot[7], state->m_pot[8], state->m_pot[9],
+			state->m_cards[0], state->m_cards[1], state->m_cards[2], state->m_cards[3], state->m_cards[4],
+			state->m_is_playing, state->m_is_posting, state->m_dealer_chair,
+			state->m_player[4].m_name, state->m_player[4].m_name_known, state->m_player[4].m_balance, state->m_player[4].m_balance_known);
+		MessageBox(NULL, s, "state", MB_OK);
+#endif OPT_DEMO_OUTPUT
 
 		return process_state( (holdem_state*)param ); 
 	}
 
 	if (strcmp(pmessage,"query")==0) 
 	{ 
-//		MessageBox(NULL, (LPCSTR) param, "query", MB_OK);
+#ifdef OPT_DEMO_OUTPUT
+		MessageBox(NULL, (LPCSTR) param, "query", MB_OK);
+#endif OPT_DEMO_OUTPUT
+
 		return process_query( (const char*)param ); 
 	}
 
 	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "load")==0) 
 	{ 
-//		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
+#ifdef OPT_DEMO_OUTPUT
+		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
+#endif OPT_DEMO_OUTPUT
 	}
 
 	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "unload")==0) 
 	{ 
-//		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
+#ifdef OPT_DEMO_OUTPUT
+		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
+#endif OPT_DEMO_OUTPUT
 	}
 
 	return 0;
