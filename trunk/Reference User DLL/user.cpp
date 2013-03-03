@@ -14,9 +14,9 @@
 
 // #define OPT_DEMO_OUTPUT if you are a beginner 
 // who wants to see some message-boxes with output of game-states, etc.
-// It is disabled per request, 
+// It is disabled upon request, 
 //   * as it is not really needed
-//   * as some DLL-users don't have MFC (atlstr.h) installed)
+//   * as some DLL-users don't have MFC (atlstr.h) installed
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16232
 #undef OPT_DEMO_OUTPUT
 
