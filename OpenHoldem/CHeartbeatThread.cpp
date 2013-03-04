@@ -70,6 +70,16 @@ CHeartbeatThread::~CHeartbeatThread()
 	p_heartbeat_thread = NULL;
 }
 
+void CHeartbeatThread::SetOpenHoldemWindowTitle()
+{
+	char title[MAX_WINDOW_TITLE];
+	CString	*messageTitle = new CString;
+
+	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
+	messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
+	theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
+}
+
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
@@ -77,7 +87,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
 	unsigned int		new_scrape = NOTHING_CHANGED;
 	bool				iswait = false;
-	char				title[MAX_WINDOW_TITLE] = {0};
 	int					N = 0;
 
 	_heartbeat_counter++;
@@ -132,14 +141,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// Set Title of window
-		CString *messageTitle = new CString();
-		GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
-		messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
-		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
-
-
+		SetOpenHoldemWindowTitle();
+		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// If we've folded, stop iterator thread and set prwin/tie/los to zero
 		if (p_symbol_engine_userchair->userchair_confirmed() &&
@@ -206,7 +209,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Save state
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
-		p_game_state->CaptureState(title);
+		p_game_state->CaptureState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine

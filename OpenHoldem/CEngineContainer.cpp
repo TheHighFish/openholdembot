@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CHandresetDetector.h"
+#include "CPreferences.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -48,6 +49,7 @@ void CEngineContainer::CreateSpecialSymbolEngines()
 
 void CEngineContainer::CreateSymbolEngines()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
 	CreateSpecialSymbolEngines();
 
 	_number_of_symbol_engines_loaded = 0;
@@ -132,12 +134,15 @@ void CEngineContainer::CreateSymbolEngines()
 
 	// Avoiding overflows
 	assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
+	write_log(prefs.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
 void CEngineContainer::DestroyAllSymbolEngines()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
+		write_log(prefs.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
 		delete _symbol_engines[i];
 		_symbol_engines[i] = NULL;
 	}
@@ -180,6 +185,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 
 void CEngineContainer::ResetOnConnection()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	p_tablelimits->ResetOnConnection();
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
@@ -189,6 +195,7 @@ void CEngineContainer::ResetOnConnection()
 
 void CEngineContainer::ResetOnHandreset()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnHandreset();
@@ -197,6 +204,7 @@ void CEngineContainer::ResetOnHandreset()
 
 void CEngineContainer::ResetOnNewRound()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Reset on new round\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnNewRound();
@@ -205,6 +213,7 @@ void CEngineContainer::ResetOnNewRound()
 
 void CEngineContainer::ResetOnMyTurn()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnMyTurn();
@@ -213,6 +222,7 @@ void CEngineContainer::ResetOnMyTurn()
 
 void CEngineContainer::ResetOnHeartbeat()
 {
+	write_log(prefs.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnHeartbeat();

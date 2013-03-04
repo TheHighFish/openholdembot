@@ -2,6 +2,7 @@
 #include "CGameState.h"
 
 #include "assert.h"
+#include "CAutoConnector.h"
 #include "CBetroundCalculator.h"
 #include "CHandresetDetector.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -141,7 +142,7 @@ void CGameState::ProcessFtr(const SHoldemState *pstate)
 }
 
 
-void CGameState::CaptureState(const char *title)
+void CGameState::CaptureState()
 {
 	bool				playing = true;
 	unsigned char		card = CARD_NOCARD;
@@ -161,6 +162,9 @@ void CGameState::CaptureState(const char *title)
 	}
 
 	// Poker window title
+	char title[MAX_WINDOW_TITLE];
+	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
+
 	strncpy_s(_state[_state_index&0xff].m_title, 64, title, _TRUNCATE);
 	_state[_state_index&0xff].m_title[63] = '\0';
 

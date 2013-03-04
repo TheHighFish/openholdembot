@@ -27,18 +27,17 @@ public:
 	// public mutators 
 	void set_replay_recorded_this_turn(const bool b) { ENT _replay_recorded_this_turn = b; }
 #undef ENT
-
-private:
-	// private variables - use public accessors and public mutators to address these	
-	bool		_replay_recorded_this_turn;
-
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
+	static void SetOpenHoldemWindowTitle();
 
+private:
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
-
+private:
+	// private variables - use public accessors and public mutators to address these	
+	bool			_replay_recorded_this_turn;
 	CCritSec		m_critsec;
 } *p_heartbeat_thread;
 
