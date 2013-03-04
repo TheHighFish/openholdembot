@@ -146,6 +146,7 @@ void CPreferences::InitDefaults(void)
 	_debug_lazy_scraper = false;
 	_debug_betsize_adjustment = false;
 	_debug_handreset_detector = false;
+	_debug_engine_container = false;
 	_debug_alltherest = false;
 
 	// Validator
@@ -319,6 +320,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_lazy_scraper", &_debug_lazy_scraper);
 		ReadReg("debug_betsize_adjustment", &_debug_betsize_adjustment);
 		ReadReg("debug_handreset_detector", &_debug_handreset_detector);
+		ReadReg("debug_engine_container", &_debug_engine_container);
 		ReadReg("debug_alltherest", &_debug_alltherest);
 
 		// Validator

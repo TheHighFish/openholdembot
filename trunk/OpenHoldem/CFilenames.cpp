@@ -62,7 +62,14 @@ CString CFilenames::IniFilename()
 			"Going to terminate...",
 			"ERROR");
 		PostQuitMessage(-1);
-		return "a_result_to_make_the_compiler_happy.ini";
+		// Previously we returned "a_result_to_make_the_compiler_happy.ini"
+		// believing the result was meaning-less and would never be used.
+		// However PostQuitMessage(-1) uses a message-queue,
+		// so it may take some time, and OH will continue a little bit.
+		// Therefore we take the last filename now in order to 
+		// not create yet another one with a funny name. ;-)
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16229
+		return ini_filename;
 	}
 	FindClose(h_find);
 

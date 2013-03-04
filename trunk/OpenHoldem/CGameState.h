@@ -13,7 +13,7 @@ public:
 	~CGameState();
 	void ProcessGameState(const SHoldemState *pstate);
 	void ProcessFtr(const SHoldemState *pstate);
-	void CaptureState(const char *title);
+	void CaptureState();
 	bool ProcessThisFrame(void);
 	const int LastRaised(const int round);
 	const double FlopPct(void);

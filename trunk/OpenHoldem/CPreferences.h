@@ -103,6 +103,7 @@ public:
 	const bool  debug_lazy_scraper() { return _debug_lazy_scraper; }
 	const bool  debug_betsize_adjustment() { return _debug_betsize_adjustment;  }
 	const bool  debug_handreset_detector() { return _debug_handreset_detector; }
+	const bool  debug_engine_container() { return _debug_engine_container; }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -253,6 +254,7 @@ public:
 	void set_debug_lazy_scraper(const bool b) { ENT _debug_lazy_scraper = b; WriteReg("debug_lazy_scraper", b); }
 	void set_debug_betsize_adjustment(const bool b) { ENT _debug_betsize_adjustment = b; WriteReg("debug_betsize_adjustment", b); }
 	void set_debug_handreset_detector(const bool b) { ENT _debug_handreset_detector = b; WriteReg("debug_handreset_detector", b); }
+	void set_debug_engine_container(const bool b) { ENT _debug_engine_container = b; WriteReg("debug_engine_container", b); }
 	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// Formula window location
@@ -417,6 +419,7 @@ private:
 	bool			_debug_lazy_scraper;
 	bool			_debug_betsize_adjustment;
 	bool			_debug_handreset_detector;
+	bool			_debug_engine_container;
 
 	// Formula window location
 	int			_formula_x;	
