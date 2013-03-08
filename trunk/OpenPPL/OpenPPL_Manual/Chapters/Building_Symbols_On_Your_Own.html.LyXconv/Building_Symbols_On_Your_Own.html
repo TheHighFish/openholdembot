@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Building_Symbols_On_Your_Own.tex"> 
-<meta name="date" content="2012-10-11 00:15:00"> 
+<meta name="date" content="2013-03-08 21:23:00"> 
 <link rel="stylesheet" type="text/css" href="Building_Symbols_On_Your_Own.css"> 
 </head><body 
 >
@@ -15,10 +15,10 @@
 
    <h2 class="likechapterHead"><a 
  id="x1-1000"></a>Building Symbols On Your Own</h2>
-<!--l. 26--><p class="noindent" >The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by
+<!--l. 27--><p class="noindent" >The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by
 any poker-playing person, no matter how much (or less) programming experience he has.
 Examples are e.g. MaxOpponentStackSize, StartingStackSize
-<!--l. 31--><p class="indent" >   However this approach has some drawbacks: it shifts all work to the developers and
+<!--l. 32--><p class="indent" >   However this approach has some drawbacks: it shifts all work to the developers and
 limits the users, who might need additional symbols for their bot-logic. Staying with the
 example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStacksize,
 ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize,
@@ -28,13 +28,13 @@ development team is, they will never be able to satisfy all needs. Therefore Ope
 balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest.
 This way the end-user is far more flexible; however at the cost of a bit more
 work.
-<!--l. 43--><p class="indent" >   As an example we develop a symbol BigBlindStackSize. As a first step we need to
+<!--l. 44--><p class="indent" >   As an example we develop a symbol BigBlindStackSize. As a first step we need to
 know the chair of the big blind. Then as a second step we will be able to return the
 stacksize for this chair. To solve the first problem we use the OpenHoldem
 symbol ac_dealposX which returns the deal-position of chair X. The big blind
 is (with the very rare exception of a missing small blind) always the second
 player to be dealt, so we search for a the chair, that got dealt as second player.
-<!--l. 50-->
+<!--l. 51-->
    <div class="lstlisting" id="listing-1"><span class="label"><a 
  id="x1-1001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;BigBlindChair&#x00A0;<br /><span class="label"><a 
  id="x1-1002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos0&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
@@ -52,12 +52,12 @@ player to be dealt, so we search for a the chair, that got dealt as second playe
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1014r14"></a></span>End&#x00A0;Symbol
    </div>
-<!--l. 68--><p class="indent" >   Having this information we can continue with the second step (the dull
+<!--l. 69--><p class="indent" >   Having this information we can continue with the second step (the dull
 part). We return the stacksize for the chair of the big blind, making use of
 Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use
 OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention
 it.
-   <!--l. 74-->
+   <!--l. 75-->
    <div class="lstlisting" id="listing-2"><span class="label"><a 
  id="x1-1015r1"></a></span>New&#x00A0;Symbol&#x00A0;BigBlindStacksize&#x00A0;<br /><span class="label"><a 
  id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;0)&#x00A0;RETURN&#x00A0;balance0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
@@ -79,13 +79,13 @@ class="cmsy-10">-</span>1&#x00A0;FORCE".&#x00A0;<br /><span class="label"><a
 class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-1031r17"></a></span>End&#x00A0;Symbol
    </div>
-<!--l. 95--><p class="indent" >   You see: it is not that difficult to extend OpenPPL on your own. The possibilites are
+<!--l. 96--><p class="indent" >   You see: it is not that difficult to extend OpenPPL on your own. The possibilites are
 nearly endless. For the moment we skipped some details, but creating new symbols is
 self-explaining: each new symbol start with &#8220;NEW SYMBOL &#x003C;Name&#x003E;&#8221; and ends with
 &#8220;END SYMBOL&#8221;. Inbetween is an (optionally open-ended) when-condition-sequence with
 return-statements instead of actions. These symbol-definitions go to an extra-part of your
 code:
-   <!--l. 103-->
+   <!--l. 104-->
 
    <div class="lstlisting" id="listing-3"><span class="label"><a 
  id="x1-1032r1"></a></span>Custom&#x00A0;<br /><span class="label"><a 
@@ -98,8 +98,34 @@ code:
  id="x1-1039r8"></a></span>Preflop&#x00A0;<br /><span class="label"><a 
  id="x1-1040r9"></a></span>...
    </div>
-<!--l. 116--><p class="indent" >   <span 
-class="ecti-1000">That&#8217;s all. OpenPPL is easy. </span> 
+<!--l. 117--><p class="indent" >   <span 
+class="ecti-1000">That&#8217;s all. OpenPPL is easy.</span>
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Advantages symbols</h3>
+<!--l. 122--><p class="noindent" >In our early versions of the manual we didn&#8217;t talk about the advantages of structured
+code (especially functions AKA symbols), because they were too obvious for us. This
+caused some confusions for newbies. Symbols are great:
+           <ul class="itemize1">
+        <li class="itemize">to   get   understandable   and   self-documenting   code   (good   naming;
+        <a 
+href="http://en.wikipedia.org/wiki/Information_hiding" class="url" ><span 
+class="ectt-1000">http://en.wikipedia.org/wiki/Information_hiding</span></a>)
+           </li>
+        <li class="itemize">to get reusabel code (named code-snippets)
+           </li>
+        <li class="itemize">to get small code (no code clones)
+           </li>
+        <li class="itemize">to get maintainable code (change and fix one location only)
+           </li>
+        <li class="itemize">to get fast code (because of OpenHoldems symbol-caching)
+           </li>
+        <li class="itemize">to get readable log-files (because you see all the symbol-names and their
+        values)
+           </li>
+        <li class="itemize">...</li></ul>
+<!--l. 136--><p class="noindent" >So how often should you make use of symbols?
+<!--l. 138--><p class="indent" >   <span 
+class="ecti-1000">All day. Everywhere. As much as possible. Enjoy them! </span> 
 </body></html> 
 
 
