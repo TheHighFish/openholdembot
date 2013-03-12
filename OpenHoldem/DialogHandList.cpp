@@ -195,6 +195,10 @@ void CDlgHandList::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDlgHandList, CDialog)
 	ON_BN_CLICKED(IDOK, &CDlgHandList::OnBnClickedOk)
 	ON_CONTROL_RANGE(BN_CLICKED, IDC_CHECK1, IDC_CHECK169, OnCheckClick)
+	ON_BN_CLICKED(IDANYPP, &CDlgHandList::OnBnClickedPP)
+	ON_BN_CLICKED(IDBROADWAYS, &CDlgHandList::OnBnClickedBroadways)
+	ON_BN_CLICKED(IDALLSUITED, &CDlgHandList::OnBnClickedSuited)
+	ON_BN_CLICKED(IDCLEAR, &CDlgHandList::OnBnClickedClear)
 END_MESSAGE_MAP()
 
 // CDlgHandList message handlers
@@ -248,6 +252,52 @@ void CDlgHandList::OnBnClickedOk()
 	OnCheckClick(0);
 
 	OnOK();
+}
+
+void CDlgHandList::OnBnClickedPP()
+{
+	// Set checked status for all PP
+	for (int i=0; i<=12; i++) {
+		checked[i][i] = 1;
+		m_Check[i][i].SetCheck(BST_CHECKED);
+	}
+	OnCheckClick(0);
+}
+
+void CDlgHandList::OnBnClickedBroadways()
+{
+	// Set checked status for broadways
+	for (int i=8; i<=12; i++) {
+		for (int j=8; j<=12; j++) {
+			checked[i][j] = 1;
+			m_Check[i][j].SetCheck(BST_CHECKED);
+		}
+	}
+	OnCheckClick(0);
+}
+
+void CDlgHandList::OnBnClickedSuited()
+{
+	// Set checked status for suited cards
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<i; j++) {
+			checked[i][j] = 1;
+			m_Check[i][j].SetCheck(BST_CHECKED);
+		}
+	}
+	OnCheckClick(0);
+}
+
+void CDlgHandList::OnBnClickedClear()
+{
+	// Set unchecked status for each box
+	for (int i=0; i<=12; i++) {
+		for (int j=0; j<=12; j++) {
+			checked[i][j] = 0;
+			m_Check[i][j].SetCheck(BST_UNCHECKED);
+		}
+	}
+	OnCheckClick(0);
 }
 
 CString CDlgHandList::GetHandListAsString()

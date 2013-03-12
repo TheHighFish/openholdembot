@@ -2,8 +2,13 @@
 // Microsoft Visual C++ generated include file.
 // Used by OpenHoldem.rc
 //
+#define IDCLEAR                         3
+#define IDANYPP                         4
+#define IDBROADWAYS                     5
+#define IDALLSUITED                     6
+#define IDCLEAR5                        7
 #define IDD_ABOUTBOX                    100
-#define IDR_MAINFRAME                   128		
+#define IDR_MAINFRAME                   128
 #define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
 #define ID_INDICATOR_STATUS_PRWIN       130
@@ -52,7 +57,7 @@
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
 #define IDD_SAPREFS21                   187
-#define ID_INDICATOR_GENERAL_HINT		188
+#define ID_INDICATOR_GENERAL_HINT       188
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -376,8 +381,8 @@
 #define IDC_RADIO_SCRAPE_ALWAYS         1335
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337
-#define IDC_RECONNECT_TIME_SPIN         1339
 #define IDC_CONFIGURATION_DISABLE_LESS_CRITICAL_CHECKS 1338
+#define IDC_RECONNECT_TIME_SPIN         1339
 #define IDC_CONFIGURATION_INPUT_SETTINGS 1340
 #define IDC_CONFIGURATION_THEME_SETTINGS 1341
 #define IDC_CONFIGURATION_FONT_SETTINGS 1342
@@ -418,7 +423,7 @@
 #define IDC_DEBUG_GUI                   1377
 #define IDC_DEBUG_TABLE_LIMITS          1378
 #define IDC_DEBUG_LAZY_SCRAPER          1379
-#define IDC_DEBUG_BETSIZE_ADJUSTMENT	1380 
+#define IDC_DEBUG_BETSIZE_ADJUSTMENT    1380
 #define IDC_DEBUG_HANDRESET_DETECTOR    1381
 #define IDC_DEBUG_ENGINE_CONTAINER      1382
 #define IDC_SCINCTRL                    2000
@@ -528,7 +533,7 @@
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993
 #define ID_FILE_LOAD_OPENPPL            32994
-#define ID_INDICATOR_STATUS_READY		61190
+#define ID_INDICATOR_STATUS_READY       61190
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
