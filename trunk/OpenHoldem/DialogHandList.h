@@ -21,6 +21,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnCheckClick(UINT controlID);
+	afx_msg void OnBnClickedPP();
+	afx_msg void OnBnClickedBroadways();
+	afx_msg void OnBnClickedSuited();
+	afx_msg void OnBnClickedClear();
 
 	CStatic m_HandList_Name, m_CommentST;
 	CButton m_Check[13][13];

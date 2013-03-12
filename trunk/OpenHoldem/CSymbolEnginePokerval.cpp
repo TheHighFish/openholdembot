@@ -275,6 +275,7 @@ CString CSymbolEnginePokerval::HandType()
 	else
 	{
 		assert(false);
+		return "err";
 	}
 }
 
