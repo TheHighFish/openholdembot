@@ -1,5 +1,4 @@
 * Change the version
-* Choose the correct build option (debug or release)
 * Choose the correct build option (optimized for OH, debug for the rest)
 * Rebuild everything
 * Test "everything", at least that OH "works"
@@ -13,7 +12,6 @@
 * Add the Documentation
 * Add ReleaseNotes (make sure, they are complete and release date is set)
 * Add "sources of code.txt"
-* Add Matrix' PlayBot as default bot.
 * Add the license-file
 * Remove the *.exp and *.pdb files.
 * Remove replay-direcoty (if existent), logs and other private data
