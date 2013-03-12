@@ -70,7 +70,7 @@ char * keywords = // Standard functions
 				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
 				  // Hand Tests
 				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush"
+				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush "
 				  // Pocket Tests
 				  "ispair issuited isconnector "
 				  // Pocket / Common Tests
