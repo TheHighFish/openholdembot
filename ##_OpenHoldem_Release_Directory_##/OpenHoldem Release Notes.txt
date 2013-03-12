@@ -1,4 +1,4 @@
-v4.0.4 2013-xx-yy
+v4.0.4 2013-03-12
 ==================
 BUG FIXES: 
 - The symbol-engine did not look up some values correctly,
