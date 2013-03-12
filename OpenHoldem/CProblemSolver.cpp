@@ -78,8 +78,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"      * You need a tablemap for that casino and game-type.\n"
 			"      * The tablesize must be right.\n"
 			"      * The titlestring must match.\n"
-			"    You also have to auto-connect or press the green button.\n"
-			"    If this does not work, then you have to fix your tablemap.",
+			"    If it does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
 	}
 	else if (UserChairUnknown())
