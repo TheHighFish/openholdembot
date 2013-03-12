@@ -76,20 +76,6 @@ private:
 	bool _issuited;
 	bool _isconnector;
 
-	//HAND TESTS
-	int _ishandup;
-	int _ishandupcommon;
-	int _ishicard;
-	int _isonepair;
-	int _istwopair;
-	int _isthreeofakind;
-	int _isstraight;
-	int _isflush;
-	int _isfullhouse;
-	int _isfourofakind;
-	int _isstraightflush;
-	int _isroyalflush;
-
 	//COMMON CARDS
 	int _ncommoncardsknown;
 

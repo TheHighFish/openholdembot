@@ -54,19 +54,6 @@ void CSymbolEngineCards::ResetOnHandreset()
 		_$$cs[i] = 0;
 		_$$cr[i] = 0;
 	}
-	_ishandup = 0;
-	_ishandupcommon = 0;
-	_ishicard = 0;
-	_isonepair = 0;
-	_istwopair = 0;
-	_isthreeofakind = 0;
-	_isstraight = 0;
-	_isflush = 0;
-	_isfullhouse = 0;
-	_isfourofakind = 0;
-	_isstraightflush = 0;
-	_isroyalflush = 0;
-
 	// pocket tests
 	_ispair = 0;
 	_issuited = 0;
