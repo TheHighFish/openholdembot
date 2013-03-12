@@ -32,6 +32,7 @@ void CSymbolEnginePokerval::InitOnStartup()
 void CSymbolEnginePokerval::ResetOnConnection()
 {
 	betround = k_betround_preflop;
+	_isroyalflush = false;
 }
 
 void CSymbolEnginePokerval::ResetOnHandreset()
@@ -45,6 +46,7 @@ void CSymbolEnginePokerval::ResetOnHandreset()
 	}
 	nCards  = 0;
 	handval = 0;
+	_isroyalflush = false;
 }
 
 void CSymbolEnginePokerval::ResetOnNewRound()
