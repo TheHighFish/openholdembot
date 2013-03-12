@@ -1,10 +1,25 @@
-v4.0.3 2013-xx-yy
+v4.0.4 2013-xx-yy
 ==================
 BUG FIXES: 
 - The symbol-engine did not look up some values correctly,
   as the userchair was not initialized correctly.
   This has now been fixed.
   [Nik0]
+- OpenHoldem did create a completely empty file on Menu -> file -> New.
+  This has now been fixed, so that OpenHoldem created at least empty default functions.
+  Thanks to Ess5 for reporting.
+  [THF]
+- OpenHoldem does expect only one ini-file in the installation-directory.
+  However when it found more then one it could even create yet another one.
+  This has now been fixed.
+  Thanks to Ess5 for reporting.
+  [THF]
+  
+MAINTENANCE:
+- The reference-user-DLL did require MFC (MicroSoft Visual Studio Professional Edition).
+  This dependency has been removed for people with other development tools.
+  Thanks to Ess5 for suggesting this change.
+  [THF]
 
 v4.0.3 2013-02-24
 ==================
