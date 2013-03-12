@@ -39,6 +39,9 @@ void CFormula::SetEmptyDefaultBot()
 	CSLock lock(m_critsec);
 	func.dirty = true;
 	_formula_name = "NoName";
+	// Adding empty standard-functions
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
+	CheckForDefaultFormulaEntries();
 }
 
 const char *CFormula::GetFunctionText(const char *name)
