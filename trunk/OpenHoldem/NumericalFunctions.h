@@ -3,11 +3,6 @@
 
 #include <assert.h>
 
-
-#define TWO(c) (0x1u << (c))
-#define MASK(c) (((unsigned int)(-1)) / (TWO(TWO(c)) + 1u))
-#define COUNT(x,c) ((x) & MASK(c)) + (((x) >> (TWO(c))) & MASK(c))
-
 inline void SwapDoubles(double *first, double *second)
 {
 	double temp = *first;
@@ -33,6 +28,16 @@ inline void AssertRange(double value, double lower_bound, double upper_bound)
 {
 	assert(value >= lower_bound);
 	assert(value <= upper_bound);
+}
+
+inline void SetBit(int &bit_vector, int n_th_bit)
+{
+	bit_vector |= (1 << n_th_bit);
+}
+
+inline bool IsBitSet(int bit_vector, int n_th_bit)
+{
+	return ((bit_vector >> n_th_bit) & 1);
 }
 
 int	bitcount(unsigned bit_vector);

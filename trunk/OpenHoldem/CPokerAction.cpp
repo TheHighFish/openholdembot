@@ -269,12 +269,12 @@ const int CPokerAction::BetPosition (const int chairnum)
 	if (chairnum<0 || chairnum>9)
 		return betpos;
 
-	if (!((sym_playersplayingbits>>chairnum)&1))
+	if (!(IsBitSet(sym_playersplayingbits, chairnum)))
 		return betpos;
 
 	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
-		if ((sym_playersplayingbits>>(i%10))&1)
+		if (IsBitSet(sym_playersplayingbits, (i%10)))
 			betpos++;
 
 		if (i%10==chairnum)
@@ -296,13 +296,13 @@ const int CPokerAction::DealPosition (const int chairnum)
 
 	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
-		if ((sym_playersdealtbits>>(i%10))&1)
+		if (IsBitSet(sym_playersdealtbits, (i%10)))
 			dealposchair++;
 
 		if (i%10==chairnum)
 			break;
 	}
-	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
+	return (IsBitSet(sym_playersdealtbits, chairnum)) ? dealposchair : 0 ;
 }
 
 const int CPokerAction::AggressorChair (void)

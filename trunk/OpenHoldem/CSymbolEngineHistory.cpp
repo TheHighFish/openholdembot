@@ -5,6 +5,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "..\CTablemap\CTablemap.h"
+#include "NumericalFunctions.h"
 
 CSymbolEngineHistory *p_symbol_engine_history  = NULL;
 
@@ -80,7 +81,7 @@ void CSymbolEngineHistory::CalculateHistory()
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if ((current_players_bet > maxbet)
-			&& (((p_symbol_engine_active_dealt_playing->playersplayingbits() >> i) & 1) == 1))
+			&& IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i))
 		{
 			maxbet = current_players_bet;
 		}

@@ -13,6 +13,7 @@
 #include "CStableFramesCounter.h"
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
+#include "NumericalFunctions.h"
 
 CSymbolEngineAutoplayer *p_symbol_engine_autoplayer = NULL;
 
@@ -202,12 +203,12 @@ CString CSymbolEngineAutoplayer::GetFCKRAString()
 	// Buttons visible (Fold, Call, Check, Raise, Allin)
 	CString fckra_seen;
 	fckra_seen.Format("%s%s%s%s%s",
-		_myturnbits&0x01 ? "F" : ".",
-		_myturnbits&0x02 ? "C" : ".",
+		IsBitSet(_myturnbits, 0) ? "F" : ".",
+		IsBitSet(_myturnbits, 1) ? "C" : ".",
 		// Check button out of order to stay consistent
 		// with button order in manual mode.
-		_myturnbits&0x10 ? "K" : ".",
-		_myturnbits&0x04 ? "R" : ".",
-		_myturnbits&0x08 ? "A" : ".");
+		IsBitSet(_myturnbits, 2) ? "K" : ".",
+		IsBitSet(_myturnbits, 3) ? "R" : ".",
+		IsBitSet(_myturnbits, 4) ? "A" : ".");
 	return fckra_seen;
 }
