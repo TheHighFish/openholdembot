@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "NumericalFunctions.h"
 
+#define TWO(c) (0x1u << (c))
+#define MASK(c) (((unsigned int)(-1)) / (TWO(TWO(c)) + 1u))
+#define COUNT(x,c) ((x) & MASK(c)) + (((x) >> (TWO(c))) & MASK(c))
+
 int bitcount (unsigned int n)
 {
     n = COUNT(n, 0) ;

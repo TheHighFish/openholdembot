@@ -19,6 +19,7 @@
 #include "inlines/eval.h"
 #include "inlines/eval_type.h"
 #include "MagicNumbers.h"
+#include "NumericalFunctions.h"
 #include "OpenHoldem.h"
 #include "poker_defs.h"
 
@@ -99,7 +100,7 @@ void CHandHistory::UpdateSymbols()
 			GetPCstring(_history.chair[i].card_player, p_scraper->card_player(i,0), p_scraper->card_player(i,1));
 		}
 
-		_history.chair[i].playersPlayingBits = (players_playing_bits >> i) & 1;
+		_history.chair[i].playersPlayingBits = IsBitSet(players_playing_bits, i);
 
 		// If the player is playing, update the symbol. 
 		// This condition gets used for muck detection.
@@ -484,11 +485,13 @@ const int CHandHistory::DealPosition (const int chairnum)
 
 	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
-		if ((sym_playersdealtbits>>(i%10))&1)
+		if (IsBitSet(sym_playersdealtbits, (i%10)))
 			dealposchair++;
 
 		if (i%10==chairnum)
-			i=99;
+		{
+			break;
+		}
 	}
 	return ((sym_playersdealtbits>>chairnum)&1) ? dealposchair : 0 ;
 }
@@ -569,7 +572,7 @@ const string CHandHistory::findLimit()
 const bool CHandHistory::isPlaying(const int i)
 {
 	int				dbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
-	int				playersdealtbits = (dbits>>i)&1;
+	int				playersdealtbits = IsBitSet(dbits, i);
 
 	if(playersdealtbits==1&&_history.chair[i].currentBalance>=0)
 		return true;

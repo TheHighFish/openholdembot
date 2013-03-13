@@ -10,7 +10,7 @@
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
-
+#include "NumericalFunctions.h"
 
 CSymbolEnginePokerval *p_symbol_engine_pokerval = NULL;
 
@@ -391,7 +391,7 @@ int CSymbolEnginePokerval::GetRankHi(int rankbits)
 {
 	for (int i=Rank_ACE; i>=2; i--)
 	{
-		if (((rankbits)>>i) & 0x1)
+		if (IsBitSet(rankbits, i))
 		{
 			return i;
 		}
@@ -403,7 +403,7 @@ int CSymbolEnginePokerval::GetRankLo(int rankbits)
 {
 	for (int i=2; i<=Rank_ACE; i++)
 	{
-		if ( ((rankbits)>>i) & 0x1)
+		if (IsBitSet(rankbits, i))
 		{
 			return i;
 		}
