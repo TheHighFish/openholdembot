@@ -59,6 +59,7 @@ void CSymbolEnginePokerval::ResetOnMyTurn()
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()
 {
+	userchair = p_symbol_engine_userchair->userchair();
 	CalculateRankBits();
 	CalcPokerValues();
 	CalculateHandType();
