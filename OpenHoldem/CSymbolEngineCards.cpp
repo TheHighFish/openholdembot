@@ -614,8 +614,8 @@ void CSymbolEngineCards::CalculateHandTests()
 	{
 		if (p_scraper->card_common(i) != CARD_NOCARD && p_scraper->card_common(i) != CARD_BACK)
 		{
-			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
-			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
+			int rank = GetRankFromCard(p_scraper->card_common(i));
+			int suit = GetSuitFromCard(p_scraper->card_common(i));
 
 			_$$cc[i] = (rank<<4) | suit;								  
 			_$$cr[i] = rank;						
