@@ -216,12 +216,12 @@ void CSymbolEnginePokerval::CalculateHandType()
 		// at least flop seen...
 		else if (nCards >= 5)
 		{
-			if (StdDeck_RANK(HandVal_TOP_CARD(handval)) >= rankhicommon())
+			if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) >= rankhicommon())
 			{
 				_ishipair = true;										
 			}
-			else if (StdDeck_RANK(HandVal_TOP_CARD(handval)) < rankhicommon()
-				&& StdDeck_RANK(HandVal_TOP_CARD(handval)) > ranklocommon())
+			else if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) < rankhicommon()
+				&& (int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) > ranklocommon())
 			{
 				_ismidpair = true;
 			}
