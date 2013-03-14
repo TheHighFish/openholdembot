@@ -210,24 +210,32 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	{
 		if (p_casino_interface->ClickButton(k_autoplayer_function_raise))
 		{
+			p_symbols->RecordPrevAction(k_action_raise);
+			write_logautoplay(ActionConstantNames(k_action_raise));
 			return true;
 		}
 	}
 	if (p_autoplayer_functions->f$call())
 	{
 		if (p_casino_interface->ClickButton(k_autoplayer_function_call))
-			{
+		{
+			p_symbols->RecordPrevAction(k_action_call);
+			write_logautoplay(ActionConstantNames(k_action_call));
 			return true;
 		}
 	}
 	// Try to check
 	if (p_casino_interface->ClickButton(k_autoplayer_function_check))
 	{
+		p_symbols->RecordPrevAction(k_action_check);
+		write_logautoplay(ActionConstantNames(k_action_check));
 		return true;
 	}
 	else
 	{
 		// Otherwise: fold
+		p_symbols->RecordPrevAction(k_action_fold);
+		write_logautoplay(ActionConstantNames(k_action_fold));
 		return p_casino_interface->ClickButton(k_autoplayer_function_fold);
 	}
 }
