@@ -103,10 +103,10 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	  	p_scraper->card_player(userchair, 0), 
 		p_scraper->card_player(userchair, 1));
 
-	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] handval = %i\n", handval);
-	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] pokerval] = %i\n", _pokerval);
-	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] nCards = %i\n", nCards);
-	write_log(prefs.debug_symbolengine(), "CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] nCards = %i\n", nCards);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[betround-1] = _pokerval & 0xff000000; 
 
