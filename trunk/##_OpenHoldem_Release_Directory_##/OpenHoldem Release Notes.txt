@@ -5,17 +5,27 @@ BUG FIXES:
   [Nik0]
 - Userchair not initialized everywhere, causing wrong pokerval to be computed
   [Nik0]
+- Logs were not written for actions other than SWAG.
+  [Nik0]
+- OpenHoldem did press the wrong button after swagging, 
+  as we confused some enumeration-types.
+  Thanks to Nik0 for reporting.
+  [THF]
+- The handreset-detector did not work correctly
+  because some symbols got initialized at the wrong time.
+  Thanks to ZooBoy and Nik0 for reporting and helping with the fix.
+  [THF]
 
 MAINTENANCE:
 - Some typos, warnings, and syntax highlighting.
   [Nik0]
-- Logs were not written for actions other than SWAG.
-  [Nik0]
-- Not checking balance stability on players that are not active.
+- No longer checking balance stability on players that are not active.
   [ZooBoy]
+  
+NEW STUFF:
+==========
 - Adding some useful buttons in the handlist creation UI.
   [Nik0]
-
 
 v4.0.4 2013-03-12
 ==================
