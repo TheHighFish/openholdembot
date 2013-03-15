@@ -131,6 +131,7 @@ void CHandresetDetector::GetNewSymbolValues()
 	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))
 	{
 		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
+		write_log(prefs.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
 	if (IsValidHandNumber(p_scraper->s_limit_info()->handnumber))
 	{
@@ -159,6 +160,7 @@ void CHandresetDetector::GetNewSymbolValues()
 void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat()
 {
 	last_dealerchair = dealerchair;
+	write_log(prefs.debug_handreset_detector(), "[CHandresetDetector] Setting last dealerchair to [%i]\n", dealerchair);
 	last_handnumber = handnumber;
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
