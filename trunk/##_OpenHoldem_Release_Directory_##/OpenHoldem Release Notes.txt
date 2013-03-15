@@ -1,3 +1,19 @@
+v4.0.5 2013-03-...
+==================
+BUG FIXES:
+- Common cards were wrongly set to player's cards
+  [Nik0]
+- Userchair not initialized everywhere, causing wrong pokerval to be computed
+  [Nik0]
+
+MAINTENANCE:
+- Some typos, warnings, and syntax highlighting.
+  [Nik0]
+- Logs were not written for actions other than SWAG.
+  [Nik0]
+- Not checking balance stability on players that are not active.
+  [ZooBoy]
+
 v4.0.4 2013-03-12
 ==================
 BUG FIXES: 
