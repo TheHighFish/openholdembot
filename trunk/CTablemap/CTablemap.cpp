@@ -71,7 +71,7 @@ void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
 	OH_MessageBox_Error_Warning(error, "Table map load error");
 }
 
-int CTablemap::LoadTablemap(const char *_filename) 
+int CTablemap::LoadTablemap(const char *_fname) 
 {
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	CString		MaxFontGroup = "", MaxHashGroup = "";
@@ -94,9 +94,10 @@ int CTablemap::LoadTablemap(const char *_filename)
 
 	CSLock lock(m_critsec);
 	
+	_filename = _fname;
+	_filepath = _fname;
 	// Open the selected file
 	CFile cfFile(_filename, CFile::modeRead | CFile::shareDenyNone);
-	_filepath = _filename;
 
 	// Load its contents into a CArchive
 	CArchive ar (&cfFile, CArchive::load);
