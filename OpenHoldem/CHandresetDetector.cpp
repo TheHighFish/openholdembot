@@ -21,6 +21,7 @@ CHandresetDetector::CHandresetDetector()
 	playercards[1] = CARD_NOCARD;
 	dealerchair = k_undefined;
 	handnumber = "";
+	_is_handreset_on_this_heartbeat = false;
 }
 
 CHandresetDetector::~CHandresetDetector()
@@ -33,7 +34,7 @@ CString CHandresetDetector::GetHandNumber()
 	return handnumber;
 }
 
-bool CHandresetDetector::IsHandreset()
+bool CHandresetDetector::CalculateIsHandreset()
 {
 	bool ishandreset = (IsHandresetByDealerChair()
 		|| IsHandresetByCards()
@@ -124,22 +125,9 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair)
 	return ((dealerchair >= 0) && (dealerchair < p_tablemap->nchairs()));
 }
 
-
-void CHandresetDetector::OnNewHeartbeat()
+void CHandresetDetector::GetNewSymbolValues()
 {
-	if (p_symbol_engine_dealerchair == NULL)
-	{
-		// Very early initialization phase
-		return;
-	}
-	// Store old values...
-	last_dealerchair = dealerchair;
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		last_playercards[i] = playercards[i];
-	}
-	last_handnumber = handnumber;
-	// ...and set new ones (if good).
+	assert(p_symbol_engine_dealerchair == NULL);
 	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))
 	{
 		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
@@ -166,4 +154,26 @@ void CHandresetDetector::OnNewHeartbeat()
 			playercards[i] = CARD_NOCARD;
 		}
 	}
+}
+
+void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat()
+{
+	last_dealerchair = dealerchair;
+	last_handnumber = handnumber;
+	for (int i=0; i<k_number_of_cards_per_player; i++)
+	{
+		last_playercards[i] = playercards[i];
+	}
+}
+
+void CHandresetDetector::OnNewHeartbeat()
+{
+	if (p_symbol_engine_dealerchair == NULL)
+	{
+		// Very early initialization phase
+		return;
+	}
+	GetNewSymbolValues();
+	_is_handreset_on_this_heartbeat = CalculateIsHandreset();
+	StoreOldValuesForComparisonOnNextHeartbeat();
 }

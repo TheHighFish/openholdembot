@@ -12,11 +12,12 @@ public:
 	// OnNewHeartbeat(): to be called on every new heartbeat
 	// BEFORE IsHandreset() gets called.
 	void OnNewHeartbeat();
-	bool IsHandreset();
+	bool IsHandreset()		{ return _is_handreset_on_this_heartbeat; }
 public:
 	// Only for output in the log
 	CString GetHandNumber();
 private: 
+	bool CalculateIsHandreset();
 	bool IsHandresetByDealerChair();
 	bool IsHandresetByCards();
 	bool IsHandresetByHandNumber();
@@ -24,6 +25,9 @@ private:
 	int HandResetMethod();
 	bool IsValidHandNumber(CString handnumber);
 	bool IsValidDealerChair(int dealerchair);
+private:
+	void GetNewSymbolValues();
+	void StoreOldValuesForComparisonOnNextHeartbeat();
 private:
 	int dealerchair;
 	int last_dealerchair;
@@ -34,6 +38,8 @@ private:
 	//   * its lengths my exceed the precision of double
 	CString handnumber;
 	CString last_handnumber;
+private:
+	bool _is_handreset_on_this_heartbeat;
 } *p_handreset_detector;
 
 #endif INC_CHANDRESETDETECTOR_H
