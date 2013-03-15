@@ -63,11 +63,11 @@ private:
 
 
 extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
-extern "C" __declspec(dllexport) void __stdcall   SendChatMessageFomDll(const char *msg);
-extern "C" __declspec(dllexport) void* __stdcall  GetPhl1kFromDll();
-extern "C" __declspec(dllexport) void* __stdcall  GetPrw1326FromDll();
-extern "C" __declspec(dllexport) CString __stdcall GetHandnumberFromDll();
-extern "C" __declspec(dllexport) void __stdcall   WriteLogFromDll(char* fmt, ...);
+extern "C" __declspec(dllexport) void   __stdcall SendChatMessageFomDll(const char *msg);
+extern "C" __declspec(dllexport) void*  __stdcall GetPhl1kFromDll();
+extern "C" __declspec(dllexport) void*  __stdcall GetPrw1326FromDll();
+extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
+extern "C" __declspec(dllexport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 
 
 

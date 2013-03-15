@@ -12,6 +12,7 @@
 #include "CSymbolEnginePrWin.h"
 #include "Cversus.h"
 #include "debug.h"
+#include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
@@ -206,9 +207,11 @@ extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 	return (void *)(p_iterator_thread->prw1326());
 }
 
-extern "C" __declspec(dllexport) CString __stdcall GetHandnumberFromDll()
+extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll()
 {
-	return (p_handreset_detector->GetHandNumber());
+	assert(p_handreset_detector->GetHandNumber().GetLength < k_max_length_of_handnumber);
+	static char handnumber_as_char_array[k_max_length_of_handnumber] = p_handreset_detector->GetHandNumber();
+	return handnumber_as_char_array;
 }
 
 extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
