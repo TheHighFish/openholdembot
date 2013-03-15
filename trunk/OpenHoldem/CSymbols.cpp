@@ -126,13 +126,16 @@ void CSymbols::LogHandReset()
 	}
 	char title[512] = "!!!Missing title is a bug!!!";
 	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
-	write_log(k_always_log_basic_information, "\n");
-	write_log(k_always_log_basic_information, "*************************************************************\n");
-	write_log(k_always_log_basic_information, "%s\n", p_version_info->GetVersionInfo());
-	write_log(k_always_log_basic_information, "HAND RESET (num: %s dealer: %d cards: %s%s): %s\n",
-		p_handreset_detector->GetHandNumber(),  
-		p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
-	write_log(k_always_log_basic_information, "*************************************************************\n");
+	write_log(k_always_log_basic_information, 
+		"\n"
+		"*************************************************************\n"
+		"%s\n" 
+		"HAND RESET (num: %s dealer: %d cards: %s%s): %s\n"
+		"*************************************************************\n"
+		p_version_info->GetVersionInfo(),
+		p_handreset_detector->GetHandNumber(),
+		p_symbol_engine_dealerchair->dealerchair(), 
+		card0, card1, title);
 }
 
 double CSymbols::GetSymbolVal(const char *a, int *e)
