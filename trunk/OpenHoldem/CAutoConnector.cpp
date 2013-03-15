@@ -133,6 +133,23 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	return true;  // keep processing through entire list of windows
 }
 
+void CAutoConnector::WriteLogTableReset()
+{
+	CString site = "";
+	SMapCI site_i = p_tablemap->s$()->find("sitename");
+	if (site_i != p_tablemap->s$()->end())
+	{
+		site = site_i->second.text;
+	}
+	CString formula = p_formula->formula_name();
+
+	write_log(k_always_log_basic_information, 
+		"\n"
+		"*************************************************************\n"
+		"TABLE RESET %s - %s(%s)\n"
+		"*************************************************************\n",
+		formula.GetString(), site.GetString(), p_scraper->title());
+}
 
 bool CAutoConnector::Connect(HWND targetHWnd)
 {
@@ -273,16 +290,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
 
-			CString site = "";
-			SMapCI site_i = p_tablemap->s$()->find("sitename");
-			if (site_i != p_tablemap->s$()->end())
-				site = site_i->second.text;
-
-			CString formula = p_formula->formula_name();
-			write_log(k_always_log_basic_information, "*************************************************************\n");
-			write_log(k_always_log_basic_information, "TABLE RESET %s - %s(%s)\n",
-				formula.GetString(), site.GetString(), title);
-			write_log(k_always_log_basic_information, "*************************************************************\n");
+			WriteLogTableReset();
 		}
 	}
 	p_table_positioner->PositionMyWindow();
@@ -435,13 +443,7 @@ void CAutoConnector::Disconnect()
 		m_ScraperOutputDlg->AddListboxItems();
 		m_ScraperOutputDlg->UpdateDisplay();
 	}
-
-	// log OH title bar text and table reset
-	CString sitename = (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end() ? p_tablemap->s$()->find("sitename")->second.text.GetString() : "");
-	write_log(k_always_log_basic_information, 
-		"%s - %s(NOT ATTACHED)\n", p_formula->formula_name().GetString(), sitename);
-	write_log(k_always_log_basic_information, 
-		"TABLE RESET\n*************************************************************\n");
+	WriteLogTableReset();
 
 	// Stop logging
 	stop_log();
