@@ -64,18 +64,18 @@ bool CCasinoInterface::ButtonClickable(int autoplayer_code)
 		&& p_scraper_access->visible_buttons[autoplayer_code]);
 }
 
-bool CCasinoInterface::ClickButton(int autoplayer_code)
+bool CCasinoInterface::ClickButton(int autoplayer_function_code)
 {
 	//write_log(prefs.debug_autoplayer(), "[CasinoInterface]  
-	if (ButtonClickable(autoplayer_code)) 
+	if (ButtonClickable(autoplayer_function_code)) 
 	{
-		ClickRect(action_buttons[autoplayer_code]);
-		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_code]);
+		ClickRect(action_buttons[autoplayer_function_code]);
+		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_function_code]);
 		return true;
 	}
 	else
 	{
-		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_autoplayer_functionname[autoplayer_code]);
+		write_log(prefs.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_autoplayer_functionname[autoplayer_function_code]);
 		return false;
 	}
 }
@@ -135,21 +135,17 @@ bool CCasinoInterface::UseSliderForAllin()
 	{
 		int confirmation_button = k_button_undefined;
 
-		// use allin button if it exists, otherwise use i3button region if it exists, 
+		// use allin button if it exists,  
 		// otherwise use the bet/raise button region
 		if (p_scraper_access->available_buttons[k_autoplayer_function_allin])
 		{
-			confirmation_button = k_button_allin;
-		}
-		else if (p_scraper_access->i3_button_available) 
-		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : Using the i3button\n");
-			confirmation_button = k_button_i3;
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : Using the allin button\n");
+			confirmation_button = k_autoplayer_function_allin;
 		}
 		else
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Slider Confirmation : Using the raise button\n");
-			confirmation_button = k_button_raise;
+			confirmation_button = k_autoplayer_function_raise;
 		}
 
 		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
@@ -307,13 +303,13 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	Sleep(prefs.swag_delay_1()); 
 
 	// Check for stolen , and thus misswag
-	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+	if (TableLostFocus())
 		lost_focus = true;
 	
 	DeleteSwagText();
 
 	// Check for stolen focus, and thus misswag
-	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+	if (TableLostFocus())
 		lost_focus = true;
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
@@ -333,7 +329,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	Sleep(prefs.swag_delay_2());
 	// Check for stolen focus, and thus misswag
-	if (GetForegroundWindow() != p_autoconnector->attached_hwnd())
+	if (TableLostFocus())
 		lost_focus = true;
 
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_3());
@@ -347,30 +343,20 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 		}
-		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-				 (p_scraper_access->available_buttons[k_autoplayer_function_raise] || p_scraper_access->i3_button_available))
+		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET 
+			&& p_scraper_access->available_buttons[k_autoplayer_function_raise])
 		{
-			int confirmation_button = k_button_undefined;
-
-			// use i3button region if it exists, otherwise use the bet/raise button region
-			if (p_scraper_access->i3_button_available)
-			{
-				confirmation_button = k_button_i3;
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Bet Confirmation: Using i3button\n");
-			}
-			else
-			{
-				confirmation_button = k_button_raise;
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Bet Confirmation: Using raise button\n");
-			}
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Bet Confirmation: Using raise button\n");
 
 			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
 			{
-				ClickButtonSequence(confirmation_button, confirmation_button, k_double_click_delay);
+				ClickButtonSequence(k_autoplayer_function_raise, 
+					k_autoplayer_function_raise, 
+					k_double_click_delay);
 			}
 			else
 			{
-				ClickButton(confirmation_button);
+				ClickButton(k_autoplayer_function_raise);
 			}
 		}
 
