@@ -13,8 +13,7 @@ BUG FIXES:
   [THF]
 - The handreset-detector did not work correctly
   because some symbols got initialized at the wrong time.
-  Thanks to ZooBoy and Nik0 for reporting and helping with the fix.
-  [THF]
+  [Zooboy, Nik0, THF]
 
 MAINTENANCE:
 - Some typos, warnings, and syntax highlighting.
