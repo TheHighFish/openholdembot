@@ -13,6 +13,9 @@ MAINTENANCE:
   [Nik0]
 - Not checking balance stability on players that are not active.
   [ZooBoy]
+- Adding some useful buttons in the handlist creation UI.
+  [Nik0]
+
 
 v4.0.4 2013-03-12
 ==================
