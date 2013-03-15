@@ -129,8 +129,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Caclulate symbols
 
-		p_handreset_detector->OnNewHeartbeat();
-
 		// mark symbol result cache as stale
 		p_formula->MarkCacheStale();
 
