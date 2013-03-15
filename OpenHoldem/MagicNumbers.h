@@ -132,7 +132,6 @@ const int k_cards_needed_for_flush    =  5;
 const int k_cards_needed_for_straight =  5;
 
 
-
 // Regions for the region cloner of OpenScrape
 // may be used for players, pots, community-cards, etc.
 // So we take the maximum.
@@ -148,6 +147,9 @@ const int k_time_frame_for_table_stats_in_seconds = 15 * 60;
 // debug tab
 const int k_precision_for_debug_tab      = 6;
 const int k_integer_places_for_debug_tab = 6;
+
+// handnumber
+const int k_max_length_of_handnumber = 256;
 
 // Hand history generator
 const double k_hand_history_rake = 0.05;
