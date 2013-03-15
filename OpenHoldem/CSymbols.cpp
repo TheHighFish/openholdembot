@@ -105,7 +105,7 @@ void CSymbols::LogHandReset()
 
 	int player_card_cur[2] = {0};
 	player_card_cur[0] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0);
-	player_card_cur[0] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1);
+	player_card_cur[1] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1);
 	char card0[10];
 	char card1[10];
 	// log new hand
@@ -129,7 +129,7 @@ void CSymbols::LogHandReset()
 	write_log(k_always_log_basic_information, "\n");
 	write_log(k_always_log_basic_information, "*************************************************************\n");
 	write_log(k_always_log_basic_information, "%s\n", p_version_info->GetVersionInfo());
-	write_log(k_always_log_basic_information, "HAND RESET (num: %s dealer: %.0f cards: %s%s): %s\n",
+	write_log(k_always_log_basic_information, "HAND RESET (num: %s dealer: %d cards: %s%s): %s\n",
 		p_handreset_detector->GetHandNumber(),  
 		p_symbol_engine_dealerchair->dealerchair(), card0, card1, title);
 	write_log(k_always_log_basic_information, "*************************************************************\n");
