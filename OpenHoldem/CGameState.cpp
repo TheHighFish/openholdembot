@@ -508,6 +508,7 @@ const double CGameState::SortedBalance(const int rank)
 bool CGameState::ProcessThisFrame (void)
 {
 	int				betround = (int) p_betround_calculator->betround();
+	int				activebits = p_symbol_engine_active_dealt_playing->playersactivebits();
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	bool balance_stability = true;
@@ -515,7 +516,8 @@ bool CGameState::ProcessThisFrame (void)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
+			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1 &&
+                       (activebits & (1 << i)) != 0)
 		{
 			balance_stability = false;
 			break;
