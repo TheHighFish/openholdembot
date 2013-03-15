@@ -3,7 +3,7 @@ v4.0.5 2013-03-...
 BUG FIXES:
 - Common cards were wrongly set to player's cards
   [Nik0]
-- Userchair not initialized everywhere, causing wrong pokerval to be computed
+- Userchair not initialized in CSymbolenginePokerval, causing wrong pokerval to be computed.
   [Nik0]
 - Logs were not written for actions other than SWAG.
   [Nik0]
@@ -20,6 +20,16 @@ MAINTENANCE:
   [Nik0]
 - No longer checking balance stability on players that are not active.
   [ZooBoy]
+- Changing the DLL-interface of GetHandnumberFromDll() to
+    extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
+  to avoid using CStrings, so that we also support C-linkage
+  as custom data-types cause problems with mixed-linking (C/C++) (Warning C4190).  http://stackoverflow.com/questions/7778936/returning-non-primitive-c-type-from-a-dll-function-linked-with-a-static-runtim
+  [THF]
+- Supporting the DLL-messages "load" and "unload" again (already since an earlier version)
+  as DLLMain is no good place for initializations.
+  Thanks to TT_83 for the explanations.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16190
+  [THF]
   
 NEW STUFF:
 ==========
