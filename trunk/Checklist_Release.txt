@@ -4,6 +4,9 @@
 * Test "everything", at least that OH "works"
 * Commit everything
 * Tag the release on googlecode
+  TurtoiseSVN -> Branch/Tag
+  and then create a tag for svn/tags/OpenHoldem_4.x.y
+  Comment: "Tagging OpenHoldem 4.x.y for release"
 * Copy all files to a new directory
 * Add dbdhelp.dll
 * Add OpenHoldem.lib to support DLL-linking
