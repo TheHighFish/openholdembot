@@ -1,5 +1,15 @@
 v4.0.5 2013-03-...
 ==================
+NEW STUFF:
+==========
+- Adding some useful buttons in the handlist creation UI.
+  [Nik0]
+- Making it possible to engage the autoplayer immediatelly after connection
+  to support secondary formulas better (f$sitin, f$sitout, f$close, etc.).
+  Only primary formulas (f$alli, f$rais, etc.) will still require a known userchair,
+  i.e. a combination of cards and action-buttons.
+  [THF]
+
 BUG FIXES:
 - Common cards were wrongly set to player's cards
   [Nik0]
@@ -30,11 +40,6 @@ MAINTENANCE:
   Thanks to TT_83 for the explanations.
   http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16190
   [THF]
-  
-NEW STUFF:
-==========
-- Adding some useful buttons in the handlist creation UI.
-  [Nik0]
 
 v4.0.4 2013-03-12
 ==================
