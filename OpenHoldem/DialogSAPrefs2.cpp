@@ -35,7 +35,7 @@ void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SWAGDELAY2_SPIN, m_SwagDelay2_Spin);
 	DDX_Control(pDX, IDC_SWAGDELAY3, m_SwagDelay3);
 	DDX_Control(pDX, IDC_SWAGDELAY3_SPIN, m_SwagDelay3_Spin);
-	DDX_Control(pDX, IDC_AUTO_AP, m_AutoAP);
+	DDX_Control(pDX, IDC_AUTOPLAYER_UPON_CONNECTION, m_Autoplayer_Upon_Connection);
 	DDX_Control(pDX, IDC_SWAGUSECOMMA, m_SwagUseComma);
 }
 
@@ -82,7 +82,7 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	m_SwagDelay3_Spin.SetPos(prefs.swag_delay_3());
 	m_SwagDelay3_Spin.SetBuddy(&m_SwagDelay3);
 
-	m_AutoAP.SetCheck(prefs.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
+	m_Autoplayer_Upon_Connection.SetCheck(prefs.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
 
 	m_SwagUseComma.SetCheck(prefs.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
@@ -134,7 +134,7 @@ void CDlgSAPrefs2::OnOK()
 	}
 	prefs.set_swag_delay_3(strtoul(text.GetString(), 0, 10));
 
-	prefs.set_engage_autoplayer(m_AutoAP.GetCheck()==BST_CHECKED ? true : false);
+	prefs.set_engage_autoplayer(m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
 	prefs.set_swag_use_comma(m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();

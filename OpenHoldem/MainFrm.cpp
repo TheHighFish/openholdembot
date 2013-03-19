@@ -451,8 +451,10 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	{
 
 		// Autoplayer
+		// Since OH 4.0.5 we support autoplaying immediatelly after connection
+		// without the need to know the userchair to act on secondary formulas.
 		if (p_symbol_engine_userchair != NULL
-			&& p_symbol_engine_userchair->userchair_confirmed())
+			&& p_autoconnector->IsConnected())
 		{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}
@@ -463,7 +465,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 		// Automatically start autoplayer, if set in preferences
 		if (prefs.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_symbol_engine_userchair->userchair_confirmed() 
+				((p_autoconnector->IsConnected() 
 				&& !p_autoplayer->autoplayer_engaged())))
 		{
 			if (!_autoplay_pressed)
@@ -473,7 +475,6 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				_autoplay_pressed = true;
 			}
 		}
-
 		// attach
 		if (p_autoconnector->attached_hwnd() != NULL) 
 		{

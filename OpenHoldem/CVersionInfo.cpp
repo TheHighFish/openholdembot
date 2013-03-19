@@ -35,8 +35,7 @@ CVersionInfo::CVersionInfo()
 }
 
 CVersionInfo::~CVersionInfo()
-{
-}
+{}
 
 CString CVersionInfo::GetVersionInfo()
 {
@@ -46,7 +45,7 @@ CString CVersionInfo::GetVersionInfo()
 	assert(p_tablemap != NULL);
 	assert(p_dll_extension != NULL);
 
-	version_info.Format("OpenHoldem version [%s, %li], formula [%s], tablemap [%s], DLL [%s]",
+	version_info.Format("OpenHoldem version [%s, %s], formula [%s], tablemap [%s], DLL [%s]",
 		VERSION_TEXT,
 		_openholdem_MD5,
 		p_formula->formula_name(),

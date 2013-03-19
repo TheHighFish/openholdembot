@@ -393,15 +393,26 @@ void CAutoplayer::DoAutoplayer(void)
 		if (!ExecuteSecondaryFormulasIfNecessary())	
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-			if(p_symbol_engine_autoplayer->isfinalanswer())
+			// Since OH 4.0.5 we support autoplaying immediatelly after connection
+			// without the need to know the userchair to act on secondary formulas.
+			// However: for primary formulas (f$alli, f$rais, etc.)
+			// knowing the userchair (combination of cards and buttons) is a must.
+			if (!p_symbol_engine_userchair->userchair_confirmed())
 			{
-				p_autoplayer_functions->CalcPrimaryFormulas();
-				ExecutePrimaryFormulas();
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
 			}
 			else
 			{
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
+				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
+				if(p_symbol_engine_autoplayer->isfinalanswer())
+				{
+					p_autoplayer_functions->CalcPrimaryFormulas();
+					ExecutePrimaryFormulas();
+				}
+				else
+				{
+					write_log(prefs.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
+				}
 			}
 		}
 	}

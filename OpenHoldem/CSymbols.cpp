@@ -131,7 +131,7 @@ void CSymbols::LogHandReset()
 		"*************************************************************\n"
 		"%s\n" 
 		"HAND RESET (num: %s dealer: %d cards: %s%s): %s\n"
-		"*************************************************************\n"
+		"*************************************************************\n",
 		p_version_info->GetVersionInfo(),
 		p_handreset_detector->GetHandNumber(),
 		p_symbol_engine_dealerchair->dealerchair(), 

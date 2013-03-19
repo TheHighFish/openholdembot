@@ -147,10 +147,9 @@
 #define IDC_ICM_3                       1112
 #define IDC_ICM_4                       1113
 #define IDC_CHECK1                      1114
-#define IDC_AUTO_AP                     1114
+#define IDC_AUTOPLAYER_UPON_CONNECTION                     1114
 #define IDC_ICM_5                       1114
 #define IDC_CHECK2                      1115
-#define IDC_AUTO_AP2                    1115
 #define IDC_CHECK3                      1116
 #define IDC_SWAGUSECOMMA                1116
 #define IDC_CHECK4                      1117
