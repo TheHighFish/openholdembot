@@ -78,4 +78,5 @@ int CReplayFramesCounter::GetNumberOfLastReplayFrameInDirectory()
             }
         }
     }
+	return _current_last_replay_frame;
 }
