@@ -194,8 +194,8 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	else
 	{
 		_status_prwin = "0/0/0";
-		int	e = SUCCESS;
-		_status_nit.Format("0/%d", p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
+		// No iteratrions without userchair or cards
+		_status_nit.Format("0");
 	}
 
 	// action
