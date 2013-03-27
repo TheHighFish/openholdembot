@@ -7,7 +7,7 @@
 //
 //*****************************************************************************
 //
-// Purpose:
+// Purpose: PrWin-simulation
 //
 //*****************************************************************************
 
@@ -30,22 +30,23 @@
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
 #include "Numericalfunctions.h"
+#include "PrWinHandranges.h"
 
 
 CIteratorThread		*p_iterator_thread = NULL;
 
-//weighted prwin lookup tables for non-suited and suited cards
+// weighted prwin lookup tables for non-suited and suited cards
 int pair2rank_offsuited[170] = {0}, pair2rank_suited[170] = {0};
-//used to resolve ascii cards to numbers for init of above
-char ctonum[14]="23456789TJQKA";
-//int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
-sprw1326	_prw1326;								//prwin 1326 data structure Matrix 2008-04-29
+// used to resolve ascii cards to numbers for init of above
+char ctonum[k_number_of_ranks_per_deck + 1]="23456789TJQKA";
+// int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
+sprw1326	_prw1326;	//prwin 1326 data structure Matrix 2008-04-29
 
 
-//handrank table used to prime weighted prwin lookup table.
-//reflects incidence of cards people actually play to flop.
-//left in this form for ease of developer modification.
-//converted at startup to the tables actually used by prwin calculation
+// handrank table used to prime weighted prwin lookup table.
+// reflects incidence of cards people actually play to flop.
+// left in this form for ease of developer modification.
+// converted at startup to the tables actually used by prwin calculation
 char *prwin_handrank_table_169[k_number_of_starting_hands] =
 {
 	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
@@ -67,6 +68,19 @@ char *prwin_handrank_table_169[k_number_of_starting_hands] =
 	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
 };
 
+// Make some variables global
+// because they need to be accessed and shared 
+// by both class functions and static iterator-functions
+// and because the former "solution" of passing class pointers 
+// to static iterator-functions was no real option either. ;-(
+int				deck[k_number_of_cards_per_deck];
+CardMask		usedCards,temp_usedCards;
+unsigned int	ocard[MAX_OPPONENTS*k_number_of_cards_per_player];
+CardMask		addlcomCards;
+CardMask		evalCards = {0}, opp_evalCards = {0};
+int				_willplay, _wontplay, _mustplay, _topclip;
+int				_nplCards, _ncomCards;
+double			_win, _tie, _los;
 
 CIteratorThread::CIteratorThread()
 {
@@ -142,22 +156,22 @@ void CIteratorThread::StartIteratorThreadIfNeeded()
 	}
 }
 
-void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent)
+void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /* needed ???*/)
 {
 	// Cut off from IteratorThreadFunction
 	// Also moved outside of the loop.
 
 	int	sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
-	if (pParent->_willplay && (pParent->_willplay < 2 * sym_nopponents + 1))
+	if (_willplay && (_willplay < 2 * sym_nopponents + 1))
 	{
 		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
-		pParent->_willplay = 2 * sym_nopponents + 1; //too low a value can give lockup
+		_willplay = 2 * sym_nopponents + 1; //too low a value can give lockup
 	}
-	if (pParent->_wontplay < pParent->_willplay)
+	if (_wontplay < _willplay)
 	{
 		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
-		pParent->_wontplay = pParent->_willplay; //wontplay cannot safely be less than willplay
+		_wontplay = _willplay; //wontplay cannot safely be less than willplay
 	}
 }
 
@@ -168,24 +182,14 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	// Loop-variables j, k get used inside and outside loops.
 	// It is a bit messy, nearly impossible to fix it.
 	// At least the outer loops ("f$prwin_number_of_iterations" and "i") could be improved.
-	int				j = 0, k = 0;
-	int				randfix = 0;
-	CardMask		addlcomCards = {0}, evalCards = {0}, opp_evalCards = {0}, usedCards = {0}, temp_usedCards = {0};
-	unsigned int	ocard[MAX_OPPONENTS*2] = {0}, card = 0, pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
+	unsigned int	pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal			pl_hv = 0, opp_hv = 0;
 	int				dummy = 0;
-	int				deck[k_number_of_cards_per_deck] = {0}, x = 0;
-	int				numberOfCards = 0;
 
-	int				betround = p_betround_calculator->betround();
-	int				sym_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
-	double			sym_nbetsround = p_symbol_engine_history->nbetsround(betround);
-	int				sym_bblindbits = p_symbol_engine_blinds->bblindbits();
-	bool			sym_didcall = p_symbol_engine_history->didcall(betround);
 	int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
-
 	bool			hand_lost;
 
+	ResetGlobalVariables();
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
 
@@ -196,8 +200,8 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	// "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
-	unsigned int nit;
 	AdjustPrwinVariablesIfNecessary(pParent);
+	unsigned int nit;
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
 		// Check event for thread stop signal
@@ -210,219 +214,13 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
 		
-		if (_prw1326.useme==1326 && (betround>=k_betround_flop || _prw1326.preflop==1326))
+		if (UseEnhancedPrWin())
 		{
-			write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
-
-			//prw1326 active  Matrix 2008-05-08
-			k = sym_nopponents = 0; //k is used as an index into ocard[] 
-
-			// loop through active opponents
-			for(int i=0; i<k_max_number_of_players; i++) 
-			{
-				if (i==(int) p_symbol_engine_userchair->userchair())
-					continue; //skip our own chair!
-
-				if (!((sym_playersplayingbits) & (1<<i)))
-					continue; //skip inactive chairs 
-
-				sym_nopponents++; //we have to use actual opponents for prw1326 calculations
-
-				// first deal with the special non-weighted cases
-				// player who is marked 'ignore' or one who is BB and has not VPIP'd
-				if (_prw1326.chair[i].ignore || 
-					(_prw1326.bblimp && sym_nbetsround<1.1 && (sym_bblindbits&(1<<i))) )
-				{
-					do 
-					{
-						card = rand() & 63;
-					}
-					while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-					
-					CardMask_SET(usedCards, card);
-					ocard[k++] = card;
-
-					do 
-					{
-						card = rand() & 63;
-					}
-					while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-					
-					CardMask_SET(usedCards, card);
-					ocard[k++] = card;
-
-					continue;
-				} // end of special non-weighted cases
-
-				randfix=(RAND_MAX/_prw1326.chair[i].limit) * _prw1326.chair[i].limit;
-
-
-				while (true)
-				{ //find a possible hand for this chair NOTE: may want to put in loop limits to prevent hanging
-					do 
-					{
-						j=rand();
-					} while (j>=randfix);
-
-					j = j % _prw1326.chair[i].limit; //j is now any one of the allowed hands
-
-					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].rankhi[j] ))
-						continue; //hand contains dead card
-
-					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].ranklo[j] ))
-						continue; //hand contains dead card
-
-//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
-
-					if(_prw1326.chair[i].level <= _prw1326.chair[i].weight[j])
-						break; //hand marked as always uae
-
-					//check if we want a player who is BB and has not VPIP'd to be analysed further
-//					if(symbols.prw1326.bblimp)
-//					{
-//					if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
-//					}
-
-					//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
-					//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
-					if(rand() % _prw1326.chair[i].level < _prw1326.chair[i].weight[j])
-						break; //allowable
-
-					//if we reach here we will loop again to find a suitable hand
-				} //end of possible hand find
-
-				ocard[k++] = _prw1326.chair[i].rankhi[j];
-				ocard[k++] = _prw1326.chair[i].ranklo[j];
-
-				CardMask_SET(usedCards, ocard[k-2]);
-				CardMask_SET(usedCards, ocard[k-1]);
-
-			} //end of active opponent loop
-
-			// additional common cards
-			CardMask_RESET(addlcomCards);
-			for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
-			{
-				do 
-				{
-					card = rand() & 63;
-				}
-				while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
-				CardMask_SET(usedCards, card);
-				CardMask_SET(addlcomCards, card);
-			}
-		} //end of prw1326 code
-		
+			EnhancedDealingAlgorithm();
+		}
 		else
 		{ 
-			// normal prwin opponent card selection
-			write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
-
-			// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
-			if (sym_nopponents <= 13)
-			{
-				write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
-				// random replacement algorithm
-				// opponent cards
-				if (sym_nopponents < 1)
-				{
-					write_log(prefs.debug_prwin(), "[PrWinThread] No opponents.\n");
-				}
-				for (int i=0; i<sym_nopponents*2; i+=2)
-				{
-					temp_usedCards=usedCards;
-					do
-					{
-						usedCards=temp_usedCards; //reset the card mask to clear settings from failed card assignments
-
-						do {
-							card = rand() & 63;
-						}
-						while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-						CardMask_SET(usedCards, card);
-						ocard[i] = card;
-
-						do {
-							card = rand() & 63;
-						}
-						while (card>51 || CardMask_CARD_IS_SET(usedCards, card));
-						CardMask_SET(usedCards, card);
-						ocard[i+1] = card;
-
-						if (!pParent->_willplay)
-						{
-							write_log(prefs.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
-							break; //0 disables weighting
-						}
-
-						//put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
-						//In round 1 we should really do an analysis of chairs to find out how many have still to
-						//place a bet. Not implemented since accuracy of prwin pre-flop is less critical.
-						if (!i)
-						{
-							//if we called then we are not BB, BB limped to flop,
-							//BB still playing, so do not weight his cards
-							if (sym_nbetsround<1.1 && sym_didcall && (sym_playersplayingbits&sym_bblindbits) )
-							{
-								break;
-							}
-						}
-					}
-					while (!pParent->InRange(ocard[i], ocard[i+1], pParent->_willplay, 
-							pParent->_wontplay, pParent->_topclip, pParent->_mustplay));
-				}
-				// additional common cards
-				CardMask_RESET(addlcomCards);
-				for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
-				{
-					do {
-						card = rand() & 63;
-					}
-					while (card>51 ||CardMask_CARD_IS_SET(usedCards, card));
-					CardMask_SET(usedCards, card);
-					CardMask_SET(addlcomCards, card);
-				}
-			}
-
-			else
-			{
-				write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
-				// swap alogorithm
-				//weighted prwin not implemented for this case
-				numberOfCards=52;
-				for (int i=0; i<numberOfCards; i++)
-					deck[i] = i;
-
-				while (numberOfCards>=1)
-				{
-					x = rand() % numberOfCards;
-					numberOfCards--;
-					if (x != numberOfCards)
-					{
-						SwapInts(&deck[x], &deck[numberOfCards]);
-					}
-				}
-
-				// opponent cards
-				x = 0;
-				for (int i=0; i<sym_nopponents*2; i++)
-				{
-					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
-						x++;
-					}
-					ocard[i] = deck[x++];
-				}
-
-				// additional common cards
-				CardMask_RESET(addlcomCards);
-				for (int i=0; i<(k_number_of_community_cards - pParent->_ncomCards); i++)
-				{
-					while (CardMask_CARD_IS_SET(usedCards, deck[x]) && x<=51) {
-						x++;
-					}
-					CardMask_SET(addlcomCards, deck[x++]);
-				}
-			}
+			StandardDealingAlgorithm(sym_nopponents);
 		}
 
 		// Get my handval/pokerval
@@ -447,51 +245,46 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 			if (opp_pokval>pl_pokval)
 			{
-				pParent->_los++;
+				_los++;
 				hand_lost = true;
 				break;
 			}
 			else
 			{
 				if (opp_pokval > opp_pokvalmax)
+				{
 					opp_pokvalmax = opp_pokval;
+				}
 			}
 		}
 		if (!hand_lost)
 		{
 			if (pl_pokval > opp_pokvalmax)
-				pParent->_win++;
+			{
+				_win++;
+			}
 			else
-				pParent->_tie++;
+			{
+				_tie++;
+			}
 		}
 
-		// Update display once every 1000 iterations
-		if ((nit % 1000 == 0) && nit >= 1000)
-		{
-			write_log(prefs.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", nit, pParent->_win / (double) nit, pParent->_tie / (double) nit, pParent->_los / (double) nit);
-			iter_vars.set_iterator_thread_progress(nit);
-			iter_vars.set_prwin(pParent->_win / (double) nit);
-			iter_vars.set_prtie(pParent->_tie / (double) nit);
-			iter_vars.set_prlos(pParent->_los / (double) nit);
-		}
+		UpdateIteratorVarsForDisplay(nit);
 	}
 
 	write_log(prefs.debug_prwin(), "[PrWinThread] End of main loop.\n");
 
-	if (nit >= iter_vars.nit())
+	if (SimulationFinished(nit))
 	{
 		iter_vars.set_iterator_thread_running(false);
 		iter_vars.set_iterator_thread_complete(true);
-		iter_vars.set_iterator_thread_progress(nit);
-		iter_vars.set_prwin(pParent->_win / (double) iter_vars.nit());
-		iter_vars.set_prtie(pParent->_tie / (double) iter_vars.nit());
-		iter_vars.set_prlos(pParent->_los / (double) iter_vars.nit());
+		UpdateIteratorVarsForDisplay(nit);
 	}
 	else
 	{
 		iter_vars.set_iterator_thread_running(false);
 		iter_vars.set_iterator_thread_complete(false);
-		iter_vars.set_iterator_thread_progress(0);
+		iter_vars.set_iterator_thread_progress(0); //???
 		iter_vars.set_nit(0);
 
 		for (int i=0; i<k_number_of_cards_per_player; i++)
@@ -500,15 +293,61 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		for (int i=0; i<k_number_of_community_cards; i++)
 			iter_vars.set_ccard(i, CARD_NOCARD);
 
-		iter_vars.set_prwin(0);
-		iter_vars.set_prtie(0);
-		iter_vars.set_prlos(0);
+		ResetIteratorVars();
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
 	//!!!StopIteratorThread();
 
 	return 0;
+}
+
+void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
+{
+	// Update display once every 1000 iterations
+	if (SimulationFinished(nit)
+		|| ((nit % 1000 == 0) && (nit >= 1000)))
+	{
+		iter_vars.set_iterator_thread_progress(nit);
+		iter_vars.set_prwin(_win / (double) nit);
+		iter_vars.set_prtie(_tie / (double) nit);
+		iter_vars.set_prlos(_los / (double) nit);
+		write_log(prefs.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
+			nit, 
+			iter_vars.prwin(),
+			iter_vars.prtie(), 
+			iter_vars.prlos());
+	}
+}
+
+bool CIteratorThread::SimulationFinished(unsigned int nit)
+{
+	return (nit >= iter_vars.nit());
+}
+
+void CIteratorThread::ResetIteratorVars()
+{
+	iter_vars.set_prwin(0);
+	iter_vars.set_prtie(0);
+	iter_vars.set_prlos(0);
+}
+
+void CIteratorThread::ResetGlobalVariables()
+{
+	CardMask_RESET(usedCards);
+	CardMask_RESET(temp_usedCards);
+	CardMask_RESET(addlcomCards);
+	CardMask_RESET(evalCards);
+	CardMask_RESET(opp_evalCards);
+	for (int i=0; i<k_number_of_cards_per_deck; i++)
+	{
+		deck[i] = 0;
+	}
+	for (int i=0; i<MAX_OPPONENTS; i++)
+	{
+		ocard[2*i] = 0;
+		ocard[2*i + 1] = 0;
+	}
 }
 
 void CIteratorThread::InitIteratorLoop()
@@ -523,11 +362,16 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_progress(0);
 	iter_vars.set_nit(10000); //!! f$prwin_number_of_iterations")
 
+	// Users cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
-		iter_vars.set_pcard(i, p_scraper->card_player((int) p_symbol_engine_userchair->userchair(), i));
-
+	{
+		iter_vars.set_pcard(i, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
+	}
+	// Community cards
 	for (int i=0; i<k_number_of_community_cards; i++)
+	{
 		iter_vars.set_ccard(i, p_scraper->card_common(i));
+	}
 
 	iter_vars.set_prwin(0);
 	iter_vars.set_prtie(0);
@@ -561,107 +405,49 @@ void CIteratorThread::InitIteratorLoop()
 
 	//Weighted prwin only for nopponents <=13
 	e = SUCCESS;
-	_willplay = (int) gram.CalcF$symbol(p_formula, "f$willplay", &e);
+	_willplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_willplay", &e);
 	e = SUCCESS;
-	_wontplay = (int) gram.CalcF$symbol(p_formula, "f$wontplay", &e);
+	_wontplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_wontplay", &e);
 	e = SUCCESS;
-	_mustplay = (int) gram.CalcF$symbol(p_formula, "f$mustplay", &e);
+	_mustplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_mustplay", &e);
 	e = SUCCESS;
-	_topclip = (int) gram.CalcF$symbol(p_formula, "f$topclip", &e);
+	_topclip = (int) gram.CalcF$symbol(p_formula, "f$prwin_topclip", &e);
 
 	// Call prw1326 callback if needed
-	if (_prw1326.useme==1326 && 
-		_prw1326.usecallback==1326 && 
-		(p_betround_calculator->betround()!=1 || _prw1326.preflop==1326) )
+	if (_prw1326.useme==1326 
+		&& _prw1326.usecallback==1326 
+		&& (p_betround_calculator->betround()!= k_betround_preflop
+			|| _prw1326.preflop==1326) )
 	{
 		_prw1326.prw_callback(); //Matrix 2008-05-09
 	}
 }
 
-int CIteratorThread::InRange(const int card1, const int card2, const int willplay, 
-							 const int wontplay, const int topclip, const int mustplay)
-{
-	//returns non-zero if card pair acceptable for prwin calculation
 
-	/*
-	p |---|	---------
-	r |   |   /      \
-	o |   |  /        \
-	b |   | /          \
-	a |   |/            \
-	b |                  \
-	l -----------------------------------------------------
-	e	 1	2	   3	 4	 handrank169 ->
-	1=mustplay
-	2=topclip
-	3=willplay
-	4=wontplay
-	(with the current statistics available in OH only willplay and wontplay should be used.
-	 mustplay and topclip are debatable constructs at the best of times 2008-01-29)
-	*/
-	
-	extern int pair2rank_offsuited[170], pair2rank_suited[170];
-	int i = card1%13;
-	int j = card2%13;
-	int	hrank=0;
-
-	if (j>i) //normalise the card order
-	{
-		i=j;
-		j=card1%13;
-	}
-	i=i*13+j; //offset into handrank table
-
-	if (card1/13==card2/13)  //same suit
-		hrank=pair2rank_suited[i]; //suited
-	else
-		hrank=pair2rank_offsuited[i]; //not suited
-
-	if (hrank>=wontplay)return 0; //no good, never play these
-
-	if (hrank<=mustplay) return 1; //OK, assumed opponent will always play these
-
-	if ((hrank>topclip)&&(hrank<=willplay))return 1;//OK, in the 100% region
-
-	//we now handle the probability slopes
-	if (hrank<=topclip) //handle the good cards not likely to be one-betted with
-	{
-		j=topclip-rand()%topclip;
-		if (hrank>j)return 1; //OK
-		else return 0; //nogood
-	}
-
-	//now finish with poorish hands of reduced probability
-	j=wontplay-willplay;
-	if (j<3)
-		return 1; //protect ourselves from effect of bad wontplay
-
-	j=willplay+rand()%j;
-
-	if (hrank<j)
-		return 1; //OK
-
-	return 0; //no good
-}
 
 void CIteratorThread::InitHandranktTableForPrwin()
 {
-	int		i = 0, j = 0, k = 0; 
 	int		vndx = 0;
 	char	*ptr = NULL;
 
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
-	for (i=0;i<169;i++)
+	for (int i=0; i<169; i++)
 	{
 		//normal weighted prwin table
 		ptr = prwin_handrank_table_169[i];
-		j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
-		if (*(ptr+2)=='s')pair2rank_suited[j]=i+1;
-		else pair2rank_offsuited[j]=i+1;
+		int j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
+		if (*(ptr+2)=='s')
+		{
+			pair2rank_suited[j]= i+1;
+		}
+		else 
+		{
+			pair2rank_offsuited[j] = i+1;
+		}
 		//prw1326 vanilla table
 		j=strchr(ctonum,*ptr)-ctonum;
-		k=strchr(ctonum,*(ptr+1))-ctonum;
+		int k=strchr(ctonum,*(ptr+1))-ctonum;
 		for(;;)
 		{
 			//I originally had an algorithm to do this, but it was obscure and impenetrable
@@ -710,7 +496,7 @@ void CIteratorThread::InitHandranktTableForPrwin()
 			_prw1326.vanilla_chair.rankhi[vndx+8]=j+26;	//c
 			_prw1326.vanilla_chair.rankhi[vndx+9]=j+39;	//s
 			_prw1326.vanilla_chair.rankhi[vndx+10]=j+39;	//s
-			_prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s Matrix corrected typo
+			_prw1326.vanilla_chair.rankhi[vndx+11]=j+39; //s 
 			_prw1326.vanilla_chair.ranklo[vndx]=k+13;	//d
 			_prw1326.vanilla_chair.ranklo[vndx+1]=k+26;	//c
 			_prw1326.vanilla_chair.ranklo[vndx+2]=k+39;	//s
@@ -731,20 +517,289 @@ void CIteratorThread::InitHandranktTableForPrwin()
 	_prw1326.vanilla_chair.level=1024;
 	_prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
 
+	const int k_first_third_1362_range  =  442;
+	const int k_second_third_1362_range =  884;
+	const int k_third_third_1362_range  = 1362;
+
 	// now assign a weight table. Assume upper third fully probable, next third reducing
 	// probability, lowest third not played.
-	for(i=0;i<442;i++)
+	for(int i=0; i<k_first_third_1362_range; i++)
+	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level;
-	for(i=442;i<884;i++)
+	}
+	for(int i=k_first_third_1362_range; i<k_second_third_1362_range; i++)
+	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level*(884-i)/442;
-	for(i=884;i<1326;i++)
+	}
+	for(int i=k_second_third_1362_range; i<k_third_third_1362_range; i++)
+	{
 		_prw1326.vanilla_chair.weight[i]=0;
+	}
 
-	//!!!CloneVanillaChair();
-	//finally copy the vanilla to all user chairs so that someone who just turns on prw1326
-	//experimentally does not cause a crash
-	for(i=0;i<10;i++)
+	CloneVanillaChairToAllOtherChairs();
+}
+
+void CIteratorThread::CloneVanillaChairToAllOtherChairs()
+{
+	// finally copy the vanilla to all user chairs so that someone who just turns on prw1326
+	// experimentally does not cause a crash
+	for(int i=0; i<k_max_number_of_players; i++)
+	{
 		_prw1326.chair[i]=_prw1326.vanilla_chair;
+	}
+}
 
-	//end of handrank initialisation
+void CIteratorThread::StandardDealingAlgorithm(int nopponents)
+{
+	// Normal prwin opponent card selection
+	// Random ranges for everybody
+	// Number of opponents might be adapted to get more "reasonable" results
+	write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
+
+	// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
+	if (nopponents <= 13)
+	{
+		StandardDealingAlgorithmForUpTo13Opponents(nopponents);
+	}
+	else
+	{
+		SwapDealingAlgorithmForMoreThan13Opponents(nopponents);
+	}
+}
+
+void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
+{
+	write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
+	// swap alogorithm
+	// weighted prwin not implemented for this case
+	int numberOfCards = k_number_of_cards_per_deck;
+	for (int i=0; i<numberOfCards; i++)
+	{
+		deck[i] = i;
+	}
+
+	while (numberOfCards >= 1)
+	{
+		int selected_card = rand() % numberOfCards;
+		numberOfCards--;
+		if (selected_card != numberOfCards)
+		{
+			SwapInts(&deck[selected_card], &deck[numberOfCards]);
+		}
+	}
+
+	// opponent cards
+	int x = 0;
+	for (int i=0; 
+		i<nopponents*k_number_of_cards_per_player; 
+		i++)
+	{
+		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
+			&& (x < k_number_of_cards_per_deck)) 
+		{
+			x++;
+		}
+		ocard[i] = deck[x++];
+	}
+
+	// additional common cards
+	CardMask_RESET(addlcomCards);
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	{
+		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
+			&& (x < k_number_of_cards_per_deck)) 
+		{
+			x++;
+		}
+		CardMask_SET(addlcomCards, deck[x++]);
+	}
+}
+
+int CIteratorThread::GetRandomCard()
+{
+	// We use bit-operations for truncation
+	// That is better as modulo (52) which introdues a bias
+	const int k_low_6_bits = 0x3F;
+	// The search-loop is guaranteed to terminate,
+	// as there are 52-cards in the deck, 
+	// but at most 25 cards in use (10*2 player-cards + 5 community-cards).
+	while (true)
+	{
+		int card = rand() & k_low_6_bits;
+		if ((card < k_number_of_cards_per_deck)
+			&& !CardMask_CARD_IS_SET(usedCards, card))
+		{
+			// We found a good card
+			return card;
+		}
+	}
+}
+
+void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
+{
+	unsigned int	card = 0;
+
+	write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
+	// random replacement algorithm
+	// opponent cards
+	if (nopponents < 1)
+	{
+		write_log(prefs.debug_prwin(), "[PrWinThread] No opponents.\n");
+	}
+	for (int i=0; 
+		i<nopponents*k_number_of_cards_per_player; 
+		i+=k_number_of_cards_per_player)
+	{
+		temp_usedCards=usedCards;
+		do
+		{
+			usedCards = temp_usedCards; //reset the card mask to clear settings from failed card assignments
+
+			for (int j=0; j<k_number_of_cards_per_player; j++)
+			{
+				card = GetRandomCard();
+				CardMask_SET(usedCards, card);
+				ocard[i+j] = card;
+			}
+
+			if (!_willplay)
+			{
+				write_log(prefs.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
+				break; //0 disables weighting
+			}
+
+			//put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
+			//In round 1 we should really do an analysis of chairs to find out how many have still to
+			//place a bet. Not implemented since accuracy of prwin pre-flop is less critical.
+			if (!i)
+			{
+				//if we called then we are not BB, BB limped to flop,
+				//BB still playing, so do not weight his cards
+				int betround = p_betround_calculator->betround();
+				if (p_symbol_engine_history->nbetsround(betround) < 1.1 
+					&& p_symbol_engine_history->didcall(betround) 
+					&& (p_symbol_engine_active_dealt_playing->playersplayingbits() 
+						& p_symbol_engine_blinds->bblindbits()))
+				{
+					break;
+				}
+			}
+		} while (IsHandInWeightedRange(ocard[i], ocard[i+1], // !!! Not?
+			_willplay, _wontplay, 
+			_topclip, _mustplay));
+	}
+	// additional common cards
+	CardMask_RESET(addlcomCards);
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	{
+		card = GetRandomCard();
+		CardMask_SET(usedCards, card);
+		CardMask_SET(addlcomCards, card);
+	}
+}
+
+
+void CIteratorThread::EnhancedDealingAlgorithm()
+{
+	// Dealing algorithm for enhanced prwin
+	// (user-defined weighting at DLL-level).
+	write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
+
+	//prw1326 active  Matrix 2008-05-08
+	int k = 0; //k is used as an index into ocard[] 
+	unsigned int	card = 0;
+
+	int userchair = p_symbol_engine_userchair->userchair();
+	int playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
+	//we have to use actual opponents for prw1326 calculations
+	int nopponents = bitcount(playersplayingbits & ~(1 << userchair));
+	int betround   = p_betround_calculator->betround();
+	int bblindbits = p_symbol_engine_blinds->bblindbits();
+
+	// loop through active opponents
+	for(int i=0; i<k_max_number_of_players; i++) 
+	{
+		if (i == userchair)
+			continue; //skip our own chair!
+
+		if (!(playersplayingbits & (1<<i)))
+			continue; //skip inactive chairs 
+
+		// first deal with the special non-weighted cases
+		// player who is marked 'ignore' or one who is BB and has not VPIP'd
+		if (_prw1326.chair[i].ignore || 
+			(_prw1326.bblimp && p_symbol_engine_history->nbetsround(betround)<1.1 
+				&& (bblindbits&(1<<i))) )
+		{
+			card = GetRandomCard();
+			CardMask_SET(usedCards, card);
+			ocard[k++] = card;
+
+			card = GetRandomCard();
+			CardMask_SET(usedCards, card);
+			ocard[k++] = card;
+
+			continue;
+		} // end of special non-weighted cases
+
+		int randfix=(RAND_MAX/_prw1326.chair[i].limit) * _prw1326.chair[i].limit;
+
+		int j;
+		while (true)
+		{ //find a possible hand for this chair NOTE: may want to put in loop limits to prevent hanging
+			do 
+			{
+				j=rand();
+			} while (j>=randfix);
+
+			j = j % _prw1326.chair[i].limit; //j is now any one of the allowed hands
+
+			if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].rankhi[j] ))
+				continue; //hand contains dead card
+
+			if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[i].ranklo[j] ))
+				continue; //hand contains dead card
+
+//					if(symbols.prw1326.chair[i].ignore)break; //chair marked as not to be weighted
+
+			if(_prw1326.chair[i].level <= _prw1326.chair[i].weight[j])
+				break; //hand marked as always uae
+
+			//check if we want a player who is BB and has not VPIP'd to be analysed further
+//					if(symbols.prw1326.bblimp)
+//					{
+//					if ((symbols.sym.nbetsround[0]<1.1) && ((int)symbols.sym.bblindbits&(1<<i)))break;
+//					}
+
+			//we should really do a 'randfix' here for the case where RAND_MAX is not an integral
+			//multiple of .level, but the bias introduced is trivial compared to other uncertainties.
+			if(rand() % _prw1326.chair[i].level < _prw1326.chair[i].weight[j])
+				break; //allowable
+
+			//if we reach here we will loop again to find a suitable hand
+		} //end of possible hand find
+
+		ocard[k++] = _prw1326.chair[i].rankhi[j];
+		ocard[k++] = _prw1326.chair[i].ranklo[j];
+
+		CardMask_SET(usedCards, ocard[k-2]);
+		CardMask_SET(usedCards, ocard[k-1]);
+
+	} //end of active opponent loop
+
+	// additional common cards
+	CardMask_RESET(addlcomCards);
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	{
+		card = GetRandomCard();
+		CardMask_SET(usedCards, card);
+		CardMask_SET(addlcomCards, card);
+	}
+} //end of prw1326 code
+
+bool CIteratorThread::UseEnhancedPrWin()
+{
+	return (_prw1326.useme==1326 
+		&& (p_betround_calculator->betround() >= k_betround_flop 
+			|| _prw1326.preflop==1326));
 }
