@@ -66,12 +66,6 @@ extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
 
-// To make use of it write:
-//FnPtrT FnPtr = (FnPtrT)::GetProcAddress(GetModuleHandle(NULL),"write_log_export");
-//if(FnPtr)
-//{
-//  (*FnPtr)("Message From The DLL");
-//}
 
 double getsym(const char* name)	
 { 
