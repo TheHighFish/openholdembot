@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="Reference User DLL"
 	ProjectGUID="{AC9135D2-9C77-41E4-BB36-81600D7F0812}"
 	RootNamespace="whuser"
@@ -244,4 +244,6 @@
 			</File>
 		</Filter>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>

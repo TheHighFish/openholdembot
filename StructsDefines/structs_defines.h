@@ -268,7 +268,7 @@ struct phistory
 	int sblindpos;
 	int bblindpos;
 	int utg;
-	int lpta;
+	int last_player_to_act;
 	phistory_chair chair[k_max_number_of_players];
 };
 
