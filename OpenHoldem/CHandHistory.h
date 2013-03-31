@@ -38,7 +38,13 @@ private:
 	void resetVars();
 	void SetAction(int pnum, int action, double amount, int br);
 	void ReconstructHand(bool constested);
+	void HandleDealingPhase();
+	void HandleShowdown(bool constested);
+	void HandleNewBetround();
 	void HandleUncontestedPot();
+	void HandleContestedPot();
+	void CalculateTotalPot();
+	void CreateHandHistoryFile();
 private:
 	fstream outfile;
 	string playerName[k_max_number_of_players];
@@ -70,6 +76,7 @@ private:
 	char card_global[5][5];
 	phistory _history;			//phistory data structure Demonthus 2010-01-23
 	double calculatedPot;
+	int nplayersin;
 private:
 	int nchairs;
 	int betround;
