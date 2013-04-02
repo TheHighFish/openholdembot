@@ -8,6 +8,7 @@ public:
 	CPokerAction();
 	~CPokerAction();
 	const double	ProcessQuery(const char * pquery, int *e);
+	const int		DealPosition(const int chairnum);
 	
 private:
 	// private functions and variables - not available via accessors or mutators
@@ -16,7 +17,6 @@ private:
 	const int		PostflopPos(void);
 	const bool		FirstIntoPot(void);	
 	const int		BetPosition(const int chairnum);
-	const int		DealPosition(const int chairnum);
 	const int		AggressorChair(void);
 	const bool		AgchairAfter(void);
 };

@@ -10,14 +10,14 @@ extern class CHandHistory
 {
 public:
 	CHandHistory();
+	~CHandHistory();
+public:
 	//~CHandHistory(); 
 	void MakeHistory();
 	const phistory		*history() { return &_history; }
 
 private:
 	const string setDate();
-	const string FindLimit();
-	const int DealPosition (const int chairnum);
 	const bool isBigBlind(const int i);
 	const bool isShowdown();
 	const bool cardsDealt();
@@ -36,8 +36,9 @@ private:
 	void WriteHistory();
 	void SearchForAllinPlayers(const int i);
 	void resetVars();
-	void SetAction(int pnum, int action, double amount, int br);
+	void SetAction(int pnum, int action, double amount, int betround);
 	void ReconstructHand(bool constested);
+	void HandleNextAction();
 	void HandleDealingPhase();
 	void HandleShowdown(bool constested);
 	void HandleNewBetround();
@@ -77,6 +78,9 @@ private:
 	phistory _history;			//phistory data structure Demonthus 2010-01-23
 	double calculatedPot;
 	int nplayersin;
+	int next_chair_to_look_for_actions;
+	bool potbetinto;
+	bool hasFolded[k_max_number_of_players];;					
 private:
 	int nchairs;
 	int betround;

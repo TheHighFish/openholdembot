@@ -406,23 +406,22 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	}
 	t.Append(s);
 
+	CString format_string;
 	// blinds/type
 	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
 	{
-		s.Format("  %s%s %.2f/%.2f/%.2f\n",
-				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
-				  sym_lim == k_gametype_FL ? "FL" : "?L"),
-				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_tablelimits->bigbet());
+		// Fractional nunbers: use 2.00 digits  
+		format_string = "  %s%s %.2f/%.2f/%.2f\n";
 	}
-	else 
+	else
 	{
-		s.Format("  %s%s %.0f/%.0f/%.0f\n",
-				 (sym_lim == k_gametype_NL ? "NL" : sym_lim == k_gametype_PL ? "PL" :
-				  sym_lim == k_gametype_FL ? "FL" : "?L"),
-				 (sym_istournament ? "T" : ""),
-				 sym_sblind, sym_bblind, p_tablelimits->bigbet());
+		// Display as integer numbers
+		format_string = "  %s%s %.0f/%.0f/%.0f\n";
 	}
+	s.Format(format_string,
+		p_tablelimits->GetGametypeAsString(),
+		(sym_istournament ? "T" : ""),
+		sym_sblind, sym_bblind, p_tablelimits->bigbet());
 	t.Append(s);
 
 	// ante
