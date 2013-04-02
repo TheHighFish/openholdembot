@@ -628,3 +628,23 @@ double CTableLimits::bet()
 {
 	return (bet(p_betround_calculator->betround()));
 }
+
+CString CTableLimits::GetGametypeAsString()
+{
+	if (isnl())
+	{
+		return "NL";
+	}
+	else if (ispl())
+	{
+		return "PL";
+	}
+	else if (isfl())
+	{
+		return "FL";
+	}
+	else
+	{
+		return "?L";
+	}
+}
