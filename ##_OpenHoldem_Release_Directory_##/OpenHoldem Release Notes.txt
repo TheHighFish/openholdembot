@@ -1,7 +1,25 @@
+v4.0.6 2013-04-XX
+==================
+NEW STUFF:
+- The handhistory-generator finally got integrated into OpenHoldem.
+  It analyzes a sequence of game-states and then saves handhistories
+  in IPoker-format to the "handhistory"-subdirectory.
+  Unfortunatelly the developer who was responsible for that feature 
+  declared it "finished" about three years ago 
+  and then mysteriously disappeared from the project.
+  As it turned out there were some problems left and the code was a complete mess.
+  We finally managed to fix a good portion of obvious problems,
+  but our main aim was to clean-up the code a bit,
+  so that everybody who is interested in this feature can help 
+  to improve it.
+  Code:  http://code.google.com/p/openholdembot/source/browse/trunk/OpenHoldem/CHandHistory.cpp
+  Forum: http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=9722
+  [Demonthus, Pingvvino, THF]
+
+
 v4.0.5 2013-03-22
 ==================
 NEW STUFF:
-==========
 - Adding some useful buttons in the handlist creation UI.
   [Nik0]
 - Making it possible to engage the autoplayer immediatelly after connection
