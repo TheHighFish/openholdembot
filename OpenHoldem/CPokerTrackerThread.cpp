@@ -448,6 +448,7 @@ const double CPokerTrackerThread::ProcessQuery (const char * s)
 
 void CPokerTrackerThread::Connect(void)
 {
+	write_log_pokertracker(prefs.debug_pokertracker(), "Trying to open PostgreSQL DB...\n");
 	_pgconn = PQconnectdb(_conn_str.GetString());
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
@@ -1028,7 +1029,9 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	pParent->ReportSeatChanges(chair);  
 
 	if (!pParent->_connected)
+	{
 		pParent->Connect();
+	}
 	
 	
 	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
@@ -1138,7 +1141,9 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		write_log_pokertracker(2, "PTthread iteration [%d] had started\n", ++iteration);
 		pParent->SetHandsStat();
 		if (!pParent->_connected)
+		{
 			pParent->Connect();
+		}
 	
 		/* Count the number of players */ 
 		players = 0;

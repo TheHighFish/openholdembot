@@ -41,6 +41,12 @@
 #pragma warning(disable:4319)		// zero extending 'unsigned long' to 'double' of greater size
 #pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
 
+// Turn some warnings on, because we consider them helpful
+// http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
+// http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
+#pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
+#pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
+
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
 
@@ -69,8 +75,8 @@
 #include <string.h>
 
 // Version
-#define VERSION_NUMBER				4.05
-#define VERSION_TEXT				"4.0.5"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER				4.06
+#define VERSION_TEXT				"4.0.6"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
