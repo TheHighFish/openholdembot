@@ -16,6 +16,22 @@ NEW STUFF:
   Forum: http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=9722
   [Demonthus, Pingvvino, THF]
 
+BUG FIXES:
+- The formula-editor has been broken in OH 4.0.0,
+  so that it was impossible to edit formulas or use the debug-tab.
+  This has now been fixed.
+  Thanks to Querty for reporting.
+  [THF]
+- There was a problem with the DLL-messages "load" and "unload" 
+  which we supported again. This has now been fixed.
+  Thanks to PyBotter666 for reporting.
+  [THF]
+
+MAINTENANCE:
+- Adding some log-messages to the PokerTracker-module
+  and enabling the debug-option for PT.
+  [THF]
+
 
 v4.0.5 2013-03-22
 ==================
