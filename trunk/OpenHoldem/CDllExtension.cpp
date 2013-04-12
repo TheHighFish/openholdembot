@@ -112,6 +112,9 @@ void CDllExtension::LoadDll(const char * path)
 		_hmod_dll = NULL;
 		return;
 	}
+	// pass "load" message
+	(_process_message) ("event", "load");
+
 	// No longer passing any pointers to the DLL.
 	// We do no export functions an link them implicitly:
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
@@ -125,8 +128,10 @@ void CDllExtension::LoadDll(const char * path)
 void CDllExtension::UnloadDll(void)
 {
 	if (_hmod_dll==NULL)
+	{
 		return;
-
+	}
+	(_process_message) ("event", "unload");
 	p_iterator_thread->set_prw1326_useme(0);
 	if (FreeLibrary(_hmod_dll))
 	{
