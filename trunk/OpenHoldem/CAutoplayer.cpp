@@ -96,25 +96,6 @@ void CAutoplayer::FinishActionSequenceIfNecessary()
 }
 
 
-bool CAutoplayer::TimeToHandleSecondaryFormulas()
-{
-	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
-	// to avoid multiple fast clicking on the sitin / sitout-button.
-	// Contrary to the old f$play-function we use a heartbeat-counter 
-	// for that logic, as with a small scrape-delay it was
-	// still possible to act multiple times within the same second.
-
-	// Scrape_delay() should always be > 0, there's a check in the GUI.
-	assert(prefs.scrape_delay() > 0);
-	int hearbeats_to_pause = 4 / prefs.scrape_delay();
-	if  (hearbeats_to_pause < 1)
-	{
-		hearbeats_to_pause = 1;
-	}
-	return ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
-}
-
-
 bool CAutoplayer::DoBetPot(void)
 {
 	bool success = false;
@@ -146,18 +127,6 @@ bool CAutoplayer::DoBetPot(void)
 		// Else continue trying with the next betpot function
 	}
 	// We didn't click any betpot-button
-	return false;
-}
-
-bool CAutoplayer::AnyPrimaryFormulaTrue()
-{
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_call; i++)
-	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
-		{
-			return true;
-		}
-	}
 	return false;
 }
 
@@ -429,22 +398,6 @@ bool CAutoplayer::DoSwag(void)
 	}
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
-}
-
-
-void CAutoplayer::DoPrefold(void) 
-{
-	if (p_autoplayer_functions->f$prefold() == 0)  
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't prefold, because f$prefold evaluates to false.\n");
-		return;
-	}
-	p_casino_interface->ClickButton(k_autoplayer_function_prefold);
-
-	p_symbols->RecordPrevAction(k_action_fold);
-	write_logautoplay(ActionConstantNames(k_action_fold));
-	p_autoplayer_functions->CalcAutoTrace();
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 }
 
 

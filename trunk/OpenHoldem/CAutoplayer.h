@@ -26,11 +26,9 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void DoRebuyIfNeccessary(void);
 	bool ExecutePrimaryFormulas();
 	bool ExecuteSecondaryFormulasIfNecessary();
 	bool ExecuteRaiseCallCheckFold();
-	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
 	bool DoAllin(void);
 	bool DoBetPot(void);
@@ -38,10 +36,6 @@ private:
 	bool PrepareActionSequence();
 	void FinishActionSequenceIfNecessary();
 	bool DoSwag(void);
-	void DoSlider(void);
-	void DoPrefold(void);
-	bool TimeToHandleSecondaryFormulas();
-	void DoSitinSitoutLeave(void);
 	bool DoChat(void);
 
 private:
