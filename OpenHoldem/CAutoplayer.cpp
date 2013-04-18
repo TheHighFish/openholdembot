@@ -142,9 +142,16 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	return false;
 }
 
-bool CAutoplayer::ExecutePrimaryFormulas() 
+bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() 
 {
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulas()\n");
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
+	if (!AnyPrimaryFormulaTrue())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
+		return false;
+	}
+	assert(p_symbol_engine_autoplayer->isfinalanswer());
+	assert(p_symbol_engine_autoplayer->ismyturn());
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
@@ -212,7 +219,11 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 {
-	// !!! Once every N seconds
+	if (!TimeToHandleSecondaryFormulas())
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
+		return false;
+	}
 	if (!AnySecondaryFormulaTrue())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
@@ -221,15 +232,15 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 	}
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
 	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
-		{
-			if (p_casino_interface->ClickButton(i))
-			{
-				return true;
-			}
-		}
-		// Close, rebuy and chat work require different treatment,
+
+		// Prefold, close, rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
+		{
+			// Prefold is technically more than a simple button-click,
+			// because we need to create an autoplayer-trace afterwards.
+			return DoPrefold();
+		}
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
 		{
 			// CloseWindow is "final".
@@ -247,6 +258,14 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_chat))
 		{
 			return DoChat();
+		}
+		// Otherwise: it is a simple button-click
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
+		{
+			if (p_casino_interface->ClickButton(i))
+			{
+				return true;
+			}
 		}
 	}
 	return false;
@@ -376,7 +395,7 @@ void CAutoplayer::DoAutoplayer(void)
 				if(p_symbol_engine_autoplayer->isfinalanswer())
 				{
 					p_autoplayer_functions->CalcPrimaryFormulas();
-					ExecutePrimaryFormulas();
+					ExecutePrimaryFormulasIfNecessary();
 				}
 				else
 				{
@@ -397,6 +416,21 @@ bool CAutoplayer::DoSwag(void)
 		return p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
 	}
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
+	return false;
+}
+
+
+bool CAutoplayer::DoPrefold(void) 
+{
+	assert(p_autoplayer_functions->f$prefold() == 0);
+	if (p_casino_interface->ClickButton(k_autoplayer_function_prefold))
+	{
+		p_symbols->RecordPrevAction(k_action_fold);
+		write_logautoplay(ActionConstantNames(k_action_fold));
+		p_autoplayer_functions->CalcAutoTrace();
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
+		return true;
+	}
 	return false;
 }
 
