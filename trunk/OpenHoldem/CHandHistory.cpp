@@ -86,7 +86,7 @@ void CHandHistory::WriteHistory()
 	checkBetround();
 	// Precondition: Cards have been dealt and the round summary has not
 	// been printed
-	if (showdownSeen && roundStarted)
+	if (showdownSeen == false && roundStarted == true)
 	{
 		scanPlayerChanges(); 
 	}
@@ -426,7 +426,7 @@ void CHandHistory::scanPlayerChanges()
 						if (_history.chair[j].seatIsPlaying)
 						{
 							SetAction(j, 4, 0, betround);
-							if (showdownSeen)
+							if(showdownSeen==false)
 							{
 								ReconstructHand(false);
 							}
@@ -545,8 +545,8 @@ void CHandHistory::processShowdown()
 	{
 		//Precondition: Player is playing, their cards haven't been processed yet
 		//and the cards are visible
-		if (_history.chair[i].playersPlayingBits
-			&& _history.chair[i].cardsSeen
+		if (_history.chair[i].playersPlayingBits != 0
+			&& _history.chair[i].cardsSeen == false 
 			&& _history.chair[i].card_player[1]!= NULL)
 		{
 			stringstream ss;
@@ -569,7 +569,7 @@ void CHandHistory::processShowdown()
 			_history.chair[i].cardsSeen = true;	
 		}
 	}
-	if (showdownReady && showdownSeen)
+	if(showdownReady==true&&showdownSeen==false)
 	{
 		// Precondition: All players' hole cards have been seen and
 		// the showdown results haven't been displayed
