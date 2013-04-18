@@ -198,7 +198,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Update scraper output dialog if it is present
 		if (m_ScraperOutputDlg)
+		{
 			m_ScraperOutputDlg->UpdateDisplay();
+		}
 
 		// Measure cycle time
 		QueryPerformanceCounter(&cycle_end);

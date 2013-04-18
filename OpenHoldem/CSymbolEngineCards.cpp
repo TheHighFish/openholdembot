@@ -3,7 +3,9 @@
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
+#include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
 #include "inlines/eval.h"
@@ -114,10 +116,8 @@ void CSymbolEngineCards::ResetOnHeartbeat()
 
 bool CSymbolEngineCards::BothPocketCardsKnown()
 {
-	return (p_scraper->card_player(_userchair, 0) != CARD_NOCARD 
-		&& p_scraper->card_player(_userchair, 0) != CARD_BACK
-		&& p_scraper->card_player(_userchair, 1) != CARD_NOCARD
-		&& p_scraper->card_player(_userchair, 1) != CARD_BACK);
+	return (p_scraper_access->IsKnownCard(p_scraper->card_player(_userchair, 0))
+		&& p_scraper_access->IsKnownCard(p_scraper->card_player(_userchair, 1)));
 }
 
 void CSymbolEngineCards::CalcPocketTests()
@@ -238,10 +238,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(plCards);
 	for (i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(_userchair, i) != CARD_BACK && 
-			p_scraper->card_player(_userchair, i) != CARD_NOCARD)
+		int card = p_scraper->card_player(_userchair, i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
-			CardMask_SET(plCards, p_scraper->card_player(_userchair, i));
+			CardMask_SET(plCards, card);
 		}
 	}
 
@@ -249,8 +249,8 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(comCards);
 	for (i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != CARD_BACK && 
-			p_scraper->card_common(i) != CARD_NOCARD)
+		int card = p_scraper->card_common(i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
 			CardMask_SET(comCards, p_scraper->card_common(i));
 			CardMask_SET(plCards, p_scraper->card_common(i));
@@ -595,8 +595,8 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(_userchair, i) != CARD_NOCARD && 
-			p_scraper->card_player(_userchair, i) != CARD_BACK)
+		int card = p_scraper->card_player(_userchair, i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
 			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
 			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
@@ -612,7 +612,8 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != CARD_NOCARD && p_scraper->card_common(i) != CARD_BACK)
+		int card = p_scraper->card_common(i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
 			int rank = GetRankFromCard(p_scraper->card_common(i));
 			int suit = GetSuitFromCard(p_scraper->card_common(i));
@@ -644,26 +645,27 @@ void CSymbolEngineCards::CalcUnknownCards()
 	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
 	int				dummy = 0;
 
+	write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		if (p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_BACK && 
-			p_scraper->card_player(p_symbol_engine_userchair->userchair(), i) != CARD_NOCARD)
+		int card = p_scraper->card_player(p_symbol_engine_userchair->userchair(), i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
-			CardMask_SET(stdCards, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
+			CardMask_SET(stdCards, card);
 			nstdCards++;
 		}
 	}
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		if (p_scraper->card_common(i) != CARD_BACK &&
-			p_scraper->card_common(i) != CARD_NOCARD)
+		int card = p_scraper->card_common(i);
+		if (p_scraper_access->IsKnownCard(card))
 		{
-			CardMask_SET(stdCards, p_scraper->card_common(i));
+			CardMask_SET(stdCards, card);
 			nstdCards++;
 			CardMask_SET(commonCards, p_scraper->card_common(i));
 		}
@@ -678,18 +680,18 @@ void CSymbolEngineCards::CalcUnknownCards()
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
+		write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
 		for (int i=0; i<k_number_of_cards_per_deck; i++)
 		{
-			if (i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0) && 
-				i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1) &&
-				i!=p_scraper->card_common(0) &&
-				i!=p_scraper->card_common(1) &&
-				i!=p_scraper->card_common(2) &&
-				i!=p_scraper->card_common(3) &&
-				i!=p_scraper->card_common(4))
+			if (i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)  
+				&& i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1) 
+				&& i!=p_scraper->card_common(0) 
+				&& i!=p_scraper->card_common(1) 
+				&& i!=p_scraper->card_common(2) 
+				&& i!=p_scraper->card_common(3) 
+				&& i!=p_scraper->card_common(4))
 			{
-
 				CardMask_SET(stdCards, i);
 				handval_std_plus1 = Hand_EVAL_N(stdCards, nstdCards+1);
 				CardMask_UNSET(stdCards, i);
@@ -713,6 +715,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
+	write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
 	AssertRange(_ncardsknown,   0, k_number_of_cards_per_deck);
 	AssertRange(_ncardsunknown, 0, k_number_of_cards_per_deck);
 	AssertRange(_nouts,         0, k_number_of_cards_per_deck);

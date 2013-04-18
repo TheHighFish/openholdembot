@@ -350,3 +350,9 @@ void CDlgScraperOutput::OnCancel()
 
 	CDialog::OnCancel();
 }
+
+void CDlgScraperOutput::Reset()
+{
+	AddListboxItems();
+	UpdateDisplay();
+}

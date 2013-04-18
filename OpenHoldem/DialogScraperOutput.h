@@ -15,8 +15,8 @@ public:
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
-	void AddListboxItems(void);
 	void UpdateDisplay();
+	void Reset();
 
 	enum { IDD = IDD_SCRAPER_OUTPUT };
 
@@ -39,6 +39,8 @@ protected:
 	bool			in_startup;
 
 	DECLARE_MESSAGE_MAP()
+private:
+	void AddListboxItems(void);
 };
 
 
