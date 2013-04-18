@@ -244,8 +244,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
 			{
-				m_ScraperOutputDlg->AddListboxItems();
-				m_ScraperOutputDlg->UpdateDisplay();
+				m_ScraperOutputDlg->Reset();
 			}
 
 			LoadScraperDLL();
@@ -440,8 +439,7 @@ void CAutoConnector::Disconnect()
 	// Reset "ScraperOutput" dialog, if it is live
 	if (m_ScraperOutputDlg)
 	{
-		m_ScraperOutputDlg->AddListboxItems();
-		m_ScraperOutputDlg->UpdateDisplay();
+		m_ScraperOutputDlg->Reset();
 	}
 	WriteLogTableReset();
 
