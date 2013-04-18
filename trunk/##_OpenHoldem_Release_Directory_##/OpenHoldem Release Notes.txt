@@ -26,6 +26,10 @@ BUG FIXES:
   which we supported again. This has now been fixed.
   Thanks to PyBotter666 for reporting.
   [THF]
+- When the autoplayer-code got completely rewritten for OH 4.0
+  some functions of minor importance got only partially implemented or never called.
+  Thanks to ZooBoy for finding these bugs.
+  [THF]
 
 MAINTENANCE:
 - Adding some log-messages to the PokerTracker-module
