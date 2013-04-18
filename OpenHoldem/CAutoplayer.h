@@ -30,6 +30,7 @@ private:
 	bool ExecutePrimaryFormulasIfNecessary();
 	bool ExecuteSecondaryFormulasIfNecessary();
 	bool ExecuteRaiseCallCheckFold();
+	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
 	bool DoAllin(void);
 	bool DoBetPot(void);

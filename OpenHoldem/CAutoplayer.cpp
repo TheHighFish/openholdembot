@@ -95,6 +95,24 @@ void CAutoplayer::FinishActionSequenceIfNecessary()
 	}
 }
 
+ 
+bool CAutoplayer::TimeToHandleSecondaryFormulas()
+{
+	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
+	// to avoid multiple fast clicking on the sitin / sitout-button.
+	// Contrary to the old f$play-function we use a heartbeat-counter
+	// for that logic, as with a small scrape-delay it was
+	// still possible to act multiple times within the same second.
+	// Scrape_delay() should always be > 0, there's a check in the GUI.
+	assert(prefs.scrape_delay() > 0);
+	int hearbeats_to_pause = 4 / prefs.scrape_delay();
+	if  (hearbeats_to_pause < 1)
+	{
+ 		hearbeats_to_pause = 1;
+ 	}
+	return ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
+}
+
 
 bool CAutoplayer::DoBetPot(void)
 {
@@ -129,6 +147,19 @@ bool CAutoplayer::DoBetPot(void)
 	// We didn't click any betpot-button
 	return false;
 }
+
+bool CAutoplayer::AnyPrimaryFormulaTrue()
+{ 
+	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_call; i++)
+	{
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 
 bool CAutoplayer::AnySecondaryFormulaTrue()
 {
