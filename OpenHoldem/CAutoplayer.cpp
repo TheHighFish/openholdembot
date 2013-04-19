@@ -150,7 +150,7 @@ bool CAutoplayer::DoBetPot(void)
 
 bool CAutoplayer::AnyPrimaryFormulaTrue()
 { 
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_call; i++)
+	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
 	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{

@@ -30,6 +30,12 @@ BUG FIXES:
   some functions of minor importance got only partially implemented or never called.
   Thanks to ZooBoy for finding these bugs.
   [THF]
+- Fix for improper values for symbols rankhiplayer, ranklo, ...
+  [nik0]
+- Fix for improper values for betposition, callposition kind of symbols
+  [nik0]
+- Fix for autoplayer not check-folding anymore because function value was not set.
+  [nik0]
 
 MAINTENANCE:
 - Adding some log-messages to the PokerTracker-module
