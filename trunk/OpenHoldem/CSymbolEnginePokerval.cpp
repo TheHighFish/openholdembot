@@ -390,7 +390,7 @@ void CSymbolEnginePokerval::CalculateRankBits()
 
 int CSymbolEnginePokerval::GetRankHi(int rankbits)
 {
-	for (int i=Rank_ACE; i>=2; i--)
+	for (int i=k_rank_ace; i>=2; i--)
 	{
 		if (IsBitSet(rankbits, i))
 		{
@@ -402,7 +402,7 @@ int CSymbolEnginePokerval::GetRankHi(int rankbits)
 
 int CSymbolEnginePokerval::GetRankLo(int rankbits)
 {
-	for (int i=2; i<=Rank_ACE; i++)
+	for (int i=2; i<=k_rank_ace; i++)
 	{
 		if (IsBitSet(rankbits, i))
 		{

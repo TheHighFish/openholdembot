@@ -54,6 +54,9 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
 			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
+	// [nik0] always set check/fold to 1
+	p_autoplayer_functions->SetAutoplayerFunction(k_autoplayer_function_check, 1);
+	p_autoplayer_functions->SetAutoplayerFunction(k_autoplayer_function_fold, 1);
 	CalcAutoTrace();
 }
 

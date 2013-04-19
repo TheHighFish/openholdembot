@@ -112,9 +112,9 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 {
-	_betposition  = 0;
-	_dealposition = 0;
-	_callposition = 0;
+	_betposition  = 1;
+	_dealposition = 1;
+	_callposition = 1;
 
 	for (int i=_dealerchair+1; 
 		i<=_dealerchair+p_tablemap->nchairs() 
