@@ -62,7 +62,8 @@ void CSymbolEnginePokerval::ResetOnHeartbeat()
 	userchair = p_symbol_engine_userchair->userchair();
 	CalculateRankBits();
 	CalcPokerValues();
-	CalculateHandType();
+	// [nik0] no need to call it as it's called from CalcPokerValues() already, and after CalcPokerValues handval is not correct anymore
+//	CalculateHandType();
 }
 
 
@@ -170,6 +171,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 void CSymbolEnginePokerval::CalculateHandType()
 {
 	_hand_type = HandVal_HANDTYPE(handval);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
+	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
 
 	if  (isstraightflush() 
 		&& StdDeck_RANK(HandVal_TOP_CARD(handval)) == Rank_ACE)

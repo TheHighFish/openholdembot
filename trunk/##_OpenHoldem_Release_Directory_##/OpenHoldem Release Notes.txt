@@ -36,6 +36,8 @@ BUG FIXES:
   [nik0]
 - Fix for autoplayer not check-folding anymore because function value was not set.
   [nik0]
+- Fix for hand type not being correct because recalculated after we change handvalue
+  [nik0]
 
 MAINTENANCE:
 - Adding some log-messages to the PokerTracker-module
