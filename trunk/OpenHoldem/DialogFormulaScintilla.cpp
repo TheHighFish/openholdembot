@@ -50,7 +50,7 @@ char * keywords = // Standard functions
 				  // Hand Rank
 				  "handrank169 handrank2652 handrank1326 handrank1000 handrankp "
 				  // Chairs
-				  "chair userchair dealerchair raischair chair$ chairbit$ "
+				  "userchair dealerchair raischair chair$ chairbit$ "
 				  // Rounds / Positions
 				  "betround betposition dealposition callposition dealpositionrais betpositionrais "
 				  // Probabilities
