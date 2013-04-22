@@ -1,3 +1,12 @@
+v4.1.0 2013-04-XX
+==================
+BUG FIXES:
+- The code to handle regions had no call to disable_and_clear_all(),
+  so some data could be initialized with old values.
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16412 
+  Thanks to ZooBoy for reporting.
+  [THF]
+
 v4.0.2 2013-02-08
 =================
 BUG FIXES:

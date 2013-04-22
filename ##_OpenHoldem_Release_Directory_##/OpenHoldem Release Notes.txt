@@ -1,4 +1,4 @@
-v4.0.6 2013-04-XX
+v4.1.0 2013-04-XX
 ==================
 NEW STUFF:
 - The handhistory-generator finally got integrated into OpenHoldem.
@@ -38,6 +38,13 @@ BUG FIXES:
   [nik0]
 - Fix for hand type not being correct because recalculated after we change handvalue
   [nik0]
+- The symbol "ismyturn" was always true, as we confused AND and OR operators at some point.
+  [THF]
+- Due to several smaller problems and messy code the iterator-thread for prwin
+  got refactored and partly rewritten for OH 4.0. 
+  As a consequence it worked only for one decision but did no restart.
+  This problem has now been fixed.
+  [THF]
 
 MAINTENANCE:
 - Adding some log-messages to the PokerTracker-module
