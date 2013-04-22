@@ -142,11 +142,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// If we've folded, stop iterator thread and set prwin/tie/los to zero
-		if (p_symbol_engine_userchair->userchair_confirmed() &&
-			(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_NOCARD || 
-			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_BACK ||
-			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_NOCARD || 
-			 p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_BACK))
+		if (!p_scraper_access->UserHasCards())
 		{
 			p_iterator_thread->StopIteratorThread();
 		}

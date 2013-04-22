@@ -22,7 +22,7 @@ public:
 public:
 	// Public accessors
 	int  myturnbits()		{ return _myturnbits; }
-	bool ismyturn()			{ return ((_myturnbits | k_my_turn_bits_fold_call_raise) != 0); }
+	bool ismyturn()			{ return ((_myturnbits & k_my_turn_bits_fold_call_raise) != 0); }
 	bool issittingin()		{ return _issittingin; }
 	bool issittingout()		{ return !issittingin(); }
 	bool isautopost()		{ return _isautopost; }
@@ -31,6 +31,9 @@ public:
 	bool isbring()			{ return _isbring; }
 	bool ismanual()			{ return _ismanual; }
 public:
+	// Especially needed to start the PrWin-calculations
+	bool IsFirstHeartbeatOfMyTurn();
+	// Visible buttons
 	CString GetFCKRAString();
 private:
 	void CalculateMyTurnBits();
@@ -45,6 +48,8 @@ private:
 	bool _isfinaltable;  
 	bool _isbring;
 	bool _ismanual;
+private:
+	bool _last_myturnbits;
 } *p_symbol_engine_autoplayer;
 
 #endif INC_CSYMBOLENGINEAUTOPLAYER_H

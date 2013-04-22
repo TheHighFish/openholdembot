@@ -174,7 +174,7 @@ void CHandHistory::checkBetround()
 		}
 
 		//Precondition: Has iterated through all players OR bblind has checked and hasn't been run and flop cards visible
-		if((_history.whosturn==((_history.lpta+1)%nchairs)||allChecks[0]==true)
+		if((_history.whosturn==((_history.last_player_to_act+1)%nchairs)||allChecks[0]==true)
 			&&flopSeen==false
 			&&showdownReady==false
 			&&showdownSeen==false
@@ -182,7 +182,7 @@ void CHandHistory::checkBetround()
 		{
 			if(allChecks[0]==true) SetAction(_history.bblindpos, 2, 0, 1);
 			_history.whosturn=postflopstart;
-			_history.lpta = -5; // !! WTF is lpta?
+			_history.last_player_to_act = -5; // !! WTF is last_player_to_act?
 			flopSeen=true;
 			passChecks=false;
 			maxBet=0;
@@ -194,7 +194,7 @@ void CHandHistory::checkBetround()
 			}
 		}
 		//Precondition: Has iterated through all players OR players checked and hasn't been run and turn card visible
-		if((_history.whosturn==((_history.lpta+1)%nchairs)||allChecks[1]==true)
+		if((_history.whosturn==((_history.last_player_to_act+1)%nchairs)||allChecks[1]==true)
 			&&flopSeen==true
 			&&turnSeen==false
 			&&showdownReady==false
@@ -202,7 +202,7 @@ void CHandHistory::checkBetround()
 			&&card_common[3][1]!=NULL)
 		{
 			_history.whosturn=postflopstart;
-			_history.lpta = -5;
+			_history.last_player_to_act = -5;
 			turnSeen=true;
 			passChecks=false;
 			maxBet=0;
@@ -214,7 +214,7 @@ void CHandHistory::checkBetround()
 			}
 		}
 		//Precondition: Has iterated through all players OR players checked and hasn't been run and river card visible
-		if((_history.whosturn==((_history.lpta+1)%nchairs)||allChecks[2]==true)
+		if((_history.whosturn==((_history.last_player_to_act+1)%nchairs)||allChecks[2]==true)
 			&&turnSeen==true
 			&&riverSeen==false
 			&&showdownReady==false
@@ -222,7 +222,7 @@ void CHandHistory::checkBetround()
 			&&card_common[4][1]!=NULL)
 		{
 			_history.whosturn=postflopstart;
-			_history.lpta = -5;
+			_history.last_player_to_act = -5;
 			riverSeen=true;
 			passChecks=false;
 			maxBet=0;
@@ -234,7 +234,7 @@ void CHandHistory::checkBetround()
 			}
 		}
 		//Precondition: Has iterated through all players, hasn't been run, and is showdown
-		if((_history.whosturn==((_history.lpta+1)%nchairs)||allChecks[3]==true)
+		if((_history.whosturn==((_history.last_player_to_act+1)%nchairs)||allChecks[3]==true)
 			&&riverSeen==true
 			&&showdownReady==false
 			&&showdownSeen==false&&isShowdown())
@@ -255,14 +255,14 @@ void CHandHistory::scanPlayerChanges()
 	{
 		//Precondition: It is the player's turn, and they are not past the
 		//last to act
-		if(_history.whosturn==i&&_history.whosturn!=(_history.lpta+1)%nchairs)
+		if(_history.whosturn==i&&_history.whosturn!=(_history.last_player_to_act+1)%nchairs)
 		{
 			//Precondition: Player is playing
 			if(_history.chair[i].playersPlayingBits!=0)
 			{
 				//Prevents loops during first betround if _history.utg called and dealer checked
-				if(betround==1&&i==_history.bblindpos&&_history.lpta==-5)
-					_history.lpta = _history.bblindpos;
+				if(betround==1&&i==_history.bblindpos&&_history.last_player_to_act==-5)
+					_history.last_player_to_act = _history.bblindpos;
 				/* 
 				Detects previous checks; if it is not preflop, and amount in the
 				the player pot is not zero, checks have not been passed and someone has
@@ -297,8 +297,8 @@ void CHandHistory::scanPlayerChanges()
 					else 
 						SetAction(i, 3, (_history.chair[i].currentBet-_history.chair[i].totalIn[betround-1]), betround);
 
-					_history.lpta = (i-1)%nchairs;	//Set _history.lpta to seat behind raiser
-					if(_history.lpta==-1)_history.lpta=nchairs-1;
+					_history.last_player_to_act = (i-1)%nchairs;	//Set _history.last_player_to_act to seat behind raiser
+					if(_history.last_player_to_act==-1)_history.last_player_to_act=nchairs-1;
 					_history.whosturn=(_history.whosturn+1)%nchairs;	//Increment _history.whosturn
 					allChecks[betround-1]=false;
 					passChecks=true;
@@ -633,7 +633,7 @@ void CHandHistory::resetVars()
 	gameNumber++;
 	maxBet=bblind;
 	passChecks=false;
-	_history.lpta = -5;
+	_history.last_player_to_act = -5;
 
 	for(int i=k_betround_preflop; i<k_betround_river; i++)
 	{

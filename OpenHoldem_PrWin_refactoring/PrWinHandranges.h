@@ -16,7 +16,7 @@
 
 bool IsHandInWeightedRange(const int card1, const int card2, 
 							const int willplay, const int wontplay, 
-							const int topclip, const int mustplay)
+							const int topclip, const int mustplay);
 	/*
 	p |---|	---------
 	r |   |   /      \
