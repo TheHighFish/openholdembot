@@ -21,6 +21,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
@@ -148,12 +149,15 @@ void CIteratorThread::StartIteratorThreadIfNeeded()
 	if (p_iterator_thread)
 	{
 		write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");
+		return;
 	}
-	else
+	write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
+	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
 		RestartIteratorThread();
+		return;
 	}
+	// Otherwise: nothing to do, e.g. not my turn
 }
 
 void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /* needed ???*/)
@@ -291,13 +295,14 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 			iter_vars.set_pcard(i, CARD_NOCARD);
 
 		for (int i=0; i<k_number_of_community_cards; i++)
+		{
 			iter_vars.set_ccard(i, CARD_NOCARD);
-
+		}
 		ResetIteratorVars();
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
-	//!!!StopIteratorThread();
+	StopIteratorThread();
 
 	return 0;
 }

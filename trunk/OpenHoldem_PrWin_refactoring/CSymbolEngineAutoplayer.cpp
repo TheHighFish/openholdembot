@@ -30,18 +30,19 @@ CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer()
 
 void CSymbolEngineAutoplayer::InitOnStartup()
 {
-	_myturnbits    = 0;
-	_issittingin   = false;
-	_isautopost    = false;
-	_isfinalanswer = false;
+	_myturnbits      = 0;
+	_issittingin     = false;
+	_isautopost      = false;
+	_isfinalanswer   = false;
 }
 
 void CSymbolEngineAutoplayer::ResetOnConnection()
 {
-	_myturnbits    = 0;
-	_issittingin   = false;
-	_isautopost    = false;
-	_isfinalanswer = false;
+	_myturnbits      = 0;
+	_issittingin     = false;
+	_isautopost      = false;
+	_isfinalanswer   = false;
+	_last_myturnbits = 0;
 	DetectSpecialConnectionLikeBringAndManualMode();
 }
 
@@ -58,10 +59,11 @@ void CSymbolEngineAutoplayer::ResetOnMyTurn()
 
 void CSymbolEngineAutoplayer::ResetOnHeartbeat()
 {
-	_myturnbits    = 0;
-	_issittingin   = false;
-	_isautopost    = false;
-	_isfinalanswer = false;
+	_last_myturnbits = _myturnbits;
+	_myturnbits      = 0;
+	_issittingin     = false;
+	_isautopost      = false;
+	_isfinalanswer   = false;
 	CalculateMyTurnBits();
 	CalculateSitInState();
 	CalculateFinalAnswer();
@@ -210,4 +212,10 @@ CString CSymbolEngineAutoplayer::GetFCKRAString()
 		_myturnbits&0x04 ? "R" : ".",
 		_myturnbits&0x08 ? "A" : ".");
 	return fckra_seen;
+}
+
+bool CSymbolEngineAutoplayer::IsFirstHeartbeatOfMyTurn()
+{
+	return(ismyturn()
+		&& (_last_myturnbits == 0));
 }
