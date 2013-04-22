@@ -234,7 +234,7 @@ struct sprw1326
 };
 
 //player history structure		Demonthus 2010-02-05
-
+// !!! undocumented
 struct phistory_chair
 {
 	char card_player[(2 * k_number_of_cards_per_player) + 1]; // 2 characters per card + NULL char
@@ -252,7 +252,7 @@ struct phistory_chair
 	double bet[k_number_of_betrounds][k_assumed_max_number_of_actions_per_player_and_round];
 	int action[k_number_of_betrounds][k_assumed_max_number_of_actions_per_player_and_round];
 	int ac_dealpos;
-	int playersPlayingBits;
+	bool playersPlayingBits;
 	int bets;
 	int calls;
 	int actionCount;
