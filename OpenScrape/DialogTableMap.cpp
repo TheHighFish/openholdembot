@@ -849,6 +849,7 @@ void CDlgTableMap::update_display(void)
 
 		else if (type_text == "Regions")
 		{
+			disable_and_clear_all();
 			m_Left.EnableWindow(true);
 			m_Top.EnableWindow(true);
 			m_Right.EnableWindow(true);
