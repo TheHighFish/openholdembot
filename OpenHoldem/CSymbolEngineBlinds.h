@@ -21,11 +21,11 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	double bblindbits()			{ return _bblindbits; }
-	double opponentsblindbits()	{ return _playersblindbits & ~p_symbol_engine_userchair->userchairbit(); }
-	double playersblindbits()	{ return _playersblindbits; }
-	double nplayersblind()		{ return bitcount(_playersblindbits); }
-	double nopponentsblind()	{ return bitcount(opponentsblindbits()); }
+	int bblindbits()			{ return _bblindbits; }
+	int opponentsblindbits()	{ return _playersblindbits & ~p_symbol_engine_userchair->userchairbit(); }
+	int playersblindbits()	{ return _playersblindbits; }
+	int nplayersblind()		{ return bitcount(_playersblindbits); }
+	int nopponentsblind()	{ return bitcount(opponentsblindbits()); }
 private:
 	bool BlindsAreUnknown();
 	void CalculateBlinds();
