@@ -61,6 +61,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_BETSIZE_ADJUSTMENT, prefs.debug_betsize_adjustment() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_HANDRESET_DETECTOR, prefs.debug_handreset_detector() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ENGINE_CONTAINER, prefs.debug_engine_container() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_HANDHISTORY, prefs.debug_handhistory() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, prefs.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -93,6 +94,7 @@ void CDlgSAPrefs20::OnOK()
 	prefs.set_debug_betsize_adjustment(IsDlgButtonChecked(IDC_DEBUG_BETSIZE_ADJUSTMENT));
 	prefs.set_debug_handreset_detector(IsDlgButtonChecked(IDC_DEBUG_HANDRESET_DETECTOR));
 	prefs.set_debug_engine_container(IsDlgButtonChecked(IDC_DEBUG_ENGINE_CONTAINER));
+	prefs.set_debug_handhistory(IsDlgButtonChecked(IDC_DEBUG_HANDHISTORY));
 	prefs.set_debug_alltherest(IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
 	CSAPrefsSubDlg::OnOK();
 }

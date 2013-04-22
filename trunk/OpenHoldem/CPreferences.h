@@ -95,6 +95,7 @@ public:
 	const bool	debug_memorysymbols() { return _debug_memorysymbols; }
 	const bool	debug_tablemap_loader() { return _debug_tablemap_loader; }
 	const bool	debug_filesystem_monitor() { return _debug_filesystem_monitor; }
+	const bool	debug_handhistory() { return _debug_handhistory; }
 	const bool	debug_alltherest() { return _debug_alltherest; }
 	const bool  debug_table_positioner() { return _debug_table_positioner; }
 	const bool  debug_istournament() { return _debug_istournament; }
@@ -255,6 +256,7 @@ public:
 	void set_debug_betsize_adjustment(const bool b) { ENT _debug_betsize_adjustment = b; WriteReg("debug_betsize_adjustment", b); }
 	void set_debug_handreset_detector(const bool b) { ENT _debug_handreset_detector = b; WriteReg("debug_handreset_detector", b); }
 	void set_debug_engine_container(const bool b) { ENT _debug_engine_container = b; WriteReg("debug_engine_container", b); }
+	void set_debug_handhistory(const bool b) { ENT _debug_handhistory = b; WriteReg("debug_handhistory", b); }
 	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
 
 	// Formula window location
@@ -411,6 +413,7 @@ private:
 	bool			_debug_memorysymbols;
 	bool			_debug_tablemap_loader;
 	bool			_debug_filesystem_monitor;
+	bool			_debug_handhistory;
 	bool			_debug_alltherest;
 	bool			_debug_table_positioner;
 	bool			_debug_istournament;
