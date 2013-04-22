@@ -9,6 +9,7 @@
 #include "CGameState.h"
 #include "CHandresetDetector.h"
 #include "CPokerAction.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -60,6 +61,7 @@ CHandHistory::~CHandHistory()
 // Checked
 void CHandHistory::MakeHistory()
 {
+	write_log(prefs.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
 	CreateHandHistoryFile();//!!! Bad
 	UpdateSymbols();
 	WriteHistory();
@@ -70,6 +72,7 @@ void CHandHistory::MakeHistory()
 // Checked
 void CHandHistory::WriteHistory()
 {
+	write_log(prefs.debug_handhistory(), "[CHandHistory] WriteHistory()\n");
 	int	betround    = p_betround_calculator->betround();
 	int	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
@@ -86,7 +89,7 @@ void CHandHistory::WriteHistory()
 	checkBetround();
 	// Precondition: Cards have been dealt and the round summary has not
 	// been printed
-	if (showdownSeen == false && roundStarted == true)
+	if (showdownSeen == false && roundStarted)
 	{
 		scanPlayerChanges(); 
 	}
@@ -426,7 +429,7 @@ void CHandHistory::scanPlayerChanges()
 						if (_history.chair[j].seatIsPlaying)
 						{
 							SetAction(j, 4, 0, betround);
-							if(showdownSeen==false)
+							if(showdownSeen == false)
 							{
 								ReconstructHand(false);
 							}
@@ -538,6 +541,7 @@ void CHandHistory::GetBCstring(char *c, unsigned int c0)
 // Done
 void CHandHistory::processShowdown()
 {
+	write_log(prefs.debug_handhistory(), "[CHandHistory] ProcessShowdown()\n");
 	int	nchairs         = p_tablemap->nchairs();
 	int	nplayersplaying	= p_symbol_engine_active_dealt_playing->nplayersplaying();
 
@@ -569,7 +573,7 @@ void CHandHistory::processShowdown()
 			_history.chair[i].cardsSeen = true;	
 		}
 	}
-	if(showdownReady==true&&showdownSeen==false)
+	if(showdownReady && showdownSeen == false)
 	{
 		// Precondition: All players' hole cards have been seen and
 		// the showdown results haven't been displayed
@@ -727,6 +731,7 @@ void CHandHistory::resetVars()
 			}
 		}
 	}
+	next_chair_to_look_for_actions = _history.utg;
 	_history.whosturn = _history.utg;
 	postflopstart = _history.sblindpos;
 }
@@ -851,7 +856,7 @@ void CHandHistory::HandleNextAction()
 		}
 	}
 	_history.chair[next_chair_to_look_for_actions].actionCount++;
-	next_chair_to_look_for_actions = (next_chair_to_look_for_actions+1)%nchairs;
+	next_chair_to_look_for_actions = (next_chair_to_look_for_actions + 1) % nchairs;
 }
 
 // Done
@@ -1034,8 +1039,14 @@ void CHandHistory::HandleDealingPhase()
 // Done
 void CHandHistory::CreateHandHistoryFile()
 {
-	//Append to (or create if it does not exist) a handhistory file
-	//using the session id as the name
+	if (!prefs.handhistory_generator_enable())
+	{
+		write_log(prefs.debug_handhistory(), "[CHandHistory] Disabled. Not creating file.\n");
+		return;
+	}
+	write_log(prefs.debug_handhistory(), "[CHandHistory] Enabled. Creating file if needed.\n");
+	// Append to (or create if it does not exist) a handhistory file
+	// using the session id as the name
 	CreateDirectory("handhistory", NULL);
 	stringstream ss;
 	ss << "handhistory/handhistory_" << p_sessioncounter->session_id() << ".txt";
