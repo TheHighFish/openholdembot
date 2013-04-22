@@ -1122,6 +1122,10 @@
 					RelativePath=".\CIteratorVars.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\PrWinHandranges.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ReplayFrames"
@@ -1916,6 +1920,10 @@
 				</File>
 				<File
 					RelativePath=".\CIteratorVars.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PrWinHandranges.h"
 					>
 				</File>
 			</Filter>

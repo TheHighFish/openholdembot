@@ -15,6 +15,7 @@
 #include "stdafx.h"
 #include "CScraperAccess.h"
 
+#include <assert.h>
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -341,6 +342,8 @@ int CScraperAccess::NumberOfVisibleButtons()
 
 bool CScraperAccess::PlayerHasKnownCards(int player)
 {
+	assert(player >= 0);
+	assert(player < p_tablemap->nchairs());
 	if (p_scraper->card_player(player, 0) == CARD_BACK 
 		|| p_scraper->card_player(player, 0) == CARD_NOCARD 
 		|| p_scraper->card_player(player, 1) == CARD_BACK 
@@ -353,6 +356,8 @@ bool CScraperAccess::PlayerHasKnownCards(int player)
 
 bool CScraperAccess::PlayerHasCards(int player)
 {
+	assert(player >= 0);
+	assert(player < p_tablemap->nchairs());
 	// We do no longer check for cardbacks,
 	// but for cardbacks or cards.
 	// This way we can play all cards face-up at PokerAcademy.
@@ -373,6 +378,10 @@ bool CScraperAccess::UserHasCards()
 		return false;
 	}
 	int userchair = p_symbol_engine_userchair->userchair();
+	if (userchair == k_undefined)
+	{
+		return false;
+	}
 	return PlayerHasCards(userchair);
 }
 

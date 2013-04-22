@@ -362,8 +362,11 @@ void CFormula::CheckForDefaultFormulaEntries()
 {
 	CSLock lock(m_critsec);
 
+	// Header comment
 	AddEmptyFunctionIfFunctionDoesNotExist("notes");
+	// DLL to be loaded
 	AddEmptyFunctionIfFunctionDoesNotExist("dll");
+	// Primary functions (autoplayer)
 	AddEmptyFunctionIfFunctionDoesNotExist("f$alli");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$betsize");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_2_1");
@@ -375,16 +378,24 @@ void CFormula::CheckForDefaultFormulaEntries()
 	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_4");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$rais");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$call");
+	// Secondary functions (once every N seconds)
 	AddEmptyFunctionIfFunctionDoesNotExist("f$prefold");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$rebuy");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$delay");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$chat");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_opponents");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_iterations");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitin");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$sitout");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$leave");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$close");
+	// PrWin functions
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_opponents");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_iterations");
+	// Weighted PrWin
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_mustplay");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_topclip");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_willplay");
+	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_wontplay");
+	// Debug functions
 	AddEmptyFunctionIfFunctionDoesNotExist("f$test");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$debug");
 }

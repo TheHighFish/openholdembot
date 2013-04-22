@@ -7,7 +7,7 @@
 //
 //*****************************************************************************
 //
-// Purpose:
+// Purpose: PrWin-simulation
 //
 //*****************************************************************************
 
@@ -36,18 +36,24 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
 	static void AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent);
+	static void StandardDealingAlgorithm(int nopponents);
+	static void SwapDealingAlgorithmForMoreThan13Opponents(int nopponents);
+	static void StandardDealingAlgorithmForUpTo13Opponents(int nopponents);
+	static void EnhancedDealingAlgorithm();
+	static bool UseEnhancedPrWin();
+	static int  GetRandomCard();
 private:
-	int InRange(const int card1, const int card2, const int willplay, 
-				const int wontplay, const int topclip, const int mustplay);
+	static void UpdateIteratorVarsForDisplay(unsigned int nit);
+	static void ResetIteratorVars();
+	static void ResetGlobalVariables();
+	static bool SimulationFinished(unsigned int nit);
+private:
 	void InitIteratorLoop(void);
 	void InitHandranktTableForPrwin();
-
+	void CloneVanillaChairToAllOtherChairs();
+private:
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
-	int				_nplCards, _ncomCards;
-	double			_win, _tie, _los;
-	int				_willplay, _wontplay, _mustplay, _topclip;
-
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
 } *p_iterator_thread;
