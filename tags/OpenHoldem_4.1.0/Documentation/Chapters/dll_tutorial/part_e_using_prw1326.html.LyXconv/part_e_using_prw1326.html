@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="part_e_using_prw1326.tex"> 
+<meta name="date" content="2010-05-07 02:35:00"> 
+<link rel="stylesheet" type="text/css" href="part_e_using_prw1326.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Using prw1326</h3>
+<!--l. 29--><p class="noindent" >Included in the attachment is a "library" for prwin1326, it includes functions to set
+hands, manage weights, log prw1326 lists. Now i will not go into details to much simply
+take a look at the example below:
+<!--l. 34--><p class="indent" >   This is the main part of the code for this example:
+   <!--l. 37-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>double&#x00A0;process_state(holdem_state<span 
+class="cmsy-10">*</span>&#x00A0;pstate)&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>{&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pstate!=NULL)&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;m_holdem_state[&#x00A0;(++m_ndx)&amp;0xff&#x00A0;]&#x00A0;=&#x00A0;<span 
+class="cmsy-10">*</span>pstate;&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>/////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>//ACTIVATING&#x00A0;PRW&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>/////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw1326<span 
+class="cmsy-10">-</span>&#x003E;preflop&#x00A0;=&#x00A0;1326;&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw1326<span 
+class="cmsy-10">-</span>&#x003E;useme&#x00A0;=&#x00A0;1326;&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r10"></a></span>/////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-1011r11"></a></span>//PRW&#x00A0;EXAMPLE&#x00A0;<br /><span class="label"><a 
+ id="x1-1012r12"></a></span>/////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-1013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;betround&#x00A0;=&#x00A0;(int)gws("betround");&#x00A0;<br /><span class="label"><a 
+ id="x1-1014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;userchair&#x00A0;=&#x00A0;(int)gws("userchair");&#x00A0;<br /><span class="label"><a 
+ id="x1-1015r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;handnumber&#x00A0;=&#x00A0;(int)gws("handnumber");&#x00A0;<br /><span class="label"><a 
+ id="x1-1016r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;ismyturn&#x00A0;=&#x00A0;(int)gws("ismyturn");&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(ismyturn)&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r18"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//list&#x00A0;managment&#x00A0;preflop&#x00A0;<br /><span class="label"><a 
+ id="x1-1020r20"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(betround&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;round_trigger&#x00A0;!=&#x00A0;betround)&#x00A0;<br /><span class="label"><a 
+ id="x1-1021r21"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1022r22"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//chair&#x00A0;0&#x00A0;<span 
+class="cmsy-10">-</span>&#x003E;&#x00A0;VIP&#x00A0;50%&#x00A0;PFR&#x00A0;10%&#x00A0;<br /><span class="label"><a 
+ id="x1-1023r23"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_set_preflop_list(0,&#x00A0;0.5,&#x00A0;0.1,&#x00A0;1024);&#x00A0;<br /><span class="label"><a 
+ id="x1-1024r24"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//chair&#x00A0;1&#x00A0;<span 
+class="cmsy-10">-</span>&#x003E;&#x00A0;VIP&#x00A0;20%&#x00A0;PFR&#x00A0;10%&#x00A0;<br /><span class="label"><a 
+ id="x1-1025r25"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_set_preflop_list(1,&#x00A0;0.2,&#x00A0;0.1,&#x00A0;1024);&#x00A0;<br /><span class="label"><a 
+ id="x1-1026r26"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//log&#x00A0;preflop&#x00A0;handranges&#x00A0;<br /><span class="label"><a 
+ id="x1-1027r27"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_log_handlist(handnumber,&#x00A0;userchair,&#x00A0;betround,&#x00A0;0);&#x00A0;<br /><span class="label"><a 
+ id="x1-1028r28"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;round_trigger&#x00A0;=&#x00A0;betround;&#x00A0;<br /><span class="label"><a 
+ id="x1-1029r29"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-1030r30"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//list&#x00A0;managment&#x00A0;flop&#x00A0;<br /><span class="label"><a 
+ id="x1-1031r31"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(betround&#x00A0;==&#x00A0;2&#x00A0;&amp;&amp;&#x00A0;round_trigger&#x00A0;!=&#x00A0;betround)&#x00A0;<br /><span class="label"><a 
+ id="x1-1032r32"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1033r33"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//chair&#x00A0;0&#x00A0;<span 
+class="cmsy-10">-</span>&#x003E;&#x00A0;remove&#x00A0;all&#x00A0;pocket&#x00A0;pairs&#x00A0;<br /><span class="label"><a 
+ id="x1-1034r34"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i=0;&#x00A0;i&#x003C;13;&#x00A0;i++)&#x00A0;<br /><span class="label"><a 
+ id="x1-1035r35"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_remove_pp(0,&#x00A0;i,&#x00A0;1024);&#x00A0;<br /><span class="label"><a 
+ id="x1-1036r36"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//chair&#x00A0;1&#x00A0;<span 
+class="cmsy-10">-</span>&#x003E;&#x00A0;remove&#x00A0;all&#x00A0;suited&#x00A0;aces&#x00A0;<br /><span class="label"><a 
+ id="x1-1037r37"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i=0;&#x00A0;i&#x003C;13;&#x00A0;i++)&#x00A0;<br /><span class="label"><a 
+ id="x1-1038r38"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_remove_s(1,&#x00A0;12,&#x00A0;i,&#x00A0;1024);&#x00A0;<br /><span class="label"><a 
+ id="x1-1039r39"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//log&#x00A0;flop&#x00A0;handranges&#x00A0;<br /><span class="label"><a 
+ id="x1-1040r40"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;prw_log_handlist(handnumber,&#x00A0;userchair,&#x00A0;betround,&#x00A0;1);&#x00A0;<br /><span class="label"><a 
+ id="x1-1041r41"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;round_trigger&#x00A0;=&#x00A0;betround;&#x00A0;<br /><span class="label"><a 
+ id="x1-1042r42"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-1043r43"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-1044r44"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
+ id="x1-1045r45"></a></span>}
+   </div>
+<!--l. 86--><p class="indent" >   All this piece of code does is:
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-1047x1">set up hand range for chair 0 which include 50% of the best hands and
+        exclude 10% of the best hands, same for chair 1 with 20% and 10%
+           </li>
+        <li 
+  class="enumerate" id="x1-1049x2">on the flop it removes pocket pairs out of chair 0&#8217;s range and suited aces
+        out of chair 1&#8217;s range
+           </li>
+        <li 
+  class="enumerate" id="x1-1051x3">creates a log file preflop
+           </li>
+        <li 
+  class="enumerate" id="x1-1053x4">creates a log file on the flop</li></ol>
+<!--l. 96--><p class="noindent" >The log files are saved in "C:/prwlog/handnumber/" folder, this is how the log files look like,
+once they have been converted with gnuplot into images:
+
+<!--l. 100--><p class="indent" >   <img 
+src="part_e_using_prw13260x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="part_e_using_prw13260x.png" src="15E__Dokumente_und_Einstellungen_Development_De___s_suitlog_chair0_round1_logparam0_suitlog_0.eps"  
+-->
+<!--l. 102--><p class="indent" >   This is a log of all 1326 hands, on the top left are the suited hands on the bottom
+right are the unsuited hands.
+
+<!--l. 105--><p class="indent" >   <img 
+src="part_e_using_prw13261x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="part_e_using_prw13261x.png" src="16E__Dokumente_und_Einstellungen_Development_De___s_suitlog_chair0_round1_logparam0_suitlog_1.eps"  
+-->
+
+<!--l. 107--><p class="indent" >   <img 
+src="part_e_using_prw13262x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="part_e_using_prw13262x.png" src="17E__Dokumente_und_Einstellungen_Development_De___s_suitlog_chair0_round1_logparam0_suitlog_2.eps"  
+-->
+<!--l. 109--><p class="indent" >   These 2 are 2 out of 10 more logs seperated by all suit combinations. Now to
+obtain these log pics you need gnuplot, as the DLL saves a gnuplot script in
+the log folder which needs to be executed to create those images. it is pretty
+simple:
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-1055x1">download gnuplot: <a 
+href="http://www.gnuplot.info/" class="url" ><span 
+class="ectt-1000">http://www.gnuplot.info/</span></a> .
+           </li>
+
+        <li 
+  class="enumerate" id="x1-1057x2">install and run gnuplot
+           </li>
+        <li 
+  class="enumerate" id="x1-1059x3">open the log folder "C:/prwlog/handnumber/gnuscript/" there, if you ran
+        this DLL (vs 2 opponents ideally in chair 0 &amp; 1), you should find 2 files
+        which have the name "gnuscript-0" (preflop log) and "gnuscript-1" (flop
+        log) you can simple drag them to the gnuplot window or simply select
+        "file -&#x003E; open" and browse to their location.
+           </li>
+        <li 
+  class="enumerate" id="x1-1061x4">if you execute them it may take a while till the "jpgs" are created in the
+        directory because these are height projections of 3d plots and depending
+        on your CPU this can take some minutes.</li></ol>
+<!--l. 126--><p class="noindent" >you can also set the resolution lower if it takes to long. look for this line in "prw_log.h":
+   <!--l. 130-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-1062r1"></a></span>gnuplot_obj&#x00A0;&#x003C;&#x003C;&#x00A0;"set&#x00A0;dgrid3d&#x00A0;500,500,1"&#x00A0;&#x003C;&#x003C;&#x00A0;endl;
+   </div>
+<!--l. 135--><p class="indent" >   Replace the 500,500 values with lower one.
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>File</h4>
+<!--l. 140--><p class="noindent" >The files for this tutorial can be found here:
+           <ul class="itemize1">
+        <li class="itemize"><a 
+href="http://www.maxinmontreal.com/forums/download/file.php?id=2338" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/forums/download/file.php?id=2338</span></a>
+           </li>
+        <li class="itemize"><a 
+href="http://www.maxinmontreal.com/forums/download/file.php?id=2337" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/forums/download/file.php?id=2337</span></a></li></ul>
+    
+</body></html> 
+
+
+
