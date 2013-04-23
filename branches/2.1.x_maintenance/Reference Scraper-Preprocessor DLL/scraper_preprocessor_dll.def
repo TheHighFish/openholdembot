@@ -1,4 +1,0 @@
-LIBRARY	scraper_preprocessor
-EXPORTS
-   ProcessMessage    @1
-   
