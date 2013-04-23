@@ -1,4 +1,4 @@
-v4.1.0 2013-04-XX
+v4.1.0 2013-04-23
 ==================
 BUG FIXES:
 - The code to handle regions had no call to disable_and_clear_all(),
