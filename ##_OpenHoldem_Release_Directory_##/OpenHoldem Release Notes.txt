@@ -281,6 +281,142 @@ NEW STUFF:
   The ini-file has to be placed in the OpenHoldem-directory.
   The filename does not matter, but there must be only one such file.
   [THF]
+
+NEW POKERTRAKCER-STATS
+- OpenHoldem 4.0.0 supports lots of new PokerTracker-symbols
+  and the PokerTracker logic got completely rewritten for cleaner code and better performance.
+  The new stats are:
+
+	Ring game symbols
+	=================
+		pt_iconx (x=0-9) - Poker Tracker auto-rate icon code for chair x
+		pt_iconlastrx (x=1-4) - Poker Tracker auto-rate icon code for the last raiser in round x
+		pt_pfrx (x=0-9) - Poker Tracker pre-flop raise percentage for chair x
+		pt_aggtotx (x=0-9) - Poker Tracker total aggression for chair x
+		pt_aggtotnopfx (x=0-9) - Poker Tracker total aggression excluding preflop for chair x
+		pt_aggpx (x=0-9) - Poker Tracker preflop aggression for chair x
+		pt_aggfx (x=0-9) - Poker Tracker flop aggression for chair x
+		pt_aggtx (x=0-9) - Poker Tracker turn aggression for chair x
+		pt_aggrx (x=0-9) - Poker Tracker river aggression for chair x
+		pt_floppctx (x=0-9) - Poker Tracker saw flop pct for chair x
+		pt_turnpctx (x=0-9) - Poker Tracker saw turn pct for chair x
+		pt_riverpctx (x=0-9) - Poker Tracker saw river pct for chair x
+		pt_vpipx (x=0-9) - Poker Tracker VP$IP for chair x
+		pt_handsx (x=0-9) - Poker Tracker number of hands that are in the database for chair x
+		pt_pf_rfix (x=0-9) - Poker Tracker [pre-flop raise first in] pct for chair x
+		pt_pf_crx (x=0-9) - Poker Tracker [pre-flop called raise] pct for chair x
+		pt_pfatsx (x=0-9) - Poker Tracker attempt to steal blinds for chair x
+		pt_wsdpx (x=0-9) - Poker Tracker went to showdown percentage for chair x
+		pt_wssdx (x=0-9) - Poker Tracker won $ at showdown for chair x
+		pt_fsbtsx (x=0-9) - Poker Tracker folded small blind to steal for chair x
+		pt_fbbtsx (x=0-9) - Poker Tracker folded big blind to steal for chair x 
+		pt_cbetflop (x=0-9) - Poker Tracker cbet pct on flop for chair x 
+		pt_f3bettot (x=0-9) - Poker Tracker folded while facing 3bet total pct for chair x 
+		pt_f3betpreflop (x=0-9) - Poker Tracker folded while facing 3bet preflop pct for chair x 
+		pt_f3betflop (x=0-9) - Poker Tracker folded while facing 3bet flop pct for chair x 
+		pt_f3betturn (x=0-9) - Poker Tracker folded while facing 3bet turn pct for chair x 
+		pt_f3betriver (x=0-9) - Poker Tracker folded while facing 3bet river pct for chair x 
+		pt_fcbetflop (x=0-9) - Poker Tracker folded while facing cbet preflop pct for chair x 
+		pt_fcbetturn (x=0-9) - Poker Tracker folded while facing cbet turn pct for chair x 
+		pt_fcbetriver (x=0-9) - Poker Tracker folded while facing cbet river pct for chair x 
+
+	Ringgame  symbols for the [raischair]
+	=====================================
+		pt_ricon - Poker Tracker auto-rate icon code for raise chair
+		pt_rpfr - Poker Tracker pre-flop raise percentage for raise chair
+		pt_raggtot - Poker Tracker total aggression for raise chair
+		pt_raggtotnopf - Poker Tracker total aggression excluding preflop for raise chair
+		pt_raggp - Poker Tracker preflop aggression for raise chair
+		pt_raggf - Poker Tracker flop aggression for raise chair
+		pt_raggt - Poker Tracker turn aggression for raise chair
+		pt_raggr - Poker Tracker river aggression for raise chair
+		pt_rfloppct - Poker Tracker saw flop pct for raise chair
+		pt_rturnpct - Poker Tracker saw turn pct for raise chair
+		pt_rriverpct - Poker Tracker saw river pct for raise chair
+		pt_rvpip - Poker Tracker VP$IP for raise chair
+		pt_rhands - Poker Tracker number of hands that are in the database for raise chair
+		pt_rpf_rfi - Poker Tracker [pre-flop raise first in] pct for raise chair
+		pt_rpf_cr - Poker Tracker [pre-flop called raise] pct for raise chair
+		pt_rpfats - Poker Tracker attempt to steal blinds for raise chair
+		pt_rwsdp - Poker Tracker went to showdown percentage for raise chair
+		pt_rwssd - Poker Tracker won $ at showdown for raise chair
+		pt_rfsbts - Poker Tracker folded small blind to steal for raise chair
+		pt_rfbbts - Poker Tracker folded big blind to steal for raise chair
+		pt_rcbetflop - Poker Tracker continuation bet on flop for raise chair 
+		pt_rf3bettot - Poker Tracker folded while facing 3bet total pct for raise chair 
+		pt_rf3betpreflop - Poker Tracker folded while facing 3bet preflop pct raise chair
+		pt_rf3betflop - Poker Tracker folded while facing 3bet flop pct for raise chair 
+		pt_rf3betturn - Poker Tracker folded while facing 3bet turn pct for raise chair 
+		pt_rf3betriver - Poker Tracker folded while facing 3bet river pct for raise chair 
+		pt_rfcbetflop - Poker Tracker folded while facing cbet preflop pct for raise chair 
+		pt_rfcbetturn - Poker Tracker folded while facing cbet turn pct for raise chair 
+		pt_rfcbetriver - Poker Tracker folded while facing cbet river pct for raise chair 
+
+	Tournament symbols
+	==================
+		ptt_iconx (x=0-9) - Poker Tracker auto-rate icon code for chair x
+		ptt_iconlastrx (x=1-4) - Poker Tracker auto-rate icon code for the last raiser in round x
+		ptt_pfrx (x=0-9) - Poker Tracker pre-flop raise percentage for chair x
+		ptt_aggtotx (x=0-9) - Poker Tracker total aggression for chair x
+		ptt_aggtotnopfx (x=0-9) - Poker Tracker total aggression excluding preflop for chair x
+		ptt_aggpx (x=0-9) - Poker Tracker preflop aggression for chair x
+		ptt_aggfx (x=0-9) - Poker Tracker flop aggression for chair x
+		ptt_aggtx (x=0-9) - Poker Tracker turn aggression for chair x
+		ptt_aggrx (x=0-9) - Poker Tracker river aggression for chair x
+		ptt_floppctx (x=0-9) - Poker Tracker saw flop pct for chair x
+		ptt_turnpctx (x=0-9) - Poker Tracker saw turn pct for chair x
+		ptt_riverpctx (x=0-9) - Poker Tracker saw river pct for chair x
+		ptt_vpipx (x=0-9) - Poker Tracker VP$IP for chair x
+		ptt_handsx (x=0-9) - Poker Tracker number of hands that are in the database for chair x
+		ptt_pf_rfix (x=0-9) - Poker Tracker [pre-flop raise first in] pct for chair x
+		ptt_pf_crx (x=0-9) - Poker Tracker [pre-flop called raise] pct for chair x
+		ptt_pfatsx (x=0-9) - Poker Tracker attempt to steal blinds for chair x
+		ptt_wsdpx (x=0-9) - Poker Tracker went to showdown percentage for chair x
+		ptt_wssdx (x=0-9) - Poker Tracker won $ at showdown for chair x
+		ptt_fsbtsx (x=0-9) - Poker Tracker folded small blind to steal for chair x
+		ptt_fbbtsx (x=0-9) - Poker Tracker folded big blind to steal for chair x 
+
+	Tournament symbols for the [raischair]
+	======================================
+		ptt_ricon - Poker Tracker auto-rate icon code for raise chair
+		ptt_rpfr - Poker Tracker pre-flop raise percentage for raise chair
+		ptt_raggtot - Poker Tracker total aggression for raise chair
+		ptt_raggtotnopf - Poker Tracker total aggression excluding preflop for raise chair
+		ptt_raggp - Poker Tracker preflop aggression for raise chair
+		ptt_raggf - Poker Tracker flop aggression for raise chair
+		ptt_raggt - Poker Tracker turn aggression for raise chair
+		ptt_raggr - Poker Tracker river aggression for raise chair
+		ptt_rfloppct - Poker Tracker saw flop pct for raise chair
+		ptt_rturnpct - Poker Tracker saw turn pct for raise chair
+		ptt_rriverpct - Poker Tracker saw river pct for raise chair
+		ptt_rvpip - Poker Tracker VP$IP for raise chair
+		ptt_rhands - Poker Tracker number of hands that are in the database for raise chair
+		ptt_rpf_rfi - Poker Tracker [pre-flop raise first in] pct for raise chair
+		ptt_rpf_cr - Poker Tracker [pre-flop called raise] pct for raise chair
+		ptt_rpfats - Poker Tracker attempt to steal blinds for raise chair
+		ptt_rwsdp - Poker Tracker went to showdown percentage for raise chair
+		ptt_rwssd - Poker Tracker won $ at showdown for raise chair
+		ptt_rfsbts - Poker Tracker folded small blind to steal for raise chair
+		ptt_rfbbts - Poker Tracker folded big blind to steal for raise chair
+
+	The stats get now grouped into 3 categories:
+	  * basic
+	  * positional preflop
+	  * advanced
+	Positional preflop and advanced stats get only loaded once per player,
+	as they need lots of hands to become reasonable. Therefore they won't get updated during a session.
+	Basic stats get loaded at the beginning. They won't get updated for people with lots of hands,
+	because we don't expect any real changes. However basic stats will update during a session 
+	once every 15 minutes for players with few hands, so that we become reasonable basic stats
+	for unknown opponents as soon as possible.
+	This behavious does also lead to a significantly improved performance of the PokerTracker-thread.
+
+	A big thank you to KaeKruse, Bo858585, termitapalahermita and Rumburak 
+	for providing some (lots!) of additional stats, some of which still to have to be integrated 
+	in a future version of OpenHoldem.
+
+	All the other work done by...	
+[TripleSeven, Kyo, FLBotter, Strikles and Pingvvino]
   
   
 BUG FIXES: 
