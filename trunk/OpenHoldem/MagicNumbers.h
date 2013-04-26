@@ -333,18 +333,22 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define MAX_CHIPS_PER_STACK	20
 #define MAX_CHIP_STACKS		10
 
+// SWAG options - text selectioin
+const int TEXTSEL_SINGLECLICK =	1;
+const int TEXTSEL_DOUBLECLICK =	2;
+const int TEXTSEL_TRIPLECLICK =	3;  
+const int TEXTSEL_CLICKDRAG	  =	4;
+const int TEXTSEL_NOTHING	  =	5;
 
-// SWAG options
-#define TEXTSEL_SINGLECLICK	1
-#define TEXTSEL_DOUBLECLICK	2
-#define TEXTSEL_CLICKDRAG	3
-#define TEXTSEL_NOTHING		4
-#define TEXTDEL_DELETE		1
-#define TEXTDEL_BACKSPACE	2
-#define TEXTDEL_NOTHING		3
-#define BETCONF_ENTER		1
-#define BETCONF_CLICKBET	2
-#define BETCONF_NOTHING		3
+// SWAG options - text deletion
+const int TEXTDEL_DELETE	 = 1;
+const int TEXTDEL_BACKSPACE	 = 2;
+const int TEXTDEL_NOTHING	 = 3;
+
+// SWAG options - bet confirmation
+const int BETCONF_ENTER		 = 1;
+const int BETCONF_CLICKBET	 = 2;
+const int BETCONF_NOTHING	 = 3;
 
 // Button click options
 #define BUTTON_SINGLECLICK	1

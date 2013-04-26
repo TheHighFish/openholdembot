@@ -232,20 +232,24 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 
 void CCasinoInterface::SelectSwagText()
 {
-	if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
-	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", 
-			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
-		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 2, NULL, p_null);
-	}
-
-	else if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
+	if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", 
 			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 1, NULL, p_null);
 	}
-
+	else if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", 
+			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 2, NULL, p_null);
+	}
+	else if (p_tablemap->swagselectionmethod() == TEXTSEL_TRIPLECLICK)
+	{
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to triple click: %d,%d %d,%d\n", 
+			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 3, NULL, p_null);
+	}
 	else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", 
