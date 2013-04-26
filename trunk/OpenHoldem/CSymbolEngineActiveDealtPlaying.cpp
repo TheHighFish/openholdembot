@@ -32,8 +32,6 @@ void CSymbolEngineActiveDealtPlaying::InitOnStartup()
 
 void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
 {
-	_nchairs = p_tablemap->nchairs();
-
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
 	_playersdealtbits   = 0;
@@ -42,8 +40,6 @@ void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
 {
-	_userchair   = p_symbol_engine_userchair->userchair();
-	
 	_playersdealtbits   = 0;
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
@@ -58,9 +54,6 @@ void CSymbolEngineActiveDealtPlaying::ResetOnMyTurn()
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat()
 {
-	_dealerchair = p_symbol_engine_dealerchair->dealerchair();
-	_bblind      = p_tablelimits->bblind();
-
 	CalculateActiveBits();
 	CalculatePlayingBits();
 	CalculateDealtBits();
@@ -110,9 +103,9 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 	bool big_blind_found = false;
 	bool first_non_blind_with_cards_found = false;
 
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		int chair_to_consider = (_dealerchair + i + 1) % _nchairs;
+		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
 		// First we search the blinds only, 
 		// i.e. players with a positive bet.
@@ -127,7 +120,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 				number_of_blind_posters_found++;
 				this_player_got_dealt = true;
 			}
-			if ((bet == _bblind) || (number_of_blind_posters_found == k_usual_number_of_blind_posters))
+			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == k_usual_number_of_blind_posters))
 			{
 				// big blind might be allin for less than 1 bb
 				// or small blind might be missing.

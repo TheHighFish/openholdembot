@@ -3,6 +3,9 @@
 
 #include "MagicNumbers.h"
 
+#define BIG_BLIND p_tablelimits->bblind()
+#define SMALL_BLIND p_tablelimits->sblind()
+
 struct STableLimit
 {
 	double sblind;

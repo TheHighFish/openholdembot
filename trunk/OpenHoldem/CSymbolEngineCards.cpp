@@ -97,27 +97,24 @@ void CSymbolEngineCards::ResetOnHandreset()
 }
 
 void CSymbolEngineCards::ResetOnNewRound()
-{
-	betround = p_betround_calculator->betround();
-}
+{}
 
 void CSymbolEngineCards::ResetOnMyTurn()
 {}
 
 void CSymbolEngineCards::ResetOnHeartbeat()
 {
-	_userchair = p_symbol_engine_userchair->userchair();
 	CalcPocketTests();
 	CalculateCommonCards();
 	CalculateHandTests();
 	CalcFlushesStraightsSets();
 	CalcUnknownCards();
 }
-
+//!!!!!
 bool CSymbolEngineCards::BothPocketCardsKnown()
 {
-	return (p_scraper_access->IsKnownCard(p_scraper->card_player(_userchair, 0))
-		&& p_scraper_access->IsKnownCard(p_scraper->card_player(_userchair, 1)));
+	return (p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, 0))
+		&& p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, 1)));
 }
 
 void CSymbolEngineCards::CalcPocketTests()
@@ -131,18 +128,18 @@ void CSymbolEngineCards::CalcPocketTests()
 		return;
 	}
 
-	if (StdDeck_RANK(p_scraper->card_player(_userchair, 0)) 
-			== StdDeck_RANK(p_scraper->card_player(_userchair, 1)))
+	if (StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 0)) 
+			== StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 1)))
 	{
 		_ispair = true;															
 	}
-	if (StdDeck_SUIT(p_scraper->card_player(_userchair, 0)) 
-		== StdDeck_SUIT(p_scraper->card_player(_userchair, 1)))
+	if (StdDeck_SUIT(p_scraper->card_player(USER_CHAIR, 0)) 
+		== StdDeck_SUIT(p_scraper->card_player(USER_CHAIR, 1)))
 	{
 		_issuited = true;														
 	}
-	if (abs(int(StdDeck_RANK(p_scraper->card_player(_userchair, 0))  
-		- StdDeck_RANK(p_scraper->card_player(_userchair, 1)))) == 1)
+	if (abs(int(StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 0))  
+		- StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 1)))) == 1)
 	{
 		_isconnector = true;														
 	}
@@ -238,7 +235,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(plCards);
 	for (i=0; i<k_number_of_cards_per_player; i++)
 	{
-		int card = p_scraper->card_player(_userchair, i);
+		int card = p_scraper->card_player(USER_CHAIR, i);
 		if (p_scraper_access->IsKnownCard(card))
 		{
 			CardMask_SET(plCards, card);
@@ -595,11 +592,11 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		int card = p_scraper->card_player(_userchair, i);
+		int card = p_scraper->card_player(USER_CHAIR, i);
 		if (p_scraper_access->IsKnownCard(card))
 		{
-			int rank = GetRankFromCard(p_scraper->card_player(_userchair, i));
-			int suit = GetSuitFromCard(p_scraper->card_player(_userchair, i));
+			int rank = GetRankFromCard(p_scraper->card_player(USER_CHAIR, i));
+			int suit = GetSuitFromCard(p_scraper->card_player(USER_CHAIR, i));
 
 			AssertRange(rank, 0, k_rank_ace);
 			AssertRange(suit, 0, WH_SUIT_SPADES);
@@ -700,7 +697,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 				handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 				CardMask_UNSET(commonCards, i);
 
-				if (betround < k_betround_river 
+				if (BETROUND < k_betround_river 
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
 					&& p_symbol_engine_pokerval->CalculatePokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval()
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))

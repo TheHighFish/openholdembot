@@ -38,12 +38,6 @@ private:
 	int _betposition;
 	int _dealposition;
 	int _callposition;
-private:
-	int _dealerchair; 
-	int _userchair;
-	int _raischair;
-	int _playersdealtbits;
-	int _playersplayingbits;
 } *p_symbol_engine_positions;
 
 #endif INC_CSYMBOLENGINEPOSITIONS_H

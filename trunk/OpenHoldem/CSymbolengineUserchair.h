@@ -3,6 +3,8 @@
 
 #include "CVirtualSymbolEngine.h"
 
+#define USER_CHAIR p_symbol_engine_userchair->userchair()
+
 extern class CSymbolEngineUserchair: public CVirtualSymbolEngine
 {
 public:
