@@ -41,8 +41,6 @@ private:
 	double _prlosnow;
 private:
 	int _nopponents_for_prwin;
-private:
-	int userchair;
 } *p_symbol_engine_prwin;
 
 #endif INC_CSYMBOLENGINEPRWIN_H

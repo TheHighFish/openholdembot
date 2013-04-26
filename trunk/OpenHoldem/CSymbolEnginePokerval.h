@@ -120,9 +120,6 @@ private:
 private:
 	int nCards;
 	HandVal	handval; 
-private:
-	int userchair;
-	int betround;
 } *p_symbol_engine_pokerval;
 
 #endif INC_CSYMBOLENGINEPOKERVAL_H

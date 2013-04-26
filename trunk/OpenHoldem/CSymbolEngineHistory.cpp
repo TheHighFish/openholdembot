@@ -17,8 +17,6 @@ CSymbolEngineHistory::CSymbolEngineHistory()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_userchair != NULL);
-
-	_betround = k_betround_preflop;
 }
 
 CSymbolEngineHistory::~CSymbolEngineHistory()
@@ -36,8 +34,6 @@ void CSymbolEngineHistory::ResetOnConnection()
 
 void CSymbolEngineHistory::ResetOnHandreset()
 {
-	_betround = k_betround_preflop; 
-
 	// Element 0 is unused
 	for (int i=0; i<(k_number_of_betrounds+1); i++)
 	{
@@ -58,16 +54,15 @@ void CSymbolEngineHistory::ResetOnMyTurn()
 
 void CSymbolEngineHistory::ResetOnHeartbeat()
 {
-	_betround = p_betround_calculator->betround();
 	CalculateHistory();
 }
 
 
 void CSymbolEngineHistory::CalculateHistory()
 {
-	if (_nplayersround[_betround] == 0)
+	if (_nplayersround[BETROUND] == 0)
 	{
-		_nplayersround[_betround] = 
+		_nplayersround[BETROUND] = 
 			p_symbol_engine_active_dealt_playing->nplayersplaying();
 	}
 
@@ -91,8 +86,8 @@ void CSymbolEngineHistory::CalculateHistory()
 	{
 		maxbet /= p_tablelimits->bet();
 	}
-	if (maxbet > _nbetsround[_betround])
+	if (maxbet > _nbetsround[BETROUND])
 	{
-		_nbetsround[_betround] = maxbet;									// nbetsroundx
+		_nbetsround[BETROUND] = maxbet;									// nbetsroundx
 	}
 }
