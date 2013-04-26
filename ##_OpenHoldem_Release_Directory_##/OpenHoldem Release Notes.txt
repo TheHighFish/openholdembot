@@ -1,3 +1,13 @@
+v4.1.1 2013-05-xx
+==================
+NEW STUFF:
+- New test-selection-method "Triple Click" for swagging to support 
+  some casinos with bad user-interfaces that don't react to double-clicks.
+  The complete list of text-selection-methods:
+  'Sgl Click', 'Dbl Click', 'Triple Click', 'Click Drag' and 'Nothing'.
+  Thanks to Mesta for providing the patch.
+  [THF]
+
 v4.1.0 2013-04-23
 ==================
 NEW STUFF:
