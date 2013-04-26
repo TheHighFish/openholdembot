@@ -31,14 +31,11 @@ void CSymbolEnginePokerval::InitOnStartup()
 
 void CSymbolEnginePokerval::ResetOnConnection()
 {
-	betround = k_betround_preflop;
 	_isroyalflush = false;
 }
 
 void CSymbolEnginePokerval::ResetOnHandreset()
 {
-	userchair = p_symbol_engine_userchair->userchair();
-
 	for (int i=0; i<k_number_of_betrounds; i++)
 	{
 		_phandval[i] = 0;
@@ -53,17 +50,12 @@ void CSymbolEnginePokerval::ResetOnNewRound()
 {}
 
 void CSymbolEnginePokerval::ResetOnMyTurn()
-{
-	betround = p_betround_calculator->betround();
-}
+{}
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()
 {
-	userchair = p_symbol_engine_userchair->userchair();
 	CalculateRankBits();
 	CalcPokerValues();
-	// [nik0] no need to call it as it's called from CalcPokerValues() already, and after CalcPokerValues handval is not correct anymore
-//	CalculateHandType();
 }
 
 
@@ -78,11 +70,11 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	CardMask_RESET(Cards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		// player cards
-		if (p_scraper->card_player(userchair, i) != CARD_BACK &&
-			p_scraper->card_player(userchair, i) != CARD_NOCARD)
+		// player cards!!!!!
+		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK &&
+			p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
 		{
-			CardMask_SET(Cards, p_scraper->card_player(userchair, i));
+			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
 			nCards++;
 		}
 	}
@@ -102,18 +94,18 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 	_pcbits = 0;
 	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
-	  	p_scraper->card_player(userchair, 0), 
-		p_scraper->card_player(userchair, 1));
+	  	p_scraper->card_player(USER_CHAIR, 0), 
+		p_scraper->card_player(USER_CHAIR, 1));
 
 	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
 	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
 	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] nCards = %i\n", nCards);
 	write_log(prefs.debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
-	_phandval[betround-1] = _pokerval & 0xff000000; 
+	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
 
-	if (betround > k_betround_preflop
-		&& _phandval[betround-1] > _phandval[betround-2])
+	if (BETROUND > k_betround_preflop
+		&& _phandval[BETROUND-1] > _phandval[BETROUND-2])
 	{
 		_ishandup = true;														
 	}
@@ -127,11 +119,11 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		if (p_scraper->card_player(userchair, i) != CARD_BACK 
-			&& p_scraper->card_player(userchair, i) != CARD_NOCARD 
-			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_player(userchair, i)) )
+		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK 
+			&& p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD 
+			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_player(USER_CHAIR, i)) )
 		{
-			CardMask_SET(Cards, p_scraper->card_player(userchair, i));
+			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
 			nCards++;
 		}
 	}
@@ -159,9 +151,9 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 	_pokervalcommon = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
 
-		_chandval[betround-1] = _pokervalcommon & 0xff000000; 
-		if (betround > k_betround_preflop 
-			&& _chandval[betround-1] > _chandval[betround-2])
+		_chandval[BETROUND-1] = _pokervalcommon & 0xff000000; 
+		if (BETROUND > k_betround_preflop 
+			&& _chandval[BETROUND-1] > _chandval[BETROUND-2])
 		{
 			_ishandupcommon = true;
 		}
@@ -304,11 +296,11 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(userchair, i) != CARD_BACK && 
-			p_scraper->card_player(userchair, i) != CARD_NOCARD)
+		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK && 
+			p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
 		{
-			CardMask_SET(plCards, p_scraper->card_player(userchair, i));
-			CardMask_SET(plcomCards, p_scraper->card_player(userchair, i));
+			CardMask_SET(plCards, p_scraper->card_player(USER_CHAIR, i));
+			CardMask_SET(plcomCards, p_scraper->card_player(USER_CHAIR, i));
 		}
 	}
 
@@ -551,10 +543,10 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_RESET(Cards);
 		for (i=0; i<k_number_of_cards_per_player; i++)
 		{
-			if (p_scraper->card_player(userchair, i) != CARD_BACK && 
-				p_scraper->card_player(userchair, i) != CARD_NOCARD)
+			if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK && 
+				p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
 			{
-				CardMask_SET(Cards, p_scraper->card_player(userchair, i));
+				CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
 			}
 		}
 

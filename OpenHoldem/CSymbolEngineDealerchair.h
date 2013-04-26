@@ -25,7 +25,6 @@ private:
 	void CalculateDealerChair();
 private:
 	int _dealerchair;
-	int nchairs;
 } *p_symbol_engine_dealerchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

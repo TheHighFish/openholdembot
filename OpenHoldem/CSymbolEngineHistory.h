@@ -2,6 +2,7 @@
 #define INC_CSYMBOLENGINEHISTORY_H
 
 #include "CVirtualSymbolEngine.h"
+#include "CBetroundCalculator.h"
 #include "CSymbolEngineUserChair.h"
 
 extern class CSymbolEngineHistory: public CVirtualSymbolEngine
@@ -26,8 +27,8 @@ public:
 			return false;
 		}
 		// Not considering fold or allin, because the game would be over.
-		return (didchec(_betround) || didcall(_betround) 
-			|| didswag(_betround) || didrais(_betround));
+		return (didchec(BETROUND) || didcall(BETROUND) 
+			|| didswag(BETROUND) || didrais(BETROUND));
 	}
 public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
@@ -52,8 +53,6 @@ private:
 	bool _didcall[k_number_of_betrounds + 1];
 	bool _didrais[k_number_of_betrounds + 1];
 	bool _didswag[k_number_of_betrounds + 1];
-private:
-	int _betround;
 } *p_symbol_engine_history;
 
 #endif INC_CSYMBOLENGINEHISTORY_H

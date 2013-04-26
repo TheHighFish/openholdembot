@@ -27,7 +27,6 @@ void CSymbolEngineDealerchair::InitOnStartup()
 void CSymbolEngineDealerchair::ResetOnConnection()
 {
 	_dealerchair = k_undefined;
-	nchairs = p_tablemap->nchairs();
 }
 
 void CSymbolEngineDealerchair::ResetOnHandreset()
@@ -41,8 +40,9 @@ void CSymbolEngineDealerchair::ResetOnMyTurn()
 
 void CSymbolEngineDealerchair::ResetOnHeartbeat()
 {
-	write_log(prefs.debug_symbolengine(), "nchairs: %d\n", nchairs);
-	for (int i=0; i < nchairs; i++)
+	write_log(prefs.debug_symbolengine(), "nchairs: %d\n", 
+		p_tablemap->nchairs());
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->dealer(i))
 		{

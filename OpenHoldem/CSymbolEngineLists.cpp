@@ -27,9 +27,7 @@ void CSymbolEngineLists::ResetOnConnection()
 {}
 
 void CSymbolEngineLists::ResetOnHandreset()
-{
-	userchair = p_symbol_engine_userchair->userchair();
-}
+{}
 
 void CSymbolEngineLists::ResetOnNewRound()
 {}
@@ -51,16 +49,16 @@ void CSymbolEngineLists::CalculateLists()
 
 	unsigned int	card0, card1;
 
-	if (StdDeck_RANK(p_scraper->card_player(userchair, 0)) 
-		>= StdDeck_RANK(p_scraper->card_player(userchair, 1)))
+	if (StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 0)) 
+		>= StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 1)))
 	{
-		card0 = p_scraper->card_player(userchair, 0);
-		card1 = p_scraper->card_player(userchair, 1);
+		card0 = p_scraper->card_player(USER_CHAIR, 0);
+		card1 = p_scraper->card_player(USER_CHAIR, 1);
 	}
 	else
 	{
-		card0 = p_scraper->card_player(userchair, 1);
-		card1 = p_scraper->card_player(userchair, 0);
+		card0 = p_scraper->card_player(USER_CHAIR, 1);
+		card1 = p_scraper->card_player(USER_CHAIR, 0);
 	}
 
 	int number_of_lists = p_formula->formula()->mHandList.GetSize();

@@ -35,7 +35,6 @@ void CSymbolEnginePrwin::ResetOnConnection()
 
 void CSymbolEnginePrwin::ResetOnHandreset()
 {
-	userchair = p_symbol_engine_userchair->userchair();
 	ResetOnNewRound();
 }
 
@@ -69,9 +68,9 @@ void CSymbolEnginePrwin::CalculateNhands()
 	nplCards = 0;
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_player(userchair, i)))
+		if (p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, i)))
 		{
-			CardMask_SET(plCards, p_scraper->card_player(userchair, i));
+			CardMask_SET(plCards, p_scraper->card_player(USER_CHAIR, i));
 			nplCards++;
 		}
 	}
