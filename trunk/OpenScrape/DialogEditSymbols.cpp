@@ -130,15 +130,19 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 	m_Name.GetWindowText(s);
 	m_Value.GetWindowText(v);
 
-	if (s=="swagselectionmethod")
+	if (s == "swagselectionmethod")
 	{
-		if (v!="Sgl Click" && v!="Dbl Click" && v!="Click Drag")
-			MessageBox("Valid values for swagselectionmethod are:\n"
-			           "'Sgl Click', 'Dbl Click' and 'Click Drag'",
-					   "Invalid value", MB_OK);
+		if (v != "Sgl Click" 
+			&& v!= "Dbl Click" 
+			&& v!= "Triple Click"
+			&& v!= "Click Drag"
+			&& v!= "Nothing")
+			MessageBox(
+				"Valid values for swagselectionmethod are:\n"
+				"'Sgl Click', 'Dbl Click', 'Triple Click', 'Click Drag' and 'Nothing'.",
+				"Invalid value", MB_OK);
 	}
-	
-	else if (s=="swagdeletionmethod")
+	else if (s == "swagdeletionmethod")
 	{
 		if (v!="Delete" && v!="Backspace")
 			MessageBox("Valid values for swagdeletionmethod are:\n"
