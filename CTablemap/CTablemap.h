@@ -157,6 +157,7 @@ public:
 									  CString s=it->second.text;
 									  if (s.MakeLower() == "sgl click") return TEXTSEL_SINGLECLICK;
 									  else if (s.MakeLower() == "dbl click") return TEXTSEL_DOUBLECLICK;
+									  else if (s.MakeLower() == "triple click") return TEXTSEL_TRIPLECLICK;
 									  else if (s.MakeLower() == "click drag") return TEXTSEL_CLICKDRAG;
 									  else if (s.MakeLower() == "nothing") return TEXTSEL_NOTHING;
 									  else return TEXTSEL_DOUBLECLICK; }

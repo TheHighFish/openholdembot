@@ -1827,14 +1827,6 @@
 				Name="PokerTracker"
 				>
 				<File
-					RelativePath=".\PokerTracker_Queries\AdvancedStats.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker_Queries\BaiscStats.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerTrackerThread.h"
 					>
 				</File>
