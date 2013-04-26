@@ -2,6 +2,7 @@
 #define INC_CSYMBOLENGINERAISERSCALLERS_H
 
 #include "CVirtualSymbolEngine.h"
+#include "CBetroundCalculator.h"
 #include "NumericalFunctions.h"
 
 extern class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
@@ -60,7 +61,7 @@ public:
 	}
 public:
 	int nplayerscallshort()		{ return _nplayerscallshort; }
-	int nopponentsraising()		{ return bitcount(_raisbits[_betround]); }
+	int nopponentsraising()		{ return bitcount(_raisbits[BETROUND]); }
 	int nopponentsbetting()		{ return _nopponentsbetting; }
 	int nopponentsfolded()		{ return _nopponentsfolded; }
 	int nopponentscalling()		{ return _nopponentscalling; }
@@ -89,12 +90,7 @@ private:
 	int _foldbits[k_number_of_betrounds + 1];
 	int _callbits[k_number_of_betrounds + 1]; 
 private:
-	int _dealerchair; 
-	int _userchair;
-	int _nchairs;
 	int _raischair_previous_frame;
-	int _betround;
-	int _playersdealtbits;
 } *p_symbol_engine_raisers_callers;
 
 #endif INC_CSYMBOLENGINERAISERSCALLERS_H

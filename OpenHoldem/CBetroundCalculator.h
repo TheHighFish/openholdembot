@@ -6,6 +6,8 @@
 // by the symbol-engine-container / all other symbol-engines
 // in advance (just like hand-resets).
 
+#define BETROUND p_betround_calculator->betround()
+
 extern class CBetroundCalculator
 {
 public:

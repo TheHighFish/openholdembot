@@ -123,8 +123,6 @@ private:
 	double _ncallbets;
 	double _nraisbets;
 private:
-	int _nchairs;
-	int _userchair;
 } *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

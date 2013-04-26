@@ -58,8 +58,6 @@ void CSymbolEngineHandrank::ResetOnConnection()
 
 void CSymbolEngineHandrank::ResetOnHandreset()
 {
-	_userchair = p_symbol_engine_userchair->userchair();
-
 	_handrank169  = 0;
 	_handrank2652 = 0;
 	_handrank1326 = 0;
@@ -76,8 +74,8 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 
 	// Get a string containing the players' current cards
 	GetCardstring(cardstr, 
-		p_scraper->card_player(_userchair, 0), 
-		p_scraper->card_player(_userchair, 1));
+		p_scraper->card_player(USER_CHAIR, 0), 
+		p_scraper->card_player(USER_CHAIR, 1));
 
 	// if nopponents<1 or >9 then default to a sane value
 	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();

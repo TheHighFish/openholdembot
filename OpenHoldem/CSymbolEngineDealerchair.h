@@ -3,6 +3,8 @@
 
 #include "CVirtualSymbolEngine.h"
 
+#define DEALER_CHAIR p_symbol_engine_dealerchair->dealerchair()
+
 extern class CSymbolEngineDealerchair: public CVirtualSymbolEngine
 {
 public:
@@ -18,7 +20,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	int dealerchair()			{ return _dealerchair; }
+	inline int dealerchair()			{ return _dealerchair; }
 private:
 	void CalculateDealerChair();
 private:

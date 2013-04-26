@@ -26,7 +26,6 @@ void CSymbolEngineChipAmounts::ResetOnConnection()
 
 	_maxbalance = k_undefined;
 	_balanceatstartofsession = k_undefined;
-	_nchairs = p_tablemap->nchairs();
 }
 
 void CSymbolEngineChipAmounts::ResetOnHandreset()
@@ -53,8 +52,6 @@ void CSymbolEngineChipAmounts::ResetOnMyTurn()
 
 void CSymbolEngineChipAmounts::ResetOnHeartbeat()
 {
-	_userchair = p_symbol_engine_userchair->userchair();
-
 	CalculateBalances();
 	CalculateStacks();
 	CalculateCurrentbets();
@@ -68,7 +65,7 @@ void CSymbolEngineChipAmounts::SetBalance(const int player, const double d)
 	assert(player >= 0);
 	assert(player < k_max_number_of_players);
 	_balance[player] = d;
-	if (player == _userchair) 
+	if (player == USER_CHAIR) 
 	{
 		SetMaxBalanceConditionally(d);
 		SetBalanceAtStartOfSessionConditionally(d);
@@ -95,7 +92,7 @@ void CSymbolEngineChipAmounts::CalculateBalances()
 {
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		if (i < _nchairs)
+		if (i < p_tablemap->nchairs())
 		{
 			SetBalance(i, p_scraper->player_balance(i));
 		}
@@ -109,7 +106,7 @@ void CSymbolEngineChipAmounts::CalculateBalances()
 void CSymbolEngineChipAmounts::CalculateStacks()
 {
 	// simple bubble sort for 10 stack values
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper_access->PlayerHasCards(i))
 		{
@@ -120,9 +117,9 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 			_stack[i] = 0;
 		}
 	}
-	for (int i=0; i<_nchairs-1; i++)
+	for (int i=0; i<p_tablemap->nchairs()-1; i++)
 	{
-		for (int j=i+1; j<_nchairs; j++)
+		for (int j=i+1; j<p_tablemap->nchairs(); j++)
 		{
 			if (_stack[i] < _stack[j])
 			{
@@ -130,11 +127,11 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 			}
 		}
 	}
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		assert(_stack[i] >= 0);									
 	}
-	for (int i=_nchairs; i<k_max_number_of_players; i++)
+	for (int i=p_tablemap->nchairs(); i<k_max_number_of_players; i++)
 	{
 		_stack[i] = 0;
 	}
@@ -142,7 +139,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 
 void CSymbolEngineChipAmounts::CalculateCurrentbets()
 {
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		_currentbet[i] = p_scraper->player_bet(i); 
 	}
@@ -153,7 +150,7 @@ void CSymbolEngineChipAmounts::CalculatePots()
 	_pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		_potplayer += _currentbet[i];							
 	}
@@ -193,7 +190,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	if (p_symbol_engine_userchair->userchair_confirmed())
 		
 	{
-		_call = largest_bet - _currentbet[_userchair];
+		_call = largest_bet - _currentbet[USER_CHAIR];
 	}
 	else
 	{
@@ -201,7 +198,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	}
 
 	next_largest_bet = 0;
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (_currentbet[i] != largest_bet 
 			&& _currentbet[i] > next_largest_bet)
@@ -214,7 +211,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
 		_sraimin = largest_bet + _call;
-		_sraimax = _balance[_userchair] - _call;
+		_sraimax = _balance[USER_CHAIR] - _call;
 		if (_sraimax < 0)
 		{
 			_sraimax = 0;
@@ -241,7 +238,7 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise()
 double CSymbolEngineChipAmounts::Largestbet()
 {
 	double largest_bet = 0.0;
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (_currentbet[i] > largest_bet) 
 		{

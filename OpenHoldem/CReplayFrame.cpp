@@ -217,7 +217,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		text = "      <td>";
 		text +=	(p_symbol_engine_active_dealt_playing->playersseatedbits() & (1<<i)) ? "s" : "-";
 		text +=	(p_symbol_engine_active_dealt_playing->playersactivebits() & (1<<i)) ? "a" : "-";
-		text +=	(p_symbol_engine_dealerchair->dealerchair() == i) ? "b" : "-";
+		text +=	(DEALER_CHAIR == i) ? "b" : "-";
 		text +=	(p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<i)) ? "d" : "-";
 		text +=	(p_symbol_engine_active_dealt_playing->playersplayingbits() & (1<<i)) ? "p" : "-";
 		text += "</td>\n";

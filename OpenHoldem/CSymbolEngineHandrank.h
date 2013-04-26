@@ -31,8 +31,6 @@ private:
 	double _handrank1326;
 	double _handrank1000;
 	double _handrankp;
-private:
-	int _userchair;
 } *p_symbol_engine_handrank;
 
 #endif INC_CSYMBOLENGINEHANDRANK_H

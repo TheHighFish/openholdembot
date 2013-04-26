@@ -32,11 +32,6 @@ private:
 private:
 	int _playersblindbits;
 	int _bblindbits;
-private:
-	int _nplayersdealt;
-	int _playersplayingbits;
-	int _dealerchair;
-	int _userchair;
 } *p_symbol_engine_blinds;
 
 #endif INC_CSYMBOLENGINEBLINDS_H

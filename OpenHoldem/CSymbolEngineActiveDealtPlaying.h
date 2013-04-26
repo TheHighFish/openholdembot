@@ -2,6 +2,7 @@
 #define INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
 
 #include "CVirtualSymbolEngine.h"
+#include "CSymbolEngineUserchair.h"
 #include "NumericalFunctions.h"
 
 extern class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine
@@ -41,7 +42,7 @@ public:
 public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
-	int userchairbit()				{ return 1 << _userchair; }
+	int userchairbit()				{ return 1 << USER_CHAIR; }
 private:
 	void CalculateActiveBits();
 	void CalculatePlayingBits();
@@ -52,11 +53,6 @@ private:
 	int _playersplayingbits;
 	int _playersdealtbits;
 	int _playersseatedbits;
-private:
-	int _userchair;
-	int _dealerchair;
-	int _nchairs;
-	double _bblind;
 } *p_symbol_engine_active_dealt_playing;
 
 #endif INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H

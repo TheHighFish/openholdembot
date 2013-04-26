@@ -116,9 +116,6 @@ private:
 	int _$$cc[k_number_of_community_cards];
 	int _$$cr[k_number_of_community_cards];
 	int _$$cs[k_number_of_community_cards];
-private:
-	int _userchair; 
-	int betround; 
 } *p_symbol_engine_cards;
 
 #endif INC_CSYMBOLENGINECARDS_H

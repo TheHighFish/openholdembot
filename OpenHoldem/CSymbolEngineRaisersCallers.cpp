@@ -24,8 +24,6 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
-	
-	_betround = k_betround_preflop;
 }
 
 CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
@@ -36,7 +34,6 @@ void CSymbolEngineRaisersCallers::InitOnStartup()
 
 void CSymbolEngineRaisersCallers::ResetOnConnection()
 {
-	_nchairs = p_tablemap->nchairs();
 	_raischair_previous_frame = k_undefined;
 	
 	ResetOnHandreset();
@@ -44,8 +41,6 @@ void CSymbolEngineRaisersCallers::ResetOnConnection()
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
 {
-	_userchair = p_symbol_engine_userchair->userchair();
-
 	// callbits, raisbits, etc.
 	for (int i=k_betround_preflop; i<=k_betround_river; i++)
 	{
@@ -60,10 +55,6 @@ void CSymbolEngineRaisersCallers::ResetOnNewRound()
 
 void CSymbolEngineRaisersCallers::ResetOnMyTurn()
 {
-	_dealerchair      = p_symbol_engine_dealerchair->dealerchair();
-	_betround         = p_betround_calculator->betround();
-	_playersdealtbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
-
 	CalculateRaisers();
 	CalculateCallers();
 }
@@ -77,7 +68,7 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
 	_raischair = k_undefined;
-	_raisbits[_betround] = 0;
+	_raisbits[BETROUND] = 0;
 
 	// Raischair, nopponentsraising, raisbits
 	//
@@ -93,8 +84,8 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		{
 			last_bet = current_players_bet;
 			_raischair = i % p_tablemap->nchairs();
-			int new_raisbits = _raisbits[_betround] | k_exponents[i%p_tablemap->nchairs()];
-			_raisbits[_betround] = new_raisbits;
+			int new_raisbits = _raisbits[BETROUND] | k_exponents[i%p_tablemap->nchairs()];
+			_raisbits[BETROUND] = new_raisbits;
 		}
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
@@ -108,7 +99,7 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	// after the aggressor as the first bettor.
 	// Then start a circular search for callers.
 
-	_callbits[_betround] = 0;
+	_callbits[BETROUND] = 0;
 	_nopponentscalling = 0;
 
 	int FirstBettor = _raischair;
@@ -133,8 +124,8 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 		// Exact match required. Players being allin don't count as callers.
 		if ((p_scraper->player_bet(i%p_tablemap->nchairs()) == CurrentBet) && (CurrentBet > 0))
 		{
-			int new_callbits = _callbits[_betround] | k_exponents[i%p_tablemap->nchairs()];
-			_callbits[_betround] = new_callbits;
+			int new_callbits = _callbits[BETROUND] | k_exponents[i%p_tablemap->nchairs()];
+			_callbits[BETROUND] = new_callbits;
 			_nopponentscalling++;
 		}
 		else if (p_scraper->player_bet(i%p_tablemap->nchairs()) > CurrentBet)
@@ -143,7 +134,7 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 		}
 	}
 
-	AssertRange(_callbits[_betround], 0, k_bits_all_ten_players_1_111_111_111);
+	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
 	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
 }
 
@@ -156,12 +147,12 @@ int CSymbolEngineRaisersCallers::FirstPossibleRaiser()
 	if (p_symbol_engine_history->DidAct())
 	{
 		// Counting raises behind me
-		first_possible_raiser = (_userchair + 1) % p_tablemap->nchairs();
+		first_possible_raiser = (USER_CHAIR + 1) % p_tablemap->nchairs();
 	}
 	else
 	{
 		// Start with the player after last known raiser
-		first_possible_raiser = (_dealerchair + 1) % p_tablemap->nchairs();
+		first_possible_raiser = (DEALER_CHAIR + 1) % p_tablemap->nchairs();
 	}
 	return first_possible_raiser;
 }
@@ -180,7 +171,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	_nopponentsfolded   = 0;
 	_nopponentschecking = 0;
 
-	for (int i=0; i<_nchairs; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet < RaisersBet()
@@ -188,7 +179,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 		{
 			_nplayerscallshort++;
 		}
-		if (i == _userchair)
+		if (i == USER_CHAIR)
 		{
 			// No opponent;
 			// Nothing more to do
@@ -199,7 +190,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 			_nopponentsbetting++;
 		}
 		// Players might have been betting, but folded, so no else for the if
-		if ((_playersdealtbits & (1<<(i)))
+		if ((p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<(i)))
 			&& ((p_scraper->card_player(i, 0) == CARD_NOCARD)
 				|| (p_scraper->card_player(i, 1) == CARD_NOCARD)))
 		{
@@ -248,21 +239,21 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 		}
 	}
 	// remove players, who didn't get dealt.
-	new_foldbits &= int(_playersdealtbits);
+	new_foldbits &= p_symbol_engine_active_dealt_playing->playersdealtbits();
 
 	// remove players, who folded in earlier betting-rounds.
-	if (_betround >= k_betround_flop)
+	if (BETROUND >= k_betround_flop)
 	{
 		new_foldbits &= (~_foldbits[k_betround_preflop]);
 	}
-	if (_betround >= k_betround_turn)
+	if (BETROUND >= k_betround_turn)
 	{
 		new_foldbits &= (~_foldbits[k_betround_flop]);
 	}
-	if (_betround >= k_betround_river)   
+	if (BETROUND >= k_betround_river)   
 	{
 		new_foldbits &= (~_foldbits[k_betround_turn]);
 	}
-	_foldbits[_betround] = new_foldbits;
+	_foldbits[BETROUND] = new_foldbits;
 }
 
