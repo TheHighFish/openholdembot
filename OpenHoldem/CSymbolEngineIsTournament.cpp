@@ -22,6 +22,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineTime.h"
 #include "CTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
@@ -93,6 +94,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_time != NULL);
 }
 
 CSymbolEngineIsTournament::~CSymbolEngineIsTournament()
@@ -203,7 +205,10 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	}
 	// If we have more than 2 hands played we should be sure
 	// and stick to our decision, whatever it is (probably cash-game).
-	if (p_game_state->hands_played() > 2)
+	// Also checking for (elapsedauto < elapsed). i.e. at least one action
+	// since connection, as handsplayed does not reset if we play multiple games.
+	if ((p_game_state->hands_played() > 2)
+		&& (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed()))
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
 		_decision_locked = true;

@@ -140,7 +140,7 @@ public:
 
 public:
 	/* commonly used strings */
-	const int nchairs()				{ SMapCI it = _s$.find("nchairs"); 
+	inline const int nchairs()		{ SMapCI it = _s$.find("nchairs"); 
 									  if (it==_s$.end()) return 10;
 									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
 									  return (n>=2 && n<=10) ? n : 10; }
