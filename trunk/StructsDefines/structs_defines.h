@@ -86,19 +86,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define MAX_CHIPS_PER_STACK	20
 #define MAX_CHIP_STACKS		10
 
-
-// SWAG options
-#define TEXTSEL_SINGLECLICK	1
-#define TEXTSEL_DOUBLECLICK	2
-#define TEXTSEL_CLICKDRAG	3
-#define TEXTSEL_NOTHING		4
-#define TEXTDEL_DELETE		1
-#define TEXTDEL_BACKSPACE	2
-#define TEXTDEL_NOTHING		3
-#define BETCONF_ENTER		1
-#define BETCONF_CLICKBET	2
-#define BETCONF_NOTHING		3
-
 // Button click options
 #define BUTTON_SINGLECLICK	1
 #define BUTTON_DOUBLECLICK	2
