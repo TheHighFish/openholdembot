@@ -239,7 +239,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %i\n", p_symbol_engine_userchair->userchair_confirmed());
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] iswait: %i\n", iswait);
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
-		if (p_autoplayer->autoplayer_engaged() && p_symbol_engine_userchair->userchair_confirmed() && !iswait)
+		if (p_autoplayer->autoplayer_engaged() && !iswait)
 		{
 			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 			p_autoplayer->DoAutoplayer();
