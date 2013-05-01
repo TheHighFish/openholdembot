@@ -107,7 +107,7 @@ void CSymbolEngineIsTournament::InitOnStartup()
 
 void CSymbolEngineIsTournament::ResetOnConnection()
 {
-	_istournament    = false;
+	_istournament    = k_undefined;
 	_decision_locked = false;
 }
 
@@ -195,7 +195,10 @@ bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament()
 
 void CSymbolEngineIsTournament::TryToDetectTournament()
 {
-	write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s%s", Bool2CString(_istournament), "\n");
+	if (_istournament != k_undefined)
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
+	else
+		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = unknown\n");
 	// Don't do anything if we are already sure.
 	// Don't mix things up.
 	if (_decision_locked)
@@ -207,7 +210,8 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// and stick to our decision, whatever it is (probably cash-game).
 	// Also checking for (elapsedauto < elapsed). i.e. at least one action
 	// since connection, as handsplayed does not reset if we play multiple games.
-	if ((p_game_state->hands_played() > 2)
+	if ((_istournament != k_undefined)
+		&& (p_game_state->hands_played() > 2)
 		&& (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed()))
 	{
 		write_log(prefs.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
