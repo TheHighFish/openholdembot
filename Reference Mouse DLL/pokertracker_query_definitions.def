@@ -1,4 +1,4 @@
-LIBRARY	mouse
+LIBRARY	pokertracker_query_definitions
 EXPORTS
    ProcessMessage    @1
    MouseClick        @2
