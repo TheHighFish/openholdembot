@@ -198,9 +198,9 @@ void CHandHistory::checkBetround()
 
 	//Precondition: Has iterated through all players OR bblind has checked and hasn't been run and flop cards visible
 	if ((_history.whosturn == ((_history.last_player_to_act+1)%nchairs)||allChecks[0])
-		&&flopSeen
-		&&showdownReady
-		&&showdownSeen
+			&&flopSeen==false
+			&&showdownReady==false
+			&&showdownSeen==false
 		&&card_common[0][1]!= NULL&&card_common[1][1]!= NULL&&card_common[2][1]!= NULL)
 	{
 		if (allChecks[0]) 
@@ -212,10 +212,10 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players OR players checked and hasn't been run and turn card visible
 	if ((_history.whosturn == ((_history.last_player_to_act+1)%nchairs)||allChecks[1])
-		&&flopSeen
-		&&turnSeen
-		&&showdownReady
-		&&showdownSeen
+		&&flopSeen==true
+		&&turnSeen==false
+		&&showdownReady==false
+		&&showdownSeen==false
 		&&card_common[3][1]!= NULL) //???
 	{
 		turnSeen = true;
@@ -223,10 +223,10 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players OR players checked and hasn't been run and river card visible
 	if ((_history.whosturn == ((_history.last_player_to_act+1)%nchairs)||allChecks[2])
-		&&turnSeen
-		&&riverSeen
-		&&showdownReady
-		&&showdownSeen
+		&&turnSeen==true
+		&&riverSeen==false
+		&&showdownReady==false
+		&&showdownSeen==false
 		&&card_common[4][1]!= NULL)
 	{
 		riverSeen = true;
@@ -234,8 +234,8 @@ void CHandHistory::checkBetround()
 	}
 	//Precondition: Has iterated through all players, hasn't been run, and is showdown
 	if ((_history.whosturn == ((_history.last_player_to_act+1)%nchairs)||allChecks[3])
-		&&riverSeen
-		&&showdownReady
+		&&riverSeen==true
+		&&showdownReady==false
 		&&showdownSeen&&isShowdown())
 	{
 		showdownReady = true;
