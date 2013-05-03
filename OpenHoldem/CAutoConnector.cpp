@@ -275,7 +275,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			p_heartbeat_thread = new CHeartbeatThread;
 			p_scraper_access->InitOnConnect();
-			p_pokertracker_thread->ClearAllStats();
 
 			// Start timer that checks for continued existence of attached HWND
 			PMainframe()->StartTimer();
@@ -290,10 +289,12 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
 
 			WriteLogTableReset();
+
+			p_table_positioner->PositionMyWindow();
+			p_pokertracker_thread->ClearAllStats();
+			p_pokertracker_thread->StartThread();
 		}
 	}
-	p_table_positioner->PositionMyWindow();
-
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);

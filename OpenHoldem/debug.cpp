@@ -521,31 +521,6 @@ void stop_log(void)
     }
 }
 
-void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...) 
-{
-    char		buff[10000] ;
-    va_list		ap;
-    char		nowtime[26];
-	FILE		*fp=NULL;
-
-	if (debug_settings_for_this_message == false)
-		return;
-
-	CString fn = p_filenames->PokerTrackerLogFilename();
-	if ((fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
-	{
-        va_start(ap, fmt);
-        vsprintf_s(buff, 10000, fmt, ap);
-		get_time(nowtime);
-        fprintf(fp, "%s - %s", nowtime, buff);
-
-        va_end(ap);
-
-        fflush(fp);
-		fclose(fp);
-    }
-}
-
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 {
     bool		bMiniDumpSuccessful;

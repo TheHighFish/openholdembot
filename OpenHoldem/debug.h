@@ -19,7 +19,6 @@ void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
 void write_logautoplay(const char * action);
-void write_log_pokertracker(bool debug_settings_for_this_message, char* fmt, ...);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
 extern FILE *log_fp;
