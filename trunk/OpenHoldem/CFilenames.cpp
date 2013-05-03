@@ -130,16 +130,25 @@ CString CFilenames::ReplayHTMLFilename(int frame_number)
 	return path;
 }
 
-CString CFilenames::LogFilename()
+CString CFilenames::LogsDirectory()
 {
 	assert(_startup_path != "");
 	CString path;
-	path.Format("%s\\oh_%lu.log", _startup_path, p_sessioncounter->session_id());
+	path.Format("%s\\logs\\", _startup_path);
+	return path;
+};
+
+CString CFilenames::LogFilename()
+{
+	CString path;
+	path.Format("%s\\oh_%lu.log", LogsDirectory(), p_sessioncounter->session_id());
 	return path;
 }
 
 CString CFilenames::PokerTrackerLogFilename()
 {
+	// !!! Function to be removed
+	assert(false);
 	assert(_startup_path != "");
 	CString path;
 	path.Format("%s\\oh_pt_%lu.log", _startup_path, p_sessioncounter->session_id());

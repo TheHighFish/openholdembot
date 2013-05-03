@@ -7,6 +7,7 @@ public:
 	CString OpenHoldemDirectory();
 	CString IniFilePath();
 	CString TableMapWildcard();
+	CString LogsDirectory();
 	CString LogFilename();
 	CString DebugTabLogFilename();
 	CString PokerTrackerLogFilename();
