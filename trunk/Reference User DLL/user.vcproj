@@ -75,6 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="$(OutDir)\OpenHoldem.lib"
 				OutputFile="$(OutDir)\user.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -171,6 +172,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="$(OutDir)\OpenHoldem.lib"
 				OutputFile="$(OutDir)\user.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
