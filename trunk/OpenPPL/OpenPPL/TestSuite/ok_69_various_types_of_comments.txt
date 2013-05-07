@@ -4,8 +4,15 @@ custom // this is a comment at the end of a line
 preflop
 when others fold force // another comment
 
+/*
+and 
+a 
+              multi-line-comment
+*/
+
+
 flop
-when others fold force
+when others /* comment inbetween */ fold force
 
 turn
 when others fold force

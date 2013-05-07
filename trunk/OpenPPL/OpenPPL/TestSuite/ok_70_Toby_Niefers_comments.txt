@@ -1,8 +1,9 @@
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=14664
-custom // this is a comment at the end of a line
+// Comment below exactly like Toby
+custom 
 
 preflop
-when others fold force // another comment
+when (betround=4 and HaveNuts) RaiseMax FORCE //Any comments
 
 flop
 when others fold force
