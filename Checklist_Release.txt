@@ -1,5 +1,8 @@
 * Change the version
-* Choose the correct build option (optimized for OH, debug for the rest)
+* Choose the correct build option 
+  - optimized for OH
+  - release for Perl (necessary!)
+  - debug for the rest
 * Rebuild everything
 * Test "everything", at least that OH "works"
 * Commit everything
