@@ -114,7 +114,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters)
 			&& ! big_blind_found)
 		{
-			int bet = p_scraper->player_bet(chair_to_consider);
+			double bet = p_scraper->player_bet(chair_to_consider);
 			if (bet > 0)
 			{
 				number_of_blind_posters_found++;
