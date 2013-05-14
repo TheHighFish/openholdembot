@@ -160,6 +160,7 @@ const int F_OK = 0;
 
 // thread timeout
 #define THREAD_WAIT					3000
+const DWORD k_max_time_to_wait_for_thread_to_shutdown = 60000; // milli-seconds
 // "This must not happen."
 // It is better to have a named constant then to write "assert(false);".
 const bool k_this_must_not_happen = false;
