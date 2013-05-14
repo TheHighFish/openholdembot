@@ -252,7 +252,7 @@ void CPokerTrackerThread::StopThread()
 		::SetEvent(_m_stop_thread);
 
 		// Wait until thread finished
-		::WaitForSingleObject(_m_wait_thread, INFINITE);
+		::WaitForSingleObject(_m_wait_thread, k_max_time_to_wait_for_thread_to_shutdown);
 
 		_pt_thread = NULL;
 
