@@ -15,7 +15,7 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 */
 
 int GetNumberOfStats();
-CString GetQueryDefinition(int index, bool istournament);
+CString GetQueryDefinition(int index, bool isomaha, bool istournament);
 CString GetDescription(int index);
 bool IsBasicStat(int index);
 bool IsPositionalPreflopStat(int index);

@@ -39,20 +39,31 @@ int GetNumberOfStats()
 
 // We create queries on the fly, 
 // so that they are usable for both ring-games and tournaments 
-const CString k_ring_game_infix  = " holdem_";
-const CString k_tournament_infix = " tourney_holdem_";
+const CString k_holdem_infix  = " holdem_";
+const CString k_omaha_infix   = " omaha_";
+const CString k_tournament_infix = " tourney_";
 
-CString GetQueryDefinition(int index, bool istournament)
+CString GetQueryDefinition(int index, bool isomaha, bool istournament)
 {
 	AssertRange(index, 0, (k_number_of_pokertracker_stats - 1));
-	if (istournament)
+	CString query = query_definitions[index].first_part_of_query;
+	if (query_definitions[index].needs_infix_and_second_part)
 	{
-		return k_tournament_infix;
+		if (istournament)
+		{
+			query += k_tournament_infix;
+		}
+		if (isomaha)
+		{
+			query += k_omaha_infix;
+		}
+		else
+		{
+			query += k_holdem_infix;
+		}
+		query += query_definitions[index].last_part_of_query;
 	}
-	else
-	{
-		return k_ring_game_infix;
-	}
+	return query;
 }
 
 CString GetDescription(int index)
