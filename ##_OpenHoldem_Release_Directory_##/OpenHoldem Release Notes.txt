@@ -8,6 +8,13 @@ NEW STUFF:
   Thanks to Mesta for providing the patch.
   [THF]
 
+BUG FIXES:
+- Using an inappropriate data-type (int instead of double)
+  could have caused some rounding of betsizes (blinds) to zero 
+  and affected the detection of dealt players.
+  Thanks to Danutzz for finding this bug and suggesting the fix.
+  [THF]
+
 v4.1.0 2013-04-23
 ==================
 NEW STUFF:
