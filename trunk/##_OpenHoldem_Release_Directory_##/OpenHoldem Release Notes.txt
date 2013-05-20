@@ -24,8 +24,9 @@ BUG FIXES:
   Thanks to AleX-YaR for reporting and to SteveMoore and Querty
   for helping to locate the problem.
   [THF]
-- Perl did not work for most users, because it got compiled in debug-configuration,
-  but most users need release-configuration (compatibility with other libraries).
+- Perl did not work for most users, because the callback-DLL 
+  got compiled in debug-configuration, but most users 
+  need release-configuration (compatibility with other libraries).
   This has now been fixed.
   Thanks to Daniel for reporting and to Pingvvino for helping to locate the problem.
   [THF]
