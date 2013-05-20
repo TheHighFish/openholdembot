@@ -31,7 +31,7 @@ void CSymbolEnginePokerval::InitOnStartup()
 
 void CSymbolEnginePokerval::ResetOnConnection()
 {
-	ResetOnHandReset();
+	ResetOnHandreset();
 }
 
 void CSymbolEnginePokerval::ResetOnHandreset()
