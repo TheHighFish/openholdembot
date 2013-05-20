@@ -11,7 +11,6 @@
 #define k_max_chair_number 9
 #define k_advanced_stat_update_every 5
 #define k_min_hands_slower_updates_ring    1000
-#define k_min_hands_slower_updates_tourney 1000
 
 extern class CPokerTrackerLookup
 {

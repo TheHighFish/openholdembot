@@ -165,15 +165,7 @@ char * keywords = // Standard functions
 				  // Poker Tracker ring symbols for the "raischair"
 				  "pt_ricon pt_rhands pt_rpfr pt_raggp pt_raggf pt_raggt pt_raggr "
 				  "pt_raggtot pt_raggtotnopf pt_rfloppct pt_rturnpct pt_rriverpct pt_rvpip pt_rpf_rfi "
-				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts "
-				  // Poker Tracker tournament symbols
-				  "ptt_icon ptt_hands ptt_pfr ptt_aggp ptt_aggf ptt_aggt ptt_aggr "
-				  "ptt_aggtot ptt_aggtotnopf ptt_floppct ptt_turnpct ptt_riverpct ptt_vpip ptt_pf_rfi "
-				  "ptt_pf_cr ptt_pfats ptt_wsdp ptt_wssd ptt_fbbts ptt_fsbts "
-					// Poker Tracker tournament symbols for the "raischair"
-				  "ptt_ricon ptt_rhands ptt_rpfr ptt_raggp ptt_raggf ptt_raggt ptt_raggr "
-				  "ptt_raggtot ptt_raggtotnopf ptt_rfloppct ptt_rturnpct ptt_rriverpct ptt_rvpip ptt_rpf_rfi "
-				  "ptt_rpf_cr ptt_rpfats ptt_rwsdp ptt_rwssd ptt_rfbbts ptt_rfsbts ";
+				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts ";
 
 #define ID_SCIN_SIZERBAR 5555
 
@@ -3279,51 +3271,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "pt_rfcbetflop", "Poker Tracker folded while facing cbet preflop pct for raise chair ");
 	AddSymbol(parent, "pt_rfcbetturn", "Poker Tracker folded while facing cbet turn pct for raise chair ");
 	AddSymbol(parent, "pt_rfcbetriver", "Poker Tracker folded while facing cbet river pct for raise chair ");
-
-	parent = AddSymbolSubTitle(mainParent, "Tournament symbols");
-	AddSymbol(parent, "ptt_iconx (x=0-9)", "Poker Tracker auto-rate icon code for chair x");
-	AddSymbol(parent, "ptt_iconlastrx (x=1-4)", "Poker Tracker auto-rate icon code for the last raiser in round x");
-	AddSymbol(parent, "ptt_pfrx (x=0-9)", "Poker Tracker pre-flop raise percentage for chair x");
-	AddSymbol(parent, "ptt_aggtotx (x=0-9)", "Poker Tracker total aggression for chair x");
-	AddSymbol(parent, "ptt_aggtotnopfx (x=0-9)", "Poker Tracker total aggression excluding preflop for chair x");
-	AddSymbol(parent, "ptt_aggpx (x=0-9)", "Poker Tracker preflop aggression for chair x");
-	AddSymbol(parent, "ptt_aggfx (x=0-9)", "Poker Tracker flop aggression for chair x");
-	AddSymbol(parent, "ptt_aggtx (x=0-9)", "Poker Tracker turn aggression for chair x");
-	AddSymbol(parent, "ptt_aggrx (x=0-9)", "Poker Tracker river aggression for chair x");
-	AddSymbol(parent, "ptt_floppctx (x=0-9)", "Poker Tracker saw flop pct for chair x");
-	AddSymbol(parent, "ptt_turnpctx (x=0-9)", "Poker Tracker saw turn pct for chair x");
-	AddSymbol(parent, "ptt_riverpctx (x=0-9)", "Poker Tracker saw river pct for chair x");
-	AddSymbol(parent, "ptt_vpipx (x=0-9)", "Poker Tracker VP$IP for chair x");
-	AddSymbol(parent, "ptt_handsx (x=0-9)", "Poker Tracker number of hands that are in the database for chair x");
-	AddSymbol(parent, "ptt_pf_rfix (x=0-9)", "Poker Tracker [pre-flop raise first in] pct for chair x");
-	AddSymbol(parent, "ptt_pf_crx (x=0-9)", "Poker Tracker [pre-flop called raise] pct for chair x");
-	AddSymbol(parent, "ptt_pfatsx (x=0-9)", "Poker Tracker attempt to steal blinds for chair x");
-	AddSymbol(parent, "ptt_wsdpx (x=0-9)", "Poker Tracker went to showdown percentage for chair x");
-	AddSymbol(parent, "ptt_wssdx (x=0-9)", "Poker Tracker won $ at showdown for chair x");
-	AddSymbol(parent, "ptt_fsbtsx (x=0-9)", "Poker Tracker folded small blind to steal for chair x");
-	AddSymbol(parent, "ptt_fbbtsx (x=0-9)", "Poker Tracker folded big blind to steal for chair x ");
-
-	parent = AddSymbolSubTitle(mainParent, "Tournament symbols for the [raischair]");
-	AddSymbol(parent, "ptt_ricon", "Poker Tracker auto-rate icon code for raise chair");
-	AddSymbol(parent, "ptt_rpfr", "Poker Tracker pre-flop raise percentage for raise chair");
-	AddSymbol(parent, "ptt_raggtot", "Poker Tracker total aggression for raise chair");
-	AddSymbol(parent, "ptt_raggtotnopf", "Poker Tracker total aggression excluding preflop for raise chair");
-	AddSymbol(parent, "ptt_raggp", "Poker Tracker preflop aggression for raise chair");
-	AddSymbol(parent, "ptt_raggf", "Poker Tracker flop aggression for raise chair");
-	AddSymbol(parent, "ptt_raggt", "Poker Tracker turn aggression for raise chair");
-	AddSymbol(parent, "ptt_raggr", "Poker Tracker river aggression for raise chair");
-	AddSymbol(parent, "ptt_rfloppct", "Poker Tracker saw flop pct for raise chair");
-	AddSymbol(parent, "ptt_rturnpct", "Poker Tracker saw turn pct for raise chair");
-	AddSymbol(parent, "ptt_rriverpct", "Poker Tracker saw river pct for raise chair");
-	AddSymbol(parent, "ptt_rvpip", "Poker Tracker VP$IP for raise chair");
-	AddSymbol(parent, "ptt_rhands", "Poker Tracker number of hands that are in the database for raise chair");
-	AddSymbol(parent, "ptt_rpf_rfi", "Poker Tracker [pre-flop raise first in] pct for raise chair");
-	AddSymbol(parent, "ptt_rpf_cr", "Poker Tracker [pre-flop called raise] pct for raise chair");
-	AddSymbol(parent, "ptt_rpfats", "Poker Tracker attempt to steal blinds for raise chair");
-	AddSymbol(parent, "ptt_rwsdp", "Poker Tracker went to showdown percentage for raise chair");
-	AddSymbol(parent, "ptt_rwssd", "Poker Tracker won $ at showdown for raise chair");
-	AddSymbol(parent, "ptt_rfsbts", "Poker Tracker folded small blind to steal for raise chair");
-	AddSymbol(parent, "ptt_rfbbts", "Poker Tracker folded big blind to steal for raise chair");
 
 	mainParent = parent = AddSymbolTitle("ICM calculator symbols", NULL, hCatItem);
 	AddSymbol(parent, "icm", "my tournament equity before any action is considered (just balances)");
