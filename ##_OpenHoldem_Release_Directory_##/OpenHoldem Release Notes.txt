@@ -1,4 +1,4 @@
-v4.1.1 2013-05-xx
+v4.1.1 2013-05-20
 ==================
 NEW STUFF:
 - New test-selection-method "Triple Click" for swagging to support 
@@ -23,6 +23,11 @@ BUG FIXES:
   for OpenHoldem 4.x. Now it always starts when OpenHoldem connects to a table.
   Thanks to AleX-YaR for reporting and to SteveMoore and Querty
   for helping to locate the problem.
+  [THF]
+- Perl did not work for most users, because it got compiled in debug-configuration,
+  but most users need release-configuration (compatibility with other libraries).
+  This has now been fixed.
+  Thanks to Daniel for reporting and to Pingvvino for helping to locate the problem.
   [THF]
 
 v4.1.0 2013-04-23
