@@ -505,11 +505,10 @@ void CPokerTrackerThread::Disconnect(void)
    In the seat it's getting stats for*/ 
 void CPokerTrackerThread::ReportSeatChanges(int chair)
 {
-	int i;
 	bool nameChanged;
 	char currentScrapeName[k_max_length_of_playername];
 	write_log(prefs.debug_pokertracker(), "ReportSeatChanges: started\n");
-	for (i = k_min_chair_number; i < k_max_chair_number; ++i)
+	for (int i = k_min_chair_number; i < k_max_chair_number; ++i)
 	{
 		if (i != chair)
 		{
@@ -1060,7 +1059,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 				   we're on, that is GetStatsForChair. But if we won't do this every now and then,
 				   we might find ourselves updating stats for chair 1, for 1 minute, while the player
 				   in chair 3 stood up and someone else replaced him. we cannot let this go unnoticed */
-				if (i % 10 == 4) pParent->ReportSeatChanges(chair);
+				pParent->ReportSeatChanges(chair);
 			
 				/* CheckName is necessary before each update.
 				   There's a short interval between any two updates, and it's possible that the player
