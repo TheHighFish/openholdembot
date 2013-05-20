@@ -31,7 +31,7 @@ void CSymbolEnginePokerval::InitOnStartup()
 
 void CSymbolEnginePokerval::ResetOnConnection()
 {
-	_isroyalflush = false;
+	ResetOnHandReset();
 }
 
 void CSymbolEnginePokerval::ResetOnHandreset()
@@ -43,7 +43,6 @@ void CSymbolEnginePokerval::ResetOnHandreset()
 	}
 	nCards  = 0;
 	handval = 0;
-	_isroyalflush = false;
 }
 
 void CSymbolEnginePokerval::ResetOnNewRound()
@@ -54,6 +53,23 @@ void CSymbolEnginePokerval::ResetOnMyTurn()
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()
 {
+	_ishistraight = false;
+	_hand_type = 0;
+	_isroyalflush = false;
+	_ishandup = false;
+	_ishandupcommon = false;
+	_ishipair = 0;
+	_islopair = 0;
+	_ismidpair = 0;
+	_ishistraight = 0;
+	_ishiflush = 0;
+	_rankbitsplayer = 0;
+	_rankbitscommon = 0;
+	_rankbitspoker = 0;
+	_srankbitsplayer = 0;
+	_srankbitscommon = 0;
+	_srankbitspoker = 0;
+
 	CalculateRankBits();
 	CalcPokerValues();
 }
