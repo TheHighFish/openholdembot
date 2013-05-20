@@ -1831,6 +1831,10 @@
 				Name="PokerTracker"
 				>
 				<File
+					RelativePath=".\CPokerTrackerDLLInterface.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CPokerTrackerThread.h"
 					>
 				</File>
