@@ -1,0 +1,28 @@
+* Change the version
+* Choose the correct build option 
+  - optimized for OH
+  - release for Perl (necessary!)
+  - debug for the rest
+* Rebuild everything
+* Test "everything", at least that OH "works"
+* Commit everything
+* Tag the release on googlecode
+  TurtoiseSVN -> Branch/Tag
+  and then create a tag for svn/tags/OpenHoldem_4.x.y
+  Comment: "Tagging OpenHoldem 4.x.y for release"
+* Copy all files to a new directory
+* Add dbdhelp.dll
+* Add OpenHoldem.lib to support DLL-linking
+* Add the scraper directory and double-check it (TM for ManualMode, Universal TM)
+* Add the Documentation
+* Add ReleaseNotes (make sure, they are complete and release date is set)
+* Add "sources of code.txt"
+* Add the license-file
+* Remove the *.exp and *.pdb files.
+* Remove replay-direcoty (if existent), logs and other private data
+* Create a rar-archive
+* Upload the rar-file to google-code.
+  Please dont forget Summary and description.
+  Labels: Featured, Type-Executable, OpSys-Windows
+* Remove the label "Featured" from the last release of OpenHoldem
+* Announce the new download in "OpenHoldem Stickies" and post the release-notes.

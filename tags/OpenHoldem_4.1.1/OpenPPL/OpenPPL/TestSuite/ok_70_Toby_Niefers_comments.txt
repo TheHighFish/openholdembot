@@ -1,0 +1,15 @@
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=14664
+// Comment below exactly like Toby
+custom 
+
+preflop
+when (betround=4 and HaveNuts) RaiseMax FORCE //Any comments
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
