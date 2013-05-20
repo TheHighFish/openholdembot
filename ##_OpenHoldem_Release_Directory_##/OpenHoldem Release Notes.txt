@@ -30,6 +30,12 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Daniel for reporting and to Pingvvino for helping to locate the problem.
   [THF]
+- Checking now for every PokerTracker-query that we execute 
+  if the same players are at the table or if a player has left and a new one sat down.
+  This became necessary to support fast-fold-games like "Rush".
+  Thanks to Relhby for reporting and to Querty and Pingvvino for helping to fix it.
+  [THF]
+
 
 v4.1.0 2013-04-23
 ==================
