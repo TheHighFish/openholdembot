@@ -233,7 +233,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// player cards
 	CardMask_RESET(plCards);
-	for (i=0; i<k_number_of_cards_per_player; i++)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		int card = p_scraper->card_player(USER_CHAIR, i);
 		if (p_scraper_access->IsKnownCard(card))
@@ -244,7 +244,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// common cards
 	CardMask_RESET(comCards);
-	for (i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		int card = p_scraper->card_common(i);
 		if (p_scraper_access->IsKnownCard(card))
@@ -320,7 +320,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// nranked, trank
 	max = 0;
-	for (i=12; i>=0; i--)
+	for (int i=12; i>=0; i--)
 	{
 		n = CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*0)) +
 			CardMask_CARD_IS_SET(plCards, i+(Rank_COUNT*1)) +
@@ -336,7 +336,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// nrankedcommon, trankcommon
 	max = 0;
-	for (i=12; i>=0; i--)
+	for (int i=12; i>=0; i--)
 	{
 		n = CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*0)) +
 			CardMask_CARD_IS_SET(comCards, i+(Rank_COUNT*1)) +
@@ -352,7 +352,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// nstraight, nstraightfill
 	strbits = 0;
-	for (i=0; i<Rank_COUNT; i++)
+	for (int i=0; i<Rank_COUNT; i++)
 	{
 		if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+i) ||
 			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+i) ||
@@ -371,7 +371,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 
 	// Checking for T-low-strsight down to Ace-low-straight
-	for (i=10; i>=1; i--)
+	for (int i=10; i>=1; i--)
 	{
 		if (((strbits>>i)&0x1f) == 0x1f)
 		{
@@ -415,7 +415,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		else
 		{
 			strbits = 0;
-			for (i=0; i<Rank_COUNT; i++)
+			for (int i=0; i<Rank_COUNT; i++)
 			{
 				if (CardMask_CARD_IS_SET(comCards, (Rank_COUNT*0)+i) ||
 					CardMask_CARD_IS_SET(comCards, (Rank_COUNT*1)+i) ||
@@ -434,7 +434,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 			}
 
 			// Checking for T-low-strsight down to Ace-low-straight
-			for (i=10; i>=1; i--)
+			for (int i=10; i>=1; i--)
 			{
 				if (((strbits>>i)&0x1f) == 0x1f)
 				{
@@ -472,10 +472,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		}
 
 		// nstraightflush, nstraightflushfill
-		for (j=0; j<k_number_of_suits_per_deck; j++)
+		for (int j=0; j<k_number_of_suits_per_deck; j++)
 		{
 			strbits = 0;
-			for (i=0; i<Rank_COUNT; i++)
+			for (int i=0; i<Rank_COUNT; i++)
 			{
 				if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*j)+i))
 				{
@@ -487,7 +487,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 				strbits |= (1<<1);
 			}
 			// Checking for T-low-strsight down to Ace-low-straight
-			for (i=10; i>=1; i--)
+			for (int i=10; i>=1; i--)
 			{
 				if (((strbits>>i)&0x1f) == 0x1f)
 				{
@@ -531,10 +531,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		}
 		else
 		{
-			for (j=0; j<=3; j++)
+			for (int j=0; j<=3; j++)
 			{
 				strbits = 0;
-				for (i=0; i<Rank_COUNT; i++)
+				for (int i=0; i<Rank_COUNT; i++)
 				{
 					if (CardMask_CARD_IS_SET(comCards, (Rank_COUNT*j)+i))
 					{
@@ -546,7 +546,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 					strbits |= (1<<1);
 			}
 
-			for (i=10; i>=1; i--)
+			for (int i=10; i>=1; i--)
 			{
 				if (((strbits>>i)&0x1f) == 0x1f)
 				{

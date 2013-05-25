@@ -95,26 +95,26 @@ int CLevDistance::LD(char const *s, char const *t)
 
 	// Step 2
 
-	for (i = 0; i <= n; i++) 
+	for (int i = 0; i <= n; i++) 
 	{
 		PutAt (d, i, 0, n, i);
 	}
 
-	for (j = 0; j <= m; j++) 
+	for (int j = 0; j <= m; j++) 
 	{
 		PutAt (d, 0, j, n, j);
 	}
 
 	// Step 3
 
-	for (i = 1; i <= n; i++) 
+	for (int i = 1; i <= n; i++) 
 	{
 
 		s_i = s[i-1];
 
 		// Step 4
 
-		for (j = 1; j <= m; j++) 
+		for (int j = 1; j <= m; j++) 
 		{
 
 			t_j = t[j-1];

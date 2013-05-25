@@ -215,7 +215,7 @@ void CDlgEditGrHashPoints::update_bitmap()
 			type = text.GetString()[4] - '0';
 
 			// Draw points on bitmap as circles
-			for (i=0; i<working_hash_points[type].GetSize(); i++)
+			for (int i=0; i<working_hash_points[type].GetSize(); i++)
 			{
 				unsigned int this_x = working_hash_points[type].GetAt(i).x;
 				unsigned int this_y = working_hash_points[type].GetAt(i).y;
@@ -262,7 +262,7 @@ void CDlgEditGrHashPoints::reset_list_box(int type)
 	CString		text;
 
 	m_Point_List.ResetContent();
-	for (i=0; i<working_hash_points[type].GetSize(); i++)
+	for (int i=0; i<working_hash_points[type].GetSize(); i++)
 	{
 		text.Format("%2d, %2d", working_hash_points[type].GetAt(i).x, working_hash_points[type].GetAt(i).y);
 		m_Point_List.AddString(text.GetString());
@@ -336,7 +336,7 @@ void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 		y = (point.y-bmp_rect.top-1)/zoom;
 
 		// See if we already have this point
-		for (i=0; i<working_hash_points[type].GetSize(); i++)
+		for (int i=0; i<working_hash_points[type].GetSize(); i++)
 		{
 			if (working_hash_points[type].GetAt(i).x == x &&
 				working_hash_points[type].GetAt(i).y == y)
@@ -401,7 +401,7 @@ void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 
 		// See if we have this point
 		del_index = -1;
-		for (i=0; i<working_hash_points[type].GetSize(); i++)
+		for (int i=0; i<working_hash_points[type].GetSize(); i++)
 		{
 			if (working_hash_points[type].GetAt(i).x == x &&
 				working_hash_points[type].GetAt(i).y == y)

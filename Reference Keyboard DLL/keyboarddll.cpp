@@ -102,7 +102,7 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 
 	int i = 0, strlength = (int)strlen(ch_str);
 	short KeyScan;
-	for (i=0; i<strlength; i++)
+	for (int i=0; i<strlength; i++)
 	{
 		Sleep(20);
 		if (use_comma && ch_str[i]=='.')

@@ -51,7 +51,7 @@ BOOL CDlgSelectTable::OnInitDialog()
 
 	// Populate listbox
 	N = (int) tlist.GetSize();
-	for (i=0; i<N; i++) {
+	for (int i=0; i<N; i++) {
 		m_HSLB.AddString(tlist[i].title.GetString());
 	}
 

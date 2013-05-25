@@ -65,7 +65,7 @@ BOOL COpenScrapeApp::InitInstance()
 	EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded );
 	cProcesses = cbNeeded / sizeof(DWORD);
 	sessionnum = 0;
-	for (i=0; i<(int) cProcesses; i++) {
+	for (int i=0; i<(int) cProcesses; i++) {
 		hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
                                PROCESS_VM_READ,
                                FALSE, aProcesses[i] );

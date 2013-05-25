@@ -449,7 +449,7 @@ bool CSAPrefsDialog::EndOK()
 	}
 
 	// tell all of the sub-dialogs "OK"
-	for (i=0;i<m_pages.GetSize();i++)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);

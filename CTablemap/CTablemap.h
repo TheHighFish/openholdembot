@@ -120,7 +120,6 @@ public:
 	void ClearTablemap();
 	int LoadTablemap(const char *_filename);
 	int SaveTablemap(CArchive& ar, const char *version_text);
-	int ConvertTablemap(const HWND hwnd=NULL, const char *startup_path="");
 	int UpdateHashes(const HWND hwnd, const char *startup_path);
 	uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type);
 	CString CreateH$Index(const unsigned int number, const CString name);

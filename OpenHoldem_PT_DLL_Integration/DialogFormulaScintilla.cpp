@@ -14,6 +14,7 @@
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
+#include "CPokerTrackerDLLInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -34,7 +35,9 @@
 // CDlgFormulaScintilla dialog
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
-char * keywords = // Standard functions
+// Keywords got changed from "char* to "CString"
+// as we want to append PokerTracker-keywords dynamically
+CString keywords = // Standard functions
 				  "f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
 				  "f$betpot_2_3 f$betpot_1_2 f$betpot_1_3 f$betpot_1_4 "
 				  "f$rais f$call f$prefold f$rebuy f$delay f$chat "
@@ -158,14 +161,10 @@ char * keywords = // Standard functions
 				  // Undocumented
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
 				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
-				  // Poker Tracker ring symbols
-				  "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
-				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
-				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts "
+				  // Poker Tracker ring symbols and
 				  // Poker Tracker ring symbols for the "raischair"
-				  "pt_ricon pt_rhands pt_rpfr pt_raggp pt_raggf pt_raggt pt_raggr "
-				  "pt_raggtot pt_raggtotnopf pt_rfloppct pt_rturnpct pt_rriverpct pt_rvpip pt_rpf_rfi "
-				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts ";
+				  // get appended dynamically later
+				  
 
 #define ID_SCIN_SIZERBAR 5555
 
@@ -233,6 +232,8 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) 
 {
 	in_startup = true;
+
+	p_pokertracker_dll_interface->ExtendListOfSymbolsForEditor(&keywords);
 
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");

@@ -42,7 +42,7 @@ void CheckBringKeyboard(void)
 	mii.fType = MFT_STRING;
 	mii.dwTypeData = temp;
 	keybd_item_pos = -1;
-	for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
+	for (int i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
 	{
 		mii.cch = 256;
 	

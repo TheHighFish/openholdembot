@@ -946,7 +946,7 @@ void CDlgTableMap::update_display(void)
 			// See which hash types are already present for this image
 			// and disable the relevant create hash button
 			int j;
-			for (j=0; j<=3; j++)
+			for (int j=0; j<=3; j++)
 			{
 				bool found = false;
 				for (HMapCI h_iter=p_tablemap->h$(j)->begin(); h_iter!=p_tablemap->h$(j)->end() && !found; h_iter++)
@@ -1272,12 +1272,12 @@ void CDlgTableMap::update_t$_display(void)
 
 	// Get set bits
 	bit = 0;
-	for (j=0; j<sel_font->second.x_count; j++)
+	for (int j=0; j<sel_font->second.x_count; j++)
 		for (bit=0; bit<MAX_CHAR_HEIGHT; bit++)
 			character[j][bit] = (sel_font->second.x[j] & (int) pow((double) 2, (double) bit)) != 0;
 
 	// Find topmost line with a set pixel
-	for (j=MAX_CHAR_HEIGHT-1; j>=0; j--)
+	for (int j=MAX_CHAR_HEIGHT-1; j>=0; j--)
 	{
 		for (x=0; x<sel_font->second.x_count; x++)
 		{
@@ -1292,7 +1292,7 @@ void CDlgTableMap::update_t$_display(void)
 
 	// Create string of set pixels
 	separation = "";
-	for (j=top; j>=0; j--)
+	for (int j=top; j>=0; j--)
 	{
 		for (x=0; x<sel_font->second.x_count; x++)
 		{
@@ -2458,7 +2458,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	font_group = atoi(sel_region->second.transform.Right(1));
 
 	// Initialize arrays
-	for (i=0; i<MAX_CHAR_WIDTH; i++)
+	for (int i=0; i<MAX_CHAR_WIDTH; i++)
 		background[i] = true;
 
 	// Get bitmap size
@@ -2489,7 +2489,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 	DeleteDC(hdcScreen);
 
 	// Scan through background, separate characters by looking for background bands
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 		new_t$_recs[i].RemoveAll();
 
 	int start = 0;
@@ -2557,7 +2557,7 @@ void CDlgTableMap::OnBnClickedCreateFont()
 		dlg_editfont.delete_sort_enabled = true;
 		dlg_editfont.group = font_group;
 
-		for (i=0; i<=3; i++)
+		for (int i=0; i<=3; i++)
 			dlg_editfont.new_t$_recs[i] = &new_t$_recs[i];
 
 		if (dlg_editfont.DoModal() == IDOK) 
@@ -2571,11 +2571,11 @@ void CDlgTableMap::OnBnClickedCreateFont()
 				node_text = m_TableMapTree.GetItemText(font_node);
 			}
 
-			for (i=0; i<new_t$_recs[font_group].GetCount(); i++)
+			for (int i=0; i<new_t$_recs[font_group].GetCount(); i++)
 			{
 				// Populate temp structure
 				new_font.x_count = new_t$_recs[font_group].GetAt(i).x_count;
-				for (j=0; j<new_font.x_count; j++)
+				for (int j=0; j<new_font.x_count; j++)
 					new_font.x[j] = new_t$_recs[font_group].GetAt(i).x[j];
 				new_font.hexmash = new_t$_recs[font_group].GetAt(i).hexmash;
 				new_font.ch = new_t$_recs[font_group].GetAt(i).ch;
@@ -2865,7 +2865,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Fonts");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 	
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		for (TMapCI t_iter=p_tablemap->t$(i)->begin(); t_iter!=p_tablemap->t$(i)->end(); t_iter++)
 		{
@@ -2879,7 +2879,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Hash Points");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	for (i=0; i<3; i++)
+	for (int i=0; i<3; i++)
 	{
 		for (PMapCI p_iter=p_tablemap->p$(i)->begin(); p_iter!=p_tablemap->p$(i)->end(); p_iter++)
 		{
@@ -2894,7 +2894,7 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Hashes");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	for (i=0; i<=3; i++)
+	for (int i=0; i<=3; i++)
 	{
 		for (HMapCI h_iter=p_tablemap->h$(i)->begin(); h_iter!=p_tablemap->h$(i)->end(); h_iter++)
 		{
@@ -3291,7 +3291,7 @@ void CDlgTableMap::UpdateStatus(void)
 
 
 	//fonts
-	for (i=0; fontsList[i] != '\0'; i++)
+	for (int i=0; fontsList[i] != '\0'; i++)
 	{
 		k = fontNum;
 		// Find root of the Fonts node
@@ -3335,7 +3335,7 @@ void CDlgTableMap::UpdateStatus(void)
 	m_status_fonts.SetWindowTextA(_T(statusFonts));
 
 	//card hashes
-	for (i=0; i < 52; i++)
+	for (int i=0; i < 52; i++)
 	{
 		k = cardNum;
 			// Find root of the Hashes node

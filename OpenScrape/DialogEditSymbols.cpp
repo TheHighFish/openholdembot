@@ -52,7 +52,7 @@ BOOL CDlgEditSymbols::OnInitDialog()
 	m_Titletext.SetWindowText(titlebartext.GetString());
 
 	// Set drop down choices for "Record name" field and select current
-	for (i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
+	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
 	m_Name.SelectString(-1, name);
 	m_Name.SetWindowPos(NULL, 0, 0, 145, 300, SWP_NOMOVE | SWP_NOZORDER);
 

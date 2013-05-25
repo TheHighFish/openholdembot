@@ -600,16 +600,16 @@ enumResultPrint(enum_result_t *result, StdDeck_CardMask pockets[],
     int j;
     /* experimental output format to show pot splitting */
     printf("\n%*s", -width, "cards");
-    for (j=0; j<=result->nplayers; j++)
+    for (int j=0; j<=result->nplayers; j++)
       printf(" %6s%d", "HI", j);
-    for (j=0; j<=result->nplayers; j++)
+    for (int j=0; j<=result->nplayers; j++)
       printf(" %6s%d", "LO", j);
     printf("\n");
-    for (i=0; i<result->nplayers; i++) {
+    for (int i=0; i<result->nplayers; i++) {
       printf("%*s", -width, DmaskString(StdDeck, pockets[i]));
-      for (j=0; j<=result->nplayers; j++)
+      for (int j=0; j<=result->nplayers; j++)
         printf(" %7d", result->nsharehi[i][j]);
-      for (j=0; j<=result->nplayers; j++)
+      for (int j=0; j<=result->nplayers; j++)
         printf(" %7d", result->nsharelo[i][j]);
       printf("\n");
     }
