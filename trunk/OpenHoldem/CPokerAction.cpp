@@ -272,7 +272,7 @@ const int CPokerAction::BetPosition (const int chairnum)
 	if (!(IsBitSet(sym_playersplayingbits, chairnum)))
 		return betpos;
 
-	for (i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
 		if (IsBitSet(sym_playersplayingbits, (i%10)))
 			betpos++;

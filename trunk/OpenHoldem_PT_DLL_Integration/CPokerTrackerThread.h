@@ -6,11 +6,11 @@
 #include "MagicNumbers.h"
 #include "PokerTracker_Queries_Version_3.h"
 
-#define k_max_length_of_playername 30
-#define k_min_chair_number 0
-#define k_max_chair_number 9
-#define k_advanced_stat_update_every 5
-#define k_min_hands_slower_updates_ring    1000
+const int k_max_length_of_playername      =   30;
+const int k_min_chair_number              =    0;
+const int k_max_chair_number              =    9;
+const int k_advanced_stat_update_every    =    5;
+const int k_min_hands_slower_updates_ring = 1000;
 
 extern class CPokerTrackerLookup
 {

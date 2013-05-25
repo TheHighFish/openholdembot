@@ -95,7 +95,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		return 0.0;
 	}
 
-	for (i = 0; i < MAX_PLAYERS; i++)
+	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
@@ -108,7 +108,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	{
 		double to_split = p_symbol_engine_chip_amounts->potcommon();
 
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += sym_currentbet[i];
@@ -118,7 +118,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 		double win = to_split / sym_nopponentsplaying;
 
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += win;
@@ -133,7 +133,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < MAX_PLAYERS; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) && 
 					myTotalBet < sym_currentbet[i])
@@ -155,7 +155,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 		stacks[sym_userchair] -= mycall;
 
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -172,7 +172,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < MAX_PLAYERS; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) 
 					&& myTotalBet < sym_currentbet[i])
@@ -187,7 +187,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		sym_pot += min(sym_call, stacks[sym_userchair]);
 		win = sym_pot / (sym_nopponentsplaying +1);
 		stacks[sym_userchair] += win;
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -204,12 +204,12 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 			bool callers[MAX_PLAYERS] = {0};
 			int ncallers = min(pquery[8]-'0', sym_nopponentsplaying);
 
-			for (i = 0; i < ncallers; i++)
+			for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
 				double smalleststack = MAX_DOUBLE;
 
-				for (j = 0; j < MAX_PLAYERS; j++)
+				for (int j = 0; j < MAX_PLAYERS; j++)
 				{
 					if (IsBitSet(sym_opponentsplayingbits, j))
 					{
@@ -265,12 +265,12 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 				memset(sidepots,0, ncallers * sizeof(double));
 
-				for (i = 0; i < ncallers; i++)
+				for (int i = 0; i < ncallers; i++)
 				{
 					int jbiggest = -1;
 					double biggeststack = 0.;
 
-					for (j = 0; j < MAX_PLAYERS; j++)
+					for (int j = 0; j < MAX_PLAYERS; j++)
 					{
 						if (IsBitSet(sym_opponentsplayingbits, j))
 						{
@@ -291,7 +291,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 				}
 				stacks[sym_userchair] += sym_currentbet[sym_userchair];
 				sym_pot -= sym_currentbet[sym_userchair];
-				for (i = (ncallers -1); i>=0; i--)
+				for (int i = (ncallers -1); i>=0; i--)
 				{
 					ASSERT(biggest[i] >= 0);
 					sidepots[i] = min(stacks[biggest[i]], stacks[sym_userchair]) - mybet;
@@ -299,11 +299,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 				}
 				stacks[sym_userchair] -= mybet;
 				sidepots[ncallers - 1] += sym_pot;
-				for (i = 0; i<ncallers; i++)
+				for (int i = 0; i<ncallers; i++)
 				{
 					double win = sidepots[i] / (i + 1);
 
-					for (j = 0; j<=i; j++)
+					for (int j = 0; j<=i; j++)
 					{
 						ASSERT(biggest[j] >= 0);
 						stacks[biggest[j]] += win;
@@ -344,7 +344,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 	else if(strcmp(pquery,"")==0)
 	{
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_playersseatedbits, i))
 			{
@@ -367,7 +367,7 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 
 	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
 
-	for (i = 0; i < playerNB; i++)
+	for (int i = 0; i < playerNB; i++)
 	{
 		//printf("player %d  stack = %1.2f \n", i, stacks[i]);
 	}
@@ -381,7 +381,7 @@ double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, i
 	{
 		int place = 0;
 
-		for (i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			if (IsBitSet(sym_opponentsseatedbits, i))
 			{

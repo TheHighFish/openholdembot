@@ -57,15 +57,15 @@ float *LPyramid::Copy(float *img)
 void LPyramid::Convolve(float *a, float *b)
 // convolves image b with the filter kernel and stores it in a
 {
-	int y,x,i,j,nx,ny;
+	int y, x, nx, ny;
 	const float Kernel[] = {0.05f, 0.25f, 0.4f, 0.25f, 0.05f};
 
 	for (y=0; y<Height; y++) {
 		for (x=0; x<Width; x++) {
 			int index = y * Width + x;
 			a[index] = 0.0f;
-			for (i=-2; i<=2; i++) {
-				for (j=-2; j<=2; j++) {
+			for (int i=-2; i<=2; i++) {
+				for (int j=-2; j<=2; j++) {
 					nx=x+i;
 					ny=y+j;
 					if (nx<0) nx=-nx;

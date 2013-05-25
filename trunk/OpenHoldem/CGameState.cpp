@@ -841,7 +841,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) checked\n", index_normalized, _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_name);
 				}
-			}  // end of "for (i = from_chair; i <= to_chair; i++)"
+			}  // end of "for (int i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."
 	} // end of "if (_process_game_state)"
 }

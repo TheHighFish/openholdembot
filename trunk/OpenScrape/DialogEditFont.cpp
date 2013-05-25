@@ -83,7 +83,7 @@ BOOL CDlgEditFont::OnInitDialog()
 
 	m_Character.SetWindowText(character.GetString());
 
-	for (i = 0; i < new_t$_recs[group]->GetCount(); i++)
+	for (int i = 0; i < new_t$_recs[group]->GetCount(); i++)
 	{
 		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
 		text.Format("%c", fontrec.ch);
@@ -111,12 +111,12 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 		// Get set bits
 		bit = 0;
-		for (j=0; j<fontrec.x_count; j++)
+		for (int j=0; j<fontrec.x_count; j++)
 			for (bit=0; bit<MAX_CHAR_HEIGHT; bit++)
 				character[j][bit] = (fontrec.x[j] & (int) pow((double) 2, (double) bit)) != 0;
 
 		// Find topmost line with a set pixel
-		for (j=MAX_CHAR_HEIGHT-1; j>=0; j--)
+		for (int j=MAX_CHAR_HEIGHT-1; j>=0; j--)
 		{
 			for (x=0; x<fontrec.x_count; x++)
 			{
@@ -131,7 +131,7 @@ void CDlgEditFont::OnLbnSelchangeCharlist()
 
 		// Create string of set pixels
 		separation = "";
-		for (j=top; j>=0; j--)
+		for (int j=top; j>=0; j--)
 		{
 			for (x=0; x<fontrec.x_count; x++)
 			{
@@ -213,9 +213,9 @@ void CDlgEditFont::OnBnClickedSort()
 	int				size = (int) new_t$_recs[group]->GetSize();
 
 	// Bubble sort em
-	for (i=0; i<size-1; i++)
+	for (int i=0; i<size-1; i++)
 	{
-		for (j=i+1; j<size; j++)
+		for (int j=i+1; j<size; j++)
 		{
 			STablemapFont &i_fontrec = new_t$_recs[group]->ElementAt(i);
 			STablemapFont &j_fontrec = new_t$_recs[group]->ElementAt(j);
@@ -247,7 +247,7 @@ void CDlgEditFont::OnBnClickedSort()
 
 	// Clear and re-populate list box
 	m_CharList.ResetContent();
-	for (i=0; i < size; i++)
+	for (int i=0; i < size; i++)
 	{
 		STablemapFont &fontrec = new_t$_recs[group]->ElementAt(i);
 		text.Format("%c", fontrec.ch);

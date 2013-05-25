@@ -42,7 +42,7 @@ BOOL CDlgEditRegion::OnInitDialog()
 
 	SetWindowText(titletext.GetString());
 
-	for (i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i].GetString());
+	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i].GetString());
 	m_Name.SelectString(-1, name.GetString());
 	m_Name.SetWindowPos(NULL, 0, 0, 145, 300, SWP_NOMOVE | SWP_NOZORDER);
 

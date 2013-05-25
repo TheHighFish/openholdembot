@@ -740,182 +740,8 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	return SUCCESS;	
 }
 
-
-int CTablemap::ConvertTablemap(const HWND hwnd, const char *startup_path) 
-{
-	int						i = 0, j = 0;
-	CString					e = "", s = "";
-	uint32_t				pixels[200*150] = {0};
-	int						pixcount = 0;
-	bool					all_i$_found = false, this_i$_found = false;
-	FILE					*fp = NULL;
-	char					timebuf[30] = {0};
-	CString					logpath = "";
-	uint32_t				hash_seed = 0;
-	STablemapHashValue		hold_hash_value;
-	STablemapHashValue		h$_record;
-	CArray <STablemapHashValue, STablemapHashValue> new_hashes[k_max_number_of_hash_groups_in_tablemap];
-	CArray <STablemapHashValue, STablemapHashValue>	unmatched_h$_records[k_max_number_of_hash_groups_in_tablemap];
-
-	// Get number of records of each type in this table map
-	if (_i$.begin()==_i$.end()) 
-	{
-		OH_MessageBox_Error_Warning("No i$ records found - is this a master?", "'Profile' Error");
-		return ERR_NOTMASTER;
-	}
-
-	// Loop through all the region records, and invert the colors to align with
-	// Windows' COLORREF  ARGB->ABGR
-	for (RMapI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++) 
-	{
-		r_iter->second.color = 
-			(r_iter->second.color & 0xff000000) +
-			((r_iter->second.color & 0x00ff0000)>>16) +
-			((r_iter->second.color & 0x0000ff00)) +
-			((r_iter->second.color & 0x000000ff)<<16);
-	}
-
-	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
-	// Log missing records, display message and error out if we can't find them all
-	all_i$_found = true;
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; j++)
-		unmatched_h$_records[j].RemoveAll();
-
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; j++)
-	{
-		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
-		{
-			this_i$_found = false;
-			for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
-			{
-				if (i_iter->second.name == h_iter->second.name) 
-					this_i$_found = true;
-			}
-
-			if (!this_i$_found) 
-			{
-				all_i$_found = false;
-				h$_record.name = h_iter->second.name;
-				h$_record.hash = h_iter->second.hash;
-				unmatched_h$_records[i].Add(h$_record);
-			}
-
-		}
-	}
-
-	if (!all_i$_found) 
-	{
-		logpath.Format("%s\\tablemap conversion log.txt", startup_path);
-
-		if (fopen_s(&fp, logpath.GetString(), "a")==0)
-		{
-			get_now_time(timebuf);
-			fprintf(fp, "<%s>\nConverting from: %s\n", timebuf, _filepath);
-			fprintf(fp, "h$ records with no matching i$ record:\n");
-
-			for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-				for (j=0; j<unmatched_h$_records[i].GetCount(); j++)
-					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
-
-			fprintf(fp, "=======================================================\n\n");
-			fclose(fp);
-		}
-
-		OH_MessageBox_Error_Warning("Could not complete conversion of this table map, due to missing Image\n"\
-				   "records. Please see the \"tablemap conversion log.txt\" file for details.\n\n"\
-				   "The Image records will need to be recreated and the Hash records\n"\
-				   "will need to be updated (Edit/Update Hashes) before this table map\n"\
-				   "can be used in OpenHoldem.", 
-				   "Conversion Error");
-
-		return ERR_INCOMPLETEMASTER;
-	}
-
-	// Prepare CArray that holds temporary hash records
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-		new_hashes[i].RemoveAll();
-
-	// Loop through each of the image records and create hashes
-	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
-	{
-		// Loop through the h$ records to find all the hashes that we have to create for this image record
-		for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-		{
-			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
-			{
-				if (i_iter->second.name == h_iter->second.name) 
-				{
-					// create hash, based on type
-					hold_hash_value.name = i_iter->second.name;
-
-					// Get count of pixels (p$ records)
-					pixcount = 0;
-					for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++) 
-					{
-						if (p_iter->second.x <= i_iter->second.width &&
-							p_iter->second.y <= i_iter->second.height) 
-						{
-								pixels[pixcount++] = i_iter->second.pixel[(p_iter->second.y * i_iter->second.width) + p_iter->second.x];				
-						}
-					}
-
-					hash_seed = i==0 ? HASH_SEED_0 :
-								i==1 ? HASH_SEED_1 :
-								i==2 ? HASH_SEED_2 :
-								i==3 ? HASH_SEED_3 : 0;
-
-					// Create hash
-					if (pixcount==0) 
-						hold_hash_value.hash = hashword(&i_iter->second.pixel[0], i_iter->second.width * i_iter->second.height, hash_seed);
-					else 
-						hold_hash_value.hash = hashword(&pixels[0], pixcount, hash_seed);
-
-					// Check for hash collision
-					for (j=0; j<(int) new_hashes[i].GetSize(); j++) 
-					{
-						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
-						{
-							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.\n%s %08x %08x", 
-								hold_hash_value.name.GetString(), 
-								new_hashes[i].GetAt(j).name.GetString(),
-								hold_hash_value.name,
-								hold_hash_value.hash, new_hashes[i].GetAt(j).hash
-								); 
-							OH_MessageBox_Error_Warning(e, "Hash collision");
-							return ERR_HASH_COLL;
-						}
-					}
-
-					// Store this new hash in the temporary holding CArray
-					new_hashes[i].Add(hold_hash_value);
-				}
-			}  // for (HMapCI h_iter=_h$.begin(); h_iter!=_h$.end(); h_iter++) 
-		} // for (i=0; i<=3; i++)
-	} // for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
-
-
-	// Copy the temporary new hash CArray to the internal std::map
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-		h$_clear(i);
-
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-	{
-		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
-		{
-			if (!h$_insert(i, new_hashes[i].GetAt(j)))
-			{
-				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
-				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + new_hashes[i].GetAt(j).name);	
-			}
-		}
-	}
-
-	return SUCCESS;
-}
-
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
-	int						i = 0, j = 0;
 	CString					e = "", s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
@@ -938,10 +764,11 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records and display message if we can't find them all
 	all_i$_found = true;
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	{
 		unmatched_h$_records[i].RemoveAll();
-
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	}
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -971,9 +798,13 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 
-			for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-				for (j=0; j<unmatched_h$_records[i].GetCount(); j++) 
+			for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+			{
+				for (int j=0; j<unmatched_h$_records[i].GetCount(); j++) 
+				{
 					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
+				}
+			}
 
 			fprintf(fp, "=======================================================\n\n");
 			fclose(fp);
@@ -985,14 +816,14 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	}
 
 	// Init new hash array
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		new_hashes[i].RemoveAll();
 
 	// Loop through each of the image records and create hashes
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
 		// Loop through the h$ records to find all the hashes that we have to create for this image record
-		for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+		for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		{
 			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
@@ -1005,7 +836,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					if (i == 0) 
 					{
 						// only create hash based on rgb values - ignore alpha
-						for (j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
+						for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
 							filtered_pix[j] = i_iter->second.pixel[j] & RGB_MASK;
 
 						hold_hash_value.hash = hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
@@ -1036,7 +867,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					}
 
 					// Check for hash collision
-					for (j=0; j<(int) new_hashes[i].GetSize(); j++) 
+					for (int j=0; j<(int) new_hashes[i].GetSize(); j++) 
 					{
 						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
 						{
@@ -1052,17 +883,17 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					new_hashes[i].Add(hold_hash_value);
 				}
 			}  // for (HMapCI h_iter=_h$.begin(); h_iter!=_h$.end(); h_iter++)
-		} // for (i=0; i<=3; i++)
+		} // for (int i=0; i<=3; i++)
 	} // for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 
 
 	// Copy the temporary new hash CArray to the internal std::map
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 		h$_clear(i);
 
-	for (i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
-		for (j=0; j<(int) new_hashes[i].GetSize(); j++)
+		for (int j=0; j<(int) new_hashes[i].GetSize(); j++)
 		{
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
@@ -1127,14 +958,14 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels)
 {
 	uint32_t *uints = new uint32_t[MAX_HASH_WIDTH*MAX_HASH_HEIGHT + name.GetLength()];
-	int c = 0, i = 0;
+	int c = 0;
 
 	// Put the ascii value of each letter into a uint32_t
-	for (i=0; i<name.GetLength(); i++)
+	for (int i=0; i<name.GetLength(); i++)
 		uints[c++] = name.Mid(i,1).GetString()[0];
 
 	// Now the pixels
-	for (i=0; i<(int) (height * width); i++)
+	for (int i=0; i<(int) (height * width); i++)
 		uints[c++] = pixels[i];
 
 	uint32_t index = hashword(&uints[0], height * width + name.GetLength(), 0x71e9ff36);

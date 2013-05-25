@@ -4,9 +4,11 @@
 #include <assert.h>
 #include <process.h>
 #include <comdef.h>
-#include "CPreferences.h"
+#include "CAutoConnector.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
+#include "CPreferences.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineRaisersCallers.h"
@@ -206,15 +208,14 @@ void CPokerTrackerThread::SetTourneyStatsState(bool enabled)
 
 void CPokerTrackerThread::SetStatTypes()
 {
-	int i;
 	/* Ring symbols */
-	for (i = pt_ring_min; i <= pt_ring_max; ++i)
+	for (int i = pt_ring_min; i <= pt_ring_max; ++i)
 	{	
 		_m_stat_type[i] = pt_statType_Ring;
 	}
 	
 	/* Tournament symbols */
-	for (i = pt_tourney_min; i <= pt_tourney_max; ++i)
+	for (int i = pt_tourney_min; i <= pt_tourney_max; ++i)
 	{	
 		_m_stat_type[i] = pt_statType_Tourney;
 	}
@@ -533,8 +534,6 @@ bool CPokerTrackerThread::CheckName(int chr, bool &nameChanged)
 	char		oh_scraped_name[k_max_length_of_playername]; 
 	char		best_name[k_max_length_of_playername];
 	bool		result = false, ok_scrape = false;
-	int			i;
-
 
 	assert(chr >= k_min_chair_number); 
 	assert(chr <= k_max_chair_number);
@@ -550,7 +549,7 @@ bool CPokerTrackerThread::CheckName(int chr, bool &nameChanged)
 
 	// Check for bad name scrape
 	int len = (int) strlen(oh_scraped_name);
-	for (i = 0; i < len; ++i)
+	for (int i = 0; i < len; ++i)
 	{
 		if (oh_scraped_name[i]!='l' && oh_scraped_name[i]!='i' && oh_scraped_name[i]!='.' && oh_scraped_name[i]!=',')
 		{
@@ -902,8 +901,7 @@ void CPokerTrackerThread::ClearSeatStats(int chr, bool clearNameAndFound)
 {
 	assert(chr >= k_min_chair_number); 
 	assert(chr <= k_max_chair_number);
-	int j;
-	for (j = pt_min; j <= pt_max; ++j)
+	for (int j = pt_min; j <= pt_max; ++j)
 	{
 		_player_stats[chr].stat[j] = -1.0;
 		_player_stats[chr].t_elapsed[j] = -1;
@@ -919,8 +917,7 @@ void CPokerTrackerThread::ClearSeatStats(int chr, bool clearNameAndFound)
 
 void CPokerTrackerThread::ClearAllStats()
 {
-	int i;
-	for (i = 0; i <= 9; ++i)
+	for (int i = 0; i <= 9; ++i)
 	{
 		ClearSeatStats(i);
 	}
@@ -1010,9 +1007,6 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	bool		nameChanged = false;
-	bool		sym_issittingin = p_symbol_engine_autoplayer->issittingin();
-	bool		sym_ismanual = (bool) p_symbol_engine_autoplayer->ismanual();
-	int			i;
 	int			updateType;
 	char        reason[100];
 	int         updatedCount = 0;
@@ -1050,9 +1044,9 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	
 	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 	{
-		if (sym_issittingin || sym_ismanual)
+		if (p_autoconnector->IsConnected())
 		{
-			for (i = pt_min; i <= pt_max; ++i)
+			for (int i = pt_min; i <= pt_max; ++i)
 			{
 				/* Every few iterations, we need to verify that the seats we already have stats on, 
 			       did not change. This task is totally irrelevant for the current function
@@ -1139,13 +1133,9 @@ bool CPokerTrackerThread::IsFound(int chair)
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-	bool			sym_issittingin = p_symbol_engine_autoplayer->issittingin();
-	bool			sym_ismanual = p_symbol_engine_autoplayer->ismanual();
-	int				chr = 0;
 	int				iteration = 0;
 	int				players;
 	int				sleepTime;
-	bool			dummy;
 	clock_t			iterStart, iterEnd;
 	int				iterDurationMS;
 
@@ -1159,21 +1149,8 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		/* Count the number of players */ 
-		players = 0;
-		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
-		{
-			if (sym_issittingin || sym_ismanual)
-			{
-				for (chr = 0; chr < k_max_number_of_players; ++chr)
-				{
-					if (pParent->CheckName(chr, dummy))
-					{
-						++players;
-					}
-				}
-			}
-		}
+		players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
+			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
 		write_log(prefs.debug_pokertracker(), "Players count is [%d]\n", players);
 		
 		//Define sleeptime for current ptrhead iteration
@@ -1191,9 +1168,9 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
-			for (chr = 0; chr < k_max_number_of_players; ++chr)
+			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)
 			{
-				GetStatsForChair(pParam, chr, sleepTime);
+				GetStatsForChair(pParam, chair, sleepTime);
 				/* Verify therad_stop is false */ 
 				if (LightSleep(0, pParent)) 
 					break; 
@@ -1225,7 +1202,7 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 		int i = 0;
 		int iterations = 20;
 		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
-		for (i = 0; i < iterations; ++i)
+		for (int i = 0; i < iterations; ++i)
 		{
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)

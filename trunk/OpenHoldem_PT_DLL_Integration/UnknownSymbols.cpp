@@ -168,6 +168,12 @@ char *outdated_symbol_originaldealposition =
 	"The symbol \"originaldealposition\" got removed from the code base\n"
 	"because there was no longer any need for it\n"
 	"after making dealposition persistent.\n";
+
+char *outdated_symbols_pokertracker_tournament =
+	"The PokerTracker tournament symbols \"ptt_\" got removed\n"
+	"because we changed the \"pt_\"-symbols so that they\n"
+	"automagically work for both ring-games and tournaments\n"
+	"to simplify user-code and supporting libraries (OpenPPL).";
 	
 void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 {
@@ -256,6 +262,10 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	else if ((symbol.Left(9) == "callshort") || (symbol.Left(9) == "raisshort"))
 	{
 		OH_MessageBox_Error_Warning(outdated_symbols_callshort_raisshort, title_outdated_symbol);
+	}
+	else if ((symbol.Left(4) == "ptt_"))
+	{
+		OH_MessageBox_Error_Warning(outdated_symbols_pokertracker_tournament, title_outdated_symbol);
 	}
 	else
 	{

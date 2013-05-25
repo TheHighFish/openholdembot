@@ -557,7 +557,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 
 
 		CardMask_RESET(Cards);
-		for (i=0; i<k_number_of_cards_per_player; i++)
+		for (int i=0; i<k_number_of_cards_per_player; i++)
 		{
 			if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK && 
 				p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
@@ -566,7 +566,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 			}
 		}
 
-		for (i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<k_number_of_community_cards; i++)
 		{
 			if (p_scraper->card_common(i) != CARD_BACK && 
 				p_scraper->card_common(i) != CARD_NOCARD)
@@ -617,7 +617,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		pv += (HandVal_TOP_CARD(hv)+2-3)<<4;
 		pv += (HandVal_TOP_CARD(hv)+2-4)<<0;
 
-		for (i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<k_number_of_community_cards; i++)
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);
@@ -774,7 +774,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		pv += (HandVal_TOP_CARD(hv)+2-2)<<8;
 		pv += (HandVal_TOP_CARD(hv)+2-3)<<4;
 		pv += (HandVal_TOP_CARD(hv)+2-4)<<0;
-		for (i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<k_number_of_community_cards; i++)
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);

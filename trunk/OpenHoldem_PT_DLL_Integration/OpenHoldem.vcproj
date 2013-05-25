@@ -468,10 +468,6 @@
 				RelativePath=".\SwagAdjustment.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\UnknownSymbols.cpp"
-				>
-			</File>
 			<Filter
 				Name="winmgr"
 				>
@@ -942,6 +938,10 @@
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\UnknownSymbols.cpp"
+					>
+				</File>
 				<Filter
 					Name="Symbol_Engines"
 					>
@@ -1110,6 +1110,10 @@
 			<Filter
 				Name="PokerTracker"
 				>
+				<File
+					RelativePath=".\CPokerTrackerDLLInterface.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\CPokerTrackerThread.cpp"
 					>
@@ -1337,10 +1341,6 @@
 			</File>
 			<File
 				RelativePath=".\SwagAdjustment.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UnknownSymbols.h"
 				>
 			</File>
 			<Filter
@@ -1584,6 +1584,10 @@
 				</File>
 				<File
 					RelativePath=".\CVirtualSymbolEngine.h"
+					>
+				</File>
+				<File
+					RelativePath=".\UnknownSymbols.h"
 					>
 				</File>
 				<Filter

@@ -232,14 +232,14 @@ void ViewStyle::Init() {
 
 void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
 	unsigned int i;
-	for (i=0;i<(sizeof(styles)/sizeof(styles[0]));i++) {
+	for (int i=0;i<(sizeof(styles)/sizeof(styles[0]));i++) {
 		pal.WantFind(styles[i].fore, want);
 		pal.WantFind(styles[i].back, want);
 	}
-	for (i=0;i<(sizeof(indicators)/sizeof(indicators[0]));i++) {
+	for (int i=0;i<(sizeof(indicators)/sizeof(indicators[0]));i++) {
 		pal.WantFind(indicators[i].fore, want);
 	}
-	for (i=0;i<(sizeof(markers)/sizeof(markers[0]));i++) {
+	for (int i=0;i<(sizeof(markers)/sizeof(markers[0]));i++) {
 		markers[i].RefreshColourPalette(pal, want);
 	}
 	pal.WantFind(selforeground, want);
