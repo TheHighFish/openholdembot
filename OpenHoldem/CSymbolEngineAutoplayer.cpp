@@ -162,9 +162,9 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	}
 
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < 2)
+	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < 2\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < %d\n", k_min_buttons_needed_for_my_turn);
 		_isfinalanswer = false;
 	}
 
