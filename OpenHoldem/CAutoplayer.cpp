@@ -124,10 +124,6 @@ bool CAutoplayer::DoBetPot(void)
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
 				k_autoplayer_functionname[i]);
-			if (!PrepareActionSequence())
-			{
-				return false;
-			}
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !! */ 400);
