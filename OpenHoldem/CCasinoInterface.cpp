@@ -294,7 +294,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoSwag...\n");
 
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
-	if (!p_scraper_access->i3_edit_defined)
+	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available || !p_scraper_access->i3_button_visible)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag early (no edit field).\n");
 		return false;
