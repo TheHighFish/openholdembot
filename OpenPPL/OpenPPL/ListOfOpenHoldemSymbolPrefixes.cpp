@@ -1,4 +1,9 @@
+#include <afxwin.h>
 #include "ListOfOpenHoldemSymbolPrefixes.h"
+#include <fstream> 
+#include <iostream> 
+
+using namespace std;
 
 
 #undef DEBUG_PREFIX
@@ -7,7 +12,7 @@
 ListOfOpenHoldemSymbolPrefixes *p_list_of_openholdem_symbol_prefixes = NULL;
 
 const int k_max_length_of_symbol_prefix = 17;
-const int k_number_of_symbol_prefixes = 169;
+const int k_number_of_symbol_prefixes = 168;
 
 extern const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_of_symbol_prefix];
 
@@ -23,7 +28,7 @@ ListOfOpenHoldemSymbolPrefixes::~ListOfOpenHoldemSymbolPrefixes()
 bool ListOfOpenHoldemSymbolPrefixes::LooksLikeOpenHoldemSymbol(CString symbol)
 {
 #ifdef DEBUG_PREFIX
-	MessageBox(0, "Checking symbol: " + symbol, "Debug: OH-symbol?", 0);
+	cout << endl << "// Checking symbol: " << symbol << endl;
 #endif
 	for (int i=0; i<k_number_of_symbol_prefixes; i++)
 	{
@@ -31,9 +36,17 @@ bool ListOfOpenHoldemSymbolPrefixes::LooksLikeOpenHoldemSymbol(CString symbol)
 		int length_of_prefix = next_prefix.GetLength();
 		// OpenHoldem is case sensitive, 
 		// so we don't normalize cases for this comparison.
-		//MessageBox(0, "Comparing " + symbol + " to " + next_prefix, "Debug", 0);
-		if (symbol.Left(length_of_prefix) == next_prefix)
+		// Be careful! List of prefixes might be not full,
+		// because we removed some OH-symbols
+		// and "" matches everything!
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=16492
+		if ((length_of_prefix > 0)
+			&& (symbol.Left(length_of_prefix) == next_prefix))
 		{
+#ifdef DEBUG_PREFIX
+			cout << endl << "// Symbol: " << symbol << " matches OH-prefix " 
+				<< symbol.Left(length_of_prefix) << endl;
+#endif
 			return true;
 		}
 	}

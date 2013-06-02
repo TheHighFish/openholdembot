@@ -178,10 +178,6 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\UserDefinedVariables.cpp"
-				>
-			</File>
 			<Filter
 				Name="Included_Code_Files"
 				>
