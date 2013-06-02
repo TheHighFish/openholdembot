@@ -9,6 +9,7 @@
 
 #undef DEBUG_WHEN_CONDITIONS
 #undef DEBUG_SYMBOLS
+#undef DEBUG_USER_VARIABLES
 
 //
 // Larger code-snippets
@@ -99,18 +100,21 @@ struct print_symbol
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		std::string symbol = std::string(begin, end);
-#ifdef DEBUG_SYMBOLS
-		MessageBox(0, CString(symbol.c_str()), "Debug; print_symbol", 0);
-#endif
 		if (p_symbol_table->IsOpenPPLSymbol(symbol.c_str()))
 		{
 			// OpenPPL symbols and user-defined symbols 
 			// get translated to f$...OH-script-symbols.
 			// So we prepend "f$"
+#ifdef DEBUG_SYMBOLS
+			current_output << "\n// OpenPPL-symbol\n";
+#endif DEBUG_SYMBOLS
 			current_output << p_symbol_table->GetSymbolNameWithcorrectCases(symbol.c_str());
 		}
 		else if (p_list_of_openholdem_symbol_prefixes->LooksLikeOpenHoldemSymbol(CString(symbol.c_str())))
 		{
+#ifdef DEBUG_SYMBOLS
+			current_output << "\n// OpenHoldem-symbol\n";
+#endif DEBUG_SYMBOLS
 			current_output << symbol;
 		}
 		// Ubknown symbol
@@ -124,6 +128,9 @@ struct print_symbol
 				// Removing underscores, as they are used as separators
 				// and would mix things up. 
 				c_symbol.Remove('_');
+#ifdef DEBUG_SYMBOLS
+			current_output << "\n// User-defined variable (me_re_)\n";
+#endif DEBUG_SYMBOLS
 				current_output << "me_re_" << c_symbol.MakeLower();
 			}
 			else if (c_symbol.MakeLower().Right(6) == "suited")
@@ -140,6 +147,12 @@ struct print_symbol
 				//     should work anyway.
 				current_output << symbol;
 			}
+		}
+		else
+		{
+#ifdef DEBUG_SYMBOLS
+			current_output << "\n// Nothing to do (generation of symbol table)\n";
+#endif DEBUG_SYMBOLS
 		}
 	} 
 }; 
@@ -576,6 +589,9 @@ struct print_setting_UDV
  	{
  		std::string text = std::string(begin, end);
  		CString ctext = text.c_str();
+#ifdef DEBUG_USER_VARIABLES
+		cout << endl << "Uservariable to be set: " << ctext << endl;	
+#endif 
 		// Removing underscores, as they are used as separators
 		// and would mix things up, e.g. me_st_Pi_3_141592653
 		ctext.Remove('_');
