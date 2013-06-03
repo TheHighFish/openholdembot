@@ -4,64 +4,46 @@
 #include <assert.h>
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
 #include "debug.h"
+#include "NumericalFunctions.h"
 
-double MinimumSwagAmount()
+double MinimumBetsizeDueToPreviousRaise()
 {
 	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
 		+ p_symbol_engine_chip_amounts->sraiprev());
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MinimumSwagAmount: %f\n", minimums_swag_amount);
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: %f\n", minimums_swag_amount);
 	assert(minimums_swag_amount > 0);
 	return minimums_swag_amount;
 }
 
-double MaximumSwagAmountForPotLimit()
+double MaximumPossibleBetsizeBecauseOfBalance()
+{
+	assert(p_symbol_engine_userchair != NULL);
+	int userchair = p_symbol_engine_userchair->userchair();
+	AssertRange(userchair, k_first_chair, k_last_chair);
+	double maximum_betsize = p_symbol_engine_chip_amounts->currentbet(userchair)
+		+ p_symbol_engine_chip_amounts->balance(userchair);
+	assert (maximum_betsize > 0);
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %f\n",
+		maximum_betsize);
+	return maximum_betsize;
+}
+
+double MaximumBetsizeForPotLimit()
 {
 	// ToDo: Preflop
 	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
 		+ p_symbol_engine_chip_amounts->pot()); // !!???
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MaximumSwagAmountForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
 	assert(maximum_swag_amount_for_pot_limit >= 0);
 	return maximum_swag_amount_for_pot_limit;
 }
 
-double MaximumSwagAmount()
-{
-	double maximum_swag_amount = 0;
-	if (p_tablelimits->ispl())
-	{
-		maximum_swag_amount = MaximumSwagAmountForPotLimit();
-	}
-	else
-	{
-		int userchair = p_symbol_engine_userchair->userchair();
-		maximum_swag_amount = (p_symbol_engine_chip_amounts->currentbet(userchair)
-			+ p_symbol_engine_chip_amounts->balance(userchair));
-	}
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: MaximumSwagAmount: %f\n", maximum_swag_amount);
-	assert(maximum_swag_amount >= 0);
-	return maximum_swag_amount;
-}
 
-double SwagAmountAjustedToMinimumAndMaximum(double amount_to_raise_to)
-{
-	assert(amount_to_raise_to >= 0);
-	double adjusted_swag_amount = amount_to_raise_to;
-	if (adjusted_swag_amount < MinimumSwagAmount())
-	{
-		adjusted_swag_amount = MinimumSwagAmount();
-	}
-	if (adjusted_swag_amount > MaximumSwagAmount())
-	{
-		adjusted_swag_amount = MaximumSwagAmount();
-	}
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAjustedToMinimumAndMaximum: %f\n",
-		adjusted_swag_amount);
-	return adjusted_swag_amount;
-}
 
 double SwagAmountAjustedToCasino(double amount_to_raise_to)
 {
@@ -90,17 +72,77 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 			- p_symbol_engine_chip_amounts->currentbet(userchair)
 			- p_symbol_engine_chip_amounts->call();
 	}
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAjustedToCasino %f\n",
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] SwagAmountAjustedToCasino %f\n",
 		swag_amount_ajusted_to_casino);
 	return swag_amount_ajusted_to_casino;
 }
 
-double SwagAmountAdjusted(double amount_to_raise_to)
+bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents)
 {
-	assert(amount_to_raise_to >= 0);
-	double swag_amount_adjusted = SwagAmountAjustedToMinimumAndMaximum(amount_to_raise_to);
-	swag_amount_adjusted = SwagAmountAjustedToCasino(swag_amount_adjusted);
-	write_log(prefs.debug_betsize_adjustment(), "SwagAdjustment: SwagAmountAdjusted (finally): %f\n",
-		swag_amount_adjusted);
-	return swag_amount_adjusted;
+	double maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() desired betsize: %f\n",
+		amount_to_raise_to_in_dollars_and_cents);
+	write_log(prefs.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() maximum betsize: %f\n",
+		maximum_betsize);
+	return (maximum_betsize >= amount_to_raise_to_in_dollars_and_cents);
+}
+
+double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents)
+{
+	if (!p_symbol_engine_istournament->istournament())
+	{
+		write_log(prefs.debug_betsize_adjustment(), 
+			"[SwagAdjustment] Game-type is cash-game. No rounding necessary.\n");
+		return amount_to_raise_to_in_dollars_and_cents;
+	}
+	else if (BetSizeIsAllin(amount_to_raise_to_in_dollars_and_cents))
+	{
+		write_log(prefs.debug_betsize_adjustment(), 
+			"[SwagAdjustment] Tournament, but no rounding because we will go allin.\n");
+		return amount_to_raise_to_in_dollars_and_cents;
+	}
+	else
+	{
+		int rounded_amount = int(amount_to_raise_to_in_dollars_and_cents);
+		write_log(prefs.debug_betsize_adjustment(), 
+			"[SwagAdjustment] Rounded dollars for tournaments: %f.2\n", rounded_amount);
+		return rounded_amount;
+	}
+}
+
+double MaximumBetsizeForGameType()
+{
+	double maximum_betsize = 0;
+	if (p_tablelimits->ispl())
+	{
+		write_log(prefs.debug_betsize_adjustment(),
+			"[SwagAdjustment] Game-type is Pot Limit.\n");
+		maximum_betsize = MaximumBetsizeForPotLimit();
+	}
+	else if (p_tablelimits->isfl())
+	{
+		write_log(prefs.debug_betsize_adjustment(), 
+			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
+		maximum_betsize = 0;
+	}
+	else
+	{
+		int userchair = p_symbol_engine_userchair->userchair();
+		write_log(prefs.debug_betsize_adjustment(), 
+			"[SwagAdjustment] Game-type is No Limit. Betsize restricted only by users balance.\n");
+		maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
+	}
+	write_log(prefs.debug_betsize_adjustment(), 
+		"[SwagAdjustment] MaximumBetsizeForGameType(): %f\n", maximum_betsize);
+	assert(maximum_betsize >= 0);
+	return maximum_betsize;	
+}
+
+
+void AdjustBetsize(double *amount_to_raise_to)
+{
+	AdaptValueToMinMaxRange(amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), *amount_to_raise_to);
+	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, MaximumBetsizeForGameType());
+	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
+	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, RoundedBetsizeForTournaments(*amount_to_raise_to));
 }

@@ -990,6 +990,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEnginePokerTracker.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEnginePokerval.cpp"
 						>
 					</File>
@@ -1627,6 +1631,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineLists.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEnginePokerTracker.h"
 						>
 					</File>
 					<File
