@@ -3,7 +3,7 @@
 #define INC_POKERTRACKER_QUERIES_VERSION_3_H
 
 
-const int k_number_of_pokertracker_stats = 49;
+const int k_number_of_pokertracker_stats = 49; ///!!!!
 
 const int k_max_lenght_of_stats_name = 15;	// 14 + 1 char for NULL
 

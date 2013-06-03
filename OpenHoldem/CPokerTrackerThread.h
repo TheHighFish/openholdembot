@@ -7,9 +7,7 @@
 #include "PokerTracker_Queries_Version_3.h"
 
 #define k_max_length_of_playername 30
-#define k_min_chair_number 0
-#define k_max_chair_number 9
-#define k_advanced_stat_update_every 5
+#define k_advanced_stat_update_every 5 //???
 #define k_min_hands_slower_updates_ring    1000
 #define k_min_hands_slower_updates_tourney 1000
 
@@ -35,8 +33,6 @@ public:
 						~CPokerTrackerThread();
 	void				StartThread();
 	void				StopThread();
-	void				ClearAllStats(void);
-	const double		ProcessQuery(const char *s);
 	CString				CreateConnectionString(const CString ip_address, 
 		const CString port, const CString username,
 		const CString password, const CString DB_name);
@@ -52,14 +48,15 @@ private:
 	void				SetTourneyStatsState(bool enabled);
 	void				Connect(void);
 	void				Disconnect(void);
-	bool				CheckName(const int m_chair, bool &nameChange);
+	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
+	bool				CheckIfNameExistsInDB(int chair);
+	bool				CheckIfNameHasChanged(int chair);
 	double				GetStat(const int m_chair, const PT_Stats stat);	
 	double				UpdateStat(const int m_chair, const int stat);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);
 	int					GetUpdateType(int chair);
-	void				WarnAboutInvalidPTSymbol(CString s);
 	int					GetStatGroup(int stat);
 	int					SkipUpdateCondition(int stat, int chair);
 	int					SkipUpdateForChair(int chair, char* reason);
@@ -69,23 +66,15 @@ private:
 	void				ReportUpdateComplete(int updatedCount, int chair);
 	bool				StatEnabled(int stat){return _m_enabled_stats[stat];}
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
-	int					GetSkippedUpdates(int chr){return _player_stats[chr].skipped_updates;}
+	//!!!int					GetSkippedUpdates(int chr){return _player_stats[chr].skipped_updates;}
 	bool				IsFound(int chair);
-	const char*         GetPlayerScrapedName(int chair){return _player_stats[chair].scraped_name;}
+	//!!!const char*         GetPlayerScrapedName(int chair){return _player_stats[chair].scraped_name;}
 
 	CString				_conn_str;
 	bool				_connected;
 	PGconn *			_pgconn;
 
-	struct SPlayerStats 
-	{
-		char			scraped_name[k_max_length_of_playername];
-		char			pt_name[k_max_length_of_playername];
-		bool			found;
-		double			stat[k_number_of_pokertracker_stats];
-		int				t_elapsed[k_number_of_pokertracker_stats];
-		int				skipped_updates;
-	} _player_stats[k_max_number_of_players];
+	
 	
 	bool                _m_enabled_stats[k_number_of_pokertracker_stats];
 	PT_StatTypes		_m_stat_type[k_number_of_pokertracker_stats];
