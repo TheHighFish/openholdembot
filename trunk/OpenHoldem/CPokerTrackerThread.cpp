@@ -327,7 +327,7 @@ void CPokerTrackerThread::ReportSeatChanges(int chair)
 				/* Scrapped name got changed. Clear stats for that chair */
 				write_log(prefs.debug_pokertracker(), "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
 				/* Clear stats but leave the new name intact */
-				ClearSeatStats(i, false);
+				//!!!ClearSeatStats(i, false);
 			}
 		}
 	}
@@ -884,7 +884,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 						   Clear stats for this seat and return                   */
 						write_log(prefs.debug_pokertracker(), "GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
 						/* Clear stats, but leave the new name intact */
-						pParent->ClearSeatStats(chair, false);
+						//!!!pParent->ClearSeatStats(chair, false);
 						return;
 					}
 					if (!pParent->StatEnabled(i))

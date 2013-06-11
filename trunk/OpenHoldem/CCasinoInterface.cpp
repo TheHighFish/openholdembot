@@ -319,7 +319,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
 	
 	// SWAG AMOUNT ENTRY
-	double swag_adjusted = SwagAmountAdjusted(p_autoplayer_functions->f$betsize());
+	double swag_adjusted = AdjustedBetsize(p_autoplayer_functions->f$betsize());
 
 	if (swag_adjusted != (int) swag_adjusted)
 		swag_amt.Format("%.2f", swag_adjusted);

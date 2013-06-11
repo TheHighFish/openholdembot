@@ -146,3 +146,8 @@ void AdjustBetsize(double *amount_to_raise_to)
 	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
 	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, RoundedBetsizeForTournaments(*amount_to_raise_to));
 }
+
+double AdjustedBetsize(double amount_to_raise_to)
+{
+	return 0; //!!!
+}

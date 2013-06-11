@@ -14,6 +14,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
 #include "CSymbolEnginePokerval.h"
@@ -108,6 +109,10 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineCards
 	p_symbol_engine_cards = new CSymbolEngineCards();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_cards;
+	_number_of_symbol_engines_loaded++;
+	// CSymbolEngineIsOmaha
+	p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
+	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_isomaha;
 	_number_of_symbol_engines_loaded++;
 	// CSymbolEnginePokerval
 	p_symbol_engine_pokerval = new CSymbolEnginePokerval();
