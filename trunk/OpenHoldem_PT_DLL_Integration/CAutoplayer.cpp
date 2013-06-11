@@ -31,7 +31,7 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
-
+#include "StringFunctions.h"
 
 CAutoplayer	*p_autoplayer = NULL;
 
@@ -110,7 +110,12 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas()
 	{
  		hearbeats_to_pause = 1;
  	}
-	return ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
+		hearbeats_to_pause);
+	bool act_this_heartbeat = ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() act_this_heartbeat: %s\n",
+		Bool2CString(act_this_heartbeat));
+	return act_this_heartbeat;
 }
 
 
@@ -124,10 +129,6 @@ bool CAutoplayer::DoBetPot(void)
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
 				k_autoplayer_functionname[i]);
-			if (!PrepareActionSequence())
-			{
-				return false;
-			}
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !! */ 400);
@@ -167,9 +168,11 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): no\n");
 	return false;
 }
 

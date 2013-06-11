@@ -71,7 +71,7 @@ void CDlgNew::OnBnClickedOk()
 		return;
 	}
 	else if (type==0) {
-		for (i=4; i<(int) strlen(str); i++) {
+		for (int i=4; i<(int) strlen(str); i++) {
 
 			if (str[i]<'0' || str[i]>'9') 
 			{

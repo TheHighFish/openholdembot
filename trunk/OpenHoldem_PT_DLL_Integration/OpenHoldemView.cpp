@@ -108,17 +108,17 @@ COpenHoldemView::COpenHoldemView()
 	_sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
 	_iterator_thread_progress_last = 0;
 	
-	for (i = 0; i<=4; i++)
+	for (int i = 0; i<=4; i++)
 		_card_common_last[i] = CARD_NOCARD;
 
-	for (i = 0; i<=9; i++)
-		for (j=0; j<=1; j++)
+	for (int i = 0; i<=9; i++)
+		for (int j=0; j<=1; j++)
 			_card_player_last[i][j] = CARD_NOCARD;
 
-	for (i = 0; i<=9; i++)
+	for (int i = 0; i<=9; i++)
 		_seated_last[i] = _active_last[i] = _playername_last[i] = "";
 
-	for (i = 0; i<=9; i++)
+	for (int i = 0; i<=9; i++)
 	{
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
@@ -242,7 +242,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	DrawButtonIndicators();
 
 	// Draw common cards
-	for (i=0; i<5; i++) 
+	for (int i=0; i<5; i++) 
 	{
 		if (_card_common_last[i] != p_scraper->card_common(i) || update_all) 
 		{
@@ -256,7 +256,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	}
 
 	// Draw collection of player info
-	for (i=0; i<p_tablemap->nchairs(); i++) 
+	for (int i=0; i<p_tablemap->nchairs(); i++) 
 	{
 
 		// Figure out if we need to redraw this seat
@@ -484,7 +484,7 @@ void COpenHoldemView::DrawButtonIndicators(void)
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (i=0; i<=9; i++) 
+	for (int i=0; i<=9; i++) 
 	{
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 

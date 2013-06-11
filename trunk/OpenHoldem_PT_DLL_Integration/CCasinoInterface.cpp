@@ -294,7 +294,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoSwag...\n");
 
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
-	if (!p_scraper_access->i3_edit_defined)
+	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available || !p_scraper_access->i3_button_visible)
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag early (no edit field).\n");
 		return false;
@@ -319,7 +319,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", prefs.swag_delay_2());
 	
 	// SWAG AMOUNT ENTRY
-	double swag_adjusted = SwagAmountAdjusted(p_autoplayer_functions->f$betsize());
+	double swag_adjusted = AdjustedBetsize(p_autoplayer_functions->f$betsize());
 
 	if (swag_adjusted != (int) swag_adjusted)
 		swag_amt.Format("%.2f", swag_adjusted);

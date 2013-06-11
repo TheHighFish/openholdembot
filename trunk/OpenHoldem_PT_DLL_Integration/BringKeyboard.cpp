@@ -13,8 +13,6 @@ void CheckBringKeyboard(void)
 	MENUITEMINFO	mii;
 	int				input_count = 0, i = 0;
 	INPUT			input[100] = {0};
-	HWND			hwnd_focus = GetFocus();
-	POINT			cur_pos = {0};
 	char			temp[256] = {0};
 	CString			c_text = "";
 	int				keybd_item_pos = 0;
@@ -32,8 +30,6 @@ void CheckBringKeyboard(void)
 	// Init locals
 	memset(&mii, 0, sizeof(MENUITEMINFO));
 
-	GetCursorPos(&cur_pos);
-
 	// Find position of "Keyboard" item on system menu
 	bringsysmenu = GetSystemMenu(p_autoconnector->attached_hwnd(), false);
 
@@ -42,7 +38,7 @@ void CheckBringKeyboard(void)
 	mii.fType = MFT_STRING;
 	mii.dwTypeData = temp;
 	keybd_item_pos = -1;
-	for (i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
+	for (int i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
 	{
 		mii.cch = 256;
 	
@@ -72,6 +68,9 @@ void CheckBringKeyboard(void)
 
 	if (!(mii.fState&MFS_CHECKED)) 
 	{
+		HWND			hwnd_focus;
+		POINT			cur_pos = {0};
+		CMutex			mutex (false, prefs.mutex_name());
 
 		input_count = 0;
 		// Alt key down
@@ -99,6 +98,13 @@ void CheckBringKeyboard(void)
 		input[input_count].ki.wVk = VK_MENU;
 		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
 		input_count++;
+
+		if (!mutex.Lock(0))
+			return;
+
+
+		hwnd_focus = GetFocus();
+		GetCursorPos(&cur_pos);
 
 		SetFocus(p_autoconnector->attached_hwnd());
 		SetForegroundWindow(p_autoconnector->attached_hwnd());
@@ -131,5 +137,7 @@ void CheckBringKeyboard(void)
 		SetFocus(hwnd_focus);
 
 		SetCursorPos(cur_pos.x, cur_pos.y);
+		mutex.Unlock();
 	}
+
 }
