@@ -51,29 +51,29 @@ public:
 	int ishistraight()	{ return _ishistraight; }
 	int ishiflush()		{ return _ishiflush; }
 	// Bits
-	int rankbits()			{ return _rankbitsplayer & _rankbitscommon; }
+	int rankbits()			{ return _rankbitsplayer | _rankbitscommon; }
 	int rankbitsplayer()	{ return _rankbitsplayer; }
 	int rankbitscommon()	{ return _rankbitscommon; }
 	int rankbitspoker()		{ return _srankbitspoker; }
-	int srankbits()			{ return _srankbitsplayer & _srankbitscommon; }
+	int srankbits()			{ return _srankbitsplayer | _srankbitscommon; }
 	int srankbitsplayer()	{ return _srankbitsplayer; }
 	int srankbitscommon()	{ return _srankbitscommon; }
 	int srankbitspoker()	{ return _rankbitspoker; }
 	//RANK HI
-	int rankhi()			{ return GetRankHi(_rankbitsplayer & _rankbitscommon); }
+	int rankhi()			{ return GetRankHi(rankbits()); }
 	int rankhicommon()		{ return GetRankHi(_rankbitscommon); }
 	int rankhiplayer()		{ return GetRankHi(_rankbitsplayer); }
 	int rankhipoker()		{ return GetRankHi(_rankbitspoker);  }
-	int srankhi()			{ return GetRankHi(_srankbitsplayer & _srankbitscommon); }
+	int srankhi()			{ return GetRankHi(srankbits()); }
 	int srankhicommon()		{ return GetRankHi(_srankbitscommon); }
 	int srankhiplayer()		{ return GetRankHi(_srankbitsplayer); }
 	int srankhipoker()		{ return GetRankHi(_srankbitspoker);  }
 	//RANK LO
-	int ranklo()			{ return GetRankLo(_rankbitsplayer & _rankbitscommon); }
+	int ranklo()			{ return GetRankLo(rankbits()); }
 	int ranklocommon()		{ return GetRankLo(_rankbitscommon); }
 	int rankloplayer()		{ return GetRankLo(_rankbitsplayer); }
 	int ranklopoker()		{ return GetRankLo(_rankbitspoker); }
-	int sranklo()			{ return GetRankLo(_srankbitsplayer & _srankbitscommon); }
+	int sranklo()			{ return GetRankLo(srankbits()); }
 	int sranklocommon()		{ return GetRankLo(_srankbitscommon); }
 	int srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
 	int sranklopoker()		{ return GetRankLo(_srankbitspoker); }

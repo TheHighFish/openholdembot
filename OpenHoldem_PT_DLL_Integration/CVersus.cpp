@@ -145,13 +145,13 @@ bool CVersus::GetCounts(void)
 	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
 
 	unsigned int	pcard[2] = {0};
-	for (i=0; i<=1; i++)
+	for (int i=0; i<=1; i++)
 		pcard[i] = CARD_NOCARD;
 
 	unsigned int	card_player[2] = {0}, card_common[5] = {0};
-	for (i=0; i<=1; i++)
+	for (int i=0; i<=1; i++)
 		card_player[i] = p_scraper->card_player(sym_userchair, i);
-	for (i=0; i<=4; i++)
+	for (int i=0; i<=4; i++)
 		card_common[i] = p_scraper->card_common(i);
 
 	// Get the lock
@@ -201,7 +201,7 @@ bool CVersus::GetCounts(void)
 
 		// figure out offset into file
 		offset = 0;
-		//for (i=1; i<pcard[0]; i++)  offset += (52-i)*1225;
+		//for (int i=1; i<pcard[0]; i++)  offset += (52-i)*1225;
 		offset += card0_offset[pcard[0]];
 		offset += (pcard[1]-pcard[0]-1)*1225;
 		offset *= sizeof(byte);
@@ -214,9 +214,9 @@ bool CVersus::GetCounts(void)
 
 		wintemp = lostemp = 0;
 
-		for (i=0; i<(k_number_of_cards_per_deck - 1); i++)
+		for (int i=0; i<(k_number_of_cards_per_deck - 1); i++)
 		{
-			for (j=i+1; j<k_number_of_cards_per_deck; j++)
+			for (int j=i+1; j<k_number_of_cards_per_deck; j++)
 			{
 				if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1])
 				{
@@ -304,9 +304,9 @@ bool CVersus::GetCounts(void)
 		player_hv_now = Hand_EVAL_N(playerEvalCardsNow, betround+3);
 	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
-		for (i=0; i<=50; i++)
+		for (int i=0; i<=50; i++)
 		{
-			for (j=i+1; j<=51; j++)
+			for (int j=i+1; j<=51; j++)
 			{
 				if (!CardMask_CARD_IS_SET(usedCards, i) && !CardMask_CARD_IS_SET(usedCards, j))
 				{

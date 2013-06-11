@@ -63,7 +63,7 @@ void CDlgRename::OnBnClickedOk()
 	}
 	else if (memcmp(oldstr, "list", 4)==0) 
 	{
-		for (i=4; i<(int) strlen(newstr); i++) 
+		for (int i=4; i<(int) strlen(newstr); i++) 
 		{
 			if (newstr[i]<'0' || newstr[i]>'9') 
 			{

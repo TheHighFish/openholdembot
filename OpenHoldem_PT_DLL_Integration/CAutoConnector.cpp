@@ -291,7 +291,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			WriteLogTableReset();
 
 			p_table_positioner->PositionMyWindow();
-			p_pokertracker_thread->ClearAllStats();
+//!!!			p_pokertracker_thread->ClearAllStats();
 			p_pokertracker_thread->StartThread();
 		}
 	}

@@ -160,7 +160,7 @@ CString keywords = // Standard functions
 				  "$$cs0 $$cs1 $$cs2 $$cs3 $$cs4 "
 				  // Undocumented
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
-				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
+				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 ";
 				  // Poker Tracker ring symbols and
 				  // Poker Tracker ring symbols for the "raischair"
 				  // get appended dynamically later
@@ -421,10 +421,10 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 {
 	keys = keywords;
 	int i = 0;
-	for (i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) {
+	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) {
 		keys.AppendFormat(" %s", m_wrk_formula.formula()->mFunction[i].func);
 	}
-	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
+	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
 		keys.AppendFormat(" is%s", m_wrk_formula.formula()->mHandList[i].list);
 		if (m_wrk_formula.formula()->mHandList[i].list.GetLength() > 4) {
 			keys.AppendFormat(" vs$%s$prlos", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
@@ -432,7 +432,7 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
 		}
 	}
-	for (i=0; i<10; i++) {
+	for (int i=0; i<10; i++) {
 		keys.AppendFormat(" pt_icon%d", i);
 		keys.AppendFormat(" pt_hands%d", i);
 		keys.AppendFormat(" pt_pfr%d", i);
@@ -454,7 +454,7 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 		keys.AppendFormat(" pt_fbbts%d", i);
 		keys.AppendFormat(" pt_fsbts%d", i);
 	}
-	for (i=0; i<k_number_of_different_cardranks; i++)
+	for (int i=0; i<k_number_of_different_cardranks; i++)
 	{
 		for (int j=0; j<k_number_of_different_cardranks;j ++)
 		{
@@ -963,7 +963,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 		{
 			SetWindowText("Formula Editor - " + s);
 			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (i=0; i<N; i++) 
+			for (int i=0; i<N; i++) 
 			{
 				if (m_wrk_formula.formula()->mFunction[i].func == s) 
 				{
@@ -999,7 +999,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 		{
 			SetWindowText("Formula Editor - " + s);
 			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (i=0; i<N; i++) 
+			for (int i=0; i<N; i++) 
 			{
 				if (m_wrk_formula.formula()->mFunction[i].func == s) 
 				{
@@ -1035,7 +1035,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 		{
 			// Find proper list and display it
 			N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-			for (i=0; i<N; i++) {
+			for (int i=0; i<N; i++) {
 				if (m_wrk_formula.formula()->mHandList[i].list == s) 
 				{
 					SetWindowText("Formula Editor - " + s);
@@ -1285,7 +1285,7 @@ void CDlgFormulaScintilla::OnRename()
 		if (memcmp(str, "list", 4) == 0) 
 		{
 			bool bAlreadyExists = false;
-			for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
+			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
 			{
 				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) 
 				{
@@ -1302,7 +1302,7 @@ void CDlgFormulaScintilla::OnRename()
 			{
 				// Find proper list
 				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (i=0; i<N; i++) 
+				for (int i=0; i<N; i++) 
 				{
 					if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
 					{
@@ -1321,7 +1321,7 @@ void CDlgFormulaScintilla::OnRename()
 			bRenameUDF = true;
 
 			bool bAlreadyExists = false;
-			for (i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
+			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
 			{
 				if (m_wrk_formula.formula()->mFunction[i].func == rendlg.CSnewname) 
 				{
@@ -1339,7 +1339,7 @@ void CDlgFormulaScintilla::OnRename()
 			{
 				// Find proper UDF and display it
 				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (i=0; i<N; i++) 
+				for (int i=0; i<N; i++) 
 				{
 					if (m_wrk_formula.formula()->mFunction[i].func == s) 
 					{
@@ -1489,7 +1489,7 @@ void CDlgFormulaScintilla::OnDelete()
 	HandleEnables(true);
 	*/
 
-	int ret, N, i;
+	int ret, N;
 		HTREEITEM h = m_FormulaTree.GetSelectedItem();
 		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 		CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
@@ -1504,7 +1504,7 @@ void CDlgFormulaScintilla::OnDelete()
 			// Delete a UDF
 			if (s.Find("f$") != -1) {
 				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (i=0; i<N; i++) {
+				for (int i=0; i<N; i++) {
 					if (m_wrk_formula.formula()->mFunction[i].func == s) 
 					{
 						// Update the dialog
@@ -1532,7 +1532,7 @@ void CDlgFormulaScintilla::OnDelete()
 			// Delete a list
 			else if (s.Find("list") != -1) {
 				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (i=0; i<N; i++) {
+				for (int i=0; i<N; i++) {
 					if (m_wrk_formula.formula()->mHandList[i].list == s) {
 						// Update the dialog
 						//m_FormulaTree.SelectItem(NULL);
@@ -1699,7 +1699,7 @@ void CDlgFormulaScintilla::OnHandList()
 	
 	// Find appropriate list in the internal structure
 	list_index = k_not_found;
-	for (i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
+	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
 	{
 		if (m_wrk_formula.formula()->mHandList[i].list == s)
 		{
@@ -1768,7 +1768,7 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 	{
 		// check for function
 		N = (int) f->formula()->mFunction.GetSize();
-		for (i=0; i<N; i++) 
+		for (int i=0; i<N; i++) 
 		{
 			if (f->formula()->mFunction[i].func == s) 
 			{
@@ -1785,7 +1785,7 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 		{
 			// Find proper list and load it
 			N = (int) f->formula()->mHandList.GetSize();
-			for (i=0; i<N; i++) 
+			for (int i=0; i<N; i++) 
 			{
 				if (f->formula()->mHandList[i].list == s) 
 				{
@@ -2186,7 +2186,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	m_wrk_formula.MarkCacheStale();
 
 	// Loop through each line in the debug tab and evaluate it
-	for (i=0; i<(int) debug_ar.GetSize(); i++) 
+	for (int i=0; i<(int) debug_ar.GetSize(); i++) 
 	{
 		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
 		{
@@ -2233,7 +2233,7 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 	*cs = "";
 
 	N = (int) debug_ar.GetSize();
-	for (i=0; i<N; i++) 
+	for (int i=0; i<N; i++) 
 	{
 		if (debug_ar[i].valid) 
 		{
@@ -2246,7 +2246,7 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 			else 
 			{
 				newline="";
-				for (j=0; j<(k_precision_for_debug_tab + k_integer_places_for_debug_tab - 9); j++) // WTF is 9???
+				for (int j=0; j<(k_precision_for_debug_tab + k_integer_places_for_debug_tab - 9); j++) // WTF is 9???
 				{
 					newline.Append(" ");
 				}
@@ -2305,7 +2305,7 @@ void CDlgFormulaScintilla::WriteFDebugLog(bool write_header)
 	header.Format("date/time,");
 
 	N = (int) debug_ar.GetSize();
-	for (i=0; i<N; i++) 
+	for (int i=0; i<N; i++) 
 	{
 		if (debug_ar[i].valid) 
 		{
@@ -2621,7 +2621,7 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 	}
 	else 
 	{
-		for (i=0; i<=MAX_STYLE_NUM; i++) 
+		for (int i=0; i<=MAX_STYLE_NUM; i++) 
 		{
 			pWnd->SetForeground(i, RGB(0x00, 0x00, 0x00));
 		}

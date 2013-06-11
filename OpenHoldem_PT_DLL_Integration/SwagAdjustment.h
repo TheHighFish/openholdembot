@@ -3,7 +3,7 @@
 #define INC_SWAGADJUSTMENT_H
 
 
-double SwagAmountAdjusted(double amount_to_raise_to);
+double AdjustedBetsize(double amount_to_raise_to);
 
 
 #endif // INC_SWAGADJUSTMENT_H

@@ -212,7 +212,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// PokerTracker symbols
 	if (memcmp(a,"pt_",3 )==0)
 	{
-		return p_pokertracker_thread->ProcessQuery(a);
+//!!!		return p_pokertracker_thread->ProcessQuery(a);
 	}
 
 	// HAND RANK

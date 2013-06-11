@@ -127,7 +127,7 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair)
 
 void CHandresetDetector::GetNewSymbolValues()
 {
-	assert(p_symbol_engine_dealerchair == NULL);
+	assert(p_symbol_engine_dealerchair != NULL);
 	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))
 	{
 		dealerchair = p_symbol_engine_dealerchair->dealerchair();	

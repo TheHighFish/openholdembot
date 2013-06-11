@@ -609,7 +609,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	QueryPerformanceFrequency(&lFrequency);
 
 	N = (int) data->pParent->formula()->mFunction.GetSize();
-	for (i=0; i<N; i++)
+	for (int i=0; i<N; i++)
 	{
 
 		// Update progress dialog
@@ -658,7 +658,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 			{
 				s.Format("Error in parse of %s\n\nInvalid symbols:\n",
 					 data->pParent->formula()->mFunction[i].func.GetString());
-				for (j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
+				for (int j=0; j<gram.parse_symbol_stop_strs()->GetSize(); j++)
 				{
 					s.Append("   ");
 					s.Append(gram.parse_symbol_stop_strs()->GetAt(j).c_str());

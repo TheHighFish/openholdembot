@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CPokerTrackerDLLInterface.h"
 
+extern class CPokerTrackerDLLInterface *p_pokertracker_dll_interface = NULL;
+
 CPokerTrackerDLLInterface::CPokerTrackerDLLInterface()
 {}
 

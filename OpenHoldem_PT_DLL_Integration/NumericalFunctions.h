@@ -42,4 +42,16 @@ inline bool IsBitSet(int bit_vector, int n_th_bit)
 
 int	bitcount(unsigned bit_vector);
 
+inline void AdaptValueToMinMaxRange(double *value, double min, double max)
+{
+	if (*value < min)
+	{
+		*value = min;
+	}
+	else if (*value > max)
+	{
+		*value = max;
+	}
+}
+
 #endif INC_NUMERICALFUNCTIONS_H

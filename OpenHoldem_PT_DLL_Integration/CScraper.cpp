@@ -1245,17 +1245,17 @@ void CScraper::DoBasicScrapeButtons()
 	set_button_label(1, "call");
 	set_button_label(2, "raise");
 	set_button_label(3, "allin");
-	for (j=4; j<=9; j++)
+	for (int j=4; j<=9; j++)
 	{
 		set_button_label(j, "");
 	}
-	for (j=0; j<=9; j++)
+	for (int j=0; j<=9; j++)
 	{
 		set_button_state(j, "false");
 		set_i86X_button_state(j, "false");
 	}
 
-	for (j=0; j<=9; j++)
+	for (int j=0; j<=9; j++)
 	{
 		// Button state iXstate
 		s.Format("i%dstate", j);
@@ -1507,10 +1507,10 @@ void CScraper::ScrapePots()
 	CString				s = "", t="";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
-	for (j=0; j<=9; j++)
+	for (int j=0; j<=9; j++)
 		set_pot(j, 0);
 
-	for (j=0; j<=9; j++)
+	for (int j=0; j<=9; j++)
 	{
 		// r$c0potX
 		s.Format("c0pot%d", j);
@@ -1596,7 +1596,6 @@ void CScraper::ScrapePots()
 void CScraper::ScrapeLimits()
 {
 	__HDC_HEADER
-	int					j = 0;
 	CString				handnumber = "";
 	bool				istournament = false;
 	CString				text = "";
@@ -1680,7 +1679,7 @@ void CScraper::ScrapeLimits()
 		write_log(prefs.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
 
-	for (j=0; j<=9; j++)
+	for (int j=0; j<=9; j++)
 	{
 		// r$c0handnumberX
 		s.Format("c0handnumber%d", j);
@@ -1746,7 +1745,7 @@ void CScraper::ScrapeLimits()
 			p_tablelimits->ante(), p_tablelimits->gametype());
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
-		for (j=0; j<=9; j++)
+		for (int j=0; j<=9; j++)
 		{
 			s.Format("ttlimits%d", j);
 			s_iter = p_tablemap->s$()->find(s.GetString());
@@ -1804,6 +1803,7 @@ void CScraper::ScrapeLimits()
 			}
 		}
 
+		int j=0;
 		for (j=0; j<=9; j++)
 		{
 			// r$c0limitsX, s$c0limitsX
@@ -2238,7 +2238,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	CString			s = "";
 
 	// Initialize arrays
-	for (j=0; j<10; j++)
+	for (int j=0; j<10; j++)
 	{
 		r_vert[j] = p_tablemap->r$()->end();
 		r_horiz[j] = p_tablemap->r$()->end();
@@ -2273,7 +2273,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 		return 0.;
 	}
 
-	for (j = 1; j<=9; j++)
+	for (int j = 1; j<=9; j++)
 	{
 		s.Format("%s0%d", type.GetString(), j);
 		r_vert[j] = p_tablemap->r$()->find(s.GetString());
