@@ -982,6 +982,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineIsOmaha.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEngineIsTournament.cpp"
 						>
 					</File>
@@ -1623,6 +1627,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineHistory.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineIsOmaha.h"
 						>
 					</File>
 					<File
