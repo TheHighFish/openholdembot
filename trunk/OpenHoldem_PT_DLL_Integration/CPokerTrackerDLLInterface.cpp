@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "CPokerTrackerDLLInterface.h"
 
-extern class CPokerTrackerDLLInterface *p_pokertracker_dll_interface = NULL;
+#include "CPokerTrackerThread.h"
+
+class CPokerTrackerDLLInterface *p_pokertracker_dll_interface = NULL;
 
 CPokerTrackerDLLInterface::CPokerTrackerDLLInterface()
 {}
@@ -23,4 +25,25 @@ void CPokerTrackerDLLInterface::ExtendListOfSymbolsForEditor(CString *keywords)
 void CPokerTrackerDLLInterface::ExtendListOfSymbolDescriptionsForEditor()
 {
 	//!!!!!	
+}
+
+
+double CPokerTrackerDLLInterface::GetStat(int chr, int stat)
+{
+	assert(chr >= k_first_chair); 
+	assert(chr <= k_last_chair);
+
+	return 0;
+	//!!!return _player_stats[chr].stat[stat];	
+}
+
+bool CPokerTrackerDLLInterface::IsFound(int chair)
+{
+	return true; //!!!_player_stats[chair].found;
+}
+
+
+void CPokerTrackerDLLInterface::SetStat(int chair, int stat, double value)
+{
+//!!!
 }

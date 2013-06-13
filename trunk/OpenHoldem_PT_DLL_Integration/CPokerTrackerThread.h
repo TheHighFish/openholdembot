@@ -9,6 +9,20 @@
 const int k_advanced_stat_update_every    =    5;
 const int k_min_hands_slower_updates_ring = 1000;
 
+struct SPlayerData 
+{
+	char			scraped_name[k_max_length_of_playername];
+	char			pt_name[k_max_length_of_playername];
+	bool			found;
+	// Stats are now in the DLL
+	//double			stat[k_max_number_of_supported_pokertracker_stats];
+
+	//int				t_elapsed[k_max_number_of_supported_pokertracker_stats]; //??? necessary
+	//int				skipped_updates;           //??? nec?
+};
+
+extern SPlayerData _player_data[k_max_number_of_players];
+
 extern class CPokerTrackerLookup
 {
 public:
@@ -49,7 +63,6 @@ private:
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);
 	bool				CheckIfNameHasChanged(int chair);
-	double				GetStat(const int m_chair, const PT_Stats stat);	
 	double				UpdateStat(const int m_chair, const int stat);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
@@ -64,7 +77,7 @@ private:
 	void				ReportUpdateComplete(int updatedCount, int chair);
 	bool				StatEnabled(int stat){return _m_enabled_stats[stat];}
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
-	//!!!int					GetSkippedUpdates(int chr){return _player_stats[chr].skipped_updates;}
+	//R!!!int					GetSkippedUpdates(int chr){return _player_stats[chr].skipped_updates;}
 	bool				IsFound(int chair);
 	//!!!const char*         GetPlayerScrapedName(int chair){return _player_stats[chair].scraped_name;}
 

@@ -3,20 +3,6 @@
 
 #include "CVirtualSymbolEngine.h"
 
-const int k_max_number_of_supported_pokertracker_stats = 64;
-
-struct SPlayerStats 
-{
-	char			scraped_name[k_max_length_of_playername];
-	char			pt_name[k_max_length_of_playername];
-	bool			found;
-	double			stat[k_max_number_of_supported_pokertracker_stats];
-	int				t_elapsed[k_max_number_of_supported_pokertracker_stats]; //??? necessary
-	int				skipped_updates;           //??? nec?
-};
-
-extern SPlayerStats _player_stats[k_max_number_of_players];
-
 extern class CSymbolEnginePokerTracker: public CVirtualSymbolEngine
 {
 public:

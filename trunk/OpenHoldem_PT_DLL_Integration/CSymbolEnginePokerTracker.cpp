@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
 
+#include "CPokerTrackerDLLInterface.h"
+#include "CPokerTrackerThread.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
 
 
 CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
-
-SPlayerStats _player_stats[k_max_number_of_players];
 
 
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
@@ -63,7 +63,7 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 	ClearAllStatsOfChangedPlayers();
 }
 
-int pt_max = 42; //!!!
+//int pt_max = 42; //!!!
 
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound)
 {
@@ -71,16 +71,16 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 	assert(chair <= k_last_chair);
 	for (int i=0; i<=pt_max; i++)
 	{
-		_player_stats[chair].stat[i] = -1.0;
-		_player_stats[chair].t_elapsed[i] = -1;
+		p_pokertracker_dll_interface->SetStat(chair, i, -1.0);
+		//R!!!_player_data[chair].t_elapsed[i] = -1;
 	}
 	if (clearNameAndFound)
 	{
-		_player_stats[chair].found = false;
-		memset(_player_stats[chair].pt_name, 0, k_max_length_of_playername);
-		memset(_player_stats[chair].scraped_name, 0, k_max_length_of_playername);
+		_player_data[chair].found = false;
+		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
+		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
 	}
-	_player_stats[chair].skipped_updates = 0; //!!!k_advanced_stat_update_every;
+	//R?!!!_player_data[chair].skipped_updates = 0; //!!!k_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()
@@ -159,14 +159,14 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char * s)
 		}
 	}
 	int index = GetIndex("symbol"); //!!!
-	AssertRange(index, -1, (k_max_number_of_supported_pokertracker_stats - 1));
+	//!!!AssertRange(index, -1, (k_max_number_of_supported_pokertracker_stats - 1));
 	AssertRange(chair, k_first_chair, k_last_chair);
 	if (index == 1)
 	{
 		WarnAboutInvalidPTSymbol(s);
 		return -1.0;
 	}
-	return _player_stats[chair].stat[index];
+	return p_pokertracker_dll_interface->GetStat(chair, index);
 }
 
 
