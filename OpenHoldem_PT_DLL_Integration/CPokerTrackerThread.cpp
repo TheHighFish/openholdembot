@@ -5,6 +5,7 @@
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
+#include "CPokerTrackerDLLInterface.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "CPreferences.h"
@@ -15,13 +16,15 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
-#include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 #include "PokerTracker_Queries_Version_3.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
+
+SPlayerData _player_data[k_max_number_of_players];
+
 
 CPokerTrackerLookup::CPokerTrackerLookup()
 {
@@ -286,11 +289,11 @@ void CPokerTrackerThread::ReportSeatChanges(int chair)
 	{
 		if (i != chair)
 		{
-			memcpy(currentScrapeName, _player_stats[i].scraped_name, k_max_length_of_playername);
+			memcpy(currentScrapeName, _player_data[i].scraped_name, k_max_length_of_playername);
 			if (CheckIfNameHasChanged(i))
 			{
 				/* Scrapped name got changed. Clear stats for that chair */
-				write_log(prefs.debug_pokertracker(), "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
+				write_log(prefs.debug_pokertracker(), "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_data[i].scraped_name);
 				/* Clear stats but leave the new name intact */
 				//!!!ClearSeatStats(i, false);
 			}
@@ -341,7 +344,7 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 	}
 	
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	if (_player_stats[chair].found && 0 == strcmp(_player_stats[chair].scraped_name, oh_scraped_name))
+	if (_player_data[chair].found && 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name))
 	{
 		return true;
 	}
@@ -384,8 +387,8 @@ bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 	}
 
 	// We already have the name, and it has not changed since we last checked, so do nothing
-	if (_player_stats[chair].found 
-		&& 0 == strcmp(_player_stats[chair].scraped_name, oh_scraped_name))
+	if (_player_data[chair].found 
+		&& 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name))
 	{
 		return false;
 	}
@@ -395,21 +398,21 @@ bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 
 void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name)
 {
-	_player_stats[chr].found = found;
+	_player_data[chr].found = found;
 	bool logResult = false;
-	if (0 != memcmp(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].pt_name, pt_name, k_max_length_of_playername) )
 	{
-		memcpy(_player_stats[chr].pt_name, pt_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].pt_name, pt_name, k_max_length_of_playername);
 		logResult = true;
 	}
-	if (0 != memcmp(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername) )
 	{
-		memcpy(_player_stats[chr].scraped_name, scraped_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername);
 		logResult = true;
 	}
 	if (logResult)
 	{
-		write_log(prefs.debug_pokertracker(), "SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
+		write_log(prefs.debug_pokertracker(), "SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_data[chr].pt_name, _player_data[chr].scraped_name);
 	}
 }
 
@@ -447,15 +450,6 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	return result;
 }
 
-double CPokerTrackerThread::GetStat(int chr, PT_Stats stat)
-{
-	assert(chr >= k_first_chair); 
-	assert(chr <= k_last_chair);
-
-	return _player_stats[chr].stat[stat];
-
-		
-}
 
 double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
@@ -489,11 +483,11 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	//if (sym_elapsed - _player_stats[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
-		//_player_stats[m_chr].t_elapsed[stat] != -1 &&
-		//_player_stats[m_chr].stat[stat] != -1)
+	//if (sym_elapsed - _player_data[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
+		//_player_data[m_chr].t_elapsed[stat] != -1 &&
+		//_player_data[m_chr].stat[stat] != -1)
 	//{
-		//result = _player_stats[m_chr].stat[stat];
+		//result = _player_data[m_chr].stat[stat];
 	//}
 
 	// ...otherwise query the database
@@ -508,7 +502,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		{
 			strcpy_s(strQry2, k_max_length_of_query, strQry1);  // move the query into temp str 2
 			strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-			strcat_s(strQry2, k_max_length_of_query, _player_stats[m_chr].pt_name);  // append the player name to temp str 2
+			strcat_s(strQry2, k_max_length_of_query, _player_data[m_chr].pt_name);  // append the player name to temp str 2
 			strcat_s(strQry2, k_max_length_of_query, n+12); // append the portion of temp str 1 after the token to temp str 2
 			strcpy_s(strQry, k_max_length_of_query, strQry2); // move temp str 2 into the original query
 			strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
@@ -595,8 +589,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		PQclear(res);
 
 		// update cache with new values
-		_player_stats[m_chr].stat[stat] = result;
-		_player_stats[m_chr].t_elapsed[stat] = sym_elapsed;
+		p_pokertracker_dll_interface->SetStat(m_chr, stat, result);
+		//R!!!_player_data[m_chr].t_elapsed[stat] = sym_elapsed;
 	}
 
 	return result;
@@ -698,10 +692,11 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	return result;
 }
 
-// Returns 1 for basic stats only, and 2 for all
+
+// R!!!Returns 1 for basic stats only, and 2 for all
 int CPokerTrackerThread::GetUpdateType(int chr)
 {
-	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
+	//!!!if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
 	{
 		write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
 		return pt_updateType_updateAll;
@@ -710,13 +705,15 @@ int CPokerTrackerThread::GetUpdateType(int chr)
 	return pt_updateType_updateBasic;
 }
 
-
+//!!!R
 void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
 {
-	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
-		_player_stats[chr].skipped_updates = 1;
+	/*!!!
+	if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
+		_player_data[chr].skipped_updates = 1;
 	else
-		++_player_stats[chr].skipped_updates;
+		++_player_data[chr].skipped_updates;
+		*/
 }
 
 
@@ -751,7 +748,7 @@ int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
 		return pt_updateType_noUpdate;
 	}
 	
-	int hands = (int)GetStat(chair, _m_handsStats);
+	int hands = (int)p_pokertracker_dll_interface->GetStat(chair, _m_handsStats);
 	if (hands > _m_min_hands_for_slower_update)
 	{
 		if (GetUpdateType(chair) == pt_updateType_updateAll)
@@ -825,7 +822,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 				   So what we do care about, is the situation were the name got replaced by another name,
 				   in that case, we stop the update for the current chair  			   */ 
 
-				if (pParent->IsFound(chair))
+				if (p_pokertracker_dll_interface->IsFound(chair))
 				{
 					/* Verify therad_stop is false */ 
 					if (LightSleep(0, pParent)) 
@@ -877,14 +874,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 
 void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
 {
-	write_log(prefs.debug_pokertracker(), "Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_stats[chair].scraped_name, updatedCount);
+	write_log(prefs.debug_pokertracker(), "Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_data[chair].scraped_name, updatedCount);
 }
-
-bool CPokerTrackerThread::IsFound(int chair)
-{
-	return _player_stats[chair].found;
-}
-
 
 UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
