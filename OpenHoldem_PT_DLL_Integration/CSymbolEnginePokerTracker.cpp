@@ -63,8 +63,6 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 	ClearAllStatsOfChangedPlayers();
 }
 
-//int pt_max = 42; //!!!
-
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound)
 {
 	assert(chair >= k_first_chair); 
@@ -72,7 +70,6 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 	for (int i=0; i<=pt_max; i++)
 	{
 		p_pokertracker_dll_interface->SetStat(chair, i, -1.0);
-		//R!!!_player_data[chair].t_elapsed[i] = -1;
 	}
 	if (clearNameAndFound)
 	{
@@ -80,7 +77,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
 		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
 	}
-	//R?!!!_player_data[chair].skipped_updates = 0; //!!!k_advanced_stat_update_every;
+	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()

@@ -483,9 +483,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	
 	// If we already have stats cached for the player, the timeout has not expired,
 	// return the value from the cache...
-	//if (sym_elapsed - _player_data[m_chr].t_elapsed[stat] < prefs.pt_cache_refresh() &&
-		//_player_data[m_chr].t_elapsed[stat] != -1 &&
-		//_player_data[m_chr].stat[stat] != -1)
+	//if (_player_data[m_chr].stat[stat] != -1)
 	//{
 		//result = _player_data[m_chr].stat[stat];
 	//}
@@ -590,7 +588,6 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 		// update cache with new values
 		p_pokertracker_dll_interface->SetStat(m_chr, stat, result);
-		//R!!!_player_data[m_chr].t_elapsed[stat] = sym_elapsed;
 	}
 
 	return result;
@@ -693,10 +690,10 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 }
 
 
-// R!!!Returns 1 for basic stats only, and 2 for all
+// Returns 1 for basic stats only, and 2 for all
 int CPokerTrackerThread::GetUpdateType(int chr)
 {
-	//!!!if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
+	if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
 	{
 		write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
 		return pt_updateType_updateAll;
@@ -705,15 +702,12 @@ int CPokerTrackerThread::GetUpdateType(int chr)
 	return pt_updateType_updateBasic;
 }
 
-//!!!R
 void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
 {
-	/*!!!
 	if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
 		_player_data[chr].skipped_updates = 1;
 	else
 		++_player_data[chr].skipped_updates;
-		*/
 }
 
 
@@ -846,7 +840,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					{
 						/* Updating stat i should be skipped this time */
 						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
-//!!!						write_log(prefs.debug_pokertracker(), "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
+						write_log(prefs.debug_pokertracker(), "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
 					}
 					else
 					{
