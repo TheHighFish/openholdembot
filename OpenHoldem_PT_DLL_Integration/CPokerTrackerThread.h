@@ -77,7 +77,7 @@ private:
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
 	int					GetSkippedUpdates(int chr){return _player_data[chr].skipped_updates;}
 	bool				IsFound(int chair);
-	//!!!const char*         GetPlayerScrapedName(int chair){return _player_stats[chair].scraped_name;}
+	const char*         GetPlayerScrapedName(int chair){return _player_data[chair].scraped_name;}
 
 	CString				_conn_str;
 	bool				_connected;

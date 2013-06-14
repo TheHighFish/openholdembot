@@ -774,8 +774,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
 		return;
 	}
-//!!!	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
-//!!!	write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
+	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
+	write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
 	
 	/* Check if there's a complete update cycle skipping for that chair */
 	updateType = pParent->SkipUpdateForChair(chair, reason);
