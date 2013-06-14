@@ -16,9 +16,7 @@ struct SPlayerData
 	bool			found;
 	// Stats are now in the DLL
 	//double			stat[k_max_number_of_supported_pokertracker_stats];
-
-	//int				t_elapsed[k_max_number_of_supported_pokertracker_stats]; //??? necessary
-	//int				skipped_updates;           //??? nec?
+	int				skipped_updates;           
 };
 
 extern SPlayerData _player_data[k_max_number_of_players];
@@ -77,7 +75,7 @@ private:
 	void				ReportUpdateComplete(int updatedCount, int chair);
 	bool				StatEnabled(int stat){return _m_enabled_stats[stat];}
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
-	//R!!!int					GetSkippedUpdates(int chr){return _player_stats[chr].skipped_updates;}
+	int					GetSkippedUpdates(int chr){return _player_data[chr].skipped_updates;}
 	bool				IsFound(int chair);
 	//!!!const char*         GetPlayerScrapedName(int chair){return _player_stats[chair].scraped_name;}
 
