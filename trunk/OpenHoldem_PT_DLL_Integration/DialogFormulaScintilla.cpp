@@ -14,7 +14,7 @@
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CHeartbeatThread.h"
-#include "CPokerTrackerDLLInterface.h"
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -233,7 +233,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	in_startup = true;
 
-	p_pokertracker_dll_interface->ExtendListOfSymbolsForEditor(&keywords);
+	//!!!!!p_pokertracker_dll_interface->ExtendListOfSymbolsForEditor(&keywords);
 
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");
@@ -432,7 +432,7 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
 		}
 	}
-	for (int i=0; i<10; i++) {
+	for (int i=0; i<10; i++) { //!!!!!
 		keys.AppendFormat(" pt_icon%d", i);
 		keys.AppendFormat(" pt_hands%d", i);
 		keys.AppendFormat(" pt_pfr%d", i);
@@ -2987,7 +2987,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "fourofakind", "1<<30 (2 ** 30)");
 	AddSymbol(parent, "straightflush", "1<<31 (2 ** 31)");
 	AddSymbol(parent, "royalflush", "0x800edcba");
-	AddSymbol(parent, "fiveofakind", "0xff000000");
 
 	mainParent = parent = AddSymbolTitle("Hand Tests", NULL, hCatItem);
 	AddSymbol(parent, "$CCc", "see the hand symbol reference for details");

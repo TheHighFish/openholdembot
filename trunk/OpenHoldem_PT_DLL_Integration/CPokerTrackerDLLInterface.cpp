@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "CPokerTrackerDLLInterface.h"
 
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
+#include "DialogFormulaScintilla.h"
 
 class CPokerTrackerDLLInterface *p_pokertracker_dll_interface = NULL;
 
@@ -13,37 +15,49 @@ CPokerTrackerDLLInterface::~CPokerTrackerDLLInterface()
 
 void CPokerTrackerDLLInterface::ExtendListOfSymbolsForEditor(CString *keywords)
 {
-	//!!!!!
-	*keywords += "pt_icon pt_hands pt_pfr pt_aggp pt_aggf pt_aggt pt_aggr "
-				  "pt_aggtot pt_aggtotnopf pt_floppct pt_turnpct pt_riverpct pt_vpip pt_pf_rfi "
-				  "pt_pf_cr pt_pfats pt_wsdp pt_wssd pt_fbbts pt_fsbts ";
-	*keywords += "pt_ricon pt_rhands pt_rpfr pt_raggp pt_raggf pt_raggt pt_raggr "
-				  "pt_raggtot pt_raggtotnopf pt_rfloppct pt_rturnpct pt_rriverpct pt_rvpip pt_rpf_rfi "
-				  "pt_rpf_cr pt_rpfats pt_rwsdp pt_rwssd pt_rfbbts pt_rfsbts ";
+	/*	Extends a list of known symbol like 
+		"pt_icon pt_hands pt_pfr pt_aggp pt_aggf "
+		Trailing space is necessary.
+	*/
+	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString pt_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
+		assert(pt_symbol_name != "");
+		CString new_keyword = "pt_" + pt_symbol_name + " ";
+		*keywords += new_keyword;
+		new_keyword = "pt_r_" + pt_symbol_name + " ";
+		*keywords += new_keyword;
+			
+	}
 }
 
-void CPokerTrackerDLLInterface::ExtendListOfSymbolDescriptionsForEditor()
-{
-	//!!!!!	
+void CPokerTrackerDLLInterface::ExtendListOfSymbolDescriptionsForEditor(
+	HTREEITEM hCatItem)
+{/*!!!
+	HTREEITEM mainParent, parent;
+	mainParent = parent = CDlgFormulaScintilla::AddSymbolTitle(
+		"Poker Tracker symbols", NULL, hCatItem);
+	parent = CDlgFormulaScintilla::AddSymbolSubTitle(
+		mainParent, "Ring symbols");
+	
+	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString new_symbol  = "pt_
+		CString description = PT_DLL_GetDescription(i);
+		CDlgFormulaScintilla::AddSymbol(parent, new_symbol, description);
+	}*/
 }
 
-
-double CPokerTrackerDLLInterface::GetStat(int chr, int stat)
+double CPokerTrackerDLLInterface::GetStat(CString symbol_without_prefix, int chair)
 {
-	assert(chr >= k_first_chair); 
-	assert(chr <= k_last_chair);
-
-	return 0;
-	//!!!return _player_stats[chr].stat[stat];	
+	assert(chair >= k_first_chair); 
+	assert(chair <= k_last_chair);
+	return PT_DLL_GetStat(symbol_without_prefix, chair);	
 }
 
-bool CPokerTrackerDLLInterface::IsFound(int chair)
+void CPokerTrackerDLLInterface::SetStat(int stat, int chair, double value)
 {
-	return true; //!!!_player_stats[chair].found;
-}
-
-
-void CPokerTrackerDLLInterface::SetStat(int chair, int stat, double value)
-{
-//!!!
+	assert(chair >= k_first_chair); 
+	assert(chair <= k_last_chair);
+	PT_DLL_SetStat(stat, chair, value);
 }

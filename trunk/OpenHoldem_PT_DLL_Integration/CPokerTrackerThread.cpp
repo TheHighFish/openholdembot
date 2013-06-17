@@ -5,9 +5,9 @@
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
-#include "CPokerTrackerDLLInterface.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -587,7 +587,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		PQclear(res);
 
 		// update cache with new values
-		p_pokertracker_dll_interface->SetStat(m_chr, stat, result);
+		PT_DLL_SetStat(stat, m_chr, result);
 	}
 
 	return result;
@@ -742,7 +742,7 @@ int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
 		return pt_updateType_noUpdate;
 	}
 	
-	int hands = (int)p_pokertracker_dll_interface->GetStat(chair, _m_handsStats);
+	int hands = (int)PT_DLL_GetStat("hands", chair);
 	if (hands > _m_min_hands_for_slower_update)
 	{
 		if (GetUpdateType(chair) == pt_updateType_updateAll)
@@ -816,7 +816,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 				   So what we do care about, is the situation were the name got replaced by another name,
 				   in that case, we stop the update for the current chair  			   */ 
 
-				if (p_pokertracker_dll_interface->IsFound(chair))
+				if (_player_data[chair].found)
 				{
 					/* Verify therad_stop is false */ 
 					if (LightSleep(0, pParent)) 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
 
-#include "CPokerTrackerDLLInterface.h"
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "OH_MessageBox.h"
@@ -67,10 +67,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 {
 	assert(chair >= k_first_chair); 
 	assert(chair <= k_last_chair);
-	for (int i=0; i<=pt_max; i++)
-	{
-		p_pokertracker_dll_interface->SetStat(chair, i, -1.0);
-	}
+	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound)
 	{
 		_player_data[chair].found = false;
@@ -99,12 +96,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 	}
 }
 
-int GetIndex(char *symbol)
-{
-	return 0; //!!!
-}
-
-double CSymbolEnginePokerTracker::ProcessQuery(const char * s)
+double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 {
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	int chair = 0;
@@ -155,15 +147,8 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char * s)
 			return -1.0;
 		}
 	}
-	int index = GetIndex("symbol"); //!!!
-	//!!!AssertRange(index, -1, (k_max_number_of_supported_pokertracker_stats - 1));
 	AssertRange(chair, k_first_chair, k_last_chair);
-	if (index == 1)
-	{
-		WarnAboutInvalidPTSymbol(s);
-		return -1.0;
-	}
-	return p_pokertracker_dll_interface->GetStat(chair, index);
+	return PT_DLL_GetStat(s, chair); //!!!
 }
 
 
