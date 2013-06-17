@@ -10,7 +10,6 @@ public:
 	CString LogsDirectory();
 	CString LogFilename();
 	CString DebugTabLogFilename();
-	CString PokerTrackerLogFilename();
 	CString MiniDumpFilename();
 	CString ScraperDirectory();
 	CString ReplaySessionDirectory();
