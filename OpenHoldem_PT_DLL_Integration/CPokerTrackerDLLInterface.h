@@ -9,11 +9,10 @@ public:
 	CPokerTrackerDLLInterface();
 	~CPokerTrackerDLLInterface();
 public:
-	void ExtendListOfSymbolsForEditor(CString *keywords);
-	void ExtendListOfSymbolDescriptionsForEditor();
-	double GetStat(int chair, int stat);
-	void SetStat(int chair, int stat, double value);
-	bool IsFound(int chair);
+	void	ExtendListOfSymbolsForEditor(CString *keywords);
+	void	ExtendListOfSymbolDescriptionsForEditor(HTREEITEM hCatItem);
+	double	GetStat(CString symbol_without_prefix, int chair);
+	void	SetStat(int stat, int chair, double value);
 } *p_pokertracker_dll_interface;
 
 #endif INC_CPOKERTRACKERDLLINTERFACE_H
