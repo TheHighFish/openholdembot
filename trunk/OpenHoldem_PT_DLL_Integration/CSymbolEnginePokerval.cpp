@@ -86,9 +86,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	CardMask_RESET(Cards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		// player cards!!!!!
-		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK &&
-			p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
+		if (p_scraper_access->UserHasCards())
 		{
 			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
 			nCards++;
