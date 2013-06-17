@@ -145,16 +145,6 @@ CString CFilenames::LogFilename()
 	return path;
 }
 
-CString CFilenames::PokerTrackerLogFilename()
-{
-	// !!! Function to be removed
-	assert(false);
-	assert(_startup_path != "");
-	CString path;
-	path.Format("%s\\oh_pt_%lu.log", _startup_path, p_sessioncounter->session_id());
-	return path;
-}
-
 CString CFilenames::MiniDumpFilename()
 {
 	SYSTEMTIME	stLocalTime;

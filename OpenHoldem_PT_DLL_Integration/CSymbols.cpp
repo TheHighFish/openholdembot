@@ -37,6 +37,7 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
+#include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
@@ -124,7 +125,7 @@ void CSymbols::LogHandReset()
 		StdDeck_cardToString(player_card_cur[0], card0);
 		StdDeck_cardToString(player_card_cur[1], card1);
 	}
-	char title[512] = "!!!Missing title is a bug!!!";
+	char title[512] = "--- No title specified ---";
 	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
 	write_log(k_always_log_basic_information, 
 		"\n"
@@ -212,7 +213,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// PokerTracker symbols
 	if (memcmp(a,"pt_",3 )==0)
 	{
-//!!!		return p_pokertracker_thread->ProcessQuery(a);
+		return p_symbol_engine_pokertracker->ProcessQuery(a);
 	}
 
 	// HAND RANK

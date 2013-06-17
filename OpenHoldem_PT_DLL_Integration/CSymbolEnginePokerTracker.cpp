@@ -4,6 +4,7 @@
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
 
@@ -17,6 +18,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_userchair != NULL);
 }
 
 CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker()
@@ -31,6 +33,7 @@ void CSymbolEnginePokerTracker::InitOnStartup()
 void CSymbolEnginePokerTracker::ResetOnConnection()
 {
 	ClearAllStats();
+	p_pokertracker_thread->StartThread();
 }
 
 void CSymbolEnginePokerTracker::ResetOnHandreset()
@@ -103,14 +106,14 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 
 //!!!	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 	{
-		//!!!if (!p_symbol_engine_userchair->userchair_confirmed())
+		if (!p_symbol_engine_userchair->userchair_confirmed())
 		{
 			// We are not yet seated.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
 		}
-		//!!!else
+		else
 		{
 			// We are seated and playing.
 			// Serious problem, if we do not have a DB-connection.

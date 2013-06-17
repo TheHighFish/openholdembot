@@ -258,9 +258,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
-			// reset iterator vars !!! not here!
-			iter_vars.ResetVars();
-
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
@@ -291,8 +288,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			WriteLogTableReset();
 
 			p_table_positioner->PositionMyWindow();
-//!!!			p_pokertracker_thread->ClearAllStats();
-			p_pokertracker_thread->StartThread();
 		}
 	}
 	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");

@@ -11,14 +11,12 @@
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
-#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
-#include "PokerTracker_Queries_Version_3.h"
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 CPokerTrackerLookup pt_lookup;
@@ -129,14 +127,13 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_connected = false;
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
-	SetStatGroups();
-	SetStatTypes();
+	//!!!SetStatGroups();
 	_pgconn = NULL; 
 }
 
+/*!!!
 void CPokerTrackerThread::SetStatGroups()
 {
-	/* Ring symbols */
 	_m_statGroup[pt_icon] = pt_group_advanced;
 	_m_statGroup[pt_hands] = pt_group_basic;
 	_m_statGroup[pt_pfr] = pt_group_basic;
@@ -166,25 +163,7 @@ void CPokerTrackerThread::SetStatGroups()
 	_m_statGroup[pt_fcbetflop] = pt_group_advanced;
 	_m_statGroup[pt_fcbetturn] = pt_group_advanced;
 	_m_statGroup[pt_fcbetriver] = pt_group_advanced;
-}
-
-void CPokerTrackerThread::SetRingStatsState(bool enabled)
-{
-	for (int i = pt_min; i <= pt_max; ++i)
-	{	
-		_m_enabled_stats[i] = enabled;
-	}
-}
-
-void CPokerTrackerThread::SetStatTypes()
-{
-	/* Ring symbols */
-	for (int i = pt_min; i <= pt_max; ++i)
-	{	
-		_m_stat_type[i] = pt_statType_Ring;
-	}
-}
-
+}*/
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
@@ -450,10 +429,14 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	return result;
 }
 
+//!!!!
+const int k_max_length_of_query = 42;
+const int k_max_length_of_site_id = 42;
 
 double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
 	PGresult	*res = NULL;
+	//!!!!!
 	char		strQry[k_max_length_of_query] = {0};
 	char		strQry1[k_max_length_of_query] = {0};
 	char		strQry2[k_max_length_of_query] = {0};
@@ -476,8 +459,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 	assert(m_chr >= k_first_chair);
 	assert(m_chr <= k_last_chair);
-	assert(stat >= pt_min);
-	assert(stat <= pt_max);
+	assert(stat >= 0);
+	assert(stat < PT_DLL_GetNumberOfStats());
 
 	/* TS 01/25/2011.  Update means update... we will not back off now :-) */
 	
@@ -492,7 +475,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	//else
 	{
 		// get query string for the requested statistic
-		strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
+		//!!!!!strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
 
 		// Insert the player name in the query string
 		strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
@@ -524,7 +507,10 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		try
 		{
 			// See if we can find the player name in the database
-			write_log(prefs.debug_pokertracker(), "Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
+			write_log(prefs.debug_pokertracker(), 
+				"Querying %s for m_chr %d: %s\n", 
+				PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
+				m_chr, strQry);
 			res = PQexec(_pgconn, strQry);
 		}
 		catch (_com_error &e)
@@ -580,7 +566,10 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			if (PQgetisnull(res,0,0) != 1)
 			{
 				result = atof(PQgetvalue(res,0,0));
-				write_log(prefs.debug_pokertracker(), "Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
+				write_log(prefs.debug_pokertracker(), 
+					"Query %s for m_chr %d success: %f\n", 
+					PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
+					m_chr, result);
 			}
 		}
 
@@ -690,16 +679,15 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 }
 
 
-// Returns 1 for basic stats only, and 2 for all
-int CPokerTrackerThread::GetUpdateType(int chr)
+bool CPokerTrackerThread::UpdateAllStats(int chr)
 {
 	if (_player_data[chr].skipped_updates == k_advanced_stat_update_every)
 	{
-		write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
-		return pt_updateType_updateAll;
+		write_log(prefs.debug_pokertracker(), "UpdateAllStats: for chair [%d] is true.\n", chr);
+		return true;
 	}
-	write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update Basic only\n", chr);
-	return pt_updateType_updateBasic;
+	write_log(prefs.debug_pokertracker(), "UpdateAllStats: for chair [%d] is false (Basic only).\n", chr);
+	return false;
 }
 
 void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
@@ -713,55 +701,49 @@ void CPokerTrackerThread::RecalcSkippedUpdates(int chr)
 
 int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 {
-	int statGroup = _m_statGroup[stat]; // puts in statgroup the group of this stat, that is basic/advanced/positional
-	int result;
-	int updateType = GetUpdateType(chair); // get the current update type, that is either basic or all
-
-	if (updateType == pt_updateType_updateBasic && (statGroup == pt_group_advanced || statGroup == pt_group_positional))
-		result = 1;
+	if (UpdateAllStats(chair))
+	{
+		return false;
+	}
+	else if (PT_DLL_IsPositionalPreflopStat(stat) 
+		|| PT_DLL_IsAdvancedStat(chair))
+	{
+		return true;
+	}
 	else
-		result = 0;
-	return result;
+	{
+		return false;
+	}
 }
 
-void CPokerTrackerThread::SetHandsStat()
+bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 {
-	_m_handsStats = pt_hands;
-	_m_min_hands_for_slower_update = k_min_hands_slower_updates_ring;
-	SetRingStatsState(true);
-}
-
-int CPokerTrackerThread::SkipUpdateForChair(int chair, char* reason)
-{
-	memset(reason,0,100);
 	int userchair = p_symbol_engine_userchair->userchair();
 	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
-		memcpy(reason, "User sits in this chair", 100);
-		return pt_updateType_noUpdate;
+		write_log(prefs.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
+		return true;
 	}
 	
 	int hands = (int)PT_DLL_GetStat("hands", chair);
 	if (hands > _m_min_hands_for_slower_update)
 	{
-		if (GetUpdateType(chair) == pt_updateType_updateAll)
-			return pt_updateType_updateAll;
+		if (UpdateAllStats(chair))
+			return false;
 		else
 		{
-			memcpy(reason, "User has lots of hands", 100);
-			return pt_updateType_noUpdate;
+			write_log(prefs.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [User has lots of hands]\n", chair);
+			return true;
 		}
 	}
-	return pt_updateType_updateAll;
+	return false;
 }
 
 
 void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTime)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
-	int			updateType;
-	char        reason[100];
 	int         updatedCount = 0;
 	
 	if (pParent->CheckIfNameExistsInDB(chair) == false)
@@ -778,10 +760,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
 	
 	/* Check if there's a complete update cycle skipping for that chair */
-	updateType = pParent->SkipUpdateForChair(chair, reason);
-	if (updateType == pt_updateType_noUpdate)
+	if (pParent->SkipUpdateForChair(chair))
 	{
-		write_log(prefs.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [%s]\n", chair, reason);
 		pParent->RecalcSkippedUpdates(chair);
 		return;
 	}
@@ -798,7 +778,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	{
 		if (p_autoconnector->IsConnected())
 		{
-			for (int i = pt_min; i <= pt_max; i++)
+			for (int i=0; i <PT_DLL_GetNumberOfStats(); i++)
 			{
 				/* Every few iterations, we need to verify that the seats we already have stats on, 
 			       did not change. This task is totally irrelevant for the current function
@@ -831,12 +811,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 						//!!!pParent->ClearSeatStats(chair, false);
 						return;
 					}
-					if (!pParent->StatEnabled(i))
-					{
-						/* Skip disabled stats */
-						write_log(prefs.debug_pokertracker(), "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [stat is disabled]\n", i, chair);
-					}
-					else if (pParent->SkipUpdateCondition(i, chair))
+					if (pParent->SkipUpdateCondition(i, chair))
 					{
 						/* Updating stat i should be skipped this time */
 						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
@@ -884,7 +859,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	{
 		iterStart = clock();
 		write_log(prefs.debug_pokertracker(), "PTthread iteration [%d] had started\n", ++iteration);
-		pParent->SetHandsStat();
+		//!!!!!pParent->SetHandsStat();
 		if (!pParent->_connected)
 		{
 			pParent->Connect();
@@ -897,7 +872,9 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		//Define sleeptime for current ptrhead iteration
 		if (players > 1)
 		{
-			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!*/ 30 * 1000) / (double)(pt_max * players));
+			const int k_refresh_time = 30 * 1000; // milli-seconds
+			sleepTime = (int) ((double)(k_refresh_time) 
+				/ (double)(PT_DLL_GetNumberOfStats() * players));
 			write_log(prefs.debug_pokertracker(), "sleepTime set to %d\n", sleepTime);
 		}
 		else
