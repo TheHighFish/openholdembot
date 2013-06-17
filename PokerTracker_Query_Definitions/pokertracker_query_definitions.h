@@ -1,26 +1,24 @@
-#ifndef INC_MOUSEDLL_H
-#define INC_MOUSEDLL_H
+#ifndef INC_POKERTRQCKERQUERYDEFINITIONS_H
+#define INC_POKERTRQCKERQUERYDEFINITION_H
 
-#ifdef MOUSEDLL_EXPORTS
-#define MOUSEDLL_API __declspec(dllexport)
+#ifdef POKERTRACKER_DLL_EXPORTS
+#define POKERTRACKER_DLL_API extern "C" __declspec(dllexport)
 #else
-#define MOUSEDLL_API __declspec(dllimport)
+#define POKERTRACKER_DLL_API extern "C" __declspec(dllimport)
 #endif
 
-/*
-typedef int (*mouse_click_t)(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks, 
-							 const HWND restore_focus, const POINT restore_cursor);
-MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks, 
-							const HWND restore_focus, const POINT restore_cursor);
-*/
+#include "atlstr.h"
 
-int GetNumberOfStats();
-CString GetQueryDefinition(int index, bool isomaha, bool istournament);
-CString GetDescription(int index);
-bool IsBasicStat(int index);
-bool IsPositionalPreflopStat(int index);
-bool isAdvancedStat(int index);
+POKERTRACKER_DLL_API	int		PT_DLL_GetNumberOfStats();
+POKERTRACKER_DLL_API	CString PT_DLL_GetQueryDefinition(int stats_index, bool isomaha, bool istournament);
+POKERTRACKER_DLL_API	CString PT_DLL_GetDescription(int stats_index);
+POKERTRACKER_DLL_API	CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_index);
+POKERTRACKER_DLL_API	bool	PT_DLL_IsBasicStat(int stats_index);
+POKERTRACKER_DLL_API	bool	PT_DLL_IsPositionalPreflopStat(int stats_index);
+POKERTRACKER_DLL_API	bool	PT_DLL_isAdvancedStat(int stats_index);
+POKERTRACKER_DLL_API	double	PT_DLL_GetStat(CString symbol_without_prefix, int chair);
+POKERTRACKER_DLL_API	void	PT_DLL_SetStat(int stats_index, int chair, double value);
+POKERTRACKER_DLL_API	void	PT_DLL_ClearPlayerStats(int chair);
+POKERTRACKER_DLL_API	void	PT_DLL_ClearAllPlayerStats();
 
-//IsValidSymbol?, GetPrefix?
-
-#endif //INC_MOUSEDLL_H
+#endif INC_POKERTRQCKERQUERYDEFINITION_H
