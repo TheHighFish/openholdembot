@@ -1119,10 +1119,6 @@
 				Name="PokerTracker"
 				>
 				<File
-					RelativePath=".\CPokerTrackerDLLInterface.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerTrackerThread.cpp"
 					>
 				</File>
@@ -1908,15 +1904,7 @@
 				Name="PokerTracker"
 				>
 				<File
-					RelativePath=".\CPokerTrackerDLLInterface.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerTrackerThread.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PokerTracker_Queries_Version_3.h"
 					>
 				</File>
 			</Filter>
