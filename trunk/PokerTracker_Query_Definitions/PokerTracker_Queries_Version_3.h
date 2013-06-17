@@ -1,43 +1,9 @@
 #ifndef INC_POKERTRACKER_QUERIES_VERSION_3_H
 #define INC_POKERTRACKER_QUERIES_VERSION_3_H
 
-const int k_number_of_pokertracker_stats = 49;
-
-const int k_max_lenght_of_stats_name = 15;	// 14 + 1 char for NULL
-
-const int k_max_length_of_query = 2000;
-
-const int k_max_length_of_site_id = 5;		// for a string with the number, not the name
+const int k_number_of_pokertracker_stats = 29;
 
 // PokerTracker support
-// This enum is used for both PT2 and PT3
-enum PT_Stats 
-{
-	pt_icon,		pt_hands,		pt_pfr,			pt_aggp, 
-	pt_aggf,		pt_aggt,		pt_aggr,		pt_aggtot, 
-	pt_aggtotnopf,	pt_floppct,		pt_turnpct,		pt_riverpct, 
-	pt_vpip,		pt_pf_rfi,		pt_pf_cr,		pt_pfats, 
-	pt_wsdp,		pt_wssd,		pt_fbbts,		pt_fsbts,
-	pt_cbetflop,	pt_f3bettot,	pt_f3betpflop,	pt_f3betflop,
-	pt_f3betturn,	pt_f3betriver,	pt_fcbetflop,	pt_fcbetturn,
-	pt_fcbetriver,	ptt_icon,		ptt_hands,		ptt_pfr,		
-	ptt_aggp,		ptt_aggf,		ptt_aggt,		ptt_aggr,		
-	ptt_aggtot,		ptt_aggtotnopf, ptt_floppct,	ptt_turnpct,	
-	ptt_riverpct, 	ptt_vpip,		ptt_pf_rfi,		ptt_pf_cr,		
-	ptt_pfats,		ptt_wsdp,		ptt_wssd,		ptt_fbbts,		
-	ptt_fsbts, 
-	// End of stats
-	// Specification of minimu and maximum
-	// These have to be adapted, when new stats are added.
-	pt_min = pt_icon,
-	pt_max = ptt_fsbts,
-	pt_ring_min = pt_icon,
-	pt_ring_max = pt_fcbetriver,
-	pt_tourney_min = ptt_icon,
-	pt_tourney_max = ptt_fsbts
-};
-
-
 enum PT_Groups
 {
 	pt_group_basic = 1,
@@ -72,20 +38,15 @@ typedef struct t_QueryDefinition
 
 
 // These are for PokerTracker version 3 stats
-const CString stat_str[k_number_of_pokertracker_stats]/*[k_max_lenght_of_stats_name]*/ = {
-	"pt_icon",			"pt_hands",			"pt_pfr",			"pt_aggp", 
-	"pt_aggf",			"pt_aggt",			"pt_aggr",			"pt_aggtot", 
-	"pt_aggtotnopf",	"pt_floppct",		"pt_turnpct",		"pt_riverpct", 
-	"pt_vpip",			"pt_pf_rfi",		"pt_pf_cr",			"pt_pfats",	
-	"pt_wsdp",			"pt_wssd",			"pt_fbbts",			"pt_fsbts",
-	"pt_cbetflop",		"pt_f3bettot",		"pt_f3betpflop",	"pt_f3betflop",
-	"pt_f3betturn",		"pt_f3betriver",	"pt_fcbetflop",		"pt_fcbetturn",
-	"pt_fcbetriver",	"ptt_icon",			"ptt_hands",		"ptt_pfr",			
-	"ptt_aggp",			"ptt_aggf",			"ptt_aggt",			"ptt_aggr",			
-	"ptt_aggtot",		"ptt_aggtotnopf",	"ptt_floppct",		"ptt_turnpct",		
-	"ptt_riverpct", 	"ptt_vpip",			"ptt_pf_rfi",		"ptt_pf_cr",		
-	"ptt_pfats",		"ptt_wsdp",			"ptt_wssd",			"ptt_fbbts",		
-	"ptt_fsbts"
+const CString stat_str[k_number_of_pokertracker_stats] = {
+	"icon",			"hands",		"pfr",			"aggp", 
+	"aggf",			"aggt",			"aggr",			"aggtot", 
+	"aggtotnopf",	"floppct",		"turnpct",		"riverpct", 
+	"vpip",			"pf_rfi",		"pf_cr",		"pfats",	
+	"wsdp",			"wssd",			"fbbts",		"fsbts",
+	"cbetflop",		"f3bettot",		"f3betpflop",	"f3betflop",
+	"f3betturn",	"f3betriver",	"fcbetflop",	"fcbetturn",
+	"fcbetriver"
 };
 
 t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
