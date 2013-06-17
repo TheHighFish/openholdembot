@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib ..\Debug\pokertracker_query_definitions.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
