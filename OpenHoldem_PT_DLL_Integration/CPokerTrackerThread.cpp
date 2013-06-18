@@ -129,43 +129,8 @@ CPokerTrackerThread::CPokerTrackerThread()
 	_connected = false;
 	_m_stop_thread = NULL;
 	_m_wait_thread = NULL;
-	//!!!SetStatGroups();
 	_pgconn = NULL; 
 }
-
-/*!!!
-void CPokerTrackerThread::SetStatGroups()
-{
-	_m_statGroup[pt_icon] = pt_group_advanced;
-	_m_statGroup[pt_hands] = pt_group_basic;
-	_m_statGroup[pt_pfr] = pt_group_basic;
-	_m_statGroup[pt_aggp] = pt_group_basic;
-	_m_statGroup[pt_aggf] = pt_group_basic;
-	_m_statGroup[pt_aggt] = pt_group_advanced;
-	_m_statGroup[pt_aggr] = pt_group_basic;
-	_m_statGroup[pt_aggtot] = pt_group_basic;
-	_m_statGroup[pt_aggtotnopf] = pt_group_basic;
-	_m_statGroup[pt_floppct] = pt_group_basic;
-	_m_statGroup[pt_turnpct] = pt_group_advanced;
-	_m_statGroup[pt_riverpct] = pt_group_advanced;
-	_m_statGroup[pt_vpip] = pt_group_basic;
-	_m_statGroup[pt_pf_rfi] = pt_group_basic;
-	_m_statGroup[pt_pf_cr] = pt_group_basic;
-	_m_statGroup[pt_pfats] = pt_group_basic;
-	_m_statGroup[pt_wsdp] = pt_group_advanced;
-	_m_statGroup[pt_wssd] = pt_group_advanced;
-	_m_statGroup[pt_fbbts] = pt_group_basic;
-	_m_statGroup[pt_fsbts] = pt_group_basic;
-	_m_statGroup[pt_cbetflop] = pt_group_advanced;
-	_m_statGroup[pt_f3bettot] = pt_group_advanced;
-	_m_statGroup[pt_f3betpflop] = pt_group_basic;
-	_m_statGroup[pt_f3betflop] = pt_group_advanced;
-	_m_statGroup[pt_f3betturn] = pt_group_advanced;
-	_m_statGroup[pt_f3betriver] = pt_group_advanced;
-	_m_statGroup[pt_fcbetflop] = pt_group_advanced;
-	_m_statGroup[pt_fcbetturn] = pt_group_advanced;
-	_m_statGroup[pt_fcbetriver] = pt_group_advanced;
-}*/
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
@@ -430,10 +395,6 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	}
 	return result;
 }
-
-//!!!!
-//const int k_max_length_of_query = 42;
-//const int k_max_length_of_site_id = 42;
 
 double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
