@@ -52,8 +52,9 @@ const CString k_tournament_infix = " tourney_";
 // Values of all stats for all players
 double stats[k_number_of_pokertracker_stats][k_max_number_of_players];
 
-POKERTRACKER_DLL_API CString PT_DLL_GetQueryDefinition(
-	int stats_index, bool isomaha, bool istournament)
+POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
+	int stats_index, bool isomaha, bool istournament,
+	int site_id, CString player_name)
 {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
 	CString query = query_definitions[stats_index].first_part_of_query;
@@ -72,6 +73,13 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQueryDefinition(
 			query += k_holdem_infix;
 		}
 		query += query_definitions[stats_index].last_part_of_query;
+		query += " WHERE  S.id_player = P.id_player";
+		query += "AND P.player_name like '";
+		query += player_name;
+		query += "'AND P.id_site=";
+		CString site_id_as_string;
+		site_id_as_string.Format("%i", site_id);
+		query += site_id_as_string;
 	}
 	return query;
 }

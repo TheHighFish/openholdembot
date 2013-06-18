@@ -10,7 +10,9 @@
 #include "atlstr.h"
 
 POKERTRACKER_DLL_API	int		PT_DLL_GetNumberOfStats();
-POKERTRACKER_DLL_API	CString PT_DLL_GetQueryDefinition(int stats_index, bool isomaha, bool istournament);
+POKERTRACKER_DLL_API	CString PT_DLL_GetQuery(int stats_index, 
+												bool isomaha, bool istournament,
+												int site_id, CString player_name);
 POKERTRACKER_DLL_API	CString PT_DLL_GetDescription(int stats_index);
 POKERTRACKER_DLL_API	CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_index);
 POKERTRACKER_DLL_API	bool	PT_DLL_IsBasicStat(int stats_index);

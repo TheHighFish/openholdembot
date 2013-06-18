@@ -74,10 +74,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// first_part_of_query
 		"SELECT COUNT(*) as result FROM ",	
 		// last_part_of_query
-		"hand_player_detail as D, player as P \
-		WHERE  P.id_player=D.id_player AND \
-		P.player_name like '%SCREENNAME%'  AND \
-		P.id_site=%SITEID%",
+		"hand_player_detail as D, player as P",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -94,10 +91,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -114,10 +108,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"holdem_hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"holdem_hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -134,10 +125,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -154,10 +142,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -174,10 +159,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -205,10 +187,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -233,10 +212,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		 "hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		 "hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -253,10 +229,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
         end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -273,10 +246,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
         end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -293,10 +263,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
         end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -313,10 +280,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -334,10 +298,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -355,10 +316,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		 "hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		 "hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -376,10 +334,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -397,10 +352,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -418,10 +370,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"holdem_hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"holdem_hand_player_statistics as S",
 		// stat_group
 		pt_group_basic,
 		// needs_infix_and_second_part
@@ -439,10 +388,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_positional,
 		// needs_infix_and_second_part
@@ -460,10 +406,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
          end) as result \
 		FROM   player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-        P.player_name like '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_positional,
 		// needs_infix_and_second_part
@@ -480,10 +423,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			else (-1) end) as result \
 		FROM	player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE	S.id_player = P.id_player AND \
-		P.player_name LIKE '%SCREENNAME%' AND \
-		P.id_site=%SITEID%",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -500,9 +440,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -519,9 +457,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -538,9 +474,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -557,9 +491,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -576,9 +508,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,", 
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -595,9 +525,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,",
 		// last_part_of_query
-		"holdem_hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"holdem_hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -614,9 +542,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
@@ -633,9 +559,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		else (-1) end) as result \
 		FROM player as P,",
 		// last_part_of_query
-		"hand_player_statistics as S \
-		WHERE S.id_player = P.id_player \
-		AND P.player_name LIKE '%SCREENNAME%'",
+		"hand_player_statistics as S",
 		// stat_group
 		pt_group_advanced,
 		// needs_infix_and_second_part
