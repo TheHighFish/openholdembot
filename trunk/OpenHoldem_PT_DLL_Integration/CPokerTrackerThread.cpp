@@ -11,6 +11,8 @@
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineIsOmaha.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
@@ -430,19 +432,13 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 }
 
 //!!!!
-const int k_max_length_of_query = 42;
-const int k_max_length_of_site_id = 42;
+//const int k_max_length_of_query = 42;
+//const int k_max_length_of_site_id = 42;
 
 double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 {
 	PGresult	*res = NULL;
-	//!!!!!
-	char		strQry[k_max_length_of_query] = {0};
-	char		strQry1[k_max_length_of_query] = {0};
-	char		strQry2[k_max_length_of_query] = {0};
-	const char	*n = NULL;
 	double		result = k_undefined;
-	char		siteidstr[k_max_length_of_site_id] = {0};
 	clock_t		updStart, updEnd;
 	int			duration;
 
@@ -462,32 +458,10 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	assert(stat < PT_DLL_GetNumberOfStats());
 
 	// get query string for the requested statistic
-	//!!!!!strcpy_s(strQry, k_max_length_of_query, query_str3[stat]);
-
-	// Insert the player name in the query string
-	strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
-	while ((n=strstr(strQry1, "%SCREENNAME%"))!=NULL) // find the token in temp str 1
-	{
-		strcpy_s(strQry2, k_max_length_of_query, strQry1);  // move the query into temp str 2
-		strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-		strcat_s(strQry2, k_max_length_of_query, _player_data[m_chr].pt_name);  // append the player name to temp str 2
-		strcat_s(strQry2, k_max_length_of_query, n+12); // append the portion of temp str 1 after the token to temp str 2
-		strcpy_s(strQry, k_max_length_of_query, strQry2); // move temp str 2 into the original query
-		strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
-	}
-
-	// Insert the site id in the query string
-	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
-	strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
-	while ((n=strstr(strQry1, "%SITEID%"))!=NULL)   // find the token in temp str 1
-	{
-		strcpy_s(strQry2, k_max_length_of_query, strQry1);  // move the query into temp str 2
-		strQry2[n-strQry1]='\0';  // cut off temp str 2 at the beginning of the token
-		strcat_s(strQry2, k_max_length_of_query, siteidstr);  // append the site id to temp str 2
-		strcat_s(strQry2, k_max_length_of_query, n+8); // append the portion of temp str 1 after the token to temp str 2
-		strcpy_s(strQry, k_max_length_of_query, strQry2); // move temp str 2 into the original query
-		strcpy_s(strQry1, k_max_length_of_query, strQry);  // move the query into temp str 1
-	}
+	CString query = PT_DLL_GetQuery(stat,
+		p_symbol_engine_isomaha->isomaha(),
+		p_symbol_engine_istournament->istournament(),
+		siteid, _player_data[m_chr].pt_name);
 
 	// Do the query against the PT database
 	updStart = clock();
@@ -497,8 +471,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		write_log(prefs.debug_pokertracker(), 
 			"Querying %s for m_chr %d: %s\n", 
 			PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
-			m_chr, strQry);
-		res = PQexec(_pgconn, strQry);
+			m_chr, query);
+		res = PQexec(_pgconn, query);
 	}
 	catch (_com_error &e)
 	{
@@ -509,7 +483,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		_bstr_t bstrDescription(e.Description());
 		write_log(prefs.debug_pokertracker(), _T("\tSource = %s\n"), (LPCTSTR) bstrSource);
 		write_log(prefs.debug_pokertracker(), _T("\tDescription = %s\n"), (LPCTSTR) bstrDescription);
-		write_log(prefs.debug_pokertracker(), _T("\tQuery = [%s]\n"), strQry);
+		write_log(prefs.debug_pokertracker(), _T("\tQuery = [%s]\n"), query);
 	}
 	
 	updEnd = clock();
@@ -523,28 +497,28 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		switch (PQresultStatus(res))
 		{
 		case PGRES_COMMAND_OK:
-			write_log(prefs.debug_pokertracker(), "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_EMPTY_QUERY:
-			write_log(prefs.debug_pokertracker(), "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_BAD_RESPONSE:
-			write_log(prefs.debug_pokertracker(), "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_COPY_OUT:
-			write_log(prefs.debug_pokertracker(), "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_COPY_IN:
-			write_log(prefs.debug_pokertracker(), "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_NONFATAL_ERROR:
-			write_log(prefs.debug_pokertracker(), "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_FATAL_ERROR:
-			write_log(prefs.debug_pokertracker(), "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		default:
-			write_log(prefs.debug_pokertracker(), "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+			write_log(prefs.debug_pokertracker(), "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		}
 	}
@@ -569,10 +543,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 bool CPokerTrackerThread::QueryName(const char * query_name, const char * scraped_name, char * best_name)
 {
-	char			strQry[k_max_length_of_query] = {0};
 	int				lev_dist = 0, bestLD = 0, bestLDindex = 0;
 	PGresult		*res = NULL;
-	char			siteidstr[k_max_length_of_site_id] = {0};
 	bool			result = false;
 	CLevDistance	myLD;
 	int				siteid = 0;
@@ -588,17 +560,12 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	if (0 == strlen(query_name))
 		return false;
 
-	sprintf_s(siteidstr, k_max_length_of_site_id, "%d", siteid);
-
-	// PT version 3 name query
-	strcpy_s(strQry, k_max_length_of_query, "SELECT player_name FROM player WHERE player_name like '");
-	strcat_s(strQry, k_max_length_of_query, query_name);
-	strcat_s(strQry, k_max_length_of_query, "' AND id_site=");
-	strcat_s(strQry, k_max_length_of_query, siteidstr);
-	
+	CString query;
+	query.Format("SELECT player_name FROM player WHERE player_name like '%s %s%i",
+		query_name, "' AND id_site=", siteid);
 	try
 	{
-		res = PQexec(_pgconn, strQry);
+		res = PQexec(_pgconn, query);
 	}
 	catch (_com_error &e)
 	{
@@ -609,7 +576,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		_bstr_t bstrDescription(e.Description());
 		write_log(prefs.debug_pokertracker(), "\tSource = %s\n", (LPCTSTR) bstrSource);
 		write_log(prefs.debug_pokertracker(), "\tDescription = %s\n", (LPCTSTR) bstrDescription);
-		write_log(prefs.debug_pokertracker(), "\tQuery = [%s]\n", strQry);
+		write_log(prefs.debug_pokertracker(), "\tQuery = [%s]\n", query);
 	}
 
 	// We got nothing, return false
