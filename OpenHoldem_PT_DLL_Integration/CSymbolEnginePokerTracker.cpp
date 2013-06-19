@@ -56,6 +56,13 @@ void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s)
 	OH_MessageBox_Error_Warning(error_message, "Error");
 }
 
+bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s)
+{
+	return ((s.Left(2) == "pt") 
+		&& (s.Left(3) != "pt_")
+		&& (s.Left(5) != "pt_r_"));
+}
+
 void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup()
 {
 	if (check_for_identity_of_players_executed_this_heartbeat)
@@ -102,6 +109,18 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 {
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
+	if (IsOldStylePTSymbol(s))
+	{
+		CString error_message;
+		error_message.Format(
+			"Old style PokerTracker symbol detected: %s.\n"
+			"\n"
+			"PokerTracker symbol either start with \"pt_\" or \"pt_r_\".\n", s);
+		OH_MessageBox_Error_Warning(
+			error_message,			 
+			"ERROR: Invalid PokerTracker Symbol");
+		return k_undefined;
+	}
 	int chair = 0;
 
 //!!!	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)

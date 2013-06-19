@@ -22,6 +22,7 @@ public:
 private:
 	void	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	void	WarnAboutInvalidPTSymbol(CString s);
+	bool	IsOldStylePTSymbol(CString s);
 	void	ClearSeatStats(int chair, bool clearNameAndFound);
 	void	ClearAllStatsOfChangedPlayers();
 	void	ClearAllStats();
