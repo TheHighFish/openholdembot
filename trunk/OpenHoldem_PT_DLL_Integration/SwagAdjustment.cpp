@@ -138,16 +138,11 @@ double MaximumBetsizeForGameType()
 	return maximum_betsize;	
 }
 
-
-void AdjustBetsize(double *amount_to_raise_to)
-{
-	AdaptValueToMinMaxRange(amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), *amount_to_raise_to);
-	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, MaximumBetsizeForGameType());
-	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
-	AdaptValueToMinMaxRange(amount_to_raise_to, *amount_to_raise_to, RoundedBetsizeForTournaments(*amount_to_raise_to));
-}
-
 double AdjustedBetsize(double amount_to_raise_to)
 {
-	return 0; //!!!
+	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
+	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
+	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
+	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
+	return amount_to_raise_to; 
 }

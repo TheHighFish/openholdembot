@@ -121,9 +121,15 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 			"ERROR: Invalid PokerTracker Symbol");
 		return k_undefined;
 	}
+	if (!PT_DLL_IsValidSymbol(CString(*s)))
+	{
+		// Invalid PokerTracker symbol
+		WarnAboutInvalidPTSymbol(s);
+		return k_undefined;
+	}
 	int chair = 0;
 
-//!!!	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
+	if (!p_pokertracker_thread->IsConnected())
 	{
 		if (!p_symbol_engine_userchair->userchair_confirmed())
 		{
@@ -142,35 +148,25 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		return k_undefined;
 	}
 
-	// ATTENTION!
-	//  
-	// Be very careful, if a string is a prefix of multiple symbols,
-	// e.g. "pt_vpip" is a prefix of both "pt_vpipX" and "pt_vpipsbX".
-	// Take care to handle those cases correctly!
-
-	// PokerTracker ring game symbols for the raise-chair
-	if (StringAIsPrefixOfStringB("pt_r_", s) //!!!!!
-		&& !StringAIsPrefixOfStringB("pt_riverpct", s))
+	CString pure_symbol_name;
+	// PokerTracker ymbols for the raise-chair
+	if (StringAIsPrefixOfStringB("pt_r_", s))
 	{
 		chair = p_symbol_engine_raisers_callers->raischair();
-		{
-			// Invalid ring game symbol
-			WarnAboutInvalidPTSymbol(s);
-			return -1.0;
-		}
+		CString symbol = s;
+		pure_symbol_name = symbol.Right(symbol.GetLength() - 5);
 	}
-	// PokerTracker ring game symbols for chair X
-	else if (StringAIsPrefixOfStringB("pt_", s))
+	// PokerTracker symbols for chair X
+	else 
 	{
-		//!!! chair ==
-		{
-			// Invalid ring game symbol
-			WarnAboutInvalidPTSymbol(s);
-			return -1.0;
-		}
+		assert(StringAIsPrefixOfStringB("pt_", s));
+		CString symbol = s;
+		CString last_character = symbol.Right(1);
+		chair = atoi(last_character);
+		pure_symbol_name = symbol.Right(symbol.GetLength() - 3);
 	}
 	AssertRange(chair, k_first_chair, k_last_chair);
-	return PT_DLL_GetStat(s, chair); //!!!
+	return PT_DLL_GetStat(pure_symbol_name, chair); 
 }
 
 

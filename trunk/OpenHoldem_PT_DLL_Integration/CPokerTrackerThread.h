@@ -42,6 +42,7 @@ public:
 						~CPokerTrackerThread();
 	void				StartThread();
 	void				StopThread();
+	bool				IsConnected();
 	CString				CreateConnectionString(const CString ip_address, 
 		const CString port, const CString username,
 		const CString password, const CString DB_name);
@@ -77,14 +78,8 @@ private:
 	bool				_connected;
 	PGconn *			_pgconn;
 
-	
-	
-	//!!!bool                _m_enabled_stats[k_number_of_pokertracker_stats];
-	//!!!PT_StatTypes		_m_stat_type[k_number_of_pokertracker_stats];
-	//!!!PT_Stats			_m_handsStats;
 	int					_m_min_hands_for_slower_update;
 
-	//!!!int					_m_statGroup[pt_max];
 	HANDLE				_m_stop_thread;
 	HANDLE				_m_wait_thread;
 
