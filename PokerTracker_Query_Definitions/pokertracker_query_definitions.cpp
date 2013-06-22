@@ -90,6 +90,12 @@ POKERTRACKER_DLL_API CString PT_DLL_GetDescription(int stats_index)
 	return query_definitions[stats_index].description_for_editor; 
 }
 
+POKERTRACKER_DLL_API CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_index)
+{
+	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
+	return stat_str[stats_index];
+}	
+
 POKERTRACKER_DLL_API bool PT_DLL_IsBasicStat(int stats_index)
 { 
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
@@ -141,6 +147,11 @@ POKERTRACKER_DLL_API void PT_DLL_SetStat(int stats_index, int chair, double valu
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
 	AssertRange(chair, k_first_chair, k_last_chair);
 	stats[stats_index][chair] = value;
+}
+
+POKERTRACKER_DLL_API bool PT_DLL_IsValidSymbol(CString symbol_without_prefix)
+{
+	return (GetIndex(symbol_without_prefix) >= 0);
 }
 
 POKERTRACKER_DLL_API void PT_DLL_ClearPlayerStats(int chair)
