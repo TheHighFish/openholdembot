@@ -157,6 +157,7 @@ protected:
 	void SelectFunctionTab(CScintillaWnd *pCurScin);
 
 	void PopulateSymbols();
+	void PopulatePokerTrackerSymbols();
 	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
 	HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
