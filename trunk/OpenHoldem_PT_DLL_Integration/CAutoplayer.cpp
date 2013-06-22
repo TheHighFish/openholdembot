@@ -269,7 +269,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 
 		// Prefold, close, rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_prefold))
 		{
 			// Prefold is technically more than a simple button-click,
 			// because we need to create an autoplayer-trace afterwards.
