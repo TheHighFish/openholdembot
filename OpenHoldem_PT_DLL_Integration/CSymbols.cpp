@@ -211,7 +211,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "islist", 6) == 0)	return p_symbol_engine_lists->IsList(atoi(a+6));
 
 	// PokerTracker symbols
-	if (memcmp(a,"pt_",3 )==0)
+	if (memcmp(a,"pt",2 )==0)
 	{
 		return p_symbol_engine_pokertracker->ProcessQuery(a);
 	}

@@ -221,6 +221,11 @@ void CPokerTrackerThread::Disconnect(void)
 	_connected = false;
 }
 
+bool CPokerTrackerThread::IsConnected()
+{
+	return (_connected && PQstatus(_pgconn) == CONNECTION_OK);
+}
+
 
 // !!! to be removed completely
 /* When running this function, chair is the chair to IGNORE 
@@ -772,7 +777,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	{
 		iterStart = clock();
 		write_log(prefs.debug_pokertracker(), "PTthread iteration [%d] had started\n", ++iteration);
-		//!!!!!pParent->SetHandsStat();
 		if (!pParent->_connected)
 		{
 			pParent->Connect();
