@@ -233,8 +233,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	in_startup = true;
 
-	//!!!!!p_pokertracker_dll_interface->ExtendListOfSymbolsForEditor(&keywords);
-
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");
 	m_standard_headings.Add("Debug Functions");
@@ -417,6 +415,24 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 	return pWnd;
 }
 
+void CDlgFormulaScintilla::ConstructKeywordsForPokerTracker(CString &keys)
+{
+	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
+		// Add symbol for raise-chair
+		CString new_symbol = "pt_r_" + basic_symbol_name;
+		keys.AppendFormat(" %s", new_symbol);
+	
+		// Add symbols for all chairs, indexed by trailing numbers
+		for (int j=0; j<k_max_number_of_players; j++)
+		{
+			new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
+			keys.AppendFormat(" %s", new_symbol);
+		}
+	}
+}
+
 void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 {
 	keys = keywords;
@@ -432,28 +448,7 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
 		}
 	}
-	for (int i=0; i<10; i++) { //!!!!!
-		keys.AppendFormat(" pt_icon%d", i);
-		keys.AppendFormat(" pt_hands%d", i);
-		keys.AppendFormat(" pt_pfr%d", i);
-		keys.AppendFormat(" pt_aggp%d", i);
-		keys.AppendFormat(" pt_aggf%d", i);
-		keys.AppendFormat(" pt_aggt%d", i);
-		keys.AppendFormat(" pt_aggr%d", i);
-		keys.AppendFormat(" pt_aggtot%d", i);
-		keys.AppendFormat(" pt_aggtotnopf%d", i);
-		keys.AppendFormat(" pt_floppct%d", i);
-		keys.AppendFormat(" pt_turnpct%d", i);
-		keys.AppendFormat(" pt_riverpct%d", i);
-		keys.AppendFormat(" pt_vpip%d", i);
-		keys.AppendFormat(" pt_pf_rfi%d", i);
-		keys.AppendFormat(" pt_pf_cr%d", i);
-		keys.AppendFormat(" pt_pfats%d", i);
-		keys.AppendFormat(" pt_wsdp%d", i);
-		keys.AppendFormat(" pt_wssd%d", i);
-		keys.AppendFormat(" pt_fbbts%d", i);
-		keys.AppendFormat(" pt_fsbts%d", i);
-	}
+	ConstructKeywordsForPokerTracker(keys);
 	for (int i=0; i<k_number_of_different_cardranks; i++)
 	{
 		for (int j=0; j<k_number_of_different_cardranks;j ++)

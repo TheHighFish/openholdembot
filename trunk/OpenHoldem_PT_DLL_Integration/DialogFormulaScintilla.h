@@ -146,6 +146,7 @@ protected:
 	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
 	void UpdateAllScintillaKeywords();
 	void ConstructKeywords(CString &keys);
+	void ConstructKeywordsForPokerTracker(CString &keys);
 	void UpdateScintillaKeywords(CScintillaWnd *pWnd);
 	void DeleteScintilla(CScintillaWnd *pWnd);
 
