@@ -1,8 +1,26 @@
-v4.1.2 2013-05-XX
+v4.2.0 2013-06-XX
 ==================
 NEW STUFF:
+- Adding some ini-functions that get called automatically by OpenHoldem:
+  "f$init_on_startup", "f$init_on_connection", "f$init_on_handreset",
+  "f$init_on_new_round", "f$init_on_my_turn", "f$init_on_heartbeat".
+  This way we can initialize memory-symbols and other stuff
+  without using the old messy concept "put it into f$alli".
+  [THF]
+- Moving PokerTracker-query-definitions to a new and small DLL.
+  This way the users can now extend the queries pretty easily
+  without depending on the update-cycle of OpenHoldem
+  or having to rebuild everything.
+  For more details please have a look at the source-code:
+  http://code.google.com/p/openholdembot/source/browse/trunk/
+  [THF]
 
 BUG FIXES:
+- f$close did not work, but OpenHoldem tried to click prefold instead
+  because we used a wrong autoplayer-constant (copy-and-paste).
+  This has now been fixed.
+  Thanks to AlCapown3d for reporting.
+  [THF]
 - Rankbits was wrong. We do no longer calculate it directly 
   but combine the values of rankbitsplayer and rankbitscommon.
   However we confused bitwise AND and OR.
@@ -17,7 +35,6 @@ MAINTENANCE:
   for production mode, but it confused lots of beginners in development mode.
   Therefore we do now always query stats if we are connected to a table.
   [THF]
--
 
 
 v4.1.1 2013-05-20
