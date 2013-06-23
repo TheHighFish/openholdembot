@@ -17,6 +17,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineIniFunctions.h"
 #include "CSymbols.h"
 #include "DialogHandList.h"
 #include "DialogNew.h"
@@ -244,13 +245,17 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");
+	m_standard_headings.Add("Ini Functions");
 	m_standard_headings.Add("Debug Functions");
 
+
+	// !!! Remove?
 	m_standard_expand[0] = prefs.expand_auto();
 	m_standard_expand[1] = prefs.expand_std();
-	m_standard_expand[2] = prefs.expand_debug();
+	m_standard_expand[2] = false;
+	m_standard_expand[3] = prefs.expand_debug();	
 
-	ASSERT(m_standard_headings.GetSize() == 3);
+	ASSERT(m_standard_headings.GetSize() == 4);
 
 	m_standard_functions[0].Add("f$alli");
 	m_standard_functions[0].Add("f$betsize");
@@ -277,8 +282,13 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[1].Add("f$leave");
 	m_standard_functions[1].Add("f$close");
 
-	m_standard_functions[2].Add("f$test");
-	m_standard_functions[2].Add("f$debug");
+	for (int i=0; i<k_number_of_ini_functions; ++i)
+	{
+		m_standard_functions[2].Add(k_ini_function_names[i]);
+	}
+
+	m_standard_functions[3].Add("f$test");
+	m_standard_functions[3].Add("f$debug");
 
 	// Copy current doc formula into working set
 	m_wrk_formula.ClearFormula();
@@ -2712,6 +2722,8 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 				prefs.set_expand_auto(state);
 			else if (text == "Standard Functions")
 				prefs.set_expand_std(state);
+			else if (text == "Ini Functions")
+				prefs.set_expand_std(state);
 			else if (text == "Debug Functions")
 				prefs.set_expand_debug(state);
 			else if (text == "Hand Lists")
@@ -2768,6 +2780,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	}
 	if (headingText == "Autoplayer Functions")			iWhichTypeSelected = 0;
 	else if (headingText == "Standard Functions")		iWhichTypeSelected = 0;
+	else if (headingText == "Ini Functions")			iWhichTypeSelected = 0;
 	else if (headingText == "Debug Functions")			iWhichTypeSelected = 0;
 	else if (headingText == "Hand Lists")				iWhichTypeSelected = 1;
 	else if (headingText == "User Defined Functions")	iWhichTypeSelected = 2;

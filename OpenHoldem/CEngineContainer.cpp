@@ -14,6 +14,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIniFunctions.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
@@ -130,11 +131,17 @@ void CEngineContainer::CreateSymbolEngines()
 	p_symbol_engine_handrank = new CSymbolEngineHandrank();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_handrank;
 	_number_of_symbol_engines_loaded++;
-	// Csymbols
+	// CSymbols
 	// Deals with symbol-lookups and depends on all the other ones.
-	// Therefore it should has to be the very last one.
+	// Therefore it has to be the very last one.
 	p_symbols = new CSymbols();
 	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbols;
+	_number_of_symbol_engines_loaded++;
+	// CSymbolEngineIniFunctions
+	// "depends" on all other engines,
+	// as it can only be called after all symbols have been initialized.
+	p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
+	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_ini_functions;
 	_number_of_symbol_engines_loaded++;
 
 	// Avoiding overflows
