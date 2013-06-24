@@ -7,6 +7,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CEngineContainer.h"
 #include "CFormula.h"
 #include "CGameState.h"
@@ -47,8 +48,6 @@ CHeartbeatThread::CHeartbeatThread()
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
 
-	_replay_recorded_this_turn = false;
-
 	// Start thread
 	AfxBeginThread(HeartbeatThreadFunction, this);
 }
@@ -83,11 +82,8 @@ void CHeartbeatThread::SetOpenHoldemWindowTitle()
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
-
-	LARGE_INTEGER		cycle_start = {0}, cycle_end = {0}, lFrequency = {0};
-	unsigned int		new_scrape = NOTHING_CHANGED;
+	unsigned int		new_scrape = NOTHING_CHANGED; /// not necessary?
 	bool				iswait = false;
-	int					N = 0;
 
 	_heartbeat_counter++;
 
@@ -105,10 +101,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
-
-		// Measure cycle time
-		QueryPerformanceCounter(&cycle_start);
-
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
 
 		// This critical section lets other threads know that the internal state is being updated
@@ -135,6 +127,15 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		if (new_scrape!=NOTHING_CHANGED)
 		{
 			p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+			// Shoot replay-frame if desired
+			// a) on every change
+			if (prefs.replay_record_every_change() 
+				// b) on every change when in hand
+				|| (prefs.replay_record_every_change_playing()
+					&& p_scraper_access->UserHasCards()))
+			{
+				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+			}
 		}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
@@ -145,50 +146,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// If we've folded, stop iterator thread and set prwin/tie/los to zero
 		if (!p_scraper_access->UserHasCards())
 		{
+			//!!! -> symbol-engine
 			p_iterator_thread->StopIteratorThread();
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// Create replay frame
-
-		static double last_br = 0; 
-		static double last_ncallbets = -1; 
-
-		if (p_handreset_detector->IsHandreset() ||
-			p_betround_calculator->betround() != last_br ||
-			p_symbol_engine_chip_amounts->ncallbets() != last_ncallbets)
-		{
-			last_br = p_betround_calculator->betround();
-			last_ncallbets = p_symbol_engine_chip_amounts->ncallbets();
-
-			p_heartbeat_thread->set_replay_recorded_this_turn(false);
-		}
-
-		 // If it's my turn, and we have enough stable frames
-		if ((prefs.replay_record() 			
-			&& p_symbol_engine_autoplayer->ismyturn() 
-			&& p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay()) 
-			&& !p_heartbeat_thread->replay_recorded_this_turn()
-			 
-			 ||
-
-			 // Every change
-			 (prefs.replay_record_every_change() && new_scrape!=NOTHING_CHANGED) 
-			 
-			 ||
-
-			 // Every change and I'm playing
-			 (prefs.replay_record_every_change_playing() && (p_symbol_engine_userchair->userchair_confirmed() &&
-			   !(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_NOCARD ||
-			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)==CARD_BACK ||
-			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_NOCARD ||
-			     p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)==CARD_BACK))&& new_scrape != NOTHING_CHANGED)
-		   )
-		{
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CreateReplayFrame.\n");
-			CReplayFrame   crf;
-			crf.CreateReplayFrame();
-			p_heartbeat_thread->set_replay_recorded_this_turn(p_autoplayer->autoplayer_engaged());
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,10 +157,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			m_ScraperOutputDlg->UpdateDisplay();
 		}
 
-		// Measure cycle time
-		QueryPerformanceCounter(&cycle_end);
-		QueryPerformanceFrequency(&lFrequency);
-
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Save state
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
@@ -209,6 +164,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
+		//!!! create a symbol-engine
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
 		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessFtr.\n");

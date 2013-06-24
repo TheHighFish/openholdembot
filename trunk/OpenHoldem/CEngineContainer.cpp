@@ -23,6 +23,7 @@
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineRandom.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
@@ -49,6 +50,13 @@ void CEngineContainer::CreateSpecialSymbolEngines()
 	p_betround_calculator = new CBetroundCalculator();	
 }
 
+void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine)
+{
+	assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
+	_symbol_engines[_number_of_symbol_engines_loaded] = new_symbol_engine;
+	++_number_of_symbol_engines_loaded;
+}
+
 void CEngineContainer::CreateSymbolEngines()
 {
 	write_log(prefs.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
@@ -59,93 +67,74 @@ void CEngineContainer::CreateSymbolEngines()
 	// The engines inserted first will be called first later.
 	// But we assure correct ordering by assertions in the constructors of the engines.
 
+	// CSymbolEngineReplayFrameController
+	p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
+	AddSymbolEngine(p_symbol_engine_replayframe_controller);
 	// CSymbolEngineTime
 	p_symbol_engine_time = new CSymbolEngineTime();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_time;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_time);
 	// CSymbolEngineDealerchair
 	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_dealerchair;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_dealerchair);
 	// CSymbolEngineUserchair
 	p_symbol_engine_userchair = new CSymbolEngineUserchair();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_userchair;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_userchair);
 	// CSymbolEngineAutoplayer
 	p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_autoplayer;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_autoplayer);
 	// CSymbolEngineLists
 	p_symbol_engine_lists = new CSymbolEngineLists();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_lists;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_lists);
 	// CSymbolEngineRandom
 	p_symbol_engine_random = new CSymbolEngineRandom();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_random;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_random);
 	// CSymbolEngineActiveDealtPlaying
 	p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_active_dealt_playing;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_active_dealt_playing);
 	// CSymbolEnginePositions
 	p_symbol_engine_positions = new CSymbolEnginePositions();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_positions;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_positions);
 	// CSymbolEngineBlinds
 	p_symbol_engine_blinds = new CSymbolEngineBlinds();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_blinds;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_blinds);
 	// CSymbolEngineChipAmounts
 	p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_chip_amounts;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_chip_amounts);
 	// CSymbolEngineRaisersCallers
 	p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_raisers_callers;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_raisers_callers);
 	// CSymbolEngineIsTournament
 	p_symbol_engine_istournament = new CSymbolEngineIsTournament();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_istournament;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_istournament);
 	// CSymbolEngineCards
 	p_symbol_engine_cards = new CSymbolEngineCards();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_cards;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_cards);
 	// CSymbolEngineIsOmaha
 	p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_isomaha;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_isomaha);
 	// CSymbolEnginePokerval
 	p_symbol_engine_pokerval = new CSymbolEnginePokerval();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_pokerval;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_pokerval);
 	// CSymbolEngineHistory
 	p_symbol_engine_history = new CSymbolEngineHistory();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_history;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_history);
 	// CSymbolEnginePrwin
 	p_symbol_engine_prwin = new CSymbolEnginePrwin();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_prwin;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_prwin);
 	// CSymbolEngineHandrank
 	p_symbol_engine_handrank = new CSymbolEngineHandrank();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_handrank;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_handrank);
 	// CSymbols
 	// Deals with symbol-lookups and depends on all the other ones.
 	// Therefore it has to be the very last one.
 	p_symbols = new CSymbols();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbols;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbols);
 	// CSymbolEngineIniFunctions
 	// "depends" on all other engines,
 	// as it can only be called after all symbols have been initialized.
 	p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
-	_symbol_engines[_number_of_symbol_engines_loaded] = p_symbol_engine_ini_functions;
-	_number_of_symbol_engines_loaded++;
+	AddSymbolEngine(p_symbol_engine_ini_functions);
 
-	// Avoiding overflows
-	assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
 	write_log(prefs.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 

@@ -19,7 +19,7 @@
 #include "CPerl.hpp"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
-#include "CReplayFrame.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
@@ -289,8 +289,7 @@ void CMainFrame::OnScraperOutput()
 
 void CMainFrame::OnViewShootreplayframe()
 {
-	CReplayFrame	crf;
-	crf.CreateReplayFrame();
+	p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 }
 
 void CMainFrame::OnEditPreferences() 

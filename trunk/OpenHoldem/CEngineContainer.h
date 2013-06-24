@@ -15,6 +15,7 @@ public:
 	void CallSymbolEnginesToUpdateSymbolsIfNecessary();
 private:
 	void CreateSpecialSymbolEngines();
+	void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
 	void CreateSymbolEngines();
 	void DestroyAllSymbolEngines();
 	void DestroyAllSpecialSymbolEngines();
