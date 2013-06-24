@@ -3,8 +3,8 @@
 #include "CAutoPlayer.h"
 #include "CDllExtension.h"
 #include "CPreferences.h"
-#include "CReplayFrame.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CSymbols.h"
 #include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
@@ -72,8 +72,7 @@ void CValidator::ValidateSingleRule()
 				// First error: shoot replayframe, if needed
 				if (prefs.validator_shoot_replayframe_on_error())
 				{
-					CReplayFrame crf;
-					crf.CreateReplayFrame();
+					p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}

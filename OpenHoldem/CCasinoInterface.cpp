@@ -5,7 +5,6 @@
 #include "CAutoConnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
-#include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -166,8 +165,6 @@ bool CCasinoInterface::UseSliderForAllin()
 
 	write_logautoplay(ActionConstantNames(k_action_jam));
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
-
-	p_heartbeat_thread->set_replay_recorded_this_turn(false);
 
 	// reset elapsedauto symbol
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSlider.\n");
@@ -377,7 +374,6 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 		p_symbols->RecordPrevAction(k_action_betsize);
 		write_logautoplay(ActionConstantNames(k_action_betsize));
 
-		p_heartbeat_thread->set_replay_recorded_this_turn(false);
 	}
 	int betround = p_betround_calculator->betround();
 	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag, 'didswag' now: %d\n", 

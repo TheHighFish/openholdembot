@@ -361,7 +361,6 @@ bool CAutoplayer::DoAllin(void)
 			k_autoplayer_function_raise, prefs.swag_delay_3());
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
-	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		return success;
 	}
 	else  if (p_tablemap->allinmethod() == 2)
@@ -369,14 +368,12 @@ bool CAutoplayer::DoAllin(void)
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
-	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		return success;
 	}
 	else if (p_tablemap->allinmethod() == 3)
 	{
 		success = p_casino_interface->UseSliderForAllin();
 		write_logautoplay(ActionConstantNames(k_action_allin));
-	    p_heartbeat_thread->set_replay_recorded_this_turn(false);
 		return success;
 	}
 	else

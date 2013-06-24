@@ -1022,6 +1022,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineReplayFrameController.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEngineTime.cpp"
 						>
 					</File>
@@ -1671,6 +1675,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineRandom.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineReplayFrameController.h"
 						>
 					</File>
 					<File

@@ -7,6 +7,7 @@ public:
 	// public functions
 	CReplayFrame(void);
 	~CReplayFrame(void);
+	//!!!!! this should be protected
 	void CreateReplayFrame(void);
 private:
 	// private functions and variables - not available via accessors or mutators

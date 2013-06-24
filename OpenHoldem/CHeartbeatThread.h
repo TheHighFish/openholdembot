@@ -19,14 +19,8 @@ public:
 
 public:
 	// public accessors
-	bool		replay_recorded_this_turn() { return _replay_recorded_this_turn; }
 	long int	heartbeat_counter() { return _heartbeat_counter; }
 
-public:
-#define ENT CSLock lock(m_critsec);
-	// public mutators 
-	void set_replay_recorded_this_turn(const bool b) { ENT _replay_recorded_this_turn = b; }
-#undef ENT
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
@@ -37,7 +31,6 @@ private:
 	HANDLE			_m_wait_thread;
 private:
 	// private variables - use public accessors and public mutators to address these	
-	bool			_replay_recorded_this_turn;
 	CCritSec		m_critsec;
 } *p_heartbeat_thread;
 
