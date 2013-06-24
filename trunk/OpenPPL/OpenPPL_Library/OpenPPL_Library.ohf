@@ -11,9 +11,8 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 4.0.3 or later
-//   Symbols not working with 2.1.x:
-//     * isfinaltable
+// Required OpenHoldem version: 4.2.0 or later
+//   because we make use of the new f$init-functions
 //
 // Contributors:
 //   Bob3456
@@ -1258,21 +1257,11 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 [f$OpenPPL_Decision == f$OpenPPL_SitOut] ? me_st_GoBuddyTakeABreakAndABeer_1 : 0
 
 ##f$alli##
-// f$alli is the very first function to be called on each turn,
-// so we abuse it to initialize memory-symbhols as a side-effect
-// and only then we do the real evaluation.
-
-// We can't use addition here to call the functions in correct sequential order,
-// because OH doesn't add the operands in order:
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
-   [f$OpenPPL_InitMemorySymbols * 0]
-|| [f$OpenPPL_RememberToSitoutIfNecessary * 0]
 || [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 || [f$OpenPPL_DecisionIsPercentagedPotsizedBet 
     && f$OpenPPL_BetSizeForPercentagedPotsizeBet >= f$OpenPPL_MaximumBetsizeInDollars]
 
-	
 // Betpot functions
 // OpenPPL knows only the following action-command:
 //   * BetPot
@@ -1364,6 +1353,16 @@ f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPots
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
 me_re_GoBuddyTakeABreakAndABeer
 + [0 * me_st_GoBuddyTakeABreakAndABeer_0]
+
+//*****************************************************************************
+//
+// OpenPPL - Ini-functions
+//
+//*****************************************************************************
+
+##f$init_on_my_turn##
+  f$OpenPPL_InitMemorySymbols
++ f$OpenPPL_RememberToSitoutIfNecessary
 
 //*****************************************************************************
 //
@@ -4731,7 +4730,7 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 
 ##f$OpenPPL_GameStateChanged##
 // Change in dealerchair => new hand
-   (dealerchair != me_re_MemOldGameStateEealerChair)
+   (dealerchair != me_re_MemOldGameStateDealerChair)
 // Change in currentbet => we did act 
 // and the autoplayer executed sucessfully   
 || (currentbet  != me_re_MemOldGameStateCurrentBet)
@@ -4740,7 +4739,7 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 || (pot			!= me_re_MemOldGameStatePotSize)
 
 ##f$OpenPPL_RememberCurrentGameState##
-   (me_st_MemOldGameStateEealerChair_dealerchair * 0)
+   (me_st_MemOldGameStateDealerChair_dealerchair * 0)
 || (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
 || (me_st_MemOldGameStatePotSize_pot             * 0)
 
