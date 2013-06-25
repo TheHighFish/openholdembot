@@ -35,6 +35,9 @@ MAINTENANCE:
   for production mode, but it confused lots of beginners in development mode.
   Therefore we do now always query stats if we are connected to a table.
   [THF]
+- No longer saving the state of the formula-editors tree-view to the registry.
+  Removed these useless options rather than adding even more code for consistency.
+  [THF]
 
 
 v4.1.1 2013-05-20
