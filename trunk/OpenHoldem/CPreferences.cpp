@@ -44,9 +44,6 @@ void CPreferences::InitDefaults(void)
 	_scraper_dx = 340;
 	_scraper_dy = 250;
 
-	// Formula editor
-	_expand_auto = _expand_debug = _expand_std = _expand_list = _expand_udf = false;
-
 	// autoplayer
 	_frame_delay = 2;
 	_click_delay  = 250;
@@ -225,13 +222,6 @@ void CPreferences::ReadPreferences()
 		ReadReg("scraper_y", &_scraper_y);
 		ReadReg("scraper_dx", &_scraper_dx);
 		ReadReg("scraper_dy", &_scraper_dy);
-
-		// formula editor
-		ReadReg("expand_auto", &_expand_auto);
-		ReadReg("expand_debug", &_expand_debug);
-		ReadReg("expand_list", &_expand_list);
-		ReadReg("expand_std", &_expand_std);
-		ReadReg("expand_udf", &_expand_udf);
 
 		// prefs - autoplayer
 		ReadReg("frame_delay", &_frame_delay);

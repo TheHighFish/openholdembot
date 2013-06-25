@@ -213,7 +213,6 @@ protected:
 	CFormula		m_wrk_formula;
 
 	CStringArray	m_standard_headings;
-	bool			m_standard_expand[3];
 	CStringArray	m_standard_functions[3];
 
 	// This is used for formula parsing and evaluation
