@@ -127,7 +127,6 @@ char * keywords = // Standard functions
 				  "raisbits1 raisbits2 raisbits3 raisbits4 "
 				  "callbits1 callbits2 callbits3 callbits4 "
 				  "foldbits1 foldbits2 foldbits3 foldbits4 "
-				  "oppdealt "
 				  "ac_aggressor ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
 				  "ac_postflop_pos ac_first_into_pot "
 				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
@@ -3183,7 +3182,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "raisbitsx (x=1-4)", "which chairs raised in round x ");
 	AddSymbol(parent, "callbitsx (x=1-4)", "which chairs called in round x");
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
-	AddSymbol(parent, "oppdealt", "Trailing indicator for nopponentsdealt");
 	AddSymbol(parent, "ac_aggressor", "which chair was aggressor (might be from previous round)");
 	AddSymbol(parent, "ac_agchair_after", "does the aggressor chair act after me?");
 	AddSymbol(parent, "ac_preflop_pos", "preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
