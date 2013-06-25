@@ -121,12 +121,6 @@ public:
 	const int formula_y() { return _formula_y; }
 	const int formula_dx() { return _formula_dx; }
 	const int formula_dy() { return _formula_dy; }	
-	// Formula editor
-	const bool expand_auto() { return _expand_auto; }
-	const bool expand_debug() { return _expand_debug; }
-	const bool expand_list() { return _expand_list; }
-	const bool expand_std() { return _expand_std; }
-	const bool expand_udf() { return _expand_udf; }
 	// Validator
 	const int validator_enabled() { return _validator_enabled; }
 	const bool validator_stop_on_error() { return _validator_stop_on_error; }
@@ -276,13 +270,6 @@ public:
 	void set_main_y(const int i) { ENT _main_y = i; WriteReg("main_y", i); }
 	void set_main_dx(const int i) { ENT _main_dx = i; WriteReg("main_dx", i); }
 	void set_main_dy(const int i) { ENT _main_dy = i; WriteReg("main_dy", i); }
-
-	// Formula editor
-	void set_expand_auto(const bool  b) { ENT _expand_auto = b; WriteReg("expand_auto", b); }
-	void set_expand_debug(const bool  b) { ENT _expand_debug = b; WriteReg("expand_debug", b); }
-	void set_expand_list(const bool  b) { ENT _expand_list = b; WriteReg("expand_list", b); }
-	void set_expand_std(const bool b) { ENT _expand_std = b; WriteReg("expand_std", b); }
-	void set_expand_udf(const bool b) { ENT _expand_udf = b; WriteReg("expand_udf", b); }
 
 	// Validator
 	void set_validator_enabled(const int i) { ENT _validator_enabled = i; WriteReg("validator_enabled", i); }
@@ -441,13 +428,6 @@ private:
 	int			_main_y;
 	int			_main_dx;
 	int			_main_dy;
-
-	// Formula editor
-	bool			_expand_auto;
-	bool			_expand_debug;
-	bool			_expand_list;
-	bool			_expand_std;
-	bool			_expand_udf;
 
 	// Validator
 	int				_validator_enabled;

@@ -248,13 +248,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_headings.Add("Ini Functions");
 	m_standard_headings.Add("Debug Functions");
 
-
-	// !!! Remove?
-	m_standard_expand[0] = prefs.expand_auto();
-	m_standard_expand[1] = prefs.expand_std();
-	m_standard_expand[2] = false;
-	m_standard_expand[3] = prefs.expand_debug();	
-
 	ASSERT(m_standard_headings.GetSize() == 4);
 
 	m_standard_functions[0].Add("f$alli");
@@ -719,7 +712,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 			parent = NULL;
 		} else {
 			parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
-			m_FormulaTree.SetItemState(parent, TVIS_BOLD | (m_standard_expand[j] ? TVIS_EXPANDED : 0), TVIS_BOLD | (m_standard_expand[j] ? TVIS_EXPANDED : 0) );
+			m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 		}
 		for (int i=0; i<m_standard_functions[j].GetSize(); i++)
 		{
@@ -728,7 +721,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 	}
 
 	parent = m_FormulaTree.InsertItem("Hand Lists");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_list() ? TVIS_EXPANDED : 0) );
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 	
 	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
 	{
@@ -737,7 +730,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 	}
 
 	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0), TVIS_BOLD | (prefs.expand_udf() ? TVIS_EXPANDED : 0) );
+	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
 	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
 	{
@@ -2698,6 +2691,7 @@ void CDlgFormulaScintilla::SortUdfTree()
 	}
 }
 
+// !!!Remove?
 void CDlgFormulaScintilla::SaveSettingsToRegistry()
 {
 	WINDOWPLACEMENT wp;
@@ -2717,32 +2711,14 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	{
 		text = m_FormulaTree.GetItemText(hItem);
 		state = (m_FormulaTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) ? true : false;
-		if (m_FormulaTree.ItemHasChildren(hItem)) {
-			if (text == "Autoplayer Functions")
-				prefs.set_expand_auto(state);
-			else if (text == "Standard Functions")
-				prefs.set_expand_std(state);
-			else if (text == "Ini Functions")
-				prefs.set_expand_std(state);
-			else if (text == "Debug Functions")
-				prefs.set_expand_debug(state);
-			else if (text == "Hand Lists")
-				prefs.set_expand_list(state);
-			else if (text == "User Defined Functions")
-				prefs.set_expand_udf(state);
-		}
+
 
 		hItem = m_FormulaTree.GetNextItem(hItem, TVGN_NEXT);
 		if (hItem != NULL)
 			text = m_FormulaTree.GetItemText(hItem);
 	}
-
 	if (hItem != NULL && text == "User Defined Functions")
 		m_FormulaTree.SortChildren(hItem);
-
-	m_standard_expand[1] = prefs.expand_auto();
-	m_standard_expand[2] = prefs.expand_std();
-	m_standard_expand[3] = prefs.expand_debug();
 }
 
 void CDlgFormulaScintilla::HandleEnables(bool AllItems)
