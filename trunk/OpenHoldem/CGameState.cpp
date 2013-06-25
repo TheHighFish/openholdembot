@@ -34,7 +34,6 @@ CGameState::CGameState()
 
 	_m_ndx = 0;
 	_hands_played = 0;
-	_oppdealt = 0;
 	_m_game_ndx = 0;
 	_m_ftr_ndx = 0;
 	_new_hand = true;
@@ -69,10 +68,6 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	bool		sym_ismyturn = p_symbol_engine_autoplayer->ismyturn();
 	bool		sym_ismanual = p_symbol_engine_autoplayer->ismanual();
-
-	// tracking of nopponentsdealt
-	if (betround==k_betround_flop || sym_nopponentsdealt>_oppdealt)
-		_oppdealt = sym_nopponentsdealt;
 
 	// Has the number of opponents changed?
 	if (sym_nopponentsplaying != _nopponentsplaying_last)
