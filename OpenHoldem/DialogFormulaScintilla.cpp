@@ -2703,21 +2703,6 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	prefs.set_formula_y(wp.rcNormalPosition.top);
 	prefs.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
 	prefs.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-
-	// Tree expansion settings
-	hItem = m_FormulaTree.GetChildItem(NULL);
-	while (hItem != NULL)
-	{
-		text = m_FormulaTree.GetItemText(hItem);
-		state = (m_FormulaTree.GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED) ? true : false;
-
-
-		hItem = m_FormulaTree.GetNextItem(hItem, TVGN_NEXT);
-		if (hItem != NULL)
-			text = m_FormulaTree.GetItemText(hItem);
-	}
-	if (hItem != NULL && text == "User Defined Functions")
-		m_FormulaTree.SortChildren(hItem);
 }
 
 void CDlgFormulaScintilla::HandleEnables(bool AllItems)
