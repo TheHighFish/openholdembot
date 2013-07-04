@@ -233,11 +233,11 @@ void CPokerTrackerThread::StartThread()
 
 		_pt_thread = AfxBeginThread(PokertrackerThreadFunction, this);
 
-		write_log(prefs.debug_pokertracker(), "Started PokerTracker-thread.\n");
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] Started PokerTracker-thread.\n");
 	}
 	else
 	{
-		write_log(prefs.debug_pokertracker(), "PokerTracker-thread already running.\n");
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] PokerTracker-thread already running.\n");
 	}
 }
 
@@ -255,7 +255,7 @@ void CPokerTrackerThread::StopThread()
 
 		Disconnect();
 
-		write_log(prefs.debug_pokertracker(), "Stopped Poker Tracker thread.\n");
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] Stopped Poker Tracker thread.\n");
 	}
 
 	// Close handles
@@ -273,12 +273,12 @@ void CPokerTrackerThread::StopThread()
 
 void CPokerTrackerThread::Connect(void)
 {
-	write_log(prefs.debug_pokertracker(), "Trying to open PostgreSQL DB...\n");
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] Trying to open PostgreSQL DB...\n");
 	_pgconn = PQconnectdb(_conn_str.GetString());
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
 	{
-		write_log(prefs.debug_pokertracker(), "PostgreSQL DB opened successfully <%s/%s/%s>\n", 
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] PostgreSQL DB opened successfully <%s/%s/%s>\n", 
 			prefs.pt_ip_addr(), 
 			prefs.pt_port(), 
 			prefs.pt_dbname());
@@ -287,7 +287,7 @@ void CPokerTrackerThread::Connect(void)
 	}
 	else
 	{
-		write_log(prefs.debug_pokertracker(), "ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
 		PQfinish(_pgconn);
 		_connected = false;
 		_pgconn = NULL;
@@ -316,7 +316,7 @@ void CPokerTrackerThread::Disconnect(void)
 void CPokerTrackerThread::ReportSeatChanges(int chair)
 {
 	char currentScrapeName[k_max_length_of_playername];
-	write_log(prefs.debug_pokertracker(), "ReportSeatChanges: started\n");
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] ReportSeatChanges: started\n");
 	for (int i = k_first_chair; i < k_last_chair; i++)
 	{
 		if (i != chair)
@@ -325,7 +325,7 @@ void CPokerTrackerThread::ReportSeatChanges(int chair)
 			if (CheckIfNameHasChanged(i))
 			{
 				/* Scrapped name got changed. Clear stats for that chair */
-				write_log(prefs.debug_pokertracker(), "ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_stats[i].scraped_name);
 				/* Clear stats but leave the new name intact */
 				//!!!ClearSeatStats(i, false);
 			}
@@ -444,7 +444,7 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 	}
 	if (logResult)
 	{
-		write_log(prefs.debug_pokertracker(), "SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] SetPlayerName[%d]: Done. ptname[%s] scrapedName[%s]\n", chr, _player_stats[chr].pt_name, _player_stats[chr].scraped_name);
 	}
 }
 
@@ -567,12 +567,12 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		try
 		{
 			// See if we can find the player name in the database
-			write_log(prefs.debug_pokertracker(), "Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] Querying %s for m_chr %d: %s\n", stat_str[stat], m_chr, strQry);
 			res = PQexec(_pgconn, strQry);
 		}
 		catch (_com_error &e)
 		{
-			write_log(prefs.debug_pokertracker(), "ERROR\n");
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] ERROR\n");
 			write_log(prefs.debug_pokertracker(), _T("\tCode = %08lx\n"), e.Error());
 			write_log(prefs.debug_pokertracker(), _T("\tCode meaning = %s\n"), e.ErrorMessage());
 			_bstr_t bstrSource(e.Source());
@@ -585,7 +585,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		updEnd = clock();
 		duration = (int) ((double)(updEnd - updStart) / 1000);
 		if (duration >= 3)
-			write_log(prefs.debug_pokertracker(), "Query time in seconds: [%d]\n", duration);
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] Query time in seconds: [%d]\n", duration);
 
 		// Check query return code
 		if (PQresultStatus(res) != PGRES_TUPLES_OK)
@@ -593,28 +593,28 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			switch (PQresultStatus(res))
 			{
 			case PGRES_COMMAND_OK:
-				write_log(prefs.debug_pokertracker(), "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_EMPTY_QUERY:
-				write_log(prefs.debug_pokertracker(), "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_BAD_RESPONSE:
-				write_log(prefs.debug_pokertracker(), "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_COPY_OUT:
-				write_log(prefs.debug_pokertracker(), "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_COPY_IN:
-				write_log(prefs.debug_pokertracker(), "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_NONFATAL_ERROR:
-				write_log(prefs.debug_pokertracker(), "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			case PGRES_FATAL_ERROR:
-				write_log(prefs.debug_pokertracker(), "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			default:
-				write_log(prefs.debug_pokertracker(), "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), strQry);
 				break;
 			}
 		}
@@ -623,7 +623,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 			if (PQgetisnull(res,0,0) != 1)
 			{
 				result = atof(PQgetvalue(res,0,0));
-				write_log(prefs.debug_pokertracker(), "Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] Query %s for m_chr %d success: %f\n", stat_str[stat], m_chr, result);
 			}
 		}
 
@@ -672,14 +672,14 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	}
 	catch (_com_error &e)
 	{
-		write_log(prefs.debug_pokertracker(), "Postgres Query error:\n");
-		write_log(prefs.debug_pokertracker(), "\tCode = %08lx\n", e.Error());
-		write_log(prefs.debug_pokertracker(), "\tCode meaning = %s\n", e.ErrorMessage());
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] Postgres Query error:\n");
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] \tCode = %08lx\n", e.Error());
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] \tCode meaning = %s\n", e.ErrorMessage());
 		_bstr_t bstrSource(e.Source());
 		_bstr_t bstrDescription(e.Description());
-		write_log(prefs.debug_pokertracker(), "\tSource = %s\n", (LPCTSTR) bstrSource);
-		write_log(prefs.debug_pokertracker(), "\tDescription = %s\n", (LPCTSTR) bstrDescription);
-		write_log(prefs.debug_pokertracker(), "\tQuery = [%s]\n", strQry);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] \tSource = %s\n", (LPCTSTR) bstrSource);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] \tDescription = %s\n", (LPCTSTR) bstrDescription);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] \tQuery = [%s]\n", strQry);
 	}
 
 	// We got nothing, return false
@@ -738,10 +738,10 @@ int CPokerTrackerThread::GetUpdateType(int chr)
 {
 	if (_player_stats[chr].skipped_updates == k_advanced_stat_update_every)
 	{
-		write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update ALL\n", chr);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] GetUpdateType: update type for chair [%d] is update ALL\n", chr);
 		return pt_updateType_updateAll;
 	}
-	write_log(prefs.debug_pokertracker(), "GetUpdateType: update type for chair [%d] is update Basic only\n", chr);
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] GetUpdateType: update type for chair [%d] is update Basic only\n", chr);
 	return pt_updateType_updateBasic;
 }
 
@@ -826,18 +826,18 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		   in that chair, but only that the scraper failed to find one. This could be due to lobby window
 		   that hides poker window behind it. We make this check once, and if we are good, the update iteration
 		   is good to go. if we are not, we assume that this seat is not taken. */ 
-		write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d] had been started.\n", chair);
-		write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been started.\n", chair);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
 		return;
 	}
 //!!!	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
-//!!!	write_log(prefs.debug_pokertracker(), "GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
+//!!!	write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
 	
 	/* Check if there's a complete update cycle skipping for that chair */
 	updateType = pParent->SkipUpdateForChair(chair, reason);
 	if (updateType == pt_updateType_noUpdate)
 	{
-		write_log(prefs.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [%s]\n", chair, reason);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [%s]\n", chair, reason);
 		pParent->RecalcSkippedUpdates(chair);
 		return;
 	}
@@ -882,7 +882,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					{
 						/* Name got changed while we search for stats for current chair
 						   Clear stats for this seat and return                   */
-						write_log(prefs.debug_pokertracker(), "GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
+						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
 						/* Clear stats, but leave the new name intact */
 						//!!!pParent->ClearSeatStats(chair, false);
 						return;
@@ -890,18 +890,18 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					if (!pParent->StatEnabled(i))
 					{
 						/* Skip disabled stats */
-						write_log(prefs.debug_pokertracker(), "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [stat is disabled]\n", i, chair);
+						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [stat is disabled]\n", i, chair);
 					}
 					else if (pParent->SkipUpdateCondition(i, chair))
 					{
 						/* Updating stat i should be skipped this time */
 						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
-//!!!						write_log(prefs.debug_pokertracker(), "GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
+//!!!						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
 					}
 					else
 					{
 						/* Update... */
-						write_log(prefs.debug_pokertracker(), "GetStatsForChair updating stats [%d] for chair [%d]...\n", i, chair);
+						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair updating stats [%d] for chair [%d]...\n", i, chair);
 						pParent->UpdateStat(chair, i);
 						++updatedCount;
 					}
@@ -912,7 +912,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 				else
 				{
 					/* We couldn't find any user sitting on that chair. Give message*/
-					write_log(prefs.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [user not found (user stood up?)]\n", chair);
+					write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [user not found (user stood up?)]\n", chair);
 					return;
 				}
 			}
@@ -924,7 +924,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 
 void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
 {
-	write_log(prefs.debug_pokertracker(), "Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_stats[chair].scraped_name, updatedCount);
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_stats[chair].scraped_name, updatedCount);
 }
 
 bool CPokerTrackerThread::IsFound(int chair)
@@ -945,7 +945,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
 	{
 		iterStart = clock();
-		write_log(prefs.debug_pokertracker(), "PTthread iteration [%d] had started\n", ++iteration);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had started\n", ++iteration);
 		pParent->SetHandsStat();
 		if (!pParent->_connected)
 		{
@@ -954,17 +954,18 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	
 		players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
 			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
-		write_log(prefs.debug_pokertracker(), "Players count is [%d]\n", players);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
 		
 		//Define sleeptime for current ptrhead iteration
 		if (players > 1)
 		{
 			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!*/ 30 * 1000) / (double)(pt_max * players));
-			write_log(prefs.debug_pokertracker(), "sleepTime set to %d\n", sleepTime);
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleepTime);
 		}
 		else
 		{
-			write_log(prefs.debug_pokertracker(), "Not enough players to justify iteration, sleeping 10 seconds...\n");
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration, sleeping 10 seconds...\n");
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
 			LightSleep(10000, pParent);
 			continue;
 		}
@@ -981,16 +982,16 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		}
 		iterEnd = clock();
 		iterDurationMS = (int) ((double)(iterEnd - iterStart));
-		write_log(prefs.debug_pokertracker(), "PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
 		if (iterDurationMS <= 10000)
 		{
-			write_log(prefs.debug_pokertracker(), "sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
 			if (LightSleep(10000 - iterDurationMS, pParent)) 
 				break; 
 		}
 	}
 	// Set event
-	write_log(prefs.debug_pokertracker(), "PokertrackerThreadFunction: outside while loop...\n");
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] PokertrackerThreadFunction: outside while loop...\n");
 	::SetEvent(pParent->_m_wait_thread);
 	return 0;
 }
@@ -999,7 +1000,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
 int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 {
-	write_log(prefs.debug_pokertracker(), "LightSleep: called with sleepTime[%d]\n", sleepTime);
+	write_log(prefs.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
 	if ( sleepTime > 0)
 	{
 		int i = 0;
@@ -1010,7 +1011,7 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
 			{
-				write_log(prefs.debug_pokertracker(), "LightSleep: _m_stop_thread signal received\n");
+				write_log(prefs.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
 				return 1;
 			}
 		}
@@ -1019,7 +1020,7 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 	{
 		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
 		{
-			write_log(prefs.debug_pokertracker(), "LightSleep: _m_stop_thread signal received\n");
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
 			return 1;
 		}
 	}

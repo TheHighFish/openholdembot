@@ -151,22 +151,30 @@ bool CAutoplayer::DoBetPot(void)
 
 bool CAutoplayer::AnyPrimaryFormulaTrue()
 { 
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
+	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
 	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
+		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+			k_autoplayer_functionname[i], Bool2CString(function_result));
+		if (function_result)
 		{
+			write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
+	write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): no\n");
 	return false;
 }
 
 
 bool CAutoplayer::AnySecondaryFormulaTrue()
 {
-	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
+	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; ++i)
 	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
+		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+			k_autoplayer_functionname[i], Bool2CString(function_result));
+		if (function_result)
 		{
 			write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
 			return true;
@@ -202,11 +210,11 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 		}
 		// Else continue with swag and betpot
 	}
-	if (DoSwag())
+	if (DoBetPot())
 	{
 		return true;
 	}
-	if (DoBetPot())
+	if (DoSwag())
 	{
 		return true;
 	}
@@ -264,7 +272,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_leave; i++)
+	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
 	{
 
 		// Prefold, close, rebuy and chat work require different treatment,

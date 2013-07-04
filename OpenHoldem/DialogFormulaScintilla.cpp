@@ -304,7 +304,7 @@ CDlgFormulaScintilla::~CDlgFormulaScintilla()
 		if (&m_EmptyScinCtrl != m_ScinArray.GetAt(i)._pWnd)
 			delete m_ScinArray.GetAt(i)._pWnd;
 	}
-	m_ScinArray.RemoveAll();
+	m_ScinArray. RemoveAll(); 
 }
 
 void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX) 
