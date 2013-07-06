@@ -604,11 +604,13 @@ while (<>)
 	# Check for unsafe code	and warn the user
 	if ((m/Betsize =/i) or (m/TotalInvested =/i) or (m/AmountToCall =/i)
 		or (m/StartingStacksize =/i) or (m/MinOpponentStacksize =/i)
-		or (m/MaxOpponentStacksize =/i) or (m/Stacksize =/i))
+		or (m/MaxOpponentStacksize =/i) or (m/Stacksize =/i)
+		or (m/PotSize =/i))
 	{
 		print STDERR "\n";
 		print STDERR "WARNING: Unsafe Stacksize operation!\n";
-		print STDERR "\"StackSize = X\" will cause troubles, because OpenHoldem uses real numbers.\n";
+		print STDERR "\"StackSize = X\" and similar expressions\n";
+		print STDERR "will cause troubles, because OpenHoldem uses real numbers.\n";
 		print STDERR "You really should fix it; better use <= or >= instead.\n\n";
 		# Print current line of code
 		print STDERR "Line: $current_line_of_code\n";
