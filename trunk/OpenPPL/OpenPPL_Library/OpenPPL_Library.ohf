@@ -1257,7 +1257,7 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 [f$OpenPPL_Decision == f$OpenPPL_SitOut] ? me_st_GoBuddyTakeABreakAndABeer_1 : 0
 
 ##f$alli##
-|| [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
+   [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 || [f$OpenPPL_DecisionIsPercentagedPotsizedBet 
     && f$OpenPPL_BetSizeForPercentagedPotsizeBet >= f$OpenPPL_MaximumBetsizeInDollars]
@@ -1360,9 +1360,19 @@ me_re_GoBuddyTakeABreakAndABeer
 //
 //*****************************************************************************
 
+##f$init_on_startup##
+
+##f$init_on_connection##
+f$init_on_handreset
+
+##f$init_on_handreset##
+me_st_MemBotsLastAction_f$OpenPPL_None
+
+##f$init_on_new_betround##
+
 ##f$init_on_my_turn##
-  f$OpenPPL_InitMemorySymbols
-+ f$OpenPPL_RememberToSitoutIfNecessary
+   [f$OpenPPL_InitMemorySymbols * 0]
+|| [f$OpenPPL_RememberToSitoutIfNecessary * 0]
 
 //*****************************************************************************
 //
@@ -1438,12 +1448,11 @@ ac_aggressor
 // (inside f$OpenPPL_InitMemorySymbols)
 // because it will call the final f$Decision routine.
 //
-([(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
 //
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
 //
-[[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? 0 : 0])
+[[(betround != f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? 0 : 0]
 //
 // Then we call f$OpenPPL_Decision and store BotsLastAction for the next time...
 //
