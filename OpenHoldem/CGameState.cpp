@@ -653,7 +653,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
 			{
 				_process_game_state = true;
-				write_log(k_always_log_basic_information, ">>> My turn, br=%d\n", betround);
+				write_log(k_always_log_basic_information, ">>> My turn, betround=%d\n", betround);
 			}
 			else
 			{
