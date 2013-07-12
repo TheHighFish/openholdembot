@@ -20,13 +20,13 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	int playersactivebits()		{ return _playersactivebits; }
-	int opponentsactivebits()	{ return (_playersactivebits & ~userchairbit());}
+	int playersactivebits()		{ return _playersactivebits & playersseatedbits(); }
+	int opponentsactivebits()	{ return (playersactivebits() & ~userchairbit());}
 	int nplayersactive()		{ return bitcount(playersactivebits()); }
 	int nopponentsactive()		{ return bitcount(opponentsactivebits()); }
 public:
-	int playersplayingbits()	{ return _playersplayingbits; }
-	int opponentsplayingbits()	{ return (_playersplayingbits & ~userchairbit());}
+	int playersplayingbits()	{ return _playersplayingbits & playersseatedbits(); }
+	int opponentsplayingbits()	{ return (playersplayingbits() & ~userchairbit());}
 	int nplayersplaying()		{ return bitcount(playersplayingbits()); }
 	int nopponentsplaying()		{ return bitcount(opponentsplayingbits()); }
 public:

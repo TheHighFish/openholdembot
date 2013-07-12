@@ -937,7 +937,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int				iteration = 0;
-	int				players;
 	int				sleepTime;
 	clock_t			iterStart, iterEnd;
 	int				iterDurationMS;
@@ -952,7 +951,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
+		int players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
 			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
 		write_log(prefs.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
 		
