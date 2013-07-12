@@ -1,4 +1,4 @@
-v4.2.0 2013-06-XX
+v4.2.0 2013-07-XX
 ==================
 NEW STUFF:
 - Adding some ini-functions that get called automatically by OpenHoldem:
@@ -17,7 +17,7 @@ NEW STUFF:
 
 BUG FIXES:
 - f$close did not work, but OpenHoldem tried to click prefold instead
-  because we used a wrong autoplayer-constant (copy-and-paste).
+  because we used wrong autoplayer-constants at two places (copy-and-paste).
   This has now been fixed.
   Thanks to AlCapown3d for reporting.
   [THF]
@@ -27,6 +27,11 @@ BUG FIXES:
   This bug did also affect the values of srankbits,
   (s)rankhi and (s)ranklo.
   Thanks to FpTrader for reporting.
+  [THF]
+- It could happen that players got recognized as active 
+  who were not even seated (bad tablemap).
+  This has now been improved.
+  Thanks to Rehlby for reporting.
   [THF]
 
 MAINTENANCE:
