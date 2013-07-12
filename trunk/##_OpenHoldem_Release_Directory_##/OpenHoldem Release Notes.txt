@@ -36,8 +36,9 @@ BUG FIXES:
 
 MAINTENANCE:
 - Previously the PokerTracker-thread worked only if the userchair was confirmed
-  and we were sitting in and playing. This optimization was no big-deal
-  for production mode, but it confused lots of beginners in development mode.
+  and we were sitting in and there were at least 2 players playing (including us). 
+  This optimization was no big-deal for production mode, 
+  but it confused lots of beginners in development mode.
   Therefore we do now always query stats if we are connected to a table.
   [THF]
 - Rewrote some parts of the code for replay-frame-generation,
