@@ -937,7 +937,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int				iteration = 0;
-	int				sleepTime;
 	clock_t			iterStart, iterEnd;
 	int				iterDurationMS;
 
@@ -951,29 +950,29 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		int players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
+		double players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
 			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
 		write_log(prefs.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
-		
-		//Define sleeptime for current ptrhead iteration
-		if (players > 1)
+				
+		if (players < 2)
 		{
-			sleepTime = (int) ((double)(/*prefs.pt_cache_refresh() !!*/ 30 * 1000) / (double)(pt_max * players));
-			write_log(prefs.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleepTime);
-		}
-		else
-		{
-			write_log(prefs.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration, sleeping 10 seconds...\n");
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration...\n");
 			write_log(prefs.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
-			LightSleep(10000, pParent);
+			write_log(prefs.debug_pokertracker(), "[PokerTracker] Continuing anyway...\n");
 			continue;
 		}
+
+		// Avoiding division by zero and setting sleep time
+		AdaptValueToMinMaxRange(&players, 1, k_max_number_of_players);
+		int sleep_time = (int) ((double)(/*prefs.pt_cache_refresh() !!*/ 30 * 1000) / (double)(pt_max * players));
+		write_log(prefs.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleep_time);
+		LightSleep(sleep_time, pParent);
 		
 		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 		{
 			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)
 			{
-				GetStatsForChair(pParam, chair, sleepTime);
+				GetStatsForChair(pParam, chair, sleep_time);
 				/* Verify therad_stop is false */ 
 				if (LightSleep(0, pParent)) 
 					break; 
