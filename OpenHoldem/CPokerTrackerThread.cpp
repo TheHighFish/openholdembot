@@ -959,7 +959,6 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			write_log(prefs.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration...\n");
 			write_log(prefs.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
 			write_log(prefs.debug_pokertracker(), "[PokerTracker] Continuing anyway...\n");
-			continue;
 		}
 
 		// Avoiding division by zero and setting sleep time
