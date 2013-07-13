@@ -196,6 +196,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	if (!p_game_state->ProcessThisFrame ())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Mots common reason: missing balance-stability or card-stability.\n");
 		_isfinalanswer = false;
 	}
 }
