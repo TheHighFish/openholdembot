@@ -1697,16 +1697,16 @@ me_re_MemMissingSmallBlind
 
 ##f$OpenPPL_OpponentStacksizeHeadsUp##
 bblind==0 ? f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
-[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && userchair!=0] ? balance0/bblind:
-[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && userchair!=1] ? balance1/bblind:
-[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && userchair!=2] ? balance2/bblind:
-[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && userchair!=3] ? balance3/bblind:
-[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && userchair!=4] ? balance4/bblind:
-[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && userchair!=5] ? balance5/bblind:
-[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && userchair!=6] ? balance6/bblind:
-[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && userchair!=7] ? balance7/bblind:
-[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && userchair!=8] ? balance8/bblind:
-[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && userchair!=9] ? balance9/bblind:
+[(playersplayingbits & 0b0000000001) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=0 && balance0>0] ? balance0/bblind:
+[(playersplayingbits & 0b0000000010) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=1 && balance1>0] ? balance1/bblind:
+[(playersplayingbits & 0b0000000100) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=2 && balance2>0] ? balance2/bblind:
+[(playersplayingbits & 0b0000001000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=3 && balance3>0] ? balance3/bblind:
+[(playersplayingbits & 0b0000010000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=4 && balance4>0] ? balance4/bblind:
+[(playersplayingbits & 0b0000100000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=5 && balance5>0] ? balance5/bblind:
+[(playersplayingbits & 0b0001000000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=6 && balance6>0] ? balance6/bblind:
+[(playersplayingbits & 0b0010000000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=7 && balance7>0] ? balance7/bblind:
+[(playersplayingbits & 0b0100000000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=8 && balance8>0] ? balance8/bblind:
+[(playersplayingbits & 0b1000000000) && (nopponentsplaying-f$OpenPPL_NumberOfOpponentsAllin==1) && chair!=9 && balance9>0] ? balance9/bblind:
 -1
 
 
