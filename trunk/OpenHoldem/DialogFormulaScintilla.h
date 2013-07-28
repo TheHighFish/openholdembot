@@ -146,6 +146,7 @@ protected:
 	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
 	void UpdateAllScintillaKeywords();
 	void ConstructKeywords(CString &keys);
+	void ConstructKeywordsForPokerTracker(CString &keys);
 	void UpdateScintillaKeywords(CScintillaWnd *pWnd);
 	void DeleteScintilla(CScintillaWnd *pWnd);
 
@@ -156,6 +157,7 @@ protected:
 	void SelectFunctionTab(CScintillaWnd *pCurScin);
 
 	void PopulateSymbols();
+	void PopulatePokerTrackerSymbols();
 	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
 	HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
