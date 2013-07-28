@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
 
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
+#include "CPokerTrackerThread.h"
 #include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
 
 
 CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
-
-SPlayerStats _player_stats[k_max_number_of_players];
 
 
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
@@ -17,6 +18,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_userchair != NULL);
 }
 
 CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker()
@@ -31,6 +33,7 @@ void CSymbolEnginePokerTracker::InitOnStartup()
 void CSymbolEnginePokerTracker::ResetOnConnection()
 {
 	ClearAllStats();
+	p_pokertracker_thread->StartThread();
 }
 
 void CSymbolEnginePokerTracker::ResetOnHandreset()
@@ -53,6 +56,13 @@ void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s)
 	OH_MessageBox_Error_Warning(error_message, "Error");
 }
 
+bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s)
+{
+	return ((s.Left(2) == "pt") 
+		&& (s.Left(3) != "pt_")
+		&& (s.Left(5) != "pt_r_"));
+}
+
 void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup()
 {
 	if (check_for_identity_of_players_executed_this_heartbeat)
@@ -63,24 +73,18 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 	ClearAllStatsOfChangedPlayers();
 }
 
-int pt_max = 42; //!!!
-
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound)
 {
 	assert(chair >= k_first_chair); 
 	assert(chair <= k_last_chair);
-	for (int i=0; i<=pt_max; i++)
-	{
-		_player_stats[chair].stat[i] = -1.0;
-		_player_stats[chair].t_elapsed[i] = -1;
-	}
+	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound)
 	{
-		_player_stats[chair].found = false;
-		memset(_player_stats[chair].pt_name, 0, k_max_length_of_playername);
-		memset(_player_stats[chair].scraped_name, 0, k_max_length_of_playername);
+		_player_data[chair].found = false;
+		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
+		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
 	}
-	_player_stats[chair].skipped_updates = 0; //!!!k_advanced_stat_update_every;
+	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()
@@ -102,26 +106,39 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 	}
 }
 
-int GetIndex(char *symbol)
-{
-	return 0; //!!!
-}
-
-double CSymbolEnginePokerTracker::ProcessQuery(const char * s)
+double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 {
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
+	if (IsOldStylePTSymbol(s))
+	{
+		CString error_message;
+		error_message.Format(
+			"Old style PokerTracker symbol detected: %s.\n"
+			"\n"
+			"PokerTracker symbol either start with \"pt_\" or \"pt_r_\".\n", s);
+		OH_MessageBox_Error_Warning(
+			error_message,			 
+			"ERROR: Invalid PokerTracker Symbol");
+		return k_undefined;
+	}
+	if (!PT_DLL_IsValidSymbol(CString(*s)))
+	{
+		// Invalid PokerTracker symbol
+		WarnAboutInvalidPTSymbol(s);
+		return k_undefined;
+	}
 	int chair = 0;
 
-//!!!	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
+	if (!p_pokertracker_thread->IsConnected())
 	{
-		//!!!if (!p_symbol_engine_userchair->userchair_confirmed())
+		if (!p_symbol_engine_userchair->userchair_confirmed())
 		{
 			// We are not yet seated.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
 		}
-		//!!!else
+		else
 		{
 			// We are seated and playing.
 			// Serious problem, if we do not have a DB-connection.
@@ -131,42 +148,25 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char * s)
 		return k_undefined;
 	}
 
-	// ATTENTION!
-	//  
-	// Be very careful, if a string is a prefix of multiple symbols,
-	// e.g. "pt_vpip" is a prefix of both "pt_vpipX" and "pt_vpipsbX".
-	// Take care to handle those cases correctly!
-
-	// PokerTracker ring game symbols for the raise-chair
-	if (StringAIsPrefixOfStringB("pt_r_", s) //!!!!!
-		&& !StringAIsPrefixOfStringB("pt_riverpct", s))
+	CString pure_symbol_name;
+	// PokerTracker ymbols for the raise-chair
+	if (StringAIsPrefixOfStringB("pt_r_", s))
 	{
 		chair = p_symbol_engine_raisers_callers->raischair();
-		{
-			// Invalid ring game symbol
-			WarnAboutInvalidPTSymbol(s);
-			return -1.0;
-		}
+		CString symbol = s;
+		pure_symbol_name = symbol.Right(symbol.GetLength() - 5);
 	}
-	// PokerTracker ring game symbols for chair X
-	else if (StringAIsPrefixOfStringB("pt_", s))
+	// PokerTracker symbols for chair X
+	else 
 	{
-		//!!! chair ==
-		{
-			// Invalid ring game symbol
-			WarnAboutInvalidPTSymbol(s);
-			return -1.0;
-		}
+		assert(StringAIsPrefixOfStringB("pt_", s));
+		CString symbol = s;
+		CString last_character = symbol.Right(1);
+		chair = atoi(last_character);
+		pure_symbol_name = symbol.Right(symbol.GetLength() - 3);
 	}
-	int index = GetIndex("symbol"); //!!!
-	AssertRange(index, -1, (k_max_number_of_supported_pokertracker_stats - 1));
 	AssertRange(chair, k_first_chair, k_last_chair);
-	if (index == 1)
-	{
-		WarnAboutInvalidPTSymbol(s);
-		return -1.0;
-	}
-	return _player_stats[chair].stat[index];
+	return PT_DLL_GetStat(pure_symbol_name, chair); 
 }
 
 

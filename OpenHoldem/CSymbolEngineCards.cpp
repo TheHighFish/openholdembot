@@ -110,12 +110,6 @@ void CSymbolEngineCards::ResetOnHeartbeat()
 	CalcFlushesStraightsSets();
 	CalcUnknownCards();
 }
-//!!!!!
-bool CSymbolEngineCards::BothPocketCardsKnown()
-{
-	return (p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, 0))
-		&& p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, 1)));
-}
 
 void CSymbolEngineCards::CalcPocketTests()
 {
@@ -123,7 +117,7 @@ void CSymbolEngineCards::CalcPocketTests()
 	_issuited    = false;
 	_isconnector = false;
 
-	if (!BothPocketCardsKnown())
+	if (!p_scraper_access->UserHasCards())
 	{
 		return;
 	}

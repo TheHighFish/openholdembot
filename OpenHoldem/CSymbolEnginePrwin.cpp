@@ -5,6 +5,7 @@
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CIteratorThread.h"
+#include "CIteratorVars.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolenginePokerval.h"
@@ -30,6 +31,7 @@ void CSymbolEnginePrwin::InitOnStartup()
 
 void CSymbolEnginePrwin::ResetOnConnection()
 {
+	iter_vars.ResetVars();
 	ResetOnHandreset();
 }
 

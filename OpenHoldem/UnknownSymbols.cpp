@@ -83,7 +83,7 @@ char *outdated_symbols_ptt =
 	"The \"ptt_\" symbols got removed from the code-base,\n"
 	"to simplify OpenHoldem and its supporting libraries (OpenPPL)\n"
 	"\n"
-	"OpenHoldem does now only support \"pt\" symbols\n"
+	"OpenHoldem does now only support \"pt_\" symbols\n"
 	"and fetches cash-game or tournament-stats automatically,\n"
 	"provided your c0istournament-symbol returns the correct value.\n";
 
@@ -168,6 +168,12 @@ char *outdated_symbol_originaldealposition =
 	"The symbol \"originaldealposition\" got removed from the code base\n"
 	"because there was no longer any need for it\n"
 	"after making dealposition persistent.\n";
+
+char *outdated_symbols_pokertracker_tournament =
+	"The PokerTracker tournament symbols \"ptt_\" got removed\n"
+	"because we changed the \"pt_\"-symbols so that they\n"
+	"automagically work for both ring-games and tournaments\n"
+	"to simplify user-code and supporting libraries (OpenPPL).";
 	
 void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 {
@@ -223,7 +229,7 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	{
 		OH_MessageBox_Error_Warning(outdated_symbol_clocks, title_outdated_symbol);
 	}
-	else if (symbol.Left(4) == "ptt_")
+	else if (symbol.Left(3) == "ptt")
 	{
 		OH_MessageBox_Error_Warning(outdated_symbols_ptt, title_outdated_symbol);
 	}

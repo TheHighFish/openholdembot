@@ -63,7 +63,6 @@ public:
 	int $$cs(int index)		{ return _$$cs[index]; }
 
 private:
-	bool BothPocketCardsKnown();
 	void CalcPocketTests();
 	void CalcFlushesStraightsSets();
 	void CalculateHandTests();

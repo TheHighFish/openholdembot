@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Debug\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib ..\PokerTracker_Query_Definitions\Debug\pokertracker_query_definitions.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
@@ -466,10 +466,6 @@
 			</File>
 			<File
 				RelativePath=".\SwagAdjustment.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\UnknownSymbols.cpp"
 				>
 			</File>
 			<Filter
@@ -942,6 +938,10 @@
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\UnknownSymbols.cpp"
+					>
+				</File>
 				<Filter
 					Name="Symbol_Engines"
 					>
@@ -1197,6 +1197,63 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Documents"
+				>
+				<File
+					RelativePath=".\HeaderCopyrightDocumentation.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm"
+					DeploymentContent="true"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\sources of code.txt"
+					>
+				</File>
+				<Filter
+					Name="Release Notes"
+					>
+					<File
+						RelativePath="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt"
+						>
+					</File>
+					<File
+						RelativePath="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt"
+						>
+					</File>
+					<File
+						RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt"
+						>
+					</File>
+					<File
+						RelativePath="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt"
+						>
+					</File>
+					<File
+						RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Checklist for Releases"
+					>
+					<File
+						RelativePath="..\Checklist_Release.txt"
+						>
+					</File>
+					<File
+						RelativePath="..\Checklist_Release_OpenPPL.txt"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1353,10 +1410,6 @@
 			</File>
 			<File
 				RelativePath=".\SwagAdjustment.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UnknownSymbols.h"
 				>
 			</File>
 			<Filter
@@ -1600,6 +1653,10 @@
 				</File>
 				<File
 					RelativePath=".\CVirtualSymbolEngine.h"
+					>
+				</File>
+				<File
+					RelativePath=".\UnknownSymbols.h"
 					>
 				</File>
 				<Filter
@@ -1866,10 +1923,6 @@
 					RelativePath=".\CPokerTrackerThread.h"
 					>
 				</File>
-				<File
-					RelativePath=".\PokerTracker_Queries_Version_3.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="AutoPlayer"
@@ -1968,63 +2021,6 @@
 				</File>
 				<File
 					RelativePath=".\CReplayFramesCounter.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="Documents"
-			>
-			<File
-				RelativePath=".\HeaderCopyrightDocumentation.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm"
-				DeploymentContent="true"
-				>
-			</File>
-			<File
-				RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI"
-				>
-			</File>
-			<File
-				RelativePath="..\##_OpenHoldem_Release_Directory_##\sources of code.txt"
-				>
-			</File>
-			<Filter
-				Name="Release Notes"
-				>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Checklist for Releases"
-				>
-				<File
-					RelativePath="..\Checklist_Release.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\Checklist_Release_OpenPPL.txt"
 					>
 				</File>
 			</Filter>

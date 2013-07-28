@@ -214,7 +214,7 @@ extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 
 extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll()
 {
-	assert(p_handreset_detector->GetHandNumber().GetLength < k_max_length_of_handnumber);
+	assert(p_handreset_detector->GetHandNumber().GetLength() < k_max_length_of_handnumber);
 	static char handnumber_as_char_array[k_max_length_of_handnumber];
 	strcpy_s(handnumber_as_char_array, 
 		k_max_length_of_handnumber, 
