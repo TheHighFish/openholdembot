@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib $(OutDir)\pokertracker_query_definitions.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
@@ -164,11 +164,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib $(OutDir)\pokertracker_query_definitions.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="1"
 				GenerateManifest="false"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				StackReserveSize="8388608"
 				OptimizeReferences="2"
@@ -255,11 +255,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib"
+				AdditionalDependencies="imm32.lib psapi.lib ..\dbghelp\dbghelp.lib ..\scintilla\bin\SciLexer.lib ..\pokereval\Release\poker-eval.lib ..\lib\libpq.lib ..\lib\PerlEz.lib ..\Release\pokertracker_query_definitions.lib"
 				OutputFile="$(OutDir)\OpenHoldem.exe"
 				LinkIncremental="1"
 				GenerateManifest="false"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				StackReserveSize="8388608"
 				OptimizeReferences="2"
