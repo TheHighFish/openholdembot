@@ -1222,10 +1222,10 @@ f$OpenPPL_ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##f$OpenPPL_Decision##
 // f$preflop, f$flop, f$turn and f$river will be added by the translator.
-[betround == 1] ? f$preflop :
-[betround == 2] ? f$flop :
-[betround == 3] ? f$turn :
-[betround == 4] ? f$river :
+[betround == f$OpenPPL_ConstBetRoundPreflop] ? f$preflop :
+[betround == f$OpenPPL_ConstBetRoundFlop]    ? f$flop :
+[betround == f$OpenPPL_ConstBetRoundTurn]    ? f$turn :
+[betround == f$OpenPPL_ConstBetRoundRiver]   ? f$river :
 f$OpenPPL_ERROR_Betround_Out_Of_Range
 
 ##f$RaiseByBigBlinds##
@@ -2707,10 +2707,9 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 (pokervalcommon & twopair) || (pokervalcommon & fullhouse)
 
 ##f$OpenPPL_TwoPairOnBoardOnTurn##
-(betround>2 && f$OpenPPL_TwoPairOnBoard && $$cr0==$$cr1 && $$cr2==$$cr3 && $$cr0!=$$cr2) ? 1 :
-(betround>2 && f$OpenPPL_TwoPairOnBoard && $$cr0==$$cr2 && $$cr1==$$cr3 && $$cr0!=$$cr1) ? 1 :
-(betround>2 && f$OpenPPL_TwoPairOnBoard && $$cr0==$$cr3 && $$cr1==$$cr2 && $$cr0!=$$cr1) ? 1 :
-0
+   (betround>f$OpenPPL_ConstBetRoundFlop && $$cr0==$$cr1 && $$cr2==$$cr3 && $$cr0!=$$cr2)
+|| (betround>f$OpenPPL_ConstBetRoundFlop && $$cr0==$$cr2 && $$cr1==$$cr3 && $$cr0!=$$cr1)
+|| (betround>f$OpenPPL_ConstBetRoundFlop && $$cr0==$$cr3 && $$cr1==$$cr2 && $$cr0!=$$cr1)
 
 ##f$OpenPPL_UncoordinatedFlop##
 !f$OpenPPL_PairOnFlop
