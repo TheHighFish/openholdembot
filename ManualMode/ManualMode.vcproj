@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="3. ManualMode"
 	ProjectGUID="{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}"
 	RootNamespace="ManualMode"
@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pokereval\Debug\poker-eval.lib ..\dbghelp\dbghelp.lib"
+				AdditionalDependencies="..\pokereval\Release\poker-eval.lib ..\dbghelp\dbghelp.lib"
 				OutputFile="$(OutDir)\ManualMode.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
