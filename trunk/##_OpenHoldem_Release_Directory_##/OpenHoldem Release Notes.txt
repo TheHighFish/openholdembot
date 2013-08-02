@@ -1,4 +1,4 @@
-v4.2.0 2013-07-XX
+v4.2.0 2013-08-XX
 ==================
 NEW STUFF:
 - Adding some ini-functions that get called automatically by OpenHoldem:
@@ -13,6 +13,17 @@ NEW STUFF:
   or having to rebuild everything.
   For more details please have a look at the source-code:
   http://code.google.com/p/openholdembot/source/browse/trunk/
+  [THF]
+- Adding a symbol msgbox$TEXT for OH-script
+  to support runtime-messages and warnings.
+  As the characterset inside TEXT is limited 
+  the following substitutions will take place:
+    _B will be replaced by a blank
+    _C will be replaced by a comma
+    _D will be replaced by a dot
+    _N will be replaced by a new-line
+    _U will be replaced by a underscore
+  The symbol msgbox$TEXT will evaluate to 0.
   [THF]
 
 BUG FIXES:
