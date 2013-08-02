@@ -3,14 +3,17 @@
 
 class CReplayFrame 
 {
+	// CSymbolEngineReplayFrameController (and nobody else!) 
+	// should get access to CreateReplayFrame(void);
+	// to avoid multiple calls during the same heartbeat.
+	friend class CSymbolEngineReplayFrameController;
 public:
 	// public functions
 	CReplayFrame(void);
 	~CReplayFrame(void);
-	//!!!!! this should be protected
-	void CreateReplayFrame(void);
 private:
 	// private functions and variables - not available via accessors or mutators
+	void CreateReplayFrame(void);
 	void CreateReplaySessionDirectoryIfNecessary();
 	CString GetCardHtml(unsigned int card);
 	CString GetPlayerInfoAsHTML();
