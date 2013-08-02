@@ -5,7 +5,7 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 
-// !!! make it a symbol-engine?
+// TODO make it a symbol-engine?
 // Call it!
 
 CAutoplayerFunctions *p_autoplayer_functions = NULL;

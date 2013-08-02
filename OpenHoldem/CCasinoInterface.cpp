@@ -217,7 +217,7 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 	assert(button_number >= 0);
 	assert(button_number < k_max_number_of_i86X_buttons);
 
-	if (p_scraper_access->i86X_button_available[button_number] /*!!! && p_scraper_access->_i86X_state[button_number]*/)
+	if (p_scraper_access->i86X_button_available[button_number])
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Found valid i86 (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);

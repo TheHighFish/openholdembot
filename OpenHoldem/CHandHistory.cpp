@@ -30,8 +30,8 @@ using namespace std;
 
 CHandHistory *p_handhistory = NULL;
 
-// !!! searching from -5 to 5 maybe?
-// !!! But what if we have less than 10 chairs or the user/dealer sits not in nr. 5?
+// !! searching from -5 to 5 maybe?
+// !! But what if we have less than 10 chairs or the user/dealer sits not in nr. 5?
 const int WTF_means_minus_five = -5; 
 
 const int k_betround_showdown = k_betround_river + 1;
@@ -62,11 +62,11 @@ CHandHistory::~CHandHistory()
 void CHandHistory::MakeHistory()
 {
 	write_log(prefs.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
-	CreateHandHistoryFile();//!!! Bad
+	CreateHandHistoryFile();//!! Bad
 	UpdateSymbols();
 	WriteHistory();
 	SetPreviousActions();
-	outfile.close(); //!!! Bad
+	outfile.close(); //!! Bad
 }
 
 // Checked
@@ -141,7 +141,7 @@ void CHandHistory::roundStart()
 	// Records if there is no small blind
 	if (p_symbol_engine_chip_amounts->currentbet(_history.sblindpos) == 0)
 	{
-		// !!! What if the BB occupies this seat?
+		// !! What if the BB occupies this seat?
 		SBfound = false;
 	}
 	else
@@ -500,7 +500,7 @@ const bool CHandHistory::isShowdown()
 	return false;
 }
 
-// !!! Duplicate somewhere?
+// !! Duplicate somewhere?
 void CHandHistory::GetPCstring(char *c, unsigned int c0, unsigned int c1)
 {
 	char		card0[10] = {0}, card1[10] = {0};
@@ -534,7 +534,7 @@ void CHandHistory::GetBCstring(char *c, unsigned int c0)
 
 	c[0] = card0[0];
 	c[1] = card0[1];
-	// !!! What is with c[2]?
+	// !! What is with c[2]?
 	c[3] = '\0';
 }
 
@@ -608,7 +608,7 @@ const bool CHandHistory::cardsDealt()
 			playersdealt++;
 		}
 	}
-	// !!! What if it is headsup? Then only one player has cardbacks
+	// !! What if it is headsup? Then only one player has cardbacks
 	return (playersdealt>= 2);
 }
 
@@ -619,7 +619,7 @@ const bool CHandHistory::isPlaying(const int chair)
 	bool playersdealtbits = IsBitSet(dbits, chair);
 
 	return (playersdealtbits
-		&&_history.chair[chair].currentBalance >= 0); // !!! What if he is allin?
+		&&_history.chair[chair].currentBalance >= 0); // !! What if he is allin?
 		
 }
 
@@ -629,22 +629,22 @@ const bool CHandHistory::hasMucked(const int chair)
 	int	betround = (int) p_betround_calculator->betround();
 
 	//Precondition: Betround is 4, player has called and has not folded
-	// !!! 3 means here: river and 4 means showdown
+	// !! 3 means here: river and 4 means showdown
 	return (betround == k_betround_river
 		&& (_history.chair[chair].currentBet == maxBet
 			|| _history.chair[chair].currentBalance == (_history.chair[chair].prevBalance - maxBet))
 		&& _history.chair[chair].seatIsPlaying);
 }
 
-// !!! Check For What?
-// !!! Why pass the loop-variable j as in-parameters?
+// !! Check For What?
+// !! Why pass the loop-variable j as in-parameters?
 void CHandHistory::checkSeats(const int i, int j)
 {
 	do
 	{
 		if (_history.chair[j].playersPlayingBits)
 		{
-			// !!! What means 2?
+			// !! What means 2?
 			SetAction(j, 2, 0, prevround);
 		}
 		j = (j+1)%nchairs;
@@ -653,7 +653,7 @@ void CHandHistory::checkSeats(const int i, int j)
 }
 
 // CHECKED
-// !!! Seems like it could be completely removed
+// !! Seems like it could be completely removed
 void CHandHistory::SearchForAllinPlayers(const int chair)
 {
 	int	betround = (int) p_betround_calculator->betround();
@@ -663,7 +663,7 @@ void CHandHistory::SearchForAllinPlayers(const int chair)
 			||_history.chair[chair].currentBalance == 0)
 		&& allin[chair]) 
 	{
-		// !!! allin will be set to true, only if it is true?
+		// !! allin will be set to true, only if it is true?
 		allin[chair] = true;	
 	}
 }
@@ -721,7 +721,7 @@ void CHandHistory::resetVars()
 		_history.chair[i].calls = 0;
 		_history.chair[i].actionCount = 0;
 		middleBet[i] = 0;
-		for (int j=0; j<4 ;j++) // !!! Betrounds are 1..4 
+		for (int j=0; j<4 ;j++) // !! Betrounds are 1..4 
 		{
 			_history.chair[i].totalIn[j] = 0;
 			for (int k=0; k<k_assumed_max_number_of_actions_per_player_and_round; k++) // !! WTF is 8?
@@ -779,7 +779,7 @@ void CHandHistory::SetAction(int pnum, int action, double amount, int betround)
 	{
 		_history.chair[pnum].actionCount++;
 	}
-	// !!! Otherwise: too many action
+	// !! Otherwise: too many action
 }
 
 // Done
@@ -826,7 +826,7 @@ void CHandHistory::HandleNextAction()
 
 	if (_history.chair[next_chair_to_look_for_actions].dealt)
 	{
-		if (action == 1) // !!! Bad! Unnamed constants
+		if (action == 1) // !! Bad! Unnamed constants
 		{
 			outfile << name << ": Fold" << endl;
 			hasFolded[next_chair_to_look_for_actions] = true;
@@ -862,7 +862,7 @@ void CHandHistory::HandleNextAction()
 // Done
 void CHandHistory::HandleNewBetround()
 {
-	if (betround == (k_betround_flop-1)) // !!! betrounds should be 1..4, not 0..3
+	if (betround == (k_betround_flop-1)) // !! betrounds should be 1..4, not 0..3
 	{
 		outfile << "*** FLOP *** [ "
 			 << card_global[0][1] << card_global[0][0] << " "
@@ -951,7 +951,7 @@ void CHandHistory::HandleContestedPot()
 void CHandHistory::HandleShowdown(bool constested)
 {
 	outfile << "*** SUMMARY ***" << endl;
-	// !!! Rake-structure: maximum / tourneys not handled
+	// !! Rake-structure: maximum / tourneys not handled
 	outfile << "Total pot $" << calculatedPot << " Rake $"
 		 << (k_hand_history_rake * calculatedPot) << endl;
 	if (constested)

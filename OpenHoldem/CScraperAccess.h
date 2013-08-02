@@ -99,7 +99,6 @@ public:
 	bool i86X_button_available[k_max_number_of_i86X_buttons];
 
 public:
-	//!!! probably superfluos! bool _i86X_state[k_max_number_of_i86X_buttons];
 	bool allin_option_available;
 
 } *p_scraper_access;

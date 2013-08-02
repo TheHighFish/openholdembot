@@ -227,7 +227,7 @@ bool CPokerTrackerThread::IsConnected()
 }
 
 
-// !!! to be removed completely
+// TODO: to be removed completely
 /* When running this function, chair is the chair to IGNORE 
    That's because this function is running while GetStatsForChair is running,
    And we wouldn't like to interrupt its order and ability to detect name changes

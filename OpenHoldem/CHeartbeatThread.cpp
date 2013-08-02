@@ -143,14 +143,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		SetOpenHoldemWindowTitle();
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
-		// If we've folded, stop iterator thread and set prwin/tie/los to zero
-		if (!p_scraper_access->UserHasCards())
-		{
-			//!!! -> symbol-engine
-			p_iterator_thread->StopIteratorThread();
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////
 		// Update scraper output dialog if it is present
 		if (m_ScraperOutputDlg)
 		{
@@ -164,7 +156,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
-		//!!! create a symbol-engine
+		// TODO: create a symbol-engine
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
 		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
 		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessFtr.\n");
