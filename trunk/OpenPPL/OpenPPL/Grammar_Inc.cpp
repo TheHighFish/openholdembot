@@ -139,8 +139,7 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			// for illegal Open-PPL-code in "handle_when_condition()"
 			// this way.
 			//
-			// For technical reasons ("HALP ME!!!! IT DO NO WORKS!!!!!")
-			// evary condition needs to be enclosed in brackets.
+			// For technical reasons every condition needs to be enclosed in brackets.
 			// For details see http://www.maxinmontreal.com/forums/viewtopic.php?f=216&t=13934
 			// The simple "When Others" as an exception.
 			code_block = *(when_condition | action);

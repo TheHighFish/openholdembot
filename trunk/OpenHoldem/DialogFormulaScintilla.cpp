@@ -2678,7 +2678,6 @@ void CDlgFormulaScintilla::SortUdfTree()
 	}
 }
 
-// !!!Remove?
 void CDlgFormulaScintilla::SaveSettingsToRegistry()
 {
 	WINDOWPLACEMENT wp;
@@ -2846,9 +2845,6 @@ HTREEITEM CDlgFormulaScintilla::AddSymbol(HTREEITEM parentItem, const char *symb
 
 void CDlgFormulaScintilla::PopulatePokerTrackerSymbols()
 {
-	// !!! Symbols like the following cause some problems
-	// and need special treatment (1..4 instead of 0..9)
-	// AddSymbol(parent, "pt_iconlastrx (x=1-4)", "Poker Tracker auto-rate icon code for the last raiser in round x");
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("Poker Tracker symbols", NULL, hCatItem);
 	parent = AddSymbolSubTitle(mainParent, "Symbols for chair X");
