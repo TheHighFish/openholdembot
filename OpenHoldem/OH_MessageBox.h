@@ -13,4 +13,8 @@ void OH_MessageBox_Error_Warning(CString Message, CString Title);
 // or we need request some direct input.
 int OH_MessageBox_Interactive(CString Message, CString Title, int Flags);
 
+// MessageBox for the msgbox$MESSAGE-command of OH-script
+// Returns 0 as a result
+int OH_MessageBox_OH_Script_Messages(CString message);
+
 #endif
