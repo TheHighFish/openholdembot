@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "OH_MessageBox.h"
+
+#include <assert.h>
 #include "CPreferences.h"
 
 
@@ -23,4 +25,21 @@ void OH_MessageBox_Error_Warning(CString Message, CString Title)
 int OH_MessageBox_Interactive(CString Message, CString Title, int Flags)
 {
 	return MessageBox(0, Message, Title, (Flags | k_messagebox_standard_flags));
+}
+
+// MessageBox for the msgbox$MESSAGE-command of OH-script
+// Returns 0 as a result
+int OH_MessageBox_OH_Script_Messages(CString message)
+{
+	// Preprocess message
+	assert(message.Left(7) == "msgbox$");
+	message = message.Right(7);
+	message.Replace("_B", " ");
+	message.Replace("_C", ",");
+	message.Replace("_D", ".");
+	message.Replace("_N", "\n");
+	// At the very last: underscores (to avoid incorrect future replacements)
+	message.Replace("_U", "_");
+	OH_MessageBox_Error_Warning(message, "OH-Script Message");
+	return 0;
 }
