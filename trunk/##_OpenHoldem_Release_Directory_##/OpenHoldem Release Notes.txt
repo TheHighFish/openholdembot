@@ -44,6 +44,9 @@ BUG FIXES:
   This has now been improved.
   Thanks to Rehlby for reporting.
   [THF]
+- The range-check for weighted PrWin was missing a not-operator
+  that got lost during refactoring. Added again.
+  [THF]
 
 MAINTENANCE:
 - Previously the PokerTracker-thread worked only if the userchair was confirmed
