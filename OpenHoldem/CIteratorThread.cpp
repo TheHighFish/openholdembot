@@ -689,7 +689,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 					break;
 				}
 			}
-		} while (IsHandInWeightedRange(ocard[i], ocard[i+1], // !!! Not?
+		} while (!IsHandInWeightedRange(ocard[i], ocard[i+1],
 			_willplay, _wontplay, 
 			_topclip, _mustplay));
 	}
