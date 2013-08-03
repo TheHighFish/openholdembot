@@ -18,7 +18,7 @@
 
 #include "CPreferences.h"
 
-CIteratorVars iter_vars; // !!! Bad: global object! Undefined equence of initialization!
+CIteratorVars iter_vars; // TODO!! Bad: global object! Undefined equence of initialization!
 
 
 CIteratorVars::CIteratorVars()
