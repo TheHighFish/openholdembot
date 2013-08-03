@@ -226,31 +226,6 @@ bool CPokerTrackerThread::IsConnected()
 	return (_connected && PQstatus(_pgconn) == CONNECTION_OK);
 }
 
-
-// TODO: to be removed completely
-/* When running this function, chair is the chair to IGNORE 
-   That's because this function is running while GetStatsForChair is running,
-   And we wouldn't like to interrupt its order and ability to detect name changes
-   In the seat it's getting stats for*/ 
-void CPokerTrackerThread::ReportSeatChanges(int chair)
-{
-	char currentScrapeName[k_max_length_of_playername];
-	write_log(prefs.debug_pokertracker(), "[PokerTracker] ReportSeatChanges: started\n");
-	for (int i = k_first_chair; i < k_last_chair; i++)
-	{
-		if (i != chair)
-		{
-			memcpy(currentScrapeName, _player_data[i].scraped_name, k_max_length_of_playername);
-			if (CheckIfNameHasChanged(i))
-			{
-				/* Scrapped name got changed. Clear stats for that chair */
-				write_log(prefs.debug_pokertracker(), "[PokerTracker] ReportSeatChanges: chair [%d]: new player sat down in chair! oldscrape[%s] newscrape[%s].\n", i, currentScrapeName, _player_data[i].scraped_name);
-				/* Clear stats but leave the new name intact */
-				//!!!ClearSeatStats(i, false);
-			}
-		}
-	}
-}
 /* A scraped name is "bad" if it consists only of characters 
    like "l", "1", "i", "." and "," */
 bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
@@ -723,10 +698,11 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					if (pParent->CheckIfNameHasChanged(i))
 					{
 						/* Name got changed while we search for stats for current chair
-						   Clear stats for this seat and return                   */
-						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair chair [%d] had changed name getting stat for chair. Clearing stats for chair.\n", chair);
-						/* Clear stats, but leave the new name intact */
-						//!!!pParent->ClearSeatStats(chair, false);
+						   Simply return.
+						   Clearing stats happens by CSymbolEnginePokerTracker
+						   on next symbol lookup   .
+						*/
+						write_log(prefs.debug_pokertracker(), "[PokerTracker] Name changed for chair [%d] Stopping PT-symbol-lookup. \n", chair);
 						return;
 					}
 					if (pParent->SkipUpdateCondition(i, chair))

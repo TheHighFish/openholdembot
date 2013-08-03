@@ -36,10 +36,12 @@ private:
 
 extern class CPokerTrackerThread 
 {
+	friend class CSymbolEnginePokerTracker;
 public:
 	// public functions
-						CPokerTrackerThread();
-						~CPokerTrackerThread();
+	CPokerTrackerThread();
+	~CPokerTrackerThread();
+public:
 	void				StartThread();
 	void				StopThread();
 	bool				IsConnected();
@@ -67,7 +69,6 @@ private:
 	int					SkipUpdateCondition(int stat, int chair);
 	bool				SkipUpdateForChair(int chair);
 	void				RecalcSkippedUpdates(int chr);
-	void				ReportSeatChanges(int chair);
 	void				ReportUpdateComplete(int updatedCount, int chair);
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
 	int					GetSkippedUpdates(int chr){return _player_data[chr].skipped_updates;}

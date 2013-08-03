@@ -3,6 +3,7 @@
 
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
+#include "CPreferences.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
@@ -77,6 +78,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 {
 	assert(chair >= k_first_chair); 
 	assert(chair <= k_last_chair);
+	write_log(prefs.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound)
 	{
@@ -89,9 +91,10 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()
 {
+	write_log(prefs.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-//!!!		if (CheckIfNameHasChanged(i))//!!!
+		if (p_pokertracker_thread->CheckIfNameHasChanged(i))
 		{
 			ClearSeatStats(i, true);
 		}
