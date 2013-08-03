@@ -659,9 +659,6 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		return;
 	}
 
-	/* Make sure all other seats contain the appropriate players */ 
-	pParent->ReportSeatChanges(chair);  
-
 	if (!pParent->_connected)
 	{
 		pParent->Connect();
@@ -673,13 +670,6 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		{
 			for (int i=0; i<PT_DLL_GetNumberOfStats(); i++)
 			{
-				/* Every few iterations, we need to verify that the seats we already have stats on, 
-			       did not change. This task is totally irrelevant for the current function
-				   we're on, that is GetStatsForChair. But if we won't do this every now and then,
-				   we might find ourselves updating stats for chair 1, for 1 minute, while the player
-				   in chair 3 stood up and someone else replaced him. we cannot let this go unnoticed */
-				pParent->ReportSeatChanges(chair);
-			
 				/* CheckName is necessary before each update.
 				   There's a short interval between any two updates, and it's possible that the player
 				   had stood up during the update process. But it also possible that the poker lobby was 
