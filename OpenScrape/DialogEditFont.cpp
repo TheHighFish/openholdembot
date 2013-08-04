@@ -229,14 +229,14 @@ void CDlgEditFont::OnBnClickedSort()
 				// copy j rec to i rec
 				i_fontrec.ch = j_fontrec.ch;
 				i_fontrec.x_count = j_fontrec.x_count;
-				for (k=0; k<j_fontrec.x_count; k++)
+				for (int k=0; k<j_fontrec.x_count; k++)
 					i_fontrec.x[k] = j_fontrec.x[k];
 				i_fontrec.hexmash = j_fontrec.hexmash;
 
 				// copy temp to j rec
 				j_fontrec.ch = temp.ch;
 				j_fontrec.x_count = temp.x_count;
-				for (k=0; k<temp.x_count; k++)
+				for (int k=0; k<temp.x_count; k++)
 					j_fontrec.x[k] = temp.x[k];
 				j_fontrec.hexmash = temp.hexmash;
 			}
