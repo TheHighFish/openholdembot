@@ -160,7 +160,9 @@ CString keywords = // Standard functions
 				  "$$cs0 $$cs1 $$cs2 $$cs3 $$cs4 "
 				  // Undocumented
 				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
-				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 ";
+				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
+				  // Messagebox
+				  "msgbox$ ";
 				  // Poker Tracker ring symbols and
 				  // Poker Tracker ring symbols for the "raischair"
 				  // get appended dynamically later
@@ -2410,20 +2412,16 @@ void CDlgFormulaScintilla::OnBnClickedApplySave()
 	PMainframe()->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
-void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff()
+void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 {
 	OH_MessageBox_Interactive("Editing the formula while the autoplayer is enabled\n"
 		"is an extremely insane idea\n"
 		"(like changing wheels while driving on the highway).\n\n"
 		"We will have to turn the autoplayer off,\n"
-		"but nevertheless you might lose your complete formula.\n"
-		"Please make a backup and then press ok\n"
-		"and never ever do such stupid things again.",
+		"but to avoid any problems we skip saving.",
 		"Warning", MB_OK | MB_TOPMOST);
-	// There might be a race-condition somewhere, nobody really knows.
-	// Trying to reduce the risk for evil outcomes...
-	Sleep(1000);
 	p_autoplayer->set_autoplayer_engaged(false);	
+	return;
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() 
@@ -2434,7 +2432,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// If autoplayer is engaged, dis-engage it
 	if (p_autoplayer->autoplayer_engaged())
 	{
-		WarnAboutAutoplayerWhenApplyingFormulaAndTurnAutoplayerOff();
+		WarnAboutAutoplayerWhenApplyingFormula();
 	}
 
 	// Save settings to registry
@@ -3224,6 +3222,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "$$pcX", "the card value for player card X (X=0-1)");
 	AddSymbol(parent, "$$prX", "the rank value for player card X (X=0-1)");
 	AddSymbol(parent, "$$psX", "the suit value for player card X (X=0-1)");
+
+	mainParent = parent = AddSymbolTitle("Debug messages", NULL, hCatItem);
+	AddSymbol(parent, "msgbox$TEXT", "Displays a message-box and evaluates to 0");
 
 	m_SymbolTree.SortChildren(hRawItem);
 }

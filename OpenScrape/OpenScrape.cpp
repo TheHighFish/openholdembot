@@ -44,7 +44,6 @@ BOOL COpenScrapeApp::InitInstance()
 	HANDLE		hProcess;
 	DWORD		curprocid, aProcesses[1024], cbNeeded, cProcesses;
 	char		sCurProcessName[MAX_PATH], sProcessName[MAX_PATH];
-	int			i;
 
 	// Classes
 	if (!p_tablemap)  p_tablemap = new CTablemap;

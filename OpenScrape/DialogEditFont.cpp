@@ -48,7 +48,6 @@ BOOL CDlgEditFont::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CString		text;
-	int			i;
 
 	// Font
 	lf_fixed.lfWidth = 0;
@@ -101,7 +100,7 @@ BOOL CDlgEditFont::OnInitDialog()
 
 void CDlgEditFont::OnLbnSelchangeCharlist()
 {
-	int				j, x, bit, top;
+	int				x, bit, top;
 	CString			separation, text, charstr, type;
 	bool			character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };	
 
@@ -207,7 +206,6 @@ void CDlgEditFont::OnBnClickedDelete()
 
 void CDlgEditFont::OnBnClickedSort()
 {
-	int				i, j, k;
 	STablemapFont	temp;
 	CString			text;
 	int				size = (int) new_t$_recs[group]->GetSize();
@@ -224,7 +222,7 @@ void CDlgEditFont::OnBnClickedSort()
 				// hold i rec in temp
 				temp.ch = i_fontrec.ch;
 				temp.x_count = i_fontrec.x_count;
-				for (k=0; k<i_fontrec.x_count; k++)
+				for (int k=0; k<i_fontrec.x_count; k++)
 					temp.x[k] = i_fontrec.x[k];
 				temp.hexmash = i_fontrec.hexmash;
 

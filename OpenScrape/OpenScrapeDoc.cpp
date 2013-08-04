@@ -79,7 +79,7 @@ BOOL COpenScrapeDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	// Create tree on TableMap dialog
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->create_tree();
 
-	// Force re-draw // !!!
+	//???ForceRedraw();
 	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 	if (theApp.m_TableMapDlg)  theApp.m_TableMapDlg->Invalidate(true);
 
@@ -92,7 +92,7 @@ void COpenScrapeDoc::Serialize(CArchive& ar)
 {
 	CString			s;
 	CMainFrame		*pMyMainWnd  = (CMainFrame *) (theApp.m_pMainWnd);
-	int				linenum, ret;
+	int				ret;
 
 	if (ar.IsStoring())
 	{

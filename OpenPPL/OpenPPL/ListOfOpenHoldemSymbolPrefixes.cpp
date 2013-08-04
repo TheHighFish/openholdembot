@@ -164,4 +164,6 @@ const char openholdem_symbol_prefixes[k_number_of_symbol_prefixes][k_max_length_
 	"$$p",			"$$c",
 	// DLL call symbols
 	"dll$"
+	// Debug-messages for OH-script
+	"msgbox$"
 };
