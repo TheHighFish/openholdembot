@@ -649,9 +649,6 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
 		return;
 	}
-//!!!	const char* playerscrapedName = pParent->GetPlayerScrapedName(chair);
-//!!!	write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d][%s] had been started.\n", chair, playerscrapedName);
-	
 	/* Check if there's a complete update cycle skipping for that chair */
 	if (pParent->SkipUpdateForChair(chair))
 	{
@@ -699,7 +696,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					{
 						/* Updating stat i should be skipped this time */
 						/* advanced/positional stats are updated every k_advanced_stat_update_every cycles */
-//!!!						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
+						write_log(prefs.debug_pokertracker(), "[PokerTracker] GetStatsForChair: Updating stats [%d] for chair [%d] had been skipped. Reason: [advanced/positional stats cycle [%d of %d]]\n", i, chair, pParent->GetSkippedUpdates(chair) , k_advanced_stat_update_every);
 					}
 					else
 					{

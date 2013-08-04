@@ -611,7 +611,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "balance_rank", 12)==0 && strlen(a)==13)  			return p_game_state->SortedBalance(a[12]-'0');
 
 	// OH-script-messagebox
-	if (memcmp(a, "msgbox$", 7)==0 && strlen(a)==7)  					return OH_MessageBox_OH_Script_Messages(a);
+	if (memcmp(a, "msgbox$", 7)==0 && strlen(a)>7)  					return OH_MessageBox_OH_Script_Messages(a);
 
 	*e = ERR_INVALID_SYM;
 	return 0.0;

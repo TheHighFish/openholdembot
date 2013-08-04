@@ -225,6 +225,7 @@ BOOL CMainFrame::DestroyWindow()
 	return CFrameWnd::DestroyWindow();
 }
 
+// TODO: Callers might need to be refactored
 void CMainFrame::ForceRedraw()
 {
 	Invalidate(true);
@@ -235,7 +236,6 @@ void CMainFrame::OnViewConnecttowindow()
 {
 	LPARAM				lparam;
 	CDlgSelectTable		cstd;
-	STableList			tablelisthold;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	// Clear global list for holding table candidates
@@ -255,14 +255,7 @@ void CMainFrame::OnViewConnecttowindow()
 	{
 		for (int i=0; i<number_of_tablemaps; i++) 
 		{
-			tablelisthold.hwnd = g_tlist[i].hwnd;
-			tablelisthold.title = g_tlist[i].title;
-			tablelisthold.path = g_tlist[i].path;
-			tablelisthold.crect.left = g_tlist[i].crect.left;
-			tablelisthold.crect.top = g_tlist[i].crect.top;
-			tablelisthold.crect.right = g_tlist[i].crect.right;
-			tablelisthold.crect.bottom = g_tlist[i].crect.bottom;
-			cstd.tlist.Add(tablelisthold);
+			cstd.tlist.Add(g_tlist[i]);
 		}
 
 		// Display table select dialog
@@ -289,7 +282,7 @@ void CMainFrame::OnViewShowregionboxes()
 
 	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
 
-	ForceRedraw(); // !!!
+	ForceRedraw();
 }
 
 void CMainFrame::OnEditUpdatehashes()
@@ -448,7 +441,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 void CMainFrame::SetTablemapSizeIfUnknown(int size_x, int size_y)
 {
 	return;
-	if ((size_x > 0) && (size_y > 0)) //!!! and tm loaded!
+	if ((size_x > 0) && (size_y > 0)) //!! and tm loaded!
 	{
 		CString	text;
 		text.Format("z$clientsize not yet defined.\nSetting it automatically to (%d, %d).",
@@ -818,7 +811,7 @@ void CMainFrame::SaveBmpPbits(void)
 	DeleteDC(hdcScreen);
 }
 
-// !!! Why here? Used by auto-connector
+// TODO!! Why here? Used by auto-connector
 CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
