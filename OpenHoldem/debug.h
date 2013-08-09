@@ -24,4 +24,6 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 extern FILE *log_fp;
 extern CCritSec	log_critsec;  // Used to ensure only one thread at a time writes to log file
 
+#define __TRACE write_log(true, "[Trace] %s line %i\n", __FILE__, __LINE__);
+
 #endif /* INC_DEBUG_H */
