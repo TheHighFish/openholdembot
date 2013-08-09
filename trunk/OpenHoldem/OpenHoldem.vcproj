@@ -1160,44 +1160,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Resource Files"
-				Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-				UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-				>
-				<File
-					RelativePath=".\res\bitmap1.bmp"
-					>
-				</File>
-				<File
-					RelativePath=".\res\bitmap_flags.bmp"
-					>
-				</File>
-				<File
-					RelativePath=".\res\idc_marg.ico"
-					>
-				</File>
-				<File
-					RelativePath=".\res\OpenHoldem.ico"
-					>
-				</File>
-				<File
-					RelativePath=".\OpenHoldem.rc"
-					>
-				</File>
-				<File
-					RelativePath=".\res\OpenHoldem.rc2"
-					>
-				</File>
-				<File
-					RelativePath=".\res\Toolbar.bmp"
-					>
-				</File>
-				<File
-					RelativePath=".\res\toolbar_formula_list.bmp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Documents"
 				>
 				<File
@@ -2024,6 +1986,44 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+			<File
+				RelativePath=".\res\bitmap1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bitmap_flags.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\idc_marg.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\OpenHoldem.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenHoldem.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\res\OpenHoldem.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Toolbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar_formula_list.bmp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
