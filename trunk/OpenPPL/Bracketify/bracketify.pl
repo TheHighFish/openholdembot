@@ -601,11 +601,16 @@ while (<>)
 	# Technical symbols
 	# Not needed for standard PPL, and most probably not for openPPL either
 	#
-	# Check for unsafe code	and warn the user
-	if ((m/Betsize =/i) or (m/TotalInvested =/i) or (m/AmountToCall =/i)
-		or (m/StartingStacksize =/i) or (m/MinOpponentStacksize =/i)
-		or (m/MaxOpponentStacksize =/i) or (m/Stacksize =/i)
-		or (m/PotSize =/i))
+	# Check for unsafe code	and warn the user, e.g. "Stacksize = 17",
+	# but not "Stacksize = 0" which is completely fine.
+	if ((m/Betsize = [1-9]/i) 
+		or (m/TotalInvested = [1-9]/i) 
+		or (m/AmountToCall = [1-9]/i)
+		or (m/StartingStacksize = [1-9]/i) 
+		or (m/MinOpponentStacksize = [1-9]/i)
+		or (m/MaxOpponentStacksize = [1-9]/i) 
+		or (m/Stacksize = [1-9]/i)
+		or (m/PotSize = [1-9]/i))
 	{
 		print STDERR "\n";
 		print STDERR "WARNING: Unsafe Stacksize operation!\n";
