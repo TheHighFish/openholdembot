@@ -12,7 +12,8 @@
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
 // Required OpenHoldem version: 4.2.0 or later
-//   because we make use of the new f$init-functions
+//   * because we make use of the new f$init-functions
+//   * because we make use of the new msgbox$-symbol
 //
 // Contributors:
 //   Bob3456
@@ -4798,8 +4799,7 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 //*****************************************************************************
 
 ##f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
-// Creating an endless-recursion on purpose to get a message-box.
--1 + (0 * f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED)
+-1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
 
 ##f$OpenPPL_HaveBackdoorStraightDraw##
 f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
