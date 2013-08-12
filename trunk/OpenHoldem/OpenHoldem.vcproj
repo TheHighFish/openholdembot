@@ -15,7 +15,6 @@
 	<ToolFiles>
 	</ToolFiles>
 	<Configurations>
-	
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
