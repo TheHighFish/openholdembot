@@ -1495,7 +1495,7 @@ void CDlgFormulaScintilla::OnDelete()
 
 		StopAutoButton();
 
-		ret = MessageBox("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", 
+		ret = OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", 
 			"Confirm Delete", MB_YESNO | MB_ICONWARNING);
 
 		if (ret == IDYES) {
