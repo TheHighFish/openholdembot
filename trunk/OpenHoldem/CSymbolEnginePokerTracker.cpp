@@ -6,6 +6,7 @@
 #include "CPreferences.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
+#include "debug.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
 
@@ -111,12 +112,9 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 
 double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 {
-	__TRACE
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
-	__TRACE
 	if (IsOldStylePTSymbol(s))
 	{
-		__TRACE
 		CString error_message;
 		error_message.Format(
 			"Old style PokerTracker symbol detected: %s.\n"
@@ -127,23 +125,18 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 			"ERROR: Invalid PokerTracker Symbol");
 		return k_undefined;
 	}
-	__TRACE
 	if (!PT_DLL_IsValidSymbol(CString(*s)))
 	{
-		__TRACE
 		// Invalid PokerTracker symbol
 		WarnAboutInvalidPTSymbol(s);
 		return k_undefined;
 	}
 	int chair = 0;
 
-	__TRACE
 	if (!p_pokertracker_thread->IsConnected())
 	{
-		__TRACE
 		if (!p_symbol_engine_userchair->userchair_confirmed())
 		{
-			__TRACE
 			// We are not yet seated.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
@@ -151,7 +144,6 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		}
 		else
 		{
-			__TRACE
 			// We are seated and playing.
 			// Serious problem, if we do not have a DB-connection.
 			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
@@ -162,10 +154,8 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 
 	CString pure_symbol_name;
 	// PokerTracker ymbols for the raise-chair
-	__TRACE
 	if (StringAIsPrefixOfStringB("pt_r_", s))
 	{
-		__TRACE
 		chair = p_symbol_engine_raisers_callers->raischair();
 		CString symbol = s;
 		pure_symbol_name = symbol.Right(symbol.GetLength() - 5);
@@ -173,14 +163,12 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 	// PokerTracker symbols for chair X
 	else 
 	{
-		__TRACE
 		assert(StringAIsPrefixOfStringB("pt_", s));
 		CString symbol = s;
 		CString last_character = symbol.Right(1);
 		chair = atoi(last_character);
 		pure_symbol_name = symbol.Right(symbol.GetLength() - 3);
 	}
-	__TRACE
 	AssertRange(chair, k_first_chair, k_last_chair);
 	return PT_DLL_GetStat(pure_symbol_name, chair); 
 }

@@ -25,5 +25,6 @@ extern FILE *log_fp;
 extern CCritSec	log_critsec;  // Used to ensure only one thread at a time writes to log file
 
 #define __TRACE write_log(true, "[Trace] %s line %i\n", __FILE__, __LINE__);
+#define __MTRACE msgbox(0, CString(__LINE__), "Debug-Info", 0);
 
 #endif /* INC_DEBUG_H */
