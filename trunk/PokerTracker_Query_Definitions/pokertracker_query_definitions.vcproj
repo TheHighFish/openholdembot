@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="PokerTracker_Query_Definitions.DLL"
+	Name="PokerTracker_Query_Definitions DLL"
 	ProjectGUID="{DAE7979B-3014-4B86-8EFD-FA155A58FE78}"
 	RootNamespace="pokertracker_query_definitions"
 	Keyword="Win32Proj"
