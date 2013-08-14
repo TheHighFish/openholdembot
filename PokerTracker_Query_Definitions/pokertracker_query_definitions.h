@@ -18,9 +18,9 @@ POKERTRACKER_DLL_API	CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_
 POKERTRACKER_DLL_API	bool	PT_DLL_IsBasicStat(int stats_index);
 POKERTRACKER_DLL_API	bool	PT_DLL_IsPositionalPreflopStat(int stats_index);
 POKERTRACKER_DLL_API	bool	PT_DLL_IsAdvancedStat(int stats_index);
-POKERTRACKER_DLL_API	double	PT_DLL_GetStat(CString symbol_without_prefix, int chair);
+POKERTRACKER_DLL_API	double	PT_DLL_GetStat(CString symbol_name, int chair);
 POKERTRACKER_DLL_API	void	PT_DLL_SetStat(int stats_index, int chair, double value);
-POKERTRACKER_DLL_API	bool	PT_DLL_IsValidSymbol(CString symbol_without_prefix);
+POKERTRACKER_DLL_API	bool	PT_DLL_IsValidSymbol(CString symbol_name);
 POKERTRACKER_DLL_API	void	PT_DLL_ClearPlayerStats(int chair);
 POKERTRACKER_DLL_API	void	PT_DLL_ClearAllPlayerStats();
 
