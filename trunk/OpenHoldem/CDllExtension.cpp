@@ -91,7 +91,9 @@ void CDllExtension::LoadDll(const char * path)
 	if (_hmod_dll == NULL)
 	{
 		CString error_message;
-		error_message.Format("Unable to load DLL from:\n%s, error=%d\n",
+		error_message.Format("Unable to load DLL from:\n"
+			"%s\n"
+			"error-code: %d\n",
 			 dll_path.GetString(), dll_error);
 		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
 		return;
