@@ -18,6 +18,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
+#include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
@@ -103,6 +104,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineRaisersCallers
 	p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
 	AddSymbolEngine(p_symbol_engine_raisers_callers);
+	// CSymbolEnginePokerTracker
+	p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
+	AddSymbolEngine(p_symbol_engine_pokertracker);
 	// CSymbolEngineIsTournament
 	p_symbol_engine_istournament = new CSymbolEngineIsTournament();
 	AddSymbolEngine(p_symbol_engine_istournament);
