@@ -599,7 +599,7 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 		return false;
 	}
 	else if (PT_DLL_IsPositionalPreflopStat(stat) 
-		|| PT_DLL_IsAdvancedStat(chair))
+		|| PT_DLL_IsAdvancedStat(stat))
 	{
 		return true;
 	}
@@ -619,7 +619,7 @@ bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 		return true;
 	}
 	
-	int hands = (int)PT_DLL_GetStat("hands", chair);
+	int hands = (int)PT_DLL_GetStat("pt_hands", chair);
 	if (hands > _m_min_hands_for_slower_update)
 	{
 		if (UpdateAllStats(chair))
