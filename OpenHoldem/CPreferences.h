@@ -105,6 +105,7 @@ public:
 	const bool  debug_betsize_adjustment() { return _debug_betsize_adjustment;  }
 	const bool  debug_handreset_detector() { return _debug_handreset_detector; }
 	const bool  debug_engine_container() { return _debug_engine_container; }
+	const bool  debug_preferences() { return _debug_preferences; }
 
 	// Main window locations
 	const int main_x() { return _main_x; }
@@ -252,6 +253,7 @@ public:
 	void set_debug_engine_container(const bool b) { ENT _debug_engine_container = b; WriteReg("debug_engine_container", b); }
 	void set_debug_handhistory(const bool b) { ENT _debug_handhistory = b; WriteReg("debug_handhistory", b); }
 	void set_debug_alltherest(const bool b) { ENT _debug_alltherest = b; WriteReg("debug_alltherest", b); }
+	void set_debug_preferences(const bool b) { ENT _debug_preferences = b; WriteReg("debug_preferences", b); }
 
 	// Formula window location
 	void set_formula_x(const int i) { ENT _formula_x = i; WriteReg("formula_x", i); }
@@ -410,6 +412,7 @@ private:
 	bool			_debug_betsize_adjustment;
 	bool			_debug_handreset_detector;
 	bool			_debug_engine_container;
+	bool			_debug_preferences;
 
 	// Formula window location
 	int			_formula_x;	
