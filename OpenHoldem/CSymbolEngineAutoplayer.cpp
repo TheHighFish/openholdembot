@@ -157,21 +157,23 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	// check factors that affect isFinalAnswer status
 	if (iter_vars.iterator_thread_running())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread_running\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
 		_isfinalanswer = false;
 	}
 
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
 	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because num_buttons_visible < %d\n", k_min_buttons_needed_for_my_turn);
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
 		_isfinalanswer = false;
 	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
 	if (!p_scraper_access->UserHasCards())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because !p_symbols->sym()->playing\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}
 
@@ -196,7 +198,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	if (!p_game_state->ProcessThisFrame ())
 	{
 		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Mots common reason: missing balance-stability or card-stability.\n");
+		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Most common reason: missing balance-stability or card-stability.\n");
 		_isfinalanswer = false;
 	}
 }
