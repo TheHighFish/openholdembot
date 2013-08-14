@@ -1,4 +1,4 @@
-v4.2.0 2013-08-xx
+v4.2.1 2013-08-xx
 ==================
 BUG FIXES:
 - During refactoring of the iterator-thread ("i-j-fetish") 
@@ -6,6 +6,20 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Tobag for reporting and for suggesting a fix.
   [THF]
+- OpenHoldem did not automagically adjust the bet-amount
+  to the input-requirements of the casino (swagtextmethod)
+  because we forgot to call that function when we rewrote it the 2nd time.
+  Thanks to Tobag for reporting.
+  [THF]
+- The formula-editor could sometimes crash and the debug-tab didn't work
+  because an array was 1 element to small 
+  (we added "Ini-functions" to the tree-view but kept that array as is).
+  This has now been fixed.
+- When we rewrote the PokerTracker-code we created a new symbol-engine,
+  but forgot to add it to the engine-container.
+  Therefore PT-symbols did not work.
+  Thanks to JokeDoke for reporting, Hapil for helping us to find the bug.
+  [THF, Termitapalahermita]
 
 v4.2.0 2013-08-04
 ==================
