@@ -213,7 +213,6 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// PokerTracker symbols
 	if (memcmp(a,"pt",2 )==0)
 	{
-		__TRACE
 		return p_symbol_engine_pokertracker->ProcessQuery(a);
 	}
 

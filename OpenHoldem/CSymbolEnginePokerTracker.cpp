@@ -125,7 +125,7 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 			"ERROR: Invalid PokerTracker Symbol");
 		return k_undefined;
 	}
-	if (!PT_DLL_IsValidSymbol(CString(*s)))
+	if (!PT_DLL_IsValidSymbol(CString(s)))
 	{
 		// Invalid PokerTracker symbol
 		WarnAboutInvalidPTSymbol(s);
@@ -152,13 +152,11 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		return k_undefined;
 	}
 
-	CString pure_symbol_name;
+	CString standard_symbol_name;
 	// PokerTracker ymbols for the raise-chair
 	if (StringAIsPrefixOfStringB("pt_r_", s))
 	{
 		chair = p_symbol_engine_raisers_callers->raischair();
-		CString symbol = s;
-		pure_symbol_name = symbol.Right(symbol.GetLength() - 5);
 	}
 	// PokerTracker symbols for chair X
 	else 
@@ -167,10 +165,9 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		CString symbol = s;
 		CString last_character = symbol.Right(1);
 		chair = atoi(last_character);
-		pure_symbol_name = symbol.Right(symbol.GetLength() - 3);
 	}
 	AssertRange(chair, k_first_chair, k_last_chair);
-	return PT_DLL_GetStat(pure_symbol_name, chair); 
+	return PT_DLL_GetStat(s, chair); 
 }
 
 
