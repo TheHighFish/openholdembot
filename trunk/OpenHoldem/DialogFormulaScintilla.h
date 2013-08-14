@@ -215,7 +215,7 @@ protected:
 	CFormula		m_wrk_formula;
 
 	CStringArray	m_standard_headings;
-	CStringArray	m_standard_functions[3];
+	CStringArray	m_standard_functions[4];
 
 	// This is used for formula parsing and evaluation
 	CGrammar		gram;
