@@ -146,6 +146,7 @@ void CPreferences::InitDefaults(void)
 	_debug_engine_container = false;
 	_debug_handhistory = false;
 	_debug_alltherest = false;
+	_debug_preferences = false;
 
 	// Validator
 	//   0 = disabled
@@ -314,6 +315,7 @@ void CPreferences::ReadPreferences()
 		ReadReg("debug_engine_container", &_debug_engine_container);
 		ReadReg("debug_handhistory", &_debug_handhistory);
 		ReadReg("debug_alltherest", &_debug_alltherest);
+		ReadReg("debug_preferences", &_debug_preferences);
 
 		// Validator
 		ReadReg("validator_enabled", &_validator_enabled);
