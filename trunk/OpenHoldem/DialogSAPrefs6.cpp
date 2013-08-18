@@ -46,11 +46,11 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_ip.SetWindowText(prefs.pt_ip_addr().GetString());
-	m_pt_port.SetWindowText(prefs.pt_port().GetString());
-	m_pt_user.SetWindowText(prefs.pt_user().GetString());
-	m_pt_pass.SetWindowText(prefs.pt_pass().GetString());
-	m_pt_dbname.SetWindowText(prefs.pt_dbname().GetString());
+	m_pt_ip.SetWindowText(preferences.pt_ip_addr().GetString());
+	m_pt_port.SetWindowText(preferences.pt_port().GetString());
+	m_pt_user.SetWindowText(preferences.pt_user().GetString());
+	m_pt_pass.SetWindowText(preferences.pt_pass().GetString());
+	m_pt_dbname.SetWindowText(preferences.pt_dbname().GetString());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -61,19 +61,19 @@ void CDlgSAPrefs6::OnOK()
 	CString			text = "";
 
 	m_pt_ip.GetWindowText(text);
-	prefs.set_pt_ip_addr(text);
+	preferences.set_pt_ip_addr(text);
 
 	m_pt_port.GetWindowText(text);
-	prefs.set_pt_port(text);
+	preferences.set_pt_port(text);
 
 	m_pt_user.GetWindowText(text);
-	prefs.set_pt_user(text);
+	preferences.set_pt_user(text);
 
 	m_pt_pass.GetWindowText(text);
-	prefs.set_pt_pass(text);
+	preferences.set_pt_pass(text);
 
 	m_pt_dbname.GetWindowText(text);
-	prefs.set_pt_dbname(text);
+	preferences.set_pt_dbname(text);
 
 	CSAPrefsSubDlg::OnOK();
 }
@@ -104,15 +104,15 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 
 	if (PQstatus(pgconn) == CONNECTION_OK) 
 	{
-		write_log(prefs.debug_pokertracker(), "Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
+		write_log(preferences.debug_pokertracker(), "Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
 		if (PQisthreadsafe()) 
 		{
-			write_log(prefs.debug_pokertracker(), "Test: PostgreSQL library is thread safe.\n\n");
+			write_log(preferences.debug_pokertracker(), "Test: PostgreSQL library is thread safe.\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
 		}
 		else 
 		{
-			write_log(prefs.debug_pokertracker(), "Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
+			write_log(preferences.debug_pokertracker(), "Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
@@ -120,7 +120,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	}
 	else 
 	{
-		write_log(prefs.debug_pokertracker(), "Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
+		write_log(preferences.debug_pokertracker(), "Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
 		e = "ERROR opening PostgreSQL DB:\n";
 		e += PQerrorMessage(pgconn);
 		e += "\nConn string:";

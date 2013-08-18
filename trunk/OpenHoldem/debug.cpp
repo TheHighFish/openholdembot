@@ -242,7 +242,7 @@ void start_log(void)
 	struct stat file_stats = { 0 };
 	if (stat(fn.GetString(), &file_stats) == 0)
 	{
-		unsigned long int max_file_size = 1E06 * prefs.log_max_logsize();
+		unsigned long int max_file_size = 1E06 * preferences.log_max_logsize();
 		size_t file_size = file_stats.st_size;
 		if (file_size > max_file_size)
 		{
@@ -339,7 +339,7 @@ void write_logautoplay(const char * action)
 	int			betround = (int) p_betround_calculator->betround();
 
 
-	if (!prefs.trace_enabled())
+	if (!preferences.trace_enabled())
 		return;
 
 	if (log_fp != NULL) 
@@ -347,15 +347,15 @@ void write_logautoplay(const char * action)
 		CSLock lock(log_critsec);
 
 		// log$ writing
-		if (prefs.log_symbol_enabled())
+		if (preferences.log_symbol_enabled())
 		{
 			int max_log = p_symbols->logsymbols_collection()->GetCount();
 
 			if (max_log > 0)
 			{
-				if (max_log > prefs.log_symbol_max_log())
+				if (max_log > preferences.log_symbol_max_log())
 				{
-					max_log = prefs.log_symbol_max_log();
+					max_log = preferences.log_symbol_max_log();
 				}
 
 				write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
@@ -497,7 +497,7 @@ void write_logautoplay(const char * action)
 			fcra_formula_status.GetString(), 
 			p_autoplayer_functions->f$betsize() );
 
-		if (prefs.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
+		if (preferences.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
 			write_log_nostamp(1, "***** Autoplayer Trace ****\n");
 			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)

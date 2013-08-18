@@ -619,7 +619,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 
 void CSymbols::RecordPrevAction(const ActionConstant action)
 {/*
-	write_log(prefs.debug_symbolengine(), "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
+	write_log(preferences.debug_symbolengine(), "CSymbols::AdaptSymbolsForUsersAction(%d)\n", action);
 	set_prevaction(action);
 
 	// !! Most things temporary disabled, as this causes only problems
@@ -640,12 +640,12 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	switch (action)
 	{
 		case k_action_fold:	
-			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: fold - nothing to do\n");
+			write_log(preferences.debug_symbolengine(), "Adjusting symbols for users action: fold - nothing to do\n");
 			// Did-symbols - no "didfold"
 			// Bets and pot - nothing to adapt
 			break;
 		case k_action_check:
-			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: check\n");
+			write_log(preferences.debug_symbolengine(), "Adjusting symbols for users action: check\n");
 			// Did-symbols
 			set_didchec(4, p_symbols->sym()->didchec[4] + 1);
 			set_didchec(betround-1, p_symbols->sym()->didchec[betround-1] + 1);
@@ -656,7 +656,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_call:
 			assert(p_autoplayer_functions->f$call() > 0);
-			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: call\n");
+			write_log(preferences.debug_symbolengine(), "Adjusting symbols for users action: call\n");
 			// Did-symbols
 			set_didcall(4, p_symbols->sym()->didcall[4] + 1);
 			set_didcall(betround-1, p_symbols->sym()->didcall[betround-1] + 1);
@@ -667,7 +667,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_raise:
 			assert(p_autoplayer_functions->f$rais() > 0);
-			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: raise\n");
+			write_log(preferences.debug_symbolengine(), "Adjusting symbols for users action: raise\n");
 			// Did-symbols
 			set_didrais(4, p_symbols->sym()->didrais[4] + 1);
 			set_didrais(betround-1, p_symbols->sym()->didrais[betround-1] + 1);
@@ -678,7 +678,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 			break;
 		case k_action_betsize:
 			assert(p_autoplayer_functions->f$betsize() > 0);
-			write_log(prefs.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
+			write_log(preferences.debug_symbolengine(), "Adjusting symbols for users action: swag\n");
 			// Did-symbols
 			set_didswag(4, p_symbols->sym()->didswag[4] + 1);
 			set_didswag(betround-1, p_symbols->sym()->didswag[betround-1] + 1);

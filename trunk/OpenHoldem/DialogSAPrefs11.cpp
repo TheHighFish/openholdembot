@@ -49,25 +49,25 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	m_EnableLog.SetCheck(prefs.log_symbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableTrace.SetCheck(prefs.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableBasicInfo.SetCheck(prefs.basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableErrorLogging.SetCheck(prefs.error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableDLLLogging.SetCheck(prefs.dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableLog.SetCheck(preferences.log_symbol_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableTrace.SetCheck(preferences.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableBasicInfo.SetCheck(preferences.basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableErrorLogging.SetCheck(preferences.error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableDLLLogging.SetCheck(preferences.dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
-	text.Format("%d", prefs.log_symbol_max_log());
+	text.Format("%d", preferences.log_symbol_max_log());
 	m_MaximumLog.SetWindowText(text);
 	m_MaximumLog_Spin.SetRange(0, (short) MAX_MAX_LOG);
-	m_MaximumLog_Spin.SetPos(prefs.log_symbol_max_log());
+	m_MaximumLog_Spin.SetPos(preferences.log_symbol_max_log());
 	m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 
-	m_disable_msgbox.SetCheck(prefs.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
+	m_disable_msgbox.SetCheck(preferences.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
-	text.Format("%d", prefs.log_max_logsize());
-	text.Format("%d", prefs.log_max_logsize());
+	text.Format("%d", preferences.log_max_logsize());
+	text.Format("%d", preferences.log_max_logsize());
 	m_MaximumLogSize.SetWindowText(text);
 	m_MaximumLogSize_Spin.SetRange(0, 999);
-	m_MaximumLogSize_Spin.SetPos(prefs.log_max_logsize());
+	m_MaximumLogSize_Spin.SetPos(preferences.log_max_logsize());
 	m_MaximumLogSize_Spin.SetBuddy(&m_MaximumLogSize);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -83,11 +83,11 @@ void CDlgSAPrefs11::OnOK()
 {
 	CString			text = "";
 
-	prefs.set_log_symbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_basic_logging_enabled(m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_error_logging_enabled(m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_dll_logging_enabled(m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_log_symbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_basic_logging_enabled(m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_error_logging_enabled(m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_dll_logging_enabled(m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
 
 
 	m_MaximumLog.GetWindowText(text);
@@ -95,12 +95,12 @@ void CDlgSAPrefs11::OnOK()
 		OH_MessageBox_Interactive("Invalid maximum log amount!", "ERROR", MB_OK);
 		return;
 	}
-	prefs.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
+	preferences.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
 
-	prefs.set_disable_msgbox(m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_disable_msgbox(m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
 
 	m_MaximumLogSize.GetWindowText(text);
-	prefs.set_log_max_logsize(strtoul(text.GetString(), NULL, 10));
+	preferences.set_log_max_logsize(strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }

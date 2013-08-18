@@ -85,7 +85,7 @@ double			_win, _tie, _los;
 
 CIteratorThread::CIteratorThread()
 {
-	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -102,12 +102,12 @@ CIteratorThread::CIteratorThread()
 	iter_vars.set_iterator_thread_running(true);
 	AfxBeginThread(IteratorThreadFunction, this);
 
-	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
 }
 
 CIteratorThread::~CIteratorThread()
 {
-	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
 
 	if (_m_stop_thread)
 	{
@@ -123,14 +123,14 @@ CIteratorThread::~CIteratorThread()
 	}
 	p_iterator_thread = NULL;
 
-	write_log(prefs.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
 
 void CIteratorThread::StopIteratorThread()
 {
 	if (p_iterator_thread)
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
 		// Delete does implicitly call the destructor.
 		// All other stuff gets handled there.
 		delete p_iterator_thread;
@@ -140,7 +140,7 @@ void CIteratorThread::StopIteratorThread()
 void CIteratorThread::RestartIteratorThread()
 {
 	StopIteratorThread();
-	write_log(prefs.debug_prwin(), "[PrWinThread] Restarting iterator thread.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting iterator thread.\n");
 	p_iterator_thread = new CIteratorThread;
 }
 
@@ -148,10 +148,10 @@ void CIteratorThread::StartIteratorThreadIfNeeded()
 {
 	if (p_iterator_thread)
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");
 		return;
 	}
-	write_log(prefs.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
 	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())
 	{
 		RestartIteratorThread();
@@ -169,12 +169,12 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /
 	//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
 	if (_willplay && (_willplay < 2 * sym_nopponents + 1))
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
 		_willplay = 2 * sym_nopponents + 1; //too low a value can give lockup
 	}
 	if (_wontplay < _willplay)
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
 		_wontplay = _willplay; //wontplay cannot safely be less than willplay
 	}
 }
@@ -200,7 +200,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	//
 	// Main iterator loop
 	//
-	write_log(prefs.debug_prwin(), "[PrWinThread] Start of main loop.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
 
 	// "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
@@ -276,7 +276,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		UpdateIteratorVarsForDisplay(nit);
 	}
 
-	write_log(prefs.debug_prwin(), "[PrWinThread] End of main loop.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
 
 	if (SimulationFinished(nit))
 	{
@@ -317,7 +317,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
 		iter_vars.set_prwin(_win / (double) nit);
 		iter_vars.set_prtie(_tie / (double) nit);
 		iter_vars.set_prlos(_los / (double) nit);
-		write_log(prefs.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
+		write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
 			nit, 
 			iter_vars.prwin(),
 			iter_vars.prtie(), 
@@ -360,7 +360,7 @@ void CIteratorThread::InitIteratorLoop()
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	write_log(prefs.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 	// Set starting status and parameters
 	iter_vars.set_iterator_thread_running(true);
 	iter_vars.set_iterator_thread_complete(false);
@@ -559,7 +559,7 @@ void CIteratorThread::StandardDealingAlgorithm(int nopponents)
 	// Normal prwin opponent card selection
 	// Random ranges for everybody
 	// Number of opponents might be adapted to get more "reasonable" results
-	write_log(prefs.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
 
 	// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
 	if (nopponents <= 13)
@@ -574,7 +574,7 @@ void CIteratorThread::StandardDealingAlgorithm(int nopponents)
 
 void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 {
-	write_log(prefs.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
 	// swap alogorithm
 	// weighted prwin not implemented for this case
 	int numberOfCards = k_number_of_cards_per_deck;
@@ -644,12 +644,12 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 {
 	unsigned int	card = 0;
 
-	write_log(prefs.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 	// random replacement algorithm
 	// opponent cards
 	if (nopponents < 1)
 	{
-		write_log(prefs.debug_prwin(), "[PrWinThread] No opponents.\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] No opponents.\n");
 	}
 	for (int i=0; 
 		i<nopponents*k_number_of_cards_per_player; 
@@ -669,7 +669,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 
 			if (!_willplay)
 			{
-				write_log(prefs.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
+				write_log(preferences.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
 				break; //0 disables weighting
 			}
 
@@ -708,7 +708,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 {
 	// Dealing algorithm for enhanced prwin
 	// (user-defined weighting at DLL-level).
-	write_log(prefs.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using Matrix's enhanced prwin.\n");
 
 	//prw1326 active  Matrix 2008-05-08
 	int k = 0; //k is used as an index into ocard[] 

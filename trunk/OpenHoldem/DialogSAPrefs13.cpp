@@ -40,9 +40,9 @@ BOOL CDlgSAPrefs13::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_class_name_edit.SetWindowText(prefs.window_class_name());
-	_class_mutex_edit.SetWindowText(prefs.mutex_name());
-	_simple_window_title.SetCheck(prefs.simple_window_title());
+	_class_name_edit.SetWindowText(preferences.window_class_name());
+	_class_mutex_edit.SetWindowText(preferences.mutex_name());
+	_simple_window_title.SetCheck(preferences.simple_window_title());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -53,11 +53,11 @@ void CDlgSAPrefs13::OnOK()
 	CString temp;
 
 	_class_name_edit.GetWindowText(temp);
-	prefs.set_window_class_name(temp);
+	preferences.set_window_class_name(temp);
 	_class_mutex_edit.GetWindowText(temp);
-	prefs.set_mutex_name(temp);
+	preferences.set_mutex_name(temp);
 
-	prefs.set_simple_window_title(_simple_window_title.GetCheck() == 1);
+	preferences.set_simple_window_title(_simple_window_title.GetCheck() == 1);
 
 	CSAPrefsSubDlg::OnOK();
 }

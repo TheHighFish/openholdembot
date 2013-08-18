@@ -174,7 +174,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start timer that attaches the OH window when the poker window moves
 	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
-	if (prefs.simple_window_title())
+	if (preferences.simple_window_title())
 		SetMainWindowTitle("");
 
 	return 0;
@@ -191,7 +191,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	HINSTANCE hInst = AfxGetInstanceHandle();
 
 	// Set class name
-	if (!(::GetClassInfo(hInst, prefs.window_class_name(), &wnd)))
+	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd)))
 	{
 		wnd.style			= CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc		= ::DefWindowProc;
@@ -201,19 +201,19 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		wnd.hCursor			= AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
 		wnd.lpszMenuName	= NULL;
-		wnd.lpszClassName	= prefs.window_class_name();
+		wnd.lpszClassName	= preferences.window_class_name();
 
 		AfxRegisterClass( &wnd );
 	}
-	cs.lpszClass = prefs.window_class_name();
+	cs.lpszClass = preferences.window_class_name();
 
 	// Restore window location and size
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-	cs.x = min(prefs.main_x(), max_x);
-	cs.y = min(prefs.main_y(), max_y);
-	cs.cx = prefs.main_dx();
-	cs.cy = prefs.main_dy();
+	cs.x = min(preferences.main_x(), max_x);
+	cs.y = min(preferences.main_y(), max_y);
+	cs.cx = preferences.main_dx();
+	cs.cy = preferences.main_dy();
 
 	return true;
 }
@@ -255,11 +255,11 @@ void CMainFrame::OnScraperOutput()
 {
 	if (m_ScraperOutputDlg) 
 	{
-		write_log(prefs.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
-		write_log(prefs.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
+		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
+		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
 		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
-		write_log(prefs.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
+		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
 		m_ScraperOutputDlg->DestroyWindow();
 		delete m_ScraperOutputDlg;
@@ -267,24 +267,24 @@ void CMainFrame::OnScraperOutput()
 
 		if (bWasShown)
 		{
-			write_log(prefs.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
+			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
 		}
 	}
 	else
 	{
-		write_log(prefs.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
+		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 
-	write_log(prefs.debug_gui(), "[GUI] Going to create scraper output dialog\n");
+	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
 	m_ScraperOutputDlg = new CDlgScraperOutput(this);
-	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
+	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
 	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
-	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
+	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
 	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
-	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
+	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
-	write_log(prefs.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
+	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
 void CMainFrame::OnViewShootreplayframe()
@@ -373,17 +373,17 @@ BOOL CMainFrame::DestroyWindow()
 	{
 		GetWindowPlacement(&wp);
 
-		prefs.set_main_x(wp.rcNormalPosition.left);
-		prefs.set_main_y(wp.rcNormalPosition.top);
-		prefs.set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-		prefs.set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+		preferences.set_main_x(wp.rcNormalPosition.left);
+		preferences.set_main_y(wp.rcNormalPosition.top);
+		preferences.set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+		preferences.set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 	}
 	else 
 	{
-		prefs.set_main_x(_table_view_size.left);
-		prefs.set_main_y(_table_view_size.top);
-		prefs.set_main_dx(_table_view_size.right - _table_view_size.left);
-		prefs.set_main_dy(_table_view_size.bottom - _table_view_size.top);
+		preferences.set_main_x(_table_view_size.left);
+		preferences.set_main_y(_table_view_size.top);
+		preferences.set_main_dx(_table_view_size.right - _table_view_size.left);
+		preferences.set_main_dy(_table_view_size.bottom - _table_view_size.top);
 	}
 
 	return CFrameWnd::DestroyWindow();
@@ -391,7 +391,7 @@ BOOL CMainFrame::DestroyWindow()
 
 void CMainFrame::SetMainWindowTitle(LPCSTR title)
 {
-	if (prefs.simple_window_title()) {
+	if (preferences.simple_window_title()) {
 		if (_exec_filename.IsEmpty()) {
 			char exec[_MAX_PATH];
 			GetModuleFileName(AfxGetInstanceHandle(), exec, _MAX_PATH);
@@ -418,7 +418,7 @@ void CMainFrame::OnFileOpen()
 
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = prefs.path_ohf();
+	cfd.m_ofn.lpstrInitialDir = preferences.path_ohf();
 	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
@@ -427,7 +427,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
-		prefs.set_path_ohf(cfd.GetPathName());
+		preferences.set_path_ohf(cfd.GetPathName());
 	}
 }
 
@@ -463,7 +463,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 
 		// Automatically start autoplayer, if set in preferences
-		if (prefs.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
+		if (preferences.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
 				((p_autoconnector->IsConnected() 
 				&& !p_autoplayer->autoplayer_engaged())))
 		{
@@ -578,7 +578,7 @@ void CMainFrame::OnDllLoadspecificfile()
 {
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = prefs.path_dll();
+	cfd.m_ofn.lpstrInitialDir = preferences.path_dll();
 	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
@@ -586,7 +586,7 @@ void CMainFrame::OnDllLoadspecificfile()
 	{
 		p_dll_extension->UnloadDll();
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
-		prefs.set_path_dll(cfd.GetPathName());
+		preferences.set_path_dll(cfd.GetPathName());
 	}
 }
 
@@ -705,13 +705,13 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 {
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = prefs.path_perl();
+	cfd.m_ofn.lpstrInitialDir = preferences.path_perl();
 	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
 	{
 		p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
-		prefs.set_path_perl(cfd.GetPathName());
+		preferences.set_path_perl(cfd.GetPathName());
 	}
 }
 

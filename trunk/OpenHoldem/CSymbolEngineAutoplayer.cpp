@@ -72,7 +72,7 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat()
 
 void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 {
-	write_log(prefs.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
 	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		if (p_scraper->GetButtonState(i))
@@ -105,7 +105,7 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 			}
 		}
 	}
-	write_log(prefs.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
 }
 
 void CSymbolEngineAutoplayer::CalculateSitInState()
@@ -157,23 +157,23 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	// check factors that affect isFinalAnswer status
 	if (iter_vars.iterator_thread_running())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
 		_isfinalanswer = false;
 	}
 
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
 	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
 		_isfinalanswer = false;
 	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
 	if (!p_scraper_access->UserHasCards())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}
 
@@ -183,22 +183,22 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 		p_stableframescounter->UpdateNumberOfStableFrames();
 	}
 
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = (prefs.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/prefs.scrape_delay()) : 0);
+	unsigned int additional_frames_to_wait = (preferences.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/preferences.scrape_delay()) : 0);
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < prefs.frame_delay() + additional_frames_to_wait)
+	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait)
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
 		_isfinalanswer = false;
 	}
 
 	// If the game state processor didn't process this frame, then we should not act.
 	if (!p_game_state->ProcessThisFrame ())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Most common reason: missing balance-stability or card-stability.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Most common reason: missing balance-stability or card-stability.\n");
 		_isfinalanswer = false;
 	}
 }

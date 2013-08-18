@@ -4,14 +4,159 @@
 #include "..\CCritSec\CCritSec.h"
 
 // global preferences constants
-const int k_AutoConnector_Connect_Never		= 0;
-const int k_AutoConnector_Connect_Once		= 1;
-const int k_AutoConnector_Connect_Permanent	= 2;
+enum
+{
+	k_AutoConnector_Connect_Never		= 0,
+	k_AutoConnector_Connect_Once		= 1,
+	k_AutoConnector_Connect_Permanent	= 2,
+};
 
-const int k_lazy_scraping_always = 0;
-const int k_lazy_scraping_myturn = 1;
-const int k_lazy_scraping_cards  = 2;
+enum
+{
+	k_lazy_scraping_always = 0,
+	k_lazy_scraping_myturn = 1,
+	k_lazy_scraping_cards  = 2,
+};
 
+enum
+{
+	// Boolean values
+	k_prefs_debug_preferences,	// Should be the very first, to get proper logging for the rest
+	k_prefs_debug_autoconnector,
+	k_prefs_debug_autoplayer,
+	k_prefs_debug_heartbeat,
+	k_prefs_debug_prwin,
+	k_prefs_debug_icm,
+	k_prefs_debug_occlusionchecker,
+	k_prefs_debug_pokertracker,
+	k_prefs_debug_rebuy,
+	k_prefs_debug_replayframes,
+	k_prefs_debug_scraper,
+	k_prefs_debug_sessioncounter,
+	k_prefs_debug_stableframescounter,
+	k_prefs_debug_symbolengine,
+	k_prefs_debug_blindlocking,
+	k_prefs_debug_memorysymbols,
+	k_prefs_debug_tablemap_loader,
+	k_prefs_debug_filesystem_monitor,
+	k_prefs_debug_handhistory,
+	k_prefs_debug_alltherest,
+	k_prefs_debug_table_positioner,
+	k_prefs_debug_istournament,
+	k_prefs_debug_gui,
+	k_prefs_debug_table_limits,
+	k_prefs_debug_lazy_scraper,
+	k_prefs_debug_betsize_adjustment,
+	k_prefs_debug_handreset_detector,
+	k_prefs_debug_engine_container,
+	k_prefs_engage_autoplayer,
+	k_prefs_swag_use_comma,
+	k_prefs_replay_record,
+	k_prefs_replay_record_every_change_playing,
+	k_prefs_replay_record_every_change,
+	k_prefs_log_symbol_enabled,
+	k_prefs_trace_enabled,
+	k_prefs_basic_logging_enabled,
+	k_prefs_error_logging_enabled,
+	k_prefs_dll_logging_enabled,
+	k_prefs_disable_msgbox,
+	k_prefs_validator_stop_on_error,
+	k_prefs_validator_use_heuristic_rules,
+	k_prefs_validator_shoot_replayframe_on_error,
+	k_prefs_autoconnector_close_when_table_disappears,
+	k_prefs_gui_start_minimized, 
+	k_prefs_gui_disable_progress_dialog,
+	k_prefs_rebuy_condition_no_cards,
+	k_prefs_rebuy_condition_change_in_handnumber,
+	k_prefs_rebuy_condition_heuristic_check_for_occlusion,
+	k_prefs_configurationcheck_input_settings,
+	k_prefs_configurationcheck_theme_settings,
+	k_prefs_configurationcheck_font_settings,
+	k_prefs_handhistory_generator_enable,
+	k_prefs_simple_window_title,
+	// leave this always at the last position
+	k_prefs_last_bool_value,
+};
+
+enum
+{
+	// Int values
+	k_prefs_replay_max_frames,
+	k_prefs_frame_delay,
+	k_prefs_click_delay,
+	k_prefs_swag_delay_1,
+	k_prefs_swag_delay_2,
+	k_prefs_swag_delay_3,
+	k_prefs_scrape_delay,
+	k_prefs_chat_min_delay,
+	k_prefs_chat_random_delay,
+	k_prefs_log_symbol_max_log,
+	k_prefs_log_max_logsize,
+	k_prefs_formula_x,	
+	k_prefs_formula_y,
+	k_prefs_formula_dx,
+	k_prefs_formula_dy,
+	k_prefs_scraper_x,
+	k_prefs_scraper_y,
+	k_prefs_scraper_dx,
+	k_prefs_scraper_dy,
+	k_prefs_main_x,
+	k_prefs_main_y,
+	k_prefs_main_dx,
+	k_prefs_main_dy,
+	k_prefs_validator_enabled, 
+	k_prefs_autoconnector_when_to_connect,
+	k_prefs_rebuy_minimum_time_to_next_try,
+	k_prefs_lazy_scraping_when_to_scrape,
+	k_prefs_table_positioner_options,
+	k_prefs_scraper_zoom,
+	// leave this always at the last position
+	k_prefs_last_int_value,
+};
+
+enum
+{
+	// String Values
+	k_prefs_dll_name,
+	k_prefs_pt_ip_addr,
+	k_prefs_pt_port,
+	k_prefs_pt_dbname,
+	k_prefs_pt_user,
+	k_prefs_pt_pass,
+	k_prefs_perl_default_formula,
+	k_prefs_perl_editor,
+	k_prefs_rebuy_script,
+	k_prefs_window_class_name,
+	k_prefs_mutex_name,
+	k_prefs_path_ohf,
+	k_prefs_path_tm,
+	k_prefs_path_perl,
+	k_prefs_path_dll,
+	// leave this always at the last position
+	k_prefs_last_CString_value,
+};
+
+enum
+{
+	// Double values
+	k_prefs_icm_prize1,
+	k_prefs_icm_prize2,
+	k_prefs_icm_prize3,
+	k_prefs_icm_prize4,
+	k_prefs_icm_prize5,
+	// leave this always at the last position
+	k_prefs_last_double_value,
+};	
+
+// registry keys for CString values
+const CString k_registry_keys_for_CStrings[k_prefs_last_double_value] =
+{
+	"icm_prize1",
+	"icm_prize2",
+	"icm_prize3",
+	"icm_prize4",
+	"icm_prize5",
+};
 
 extern class CPreferences
 {
@@ -19,25 +164,24 @@ public:
 	// public functions
 	CPreferences();
 	~CPreferences();
-
 	void LoadPreferences();
 
 public:
 	// public accessors
 
 	// Autoplayer
-	const unsigned int frame_delay() { return _frame_delay; }
-	const unsigned int click_delay() { return _click_delay; }
-	const unsigned int swag_delay_1() { return _swag_delay_1; }
-	const unsigned int swag_delay_2() { return _swag_delay_2; }
-	const unsigned int swag_delay_3() { return _swag_delay_3; }
+	const int frame_delay() { return _frame_delay; }
+	const int click_delay() { return _click_delay; }
+	const int swag_delay_1() { return _swag_delay_1; }
+	const int swag_delay_2() { return _swag_delay_2; }
+	const int swag_delay_3() { return _swag_delay_3; }
 	const bool engage_autoplayer() { return _engage_autoplayer; }
 	const bool swag_use_comma() { return _swag_use_comma; }
 
 	// Dll extension
 	const CString dll_name() { return _dll_name; }
 	// Scraper
-	const unsigned int scrape_delay() { return _scrape_delay; }
+	const int scrape_delay() { return _scrape_delay; }
 	// ICM
 	const double icm_prize1() { return _icm_prize1; }
 	const double icm_prize2() { return _icm_prize2; }
@@ -169,11 +313,11 @@ public:
 #define ENT CSLock lock(m_critsec);
 
 	// Autoplayer
-	void set_frame_delay(const unsigned int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
-	void set_click_delay(const unsigned int i) { ENT _click_delay = i; WriteReg("click_delay", (int) i); }
-	void set_swag_delay_1(const unsigned int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
-	void set_swag_delay_2(const unsigned int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
-	void set_swag_delay_3(const unsigned int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
+	void set_frame_delay(const int i) { ENT _frame_delay = i; WriteReg("frame_delay", (int) i); }
+	void set_click_delay(const int i) { ENT _click_delay = i; WriteReg("click_delay", (int) i); }
+	void set_swag_delay_1(const int i) { ENT _swag_delay_1 = i; WriteReg("swag_delay_1", (int) i); }
+	void set_swag_delay_2(const int i) { ENT _swag_delay_2 = i; WriteReg("swag_delay_2", (int) i); }
+	void set_swag_delay_3(const int i) { ENT _swag_delay_3 = i; WriteReg("swag_delay_3", (int) i); }
 	void set_engage_autoplayer(const bool b) { ENT _engage_autoplayer = b; WriteReg("auto", (int) b!=false); }
 	void set_swag_use_comma(const bool b) { ENT _swag_use_comma = b; WriteReg("swag_use_comma", (int) b!=false); }
 
@@ -181,7 +325,7 @@ public:
 	void set_dll_name(const CString s) { ENT _dll_name = s; WriteReg("dll_name", s); }
 
 	// Scraper
-	void set_scrape_delay(const unsigned int i) { ENT _scrape_delay = i; WriteReg("scrape_delay", (int) i); }
+	void set_scrape_delay(const int i) { ENT _scrape_delay = i; WriteReg("scrape_delay", (int) i); }
 
 	// ICM
 	void set_icm_prize1(const double d) { ENT _icm_prize1 = d; WriteReg("icm_prize1", d); }
@@ -326,13 +470,18 @@ public:
 
 private:
 	// private variables - use public accessors and public mutators to address these
+	bool		prefs_bool_values[k_prefs_last_bool_value];
+	int			prefs_int_values[k_prefs_last_int_value];
+	CString	    prefs_CString_values[k_prefs_last_CString_value];
+	double      prefs_double_values[k_prefs_last_double_value];
 
+private:
 	// Autoplayer
-	unsigned int		_frame_delay;
-	unsigned int		_click_delay;
-	unsigned int		_swag_delay_1;
-	unsigned int		_swag_delay_2;
-	unsigned int		_swag_delay_3;
+	int _frame_delay;
+	int _click_delay;
+	int _swag_delay_1;
+	int _swag_delay_2;
+	int _swag_delay_3;
 	bool				_engage_autoplayer;
 	bool				_swag_use_comma;
 
@@ -340,7 +489,7 @@ private:
 	CString				_dll_name;
 
 	// Scraper
-	unsigned int		_scrape_delay;
+	int				_scrape_delay;
 
 	// ICM
 	double			_icm_prize1;
@@ -487,7 +636,6 @@ private:
 	void ReadPreferences(void);
 	void ReadReg(const LPCTSTR registry_key, int *registry_value);
 	void ReadReg(const LPCTSTR registry_key, bool *registry_value);
-	void ReadReg(const LPCTSTR registry_key, unsigned int *registry_value);
 	void ReadReg(const LPCTSTR registry_key, CString *registry_value);
 	void ReadReg(const LPCTSTR registry_key, double *registry_value);
 	void WriteReg(const LPCTSTR registry_key, const int registry_value);
@@ -496,6 +644,6 @@ private:
 
 	CCritSec		m_critsec;
 	CString			_preferences_heading;
-} prefs;
+} preferences;
 
 #endif // INC_CPREFERENCES_H_

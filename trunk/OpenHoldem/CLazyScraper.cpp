@@ -19,7 +19,7 @@ CLazyScraper::~CLazyScraper()
 
 void CLazyScraper::DoScrape()
 {
-	write_log(prefs.debug_lazy_scraper(), "CLazyScraper::DoScrape()\n");
+	write_log(preferences.debug_lazy_scraper(), "CLazyScraper::DoScrape()\n");
 	// As scraping is the most time-consuming part
 	// of the heartbeat-cycle, we do optionally
 	// execute only partial scrapes (aka "Lazy Scraping").
@@ -27,11 +27,11 @@ void CLazyScraper::DoScrape()
 	p_scraper->DoBasicScrapeButtons();
 	if (1 /* CardScrapeNeeded()!!*/)
 	{
-		write_log(prefs.debug_lazy_scraper(), "CLazyScraper: CardScrape needed\n");
+		write_log(preferences.debug_lazy_scraper(), "CLazyScraper: CardScrape needed\n");
 		p_scraper->DoBasicScrapeAllPlayerCards();
 		if (1 /*CompleteScrapeNeeded()!!*/)
 		{
-			write_log(prefs.debug_lazy_scraper(), "CLazyScraper: CompleteScrape needed\n");
+			write_log(preferences.debug_lazy_scraper(), "CLazyScraper: CompleteScrape needed\n");
 			p_scraper->CompleteBasicScrapeToFullScrape();
 		}
 	}
@@ -41,10 +41,10 @@ bool CLazyScraper::IsMyTurn()
 {
 	if (p_scraper_access->visible_buttons[k_autoplayer_function_fold])
 	{
-		write_log(prefs.debug_lazy_scraper(), "CLazyScraper::IsMyTurn(): true\n");
+		write_log(preferences.debug_lazy_scraper(), "CLazyScraper::IsMyTurn(): true\n");
 		return true;
 	}
-	write_log(prefs.debug_lazy_scraper(), "CLazyScraper::IsMyTurn(): false\n");
+	write_log(preferences.debug_lazy_scraper(), "CLazyScraper::IsMyTurn(): false\n");
 	return false;
 }
 
@@ -52,7 +52,7 @@ bool CLazyScraper::HaveCards()
 {
 	if (!p_symbol_engine_userchair->userchair_confirmed())
 	{
-		write_log(prefs.debug_lazy_scraper(), "CLazyScraper::HaveCards(): false, as userchair not confirmed\n");
+		write_log(preferences.debug_lazy_scraper(), "CLazyScraper::HaveCards(): false, as userchair not confirmed\n");
 		return false;
 	}
 	int userchair = p_symbol_engine_userchair->userchair();
@@ -61,23 +61,23 @@ bool CLazyScraper::HaveCards()
 	if (p_scraper_access->IsValidCard(my_first_card)
 		&& p_scraper_access->IsValidCard(my_second_card))
 	{
-		write_log(prefs.debug_lazy_scraper(), "CLazyScraper::HaveCards(): false, no cards\n");
+		write_log(preferences.debug_lazy_scraper(), "CLazyScraper::HaveCards(): false, no cards\n");
 		return false;
 	}
-	write_log(prefs.debug_lazy_scraper(), "CLazyScraper::HaveCards(): true\n");
+	write_log(preferences.debug_lazy_scraper(), "CLazyScraper::HaveCards(): true\n");
 	return true;
 }
 
 bool CLazyScraper::CardScrapeNeeded()
 {
 	return (IsMyTurn() 
-		|| (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
-		|| (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
+		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
+		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
 }
 
 bool CLazyScraper::CompleteScrapeNeeded()
 {
 	return (IsMyTurn() 
-		|| (HaveCards() && (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards))
-		|| (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
+		|| (HaveCards() && (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards))
+		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
 }

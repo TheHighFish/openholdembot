@@ -33,7 +33,7 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs3::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_DllName.SetWindowText(prefs.dll_name());
+	m_DllName.SetWindowText(preferences.dll_name());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -44,7 +44,7 @@ void CDlgSAPrefs3::OnOK()
 	CString			text = "";
 
 	m_DllName.GetWindowText(text);
-	prefs.set_dll_name(text);
+	preferences.set_dll_name(text);
 
 	CSAPrefsSubDlg::OnOK();
 }

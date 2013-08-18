@@ -20,12 +20,12 @@ void CheckBringKeyboard(void)
 
 	if (!p_symbol_engine_autoplayer->isbring())
 	{
-		write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
+		write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
 		return;
 	}
 
-	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Connected to bring.\n");
-	write_log(prefs.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
+	write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Connected to bring.\n");
+	write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 
 	// Init locals
 	memset(&mii, 0, sizeof(MENUITEMINFO));
@@ -70,7 +70,7 @@ void CheckBringKeyboard(void)
 	{
 		HWND			hwnd_focus;
 		POINT			cur_pos = {0};
-		CMutex			mutex (false, prefs.mutex_name());
+		CMutex			mutex (false, preferences.mutex_name());
 
 		input_count = 0;
 		// Alt key down

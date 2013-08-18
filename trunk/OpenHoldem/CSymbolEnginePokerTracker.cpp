@@ -79,7 +79,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 {
 	assert(chair >= k_first_chair); 
 	assert(chair <= k_last_chair);
-	write_log(prefs.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
+	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound)
 	{
@@ -92,7 +92,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()
 {
-	write_log(prefs.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
+	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (p_pokertracker_thread->CheckIfNameHasChanged(i))

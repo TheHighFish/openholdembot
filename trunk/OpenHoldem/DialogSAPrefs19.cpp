@@ -38,7 +38,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_handhistory_generator_enable_Button.SetCheck(prefs.handhistory_generator_enable());
+	_handhistory_generator_enable_Button.SetCheck(preferences.handhistory_generator_enable());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -46,7 +46,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 
 void CDlgSAPrefs19::OnOK()
 {
-	prefs.set_handhistory_generator_enable(_handhistory_generator_enable_Button.GetCheck() == true);
+	preferences.set_handhistory_generator_enable(_handhistory_generator_enable_Button.GetCheck() == true);
 
 	CSAPrefsSubDlg::OnOK();
 }

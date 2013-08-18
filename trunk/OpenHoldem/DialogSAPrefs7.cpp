@@ -41,34 +41,34 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (prefs.icm_prize1() == (int) prefs.icm_prize1())
-		text.Format("%.0f", prefs.icm_prize1());
+	if (preferences.icm_prize1() == (int) preferences.icm_prize1())
+		text.Format("%.0f", preferences.icm_prize1());
 	else
-		text.Format("%f", prefs.icm_prize1());
+		text.Format("%f", preferences.icm_prize1());
 	m_ICM1.SetWindowText(text);
 
-	if (prefs.icm_prize2() == (int) prefs.icm_prize2())
-		text.Format("%.0f", prefs.icm_prize2());
+	if (preferences.icm_prize2() == (int) preferences.icm_prize2())
+		text.Format("%.0f", preferences.icm_prize2());
 	else
-		text.Format("%f", prefs.icm_prize2());
+		text.Format("%f", preferences.icm_prize2());
 	m_ICM2.SetWindowText(text);
 
-	if (prefs.icm_prize3() == (int) prefs.icm_prize3())
-		text.Format("%.0f", prefs.icm_prize3());
+	if (preferences.icm_prize3() == (int) preferences.icm_prize3())
+		text.Format("%.0f", preferences.icm_prize3());
 	else
-		text.Format("%f", prefs.icm_prize3());
+		text.Format("%f", preferences.icm_prize3());
 	m_ICM3.SetWindowText(text);
 
-	if (prefs.icm_prize4() == (int) prefs.icm_prize4())
-		text.Format("%.0f", prefs.icm_prize4());
+	if (preferences.icm_prize4() == (int) preferences.icm_prize4())
+		text.Format("%.0f", preferences.icm_prize4());
 	else
-		text.Format("%f", prefs.icm_prize4());
+		text.Format("%f", preferences.icm_prize4());
 	m_ICM4.SetWindowText(text);
 
-	if (prefs.icm_prize5() == (int) prefs.icm_prize5())
-		text.Format("%.0f", prefs.icm_prize5());
+	if (preferences.icm_prize5() == (int) preferences.icm_prize5())
+		text.Format("%.0f", preferences.icm_prize5());
 	else
-		text.Format("%f", prefs.icm_prize5());
+		text.Format("%f", preferences.icm_prize5());
 	m_ICM5.SetWindowText(text);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -80,15 +80,15 @@ void CDlgSAPrefs7::OnOK()
 	CString			text = "";
 
 	m_ICM1.GetWindowText(text);
-	prefs.set_icm_prize1(atof(text.GetString()));
+	preferences.set_icm_prize1(atof(text.GetString()));
 	m_ICM2.GetWindowText(text);
-	prefs.set_icm_prize2(atof(text.GetString()));
+	preferences.set_icm_prize2(atof(text.GetString()));
 	m_ICM3.GetWindowText(text);
-	prefs.set_icm_prize3(atof(text.GetString()));
+	preferences.set_icm_prize3(atof(text.GetString()));
 	m_ICM4.GetWindowText(text);
-	prefs.set_icm_prize4(atof(text.GetString()));
+	preferences.set_icm_prize4(atof(text.GetString()));
 	m_ICM5.GetWindowText(text);
-	prefs.set_icm_prize5(atof(text.GetString()));
+	preferences.set_icm_prize5(atof(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }

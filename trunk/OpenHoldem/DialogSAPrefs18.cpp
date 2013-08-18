@@ -35,11 +35,11 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs18::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	if (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_myturn)
+	if (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_myturn)
 	{
 		_scrape_when_my_turn_button.SetCheck(true);
 	}
-	else if (prefs.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
+	else if (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
 	{
 		_scrape_when_cards_button.SetCheck(true);
 	}
@@ -57,16 +57,16 @@ void CDlgSAPrefs18::OnOK()
 
 	if (_scrape_when_cards_button.GetCheck())
 	{
-		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_cards);
+		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_cards);
 	}
 	else if (_scrape_when_my_turn_button.GetCheck())
 	{
-		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_myturn);
+		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_myturn);
 	}
 	else
 	{
 		// Default: k_lazy_scraping_always
-		prefs.set_lazy_scraping_when_to_scrape(k_lazy_scraping_always);
+		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_always);
 
 	}
 	CSAPrefsSubDlg::OnOK();

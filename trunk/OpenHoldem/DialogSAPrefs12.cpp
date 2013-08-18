@@ -37,11 +37,11 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs12 message handlers
 BOOL CDlgSAPrefs12::OnInitDialog()
 {	
-	if (prefs.validator_enabled() == 0)
+	if (preferences.validator_enabled() == 0)
 	{
 		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_1);
 	}
-	else if (prefs.validator_enabled() == 1)
+	else if (preferences.validator_enabled() == 1)
 	{
 		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_2);
 	}
@@ -49,9 +49,9 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 	{
 		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_3);
 	}
-	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, prefs.validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, prefs.validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, prefs.validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, preferences.validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, preferences.validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, preferences.validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -61,19 +61,19 @@ void CDlgSAPrefs12::OnOK()
 {
 	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1))
 	{
-		prefs.set_validator_enabled(0);
+		preferences.set_validator_enabled(0);
 	}
 	else if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_2))
 	{
-		prefs.set_validator_enabled(1);
+		preferences.set_validator_enabled(1);
 	}
 	else
 	{
-		prefs.set_validator_enabled(2);
+		preferences.set_validator_enabled(2);
 	}
-	prefs.set_validator_use_heuristic_rules(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
-	prefs.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
-	prefs.set_validator_shoot_replayframe_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
+	preferences.set_validator_use_heuristic_rules(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
+	preferences.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
+	preferences.set_validator_shoot_replayframe_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
 	CSAPrefsSubDlg::OnOK();
 }
 

@@ -101,7 +101,7 @@ CPerl::CPerl()
 	_formula_loaded = false;
 	_interpreter_not_loaded = true;
 
-	if (prefs.perl_default_formula() == "")
+	if (preferences.perl_default_formula() == "")
 	{
 		// For people who don't need perl.
 		return;
@@ -112,7 +112,7 @@ CPerl::CPerl()
 		return;
 	}
 	//  Load file and create new instance of the interpreter.
-	LoadFormulaFile(string(prefs.perl_default_formula()));
+	LoadFormulaFile(string(preferences.perl_default_formula()));
 	//  _interpreter_not_loaded and _formula_loaded set automatically.
 
 	if ((_interpreter == NULL) || _interpreter_not_loaded)
@@ -195,7 +195,7 @@ double CPerl::GetPerlSymbol(const char *symbol)
 
 void CPerl::EditMainFormulaFile()
 {
-	CString my_favourite_Editor = prefs.perl_editor();
+	CString my_favourite_Editor = preferences.perl_editor();
 
 	if (_access(my_favourite_Editor, F_OK) != 0)
 	{

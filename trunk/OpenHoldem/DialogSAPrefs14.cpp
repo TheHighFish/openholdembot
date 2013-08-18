@@ -44,11 +44,11 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
+	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
 	{
 		_autoconnector_connect_never.SetCheck(true);
 	}
-	else if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
+	else if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
 		_autoconnector_connect_once.SetCheck(true);
 	}
@@ -57,7 +57,7 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 		_autoconnector_connect_permanent.SetCheck(true);
 	}
 
-	_autoconnector_close_when_table_disappears.SetCheck(prefs.autoconnector_close_when_table_disappears());
+	_autoconnector_close_when_table_disappears.SetCheck(preferences.autoconnector_close_when_table_disappears());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -68,17 +68,17 @@ void CDlgSAPrefs14::OnOK()
 {
 	if (bool(_autoconnector_connect_never.GetCheck()) == true)
 	{
-		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Never);
+		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Never);
 	}
 	else if (bool(_autoconnector_connect_once.GetCheck()) == true)
 	{
-		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Once);
+		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Once);
 	}
 	else // _autoconnector_connect_permanent.GetCheck() == true
 	{
-		prefs.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Permanent);
+		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Permanent);
 	}
 
-	prefs.set_autoconnector_close_when_table_disappears(_autoconnector_close_when_table_disappears.GetCheck());
+	preferences.set_autoconnector_close_when_table_disappears(_autoconnector_close_when_table_disappears.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }

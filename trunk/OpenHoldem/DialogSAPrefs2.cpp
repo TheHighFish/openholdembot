@@ -52,39 +52,39 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	text.Format("%d", prefs.frame_delay());
+	text.Format("%d", preferences.frame_delay());
 	m_FrameDelay.SetWindowText(text);
 	m_FrameDelay_Spin.SetRange(0, 9);
-	m_FrameDelay_Spin.SetPos(prefs.frame_delay());
+	m_FrameDelay_Spin.SetPos(preferences.frame_delay());
 	m_FrameDelay_Spin.SetBuddy(&m_FrameDelay);
 
-	text.Format("%d", prefs.click_delay());
+	text.Format("%d", preferences.click_delay());
 	m_ClickDelay.SetWindowText(text);
 	m_ClickDelay_Spin.SetRange(0, 5000);
-	m_ClickDelay_Spin.SetPos(prefs.click_delay());
+	m_ClickDelay_Spin.SetPos(preferences.click_delay());
 	m_ClickDelay_Spin.SetBuddy(&m_ClickDelay);
 
-	text.Format("%d", prefs.swag_delay_1());
+	text.Format("%d", preferences.swag_delay_1());
 	m_SwagDelay1.SetWindowText(text);
 	m_SwagDelay1_Spin.SetRange(0, 5000);
-	m_SwagDelay1_Spin.SetPos(prefs.swag_delay_1());
+	m_SwagDelay1_Spin.SetPos(preferences.swag_delay_1());
 	m_SwagDelay1_Spin.SetBuddy(&m_SwagDelay1);
 
-	text.Format("%d", prefs.swag_delay_2());
+	text.Format("%d", preferences.swag_delay_2());
 	m_SwagDelay2.SetWindowText(text);
 	m_SwagDelay2_Spin.SetRange(0, 5000);
-	m_SwagDelay2_Spin.SetPos(prefs.swag_delay_2());
+	m_SwagDelay2_Spin.SetPos(preferences.swag_delay_2());
 	m_SwagDelay2_Spin.SetBuddy(&m_SwagDelay2);
 
-	text.Format("%d", prefs.swag_delay_3());
+	text.Format("%d", preferences.swag_delay_3());
 	m_SwagDelay3.SetWindowText(text);
 	m_SwagDelay3_Spin.SetRange(0, 5000);
-	m_SwagDelay3_Spin.SetPos(prefs.swag_delay_3());
+	m_SwagDelay3_Spin.SetPos(preferences.swag_delay_3());
 	m_SwagDelay3_Spin.SetBuddy(&m_SwagDelay3);
 
-	m_Autoplayer_Upon_Connection.SetCheck(prefs.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
+	m_Autoplayer_Upon_Connection.SetCheck(preferences.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
 
-	m_SwagUseComma.SetCheck(prefs.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
+	m_SwagUseComma.SetCheck(preferences.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -100,7 +100,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
 		return;
 	}
-	prefs.set_frame_delay(strtoul(text.GetString(), 0, 10));
+	preferences.set_frame_delay(strtoul(text.GetString(), 0, 10));
 
 	m_ClickDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_CLICKDELAY)
@@ -108,7 +108,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Error_Warning("Invalid Click Delay", "ERROR");
 		return;
 	}
-	prefs.set_click_delay(strtoul(text.GetString(), 0, 10));
+	preferences.set_click_delay(strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
@@ -116,7 +116,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Select to Delete)", "ERROR", MB_OK);
 		return;
 	}
-	prefs.set_swag_delay_1(strtoul(text.GetString(), 0, 10));
+	preferences.set_swag_delay_1(strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay2.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY2)
@@ -124,7 +124,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Delete to Entry)", "ERROR", MB_OK);
 		return;
 	}
-	prefs.set_swag_delay_2(strtoul(text.GetString(), 0, 10));
+	preferences.set_swag_delay_2(strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay3.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY3) 
@@ -132,10 +132,10 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Entry to Confirm)", "ERROR", MB_OK);
 		return;
 	}
-	prefs.set_swag_delay_3(strtoul(text.GetString(), 0, 10));
+	preferences.set_swag_delay_3(strtoul(text.GetString(), 0, 10));
 
-	prefs.set_engage_autoplayer(m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
-	prefs.set_swag_use_comma(m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_engage_autoplayer(m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
+	preferences.set_swag_use_comma(m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
 }

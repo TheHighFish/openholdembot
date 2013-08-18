@@ -636,7 +636,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
 	int				dummy = 0;
 
-	write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
@@ -671,7 +671,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
-		write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
+		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
 		for (int i=0; i<k_number_of_cards_per_deck; i++)
 		{
@@ -706,7 +706,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
-	write_log(prefs.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
 	AssertRange(_ncardsknown,   0, k_number_of_cards_per_deck);
 	AssertRange(_ncardsunknown, 0, k_number_of_cards_per_deck);
 	AssertRange(_nouts,         0, k_number_of_cards_per_deck);

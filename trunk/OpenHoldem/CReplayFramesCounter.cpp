@@ -38,11 +38,11 @@ int CReplayFramesCounter::GetNumberOfNextReplayFrame()
 
 	_current_last_replay_frame++;
 	if ((_current_last_replay_frame < 0) 
-		|| (_current_last_replay_frame > prefs.replay_max_frames()))
+		|| (_current_last_replay_frame > preferences.replay_max_frames()))
 	{
 		_current_last_replay_frame = 0;
 	}
-	write_log(prefs.debug_replayframes(), "[CReplayFrame] Next frame number: %d\n", 
+	write_log(preferences.debug_replayframes(), "[CReplayFrame] Next frame number: %d\n", 
 		_current_last_replay_frame);
 	return _current_last_replay_frame;
 }

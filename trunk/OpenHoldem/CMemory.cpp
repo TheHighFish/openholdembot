@@ -12,7 +12,7 @@ CMemory		*p_memory = NULL;
 
 CMemory::CMemory()
 {
-	write_log(prefs.debug_memorysymbols(), "[CMemory] Clearing all symbols\n");
+	write_log(preferences.debug_memorysymbols(), "[CMemory] Clearing all symbols\n");
 	_var_count = -1;
 	for (int i=0; i<k_max_number_of_memory_symbols; i++)
 	{
@@ -31,14 +31,14 @@ const double CMemory::ProcessQuery(const char * pquery, CEvalInfoFunction **logC
 	{
 		*e = SUCCESS;
 		StoreValue(pquery, logCallingFunction, e);
-		write_log(prefs.debug_memorysymbols(), "[CMemory] Storing symbol: %s\n", pquery);
+		write_log(preferences.debug_memorysymbols(), "[CMemory] Storing symbol: %s\n", pquery);
 		return 0.0;
 	}
 
 	if (memcmp(pquery, "me_re_", 6)==0)
 	{
 		*e = SUCCESS;
-		write_log(prefs.debug_memorysymbols(), "[CMemory] Querying symbol: %s\n", pquery);
+		write_log(preferences.debug_memorysymbols(), "[CMemory] Querying symbol: %s\n", pquery);
 		return RetrieveValue(pquery, e);
 	}
 
@@ -109,12 +109,12 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 			p_autoplayer->set_autoplayer_engaged(false);
 			return;
 		}
-		write_log(prefs.debug_memorysymbols(), "[CMemory] Storing new value in a new slot\n");
+		write_log(preferences.debug_memorysymbols(), "[CMemory] Storing new value in a new slot\n");
 		set_var_count(next_free_slot);
 	}
 	else
 	{
-		write_log(prefs.debug_memorysymbols(), "[CMemory] Overwriting existing symbol with new value\n");
+		write_log(preferences.debug_memorysymbols(), "[CMemory] Overwriting existing symbol with new value\n");
 	}
 
 	if (RightValueIsNumber(value[0]))
@@ -173,10 +173,10 @@ double CMemory::RetrieveValue(const char * pquery, int *e)
 	{
 		if (strlen(var)==strlen(_var_name[i]) && memcmp(var, _var_name[i], strlen(var))==0)
 		{
-			write_log(prefs.debug_memorysymbols(), "[CMemory] Value found: %.3f\n");
+			write_log(preferences.debug_memorysymbols(), "[CMemory] Value found: %.3f\n");
 			return _var_value[i];
 		}
 	}
-	write_log(prefs.debug_memorysymbols(), "[CMemory] Value not found. Returning 0.\n");
+	write_log(preferences.debug_memorysymbols(), "[CMemory] Value not found. Returning 0.\n");
 	return 0;
 }

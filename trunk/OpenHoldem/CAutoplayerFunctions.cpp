@@ -43,15 +43,15 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	write_log(prefs.debug_symbolengine(), "Trace enabled: %i\n", prefs.trace_enabled());
-	bool trace_needed = prefs.trace_enabled();
+	write_log(preferences.debug_symbolengine(), "Trace enabled: %i\n", preferences.trace_enabled());
+	bool trace_needed = preferences.trace_enabled();
 
 	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
 	{
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
-		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+		write_log(preferences.debug_symbolengine(), "Primary formulas; %s: %f\n", 
 			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	// [nik0] always set check/fold to 1
@@ -65,14 +65,14 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	bool trace_needed = prefs.trace_enabled();
+	bool trace_needed = preferences.trace_enabled();
 
 	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
 	{
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
-		write_log(prefs.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+		write_log(preferences.debug_symbolengine(), "Primary formulas; %s: %f\n", 
 			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();

@@ -24,7 +24,7 @@ CVersus::CVersus()
 	_sopen_s(&_versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (_versus_fh == k_undefined)
 	{
-		_sopen_s(&_versus_fh, prefs.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+		_sopen_s(&_versus_fh, preferences.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	}
 
 	if (_versus_fh == k_undefined) 

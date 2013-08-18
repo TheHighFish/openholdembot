@@ -61,7 +61,7 @@ CHandHistory::~CHandHistory()
 // Checked
 void CHandHistory::MakeHistory()
 {
-	write_log(prefs.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
+	write_log(preferences.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
 	CreateHandHistoryFile();//!! Bad
 	UpdateSymbols();
 	WriteHistory();
@@ -72,7 +72,7 @@ void CHandHistory::MakeHistory()
 // Checked
 void CHandHistory::WriteHistory()
 {
-	write_log(prefs.debug_handhistory(), "[CHandHistory] WriteHistory()\n");
+	write_log(preferences.debug_handhistory(), "[CHandHistory] WriteHistory()\n");
 	int	betround    = p_betround_calculator->betround();
 	int	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
@@ -541,7 +541,7 @@ void CHandHistory::GetBCstring(char *c, unsigned int c0)
 // Done
 void CHandHistory::processShowdown()
 {
-	write_log(prefs.debug_handhistory(), "[CHandHistory] ProcessShowdown()\n");
+	write_log(preferences.debug_handhistory(), "[CHandHistory] ProcessShowdown()\n");
 	int	nchairs         = p_tablemap->nchairs();
 	int	nplayersplaying	= p_symbol_engine_active_dealt_playing->nplayersplaying();
 
@@ -1039,12 +1039,12 @@ void CHandHistory::HandleDealingPhase()
 // Done
 void CHandHistory::CreateHandHistoryFile()
 {
-	if (!prefs.handhistory_generator_enable())
+	if (!preferences.handhistory_generator_enable())
 	{
-		write_log(prefs.debug_handhistory(), "[CHandHistory] Disabled. Not creating file.\n");
+		write_log(preferences.debug_handhistory(), "[CHandHistory] Disabled. Not creating file.\n");
 		return;
 	}
-	write_log(prefs.debug_handhistory(), "[CHandHistory] Enabled. Creating file if needed.\n");
+	write_log(preferences.debug_handhistory(), "[CHandHistory] Enabled. Creating file if needed.\n");
 	// Append to (or create if it does not exist) a handhistory file
 	// using the session id as the name
 	CreateDirectory("handhistory", NULL);
