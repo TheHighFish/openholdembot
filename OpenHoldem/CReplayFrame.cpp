@@ -54,7 +54,7 @@ void CReplayFrame::CreateReplayFrame(void)
 		&free_bytes_total_on_disk);
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
 	{
-		write_log(prefs.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
+		write_log(preferences.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		OH_MessageBox_Error_Warning("Not enough disk space to create replay-frame.", "ERROR");
 
 		return;
@@ -74,7 +74,7 @@ void CReplayFrame::CreateReplayFrame(void)
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0)
 	{
-		write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
+		write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
@@ -337,7 +337,7 @@ CString CReplayFrame::GetPotsAsHTML()
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary()
 {
 	CString path = p_filenames->ReplaySessionDirectory();
-	write_log(prefs.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
+	write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
 	{
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
@@ -357,10 +357,10 @@ CString CReplayFrame::GetLinksToPrevAndNextFile()
 {
 	CString links, text;
 	text.Format("<a href=\"frame%06d.htm\">PREV</a>\n",
-		_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : prefs.replay_max_frames());
+		_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : preferences.replay_max_frames());
 	links += text;
 	text.Format("<a href=\"frame%06d.htm\">NEXT</a>\n",
-		_next_replay_frame+1 < prefs.replay_max_frames() ? _next_replay_frame+1 : 0);
+		_next_replay_frame+1 < preferences.replay_max_frames() ? _next_replay_frame+1 : 0);
 	links += text;
 	return links;
 }

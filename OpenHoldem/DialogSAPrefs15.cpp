@@ -40,8 +40,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_gui_start_minimized_Button.SetCheck(prefs.gui_start_minimized());
-	_gui_disable_progress_dialog_Button.SetCheck(prefs.gui_disable_progress_dialog());
+	_gui_start_minimized_Button.SetCheck(preferences.gui_start_minimized());
+	_gui_disable_progress_dialog_Button.SetCheck(preferences.gui_disable_progress_dialog());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -49,8 +49,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 
 void CDlgSAPrefs15::OnOK()
 {
-	prefs.set_gui_start_minimized(_gui_start_minimized_Button.GetCheck() == true);
-	prefs.set_gui_disable_progress_dialog(_gui_disable_progress_dialog_Button.GetCheck() == true);
+	preferences.set_gui_start_minimized(_gui_start_minimized_Button.GetCheck() == true);
+	preferences.set_gui_disable_progress_dialog(_gui_disable_progress_dialog_Button.GetCheck() == true);
 
 	CSAPrefsSubDlg::OnOK();
 }

@@ -43,15 +43,15 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (prefs.replay_record()){
+	if (preferences.replay_record()){
 		m_RecordMyTurn.SetCheck(BST_CHECKED);
 		m_RecordFrames.SetCheck(BST_CHECKED);
 	}
-	else if (prefs.replay_record_every_change()){
+	else if (preferences.replay_record_every_change()){
 		m_RecordEveryChange.SetCheck(BST_CHECKED);
 		m_RecordFrames.SetCheck(BST_CHECKED);
 	}
-	else if (prefs.replay_record_every_change_playing()){
+	else if (preferences.replay_record_every_change_playing()){
 		m_RecordEveryChangePlaying.SetCheck(BST_CHECKED);
 		m_RecordFrames.SetCheck(BST_CHECKED);
 	}
@@ -62,10 +62,10 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 		m_RecordEveryChangePlaying.EnableWindow(0);
 	}
 
-	text.Format("%d", prefs.replay_max_frames());
+	text.Format("%d", preferences.replay_max_frames());
 	m_MaxFrames.SetWindowText(text.GetString());
 	m_MaxFramesSpin.SetRange(1, 1000);
-	m_MaxFramesSpin.SetPos(prefs.replay_max_frames());
+	m_MaxFramesSpin.SetPos(preferences.replay_max_frames());
 	m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -77,18 +77,18 @@ void CDlgSAPrefs8::OnOK()
 	CString			text = "";
 
 	if (m_RecordFrames.GetCheck() == BST_CHECKED){
-		prefs.set_replay_record(m_RecordMyTurn.GetCheck() == BST_CHECKED);
-		prefs.set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
-		prefs.set_replay_record_every_change_playing(m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
+		preferences.set_replay_record(m_RecordMyTurn.GetCheck() == BST_CHECKED);
+		preferences.set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
+		preferences.set_replay_record_every_change_playing(m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
 	}
 	else{
-		prefs.set_replay_record(0);
-		prefs.set_replay_record_every_change(0);
-		prefs.set_replay_record_every_change_playing(0);
+		preferences.set_replay_record(0);
+		preferences.set_replay_record_every_change(0);
+		preferences.set_replay_record_every_change_playing(0);
 	}
 
 	m_MaxFrames.GetWindowText(text);
-	prefs.set_replay_max_frames(atoi(text.GetString()));
+	preferences.set_replay_max_frames(atoi(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }

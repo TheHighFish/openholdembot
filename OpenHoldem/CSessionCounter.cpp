@@ -14,7 +14,7 @@ CSessionCounter::CSessionCounter()
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		// Name the mutexes A..Y
-		CString mutex_name = prefs.mutex_name() + "_" + CString(char('A' + i));
+		CString mutex_name = preferences.mutex_name() + "_" + CString(char('A' + i));
 		hMutex = CreateMutex(0, FALSE, mutex_name);
 		if (GetLastError() != ERROR_ALREADY_EXISTS)
 		{

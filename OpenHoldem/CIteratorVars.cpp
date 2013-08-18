@@ -31,7 +31,7 @@ CIteratorVars::~CIteratorVars()
 
 void CIteratorVars::ResetVars()
 {
-	write_log(prefs.debug_prwin(), "[CiteratorVars] Resetting PrWin variables\n");
+	write_log(preferences.debug_prwin(), "[CiteratorVars] Resetting PrWin variables\n");
 	_nit = 0;
 
 	for (int i=0; i<k_number_of_cards_per_player; i++)

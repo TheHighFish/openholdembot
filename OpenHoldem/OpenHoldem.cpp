@@ -96,7 +96,7 @@ BOOL COpenHoldemApp::InitInstance()
 	InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
 	free((void*)m_pszProfileName);
 	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
-	prefs.LoadPreferences();
+	preferences.LoadPreferences();
 	
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
@@ -206,11 +206,11 @@ BOOL COpenHoldemApp::InitInstance()
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 
-	if (prefs.simple_window_title())
+	if (preferences.simple_window_title())
 		m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 
 	// The one and only window has been initialized, so show and update it
-	if (prefs.gui_start_minimized())
+	if (preferences.gui_start_minimized())
 	{
 		m_pMainWnd->ShowWindow(SW_MINIMIZE);
 	}
@@ -231,7 +231,7 @@ BOOL COpenHoldemApp::InitInstance()
 	m_pMainWnd->SetForegroundWindow();
 
 	// autoconnect on start, if preferred
-	if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
+	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
 		p_autoconnector->Connect(NULL);
 	}

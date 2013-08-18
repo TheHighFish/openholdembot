@@ -74,7 +74,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 
 	p_dll_extension->LoadDll("");
 
-	if (prefs.simple_window_title() && theApp.m_pMainWnd)
+	if (preferences.simple_window_title() && theApp.m_pMainWnd)
 		theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 
 	return true;
@@ -139,7 +139,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 
 		p_dll_extension->LoadDll("");
-		if (prefs.simple_window_title() && theApp.m_pMainWnd)
+		if (preferences.simple_window_title() && theApp.m_pMainWnd)
 			theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 	}
 }

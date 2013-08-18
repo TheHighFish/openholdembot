@@ -54,11 +54,11 @@ public:
 	int rankbits()			{ return _rankbitsplayer | _rankbitscommon; }
 	int rankbitsplayer()	{ return _rankbitsplayer; }
 	int rankbitscommon()	{ return _rankbitscommon; }
-	int rankbitspoker()		{ return _srankbitspoker; }
+	int rankbitspoker()		{ return _rankbitspoker; }
 	int srankbits()			{ return _srankbitsplayer | _srankbitscommon; }
 	int srankbitsplayer()	{ return _srankbitsplayer; }
 	int srankbitscommon()	{ return _srankbitscommon; }
-	int srankbitspoker()	{ return _rankbitspoker; }
+	int srankbitspoker()	{ return _srankbitspoker; }
 	//RANK HI
 	int rankhi()			{ return GetRankHi(rankbits()); }
 	int rankhicommon()		{ return GetRankHi(_rankbitscommon); }

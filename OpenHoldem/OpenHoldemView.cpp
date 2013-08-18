@@ -233,7 +233,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		update_it = true;
 	}
 
-	if (prefs.log_symbol_enabled() || update_it || update_all) 
+	if (preferences.log_symbol_enabled() || update_it || update_all) 
 	{
 		DrawCenterInfoBox();
 	}
@@ -358,10 +358,10 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
 	int height = k_basic_height 
 		+ k_extra_height_per_line * k_number_of_default_lines;
-	if (prefs.log_symbol_enabled())
+	if (preferences.log_symbol_enabled())
 	{
 		// Extra lines for symbol-logging
-		height += k_extra_height_per_line * prefs.log_symbol_max_log();
+		height += k_extra_height_per_line * preferences.log_symbol_max_log();
 	}
 
 	// Get size of current client window
@@ -447,7 +447,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	t.Append(s);
 
-	if (prefs.log_symbol_enabled() 
+	if (preferences.log_symbol_enabled() 
 		&& p_symbol_engine_userchair->userchair_confirmed() 
 		&& p_scraper_access->UserHasCards()) 
 	{

@@ -40,13 +40,13 @@ void CSymbolEngineDealerchair::ResetOnMyTurn()
 
 void CSymbolEngineDealerchair::ResetOnHeartbeat()
 {
-	write_log(prefs.debug_symbolengine(), "nchairs: %d\n", 
+	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper->dealer(i))
 		{
-			write_log(prefs.debug_symbolengine(), "Setting dealerchair to %d\n", i);
+			write_log(preferences.debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
 			break;
 		}

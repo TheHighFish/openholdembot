@@ -92,7 +92,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 	while (true)
 	{
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Heartbeat start\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat start\n");
 
 		// Check event for stop thread
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
@@ -109,7 +109,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Scrape window
 
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
 		new_scrape = !NOTHING_CHANGED;
 		p_lazyscraper->DoScrape();
 
@@ -129,9 +129,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
 			// Shoot replay-frame if desired
 			// a) on every change
-			if (prefs.replay_record_every_change() 
+			if (preferences.replay_record_every_change() 
 				// b) on every change when in hand
-				|| (prefs.replay_record_every_change_playing()
+				|| (preferences.replay_record_every_change_playing()
 					&& p_scraper_access->UserHasCards()))
 			{
 				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
@@ -151,25 +151,25 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Save state
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
 		p_game_state->CaptureState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Game state engine
 		// TODO: create a symbol-engine
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
 		p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ProcessFtr.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ProcessFtr.\n");
 		p_game_state->ProcessFtr(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// OH-Validator
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");
 		p_validator->ValidateGameState();
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// DLL - always send state
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
 		p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,20 +183,20 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			iswait = false;
 		}
 
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %i\n", p_symbol_engine_userchair->userchair_confirmed());
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] iswait: %i\n", iswait);
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %i\n", p_autoplayer->autoplayer_engaged());
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %i\n", p_symbol_engine_userchair->userchair_confirmed());
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] iswait: %i\n", iswait);
 		// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 		if (p_autoplayer->autoplayer_engaged() && !iswait)
 		{
-			write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
+			write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 			p_autoplayer->DoAutoplayer();
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Hand history generator
 
-		if (prefs.handhistory_generator_enable())
+		if (preferences.handhistory_generator_enable())
 		{
 			p_handhistory->MakeHistory();
 		}
@@ -208,9 +208,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Finally sleeping
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", prefs.scrape_delay());
-		Sleep(prefs.scrape_delay());
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", preferences.scrape_delay());
+		Sleep(preferences.scrape_delay());
 
-		write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Heartbeat end.\n");
+		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat end.\n");
 	}
 }

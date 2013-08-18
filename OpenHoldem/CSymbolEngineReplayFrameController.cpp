@@ -54,9 +54,9 @@ void CSymbolEngineReplayFrameController::ResetOnNewRound()
 void CSymbolEngineReplayFrameController::ResetOnMyTurn()
 {
 	// If it's my turn, and we have enough stable frames
-	if (prefs.replay_record() 			
+	if (preferences.replay_record() 			
 		&& p_symbol_engine_autoplayer->ismyturn() 
-		&& p_stableframescounter->NumberOfStableFrames() >= prefs.frame_delay())
+		&& p_stableframescounter->NumberOfStableFrames() >= preferences.frame_delay())
 	{
 		ShootReplayFrameIfNotYetDone();
 	}
@@ -72,10 +72,10 @@ void CSymbolEngineReplayFrameController::ShootReplayFrameIfNotYetDone()
 	// Don't shoot replay-frames twice per heartbeat
 	if (_replay_recored_this_turn)
 	{
-		write_log(prefs.debug_replayframes(), "[CSymbolEngineReplayFrameController] Not shooting a replay-frame, because we already shot one this heartbeat\n");
+		write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Not shooting a replay-frame, because we already shot one this heartbeat\n");
 		return;
 	}
-	write_log(prefs.debug_replayframes(), "[CSymbolEngineReplayFrameController] Going to shooting a replay-frame\n");
+	write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Going to shooting a replay-frame\n");
 	CReplayFrame crf;
 	crf.CreateReplayFrame();
 }

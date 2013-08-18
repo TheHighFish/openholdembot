@@ -572,8 +572,8 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	// Restore window location and size, precision preference
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-	::SetWindowPos(m_hWnd, HWND_TOP, min(prefs.formula_x(), max_x), min(prefs.formula_y(), max_y),
-				   prefs.formula_dx(), prefs.formula_dy(), SWP_NOCOPYBITS);
+	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.formula_x(), max_x), min(preferences.formula_y(), max_y),
+				   preferences.formula_dx(), preferences.formula_dy(), SWP_NOCOPYBITS);
 
 	// Debug logging preferences
 	m_wrote_fdebug_header = false;
@@ -2684,10 +2684,10 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	UINT			state = 0;
 
 	GetWindowPlacement(&wp);
-	prefs.set_formula_x(wp.rcNormalPosition.left);
-	prefs.set_formula_y(wp.rcNormalPosition.top);
-	prefs.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	prefs.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+	preferences.set_formula_x(wp.rcNormalPosition.left);
+	preferences.set_formula_y(wp.rcNormalPosition.top);
+	preferences.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+	preferences.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 }
 
 void CDlgFormulaScintilla::HandleEnables(bool AllItems)

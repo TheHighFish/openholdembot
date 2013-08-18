@@ -109,10 +109,10 @@ void ComputeFirstPossibleNextChatTime(void)
 	time_t the_actual_time;
 	time(&the_actual_time);
 	_first_possible_next_chat_time = the_actual_time +
-								   prefs.chat_min_delay() +
+								   preferences.chat_min_delay() +
 								   //  We have to convert to a double here,
 								   //  as integer "division" would be result in zero.
-								   (double(rand()) / RAND_MAX) * prefs.chat_random_delay();
+								   (double(rand()) / RAND_MAX) * preferences.chat_random_delay();
 }
 
 //  Simple messages for the formula guys.

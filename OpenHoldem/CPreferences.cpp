@@ -5,7 +5,7 @@
 #include "MagicNumbers.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
-CPreferences		prefs;
+CPreferences		preferences;
 
 //
 // Constructor and destructor
@@ -29,173 +29,85 @@ void CPreferences::LoadPreferences()
 //
 void CPreferences::InitDefaults(void)
 {
-	// Main window location
-	_main_x = _main_y = 0;
-	_main_dx = 640;
-	_main_dy = 400;
+	// General initialization
+	// that fits most values and purposes
+	for (int i=0; i<k_prefs_last_bool_value; i++)
+	{
+		prefs_bool_values[i] = false;
+	}
+	for (int i=0; i<k_prefs_last_int_value; i++)
+	{
+		prefs_int_values[i] = 0;	
+	}
+	for (int i=0; i<k_prefs_last_CString_value; i++)
+	{
+		prefs_CString_values[i] = "";
+	}
+	for (int i=0; i<k_prefs_last_double_value; i++)
+	{
+		prefs_double_values[i] = 0.0;
+	}
 
-	// Formula window location
-	_formula_x = _formula_y = 0;
-	_formula_dx = 640;
-	_formula_dy = 400;
+	// Special initialization of data that requires special values
+	prefs_bool_values[k_prefs_engage_autoplayer] = true;
+	prefs_bool_values[k_prefs_trace_enabled] = true;
+	prefs_bool_values[k_prefs_basic_logging_enabled] = true;
+	prefs_bool_values[k_prefs_error_logging_enabled] = true;
+	prefs_bool_values[k_prefs_dll_logging_enabled] = true;
+	prefs_bool_values[k_prefs_debug_preferences] = false; // To assure that we log at least the initialization of this value
+	prefs_bool_values[k_prefs_rebuy_condition_no_cards] = true;
+	prefs_bool_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
+	prefs_bool_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
+	prefs_bool_values[k_prefs_configurationcheck_input_settings] = true;
+	prefs_bool_values[k_prefs_configurationcheck_theme_settings] = true;
+	prefs_bool_values[k_prefs_configurationcheck_font_settings] = true;
 
-	// Scraper window location
-	_scraper_x = _scraper_y = 0;
-	_scraper_dx = 340;
-	_scraper_dy = 250;
-
-	// autoplayer
-	_frame_delay = 2;
-	_click_delay  = 250;
-	_swag_delay_1 = 400;
-	_swag_delay_2 = 400;
-	_swag_delay_3 = 700;
-	_engage_autoplayer = true;
-	_swag_use_comma = false;
-
-	// scraper
-	_scrape_delay = 750;
-
-	// dll
-	// Default is: empty string
-	// Setting the string to "user.dll" whenever it is empty
-	// caused problems for the people who want it undefined:
-	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=11556
-	_dll_name = "";
-
-	// scraper zoom level
-	_scraper_zoom = 2;  // 4x
-
-	// Poker Tracker
-	_pt_ip_addr = "127.0.0.1";
-	_pt_port = "5432";
-	_pt_user = "pokertracker";
-	_pt_pass = "";
-	_pt_dbname = "";
-
-	// ICM
-	_icm_prize1 = 0.5;
-	_icm_prize2 = 0.3;
-	_icm_prize3 = 0.2;
-	_icm_prize4 = 0.0;
-	_icm_prize5 = 0.0;
-
-	// Replay frames
-	_replay_record = false;
-	_replay_record_every_change = false;
-	_replay_max_frames = 100;
-	_replay_record_every_change_playing = false;
-
-	//  PokerChat
-	//  Just a security measure against crazy bot formulas...
-	_chat_min_delay = 600;	  //  seconds
-	_chat_random_delay = 3000;  //  seconds;
-
+	prefs_int_values[k_prefs_main_dx] = 640;
+	prefs_int_values[k_prefs_main_dy] = 400;
+	prefs_int_values[k_prefs_formula_dx] = 640;
+	prefs_int_values[k_prefs_formula_dy] = 400;
+	prefs_int_values[k_prefs_scraper_dx] = 340;
+	prefs_int_values[k_prefs_scraper_dy] = 250;
+	prefs_int_values[k_prefs_frame_delay] = 2;
+	prefs_int_values[k_prefs_click_delay] = 250;
+	prefs_int_values[k_prefs_swag_delay_1] = 400;
+	prefs_int_values[k_prefs_swag_delay_2] = 400;
+	prefs_int_values[k_prefs_swag_delay_3] = 700;
+	prefs_int_values[k_prefs_scrape_delay] = 750;
+	prefs_int_values[k_prefs_scraper_zoom] = 2;			// 4x
+	prefs_int_values[k_prefs_replay_max_frames] = 100;
+	prefs_int_values[k_prefs_chat_min_delay] = 600;		//  seconds
+	prefs_int_values[k_prefs_chat_random_delay] = 3000;	//  seconds;
+	prefs_int_values[k_prefs_log_symbol_max_log] = 5;
+	prefs_int_values[k_prefs_log_max_logsize] = 10;		// MB
+	prefs_int_values[k_prefs_validator_enabled] = 1;		// 0 = disabled; 1 = when it's my turn; 2 = always
+	prefs_int_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;
+	prefs_int_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
+	prefs_int_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;
+	prefs_int_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
+	
+	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";
+	prefs_CString_values[k_prefs_pt_port] = "5432";
+	prefs_CString_values[k_prefs_pt_user] = "pokertracker";
+	prefs_CString_values[k_prefs_rebuy_script] = "Rebuy.exe";
+	prefs_CString_values[k_prefs_window_class_name] = "OpenHoldem";
+	prefs_CString_values[k_prefs_mutex_name] = "OHAntiColl";
+	
 	//  Perl
-	_perl_default_formula = "";
-	_perl_editor = "C:\\Windows\\notepad.exe";
 	TCHAR windows_path[MAX_PATH];
 	if (S_OK == SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, windows_path)) 
 	{
-		_perl_editor = windows_path;
-		_perl_editor += _T("\\notepad.exe");
+		prefs_CString_values[k_prefs_perl_editor] = windows_path;
+		prefs_CString_values[k_prefs_perl_editor] += _T("\\notepad.exe");
 	}
 	else
 	{
-		_perl_editor = _T("C:\\Windows\\notepad.exe");
+		prefs_CString_values[k_prefs_perl_editor] = _T("C:\\Windows\\notepad.exe");
 	}
-
-	// log$ loggin
-	_log_symbol_enabled = false;
-	_log_symbol_max_log = 5;
-
-	_trace_enabled = true;
-	_basic_logging_enabled = true;
-	_error_logging_enabled = true;
-	_dll_logging_enabled = true;
-
-	// Logging and debugging
-	_disable_msgbox = false;
-	_log_max_logsize = 10; // MB
-
-	// Debugging
-	_debug_autoconnector = false;
-	_debug_autoplayer = false;
-	_debug_heartbeat = false;
-	_debug_prwin = false;
-	_debug_icm = false;
-	_debug_occlusionchecker = false;
-	_debug_pokertracker = false;
-	_debug_rebuy = false;
-	_debug_replayframes = false;
-	_debug_scraper = false;
-	_debug_sessioncounter = false;
-	_debug_stableframescounter = false;
-	_debug_symbolengine = false;
-	_debug_blindlocking = false;
-	_debug_memorysymbols = false;
-	_debug_tablemap_loader = false;
-	_debug_filesystem_monitor = false;
-	_debug_table_positioner = false;
-	_debug_istournament = false;
-	_debug_gui = false;
-	_debug_table_limits = false;
-	_debug_lazy_scraper = false;
-	_debug_betsize_adjustment = false;
-	_debug_handreset_detector = false;
-	_debug_engine_container = false;
-	_debug_handhistory = false;
-	_debug_alltherest = false;
-	_debug_preferences = false;
-
-	// Validator
-	//   0 = disabled
-	//   1 = when it's my turn
-	//   2 = always
-	_validator_enabled = 1;
-	_validator_use_heuristic_rules = false;
-	_validator_stop_on_error = false;
-	_validator_shoot_replayframe_on_error = false;
-
-	// Auto-connector
-	_autoconnector_when_to_connect = k_AutoConnector_Connect_Permanent;
-	_autoconnector_close_when_table_disappears = false;
-
-	// GUI
-	_gui_start_minimized = false; 
-	_gui_disable_progress_dialog = false;
-
-	// Rebuy
-	_rebuy_condition_no_cards = true;
-	_rebuy_condition_change_in_handnumber = true;
-	_rebuy_condition_heuristic_check_for_occlusion = true;
-	_rebuy_minimum_time_to_next_try = 30;
-	_rebuy_script = "Rebuy.exe";
-
-	// Configuration check
-	_configurationcheck_input_settings = true;
-	_configurationcheck_theme_settings = true;
-	_configurationcheck_font_settings = true;
-
-	// Lazy scraping
-	_lazy_scraping_when_to_scrape = k_lazy_scraping_always;
-
-	// Handhistory generator
-	_handhistory_generator_enable = false;
-
-	// Table positioner
-	_table_positioner_options = k_position_tables_tiled;
-
-	// Obscure
-	_window_class_name = "OpenHoldem";
-	_mutex_name= "OHAntiColl";
-	_simple_window_title = false;
-
-	// CFileDialog saved paths
-	_path_ohf = "";
-	_path_tm = "";
-	_path_perl = "";
-	_path_dll = "";
+		
+	prefs_double_values[k_prefs_icm_prize1] = 0.5;
+	prefs_double_values[k_prefs_icm_prize2] = 0.3;
+	prefs_double_values[k_prefs_icm_prize3] = 0.2;
 }
 
 //
@@ -381,14 +293,6 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 		*registry_value = atoi(value);
 }
 
-void CPreferences::ReadReg(const LPCTSTR registry_key, unsigned int *registry_value)
-{
-	CString value;
-	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
-	if (!value.IsEmpty())
-		*registry_value = atoi(value);
-}
-
 void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 {
 	CString value;
@@ -406,7 +310,7 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 }
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const int registry_value)
-//  This method is used to write unsigned ints and booleans, too.
+//  This method is used to write ints and booleans, too.
 {
 	CString str;
 	str.Format("%d", registry_value);
@@ -431,7 +335,7 @@ const CString CPreferences::versus_path()
 	TCHAR Buffer[MAX_PATH];
 	GetModuleFileName(NULL, Buffer, MAX_PATH);
 	CString ExecutableFileName = Buffer;
-	unsigned int PositionOfLastDelimiter = ExecutableFileName.ReverseFind('\\');
+	int PositionOfLastDelimiter = ExecutableFileName.ReverseFind('\\');
 	// Truncate path. Keep last "\" to get versus_path.
 	return(ExecutableFileName.Left(PositionOfLastDelimiter + 1));
 }

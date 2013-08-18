@@ -31,9 +31,9 @@ CAutoConnector						*p_autoconnector = NULL;
 
 CAutoConnector::CAutoConnector()
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
 
-	CString MutexName = prefs.mutex_name() + "AutoConnector";
+	CString MutexName = preferences.mutex_name() + "AutoConnector";
 	_autoconnector_mutex = new CMutex(false, MutexName);
 
 	p_sharedmem->MarkPokerWindowAsUnAttached();
@@ -45,14 +45,14 @@ CAutoConnector::~CAutoConnector()
 {
 	// Releasing the mutex in case we hold it.
 	// If we don't hold it, Unlock() will "fail" silently.
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	_autoconnector_mutex->Unlock();
 	if (_autoconnector_mutex != NULL)
 	{
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 }
@@ -66,7 +66,7 @@ bool CAutoConnector::IsConnected()
 
 void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd)
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Check_TM_Against_All_Windows(..)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Check_TM_Against_All_Windows(..)\n");
 
 	if (targetHWnd == NULL)
 		EnumWindows(EnumProcTopLevelWindowList, (LPARAM) tablemap_index);
@@ -83,8 +83,8 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	STableList			tablelisthold;
 	int					tablemap_index = (int)(lparam);
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..)\n");
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Tablemap nr. %d\n", tablemap_index);
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap nr. %d\n", tablemap_index);
 	// If this is not a top level window, then return
 	if (GetParent(hwnd) != NULL)
 		return true;
@@ -101,7 +101,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	title = text;
 
 	// Found a candidate window, get client area rect
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	GetClientRect(hwnd, &crect);
 
 	// See if it matches the currently loaded table map
@@ -114,11 +114,11 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 		// and the indexes will not match.
 		if (p_sharedmem->PokerWindowAttached(hwnd))
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
 		}
 		else
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
 			tablelisthold.title = title;
 			tablelisthold.path = p_tablemap_loader->GetTablemapPathToLoad(tablemap_index);
@@ -161,13 +161,13 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	BOOL				bFound = false;
 	CFileFind			hFile;
 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
 
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
 	if (!_autoconnector_mutex->Lock(500))
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
+		write_log(preferences.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
 		return false; 
 	}
 
@@ -176,7 +176,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	
 	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++)
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
+		write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
 			tablemap_index, p_tablemap_loader->NumberOfTableMapsLoaded());
 		Check_TM_Against_All_Windows_Or_TargetHWND(tablemap_index, targetHWnd);
 	}
@@ -190,7 +190,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		int cySize = GetSystemMetrics(SM_CYSIZE);
 		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
 
-		if (prefs.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
+		if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 		{
 			if (cySize != 18 || cyMenuSize != 19)
 			{
@@ -220,12 +220,12 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 		if (SelectedItem == k_undefined)
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
 			p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
 		}
 		else		
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
 			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
@@ -290,7 +290,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_table_positioner->PositionMyWindow();
 		}
 	}
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);
 }
@@ -328,7 +328,7 @@ void CAutoConnector::LoadScraperDLL()
 	}
 	else
 	{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
 	}
 }
 
@@ -364,21 +364,21 @@ void CAutoConnector::LoadScraperPreprocessorDLL()
 	}
 	else
 	{
-		write_log(prefs.debug_autoconnector(), "[CAutoConnector] scraperpreprocessor.dll loaded, ProcessMessage found.\n");
+		write_log(preferences.debug_autoconnector(), "[CAutoConnector] scraperpreprocessor.dll loaded, ProcessMessage found.\n");
 	}
 }
 
 void CAutoConnector::Disconnect()
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
 
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
 	_autoconnector_mutex->Lock(INFINITE);
 
 	// stop threads
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Stopping heartbeat-thread\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping heartbeat-thread\n");
 	if (p_heartbeat_thread)
 	{
 		delete p_heartbeat_thread;
@@ -386,7 +386,7 @@ void CAutoConnector::Disconnect()
 	}
 
 	// Make sure autoplayer is off
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
 	p_autoplayer->set_autoplayer_engaged(false);
 
 	// Send "disconnect" to scraper DLL, if loaded
@@ -410,11 +410,11 @@ void CAutoConnector::Disconnect()
 	p_flags_toolbar->EnableButtonsOnDisconnect();
 
 	// Mark table as not attached
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 
 	// Release mutex as soon as possible, after critical work is done
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();	
 
 	// Delete bitmaps
@@ -443,7 +443,7 @@ void CAutoConnector::Disconnect()
 	stop_log();
 	
 	// Close OH, when table disappears and leaving enabled in preferences.
-	if (prefs.autoconnector_close_when_table_disappears())
+	if (preferences.autoconnector_close_when_table_disappears())
 	{
 		PostQuitMessage(0);
 	}
@@ -452,7 +452,7 @@ void CAutoConnector::Disconnect()
 
 int CAutoConnector::SelectTableMapAndWindow(int Choices)
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindow(..)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindow(..)\n");
 	// Always connecting automatically
 	return SelectTableMapAndWindowAutomatically(Choices);
 }
@@ -460,17 +460,17 @@ int CAutoConnector::SelectTableMapAndWindow(int Choices)
 
 int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 {
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowAutomatically(..)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowAutomatically(..)\n");
 	for (int i=0; i<Choices; i++) 
 	{
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
 		{
-			write_log(prefs.debug_autoconnector(), "[CAutoConnector] Chosen (table, TM)-pair in list: %d\n", i);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Chosen (table, TM)-pair in list: %d\n", i);
 			return i;
 		}
 	}
 	// No appropriate table found
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] No appropriate table found.\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] No appropriate table found.\n");
 	return -1;
 }
 
@@ -480,6 +480,6 @@ double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 	time_t CurrentTime;
 	time(&CurrentTime);
 	double _TimeSincelast_failed_attempt_to_connect = difftime(CurrentTime, last_failed_attempt_to_connect);
-	write_log(prefs.debug_autoconnector(), "[CAutoConnector] TimeSincelast_failed_attempt_to_connect %f\n", _TimeSincelast_failed_attempt_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] TimeSincelast_failed_attempt_to_connect %f\n", _TimeSincelast_failed_attempt_to_connect);
 	return _TimeSincelast_failed_attempt_to_connect;
 }

@@ -72,7 +72,7 @@ void InstantiateAllSingletons()
 	if (!p_formula) 
 		p_formula = new CFormula;
 	if (!p_autoplayer) 
-		p_autoplayer = new CAutoplayer(false, prefs.mutex_name());
+		p_autoplayer = new CAutoplayer(false, preferences.mutex_name());
 	if (!p_pokertracker_thread)  
 		p_pokertracker_thread = new CPokerTrackerThread;
 	if (!p_dll_extension) 

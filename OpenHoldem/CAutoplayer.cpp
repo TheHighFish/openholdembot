@@ -104,16 +104,16 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas()
 	// for that logic, as with a small scrape-delay it was
 	// still possible to act multiple times within the same second.
 	// Scrape_delay() should always be > 0, there's a check in the GUI.
-	assert(prefs.scrape_delay() > 0);
-	int hearbeats_to_pause = 4 / prefs.scrape_delay();
+	assert(preferences.scrape_delay() > 0);
+	int hearbeats_to_pause = 4 / preferences.scrape_delay();
 	if  (hearbeats_to_pause < 1)
 	{
  		hearbeats_to_pause = 1;
  	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
 		hearbeats_to_pause);
 	bool act_this_heartbeat = ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() act_this_heartbeat: %s\n",
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() act_this_heartbeat: %s\n",
 		Bool2CString(act_this_heartbeat));
 	return act_this_heartbeat;
 }
@@ -127,7 +127,7 @@ bool CAutoplayer::DoBetPot(void)
 	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
 				k_autoplayer_functionname[i]);
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
@@ -154,15 +154,15 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
 	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_autoplayer_functionname[i], Bool2CString(function_result));
 		if (function_result)
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): no\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): no\n");
 	return false;
 }
 
@@ -172,24 +172,24 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; ++i)
 	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_autoplayer_functionname[i], Bool2CString(function_result));
 		if (function_result)
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): no\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): no\n");
 	return false;
 }
 
 bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() 
 {
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
 	if (!AnyPrimaryFormulaTrue())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
 		return false;
 	}
 	assert(p_symbol_engine_autoplayer->isfinalanswer());
@@ -223,7 +223,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	if (p_autoplayer_functions->f$rais())
 	{
 		if (p_casino_interface->ClickButton(k_autoplayer_function_raise))
@@ -263,13 +263,13 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 {
 	if (!TimeToHandleSecondaryFormulas())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 		return false;
 	}
 	if (!AnySecondaryFormulaTrue())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
 	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
@@ -331,12 +331,12 @@ bool CAutoplayer::DoChat(void)
 {
 	if (!IsChatAllowed())
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
 	if ((p_autoplayer_functions->f$chat() == 0) || (_the_chat_message == NULL))
 	{
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
 		return false;
 	}
 
@@ -349,7 +349,7 @@ bool CAutoplayer::DoChat(void)
 bool CAutoplayer::DoAllin(void)
 {
 	bool success = false;
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
 
 	int number_of_clicks = 1; // Default is: single click with the mouse
 	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
@@ -366,7 +366,7 @@ bool CAutoplayer::DoAllin(void)
 	{
 		// Clicking max (or allin) and then raise
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
-			k_autoplayer_function_raise, prefs.swag_delay_3());
+			k_autoplayer_function_raise, preferences.swag_delay_3());
 
 		write_logautoplay(ActionConstantNames(k_action_allin));
 		return success;
@@ -397,13 +397,13 @@ bool CAutoplayer::DoAllin(void)
 
 void CAutoplayer::DoAutoplayer(void) 
 {
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
 
 	CheckBringKeyboard();
 
 	p_scraper_access->GetNeccessaryTablemapObjects();
 	/* [TODO] better log-file format !! 	
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
 		num_buttons_visible, 
 		allin_option_available ? 'A' : '.',
 		raise_button_available ? 'R' : '.',
@@ -419,18 +419,18 @@ void CAutoplayer::DoAutoplayer(void)
 		p_autoplayer_functions->CalcSecondaryFormulas();
 		if (!ExecuteSecondaryFormulasIfNecessary())	
 		{
-			write_log(prefs.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
 			// Since OH 4.0.5 we support autoplaying immediatelly after connection
 			// without the need to know the userchair to act on secondary formulas.
 			// However: for primary formulas (f$alli, f$rais, etc.)
 			// knowing the userchair (combination of cards and buttons) is a must.
 			if (!p_symbol_engine_userchair->userchair_confirmed())
 			{
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
+				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
 			}
 			else
 			{
-				write_log(prefs.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
+				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
 				if(p_symbol_engine_autoplayer->isfinalanswer())
 				{
 					p_autoplayer_functions->CalcPrimaryFormulas();
@@ -438,13 +438,13 @@ void CAutoplayer::DoAutoplayer(void)
 				}
 				else
 				{
-					write_log(prefs.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
+					write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
 				}
 			}
 		}
 	}
 	FinishActionSequenceIfNecessary();
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
 
@@ -454,7 +454,7 @@ bool CAutoplayer::DoSwag(void)
 	{
 		return p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
 	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
 }
 
@@ -467,7 +467,7 @@ bool CAutoplayer::DoPrefold(void)
 		p_symbols->RecordPrevAction(k_action_fold);
 		write_logautoplay(ActionConstantNames(k_action_fold));
 		p_autoplayer_functions->CalcAutoTrace();
-		write_log(prefs.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}
 	return false;
@@ -483,6 +483,6 @@ bool CAutoplayer::HandleInterfacebuttonsI86(void)
 			return true;
 		}
 	}
-	write_log(prefs.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
 	return false;
 }

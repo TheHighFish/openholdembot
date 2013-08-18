@@ -27,17 +27,17 @@ void CConfigurationCheck::CheckEverything()
 	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (prefs.configurationcheck_input_settings())
+	if (preferences.configurationcheck_input_settings())
 	{
 		CheckInputSettings();
 	}
 
-	if (prefs.configurationcheck_theme_settings())
+	if (preferences.configurationcheck_theme_settings())
 	{
 		CheckForClassicalTheme();
 	}
 
-	if (prefs.configurationcheck_font_settings())
+	if (preferences.configurationcheck_font_settings())
 	{
 		CheckForFontSmoothing();
 	}
@@ -55,7 +55,7 @@ bool CConfigurationCheck::CheckOfPerlInstallationNecessary()
 	// We better make that check dependend of the perl-preferences,
 	// instead of a separate option that might be turned off
 	// or might confuse other users.
-	return (prefs.perl_default_formula() != "");
+	return (preferences.perl_default_formula() != "");
 }
 
 HKEY CConfigurationCheck::GetHive(CString mhive)

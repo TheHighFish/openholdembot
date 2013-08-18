@@ -75,11 +75,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	double		prizes[MAX_PLAYERS] = {0};
 	double		stacks[MAX_PLAYERS] = {0};
 	int			i = 0, j = 0;
-	prizes[0] = prefs.icm_prize1();
-	prizes[1] = prefs.icm_prize2();
-	prizes[2] = prefs.icm_prize3();
-	prizes[3] = prefs.icm_prize4();
-	prizes[4] = prefs.icm_prize5();
+	prizes[0] = preferences.icm_prize1();
+	prizes[1] = preferences.icm_prize2();
+	prizes[2] = preferences.icm_prize3();
+	prizes[3] = preferences.icm_prize4();
+	prizes[4] = preferences.icm_prize5();
 
 	int			sym_userchair = p_symbol_engine_userchair->userchair();
 	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();

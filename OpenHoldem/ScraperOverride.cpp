@@ -80,7 +80,7 @@ void PopulateScraperStateWithScrapedValues()
 void CallScraperOverrideDLL()
 {
 	// Call the scraper override !! extra option for logging?
-	write_log(prefs.debug_heartbeat(), "[HeartBeatThread] Sending scraper data to override DLL.\n");
+	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sending scraper data to override DLL.\n");
 	(theApp._dll_scraper_override) (&ss);
 }
 

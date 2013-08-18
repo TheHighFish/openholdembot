@@ -57,7 +57,7 @@ CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected)
 void CValidator::ValidateSingleRule()
 {
 	// Heuristic rules and not to be tested?
-	if (_heuristic && !prefs.validator_use_heuristic_rules())
+	if (_heuristic && !preferences.validator_use_heuristic_rules())
 	{
 		return;
 	}
@@ -70,13 +70,13 @@ void CValidator::ValidateSingleRule()
 			if (_no_errors_this_heartbeat)
 			{
 				// First error: shoot replayframe, if needed
-				if (prefs.validator_shoot_replayframe_on_error())
+				if (preferences.validator_shoot_replayframe_on_error())
 				{
 					p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}
-			if (prefs.validator_stop_on_error()) 
+			if (preferences.validator_stop_on_error()) 
 			{ 
 				p_autoplayer->set_autoplayer_engaged(false); 
 			}
@@ -194,9 +194,9 @@ double CValidator::gws(const char *the_Symbol)
 void CValidator::ValidateGameState()
 {
 	if (// Always enabled?
-		(prefs.validator_enabled() == 2)
+		(preferences.validator_enabled() == 2)
 		// Enabled, when it's my turn?
-		|| ((prefs.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
+		|| ((preferences.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
 		// Manually enabled via toolbar?
 		|| (_enabled_manually))
 	{

@@ -24,9 +24,9 @@ CFileSystemMonitor *p_filesystem_monitor = NULL;
 
 CFileSystemMonitor::CFileSystemMonitor()
 {
-	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
+	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
 	absolute_path_to_scraper_directory = p_filenames->ScraperDirectory();
-	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
+	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
 		absolute_path_to_scraper_directory);
 	// Create directory in case it does not exist (mainly debug sessions).
 	CreateDirectory(absolute_path_to_scraper_directory, NULL);
@@ -49,8 +49,8 @@ void CFileSystemMonitor::InitMonitor()
 		changes_to_monitor);
 	if ((dwChangeHandle == INVALID_HANDLE_VALUE) || (dwChangeHandle == NULL))
 	{
-		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
-		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Going to terminate...\n");
+		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
+		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Going to terminate...\n");
 		ExitProcess(GetLastError()); 
 	}
 }
@@ -65,10 +65,10 @@ bool CFileSystemMonitor::AnyChanges()
 		0);					// time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0)
 	{
-		write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
+		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
 		return true;
 	}
-	write_log(prefs.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
+	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
 	// Resetting change handle for next query
 	dwChangeHandle = 0;
 	return false;

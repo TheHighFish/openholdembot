@@ -74,7 +74,7 @@ void CDllExtension::LoadDll(const char * path)
 		dll_path = GetDLLSpecifiedInFormula();
 		if (dll_path == "")
 		{
-			dll_path = prefs.dll_name().GetString();
+			dll_path = preferences.dll_name().GetString();
 		}
 	}
 

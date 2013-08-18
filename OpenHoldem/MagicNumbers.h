@@ -55,16 +55,20 @@ const int k_number_of_cards_per_deck   =  52;
 const int k_number_of_starting_hands   = 169;
 
 // poker constants
-const int k_pokerval_hicard        = 0x00000001;
-const int k_pokerval_onepair       = 0x01000000;
-const int k_pokerval_twopair       = 0x02000000;
-const int k_pokerval_threeofakind  = 0x04000000;
-const int k_pokerval_straight      = 0x08000000;
-const int k_pokerval_flush         = 0x10000000;
-const int k_pokerval_fullhouse     = 0x20000000;
-const int k_pokerval_fourofakind   = 0x40000000;
-const int k_pokerval_straightflush = 0x80000000;
-const int k_pokerval_royalflush    = 0x800EDCBA;
+// The type has to be unsigned int, 
+// because straightflush and royalflush excide the precision of (signed) int.
+// For the same reason the bitwise operations in the symbol-engine
+// have to be executed with unsigned ints too.
+const unsigned int k_pokerval_hicard        = 0x00000001;
+const unsigned int k_pokerval_onepair       = 0x01000000;
+const unsigned int k_pokerval_twopair       = 0x02000000;
+const unsigned int k_pokerval_threeofakind  = 0x04000000;
+const unsigned int k_pokerval_straight      = 0x08000000;
+const unsigned int k_pokerval_flush         = 0x10000000;
+const unsigned int k_pokerval_fullhouse     = 0x20000000;
+const unsigned int k_pokerval_fourofakind   = 0x40000000;
+const unsigned int k_pokerval_straightflush = 0x80000000;
+const unsigned int k_pokerval_royalflush    = 0x800EDCBA;
 
 // Game type
 const int k_gametype_unknown = -1;

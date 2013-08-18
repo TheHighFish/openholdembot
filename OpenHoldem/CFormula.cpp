@@ -600,7 +600,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 	double			time_elapsed = 0.;
 	sData			*data = (sData*) (pCUPDUPData->GetAppData());
 	CGrammar		gram;
-	bool            gui_enable_progress_dialog = !prefs.gui_disable_progress_dialog();
+	bool            gui_enable_progress_dialog = !preferences.gui_disable_progress_dialog();
 
 	pCUPDUPData->SetProgress("", 0, false);
 
@@ -683,11 +683,11 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 bool CFormula::DoesFormulaAlreadyExist(const CString new_name)
 {
 	int number_of_formulae = _formula.mFunction.GetCount(); 
-	write_log(prefs.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): number_of_formulae = [%d]\n", 
+	write_log(preferences.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): number_of_formulae = [%d]\n", 
 		number_of_formulae);
 	for (int i=0; i<number_of_formulae; i++)
 	{
-		write_log(prefs.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
+		write_log(preferences.debug_alltherest(), "CFormula::DoesFormulaAlreadyExist(): [%s] == [%s]\n",
 			new_name, _formula.mFunction[i].func);
 		if (new_name == _formula.mFunction[i].func)
 		{
@@ -702,7 +702,7 @@ bool CFormula::DoesHandlistAlreadyExist(const CString new_name)
 	int number_of_handlists = _formula.mHandList.GetCount(); 
 	for (int i=0; i<number_of_handlists; i++)
 	{
-		write_log(prefs.debug_alltherest(), "CFormula::DoesHandlistAlreadyExist(): [%s] == [%s]\n",
+		write_log(preferences.debug_alltherest(), "CFormula::DoesHandlistAlreadyExist(): [%s] == [%s]\n",
 			new_name, _formula.mHandList[i].list);
 		if (new_name == _formula.mHandList[i].list)
 		{
