@@ -2699,7 +2699,7 @@ NEW STUFF:
 
 - A new .whf section called "##dll##" is now supported.
   The implementation is slightly different than WH's, due to the fact that in OH, the dll's name to be
-  loaded can be set in prefs. OH will use this decision path to determine
+  loaded can be set in preferences. OH will use this decision path to determine
   which dll to load:
   A. On startup:
      1. Is "Load DLL on startup" ticked in Edit/Preferences? 
