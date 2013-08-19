@@ -20,6 +20,11 @@ BUG FIXES:
   Therefore PT-symbols did not work.
   Thanks to JokeDoke for reporting, Hapil for helping us to find the bug.
   [THF, Termitapalahermita]
+- The poker-values for straightflush 0x80000000 and royalflush 0x800EDCBA
+  exceeded the precision of (signed) integers and therefore caused 
+  an integer overflow. This has now been fixed.
+  Thanks to Daniel for reporting.
+  [THF]
 
 v4.2.0 2013-08-04
 ==================
