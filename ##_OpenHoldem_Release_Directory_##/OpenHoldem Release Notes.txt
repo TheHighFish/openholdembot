@@ -1,4 +1,4 @@
-v4.2.1 2013-08-xx
+v4.2.1 2013-08-19
 ==================
 BUG FIXES:
 - During refactoring of the iterator-thread ("i-j-fetish") 
@@ -25,6 +25,11 @@ BUG FIXES:
   an integer overflow. This has now been fixed.
   Thanks to Daniel for reporting.
   [THF]
+- The symbol-engine confused rankbits and srankbits at some point.
+  Therefore rankhi, ranklo, etc. didn't work. This has now been fixed.
+  Thanks to Daniel for reporting.
+  [THF]
+
 
 v4.2.0 2013-08-04
 ==================
