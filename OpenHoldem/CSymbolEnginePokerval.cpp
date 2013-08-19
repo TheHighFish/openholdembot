@@ -388,12 +388,19 @@ void CSymbolEnginePokerval::CalculateRankBits()
 		 (1<<((_pokerval>>0)&0xf)) : 0);
 	_srankbitspoker += ((_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
 
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitsplayer  = %i\n", _rankbitsplayer);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitscommon  = %i\n", _rankbitscommon);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitspoker   = %i\n", _rankbitspoker);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitsplayer = %i\n", _srankbitsplayer);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitscommon = %i\n", _srankbitscommon);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitspoker  = %i\n", _srankbitspoker);
+
 	AssertRange(_rankbitsplayer,  0, k_rankbits_all_cards_111_111_111_111_110);
 	AssertRange(_rankbitscommon,  0, k_rankbits_all_cards_111_111_111_111_110); 
 	AssertRange(_rankbitspoker,   0, k_rankbits_all_cards_111_111_111_111_110);  
 	AssertRange(_srankbitsplayer, 0, k_rankbits_all_cards_111_111_111_111_110);  
 	AssertRange(_srankbitscommon, 0, k_rankbits_all_cards_111_111_111_111_110); 
-	AssertRange(_srankbitspoker,  0, k_rankbits_all_cards_111_111_111_111_110); 
+	AssertRange(_srankbitspoker,  0, k_rankbits_all_cards_111_111_111_111_110); 	
 }
 
 
