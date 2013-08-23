@@ -14,6 +14,7 @@
 // Required OpenHoldem version: 4.2.0 or later
 //   * because we make use of the new f$init-functions
 //   * because we make use of the new msgbox$-symbol
+//   * because of new-style PT-naming
 //
 // Contributors:
 //   Bob3456
@@ -4635,16 +4636,16 @@ f$OpenPPL_Middle
 //*****************************************************************************
 
 ##f$OpenPPL_PT_LastRaiser_Hands##
-(raischair != -1) ? pt_rhands : -1
+(raischair != -1) ? pt_r_hands : -1
 
 ##f$OpenPPL_PT_LastRaiser_PFR##
-f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_rpfr : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_r_pfr : -1
 
 ##f$OpenPPL_PT_LastRaiser_VPIP##
-f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_rvpip : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_r_vpip : -1
 
 ##f$OpenPPL_PT_LastRaiser_AttemptToStealBlinds##
-f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_AttemptToStealBlinds) ? pt_rpfats : -1
+f$OpenPPL_RaiserExists && (f$OpenPPL_PT_LastRaiser_Hands >= f$OpenPPL_ConstMinHandsFor_PT_AttemptToStealBlinds) ? pt_r_pfats : -1
 
 ##f$OpenPPL_PT_BigBlind_FoldBBToSteal##
 f$OpenPPL_BigBlindChair == 0 ? pt_fbbts0 :
