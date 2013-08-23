@@ -17,6 +17,11 @@ inline void SwapInts(int *first, int *second)
 	*second = temp;
 }
 
+inline bool IsInteger(double k) 
+{ 
+	return std::floor(k) == k; 
+}
+
 inline int RankOfCard(int card)
 {
 	// Suit is stored in bits 0..3

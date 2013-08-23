@@ -18,6 +18,125 @@ CPreferences::~CPreferences()
 {
 }
 
+// registry keys 
+const CString k_registry_keys_for_bools[k_prefs_last_bool_value] =
+{
+	"debug_preferences",	
+	"debug_autoconnector",
+	"debug_autoplayer",
+	"debug_heartbeat",
+	"debug_prwin",
+	"debug_icm",
+	"debug_occlusionchecker",
+	"debug_pokertracker",
+	"debug_rebuy",
+	"debug_replayframes",
+	"debug_scraper",
+	"debug_sessioncounter",
+	"debug_stableframescounter",
+	"debug_symbolengine",
+	"debug_blindlocking",
+	"debug_memorysymbols",
+	"debug_tablemap_loader",
+	"debug_filesystem_monitor",
+	"debug_handhistory",
+	"debug_alltherest",
+	"debug_table_positioner",
+	"debug_istournament",
+	"debug_gui",
+	"debug_table_limits",
+	"debug_lazy_scraper",
+	"debug_betsize_adjustment",
+	"debug_handreset_detector",
+	"debug_engine_container",
+	"engage_autoplayer",
+	"swag_use_comma",
+	"replay_record",
+	"replay_record_every_change_playing",
+	"replay_record_every_change",
+	"log_symbol_enabled",
+	"trace_enabled",
+	"basic_logging_enabled",
+	"error_logging_enabled",
+	"dll_logging_enabled",
+	"disable_msgbox",
+	"validator_stop_on_error",
+	"validator_use_heuristic_rules",
+	"validator_shoot_replayframe_on_error",
+	"autoconnector_close_when_table_disappears",
+	"gui_start_minimized", 
+	"gui_disable_progress_dialog",
+	"rebuy_condition_no_cards",
+	"rebuy_condition_change_in_handnumber",
+	"rebuy_condition_heuristic_check_for_occlusion",
+	"configurationcheck_input_settings",
+	"configurationcheck_theme_settings",
+	"configurationcheck_font_settings",
+	"handhistory_generator_enable",
+	"simple_window_title",
+};
+
+const CString k_registry_keys_for_ints[k_prefs_last_int_value] =
+{
+	"replay_max_frames",
+	"frame_delay",
+	"click_delay",
+	"swag_delay_1",
+	"swag_delay_2",
+	"swag_delay_3",
+	"scrape_delay",
+	"chat_min_delay",
+	"chat_random_delay",
+	"log_symbol_max_log",
+	"log_max_logsize",
+	"formula_x",	
+	"formula_y",
+	"formula_dx",
+	"formula_dy",
+	"scraper_x",
+	"scraper_y",
+	"scraper_dx",
+	"scraper_dy",
+	"main_x",
+	"main_y",
+	"main_dx",
+	"main_dy",
+	"validator_enabled", 
+	"autoconnector_when_to_connect",
+	"rebuy_minimum_time_to_next_try",
+	"lazy_scraping_when_to_scrape",
+	"table_positioner_options",
+	"scraper_zoom",
+};
+
+const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value] =
+{
+	"dll_name",
+	"pt_ip_addr",
+	"pt_port",
+	"pt_dbname",
+	"pt_user",
+	"pt_pass",
+	"perl_default_formula",
+	"perl_editor",
+	"rebuy_script",
+	"window_class_name",
+	"mutex_name",
+	"path_ohf",
+	"path_tm",
+	"path_perl",
+	"path_dll",
+};
+
+const CString k_registry_keys_for_doubles[k_prefs_last_double_value] =
+{
+	"icm_prize1",
+	"icm_prize2",
+	"icm_prize3",
+	"icm_prize4",
+	"icm_prize5",
+};
+
 void CPreferences::LoadPreferences()
 {
 	_preferences_heading = "Preferences";
@@ -117,163 +236,26 @@ void CPreferences::InitDefaults(void)
 void CPreferences::ReadPreferences()
 {
 	InitDefaults();
+	// Then read the registry values and overwrite the defaults if defined
+	for (int i=0; i<k_prefs_last_bool_value; i++)
 	{
-		// Main window location and size
-		ReadReg("main_x", &_main_x);
-		ReadReg("main_y", &_main_y);
-		ReadReg("main_dx", &_main_dx);
-		ReadReg("main_dy", &_main_dy);
-
-		// Formula window location and size
-		ReadReg("formula_x", &_formula_x);
-		ReadReg("formula_y", &_formula_y);
-		ReadReg("formula_dx", &_formula_dx);
-		ReadReg("formula_dy", &_formula_dy);
-
-		// scraper window location and size
-		ReadReg("scraper_x", &_scraper_x);
-		ReadReg("scraper_y", &_scraper_y);
-		ReadReg("scraper_dx", &_scraper_dx);
-		ReadReg("scraper_dy", &_scraper_dy);
-
-		// prefs - autoplayer
-		ReadReg("frame_delay", &_frame_delay);
-		ReadReg("click_delay", &_click_delay);
-		ReadReg("swag_delay_1", &_swag_delay_1);
-		ReadReg("swag_delay_2", &_swag_delay_2);
-		//  If a key "swag_delay" exists, use this as "swag_delay_3",
-		//	if not defined in another way (checked below).
-		//	(WH backward compatibility.)
-		ReadReg("swag_delay", &_swag_delay_3);
-		ReadReg("swag_delay_3", &_swag_delay_3);
-		ReadReg("auto", &_engage_autoplayer);
-		ReadReg("swag_use_comma", &_swag_use_comma);
-
-		// prefs - dll extension
-		ReadReg("dll_name", &_dll_name);
-
-		// prefs - scraper
-		ReadReg("scrape_delay", &_scrape_delay);
-
-		// Prefs - poker tracker
-		ReadReg("pt_ip_addr", &_pt_ip_addr);
-		ReadReg("pt_port", &_pt_port);
-		ReadReg("pt_user", &_pt_user);
-		ReadReg("pt_pass", &_pt_pass);
-		ReadReg("pt_dbname", &_pt_dbname);
-
-		// prefs - ICM
-		ReadReg("icm_prize1", &_icm_prize1);
-		ReadReg("icm_prize2", &_icm_prize2);
-		ReadReg("icm_prize3", &_icm_prize3);
-		ReadReg("icm_prize4", &_icm_prize4);
-		ReadReg("icm_prize5", &_icm_prize5);
-
-		// Prefs - Replay frames
-		ReadReg("replay_record", &_replay_record);
-		ReadReg("replay_record_every_change", &_replay_record_every_change);
-		ReadReg("replay_max_frames", &_replay_max_frames);
-		ReadReg("replay_record_every_change_playing", &_replay_record_every_change_playing);
-
-		// scraper zoom level
-		ReadReg("scraper_zoom", &_scraper_zoom);
-
-		// Perl
-		ReadReg("perl_editor", &_perl_editor);
-		ReadReg("perl_default_formula", &_perl_default_formula);
-
-		// PokerChat
-		ReadReg("chat_min_delay", &_chat_min_delay);
-		ReadReg("chat_random_delay", &_chat_random_delay);
-
-		// log$ logging
-		ReadReg("log_symbol_enabled", &_log_symbol_enabled);
-		ReadReg("log_symbol_max_log", &_log_symbol_max_log);
-
-		ReadReg("trace_enabled", &_trace_enabled);
-		ReadReg("basic_logging_enabled", &_basic_logging_enabled);
-		ReadReg("error_logging_enabled", &_error_logging_enabled);
-		ReadReg("dll_logging_enabled", &_dll_logging_enabled);
-
-		// Logging and debugging
-		ReadReg("disable_msgbox", &_disable_msgbox);
-		ReadReg("log_max_logsize", &_log_max_logsize);
-
-		// Debugging
-		ReadReg("debug_autoconnector", &_debug_autoconnector);
-		ReadReg("debug_autoplayer", &_debug_autoplayer);
-		ReadReg("debug_heartbeat", &_debug_heartbeat);
-		ReadReg("debug_prwin", &_debug_prwin);
-		ReadReg("debug_icm", &_debug_icm);
-		ReadReg("debug_occlusionchecker", &_debug_occlusionchecker);
-		ReadReg("debug_pokertracker", &_debug_pokertracker);
-		ReadReg("debug_rebuy", &_debug_rebuy);
-		ReadReg("debug_replayframes", &_debug_replayframes);
-		ReadReg("debug_scraper", &_debug_scraper);
-		ReadReg("debug_sessioncounter", &_debug_sessioncounter);
-		ReadReg("debug_stableframescounter", &_debug_stableframescounter);
-		ReadReg("debug_symbolengine", &_debug_symbolengine);
-		ReadReg("debug_blindlocking", &_debug_blindlocking);
-		ReadReg("debug_memorysymbols", &_debug_memorysymbols);
-		ReadReg("debug_tablemap_loader", &_debug_tablemap_loader);
-		ReadReg("debug_filesystem_monitor", &_debug_filesystem_monitor);
-		ReadReg("debug_table_positioner", &_debug_table_positioner);
-		ReadReg("debug_istournament", &_debug_istournament);
-		ReadReg("debug_gui", &_debug_gui);
-		ReadReg("debug_table_limits", &_debug_table_limits);
-		ReadReg("debug_lazy_scraper", &_debug_lazy_scraper);
-		ReadReg("debug_betsize_adjustment", &_debug_betsize_adjustment);
-		ReadReg("debug_handreset_detector", &_debug_handreset_detector);
-		ReadReg("debug_engine_container", &_debug_engine_container);
-		ReadReg("debug_handhistory", &_debug_handhistory);
-		ReadReg("debug_alltherest", &_debug_alltherest);
-		ReadReg("debug_preferences", &_debug_preferences);
-
-		// Validator
-		ReadReg("validator_enabled", &_validator_enabled);
-		ReadReg("validator_use_heuristic_rules", &_validator_use_heuristic_rules);
-		ReadReg("validator_stop_on_error", &_validator_stop_on_error);
-		ReadReg("validator_shoot_replayframe_on_error", &_validator_shoot_replayframe_on_error);
-
-		// Auto-connector
-		ReadReg("autoconnector_when_to_connect", & _autoconnector_when_to_connect);
-		ReadReg("autoconnector_close_when_table_disappears", &_autoconnector_close_when_table_disappears);
-
-		// GUI
-		ReadReg("gui_start_minimized", &_gui_start_minimized);
-		ReadReg("gui_disable_progress_dialog", &_gui_disable_progress_dialog);
-
-		// Rebuy
-		ReadReg("rebuy_condition_no_cards", &_rebuy_condition_no_cards);
-		ReadReg("rebuy_condition_change_in_handnumber", &_rebuy_condition_change_in_handnumber);
-		ReadReg("rebuy_condition_heuristic_check_for_occlusion", &_rebuy_condition_heuristic_check_for_occlusion);
-		ReadReg("rebuy_minimum_time_to_next_try", &_rebuy_minimum_time_to_next_try);
-		ReadReg("rebuy_script", &_rebuy_script);
-
-		// Configuration check
-		ReadReg("configurationcheck_input_settings", &_configurationcheck_input_settings);	
-		ReadReg("configurationcheck_theme_settings", &_configurationcheck_theme_settings);
-		ReadReg("configurationcheck_font_settings", &_configurationcheck_font_settings);
-
-		// Lazy scraping
-		ReadReg("lazy_scraping_when_to_scrape", &_lazy_scraping_when_to_scrape);
-
-		// Handhistory_generator
-		ReadReg("handhistory_generator_enable", &_handhistory_generator_enable);
-
-		// Table positioner
-		ReadReg("table_positioner_options", &_table_positioner_options);
-
-		// obscure
-		ReadReg("window_class_name", &_window_class_name);
-		ReadReg("mutex_name", &_mutex_name);
-		ReadReg("simple_window_title", &_simple_window_title);
-
-		// CFileDialog saved paths
-		ReadReg("last_path_ohf", &_path_ohf);
-		ReadReg("last_path_tm", &_path_tm);
-		ReadReg("last_path_perl", &_path_perl);
-		ReadReg("last_path_dll", &_path_dll);
+		assert(k_registry_keys_for_bools[i] != NULL);
+		ReadReg(k_registry_keys_for_bools[i], &prefs_bool_values[i]); 
+	}
+	for (int i=0; i<k_prefs_last_int_value; i++)
+	{
+		assert(k_registry_keys_for_ints[i] != NULL);
+		ReadReg(k_registry_keys_for_ints[i], &prefs_int_values[i]);	
+	}
+	for (int i=0; i<k_prefs_last_CString_value; i++)
+	{
+		assert(k_registry_keys_for_CStrings[i] != NULL);
+		ReadReg(k_registry_keys_for_CStrings[i], &prefs_CString_values[i]);
+	}
+	for (int i=0; i<k_prefs_last_double_value; i++)
+	{
+		assert(k_registry_keys_for_doubles[i] != NULL);
+		ReadReg(k_registry_keys_for_doubles[i], &prefs_double_values[i]);
 	}
 }
 
@@ -283,6 +265,8 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = atoi(value);
+	write_log(debug_preferences(), "[CPreferences] %s = %i\n",
+		registry_key, registry_value);
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
@@ -291,6 +275,8 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = atoi(value);
+	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+		registry_key, Bool2CString(registry_value));
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
@@ -299,6 +285,8 @@ void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = value;
+	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+		registry_key, registry_value);
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
@@ -307,6 +295,8 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = atof(value);
+	write_log(debug_preferences(), "[CPreferences] %s = %f\n",
+		registry_key, registry_value);
 }
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const int registry_value)
@@ -338,4 +328,33 @@ const CString CPreferences::versus_path()
 	int PositionOfLastDelimiter = ExecutableFileName.ReverseFind('\\');
 	// Truncate path. Keep last "\" to get versus_path.
 	return(ExecutableFileName.Left(PositionOfLastDelimiter + 1));
+}
+
+#define ENT CSLock lock(m_critsec);
+
+void CPreferences::SetValue(int index_of_variable, CString value)
+{
+	ENT 
+	AssertRange(index_of_variable, 0, k_prefs_last_CString_value);
+	prefs_CString_values[index_of_variable] = value;
+	WriteReg(k_registry_keys_for_CStrings[index_of_variable], value);
+	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+		k_registry_keys_for_CStrings[index_of_variable], value);
+}
+
+void CPreferences::SetValue(int index_of_variable, double value)
+{
+	ENT 
+	AssertRange(index_of_variable, 0, k_prefs_last_double_value);
+	prefs_double_values[index_of_variable] = value;
+	if (IsInteger(value))
+	{
+		WriteReg(k_registry_keys_for_doubles[index_of_variable], int(value));
+	}
+	else
+	{
+		WriteReg(k_registry_keys_for_doubles[index_of_variable], value);
+	}
+	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+		k_registry_keys_for_doubles[index_of_variable], Bool2CString(value));
 }

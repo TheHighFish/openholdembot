@@ -57,16 +57,16 @@ void CDlgSAPrefs21::OnOK()
 
 	if (_position_tables_tiled_button.GetCheck())
 	{
-		preferences.set_table_positioner_options(k_position_tables_tiled);
+		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_tiled);
 	}
 	else if (_position_tables_cascaded_button.GetCheck())
 	{
-		preferences.set_table_positioner_options(k_position_tables_cascaded);
+		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_cascaded);
 	}
 	else
 	{
 		// Default: k_lazy_scraping_never
-		preferences.set_table_positioner_options(k_position_tables_never);
+		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_never);
 	}
 	CSAPrefsSubDlg::OnOK();
 }

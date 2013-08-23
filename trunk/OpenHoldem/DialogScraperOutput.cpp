@@ -135,11 +135,11 @@ BOOL CDlgScraperOutput::DestroyWindow()
 
 	// Save settings to registry
 	GetWindowPlacement(&wp);
-	preferences.set_scraper_x(wp.rcNormalPosition.left);
-	preferences.set_scraper_y(wp.rcNormalPosition.top);
-	preferences.set_scraper_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	preferences.set_scraper_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-	preferences.set_scraper_zoom(m_Zoom.GetCurSel());
+	preferences.SetValue, k_prefs_scraper_x, wp.rcNormalPosition.left);
+	preferences.SetValue, k_prefs_scraper_y, wp.rcNormalPosition.top);
+	preferences.SetValue, k_prefs_scraper_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+	preferences.SetValue, k_prefs_scraper_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+	preferences.SetValue, k_prefs_scraper_zoom, m_Zoom.GetCurSel());
 
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);

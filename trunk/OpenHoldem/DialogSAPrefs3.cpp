@@ -44,7 +44,7 @@ void CDlgSAPrefs3::OnOK()
 	CString			text = "";
 
 	m_DllName.GetWindowText(text);
-	preferences.set_dll_name(text);
+	preferences.SetValue(k_prefs_dll_name, text);
 
 	CSAPrefsSubDlg::OnOK();
 }

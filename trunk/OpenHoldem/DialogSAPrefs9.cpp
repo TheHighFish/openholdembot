@@ -44,10 +44,10 @@ void CDlgSAPrefs9::OnOK()
 	CString text = "";
 
 	m_DefaultPerlFormula.GetWindowText(text);
-	preferences.set_perl_default_formula(text);
+	preferences.SetValue(k_prefs_perl_default_formula, text);
 
 	m_PerlEditor.GetWindowText(text);
-	preferences.set_perl_editor(text);
+	preferences.SetValue(k_prefs_perl_editor, text);
 
    	// Load Perl interpreter without a restart
 	if (p_perl)

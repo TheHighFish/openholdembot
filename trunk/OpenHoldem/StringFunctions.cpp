@@ -12,6 +12,7 @@
 //*****************************************************************************
 
 #include <stdafx.h>
+#include "NumericalFunctions.h"
 #include "StringFunctions.h"
 
 bool StringIsExactMatch(const char *string_a, const char *string_b)
@@ -34,4 +35,18 @@ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b)
 CString Bool2CString(bool b)
 {
 	return (b ? "true" : "false");
+}
+
+CString Number2CString(double number)
+{
+	CString result;
+	if (IsInteger(number))
+	{
+		result.Format("%f.0", number);
+	}
+	else
+	{
+		result.Format("%f.9", number);
+	}
+	return result;
 }

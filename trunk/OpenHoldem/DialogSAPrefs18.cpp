@@ -57,17 +57,16 @@ void CDlgSAPrefs18::OnOK()
 
 	if (_scrape_when_cards_button.GetCheck())
 	{
-		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_cards);
+		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_cards);
 	}
 	else if (_scrape_when_my_turn_button.GetCheck())
 	{
-		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_myturn);
+		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_myturn);
 	}
 	else
 	{
 		// Default: k_lazy_scraping_always
-		preferences.set_lazy_scraping_when_to_scrape(k_lazy_scraping_always);
-
+		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_always);
 	}
 	CSAPrefsSubDlg::OnOK();
 }

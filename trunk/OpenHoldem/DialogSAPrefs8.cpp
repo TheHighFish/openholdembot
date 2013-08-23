@@ -77,18 +77,18 @@ void CDlgSAPrefs8::OnOK()
 	CString			text = "";
 
 	if (m_RecordFrames.GetCheck() == BST_CHECKED){
-		preferences.set_replay_record(m_RecordMyTurn.GetCheck() == BST_CHECKED);
-		preferences.set_replay_record_every_change(m_RecordEveryChange.GetCheck() == BST_CHECKED);
-		preferences.set_replay_record_every_change_playing(m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
+		preferences.SetValue(k_prefs_replay_record, m_RecordMyTurn.GetCheck() == BST_CHECKED);
+		preferences.SetValue(k_prefs_replay_record_every_change, m_RecordEveryChange.GetCheck() == BST_CHECKED);
+		preferences.SetValue(k_prefs_replay_record_every_change_playing, m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED);
 	}
 	else{
-		preferences.set_replay_record(0);
-		preferences.set_replay_record_every_change(0);
-		preferences.set_replay_record_every_change_playing(0);
+		preferences.SetValue(k_prefs_replay_record, 0);
+		preferences.SetValue(k_prefs_replay_record_every_change, 0);
+		preferences.SetValue(k_prefs_replay_record_every_change_playing, 0);
 	}
 
 	m_MaxFrames.GetWindowText(text);
-	preferences.set_replay_max_frames(atoi(text.GetString()));
+	preferences.SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }

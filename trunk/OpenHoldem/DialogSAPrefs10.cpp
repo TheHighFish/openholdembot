@@ -63,14 +63,14 @@ void CDlgSAPrefs10::OnOK()
 		OH_MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.set_chat_min_delay(strtoul(text.GetString(), 0, 10));
+	preferences.SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
 
 	m_RandomDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
 		OH_MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.set_chat_random_delay(strtoul(text.GetString(), 0, 10));
+	preferences.SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));
 
 	CSAPrefsSubDlg::OnOK();
 }

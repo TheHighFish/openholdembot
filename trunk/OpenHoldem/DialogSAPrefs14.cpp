@@ -68,17 +68,17 @@ void CDlgSAPrefs14::OnOK()
 {
 	if (bool(_autoconnector_connect_never.GetCheck()) == true)
 	{
-		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Never);
+		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
 	}
 	else if (bool(_autoconnector_connect_once.GetCheck()) == true)
 	{
-		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Once);
+		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Once);
 	}
 	else // _autoconnector_connect_permanent.GetCheck() == true
 	{
-		preferences.set_autoconnector_when_to_connect(k_AutoConnector_Connect_Permanent);
+		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}
 
-	preferences.set_autoconnector_close_when_table_disappears(_autoconnector_close_when_table_disappears.GetCheck());
+	preferences.SetValue(k_prefs_autoconnector_close_when_table_disappears, _autoconnector_close_when_table_disappears.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }
