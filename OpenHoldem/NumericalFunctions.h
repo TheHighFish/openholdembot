@@ -19,7 +19,7 @@ inline void SwapInts(int *first, int *second)
 
 inline bool IsInteger(double k) 
 { 
-	return std::floor(k) == k; 
+	return (double(int(k)) == k); 
 }
 
 inline int RankOfCard(int card)
