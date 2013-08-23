@@ -80,15 +80,15 @@ void CDlgSAPrefs7::OnOK()
 	CString			text = "";
 
 	m_ICM1.GetWindowText(text);
-	preferences.set_icm_prize1(atof(text.GetString()));
+	preferences.SetValue(k_prefs_icm_prize1, atof(text.GetString()));
 	m_ICM2.GetWindowText(text);
-	preferences.set_icm_prize2(atof(text.GetString()));
+	preferences.SetValue(k_prefs_icm_prize2, atof(text.GetString()));
 	m_ICM3.GetWindowText(text);
-	preferences.set_icm_prize3(atof(text.GetString()));
+	preferences.SetValue(k_prefs_icm_prize3, atof(text.GetString()));
 	m_ICM4.GetWindowText(text);
-	preferences.set_icm_prize4(atof(text.GetString()));
+	preferences.SetValue(k_prefs_icm_prize4, atof(text.GetString()));
 	m_ICM5.GetWindowText(text);
-	preferences.set_icm_prize5(atof(text.GetString()));
+	preferences.SetValue(k_prefs_icm_prize5, atof(text.GetString()));
 
 	CSAPrefsSubDlg::OnOK();
 }

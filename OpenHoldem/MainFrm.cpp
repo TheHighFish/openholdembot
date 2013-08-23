@@ -372,18 +372,18 @@ BOOL CMainFrame::DestroyWindow()
 	if (!p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowPlacement(&wp);
-
-		preferences.set_main_x(wp.rcNormalPosition.left);
-		preferences.set_main_y(wp.rcNormalPosition.top);
-		preferences.set_main_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-		preferences.set_main_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+		
+		preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left);
+		preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
+		preferences.SetValue(k_prefs_main_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+		preferences.SetValue(k_prefs_main_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 	}
 	else 
 	{
-		preferences.set_main_x(_table_view_size.left);
-		preferences.set_main_y(_table_view_size.top);
-		preferences.set_main_dx(_table_view_size.right - _table_view_size.left);
-		preferences.set_main_dy(_table_view_size.bottom - _table_view_size.top);
+		preferences.SetValue(k_prefs_main_x, _table_view_size.left);
+		preferences.SetValue(k_prefs_main_y, _table_view_size.top);
+		preferences.SetValue(k_prefs_main_dx, _table_view_size.right - _table_view_size.left);
+		preferences.SetValue(k_prefs_main_dy, _table_view_size.bottom - _table_view_size.top);
 	}
 
 	return CFrameWnd::DestroyWindow();
@@ -427,7 +427,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
-		preferences.set_path_ohf(cfd.GetPathName());
+		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 	}
 }
 
@@ -586,7 +586,7 @@ void CMainFrame::OnDllLoadspecificfile()
 	{
 		p_dll_extension->UnloadDll();
 		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
-		preferences.set_path_dll(cfd.GetPathName());
+		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
 	}
 }
 
@@ -711,7 +711,7 @@ void CMainFrame::OnPerlLoadSpecificFormula()
 	if (cfd.DoModal() == IDOK)
 	{
 		p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
-		preferences.set_path_perl(cfd.GetPathName());
+		preferences.SetValue(k_prefs_path_perl, cfd.GetPathName());
 	}
 }
 

@@ -53,11 +53,11 @@ void CDlgSAPrefs13::OnOK()
 	CString temp;
 
 	_class_name_edit.GetWindowText(temp);
-	preferences.set_window_class_name(temp);
+	preferences.SetValue(k_prefs_window_class_name, temp);
 	_class_mutex_edit.GetWindowText(temp);
-	preferences.set_mutex_name(temp);
+	preferences.SetValue(k_prefs_mutex_name, temp);
 
-	preferences.set_simple_window_title(_simple_window_title.GetCheck() == 1);
+	preferences.SetValue(k_prefs_simple_window_title, _simple_window_title.GetCheck() == true);
 
 	CSAPrefsSubDlg::OnOK();
 }

@@ -83,24 +83,22 @@ void CDlgSAPrefs11::OnOK()
 {
 	CString			text = "";
 
-	preferences.set_log_symbol_enabled(m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
-	preferences.set_trace_enabled(m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
-	preferences.set_basic_logging_enabled(m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
-	preferences.set_error_logging_enabled(m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
-	preferences.set_dll_logging_enabled(m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
-
+	preferences.SetValue(k_prefs_log_symbol_enabled, m_EnableLog.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_trace_enabled, m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_basic_logging_enabled, m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_error_logging_enabled, m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_dll_logging_enabled, m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
 
 	m_MaximumLog.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MAX_LOG) {
 		OH_MessageBox_Interactive("Invalid maximum log amount!", "ERROR", MB_OK);
 		return;
 	}
-	preferences.set_log_symbol_max_log(strtoul(text.GetString(), 0, 10));
-
-	preferences.set_disable_msgbox(m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_log_symbol_max_log, strtoul(text.GetString(), 0, 10));
+	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
 
 	m_MaximumLogSize.GetWindowText(text);
-	preferences.set_log_max_logsize(strtoul(text.GetString(), NULL, 10));
+	preferences.SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }

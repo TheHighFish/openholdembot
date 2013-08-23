@@ -58,7 +58,7 @@ void CDlgSAPrefs4::OnOK()
 		OH_MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.set_scrape_delay(strtoul(text.GetString(), 0, 10));
+	preferences.SetValue(k_prefs_scrape_delay, strtoul(text.GetString(), 0, 10));
 
 	CSAPrefsSubDlg::OnOK();
 }

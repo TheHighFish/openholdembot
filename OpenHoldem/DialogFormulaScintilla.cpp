@@ -2684,10 +2684,10 @@ void CDlgFormulaScintilla::SaveSettingsToRegistry()
 	UINT			state = 0;
 
 	GetWindowPlacement(&wp);
-	preferences.set_formula_x(wp.rcNormalPosition.left);
-	preferences.set_formula_y(wp.rcNormalPosition.top);
-	preferences.set_formula_dx(wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	preferences.set_formula_dy(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+	preferences.SetValue(k_prefs_formula_x, wp.rcNormalPosition.left);
+	preferences.SetValue(k_prefs_formula_y, wp.rcNormalPosition.top);
+	preferences.SetValue(k_prefs_formula_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+	preferences.SetValue(k_prefs_formula_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 }
 
 void CDlgFormulaScintilla::HandleEnables(bool AllItems)

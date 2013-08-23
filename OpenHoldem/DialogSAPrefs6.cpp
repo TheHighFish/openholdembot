@@ -61,19 +61,19 @@ void CDlgSAPrefs6::OnOK()
 	CString			text = "";
 
 	m_pt_ip.GetWindowText(text);
-	preferences.set_pt_ip_addr(text);
+	preferences.SetValue(k_prefs_pt_ip_addr, text);
 
 	m_pt_port.GetWindowText(text);
-	preferences.set_pt_port(text);
+	preferences.SetValue(k_prefs_pt_port, text);
 
 	m_pt_user.GetWindowText(text);
-	preferences.set_pt_user(text);
+	preferences.SetValue(k_prefs_pt_user, text);
 
 	m_pt_pass.GetWindowText(text);
-	preferences.set_pt_pass(text);
+	preferences.SetValue(k_prefs_pt_pass, text);
 
 	m_pt_dbname.GetWindowText(text);
-	preferences.set_pt_dbname(text);
+	preferences.SetValue(k_prefs_pt_dbname, text);
 
 	CSAPrefsSubDlg::OnOK();
 }

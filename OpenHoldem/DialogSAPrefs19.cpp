@@ -46,7 +46,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 
 void CDlgSAPrefs19::OnOK()
 {
-	preferences.set_handhistory_generator_enable(_handhistory_generator_enable_Button.GetCheck() == true);
+	preferences.SetValue(k_prefs_handhistory_generator_enable, _handhistory_generator_enable_Button.GetCheck() == true);
 
 	CSAPrefsSubDlg::OnOK();
 }

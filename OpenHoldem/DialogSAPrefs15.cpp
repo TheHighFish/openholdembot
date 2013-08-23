@@ -49,8 +49,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 
 void CDlgSAPrefs15::OnOK()
 {
-	preferences.set_gui_start_minimized(_gui_start_minimized_Button.GetCheck() == true);
-	preferences.set_gui_disable_progress_dialog(_gui_disable_progress_dialog_Button.GetCheck() == true);
+	preferences.SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == true);
+	preferences.SetValue(k_prefs_gui_disable_progress_dialog, _gui_disable_progress_dialog_Button.GetCheck() == true);
 
 	CSAPrefsSubDlg::OnOK();
 }

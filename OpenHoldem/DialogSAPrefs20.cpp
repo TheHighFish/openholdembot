@@ -70,34 +70,34 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 
 void CDlgSAPrefs20::OnOK()
 {
-	preferences.set_debug_autoconnector(IsDlgButtonChecked(IDC_DEBUG_AUTOCONNECTOR));
-	preferences.set_debug_autoplayer(IsDlgButtonChecked(IDC_DEBUG_AUTOPLAYER));
-	preferences.set_debug_heartbeat(IsDlgButtonChecked(IDC_DEBUG_HEARTBEAT));
-	preferences.set_debug_prwin(IsDlgButtonChecked(IDC_DEBUG_PRWIN));
-	preferences.set_debug_icm(IsDlgButtonChecked(IDC_DEBUG_ICM));
-	preferences.set_debug_occlusionchecker(IsDlgButtonChecked(IDC_DEBUG_OCCLUSSION));
-	preferences.set_debug_pokertracker(IsDlgButtonChecked(IDC_DEBUG_POKERTRACKER));
-	preferences.set_debug_rebuy(IsDlgButtonChecked(IDC_DEBUG_REBUY));
-	preferences.set_debug_replayframes(IsDlgButtonChecked(IDC_DEBUG_REPLAYFRAMES));
-	preferences.set_debug_scraper(IsDlgButtonChecked(IDC_DEBUG_SCRAPER));
-	preferences.set_debug_sessioncounter(IsDlgButtonChecked(IDC_DEBUG_SESSIONCOUNTER));
-	preferences.set_debug_stableframescounter(IsDlgButtonChecked(IDC_DEBUG_STABLEFRAMESCOUNTER));
-	preferences.set_debug_symbolengine(IsDlgButtonChecked(IDC_DEBUG_SYMBOLENGINE));
-	preferences.set_debug_blindlocking(IsDlgButtonChecked(IDC_DEBUG_BLINDLOCKING));
-	preferences.set_debug_memorysymbols(IsDlgButtonChecked(IDC_DEBUG_MEMORY_SYMBOLS));
-	preferences.set_debug_tablemap_loader(IsDlgButtonChecked(IDC_DEBUG_TABLEMAP_LOADER));
-	preferences.set_debug_filesystem_monitor(IsDlgButtonChecked(IDC_DEBUG_FILESYSTEM_MONITOR));
-	preferences.set_debug_table_positioner(IsDlgButtonChecked(IDC_DEBUG_TABLE_POSITIONER));
-	preferences.set_debug_istournament(IsDlgButtonChecked(IDC_DEBUG_ISTOURNAMENT));
-	preferences.set_debug_gui(IsDlgButtonChecked(IDC_DEBUG_GUI));
-	preferences.set_debug_table_limits(IsDlgButtonChecked(IDC_DEBUG_TABLE_LIMITS));
-	preferences.set_debug_lazy_scraper(IsDlgButtonChecked(IDC_DEBUG_LAZY_SCRAPER));
-	preferences.set_debug_betsize_adjustment(IsDlgButtonChecked(IDC_DEBUG_BETSIZE_ADJUSTMENT));
-	preferences.set_debug_handreset_detector(IsDlgButtonChecked(IDC_DEBUG_HANDRESET_DETECTOR));
-	preferences.set_debug_engine_container(IsDlgButtonChecked(IDC_DEBUG_ENGINE_CONTAINER));
-	preferences.set_debug_handhistory(IsDlgButtonChecked(IDC_DEBUG_HANDHISTORY));
-	preferences.set_debug_alltherest(IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
-	preferences.set_debug_preferences(IsDlgButtonChecked(IDC_DEBUG_PREFERENCES));
+	preferences.SetValue(k_prefs_debug_autoconnector, IsDlgButtonChecked(IDC_DEBUG_AUTOCONNECTOR));
+	preferences.SetValue(k_prefs_debug_autoplayer, IsDlgButtonChecked(IDC_DEBUG_AUTOPLAYER));
+	preferences.SetValue(k_prefs_debug_heartbeat, IsDlgButtonChecked(IDC_DEBUG_HEARTBEAT));
+	preferences.SetValue(k_prefs_debug_prwin, IsDlgButtonChecked(IDC_DEBUG_PRWIN));
+	preferences.SetValue(k_prefs_debug_icm, IsDlgButtonChecked(IDC_DEBUG_ICM));
+	preferences.SetValue(k_prefs_debug_occlusionchecker, IsDlgButtonChecked(IDC_DEBUG_OCCLUSSION));
+	preferences.SetValue(k_prefs_debug_pokertracker, IsDlgButtonChecked(IDC_DEBUG_POKERTRACKER));
+	preferences.SetValue(k_prefs_debug_rebuy, IsDlgButtonChecked(IDC_DEBUG_REBUY));
+	preferences.SetValue(k_prefs_debug_replayframes, IsDlgButtonChecked(IDC_DEBUG_REPLAYFRAMES));
+	preferences.SetValue(k_prefs_debug_scraper, IsDlgButtonChecked(IDC_DEBUG_SCRAPER));
+	preferences.SetValue(k_prefs_debug_sessioncounter, IsDlgButtonChecked(IDC_DEBUG_SESSIONCOUNTER));
+	preferences.SetValue(k_prefs_debug_stableframescounter, IsDlgButtonChecked(IDC_DEBUG_STABLEFRAMESCOUNTER));
+	preferences.SetValue(k_prefs_debug_symbolengine, IsDlgButtonChecked(IDC_DEBUG_SYMBOLENGINE));
+	preferences.SetValue(k_prefs_debug_blindlocking, IsDlgButtonChecked(IDC_DEBUG_BLINDLOCKING));
+	preferences.SetValue(k_prefs_debug_memorysymbols, IsDlgButtonChecked(IDC_DEBUG_MEMORY_SYMBOLS));
+	preferences.SetValue(k_prefs_debug_tablemap_loader, IsDlgButtonChecked(IDC_DEBUG_TABLEMAP_LOADER));
+	preferences.SetValue(k_prefs_debug_filesystem_monitor, IsDlgButtonChecked(IDC_DEBUG_FILESYSTEM_MONITOR));
+	preferences.SetValue(k_prefs_debug_table_positioner, IsDlgButtonChecked(IDC_DEBUG_TABLE_POSITIONER));
+	preferences.SetValue(k_prefs_debug_istournament, IsDlgButtonChecked(IDC_DEBUG_ISTOURNAMENT));
+	preferences.SetValue(k_prefs_debug_gui, IsDlgButtonChecked(IDC_DEBUG_GUI));
+	preferences.SetValue(k_prefs_debug_table_limits, IsDlgButtonChecked(IDC_DEBUG_TABLE_LIMITS));
+	preferences.SetValue(k_prefs_debug_lazy_scraper, IsDlgButtonChecked(IDC_DEBUG_LAZY_SCRAPER));
+	preferences.SetValue(k_prefs_debug_betsize_adjustment, IsDlgButtonChecked(IDC_DEBUG_BETSIZE_ADJUSTMENT));
+	preferences.SetValue(k_prefs_debug_handreset_detector, IsDlgButtonChecked(IDC_DEBUG_HANDRESET_DETECTOR));
+	preferences.SetValue(k_prefs_debug_engine_container, IsDlgButtonChecked(IDC_DEBUG_ENGINE_CONTAINER));
+	preferences.SetValue(k_prefs_debug_handhistory, IsDlgButtonChecked(IDC_DEBUG_HANDHISTORY));
+	preferences.SetValue(k_prefs_debug_alltherest, IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
+	preferences.SetValue(k_prefs_debug_preferences, IsDlgButtonChecked(IDC_DEBUG_PREFERENCES));
 	CSAPrefsSubDlg::OnOK();
 }
 

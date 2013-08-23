@@ -61,19 +61,20 @@ void CDlgSAPrefs12::OnOK()
 {
 	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1))
 	{
-		preferences.set_validator_enabled(0);
+		preferences.SetValue(k_prefs_validator_enabled, 0);
 	}
 	else if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_2))
 	{
-		preferences.set_validator_enabled(1);
+		preferences.SetValue(k_prefs_validator_enabled, 1);
 	}
 	else
 	{
-		preferences.set_validator_enabled(2);
+		preferences.SetValue(k_prefs_validator_enabled, 2);
 	}
-	preferences.set_validator_use_heuristic_rules(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
-	preferences.set_validator_stop_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
-	preferences.set_validator_shoot_replayframe_on_error(IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
+	preferences.SetValue(k_prefs_validator_use_heuristic_rules, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
+	preferences.SetValue(k_prefs_validator_stop_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
+	preferences.SetValue(k_prefs_validator_shoot_replayframe_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
+
 	CSAPrefsSubDlg::OnOK();
 }
 

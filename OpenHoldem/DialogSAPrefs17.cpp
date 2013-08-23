@@ -46,9 +46,9 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	preferences.set_configurationcheck_input_settings(m_ConfigurationInputSettings_Button.GetCheck());
-	preferences.set_configurationcheck_theme_settings(m_ConfigurationThemeSettings_Button.GetCheck());
-	preferences.set_configurationcheck_font_settings(m_ConfigurationFontSettings_Button.GetCheck());
+	preferences.SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
+	preferences.SetValue(k_prefs_configurationcheck_theme_settings, m_ConfigurationThemeSettings_Button.GetCheck());
+	preferences.SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }
 
