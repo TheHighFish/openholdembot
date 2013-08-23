@@ -12,6 +12,8 @@ CFilenames::CFilenames()
 {
 	// Save startup directory
 	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
+	// Create logs-directoy if necessary
+	CreateDirectory(LogsDirectory(), NULL);
 }
 
 CFilenames::~CFilenames()
