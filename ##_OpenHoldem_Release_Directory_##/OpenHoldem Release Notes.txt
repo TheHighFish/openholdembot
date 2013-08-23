@@ -30,6 +30,10 @@ BUG FIXES:
   Thanks to Daniel for reporting.
   [THF]
 
+NEW STUFF:
+- Now creating logs-directory on startup if it does not exist.
+  [THF]
+
 
 v4.2.0 2013-08-04
 ==================
