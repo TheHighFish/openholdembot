@@ -19,8 +19,9 @@ CPreferences::~CPreferences()
 }
 
 // registry keys 
-const CString k_registry_keys_for_bools[k_prefs_last_bool_value] =
+const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 1] =
 {
+	// bools
 	"debug_preferences",	
 	"debug_autoconnector",
 	"debug_autoplayer",
@@ -55,6 +56,8 @@ const CString k_registry_keys_for_bools[k_prefs_last_bool_value] =
 	"replay_record_every_change_playing",
 	"replay_record_every_change",
 	"log_symbol_enabled",
+	"log_basic_info",
+	"log_errors_and_warnings",
 	"trace_enabled",
 	"basic_logging_enabled",
 	"error_logging_enabled",
@@ -74,10 +77,7 @@ const CString k_registry_keys_for_bools[k_prefs_last_bool_value] =
 	"configurationcheck_font_settings",
 	"handhistory_generator_enable",
 	"simple_window_title",
-};
-
-const CString k_registry_keys_for_ints[k_prefs_last_int_value] =
-{
+	// ints
 	"replay_max_frames",
 	"frame_delay",
 	"click_delay",
@@ -107,6 +107,17 @@ const CString k_registry_keys_for_ints[k_prefs_last_int_value] =
 	"lazy_scraping_when_to_scrape",
 	"table_positioner_options",
 	"scraper_zoom",
+	// doubles
+	"icm_prize1",
+	"icm_prize2",
+	"icm_prize3",
+	"icm_prize4",
+	"icm_prize5",
+	// Finally an empty string
+	// This correspondents to k_prefs_last_numerical_value (unused)
+	// It will cause an assertion if used
+	// and therefore help us to detect missing values.
+	"",
 };
 
 const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value] =
@@ -128,15 +139,6 @@ const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value] =
 	"path_dll",
 };
 
-const CString k_registry_keys_for_doubles[k_prefs_last_double_value] =
-{
-	"icm_prize1",
-	"icm_prize2",
-	"icm_prize3",
-	"icm_prize4",
-	"icm_prize5",
-};
-
 void CPreferences::LoadPreferences()
 {
 	_preferences_heading = "Preferences";
@@ -150,61 +152,61 @@ void CPreferences::InitDefaults(void)
 {
 	// General initialization
 	// that fits most values and purposes
-	for (int i=0; i<k_prefs_last_bool_value; i++)
+	for (int i=0; i<k_prefs_last_numerical_value; i++)
 	{
-		prefs_bool_values[i] = false;
-	}
-	for (int i=0; i<k_prefs_last_int_value; i++)
-	{
-		prefs_int_values[i] = 0;	
+		prefs_numerical_values[i] = 0.0;	// 0 for ints and false for bools
 	}
 	for (int i=0; i<k_prefs_last_CString_value; i++)
 	{
 		prefs_CString_values[i] = "";
 	}
-	for (int i=0; i<k_prefs_last_double_value; i++)
-	{
-		prefs_double_values[i] = 0.0;
-	}
 
 	// Special initialization of data that requires special values
-	prefs_bool_values[k_prefs_engage_autoplayer] = true;
-	prefs_bool_values[k_prefs_trace_enabled] = true;
-	prefs_bool_values[k_prefs_basic_logging_enabled] = true;
-	prefs_bool_values[k_prefs_error_logging_enabled] = true;
-	prefs_bool_values[k_prefs_dll_logging_enabled] = true;
-	prefs_bool_values[k_prefs_debug_preferences] = false; // To assure that we log at least the initialization of this value
-	prefs_bool_values[k_prefs_rebuy_condition_no_cards] = true;
-	prefs_bool_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
-	prefs_bool_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
-	prefs_bool_values[k_prefs_configurationcheck_input_settings] = true;
-	prefs_bool_values[k_prefs_configurationcheck_theme_settings] = true;
-	prefs_bool_values[k_prefs_configurationcheck_font_settings] = true;
+	// Bools
+	prefs_numerical_values[k_prefs_engage_autoplayer] = true;
+	prefs_numerical_values[k_prefs_trace_enabled] = true;
+	prefs_numerical_values[k_prefs_basic_logging_enabled] = true;
+	prefs_numerical_values[k_prefs_error_logging_enabled] = true;
+	prefs_numerical_values[k_prefs_dll_logging_enabled] = true;
+	prefs_numerical_values[k_prefs_debug_preferences] = false; // To assure that we log at least the initialization of this value
+	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
+	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
+	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
+	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = true;
+	prefs_numerical_values[k_prefs_configurationcheck_theme_settings] = true;
+	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
 
-	prefs_int_values[k_prefs_main_dx] = 640;
-	prefs_int_values[k_prefs_main_dy] = 400;
-	prefs_int_values[k_prefs_formula_dx] = 640;
-	prefs_int_values[k_prefs_formula_dy] = 400;
-	prefs_int_values[k_prefs_scraper_dx] = 340;
-	prefs_int_values[k_prefs_scraper_dy] = 250;
-	prefs_int_values[k_prefs_frame_delay] = 2;
-	prefs_int_values[k_prefs_click_delay] = 250;
-	prefs_int_values[k_prefs_swag_delay_1] = 400;
-	prefs_int_values[k_prefs_swag_delay_2] = 400;
-	prefs_int_values[k_prefs_swag_delay_3] = 700;
-	prefs_int_values[k_prefs_scrape_delay] = 750;
-	prefs_int_values[k_prefs_scraper_zoom] = 2;			// 4x
-	prefs_int_values[k_prefs_replay_max_frames] = 100;
-	prefs_int_values[k_prefs_chat_min_delay] = 600;		//  seconds
-	prefs_int_values[k_prefs_chat_random_delay] = 3000;	//  seconds;
-	prefs_int_values[k_prefs_log_symbol_max_log] = 5;
-	prefs_int_values[k_prefs_log_max_logsize] = 10;		// MB
-	prefs_int_values[k_prefs_validator_enabled] = 1;		// 0 = disabled; 1 = when it's my turn; 2 = always
-	prefs_int_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;
-	prefs_int_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
-	prefs_int_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;
-	prefs_int_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
+	// Ints
+	prefs_numerical_values[k_prefs_main_dx] = 640;
+	prefs_numerical_values[k_prefs_main_dy] = 400;
+	prefs_numerical_values[k_prefs_formula_dx] = 640;
+	prefs_numerical_values[k_prefs_formula_dy] = 400;
+	prefs_numerical_values[k_prefs_scraper_dx] = 340;
+	prefs_numerical_values[k_prefs_scraper_dy] = 250;
+	prefs_numerical_values[k_prefs_frame_delay] = 2;
+	prefs_numerical_values[k_prefs_click_delay] = 250;
+	prefs_numerical_values[k_prefs_swag_delay_1] = 400;
+	prefs_numerical_values[k_prefs_swag_delay_2] = 400;
+	prefs_numerical_values[k_prefs_swag_delay_3] = 700;
+	prefs_numerical_values[k_prefs_scrape_delay] = 750;
+	prefs_numerical_values[k_prefs_scraper_zoom] = 2;			// 4x
+	prefs_numerical_values[k_prefs_replay_max_frames] = 100;
+	prefs_numerical_values[k_prefs_chat_min_delay] = 600;		//  seconds
+	prefs_numerical_values[k_prefs_chat_random_delay] = 3000;	//  seconds;
+	prefs_numerical_values[k_prefs_log_symbol_max_log] = 5;
+	prefs_numerical_values[k_prefs_log_max_logsize] = 10;		// MB
+	prefs_numerical_values[k_prefs_validator_enabled] = 1;		// 0 = disabled; 1 = when it's my turn; 2 = always
+	prefs_numerical_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;
+	prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
+	prefs_numerical_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;
+	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
+
+	// Doubles
+	prefs_numerical_values[k_prefs_icm_prize1] = 0.5;
+	prefs_numerical_values[k_prefs_icm_prize2] = 0.3;
+	prefs_numerical_values[k_prefs_icm_prize3] = 0.2;
 	
+	// CString
 	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";
 	prefs_CString_values[k_prefs_pt_port] = "5432";
 	prefs_CString_values[k_prefs_pt_user] = "pokertracker";
@@ -223,10 +225,6 @@ void CPreferences::InitDefaults(void)
 	{
 		prefs_CString_values[k_prefs_perl_editor] = _T("C:\\Windows\\notepad.exe");
 	}
-		
-	prefs_double_values[k_prefs_icm_prize1] = 0.5;
-	prefs_double_values[k_prefs_icm_prize2] = 0.3;
-	prefs_double_values[k_prefs_icm_prize3] = 0.2;
 }
 
 //
@@ -237,46 +235,16 @@ void CPreferences::ReadPreferences()
 {
 	InitDefaults();
 	// Then read the registry values and overwrite the defaults if defined
-	for (int i=0; i<k_prefs_last_bool_value; i++)
+	for (int i=0; i<k_prefs_last_numerical_value; i++)
 	{
-		assert(k_registry_keys_for_bools[i] != NULL);
-		ReadReg(k_registry_keys_for_bools[i], &prefs_bool_values[i]); 
-	}
-	for (int i=0; i<k_prefs_last_int_value; i++)
-	{
-		assert(k_registry_keys_for_ints[i] != NULL);
-		ReadReg(k_registry_keys_for_ints[i], &prefs_int_values[i]);	
+		assert(k_registry_keys_for_numerical_values[i] != "");
+		ReadReg(k_registry_keys_for_numerical_values[i], &prefs_numerical_values[i]); 
 	}
 	for (int i=0; i<k_prefs_last_CString_value; i++)
 	{
-		assert(k_registry_keys_for_CStrings[i] != NULL);
+		assert(k_registry_keys_for_CStrings[i] != "");
 		ReadReg(k_registry_keys_for_CStrings[i], &prefs_CString_values[i]);
 	}
-	for (int i=0; i<k_prefs_last_double_value; i++)
-	{
-		assert(k_registry_keys_for_doubles[i] != NULL);
-		ReadReg(k_registry_keys_for_doubles[i], &prefs_double_values[i]);
-	}
-}
-
-void CPreferences::ReadReg(const LPCTSTR registry_key, int *registry_value)
-{
-	CString value;
-	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
-	if (!value.IsEmpty())
-		*registry_value = atoi(value);
-	write_log(debug_preferences(), "[CPreferences] %s = %i\n",
-		registry_key, registry_value);
-}
-
-void CPreferences::ReadReg(const LPCTSTR registry_key, bool *registry_value)
-{
-	CString value;
-	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
-	if (!value.IsEmpty())
-		*registry_value = atoi(value);
-	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
-		registry_key, Bool2CString(registry_value));
 }
 
 void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
@@ -295,16 +263,8 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = atof(value);
-	write_log(debug_preferences(), "[CPreferences] %s = %f\n",
-		registry_key, registry_value);
-}
-
-void CPreferences::WriteReg(const LPCTSTR registry_key, const int registry_value)
-//  This method is used to write ints and booleans, too.
-{
-	CString str;
-	str.Format("%d", registry_value);
-	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
+	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+		registry_key, Number2CString(*registry_value));
 }
 
 void CPreferences::WriteReg(const LPCTSTR registry_key, const CString &registry_value)
@@ -345,16 +305,16 @@ void CPreferences::SetValue(int index_of_variable, CString value)
 void CPreferences::SetValue(int index_of_variable, double value)
 {
 	ENT 
-	AssertRange(index_of_variable, 0, k_prefs_last_double_value);
-	prefs_double_values[index_of_variable] = value;
+	AssertRange(index_of_variable, 0, k_prefs_last_numerical_value);
+	prefs_numerical_values[index_of_variable] = value;
 	if (IsInteger(value))
 	{
-		WriteReg(k_registry_keys_for_doubles[index_of_variable], int(value));
+		WriteReg(k_registry_keys_for_numerical_values[index_of_variable], int(value));
 	}
 	else
 	{
-		WriteReg(k_registry_keys_for_doubles[index_of_variable], value);
+		WriteReg(k_registry_keys_for_numerical_values[index_of_variable], value);
 	}
 	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
-		k_registry_keys_for_doubles[index_of_variable], Bool2CString(value));
+		k_registry_keys_for_numerical_values[index_of_variable], Number2CString(value));
 }

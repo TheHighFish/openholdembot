@@ -128,17 +128,16 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineHandrank
 	p_symbol_engine_handrank = new CSymbolEngineHandrank();
 	AddSymbolEngine(p_symbol_engine_handrank);
-	// CSymbols
-	// Deals with symbol-lookups and depends on all the other ones.
-	// Therefore it has to be the very last one.
-	p_symbols = new CSymbols();
-	AddSymbolEngine(p_symbols);
 	// CSymbolEngineIniFunctions
 	// "depends" on all other engines,
 	// as it can only be called after all symbols have been initialized.
 	p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
 	AddSymbolEngine(p_symbol_engine_ini_functions);
-
+	// CSymbols
+	// Deals with symbol-lookups and depends on all the other ones.
+	// Therefore it has to be the very last one.
+	p_symbols = new CSymbols();
+	AddSymbolEngine(p_symbols);
 	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
