@@ -28,6 +28,7 @@ void CFormula::ClearFormula()
 	_formula.mHandList.RemoveAll();
 	_formula.mFunction.RemoveAll();
 	_formula_name = "";
+	_is_parsing = false;
 }
 
 void CFormula::SetEmptyDefaultBot()
@@ -54,8 +55,7 @@ const char *CFormula::GetFunctionText(const char *name)
 	return "";
 }
 
-// Reading a part of a formula, which may be spread
-// between two files in case of an old style whf / whx formula.
+// Reading a formula
 void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 {
 	CString		strOneLine = ""; 
@@ -251,6 +251,7 @@ void CFormula::WriteFormula(CArchive& ar)
 	//  
 	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
 
+	// !!! missed f$init and needs refactoring
 	WriteStandardFunction(ar, "notes");
 	WriteStandardFunction(ar, "dll");
 	// ToDo: Check, if that can be done the normal way too?
@@ -328,10 +329,14 @@ bool CFormula::ParseAllFormula(HWND hwnd)
 	data.calling_hwnd = hwnd;
 	data.pParent = this;
 
+	_is_parsing = true;
+
 	CUPDialog dlg_progress(hwnd, ParseLoop, &data, "Please wait", false);
 	dlg_progress.DoModal();
 
 	WarnAboutOutdatedConcepts();
+
+	_is_parsing = false;
 
 	return data.all_parsed;
 }
@@ -362,6 +367,7 @@ void CFormula::CheckForDefaultFormulaEntries()
 {
 	CSLock lock(m_critsec);
 
+	// !!! missed f$init and needs refactoring
 	// Header comment
 	AddEmptyFunctionIfFunctionDoesNotExist("notes");
 	// DLL to be loaded

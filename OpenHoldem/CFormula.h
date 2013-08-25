@@ -58,6 +58,8 @@ public:
 	void ParseHandList(const CString &list_text, bool inlist[13][13]);
 	void CopyFormulaFrom(CFormula *f);
 	const char *GetFunctionText(const char *name);
+public:
+	bool IsParsing()	{ return _is_parsing; }
  private:
  	bool DoesFormulaAlreadyExist(const CString new_name);
 	bool DoesHandlistAlreadyExist(const CString new_name);
@@ -100,6 +102,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	const int CardIdentHelper(const char c);
 	static bool ParseLoop(const CUPDUPDATA* pCUPDUPData);
+	bool _is_parsing;
 
 	CCritSec		m_critsec;
 
