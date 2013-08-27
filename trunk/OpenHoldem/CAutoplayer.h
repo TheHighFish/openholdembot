@@ -11,7 +11,7 @@ extern class CAutoplayer
 {
 public:
 	// public functions
-	CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName);
+	CAutoplayer();
 	~CAutoplayer(void);
 public:
 	void DoAutoplayer(void);
@@ -35,7 +35,7 @@ private:
 	bool DoAllin(void);
 	bool DoBetPot(void);
 	bool HandleInterfacebuttonsI86(void); 
-	bool PrepareActionSequence();
+	void PrepareActionSequence();
 	void FinishActionSequenceIfNecessary();
 	bool DoSwag(void);
 	bool DoPrefold(void);
@@ -54,9 +54,6 @@ private:
 	POINT	cursor_position;
 	HWND	window_with_focus;
 	bool	action_sequence_needs_to_be_finished;
-
-	// Mutex used for cross-instance autoplayer coordination
-	CMutex		_mutex;
 
 	CCritSec	m_critsec;
 } *p_autoplayer;

@@ -15,6 +15,7 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "SwagAdjustment.h"
+#include "CMyMutex.h"
 
 
 CCasinoInterface *p_casino_interface = NULL;
@@ -219,6 +220,10 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 
 	if (p_scraper_access->i86X_button_available[button_number])
 	{
+		CMyMutex	mutex;
+
+		if (!mutex.IsLocked())
+			return false;
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Found valid i86 (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);
 		return true;
