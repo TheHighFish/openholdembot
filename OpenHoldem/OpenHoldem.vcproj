@@ -341,6 +341,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CMyMutex.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\COcclusionCheck.cpp"
 				>
 			</File>
@@ -1260,6 +1264,10 @@
 			</File>
 			<File
 				RelativePath=".\CLevDistance.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CMyMutex.h"
 				>
 			</File>
 			<File

@@ -32,14 +32,13 @@
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
 #include "StringFunctions.h"
+#include "CMyMutex.h"
 
 CAutoplayer	*p_autoplayer = NULL;
 
 
-CAutoplayer::CAutoplayer(BOOL bInitiallyOwn, LPCTSTR lpszName) : _mutex(bInitiallyOwn, lpszName)
+CAutoplayer::CAutoplayer(void) 
 {
-	ASSERT(_mutex.m_hObject != NULL); 
-
 	// Autoplayer is not enabled at startup.
 	// We can't call set_autoplayer_engaged() here,
 	// because the toolbar does not yet exist,
@@ -56,18 +55,16 @@ CAutoplayer::~CAutoplayer(void)
 }
 
 
-bool CAutoplayer::PrepareActionSequence()
+void
+CAutoplayer::PrepareActionSequence()
 {
 	// This function should be called at the beginning of 
 	// ExecutePrimaryFunctions and ExecuteSecondaryFunctions
 	// which bot will start exactly one action-sequence.
 	//
 	// At the end of an action sequence FinishAction() has to be called
-	// to restore the mouse-position and release the mutex again.
-	if (!_mutex.Lock(500))
-	{
-		return false;
-	}
+	// to restore the mouse-position.
+	//
 	// Getting the cursor position has to be done AFTER  we got the mutex,
 	// otherwise it could happen that other applications move the mouse
 	// while we wait, leading to funny jumps when we "clean up".
@@ -79,7 +76,6 @@ bool CAutoplayer::PrepareActionSequence()
 	// This makes cleanup simpler, as we now can handle it once,
 	// instead of everywhere where an action can happen.
 	action_sequence_needs_to_be_finished = true;
-	return true;
 }
 
 
@@ -90,7 +86,6 @@ void CAutoplayer::FinishActionSequenceIfNecessary()
 		// Restoring the original state has to be done in reversed order
 		SetFocus(window_with_focus);
 		SetCursorPos(cursor_position.x, cursor_position.y);
-		_mutex.Unlock();
 		action_sequence_needs_to_be_finished = false;
 	}
 }
@@ -198,10 +193,15 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
 	// so we can handle the preparation once at the very beginning.
-	if (!PrepareActionSequence())
+	CMyMutex mutex;
+
+	if (!mutex.IsLocked())
 	{
 		return false;
 	}
+
+	PrepareActionSequence();
+
 	if (p_autoplayer_functions->f$alli())
 	{
 		if (DoAllin())

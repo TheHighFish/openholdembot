@@ -6,6 +6,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
+#include "CMyMutex.h"
 
 void CheckBringKeyboard(void) 
 {
@@ -70,7 +71,6 @@ void CheckBringKeyboard(void)
 	{
 		HWND			hwnd_focus;
 		POINT			cur_pos = {0};
-		CMutex			mutex (false, preferences.mutex_name());
 
 		input_count = 0;
 		// Alt key down
@@ -99,9 +99,10 @@ void CheckBringKeyboard(void)
 		input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
 		input_count++;
 
-		if (!mutex.Lock(0))
-			return;
+		CMyMutex mutex;
 
+		if (!mutex.IsLocked())
+			return;
 
 		hwnd_focus = GetFocus();
 		GetCursorPos(&cur_pos);
@@ -137,7 +138,6 @@ void CheckBringKeyboard(void)
 		SetFocus(hwnd_focus);
 
 		SetCursorPos(cur_pos.x, cur_pos.y);
-		mutex.Unlock();
 	}
 
 }
