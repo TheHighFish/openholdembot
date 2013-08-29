@@ -93,7 +93,7 @@ POKERTRACKER_DLL_API CString PT_DLL_GetDescription(int stats_index)
 POKERTRACKER_DLL_API CString PT_DLL_GetBasicSymbolNameWithoutPTPrefix(int stats_index)
 {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
-	return stat_str[stats_index];
+	return query_definitions[stats_index].name;
 }	
 
 POKERTRACKER_DLL_API bool PT_DLL_IsBasicStat(int stats_index)
@@ -145,7 +145,7 @@ int GetIndex(CString symbol_name)
 	// by use of CMaps (binary trees).
 	for (int i=0; i<k_number_of_pokertracker_stats; ++i)
 	{
-		if (symbol_name == stat_str[i])
+		if (symbol_name == query_definitions[i].name)
 		{
 			return i;
 		}
