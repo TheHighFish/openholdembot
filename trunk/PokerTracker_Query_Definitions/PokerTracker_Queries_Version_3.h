@@ -26,6 +26,7 @@ enum PT_StatTypes
 
 typedef struct t_QueryDefinition
 {
+	CString name;
 	CString description_for_editor;
 	CString first_part_of_query;
 	// The queries will be created on the fly,
@@ -37,22 +38,12 @@ typedef struct t_QueryDefinition
 };
 
 
-// These are for PokerTracker version 3 stats
-const CString stat_str[k_number_of_pokertracker_stats] = {
-	"icon",			"hands",		"pfr",			"aggp", 
-	"aggf",			"aggt",			"aggr",			"aggtot", 
-	"aggtotnopf",	"floppct",		"turnpct",		"riverpct", 
-	"vpip",			"pf_rfi",		"pf_cr",		"pfats",	
-	"wsdp",			"wssd",			"fbbts",		"fsbts",
-	"cbetflop",		"f3bettot",		"f3betpflop",	"f3betflop",
-	"f3betturn",	"f3betriver",	"fcbetflop",	"fcbetturn",
-	"fcbetriver"
-};
-
 t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 {
 	/* PT3 query to get icon */
 	{
+		// name
+		"icon",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -69,6 +60,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get number of hands in the database */
 	{
+		// name
+		"hands",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -82,6 +75,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get pre flop raise % */
 	{
+		// name
+		"pfr",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -99,6 +94,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get pre-flop aggression factor */
 	{
+		// name
+		"aggp",
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -116,6 +113,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get flop aggression factor */
 	{
+		// name
+		"aggf",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -133,6 +132,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get turn aggression factor */
 	{
+		// name
+		"aggt",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -150,6 +151,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get river aggression factor */
 	{
+		// name
+		"aggr",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -167,6 +170,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get total aggression factor */
 	{
+		// name
+		"aggtot", 
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -195,6 +200,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get total aggression factor without preflop */
 	{
+		// name
+		"aggtotnopf",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -220,6 +227,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get percentage of flops seen */
 	{
+		// name
+		"floppct",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -237,6 +246,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get percentage of turns seen */
 	{
+		// name
+		"turnpct",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -254,6 +265,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get percentage of rivers seen */
 	{
+		// name
+		"riverpct", 
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -271,6 +284,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get vpip */
 	{
+		// name
+		"vpip",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -288,6 +303,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get pre-flop raise first in pct */
 	{
+		// name
+		"pf_rfi",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -306,6 +323,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get pre-flop called raise pct */
 	{
+		// name
+		"pf_cr",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -324,6 +343,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get attempted steal percentage */
 	{
+		// name
+		"pfats",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -342,6 +363,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get Went to SD % */
 	{
+		// name
+		"wsdp",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -360,6 +383,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get Won $ At SD % */
 	{
+		// name
+		"wssd",			
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -378,6 +403,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get Folded Big Blind to steal */
 	{
+		// name
+		"fbbts",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -396,6 +423,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3 query to get Folded Small Blind to steal */
 	{
+		// name
+		"fsbts",
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -414,6 +443,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get cbet on FLOP */
 	{
+		// name
+		"cbetflop",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -431,6 +462,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get TOTAL fold to 3 bet percentage */
 	{
+		// name
+		"f3bettot",		
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -448,6 +481,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get PREFLOP fold to 3 bet percentage */
 	{
+		// name
+		"f3betpflop",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -465,6 +500,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get FLOP fold to 3 bet percentage */
 	{
+		// name
+		"f3betflop",
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -482,6 +519,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get TURN fold to 3 bet percentage */
 	{
+		// name
+		"f3betturn",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -499,6 +538,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get RIVER fold to 3 bet percentage */
 	{
+		// name
+		"f3betriver",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -516,6 +557,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get FLOP fold to cbet percentage */
 	{
+		// name
+		"fcbetflop",	
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -533,6 +576,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get TURN fold to cbet percentage */
 	{
+		// name
+		"fcbetturn",
 		// description_for_editor
 		"",
 		// first_part_of_query
@@ -550,6 +595,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 	/* PT3  query to get RIVER fold to cbet percentage */
 	{
+		// name
+		"fcbetriver",
 		// description_for_editor
 		"",
 		// first_part_of_query
