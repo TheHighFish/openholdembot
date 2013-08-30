@@ -22,28 +22,6 @@
 
 #include "CGrammar.h"
 
-enum 
-{
-	k_init_on_startup,
-	k_init_on_connection,
-	k_init_on_handreset,
-	k_init_on_new_round,
-	k_init_on_my_turn,
-	k_init_on_heartbeat,
-	// (last one + 1) = number of ini-functions
-	k_number_of_ini_functions
-};
-
-const CString k_ini_function_names[k_number_of_ini_functions] =
-{
-	"f$init_on_startup",
-	"f$init_on_connection",
-	"f$init_on_handreset",
-	"f$init_on_new_round",
-	"f$init_on_my_turn",
-	"f$init_on_heartbeat",
-};
-
 extern class CSymbolEngineIniFunctions: public CVirtualSymbolEngine
 {
 public:

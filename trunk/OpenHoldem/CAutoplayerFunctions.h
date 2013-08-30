@@ -19,16 +19,18 @@ public:
 	double	f$betsize()	{ return _autoplayer_functionvalues[k_autoplayer_function_betsize]; }
 	double	f$rais()	{ return _autoplayer_functionvalues[k_autoplayer_function_raise]; }
 	double	f$call()	{ return _autoplayer_functionvalues[k_autoplayer_function_call]; }
-	double	f$sitin()	{ return _autoplayer_functionvalues[k_autoplayer_function_sitin]; }
-	double	f$sitout()	{ return _autoplayer_functionvalues[k_autoplayer_function_sitout]; }
-	double	f$leave()	{ return _autoplayer_functionvalues[k_autoplayer_function_leave]; }
-	double	f$close()	{ return _autoplayer_functionvalues[k_autoplayer_function_close]; }
-	double	f$prefold()	{ return _autoplayer_functionvalues[k_autoplayer_function_prefold]; }
-	double	f$rebuy()	{ return _autoplayer_functionvalues[k_autoplayer_function_rebuy]; }
-	double	f$delay()	{ return _autoplayer_functionvalues[k_autoplayer_function_delay]; }
-	double	f$chat()	{ return _autoplayer_functionvalues[k_autoplayer_function_chat]; }
+	double	f$check()	{ return _autoplayer_functionvalues[k_autoplayer_function_check]; }
+	double	f$fold()	{ return _autoplayer_functionvalues[k_autoplayer_function_fold]; }
+	double	f$sitin()	{ return _autoplayer_functionvalues[k_standard_function_sitin]; }
+	double	f$sitout()	{ return _autoplayer_functionvalues[k_standard_function_sitout]; }
+	double	f$leave()	{ return _autoplayer_functionvalues[k_standard_function_leave]; }
+	double	f$close()	{ return _autoplayer_functionvalues[k_standard_function_close]; }
+	double	f$prefold()	{ return _autoplayer_functionvalues[k_standard_function_prefold]; }
+	double	f$rebuy()	{ return _autoplayer_functionvalues[k_standard_function_rebuy]; }
+	double	f$delay()	{ return _autoplayer_functionvalues[k_standard_function_delay]; }
+	double	f$chat()	{ return _autoplayer_functionvalues[k_standard_function_chat]; }
 private:
-	double _autoplayer_functionvalues[k_number_of_autoplayer_functions];
+	double _autoplayer_functionvalues[k_number_of_standard_functions];
 	CCritSec	m_critsec;
 } *p_autoplayer_functions;
 

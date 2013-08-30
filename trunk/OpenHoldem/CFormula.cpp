@@ -355,9 +355,20 @@ void CFormula::AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionNam
 	// Formula not found.
 	// Add the standard one.
 	SFunction func;
-	// The function-text should contain at least one space.
-	// The editor does somehow not work for completely emptyy formulas.
-	func.func_text = " "; 
+	if (FunctionName.Compare(k_standard_function_names[k_autoplayer_function_check])
+		|| FunctionName.Compare(k_standard_function_names[k_autoplayer_function_fold]))
+	{
+		// f$check and f$fold should evaluate to true per default
+		// for auto-check-folding instead of time-outs.
+		func.func_text = "1 ";
+	}
+	else
+	{
+		// Add an empty function.
+		// The function-text should contain at least one space.
+		// The editor does somehow not work for completely empty formulas.
+		func.func_text = " "; 
+	}
 	func.dirty = true; 
 	func.func = FunctionName; 
 	_formula.mFunction.Add(func); 
@@ -367,41 +378,16 @@ void CFormula::CheckForDefaultFormulaEntries()
 {
 	CSLock lock(m_critsec);
 
-	// !!! missed f$init and needs refactoring
 	// Header comment
 	AddEmptyFunctionIfFunctionDoesNotExist("notes");
 	// DLL to be loaded
 	AddEmptyFunctionIfFunctionDoesNotExist("dll");
-	// Primary functions (autoplayer)
-	AddEmptyFunctionIfFunctionDoesNotExist("f$alli");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betsize");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_2_1");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_1");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_3_4");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_2_3");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_2");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_3");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$betpot_1_4");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$rais");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$call");
-	// Secondary functions (once every N seconds)
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prefold");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$rebuy");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$delay");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$chat");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$sitin");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$sitout");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$leave");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$close");
-	// PrWin functions
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_opponents");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_number_of_iterations");
-	// Weighted PrWin
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_mustplay");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_topclip");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_willplay");
-	AddEmptyFunctionIfFunctionDoesNotExist("f$prwin_wontplay");
-	// Debug functions
+	// Autoplayer, standard, ini and PrWin functions
+	for (int i=0; i<k_number_of_standard_functions; ++i)
+	{
+		AddEmptyFunctionIfFunctionDoesNotExist(k_standard_function_names[i]);
+	}
+	// Debug functions	
 	AddEmptyFunctionIfFunctionDoesNotExist("f$test");
 	AddEmptyFunctionIfFunctionDoesNotExist("f$debug");
 }

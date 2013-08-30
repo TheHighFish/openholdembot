@@ -172,8 +172,7 @@ const bool k_this_must_not_happen = false;
 
 const int k_mutex_lock_time = 500;
 
-// Autoplayer-functions
-enum AutoplayerConstant
+enum StandardFunctionConstants
 {
 	// Primary autoplayer-functions
 	k_autoplayer_function_allin,
@@ -190,26 +189,35 @@ enum AutoplayerConstant
 	k_autoplayer_function_check,
 	k_autoplayer_function_fold,
 	// Secondary autoplayer-functions
-	k_autoplayer_function_prefold,
-	k_autoplayer_function_sitin,
-	k_autoplayer_function_sitout,
-	k_autoplayer_function_leave,
-	k_autoplayer_function_autopost,
-	k_autoplayer_function_close,
-	k_autoplayer_function_rebuy,
-	k_autoplayer_function_chat,
-	// other functions
-	k_autoplayer_function_delay,
-	// Attention Always keep this at last place.
-	k_number_of_autoplayer_functions
+	k_standard_function_prefold,
+	k_standard_function_sitin,
+	k_standard_function_sitout,
+	k_standard_function_leave,
+	k_standard_function_autopost,
+	k_standard_function_close,
+	k_standard_function_rebuy,
+	k_standard_function_chat,
+	// Other functions
+	k_standard_function_delay,
+	// Ini-functions	
+	k_init_on_startup,
+	k_init_on_connection,
+	k_init_on_handreset,
+	k_init_on_new_round,
+	k_init_on_my_turn,
+	k_init_on_heartbeat,
+	// Prwin functions
+	k_prwin_number_of_opponents,
+	k_prwin_number_of_iterations,
+	k_prwin_topclip,
+	k_prwin_mustplay,
+	k_prwin_willplay,
+	k_prwin_wontplay,
+	// Attention! Always keep this at last place.
+	k_number_of_standard_functions
 };
 
-const int k_betpot_min = k_autoplayer_function_betpot_2_1;
-const int k_betpot_max = k_autoplayer_function_betpot_1_4;
 const int k_max_length_betpot_button_name = 17;
-
-#define k_max_betpot_buttons (k_betpot_max - k_betpot_min + 1)
-#define k_betpot_index(i) (i - k_betpot_min)
 
 const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] =
 {
@@ -222,15 +230,10 @@ const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button
 	"betpot_1_4"
 };
 
-const int first_primary_autoplayer_function = k_autoplayer_function_allin;
-const int last_primary_autoplayer_function = k_autoplayer_function_call;
-const int first_secondary_autoplayer_function = k_autoplayer_function_prefold;
-const int last_secondary_autoplayer_function = k_autoplayer_function_chat;
-
-// Autoplayer-function names
-const int k_max_length_of_autoplayer_functionname = 13;  // +1 for NULL
-const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_length_of_autoplayer_functionname] =
+//  Standard function names
+const CString k_standard_function_names[k_number_of_standard_functions] =
 {
+	// Primary autoplayer-functions
 	"f$alli",
 	"f$betpot_2_1",
 	"f$betpot_1_1",
@@ -242,17 +245,33 @@ const char k_autoplayer_functionname[k_number_of_autoplayer_functions][k_max_len
 	"f$betsize",
 	"f$rais",
 	"f$call",
-	"--check",
-	"--fold",
+	"f$check",
+	"f$fold",
+	// Secondary autoplayer-functions
 	"f$prefold",
 	"f$sitin",
 	"f$sitout",
 	"f$leave",
-	"--autopost",
+	"f$autopost",
 	"f$close",
 	"f$rebuy",
 	"f$chat",
-	"f$delay"
+	// Other functions
+	"f$delay",
+	// Ini-functions	
+	"f$ini_function_on_startup",
+	"f$ini_function_on_connection",
+	"f$ini_function_on_handreset",
+	"f$ini_function_on_new_round",
+	"f$ini_function_on_my_turn",
+	"f$ini_function_on_heartbeat",
+	// Prwin functions
+	"f$prwin_number_of_opponents",
+	"f$prwin_number_of_iterations",
+	"f$prwin_topclip",
+	"f$prwin_mustplay",
+	"f$prwin_willplay",
+	"f$prwin_wontplay",
 };
 
 enum table_positioner_options

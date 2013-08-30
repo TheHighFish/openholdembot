@@ -40,7 +40,7 @@
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-
+#include "MagicNumbers.h"
 
 CSymbolEngineIniFunctions *p_symbol_engine_ini_functions = NULL;
 
@@ -79,36 +79,36 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions()
 void CSymbolEngineIniFunctions::InitOnStartup()
 {
 	ResetOnConnection();
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_startup], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_startup], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnConnection()
 {
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_connection], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnHandreset()
 {
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_handreset], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_handreset], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnNewRound()
 {
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_new_round], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_new_round], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnMyTurn()
 {
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_my_turn], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_my_turn], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnHeartbeat()
 {
-	gram.CalcF$symbol(p_formula, k_ini_function_names[k_init_on_heartbeat], 
+	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_heartbeat], 
 		&dummy_e);
 }
