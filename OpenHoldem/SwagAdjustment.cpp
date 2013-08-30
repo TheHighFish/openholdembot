@@ -140,7 +140,7 @@ double MaximumBetsizeForGameType()
 
 double AdjustedBetsize(double amount_to_raise_to)
 {
-	double original_amount_to_raise_to;
+	double original_amount_to_raise_to = amount_to_raise_to;
 	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());

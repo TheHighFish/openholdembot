@@ -215,7 +215,14 @@ protected:
 	CFormula		m_wrk_formula;
 
 	CStringArray	m_standard_headings;
-	CStringArray	m_standard_functions[4];
+	// Tree view for function grouping
+	//   * Primary autoplayer functions
+	//   * Secondary autoplayer functions
+	//   * Ini functions
+	//   * PrWin functions
+	//   * Debug functions
+	static const int	k_number_of_standard_headings = 5;
+	CStringArray		m_standard_functions[k_number_of_standard_headings];
 
 	// This is used for formula parsing and evaluation
 	CGrammar		gram;

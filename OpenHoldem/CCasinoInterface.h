@@ -34,7 +34,7 @@ private:
 
 public:
 	// regions 
-	RECT action_buttons[k_number_of_autoplayer_functions];
+	RECT action_buttons[k_number_of_standard_functions];
 	RECT i3_button;
 	RECT i3_edit_region;
 	RECT i3_slider_region;

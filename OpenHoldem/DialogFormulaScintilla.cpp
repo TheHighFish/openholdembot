@@ -238,42 +238,41 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_headings.Add("Autoplayer Functions");
 	m_standard_headings.Add("Standard Functions");
 	m_standard_headings.Add("Ini Functions");
+	m_standard_headings.Add("PrWin Functions");
 	m_standard_headings.Add("Debug Functions");
 
-	ASSERT(m_standard_headings.GetSize() == 4);
+	ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
 
-	m_standard_functions[0].Add("f$alli");
-	m_standard_functions[0].Add("f$betsize");
-	m_standard_functions[0].Add("f$betpot_2_1");
-	m_standard_functions[0].Add("f$betpot_1_1");
-	m_standard_functions[0].Add("f$betpot_3_4");
-	m_standard_functions[0].Add("f$betpot_2_3");
-	m_standard_functions[0].Add("f$betpot_1_2");
-	m_standard_functions[0].Add("f$betpot_1_3");
-	m_standard_functions[0].Add("f$betpot_1_4");
-	m_standard_functions[0].Add("f$rais");
-	m_standard_functions[0].Add("f$call");
-	m_standard_functions[0].Add("f$prefold");
-	m_standard_functions[0].Add("f$delay");
-
+	// Autoplayer Functions
+	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
+	{
+		m_standard_functions[0].Add(k_standard_function_names[i]);
+	}
+	
+	// Standard functions
+	// Notes and DLL are somewhat special
 	m_standard_functions[1].Add("notes");
 	m_standard_functions[1].Add("dll");
-	m_standard_functions[1].Add("f$chat");
-	m_standard_functions[1].Add("f$rebuy");
-	m_standard_functions[1].Add("f$prwin_number_of_opponents");
-	m_standard_functions[1].Add("f$prwin_number_of_iterations");
-	m_standard_functions[1].Add("f$sitin");
-	m_standard_functions[1].Add("f$sitout");
-	m_standard_functions[1].Add("f$leave");
-	m_standard_functions[1].Add("f$close");
-
-	for (int i=0; i<k_number_of_ini_functions; ++i)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
 	{
-		m_standard_functions[2].Add(k_ini_function_names[i]);
+		m_standard_functions[1].Add(k_standard_function_names[i]);
+	}
+	
+	// Ini Functions
+	for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i)
+	{
+		m_standard_functions[2].Add(k_standard_function_names[i]);
 	}
 
-	m_standard_functions[3].Add("f$test");
-	m_standard_functions[3].Add("f$debug");
+	// PrWin functions
+	for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i)
+	{
+		m_standard_functions[3].Add(k_standard_function_names[i]);
+	}
+
+	// Debug functions	
+	m_standard_functions[4].Add("f$test");
+	m_standard_functions[4].Add("f$debug");
 
 	// Copy current doc formula into working set
 	m_wrk_formula.ClearFormula();

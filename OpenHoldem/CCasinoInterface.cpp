@@ -70,12 +70,12 @@ bool CCasinoInterface::ClickButton(int autoplayer_function_code)
 	if (ButtonClickable(autoplayer_function_code)) 
 	{
 		ClickRect(action_buttons[autoplayer_function_code]);
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_autoplayer_functionname[autoplayer_function_code]);
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
 		return true;
 	}
 	else
 	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_autoplayer_functionname[autoplayer_function_code]);
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_standard_function_names[autoplayer_function_code]);
 		return false;
 	}
 }

@@ -68,7 +68,7 @@ private:
 
 private:
 	// button names
-	CString button_names[k_number_of_autoplayer_functions];
+	CString button_names[k_number_of_standard_functions];
 
 	CString _i86_button_name;
 	CString _i86X_button_name[k_max_number_of_i86X_buttons];
@@ -80,12 +80,12 @@ private:
 
 public:
 	// visible
-	bool visible_buttons[k_number_of_autoplayer_functions];
+	bool visible_buttons[k_number_of_standard_functions];
 	bool i3_button_visible;
 	bool i86_button_visible;
 	bool i86X_button_visible[k_max_number_of_i86X_buttons];
 	// defined
-	bool defined_buttons[k_number_of_autoplayer_functions];
+	bool defined_buttons[k_number_of_standard_functions];
 	bool i3_button_defined;
 	bool i3_edit_defined;
 	bool i3_slider_defined;
@@ -93,7 +93,7 @@ public:
 	bool i86_button_defined;
 	bool i86X_button_defined[k_max_number_of_i86X_buttons];
 	// available
-	bool available_buttons[k_number_of_autoplayer_functions];
+	bool available_buttons[k_number_of_standard_functions];
 	bool i3_button_available;	
 	bool i86_button_available;
 	bool i86X_button_available[k_max_number_of_i86X_buttons];

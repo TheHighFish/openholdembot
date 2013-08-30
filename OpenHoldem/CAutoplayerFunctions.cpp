@@ -18,7 +18,7 @@ CAutoplayerFunctions::CAutoplayerFunctions()
 
 void CAutoplayerFunctions::Reset()
 {
-	for (int i=0; i<k_number_of_autoplayer_functions; i++)
+	for (int i=0; i<k_number_of_standard_functions; i++)
 	{
 		SetAutoplayerFunction(i, 0);
 	}
@@ -46,17 +46,14 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 	write_log(preferences.debug_symbolengine(), "Trace enabled: %i\n", preferences.trace_enabled());
 	bool trace_needed = preferences.trace_enabled();
 
-	for (int i=first_primary_autoplayer_function; i<=last_primary_autoplayer_function ; i++)
+	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
 	{
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
+			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
 		write_log(preferences.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
+			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
-	// [nik0] always set check/fold to 1
-	p_autoplayer_functions->SetAutoplayerFunction(k_autoplayer_function_check, 1);
-	p_autoplayer_functions->SetAutoplayerFunction(k_autoplayer_function_fold, 1);
 	CalcAutoTrace();
 }
 
@@ -67,13 +64,13 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 
 	bool trace_needed = preferences.trace_enabled();
 
-	for (int i=first_secondary_autoplayer_function; i<=last_secondary_autoplayer_function ; i++)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_delay; i++)
 	{
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_autoplayer_functionname[i], trace_needed, &e));
-		write_log(preferences.debug_symbolengine(), "Primary formulas; %s: %f\n", 
-			k_autoplayer_functionname[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
+			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
+		write_log(preferences.debug_symbolengine(), "Secondary formulas; %s: %f\n", 
+			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
 }

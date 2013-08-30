@@ -242,15 +242,18 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	button_names[k_autoplayer_function_call]		= GetButtonName(_call_button_number);
 	button_names[k_autoplayer_function_check]		= GetButtonName(_check_button_number);
 	button_names[k_autoplayer_function_fold]		= GetButtonName(_fold_button_number);
-	button_names[k_autoplayer_function_prefold]		= GetButtonName(_prefold_button_number);
-	button_names[k_autoplayer_function_sitin]		= GetButtonName(_sitin_button_number);
-	button_names[k_autoplayer_function_sitout]		= GetButtonName(_sitout_button_number);
-	button_names[k_autoplayer_function_leave]		= GetButtonName(_leave_button_number);
-	button_names[k_autoplayer_function_autopost]	= GetButtonName(_autopost_button_number);
+	button_names[k_standard_function_prefold]		= GetButtonName(_prefold_button_number);
+	button_names[k_standard_function_sitin]		= GetButtonName(_sitin_button_number);
+	button_names[k_standard_function_sitout]		= GetButtonName(_sitout_button_number);
+	button_names[k_standard_function_leave]		= GetButtonName(_leave_button_number);
+	button_names[k_standard_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
-	for (int i = k_betpot_min; i <= k_betpot_max; i++)
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i)
 	{
-		button_names[i].Format("%s_%s", k_betpot_button_name[k_betpot_index(i)], "button");
+		int button_index = i - k_autoplayer_function_betpot_2_1;
+		button_names[i].Format("%s_%s", 
+			k_betpot_button_name[button_index], 
+			"button");
 	}
 	// hardcoded so should only be done once at startup ?
 	_i3_button_name  = "i3button";
@@ -272,15 +275,16 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	visible_buttons[k_autoplayer_function_call]		= GetButtonVisible(_call_button_number);
 	visible_buttons[k_autoplayer_function_check]	= GetButtonVisible(_check_button_number);
 	visible_buttons[k_autoplayer_function_fold]		= GetButtonVisible(_fold_button_number);
-	visible_buttons[k_autoplayer_function_prefold]	= GetButtonVisible(_prefold_button_number);
-	visible_buttons[k_autoplayer_function_sitin]	= GetButtonVisible(_sitin_button_number);
-	visible_buttons[k_autoplayer_function_sitout]	= GetButtonVisible(_sitout_button_number);
-	visible_buttons[k_autoplayer_function_leave]	= GetButtonVisible(_leave_button_number);
-	visible_buttons[k_autoplayer_function_autopost]	= GetButtonVisible(_autopost_button_number);
+	visible_buttons[k_standard_function_prefold]	= GetButtonVisible(_prefold_button_number);
+	visible_buttons[k_standard_function_sitin]		= GetButtonVisible(_sitin_button_number);
+	visible_buttons[k_standard_function_sitout]		= GetButtonVisible(_sitout_button_number);
+	visible_buttons[k_standard_function_leave]		= GetButtonVisible(_leave_button_number);
+	visible_buttons[k_standard_function_autopost]	= GetButtonVisible(_autopost_button_number);
 	// visible betpot buttons
-	for (int i = k_betpot_min; i <= k_betpot_max; i++)
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i)
 	{
-		visible_buttons[i] = GetBetpotButtonVisible(k_betpot_index(i));
+		int button_index = i - k_autoplayer_function_betpot_2_1;
+		visible_buttons[i] = GetBetpotButtonVisible(button_index);
 	}
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
@@ -292,7 +296,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 
 
 	// DEFINED + AVAILABLE
-	for (int i = k_autoplayer_function_allin; i < k_number_of_autoplayer_functions; i++)
+	for (int i=0; i<k_number_of_standard_functions; i++)
 	{
 		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &p_casino_interface->action_buttons[i]);
 		available_buttons[i] = defined_buttons[i] && visible_buttons[i];

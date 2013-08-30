@@ -123,7 +123,7 @@ bool CAutoplayer::DoBetPot(void)
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
-				k_autoplayer_functionname[i]);
+				k_standard_function_names[i]);
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !! */ 400);
@@ -150,7 +150,7 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
-			k_autoplayer_functionname[i], Bool2CString(function_result));
+			k_standard_function_names[i], Bool2CString(function_result));
 		if (function_result)
 		{
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
@@ -164,11 +164,11 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 
 bool CAutoplayer::AnySecondaryFormulaTrue()
 {
-	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; ++i)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
 	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
-			k_autoplayer_functionname[i], Bool2CString(function_result));
+			k_standard_function_names[i], Bool2CString(function_result));
 		if (function_result)
 		{
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
@@ -223,6 +223,8 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
+	// !!! Code-clones
+	// !!! Needs refactoring and a loop
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	if (p_autoplayer_functions->f$rais())
 	{
@@ -242,20 +244,25 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 			return true;
 		}
 	}
-	// Try to check
-	if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+	if (p_autoplayer_functions->f$check())
 	{
-		p_symbols->RecordPrevAction(k_action_check);
-		write_logautoplay(ActionConstantNames(k_action_check));
-		return true;
+		if (p_casino_interface->ClickButton(k_autoplayer_function_check))
+		{
+			p_symbols->RecordPrevAction(k_action_check);
+			write_logautoplay(ActionConstantNames(k_action_check));
+			return true;
+		}
 	}
-	else
+	if (p_autoplayer_functions->f$fold())
 	{
-		// Otherwise: fold
-		p_symbols->RecordPrevAction(k_action_fold);
-		write_logautoplay(ActionConstantNames(k_action_fold));
-		return p_casino_interface->ClickButton(k_autoplayer_function_fold);
+		if (p_casino_interface->ClickButton(k_autoplayer_function_fold))
+		{
+			p_symbols->RecordPrevAction(k_action_fold);
+			write_logautoplay(ActionConstantNames(k_action_fold));
+			return true;
+		}
 	}
+	return false;
 }
 
 
@@ -272,32 +279,32 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-	for (int i=k_autoplayer_function_prefold; i<=k_autoplayer_function_chat; i++)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; i++)
 	{
 
 		// Prefold, close, rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_prefold))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_prefold))
 		{
 			// Prefold is technically more than a simple button-click,
 			// because we need to create an autoplayer-trace afterwards.
 			return DoPrefold();
 		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_close))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_close))
 		{
 			// CloseWindow is "final".
 			// We don't expect any further action after that
 			// and can return immediatelly.
 			return p_casino_interface->CloseWindow();
 		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_rebuy))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_rebuy))
 		{
 			// This requires an external script and some time.
 			// No further actions here eihter, but immediate return.
 			p_rebuymanagement->TryToRebuy();
 			return true;
 		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_autoplayer_function_chat))
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat))
 		{
 			return DoChat();
 		}
@@ -462,7 +469,7 @@ bool CAutoplayer::DoSwag(void)
 bool CAutoplayer::DoPrefold(void) 
 {
 	assert(p_autoplayer_functions->f$prefold() == 0);
-	if (p_casino_interface->ClickButton(k_autoplayer_function_prefold))
+	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbols->RecordPrevAction(k_action_fold);
 		write_logautoplay(ActionConstantNames(k_action_fold));
