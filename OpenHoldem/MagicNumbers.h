@@ -231,7 +231,8 @@ const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button
 };
 
 //  Standard function names
-const CString k_standard_function_names[k_number_of_standard_functions] =
+const int k_max_length_of_standard_function_names = 28 + 1;
+const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] =
 {
 	// Primary autoplayer-functions
 	"f$alli",

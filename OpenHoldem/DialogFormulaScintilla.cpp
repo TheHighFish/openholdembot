@@ -248,7 +248,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	{
 		m_standard_functions[0].Add(k_standard_function_names[i]);
 	}
-	
 	// Standard functions
 	// Notes and DLL are somewhat special
 	m_standard_functions[1].Add("notes");
