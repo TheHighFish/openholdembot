@@ -16,7 +16,7 @@ BUG FIXES:
   (we added "Ini-functions" to the tree-view but kept that array as is).
   This has now been fixed.
 - When we rewrote the PokerTracker-code we created a new symbol-engine,
-  but forgot to add it to the engine-container.
+  but forgot to add it t the engine-container.
   Therefore PT-symbols did not work.
   Thanks to JokeDoke for reporting, Hapil for helping us to find the bug.
   [THF, Termitapalahermita]
@@ -33,6 +33,10 @@ BUG FIXES:
 NEW STUFF:
 - Now creating logs-directory on startup if it does not exist.
   [THF]
+  
+MAINTENANCE:
+- New MyMutex class to automatically acquire/release anti-collision
+  [ZooBoy]
 
 
 v4.2.0 2013-08-04
