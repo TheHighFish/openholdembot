@@ -21,6 +21,7 @@
 #include <assert.h>
 #include "CFormula.h"
 #include "CGrammar.h"
+#include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -78,6 +79,7 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions()
 
 void CSymbolEngineIniFunctions::InitOnStartup()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
 	ResetOnConnection();
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_startup], 
 		&dummy_e);
@@ -85,30 +87,37 @@ void CSymbolEngineIniFunctions::InitOnStartup()
 
 void CSymbolEngineIniFunctions::ResetOnConnection()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnHandreset()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_handreset], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnNewRound()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_new_round], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnMyTurn()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_my_turn], 
 		&dummy_e);
 }
 
 void CSymbolEngineIniFunctions::ResetOnHeartbeat()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
+		k_standard_function_names[k_init_on_heartbeat]);
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_heartbeat], 
 		&dummy_e);
 }
