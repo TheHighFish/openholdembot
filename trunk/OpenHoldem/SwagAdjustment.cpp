@@ -6,7 +6,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineUserchair.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
 #include "debug.h"
 #include "NumericalFunctions.h"

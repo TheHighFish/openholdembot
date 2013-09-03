@@ -68,6 +68,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// The engines inserted first will be called first later.
 	// But we assure correct ordering by assertions in the constructors of the engines.
 
+	// CSymbolEngineTableLimits
+	p_tablelimits = new CSymbolEngineTableLimits ();
+	AddSymbolEngine(p_tablelimits);
 	// CSymbolEngineReplayFrameController
 	p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
 	AddSymbolEngine(p_symbol_engine_replayframe_controller);
@@ -190,7 +193,6 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 void CEngineContainer::ResetOnConnection()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
-	p_tablelimits->ResetOnConnection();
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnConnection();

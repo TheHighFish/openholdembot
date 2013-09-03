@@ -2,6 +2,7 @@
 #define INC_CTABLELIMITS_H
 
 #include "MagicNumbers.h"
+#include "CVirtualSymbolEngine.h"
 
 #define BIG_BLIND p_tablelimits->bblind()
 #define SMALL_BLIND p_tablelimits->sblind()
@@ -15,16 +16,19 @@ struct STableLimit
 	// They get stored separately and not auto-locked.
 };
 
-extern class CTableLimits
+extern class CSymbolEngineTableLimits: public CVirtualSymbolEngine
 {
 public:
-	CTableLimits();
-	~CTableLimits();
+	CSymbolEngineTableLimits();
+	~CSymbolEngineTableLimits();
 	// public mutators
 public:
+	void InitOnStartup();
 	void ResetOnConnection();
 	void ResetOnHandreset();
-	void ResetEachHeartBeatCycle();
+	void ResetOnNewRound();
+	void ResetOnMyTurn();
+	void ResetOnHeartbeat();
 	void CalcTableLimits();
 public:
 	// public accessors, formerly part of the symbol-structure.

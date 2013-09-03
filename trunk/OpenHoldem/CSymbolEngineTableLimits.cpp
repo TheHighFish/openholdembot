@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
@@ -15,21 +15,26 @@
 #include "Numericalfunctions.h"
 
 
-CTableLimits	*p_tablelimits = NULL;
+CSymbolEngineTableLimits	*p_tablelimits = NULL;
 
 
-CTableLimits::CTableLimits()
+CSymbolEngineTableLimits::CSymbolEngineTableLimits()
+{
+}
+
+CSymbolEngineTableLimits::~CSymbolEngineTableLimits()
+{
+}
+
+
+void CSymbolEngineTableLimits::InitOnStartup()
 {
 	ResetOnConnection();
 }
 
-CTableLimits::~CTableLimits()
+void CSymbolEngineTableLimits::ResetOnConnection()
 {
-}
-
-void CTableLimits::ResetOnConnection()
-{
-	write_log(preferences.debug_table_limits(), "CTableLimits::ResetOnConnection()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::ResetOnConnection()\n");
 	blinds_locked_for_complete_session = false;
 	number_of_saved_tablelimits = 0;
 	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)
@@ -43,9 +48,9 @@ void CTableLimits::ResetOnConnection()
 	ResetOnHandreset();
 }
 
-void CTableLimits::ResetOnHandreset()
+void CSymbolEngineTableLimits::ResetOnHandreset()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::ResetOnHandreset()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::ResetOnHandreset()\n");
 	blinds_locked_for_current_hand = false;
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
@@ -60,15 +65,21 @@ void CTableLimits::ResetOnHandreset()
 	ResetBets();
 }
 
-void CTableLimits::ResetEachHeartBeatCycle()
+void CSymbolEngineTableLimits::ResetOnNewRound()
+{}
+
+void CSymbolEngineTableLimits::ResetOnMyTurn()
+{}
+
+void CSymbolEngineTableLimits::ResetOnHeartbeat()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::ResetEachHeartBeatCycle()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::ResetOnHeartbeat()\n");
 	tablelimit_unreliable_input.sblind = 0;
 	tablelimit_unreliable_input.bblind = 0;
 	tablelimit_unreliable_input.bbet = 0;
 }
 
-void CTableLimits::ResetBets()
+void CSymbolEngineTableLimits::ResetBets()
 {
 	for (int i=k_betround_preflop; i<=k_betround_river; i++)
 	{
@@ -77,15 +88,15 @@ void CTableLimits::ResetBets()
 }
 
 
-void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
+void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
-	write_log(preferences.debug_table_limits(), "CTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
-	write_log(preferences.debug_table_limits(), "CTableLimits: istournament: %d\n", IsTrue(p_symbol_engine_istournament->istournament()));
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: istournament: %d\n", IsTrue(p_symbol_engine_istournament->istournament()));
 	if (blinds_locked_for_complete_session || p_symbol_engine_istournament->istournament())
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: blinds_locked_for_complete_session or istournament\n");
-		write_log(preferences.debug_table_limits(), "CTableLimits: Leaving CTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: blinds_locked_for_complete_session or istournament\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: Leaving CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
 	}
 	if (number_of_saved_tablelimits == k_number_of_hands_to_autolock_blinds_for_cashgames)
@@ -107,7 +118,7 @@ void CTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 	}
 }
 
-bool CTableLimits::ReasonableBlindsForCurrentHand()
+bool CSymbolEngineTableLimits::ReasonableBlindsForCurrentHand()
 {
 	// The blinds are "reasonable" after the calculation (with non-zero-input),
 	// so we check only for non-zero blinds.
@@ -118,30 +129,30 @@ bool CTableLimits::ReasonableBlindsForCurrentHand()
 	// (ismyturn doesn't work either)
 	// Pros/cons: more reliability, but no auto-locking before it is our turn.
 	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
-	write_log(preferences.debug_table_limits(), "CTableLimits: ismyturn: %d\n", p_symbol_engine_autoplayer->ismyturn());
-	write_log(preferences.debug_table_limits(), "CTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: bbet: %f\n", tablelimit_unreliable_input.bbet); 
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ismyturn: %d\n", p_symbol_engine_autoplayer->ismyturn());
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: bbet: %f\n", tablelimit_unreliable_input.bbet); 
 	if (/*p_symbol_engine_autoplayer->ismyturn() && */ (tablelimit_unreliable_input.sblind >= 0.01) 
 		&& (tablelimit_unreliable_input.bblind >= tablelimit_unreliable_input.sblind) 
 		&& (tablelimit_unreliable_input.bbet   >= tablelimit_unreliable_input.bblind))
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: ReasonableBlindsForCurrentHand(): true\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ReasonableBlindsForCurrentHand(): true\n");
 		return true;
 	}
 	else
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: ReasonableBlindsForCurrentHand(): false\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ReasonableBlindsForCurrentHand(): false\n");
 		return false;
 	}
 }
 
-void CTableLimits::RememberBlindsForCashgames()
+void CSymbolEngineTableLimits::RememberBlindsForCashgames()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::RememberBlindsForCashgames()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::RememberBlindsForCashgames()\n");
 	if (number_of_saved_tablelimits < k_number_of_hands_to_autolock_blinds_for_cashgames)
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: Saving blinds for hand %d\n", number_of_saved_tablelimits);
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: Saving blinds for hand %d\n", number_of_saved_tablelimits);
 		tablelimits_first_N_hands_sblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.sblind;
 		tablelimits_first_N_hands_bblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.bblind;
 		tablelimits_first_N_hands_bbet[number_of_saved_tablelimits]   = tablelimit_locked_for_current_hand.bbet;
@@ -149,57 +160,57 @@ void CTableLimits::RememberBlindsForCashgames()
 	}
 	else
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: Already enough saved blinds.\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: Already enough saved blinds.\n");
 	}
 }
 
-void CTableLimits::AutoLockBlindsForCurrentHand()
+void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::AutoLockBlindsForCurrentHand()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand()\n");
 	blinds_locked_for_current_hand = true;
 	tablelimit_locked_for_current_hand.sblind = tablelimit_last_known_good_value.sblind;
 	tablelimit_locked_for_current_hand.bblind = tablelimit_last_known_good_value.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_last_known_good_value.bbet;
-	write_log(preferences.debug_table_limits(), "CTableLimits: Locked blinds at %f / %f / %f\n", tablelimit_locked_for_current_hand.sblind,
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: Locked blinds at %f / %f / %f\n", tablelimit_locked_for_current_hand.sblind,
 		tablelimit_locked_for_current_hand.bblind, tablelimit_locked_for_current_hand.bbet);
 	RememberBlindsForCashgames();
 }
 
-void CTableLimits::SetSmallBlind(double small_blind)
+void CSymbolEngineTableLimits::SetSmallBlind(double small_blind)
 {
 	assert(small_blind >= 0);
 	tablelimit_unreliable_input.sblind = small_blind; 
 }
 
-void CTableLimits::SetBigBlind(double big_blind)
+void CSymbolEngineTableLimits::SetBigBlind(double big_blind)
 {
 	assert(big_blind >= 0);
 	tablelimit_unreliable_input.bblind = big_blind;
 }
 
-void CTableLimits::SetBigBet(double big_bet)
+void CSymbolEngineTableLimits::SetBigBet(double big_bet)
 {
 	assert(big_bet >= 0);
 	tablelimit_unreliable_input.bbet = big_bet;
 }
 
-void CTableLimits::SetAnte(double ante)
+void CSymbolEngineTableLimits::SetAnte(double ante)
 {
 	assert(ante >= 0);
 	_ante = ante;
 }
 
-void CTableLimits::SetGametype(int gametype)
+void CSymbolEngineTableLimits::SetGametype(int gametype)
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::SetGametype() new gametype: %d\n", gametype);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SetGametype() new gametype: %d\n", gametype);
 	assert(gametype >= k_gametype_unknown);
 	assert(gametype <= k_gametype_FL);
 	_gametype = gametype;
 }
 
-void CTableLimits::SetBet(int betround, double bet)
+void CSymbolEngineTableLimits::SetBet(int betround, double bet)
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::SetBet()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SetBet()\n");
 	write_log(preferences.debug_table_limits(), "New bet for betround[%d]: %f\n", betround, bet);
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
@@ -207,11 +218,11 @@ void CTableLimits::SetBet(int betround, double bet)
 	_betsizes_for_all_bettingrounds[betround] = bet;
 }
 
-void CTableLimits::AutoLockBlinds()
+void CSymbolEngineTableLimits::AutoLockBlinds()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::AutoLockBlinds()\n");
-	write_log(preferences.debug_table_limits(), "CTableLimits: blinds_locked_for_current_hand: %d\n", blinds_locked_for_current_hand);
-	write_log(preferences.debug_table_limits(), "CTableLimits: ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::AutoLockBlinds()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: blinds_locked_for_current_hand: %d\n", blinds_locked_for_current_hand);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
 	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
 		AutoLockBlindsForCurrentHand();
@@ -219,9 +230,9 @@ void CTableLimits::AutoLockBlinds()
 	}
 }
 
-void CTableLimits::CalcTableLimits_NL_PL()
+void CSymbolEngineTableLimits::CalcTableLimits_NL_PL()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::CalcTableLimits_NL_PL()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::CalcTableLimits_NL_PL()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
 		if (p_scraper->s_limit_info()->found_sb_bb)
@@ -245,26 +256,26 @@ void CTableLimits::CalcTableLimits_NL_PL()
 	}
 }
 
-bool CTableLimits::IsCalculationNeccessary()
+bool CSymbolEngineTableLimits::IsCalculationNeccessary()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::IsCalculationNeccessary()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::IsCalculationNeccessary()\n");
 	if (tablelimit_unreliable_input.sblind <= 0)
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: sblind=0, calculation neccessary.\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: sblind=0, calculation neccessary.\n");
 		return true;
 	}
 	if (tablelimit_unreliable_input.bblind <= 0)
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits: bblind=0, calculation neccessary.\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: bblind=0, calculation neccessary.\n");
 		return true;
 	}
-	write_log(preferences.debug_table_limits(), "CTableLimits: no calculation neccessary.\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: no calculation neccessary.\n");
 	return false;
 }
 
-void CTableLimits::CalcTableLimits_FL_AndUnknownGametype()
+void CSymbolEngineTableLimits::CalcTableLimits_FL_AndUnknownGametype()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::CalcTableLimits_FL_AndUnknownGametype()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::CalcTableLimits_FL_AndUnknownGametype()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
 		if (p_scraper->s_limit_info()->found_sb_bb)
@@ -288,25 +299,25 @@ void CTableLimits::CalcTableLimits_FL_AndUnknownGametype()
 	}
 }
 
-void CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
+void CSymbolEngineTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
 {
 	// If SB is greater than BB that is usually a mistake and we should swap.
 	// But we don't swap, if BB is zero, as that does mean, 
 	// that we just got the amount wrong (BB got cards, i.e. dealt, but no bet).
-	write_log(preferences.debug_table_limits(), "CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()\n");
 	if ((tablelimit_unreliable_input.sblind > tablelimit_unreliable_input.bblind)
 		&& (tablelimit_unreliable_input.bblind >= 0.01))
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero swap neccessary\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero swap neccessary\n");
 		SwapDoubles(&tablelimit_unreliable_input.sblind, &tablelimit_unreliable_input.bblind);
 	}
 }
 
-void CTableLimits::SearchTableForSbAndBbValue()
+void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 {
 	bool	found_inferred_sb = false, found_inferred_bb = false;
 
-	write_log(preferences.debug_table_limits(), "CTableLimits::SearchTableForSbAndBbValue()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SearchTableForSbAndBbValue()\n");
 	for (int i=1; i<=p_tablemap->nchairs(); i++)
 	{
 		int next_chair = (p_symbol_engine_dealerchair->dealerchair() + i) % p_tablemap->nchairs();
@@ -321,7 +332,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		// then we will try it as unknown (zero).
 		if (p_scraper->player_bet(next_chair) >= 0.01)
 		{
-			write_log(preferences.debug_table_limits(), "CTableLimits::SearchTableForSbAndBbValue found bet for chair %d\n", next_chair);
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SearchTableForSbAndBbValue found bet for chair %d\n", next_chair);
 			// Bet found
 			if (!found_inferred_sb)
 			{
@@ -329,7 +340,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 				if (tablelimit_unreliable_input.sblind==0)
 				{
 					SetSmallBlind(p_scraper->player_bet(next_chair));
-					write_log(preferences.debug_table_limits(), "CTableLimits: found inferred SB at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
+					write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: found inferred SB at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
 					found_inferred_sb = true;
 				}
 			}
@@ -342,15 +353,15 @@ void CTableLimits::SearchTableForSbAndBbValue()
 					if (next_chair != p_symbol_engine_dealerchair->dealerchair())
 					{
 						SetBigBlind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-						write_log(preferences.debug_table_limits(), "CTableLimits: found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
 					}
 					// heads up - reversed blinds
 					else
 					{
 						SetBigBlind(tablelimit_unreliable_input.sblind);
 						SetSmallBlind(p_scraper->player_bet(next_chair));
-						write_log(preferences.debug_table_limits(), "CTableLimits: found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
-						write_log(preferences.debug_table_limits(), "CTableLimits: Swapping blinds.\n");
+						write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: Swapping blinds.\n");
 					}
 					found_inferred_bb = true;
 				}
@@ -360,15 +371,15 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		else if ((p_scraper->card_player(next_chair, 0) != CARD_NOCARD)  
 			&& (p_scraper->card_player(next_chair, 0) != CARD_NOCARD))
 		{
-			write_log(preferences.debug_table_limits(), "CTableLimits::SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
-			write_log(preferences.debug_table_limits(), "CTableLimits::SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);
 			// Awful. Found cards, but not the expected blind.
 			// Either a misread, or a blind is missing.
 			// Read it as zero and try to guess it later correctly.
 			if (!found_inferred_sb)
 			{
 				found_inferred_sb = true;
-				write_log(preferences.debug_table_limits(), "CTableLimits: expected SB, but not found\n");
+				write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: expected SB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
 				// from a previous round!? 
@@ -376,7 +387,7 @@ void CTableLimits::SearchTableForSbAndBbValue()
 			else if (!found_inferred_bb)
 			{
 				found_inferred_bb = true;
-				write_log(preferences.debug_table_limits(), "CTableLimits: expected BB, but not found\n");
+				write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: expected BB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
 				// from a previous round!? 
@@ -385,15 +396,15 @@ void CTableLimits::SearchTableForSbAndBbValue()
 		}
 		else
 		{
-			write_log(preferences.debug_table_limits(), "CTableLimits::SearchTableForSbAndBbValue found neither bet nor cards for chair %d\n", next_chair);
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::SearchTableForSbAndBbValue found neither bet nor cards for chair %d\n", next_chair);
 		}
 	}
 	SwapBlindsIfSbGreaterThanBBAndNotZero();
 }
 
-double CTableLimits::GuessSmallBlindFromBigBlind()
+double CSymbolEngineTableLimits::GuessSmallBlindFromBigBlind()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::GuessSmallBlindFromBigBlind()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::GuessSmallBlindFromBigBlind()\n");
 	// Special case: 0.02/0.05/0.10
 	if (IsEqual(tablelimit_unreliable_input.bblind, 0.05))
 	{
@@ -417,11 +428,11 @@ double CTableLimits::GuessSmallBlindFromBigBlind()
 	return (tablelimit_unreliable_input.bblind / 2);
 }
 
-double CTableLimits::GuessBigBlindFromSmallBlind()
+double CSymbolEngineTableLimits::GuessBigBlindFromSmallBlind()
 {	// Special cases: NL 0.10/0.25.
 	// Some casinos do also provide NL 0.10/0.20,
 	// but that is rare, we do assume 0.10/0.25 here.
-	write_log(preferences.debug_table_limits(), "CTableLimits::GuessBigBlindFromSmallBlind()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::GuessBigBlindFromSmallBlind()\n");
 	if (gametype() == k_gametype_NL && IsEqual(tablelimit_unreliable_input.sblind, 0.10))
 	{
 		return 0.25;
@@ -429,35 +440,35 @@ double CTableLimits::GuessBigBlindFromSmallBlind()
 	return (tablelimit_unreliable_input.sblind * 2);
 }
 
-double CTableLimits::GuessBigBetFromBigBlind()
+double CSymbolEngineTableLimits::GuessBigBetFromBigBlind()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::GuessBigBetFromBigBlind()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::GuessBigBetFromBigBlind()\n");
 	if ((gametype() == k_gametype_NL) || (gametype() == k_gametype_PL))
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits::GuessBigBetFromBigBlind() BB = bb\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::GuessBigBetFromBigBlind() BB = bb\n");
 		return (tablelimit_unreliable_input.bblind);
 	}
 	else
 	{
-		write_log(preferences.debug_table_limits(), "CTableLimits::GuessBigBetFromBigBlind() BB = 2*bb\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::GuessBigBetFromBigBlind() BB = 2*bb\n");
 		return (tablelimit_unreliable_input.bblind*2);
 	}
 }
 
-void CTableLimits::AdjustForReasonableness()
+void CSymbolEngineTableLimits::AdjustForReasonableness()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::CheckForReasonableness()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::CheckForReasonableness()\n");
 	// SB unknown?
 	if (IsSmallerOrEqual(tablelimit_unreliable_input.sblind, 0))
 	{
 		SetSmallBlind(GuessSmallBlindFromBigBlind());
-			write_log(preferences.debug_table_limits(), "CTableLimits: adjusting SB\n");
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusting SB\n");
 	}
 	// BB unknown?
 	if (IsSmallerOrEqual(tablelimit_unreliable_input.bblind, 0))
 	{
 		SetBigBlind(GuessBigBlindFromSmallBlind());
-			write_log(preferences.debug_table_limits(), "CTableLimits: adjusting BB\n");
+			write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusting BB\n");
 	}
 	// BB out of range?
 	if (IsGreater(tablelimit_unreliable_input.bblind, (tablelimit_unreliable_input.sblind*3)))
@@ -474,16 +485,16 @@ void CTableLimits::AdjustForReasonableness()
 		// but up to now we never saw an online-game with identical blinds.
 		// SB >= BB does usually mean, that SB did already act and complete.
 		SetSmallBlind(GuessSmallBlindFromBigBlind());
-		write_log(preferences.debug_table_limits(), "CTableLimits: adjusting SB\n");
+		write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusting SB\n");
 	}
 	// Always force big-bet = 2 * big-blind
 	SetBigBet(GuessBigBetFromBigBlind());
-	write_log(preferences.debug_table_limits(), "CTableLimits: adjusting big bet\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusting big bet\n");
 }
 
-void CTableLimits::CalcBetsizesForEveryStreet()
+void CSymbolEngineTableLimits::CalcBetsizesForEveryStreet()
 {
-	write_log(preferences.debug_table_limits(), "CTableLimits::CalcBetsizesForEveryStreet()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::CalcBetsizesForEveryStreet()\n");
 	// Use the best  known values here, not tablelimit_unreliable_input
 	SetBet(k_betround_preflop, bblind());															
 	SetBet(k_betround_flop,    bblind());															
@@ -491,12 +502,12 @@ void CTableLimits::CalcBetsizesForEveryStreet()
 	SetBet(k_betround_river,   bigbet()>=0.01 ? bigbet() : (isnl() || ispl() ? bblind() : bblind()*2));	
 }
 
-void CTableLimits::CalcTableLimits()
+void CSymbolEngineTableLimits::CalcTableLimits()
 {
 	// This is basically the old function CSymbols::CalcStakes()
 	// with some extension at the end to auto-lock the blinds,
 	// if the values are reasonable.
-	write_log(preferences.debug_table_limits(), "CTableLimits::CalcTableLimits()\n");
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::CalcTableLimits()\n");
 	if (!IsCalculationNeccessary())
 	{
 		return;
@@ -518,10 +529,10 @@ void CTableLimits::CalcTableLimits()
 	if (p_scraper->s_limit_info()->found_bbet)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
 
-	write_log(preferences.debug_table_limits(), "CTableLimits: input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
-	write_log(preferences.debug_table_limits(), "CTableLimits: input from scraper: gametype:    %d\n", _gametype);             
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: input from scraper: gametype:    %d\n", _gametype);             
 	// Figure out bb/sb based on game type
 	if (gametype() == k_gametype_NL || gametype() == k_gametype_PL)
 	{
@@ -538,13 +549,13 @@ void CTableLimits::CalcTableLimits()
 		SearchTableForSbAndBbValue();			
 	}
 
-	write_log(preferences.debug_table_limits(), "CTableLimits: calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
 	AdjustForReasonableness();
-	write_log(preferences.debug_table_limits(), "CTableLimits: adjusted result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: adjusted result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "CTableLimits: adjusted result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusted result: small blind: %f\n", tablelimit_unreliable_input.sblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusted result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: adjusted result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
 
 	AcceptNewValuesIfGood();
 	AutoLockBlinds();
@@ -552,7 +563,7 @@ void CTableLimits::CalcTableLimits()
 	CalcBetsizesForEveryStreet();
 }
 
-void CTableLimits::AcceptNewValuesIfGood()
+void CSymbolEngineTableLimits::AcceptNewValuesIfGood()
 {
 	if ((tablelimit_unreliable_input.sblind >= 0.01) 
 		&& (tablelimit_unreliable_input.bblind > tablelimit_unreliable_input.sblind)
@@ -564,7 +575,7 @@ void CTableLimits::AcceptNewValuesIfGood()
 	}
 }
 
-double CTableLimits::sblind()
+double CSymbolEngineTableLimits::sblind()
 {
 	if (blinds_locked_for_complete_session)
 	{
@@ -580,7 +591,7 @@ double CTableLimits::sblind()
 	}
 }
 
-double CTableLimits::bblind()
+double CSymbolEngineTableLimits::bblind()
 {
 	if (blinds_locked_for_complete_session)
 	{
@@ -596,7 +607,7 @@ double CTableLimits::bblind()
 	}
 }
 
-double CTableLimits::bigbet()
+double CSymbolEngineTableLimits::bigbet()
 {
 	if (blinds_locked_for_complete_session)
 	{
@@ -612,24 +623,24 @@ double CTableLimits::bigbet()
 	}
 }
 
-double CTableLimits::ante()
+double CSymbolEngineTableLimits::ante()
 {
 	return _ante; 
 }
 
-double CTableLimits::bet(int betround)
+double CSymbolEngineTableLimits::bet(int betround)
 {
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
 	return (_betsizes_for_all_bettingrounds[betround]);
 }
 
-double CTableLimits::bet()
+double CSymbolEngineTableLimits::bet()
 {
 	return (bet(p_betround_calculator->betround()));
 }
 
-CString CTableLimits::GetGametypeAsString()
+CString CSymbolEngineTableLimits::GetGametypeAsString()
 {
 	if (isnl())
 	{

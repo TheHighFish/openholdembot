@@ -27,7 +27,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 

@@ -17,7 +17,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbols.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "enumerate.h"
 #include "inlines/eval.h"
 #include "inlines/eval_type.h"

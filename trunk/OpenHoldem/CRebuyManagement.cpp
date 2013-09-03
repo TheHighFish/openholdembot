@@ -11,7 +11,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 

@@ -377,7 +377,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CTableLimits.cpp"
+				RelativePath=".\CSymbolEngineTableLimits.cpp"
 				>
 			</File>
 			<File
@@ -935,7 +935,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CTableLimits.cpp"
+					RelativePath=".\CSymbolEngineTableLimits.cpp"
 					>
 				</File>
 				<File
@@ -1307,7 +1307,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CTableLimits.h"
+				RelativePath=".\CSymbolEngineTableLimits.h"
 				>
 			</File>
 			<File
@@ -1614,7 +1614,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CTableLimits.h"
+					RelativePath=".\CSymbolEngineTableLimits.h"
 					>
 				</File>
 				<File

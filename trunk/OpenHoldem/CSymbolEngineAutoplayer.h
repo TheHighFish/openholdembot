@@ -3,7 +3,7 @@
 
 #include "CVirtualSymbolEngine.h"
 #include "assert.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
 extern class CSymbolEngineAutoplayer: public CVirtualSymbolEngine

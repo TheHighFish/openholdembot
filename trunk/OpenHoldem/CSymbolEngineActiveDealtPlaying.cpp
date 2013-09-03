@@ -7,7 +7,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "NumericalFunctions.h"
 
