@@ -140,6 +140,21 @@ while (<>)
 		print STDERR "Code: $_\n";
 		next;
 	}
+	# Try to detect bad Shanky-style coding without spaces between keywords,
+	# especially after WHEN and before FORCE.
+	# http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=16539
+	if (m/^WHEN[a-zA-Z0-9]/i 
+		|| m/[a-zA-Z0-9]FORCE$/i)
+	{
+		# No processing, only print a warning, then skip it.
+		print STDERR "\n";
+		print STDERR "WARNING: bad coding without spaces between keywords\n";
+		print STDERR "This is bad Shanky-style, no valid OpenPPL -- ignored!\n";
+		# Print current line of code
+		print STDERR "Line: $current_line_of_code\n";
+		print STDERR "Code: $_\n";
+		next;
+	}
 	# Then try to detect multi-line-conditions,
 	# i.e. lines with AND or OR at the beginning or at the end,
 	# also lines with any bracket at the beginning or an opening bracket at the end.
