@@ -41,6 +41,7 @@ NEW STUFF:
   
 MAINTENANCE:
 - New MyMutex class to automatically acquire/release anti-collision
+  mutex. Protect I86 region clicking with the mutex.
   [ZooBoy]
 
 
