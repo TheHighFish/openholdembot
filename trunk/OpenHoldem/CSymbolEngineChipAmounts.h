@@ -66,11 +66,11 @@ public:
 
 	double ncurrentbets()
 	{
-		if (p_tablelimits->bet() == 0)
+		if (p_symbol_engine_tablelimits->bet() == 0)
 		{
 			return 0;
 		}
-		return (currentbet(p_symbol_engine_userchair->userchair()) / p_tablelimits->bet());
+		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
 	}
 public:
 	double pot()			{ return _pot; }

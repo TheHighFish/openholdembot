@@ -107,7 +107,7 @@ void CHandHistory::UpdateSymbols()
 	userchair = p_symbol_engine_userchair->userchair();
 	players_playing_bits = p_symbol_engine_active_dealt_playing->playersplayingbits(); 
 	pot = p_symbol_engine_chip_amounts->pot();
-	bblind =      p_tablelimits->bblind();
+	bblind =      p_symbol_engine_tablelimits->bblind();
 	userchair =   p_symbol_engine_userchair->userchair();
 	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
@@ -146,7 +146,7 @@ void CHandHistory::roundStart()
 	}
 	else
 	{
-		_history.chair[_history.sblindpos].totalIn[0] = p_tablelimits->sblind();
+		_history.chair[_history.sblindpos].totalIn[0] = p_symbol_engine_tablelimits->sblind();
 	}
 
 	//Assign put value of bblind in total pot
@@ -260,7 +260,7 @@ void CHandHistory::ResetPostflopHistory()
 // Checked
 void CHandHistory::scanPlayerChanges()
 {
-	double			bblind = p_tablelimits->bblind();
+	double			bblind = p_symbol_engine_tablelimits->bblind();
 	double			potplayer = p_symbol_engine_chip_amounts->potplayer();
 	int				betround  = p_betround_calculator->betround();
 	int				nchairs   = p_tablemap->nchairs();
@@ -315,7 +315,7 @@ void CHandHistory::scanPlayerChanges()
 					double temp = maxBet;
 					maxBet = _history.chair[i].currentBet;
 
-					if ((int)p_tablelimits->gametype() != 2)
+					if ((int)p_symbol_engine_tablelimits->gametype() != 2)
 					{
 						SearchForAllinPlayers(i);
 					}
@@ -354,7 +354,7 @@ void CHandHistory::scanPlayerChanges()
 					&&betround != 1 
 					&& maxBet != 0))
 				{
-					if (!p_tablelimits->isfl())
+					if (!p_symbol_engine_tablelimits->isfl())
 					{
 						SearchForAllinPlayers(i);
 					}
@@ -690,7 +690,7 @@ void CHandHistory::resetVars()
 	for (int i=k_betround_preflop; i<k_betround_river; i++)
 	{
 		allChecks[i] = true;
-		bet[i] = p_tablelimits->bet(i); 
+		bet[i] = p_symbol_engine_tablelimits->bet(i); 
 	}
 	for (int i=0; i<nchairs; i++)
 	{
@@ -983,7 +983,7 @@ void CHandHistory::HandleDealingPhase()
 	//------------------DEALER--------------------//
 	outfile << endl;
 	outfile << "GAME #" << gameNumber 
-		<< ": Texas Hold'em " << p_tablelimits->GetGametypeAsString() 
+		<< ": Texas Hold'em " << p_symbol_engine_tablelimits->GetGametypeAsString() 
 		<< " $" << bblind << "/$" << (bblind*2) << 	" " 
 		<< setDate() << endl;
 	outfile << "Table " << p_scraper->title() << endl;
@@ -1008,7 +1008,7 @@ void CHandHistory::HandleDealingPhase()
 	{
 		outfile << playerName[_history.sblindpos]
 			 << ": Post SB $"
-			 << p_tablelimits->sblind() 
+			 << p_symbol_engine_tablelimits->sblind() 
 			 << endl;
 	}
 	outfile << playerName[_history.bblindpos] << ": Post BB $" << bblind << endl;

@@ -4,8 +4,8 @@
 #include "MagicNumbers.h"
 #include "CVirtualSymbolEngine.h"
 
-#define BIG_BLIND p_tablelimits->bblind()
-#define SMALL_BLIND p_tablelimits->sblind()
+#define BIG_BLIND p_symbol_engine_tablelimits->bblind()
+#define SMALL_BLIND p_symbol_engine_tablelimits->sblind()
 
 struct STableLimit
 {
@@ -96,6 +96,6 @@ private:
 	double	_ante;
 	// Index 1..4 is for current bettinground, 0 is unused
 	double _betsizes_for_all_bettingrounds[k_number_of_betrounds+1]; 
-} *p_tablelimits;
+} *p_symbol_engine_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

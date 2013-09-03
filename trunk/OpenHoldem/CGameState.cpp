@@ -555,8 +555,8 @@ bool CGameState::ProcessThisFrame (void)
 
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
 {
-	double			sym_sblind = p_tablelimits->sblind();
-	double			sym_bblind = p_tablelimits->bblind();
+	double			sym_sblind = p_symbol_engine_tablelimits->sblind();
+	double			sym_bblind = p_symbol_engine_tablelimits->bblind();
 	int				from_chair = 0, to_chair = 0;
 	int				betround = p_betround_calculator->betround();
 	int				sym_userchair = p_symbol_engine_userchair->userchair();

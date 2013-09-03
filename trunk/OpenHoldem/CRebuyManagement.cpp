@@ -150,9 +150,9 @@ void CRebuyManagement::ExecuteRebuyScript()
 		Casino = "Undefined";
 	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
-	double SmallBlind = p_tablelimits->sblind();
-	double BigBlind = p_tablelimits->bblind();
-	double BigBet = p_tablelimits->bigbet();
+	double SmallBlind = p_symbol_engine_tablelimits->sblind();
+	double BigBlind = p_symbol_engine_tablelimits->bblind();
+	double BigBet = p_symbol_engine_tablelimits->bigbet();
 	int UserChair = p_symbol_engine_userchair->userchair();
 	double Balance = p_symbol_engine_chip_amounts->balance(UserChair);
 	double TargetAmount = p_autoplayer_functions->f$rebuy();

@@ -113,13 +113,13 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 double MaximumBetsizeForGameType()
 {
 	double maximum_betsize = 0;
-	if (p_tablelimits->ispl())
+	if (p_symbol_engine_tablelimits->ispl())
 	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
 		maximum_betsize = MaximumBetsizeForPotLimit();
 	}
-	else if (p_tablelimits->isfl())
+	else if (p_symbol_engine_tablelimits->isfl())
 	{
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");

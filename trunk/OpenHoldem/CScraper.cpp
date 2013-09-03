@@ -1739,8 +1739,8 @@ void CScraper::ScrapeLimits()
 			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-			p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bigbet(), 
-			p_tablelimits->ante(), p_tablelimits->gametype());
+			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
+			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 		for (int j=0; j<=9; j++)
@@ -1765,8 +1765,8 @@ void CScraper::ScrapeLimits()
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 				write_log(preferences.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bigbet(), 
-					p_tablelimits->ante(), p_tablelimits->gametype()); 
+					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
+					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype()); 
 			}
 		}
 
@@ -1796,8 +1796,8 @@ void CScraper::ScrapeLimits()
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bigbet(), 
-					p_tablelimits->ante(), p_tablelimits->gametype());
+					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
+					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
 			}
 		}
 
@@ -1831,8 +1831,8 @@ void CScraper::ScrapeLimits()
 				}
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					p_tablelimits->sblind(), p_tablelimits->bblind(), p_tablelimits->bigbet(), 
-					p_tablelimits->ante(), p_tablelimits->gametype());
+					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
+					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
 			}
 
 			// save what we just scanned through

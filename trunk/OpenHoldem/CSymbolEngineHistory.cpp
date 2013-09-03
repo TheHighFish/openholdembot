@@ -82,9 +82,9 @@ void CSymbolEngineHistory::CalculateHistory()
 		}
 	}
 
-	if (p_tablelimits->bet() > 0)
+	if (p_symbol_engine_tablelimits->bet() > 0)
 	{
-		maxbet /= p_tablelimits->bet();
+		maxbet /= p_symbol_engine_tablelimits->bet();
 	}
 	if (maxbet > _nbetsround[BETROUND])
 	{

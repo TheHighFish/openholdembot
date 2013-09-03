@@ -351,9 +351,9 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isfinaltable", 12)==0 && strlen(a)==12)				return p_symbol_engine_autoplayer->isfinaltable();
 
 		// LIMITS 1(3)
-		if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return p_tablelimits->isnl();
-		if (memcmp(a, "ispl", 4)==0 && strlen(a)==4)						return p_tablelimits->ispl();
-		if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return p_tablelimits->isfl();
+		if (memcmp(a, "isnl", 4)==0 && strlen(a)==4)						return p_symbol_engine_tablelimits->isnl();
+		if (memcmp(a, "ispl", 4)==0 && strlen(a)==4)						return p_symbol_engine_tablelimits->ispl();
+		if (memcmp(a, "isfl", 4)==0 && strlen(a)==4)						return p_symbol_engine_tablelimits->isfl();
 		if (memcmp(a, "istournament", 12)==0 && strlen(a)==12)				return p_symbol_engine_istournament->istournament();
 
 		// HAND TESTS 2(2)
@@ -530,8 +530,8 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==10)				return p_symbol_engine_chip_amounts->currentbet(p_symbol_engine_userchair->userchair());
 	if (memcmp(a, "currentbet", 10)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->currentbet(a[10]-'0');
 	if (memcmp(a, "call", 4)==0 && strlen(a)==4)						return p_symbol_engine_chip_amounts->call();
-	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return p_tablelimits->bet();
-	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return p_tablelimits->bet(a[3]-'0');
+	if (memcmp(a, "bet", 3)==0 && strlen(a)==3)							return p_symbol_engine_tablelimits->bet();
+	if (memcmp(a, "bet", 3)==0 && strlen(a)==4)							return p_symbol_engine_tablelimits->bet(a[3]-'0');
 	
 	//NUMBER OF BETS
 	if (memcmp(a, "nbetstocall", 11)==0 && strlen(a)==11)				return p_symbol_engine_chip_amounts->nbetstocall();
@@ -586,10 +586,10 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "version", 7)==0 && strlen(a)==7)						return VERSION_NUMBER;
 
 	// LIMITS 3(3)
-	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return p_tablelimits->bblind();
-	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return p_tablelimits->sblind();
-	if (memcmp(a, "ante", 4)==0 && strlen(a)==4)						return p_tablelimits->ante();
-	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return p_tablelimits->gametype();
+	if (memcmp(a, "bblind", 6)==0 && strlen(a)==6)						return p_symbol_engine_tablelimits->bblind();
+	if (memcmp(a, "sblind", 6)==0 && strlen(a)==6)						return p_symbol_engine_tablelimits->sblind();
+	if (memcmp(a, "ante", 4)==0 && strlen(a)==4)						return p_symbol_engine_tablelimits->ante();
+	if (memcmp(a, "lim", 3)==0 && strlen(a)==3)							return p_symbol_engine_tablelimits->gametype();
 
 	//PROFILE
 	if (memcmp(a, "sitename$", 9)==0)									return p_tablemap->sitename().Find(&a[9])!=-1;
@@ -637,7 +637,7 @@ void CSymbols::RecordPrevAction(const ActionConstant action)
 	int user_chair = p_symbol_engine_userchair->userchair();
 	int betround = int(p_betround_calculator->betround());
 
-	double bet = p_tablelimits->bet(_sym.betround);
+	double bet = p_symbol_engine_tablelimits->bet(_sym.betround);
 	assert(bet > 0);	
 
 	// Initializing "new" values with known old ones
