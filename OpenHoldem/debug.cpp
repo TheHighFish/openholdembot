@@ -488,7 +488,7 @@ void write_logautoplay(const char * action)
         fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
 			action, 
 			p_symbol_engine_chip_amounts->call(), 
-			p_tablelimits->bet(), 
+			p_symbol_engine_tablelimits->bet(), 
 			p_symbol_engine_chip_amounts->pot());
 		int userchair = p_symbol_engine_userchair->userchair();
 		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 

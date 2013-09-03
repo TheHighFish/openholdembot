@@ -69,8 +69,8 @@ void CEngineContainer::CreateSymbolEngines()
 	// But we assure correct ordering by assertions in the constructors of the engines.
 
 	// CSymbolEngineTableLimits
-	p_tablelimits = new CSymbolEngineTableLimits ();
-	AddSymbolEngine(p_tablelimits);
+	p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
+	AddSymbolEngine(p_symbol_engine_tablelimits);
 	// CSymbolEngineReplayFrameController
 	p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
 	AddSymbolEngine(p_symbol_engine_replayframe_controller);
@@ -166,7 +166,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
-	p_tablelimits->CalcTableLimits();
+	p_symbol_engine_tablelimits->CalcTableLimits();
 
 	// ResetOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.

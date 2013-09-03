@@ -10,7 +10,13 @@
 CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
 
 CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
-{}
+{
+	// The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_tablelimits != NULL);
+	assert(p_symbol_engine_userchair != NULL);
+}
 
 CSymbolEngineChipAmounts::~CSymbolEngineChipAmounts()
 {}
@@ -221,7 +227,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 
 void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() 
 {
-	double bet = p_tablelimits->bet();
+	double bet = p_symbol_engine_tablelimits->bet();
 	if (bet <= 0)
 	{
 		return;

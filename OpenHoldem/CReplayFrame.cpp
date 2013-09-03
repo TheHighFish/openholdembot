@@ -269,11 +269,11 @@ CString CReplayFrame::GetBlindInfoAsHTML()
 	CString blind_info, text;
 	// Table for: sb, bb, BB
 	blind_info += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
-	text.Format("  <tr><th>sb</th><td>%11.2f</td></tr>\n", p_tablelimits->sblind());
+	text.Format("  <tr><th>sb</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->sblind());
 	blind_info += text;
-	text.Format("  <tr><th>bb</th><td>%11.2f</td></tr>\n", p_tablelimits->bblind());
+	text.Format("  <tr><th>bb</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->bblind());
 	blind_info += text;
-	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_tablelimits->bigbet());
+	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->bigbet());
 	blind_info += text;
 	text.Format("</table>\n");
 	blind_info += text;

@@ -19,6 +19,7 @@ CSymbolEngineBlinds::CSymbolEngineBlinds()
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_dealerchair != NULL);
 	assert(p_symbol_engine_positions != NULL);
+	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 }
 
@@ -82,13 +83,13 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		// Is Hero SB or BB ?
 		double my_bet = p_scraper->player_bet(USER_CHAIR);
 
-		if (my_bet <= p_tablelimits->sblind() && my_bet > 0)
+		if (my_bet <= p_symbol_engine_tablelimits->sblind() && my_bet > 0)
 		{
 			sbchair = USER_CHAIR;
 			_playersblindbits = k_exponents[USER_CHAIR];
 		}
 
-		if (my_bet <= p_tablelimits->bblind() && my_bet > p_tablelimits->sblind())
+		if (my_bet <= p_symbol_engine_tablelimits->bblind() && my_bet > p_symbol_engine_tablelimits->sblind())
 		{
 			bbchair = USER_CHAIR;
 			_bblindbits = k_exponents[bbchair];
@@ -100,13 +101,13 @@ void CSymbolEngineBlinds::CalculateBlinds()
 			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 			// search SB
-			if (sbchair == k_undefined && p_bet <= p_tablelimits->sblind() && p_bet > 0) 
+			if (sbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->sblind() && p_bet > 0) 
 			{
 				sbchair = i%p_tablemap->nchairs();
 				_playersblindbits |= k_exponents[sbchair];		
 			}
 			// search BB
-			if (bbchair == k_undefined && p_bet <= p_tablelimits->bblind() && p_bet > p_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
+			if (bbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->bblind() && p_bet > p_symbol_engine_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
 			{
 				bbchair = i%p_tablemap->nchairs();	
 				_bblindbits = k_exponents[bbchair];
@@ -125,7 +126,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
 				// 1st caller/raiser after dealer is sb
-				if (p_bet >= p_tablelimits->bblind() && sbchair == k_undefined && i%p_tablemap->nchairs() != bbchair)
+				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == k_undefined && i%p_tablemap->nchairs() != bbchair)
 				{
 					sbchair = i%p_tablemap->nchairs();
 					_playersblindbits |= k_exponents[sbchair];

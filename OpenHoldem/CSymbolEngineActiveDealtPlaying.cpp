@@ -19,6 +19,7 @@ CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 }
 

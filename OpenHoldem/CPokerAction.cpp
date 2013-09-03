@@ -249,7 +249,7 @@ const bool CPokerAction::FirstIntoPot (void)
 
 	if (p_betround_calculator->betround() == k_betround_preflop)
 	{
-		return (p_symbol_engine_chip_amounts->potplayer() <= p_tablelimits->sblind() + p_tablelimits->bblind()); 
+		return (p_symbol_engine_chip_amounts->potplayer() <= p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind()); 
 	}
 	else
 	{

@@ -935,10 +935,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CSymbolEngineTableLimits.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
@@ -1027,6 +1023,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineReplayFrameController.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineTableLimits.cpp"
 						>
 					</File>
 					<File
@@ -1614,10 +1614,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CSymbolEngineTableLimits.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CVersus.h"
 					>
 				</File>
@@ -1706,6 +1702,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineReplayFrameController.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineTableLimits.h"
 						>
 					</File>
 					<File

@@ -432,7 +432,7 @@ int CICMCalculator::GetChairFromDealPos(const char* pquery)
 		{
 			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
 
-			if (p_bet > 0 && p_bet <= p_tablelimits->sblind())
+			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
 				sb_offset = 0;
 		}
 	}

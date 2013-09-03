@@ -94,6 +94,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
 }
 
@@ -171,7 +172,7 @@ bool CSymbolEngineIsTournament::AntesPresent()
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
-		if ((players_bet > 0) && (players_bet < p_tablelimits->sblind()))
+		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind()))
 		{
 			players_with_antes++;
 		}
@@ -219,7 +220,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 		return;
 	}
 	// If the blinds are "too low" then we play a cash-game.
-	double bigblind = p_tablelimits->bblind();
+	double bigblind = p_symbol_engine_tablelimits->bblind();
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament))
 	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
