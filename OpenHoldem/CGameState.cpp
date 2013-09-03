@@ -17,7 +17,7 @@
 #include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 #include "Numericalfunctions.h"
 

@@ -7,7 +7,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineUserchair.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineBlinds *p_symbol_engine_blinds = NULL;

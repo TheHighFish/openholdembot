@@ -23,7 +23,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"

@@ -31,7 +31,7 @@
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
 #include "CStringMatch.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CTableMaploader.h"
 #include "CTablePositioner.h"
 #include "CValidator.h"
@@ -55,8 +55,6 @@ void InstantiateAllSingletons()
 		p_sharedmem = new CSharedMem;
 	if (!p_stableframescounter) 
 		p_stableframescounter = new CStableFramesCounter;
-	if (!p_tablelimits) 
-		p_tablelimits = new CTableLimits;
 	if (!p_scraper) 
 		p_scraper = new CScraper;
 	if (!p_scraper_access)  
@@ -201,8 +199,6 @@ void DeleteAllSingletons()
 		{ delete p_scraper_access; p_scraper_access = NULL; }
 	if (p_scraper)              
 		{ delete p_scraper; p_scraper = NULL; }
-	if (p_tablelimits)          
-		{ delete p_tablelimits; p_tablelimits = NULL; }
 	if (p_stableframescounter)  
 		{ delete p_stableframescounter; p_stableframescounter = NULL; }
 	if (p_sharedmem)            

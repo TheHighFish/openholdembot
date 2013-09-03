@@ -4,7 +4,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
 extern class CSymbolEnginePrwin: public CVirtualSymbolEngine

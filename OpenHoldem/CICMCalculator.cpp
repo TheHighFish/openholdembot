@@ -17,7 +17,7 @@
 #include "CICMCalculator.h"
 
 #include "CScraper.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineBlinds.h"

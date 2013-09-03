@@ -12,7 +12,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"

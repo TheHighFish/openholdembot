@@ -29,6 +29,11 @@ BUG FIXES:
   Therefore rankhi, ranklo, etc. didn't work. This has now been fixed.
   Thanks to Daniel for reporting.
   [THF]
+- Anti-collision lock is now acquired prior to clicking I86 buttons,
+  or enabling the keyboard for bring
+  [ZooBoy]
+- Blinds for tournaments should update properly again
+  [ZooBoy]
 
 NEW STUFF:
 - Now creating logs-directory on startup if it does not exist.

@@ -12,7 +12,7 @@
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
-#include "CTableLimits.h"
+#include "CSymbolEngineTableLimits.h"
 
 CPokerAction::CPokerAction()
 {
