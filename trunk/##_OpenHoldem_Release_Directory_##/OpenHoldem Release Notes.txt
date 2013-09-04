@@ -1,4 +1,4 @@
-v4.2.1 2013-08-19
+v4.2.1 2013-09-04
 ==================
 BUG FIXES:
 - During refactoring of the iterator-thread ("i-j-fetish") 
@@ -16,7 +16,7 @@ BUG FIXES:
   (we added "Ini-functions" to the tree-view but kept that array as is).
   This has now been fixed.
 - When we rewrote the PokerTracker-code we created a new symbol-engine,
-  but forgot to add it t the engine-container.
+  but forgot to add it to the engine-container.
   Therefore PT-symbols did not work.
   Thanks to JokeDoke for reporting, Hapil for helping us to find the bug.
   [THF, Termitapalahermita]
@@ -32,25 +32,27 @@ BUG FIXES:
 - Anti-collision lock is now acquired prior to clicking I86 buttons,
   or enabling the keyboard for bring
   [ZooBoy]
-- Blinds for tournaments should update properly again
-  [ZooBoy]
-
-NEW STUFF:
-- Now creating logs-directory on startup if it does not exist.
+- Ini-functions did no work correctly, because one undocumented in-out-parameter
+  did not get initialized correctly. This has now been fixed.
   [THF]
-  
+
 MAINTENANCE:
 - New MyMutex class to automatically acquire/release anti-collision
   mutex. Protect I86 region clicking with the mutex.
   [ZooBoy]
+- Refactoring Table-limts and turning them into a regular symbol-engine.
+  [ZooBoy]
+- Now creating logs-directory on startup if it does not exist.
+  [THF]
 
 
 v4.2.0 2013-08-04
 ==================
 NEW STUFF:
 - Adding some ini-functions that get called automatically by OpenHoldem:
-  "f$init_on_startup", "f$init_on_connection", "f$init_on_handreset",
-  "f$init_on_new_round", "f$init_on_my_turn", "f$init_on_heartbeat".
+  "f$ini_function_on_startup", "f$ini_function_on_connection", 
+  "f$ini_function_on_handreset", "f$ini_function_on_new_round", 
+  "f$ini_function_on_my_turn", "f$ini_function_on_heartbeat".
   This way we can initialize memory-symbols and other stuff
   without using the old messy concept "put it into f$alli".
   [THF]
