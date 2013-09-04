@@ -11,6 +11,7 @@ public:
 	~CVersus();
 	bool GetCounts(void);
 	double GetSymbol(const char *a, int *e);
+	bool VersusBinLoaded()	{ return !versus_bin_not_loaded; }
 
 private:
 	// private functions and variables - not available via accessors or mutators
