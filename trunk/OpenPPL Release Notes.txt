@@ -1,9 +1,8 @@
 v4.0.1 2013-xx-xx
 =================
 NEW STUFF:
-- New symbols OpenPPL_TwoPairOnBoardOnTurn
-  [Lavezzi]
-  
+- New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair 
+ [Lavezzi]
 BUG FIXES:  
 OpponentStacksizeHeadsUp was not returning any value when HeadsUp with one or more opponents allin - this has now been fixed. 
   [Lavezzi]
