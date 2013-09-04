@@ -87,7 +87,7 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="87" columns="2">
+<lyxtabular version="3" rows="93" columns="2">
 <features islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="55text%">
@@ -767,6 +767,26 @@ Have5thOverpair
 
 \begin_layout Plain Layout
 We have the 5th overpair
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Have5thTopPair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+We have the 5th pair
 \end_layout
 
 \end_inset
@@ -1810,6 +1830,26 @@ The number if unique suits in our hand
 \begin_inset Text
 
 \begin_layout Plain Layout
+TopPairRank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rank of the hole card giving you Top Pair (2-14 where 14 is Ace)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 SecondTopPairRank
 \end_layout
 
@@ -1820,6 +1860,66 @@ SecondTopPairRank
 
 \begin_layout Plain Layout
 Rank of our second Top Pair
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ThirdTopPairRank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rank of our third Top Pair
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ForthTopPairRank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rank of our forth Top Pair
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FifthTopPairRank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rank of our fifth Top Pair
 \end_layout
 
 \end_inset
@@ -1850,7 +1950,7 @@ Rank of the hole kicker card when you have Top Pair (2-14 where 14 is Ace)
 \begin_inset Text
 
 \begin_layout Plain Layout
-TopPairRank
+TripsRank
 \end_layout
 
 \end_inset
@@ -1859,7 +1959,27 @@ TopPairRank
 \begin_inset Text
 
 \begin_layout Plain Layout
-Rank of the hole card giving you Top Pair (2-14 where 14 is Ace)
+Rank of our Trips
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+TripsKickerRank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rank of the kicker of our Trips
 \end_layout
 
 \end_inset
