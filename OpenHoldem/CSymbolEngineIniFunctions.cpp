@@ -79,6 +79,8 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions()
 
 void CSymbolEngineIniFunctions::InitOnStartup()
 {
+	int dummy_e = SUCCESS;
+	
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
 	ResetOnConnection();
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_startup], 
@@ -87,6 +89,8 @@ void CSymbolEngineIniFunctions::InitOnStartup()
 
 void CSymbolEngineIniFunctions::ResetOnConnection()
 {
+	int dummy_e = SUCCESS;
+	
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
 		&dummy_e);
@@ -94,6 +98,8 @@ void CSymbolEngineIniFunctions::ResetOnConnection()
 
 void CSymbolEngineIniFunctions::ResetOnHandreset()
 {
+	int dummy_e = SUCCESS;
+	
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_handreset], 
 		&dummy_e);
@@ -101,6 +107,8 @@ void CSymbolEngineIniFunctions::ResetOnHandreset()
 
 void CSymbolEngineIniFunctions::ResetOnNewRound()
 {
+	int dummy_e = SUCCESS;
+
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_new_round], 
 		&dummy_e);
@@ -108,6 +116,8 @@ void CSymbolEngineIniFunctions::ResetOnNewRound()
 
 void CSymbolEngineIniFunctions::ResetOnMyTurn()
 {
+	int dummy_e = SUCCESS;
+
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_my_turn], 
 		&dummy_e);
@@ -115,9 +125,13 @@ void CSymbolEngineIniFunctions::ResetOnMyTurn()
 
 void CSymbolEngineIniFunctions::ResetOnHeartbeat()
 {
+	int dummy_e = SUCCESS;
+
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
 		k_standard_function_names[k_init_on_heartbeat]);
-	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_heartbeat], 
+	gram.CalcF$symbol(p_formula, (char *)k_standard_function_names[k_init_on_heartbeat], 
 		&dummy_e);
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() error-code: %i\n",
+		dummy_e);
 }
