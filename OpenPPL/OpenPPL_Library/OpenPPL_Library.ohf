@@ -2997,6 +2997,15 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_2ndBestBoardCard) && (f$Ope
 ##f$OpenPPL_Have3rdTopPair##
 f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_3rdBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_3rdBestBoardCard
 
+##f$OpenPPL_ThirdTopPairRank##
+(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_3rdBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_3rdBestBoardCard) ? f$OpenPPL_3rdBestBoardCard :0
+
+##f$OpenPPL_Have5thTopPair##
+f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_5thBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_5thBestBoardCard 
+
+##f$OpenPPL_FifthTopPairRank##
+(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_5thBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_5thBestBoardCard) ? f$OpenPPL_5thBestBoardCard: 0
+
 ##f$OpenPPL_Have3rdTopSet##
 ispair && f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_3rdBestBoardCard
 
@@ -3031,6 +3040,9 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_3rdBestBoardCard) && (f$Ope
 
 ##f$OpenPPL_Have4thTopPair##
 f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_4thBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_4thBestBoardCard
+
+##f$OpenPPL_ForthTopPairRank##
+(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_4thBestBoardCard || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_4thBestBoardCard) ? f$OpenPPL_4thBestBoardCard : 0
 
 ##f$OpenPPL_Have4thTopSet##
 ispair && f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_4thBestBoardCard
@@ -3605,6 +3617,17 @@ ispair
 &&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
   || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
+
+  ##f$OpenPPL_TripsRank##
+f$OpenPPL_HaveTrips && f$OpenPPL_HaveTopPair ? f$OpenPPL_TopPairRank:
+f$OpenPPL_HaveTrips && f$OpenPPL_Have2ndTopPair ? f$OpenPPL_SecondTopPairRank:
+f$OpenPPL_HaveTrips && f$OpenPPL_Have3rdTopPair ? f$OpenPPL_ThirdTopPairRank:
+f$OpenPPL_HaveTrips && f$OpenPPL_Have4thTopPair ? f$OpenPPL_ForthTopPairRank:
+f$OpenPPL_HaveTrips && f$OpenPPL_Have5thTopPair ? f$OpenPPL_FifthTopPairRank: 0
+
+##f$OpenPPL_TripsKickerRank##
+f$OpenPPL_HaveTrips && f$OpenPPL_TripsRank==f$OpenPPL_RankOfFirstHoleCard ? f$OpenPPL_RankOfSecondHoleCard:
+f$OpenPPL_HaveTrips && f$OpenPPL_TripsRank==f$OpenPPL_RankOfSecondHoleCard ? f$OpenPPL_RankOfFirstHoleCard: 0
 
 ##f$OpenPPL_HaveStraight##
 (nstraightfill == 0)
