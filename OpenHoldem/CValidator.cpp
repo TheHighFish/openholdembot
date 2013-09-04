@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "CValidator.h"
 
 #include "CAutoPlayer.h"
 #include "CDllExtension.h"
@@ -6,7 +7,6 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbols.h"
-#include "CValidator.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
 
