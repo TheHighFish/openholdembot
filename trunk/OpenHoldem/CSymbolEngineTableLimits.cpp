@@ -5,7 +5,7 @@
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CSymbolEngineAutoplayer.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineIsTournament.h"
 #include "debug.h"
@@ -23,9 +23,14 @@ CSymbolEngineTableLimits::CSymbolEngineTableLimits()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
-	assert(p_symbol_engine_is_tournament != NULL);
+	//
+	// Actually this symbol-engine also depends on 
+	// p_symbol_engine_is_tournament.
+	// This is a circular dependency, but this does not really matter,
+	// as the value of istournament() should be constant for the
+	// entire session, so it does not matter, if we use old values
+	// from the last heartbeat.
 }
 
 CSymbolEngineTableLimits::~CSymbolEngineTableLimits()
@@ -135,7 +140,7 @@ bool CSymbolEngineTableLimits::ReasonableBlindsForCurrentHand()
 	// (ismyturn doesn't work either)
 	// Pros/cons: more reliability, but no auto-locking before it is our turn.
 	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
-	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ismyturn: %d\n", p_symbol_engine_autoplayer->ismyturn());
+	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: ismyturn: %d\n", p_scraper_access->IsMyTurn());
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: sblind: %f\n", tablelimit_unreliable_input.sblind);
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: bblind: %f\n", tablelimit_unreliable_input.bblind);
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: bbet: %f\n", tablelimit_unreliable_input.bbet); 
