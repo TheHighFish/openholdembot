@@ -2498,8 +2498,8 @@ f$OpenPPL_OneCardStraightPossible && !f$OpenPPL_MoreThanOneOneCardStraightPossib
 (nstraightcommon == 4 && (`((rankbitscommon >> 10) & 0x1f) < 4) && (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##f$OpenPPL_OpenEndedStraightDrawPossibleOnFlop##
-[(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard != f$OpenPPL_ConstCardAce)]
-|| [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_LowestFlopCard >= f$OpenPPL_ConstCardTwo)]
+[(f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard <= 3) && (f$OpenPPL_TopFlopCard - f$OpenPPL_2ndTopFlopCard > 0) && (f$OpenPPL_TopFlopCard != f$OpenPPL_ConstCardAce)]
+|| [(f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard <= 3) && (f$OpenPPL_2ndTopFlopCard - f$OpenPPL_LowestFlopCard >0) && (f$OpenPPL_LowestFlopCard >= f$OpenPPL_ConstCardTwo)]
 
 ##f$OpenPPL_IndividualOverCardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
