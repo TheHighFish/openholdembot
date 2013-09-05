@@ -3,8 +3,11 @@ v4.0.1 2013-xx-xx
 NEW STUFF:
 - New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair 
  [Lavezzi]
-BUG FIXES:  
-OpponentStacksizeHeadsUp was not returning any value when HeadsUp with one or more opponents allin - this has now been fixed. 
+
+ BUG FIXES:  
+- OpponentStacksizeHeadsUp was not returning any value when HeadsUp with one or more opponents allin - this has now been fixed. 
+  [Lavezzi]
+- OpenEndedStraightDrawPossibleOnFlop was returning wrong value on paired board. Thanks to Invader11 for providing the patch.
   [Lavezzi]
   
 v4.0.0 2013-01-26
