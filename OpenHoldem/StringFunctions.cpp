@@ -42,11 +42,11 @@ CString Number2CString(double number)
 	CString result;
 	if (IsInteger(number))
 	{
-		result.Format("%f.0", number);
+		result.Format("%1.3f", number);
 	}
 	else
 	{
-		result.Format("%f.9", number);
+		result.Format("%1.0d", number);
 	}
 	return result;
 }

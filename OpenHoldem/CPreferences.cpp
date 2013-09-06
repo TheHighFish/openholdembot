@@ -50,6 +50,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_betsize_adjustment",
 	"debug_handreset_detector",
 	"debug_engine_container",
+	"debug_dll-extension",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
@@ -120,7 +121,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"",
 };
 
-const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value] =
+const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] =
 {
 	"dll_name",
 	"pt_ip_addr",
@@ -137,11 +138,17 @@ const CString k_registry_keys_for_CStrings[k_prefs_last_CString_value] =
 	"path_tm",
 	"path_perl",
 	"path_dll",
+	// Finally an empty string
+	// This correspondents to k_prefs_last_numerical_value (unused)
+	// It will cause an assertion if used
+	// and therefore help us to detect missing values.
+	"",
 };
 
 void CPreferences::LoadPreferences()
 {
 	_preferences_heading = "Preferences";
+	InitDefaults();
 	ReadPreferences();
 }
 
@@ -168,7 +175,7 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_basic_logging_enabled] = true;
 	prefs_numerical_values[k_prefs_error_logging_enabled] = true;
 	prefs_numerical_values[k_prefs_dll_logging_enabled] = true;
-	prefs_numerical_values[k_prefs_debug_preferences] = false; // To assure that we log at least the initialization of this value
+	prefs_numerical_values[k_prefs_debug_preferences] = true; // To assure that we log at least the initialization of this value
 	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
@@ -233,7 +240,6 @@ void CPreferences::InitDefaults(void)
 
 void CPreferences::ReadPreferences()
 {
-	InitDefaults();
 	// Then read the registry values and overwrite the defaults if defined
 	for (int i=0; i<k_prefs_last_numerical_value; i++)
 	{
@@ -247,7 +253,7 @@ void CPreferences::ReadPreferences()
 	}
 }
 
-void CPreferences::ReadReg(const LPCTSTR registry_key,  CString *registry_value)
+void CPreferences::ReadReg(const LPCTSTR registry_key, CString *registry_value)
 {
 	CString value;
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
