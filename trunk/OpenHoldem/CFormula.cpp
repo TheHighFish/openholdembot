@@ -355,8 +355,8 @@ void CFormula::AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionNam
 	// Formula not found.
 	// Add the standard one.
 	SFunction func;
-	if (FunctionName.Compare(k_standard_function_names[k_autoplayer_function_check])
-		|| FunctionName.Compare(k_standard_function_names[k_autoplayer_function_fold]))
+	if ((FunctionName.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
+		|| (FunctionName.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
 	{
 		// f$check and f$fold should evaluate to true per default
 		// for auto-check-folding instead of time-outs.

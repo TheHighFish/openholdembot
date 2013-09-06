@@ -43,6 +43,7 @@ protected:
 	CButton  	m_RadioButton_symbolengine;
 	CButton  	m_RadioButton_blindlocking;
 	CButton		m_RadioButton_memorysymbols;
+	CButton		m_RadioButton_dll_extension;
 	CButton  	m_RadioButton_alltherest;
 };
 
