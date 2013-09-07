@@ -58,7 +58,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"icon",			
 		// description_for_editor
-		"",
+		"Poker Tracker auto-rate icon code",
 		// first_part_of_query
 		"SELECT val_icon \
 		FROM player \
@@ -76,7 +76,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"hands",		
 		// description_for_editor
-		"",
+		"Poker Tracker number of hands that are in the database",
 		// first_part_of_query
 		"SELECT COUNT(*) as result FROM ",	
 		// last_part_of_query
@@ -91,7 +91,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"pfr",			
 		// description_for_editor
-		"",
+		"Poker Tracker pre-flop raise percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( cast(sum(case when cnt_p_raise >0 then 1 else 0 end) as real) / count(*)) \
@@ -110,7 +110,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggp",
 		// description_for_editor
-		"",
+		"Poker Tracker preflop aggression",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( cast(sum(cnt_p_raise) as real) / cast(sum(cnt_p_call) as real)) \
@@ -129,7 +129,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggf",			
 		// description_for_editor
-		"",
+		"Poker Tracker flop aggression",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( (cast(sum(cnt_f_raise) as real) + sum(case when flg_f_bet then 1 else 0 end)) / cast(sum(cnt_f_call) as real)) \
@@ -148,7 +148,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggt",			
 		// description_for_editor
-		"",
+		"Poker Tracker turn aggression",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( (cast(sum(cnt_t_raise) as real) + sum(case when flg_t_bet then 1 else 0 end)) / cast(sum(cnt_t_call) as real)) \
@@ -167,7 +167,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggr",			
 		// description_for_editor
-		"",
+		"Poker Tracker river aggression",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( (cast(sum(cnt_r_raise) as real) + sum(case when flg_r_bet then 1 else 0 end)) / cast(sum(cnt_r_call) as real)) \
@@ -186,7 +186,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggtot", 
 		// description_for_editor
-		"",
+		"Poker Tracker total aggression",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( ( cast(sum(cnt_p_raise) as real) \
@@ -216,7 +216,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"aggtotnopf",	
 		// description_for_editor
-		"",
+		"Poker Tracker total aggression excluding preflop",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then ( ( cast(sum(cnt_f_raise) + sum(case when flg_f_bet then 1 else 0 end) as real) \
@@ -243,7 +243,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"floppct",		
 		// description_for_editor
-		"",
+		"Poker Tracker saw flop percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
              then cast(sum(case when flg_f_saw then 1 else 0 end) as real) / count(*) \
@@ -262,7 +262,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"turnpct",		
 		// description_for_editor
-		"",
+		"Poker Tracker saw turn percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
              then cast(sum(case when flg_t_saw then 1 else 0 end) as real) / count(*) \
@@ -281,7 +281,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"riverpct", 
 		// description_for_editor
-		"",
+		"Poker Tracker saw river percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
              then cast(sum(case when flg_r_saw then 1 else 0 end) as real) / count(*) \
@@ -300,7 +300,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"vpip",			
 		// description_for_editor
-		"",
+		"Poker Tracker VP$IP",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_vpip then 1 else 0 end) as real) / count(*) \
@@ -319,7 +319,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"pf_rfi",		
 		// description_for_editor
-		"",
+		"Poker Tracker pre-flop raise first in percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_p_first_raise AND flg_p_open_opp then 1 else 0 end) as real) \
@@ -339,7 +339,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"pf_cr",		
 		// description_for_editor
-		"",
+		"Poker Tracker pre-flop called raise percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_p_face_raise AND flg_p_fold = false AND cnt_p_raise=0 then 1 else 0 end) as real) \
@@ -359,7 +359,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"pfats",	
 		// description_for_editor
-		"",
+		"Poker Tracker attempt to steal blinds",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_steal_att then 1 else 0 end) as real) \
@@ -379,7 +379,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"wsdp",			
 		// description_for_editor
-		"",
+		"Poker Tracker went to showdown percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_showdown then 1 else 0 end) as real) \
@@ -399,7 +399,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"wssd",			
 		// description_for_editor
-		"",
+		"Poker Tracker won $ at showdown percentae",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_showdown AND flg_won_hand then 1 else 0 end) as real) \
@@ -419,7 +419,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"fbbts",		
 		// description_for_editor
-		"",
+		"Poker Tracker folded big blind to steal",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_bb_steal_fold then 1 else 0 end) as real) \
@@ -439,7 +439,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"fsbts",
 		// description_for_editor
-		"",
+		"Poker Tracker folded small blind to steal",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
               then cast(sum(case when flg_sb_steal_fold then 1 else 0 end) as real) \
@@ -459,7 +459,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"cbetflop",		
 		// description_for_editor
-		"",
+		"Poker Tracker cbet percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) \
 			then cast(sum(case when S.flg_f_cbet = 't' then 1 else 0 end) as real) \
@@ -478,7 +478,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"f3bettot",		
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing 3bet total percentage",
 		// first_part_of_query
 		"SELECT (case when (count(*)!=0) then \
 			(cast(sum(case when (S.enum_p_3bet_action = 'F' or S.enum_f_3bet_action = 'F' or S.enum_t_3bet_action = 'F' or S.enum_r_3bet_action = 'F') then 1 else 0 end) as real) / \
@@ -497,7 +497,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"f3betpflop",	
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing 3bet preflop percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_p_3bet_action = 'F' then 1 else 0 end) as real) / \
@@ -516,7 +516,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"f3betflop",
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing 3bet flop percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_f_3bet_action = 'F' then 1 else 0 end) as real) / \
@@ -535,7 +535,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"f3betturn",	
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing 3bet turn percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_t_3bet_action = 'F' then 1 else 0 end) as real) / \
@@ -554,7 +554,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"f3betriver",	
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing 3bet river percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_r_3bet_action = 'F' then 1 else 0 end) as real) / \
@@ -573,7 +573,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"fcbetflop",	
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing cbet flop percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_f_cbet_action = 'F' then 1 else 0 end) as real) / \
@@ -592,7 +592,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"fcbetturn",
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing cbet turn percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_t_cbet_action = 'F' then 1 else 0 end) as real) / \
@@ -611,7 +611,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// name
 		"fcbetriver",
 		// description_for_editor
-		"",
+		"Poker Tracker folded while facing cbet river percentage",
 		// first_part_of_query
 		"select (case when (count(*)!=0) then \
 			cast(sum(case when S.enum_r_cbet_action = 'F' then 1 else 0 end) as real) / \
