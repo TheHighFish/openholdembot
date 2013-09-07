@@ -92,7 +92,9 @@ void CValidator::ValidateSingleRule()
 				+ CString(_reasoning)
 				+ "\n\n"
 			    + "SYMBOLS AFFECTED: " 
-				+ Symbols_And_Values(_symbols_possibly_affected); 
+				+ Symbols_And_Values(_symbols_possibly_affected)
+				+ "\n\n"
+				+ "(The validator is a tool to help you finding errors in your tablemap.)\n"; 
 			// Show error message, if appropriate
 			OH_MessageBox_Error_Warning(the_ErrorMessage, "VALIDATOR ERROR"); 
 			// Log error message
