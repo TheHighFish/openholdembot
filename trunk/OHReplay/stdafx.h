@@ -1,3 +1,17 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose:
+//
+//*****************************************************************************
+
+
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
 // are changed infrequently
