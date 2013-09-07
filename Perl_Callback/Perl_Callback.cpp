@@ -1,3 +1,19 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose: A very simple DLL for Openoldem,
+//    enabling Perl to call the function get_OpenHoldem_Symbol()
+//    via a C function pointer.
+//  This DLL shall only be used by Perl using the module Win32::API
+//
+//*****************************************************************************
+
 //////////////////////////////////////////////////////////////////////////
 //
 //  Author: TheHighFish
@@ -5,11 +21,6 @@
 //  Created: 2008.01.10
 //
 //  Last change: 2008.07.06
-//
-//  Description: A very simple DLL for Openoldem,
-//    enabling Perl to call the function get_OpenHoldem_Symbol()
-//    via a C function pointer.
-//  This DLL shall only be used by Perl using the module Win32::API.
 //
 //////////////////////////////////////////////////////////////////////////
 
