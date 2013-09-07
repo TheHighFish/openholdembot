@@ -91,6 +91,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenPPL", "OpenPPL\OpenPPL\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PokerTracker_Query_Definitions DLL", "PokerTracker_Query_Definitions\pokertracker_query_definitions.vcproj", "{DAE7979B-3014-4B86-8EFD-FA155A58FE78}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Temp", "Temp\Temp.vcproj", "{328EBE72-749A-47C2-BDDA-7032CC7FAE63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -153,6 +155,10 @@ Global
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Debug|Win32.Build.0 = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release|Win32.ActiveCfg = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release|Win32.Build.0 = Release|Win32
+		{328EBE72-749A-47C2-BDDA-7032CC7FAE63}.Debug|Win32.ActiveCfg = Debug|Win32
+		{328EBE72-749A-47C2-BDDA-7032CC7FAE63}.Debug|Win32.Build.0 = Debug|Win32
+		{328EBE72-749A-47C2-BDDA-7032CC7FAE63}.Release|Win32.ActiveCfg = Release|Win32
+		{328EBE72-749A-47C2-BDDA-7032CC7FAE63}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
