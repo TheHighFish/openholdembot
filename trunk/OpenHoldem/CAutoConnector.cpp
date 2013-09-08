@@ -248,8 +248,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			}
 
 			LoadScraperDLL();
-			LoadScraperPreprocessorDLL();
-			
 			p_flags_toolbar->DisableButtonsOnConnect();
 
 			// Make sure autoplayer is off
@@ -261,10 +259,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
-
-			// Send "connect" and HWND to scraper pre DLL, if loaded
-			if (theApp._dll_scraperpreprocessor_process_message)
-				(theApp._dll_scraperpreprocessor_process_message) ("connect", &_attached_hwnd);
 
 			// start heartbeat thread
 			if (p_heartbeat_thread)
@@ -332,42 +326,6 @@ void CAutoConnector::LoadScraperDLL()
 	}
 }
 
-
-void CAutoConnector::LoadScraperPreprocessorDLL()
-{
-	// scraperpreprocessor.dll - failure in load is NOT fatal
-	theApp.Unload_ScraperPreprocessor_DLL();
-	CString filename = p_tablemap->scraperpreprocessor_dll();
-	if (filename.IsEmpty()) 
-	{
-		return;
-	}
-	// Otherwise: try to load DLL
-	p_filenames->SwitchToOpenHoldemDirectory();
-	theApp._scraperpreprocessor_dll = LoadLibrary(filename);
-
-	if (theApp._scraperpreprocessor_dll==NULL)
-	{
-		CString error_message = "";
-		error_message.Format("Unable to load scraper-preprocessor-dll: \"%s\"\n\n"
-			"Error-code: %d", filename, GetLastError());
-		OH_MessageBox_Error_Warning(error_message, "OpenHoldem scraperpre.dll WARNING");
-		return;
-	}
-	theApp._dll_scraperpreprocessor_process_message = (scraperpreprocessor_process_message_t) GetProcAddress(theApp._scraperpreprocessor_dll, "ProcessMessage");
-	if (theApp._dll_scraperpreprocessor_process_message==NULL)
-	{
-		CString	error_message = "";
-		error_message.Format("Unable to find symbols in scraper_preprocessor.dll");
-		OH_MessageBox_Error_Warning(error_message, "OpenHoldem scraperpreprocessor.dll ERROR");
-		theApp.Unload_ScraperPreprocessor_DLL();
-	}
-	else
-	{
-		write_log(preferences.debug_autoconnector(), "[CAutoConnector] scraperpreprocessor.dll loaded, ProcessMessage found.\n");
-	}
-}
-
 void CAutoConnector::Disconnect()
 {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
@@ -394,12 +352,6 @@ void CAutoConnector::Disconnect()
 			(theApp._dll_scraper_process_message) ("disconnect", NULL);
 
 	theApp.UnloadScraperDLL();
-
-	// Send "disconnect" to scraperpre DLL, if loaded
-	if (theApp._dll_scraperpreprocessor_process_message)
-			(theApp._dll_scraperpreprocessor_process_message) ("disconnect", NULL);
-
-	theApp.Unload_ScraperPreprocessor_DLL();
 
 	// Clear "attached" info
 	set_attached_hwnd(NULL);

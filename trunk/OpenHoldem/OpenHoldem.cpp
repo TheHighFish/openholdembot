@@ -258,14 +258,6 @@ void COpenHoldemApp::UnloadScraperDLL()
 	_dll_scraper_override = NULL;
 }
 
-void COpenHoldemApp::Unload_ScraperPreprocessor_DLL()
-{
-	if (_scraperpreprocessor_dll)
-		FreeLibrary(_scraperpreprocessor_dll);
-	_scraperpreprocessor_dll = NULL;
-	_dll_scraperpreprocessor_process_message = NULL;
-}
-
 // CDlgAbout dialog used for App About
 class CDlgAbout : public CDialog 
 {
