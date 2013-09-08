@@ -22,6 +22,7 @@
 #include "..\CTransform\hash\lookup3.h"
 #include "CAutoconnector.h"
 #include "CPreferences.h"
+#include "CScraperPreprocessor.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
@@ -1030,11 +1031,7 @@ void CScraper::ScrapeBet(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		// Give scraper-pre DLL a chance to modify transform output
-		// !!!text
-		text.Remove(',');
-		text.Remove('$');
-
+		CScraperPreprocessor::PreprocessMonetaryString(&text);
 		if (text!="")
 		{
 			set_player_bet(chair, trans.StringToMoney(text));
@@ -1053,11 +1050,7 @@ void CScraper::ScrapeBet(int chair)
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		// Give scraper-pre DLL a chance to modify transform output
-		// !!!text
-		text.Remove(',');
-		text.Remove('$');
-
+		CScraperPreprocessor::PreprocessMonetaryString(&text);
 		if (text!="")
 		{
 			set_player_bet(chair, trans.StringToMoney(text));
@@ -1075,9 +1068,9 @@ void CScraper::ScrapeBet(int chair)
 		double chipscrape_res = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		// Give scraper-pre DLL a chance to modify transform output
+		//???
 		t.Format("%.2f", chipscrape_res);
-		// !!!text
+		CScraperPreprocessor::PreprocessMonetaryString(&);
 		set_player_bet(chair, strtod(t.GetString(), 0));
 
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);
@@ -1351,10 +1344,7 @@ void CScraper::ScrapePots()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			//!!! text
-			text.Remove(',');
-			text.Remove('$');
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				set_pot(j, trans.StringToMoney(text));
@@ -1383,9 +1373,9 @@ void CScraper::ScrapePots()
 			double chipscrape_res = DoChipScrape(r_iter);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			// Give scraper-pre DLL a chance to modify transform output
 			t.Format("%.2f", chipscrape_res);
 			// !!! t??? Format!!!
+			CScraperPreprocessor::PreprocessMonetaryString(&t);
 			set_pot(j, strtod(t.GetString(), 0));
 
 			if (_pot_last[j] != _pot[j])
@@ -1530,9 +1520,7 @@ void CScraper::ScrapeLimits()
 		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 		titletext = c_titletext;
 	 	
-		// Give scraper-pre DLL a chance to modify title text
-		// !!! &titletext
-
+		CScraperPreprocessor::PreprocessTitleString(&titletext);
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
 			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
@@ -1553,8 +1541,7 @@ void CScraper::ScrapeLimits()
 				GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 				titletext = c_titletext;
 	
-				// Give scraper-pre DLL a chance to modify title text
-				//!!!&titletext
+				CScraperPreprocessor::PreprocessTitleString(&titletext);
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
@@ -1578,9 +1565,7 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			// Give scraper-pre DLL a chance to modify transform output
-			//!!!?text
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				trans.ParseStringBSL(
@@ -1610,9 +1595,7 @@ void CScraper::ScrapeLimits()
 				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
 
-				// Give scraper-pre DLL a chance to modify transform output
-				//!!!?text
-
+				CScraperPreprocessor::PreprocessMonetaryString(&text);
 				if (text!="")
 				{
 					trans.ParseStringBSL(text, s_iter->second.text, NULL,
@@ -1657,11 +1640,7 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			// Give scraper-pre DLL a chance to modify transform output
-			//!!!text
-			text.Remove(',');
-			text.Remove('$');
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				set_sblind(trans.StringToMoney(text));
@@ -1681,10 +1660,7 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			//!!!text
-			text.Remove(',');
-			text.Remove('$');
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				set_bblind(trans.StringToMoney(text));
@@ -1704,10 +1680,7 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			//!!!text
-			text.Remove(',');
-			text.Remove('$');
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				set_bbet(trans.StringToMoney(text));
@@ -1727,10 +1700,7 @@ void CScraper::ScrapeLimits()
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
 
-			//!!!text
-			text.Remove(',');
-			text.Remove('$');
-
+			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")
 			{
 				set_ante(trans.StringToMoney(text));
