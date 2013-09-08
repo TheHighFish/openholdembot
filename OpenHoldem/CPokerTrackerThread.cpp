@@ -257,21 +257,27 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 	
 	memset(oh_scraped_name, 0, k_max_length_of_playername);
 	memset(best_name, 0, k_max_length_of_playername);
+
+	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() chair = %i\n", chair);
 	
 	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
 	{
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() No name known for this chair\n");
 		return false;
 	}
 	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
 
 	if (NameLooksLikeBadScrape(oh_scraped_name))
 	{
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Name looks like a bad scrape\n");
 		return false;
 	}
 	
 	// We already have the name, and it has not changed since we last checked, so do nothing
 	if (_player_data[chair].found && 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name))
 	{
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Name is known and good\n");
 		return true;
 	}
 	
@@ -279,11 +285,13 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 	// First see if we can find the exact scraped name
 	if (FindName(oh_scraped_name, best_name))
 	{
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Name found in database\n");
 		SetPlayerName(chair, true, best_name, oh_scraped_name);
 		return true;
 	}
 	else
 	{
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Name not found in database\n");
 		SetPlayerName(chair, false, "", "");
 		return false;
 	}
@@ -644,11 +652,11 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		/* Note that checkname fail just when starting, doesn't necessarily mean that there's no user
 		   in that chair, but only that the scraper failed to find one. This could be due to lobby window
 		   that hides poker window behind it. We make this check once, and if we are good, the update iteration
-		   is good to go. if we are not, we assume that this seat is not taken. */ 
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been started.\n", chair);
+		   is good to go. if we are not, we assume that this seat is not taken at the moment. */ 
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been skipped. Reason: [CheckName failed]\n", chair);
 		return;
 	}
+	write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair[%d] had been started.\n", chair);
 	/* Check if there's a complete update cycle skipping for that chair */
 	if (pParent->SkipUpdateForChair(chair))
 	{
