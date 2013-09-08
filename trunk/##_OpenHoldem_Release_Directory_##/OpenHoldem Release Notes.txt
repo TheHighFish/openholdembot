@@ -1,3 +1,23 @@
+v4.2.2 2013-09-08
+==================
+BUG FIXES:
+- Unused standard-functions (including "DLL") got incorrectly initialized.
+  This lead to a popup on start-up "Unable to load DLL ...".
+  This has now been fixed.
+  Thanks to Lavezzi and Daniel for reporting.
+  [THF]
+
+MAINTENANCE:
+- Lots of new debug-messages, as two people complained 
+  that PokerTracker did not work for them.
+  [THF]
+- Removing the Scraper-Preprocessor-DLL
+  as it is a weird and up to now unused concept.
+  The very few use-cases for it can better be handled by OpenHoldem directly.
+  To be done in one of the next versions.
+  [THF]
+
+
 v4.2.1 2013-09-04
 ==================
 BUG FIXES:
