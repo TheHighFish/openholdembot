@@ -1070,7 +1070,7 @@ void CScraper::ScrapeBet(int chair)
 
 		//???
 		t.Format("%.2f", chipscrape_res);
-		CScraperPreprocessor::PreprocessMonetaryString(&);
+		CScraperPreprocessor::PreprocessMonetaryString(&t);
 		set_player_bet(chair, strtod(t.GetString(), 0));
 
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);

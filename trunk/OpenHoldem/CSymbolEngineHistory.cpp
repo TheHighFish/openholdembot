@@ -39,10 +39,10 @@ void CSymbolEngineHistory::ResetOnHandreset()
 	{
 		_nplayersround[i] = 0;
 		_nbetsround[i] = 0;
-		_didchec[i] = 0;
-		_didcall[i] = 0;
-		_didrais[i] = 0;
-		_didswag[i] = 0;
+		for (int j=0; j<=k_autoplayer_function_fold; j++)
+		{
+			_autoplayer_actions[i][j] = 0;
+		}
 	}
 }
 
@@ -57,6 +57,52 @@ void CSymbolEngineHistory::ResetOnHeartbeat()
 	CalculateHistory();
 }
 
+void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
+{
+	AssertRange(autoplayer_action_code, k_autoplayer_function_allin,
+		k_autoplayer_function_fold);
+	_autoplayer_actions[BETROUND][autoplayer_action_code]++;
+	SetPrevaction(autoplayer_action_code);
+}
+
+// Attention: SetPrevaction takes an OH-autoplayer-constant as input,
+// but needs to translate it to an old-style Winholdem-prevaction-constant
+void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code)
+{
+	switch (autoplayer_action_code)
+	{
+		case k_autoplayer_function_allin:
+			_prevaction = k_prevaction_allin;
+			break;
+		case k_autoplayer_function_betpot_2_1:		
+		case k_autoplayer_function_betpot_1_1:
+		case k_autoplayer_function_betpot_3_4:
+		case k_autoplayer_function_betpot_2_3:
+		case k_autoplayer_function_betpot_1_2:
+		case k_autoplayer_function_betpot_1_3:
+		case k_autoplayer_function_betpot_1_4:
+			_prevaction = k_prevaction_betsize;
+			break;
+		case k_autoplayer_function_betsize:
+			_prevaction = k_prevaction_betsize;
+			break;
+		case k_autoplayer_function_raise:
+			_prevaction = k_prevaction_raise;
+			break;
+		case k_autoplayer_function_call:
+			_prevaction = k_prevaction_call;
+			break;
+		case k_autoplayer_function_check:
+			_prevaction = k_prevaction_check;
+			break;
+		case k_autoplayer_function_fold:
+			_prevaction = k_prevaction_fold;
+			break;
+		default:
+			_prevaction = k_prevaction_undefined;
+			break;
+	};
+}
 
 void CSymbolEngineHistory::CalculateHistory()
 {

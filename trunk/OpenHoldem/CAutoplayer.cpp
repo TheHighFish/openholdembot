@@ -27,6 +27,7 @@
 #include "CSymbols.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -136,6 +137,9 @@ bool CAutoplayer::DoBetPot(void)
 		}
 		if (success)
 		{
+			// Register the action
+			// Treat betpot like swagging, i.e. raising a user-defined amount
+			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
 		// Else continue trying with the next betpot function
@@ -223,43 +227,17 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
-	// !!! Code-clones
-	// !!! Needs refactoring and a loop
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
-	if (p_autoplayer_functions->f$rais())
+	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)
 	{
-		if (p_casino_interface->ClickButton(k_autoplayer_function_raise))
+		if (p_autoplayer_functions->autoplayer_function_values(i))
 		{
-			p_symbols->RecordPrevAction(k_action_raise);
-			write_logautoplay(ActionConstantNames(k_action_raise));
-			return true;
-		}
-	}
-	if (p_autoplayer_functions->f$call())
-	{
-		if (p_casino_interface->ClickButton(k_autoplayer_function_call))
-		{
-			p_symbols->RecordPrevAction(k_action_call);
-			write_logautoplay(ActionConstantNames(k_action_call));
-			return true;
-		}
-	}
-	if (p_autoplayer_functions->f$check())
-	{
-		if (p_casino_interface->ClickButton(k_autoplayer_function_check))
-		{
-			p_symbols->RecordPrevAction(k_action_check);
-			write_logautoplay(ActionConstantNames(k_action_check));
-			return true;
-		}
-	}
-	if (p_autoplayer_functions->f$fold())
-	{
-		if (p_casino_interface->ClickButton(k_autoplayer_function_fold))
-		{
-			p_symbols->RecordPrevAction(k_action_fold);
-			write_logautoplay(ActionConstantNames(k_action_fold));
-			return true;
+			if (p_casino_interface->ClickButton(i))
+			{
+				write_logautoplay(ActionConstantNames(i));  //!!!
+				p_symbol_engine_history->RegisterAction(i);
+				return true;
+			}
 		}
 	}
 	return false;
@@ -375,21 +353,18 @@ bool CAutoplayer::DoAllin(void)
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
-		write_logautoplay(ActionConstantNames(k_action_allin));
-		return success;
+		write_logautoplay(ActionConstantNames(k_prevaction_allin));
 	}
 	else  if (p_tablemap->allinmethod() == 2)
 	{
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
-		write_logautoplay(ActionConstantNames(k_action_allin));
-		return success;
+		write_logautoplay(ActionConstantNames(k_prevaction_allin));
 	}
 	else if (p_tablemap->allinmethod() == 3)
 	{
 		success = p_casino_interface->UseSliderForAllin();
-		write_logautoplay(ActionConstantNames(k_action_allin));
-		return success;
+		write_logautoplay(ActionConstantNames(k_prevaction_allin));
 	}
 	else
 	{
@@ -397,8 +372,17 @@ bool CAutoplayer::DoAllin(void)
 		int userchair = p_symbol_engine_userchair->userchair();
 		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
 			+ p_symbol_engine_chip_amounts->balance(userchair); 
-		return p_casino_interface->EnterBetsize(betsize_for_allin);
+		success = p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
+	if (success)
+	{
+		// Not really necessary to register the action,
+		// as the game is over and there is no doallin-symbol,
+		// but it does not hurt to register it anyway.
+		p_symbol_engine_history->RegisterAction(k_autoplayer_function_allin);
+		return true;
+	}
+	return false;
 }
 
 
@@ -459,7 +443,12 @@ bool CAutoplayer::DoSwag(void)
 {
 	if (p_autoplayer_functions->f$betsize() > 0)
 	{
-		return p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
+		int success = p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
+		if (success)
+		{
+			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
+			return true;
+		}
 	}
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
@@ -471,8 +460,8 @@ bool CAutoplayer::DoPrefold(void)
 	assert(p_autoplayer_functions->f$prefold() == 0);
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
-		p_symbols->RecordPrevAction(k_action_fold);
-		write_logautoplay(ActionConstantNames(k_action_fold));
+		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
+		write_logautoplay(ActionConstantNames(k_prevaction_fold));
 		p_autoplayer_functions->CalcAutoTrace();
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;

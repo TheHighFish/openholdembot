@@ -27,7 +27,6 @@ public:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 public:
-	void RecordPrevAction(const ActionConstant action);
 	double GetSymbolVal(const char *a, int *e);
 	void LogHandReset();
 public:
