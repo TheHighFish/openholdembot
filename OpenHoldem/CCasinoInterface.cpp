@@ -164,7 +164,7 @@ bool CCasinoInterface::UseSliderForAllin()
 		return false;
 	}
 
-	write_logautoplay(ActionConstantNames(k_action_jam));
+	write_logautoplay(ActionConstantNames(k_prevaction_jam));
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
 
 	// reset elapsedauto symbol
@@ -376,8 +376,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 			return false;
 		}
 		
-		p_symbols->RecordPrevAction(k_action_betsize);
-		write_logautoplay(ActionConstantNames(k_action_betsize));
+		write_logautoplay(ActionConstantNames(k_prevaction_betsize));
 
 	}
 	int betround = p_betround_calculator->betround();

@@ -451,21 +451,19 @@ const int BETCONF_NOTHING	 = 3;
 
 #define MAX_WINDOW_TITLE	512
 
-// Autoplayer-trace
-// Action constants for the autoplayer
-// have to be backward compatible to WinHoldem
+// Old WinHoldem prevaction-constants
 // http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:Symbols#History
 // (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
-enum ActionConstant
+enum ActionConstant 
 {
-	k_action_undefined = -2,
-	k_action_fold = -1,
-	k_action_check = 0,		// new in OpenHoldem
-	k_action_call = 1,
-	k_action_raise = 2,		// min-raise
-	k_action_betsize = 3,	// "stated wager", i.e. using f$betsize
-	k_action_allin = 4,
-	k_action_jam = 5        // not really an action, but required for correctly logging the slider.
+	k_prevaction_undefined = -2,
+	k_prevaction_fold = -1,
+	k_prevaction_check = 0,		// new in OpenHoldem
+	k_prevaction_call = 1,
+	k_prevaction_raise = 2,		// min-raise
+	k_prevaction_betsize = 3,	// "stated wager", i.e. using f$betsize
+	k_prevaction_allin = 4,
+	k_prevaction_jam = 5        // not really an action, but required for correctly logging the slider.
 };
 
 // Function to access the name of the action constants.

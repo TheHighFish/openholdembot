@@ -34,12 +34,15 @@ public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
 	double nbetsround(int betround)		{ return _nbetsround[betround]; }
-	bool didchec(int betround)			{ return _didchec[betround]; }
-	bool didcall(int betround)			{ return _didcall[betround]; }
-	bool didrais(int betround)			{ return _didrais[betround]; }
-	bool didswag(int betround)			{ return _didswag[betround]; }
+	int didchec(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_check]; }
+	int didcall(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_call]; }
+	int didrais(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_raise]; }
+	int didswag(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_betsize]; }
 	int prevaction()					{ return _prevaction; }
+public:
+	void RegisterAction(int autoplayer_action_code);
 private:
+	void SetPrevaction(int autoplayer_action_code);
 	void CalculateHistory();
 private:
 	int _prevaction;
@@ -49,10 +52,12 @@ private:
 	int _nplayersround[k_number_of_betrounds + 1];		
 	int _botslastaction[k_number_of_betrounds + 1];		
 	double _nbetsround[k_number_of_betrounds + 1];
-	bool _didchec[k_number_of_betrounds + 1];
-	bool _didcall[k_number_of_betrounds + 1];
-	bool _didrais[k_number_of_betrounds + 1];
-	bool _didswag[k_number_of_betrounds + 1];
+	// Autoplayer-actions for the 4 bet-rounds
+	// First dimension: betround; element 0 is unused again.
+	// Second dimension: only some actions are really used,
+	//   but it does not hurt to have a simple and extensible interface.
+	//   "betpot" gets treated as swag, etc.
+	int _autoplayer_actions[k_number_of_betrounds + 1][k_autoplayer_function_fold];
 } *p_symbol_engine_history;
 
 #endif INC_CSYMBOLENGINEHISTORY_H

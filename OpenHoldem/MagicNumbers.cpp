@@ -5,28 +5,25 @@
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 
 // as indices for an array.
-const char* ActionConstantNames(int action_constant)
+const char* ActionConstantNames(int autoplayer_function_code)
 {
 	// names of action-constants for use in the autoplayer-log.
 	// Formerly 4 digits (WinHoldem-style), now more sane.
-	if (action_constant == k_action_undefined)
-		return "UNDEFINED";
-	else if (action_constant == k_action_fold)
+	if (autoplayer_function_code == k_autoplayer_function_fold)
 		return "FOLD";
-	else if (action_constant == k_action_check)
+	else if (autoplayer_function_code == k_autoplayer_function_check)
 		return "CHECK";
-	else if (action_constant == k_action_call)
+	else if (autoplayer_function_code == k_autoplayer_function_call)
 		return "CALL";
-	else if (action_constant == k_action_raise)
+	else if (autoplayer_function_code == k_autoplayer_function_raise)
 		return "RAISE";
-	else if (action_constant == k_action_betsize)
+	else if (autoplayer_function_code == k_autoplayer_function_betsize)
 		return "NL-BETSIZING";
-	else if (action_constant == k_action_allin)
+	else if (autoplayer_function_code == k_autoplayer_function_allin)
 		return "ALLIn";
 	else
 	{
-		assert(k_this_must_not_happen);
-		return "";
+		return "UNDEFINED";
 	}
 }
 

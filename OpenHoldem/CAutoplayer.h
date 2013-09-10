@@ -44,7 +44,6 @@ private:
 
 private:
 	// private variables - use public accessors and public mutators to address these
-	int		_prevaction;
 	bool	_autoplayer_engaged;
 
 private:
