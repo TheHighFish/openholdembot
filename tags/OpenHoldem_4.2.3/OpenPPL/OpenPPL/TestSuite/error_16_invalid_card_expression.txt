@@ -1,0 +1,15 @@
+// Invalid card expression
+custom
+
+preflop
+when others fold force
+
+flop
+WHEN (Board = XYZ) RAISEMAX FORCE
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force

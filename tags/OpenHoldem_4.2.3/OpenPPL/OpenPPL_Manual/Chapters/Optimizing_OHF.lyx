@@ -1,0 +1,150 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+Optimizing OHF-Files
+\end_layout
+
+\begin_layout Standard
+Profiles coded in Shanky-style often contain long repetitive code-sequences
+ and the converter translates open-ended when-conditions in a not optimal,
+ but easy to translate way.
+ This might lead to larger than necessary code and for large (Shanky-) profiles
+ to somewhat slow execution.
+ To overcome these handicaps our member Relhby developed an optimizer for
+ the generated OH-script-code that replaces repeated code-snippets by auto-gener
+ated functions.
+ It gets executed at the command-line like below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+OHF-optimizer.exe INPUTFILE.OHF > OUTPUTFILE.OHF
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Advantages
+\end_layout
+
+\begin_layout Itemize
+The optimized code usually becomes 20-50% smaller, and therefore loads faster.
+\end_layout
+
+\begin_layout Itemize
+The optimized code usually gets executed 2-10 times faster due to OpenHoldems
+ symbol caching.
+\end_layout
+
+\begin_layout Section*
+Disadvantages
+\end_layout
+
+\begin_layout Itemize
+For every open-ended when-condition a new function gets introduced with
+ an auto-generated name like 
+\begin_inset Quotes eld
+\end_inset
+
+f$OEWC_163
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This affects the readability of your code and especially of your log-files.
+\end_layout
+
+\begin_layout Itemize
+Well-structured code with lots of user-defined functions and few repetitive
+ code-snippets might even become larger and slower.
+\end_layout
+
+\begin_layout Section*
+General advide
+\end_layout
+
+\begin_layout Standard
+We recommend you to use this tool for original Shanky-style profiles.
+ They do usually benefit much from this optimization.
+ However for well-structured OpenPPL-profiles with lots of user-defined
+ functions the disadvantages might predominate.
+ If you are unsure the file-size before and after optimization will be a
+ good indication.
+ Files that become smaller did usually benefit.
+\end_layout
+
+\end_body
+\end_document

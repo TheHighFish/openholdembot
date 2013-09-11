@@ -1,0 +1,138 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem Preferences – 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Chat
+\end_layout
+
+\end_inset
+
+Chat
+\end_layout
+
+\begin_layout Standard
+Chat preferences control how the OpenHoldem’s Chat feature in the Autoplayer
+ functions.
+ See the {f$chat} section for more information.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Enable Chat
+\emph default
+: This parameter will completely disable the Chat feature if unchecked 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Minimum delay
+\emph default
+: This is the minimum amount of time that Chat will wait (in seconds) between
+ the posting of messages to the chat box on the Casino client.
+ This is a safety feature and is present to prevent accidental spamming
+ of the chat box.
+ Feel free to set this to “1” if you are overly confident in your configuration
+ skills.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Random delay
+\emph default
+: In addition to the “Minimum delay”, the amount of time specified in this
+ parameter (in seconds) will be used to randomly delay the entry of a chat
+ message into the chat box.
+ The setting here is the maximum amount of random delay.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Chat.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Chat
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
