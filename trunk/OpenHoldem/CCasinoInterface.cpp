@@ -84,7 +84,11 @@ bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, 
 {
 	if (ClickButton(first_button))
 	{
-		Sleep(delay_in_milli_seconds); // stolen focus ???
+		Sleep(delay_in_milli_seconds); 
+		if (TableLostFocus())
+		{
+			return false;
+		}
 		return ClickButton(second_button);
 	}
 
@@ -304,7 +308,8 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	SelectSwagText();
 
-	// First sleep(), THEN check for stolen focus
+	// First sleep(), THEN check for stolen focus, then act
+	//  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", preferences.swag_delay_1());
 	Sleep(preferences.swag_delay_1()); 
 

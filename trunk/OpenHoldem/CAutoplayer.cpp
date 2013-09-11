@@ -1,7 +1,5 @@
 /* TODO: 
 * p_stableframescounter->ResetOnAutoplayerAction();
-* check for loss of swag-focus: first sleep, then check, then act,
-  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
 */
 
 #include "StdAfx.h"
