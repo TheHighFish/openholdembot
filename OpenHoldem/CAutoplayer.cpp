@@ -1,6 +1,5 @@
 /* TODO: 
 * p_stableframescounter->ResetOnAutoplayerAction();
-* delay
 * check for loss of swag-focus: first sleep, then check, then act,
   NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
 */
@@ -392,15 +391,11 @@ void CAutoplayer::DoAutoplayer(void)
 	CheckBringKeyboard();
 
 	p_scraper_access->GetNeccessaryTablemapObjects();
-	/* [TODO] better log-file format !! 	*/
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%c%c%c%c%c)\n", 
-		num_buttons_visible, 
-		allin_option_available ? 'A' : '.',
-		raise_button_available ? 'R' : '.',
-		call_button_available  ? 'C' : '.',
-		check_button_available ? 'K' : '.',
-		fold_button_available  ? 'F' : '.');
 
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
+		p_scraper_access->NumberOfVisibleButtons(),
+		p_symbol_engine_autoplayer->GetFCKRAString());
+		
 	// Care about I86 regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
 	if (!HandleInterfacebuttonsI86())
