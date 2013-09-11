@@ -130,7 +130,7 @@ CString keywords = // Standard functions
 				  "raisbits1 raisbits2 raisbits3 raisbits4 "
 				  "callbits1 callbits2 callbits3 callbits4 "
 				  "foldbits1 foldbits2 foldbits3 foldbits4 "
-				  "ac_aggressor ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
+				  "ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
 				  "ac_postflop_pos ac_first_into_pot "
 				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
 				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "

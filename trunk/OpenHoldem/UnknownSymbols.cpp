@@ -169,6 +169,10 @@ char *outdated_symbol_originaldealposition =
 	"because there was no longer any need for it\n"
 	"after making dealposition persistent.\n";
 
+char *outdated_symbol_ac_aggressor =
+	"The symbol \"originaldealposition\" got removed from the code base\n"
+	"because it provided the same functionality as \"raischair\".\n";
+
 char *outdated_symbols_pokertracker_tournament =
 	"The PokerTracker tournament symbols \"ptt_\" got removed\n"
 	"because we changed the \"pt_\"-symbols so that they\n"
@@ -223,6 +227,10 @@ void WarnAboutUnknownOrOutdatedSymbol(CString symbol)
 	else if (symbol == "handrank")
 	{
 		OH_MessageBox_Error_Warning(outdated_symbol_handrank, title_outdated_symbol);
+	}
+	else if (symbol == "ac_aggressor ")
+	{
+		OH_MessageBox_Error_Warning(outdated_symbol_ac_aggressor, title_outdated_symbol);
 	}
 	else if ((symbol == "clocks") || (symbol == "nclockspersecond")
 		|| (symbol == "ron$clocks") || (symbol == "run$clocks"))
