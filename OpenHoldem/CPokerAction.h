@@ -17,7 +17,6 @@ private:
 	const int		PostflopPos(void);
 	const bool		FirstIntoPot(void);	
 	const int		BetPosition(const int chairnum);
-	const int		AggressorChair(void);
 	const bool		AgchairAfter(void);
 };
 

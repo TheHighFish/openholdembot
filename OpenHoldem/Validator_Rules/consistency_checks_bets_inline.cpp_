@@ -22,9 +22,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1202")
     HEURISTIC_RULE (false)
     REASONING ("If I'm the aggressor, my current bet can't be zero.")
-    PRECONDITION ((gws("ac_aggressor") == gws("userchair")) && (gws("nplayersplaying") >= 2))
+    PRECONDITION ((gws("raischair") == gws("userchair")) && (gws("nplayersplaying") >= 2))
     POSTCONDITION (gws("currentbet") > 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("ac_aggressor, userchair, currentbet, nplayersplaying")
+    SYMBOLS_POSSIBLY_AFFECTED ("raischair, userchair, currentbet, nplayersplaying")
 END_TESTCASE
 
 
