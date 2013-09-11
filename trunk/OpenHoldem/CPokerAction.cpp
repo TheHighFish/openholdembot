@@ -24,7 +24,6 @@ CPokerAction::~CPokerAction()
 
 const double CPokerAction::ProcessQuery(const char * pquery, int *e)
 {
-	if (memcmp(pquery,"ac_aggressor",12)==0)				return AggressorChair();
 	if (memcmp(pquery,"ac_agchair_after", 16) == 0)			return AgchairAfter();
 	if (memcmp(pquery,"ac_preflop_pos", 14) == 0)			return PreflopPos();
 	if (memcmp(pquery,"ac_prefloprais_pos", 18) == 0)		return PreflopRaisPos();
@@ -305,60 +304,20 @@ const int CPokerAction::DealPosition (const int chairnum)
 	return (IsBitSet(sym_playersdealtbits, chairnum)) ? dealposchair : 0 ;
 }
 
-const int CPokerAction::AggressorChair (void)
-{
-	// !! Plain superfluos code!
-	int		betround = p_betround_calculator->betround();
-	int		sym_raischair = p_symbol_engine_raisers_callers->raischair();
-
-	// br1, no raises
-	if (betround == k_betround_preflop && p_symbol_engine_history->nbetsround(betround) <= 1)
-		return sym_raischair;
-
-	// br1, someone raised
-	if (betround==k_betround_preflop && p_symbol_engine_history->nbetsround(betround)>1)
-		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
-
-	// br2, no raises
-	if (betround==k_betround_flop && p_symbol_engine_history->nbetsround(1)==0)
-		return p_game_state->LastRaised(1)!=-1 ? p_game_state->LastRaised(1) : sym_raischair;
-
-	// br2, someone raised
-	if (betround==k_betround_flop && p_symbol_engine_history->nbetsround(1)>0)
-		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
-
-	// br3, no raises
-	if (betround==k_betround_turn && p_symbol_engine_history->nbetsround(2)==0)
-		return p_game_state->LastRaised(2)!=-1 ? p_game_state->LastRaised(2) : sym_raischair;
-
-	// br3, someone raised
-	if (betround==k_betround_turn && p_symbol_engine_history->nbetsround(2)>0)
-		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
-
-	// br4, no raises
-	if (betround==k_betround_river && p_symbol_engine_history->nbetsround(3)==0)
-		return p_game_state->LastRaised(3)!=-1 ? p_game_state->LastRaised(3) : sym_raischair;
-
-	// br4, someone raised
-	if (betround==k_betround_river && p_symbol_engine_history->nbetsround(3)>0)
-		return p_game_state->LastRaised(4)!=-1 ? p_game_state->LastRaised(4) : sym_raischair;
-
-	return sym_raischair;
-}
-
 const bool CPokerAction::AgchairAfter (void)
 {
-	bool	result = false;
 	int		e = SUCCESS;
 
 	if (!p_symbol_engine_userchair->userchair_confirmed())
-		result = false;
-
-	if (AggressorChair()>=0)
-		result = BetPosition(AggressorChair()) > p_symbol_engine_positions->betposition();
-
+	{
+		return false;
+	}
+	if (p_symbol_engine_raisers_callers->raischair() >=0 )
+	{
+		return (BetPosition(p_symbol_engine_raisers_callers->raischair()) > p_symbol_engine_positions->betposition());
+	}
 	else
-		result = false ;
-
-	return result;
+	{
+		return false;
+	}
 }

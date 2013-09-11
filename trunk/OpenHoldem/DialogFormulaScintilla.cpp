@@ -3172,7 +3172,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "raisbitsx (x=1-4)", "which chairs raised in round x ");
 	AddSymbol(parent, "callbitsx (x=1-4)", "which chairs called in round x");
 	AddSymbol(parent, "foldbitsx (x=1-4)", "which chairs folded in round x");
-	AddSymbol(parent, "ac_aggressor", "which chair was aggressor (might be from previous round)");
 	AddSymbol(parent, "ac_agchair_after", "does the aggressor chair act after me?");
 	AddSymbol(parent, "ac_preflop_pos", "preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");
 	AddSymbol(parent, "ac_prefloprais_pos", "preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)");

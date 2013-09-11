@@ -44,10 +44,10 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0261")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol ac_aggressor")
+    REASONING ("Range check for symbol raischair")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ac_aggressor") >= -1) && (gws("ac_aggressor") <= 9))
-    SYMBOLS_POSSIBLY_AFFECTED ("ac_aggressor")
+    POSTCONDITION ((gws("raischair") >= -1) && (gws("raischair") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("raischair")
 END_TESTCASE
 
 
