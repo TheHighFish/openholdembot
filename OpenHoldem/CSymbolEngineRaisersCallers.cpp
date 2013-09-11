@@ -48,6 +48,7 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 		_raisbits[i] = 0;
 		_foldbits[i] = 0;
 	}
+	_raischair = k_undefined;
 }
 
 void CSymbolEngineRaisersCallers::ResetOnNewRound()
@@ -67,9 +68,15 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
 
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
-	_raischair = k_undefined;
 	_raisbits[BETROUND] = 0;
 
+	if (p_symbol_engine_chip_amounts->call() <= 0.0)
+	{
+		// There are no bets and raises.
+		// Skip the calculations to keep the raischair of the previous round.
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
+		return;
+	}
 	// Raischair, nopponentsraising, raisbits
 	//
 	int first_possible_raiser = FirstPossibleRaiser();

@@ -1,5 +1,4 @@
 /* TODO: 
-* prevaction
 * p_stableframescounter->ResetOnAutoplayerAction();
 * delay
 * check for loss of swag-focus: first sleep, then check, then act,
