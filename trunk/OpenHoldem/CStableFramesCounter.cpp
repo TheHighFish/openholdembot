@@ -1,8 +1,21 @@
+//*****************************************************************************
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//*****************************************************************************
+//
+// Purpose:
+//
+//*****************************************************************************
+
 #include "stdafx.h"
+#include "CStableFramesCounter.h"
 
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "MagicNumbers.h"
 
@@ -32,12 +45,6 @@ void CStableFramesCounter::Reset()
 	_isReset = true;
 }
 
-void CStableFramesCounter::ResetOnAutoplayerAction()
-{
-	write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Reset on autoplayer-action\n");
-	Reset();
-}
-
 void CStableFramesCounter::SaveCurrentState()
 {
 	/* 
@@ -59,6 +66,9 @@ void CStableFramesCounter::SaveCurrentState()
 	}
 }
 
+// This function does automatically detect a changed game-state,
+// so there is no longer any need to do a "Reset()" after 
+// every autoplayer-action.
 unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 {
 	write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Update number of stable frames\n");

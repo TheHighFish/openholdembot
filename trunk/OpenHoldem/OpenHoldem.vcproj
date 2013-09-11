@@ -1287,10 +1287,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\COpenPPLGrammar.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CPreferences.h"
 				>
 			</File>
@@ -1360,10 +1356,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenHoldemDoc.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ppmessage.h"
 				>
 			</File>
 			<File
@@ -1611,10 +1603,6 @@
 				</File>
 				<File
 					RelativePath=".\CPokerAction.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CSymbols.h"
 					>
 				</File>
 				<File
@@ -1943,10 +1931,6 @@
 				</File>
 				<File
 					RelativePath=".\CAutoConnectorThread.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CPokerTrackerQueryCollection.h"
 					>
 				</File>
 				<File
