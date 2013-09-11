@@ -213,20 +213,20 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 
 bool CFormula::IsStandardFormula(CString formula_name)
 {
-	return ((formula_name == "notes")	    || (formula_name == "dll")
-		|| (formula_name == "f$alli")	    || (formula_name == "f$betsize")
-		|| (formula_name == "f$betpot_2_1") || (formula_name == "f$betpot_1_1")
-		|| (formula_name == "f$betpot_3_4") || (formula_name == "f$betpot_2_3")
-		|| (formula_name == "f$betpot_1_2") || (formula_name == "f$betpot_1_3")
-		|| (formula_name == "f$betpot_1_4")
-		|| (formula_name == "f$rais")	    || (formula_name == "f$call")  
-		|| (formula_name == "f$prefold")    || (formula_name == "f$rebuy") 
-		|| (formula_name == "f$delay")	    || (formula_name == "f$chat")	
-		|| (formula_name == "f$prwin_number_of_opponents")		
-		|| (formula_name == "f$prwin_number_of_iterations")		
-		|| (formula_name == "f$sitin")	    || (formula_name == "f$sitout")	
-		|| (formula_name == "f$leave")	    || (formula_name == "f$close")	
-		|| (formula_name == "f$test")	    || (formula_name == "f$debug"));
+	// The special "functions" first
+	if ((formula_name == "notes")	  || (formula_name == "dll")
+		|| (formula_name == "f$test") || (formula_name == "f$debug"))
+	{
+		return true;
+	}
+	for (int i=k_autoplayer_function_allin; i<k_number_of_standard_functions; i++)
+	{
+		if (formula_name == k_standard_function_names[i])
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void CFormula::WriteStandardFunction(CArchive& ar, CString name)
