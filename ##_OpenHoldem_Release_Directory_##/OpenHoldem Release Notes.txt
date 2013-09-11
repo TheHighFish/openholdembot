@@ -1,3 +1,23 @@
+v4.2.2 2013-09-xx
+==================
+BUG FIXES:
+- The symbols didrais didcall didswag dischec did not work
+  because we forgot to call the update-function 
+  when we rewrote the autoplayer for OpenHoldem 4.0.0.
+  Thanks to FpTrader for reporting.
+  [THF]
+- The symbol raischair losts its value on a new bettinground
+  due to an incorrect reset. Thanks to Marchigno for reporting.
+  [THF]
+
+MAINTENANCE:
+- The symbol ac_aggressor got removed from the codebase
+  because it provided the same functionality as "raischair.
+  This already happened for version 4.0.0,
+  but we forgot to add a warning and to mention it in the release-notes,
+  so it caused some confusion.
+  [THF]
+
 v4.2.2 2013-09-08
 ==================
 BUG FIXES:
