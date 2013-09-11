@@ -35,7 +35,7 @@ double MaximumPossibleBetsizeBecauseOfBalance()
 
 double MaximumBetsizeForPotLimit()
 {
-	// ToDo: Preflop
+	// ToDo: Preflop?
 	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
 		+ p_symbol_engine_chip_amounts->pot()); // !!???
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);

@@ -53,6 +53,4 @@ void CDlgSAPrefs17::OnOK()
 }
 
 void CDlgSAPrefs17::OnBnClickedCheck1()
-{
-  // TODO: Add your control notification handler code here
-}
+{}

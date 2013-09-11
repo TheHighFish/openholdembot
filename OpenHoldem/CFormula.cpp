@@ -251,31 +251,15 @@ void CFormula::WriteFormula(CArchive& ar)
 	//  
 	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
 
-	// !!! missed f$init and needs refactoring
+	// DLL  and notes are a bit special "functions",
+	// so they get extra treatment.
 	WriteStandardFunction(ar, "notes");
 	WriteStandardFunction(ar, "dll");
-	// ToDo: Check, if that can be done the normal way too?
-	WriteStandardFunction(ar, "f$prwin_number_of_iterations");
-	WriteStandardFunction(ar, "f$alli");
-	WriteStandardFunction(ar, "f$betsize");
-	WriteStandardFunction(ar, "f$betpot_2_1");
-	WriteStandardFunction(ar, "f$betpot_1_1");
-	WriteStandardFunction(ar, "f$betpot_3_4");
-	WriteStandardFunction(ar, "f$betpot_2_3");
-	WriteStandardFunction(ar, "f$betpot_1_2");
-	WriteStandardFunction(ar, "f$betpot_1_3");
-	WriteStandardFunction(ar, "f$betpot_1_4");
-	WriteStandardFunction(ar, "f$rais");
-	WriteStandardFunction(ar, "f$call");
-	WriteStandardFunction(ar, "f$prefold");
-	WriteStandardFunction(ar, "f$rebuy");
-	WriteStandardFunction(ar, "f$delay");
-	WriteStandardFunction(ar, "f$chat");
-	WriteStandardFunction(ar, "f$prwin_number_of_opponents"); 
-	WriteStandardFunction(ar, "f$sitin");
-	WriteStandardFunction(ar, "f$sitout");
-	WriteStandardFunction(ar, "f$leave");
-	WriteStandardFunction(ar, "f$close");
+	for (int i=k_autoplayer_function_allin; i<k_number_of_standard_functions; i++)
+	{
+		WriteStandardFunction(ar, k_standard_function_names[i]);
+	}
+	// f$test and f$debug are again special
 	WriteStandardFunction(ar, "f$test");
 	WriteStandardFunction(ar, "f$debug");
 

@@ -164,6 +164,5 @@ void CDlgSAPrefs2::OnDeltaposSwagdelay3Spin(NMHDR *pNMHDR, LRESULT *pResult)
 void CDlgSAPrefs2::OnDeltaposClickdelaySpin(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-	// TODO: Add your control notification handler code here
 	*pResult = 0;
 }
