@@ -60,10 +60,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker auto-rate icon code",
 		// first_part_of_query
-		"SELECT val_icon \
-		FROM player \
-		WHERE id_site=%SITEID% AND \
-		player_name = '%SCREENNAME%'",
+		"SELECT val_icon "
+		"FROM player ",
 		// last_part_of_query
 		"",
 		// stat_group
