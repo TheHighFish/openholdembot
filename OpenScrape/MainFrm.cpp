@@ -843,12 +843,23 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	if (!IsWindowVisible(hwnd))
 		return true;
 
+	/* We use this when we only want windows with title text
 	// If there is no caption on this window, then return
 	GetWindowText(hwnd, text, sizeof(text));
 	if (strlen(text)==0)
 		return true;
 
 	title = text;
+	*/
+
+	// We use this when we want every existing window
+	// by setting the title text of non title text windows as "HWND: " + hwnd
+	GetWindowText(hwnd, text, sizeof(text));
+	if (strlen(text)==0)
+		title.AppendFormat("HWND: %i", hwnd);
+	else
+		title = text;
+	
 
 	// Found a window, get client area rect
 	GetClientRect(hwnd, &crect);
