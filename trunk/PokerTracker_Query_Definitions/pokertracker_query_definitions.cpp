@@ -69,6 +69,8 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
 	CString query = query_definitions[stats_index].first_part_of_query;
+	CString site_id_as_string;
+	site_id_as_string.Format("%i", site_id);
 	if (query_definitions[stats_index].needs_infix_and_second_part)
 	{
 		if (istournament)
@@ -88,9 +90,15 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 		query += "AND P.player_name like '";
 		query += player_name;
 		query += "'AND P.id_site=";
-		CString site_id_as_string;
-		site_id_as_string.Format("%i", site_id);
 		query += site_id_as_string;
+	}
+	else
+	{
+		query += "WHERE id_site=";
+		query += site_id_as_string;
+		query += "AND player_name = '";		
+		query += player_name;
+		query += "'";
 	}
 	return query;
 }
