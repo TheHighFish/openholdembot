@@ -68,6 +68,7 @@ private:
 	static UINT			PokertrackerThreadFunction(LPVOID pParam);
 	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
 	void				SetStatGroups();
+	bool				AllConnectionDataSpecified();
 	void				Connect(void);
 	void				Disconnect(void);
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);

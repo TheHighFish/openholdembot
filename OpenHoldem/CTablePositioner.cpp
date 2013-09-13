@@ -33,7 +33,6 @@ CTablePositioner::~CTablePositioner()
 
 void CTablePositioner::PositionMyWindow()
 {		
-	return;
 	// Build list of poker tables (child windows)
 	// Use the shared memory (auto-connector) for that. 
 	HWNDs_of_child_windows	= p_sharedmem->GetDenseListOfConnectedPokerWindows();
@@ -86,6 +85,13 @@ void CTablePositioner::PositionMyWindow()
 
 void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 {
+	assert(p_autoconnector != NULL);
+	if (!p_autoconnector->IsConnected())
+	{
+		// This should not happen, as this function gets only called after connection
+		// But it does not hurt to avoid trouble with p_autoconnector->attached_hwnd()
+		return;
+	}
 	// Pre-calculate our table-size
 	RECT current_position;
 	GetWindowRect(p_autoconnector->attached_hwnd(), &current_position);
