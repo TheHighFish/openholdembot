@@ -1,3 +1,11 @@
+v4.2.4 2013-09-xx
+==================
+NEW STUFF: 
+- OpenScrape still uses a list-dialog to allow the user to select the table.
+  That was a bit difficult however for tables without a title.
+  Therefore we show now a fake title: "HWND: xyz1234" for such case.
+  [Termitapalahermita]
+
 v4.1.0 2013-04-23
 ==================
 BUG FIXES:
