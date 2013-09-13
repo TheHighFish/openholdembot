@@ -21,6 +21,19 @@ public:
 	~CTablePositioner();
 public:
 	void PositionMyWindow();
+private:
+	void PositionMyWindow(HWND *list_of_tables);
+	bool TryRightSideOfTable(HWND HWND_of_potential_neighbour_table);
+	bool TryBottomSideOfTable(HWND HWND_of_potential_neighbour_table);
+	bool TryPosition(int left_x, int top_y);
+	bool PotentialNewPositionOverlapsTable(int left_x, int top_y, HWND table_to_check_for_overlapping);
+	void MoveToBottomRight();
+private:
+	int _number_of_tables;
+	HWND *HWNDs_of_child_windows;
+	int _table_size_x;
+	int _table_size_y;
+	RECT _desktop_rectangle;
 } *p_table_positioner;
 
 #endif // INC_TABLE_POSITIONER_H
