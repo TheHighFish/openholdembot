@@ -144,6 +144,10 @@ CPokerTrackerThread::~CPokerTrackerThread()
 
 void CPokerTrackerThread::StartThread()
 {
+	if (!AllConnectionDataSpecified())
+	{
+		return;
+	}
 	if (_pt_thread == NULL)
 	{
 		// Create events
@@ -190,9 +194,26 @@ void CPokerTrackerThread::StopThread()
 	}
 }
 
+bool CPokerTrackerThread::AllConnectionDataSpecified()
+{
+	return(preferences.pt_ip_addr() != ""
+		&& preferences.pt_port()    != ""
+		&& preferences.pt_user()    != ""
+		&& preferences.pt_pass()    != ""
+		&& preferences.pt_dbname()  != "");
+
+
+}
+
 void CPokerTrackerThread::Connect(void)
 {
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Trying to open PostgreSQL DB...\n");
+	if (!AllConnectionDataSpecified())
+	{
+		return;
+	}
+	_conn_str = CreateConnectionString(preferences.pt_ip_addr(), 
+		preferences.pt_port(), preferences.pt_user(), preferences.pt_pass(), preferences.pt_dbname());
 	_pgconn = PQconnectdb(_conn_str.GetString());
 
 	if (PQstatus(_pgconn) == CONNECTION_OK)
