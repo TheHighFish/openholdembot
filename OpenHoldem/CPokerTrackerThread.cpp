@@ -265,10 +265,12 @@ bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
 			&& oh_scraped_name[i] != '.' 
 			&& oh_scraped_name[i] != ',')
 		{
-			return true;
+			// Good name, good character found, no bad scrape
+			return false;
 		}
 	}
-	return false;
+	// Bad name, only bad characters found, bad scrape
+	return true;
 }
 
 /* Returns true if found an appropriate name in the DB for chr, or false if 
