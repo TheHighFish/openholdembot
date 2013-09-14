@@ -81,6 +81,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// The engines inserted first will be called first later.
 	// But we assure correct ordering by assertions in the constructors of the engines.
 
+	// CSymbolEngineUserchair
+	p_symbol_engine_userchair = new CSymbolEngineUserchair();
+	AddSymbolEngine(p_symbol_engine_userchair);
 	// CSymbolEngineTableLimits
 	p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
 	AddSymbolEngine(p_symbol_engine_tablelimits);
@@ -93,9 +96,6 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineDealerchair
 	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
 	AddSymbolEngine(p_symbol_engine_dealerchair);
-	// CSymbolEngineUserchair
-	p_symbol_engine_userchair = new CSymbolEngineUserchair();
-	AddSymbolEngine(p_symbol_engine_userchair);
 	// CSymbolEngineAutoplayer
 	p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
 	AddSymbolEngine(p_symbol_engine_autoplayer);
