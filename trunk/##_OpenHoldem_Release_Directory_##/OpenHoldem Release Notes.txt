@@ -1,11 +1,25 @@
 v4.2.4 2013-09-xx
 ==================
+BUG FIXES:
+- The function that checked if a name was reasonable
+  or if it consisted only of "bad characters" was broken, 
+  as it confused true and false.
+  This affected the PokerTracker-thread.
+  Thanks to WaveLen for providing us a strange log-file
+  that pointed us to the error.
+  [THF]
+- OpenHoldem could crash because we inserted the new symbol-engine
+  CSymbolEngineTableLimits into the engine-container in wrong order, 
+  not respecting dependencies.
+  This has now been fixed.
+  [Termitapalahermita, THF]
+
 MAINTENANCE:
 - The tablepositioner used MicroSofts TileWindows()-function,
   that had two disadvantages
     * it allowed small overlaps
     * it resized all maximized windows back to the defaults.
-  Therefore we wrote a some table-positioning functions
+  Therefore we wrote some table-positioning functions
   that arrange the tables without overlap
   and work for different-sized "tables" (lobby) too.
   [THF]
