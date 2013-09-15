@@ -12,6 +12,8 @@ BUG FIXES:
   CSymbolEngineTableLimits into the engine-container in wrong order, 
   not respecting dependencies.
   This has now been fixed.
+  Thanks to AlCapowned for providing a replay-frame 
+  and to Daniel for also reporting this problem.
   [Termitapalahermita, THF]
 
 MAINTENANCE:
