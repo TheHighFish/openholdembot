@@ -84,6 +84,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineUserchair
 	p_symbol_engine_userchair = new CSymbolEngineUserchair();
 	AddSymbolEngine(p_symbol_engine_userchair);
+	// CSymbolEngineDealerchair
+	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
+	AddSymbolEngine(p_symbol_engine_dealerchair);
 	// CSymbolEngineTableLimits
 	p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
 	AddSymbolEngine(p_symbol_engine_tablelimits);
@@ -93,9 +96,6 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineTime
 	p_symbol_engine_time = new CSymbolEngineTime();
 	AddSymbolEngine(p_symbol_engine_time);
-	// CSymbolEngineDealerchair
-	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
-	AddSymbolEngine(p_symbol_engine_dealerchair);
 	// CSymbolEngineAutoplayer
 	p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
 	AddSymbolEngine(p_symbol_engine_autoplayer);
