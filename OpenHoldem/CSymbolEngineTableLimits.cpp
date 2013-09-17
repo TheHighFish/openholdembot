@@ -114,6 +114,13 @@ void CSymbolEngineTableLimits::ResetBets()
 
 void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 {
+	if (p_symbol_engine_istournament == NULL)
+	{
+		// Initialization phase
+		// Null pointer possible due to circular dependency
+		// Simply leave because it is too early to lock the blinds
+		return;
+	}
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands()\n");
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: blinds_locked_for_complete_session: %d\n", blinds_locked_for_complete_session);
 	write_log(preferences.debug_table_limits(), "CSymbolEngineTableLimits: istournament: %d\n", IsTrue(p_symbol_engine_istournament->istournament()));
