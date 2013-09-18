@@ -1,5 +1,16 @@
 v4.2.4 2013-09-xx
 ==================
+NEW STUFF:
+- Some people had problems scraping check and call correctly,
+  as usually only one of these buttons is visible
+  and they often share the same place.
+  Others used to decide to "call" if it was free to call (check).
+  This caused problems with the action history-symbols
+  (didchec, didcall, prevaction).
+  Therefore we do now consider the amount to call when modifying these symbols.
+  Thanks to Mesta for bringing this problem to our attention again.
+  [THF]
+
 BUG FIXES:
 - The function that checked if a name was reasonable
   or if it consisted only of "bad characters" was broken, 

@@ -75,8 +75,34 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 {
 	AssertRange(autoplayer_action_code, k_autoplayer_function_allin,
 		k_autoplayer_function_fold);
-	_autoplayer_actions[BETROUND][autoplayer_action_code]++;
-	SetPrevaction(autoplayer_action_code);
+	// Special handling for check/call
+	// Some people have problems scraping check and call correctly,
+	// as usually only one of these buttons is visible
+	// and they often share the same place.
+	// Others might decide to "call" if it is free to call, etc.
+	// Therefore we set "_prevaction", "didchec", "didcall" here 
+	// depending on the amount to call.
+	if ((autoplayer_action_code == k_autoplayer_function_call)
+		|| (autoplayer_action_code == k_autoplayer_function_check))
+	{
+		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0))
+		{
+			// It was free to check
+			_autoplayer_actions[BETROUND][autoplayer_action_code == k_autoplayer_function_check]++;
+			SetPrevaction(autoplayer_action_code == k_autoplayer_function_check);
+		}
+		else
+		{
+			// There was a positive amount to call
+			_autoplayer_actions[BETROUND][k_autoplayer_function_call]++;
+			SetPrevaction(k_autoplayer_function_call);	
+		}
+	}
+	else
+	{
+		_autoplayer_actions[BETROUND][autoplayer_action_code]++;
+		SetPrevaction(autoplayer_action_code);
+	}
 }
 
 // Attention: SetPrevaction takes an OH-autoplayer-constant as input,
@@ -104,20 +130,10 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code)
 			_prevaction = k_prevaction_raise;
 			break;
 		case k_autoplayer_function_call:
+			_prevaction = k_prevaction_call;
+			break;
 		case k_autoplayer_function_check:
-			// Some people have problems scraping check and call correctly,
-			// as usually only one of these buttons is visible
-			// and they often share the same place.
-			// Others might decide to "call" if it is free to call, etc.
-			// Therefore we set "_prevaction" here depending on the amount to call.
-			if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0))
-			{
-				_prevaction = k_prevaction_check;
-			}
-			else
-			{
-				_prevaction = k_prevaction_call;
-			}
+			_prevaction = k_prevaction_check;
 			break;
 		case k_autoplayer_function_fold:
 			_prevaction = k_prevaction_fold;
