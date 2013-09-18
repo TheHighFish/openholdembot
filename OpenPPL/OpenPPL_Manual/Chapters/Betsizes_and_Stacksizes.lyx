@@ -97,7 +97,7 @@ It's up to you, what and how you code.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="14" columns="3">
+<lyxtabular version="3" rows="15" columns="3">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -434,6 +434,36 @@ Our current balance, counted in big blinds
 
 \begin_layout Plain Layout
 None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+StackSizeAtBeginningOfCurrentRound
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Our Stack Size at the beginning of current betting round ( StackSize + TotalInve
+stedThisRound )
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Valid on every betting round
 \end_layout
 
 \end_inset
