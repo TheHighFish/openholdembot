@@ -1,7 +1,7 @@
 v4.0.1 2013-xx-xx
 =================
 NEW STUFF:
-- New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair 
+- New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair , StackSizeAtBeginningOfCurrentRound
  [Lavezzi]
 
  BUG FIXES:  
