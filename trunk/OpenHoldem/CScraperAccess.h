@@ -92,7 +92,7 @@ public:
 	bool i3_handle_defined;
 	bool i86_button_defined;
 	bool i86X_button_defined[k_max_number_of_i86X_buttons];
-	// available
+	// available, i.e. defined and visible
 	bool available_buttons[k_number_of_standard_functions];
 	bool i3_button_available;	
 	bool i86_button_available;
