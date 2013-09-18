@@ -2292,6 +2292,9 @@ f$OpenPPL_HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 ##f$OpenPPL_StackSize##
 (bblind > 0) ? (balance / bblind) : f$OpenPPL_ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
+##f$OpenPPL_StackSizeAtBeginningOfCurrentRound##
+f$OpenPPL_StackSize + f$OpenPPL_TotalInvestedThisRound
+
 ##f$OpenPPL_TotalInvested##
 (betround == f$OpenPPL_ConstBetRoundPreflop && nbetsround  > 0) ? ncurrentbets :
 (betround == f$OpenPPL_ConstBetRoundFlop    && nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
