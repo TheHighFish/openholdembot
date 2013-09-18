@@ -18,6 +18,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "..\CTablemap\CTablemap.h"
+#include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 
 CSymbolEngineHistory *p_symbol_engine_history  = NULL;
@@ -103,10 +104,20 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code)
 			_prevaction = k_prevaction_raise;
 			break;
 		case k_autoplayer_function_call:
-			_prevaction = k_prevaction_call;
-			break;
 		case k_autoplayer_function_check:
-			_prevaction = k_prevaction_check;
+			// Some people have problems scraping check and call correctly,
+			// as usually only one of these buttons is visible
+			// and they often share the same place.
+			// Others might decide to "call" if it is free to call, etc.
+			// Therefore we set "_prevaction" here depending on the amount to call.
+			if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0))
+			{
+				_prevaction = k_prevaction_check;
+			}
+			else
+			{
+				_prevaction = k_prevaction_call;
+			}
 			break;
 		case k_autoplayer_function_fold:
 			_prevaction = k_prevaction_fold;
