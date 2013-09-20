@@ -26,6 +26,10 @@ BUG FIXES:
   Thanks to AlCapowned for providing a replay-frame 
   and to Daniel for also reporting this problem.
   [Termitapalahermita, THF]
+- There was a problem in a symbol-engine that sometimes 
+  caused "dealposition" to be wrong.
+  Thanks to Karamba1 for reporting.
+  [THF]
 
 MAINTENANCE:
 - The tablepositioner used MicroSofts TileWindows()-function,
@@ -36,6 +40,7 @@ MAINTENANCE:
   that arrange the tables without overlap
   and work for different-sized "tables" (lobby) too.
   [THF]
+
 
 v4.2.3 2013-09-11
 ==================
@@ -53,6 +58,7 @@ MAINTENANCE:
 - The symbol ac_aggressor got removed from the codebase
   because it provided the same functionality as "raischair.
   [THF]
+
 
 v4.2.2 2013-09-08
 ==================
