@@ -151,7 +151,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 	}
 
 	int raischair = p_symbol_engine_raisers_callers->raischair();
-	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs() && (i%p_tablemap->nchairs())!=USER_CHAIR; i++)
+	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair))
