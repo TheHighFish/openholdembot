@@ -305,7 +305,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &p_casino_interface->i3_button);
 	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &p_casino_interface->i3_edit_region);
 	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &p_casino_interface->i3_slider_region);
-	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3button", &p_casino_interface->i3_handle_region);
+	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3handle", &p_casino_interface->i3_handle_region);
 	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &p_casino_interface->i86_button);
 	i3_button_available		= i3_button_defined && i3_button_visible;
 	i86_button_available	= i86_button_defined && i86_button_visible;
