@@ -34,7 +34,6 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
-#include "ScraperOverride.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
@@ -125,8 +124,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
 		new_scrape = !NOTHING_CHANGED;
 		p_lazyscraper->DoScrape();
-
-		OverriderScraperStateByScraperPreprocessorDLLIfNecessary();
 
 		// Necessary to pre-compute some info 
 		// which is needed by the symbol-engines.

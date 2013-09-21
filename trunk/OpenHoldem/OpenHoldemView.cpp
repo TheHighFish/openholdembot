@@ -30,6 +30,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
@@ -89,8 +90,6 @@ END_MESSAGE_MAP()
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() 
 {
-	int i = 0, j = 0;
-
 	_black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	_green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	_red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -120,22 +119,20 @@ COpenHoldemView::COpenHoldemView()
 	_sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
 	_iterator_thread_progress_last = 0;
 	
-	for (int i = 0; i<=4; i++)
+	for (int i = 0; i<k_number_of_community_cards; i++)
 		_card_common_last[i] = CARD_NOCARD;
 
-	for (int i = 0; i<=9; i++)
-		for (int j=0; j<=1; j++)
-			_card_player_last[i][j] = CARD_NOCARD;
-
-	for (int i = 0; i<=9; i++)
-		_seated_last[i] = _active_last[i] = _playername_last[i] = "";
-
-	for (int i = 0; i<=9; i++)
+	for (int i = 0; i<k_max_number_of_players ; i++)
 	{
+		_seated_last[i] = _active_last[i] = _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
+		for (int j=0; j<k_number_of_cards_per_player; j++)
+		{
+			_card_player_last[i][j] = CARD_NOCARD;
+		}
 	}
-
+		
 	_istournament_last = false;
 }
 
@@ -181,8 +178,6 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 
 void COpenHoldemView::UpdateDisplay(const bool update_all) 
 {
-	int			i = 0;
-
 	bool		update_it = false;
 	RECT		cr = {0};
 	CDC			*pDC = GetDC();
@@ -254,13 +249,15 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	DrawButtonIndicators();
 
 	// Draw common cards
-	for (int i=0; i<5; i++) 
+	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
 		if (_card_common_last[i] != p_scraper->card_common(i) || update_all) 
 		{
 			_card_common_last[i] = p_scraper->card_common(i);
-
-			DrawCard(p_scraper->card_common(i),
+			int common_card = p_scraper->card_common(i);
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
+				i, common_card);
+			DrawCard(common_card,
 					  cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
 					  cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
 					  false);
@@ -315,6 +312,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 				DrawSeatedActiveCircle(i);
 
 			// Draw player cards
+			int player_card_0 = p_scraper->card_player(i, 0);
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%i]\n",
+				i, player_card_0);
 			DrawCard(p_scraper->card_player(i, 0),
 					  cr.right * pc[p_tablemap->nchairs()][i][0] - CARDSIZEX - 2,
 					  cr.bottom * pc[p_tablemap->nchairs()][i][1] - CARDSIZEY/2,
@@ -484,7 +484,6 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 void COpenHoldemView::DrawButtonIndicators(void) 
 {
-	int			i = 0;
 	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
 	bool		autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn = false;
 	RECT		cr = {0};
@@ -496,7 +495,7 @@ void COpenHoldemView::DrawButtonIndicators(void)
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (int i=0; i<=9; i++) 
+	for (int i=0; i<k_max_number_of_players; i++) 
 	{
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
