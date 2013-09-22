@@ -26,6 +26,7 @@ public:
 private:
 	// private functions
 	void ValidateSingleRule();
+	void ValidateVersusDBOnlyIfInstalled();
 	CString Symbols_And_Values(const CString symbols_possibly_affected);
 	double gws(const char *the_Symbol);
 
