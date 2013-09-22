@@ -155,7 +155,7 @@ void CAutoConnector::WriteLogTableReset()
 		"%s"
 		"TABLE RESET\n"
 		"*************************************************************\n",
-		p_version_info->GetVersionInfo(),
+		p_version_info->GetVersionInfo());
 }
 
 bool CAutoConnector::Connect(HWND targetHWnd)
