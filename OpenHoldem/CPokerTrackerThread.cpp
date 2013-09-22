@@ -446,14 +446,14 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	{
 		// See if we can find the player name in the database
 		write_log(preferences.debug_pokertracker(), 
-			"Querying %s for m_chr %d: %s\n", 
+			"[PokerTracker] Querying %s for m_chr %d: %s\n", 
 			PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
 			m_chr, query);
 		res = PQexec(_pgconn, query);
 	}
 	catch (_com_error &e)
 	{
-		write_log(preferences.debug_pokertracker(), "ERROR\n");
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] ERROR\n");
 		write_log(preferences.debug_pokertracker(), _T("\tCode = %08lx\n"), e.Error());
 		write_log(preferences.debug_pokertracker(), _T("\tCode meaning = %s\n"), e.ErrorMessage());
 		_bstr_t bstrSource(e.Source());
@@ -466,7 +466,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	updEnd = clock();
 	duration = (int) ((double)(updEnd - updStart) / 1000);
 	if (duration >= 3)
-		write_log(preferences.debug_pokertracker(), "Query time in seconds: [%d]\n", duration);
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] Query time in seconds: [%d]\n", duration);
 
 	// Check query return code
 	if (PQresultStatus(res) != PGRES_TUPLES_OK)
@@ -474,28 +474,28 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		switch (PQresultStatus(res))
 		{
 		case PGRES_COMMAND_OK:
-			write_log(preferences.debug_pokertracker(), "PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_COMMAND_OK: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_EMPTY_QUERY:
-			write_log(preferences.debug_pokertracker(), "PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_EMPTY_QUERY: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_BAD_RESPONSE:
-			write_log(preferences.debug_pokertracker(), "PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_BAD_RESPONSE: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_COPY_OUT:
-			write_log(preferences.debug_pokertracker(), "PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_COPY_OUT: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_COPY_IN:
-			write_log(preferences.debug_pokertracker(), "PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_COPY_IN: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_NONFATAL_ERROR:
-			write_log(preferences.debug_pokertracker(), "PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_NONFATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		case PGRES_FATAL_ERROR:
-			write_log(preferences.debug_pokertracker(), "PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] PGRES_FATAL_ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		default:
-			write_log(preferences.debug_pokertracker(), "GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] GENERIC ERROR: %s [%s]\n", PQerrorMessage(_pgconn), query);
 			break;
 		}
 	}
@@ -505,7 +505,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 		{
 			result = atof(PQgetvalue(res,0,0));
 			write_log(preferences.debug_pokertracker(), 
-				"Query %s for m_chr %d success: %f\n", 
+				"[PokerTracker] Query %s for m_chr %d success: %f\n", 
 				PT_DLL_GetBasicSymbolNameWithoutPTPrefix(stat), 
 				m_chr, result);
 		}
@@ -651,7 +651,7 @@ bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
-		write_log(preferences.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
 		return true;
 	}
 	
@@ -662,7 +662,7 @@ bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 			return false;
 		else
 		{
-			write_log(preferences.debug_pokertracker(), "GetStatsForChair for chair [%d] had been skipped. Reason: [User has lots of hands]\n", chair);
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [User has lots of hands]\n", chair);
 			return true;
 		}
 	}
