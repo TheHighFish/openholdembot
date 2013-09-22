@@ -912,25 +912,25 @@ void CGameState::ProcessFtrEngine(const SHoldemState *pstate)
 
 void CGameState::DumpState(void)
 {
-	write_log(preferences.debug_alltherest(), "_m_ndx: %d\n", _m_ndx);
-	write_log(preferences.debug_alltherest(), "m_title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
-	write_log(preferences.debug_alltherest(), "m_pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
+	write_log(preferences.debug_alltherest(), "[CGameState] m_ndx: %d\n", _m_ndx);
+	write_log(preferences.debug_alltherest(), "[CGameState] _title: %s\n", _m_holdem_state[(_m_ndx)&0xff].m_title);
+	write_log(preferences.debug_alltherest(), "[CGameState] _pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", _m_holdem_state[(_m_ndx)&0xff].m_pot[0], _m_holdem_state[(_m_ndx)&0xff].m_pot[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[2], _m_holdem_state[(_m_ndx)&0xff].m_pot[3], _m_holdem_state[(_m_ndx)&0xff].m_pot[4],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[5], _m_holdem_state[(_m_ndx)&0xff].m_pot[6], _m_holdem_state[(_m_ndx)&0xff].m_pot[7],
 			  _m_holdem_state[(_m_ndx)&0xff].m_pot[8], _m_holdem_state[(_m_ndx)&0xff].m_pot[9]);
-	write_log(preferences.debug_alltherest(), "m_cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
+	write_log(preferences.debug_alltherest(), "[CGameState] _cards: %d %d %d %d %d\n", _m_holdem_state[(_m_ndx)&0xff].m_cards[0], _m_holdem_state[(_m_ndx)&0xff].m_cards[1],
 			  _m_holdem_state[(_m_ndx)&0xff].m_cards[2], _m_holdem_state[(_m_ndx)&0xff].m_cards[3], _m_holdem_state[(_m_ndx)&0xff].m_cards[4]);
-	write_log(preferences.debug_alltherest(), "m_is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
-	write_log(preferences.debug_alltherest(), "m_is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
-	write_log(preferences.debug_alltherest(), "m_dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
+	write_log(preferences.debug_alltherest(), "[CGameState] _is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
+	write_log(preferences.debug_alltherest(), "[CGameState] _is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
+	write_log(preferences.debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
 	for (int i=0; i<k_max_number_of_players; i++) {
-		write_log(preferences.debug_alltherest(), "m_player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
-		write_log(preferences.debug_alltherest(), "m_balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
-		write_log(preferences.debug_alltherest(), "m_currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
-		write_log(preferences.debug_alltherest(), "m_cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
+		write_log(preferences.debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
+		write_log(preferences.debug_alltherest(), "[CGameState] _balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
+		write_log(preferences.debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);
+		write_log(preferences.debug_alltherest(), "[CGameState] _cards:%d/%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0],
 				  _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1]);
-		write_log(preferences.debug_alltherest(), "m_name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
-		write_log(preferences.debug_alltherest(), "m_balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
+		write_log(preferences.debug_alltherest(), "[CGameState] _name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
+		write_log(preferences.debug_alltherest(), "[CGameState] _balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
 }
 
