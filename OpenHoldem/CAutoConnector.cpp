@@ -34,6 +34,7 @@
 #include "CSymbols.h"
 #include "CTableMapLoader.h"
 #include "CTablePositioner.h"
+#include "CVersionInfo.h"
 #include "DialogScraperOutput.h"
 #include "MagicNumbers.h"
 #include "MainFrm.h"
@@ -148,20 +149,13 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 
 void CAutoConnector::WriteLogTableReset()
 {
-	CString site = "";
-	SMapCI site_i = p_tablemap->s$()->find("sitename");
-	if (site_i != p_tablemap->s$()->end())
-	{
-		site = site_i->second.text;
-	}
-	CString formula = p_formula->formula_name();
-
-	write_log(k_always_log_basic_information, //!!!!!
+	write_log(k_always_log_basic_information,
 		"\n"
 		"*************************************************************\n"
-		"TABLE RESET %s - %s(%s)\n"
+		"%s"
+		"TABLE RESET\n"
 		"*************************************************************\n",
-		formula.GetString(), site.GetString(), p_scraper->title());
+		p_version_info->GetVersionInfo(),
 }
 
 bool CAutoConnector::Connect(HWND targetHWnd)
