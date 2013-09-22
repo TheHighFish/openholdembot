@@ -429,10 +429,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ScraperOverride.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Singletons.cpp"
 				>
 			</File>
@@ -1167,63 +1163,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="Documents"
-				>
-				<File
-					RelativePath=".\HeaderCopyrightDocumentation.txt"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm"
-					DeploymentContent="true"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI"
-					>
-				</File>
-				<File
-					RelativePath="..\##_OpenHoldem_Release_Directory_##\sources of code.txt"
-					>
-				</File>
-				<Filter
-					Name="Release Notes"
-					>
-					<File
-						RelativePath="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt"
-						>
-					</File>
-					<File
-						RelativePath="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt"
-						>
-					</File>
-					<File
-						RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt"
-						>
-					</File>
-					<File
-						RelativePath="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt"
-						>
-					</File>
-					<File
-						RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Checklist for Releases"
-					>
-					<File
-						RelativePath="..\Checklist_Release.txt"
-						>
-					</File>
-					<File
-						RelativePath="..\Checklist_Release_OpenPPL.txt"
-						>
-					</File>
-				</Filter>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1360,10 +1299,6 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ScraperOverride.h"
 				>
 			</File>
 			<File
@@ -2024,6 +1959,63 @@
 				RelativePath=".\res\toolbar_formula_list.bmp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="Documents"
+			>
+			<File
+				RelativePath=".\HeaderCopyrightDocumentation.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\License_GPLv3.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<File
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI"
+				>
+			</File>
+			<File
+				RelativePath="..\##_OpenHoldem_Release_Directory_##\sources of code.txt"
+				>
+			</File>
+			<Filter
+				Name="Release Notes"
+				>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\ManualMode Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OHReplay Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenHoldem Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenPPL_Release_Directory_##\OpenPPL Release Notes.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\##_OpenHoldem_Release_Directory_##\OpenScrape Release Notes.txt"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Checklist for Releases"
+				>
+				<File
+					RelativePath="..\Checklist_Release.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Checklist_Release_OpenPPL.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

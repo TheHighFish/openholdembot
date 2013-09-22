@@ -20,6 +20,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbols.h"
+#include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
 
@@ -250,7 +251,6 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_rank_lo_inline.cpp_"
 #include "Validator_Rules\range_checks_time_inline.cpp_"
 #include "Validator_Rules\range_checks_autoplayer_inline.cpp_"
-#include "Validator_Rules\range_checks_versus_inline.cpp_"
 #include "Validator_Rules\range_checks_action_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_table_stats_inline.cpp_"
 #include "Validator_Rules\range_checks_icm_symbols_inline.cpp_"
@@ -271,5 +271,14 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_limits_inline.cpp_"
 #include "Validator_Rules\consistency_checks_number_of_bets_inline.cpp_"
 #include "Validator_Rules\consistency_checks_action_symbols_inline.cpp_"
+	ValidateVersusDBOnlyIfInstalled();
+	}
+}
+
+void CValidator::ValidateVersusDBOnlyIfInstalled()
+{
+	if(p_versus->VersusBinLoaded())
+	{
+#include "Validator_Rules\range_checks_versus_inline.cpp_"
 	}
 }

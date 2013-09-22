@@ -40,6 +40,10 @@ MAINTENANCE:
   that arrange the tables without overlap
   and work for different-sized "tables" (lobby) too.
   [THF]
+- We finally found a practical way to call some of the included auto-generated
+  validator rules for versus symbols only if the versus DB is installed.
+  This avoids superfluous validator-warnings.
+  [THF]
 
 
 v4.2.3 2013-09-11
