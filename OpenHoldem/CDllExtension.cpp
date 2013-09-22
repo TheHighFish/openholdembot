@@ -79,7 +79,7 @@ void CDllExtension::LoadDll(const char * path)
 	if (strlen(path) > 0)
 	{
 		dll_path = path;
-		write_log(true/*preferences.debug_dll_interface()*/,
+		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (1) to %s\n", dll_path);
 	}
 	else
@@ -87,12 +87,12 @@ void CDllExtension::LoadDll(const char * path)
 		// Nothing passed in, so we try the DLL of the formula
 		// and the DLL from preferences.
 		dll_path = GetDLLSpecifiedInFormula();
-		write_log(true/*preferences.debug_dll_interface()*/,
+		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
 		if (dll_path == "")
 		{
 			dll_path = preferences.dll_name().GetString();
-			write_log(true/*preferences.debug_dll_interface()*/,
+			write_log(preferences.debug_dll_extension(),
 				"[CDLLExtension] setting path (3) to %s\n", dll_path);
 		}
 	}
