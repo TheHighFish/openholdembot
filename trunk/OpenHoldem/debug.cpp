@@ -562,4 +562,4 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
 
     return EXCEPTION_EXECUTE_HANDLER;
 }
-
+		
