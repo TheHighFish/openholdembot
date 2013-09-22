@@ -18,6 +18,7 @@
 #include "CGrammar.h"
 #include "MagicNumbers.h"
 #include "CPreferences.h"
+#include "StringFunctions.h"
 
 // TODO make it a symbol-engine?
 // Call it!
@@ -57,7 +58,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	write_log(preferences.debug_symbolengine(), "Trace enabled: %i\n", preferences.trace_enabled());
+	write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %i\n", Bool2CString(preferences.trace_enabled()));
 	bool trace_needed = preferences.trace_enabled();
 
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
@@ -65,7 +66,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
-		write_log(preferences.debug_symbolengine(), "Primary formulas; %s: %f\n", 
+		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();
@@ -83,7 +84,7 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
 			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
-		write_log(preferences.debug_symbolengine(), "Secondary formulas; %s: %f\n", 
+		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
 	CalcAutoTrace();

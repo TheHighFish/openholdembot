@@ -101,17 +101,17 @@ void CSharedMem::RememberTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
 	time(&last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
 	session_ID_of_last_instance_that_failed_to_connect = p_sessioncounter->session_id();
-	write_log(preferences.debug_autoconnector(), "Failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CSharedMem] Failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
 }
 
 
 time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
-	write_log(preferences.debug_autoconnector(), "Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CSharedMem] Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CSharedMem] Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
 	return last_failed_attempt_to_connect;
 }
 

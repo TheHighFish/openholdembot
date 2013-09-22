@@ -156,7 +156,7 @@ void CAutoConnector::WriteLogTableReset()
 	}
 	CString formula = p_formula->formula_name();
 
-	write_log(k_always_log_basic_information, 
+	write_log(k_always_log_basic_information, //!!!!!
 		"\n"
 		"*************************************************************\n"
 		"TABLE RESET %s - %s(%s)\n"
