@@ -95,8 +95,8 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	// Pre-calculate our table-size
 	RECT current_position;
 	GetWindowRect(p_autoconnector->attached_hwnd(), &current_position);
-	_table_size_x = current_position.right - current_position.left + 1;
-	_table_size_y = current_position.bottom - current_position.top + 1;
+	_table_size_x = current_position.right - current_position.left;
+	_table_size_y = current_position.bottom - current_position.top;
 	// Get the desktop-size
 	// http://stackoverflow.com/questions/8690619/how-to-get-screen-resolution-in-c
 	HWND hDesktop = GetDesktopWindow();

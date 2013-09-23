@@ -76,7 +76,7 @@ public:
 	const double		player_bet(int n) { if (n>=0 && n<=9) return _player_bet[n]; else return 0.; }
 	const CString		player_name(int n) { if (n>=0 && n<=9) return _player_name[n]; else return ""; }
 	const bool			name_good_scrape(int n) { if (n>=0 && n<=9) return _name_good_scrape[n]; else return false; }
-	const double		player_balance(int n) { if (n>=0 && n<=9) return _player_balance[n]; else return 0.; }
+	const double		player_balance(int n);
 	const double		balance_good_scrape(int n) { if (n>=0 && n<=9) return _balance_good_scrape[n]; else return 0.; }
 	const bool			sitting_out(int n) { if (n>=0 && n<=9) return _sitting_out[n]; else return false; }
 	const double		pot(int n) { if (n>=0 && n<=9) return _pot[n]; else return 0.; }
