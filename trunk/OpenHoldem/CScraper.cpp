@@ -28,6 +28,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
+#include "debug.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
@@ -556,9 +557,15 @@ void CScraper::ScrapeSeated(int chair)
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
+	write_log(preferences.debug_scraper(), 
+		"[CScraper] ScrapeSeated()\n");
 	// Check for bad parameters
 	if (chair < 0 || chair >= p_tablemap->nchairs())
+	{
+		write_log(preferences.debug_scraper(), 
+			"[CScraper] ScrapeSeated() Invalid chair. Going to return.\n");
 		return;
+	}
 
 	__HDC_HEADER
 
@@ -566,6 +573,8 @@ void CScraper::ScrapeSeated(int chair)
 
 	// try p region first pXseated
 	s.Format("p%dseated", chair);
+	write_log(preferences.debug_scraper(), 
+		"[CScraper] ScrapeSeated() trying %s\n", s);
 	r_iter = p_tablemap->r$()->find(s.GetString());
 	if (r_iter != p_tablemap->r$()->end())
 	{
@@ -573,11 +582,11 @@ void CScraper::ScrapeSeated(int chair)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &result);
 		SelectObject(hdcCompatible, old_bitmap);
-
-		if (result!="")
+		if (result != "")
+		{
 			set_seated(chair, result);
-
-		write_log(preferences.debug_scraper(), "[CScraper] p%dseated, result %s\n", chair, result.GetString());
+		}
+		write_log(preferences.debug_scraper(), "[CScraper] p%dseated, result = [%s]\n", chair, result.GetString());
 	}
 
 	// try u region next uXseated,
@@ -1312,7 +1321,7 @@ void CScraper::DoBasicScrapeButtons()
 
 void CScraper::DoBasicScrapeAllPlayerCards()
 {
-	write_log(preferences.debug_scraper(), " [CScraper] DoBasicScrapeAllPlayerCards()\n");
+	write_log(preferences.debug_scraper(), "[CScraper] DoBasicScrapeAllPlayerCards()\n");
 	for (int i=0; i<=9; i++)
 	{
 		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
@@ -1527,9 +1536,9 @@ void CScraper::ScrapeLimits()
 			&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
-		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f.2 / %f.2 / %f.2 / %f.2 / %s\n", 
 			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
-			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
+			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->GetGametypeAsString());
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 		for (int j=0; j<=9; j++)
@@ -2216,6 +2225,19 @@ const bool CScraper::GetButtonState(int button_index)
 	return false;
 }
 
+const double CScraper::player_balance(int n) 
+{ 
+	if (n>=0 && n<=9)
+	{
+		write_log(preferences.debug_scraper(), 
+			"[CScraper] player_balance(%i) = %f\n", n, _player_balance[n]);
+		return _player_balance[n]; 
+	}
+	else 
+	{
+		return 0.; 
+	}
+}
 
-#undef __HDC_HEADER
+#undef __HDC_HEADER 
 #undef __HDC_FOOTER
