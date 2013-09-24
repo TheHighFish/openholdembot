@@ -9,6 +9,8 @@
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
+// Required OpenHoldem version: 4.2.4
+//
 //*****************************************************************************
 
 
