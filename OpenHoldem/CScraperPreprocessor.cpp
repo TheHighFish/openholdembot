@@ -24,4 +24,8 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 {}
 
 void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
-{}
+{
+	// MessageBox(0, *title_string, "Title before modification", 0);
+	// ...
+	// MessageBox(0, *title_string, "Title after modification", 0);
+}
