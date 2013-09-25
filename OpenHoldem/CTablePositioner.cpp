@@ -206,8 +206,8 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 		return false;
 	}
 	// Too small values can't happen by design.
-	assert(left_x > 0);
-	assert(top_y > 0);
+	assert(left_x >= 0);
+	assert(top_y >= 0);
 	// Calculate the other corners of my window
 	int right_x  = left_x + _table_size_x - 1;
 	int bottom_y = top_y  + _table_size_y - 1;
