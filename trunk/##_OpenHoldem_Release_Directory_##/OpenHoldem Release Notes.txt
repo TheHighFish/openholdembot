@@ -1,4 +1,4 @@
-v4.2.4 2013-09-xx
+v4.2.4 2013-09-25
 ==================
 NEW STUFF:
 - Some people had problems scraping check and call correctly,
@@ -39,6 +39,8 @@ MAINTENANCE:
   Therefore we wrote some table-positioning functions
   that arrange the tables without overlap
   and work for different-sized "tables" (lobby) too.
+  A big thank you to Ares who found a very ugly bug
+  that got temporary introduced.
   [THF]
 - We finally found a practical way to call some of the included auto-generated
   validator rules for versus symbols only if the versus DB is installed.
