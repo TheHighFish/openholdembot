@@ -1,0 +1,32 @@
+// Some symbols might be both part of OH and PPL,
+// some other might be hard to distinguish with our heuristic approach.
+
+custom
+
+preflop
+
+// OpenPPL symbols
+When (Random < 50) RaiseMax Force
+When (PotSize > 50) RaiseMax Force
+When (Calls > 3) Call Force
+When (Raises > 5) Call Force
+
+// OpenHoldem symbols
+when (raisbits = 0) call force
+when others fold force
+
+// OpenPPL and OH-script
+// different symbols named the same way
+// should be treated as OpenPPL
+when (call > 8) call force
+
+
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
