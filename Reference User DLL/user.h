@@ -64,7 +64,7 @@ extern "C" __declspec(dllimport) void   __stdcall SendChatMessageFomDll(const ch
 extern "C" __declspec(dllimport) void*  __stdcall GetPhl1kFromDll();
 extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
-extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
+extern "C" __declspec(dllimport) char*  __stdcall GetHandnumberFromDll();
 
 
 double getsym(const char* name)	
