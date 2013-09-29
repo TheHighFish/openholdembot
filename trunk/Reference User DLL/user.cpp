@@ -13,6 +13,9 @@
 //
 //*****************************************************************************
 
+// Needs to be defined here, before #include "user.h"
+// to generate export-definitions and not inport-definitions
+#define USERDLL_EXPORTS
 
 // #define OPT_DEMO_OUTPUT if you are a beginner 
 // who wants to see some message-boxes with output of game-states, etc.
