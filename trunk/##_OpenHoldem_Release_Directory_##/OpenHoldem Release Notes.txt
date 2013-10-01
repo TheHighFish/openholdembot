@@ -1,3 +1,13 @@
+v4.2.5 2013-10-xx
+==================
+BUG FIXES:
+- OpenHoldem could crash when loading a new formula,
+  because it still tried to evaluate the ini-functions,
+  especially CSymbolEngineIniFunctions::ResetOnHeartbeat()
+  which cotained invalid data at this point of time.
+  Thank you to Ares who provided us exact steps to reproduce the problem.
+  [THF]
+
 v4.2.4 2013-09-25
 ==================
 NEW STUFF:
@@ -46,7 +56,10 @@ MAINTENANCE:
   validator rules for versus symbols only if the versus DB is installed.
   This avoids superfluous validator-warnings.
   [THF]
-
+- The i3button-default for raise/swag/allin/whatever is gone,
+  as the button-defaults have been a messy concept inherited from WinHoldem.
+  [THF]
+	
 
 v4.2.3 2013-09-11
 ==================
