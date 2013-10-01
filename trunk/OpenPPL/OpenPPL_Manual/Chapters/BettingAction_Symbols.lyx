@@ -983,7 +983,8 @@ Number of opponents who raised or called allin.
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
+If the amount to call is equal to our stack size and we are headsUp we consider
+ the villan as being allin.
 \end_layout
 
 \end_inset
@@ -1157,7 +1158,8 @@ An opponent is all in, there may still be other players in the hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
+If the amount to call is equal to our stack size and we are headsUp we consider
+ the villan as being allin.
 \end_layout
 
 \end_inset
