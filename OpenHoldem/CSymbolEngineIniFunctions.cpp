@@ -51,6 +51,7 @@ CSymbolEngineIniFunctions *p_symbol_engine_ini_functions = NULL;
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16788&start=30
 #define RETURN_IF_LOADING_NEW_FORMULA if (p_formula->IsParsing()) return;
 
+
 CSymbolEngineIniFunctions::CSymbolEngineIniFunctions()
 {
 	// The values of some symbol-engines depend on other engines.
