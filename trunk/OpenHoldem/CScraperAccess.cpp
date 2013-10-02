@@ -205,15 +205,7 @@ bool CScraperAccess::GetBetpotButtonVisible(int button_code)
 	*/
 
 	CString betpot_button_state = p_scraper->betpot_button_state(button_code);
-	if (betpot_button_state.MakeLower().Left(4) == "true" ||
-		betpot_button_state.MakeLower().Left(2) == "on" ||
-		betpot_button_state.MakeLower().Left(3) == "yes" ||
-		betpot_button_state.MakeLower().Left(7) == "checked" ||
-		betpot_button_state.MakeLower().Left(3) == "lit" )	
-	{
-		return true;
-	}
-	return false;
+	return p_scraper->GetButtonState(betpot_button_state);
 }
 
 void CScraperAccess::InitOnConnect()

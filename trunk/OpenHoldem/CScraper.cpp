@@ -136,7 +136,7 @@ void CScraper::ClearScrapeAreas(void)
 }
 
 // returns true if common cards are in the middle of an animation
-const bool CScraper::IsCommonAnimation(void)
+bool CScraper::IsCommonAnimation(void)
 {
 	int				flop_card_count = 0;
 
@@ -2172,7 +2172,17 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	return result;
 }
 
-const bool CScraper::GetButtonState(int button_index)
+bool CScraper::GetButtonState(CString button_state_as_string)
+{
+	CString button_state_lower_case = button_state_as_string.MakeLower();
+	return (button_state_lower_case.Left(4) == "true" 
+		|| button_state_lower_case.Left(2) == "on" 
+		|| button_state_lower_case.Left(3) == "yes" 
+		|| button_state_lower_case.Left(7) == "checked" 
+		|| button_state_lower_case.Left(3) == "lit");
+}
+
+bool CScraper::GetButtonState(int button_index)
 {
 	CString l_button_state = "";
 	
@@ -2184,42 +2194,18 @@ const bool CScraper::GetButtonState(int button_index)
 		if (!sym_ismanual || button_index!=5)
 		{
 			l_button_state = _button_state[button_index];
-
-			if (l_button_state.MakeLower().Left(4) == "true" ||
-				l_button_state.MakeLower().Left(2) == "on" ||
-				l_button_state.MakeLower().Left(3) == "yes" ||
-				l_button_state.MakeLower().Left(7) == "checked" ||
-				l_button_state.MakeLower().Left(3) == "lit" )
-			{
-				return true;
-			}
+			return GetButtonState(l_button_state);
 		}
 	}
 	else if (button_index==86)
 	{
-		l_button_state = _i86_button_state;
-
-		if (l_button_state.MakeLower().Left(4) == "true" ||
-			l_button_state.MakeLower().Left(2) == "on" ||
-			l_button_state.MakeLower().Left(3) == "yes" ||
-			l_button_state.MakeLower().Left(7) == "checked" ||
-			l_button_state.MakeLower().Left(3) == "lit" )
-		{
-			return true;
-		}
+		l_button_state = _i86_button_state.MakeLower();
+		return GetButtonState(l_button_state);
 	}
 	else if (button_index>=860)
 	{
 		l_button_state = _i86X_button_state[button_index-860];
-
-		if (l_button_state.MakeLower().Left(4) == "true" ||
-			l_button_state.MakeLower().Left(2) == "on" ||
-			l_button_state.MakeLower().Left(3) == "yes" ||
-			l_button_state.MakeLower().Left(7) == "checked" ||
-			l_button_state.MakeLower().Left(3) == "lit" )
-		{
-			return true;
-		}
+		return GetButtonState(l_button_state);
 	}
 
 	return false;

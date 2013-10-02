@@ -63,17 +63,13 @@ const bool CStringMatch::IsStringAllin(CString s)
 
 	s.Remove(' ');
 	s.Remove('-');
-
-	if (s.MakeLower().Left(5) == "allin" ||
-		s.MakeLower().Left(5) == "a11in" ||
-		s.MakeLower().Left(5) == "allln" ||
-		s.MakeLower().Left(5) == "a111n" ||
-		s.MakeLower().Left(5) == "aiiin")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(5);
+	return (s == "allin"
+		|| s == "a11in"
+		|| s == "allln"
+		|| s == "a111n"
+		|| s == "aiiin");
 }
 
 const bool CStringMatch::IsStringRaise(CString s)
@@ -82,15 +78,12 @@ const bool CStringMatch::IsStringRaise(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(5) == "raise" ||
-		s.MakeLower().Left(5) == "ra1se" ||
-		s.MakeLower().Left(5) == "ralse" ||
-		s.MakeLower().Left(3) == "bet")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(5);
+	return (s == "raise"
+		|| s == "ra1se"
+		|| s == "ralse"
+		|| s.Left(3) == "bet");
 }
 
 const bool CStringMatch::IsStringCall(CString s)
@@ -99,14 +92,9 @@ const bool CStringMatch::IsStringCall(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(4) == "call" ||
-		s.MakeLower().Left(4) == "caii" ||
-		s.MakeLower().Left(4) == "ca11")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(4);
+	return (s == "call" || s == "caii" || s == "ca11");
 }
 
 const bool CStringMatch::IsStringCheck(CString s)
@@ -114,14 +102,10 @@ const bool CStringMatch::IsStringCheck(CString s)
 	// Check for bad parameters
 	if (!s || s == "")
 		return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(5);
 
-	if (s.MakeLower().Left(5) == "check" ||
-		s.MakeLower().Left(5) == "cheok")
-	{
-		return true;
-	}
-
-	return false;
+	return (s == "check" || s == "cheok");
 }
 
 const bool CStringMatch::IsStringFold(CString s)
@@ -130,14 +114,9 @@ const bool CStringMatch::IsStringFold(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(4) == "fold" ||
-		s.MakeLower().Left(4) == "fo1d" ||
-		s.MakeLower().Left(4) == "foid")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(4);
+	return (s == "fold" || s == "fo1d" || s == "foid");
 }
 
 const bool CStringMatch::IsStringAutopost(CString s)
@@ -149,13 +128,10 @@ const bool CStringMatch::IsStringAutopost(CString s)
 	s.Remove(' ');
 	s.Remove('-');
 
-	if (s.MakeLower().Left(8) == "autopost" ||
-		s.MakeLower().Left(8) == "aut0p0st")
-	{
-		return true;
-	}
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(8);
 
-	return false;
+	return (s == "autopost" || s == "aut0p0st");
 }
 
 const bool CStringMatch::IsStringSitin(CString s)
@@ -166,14 +142,9 @@ const bool CStringMatch::IsStringSitin(CString s)
 
 	s.Remove(' ');
 	s.Remove('-');
-
-	if (s.MakeLower().Left(5) == "sitin" ||
-		s.MakeLower().Left(5) == "s1t1n")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(5);
+	return (s == "sitin" ||	s == "s1t1n");
 }
 
 const bool CStringMatch::IsStringSitout(CString s)
@@ -185,15 +156,9 @@ const bool CStringMatch::IsStringSitout(CString s)
 	s.Remove(' ');
 	s.Remove('-');
 
-	if (s.MakeLower().Left(6) == "sitout" ||
-		s.MakeLower().Left(6) == "s1tout" ||
-		s.MakeLower().Left(6) == "sit0ut" ||
-		s.MakeLower().Left(6) == "s1t0ut")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case.Left(6);
+	return (s == "sitout" || s == "s1tout" || s == "sit0ut" || s == "s1t0ut");
 }
 
 const bool CStringMatch::IsStringLeave(CString s)
@@ -202,12 +167,7 @@ const bool CStringMatch::IsStringLeave(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(5) == "leave")
-	{
-		return true;
-	}
-
-	return false;
+	return (s.MakeLower().Left(5) == "leave");
 }
 
 const bool CStringMatch::IsStringPrefold(CString s)
@@ -216,12 +176,7 @@ const bool CStringMatch::IsStringPrefold(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(7) == "prefold")
-	{
-		return true;
-	}
-
-	return false;
+	return (s.MakeLower().Left(7) == "prefold");
 }
 
 
@@ -231,19 +186,16 @@ const bool CStringMatch::IsStringSeated(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(5) == "false" ||
-		s.MakeLower().Left(8) == "unseated")
+	CString s_lower_case = s.MakeLower();
+	if (s_lower_case.Left(5) == "false" || s_lower_case.Left(8) == "unseated")
 	{
 		return false;
 	}
 
-	else if (s.MakeLower().Left(4) == "true" ||
-		s.MakeLower().Left(6) == "seated")
+	else 
 	{
-		return true;
+		return (s_lower_case.Left(4) == "true" || s_lower_case.Left(6) == "seated");
 	}
-
-	return false;
 }
 
 const bool CStringMatch::IsStringActive(CString s)
@@ -252,37 +204,29 @@ const bool CStringMatch::IsStringActive(CString s)
 	if (!s || s == "")
 		return p_tablemap->activemethod() == 2 ? true : false;
 
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case;
 	// new method: active unless pXactive returns false/inactive/out/away
 	if (p_tablemap->activemethod() == 2)
 	{
-		if (s.MakeLower().Left(5) == "false" ||
-			s.MakeLower().Left(8) == "inactive" ||
-			s.MakeLower().Left(3) == "out" ||
-			s.MakeLower().Left(4) == "away")
-		{
-			return false;
-		}
-
-		return true;
+		return (!(s.Left(5) == "false" 
+			|| s.Left(8) == "inactive"
+			|| s.Left(3) == "out" 
+			|| s.Left(4) == "away"));
 	}
 	// old method: inactive unless pXactive returns true/active
 	else
 	{
-		if (s=="")
+		if (s == "")
 			return false;
 
-		if (s.MakeLower().Left(8) == "inactive")
+		if (s.Left(8) == "inactive")
 		{
 			return false;
 		}
 
-		if (s.MakeLower().Left(4) == "true" ||
-			s.MakeLower().Left(6) == "active")
-		{
-			return true;
-		}
-
-		return false;
+		return (s.Left(4) == "true" 
+			|| s.Left(6) == "active");
 	}
 }
 
@@ -292,13 +236,9 @@ const bool CStringMatch::IsStringCardback(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(4) == "true" ||
-		s.MakeLower().Left(8) == "cardback")
-	{
-		return true;
-	}
-
-	return false;
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case;
+	return (s.Left(4) == "true" || s.Left(8) == "cardback");
 }
 
 const bool CStringMatch::IsStringDealer(CString s)
@@ -307,11 +247,8 @@ const bool CStringMatch::IsStringDealer(CString s)
 	if (!s || s == "")
 		return false;
 
-	if (s.MakeLower().Left(4) == "true" ||
-		s.MakeLower().Left(6) == "dealer")
-	{
-		return true;
-	}
+	CString s_lower_case = s.MakeLower();
+	s = s_lower_case;
 
-	return false;
+	return (s.Left(4) == "true" || s.Left(6) == "dealer");
 }

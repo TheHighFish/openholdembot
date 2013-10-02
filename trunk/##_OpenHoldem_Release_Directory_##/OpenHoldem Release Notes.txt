@@ -4,7 +4,7 @@ BUG FIXES:
 - OpenHoldem could crash when loading a new formula,
   because it still tried to evaluate the ini-functions,
   especially CSymbolEngineIniFunctions::ResetOnHeartbeat()
-  which cotained invalid data at this point of time.
+  which contained invalid data at this point of time.
   Thank you to Ares who provided us exact steps to reproduce the problem.
   [THF]
 

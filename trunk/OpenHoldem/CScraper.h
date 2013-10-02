@@ -62,8 +62,9 @@ public:
 	void CreateBitmaps(void);
 	void DeleteBitmaps(void);
 	void SetLimitInfo(const SLimitInfo LI);
-	const bool GetButtonState(const int button_index);
-	const bool IsCommonAnimation(void);
+	bool GetButtonState(const int button_index);
+	bool GetButtonState(CString button_state_as_string);
+	bool IsCommonAnimation(void);
 
 public:
 	// public accessors
