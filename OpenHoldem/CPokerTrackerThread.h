@@ -33,19 +33,6 @@ struct SPlayerData
 
 extern SPlayerData _player_data[k_max_number_of_players];
 
-extern class CPokerTrackerLookup
-{
-public:
-	// public functions
-	CPokerTrackerLookup();
-	~CPokerTrackerLookup();
-	const int GetSiteId();
-
-private:
-	// private functions and variables - not available via accessors or mutators
-	std::map<CString, int>	_pt3_siteid;
-} pt_lookup;
-
 
 extern class CPokerTrackerThread 
 {

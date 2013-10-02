@@ -1131,6 +1131,10 @@
 				Name="PokerTracker"
 				>
 				<File
+					RelativePath=".\CPokerTrackerLookUp.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CPokerTrackerThread.cpp"
 					>
 				</File>
@@ -1820,6 +1824,10 @@
 			<Filter
 				Name="PokerTracker"
 				>
+				<File
+					RelativePath=".\CPokerTrackerLookUp.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CPokerTrackerThread.h"
 					>
