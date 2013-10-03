@@ -16,7 +16,7 @@
 
 #include "CBetroundCalculator.h"
 #include "CGameState.h"
-#include "CPokerTrackerThread.h"
+#include "CPokerTrackerLookUp.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
