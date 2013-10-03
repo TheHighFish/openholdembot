@@ -14,7 +14,68 @@
 #ifndef INC_POKERTRACKER_QUERIES_VERSION_3_H
 #define INC_POKERTRACKER_QUERIES_VERSION_3_H
 
-const int k_number_of_pokertracker_stats = 29;
+#define PT3_QUERY_SUPPORT__ICON							(TRUE)
+#define PT3_QUERY_SUPPORT__NB_HANDS						(TRUE)
+#define PT3_QUERY_SUPPORT__PFR							(TRUE)
+#define PT3_QUERY_SUPPORT__PREFLOP_AGGR_FACTOR			(TRUE)
+#define PT3_QUERY_SUPPORT__FLOP_AGGR_FACTOR				(TRUE)
+#define PT3_QUERY_SUPPORT__TURN_AGGR_FACTOR				(TRUE)
+#define PT3_QUERY_SUPPORT__RIVER_AGGR_FACTOR			(TRUE)
+#define PT3_QUERY_SUPPORT__OVERALL_AGGR_FACTOR			(TRUE)
+#define PT3_QUERY_SUPPORT__AGGR_FACTOR_NO_PREFLOP		(TRUE)
+#define PT3_QUERY_SUPPORT__SEEN_FLOP_PCT				(TRUE)
+
+#define PT3_QUERY_SUPPORT__SEEN_TURN_PCT				(TRUE)
+#define PT3_QUERY_SUPPORT__SEEN_RIVER_PCT				(TRUE)
+#define PT3_QUERY_SUPPORT__VPIP							(TRUE)
+#define PT3_QUERY_SUPPORT__RFI							(TRUE)
+#define PT3_QUERY_SUPPORT__PREFLOP_CALLED_RAISE			(TRUE)
+#define PT3_QUERY_SUPPORT__STEAL_ATTEMPT				(TRUE)
+#define PT3_QUERY_SUPPORT__WTSD							(TRUE)
+#define PT3_QUERY_SUPPORT__WSSD							(TRUE)
+#define PT3_QUERY_SUPPORT__FOLD_BB_TO_STEAL				(TRUE)
+#define PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL				(TRUE)
+
+#define PT3_QUERY_SUPPORT__FLOP_CBET					(TRUE)
+#define PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B			(TRUE)
+#define PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B			(TRUE)
+#define PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B				(TRUE)
+#define PT3_QUERY_SUPPORT__TURN_FOLD_TO_3B				(TRUE)
+#define PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B				(TRUE)
+#define PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET			(TRUE)
+#define PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET			(TRUE)
+#define PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET			(TRUE)
+
+
+const int k_number_of_pokertracker_stats =  (PT3_QUERY_SUPPORT__ICON ? 1 : 0) +
+											(PT3_QUERY_SUPPORT__NB_HANDS ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__PFR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__PREFLOP_AGGR_FACTOR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FLOP_AGGR_FACTOR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__TURN_AGGR_FACTOR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__RIVER_AGGR_FACTOR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__OVERALL_AGGR_FACTOR ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__AGGR_FACTOR_NO_PREFLOP ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__SEEN_FLOP_PCT ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__SEEN_TURN_PCT ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__SEEN_RIVER_PCT ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__VPIP ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__RFI ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__PREFLOP_CALLED_RAISE ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__STEAL_ATTEMPT ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__WTSD ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__WSSD ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FOLD_BB_TO_STEAL ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FLOP_CBET ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__TURN_FOLD_TO_3B ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET ? 1 : 0);
 
 // PokerTracker support
 enum PT_Groups
@@ -53,6 +114,7 @@ typedef struct t_QueryDefinition
 
 t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 {
+#if PT3_QUERY_SUPPORT__ICON
 	/* PT3 query to get icon */
 	{
 		// name
@@ -69,6 +131,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		false
 	},
+#endif
+#if PT3_QUERY_SUPPORT__NB_HANDS
 	/* PT3 query to get number of hands in the database */
 	{
 		// name
@@ -84,6 +148,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true
 	},
+#endif
+#if PT3_QUERY_SUPPORT__PFR
 	/* PT3 query to get pre flop raise % */
 	{
 		// name
@@ -103,6 +169,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true
 	},
+#endif
+#if PT3_QUERY_SUPPORT__PREFLOP_AGGR_FACTOR
 	/* PT3 query to get pre-flop aggression factor */
 	{
 		// name
@@ -122,6 +190,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FLOP_AGGR_FACTOR
 	/* PT3 query to get flop aggression factor */
 	{
 		// name
@@ -141,6 +211,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true
 	},
+#endif
+#if PT3_QUERY_SUPPORT__TURN_AGGR_FACTOR
 	/* PT3 query to get turn aggression factor */
 	{
 		// name
@@ -160,6 +232,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__RIVER_AGGR_FACTOR
 	/* PT3 query to get river aggression factor */
 	{
 		// name
@@ -179,6 +253,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__OVERALL_AGGR_FACTOR
 	/* PT3 query to get total aggression factor */
 	{
 		// name
@@ -209,6 +285,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__AGGR_FACTOR_NO_PREFLOP
 	/* PT3 query to get total aggression factor without preflop */
 	{
 		// name
@@ -236,6 +314,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__SEEN_FLOP_PCT
 	/* PT3 query to get percentage of flops seen */
 	{
 		// name
@@ -255,6 +335,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__SEEN_TURN_PCT
 	/* PT3 query to get percentage of turns seen */
 	{
 		// name
@@ -274,6 +356,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__SEEN_RIVER_PCT
 	/* PT3 query to get percentage of rivers seen */
 	{
 		// name
@@ -293,6 +377,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__VPIP
 	/* PT3 query to get vpip */
 	{
 		// name
@@ -312,6 +398,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__RFI
 	/* PT3 query to get pre-flop raise first in pct */
 	{
 		// name
@@ -332,6 +420,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__PREFLOP_CALLED_RAISE
 	/* PT3 query to get pre-flop called raise pct */
 	{
 		// name
@@ -352,6 +442,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__STEAL_ATTEMPT
 	/* PT3 query to get attempted steal percentage */
 	{
 		// name
@@ -372,6 +464,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__WTSD
 	/* PT3 query to get Went to SD % */
 	{
 		// name
@@ -392,6 +486,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__WSSD
 	/* PT3 query to get Won $ At SD % */
 	{
 		// name
@@ -412,6 +508,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FOLD_BB_TO_STEAL
 	/* PT3 query to get Folded Big Blind to steal */
 	{
 		// name
@@ -432,6 +530,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL
 	/* PT3 query to get Folded Small Blind to steal */
 	{
 		// name
@@ -452,6 +552,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FLOP_CBET
 	/* PT3  query to get cbet on FLOP */
 	{
 		// name
@@ -471,6 +573,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B
 	/* PT3  query to get TOTAL fold to 3 bet percentage */
 	{
 		// name
@@ -490,6 +594,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B
 	/* PT3  query to get PREFLOP fold to 3 bet percentage */
 	{
 		// name
@@ -509,6 +615,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B
 	/* PT3  query to get FLOP fold to 3 bet percentage */
 	{
 		// name
@@ -528,6 +636,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__TURN_FOLD_TO_3B
 	/* PT3  query to get TURN fold to 3 bet percentage */
 	{
 		// name
@@ -547,6 +657,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B
 	/* PT3  query to get RIVER fold to 3 bet percentage */
 	{
 		// name
@@ -566,6 +678,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET
 	/* PT3  query to get FLOP fold to cbet percentage */
 	{
 		// name
@@ -585,6 +699,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET
 	/* PT3  query to get TURN fold to cbet percentage */
 	{
 		// name
@@ -604,6 +720,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// needs_infix_and_second_part
 		true,
 	},
+#endif
+#if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET
 	/* PT3  query to get RIVER fold to cbet percentage */
 	{
 		// name
@@ -622,7 +740,8 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		pt_group_advanced,
 		// needs_infix_and_second_part
 		true,
-	}
+	},
+#endif
 };
 
 #endif // INC_POKERTRACKER_QUERIES_VERSION_3_H
