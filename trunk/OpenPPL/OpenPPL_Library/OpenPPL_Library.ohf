@@ -1411,7 +1411,7 @@ f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 didcallround1
 
 ##f$OpenPPL_AggressorChair##
-// ac_aggressor alone is somewhat unreliable, as it gets scraped (by bets).
+// raischair (formerly ac_aggressor) alone is somewhat unreliable, as it gets scraped (by bets).
 // But if we raise and there are super-fast calls behind us (e.g. at PokerAcademy),
 // then we don't have stable frames and soon we will switch to the next betting round.
 // (There are however no problems, if somebody else raises,
@@ -1419,7 +1419,7 @@ didcallround1
 // So we also check for our last action and the amount to call.
 // (-1 = fold 0 = check 1 = call 2 = raise e3 = swag 4 = allin)
 (((prevaction ==  2) || (prevaction == 3)) && (f$OpenPPL_AmountToCall == 0)) ? userchair :
-ac_aggressor
+raischair
 
 ##f$OpenPPL_BotIsLastRaiser##
 (f$OpenPPL_AggressorChair==userchair)
