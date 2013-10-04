@@ -2,7 +2,7 @@
 
 // OpenScrape 4.1.1
 
-// 2013-09-24 18:51:25
+// 2013-10-02 23:09:43
 // 32 bits per pixel
 
 //
@@ -51,18 +51,7 @@ r$i3state            559 331 559 331   ffffff    0 C
 r$i4button           525 320 536 331        0    0 N
 r$i4label            526 322 533 330        0    0 H0
 r$i4state            525 331 525 331   ffffff    0 C
-r$i5button             4 289   9 294        0    0 N
-r$i5label              3 288   4 295        0    0 H0
-r$i5state              6 291   7 293   ffffff    2 C
-r$i6button             4 301   9 306        0    0 N
-r$i6label              6 303   9 307        0    0 H0
-r$i6state              6 303   7 305   ffffff    2 C
-r$i7button             4 313   9 318        0    0 N
-r$i7label              4 317   9 319        0    0 H0
-r$i7state              6 315   7 317   ffffff    2 C
-r$i8button             4 325   9 330        0    0 N
-r$i8label              8 328   9 331        0    0 H0
-r$i8state              6 327   7 329   ffffff    2 C
+r$i5state            258  61 344  74        0    0 T0
 r$p0active           388  13 390  15   ffffff    0 C
 r$p0balance          365  68 413  80        0    0 T0
 r$p0bet              309  82 350  95   ffffff    0 T0
@@ -502,15 +491,12 @@ h0$8s                 31f7019e
 h0$5s                 341024bb
 h0$4d                 3a8566ca
 h0$8d                 3e777527
-h0$sitin              47d19460
 h0$9h                 48f0cf5b
 h0$8h                 49be8c52
-h0$sitout             4e354c76
 h0$9d                 5216d38b
 h0$4h                 5338c013
 h0$fold               5957d7eb
 h0$7d                 636111aa
-h0$autopost           6659ea27
 h0$Jc                 6e805eb1
 h0$7c                 73455614
 h0$3c                 74cfd451
@@ -541,13 +527,11 @@ h0$As                 d7c3b617
 h0$5c                 da18936a
 h0$9s                 dce7135c
 h0$Qs                 e1ad6981
-h0$prefold            e76a449f
 h0$allin              e8356ad2
 h0$Ac                 ea480c3b
 h0$2c                 ef8b717d
 h0$Js                 f1b52454
 h0$2d                 f425d0d8
-h0$leave              f687c3a8
 h0$Qd                 f7cc89fc
 h0$true               f9018143
 h0$2s                 feb74d1c
@@ -608,10 +592,6 @@ h2$Kc                 fc297fcf
 // images
 //
 
-i$prefold          6   3  
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 i$7c               32  42 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff0000993300009933000099330000993300009933000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
@@ -1449,11 +1429,6 @@ ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200c0c0c000ffffff00c0c0c000ffffff00ffffff0033330000663300009933330099330000cc6633009933330066000000b2b2b20000993300009933000099330000993300009933000099330000993300b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200f1f1f100cc996600ffeccc00ffffff00eaeaea0000333300040404000066660004040400111111001111110004040400336699000099330000993300ffffff0000993300ffffff000099330000993300b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff003399990000ccff0004040400009999000404040000336600003366000404040000ccff00ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00b2b2b200ffffff00
-i$autopost         2   4  
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
 i$8s               32  42 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff00ffffff000404040004040400040404000404040004040400ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
@@ -1904,15 +1879,6 @@ ffffff00ffffff00ff000000ffffff00ff000000ffffff00ffffff00ffffff00
 ffffff00ffffff00ff000000ffffff00ffffff00ff000000ffffff00ffffff00
 ffffff00ffffff00ff000000ffffff00ffffff00ffffff00ff000000ffffff00
 ffffff00ffffff00ff000000ffffff00ffffff00ffffff00ffffff00ff000000
-i$sitout           2   8  
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
 i$Qs               32  42 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff00040404000404040004040400040404000404040004040400ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
@@ -2103,12 +2069,6 @@ ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200000099000000990000ffff0033666600ffffff00c0dcc00000cccc0000cccc0080808000ffffff00ffffff00cc999900ffeccc000000cc000000cc000000cc000000cc000000cc000000cc000000cc00b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b20000009900000099009696960066333300ffffff00cccccc00336666000099cc0033666600ffffff00ffffff00ffffff00cc999900ffffff000000cc000000cc000000cc000000cc000000cc00ffffff00b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b2003300660099666600ffffff0099330000ffffff000000800000008000000033000404040004040400040404000404040000006600cccccc00ffffff000000cc000000cc000000cc00ffffff00ffffff00b2b2b200ffffff00
-i$leave            4   5  
-ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff00ffffff00
 i$2d               32  42 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff00cc330000cc330000cc330000cc330000cc330000ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
@@ -2754,15 +2714,6 @@ ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000000cc000000cc000000cc000000cc000000cc000000cc000000cc00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000000cc000000cc000000cc000000cc000000cc00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000000cc000000cc000000cc00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00
-i$sitin            2   8  
-ffffff0000000000
-ffffff0000000000
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff00ffffff00
-ffffff0000000000
 i$Ah               32  42 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff00ffffff00ffffff000000cc000000cc00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
