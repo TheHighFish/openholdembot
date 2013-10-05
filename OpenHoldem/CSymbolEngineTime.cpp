@@ -80,8 +80,8 @@ void CSymbolEngineTime::ResetOnHeartbeat()
 	_elapsedhand = t_now_time - _elapsedhandhold;									
 	_elapsedauto = t_now_time - _elapsedautohold;	
 
-	assert(_elapsed < 1000000);				// Heuristic: about 300 hours up-time
-	AssertRange(_elapsedhand, 0, (10 * 60));	// Heuristic: 10 minutes
+	assert(_elapsed < 1000000);					// Heuristic: about 300 hours up-time
+	AssertRange(_elapsedhand, 0, _elapsed);	
 	AssertRange(_elapsedauto, 0, _elapsed);
 	AssertRange(_elapsedtoday, 0, (24 * 3600));
 }	
