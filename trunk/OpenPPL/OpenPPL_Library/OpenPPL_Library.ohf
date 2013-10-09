@@ -3621,8 +3621,8 @@ ispair
   || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
   ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
 
-  ##f$OpenPPL_TripsRank##
-f$OpenPPL_HaveTrips && f$OpenPPL_HaveTopPair ? f$OpenPPL_TopPairRank:
+##f$OpenPPL_TripsRank##
+f$OpenPPL_HaveTrips && f$OpenPPL_HaveTopPair    ? f$OpenPPL_TopPairRank:
 f$OpenPPL_HaveTrips && f$OpenPPL_Have2ndTopPair ? f$OpenPPL_SecondTopPairRank:
 f$OpenPPL_HaveTrips && f$OpenPPL_Have3rdTopPair ? f$OpenPPL_ThirdTopPairRank:
 f$OpenPPL_HaveTrips && f$OpenPPL_Have4thTopPair ? f$OpenPPL_ForthTopPairRank:
