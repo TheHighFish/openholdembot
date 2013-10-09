@@ -11,12 +11,17 @@
 //
 //*****************************************************************************
 
+// WM_APP = 0x8000 = 32768
+// Messages 0..WM_APP reserved for Windows
+// Messages (WM_APP + 1)..0xBFFF user-defined
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ms644930(v=vs.85).aspx
 const int WMA_SETWINDOWTEXT	= WM_APP + 1;
 const int WMA_DOCONNECT		= WM_APP + 2;
 const int WMA_DODISCONNECT	= WM_APP + 3;
 const int WMA_CONNECTEDHWND	= WM_APP + 4;
 const int WMA_SETFLAG       = WM_APP + 5;
 const int WMA_RESETFLAG     = WM_APP + 6;
+const int WMA_ISREADY       = WM_APP + 7;
 
 
 extern class COpenHoldemHopperCommunication: public CWnd
@@ -31,6 +36,7 @@ public:
 	LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);
 	LRESULT OnSetFlagMessage(WPARAM, LPARAM flag_to_set);
 	LRESULT OnResetFlagMessage(WPARAM, LPARAM flag_to_reset);
+	LRESULT OnIsReadyMessage(WPARAM, LPARAM);
 protected:
 	DECLARE_MESSAGE_MAP()
 } *p_openholdem_hopper_communication;

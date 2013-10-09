@@ -16,6 +16,8 @@
 
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
+#include "CFormula.h"
+#include "CTableMaploader.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
@@ -26,7 +28,14 @@ COpenHoldemHopperCommunication *p_openholdem_hopper_communication = NULL;
 //IMPLEMENT_DYNAMIC(COpenHoldemHopperCommunication, CWnd)
 
 BEGIN_MESSAGE_MAP(COpenHoldemHopperCommunication, CWnd)
-
+	ON_WM_CREATE()
+	ON_MESSAGE(WMA_SETWINDOWTEXT, &COpenHoldemHopperCommunication::OnSetWindowText)
+	ON_MESSAGE(WMA_DOCONNECT,     &COpenHoldemHopperCommunication::OnConnectMessage)
+	ON_MESSAGE(WMA_DODISCONNECT,  &COpenHoldemHopperCommunication::OnDisconnectMessage)
+	ON_MESSAGE(WMA_CONNECTEDHWND, &COpenHoldemHopperCommunication::OnConnectedHwndMessage)
+	ON_MESSAGE(WMA_SETFLAG,       &COpenHoldemHopperCommunication::OnSetFlagMessage)
+	ON_MESSAGE(WMA_RESETFLAG,     &COpenHoldemHopperCommunication::OnResetFlagMessage)
+	ON_MESSAGE(WMA_ISREADY,       &COpenHoldemHopperCommunication::OnIsReadyMessage)  
 END_MESSAGE_MAP()
 
 
@@ -88,3 +97,26 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 	return true;
 }
 
+LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
+{
+	// 0 = Not ready, because of either
+	//   * no formula
+	//   * no tablemap
+	if (p_formula->formula_name() == "" 
+		|| p_formula->IsParsing()
+		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
+	{
+		return (LRESULT)0;
+	}
+	// Otherwise:
+	// 1 = ready and not connected
+	// 2 = ready, but already connected
+	else if (p_autoconnector->attached_hwnd() == NULL)
+	{
+		return (LRESULT)1;
+	}
+	else
+	{
+		return (LRESULT)2;
+	}
+}
