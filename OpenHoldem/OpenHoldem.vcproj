@@ -349,10 +349,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\COpenHoldemHopperCommunication.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\COpenHoldemStatusbar.cpp"
 				>
 			</File>
@@ -887,6 +883,10 @@
 				Name="Synchronization"
 				>
 				<File
+					RelativePath=".\COpenHoldemHopperCommunication.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CSessionCounter.cpp"
 					>
 				</File>
@@ -1219,10 +1219,6 @@
 			</File>
 			<File
 				RelativePath=".\COcclusionCheck.h"
-				>
-			</File>
-			<File
-				RelativePath=".\COpenHoldemHopperCommunication.h"
 				>
 			</File>
 			<File
@@ -1784,6 +1780,10 @@
 			<Filter
 				Name="Synchronization"
 				>
+				<File
+					RelativePath=".\COpenHoldemHopperCommunication.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CSessionCounter.h"
 					>

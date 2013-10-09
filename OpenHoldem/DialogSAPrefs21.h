@@ -42,6 +42,7 @@ private:
 	CButton _position_tables_never_button;
 	CButton _position_tables_tiled_button;
 	CButton _position_tables_cascaded_button;
+	CButton _position_always_keep_position;
 
 protected:
 	virtual void OnOK();

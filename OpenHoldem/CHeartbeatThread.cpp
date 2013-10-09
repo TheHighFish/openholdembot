@@ -40,6 +40,7 @@
 #include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
+#include "CTablePositioner.h"
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
@@ -114,6 +115,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			AfxEndThread(0);
 		}
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+		p_table_positioner->AlwaysKeepPositionIfEnabled();
 
 		// This critical section lets other threads know that the internal state is being updated
 		EnterCriticalSection(&pParent->cs_update_in_progress);
