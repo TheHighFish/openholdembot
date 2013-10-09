@@ -1,5 +1,22 @@
-v4.2.5 2013-10-xx
+v4.3.0 2013-10-xx
 ==================
+NEW STUFF:
+- Providing a new option for the table-positioner.
+  If enabled the position will be checked and if necessary corrected 
+  once per heartbeat.
+  [THF]
+- Providing a new message for communication between hopper and OpenHoldem: "IsReady"
+  This way the hopper can query if OpenHoldem is prepared for a new table.
+  Return values:
+    0: not ready, because formula not (yet) loaded or no tablemap
+	1: ready for a table
+	2: already connected
+  This works similar to USBFreaks examples in the manual:
+    Global Const $WMA_ISREADY = 0x8007
+    Local $result = DllCall("user32.dll", "lresult", "SendMessage", "hwnd", $oh_hwnd, "uint", 
+	  $WMA_ISREADY, "wparam", 0, "lparam", 0)
+  [THF]	  
+
 BUG FIXES:
 - OpenHoldem could crash when loading a new formula,
   because it still tried to evaluate the ini-functions,
