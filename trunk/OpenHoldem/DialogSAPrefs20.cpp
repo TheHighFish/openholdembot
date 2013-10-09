@@ -77,6 +77,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_HANDHISTORY, preferences.debug_handhistory() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_PREFERENCES, preferences.debug_preferences() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_DLL_EXTENSION, preferences.debug_dll_extension() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_DEBUG_SCRAPER_PREPROCESSOR, preferences.debug_scraper_preprocessor() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, preferences.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -112,6 +113,7 @@ void CDlgSAPrefs20::OnOK()
 	preferences.SetValue(k_prefs_debug_handhistory, IsDlgButtonChecked(IDC_DEBUG_HANDHISTORY));
 	preferences.SetValue(k_prefs_debug_preferences, IsDlgButtonChecked(IDC_DEBUG_PREFERENCES));
 	preferences.SetValue(k_prefs_debug_dll_extension, IsDlgButtonChecked(IDC_DEBUG_DLL_EXTENSION));
+	preferences.SetValue(k_prefs_debug_scraper_preprocessor, IsDlgButtonChecked(IDC_DEBUG_SCRAPER_PREPROCESSOR));
 	preferences.SetValue(k_prefs_debug_alltherest, IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
 	CSAPrefsSubDlg::OnOK();
 }
