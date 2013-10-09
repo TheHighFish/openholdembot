@@ -120,3 +120,5 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 		return (LRESULT)2;
 	}
 }
+
+
