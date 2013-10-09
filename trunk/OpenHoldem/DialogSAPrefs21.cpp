@@ -39,6 +39,7 @@ void CDlgSAPrefs21::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO_POSITION_NEVER, _position_tables_never_button);
 	DDX_Control(pDX, IDC_RADIO_POSITION_TILED, _position_tables_tiled_button);
 	DDX_Control(pDX, IDC_RADIO_POSITION_CASCADED, _position_tables_cascaded_button);
+	DDX_Control(pDX, IDC_ALWAYS_KEEP_POSITION, _position_always_keep_position);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs21, CSAPrefsSubDlg)
@@ -61,6 +62,8 @@ BOOL CDlgSAPrefs21::OnInitDialog()
 		// Default: k_lazy_scraping_always
 		_position_tables_never_button.SetCheck(true);
 	}
+	_position_always_keep_position.SetCheck(preferences.table_positioner_always_keep_position());
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -81,5 +84,7 @@ void CDlgSAPrefs21::OnOK()
 		// Default: k_lazy_scraping_never
 		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_never);
 	}
+	preferences.SetValue(k_prefs_table_positioner_always_keep_position, _position_always_keep_position.GetCheck());
+
 	CSAPrefsSubDlg::OnOK();
 }

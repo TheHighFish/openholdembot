@@ -31,6 +31,7 @@ CTablePositioner::CTablePositioner()
 CTablePositioner::~CTablePositioner()
 {}
 
+// To be called once after connection
 void CTablePositioner::PositionMyWindow()
 {		
 	// Build list of poker tables (child windows)
@@ -248,10 +249,47 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 void CTablePositioner::MoveToBottomRight()
 {
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToBottomRight()\n");
-	int new_left_x = _desktop_rectangle.right  - _table_size_x + 1;
-	int new_top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
+	int _new_left_x = _desktop_rectangle.right  - _table_size_x + 1;
+	int _new_top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
+	MoveWindowToItsPosition();
+}
+
+// Precondition: position and size defined
+void CTablePositioner::MoveWindowToItsPosition()
+{
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveWindowToItsPosition()\n");
+
+	AssertRange(_new_left_x, 0, _desktop_rectangle.right);
+	AssertRange(_new_top_y, 0, _desktop_rectangle.bottom);
+	// Usually the table is smaller than the desktop
+	AssertRange(_table_size_x, 1, _desktop_rectangle.right);
+	AssertRange(_table_size_x, 1, _desktop_rectangle.bottom);
+
 	MoveWindow(p_autoconnector->attached_hwnd(), 
-		new_left_x, new_top_y, 
+		_new_left_x, _new_top_y, 
 		_table_size_x, _table_size_y, 
 		true);	// true = Redraw the table.
+}
+
+// To be called once per heartbeat
+void CTablePositioner::AlwaysKeepPositionIfEnabled()
+{
+	if (!preferences.table_positioner_always_keep_position()
+		|| (p_autoconnector->attached_hwnd() == NULL))
+	{
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() disabled or not connected\n");
+		return;
+	}
+	RECT current_position;
+	GetWindowRect(p_autoconnector->attached_hwnd(), &current_position);
+	if ((current_position.left == _new_left_x)
+		&& (current_position.top == _new_top_y))
+	{
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() position is good\n");
+	}
+	else
+	{
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled()  restoring old position\n");
+		MoveWindowToItsPosition();
+	}
 }

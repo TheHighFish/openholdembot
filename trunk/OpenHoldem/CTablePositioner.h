@@ -20,7 +20,10 @@ public:
 	CTablePositioner();
 	~CTablePositioner();
 public:
+	// To be called once after connection
 	void PositionMyWindow();
+	// To be called once per heartbeat
+	void AlwaysKeepPositionIfEnabled();
 private:
 	void PositionMyWindow(HWND *list_of_tables);
 	bool TryRightSideOfTable(HWND HWND_of_potential_neighbour_table);
@@ -28,11 +31,14 @@ private:
 	bool TryPosition(int left_x, int top_y);
 	bool PotentialNewPositionOverlapsTable(int left_x, int top_y, HWND table_to_check_for_overlapping);
 	void MoveToBottomRight();
+	void MoveWindowToItsPosition();
 private:
 	int _number_of_tables;
 	HWND *HWNDs_of_child_windows;
 	int _table_size_x;
 	int _table_size_y;
+	int _new_left_x;
+	int _new_top_y;
 	RECT _desktop_rectangle;
 } *p_table_positioner;
 
