@@ -56,9 +56,9 @@ POKERTRACKER_DLL_API int PT_DLL_GetNumberOfStats()
 
 // We create queries on the fly, 
 // so that they are usable for both ring-games and tournaments 
-const CString k_holdem_infix  = " holdem_";
-const CString k_omaha_infix   = " omaha_";
-const CString k_tournament_infix = " tourney_";
+const CString k_holdem_infix  = "holdem";
+const CString k_omaha_infix   = "omaha";
+const CString k_tournament_infix = "tourney";
 
 // Values of all stats for all players
 double stats[k_number_of_pokertracker_stats][k_max_number_of_players];
@@ -68,38 +68,16 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	int site_id, CString player_name)
 {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
-	CString query = query_definitions[stats_index].first_part_of_query;
+	CString query = query_definitions[stats_index].query;
+
 	CString site_id_as_string;
 	site_id_as_string.Format("%i", site_id);
-	if (query_definitions[stats_index].needs_infix_and_second_part)
-	{
-		if (istournament)
-		{
-			query += k_tournament_infix;
-		}
-		if (isomaha)
-		{
-			query += k_omaha_infix;
-		}
-		else
-		{
-			query += k_holdem_infix;
-		}
-		query += query_definitions[stats_index].last_part_of_query;
-		query += " WHERE  S.id_player = P.id_player";
-		query += "AND P.player_name like '";
-		query += player_name;
-		query += "'AND P.id_site=";
-		query += site_id_as_string;
-	}
-	else
-	{
-		query += "WHERE id_site=";
-		query += site_id_as_string;
-		query += "AND player_name = '";		
-		query += player_name;
-		query += "'";
-	}
+
+	query.Replace("%SITEID%", site_id_as_string);
+	query.Replace("%SCREENNAME%", player_name);
+	query.Replace("%GAMETYPE%", (istournament ? k_tournament_infix + "_" : "") + 
+		(isomaha ? k_omaha_infix : k_holdem_infix) + "_hand_");
+
 	return query;
 }
 
