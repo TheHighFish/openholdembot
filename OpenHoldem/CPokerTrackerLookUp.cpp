@@ -57,11 +57,14 @@ const int CPokerTrackerLookup::GetSiteId()
 	lookup = _pt3_siteid.begin();
 	end = _pt3_siteid.end();
 
+	CString sitename = p_tablemap->sitename();
+	CString network = p_tablemap->network();
+
 	while (lookup!=end)
 	{
 		CString supported_sitename = lookup->first;
-		if (p_tablemap->sitename().Find(supported_sitename)
-			|| p_tablemap->network().Find(supported_sitename))
+		if (sitename.Find(supported_sitename)
+			|| network.Find(supported_sitename))
 		{
 			write_log(preferences.debug_pokertracker(), "[PokerTrackerLookup] Site or network is: %s\n",
 				supported_sitename);

@@ -102,13 +102,8 @@ typedef struct t_QueryDefinition
 {
 	CString name;
 	CString description_for_editor;
-	CString first_part_of_query;
-	// The queries will be created on the fly,
-	// for both ring-games and tournaments.
-	// There will be an "infix" added, depending on game-type
-	CString last_part_of_query;
+	CString query;
 	int stat_group;
-	bool needs_infix_and_second_part;
 };
 
 
@@ -118,35 +113,33 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get icon */
 	{
 		// name
-		"icon",			
+		"icon",
 		// description_for_editor
 		"Poker Tracker auto-rate icon code",
-		// first_part_of_query
-		"SELECT val_icon "
-		"FROM player ",
-		// last_part_of_query
-		"",
+		// query
+		"SELECT val_icon as result \
+		 FROM   player \
+		 WHERE  id_site = %SITEID% AND \
+		        player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		false
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__NB_HANDS
 	/* PT3 query to get number of hands in the database */
 	{
 		// name
-		"hands",		
+		"hands",	
 		// description_for_editor
 		"Poker Tracker number of hands that are in the database",
-		// first_part_of_query
-		"SELECT COUNT(*) as result FROM ",	
-		// last_part_of_query
-		"hand_player_detail as D, player as P",
+		// query
+		"SELECT COUNT(*) as result \
+		 FROM   player as P, %GAMETYPE%player_detail as D \
+		 WHERE  D.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PFR
@@ -156,18 +149,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"pfr",			
 		// description_for_editor
 		"Poker Tracker pre-flop raise percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( cast(sum(case when cnt_p_raise >0 then 1 else 0 end) as real) / count(*)) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when (count(*) = 0) \
+		        then -1 \
+				else (cast(sum(case when cnt_p_raise > 0 then 1 else 0 end) as real) / count(*)) \
+				end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_AGGR_FACTOR
@@ -177,60 +169,59 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"aggp",
 		// description_for_editor
 		"Poker Tracker preflop aggression",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( cast(sum(cnt_p_raise) as real) / cast(sum(cnt_p_call) as real)) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"holdem_hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(S.cnt_p_call) = 0 \
+		        then -1 \
+				else cast(sum(S.cnt_p_raise) as real) / sum(S.cnt_p_call) \
+				end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_AGGR_FACTOR
 	/* PT3 query to get flop aggression factor */
 	{
 		// name
-		"aggf",			
+		"aggf",
 		// description_for_editor
 		"Poker Tracker flop aggression",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( (cast(sum(cnt_f_raise) as real) + sum(case when flg_f_bet then 1 else 0 end)) / cast(sum(cnt_f_call) as real)) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(S.cnt_f_call) = 0 \
+		        then -1 \
+				else cast((sum(S.cnt_f_raise) + sum(case when S.flg_f_bet then 1 else 0 end)) as real) \
+				/ sum(S.cnt_f_call) \
+				end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_AGGR_FACTOR
 	/* PT3 query to get turn aggression factor */
 	{
 		// name
-		"aggt",			
+		"aggt",
 		// description_for_editor
 		"Poker Tracker turn aggression",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( (cast(sum(cnt_t_raise) as real) + sum(case when flg_t_bet then 1 else 0 end)) / cast(sum(cnt_t_call) as real)) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(S.cnt_t_call) = 0 \
+		        then -1 \
+				else cast((sum(S.cnt_t_raise) + sum(case when S.flg_t_bet then 1 else 0 end)) as real) \
+				/ sum(S.cnt_t_call) \
+				end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_AGGR_FACTOR
@@ -240,18 +231,18 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"aggr",			
 		// description_for_editor
 		"Poker Tracker river aggression",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( (cast(sum(cnt_r_raise) as real) + sum(case when flg_r_bet then 1 else 0 end)) / cast(sum(cnt_r_call) as real)) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(S.cnt_r_call) = 0 \
+		        then -1 \
+				else cast((sum(S.cnt_r_raise) + sum(case when S.flg_r_bet then 1 else 0 end)) as real) \
+				/ sum(S.cnt_r_call) \
+				end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__OVERALL_AGGR_FACTOR
@@ -261,29 +252,28 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"aggtot", 
 		// description_for_editor
 		"Poker Tracker total aggression",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( ( cast(sum(cnt_p_raise) as real) \
+		// query
+		"SELECT (case when B = 0 \
+		        then -1 \
+				else cast(A as real) / B \
+				end) as result \
+		 FROM (SELECT sum(cnt_p_raise) \
                        + sum(cnt_f_raise) \
 					   + sum(case when flg_f_bet then 1 else 0 end) \
                        + sum(cnt_t_raise) \
 					   + sum(case when flg_t_bet then 1 else 0 end) \
                        + sum(cnt_r_raise) \
-					   + sum(case when flg_r_bet then 1 else 0 end) ) \
-                     / ( cast(sum(cnt_p_call) as real) \
-                         + sum(cnt_f_call) \
-                         + sum(cnt_t_call) \
-                         + sum(cnt_r_call) ) \
-                   ) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+					   + sum(case when flg_r_bet then 1 else 0 end) as A, \
+		              sum(cnt_p_call) \
+                       + sum(cnt_f_call) \
+                       + sum(cnt_t_call) \
+                       + sum(cnt_r_call) as B \
+			   FROM   player as P, %GAMETYPE%player_statistics as S \
+			   WHERE  S.id_player = P.id_player AND \
+		              P.id_site = %SITEID% AND \
+		              P.player_name LIKE '%SCREENNAME%') foo",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__AGGR_FACTOR_NO_PREFLOP
@@ -293,26 +283,26 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"aggtotnopf",	
 		// description_for_editor
 		"Poker Tracker total aggression excluding preflop",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then ( ( cast(sum(cnt_f_raise) + sum(case when flg_f_bet then 1 else 0 end) as real) \
+		// query
+		"SELECT (case when B = 0 \
+		        then -1 \
+				else cast(A as real) / B \
+				end) as result \
+		 FROM (SELECT sum(cnt_f_raise) \
+					   + sum(case when flg_f_bet then 1 else 0 end) \
                        + sum(cnt_t_raise) \
-				       + sum(case when flg_t_bet then 1 else 0 end) \
+					   + sum(case when flg_t_bet then 1 else 0 end) \
                        + sum(cnt_r_raise) \
-				       + sum(case when flg_r_bet then 1 else 0 end) ) \
-                     / ( sum(cnt_f_call) \
-                         + sum(cnt_t_call) \
-                         + sum(cnt_r_call) ) \
-                   ) \
-              else (-1) \
-			end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		 "hand_player_statistics as S",
+					   + sum(case when flg_r_bet then 1 else 0 end) as A, \
+		              sum(cnt_f_call) \
+                       + sum(cnt_t_call) \
+                       + sum(cnt_r_call) as B \
+			   FROM   player as P, %GAMETYPE%player_statistics as S \
+			   WHERE  S.id_player = P.id_player AND \
+		              P.id_site = %SITEID% AND \
+		              P.player_name LIKE '%SCREENNAME%') foo",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_FLOP_PCT
@@ -322,18 +312,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"floppct",		
 		// description_for_editor
 		"Poker Tracker saw flop percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-             then cast(sum(case when flg_f_saw then 1 else 0 end) as real) / count(*) \
-             else (-1) \
-        end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when (count(*) = 0) \
+		         then -1 \
+				 else cast(sum(case when flg_f_saw then 1 else 0 end) as real) / count(*) \
+				 end) as result \
+		FROM   player as P, %GAMETYPE%player_statistics as S \
+		WHERE  S.id_player = P.id_player AND \
+		       P.id_site = %SITEID% AND \
+		       P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_TURN_PCT
@@ -343,18 +332,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"turnpct",		
 		// description_for_editor
 		"Poker Tracker saw turn percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-             then cast(sum(case when flg_t_saw then 1 else 0 end) as real) / count(*) \
-             else (-1) \
-        end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when (count(*) = 0) \
+		         then -1 \
+				 else cast(sum(case when flg_t_saw then 1 else 0 end) as real) / count(*) \
+				 end) as result \
+		FROM   player as P, %GAMETYPE%player_statistics as S \
+		WHERE  S.id_player = P.id_player AND \
+		       P.id_site = %SITEID% AND \
+		       P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_RIVER_PCT
@@ -364,18 +352,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"riverpct", 
 		// description_for_editor
 		"Poker Tracker saw river percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-             then cast(sum(case when flg_r_saw then 1 else 0 end) as real) / count(*) \
-             else (-1) \
-        end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when (count(*) = 0) \
+		         then -1 \
+				 else cast(sum(case when flg_r_saw then 1 else 0 end) as real) / count(*) \
+				 end) as result \
+		FROM   player as P, %GAMETYPE%player_statistics as S \
+		WHERE  S.id_player = P.id_player AND \
+		       P.id_site = %SITEID% AND \
+		       P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__VPIP
@@ -385,18 +372,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"vpip",			
 		// description_for_editor
 		"Poker Tracker VP$IP",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_vpip then 1 else 0 end) as real) / count(*) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when (count(*) = 0) \
+		         then -1 \
+				 else cast(sum(case when flg_vpip then 1 else 0 end) as real) / count(*) \
+				 end) as result \
+		FROM   player as P, %GAMETYPE%player_statistics as S \
+		WHERE  S.id_player = P.id_player AND \
+		       P.id_site = %SITEID% AND \
+		       P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true,
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RFI
@@ -406,19 +392,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"pf_rfi",		
 		// description_for_editor
 		"Poker Tracker pre-flop raise first in percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_p_first_raise AND flg_p_open_opp then 1 else 0 end) as real) \
-                   / sum(case when flg_p_open_opp then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when count(*) = 0 then -1 else \
+		        cast(sum(case when flg_p_first_raise then 1 else 0 end) as real) / count(*) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		 	    S.flg_p_open_opp AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true,
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_CALLED_RAISE
@@ -428,19 +411,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"pf_cr",		
 		// description_for_editor
 		"Poker Tracker pre-flop called raise percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_p_face_raise AND flg_p_fold = false AND cnt_p_raise=0 then 1 else 0 end) as real) \
-                   / sum(case when flg_p_face_raise then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		 "hand_player_statistics as S",
+		// query
+		"SELECT (case when count(*) = 0 then -1 else \
+		        cast(sum(case when not flg_p_fold AND cnt_p_raise = 0 then 1 else 0 end) as real) / count(*) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		 	    S.flg_p_face_raise AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__STEAL_ATTEMPT
@@ -450,19 +430,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"pfats",	
 		// description_for_editor
 		"Poker Tracker attempt to steal blinds",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_steal_att then 1 else 0 end) as real) \
-                   / sum(case when flg_steal_opp then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_steal_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_steal_att then 1 else 0 end) as real) \
+				/ sum(case when flg_steal_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__WTSD
@@ -472,19 +449,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"wsdp",			
 		// description_for_editor
 		"Poker Tracker went to showdown percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_showdown then 1 else 0 end) as real) \
-                   / sum(case when flg_f_saw then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_f_saw then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_showdown then 1 else 0 end) as real) \
+				/ sum(case when flg_f_saw then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true,
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__WSSD
@@ -494,19 +468,17 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"wssd",			
 		// description_for_editor
 		"Poker Tracker won $ at showdown percentae",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_showdown AND flg_won_hand then 1 else 0 end) as real) \
-                   / sum(case when flg_showdown then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"holdem_hand_player_statistics as S",
+		// query
+		"SELECT (case when count(*) = 0 then -1 else \
+		        cast(sum(case when flg_won_hand then 1 else 0 end) as real) \
+				/ count(*) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+				flg_showdown AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_basic,
-		// needs_infix_and_second_part
-		true,
+		pt_group_basic
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FOLD_BB_TO_STEAL
@@ -516,19 +488,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"fbbts",		
 		// description_for_editor
 		"Poker Tracker folded big blind to steal",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_bb_steal_fold then 1 else 0 end) as real) \
-                   / sum(case when flg_blind_def_opp AND flg_blind_b then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_blind_def_opp AND flg_blind_b then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_bb_steal_fold then 1 else 0 end) as real) \
+				/ sum(case when flg_blind_def_opp AND flg_blind_b then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_positional,
-		// needs_infix_and_second_part
-		true,
+		pt_group_positional
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL
@@ -538,19 +507,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"fsbts",
 		// description_for_editor
 		"Poker Tracker folded small blind to steal",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-              then cast(sum(case when flg_sb_steal_fold then 1 else 0 end) as real) \
-                   / sum(case when flg_blind_def_opp AND flg_blind_s then 1 else 0 end) \
-              else (-1) \
-         end) as result \
-		FROM   player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_blind_def_opp AND flg_blind_s then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_sb_steal_fold then 1 else 0 end) as real) \
+				/ sum(case when flg_blind_def_opp AND flg_blind_s then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_positional,
-		// needs_infix_and_second_part
-		true,
+		pt_group_positional
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_CBET
@@ -560,18 +526,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"cbetflop",		
 		// description_for_editor
 		"Poker Tracker cbet percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) \
-			then cast(sum(case when S.flg_f_cbet = 't' then 1 else 0 end) as real) \
-				/ cast(sum(case when S.flg_f_cbet_opp = 't' then 1 else 0 end) as real) \
-			else (-1) end) as result \
-		FROM	player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_f_cbet_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_f_cbet then 1 else 0 end) as real) \
+				/ sum(case when flg_f_cbet_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B
@@ -581,18 +545,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"f3bettot",		
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet total percentage",
-		// first_part_of_query
-		"SELECT (case when (count(*)!=0) then \
-			(cast(sum(case when (S.enum_p_3bet_action = 'F' or S.enum_f_3bet_action = 'F' or S.enum_t_3bet_action = 'F' or S.enum_r_3bet_action = 'F') then 1 else 0 end) as real) / \
-			cast(sum(case when  (S.flg_p_3bet_def_opp = 't' or S.flg_f_3bet_def_opp = 't' or S.flg_t_3bet_def_opp = 't' or S.flg_r_3bet_def_opp = 't') then 1 else 0 end) as real)) \
-		else (-1) end) as result \
-		FROM player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when not enum_p_3bet_action = 'F' or enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B
@@ -602,18 +564,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"f3betpflop",	
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet preflop percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_p_3bet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_p_3bet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_p_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_p_3bet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_p_3bet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B
@@ -623,18 +583,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"f3betflop",
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet flop percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_f_3bet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_f_3bet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_f_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_f_3bet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_f_3bet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_FOLD_TO_3B
@@ -644,18 +602,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"f3betturn",	
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet turn percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_t_3bet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_t_3bet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_t_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_t_3bet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_t_3bet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B
@@ -665,18 +621,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"f3betriver",	
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet river percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_r_3bet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_r_3bet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,", 
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_r_3bet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET
@@ -686,18 +640,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"fcbetflop",	
 		// description_for_editor
 		"Poker Tracker folded while facing cbet flop percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_f_cbet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_f_cbet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,",
-		// last_part_of_query
-		"holdem_hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_f_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_f_cbet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_f_cbet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET
@@ -707,18 +659,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"fcbetturn",
 		// description_for_editor
 		"Poker Tracker folded while facing cbet turn percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_t_cbet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_t_cbet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_t_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_t_cbet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_t_cbet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET
@@ -728,18 +678,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"fcbetriver",
 		// description_for_editor
 		"Poker Tracker folded while facing cbet river percentage",
-		// first_part_of_query
-		"select (case when (count(*)!=0) then \
-			cast(sum(case when S.enum_r_cbet_action = 'F' then 1 else 0 end) as real) / \
-			cast(sum(case when S.flg_r_cbet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
-		FROM player as P,",
-		// last_part_of_query
-		"hand_player_statistics as S",
+		// query
+		"SELECT (case when sum(case when flg_r_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when enum_r_cbet_action = 'F' then 1 else 0 end) as real) \
+				/ sum(case when flg_r_cbet_def_opp then 1 else 0 end) end) as result \
+		 FROM   player as P, %GAMETYPE%player_statistics as S \
+		 WHERE  S.id_player = P.id_player AND \
+		        P.id_site = %SITEID% AND \
+		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_advanced,
-		// needs_infix_and_second_part
-		true,
+		pt_group_advanced
 	},
 #endif
 };
