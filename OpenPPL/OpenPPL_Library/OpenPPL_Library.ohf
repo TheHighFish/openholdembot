@@ -4167,8 +4167,11 @@ f$OpenPPL_OpponentsLeft
 nopponentsdealt
 
 ##f$OpenPPL_NumberOfOpponentsAllin##
-(f$OpenPPL_Opponents_AllinBits || f$OpenPPL_Opponents==1 && f$OpenPPL_AmountToCall==f$OpenPPL_StackSize)
-
+(f$OpenPPL_Opponents>1 || (f$OpenPPL_Opponents==1 && f$OpenPPL_AmountToCall<f$OpenPPL_StackSize))? f$OpenPPL_Opponents_AllinBits:
+(f$OpenPPL_Opponents==1 && f$OpenPPL_AmountToCall==f$OpenPPL_StackSize)? 1:
+0
+  
+  
 ##f$OpenPPL_Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot##
 // Some casinos don't display the bets of players who are allin,
 // but move them immediatelly to the main-pot (and/or sitepots)
