@@ -63,8 +63,8 @@ const int CPokerTrackerLookup::GetSiteId()
 	while (lookup!=end)
 	{
 		CString supported_sitename = lookup->first;
-		if (sitename.Find(supported_sitename)
-			|| network.Find(supported_sitename))
+		if (supported_sitename.CompareNoCase(sitename) == 0
+			|| supported_sitename.CompareNoCase(network) == 0)
 		{
 			write_log(preferences.debug_pokertracker(), "[PokerTrackerLookup] Site or network is: %s\n",
 				supported_sitename);
