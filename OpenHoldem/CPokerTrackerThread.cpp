@@ -466,8 +466,8 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		return false;
 
 	CString query;
-	query.Format("SELECT player_name FROM player WHERE player_name like '%s %s%i",
-		query_name, "' AND id_site=", siteid);
+	query.Format("SELECT player_name FROM player WHERE player_name like '%s' AND id_site=%i",
+		query_name, siteid);
 	try
 	{
 		res = PQexec(_pgconn, query);
