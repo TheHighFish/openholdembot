@@ -187,13 +187,12 @@ bool CTablePositioner::TryPosition(int left_x, int top_y)
 	}
 	// We have found a good position that does not overlap any other table
 	// Move our connected table over there.
+	_new_left_x = left_x;
+	_new_top_y  = top_y;
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Found a free slot\n");
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Going to move the table to %i, %i\n",
-		left_x, top_y);
-	MoveWindow(p_autoconnector->attached_hwnd(), 
-		left_x, top_y, 
-		_table_size_x, _table_size_y, 
-		true);	// true = Redraw the table.
+		_new_left_x, _new_top_y);
+	MoveWindowToItsPosition();
 	return true;
 }
 
@@ -249,8 +248,8 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 void CTablePositioner::MoveToBottomRight()
 {
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToBottomRight()\n");
-	int _new_left_x = _desktop_rectangle.right  - _table_size_x + 1;
-	int _new_top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
+	_new_left_x = _desktop_rectangle.right  - _table_size_x + 1;
+	_new_top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
 	MoveWindowToItsPosition();
 }
 
@@ -259,11 +258,20 @@ void CTablePositioner::MoveWindowToItsPosition()
 {
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveWindowToItsPosition()\n");
 
-	AssertRange(_new_left_x, 0, _desktop_rectangle.right);
-	AssertRange(_new_top_y, 0, _desktop_rectangle.bottom);
-	// Usually the table is smaller than the desktop
-	AssertRange(_table_size_x, 1, _desktop_rectangle.right);
-	AssertRange(_table_size_x, 1, _desktop_rectangle.bottom);
+	// Consistancy checks
+	if (_new_left_x      < 0 || _new_left_x   > _desktop_rectangle.right
+		|| _new_top_y    < 0 || _new_top_y    > _desktop_rectangle.bottom
+		|| _table_size_x < 1 || _table_size_x > _desktop_rectangle.right
+		|| _table_size_y < 1 || _table_size_y > _desktop_rectangle.bottom)
+	{
+		// Values out of sane range
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] Values out of sane range; probably not yet initialized\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_left_x   = %i\n", _new_left_x);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_top_y    = %i\n", _new_top_y);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_x = %i\n", _table_size_x);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_y = %i\n", _table_size_y);
+		return;
+	}
 
 	MoveWindow(p_autoconnector->attached_hwnd(), 
 		_new_left_x, _new_top_y, 
@@ -289,7 +297,7 @@ void CTablePositioner::AlwaysKeepPositionIfEnabled()
 	}
 	else
 	{
-		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled()  restoring old position\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() restoring old position\n");
 		MoveWindowToItsPosition();
 	}
 }

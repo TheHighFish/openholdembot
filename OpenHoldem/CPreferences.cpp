@@ -54,6 +54,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_tablemap_loader",
 	"debug_filesystem_monitor",
 	"debug_handhistory",
+	"debug_hopper_messages",
 	"debug_alltherest",
 	"debug_table_positioner",
 	"debug_istournament",

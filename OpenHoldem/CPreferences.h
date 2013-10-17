@@ -58,6 +58,7 @@ enum
 	k_prefs_debug_tablemap_loader,
 	k_prefs_debug_filesystem_monitor,
 	k_prefs_debug_handhistory,
+	k_prefs_debug_hopper_messages,
 	k_prefs_debug_alltherest,
 	k_prefs_debug_table_positioner,
 	k_prefs_debug_istournament,
@@ -244,6 +245,7 @@ public:
 	const bool	debug_tablemap_loader() { return prefs_numerical_values[k_prefs_debug_tablemap_loader]; }
 	const bool	debug_filesystem_monitor() { return prefs_numerical_values[k_prefs_debug_filesystem_monitor]; }
 	const bool	debug_handhistory() { return prefs_numerical_values[k_prefs_debug_handhistory]; }
+	const bool	debug_hopper_messages() { return prefs_numerical_values[k_prefs_debug_hopper_messages]; }
 	const bool	debug_alltherest() { return prefs_numerical_values[k_prefs_debug_alltherest]; }
 	const bool  debug_table_positioner() { return prefs_numerical_values[k_prefs_debug_table_positioner]; }
 	const bool  debug_istournament() { return prefs_numerical_values[k_prefs_debug_istournament]; }
