@@ -16,6 +16,9 @@ NEW STUFF:
     Local $result = DllCall("user32.dll", "lresult", "SendMessage", "hwnd", $oh_hwnd, "uint", 
 	  $WMA_ISREADY, "wparam", 0, "lparam", 0)
   [THF]
+- Modified the way we define PT queries to allow more flexibility and
+  query response improvement.
+  [Termitapalahermita, THF]
 
 BUG FIXES:
 - OpenHoldem could crash when loading a new formula,
@@ -34,6 +37,9 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Triple for reporting.
   [THF]
+- Changed the way OH search for sitename/network to find correct site id
+  used at PT queries
+  [Termitapalahermita]
 
 v4.2.4 2013-09-25
 ==================
