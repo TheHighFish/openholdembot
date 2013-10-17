@@ -429,7 +429,8 @@
 #define IDC_DEBUG_PREFERENCES           1384
 #define IDC_DEBUG_DLL_EXTENSION			1385
 #define IDC_DEBUG_SCRAPER_PREPROCESSOR  1386
-#define IDC_ALWAYS_KEEP_POSITION        1387
+#define IDC_DEBUG_HOPPER_MESSAGES       1387
+#define IDC_ALWAYS_KEEP_POSITION        1388
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -546,7 +547,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32997
-#define _APS_NEXT_CONTROL_VALUE         1388
+#define _APS_NEXT_CONTROL_VALUE         1389
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
