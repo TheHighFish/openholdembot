@@ -28,6 +28,21 @@ double MinimumBetsizeDueToPreviousRaise()
 {
 	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
 		+ p_symbol_engine_chip_amounts->sraiprev());
+	// If there are no bets and no raises the min-bet is 1 big-blind
+	if (minimums_swag_amount <= 0)
+	{
+		if (p_symbol_engine_tablelimits->bblind() > 0)
+		{
+			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: set to 1 big-blind\n");
+			minimums_swag_amount = p_symbol_engine_tablelimits->bblind();
+		}
+		else
+		{
+			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: SERIOUS TABLEMAP-PROBLEM; no bets; big-blind unknown; setting it to 0.02\n");
+			// Setting it to the absolute minimum
+			minimums_swag_amount = 0.02;
+		}
+	}
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: %f\n", minimums_swag_amount);
 	assert(minimums_swag_amount > 0);
 	return minimums_swag_amount;
@@ -97,7 +112,7 @@ bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents)
 		amount_to_raise_to_in_dollars_and_cents);
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() maximum betsize: %f\n",
 		maximum_betsize);
-	return (maximum_betsize >= amount_to_raise_to_in_dollars_and_cents);
+	return (amount_to_raise_to_in_dollars_and_cents >= maximum_betsize);
 }
 
 double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents)
