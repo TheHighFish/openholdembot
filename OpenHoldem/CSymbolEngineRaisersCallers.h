@@ -74,7 +74,7 @@ public:
 	}
 public:
 	int nplayerscallshort()		{ return _nplayerscallshort; }
-	int nopponentsraising()		{ return bitcount(_raisbits[BETROUND]); }
+	int nopponentsraising();
 	int nopponentsbetting()		{ return _nopponentsbetting; }
 	int nopponentsfolded()		{ return _nopponentsfolded; }
 	int nopponentscalling()		{ return _nopponentscalling; }

@@ -23,6 +23,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineUserchair.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
@@ -34,6 +35,7 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_symbol_engine_userchair != NULL);
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
@@ -275,5 +277,16 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 		new_foldbits &= (~_foldbits[k_betround_turn]);
 	}
 	_foldbits[BETROUND] = new_foldbits;
+}
+
+// Be careful: nopponents does not include the user, 
+// whereas raisbits counts all chairs. 
+// We have to remove the userchair here.
+int CSymbolEngineRaisersCallers::nopponentsraising()		
+{ 
+	int opponents_raisbits = _raisbits[BETROUND] 
+		& ~p_symbol_engine_userchair->userchairbit();
+	return bitcount(opponents_raisbits); 
+
 }
 

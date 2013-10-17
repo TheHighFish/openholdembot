@@ -15,7 +15,7 @@ NEW STUFF:
     Global Const $WMA_ISREADY = 0x8007
     Local $result = DllCall("user32.dll", "lresult", "SendMessage", "hwnd", $oh_hwnd, "uint", 
 	  $WMA_ISREADY, "wparam", 0, "lparam", 0)
-  [THF]	  
+  [THF]
 
 BUG FIXES:
 - OpenHoldem could crash when loading a new formula,
@@ -23,6 +23,16 @@ BUG FIXES:
   especially CSymbolEngineIniFunctions::ResetOnHeartbeat()
   which contained invalid data at this point of time.
   Thank you to Ares who provided us exact steps to reproduce the problem.
+  [THF]
+- The automatic betsize-adjustment-code could get the minimum wrong
+  if there were no bets and raises. OpenHoldem could also incorrectly
+  go allin in some cases.
+  Thanks to Postenjak for finding both problems.
+  [THF] 
+- The symbol nopponentsraising could incorrectly include the userchair
+  on first action preflop if we were sititng in the blinds.
+  This has now been fixed.
+  Thanks to Triple for reporting.
   [THF]
 
 v4.2.4 2013-09-25
