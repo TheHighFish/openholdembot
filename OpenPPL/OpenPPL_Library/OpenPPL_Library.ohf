@@ -2794,6 +2794,10 @@ f$OpenPPL_Had2ndOverPairOnFlop && (($$cr3==f$OpenPPL_TopFlopCard)|| ($$cr3<f$Ope
 ##f$OpenPPL_HadTopPairOnFlop##
 [(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_HighestRankOnFlop) || (f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_HighestRankOnFlop)]
 
+##f$OpenPPL_Had2ndTopPairOnFlop##
+[(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_2ndTopFlopCard) || (f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_2ndTopFlopCard)]
+
+
 ##f$OpenPPL_HighestRankOnTurn##
 ((f$OpenPPL_TurnCard > f$OpenPPL_HighestRankOnFlop) ? f$OpenPPL_TurnCard : f$OpenPPL_HighestRankOnFlop)
 
