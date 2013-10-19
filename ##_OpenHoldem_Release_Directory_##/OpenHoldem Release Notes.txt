@@ -17,7 +17,10 @@ NEW STUFF:
 	  $WMA_ISREADY, "wparam", 0, "lparam", 0)
   [THF]
 - Modified the way we define PT queries to allow more flexibility and
-  query response improvement.
+  query response improvement. Now we can use %GAMETYPE% into queries and if we need the
+  table holdem_hand_player_detail or tourney_holdem_hand_player_detail we can use 
+  %GAMETYPE%player_detail and OH replace it by holdem_hand_ or tourney_holdem_hand_
+  depending on game type we are playing (it also works on omaha games).
   [Termitapalahermita, THF]
 
 BUG FIXES:
@@ -37,8 +40,11 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Triple for reporting.
   [THF]
-- Changed the way OH search for sitename/network to find correct site id
+- Solved the way OH search for sitename/network to find correct site id
   used at PT queries
+  [Termitapalahermita]
+- Solved when looking for if some player exists, the query was badly defined and
+  never find the correct player into DB.
   [Termitapalahermita]
 
 v4.2.4 2013-09-25
