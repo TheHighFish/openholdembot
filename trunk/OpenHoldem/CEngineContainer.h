@@ -24,7 +24,10 @@ public:
 	CEngineContainer();
 	~CEngineContainer();
 public:
+	// both to be called by the auto-connector
 	void ResetOnConnection();
+	void ResetOnDisconnection();
+public:
 	void CallSymbolEnginesToUpdateSymbolsIfNecessary();
 private:
 	void CreateSpecialSymbolEngines();
@@ -40,6 +43,7 @@ private:
 private:
 	CVirtualSymbolEngine *_symbol_engines[k_max_number_of_symbol_engines]; 
 	int _number_of_symbol_engines_loaded;
+	bool _reset_on_connection_executed;
 } *p_engine_container;
 
 #endif INC_CENGINECONTAINER_H

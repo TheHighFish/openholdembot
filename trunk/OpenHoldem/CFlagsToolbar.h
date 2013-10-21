@@ -34,11 +34,10 @@ public:
 	bool IsButtonEnabled(int button_ID);
 public:
 	CMyToolBar _tool_bar;
-protected:
+public:
 	afx_msg void OnClickedFlags();
 	DECLARE_MESSAGE_MAP()
 private:
-	void InitCFlagsToolbar(CWnd *parent_window);
 	void CreateMainToolbar(void);
 	void CreateFlagsToolbar(void);
 	void AlignToolbars(void);

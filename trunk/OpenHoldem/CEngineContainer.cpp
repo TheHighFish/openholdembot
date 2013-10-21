@@ -49,6 +49,8 @@ CEngineContainer::CEngineContainer()
 	CreateSymbolEngines();
 	// First initialization is the same as on a new connection
 	ResetOnConnection();
+	// But we want to initialize later again on every connection
+	_reset_on_connection_executed = false;
 }
 
 CEngineContainer::~CEngineContainer()
@@ -176,6 +178,18 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines()
 
 void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 {
+	write_log(preferences.debug_engine_container(), "[EngineContainer] CallSymbolEnginesToUpdateSymbolsIfNecessary()\n");
+	if (!_reset_on_connection_executed)
+	{
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
+		// The problem with ResetOnConnection:
+		// It will be called by another thread,
+		// so the execution might be out of order.
+		// Therefore we have to skip all other calculations
+		// until OnConnection() got executed.
+		return;
+	}
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
@@ -210,6 +224,15 @@ void CEngineContainer::ResetOnConnection()
 	{
 		_symbol_engines[i]->ResetOnConnection();
 	}
+	_reset_on_connection_executed = true;
+}
+
+void CEngineContainer::ResetOnDisconnection()
+{
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
+	// Just to make sure that our connection-code
+	// will be executed later in correct order
+	_reset_on_connection_executed = false;
 }
 
 void CEngineContainer::ResetOnHandreset()

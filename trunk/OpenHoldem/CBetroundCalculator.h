@@ -38,7 +38,7 @@ public:
 		return _betround; 
 	}
 public:
-	bool IsNewBetround()	{ return (_betround != _betround_previous_heartbeat); }
+	bool IsNewBetround();
 private:
 	int _betround;
 	int _betround_previous_heartbeat;

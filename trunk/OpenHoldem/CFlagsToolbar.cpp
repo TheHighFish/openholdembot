@@ -25,26 +25,6 @@ CFlagsToolbar *p_flags_toolbar = NULL;
 #define ENT CSLock lock(m_critsec);
 
 BEGIN_MESSAGE_MAP(CFlagsToolbar, CWnd)
-	ON_BN_CLICKED(ID_NUMBER0,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER1,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER2,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER3,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER4,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER5,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER6,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER7,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER8,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER9,  &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER10, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER11, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER12, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER13, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER14, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER15, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER16, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER17, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER18, &OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER19, &OnClickedFlags)
 END_MESSAGE_MAP()
 
 CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
@@ -65,46 +45,6 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 
 CFlagsToolbar::~CFlagsToolbar()
 {}
-
-void CFlagsToolbar::InitCFlagsToolbar(CWnd *parent_window)
-{
-	_tool_bar.CreateEx(parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER 
-		| CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
-	_tool_bar.LoadToolBar(IDR_MAINFRAME);
-	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-
-	TBBUTTONINFO	tbi;
-	tbi.cbSize = sizeof(TBBUTTONINFO);
-	tbi.dwMask = TBIF_STYLE;
-	tbi.fsStyle = TBSTYLE_CHECK;
-
-	// Make flags toolbar buttons sticky
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER0,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER1,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER2,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER3,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER4,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER5,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER6,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER7,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER8,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER9,  &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER10, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER11, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER12, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER13, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER14, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER15, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER16, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER17, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER18, &tbi);
-	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
-	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
-	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-
-	// Title of floating flags toolbar
-	_tool_bar.SetWindowText("Flags");
-}
 
 void CFlagsToolbar::DisableButtonsOnConnect()
 {
@@ -166,7 +106,9 @@ long int CFlagsToolbar::GetFlagBits()
 void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 {
 	ENT
-	// No assertion and no error-message here, only a range-check,
+
+	assert((void*)_tool_bar != NULL);
+	// No further assertion and no error-message here, only a range-check,
 	// as this function might get called by external programs
 	// via window-messages.
 	if (flag_number>=0 && flag_number<k_number_of_flags) 
@@ -200,6 +142,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 
 void CFlagsToolbar::OnClickedFlags() 
 {
+	assert((void*)_tool_bar != NULL);
 	SetFlag(0,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
 	SetFlag(1,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
 	SetFlag(2,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER2));
