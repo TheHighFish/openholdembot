@@ -279,11 +279,11 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	_foldbits[BETROUND] = new_foldbits;
 }
 
-// Be careful: nopponents does not include the user, 
-// whereas raisbits counts all chairs. 
-// We have to remove the userchair here.
 int CSymbolEngineRaisersCallers::nopponentsraising()		
 { 
+	// Be careful: nopponents does not include the user, 
+	// whereas raisbits counts all chairs. 
+	// We have to remove the userchair here.
 	int opponents_raisbits = _raisbits[BETROUND] 
 		& ~p_symbol_engine_userchair->userchairbit();
 	return bitcount(opponents_raisbits); 

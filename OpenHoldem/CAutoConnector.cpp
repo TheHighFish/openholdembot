@@ -354,9 +354,11 @@ void CAutoConnector::Disconnect()
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
 	p_autoplayer->set_autoplayer_engaged(false);
 
+	p_engine_container->ResetOnDisconnection();
+
 	// Send "disconnect" to scraper DLL, if loaded
 	if (theApp._dll_scraper_process_message)
-			(theApp._dll_scraper_process_message) ("disconnect", NULL);
+		(theApp._dll_scraper_process_message) ("disconnect", NULL);
 
 	theApp.UnloadScraperDLL();
 

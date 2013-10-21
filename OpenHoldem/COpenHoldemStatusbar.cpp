@@ -132,14 +132,13 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	int nCards = 0;
 	_status_plcards = "";
 	 
-	if (p_scraper_access->UserHasCards())
+	if (p_scraper_access->PlayerHasKnownCards(userchair))
 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) 
 		{
 			// This condition got already checked: "playing"
 			assert(p_scraper->card_player(userchair, i) != CARD_BACK);
 			assert(p_scraper->card_player(userchair, i) != CARD_NOCARD); 
-
 
 			char *card = StdDeck_cardString(p_scraper->card_player(userchair, i));
 			temp.Format("%s ", card);
