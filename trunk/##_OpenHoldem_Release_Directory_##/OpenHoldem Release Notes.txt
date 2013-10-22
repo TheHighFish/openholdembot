@@ -1,4 +1,4 @@
-v4.3.0 2013-10-xx
+v4.2.5 2013-10-22
 ==================
 NEW STUFF:
 - Providing a new option for the table-positioner.
@@ -46,6 +46,12 @@ BUG FIXES:
 - Solved when looking for if some player exists, the query was badly defined and
   never find the correct player into DB.
   [Termitapalahermita]
+- CEngineContainer::ResetOnConnection() gets called by the auto-connector-thread.
+  Depending on thread-scheduling it could happen, that this reset was out of order
+  and got executed after "minor" resets (handreset maybe).
+  This issue has now been fixed.
+  Thanks to Papa04 for reporting.
+  [THF]
 
 v4.2.4 2013-09-25
 ==================
