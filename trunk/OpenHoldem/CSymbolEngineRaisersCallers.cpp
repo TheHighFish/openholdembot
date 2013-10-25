@@ -226,9 +226,11 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 		}
 	}
 	AssertRange(_nplayerscallshort,  0, k_max_number_of_opponents_at_full_ring_table);
-	AssertRange(_nopponentsbetting,  0, k_max_number_of_opponents_at_full_ring_table);
-	AssertRange(_nopponentsfolded,   0, k_max_number_of_opponents_at_full_ring_table);
-	AssertRange(_nopponentschecking, 0, k_max_number_of_opponents_at_full_ring_table);
+	// Using k_max_number_of_players instead of k_max_number_of_opponents_at_full_ring_table below,
+	// as it might be that the user is not seated or user-chair not recognized
+	AssertRange(_nopponentsbetting,  0, k_max_number_of_players);
+	AssertRange(_nopponentsfolded,   0, k_max_number_of_players);
+	AssertRange(_nopponentschecking, 0, k_max_number_of_players);
 }
 
 double CSymbolEngineRaisersCallers::RaisersBet()
