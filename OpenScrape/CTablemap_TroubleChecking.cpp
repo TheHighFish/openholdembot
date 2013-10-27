@@ -12,6 +12,7 @@
 //*****************************************************************************
 
 
+#include "stdafx.h"
 
 void CheckForCorreectNumberOfChairs()
 {
