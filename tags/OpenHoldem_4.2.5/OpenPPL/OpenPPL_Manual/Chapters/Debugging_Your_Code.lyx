@@ -1,0 +1,533 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+Debugging Your Code
+\end_layout
+
+\begin_layout Standard
+Why debugging? If you code your bot or if you watch it play you will for
+ sure find situations where the play doesn't match your expectations.
+ Sometimes you know immediatelly what you did wrong or at what place of
+ the code you have to look for your error.
+ But sometimes you don't know or it might even seem, that everything looks
+ ok on your side.
+ So you might want to look a little bit deeper - at your code and maybe
+ even at the symbol library.
+ Here in this chapter we will show you some techniques to locate the problem:
+\end_layout
+
+\begin_layout Section*
+Working with the debug-tab
+\end_layout
+
+\begin_layout Standard
+OpenHoldem provides a cool feature called the debug-tab.
+ Just open the formula-editor (for OH-script), switch to the f$debug-section
+ and then you can enter your expressions.
+ For example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+= userchair
+\end_layout
+
+\begin_layout Plain Layout
+
+= f$OpenPPL_HaveTopPair
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here userchair in a native OpenHoldem symbol and f$OpenPPL_HaveTopPair is
+ an OpenPPL-symbol.
+ Please don't get confused about the prefix 
+\begin_inset Quotes eld
+\end_inset
+
+f$OpenPPL_
+\begin_inset Quotes erd
+\end_inset
+
+ --- the converter adds it automatically in the translated code to avoid
+ naming conflicts.
+ You don't have to care about that --- except here at the debug-tab.
+\end_layout
+
+\begin_layout Standard
+So once you have entered the symbols in question click 
+\begin_inset Quotes eld
+\end_inset
+
+Apply
+\begin_inset Quotes erd
+\end_inset
+
+ to confirm your input and 
+\begin_inset Quotes eld
+\end_inset
+
+Auto
+\begin_inset Quotes erd
+\end_inset
+
+ to turn the evaluator on.
+ OpenHoldem will evaluate your expressions and show you their values.
+ Anything wrong with them?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/debug_tab.JPG
+	width 577pt
+	height 635pt
+	noUnzip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Only one point might look strange on first sight: OpenHoldem reports a potsize
+ of 65 whereas the correspondenting OpenPPL-symbols reports a value of 32.50.
+ But there is an explanation for it: OpenHoldem calculates in dollars, OpenPPL
+ in bets or big-blinds.
+ So everything is correct with this screenshot.
+\end_layout
+
+\begin_layout Standard
+But if something is wrong, there might be several reasons:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+incorrect input.
+ 
+\emph default
+Have a look at OpenHoldems table display: everything ok?
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+a problem with your code (or with the symbol library):
+\emph default
+ a symbol like for example StillToAct depends on other symbols like dealposition
+ and nchairsdealtleft.
+ So if StillToAct was wrong you might put these symbols into the debug-tab
+ tooand evaluate further until you find the problem.
+\end_layout
+
+\begin_layout Section*
+Simulating positions
+\end_layout
+
+\begin_layout Standard
+The debug-tab is a wonderful tool --- but: the problem happened at a live-table
+ --- what can you do? There are two things you could try: Openholdem provides
+ a tool called ManualMode.
+ Here you can setup some situations to simulate your bot-logic.
+ The other possibility: you could shoot so-called replay-frames, i.e.
+ screenshots of the casino-table that get saved to the replay-directory
+ in your bot-folder.
+ Once the session is over you can load these frames with OHReplay.exe and
+ connect OpenHoldem to OHReplay like to a normal casino-table.
+ And then you can work with the debug-tab like described above.
+ Please refer to OpenHoldems manual for a more detailed description of these
+ tools.
+\end_layout
+
+\begin_layout Section*
+Investigating log-files
+\end_layout
+
+\begin_layout Standard
+Not satisfied with the play? You might also look at the autoplayer-log.
+ It is stored in your bot-folder and named e.g.
+ oh_0.log.
+ OpenHoldem uses this file to not only store the action it took, but also
+ the complete evaluation process.
+ First watch out for your hand (you can identify it e.g.
+ by the time, your cards, the hand-number, etc.).
+ At first the log might look like a complete mess, but actually it is well
+ structured: function-names on the very left are higher-level functions;
+ symbols that are more indented got called by these higher-level functions.
+ So what you see below is actually an evaluation-tree:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$rais=0.00 [Line: 2, Col: 18]
+\end_layout
+
+\begin_layout Plain Layout
+
+      f$OpenPPL_Raise=-7.00 [Line: 1, Col: 2]
+\end_layout
+
+\begin_layout Plain Layout
+
+      f$OpenPPL_Decision=-1.00 [Line: 1, Col: 19]
+\end_layout
+
+\begin_layout Plain Layout
+
+            betround=1.00
+\end_layout
+
+\begin_layout Plain Layout
+
+            f$preflop=-1.00 [Line: 10, Col: 62] 
+\end_layout
+
+\begin_layout Plain Layout
+
+                 f$OpenPPL_Raises=0.00 [Line: 1, Col: 1]
+\end_layout
+
+\begin_layout Plain Layout
+
+                        me_re_MemRaises=0.00
+\end_layout
+
+\begin_layout Plain Layout
+
+                  f$OpenPPL_Calls=0.00 [Line: 1, Col: 1]
+\end_layout
+
+\begin_layout Plain Layout
+
+                        me_re_MemCalls=0.00
+\end_layout
+
+\begin_layout Plain Layout
+
+                  f$OpenPPL_StillToAct=8.00 [Line: 1, Col: 42]
+\end_layout
+
+\begin_layout Plain Layout
+
+                        dealposition=4.00
+\end_layout
+
+\begin_layout Plain Layout
+
+                        nchairsdealtleft=6.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+                 islist008=0.00
+\end_layout
+
+\begin_layout Plain Layout
+
+                 f$OpenPPL_Others=1.00 [Cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+                 f$OpenPPL_Fold=-1.00 [Line: 1, Col: 2]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The main logic of your translated OpenPPL-code gets evaluated by the socalled
+ 
+\begin_inset Quotes eld
+\end_inset
+
+f$OpenPPL_Decision
+\begin_inset Quotes erd
+\end_inset
+
+ function.
+ It first looks up 
+\begin_inset Quotes eld
+\end_inset
+
+betround
+\begin_inset Quotes erd
+\end_inset
+
+ (which is 1.00) and therefore decides to evaluate 
+\begin_inset Quotes eld
+\end_inset
+
+f$preflop
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+f$preflop
+\begin_inset Quotes erd
+\end_inset
+
+-function looks at 
+\begin_inset Quotes eld
+\end_inset
+
+Raises
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Calls
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Both get their values from pre-computed memory-symbols (as they depend
+ on game-history).
+ After that it evaluates StilltoAct (which further calculates its value
+ depending on dealposition and nchairsdealtleft) and result to 8 (early
+ position 2).
+ As our hand is not in list008 (false = 0.00) OpenHoldem doesn't continue
+ here and finally reaches 
+\begin_inset Quotes eld
+\end_inset
+
+When Others Fold Force
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Others is always true (coded as 1.00; and [Cached] simply means, that this
+ symbol got evaluated in the past and its value got remembered).
+ So Fold (coded as -1.00) is the action to be taken.
+ Once this point gets reached, OpenHoldem evaluates f$preflop to -1.00 (Fold)
+ and then f$Decision to -1.00.
+ As Fold is something different than Raise (coded as -7.00) OpenHoldems autoplaye
+r-function f$rais evaluates to false (0.00) and therefore OpenHoldem does
+ not raise.
+ It will then continue with f$call as described in OpenHoldems manual.
+ Debugging causes brain-cancer, but for botters that's a progress.
+\end_layout
+
+\begin_layout Section*
+Things to watch out for
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Incorrect hand-reset: 
+\emph default
+Most symbols depend only on the state of the table (cards, players, etc.)
+ and are quite reliable.
+ However there are some symbols, that depend on previous game-states, like
+ BettingAction-symbols; these symbols reset whenever a new hand starts.
+ Also user-defined variables will lose their value if a hand-reset occurs.
+ These hand-resets can be triggered by certain events, like a changing dealer-ch
+air or disappearing community cards, depending on your hand-reset-method
+ defined in the tablemap.
+ Depending on your settings it be might that an occlusion of the table will
+ cause a hand-reset for OpenHoldem.
+ So watch out for messages like below in your log-file.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2012-01-21 19:50:17 -
+\end_layout
+
+\begin_layout Plain Layout
+
+************************************************************* 
+\end_layout
+
+\begin_layout Plain Layout
+
+HAND RESET (num:  dealer: 0 cards: KhKd): PartyPoker Table ###### - NL Hold'em
+ $1/$2 
+\end_layout
+
+\begin_layout Plain Layout
+
+*************************************************************
+\end_layout
+
+\begin_layout Plain Layout
+
+2012-01-21 19:50:17 - ROUND 1
+\end_layout
+
+\end_inset
+
+If they appear in the middle of a hand, then you should revisit your hand-reset-
+method.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Misread information: 
+\emph default
+Most problems (and most reported 
+\begin_inset Quotes eld
+\end_inset
+
+bugs
+\begin_inset Quotes erd
+\end_inset
+
+) are of the from 
+\begin_inset Quotes eld
+\end_inset
+
+garbage in - garbage out
+\begin_inset Quotes erd
+\end_inset
+
+.
+ If OpenHoldem gets incorrect data from the scraper-engine (e.g.
+ no seated players) then all further calculations by the symbol-engine and
+ the evaluator will return bogus values.
+ The reason is usually simple: a beginner with incorrect system settings
+ or incorrect casino settings.
+ Let us emphasize: Win2000 classic theme and all animations turned off are
+ recommended, but not necessary.
+ In pronciple you can scrape whatever configuration you like.
+ However: if you use somebody elses tablemap, then you 
+\emph on
+have to
+\emph default
+ use exactly the same settings as the profile creator.
+ So before you go crazy investigating log-files: have a look at basic OpenHoldem
+ symbols: are they reasonable or plain wrong? And before you sit at a real-money
+-table observe your bot and OpenHoldems table-display for some time: does
+ OpenHoldem recognize every game-state correctly? Don't get frightened:
+ 
+\emph on
+screenscraping is an easy and very flexible approach, that works great.
+ But it requires some care from your side!
+\end_layout
+
+\begin_layout Section*
+Using Flags
+\end_layout
+
+\begin_layout Standard
+OpenHoldem provides a useful set of buttons with a number on it, from 0
+ to 19 called flags.
+ When an OH flag button is pressed then corresponding symbol (f0..f19) will
+ be true.
+ For example our code could look like the following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN betround=2 AND (BotRaisedBeforeFlop OR f0) Raise 50% FORCE 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The above line is true if bot raised before flop or flag 0 button has been
+ pressed; This way you could simulate in Manual Mode custom conditions.
+\end_layout
+
+\end_body
+\end_document

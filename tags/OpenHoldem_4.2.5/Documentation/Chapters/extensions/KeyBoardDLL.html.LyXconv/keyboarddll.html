@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="keyboarddll.tex"> 
+<meta name="date" content="2010-04-06 00:19:00"> 
+<link rel="stylesheet" type="text/css" href="keyboarddll.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Keyboard DLL<a 
+ id="x1-1000doc"></a></h3>
+<!--l. 27--><p class="noindent" >The keyboard DLL extension provides for a user-specified handling of keyboard
+actions. The standard, reference keybaord.dll that is shipped with OpenHoldem
+performs very un-human-like keyboard actions. For example, there is no delay
+between keystrokes. When SWAGing, a human is likely to have somewhat random
+delays between keypresses as the SWAG amount is entered into the SWAG box.
+Simulating keyboard actions that are more human-like may help to avoid detection
+by casions.
+<!--l. 35--><p class="indent" >   The keyboard DLL extension is available if you would like to implement custom
+keyboard action behavior. The source code for the reference keyboard.dll
+implementation can be found on Google Code in the source code repository.
+<!--l. 40--><p class="indent" >   Two methods must be exposed in your keyboard.dll in order to interface properly
+with OpenHoldem.
+<!--l. 43--><p class="indent" >   &#8220;SendString&#8221; is called when OpenHoldem wants to send a string to the
+poker client. Generally, this method is expected to click in the specified
+rectangle first, to activate it. The prototype for the &#8220;SendString&#8221; method
+is:
+   <!--l. 50-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>KEYBOARDDLL_API&#x00A0;int&#x00A0;SendString(const&#x00A0;HWND&#x00A0;hwnd,&#x00A0;const&#x00A0;RECT&#x00A0;rect,&#x00A0;const&#x00A0;CString&#x00A0;s,&#x00A0;const&#x00A0;bool&#x00A0;use_comma,&#x00A0;const&#x00A0;HWND&#x00A0;restore_focus,&#x00A0;const&#x00A0;POINT&#x00A0;restore_cursor);
+   </div>
+<!--l. 55--><p class="indent" >   &#8220;SendKey&#8221; is called when OpenHoldem wants to send a single key to the poker
+client. Generally, this method is expected to click in the specified rectangle first, to
+activate it. The prototype for the &#8220;SendKey&#8221; method is:
+   <!--l. 62-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-1002r1"></a></span>KEYBOARDDLL_API&#x00A0;int&#x00A0;SendKey(const&#x00A0;HWND&#x00A0;hwnd,&#x00A0;const&#x00A0;RECT&#x00A0;rect,&#x00A0;UINT&#x00A0;vkey,&#x00A0;const&#x00A0;HWND&#x00A0;restore_focus,&#x00A0;const&#x00A0;POINT&#x00A0;restore_cursor);
+   </div>
+
+   <div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
+class="td11"> <!--l. 69--><p class="noindent" >Parameter         </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 69--><p class="noindent" >Description                                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
+class="td11"> <!--l. 72--><p class="noindent" >hwnd
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 72--><p class="noindent" >the
+  HWND
+  of
+  the
+  window
+  to
+  take
+  the
+  mouse
+  action
+  on                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
+class="td11"> <!--l. 74--><p class="noindent" >rect
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 74--><p class="noindent" >the
+  bounding
+  rectangle
+  of
+  the
+  area
+  to
+  click
+  in
+  to
+  activate
+  &#8211;
+  this
+  generally
+  corresponds
+  to
+  a
+  Table
+  Map
+  Region
+  record
+  rectangle,
+  like
+  the
+  chat
+  box
+  or
+  the
+  SWAG
+  field;
+  this
+  rectangle
+  is
+  in
+  relative
+  client
+  context;
+  if
+  the
+  members
+  of
+  the
+  RECT
+  struct
+  are
+  {-1,-1,-1,-1}
+  then
+  do
+  not
+  click
+  in
+  the
+  rectangle
+  first                                                                               </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
+class="td11"> <!--l. 80--><p class="noindent" >s
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 80--><p class="noindent" >the
+  string
+  to
+  be
+  sent
+  to
+  the
+  poker
+  client                                                                              </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
+class="td11"> <!--l. 82--><p class="noindent" >use_comma
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 82--><p class="noindent" >if
+  true,
+  then
+  use
+  a
+  &#8220;comma&#8221;
+  instead
+  of
+  a
+  &#8220;dot&#8221;
+  as
+  the
+  decimal
+  separator                                                                        </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
+class="td11"> <!--l. 85--><p class="noindent" >vkey
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 85--><p class="noindent" >the
+  VKEY
+  code
+  of
+  the
+  key
+  to
+  send
+  to
+  the
+  poker
+  client                                                                              </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
+class="td11"> <!--l. 87--><p class="noindent" >restore_focus
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-2"  
+class="td11"> <!--l. 87--><p class="noindent" >the
+  HWND
+  of
+  the
+  window
+  to
+  return
+  focus,
+  active
+  and
+  foreground
+  to,
+  after
+  the
+  action
+  has
+  been
+  taken;
+  if
+  this
+  is
+  NULL,
+  no
+  focus
+  resotre
+  is
+  requested                                                                        </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-1"  
+class="td11"> <!--l. 91--><p class="noindent" >restore_cursor
+  (in)                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-8-2"  
+class="td11"> <!--l. 91--><p class="noindent" >a
+  POINT
+  to
+  return
+  the
+  cursor
+  to,
+  after
+  the
+  action
+  has
+  been
+  taken;
+  if
+  POINT.x
+  and
+  POINT.y
+  are
+  set
+  to
+  -1,
+  then
+  no
+  cursor
+  return
+  is
+  requested                                                                        </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-9-1"  
+class="td11">                </td> </tr></table>
+
+</div>  
+</body></html> 
+
+
+

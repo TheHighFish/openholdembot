@@ -1,0 +1,146 @@
+// Lucky1s public NL-smash-profile
+// Incomplete, as it depends on the default programming.
+//
+// Added only lots of brackets, needed by OpenPPL (THF).
+
+MaxSessionHands = 2011
+MaxSessionTime = 650
+MaxStackSize = 275
+BathroomBreakAfter = 75
+BathroomBreakTime = 4
+SitOutWhenOpponentsAreLessThan = 5
+MakePotSizedPreFlopRaisesWhen = 6
+FoldToPre-FlopRaisesForAQAJsKQ = OFF
+FoldPost-FlopBelowTopPairToAnyBetOrRaise = OFF
+FoldToPost-FlopRaisesWithUnpairedBoardsFor = 2
+FoldToPost-FlopRaisesWithPairedBoardsFor = 4
+NeverBetTurnOrRiverWithHandBelow = 3
+NeverBetFlopWithHandBelowMiddlePairWhen = 1
+NeverBetFlopWithHandBelowMiddlePairStackSize = 100000
+NeverCallPairedBoardsWithHandBelow = 5
+NeverCallFlushPossibleBoardsWithHandBelow = 6
+FoldToPre-FlopRaiseWith55Or66When = 3
+FoldToPre-FlopRaiseWith77Or88When = 3
+FoldToPre-FlopRaiseWith99OrTTWhen = 3
+FoldToPre-FlopRaiseWithJJOrQQWhen = 2
+FoldToPre-FlopRaiseWithAKWhen = 3
+FoldToPre-FlopRaiseWithAQsWhen = 2
+FoldToPre-FlopRaiseWithAKsWhen = 3
+FoldToPre-FlopRaiseWithKQsWhen = 2
+SuperTightPlay = OFF
+SemiSuperTightPlay = OFF
+NoLimp = 15
+AggressivePreFlop = 7
+AggressivePostFlop = 3
+AggressivePreFlopStackSize = 1000000
+AggressivePostFlopStackSize = 1000000
+MiningForSets = 5
+PostFlopinBlindsOverride = 3
+PreFlopReRaiseOverride = OFF
+MinBetOverride = 5
+FoldOrGoAllInWhenOpponentsAfterFoldsLessThan = 5
+FoldOrGoAllInWhenOpponentsAfterFoldsLessThanStackSize = 1000000
+ApplyFoldOrAllInAfter = 0
+FoldOrGoAllInWhenOpponentsAtTableLessThan = 5
+FoldOrGoAllInWhenOpponentsAtTableLessThanStackSize = 1000000
+AlwaysCallWhenOpponentsRaiseIsLessThan = 4
+AlwaysCallWhenStackSizeIsLessThanTotalInvested = 90
+Verbose = ON
+AutoPlay = ON
+UserDefinedGameType = 0
+UseOcrAtFullTilt = OFF
+AutoRebuyAtUB = ON
+AlwaysAskForTableName = OFF
+EnableFoldInTurn = ON
+DefaultBetSizeFlop = 80
+DefaultBetSizeTurn = 75
+DefaultBetSizeRiver = 65
+
+custom
+preflop
+
+
+// Smash Strategy for NL micros ($25 NL and lower) coded by lucky1 4-14-2011
+
+
+//If you have AA or KK preflop, just go all in, from any position, any time, against any number of limpers or none or whatever. Just move in.
+when ((hand = AA) or (hand = KK)) raisemax force
+
+
+//Limp everything else, or call a small raise with any pair or A suited and get in as cheaply as possible.
+when (pairinhand)
+when (botslastaction = call and raises <= 2 and (hand = QQ) and amounttocall < 3) call force
+when (botslastaction = call and raises <= 2 and amounttocall <= 2) call force
+when (raises <= 2 and (hand = QQ) and amounttocall < 3) call force
+when (raises <= 2 and amounttocall <= 2) call force
+
+
+when (hand = A suited)
+when (botslastaction = call and raises <= 2 and (hand = AK) and amounttocall < 3) call force
+when (botslastaction = call and raises <= 2 and amounttocall <= 2) call force
+when (raises <= 2 and (hand = AK) and amounttocall < 3) call force
+when (raises <= 2 and amounttocall <= 2) call force
+
+
+//Button / Small blind opening steals
+when (pairinhand or (hand = AK) or (hand = AQ) or (hand = AJ) or (hand = AT) or (hand = A9) or (hand = A suited) or (hand = TJ) or (hand = TQ) or (hand = TK) or (hand = JQ) or (hand = JK) or (hand = QK) or (hand = 56 suited) or (hand = 67 suited) or (hand = 78 suited) or (hand = 89 suited) or (hand = 9T suited))
+when (botslastaction = raise and raises = 1 and amounttocall < 2) call force
+when (stilltoact < 3 and raises = 0 and calls = 0 and ((hand = 56 suited) or (hand = 67 suited) or (hand = 78 suited) or (hand = 89 suited) or (hand = 9T suited)) and random <= 75) raise 100% force
+when (stilltoact < 3 and raises = 0 and calls = 0) raise 100% force
+when (stilltoact < 3 and raises = 0 and calls >= 2 and amounttocall < 1) call force
+
+
+
+//fold everything else
+when others
+when others fold force
+
+
+
+
+flop
+
+//When you flop a set, move in. When you make a nut flush on an unpaired board, move in.
+
+//You should go all-in on the flop when you have the chance since you are most likely holding the nut hand with a set. Even if the board is suited or connected and your opponent has flopped a straight or a flush, you are not drawing dead. You still have a good chance 1 in 3 chance (around 30%) of winning with a full house or quads by the river
+when (haveset) raisemax force
+
+when (havenutflush and (not paironboard)) raisemax force
+
+//Edited egors codlines for dummies
+when (straightpossible and (not flushpossible) and havestraight) raisemax force
+when (paironboard and havefullhouse) raisemax force
+when (paironboard and havetrips and havebestkicker) raisemax force
+when (not (paironboard or flushpossible or morethanonestraightpossibleonflop) and havetoptwopair and stacksize >=100) raisemax force
+
+//If you flop a flush draw and can draw cheaply only
+when (haveflushdraw)
+when (bets = 0 and raises = 0) call force
+when (bets = 1 and raises >=0 and amountToCall >= 34% PotSize) fold force
+when (bets = 1 and raises >=0 and amountToCall < 34% PotSize and betsize < 8% stacksize) call force
+
+
+
+Turn
+
+when (havenutflush and (not paironboard)) raisemax force
+when (not (straightpossible or flushpossible or paironboard) and havestraight) raisemax force
+when (paironboard and havefullhouse) raisemax force
+when (paironboard and havetrips and havebestkicker) raisemax force
+when (not (paironboard or flushpossible or morethanonestraightpossibleonTurn) and (havetoptwopair or haveset)) raisemax force
+
+//Draw cheaply,
+when (haveflushdraw)
+when (bets = 0 and raises = 0) call force
+when (bets = 1 and raises >=0 and amountToCall > 20% PotSize) fold force
+when (bets = 1 and raises >=0 and amountToCall <= 20% PotSize and betsize < 8% stacksize) call force
+
+
+
+River
+
+when (havenutflush and (not paironboard)) raisemax force
+when (not (straightpossible or flushpossible or paironboard) and havestraight) raisemax force
+when (paironboard and havefullhouse) raisemax force
+when (paironboard and havetrips and havebestkicker) raisemax force
+when (not (paironboard or flushpossible or straightpossible) and (havetoptwopair or haveset)) raisemax force 
