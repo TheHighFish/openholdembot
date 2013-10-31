@@ -282,6 +282,8 @@ bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 	{
 		return false;
 	}
+	write_log(preferences.debug_pokertracker(), "[PokerTracker] Name changed for chair [%d] [%s] -> [%s]\n",
+		chair, _player_data[chair].scraped_name, oh_scraped_name);
 	return true;
 }
 
