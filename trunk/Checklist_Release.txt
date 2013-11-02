@@ -16,10 +16,11 @@
   Comment: "Tagging OpenHoldem 4.x.y for release"
 * Copy the directory "##_OpenHoldem_Release_Directory_##" to desktop and name it "OpenHoldem_x.y.z"
 * Copy all executables and DLLs to the new directory
+* But remove OpenPPL.exe and all other OpenPPL-files, because this is an independent release
 * Add all *.lib-files to support linking
 * Add OpenHoldem.pdb if compiled in debug-mode (the other *.pdb-files are usually not necessary)
-* Add dbdhelp.dll
 * Remove the *.exp and unnecessary *.pdb files.
+* Add dbdhelp.dll
 * Remove replay-direcoty (if existent), logs and other private data
 * Create a rar-archive
 * Upload the rar-file "OpenHoldem_x.y.z.rar" to google-code.
