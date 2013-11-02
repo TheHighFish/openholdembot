@@ -35,7 +35,7 @@ protected: // create from serialization only
 	afx_msg void OnMinMax();
 	afx_msg void OnAttachTop();
 	afx_msg void OnAttachBottom();
-	afx_msg void OnLockBlinds();
+	afx_msg void OnClickedFlags();
 
 	afx_msg void OnUpdateMenuFileNew(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);

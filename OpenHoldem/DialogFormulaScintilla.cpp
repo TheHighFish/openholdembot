@@ -100,7 +100,7 @@ CString keywords = // Standard functions
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
 				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
 				  // Flags
-				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 "
+				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 flagbits"
 				  // Common Cards
 				  "ncommoncardsknown "
 				  // (Un)known Cards
@@ -3048,7 +3048,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
 	AddSymbol(parent, "fmax", "highest numbered flag button pressed");
 	AddSymbol(parent, "f0 - f19", "true if flag 0 - flag 19 button is pressed false otherwise");
-	AddSymbol(parent, "fbits", "flag button bits 19-0 - 1=pressed 0=notpressed");
+	AddSymbol(parent, "flagbits", "flag button bits 19-0 - 1=pressed 0=notpressed");
 
 	mainParent = parent = AddSymbolTitle("Common Cards", NULL, hCatItem);
 	AddSymbol(parent, "ncommoncardsknown", "number of common cards known (normal not highlighted)");

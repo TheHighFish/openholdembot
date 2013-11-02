@@ -7,7 +7,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol fmax")
     PRECONDITION (true)
-    POSTCONDITION ((gws("fmax") >= -1) && (gws("fmax") <= 9))
+    POSTCONDITION ((gws("fmax") >= -1) && (gws("fmax") <= 19))
     SYMBOLS_POSSIBLY_AFFECTED ("fmax")
 END_TESTCASE
 
@@ -15,8 +15,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0128")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol fbits")
+    REASONING ("Range check for symbol flagbits")
     PRECONDITION (true)
-    POSTCONDITION ((gws("fbits") >= 0) && (gws("fbits") <= 1023))
-    SYMBOLS_POSSIBLY_AFFECTED ("fbits")
+    POSTCONDITION ((gws("flagbits") >= 0) && (gws("flagbits") <= 0x0FFFFF))
+    SYMBOLS_POSSIBLY_AFFECTED ("flagbits")
 END_TESTCASE
