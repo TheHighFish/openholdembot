@@ -1,11 +1,11 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose: Encapsuling the counter in an extra class
 //   and searching the directory only once on startup,
@@ -13,7 +13,7 @@
 //   for every single replay-frame, which lead to performance issues
 //   for some people: http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16135
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CReplayFramesCounter.h"
