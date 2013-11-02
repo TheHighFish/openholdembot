@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//*****************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//*****************************************************************************
 
 
 #ifndef INC_NUMERICALFUNCTIONS_H
@@ -72,5 +72,8 @@ inline void AdaptValueToMinMaxRange(double *value, double min, double max)
 		*value = max;
 	}
 }
+
+// returns a random number in the range 0..n-1
+int Random(int n);
 
 #endif INC_NUMERICALFUNCTIONS_H
