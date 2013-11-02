@@ -1,3 +1,25 @@
+v4.2.6 2013-11-xx
+==================
+NEW STUFF:
+- OpenHoldem contains now a built-in scraper-preprocessor 
+  that deals with the most common problems of numbers and title-stings:
+  * spaces inside large numbers will be removed, e.g. "$40 000"
+  * commas inside numbers will be removed or replaced by dots
+  * delimiter-dots inside numbers will be removed, e.g. "$41.765,98" -> ""$41765.98"
+  * outlandish currency-characters will be replaced by dollars.
+  Special thanks to Marchigno who did a large portion of the coding.
+  [THF]
+
+BUG FIXES:
+- The flag-buttons have been broken when we moved them to a separate class.
+  This has now been fixed.
+  Thanks to Papa05 for reporting.
+  [THF]
+
+MAINTENANCE:
+- The symbol "fbits" got renamed to flagbits, just because we like verbosity.
+  [THF]
+
 v4.2.5 2013-10-22
 ==================
 NEW STUFF:
