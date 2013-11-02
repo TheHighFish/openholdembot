@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//*****************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//*****************************************************************************
 
 
 #include "stdafx.h"
@@ -28,4 +28,12 @@ int bitcount (unsigned int n)
     n = COUNT(n, 4) ;
     /* n = COUNT(n, 5) ;    for 64-bit integers */
     return n ;
+}
+
+int Random(int n)
+{
+	// rang 0..randmax
+	int r = rand();
+	int result = double(n) * (double(r)/RANDMAX);
+	return result;
 }
