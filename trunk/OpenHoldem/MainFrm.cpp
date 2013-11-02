@@ -127,26 +127,26 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WMA_ISREADY,       &COpenHoldemHopperCommunication::OnIsReadyMessage)
 
 	// Flags
-	ON_BN_CLICKED(ID_NUMBER0,  p_flags_toolbar->OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER1,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER2,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER3,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER4,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER5,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER6,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER7,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER8,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER9,  &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER10, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER11, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER12, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER13, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER14, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER15, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER16, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER17, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER18, &CFlagsToolbar::OnClickedFlags)
-	ON_BN_CLICKED(ID_NUMBER19, &CFlagsToolbar::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER0,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER1,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER2,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER3,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER4,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER5,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER6,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER7,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER8,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER9,  &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER10, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER11, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER12, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER13, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER14, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER15, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER16, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER17, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER18, &CMainFrame::OnClickedFlags)
+	ON_BN_CLICKED(ID_NUMBER19, &CMainFrame::OnClickedFlags)
 
 	ON_WM_TIMER()
 
@@ -736,6 +736,11 @@ void CMainFrame::OnPerlLoadFormula()
 	}
 	//  Make some noise, as there's no visible reaction
 	Beep(880, 125);	
+}
+
+void CMainFrame::OnClickedFlags()
+{
+	p_flags_toolbar->OnClickedFlags();
 }
 
 void CMainFrame::OnPerlLoadSpecificFormula() 

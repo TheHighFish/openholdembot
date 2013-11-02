@@ -142,6 +142,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 
 void CFlagsToolbar::OnClickedFlags() 
 {
+	MessageBox("Flag clicked", "Debug", 0);
 	assert((void*)_tool_bar != NULL);
 	SetFlag(0,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
 	SetFlag(1,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
@@ -219,11 +220,13 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 	tbi.dwMask = TBIF_STYLE;
 	tbi.fsStyle = TBSTYLE_CHECK;
 
+	MessageBox("Creating flags toolbar", "Debug", 0);
 	// Flags toolbar
 	_tool_bar.CreateEx(_parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
 							CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	_tool_bar.LoadToolBar(IDR_FLAGS);
 
+	assert((void*)_tool_bar != NULL);
 	// Make flags toolbar buttons sticky
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER0, &tbi);
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER1, &tbi);
@@ -250,6 +253,8 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 
 	// Title of floating flags toolbar
 	_tool_bar.SetWindowText("Flags");
+
+	assert((void*)_tool_bar != NULL);
 }
 
 void CFlagsToolbar::AlignToolbars(void)
