@@ -1,15 +1,15 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose:
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CGrammar.h"
@@ -29,6 +29,7 @@
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbols.h"
+#include "CValidator.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "Numericalfunctions.h"
@@ -441,10 +442,10 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 
 	// dll$ symbols
 	else if (memcmp(sym.c_str(), "dll$", 4)==0)
-	{
-		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
+	{																																				
+		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST 
 		if (1)
-		{
+		{																																									BLERGHINI
 			if (p_dll_extension->IsDllLoaded())
 			{
 				return (p_dll_extension->process_message()) ("query", sym.c_str());
