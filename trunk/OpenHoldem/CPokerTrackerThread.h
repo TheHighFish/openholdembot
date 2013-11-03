@@ -19,7 +19,7 @@
 #include "MagicNumbers.h"
 
 const int k_advanced_stat_update_every    =    5;
-const int k_min_hands_slower_updates_ring = 1000;
+const int k_min_hands_slower_updates      = 1000;
 
 struct SPlayerData 
 {
@@ -79,8 +79,6 @@ private:
 	CString				_conn_str;
 	bool				_connected;
 	PGconn *			_pgconn;
-
-	int					_m_min_hands_for_slower_update;
 
 	HANDLE				_m_stop_thread;
 	HANDLE				_m_wait_thread;
