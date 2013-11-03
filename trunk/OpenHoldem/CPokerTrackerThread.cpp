@@ -648,7 +648,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 					if (LightSleep(0, pParent)) 
 						return; 
 					/* verify that name did not get changed */
-					if (pParent->CheckIfNameHasChanged(i))
+					if (pParent->CheckIfNameHasChanged(chair))
 					{
 						/* Name got changed while we search for stats for current chair
 						   Simply return.
