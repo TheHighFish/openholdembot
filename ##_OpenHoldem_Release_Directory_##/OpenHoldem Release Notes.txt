@@ -19,6 +19,10 @@ BUG FIXES:
   because we used a non-initialized variable instead of a constant at some point.
   Thanks to WaveLen for finding this bug.
   [THF]
+- At some point we used the wrong variable to check for changed players.
+  This did affect PT-stats-updates and has now been fixed.
+  Thanks to WaveLen for finding this bug and providing a patch.
+  [THF]
 
 MAINTENANCE:
 - The symbol "fbits" got renamed to flagbits, just because we like verbosity.
