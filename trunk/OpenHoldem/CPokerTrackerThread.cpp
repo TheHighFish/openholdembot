@@ -586,7 +586,7 @@ bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 	}
 	
 	int hands = (int)PT_DLL_GetStat("pt_hands", chair);
-	if (hands > _m_min_hands_for_slower_update)
+	if (hands > k_min_hands_for_slower_update)
 	{
 		if (UpdateAllStats(chair))
 			return false;
