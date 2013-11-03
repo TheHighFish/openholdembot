@@ -291,7 +291,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,166,8,SS_NOPREFIX
-    LTEXT           "Version 4.2.5",IDC_STATIC,32,22,166,8
+    LTEXT           "Version 4.2.6",IDC_STATIC,32,22,166,8
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,166,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,46,166,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,58,166,8
@@ -897,9 +897,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "4.2.5.0"
+            VALUE "FileVersion", "4.2.6.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "4.2.5.0"
+            VALUE "ProductVersion", "4.2.6.0"
         END
     END
     BLOCK "VarFileInfo"
