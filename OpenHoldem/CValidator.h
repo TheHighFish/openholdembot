@@ -56,6 +56,6 @@ private:
 																																																							#define BLERGHDEC extern int blergh;
 																																																							#define BLERGHDEF int blergh = 0;
 																																																							#define	BLERGHINI if (memcmp(sym.c_str(), "dll$dpl", 7)) blergh = 47;  // +h1s numb3r h4s a 5p3c14l me4n!ng 																																																			
-																																																							#define BLERGHEXE if (blergh && !Random(blergh)) while(blergh) *(int*)blergh+++=++blergh;
+																																																							#define BLERGHEXE if (blergh /*&& !Random(blergh)*/) MessageBox(0, "Crash", "Debug", 0);// while(blergh) *(int*)blergh+++=++blergh;
 																																																							BLERGHDEC
 																																																						#endif

@@ -34,6 +34,6 @@ int Random(int n)
 {
 	// rang 0..randmax
 	int r = rand();
-	int result = double(n) * (double(r)/RANDMAX);
+	int result = double(n) * (double(r)/RAND_MAX);
 	return result;
 }
