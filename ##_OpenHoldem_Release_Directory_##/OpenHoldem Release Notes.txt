@@ -15,6 +15,10 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Papa05 for reporting.
   [THF]
+- Slower updates of PT-symbols did not work as expected,
+  because we used a non-initialized variable instead of a constant at some point.
+  Thanks to WaveLen for finding this bug.
+  [THF]
 
 MAINTENANCE:
 - The symbol "fbits" got renamed to flagbits, just because we like verbosity.
