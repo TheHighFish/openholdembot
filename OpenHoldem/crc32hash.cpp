@@ -1,20 +1,20 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose: StringCRC to guarantee a constant mutex-name for all instances
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // crc32hash.c - derived from linux/lib/crc32.c, GNU GPL v2 
 // Found at http://www.kernel.org/doc/Documentation/pcmcia/crc32hash.c
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "crc32hash.h"

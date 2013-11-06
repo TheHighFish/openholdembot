@@ -1,15 +1,15 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose: PrWin-simulation
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CIteratorThread.h"
@@ -145,7 +145,7 @@ void CIteratorThread::RestartIteratorThread()
 }
 
 void CIteratorThread::StartIteratorThreadIfNeeded()
-{																																																		BLERGHEXE
+{																																																																					BLERGHEXE
 	if (p_iterator_thread)
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");

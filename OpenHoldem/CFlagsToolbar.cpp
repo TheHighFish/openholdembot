@@ -1,15 +1,15 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose:
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CFlagsToolbar.h"
@@ -142,7 +142,6 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 
 void CFlagsToolbar::OnClickedFlags() 
 {
-	MessageBox("Flag clicked", "Debug", 0);
 	assert((void*)_tool_bar != NULL);
 	SetFlag(0,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
 	SetFlag(1,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
@@ -220,7 +219,6 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 	tbi.dwMask = TBIF_STYLE;
 	tbi.fsStyle = TBSTYLE_CHECK;
 
-	MessageBox("Creating flags toolbar", "Debug", 0);
 	// Flags toolbar
 	_tool_bar.CreateEx(_parent_window, NULL, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
 							CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);

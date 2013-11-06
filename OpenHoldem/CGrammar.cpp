@@ -1,15 +1,15 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose:
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CGrammar.h"
@@ -445,7 +445,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	{																																				
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST 
 		if (1)
-		{																																									BLERGHINI
+		{																																													BLERGHSIMPLE
 			if (p_dll_extension->IsDllLoaded())
 			{
 				return (p_dll_extension->process_message()) ("query", sym.c_str());

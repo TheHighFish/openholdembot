@@ -1,17 +1,17 @@
-//*****************************************************************************
+//***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//***************************************************************************** 
 //
 // Purpose: Shooting replay-frames 
 //   (at the right time and only once per turn).
 //   Not really a symbol-engine, but easy to implement with this concept 
 //
-//*****************************************************************************
+//***************************************************************************** 
 
 #include "stdafx.h"
 #include "CSymbolEngineReplayFrameController.h"
