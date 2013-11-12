@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineUserchair.h"
 
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
@@ -67,7 +68,12 @@ void CSymbolEngineUserchair::ResetOnHeartbeat()
 void CSymbolEngineUserchair::CalculateUserChair()
 {
 	int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
-	if (num_buttons_enabled >= k_min_buttons_needed_for_my_turn)
+	if (num_buttons_enabled < k_min_buttons_needed_for_my_turn)
+	{
+		write_log(preferences.debug_symbolengine(),
+			"[CSymbolEngineUserchair] CalculateUserChair() Not enough visible buttons\n");
+	}
+	else
 	{
 		for (int i=0; i<p_tablemap->nchairs(); i++)
 		{
@@ -77,8 +83,13 @@ void CSymbolEngineUserchair::CalculateUserChair()
 			{
 				_userchair = i;
 				_userchair_locked = true;
+				write_log(preferences.debug_symbolengine(),
+					"[CSymbolEngineUserchair] CalculateUserChair() Setting userchair to %d\n",
+					_userchair);
 				return;
 			}
 		}
+		write_log(preferences.debug_symbolengine(),
+			"[CSymbolEngineUserchair] CalculateUserChair() Userchair not found, because no cards found\n");
 	}
 }
