@@ -4734,6 +4734,19 @@ f$OpenPPL_SmallBlindChair == 8 ? pt_fsbts8 :
 f$OpenPPL_SmallBlindChair == 9 ? pt_fsbts9 :
 f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
+##f$OpenPPL_PT_BigBlind_Hands##
+[ (f$OpenPPL_BigBlindChair == 0) ] ? pt_hands0 :
+[ (f$OpenPPL_BigBlindChair == 1) ] ? pt_hands1 :
+[ (f$OpenPPL_BigBlindChair == 2) ] ? pt_hands2 :
+[ (f$OpenPPL_BigBlindChair == 3) ] ? pt_hands3 :
+[ (f$OpenPPL_BigBlindChair == 4) ] ? pt_hands4 :
+[ (f$OpenPPL_BigBlindChair == 5) ] ? pt_hands5 :
+[ (f$OpenPPL_BigBlindChair == 6) ] ? pt_hands6 :
+[ (f$OpenPPL_BigBlindChair == 7) ] ? pt_hands7 :
+[ (f$OpenPPL_BigBlindChair == 8) ] ? pt_hands8 :
+[ (f$OpenPPL_BigBlindChair == 9) ] ? pt_hands9 :
+f$OpenPPL_ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
+
 ##f$OpenPPL_PT_SmallBlind_VPIP##
 f$OpenPPL_SmallBlindChair == 0 ? pt_vpip0 :
 f$OpenPPL_SmallBlindChair == 1 ? pt_vpip1 :
@@ -4746,6 +4759,19 @@ f$OpenPPL_SmallBlindChair == 7 ? pt_vpip7 :
 f$OpenPPL_SmallBlindChair == 8 ? pt_vpip8 :
 f$OpenPPL_SmallBlindChair == 9 ? pt_vpip9 :
 f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
+
+##f$OpenPPL_PT_SmallBlind_Hands##
+[ (f$OpenPPL_SmallBlindChair == 0) ] ? pt_hands0 :
+[ (f$OpenPPL_SmallBlindChair == 1) ] ? pt_hands1 :
+[ (f$OpenPPL_SmallBlindChair == 2) ] ? pt_hands2 :
+[ (f$OpenPPL_SmallBlindChair == 3) ] ? pt_hands3 :
+[ (f$OpenPPL_SmallBlindChair == 4) ] ? pt_hands4 :
+[ (f$OpenPPL_SmallBlindChair == 5) ] ? pt_hands5 :
+[ (f$OpenPPL_SmallBlindChair == 6) ] ? pt_hands6 :
+[ (f$OpenPPL_SmallBlindChair == 7) ] ? pt_hands7 :
+[ (f$OpenPPL_SmallBlindChair == 8) ] ? pt_hands8 :
+[ (f$OpenPPL_SmallBlindChair == 9) ] ? pt_hands9 :
+f$OpenPPL_ERROR_SmalllindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_PT_LastCaller_VPIP##
 f$OpenPPL_PT_LastCaller_Chair==0 && pt_hands0>=f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip0 :
