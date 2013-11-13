@@ -4755,7 +4755,7 @@ f$OpenPPL_ButtonChair==6 ? pt_vpip6:
 f$OpenPPL_ButtonChair==7 ? pt_vpip7:
 f$OpenPPL_ButtonChair==8 ? pt_vpip8:
 f$OpenPPL_ButtonChair==9 ? pt_vpip9:
--1
+f$OpenPPL_ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_PT_BigBlind_Hands##
 [ (f$OpenPPL_BigBlindChair == 0) ] ? pt_hands0 :
@@ -4904,23 +4904,6 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 //
 || [f$OpenPPL_InitBotsLastAction * 0]
 
-//*****************************************************************************
-//
-// OpenPPL -GICOS
-//
-//*****************************************************************************
-##f$OpenPPL_PT_ButtonVPIP##
-f$OpenPPL_ButtonChair==0 ? pt_vpip0:
-f$OpenPPL_ButtonChair==1 ? pt_vpip1:
-f$OpenPPL_ButtonChair==2 ? pt_vpip2:
-f$OpenPPL_ButtonChair==3 ? pt_vpip3:
-f$OpenPPL_ButtonChair==4 ? pt_vpip4:
-f$OpenPPL_ButtonChair==5 ? pt_vpip5:
-f$OpenPPL_ButtonChair==6 ? pt_vpip6:
-f$OpenPPL_ButtonChair==7 ? pt_vpip7:
-f$OpenPPL_ButtonChair==8 ? pt_vpip8:
-f$OpenPPL_ButtonChair==9 ? pt_vpip9:
--1
 
 //*****************************************************************************
 //
