@@ -2,7 +2,7 @@ v4.0.1 2013-xx-xx
 =================
 NEW STUFF:
 - New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair, StackSizeAtBeginningOfCurrentRound
-  Had2ndTopPairOnFlop
+  Had2ndTopPairOnFlop, PT_ButtonVPIP, Had2ndOverPairOnTurn
  [Lavezzi]
  - NumberOfOpponentsAllin did not count a villan betting our stack size as being allin. Although this is not an error its easier for bot coding considering him as allin.
  [Lavezzi]
