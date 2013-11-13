@@ -108,8 +108,24 @@ Please note that OH returns percentages in the range [0..1], so 0.31 means
 \end_layout
 
 \begin_layout Standard
+
+\series bold
+Invalid value return -1.
+ You need to remember that if you check any of those symbols as 
+\begin_inset Quotes eld
+\end_inset
+
+less then
+\begin_inset Quotes erd
+\end_inset
+
+ of a certain value and the returned value is -1 you need to add a sanity
+ check.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="13" columns="2">
+<lyxtabular version="3" rows="14" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="55text%">
@@ -149,6 +165,26 @@ PT_BigBlind_FoldBBToSteal
 \begin_layout Plain Layout
 Big Blind fold percentage to steal-raises from late position or from the
  small blind
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PT_ButtonVPIP
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Button VPIP
 \end_layout
 
 \end_inset
