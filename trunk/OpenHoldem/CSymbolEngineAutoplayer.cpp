@@ -178,6 +178,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Either not your turn or a problem with the tablemap\n");
 		_isfinalanswer = false;
 	}
 
