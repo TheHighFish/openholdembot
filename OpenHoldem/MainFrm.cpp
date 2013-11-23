@@ -102,7 +102,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
 	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
-	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CMainFrame::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
@@ -887,12 +886,6 @@ void CMainFrame::OnHelp()
 			OH_MessageBox_Interactive("Error opening help-file", "Error", 0);
 		}
 	}
-}
-
-
-void CMainFrame::OnHelpWiki()
-{
-	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/wiki/index.php5?title=Main_Page", "", "", SW_SHOWDEFAULT);
 }
 
 void CMainFrame::OnHelpForums()

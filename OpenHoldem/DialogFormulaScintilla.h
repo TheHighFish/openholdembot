@@ -147,7 +147,6 @@ protected:
 	afx_msg void OnEditDeleteText();
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnHelp();
-	afx_msg void OnHelpWiki();
 	afx_msg void OnHelpForums();
 	void SortUdfTree();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);

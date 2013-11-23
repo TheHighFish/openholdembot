@@ -253,14 +253,21 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	{
 		if (_card_common_last[i] != p_scraper->card_common(i) || update_all) 
 		{
-			_card_common_last[i] = p_scraper->card_common(i);
-			int common_card = p_scraper->card_common(i);
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
-				i, common_card);
-			DrawCard(common_card,
-					  cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
-					  cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
-					  false);
+			// Forget about inactive players, they have no cards.
+			// Don't draw them to point out the mistake faster
+			// for newbies with bad tablemaps.
+			if (p_scraper_access->IsPlayerActive(i))
+			{
+				_card_common_last[i] = p_scraper->card_common(i);
+				int common_card = p_scraper->card_common(i);
+				
+				write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
+					i, common_card);
+				DrawCard(common_card,
+						  cr.right/2 + cc[i][0], cr.bottom/2 + cc[i][1],
+						  cr.right/2 + cc[i][0] + CARDSIZEX, cr.bottom/2 + cc[i][1] + CARDSIZEY,
+						  false);
+			}
 		}
 	}
 
@@ -307,10 +314,29 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 
 		if (update_it || update_all) 
 		{
+			// Draw dealer button
+			// At some casinos the dealer can be at an empty seat.
+			// Therefore we draw the dealer-button anyway,
+			// inependent of "seated" and "active"
+			if (p_scraper->dealer(i))
+			{
+				DrawDealerButton(i);
+			}
 			// Draw active circle
 			if (p_string_match->IsStringSeated(p_scraper->seated(i))) 
+			{
 				DrawSeatedActiveCircle(i);
+			}
 
+			DrawNameBox(i);
+			DrawBalanceBox(i);
+			DrawPlayerBet(i);
+			
+			if (!p_scraper_access->IsPlayerActive(i))
+			{
+				// Inactive players can't have cards 
+				continue;
+			}
 			// Draw player cards
 			int player_card_0 = p_scraper->card_player(i, 0);
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%i]\n",
@@ -327,17 +353,6 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 					  cr.right * pc[p_tablemap->nchairs()][i][0] + CARDSIZEX + 1,
 					  cr.bottom * pc[p_tablemap->nchairs()][i][1] + CARDSIZEY/2 - 1,
 					  true);
-
-			// Draw dealer button
-			if (p_scraper->dealer(i))
-				DrawDealerButton(i);
-
-			// Draw name and balance boxes
-			DrawNameBox(i);
-			DrawBalanceBox(i);
-
-			// Draw player bet
-			DrawPlayerBet(i);
 		}
 	}
 
@@ -730,7 +745,7 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair)
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-	if (p_string_match->IsStringActive(p_scraper->active(chair))) 
+	if (p_scraper_access->IsPlayerActive(chair))
 	{
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 	}
@@ -979,10 +994,10 @@ void COpenHoldemView::DrawNameBox(const int chair)
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
-		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
-		(p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
-		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ ) 
+	if (p_scraper_access->IsPlayerSeated(chair) 
+		|| p_scraper_access->IsPlayerActive(chair)) 
+		/*|| (p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
+		|| p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/  
 	{
 
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
@@ -1070,10 +1085,10 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	if (p_string_match->IsStringSeated(p_scraper->seated(chair)) || 
-		p_string_match->IsStringActive(p_scraper->active(chair)) /*||
+	if (p_scraper_access->IsPlayerSeated(chair) 
+		|| p_scraper_access->IsPlayerActive(chair)) /*||
 		(p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
-		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ ) 
+		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ 
 	{
 
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);

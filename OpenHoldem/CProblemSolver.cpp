@@ -74,8 +74,9 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"BAD NEWS:\n"
-			"  * No tablemaps in scraper folder.\n"
-			"    Without tablemaps you can't connect to a table.",
+			"    - No tablemaps in scraper folder.\n"
+			"\n"
+			"You need a tablemap for every casino and game-type.",
 			k_title_string, 0);
 
 	}
@@ -83,62 +84,67 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder.\n"
+			"    - At least one tablemap in scraper folder.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * You are not connected to a table.\n"
-			"    To connect to a table three conditions must be met:\n"
-			"      * You need a tablemap for that casino and game-type.\n"
-			"      * The tablesize must be right.\n"
-			"      * The titlestring must match.\n"
-			"    If it does not connect, then you have to fix your tablemap.",
+			"    - You are not connected to a table.\n"
+			"\n"
+			" To connect to a table three conditions must be met:\n"
+			"    - You need a tablemap for that casino and game-type.\n"
+			"    - The tablesize must be right.\n"
+			"    - The titlestring must match.\n"
+			"If OpenHoldem does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
 	}
 	else if (NoOpponents())
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder.\n."
-			"  * You are connected to a table.\n"
+			"    - At least one tablemap in scraper folder.\n."
+			"    - You are connected to a table.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * There seem to be no opponents.\n"
-			"    Please revisit your tablemap, especially:\n"
-			"      * seated regions\n"
-			"      * active regions\n"
-			"      * cardbacks\n",
+			"    - There seem to be no opponents.\n"
+			"\n"
+			"Please revisit your tablemap, especially:\n"
+			"    - Seated regions\n"
+			"    - Active regions\n"
+			"    - Cardbacks\n",
 			k_title_string, 0);
 	}
 	else if (UserChairUnknown())
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder.\n"
-			"  * At least one opponent got recognized.\n"
-			"  * You are connected to a table.\n"
+			"    - At least one tablemap in scraper folder.\n"
+			"    - You are connected to a table.\n"
+			"    - At least one opponent got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * you are not seated or userchair not recognized.\n"
-			"    To detect the userchair three conditions must be met:\n"
-			"      * Cards visible.\n"
-			"      * Player must be active (not sitting out).\n"
-			"      * Buttons visible at the same time.\n"
-			"    Please revisit your tablemap.",
+			"    - You are not seated or userchair not (yet) recognized.\n"
+			"\n"
+			"To detect the userchair three conditions must be met:\n"
+			"    - Player must be active (not sitting out).\n"
+			"    - Cards visible.\n"
+			"    -  Buttons visible at the same time.\n"
+			"Please revisit your tablemap.",
 			k_title_string, 0);
 	}
 	else if (AutoPlayerDidActAtLeastOnce())
 	{
 		// This is the GOOD case!
 		OH_MessageBox_Interactive(
-			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder.\n"
-			"  * You are connected to a table.\n"
-			"  * Your chair got recognized.\n"
-			"  * The autoplayer did act at least once.\n"
-			"    This means that your map and your settings\n"
-			"    are at least not completely wrong.\n" 
-			"    The rest is fine-tuning,\n"
-			"    we won't deal with that here.\n"
+			"REALLY GOOD NEWS:\n"
+			"    - At least one tablemap in scraper folder.\n"
+			"    - You are connected to a table.\n"
+			"    - At least one opponent got recognized.\n"
+			"    - Your chair got recognized.\n"
+			"    - The autoplayer did act at least once.\n"
+			"\n"
+			"This means that your map and your settings\n"
+			"are at least not completely wrong.\n" 
+			"The rest is fine-tuning,\n"
+			"we won't deal with that here.\n"
 			"\n"
 			"Good luck, dear friend.\n",
 			k_title_string, 0);
@@ -147,31 +153,33 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table.\n"
-			"  * Your chair got recognized.\n"
-			"  * You seem to have at least 1 opponent.\n"
+			"    - At least one tablemap in scraper folder\n."
+			"    - You are connected to a table.\n"
+			"    - At least one opponent got recognized.\n"
+			"    - Your chair got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * You don't have any cards\n"
-			"    and without cards you can't play poker.\n"
-			"    If there should be cards then please revisit your tablemap.",
+			"    - You don't have any cards\n"
+			"\n"       
+			"Please revisit your tablemap\n"
+			"to make sure that cards get scraped correctly.",
 			k_title_string, 0);
 	}
 	else if (NotEnoughButtonsVisible())
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table.\n"
-			"  * Your chair got recognized.\n"
-			"  * You seem to have at least 1 opponent.\n"
-			"  * Your cards got recognized.\n"
+			"    - At least one tablemap in scraper folder\n."
+			"    - You are connected to a table.\n"
+			"    - At least one opponent got recognized.\n"
+			"    - Your chair got recognized.\n"
+			"    - Your cards got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * Not enough buttons detected.\n"
-			"    Without at least two buttons the autoplayer can't act.\n"
-			"    If it is your turn then please revisit your tablemap.",
+			"    - Not enough buttons detected.\n"
+			"\n"       
+			"Please revisit your tablemap\n"
+			"to make sure that all buttons get scraped correctly.",     
 			k_title_string, 0);
 	}
 	else
@@ -180,16 +188,18 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 		// No error detected, but autoplayer did not yet act.
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder\n."
-			"  * You are connected to a table\n"
-			"  * Your chair got recognized\n"
-			"  * You seem to have at least 1 opponent\n"
-			"  * Your cards got recognized\n"
-			"  * Buttons got detected\n"
+			"    - At least one tablemap in scraper folder\n."
+			"    - You are connected to a table\n"
+			"    - At least one opponent got recognized.\n"
+			"    - Your chair got recognized\n"
+			"    - Your cards got recognized\n"
+			"    - Buttons got detected\n"
 			"\n"
 			"BAD NEWS:\n"
-			"  * The autoplayer did not (yet) act,\n"
-			"    but this should happen within some seconds.\n"
+			"    - The autoplayer did not (yet) act,\n"        
+			"\n"
+			"The autoplayer should act within some seconds,\n"
+			"as long as the autoplayer is engaged (default).\n"
 			"\n"
 			"Good luck, dear friend.\n",
 			k_title_string, 0);

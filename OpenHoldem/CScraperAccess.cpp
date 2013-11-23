@@ -22,7 +22,6 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTableMapAccess.h"
-
 #include "MagicNumbers.h"
 
 
@@ -359,6 +358,10 @@ bool CScraperAccess::PlayerHasCards(int player)
 	// but for cardbacks or cards.
 	// This way we can play all cards face-up at PokerAcademy.
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
+	if (!IsPlayerActive(player))
+	{
+		return false;
+	}
 	if (p_scraper->card_player(player, 0) == CARD_NOCARD 
 		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
 	{
@@ -380,6 +383,19 @@ bool CScraperAccess::UserHasCards()
 		return false;
 	}
 	return PlayerHasCards(userchair);
+}
+
+bool CScraperAccess::IsPlayerActive(int player)
+{
+	bool result = p_string_match->IsStringActive(p_scraper->active(player));
+	result = result && IsPlayerSeated(player);
+	return result;
+}
+
+bool CScraperAccess::IsPlayerSeated(int player)
+{
+	bool result = p_string_match->IsStringSeated(p_scraper->seated(player));
+	return result;
 }
 
 bool CScraperAccess::IsKnownCard(int card)

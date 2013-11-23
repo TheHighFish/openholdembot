@@ -79,7 +79,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 	_playersactivebits  = 0;
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		if (p_string_match->IsStringActive(p_scraper->active(i)))
+		if (p_scraper_access->IsPlayerActive(i))
 		{
 			_playersactivebits |= (1<<i);			
 		}
@@ -152,7 +152,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		// because there can be no quick folds after him.
 		else if (!first_non_blind_with_cards_found)
 		{
-			if (p_string_match->IsStringActive(p_scraper->active(chair_to_consider)))
+			if (p_scraper_access->IsPlayerActive(chair_to_consider))
 			{
 				this_player_got_dealt = true;
 				if (p_scraper_access->PlayerHasCards(chair_to_consider))

@@ -59,7 +59,7 @@ double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, int *e)
 	return CalcF$symbol(f, symbol, false, e); 
 }
 
-// !!! e is an in-out-parameter and needs to be initialized to SUCCESS
+// ATTENTION! "e" is an in-out-parameter and needs to be initialized to SUCCESS
 // otherwise these functions don't work.
 // Candidate for refactoring
 double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, bool log, int *e)

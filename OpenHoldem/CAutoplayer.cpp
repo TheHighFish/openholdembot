@@ -252,7 +252,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 		{
 			if (p_casino_interface->ClickButton(i))
 			{
-				write_logautoplay(ActionConstantNames(i));  //!!!
+				write_logautoplay(ActionConstantNames(i));
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}

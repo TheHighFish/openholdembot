@@ -176,13 +176,13 @@ BEGIN
         MENUITEM "Check S&yntax\tF10",          ID_PERL_CHECKSYNTAX
         MENUITEM "&Edit Main Formula\tF11",     ID_PERL_EDITMAINFORMULA
     END
+    MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
-        MENUITEM "&Wiki",                       ID_HELP_DOCUMENTATIONWIKI
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
-        MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
+        MENUITEM "&Problem Solver\tF6",         ID_HELP_PROBLEMSOLVER
         MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
     END
@@ -222,7 +222,6 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
-        MENUITEM "&Wiki",                       ID_HELP_DOCUMENTATIONWIKI
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
