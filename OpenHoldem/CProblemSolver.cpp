@@ -94,28 +94,12 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    If it does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
 	}
-	else if (UserChairUnknown())
-	{
-		OH_MessageBox_Interactive(
-			"GOOD NEWS:\n"
-			"  * At least one tablemap in scraper folder.\n"
-			"  * You are connected to a table.\n"
-			"\n"
-			"BAD NEWS:\n"
-			"  * you are not seated or userchair not recognized.\n"
-			"    To detect the userchair two conditions must be met:\n"
-			"      * Cards visible.\n"
-			"      * Buttons visible at the same time.\n"
-			"    Please revisit your tablemap.",
-			k_title_string, 0);
-	}
 	else if (NoOpponents())
 	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"  * At least one tablemap in scraper folder.\n."
 			"  * You are connected to a table.\n"
-			"  * Your chair got recognized.\n"
 			"\n"
 			"BAD NEWS:\n"
 			"  * There seem to be no opponents.\n"
@@ -123,6 +107,23 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"      * seated regions\n"
 			"      * active regions\n"
 			"      * cardbacks\n",
+			k_title_string, 0);
+	}
+	else if (UserChairUnknown())
+	{
+		OH_MessageBox_Interactive(
+			"GOOD NEWS:\n"
+			"  * At least one tablemap in scraper folder.\n"
+			"  * At least one opponent got recognized.\n"
+			"  * You are connected to a table.\n"
+			"\n"
+			"BAD NEWS:\n"
+			"  * you are not seated or userchair not recognized.\n"
+			"    To detect the userchair three conditions must be met:\n"
+			"      * Cards visible.\n"
+			"      * Player must be active (not sitting out).\n"
+			"      * Buttons visible at the same time.\n"
+			"    Please revisit your tablemap.",
 			k_title_string, 0);
 	}
 	else if (AutoPlayerDidActAtLeastOnce())
