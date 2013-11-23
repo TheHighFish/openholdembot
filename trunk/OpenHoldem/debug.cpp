@@ -38,8 +38,6 @@
 
 //#include <vld.h>			// visual leak detector
 
-// !! ToDo: better debug-format (especially summary)
-
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
 
@@ -267,7 +265,6 @@ void start_log(void)
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
 		write_log(k_always_log_basic_information, "! log file open\n");
-		fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCKRA FCKRA swag\n"); //!! nit		fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 		fflush(log_fp);
 	}
 
@@ -446,78 +443,64 @@ void write_logautoplay(const char * action)
 		pokerhand = p_symbol_engine_pokerval->HandType();
 
         // best action
-        if (strcmp(action, "SWAG")==0) 
-		{
-            bestaction.Format("$%.2f", p_autoplayer_functions->f$betsize());
-        }
-        else 
-		{
-            if (p_autoplayer_functions->f$alli())
-                bestaction = "Allin";
+        if (p_autoplayer_functions->f$alli())
+            bestaction = "Allin";
+        else if ((strcmp(action, "SWAG")==0) 
+			|| (p_autoplayer_functions->f$betsize() > 0)) 
+				bestaction.Format("Raise to $%.2f", p_autoplayer_functions->f$betsize());				
+        else if (p_autoplayer_functions->f$rais())
+            bestaction = "Bet/Raise";
+        else if (p_autoplayer_functions->f$call())
+            bestaction = "Call/Check";
+        else if (p_autoplayer_functions->f$prefold())
+            bestaction = "Prefold";
+        else
+            bestaction = "Check/Fold";
 
-            else if (p_autoplayer_functions->f$betsize())
-                bestaction = "SWAG";
-
-            else if (p_autoplayer_functions->f$rais())
-                bestaction = "Bet/Raise";
-
-            else if (p_autoplayer_functions->f$call())
-                bestaction = "Call/Check";
-
-            else if (p_autoplayer_functions->f$prefold())
-                bestaction = "Pre-fold";
-
-            else
-                bestaction = "Fold/Check";
-
-        }
-
+		int userchair = p_symbol_engine_userchair->userchair();
         // fcra_seen
 		CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
-
         // fcra formula status
-		fcra_formula_status.Format("%s%s%s%s",
-			!p_autoplayer_functions->f$alli() && !p_autoplayer_functions->f$rais() && !p_autoplayer_functions->f$call() && !p_autoplayer_functions->f$betsize() ? "F" : ".",
+		fcra_formula_status.Format("%s%s%s%s%s",
+			p_autoplayer_functions->f$fold() ? "F" : ".",
 			p_autoplayer_functions->f$call() ? "C" : ".",
+			p_autoplayer_functions->f$call() ? "K" : ".",
 			p_autoplayer_functions->f$rais() ? "R" : ".",
 			p_autoplayer_functions->f$alli() ? "A" : ".");
-
-        fprintf(log_fp, "%s - %1d ", 
-			get_time(nowtime), 
-			p_tablemap->nchairs());
-        fprintf(log_fp, "%4s %10s %4s %5s ", 
-			pcards.GetString(), 
-			comcards.GetString(), 
-			rank.GetString(), 
-			pokerhand.GetString());
-        fprintf(log_fp, "%4d %4d %4d ", 
-			(iter_vars.prwin() * 1000),
-			(iter_vars.prlos() * 1000), 
-			(iter_vars.prtie() * 1000));
-        fprintf(log_fp, "%2d %8d %-10s - ", 
-			p_symbol_engine_prwin->nopponents_for_prwin(),
-			iter_vars.nit(),
-			bestaction.GetString());
-        fprintf(log_fp, "%-5s %9.2f %9.2f %9.2f ", 
-			action, 
-			p_symbol_engine_chip_amounts->call(), 
-			p_symbol_engine_tablelimits->bet(), 
-			p_symbol_engine_chip_amounts->pot());
-		int userchair = p_symbol_engine_userchair->userchair();
-		fprintf(log_fp, "%9.2f - %s %s %.2f\n", 
-			p_symbol_engine_chip_amounts->balance(userchair), 
-			fcra_seen.GetString(), 
-			fcra_formula_status.GetString(), 
-			p_autoplayer_functions->f$betsize() );
+		
+		// More verbose summary in the log
+		// The old WinHoldem format was a complete mess
+		fprintf(log_fp, "**** Basic Info *********************************************\n");
+		fprintf(log_fp, get_time(nowtime));
+		fprintf(log_fp, "  Chairs:		 %1d\n",   p_tablemap->nchairs());
+		fprintf(log_fp, "  Userchair:    %d\n",    userchair);
+		fprintf(log_fp, "  Holecards:    %s\n",    pcards.GetString());
+		fprintf(log_fp, "  Community:    %s\n",    comcards.GetString());
+		fprintf(log_fp, "  Rank:         %4s\n",   rank.GetString());
+		fprintf(log_fp, "  Hand:         %5s\n",   pokerhand.GetString());
+		fprintf(log_fp, "  PrWin:        %4d\n",   (iter_vars.prwin() * 1000));
+		fprintf(log_fp, "  PrLos:        %4d\n",   (iter_vars.prlos() * 1000));
+		fprintf(log_fp, "  PrTie:        %4d\n",   (iter_vars.prtie() * 1000));
+		fprintf(log_fp, "  NOpponents:   %2d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
+		fprintf(log_fp, "  Iterations:   %8d\n",   iter_vars.nit());
+		fprintf(log_fp, "  Balance:      %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
+		fprintf(log_fp, "  Betsize:      %9.2f\n", p_symbol_engine_tablelimits->bet());
+		fprintf(log_fp, "  Call:         %9.2f\n", p_symbol_engine_chip_amounts->call());
+		fprintf(log_fp, "  Pot:          %9.2f ",  p_symbol_engine_chip_amounts->pot());
+		fprintf(log_fp, "  f$betsize:    %.2f\n",  p_autoplayer_functions->f$betsize());
+		fprintf(log_fp, "  Formulas:     %s\n",    fcra_formula_status.GetString());
+		fprintf(log_fp, "  Buttons:      %s\n",    fcra_seen.GetString());
+		fprintf(log_fp, "  Best action:  %s\n",    bestaction.GetString());
+		fprintf(log_fp, "  Action taken: %s\n",    action);
 
 		if (preferences.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
-			write_log_nostamp(1, "***** Autoplayer Trace ****\n");
+			write_log_nostamp(1, "***** Autoplayer Trace **************************************\n");
 			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)
 			{
 				write_log_nostamp(1, "%s\n", p_symbols->symboltrace_collection()->GetAt(i));
 			}
-			write_log_nostamp(1, "***********************\n");
+			write_log_nostamp(1, "***** History (might be not accurate) ***********************\n");
 		}
 
 		fflush(log_fp);
