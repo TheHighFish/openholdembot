@@ -350,7 +350,6 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_PREV, &CDlgFormulaScintilla::OnFindPrev)
 
 	ON_COMMAND(ID_HELP, &CDlgFormulaScintilla::OnHelp)
-	ON_COMMAND(ID_HELP_DOCUMENTATIONWIKI, &CDlgFormulaScintilla::OnHelpWiki)
 	ON_COMMAND(ID_HELP_FORUMS, &CDlgFormulaScintilla::OnHelpForums)
 
 	// Keyboard Shortcuts
@@ -2648,11 +2647,6 @@ void CDlgFormulaScintilla::OnHelp()
 			OH_MessageBox_Error_Warning("Error opening help-file", "Error");
 		}
 	}
-}
-
-void CDlgFormulaScintilla::OnHelpWiki()
-{
-	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/wiki/index.php5?title=Main_Page", "", "", SW_SHOWDEFAULT);
 }
 
 void CDlgFormulaScintilla::OnHelpForums()
