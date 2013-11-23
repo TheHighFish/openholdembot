@@ -4794,7 +4794,7 @@ f$OpenPPL_ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 [ (f$OpenPPL_SmallBlindChair == 7) ] ? pt_hands7 :
 [ (f$OpenPPL_SmallBlindChair == 8) ] ? pt_hands8 :
 [ (f$OpenPPL_SmallBlindChair == 9) ] ? pt_hands9 :
-f$OpenPPL_ERROR_SmalllindChair_Not_Recognized__Check_Your_TableMap
+f$OpenPPL_ERROR_SmallindChair_Not_Recognized__Check_Your_TableMap
 
 ##f$OpenPPL_PT_LastCaller_VPIP##
 f$OpenPPL_PT_LastCaller_Chair==0 && pt_hands0>=f$OpenPPL_ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip0 :
