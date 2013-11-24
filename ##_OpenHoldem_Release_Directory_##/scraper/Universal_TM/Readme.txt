@@ -6,6 +6,7 @@ the autoconnector would then be willing to connect to any kind of random "table"
 
 For clarification (as some people didn't get it)
 * turn auto-connection completely off (preferences->auto-connector).
+  Note: this requires version 2.1.9.4 or earlier.
 * load the TM manually (don't put it in the scraper-folder!
     the auto-connector would then connect to any "table" later)
 * press the replay-buttons if you see a good situation
