@@ -155,23 +155,26 @@ BEGIN
     POPUP "&Edit"
     BEGIN
         MENUITEM "&Formula\tCtrl+F",            ID_EDIT_FORMULA
-        MENUITEM "P&references\tCtrl+P",        ID_EDIT_PREFERENCES
+        MENUITEM "&Preferences\tCtrl+P",        ID_EDIT_PREFERENCES
         MENUITEM SEPARATOR
         MENUITEM "Force &Crash",                ID_HELP_FORCECRASH
         MENUITEM SEPARATOR
-        MENUITEM "View S&craper Output",        ID_VIEW_SCRAPEROUTPUT
-        MENUITEM "S&hoot Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
+        MENUITEM "&Tag Log-File\tF6",           ID_EDIT_TAGLOG
+        MENUITEM "&View Log-file",              ID_EDIT_VIEWLOG
+        MENUITEM SEPARATOR
+        MENUITEM "View Scraper &Output",        ID_VIEW_SCRAPEROUTPUT
+        MENUITEM "Shoot &Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
     POPUP "&DLL"
     BEGIN
         MENUITEM "&Load\tF4",                   ID_DLL_LOAD
-        MENUITEM "Load &Specific File\tF5",     ID_DLL_LOADSPECIFICFILE
+        MENUITEM "Load &Specific File...\tF5",  ID_DLL_LOADSPECIFICFILE
     END
     POPUP "Per&l"
     BEGIN
         MENUITEM "&Load Formula\tF7",           ID_PERL_LOADFORMULA
         MENUITEM "&Reload Formula\tF8",         ID_PERL_RELOADFORMULA
-        MENUITEM "Load &Specific Formula\tF9",  ID_PERL_LOADSPECIFICFORMULA
+        MENUITEM "Load &Specific Formula...",   ID_PERL_LOADSPECIFICFORMULA
         MENUITEM SEPARATOR
         MENUITEM "Check S&yntax\tF10",          ID_PERL_CHECKSYNTAX
         MENUITEM "&Edit Main Formula\tF11",     ID_PERL_EDITMAINFORMULA
@@ -182,7 +185,7 @@ BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
-        MENUITEM "&Problem Solver\tF6",         ID_HELP_PROBLEMSOLVER
+        MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
         MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
     END
@@ -1223,6 +1226,8 @@ END
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
+    ID_EDIT_VIEWLOG         "View the log-file of the current OpenHoldem-instance"
+    ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review"
 END
 
 STRINGTABLE 
@@ -1316,11 +1321,15 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_AUTOPLAYER "Engage autoplayer\nAutoplayer"
     ID_MAIN_TOOLBAR_FORMULA "Edit the formula\nEdit"
+    ID_DLL_LOAD             "Load the pre-defined DLL "
 END
 
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_VALIDATOR "Enable validator\nValidator"
+    ID_HELP_PROBLEMSOLVER   "Detects the most common beginner-mistakes. Give it a try ;-)"
+    ID_HELP_HELP            "Starts the help-file"
+    ID_HELP_FORUMS          "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
 END
 
 STRINGTABLE 
@@ -1334,11 +1343,15 @@ END
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
+    ID_VIEW_SCRAPEROUTPUT   "View images that get captured by the scraper-engine"
+    ID_DLL_LOADSPECIFICFILE "Prompt the user for a DLL to load"
 END
 
 STRINGTABLE 
 BEGIN
     ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
+    ID_VIEW_SHOOTREPLAYFRAME 
+                            "Shoot an image of the current table-view for later inspection with OHReplay"
 END
 
 STRINGTABLE 
@@ -1346,6 +1359,13 @@ BEGIN
     ID_PERL_LOADFORMULA     "Load the mostt recent Perl formula"
     ID_PERL_LOADSPECIFICFORMULA "Select a Perl formula to load"
     ID_PERL_EDITMAINFORMULA "Invoke the favorite Perl editor to edit the main formula file"
+    ID_PERL_RELOADFORMULA   "Reloads the most recent Perl formula"
+    ID_PERL_CHECKSYNTAX     "Check the most recent formula for errors"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_HELP_FORCECRASH      "Force a crash for testing purposes"
 END
 
 #endif    // English (U.S.) resources

@@ -147,7 +147,7 @@
 #define IDC_ICM_3                       1112
 #define IDC_ICM_4                       1113
 #define IDC_CHECK1                      1114
-#define IDC_AUTOPLAYER_UPON_CONNECTION                     1114
+#define IDC_AUTOPLAYER_UPON_CONNECTION  1114
 #define IDC_ICM_5                       1114
 #define IDC_CHECK2                      1115
 #define IDC_CHECK3                      1116
@@ -427,7 +427,7 @@
 #define IDC_DEBUG_ENGINE_CONTAINER      1382
 #define IDC_DEBUG_HANDHISTORY           1383
 #define IDC_DEBUG_PREFERENCES           1384
-#define IDC_DEBUG_DLL_EXTENSION			1385
+#define IDC_DEBUG_DLL_EXTENSION         1385
 #define IDC_DEBUG_SCRAPER_PREPROCESSOR  1386
 #define IDC_DEBUG_HOPPER_MESSAGES       1387
 #define IDC_ALWAYS_KEEP_POSITION        1388
@@ -537,6 +537,8 @@
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993
 #define ID_FILE_LOAD_OPENPPL            32994
+#define ID_EDIT_VIEWLOG                 32997
+#define ID_EDIT_TAGLOG                  32998
 #define ID_INDICATOR_STATUS_READY       61190
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
@@ -545,7 +547,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
-#define _APS_NEXT_COMMAND_VALUE         32997
+#define _APS_NEXT_COMMAND_VALUE         32999
 #define _APS_NEXT_CONTROL_VALUE         1389
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
