@@ -88,7 +88,7 @@ bool CCasinoInterface::ClickButton(int autoplayer_function_code)
 	}
 	else
 	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s\n", k_standard_function_names[autoplayer_function_code]);
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
 		return false;
 	}
 }
