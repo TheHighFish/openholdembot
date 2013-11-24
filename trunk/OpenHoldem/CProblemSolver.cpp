@@ -199,9 +199,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    - The autoplayer did not (yet) act,\n"        
 			"\n"
 			"The autoplayer should act within some seconds,\n"
-			"as long as the autoplayer is engaged (default).\n"
-			"\n"
-			"Good luck, dear friend.\n",
+			"as long as the autoplayer is engaged (default).\n",
 			k_title_string, 0);
 	}
 }
