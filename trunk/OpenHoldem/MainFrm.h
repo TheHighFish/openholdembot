@@ -20,6 +20,8 @@ protected: // create from serialization only
 	afx_msg void OnFileOpen();
 	afx_msg void OnEditFormula();
 	afx_msg void OnEditForceuserchair();
+	afx_msg void OnEditViewLog();
+	afx_msg void OnEditTagLog();
 	afx_msg void OnScraperOutput();
 	afx_msg void OnViewShootreplayframe();
 	afx_msg void OnEditPreferences();
