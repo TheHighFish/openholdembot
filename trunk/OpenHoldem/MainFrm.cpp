@@ -23,6 +23,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CDllExtension.h"
+#include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
 #include "CHeartbeatThread.h"
@@ -92,6 +93,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
 	ON_COMMAND(ID_EDIT_FORMULA, &CMainFrame::OnEditFormula)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
+	ON_COMMAND(ID_EDIT_VIEWLOG, &CMainFrame::OnEditViewLog)
+	ON_COMMAND(ID_EDIT_TAGLOG, &CMainFrame::OnEditTagLog)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
@@ -284,6 +287,21 @@ void CMainFrame::OnEditFormula()
 	m_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
 	m_formulaScintillaDlg->ShowWindow(SW_SHOW);
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
+}
+
+void CMainFrame::OnEditViewLog()
+{
+	if (p_filenames == NULL)
+	{
+		return;
+	}
+	ShellExecute(NULL, "open", p_filenames->LogFilename(), NULL, NULL, SW_SHOW);
+}
+
+void CMainFrame::OnEditTagLog()
+{
+	write_log(k_always_log_basic_information,
+		"[*** ATTENTION ***] User tagged this situation for review\n");
 }
 
 // Menu -> Edit -> View Scraper Output
