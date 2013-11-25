@@ -89,6 +89,7 @@ BEGIN
     BUTTON      ID_MAIN_TOOLBAR_AUTOPLAYER
     BUTTON      ID_MAIN_TOOLBAR_FORMULA
     BUTTON      ID_MAIN_TOOLBAR_VALIDATOR
+	BUTTON      ID_MAIN_TOOLBAR_TAGLOGFILE
     SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_MINMAX
     BUTTON      ID_MAIN_TOOLBAR_ATTACH_TOP
@@ -1326,10 +1327,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_MAIN_TOOLBAR_VALIDATOR "Enable validator\nValidator"
-    ID_HELP_PROBLEMSOLVER   "Detects the most common beginner-mistakes. Give it a try ;-)"
-    ID_HELP_HELP            "Starts the help-file"
-    ID_HELP_FORUMS          "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
+    ID_MAIN_TOOLBAR_VALIDATOR  "Enable validator\nValidator"
+	ID_MAIN_TOOLBAR_TAGLOGFILE "Leave a stamp in the log-file for more easy review"
+    ID_HELP_PROBLEMSOLVER      "Detects the most common beginner-mistakes. Give it a try ;-)"
+    ID_HELP_HELP               "Starts the help-file"
+    ID_HELP_FORUMS             "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
+
 END
 
 STRINGTABLE 
