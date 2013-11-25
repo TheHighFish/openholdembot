@@ -88,8 +88,8 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0))
 		{
 			// It was free to check
-			_autoplayer_actions[BETROUND][autoplayer_action_code == k_autoplayer_function_check]++;
-			SetPrevaction(autoplayer_action_code == k_autoplayer_function_check);
+			_autoplayer_actions[BETROUND][k_autoplayer_function_check]++;
+			SetPrevaction(k_autoplayer_function_check);
 		}
 		else
 		{
