@@ -1,4 +1,4 @@
-v4.2.7 2013-12-xx
+v4.3.0 2013-11-25
 ==================
 NEW STUFF:
 - Introducing a new menu-item "Edit -> Tag Log-File" that creates a message in the log:
@@ -9,7 +9,7 @@ NEW STUFF:
 - Introducing a new menu-item "Edit -> View Log-File" to find the log 
   for the current instance more easily.
   [THF]
-- Extra menu item for the problem-solver ("old" feature"),
+- Extra menu item for the problem-solver ("old" feature),
   because it seemed the people who need it most do not know about it.
   [THF]  
 
