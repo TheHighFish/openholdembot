@@ -186,6 +186,7 @@ void CFlagsToolbar::CreateMainToolbar(void)
 
 	// Make validator button sticky
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_VALIDATOR, &tbi);
+	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_TAGLOGFILE
 
 	// Make scraper output button sticky
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &tbi);
