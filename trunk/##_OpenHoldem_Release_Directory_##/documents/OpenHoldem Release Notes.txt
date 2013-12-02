@@ -17,6 +17,19 @@ BUG FIXES:
 - When we improved the "prevaction"-code in 4.2.4 a small copy-and-paste-error got introduced.
   Thanks to Triple for finding it and suggesting a fix.
   [THF]
+- Better error-message for outdated version-1-tablemaps and now terminating 
+  to avoid crashes.
+  Version-1-tablemaps (outdated for about 4 years) always caused mis-scrapes 
+  and needed to get fix before getting used.
+  Even worse: corrupted tablemaps could incorrectly get detected as version 1 
+  and then get auto-corrected. This could lead to crashes.
+  To avoid problems like these we do now terminate after a warning. 
+  [THF]
+- The now "95% finished" hand-history-generator could crash OpenHoldem at startup,
+  as its constructor used potentially uninitialized data.
+  We do now show an explanatory message-box (if enabled)
+  and make sure that the critical code won't get executed.
+  [THF]
 
 MAINTENANCE:
 - Improved log-file-format.
