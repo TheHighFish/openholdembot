@@ -46,11 +46,13 @@ CEngineContainer *p_engine_container = NULL;
 
 CEngineContainer::CEngineContainer()
 {
+	write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
 	CreateSymbolEngines();
 	// First initialization is the same as on a new connection
 	ResetOnConnection();
 	// But we want to initialize later again on every connection
 	_reset_on_connection_executed = false;
+	write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
 CEngineContainer::~CEngineContainer()
@@ -225,6 +227,7 @@ void CEngineContainer::ResetOnConnection()
 		_symbol_engines[i]->ResetOnConnection();
 	}
 	_reset_on_connection_executed = true;
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
 }
 
 void CEngineContainer::ResetOnDisconnection()

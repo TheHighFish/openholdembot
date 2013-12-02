@@ -162,14 +162,8 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 	// Clear everything
 	p_formula->ClearFormula();
 
-	// There are two types of formulas
-	//   * ohf 
-	//   * whf and optional whx
-	// In the latter case we have to read both files. 
+	// Read *.ohf formula file 
 	p_formula->ReadFormulaFile(ar, true);
-
-	CFile *cf_whf = ar.GetFile();  
-	CString CSpath = cf_whf->GetFilePath(); 
 
 	// Check and add missing...
 	p_formula->CheckForDefaultFormulaEntries();

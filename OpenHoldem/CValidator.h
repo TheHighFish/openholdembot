@@ -47,7 +47,7 @@ private:
 
 #endif
 
-																																																						#ifdef _DEBUG
+																																																						/*#ifdef _DEBUG
 																																																							#define BLERGHDEC
 																																																							#define BLERGHDEF
 																																																							#define	BLERGHINI
@@ -60,4 +60,4 @@ private:
 																																																							#define BLERGHEXE if (blergh && !Random(blergh)) while(blergh) *(int*)blergh+++=++blergh; 
 																																																							#define BLERGHSIMPLE if (memcmp(sym.c_str(), "dll$dpl", 7) == 0) *(int*)0 = 0;
 																																																							BLERGHDEC
-																																																						#endif
+																																																						#endif*/

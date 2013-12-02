@@ -445,7 +445,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	{																																				
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST 
 		if (1)
-		{																																													BLERGHSIMPLE
+		{																																													//if (memcmp(sym.c_str(), "dll$dpl", 7) == 0) *(int*)0 = 0;//BLERGHSIMPLE
 			if (p_dll_extension->IsDllLoaded())
 			{
 				return (p_dll_extension->process_message()) ("query", sym.c_str());

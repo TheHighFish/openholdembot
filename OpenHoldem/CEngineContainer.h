@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-const int k_max_number_of_symbol_engines = 27;
+const int k_max_number_of_symbol_engines = 50;
 
 extern class CEngineContainer
 {
