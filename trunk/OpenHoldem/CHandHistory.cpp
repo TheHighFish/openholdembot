@@ -52,9 +52,12 @@ const int k_betround_showdown = k_betround_river + 1;
 // OK
 CHandHistory::CHandHistory()
 {
+	return; //!!! disabled
+
 	CreateHandHistoryFile();
 	// Attempt to create a random starting game number
 	unsigned long seconds = time(NULL);
+	// Attention! Might be not yet initialized
 	gameNumber = (100000000 * p_sessioncounter->session_id()) + seconds/8; 
 
 
@@ -74,6 +77,16 @@ CHandHistory::~CHandHistory()
 // Checked
 void CHandHistory::MakeHistory()
 {
+	MessageBox(0, "The hand-history-generator is work in progress.\n"
+		"It is nearly complete, but some things are not perfect.\n"
+		"Unfortunatelly its creator left the project in the mean-time.\n"
+		"\n"
+		"You are very welcome to have a look at the sources\n"
+		"and suggest some improvements.\n"
+		"\n"
+		"For the moment this feature has to be disabled.\n",
+		"Hand-history generator", 0);
+	return;
 	write_log(preferences.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
 	CreateHandHistoryFile();//!! Bad
 	UpdateSymbols();
@@ -115,6 +128,10 @@ void CHandHistory::WriteHistory()
 // Done
 void CHandHistory::UpdateSymbols()
 {
+	// !!! Attention!
+	// It seems that these pointers can be undefined the very first time
+	// Result: crashes!
+	// Better turn everything into a "symbol engine"
 	nchairs   = p_tablemap->nchairs();
 	betround  = p_betround_calculator->betround();
 	userchair = p_symbol_engine_userchair->userchair();

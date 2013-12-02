@@ -25,7 +25,7 @@
 #include "OH_MessageBox.h"
 
 CValidator *p_validator = NULL;
-																																																												BLERGHDEF																										
+																																																												//BLERGHDEF																										
 
 CValidator::CValidator()
 {

@@ -145,7 +145,7 @@ void CIteratorThread::RestartIteratorThread()
 }
 
 void CIteratorThread::StartIteratorThreadIfNeeded()
-{																																																																					BLERGHEXE
+{																																																															
 	if (p_iterator_thread)
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");

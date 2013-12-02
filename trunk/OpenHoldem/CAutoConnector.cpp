@@ -234,19 +234,26 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 		{
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
 			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window marked at shared memory\n");
+
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
-
 			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString());
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap loaded\n");
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
 
 			// Clear scraper fields
 			p_scraper->ClearScrapeAreas();
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scrape-areas cleared\n");
 
 			// Reset symbols
 			p_engine_container->ResetOnConnection();
+
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] ResetOnConnection executed (during connection)\n");
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
 
 			// Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) 
@@ -386,6 +393,9 @@ void CAutoConnector::Disconnect()
 
 	// Reset symbols
 	p_engine_container->ResetOnConnection();
+
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ResetOnConnection executed (disconnection)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
 
 	// Change window title
 	PMainframe()->UpdateWindowTitle();

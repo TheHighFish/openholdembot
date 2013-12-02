@@ -73,7 +73,7 @@ void COpenHoldemStatusbar::SwitchToAdvancedStatusbarAfterFirstHand()
 		return;
 	}
 	// Still basic statusbar for beginners
-	if (p_game_state->hands_played() >= 1)
+	if ((p_game_state != NULL) && (p_game_state->hands_played() >= 1))
 	{
 		// Bot seems to play -> no beginners advice needed
 		// -> switch to normal "advanced" status-bar.

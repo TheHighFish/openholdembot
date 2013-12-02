@@ -103,6 +103,7 @@ void CSymbolEngineIniFunctions::ResetOnConnection()
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
 		&dummy_e);
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
 }
 
 void CSymbolEngineIniFunctions::ResetOnHandreset()

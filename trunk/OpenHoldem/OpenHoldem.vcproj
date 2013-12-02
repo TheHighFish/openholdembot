@@ -994,6 +994,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineOpenPPLHandExpression.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEnginePokerTracker.cpp"
 						>
 					</File>
@@ -1605,6 +1609,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineLists.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLHandExpression.h"
 						>
 					</File>
 					<File

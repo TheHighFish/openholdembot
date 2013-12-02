@@ -139,7 +139,6 @@ int CTablemap::LoadTablemap(const char *_fname)
 			return ERR_EOF;
 		}
 	}
-
 	
 	//
 	// Validate file version (always first line).
@@ -148,14 +147,21 @@ int CTablemap::LoadTablemap(const char *_fname)
 	if ((memcmp(strLine.GetString(), VER_OPENHOLDEM_2, strlen(VER_OPENHOLDEM_2)) != 0 
 		&& memcmp(strLine.GetString(), VER_OPENSCRAPE_2, strlen(VER_OPENSCRAPE_2)) != 0))
 	{
-		OH_MessageBox_Error_Warning("This is a version 1 table map.\n\n"\
-			   "Version 2.0.0 and higher of OpenHoldem use a new format (version 2).  This\n"\
-			   "table map has been loaded, but it is highly unlikely to work correctly until\n"\
-			   "it has been opened in OpenScrape version 2.0.0 or higher, and adjustments\n"\
-			   "have been made to autoplayer settings and region sizes.\n\n"\
-			   "Please do not use this table map prior to updating it to version 2 in\n"\
-			   "OpenScrape or you run the very serious risk of costly mis-scrapes.",
-			   "Table map load warning");
+		CString error_message;
+		error_message.Format("This is a version 1 table map.\n"
+			"\n"
+			"Version 2.0.0 and higher of OpenHoldem use a new format (version 2).\n"  
+			"This table map is highly unlikely to work correctly until it has been\n"
+			"opened in OpenScrape version 2.0.0 or higher, and adjustments\n"
+			"have been made to autoplayer settings and region sizes.\n"
+			"\n"
+			"Filename: %s"
+			"\n"
+			"To avoid costly mis-scrapes and crashes OpenHoldem will terminate now.\n",
+			_filename);
+
+		OH_MessageBox_Error_Warning(error_message, "Table map load error");
+		PostQuitMessage(1);
 		return ERR_VERSION;
 	}
 

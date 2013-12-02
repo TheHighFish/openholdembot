@@ -77,12 +77,15 @@ CSymbols::~CSymbols()
 
 void CSymbols::InitOnStartup()
 {
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbols::InitOnStartup()\n");
 	logsymbols_collection_removeall();
 	symboltrace_collection_removeall();
 }
 
 void CSymbols::ResetOnConnection()
-{}
+{
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbols::ResetOnConnection()\n");
+}
 
 void CSymbols::ResetOnHandreset()
 {
