@@ -1,8 +1,10 @@
 * Have a look at http://code.google.com/p/openholdembot/source/list 
   and ask the developers, if all work is completed and remind them to update the release-notes
-* Update the version and release-date in the release-notes
+* Update the version and release-date in the release-notes "##_OpenHoldem_Release_Directory_##\documents\"OpenHoldem Release Notes.txt""
 * Change the version of OpenHoldem
   (search the OpenHoldem-project for the old one, e.g. "4.2.5" and "4.25", but don't auto-replace)
+  OpenHoldem\stdaxafx.h
+  OpenHoldem\OpenHoldem.rc
 * Choose the correct build option 
   - usually optimized for OH, but debug if there are some known problems left
   - release for Perl (necessary!)
