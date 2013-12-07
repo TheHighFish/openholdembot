@@ -993,10 +993,7 @@
 						RelativePath=".\CSymbolEngineLists.cpp"
 						>
 					</File>
-					<File
-						RelativePath=".\CSymbolEngineOpenPPLHandExpression.cpp"
-						>
-					</File>
+
 					<File
 						RelativePath=".\CSymbolEnginePokerTracker.cpp"
 						>
