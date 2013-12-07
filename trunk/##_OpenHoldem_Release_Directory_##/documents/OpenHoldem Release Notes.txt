@@ -1,4 +1,4 @@
-v4.3.0 2013-11-25
+v4.3.0 2013-12-07
 ==================
 NEW STUFF:
 - Introducing a new menu-item "Edit -> Tag Log-File" that creates a message in the log:
