@@ -174,7 +174,6 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to register document template.DLL\n");
 	MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
 	// Register the application's document templates.  Document templates
 	// serve as the connection between documents, frame windows and views
@@ -192,18 +191,15 @@ BOOL COpenHoldemApp::InitInstance()
 	EnableShellOpen();
 	RegisterShellFileTypes(false);
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to parse command-line.DLL\n");
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to open last file\n");
 	// Open the most recently saved file. (First on the MRU list.) Get the last
 	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
 	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
 	{
-		write_log(preferences.debug_alltherest(), "[OpenHoldem] CCommandLineInfo::FileNew\n");
 		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
 
 		if (! sLastPath.IsEmpty())
@@ -215,7 +211,6 @@ BOOL COpenHoldemApp::InitInstance()
 			// If file is there, set to open!
 			if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
 			{
-				write_log(preferences.debug_alltherest(), "[OpenHoldem] File opened successfully\n");
 				cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
 				cmdInfo.m_strFileName = sLastPath;
 				f.Close();
@@ -223,21 +218,17 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Dispatching commands\n");
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
-		//!!!!!return FALSE;
-		NULL;
+		return FALSE;
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Window title\n");
 	write_log(preferences.debug_alltherest(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 
 	if (preferences.simple_window_title())
 		m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to show/hide window\n");
 	// The one and only window has been initialized, so show and update it
 	if (preferences.gui_start_minimized())
 	{
@@ -248,7 +239,6 @@ BOOL COpenHoldemApp::InitInstance()
 		m_pMainWnd->ShowWindow(SW_SHOW);
 	}
 	
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to update window\n");
 	m_pMainWnd->UpdateWindow();
 	// call DragAcceptFiles only if there's a suffix
 	//  In an SDI app, this should occur after ProcessShellCommand
@@ -270,7 +260,6 @@ BOOL COpenHoldemApp::InitInstance()
 	// Start thread anyway; permanent connection might be enabled later via preferences.
 	p_autoconnectorthread->StartThread();	
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] InitInstance() finished\n");
 	return TRUE;
 }
 

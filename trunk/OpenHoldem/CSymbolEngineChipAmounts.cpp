@@ -251,7 +251,7 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise()
 		_nbetstorais = _nbetstocall + 1;	
 	}
 	_ncallbets = Largestbet() / bet;				
-	_nraisbets = _ncallbets + 1;												
+	_nraisbets = _ncallbets + 1;	// fixed limit											
 }
 
 double CSymbolEngineChipAmounts::Largestbet()
