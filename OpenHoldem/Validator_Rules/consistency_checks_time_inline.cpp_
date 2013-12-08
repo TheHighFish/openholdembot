@@ -33,7 +33,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Once the first hand is finished and the autoplayer did sct, the session duration has to be greater than the time since our last action.")
     PRECONDITION (gws("handsplayed") > 1)
-    POSTCONDITION (gws("elapsed") > gws("elapsedauto") && (gws(didchec) || gws(didcall) || gws(didrais) || gws(didswag)))
+    POSTCONDITION (gws("elapsed") > gws("elapsedauto") && (gws("didchec") || gws("didcall") || gws("didrais") || gws("didswag")))
     SYMBOLS_POSSIBLY_AFFECTED ("didcall, didchec, didrais, didswag, elapsed, elapsedauto, handsplayed")
 END_TESTCASE
 
