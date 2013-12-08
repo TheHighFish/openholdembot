@@ -1,3 +1,27 @@
+v4.3.1 2013-12-08
+==================
+BUG FIXES:
+- In the past (pre 4.2.5) OpenHoldem could crash at startuo,
+  because the ini-functions could get evaluated even if no formula 
+  was loaded at that point of time. We prevented this by a sanity-check,
+  but unfortunatelly this safenty-net did also depend on some 
+  potentially uninitialized data (depending on multiple threads).
+  This has now been fixed and the crashes on startup can no longer get reproduced.
+  [THF]
+- flagbits got reported by the validator as "unknown symbol".
+  This has now been fixed.
+  [THF]
+  
+MAINTENANCE:
+- Improved some validator-rules and introduced some new ones for the blinds.
+  [THF]
+- For OpenHoldem 4.0 we added a module that warns about outdated concepts
+  and provides lots of explanations to the user, but this functionality 
+  got called very late in the symbol-engine, so that other error-detecting mechanisms
+  fired first.
+  This has now been changed and we check for old features very early.
+  [THF]
+
 v4.3.0 2013-12-07
 ==================
 NEW STUFF:
