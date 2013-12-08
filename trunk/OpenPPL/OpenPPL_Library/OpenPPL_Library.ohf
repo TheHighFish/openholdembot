@@ -4873,11 +4873,15 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 // Change in potsize: somebody else behind us acted, 
 // so we checked or folded sucessfully
 || (pot			!= me_re_MemOldGameStatePotSize)
+// Change in betround, if everybody checked 
+// and potsize is the same
+|| (betround    != me_re_MemOldGameStateBetround)
 
 ##f$OpenPPL_RememberCurrentGameState##
    (me_st_MemOldGameStateDealerChair_dealerchair * 0)
 || (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
 || (me_st_MemOldGameStatePotSize_pot             * 0)
+|| (me_st_MemOldGameStateBetround_betround       * 0)
 
 ##f$OpenPPL_InitMemorySymbols##
 (f$OpenPPL_TimeToInitMemorySymbols == f$OpenPPL_False) ? 0 :
