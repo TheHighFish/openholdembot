@@ -57,102 +57,103 @@ void InstantiateAllSingletons()
 	// session-counter has to be done do earlier, as it is needed 
 	// to create the log-file, which might be needed before this point.
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStringMatch\n");
-	if (!p_string_match) 
-		p_string_match = new CStringMatch;
+	// This function gets executed exactly once at startup.
+	// So the global class-pointers have to be NULL.
+	assert(!p_string_match);
+	p_string_match = new CStringMatch;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
-	if (!p_handreset_detector) 
-		p_handreset_detector = new CHandresetDetector;
+	assert(!p_handreset_detector);
+	p_handreset_detector = new CHandresetDetector;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CConfigurationCheck\n");
-	if (!p_configurationcheck) 
-		p_configurationcheck = new CConfigurationCheck;
+	assert(!p_configurationcheck);
+	p_configurationcheck = new CConfigurationCheck;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayerFunctions\n");
-	if (!p_autoplayer_functions) 
-		p_autoplayer_functions = new CAutoplayerFunctions;
+	assert(!p_autoplayer_functions);
+	p_autoplayer_functions = new CAutoplayerFunctions;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CSharedMem\n");
-	if (!p_sharedmem) 
-		p_sharedmem = new CSharedMem;
+	assert(!p_sharedmem);
+	p_sharedmem = new CSharedMem;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStableFramesCounter\n");
-	if (!p_stableframescounter) 
-		p_stableframescounter = new CStableFramesCounter;
+	assert(!p_stableframescounter);
+	p_stableframescounter = new CStableFramesCounter;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraper\n");
-	if (!p_scraper) 
-		p_scraper = new CScraper;
+	assert(!p_scraper); 
+	p_scraper = new CScraper;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraperAccess\n");
-	if (!p_scraper_access)  
-		p_scraper_access = new CScraperAccess;
+	assert(!p_scraper_access);
+	p_scraper_access = new CScraperAccess;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CLazyScraper\n");
-	if (!p_lazyscraper)	
-		p_lazyscraper = new CLazyScraper;
+	assert(!p_lazyscraper);
+	p_lazyscraper = new CLazyScraper;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablemap\n");
-	if (!p_tablemap) 
-		p_tablemap = new CTablemap;
+	assert(!p_tablemap);
+	p_tablemap = new CTablemap;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablemapAccess\n");
-	if (!p_tablemap_access)  
-		p_tablemap_access = new CTablemapAccess;
+	assert(!p_tablemap_access);
+	p_tablemap_access = new CTablemapAccess;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CReplayFramesCounter\n");
-	if (!p_replayframes_counter)
-		p_replayframes_counter = new CReplayFramesCounter;
+	assert(!p_replayframes_counter);
+	p_replayframes_counter = new CReplayFramesCounter;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormula\n");
-	if (!p_formula) 
-		p_formula = new CFormula;
+	assert(!p_formula);
+	p_formula = new CFormula;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayer\n");
-	if (!p_autoplayer) 
-		p_autoplayer = new CAutoplayer();
+	assert(!p_autoplayer);
+	p_autoplayer = new CAutoplayer();
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPokerTrackerThread\n");
-	if (!p_pokertracker_thread)  
-		p_pokertracker_thread = new CPokerTrackerThread;
+	assert(!p_pokertracker_thread);
+	p_pokertracker_thread = new CPokerTrackerThread;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDllExtension\n");
-	if (!p_dll_extension) 
-		p_dll_extension = new CDllExtension;
+	assert(!p_dll_extension);
+	p_dll_extension = new CDllExtension;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CGameState\n");
-	if (!p_game_state) 
-		p_game_state = new CGameState;
+	assert(!p_game_state);
+	p_game_state = new CGameState;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPerl\n");
-	if (!p_perl) 
-		p_perl = new CPerl;
+	assert(!p_perl);
+	p_perl = new CPerl;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CMemory\n");
-	if (!p_memory) 
-		p_memory = new CMemory;	
+	assert(!p_memory);
+	p_memory = new CMemory;	
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersus\n");
-	if (!p_versus)
-		p_versus = new CVersus;	
+	assert(!p_versus);
+	p_versus = new CVersus;	
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CValidator\n");
-	if (!p_validator) 
-		p_validator = new CValidator;
-
+	assert(!p_validator);
+	p_validator = new CValidator;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablePositioner\n");
-	if (!p_table_positioner)
-		p_table_positioner = new CTablePositioner;
+	assert(!p_table_positioner);
+	p_table_positioner = new CTablePositioner;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFileSystemMonitor\n");
-	if (!p_filesystem_monitor)
-		p_filesystem_monitor = new CFileSystemMonitor;
+	assert(!p_filesystem_monitor);
+	p_filesystem_monitor = new CFileSystemMonitor;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableMapLoader\n");
-	if (!p_tablemap_loader)
-		p_tablemap_loader = new CTableMapLoader;
+	assert(!p_tablemap_loader);
+	p_tablemap_loader = new CTableMapLoader;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
-	if (!p_version_info)
-		p_version_info = new CVersionInfo;
+	assert(!p_version_info);
+	p_version_info = new CVersionInfo;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnector\n");
-	if (!p_autoconnector)
-		p_autoconnector = new CAutoConnector;
+	assert(!p_autoconnector);
+	p_autoconnector = new CAutoConnector;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
-	if (!p_engine_container)
-		p_engine_container = new CEngineContainer;
+	assert(!p_engine_container);
+	p_engine_container = new CEngineContainer;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CRebuyManagement\n");
-	if (!p_rebuymanagement) 
-		p_rebuymanagement = new CRebuyManagement;
+	assert(!p_rebuymanagement); 
+	p_rebuymanagement = new CRebuyManagement;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create COcclusionCheck\n");
-	if (!p_occlusioncheck) 
-		p_occlusioncheck = new COcclusionCheck;
+	assert(!p_occlusioncheck);
+	p_occlusioncheck = new COcclusionCheck;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnectorThread\n");
-	if (!p_autoconnectorthread) 
-		p_autoconnectorthread = new CAutoConnectorThread;
+	assert(!p_autoconnectorthread);
+	p_autoconnectorthread = new CAutoConnectorThread;
 	//!!!write_log(preferences.debug_alltherest(), "[Singletons] Going to create HandHistory\n");
-	//if (!p_handhistory)  
-	//	p_handhistory = new CHandHistory;
+	//assert(!p_handhistory)  ;
+	//p_handhistory = new CHandHistory;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
-	if (!p_casino_interface)
-		p_casino_interface = new CCasinoInterface;
+	assert(!p_casino_interface);
+	p_casino_interface = new CCasinoInterface;
 	write_log(preferences.debug_alltherest(), "[Singletons] All singletons created.\n");
 }
 
@@ -160,8 +161,8 @@ void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
 {
 	// Filenames have to be available very early,
 	// even before we read the ini-file.
-	if (!p_filenames)
-		p_filenames = new CFilenames;
+	assert(!p_filenames);
+	p_filenames = new CFilenames;
 }
 
 // To be executed first,

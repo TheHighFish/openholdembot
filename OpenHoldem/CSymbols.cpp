@@ -582,7 +582,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "fmax", 4)==0 && strlen(a)==4)						return p_flags_toolbar->GetFlagMax();
 	if (memcmp(a, "f", 1)==0 && strlen(a)==2)							return p_flags_toolbar->GetFlag(a[1]-'0');
 	if (memcmp(a, "f", 1)==0 && strlen(a)==3)							return p_flags_toolbar->GetFlag(10 * (a[1]-'0') + a[2] - '0');
-	if (memcmp(a, "flagbits", 5)==0 && strlen(a)==5)					return p_flags_toolbar->GetFlagBits();
+	if (memcmp(a, "flagbits", 8)==0 && strlen(a)==5)					return p_flags_toolbar->GetFlagBits();
 
 	//COMMON CARDS
 	if (memcmp(a, "ncommoncardsknown", 17)==0 && strlen(a)==17)			return p_symbol_engine_cards->ncommoncardsknown();

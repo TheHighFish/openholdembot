@@ -152,6 +152,15 @@ void CSymbolEngineCards::CalcPocketTests()
 	}
 }
 
+/*void CSymbolEngineCards::CardMaskCreateCMAllCardsOfOfSuit(*CardMask card_mask_of_suit, int suit)
+{
+	CardMask_RESET(card_mask_of_suit);
+	for (int i=Rank_2; i<=Rank_Ace; i++)
+	{
+		CardMask_SET(card_mask_of_suit, StdDeck_MAKE_CARD(i, suit)
+	}
+}*/
+
 void CSymbolEngineCards::CalcFlushesStraightsSets()
 {
 	int				i = 0, j = 0, n = 0;
@@ -178,66 +187,11 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	_nstraightflushfillcommon = k_cards_needed_for_straight;
 
 	// Set up some suit masks
-	CardMask_RESET(heartsCards);
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_2, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_3, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_4, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_5, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_6, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_7, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_8, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_9, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_HEARTS));
-	CardMask_SET(heartsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_HEARTS));
-
-	CardMask_RESET(diamondsCards);
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_2, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_3, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_4, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_5, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_6, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_7, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_8, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_9, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_DIAMONDS));
-	CardMask_SET(diamondsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_DIAMONDS));
-
-	CardMask_RESET(spadesCards);
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_2, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_3, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_4, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_5, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_6, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_7, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_8, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_9, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_KING, Suit_SPADES));
-	CardMask_SET(spadesCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_SPADES));
-
-	CardMask_RESET(clubsCards);
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_2, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_3, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_4, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_5, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_6, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_7, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_8, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_9, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_TEN, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_JACK, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_CLUBS));
-	CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
-
+/*	CardMaskCreateCMAllCardsOfOfSuit(&heartsCards);
+	CardMaskCreateCMAllCardsOfOfSuit(&diamondsCards);
+	CardMaskCreateCMAllCardsOfOfSuit(&spadesCards);
+	CardMaskCreateCMAllCardsOfOfSuit(&clubsCards);*/
+	
 	// player cards
 	CardMask_RESET(plCards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
@@ -265,6 +219,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	max = 0;
 	CardMask_AND(suittestCards, plCards, spadesCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of spades\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -272,6 +227,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, plCards, heartsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of hearts\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -279,6 +235,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, plCards, diamondsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of diamonds\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -286,6 +243,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, plCards, clubsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of clubs\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -297,6 +255,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	max = 0;
 	CardMask_AND(suittestCards, comCards, spadesCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of spades\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -304,6 +263,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, comCards, heartsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of hearts\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -311,6 +271,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, comCards, diamondsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of diamonds\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;
@@ -318,6 +279,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 	CardMask_AND(suittestCards, comCards, clubsCards);
 	n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of clubs\n", n);
 	if ( n>max && n>0)
 	{
 		max = n;

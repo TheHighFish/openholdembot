@@ -123,7 +123,9 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 			"[SwagAdjustment] Game-type is cash-game. No rounding necessary.\n");
 		return amount_to_raise_to_in_dollars_and_cents;
 	}
-	else if (BetSizeIsAllin(amount_to_raise_to_in_dollars_and_cents))
+	write_log(preferences.debug_betsize_adjustment(), 
+			"[SwagAdjustment] This is a tournament. Rounding to full dollars or to allin\n");
+	if (BetSizeIsAllin(amount_to_raise_to_in_dollars_and_cents))
 	{
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Tournament, but no rounding because we will go allin.\n");
@@ -133,7 +135,7 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 	{
 		int rounded_amount = int(amount_to_raise_to_in_dollars_and_cents);
 		write_log(preferences.debug_betsize_adjustment(), 
-			"[SwagAdjustment] Rounded dollars for tournaments: %f.2\n", rounded_amount);
+			"[SwagAdjustment] Rounded dollars for tournaments: %.2f\n", rounded_amount);
 		return rounded_amount;
 	}
 }
