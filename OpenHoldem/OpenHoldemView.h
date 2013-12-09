@@ -48,6 +48,7 @@ private:
 	void DrawNameBox(const int chair); 
 	void DrawBalanceBox(const int chair); 
 	void DrawPlayerBet(const int chair);
+	void DrawPlayerCards(const int chair);
 
 	CString			_handnumber_last;
 	double			_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
@@ -64,7 +65,7 @@ private:
 	LOGFONT			_logfont;
 	CPen			_black_pen, _green_pen, _red_pen, _blue_pen, _white_dot_pen, _null_pen;
 	CBrush			_white_brush, _gray_brush, _red_brush, _yellow_brush;
-
+	RECT			_client_rect;
 };
 
 inline COpenHoldemDoc* COpenHoldemView::GetDocument() const
