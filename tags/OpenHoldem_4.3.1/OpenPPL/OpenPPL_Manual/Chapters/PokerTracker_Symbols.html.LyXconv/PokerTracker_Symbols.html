@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2013-11-13"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>PokerTracker Symbols
+</h1>
+<div class="Unindented">
+OpenHoldem supports PokerTracker symbols, and so does OpenPPL. The development team did already create some symbols of general use that get shipped with the library. However: the possibilities are endless and you can for sure imagine other symbols that are useful. If you want to increase the power of OpenPPL please have a look at the chapter &ldquo;Building Symbols On Your Own&rdquo; and at Openholdems manual. It is not that difficult and if you want to contribute to the project your symbols could even become part of the next version.
+</div>
+<div class="Indented">
+Note: The PokerTracker symbols need a working connection to Poker Tracker Database (PT2/PT3 depending on OH version), correct opponents name scraping and sitename/network symbols in the TableMap as described in the OpenHoldem manual.
+</div>
+<div class="Indented">
+All PokerTracker symbols require a certain samplesize to become meaningful. Our library defines reasonable requirements for the stats and returns -1 if there are not enough hands.
+</div>
+<div class="Indented">
+Please note that OH returns percentages in the range [0..1], so 0.31 means 31%.
+</div>
+<div class="Indented">
+<b>Invalid value return -1. You need to remember that if you check any of those symbols as &ldquo;less then&rdquo; of a certain value and the returned value is -1 you need to add a sanity check.</b>
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_BigBlind_FoldBBToSteal
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Big Blind fold percentage to steal-raises from late position or from the small blind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_ButtonVPIP
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Button VPIP
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_BigBlind_Hands
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Big Blind fold percentage to steal-raises from late positions
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastCaller_VPIP
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Last caller percentange of voluntary played hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastCaller_PFR
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Last caller percentange of preflop raise
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastRaiser_AttemptToStealBlinds
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Percentage of steal-raises when first-in and in late position or in the small-blind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastRaiser_Hands
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Last Raiser player number of hands stored in PT database
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastRaiser_PFR
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Preflop raising percentage of the last raiser
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_LastRaiser_VPIP
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Percentage of volutary played hands by the last raiser
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_OpponentVPIPHeadsUp
+</td>
+<td align="left" valign="top" style="width: 55%;">
+VPIP of opponent when playing heads up
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_SmallBlind_FoldSBToSteal
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Small Blind fold percentage to steal-raises from late positions
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_SmallBlind_Hands
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Player in Small Blind number of hands stored in PT database
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+PT_SmallBlind_VPIP
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Percentage of voluntary played hands by the small blind
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2013-11-13T07:46:51.550000</span>
+</div>
+</div>
+</body>
+</html>
