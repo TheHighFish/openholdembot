@@ -355,6 +355,16 @@ void CIteratorThread::ResetGlobalVariables()
 	}
 }
 
+void CIteratorThread::InitNumberOfIterations()
+{
+	int			e = SUCCESS;
+	CGrammar	gram;
+
+	int number_of_iterations = gram.CalcF$symbol(p_formula, 
+		"f$prwin_number_of_iterations", true, &e);
+	iter_vars.set_nit(10000); //!! number_of_iterations); 
+}
+
 void CIteratorThread::InitIteratorLoop()
 {
 	int			e = SUCCESS;
@@ -365,7 +375,7 @@ void CIteratorThread::InitIteratorLoop()
 	iter_vars.set_iterator_thread_running(true);
 	iter_vars.set_iterator_thread_complete(false);
 	iter_vars.set_iterator_thread_progress(0);
-	iter_vars.set_nit(10000); //!! f$prwin_number_of_iterations")
+	InitNumberOfIterations();
 
 	// Users cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
