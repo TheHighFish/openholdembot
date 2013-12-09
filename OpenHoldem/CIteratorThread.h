@@ -51,6 +51,7 @@ private:
 	void InitIteratorLoop(void);
 	void InitHandranktTableForPrwin();
 	void CloneVanillaChairToAllOtherChairs();
+	void InitNumberOfIterations();
 private:
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
