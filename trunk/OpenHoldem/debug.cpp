@@ -104,7 +104,7 @@ char * get_time(char * timebuf)
         *(timebuf+6) = '2';
     }
 
-    *(timebuf+7) = '-';
+    *(timebuf+7) = '>';
     memcpy(timebuf+8, tmptime+8, 2); //dd
     *(timebuf+10) = ' ';
     memcpy(timebuf+11, tmptime+11, 8); //HH:mm:ss
