@@ -1383,7 +1383,6 @@ void CScraper::ScrapePots()
 			SelectObject(hdcCompatible, old_bitmap);
 
 			t.Format("%.2f", chipscrape_res);
-			// !!! t??? Format!!!
 			CScraperPreprocessor::PreprocessMonetaryString(&t);
 			set_pot(j, strtod(t.GetString(), 0));
 

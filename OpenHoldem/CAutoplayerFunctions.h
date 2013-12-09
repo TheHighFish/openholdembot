@@ -30,7 +30,6 @@ public:
 public:
 	double autoplayer_function_values(int autoplayer_function_code)	{ return _autoplayer_functionvalues[autoplayer_function_code]; }
 public:
-	// !!! These functions are probably all superfluous now!
 	double	f$alli()	{ return _autoplayer_functionvalues[k_autoplayer_function_allin]; }
 	double	f$betsize()	{ return _autoplayer_functionvalues[k_autoplayer_function_betsize]; }
 	double	f$rais()	{ return _autoplayer_functionvalues[k_autoplayer_function_raise]; }
