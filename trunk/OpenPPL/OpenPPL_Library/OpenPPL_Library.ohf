@@ -4118,9 +4118,6 @@ f$OpenPPL_ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRA
 ##f$OpenPPL_PairInHand##
 ispair
 
-##f$OpenPPL_PairOnBoardWithNoStraightDrawPossibleOnFlop##
-((f$OpenPPL_PairOnBoard && f$OpenPPL_RankOfSpareCardOnFlopWhenPairOnBoard-)  ? 2 :
-
 ##f$OpenPPL_RunnerRunnerFlushPossibleAtRiver##
 (betround == f$OpenPPL_ConstBetRoundRiver && nsuitedcommon==3 && f$OpenPPL_SuitsOnFlop!=3 && $$cs3==$$cs4) ? 1:0
 
