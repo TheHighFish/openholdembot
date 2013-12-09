@@ -330,9 +330,8 @@ void CScraper::ScrapeCommonCards()
 		// try r$c0cardfaceX region first
 		s.Format("c0cardface%d", i);
 		r_iter1 = p_tablemap->r$()->find(s.GetString());
-		if (r_iter1 != p_tablemap->r$()->end())
+		if (r_iter1 != p_tablemap->r$()->end() && ProcessRegion(r_iter1))
 		{
-			ProcessRegion(r_iter1);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -1252,9 +1251,8 @@ void CScraper::DoBasicScrapeButtons()
 	// i86 button state
 	s.Format("i86state");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end())
+	if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
 	{
-		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
