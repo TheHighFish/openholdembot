@@ -65,6 +65,7 @@
 #include "CVersionInfo.h"
 #include "CVersus.h"
 #include "OH_MessageBox.h"
+#include "UnknownSymbols.h"
 
 CSymbols			*p_symbols = NULL;
 
@@ -163,6 +164,12 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// (especially for large formulas or with the validator turned on),
 	// we do now a two-step-comparision (preselection for symbol groups).
 	// This should result in still quite maintenable and more efficient code.
+
+	if (IsOutdatedSymbol(a))
+	{
+		*e = ERR_INVALID_SYM;
+		return 0.0;
+	}
 
 	// PLAYERS OPPONENTS 1(7)
 	if (memcmp(a, "nopponents", 10)==0)
@@ -612,7 +619,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "network$", 8)==0)									return p_tablemap->network().Find(&a[8])!=-1;
 
 	//FORMULA FILE
-	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	iter_vars.nit(); 
+	if (memcmp(a, "f$prwin_number_of_iterations", 28)==0 && strlen(a)==28)	return iter_vars.nit(); 
 
 	// AUTOPLAYER 1(2)
 	if (memcmp(a, "myturnbits", 10)==0 && strlen(a)==10)				return p_symbol_engine_autoplayer->myturnbits();
@@ -638,6 +645,10 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		}
 		return OH_MessageBox_OH_Script_Messages(a);
 	}
-	*e = ERR_INVALID_SYM;
+	// Unknown symbol.
+	// Though we check the syntax, this can still happen
+	// by gws-calls from Perl or a DLL, etc.
+	WarnAboutUnknownSymbol(a);
+	//*e = ERR_INVALID_SYM;
 	return 0.0;
 }

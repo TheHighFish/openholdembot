@@ -28,13 +28,13 @@
 #include "CPokerAction.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
+#include "CSymbolEngineRandom.h"
 #include "CSymbols.h"
 #include "CValidator.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "Numericalfunctions.h"
 #include "OH_MessageBox.h"
-#include "UnknownSymbols.h"
 
 CGrammar::CGrammar(void)
 {
@@ -445,7 +445,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	{																																				
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST 
 		if (1)
-		{																																													//if (memcmp(sym.c_str(), "dll$dpl", 7) == 0) *(int*)0 = 0;//BLERGHSIMPLE
+		{																																													BLERGHSIMPLE
 			if (p_dll_extension->IsDllLoaded())
 			{
 				return (p_dll_extension->process_message()) ("query", sym.c_str());
@@ -525,10 +525,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 			}
 			else
 			{
-				// Unknown symbol.
-				// Though we check the syntax, this can still happen
-				// by gws-calls from Perl or a DLL, etc.
-				WarnAboutUnknownOrOutdatedSymbol(sym.c_str());
+				*e = ERR_INVALID_SYM;
 				return 0.0;
 			}
 		}
