@@ -1,7 +1,7 @@
-v4.3.1 2013-12-08
+v4.3.1 2013-12-09
 ==================
 BUG FIXES:
-- In the past (pre 4.2.5) OpenHoldem could crash at startuo,
+- In the past OpenHoldem (version 4.2.0 .. 4.2.5) could crash at startuo,
   because the ini-functions could get evaluated even if no formula 
   was loaded at that point of time. We prevented this by a sanity-check,
   but unfortunatelly this safenty-net did also depend on some 
@@ -9,6 +9,14 @@ BUG FIXES:
   This has now been fixed and the crashes on startup can no longer get reproduced.
   [THF]
 - flagbits got reported by the validator as "unknown symbol".
+  This has now been fixed.
+  [THF]
+- Some of the srank-symbols did not work as expected.
+  This has now been fixed.
+  Thanks to Fqfq for reporting.
+  [THF]
+- f$prwin_number_of_iterations did not work, because we forgot a return statement.
+  OpenHoldem used a default-value instead.
   This has now been fixed.
   [THF]
   
