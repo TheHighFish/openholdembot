@@ -81,7 +81,10 @@ private:
 	void CalculateHandTests();
 	void CalculateCommonCards();
 	void CalcUnknownCards();
-
+private:
+	void CardMaskCreateCMAllCardsOfOfSuit(CardMask *card_mask_of_suit, int suit);
+	int  GetNumberOfCardsForSuit(CardMask cards, CardMask card_mask_of_suit);
+	int  GetDominantSuit(CardMask cards, int* max_cards_of_same_suit);
 private:
 	//POCKET TESTS
 	bool _ispair;
@@ -128,6 +131,10 @@ private:
 	int _$$cc[k_number_of_community_cards];
 	int _$$cr[k_number_of_community_cards];
 	int _$$cs[k_number_of_community_cards];
+
+private:
+	 // Card masks
+	CardMask heartsCards, diamondsCards, clubsCards, spadesCards;
 } *p_symbol_engine_cards;
 
 #endif INC_CSYMBOLENGINECARDS_H

@@ -38,6 +38,11 @@ CSymbolEngineCards::CSymbolEngineCards()
 	// but luckily this does not create a symbol-dependency.
 	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid a circular dependency.
 	assert(p_symbol_engine_userchair != NULL);
+	// Set up some suit masks
+	CardMaskCreateCMAllCardsOfOfSuit(&heartsCards,   Suit_HEARTS);
+	CardMaskCreateCMAllCardsOfOfSuit(&diamondsCards, Suit_DIAMONDS);
+	CardMaskCreateCMAllCardsOfOfSuit(&spadesCards,   Suit_SPADES);
+	CardMaskCreateCMAllCardsOfOfSuit(&clubsCards,    Suit_CLUBS);
 }
 
 CSymbolEngineCards::~CSymbolEngineCards()
@@ -152,20 +157,61 @@ void CSymbolEngineCards::CalcPocketTests()
 	}
 }
 
-/*void CSymbolEngineCards::CardMaskCreateCMAllCardsOfOfSuit(*CardMask card_mask_of_suit, int suit)
+void CSymbolEngineCards::CardMaskCreateCMAllCardsOfOfSuit(
+	CardMask *card_mask_of_suit, int suit)
 {
-	CardMask_RESET(card_mask_of_suit);
-	for (int i=Rank_2; i<=Rank_Ace; i++)
+	CardMask_RESET(*card_mask_of_suit);
+	for (int i=Rank_2; i<=Rank_ACE; i++)
 	{
-		CardMask_SET(card_mask_of_suit, StdDeck_MAKE_CARD(i, suit)
+		CardMask_SET(*card_mask_of_suit, StdDeck_MAKE_CARD(i, suit));
 	}
-}*/
+}
+
+int CSymbolEngineCards::GetNumberOfCardsForSuit(
+	CardMask cards, CardMask card_mask_of_suit)
+{
+	CardMask suittestCards;
+	CardMask_AND(suittestCards, cards, card_mask_of_suit);
+	int n = StdDeck_numCards(suittestCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i cards of the same suit\n", n);
+	return n;
+}
+
+int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_suit)
+{
+	int n_clubs, n_diamonds, n_hearts, n_spades;
+	n_clubs    = GetNumberOfCardsForSuit(cards, clubsCards);
+	n_diamonds = GetNumberOfCardsForSuit(cards, diamondsCards);
+	n_hearts   = GetNumberOfCardsForSuit(cards, heartsCards);
+	n_spades   = GetNumberOfCardsForSuit(cards, spadesCards);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
+		n_clubs, n_diamonds, n_hearts, n_spades);
+	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades))
+	{
+		*max_cards_of_same_suit = n_clubs;
+		return WH_SUIT_CLUBS;
+	}
+	else if ((n_diamonds >= n_hearts) && (n_diamonds >= n_spades))
+	{
+		*max_cards_of_same_suit = n_diamonds;
+		return WH_SUIT_DIAMONDS;
+	}
+	else if (n_hearts >= n_spades)
+	{
+		*max_cards_of_same_suit = n_hearts;
+		return WH_SUIT_HEARTS;
+	}
+	else
+	{
+		*max_cards_of_same_suit = n_spades;
+		return WH_SUIT_SPADES;
+	}
+}
 
 void CSymbolEngineCards::CalcFlushesStraightsSets()
 {
-	int				i = 0, j = 0, n = 0;
+	int				n = 0;
 	CardMask		plCards = {0}, comCards = {0};
-	CardMask		heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 	int				max = 0;
 	unsigned int	strbits = 0;
 
@@ -185,12 +231,6 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	_nstraightflushfill = k_cards_needed_for_straight;
 	_nstraightflushcommon     = 0;
 	_nstraightflushfillcommon = k_cards_needed_for_straight;
-
-	// Set up some suit masks
-/*	CardMaskCreateCMAllCardsOfOfSuit(&heartsCards);
-	CardMaskCreateCMAllCardsOfOfSuit(&diamondsCards);
-	CardMaskCreateCMAllCardsOfOfSuit(&spadesCards);
-	CardMaskCreateCMAllCardsOfOfSuit(&clubsCards);*/
 	
 	// player cards
 	CardMask_RESET(plCards);
@@ -199,6 +239,8 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		int card = p_scraper->card_player(USER_CHAIR, i);
 		if (p_scraper_access->IsKnownCard(card))
 		{
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
+				card);
 			CardMask_SET(plCards, card);
 		}
 	}
@@ -210,83 +252,18 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		int card = p_scraper->card_common(i);
 		if (p_scraper_access->IsKnownCard(card))
 		{
-			CardMask_SET(comCards, p_scraper->card_common(i));
-			CardMask_SET(plCards, p_scraper->card_common(i));
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
+				card);
+			CardMask_SET(comCards, card);
+			CardMask_SET(plCards, card);
 		}
 	}
 
 	// nsuited, tsuit
-	max = 0;
-	CardMask_AND(suittestCards, plCards, spadesCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of spades\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuit = WH_SUIT_SPADES;
-	}
-	CardMask_AND(suittestCards, plCards, heartsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of hearts\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuit = WH_SUIT_HEARTS;
-	}
-	CardMask_AND(suittestCards, plCards, diamondsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of diamonds\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuit = WH_SUIT_DIAMONDS;
-	}
-	CardMask_AND(suittestCards, plCards, clubsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i player cards of clubs\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuit = WH_SUIT_CLUBS;												
-	}
-	_nsuited = max;															
-
+	_tsuit = GetDominantSuit(plCards, &_nsuited);
 	// nsuitedcommon, tsuitcommon
-	max = 0;
-	CardMask_AND(suittestCards, comCards, spadesCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of spades\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuitcommon = WH_SUIT_SPADES;
-	}
-	CardMask_AND(suittestCards, comCards, heartsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of hearts\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuitcommon = WH_SUIT_HEARTS;
-	}
-	CardMask_AND(suittestCards, comCards, diamondsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of diamonds\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuitcommon = WH_SUIT_DIAMONDS;
-	}
-	CardMask_AND(suittestCards, comCards, clubsCards);
-	n = StdDeck_numCards(suittestCards);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i common cards of clubs\n", n);
-	if ( n>max && n>0)
-	{
-		max = n;
-		_tsuitcommon = WH_SUIT_CLUBS;												
-	}
-	_nsuitedcommon = max;															
-
+	_tsuitcommon = GetDominantSuit(comCards, &_nsuitedcommon);
+	
 	// nranked, trank
 	max = 0;
 	for (int i=12; i>=0; i--)
