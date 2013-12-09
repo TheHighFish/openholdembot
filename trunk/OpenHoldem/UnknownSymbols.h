@@ -16,6 +16,8 @@
 #ifndef INC_UNKNOWNSYMBOLS_H
 #define INC_UNKNOWNSYMBOLS_H
 
-void WarnAboutUnknownOrOutdatedSymbol(CString symbol);
+// This function will also show a warning message with explanations
+bool IsOutdatedSymbol(CString symbol);
+void WarnAboutUnknownSymbol(CString symbol);
 
 #endif // NC_UNKNOWNSYMBOLS_H
