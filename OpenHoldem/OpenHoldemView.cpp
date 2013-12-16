@@ -252,21 +252,15 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	{
 		if (_card_common_last[i] != p_scraper->card_common(i) || update_all) 
 		{
-			// Forget about inactive players, they have no cards.
-			// Don't draw them to point out the mistake faster
-			// for newbies with bad tablemaps.
-			if (p_scraper_access->IsPlayerActive(i))
-			{
-				_card_common_last[i] = p_scraper->card_common(i);
-				int common_card = p_scraper->card_common(i);
-				
-				write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
-					i, common_card);
-				DrawCard(common_card,
-						  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
-						  _client_rect.right/2 + cc[i][0] + CARDSIZEX, _client_rect.bottom/2 + cc[i][1] + CARDSIZEY,
-						  false);
-			}
+			_card_common_last[i] = p_scraper->card_common(i);
+			int common_card = p_scraper->card_common(i);
+			
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
+				i, common_card);
+			DrawCard(common_card,
+					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
+					  _client_rect.right/2 + cc[i][0] + CARDSIZEX, _client_rect.bottom/2 + cc[i][1] + CARDSIZEY,
+					  false);
 		}
 	}
 
@@ -313,26 +307,28 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 
 		if (update_it || update_all) 
 		{
-			// Draw dealer button
-			// At some casinos the dealer can be at an empty seat.
-			// Therefore we draw the dealer-button anyway,
-			// inependent of "seated" and "active"
-			if (p_scraper->dealer(i))
-			{
-				DrawDealerButton(i);
-			}
 			// Draw active circle
 			if (p_string_match->IsStringSeated(p_scraper->seated(i))) 
 			{
 				DrawSeatedActiveCircle(i);
+				// Draw cards first, because we want the name 
+				// to occlude the cards and not the other way.
+				DrawPlayerCards(i);
+				DrawNameBox(i);
+				DrawBalanceBox(i);
 			}
-
-			// Draw cards first, because we want the name 
-			// to occlude the cards and not the other way.
-			DrawPlayerCards(i);
-			DrawNameBox(i);
-			DrawBalanceBox(i);
+			// Drawing a bet, even if no player seated.
+			// The player might have left the table, 
+			// but depending on casinos potmethod a bet might still be there.
 			DrawPlayerBet(i);
+		}
+		// Draw dealer button
+		// At some casinos the dealer can be at an empty seat.
+		// Therefore we draw the dealer-button anyway, inependent of "seated" and "active".
+		// Draw it at the very last, as we want to have it at the top of the cards.
+		if (p_scraper->dealer(i))
+		{
+			DrawDealerButton(i);
 		}
 	}
 
@@ -1223,7 +1219,9 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 {
 	if (!p_scraper_access->IsPlayerActive(chair))
 	{
-		// Inactive players can't have cards 
+		// Forget about inactive players, they have no cards.
+		// Don't draw them to point out the mistake faster
+		// for newbies with bad tablemaps.
 		return;
 	}
 	// Get size of current client window
