@@ -1,3 +1,12 @@
+v4.3.2 2013-12-xx
+==================
+BUG FIXES:
+- The the dealer-button and sometimes some of the common cards 
+  were missing after we improved the GUI in OH 4.3.0.
+  This has now been fixed.
+  Thanks to R2D3 and Pawko for reporting and providing screenshots.
+  [THF]
+
 v4.3.1 2013-12-09
 ==================
 BUG FIXES:
