@@ -499,10 +499,6 @@
 				<param name="Name" value="User-DLL">
 				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Commercial DLLs">
-				<param name="Local" value="Chapters\dll\commercial_dlls.html.LyXconv\commercial_dlls.html">
-				</OBJECT>
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -527,10 +523,6 @@
 				<param name="Name" value="Scraper-DLL">
 				<param name="Local" value="Chapters\extensions\ScraperDLL.html.LyXconv\ScraperDLL.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Scraper-Preprocessor-DLL">
-				<param name="Local" value="Chapters\extensions\Scraper-Preprocessor.html.LyXconv\Scraper-Preprocessor.html">
-				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automation">
@@ -553,10 +545,6 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Connecting to a Table">
 				<param name="Local" value="Chapters\automation\ConnectingByHwnd.html.LyXconv\ConnectingByHwnd.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Commandline Options">
-				<param name="Local" value="Chapters\automation\CommandlineOptions.html.LyXconv\CommandlineOptions.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Avoid Race Conditions">

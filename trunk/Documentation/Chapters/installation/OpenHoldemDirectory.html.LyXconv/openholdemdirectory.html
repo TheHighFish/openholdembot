@@ -7,13 +7,13 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="openholdemdirectory.tex"> 
-<meta name="date" content="2010-07-02 01:01:00"> 
+<meta name="date" content="2013-12-22 11:31:00"> 
 <link rel="stylesheet" type="text/css" href="openholdemdirectory.css"> 
 </head><body 
 >
    <h3 class="sectionHead"><a 
  id="x1-1000"></a>OpenHoldem Directory</h3>
-<!--l. 26--><p class="noindent" >In this directory are the following files:
+<!--l. 25--><p class="noindent" >In this directory are the following files:
            <ul class="itemize1">
         <li class="itemize">ManualMode.exe,   OHReplay.exe,   OpenHoldem.exe,   OpenScrape.exe,
         Rebuy.exe &#8212; these are the main files for each of the programs in the
@@ -24,10 +24,12 @@
         dumps  on  critical  errors.  These  memory  dumps  are  useful  for  the
         developers to diagnose issues.
            </li>
-        <li class="itemize">keyboard.dll,                                                                  mouse.dll,
-        perl_callback.dll, scraper.dll, scraper_preprocessor.dll, user.dll &#8212; these
+        <li class="itemize">keyboard.dll,  mouse.dll,  perl_callback.dll,  scraper.dll,  user.dll  &#8212;  these
         files are all extensions to OpenHoldem that you can use to customize the
         software. More detail on all of these are provided in this document.
+           </li>
+        <li class="itemize">*.lib-files &#8211; these are linker files, necessary to link executables and DLLs
+        against each other.
            </li>
         <li class="itemize">versus.bin &#8212; this file is a large lookup table that is mandatory for the
         versus symbols. As the versus database is quite large and does not change
@@ -40,14 +42,30 @@
         a debugger. If you need these, you know how to use these. If you don&#8217;t
         know what these are, you can safely ignore or delete them.
            </li>
-        <li class="itemize">Files with .txt extensions &#8212; these are the release notes for each of the
-        programs in the project. Feel free to peruse these if you have problems
-        falling asleep some night.
+        <li class="itemize">A  file  with  .ini  extensions  &#8212;  this  is  the  configuration  file  with  your
+        preferred  settings;  OpenHoldem  won&#8217;t  store  any  information  in  the
+        registry but use a ini-file instead; it can be named whatever you like,
+        OpenHoldem will use it automatically, as long as there is only one ini-file
+        in the directory.
            </li>
-        <li class="itemize">Files with .ini extensions &#8212; these are configuration files; they can be used
-        for easy deployment on new machines or to avoid traces in the registry.
+        <li class="itemize">OpenHoldem_Manual.chm &#8212; this manual.
            </li>
-        <li class="itemize">OpenHoldem_Manual.chm &#8212; this manual.</li></ul>
+        <li class="itemize">Documents-directory &#8211; this directory contains useful information like the
+        release-notes that document changes and the license-information (gPL v3).
+        Feel free to peruse these if you have problems falling asleep some night.
+           </li>
+        <li class="itemize">Logs &#8211; this directory contains the log.files the OpenHoldem bots. The
+        logs are named &#8220;oh_0.log&#8221; .. &#8220;oh_24.log&#8221;. The log-files provide very useful
+        information if you want to track down mis-plays or even bugs. To get the
+        correct file for a certain instance of OpenHoldem you can also use &#8220;Menu
+
+        -&#x003E; Edit -&#x003E; View Log File&#8221; and OpenHoldem will open a text-editor with
+        the correct log.
+           </li>
+        <li class="itemize">Scraper  &#8211;  this  directory  contains  the  tablemaps  for  your  favourite
+        casinos. Just add your new tablemaps there once they have been tested;
+        OpenHoldem will then load these tablemaps, so that its auto-connector
+        will be able to connect out-of-the box to any open table and start playing.</li></ul>
     
 </body></html> 
 
