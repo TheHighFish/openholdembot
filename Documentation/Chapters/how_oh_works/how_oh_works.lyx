@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,18 +9,26 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -28,21 +36,31 @@ figs-within-sections
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -52,7 +70,7 @@ How OpenHoldem Operates
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -65,11 +83,14 @@ Connecting to a table
 \end_layout
 
 \begin_layout Standard
-The “Green Circle Button” on the OpenHoldem toolbar is the usual way that
- one connects an OpenHoldem instance to a poker window.
- This is done automagically, however an explanation of what happens behind
- the scenes is useful if you have problems connecting to your target poker
- window.
+As soon as you start OpenHoldem it will read all tablemaps in your scraper-folde
+r and parse them for the information that is necessary to connect to a table.
+ The auto-connector will then have a look for new tables that are not yet
+ served by other instances once per heartbeat and connect if it finds a
+ new one.
+ This all happens automagically, however an explanation of what happens
+ behind the scenes is useful if you have problems connecting to your target
+ poker window.
  The following steps are taken to identify which windows on your screen
  are valid poker tables.
 \end_layout
@@ -82,7 +103,7 @@ A list of all visible top level windows that have a non-blank caption is
 \begin_layout Enumerate
 Each window in this list is compared against each Table Map that you have
  placed in your 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -100,7 +121,7 @@ Scraper directory
 The size of the client portion of the window is compared to the clientsize
  records in the Table Map.
  The window is considered a match if the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -110,7 +131,7 @@ Table Map
 \end_inset
 
 Table Map indicates the correct size as given by the record 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -126,7 +147,7 @@ clientsize, or if the size is within the size limits given by clientsizemin
 \begin_layout Enumerate
 The window’s title text is compared to the keyword text filters provided
  by 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -144,52 +165,13 @@ titletext records in the Table Map.
  
 \end_layout
 
-\begin_layout Enumerate
-Any 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Tablepoint
-\end_layout
-
-\end_inset
-
-tablepoint records that exist in the Table Map are then the compared to
- the window’s pixels.
- If the color of any pixel does not match its tablepoint record then the
- window is considered a non-match.
- 
-\end_layout
-
 \begin_layout Standard
 In summary, OpenHoldem will connect to a window if it matches the client
- size, title text and pixel colors as specified in a Table Map.
-\end_layout
-
-\begin_layout Standard
-After this list of table-candidates has been created, tables that already
- get served get removed from the list.
- There is usually not much benefit if you connect multiple bots to the same
- table.
- After that a table gets chosen:
-\end_layout
-
-\begin_layout Itemize
-if there is exactly one window OpenHoldem will choose this one and connect.
-\end_layout
-
-\begin_layout Itemize
-if there are multiple candidates OpenHoldem will show a popup-dialog to
- ask the user or it will choose the 
-\begin_inset Quotes eld
-\end_inset
-
-first
-\begin_inset Quotes erd
-\end_inset
-
- table, depending on your auto-connector-settings.
+ size and title text colors as specified in a Table Map.
+ After OpenHoldem has connected to a table the table-positioner will move
+ the table to a free slot where it does not occlude any other tables.
+ Per default OpenHoldem will then start playing as soon as your user-chair
+ got identified (it needs to see cards and buttons to do so).
 \end_layout
 
 \begin_layout Standard
@@ -198,7 +180,7 @@ And then the fun begins...
 
 \begin_layout Section
 The 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -219,7 +201,7 @@ Once OpenHoldem has been connected to a table, it will enter into a continuous
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="10" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
 <row>
@@ -257,7 +239,7 @@ Scrape window
 
 \begin_layout Plain Layout
 Ask the screen 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -287,19 +269,11 @@ Scraper preprocessor
 \begin_inset Text
 
 \begin_layout Plain Layout
-If a 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Scraper Preprocessor DLL
-\end_layout
-
-\end_inset
-
-Scraper Preprocessor DLL is loaded, then execute a textual preprocessing
- for the input from the scraper; this is meant mainly for casinos, which
- display non-numerical values, such as 
+OpenHoldems built-in scraper preprocessor will then preprocess some textual
+ input from the scraper; especially title-string, bets and balances.
+ For example it will remove spaces inside numbers, replace commas inside
+ numbers by dots, replace outlandish currency-signs by dollars or remove
+ other superflous texts, such as 
 \begin_inset Quotes eld
 \end_inset
 
@@ -328,7 +302,7 @@ Scraper override
 
 \begin_layout Plain Layout
 If a 
-\begin_inset Index
+\begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
@@ -386,7 +360,7 @@ Calculate all OpenHoldem symbols {Calculated Symbols}.
 
 \begin_layout Plain Layout
 Create 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -405,7 +379,8 @@ Replay frames
 
 \begin_layout Plain Layout
 If a replay frame {Replay Frames} is requested in preferences {Preferences},
- create it now.
+ OpenHoldem will store an image file and a HTML-file in the scraper-directory
+ for a future settion-review with OHReplay
 \end_layout
 
 \end_inset
@@ -426,7 +401,7 @@ Validate game state
 
 \begin_layout Plain Layout
 If the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -464,7 +439,7 @@ Send state to user dll
 
 \begin_layout Plain Layout
 If a 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -494,7 +469,7 @@ Autoplay
 
 \begin_layout Plain Layout
 If the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -524,7 +499,7 @@ Wait
 
 \begin_layout Plain Layout
 Sleep for the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -549,7 +524,7 @@ Scrape Delay period of time as specified in preferences {Preferences}, then
 
 \begin_layout Section
 The 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -575,7 +550,7 @@ OpenHoldem’s Autoplayer engine uses the following logic to decide what action
 
 \begin_layout Enumerate
 If the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -590,7 +565,7 @@ f$prefold function evaluates to non-zero, and a fold control is present,
 
 \begin_layout Enumerate
 Else if the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -604,8 +579,14 @@ f$alli function evaluates to non-zero, and an all-in control is present
 \end_layout
 
 \begin_layout Enumerate
+Else if one of the betpot-functions (f$betpot_2_1, f$betpot_1_1, ..
+ f$betpot_1_4) is true then press the correspondenting betpot-button (and
+ maybe the raise-button afterwards, depending on your casinos tablemap)
+\end_layout
+
+\begin_layout Enumerate
 Else if the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -621,7 +602,7 @@ f$betsize
 
 \begin_layout Enumerate
 Else if the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -636,7 +617,7 @@ f$rais function evaluates to non-zero, and the Raise button is present,
 
 \begin_layout Enumerate
 Else if the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -650,9 +631,9 @@ f$call function evaluates to non-zero, and the Call button is present, then
 \end_layout
 
 \begin_layout Enumerate
-Else if the 
-\begin_inset Index
-status open
+Else if the f$check function is true and the 
+\begin_inset Index idx
+status collapsed
 
 \begin_layout Plain Layout
 Check
@@ -664,17 +645,8 @@ Check button is present, then click the Check button
 \end_layout
 
 \begin_layout Enumerate
-Else click the 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Fold
-\end_layout
-
-\end_inset
-
-Fold button
+Else if the f$fold function is true and the Fold button is present, then
+ click the Check button 
 \end_layout
 
 \begin_layout Standard
@@ -685,7 +657,7 @@ To determine when and which action to take the Autoplayer performs the following
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
 <row>
@@ -735,7 +707,7 @@ Evaluate the f$sitin, f$sitout and f$leave functions and take action depending
 
 \begin_layout Plain Layout
 Handle 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -754,7 +726,7 @@ spam
 
 \begin_layout Plain Layout
 Evaluate any i86 regions, and dismiss any 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -775,7 +747,7 @@ popups/spam .
 
 \begin_layout Plain Layout
 Handle 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -806,7 +778,7 @@ If f$prefold evaluates to non-zero, then engage the prefold button as defined
 
 \begin_layout Plain Layout
 Handle 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -837,7 +809,7 @@ If f$rebuy evaluates to non-zero and the rebuy-conditions specified in the
 
 \begin_layout Plain Layout
 Handle 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -867,7 +839,7 @@ If f$chat evaluates to non-zero and safety constraints have been met, then
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -889,7 +861,7 @@ Determine the value of the isfinalanswer symbol --- if the Iterator has
  finished, at least one action button is visible, we are “playing”, the
  number of sequential stable frames have been seen and the time value in
  
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -918,8 +890,8 @@ Evaluate primary functions
 \begin_inset Text
 
 \begin_layout Plain Layout
-f$alli, f$swag, f$rais and f$call are evaluated and action taken based on
- the above logic.
+f$alli, f$betpot..., f$betsize, f$rais, f$call, f$check, f$fold are evaluated
+ and action taken based on the above logic.
  Use the if-then-else logic as described above to take the appropriate Autoplaye
 r action.
 \end_layout
@@ -939,7 +911,7 @@ The bot logic
 \end_layout
 
 \begin_layout Subsection
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -1003,14 +975,37 @@ shall I call
  --- f$call (boolean)
 \end_layout
 
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+shall I check
+\begin_inset Quotes erd
+\end_inset
+
+ --- f$check (boolean)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+shall I fold
+\begin_inset Quotes erd
+\end_inset
+
+ --- f$fold (boolean)
+\end_layout
+
 \begin_layout Standard
-If all questions were answered with 0 or false, your hand-will be check-folded.
+Per default f$check and f$fold evaluate to true, so if all questions were
+ answered with 0 or false, your hand-will be check-folded.
  
 \end_layout
 
 \begin_layout Standard
 Every bot needs such a formula file, even if it is programmed in 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -1020,7 +1015,7 @@ Perl
 \end_inset
 
 Perl or 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -1030,7 +1025,7 @@ DLL
 \end_inset
 
 
-\begin_inset Index
+\begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
@@ -1135,49 +1130,6 @@ In practice formulas can become arbitary complex, but those are the basic
 \end_layout
 
 \begin_layout Subsection
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Default bot
-\end_layout
-
-\end_inset
-
-Default Bot
-\end_layout
-
-\begin_layout Standard
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Playbot
-\end_layout
-
-\end_inset
-
-The OpenHoldem default bot is Playbot by Matrix.
- It is a very early case-study about prwin-based bots, meant for Fixed Limit
- Texas Hold'em.
- Prwin-based bots (short for 
-\begin_inset Quotes eld
-\end_inset
-
-probability of win
-\begin_inset Quotes erd
-\end_inset
-
-) try to code the decision with very few and small mathematical formulae,
- unlike scenario-based bots that code hundreds or thousands of different
- situations.
- Despite its small size PlayBot is able to value-bet, protect and control
- the pot-size with some bet-capping logic.
- Thus it is much better than the old WinHoldem-default-bot.
- But of course it is no guaranteed money-maker at any level online.
-\end_layout
-
-\begin_layout Subsection
 Parse-Time and Run-Time Errors 
 \end_layout
 
@@ -1195,6 +1147,51 @@ Additionally, several classes of run-time errors will be detected, including
  Note that the OH-Script language does not support recursion in any form,
  due to the absence of the assignment operator and function parameters to
  control the recursion depth.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Default bot
+\end_layout
+
+\end_inset
+
+Default Bot
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does not contain a default bot.
+ For some time we included 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Playbot
+\end_layout
+
+\end_inset
+
+Playbot by Matrix just for demonstration purposes.
+ It was a very early case-study about prwin-based bots, meant for Fixed
+ Limit Texas Hold'em.
+ Prwin-based bots (short for 
+\begin_inset Quotes eld
+\end_inset
+
+probability of win
+\begin_inset Quotes erd
+\end_inset
+
+) try to code the decision with very few and small mathematical formulae,
+ unlike scenario-based bots that code hundreds or thousands of different
+ situations.
+ However the golden times of fixed limit are over and most people want to
+ develop their own bots anyway.
+ Due to the existence of countless demo-bots and the rise of OpenPPL we
+ decided that a default bot-logic is no longer necessary.
 \end_layout
 
 \end_body
