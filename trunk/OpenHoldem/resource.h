@@ -534,6 +534,7 @@
 #define ID_FILE_APPLYANDSAVE            32986
 #define ID_FORMULA_FILE_APPLYANDSAVE    32987
 #define ID_HELP_HELP                    32988
+#define ID_HELP_OPEN_PPL                32989
 #define ID_HELP_FORUMS                  32990
 #define ID_MAIN_TOOLBAR_HELP            32992
 #define ID_Menu32993                    32993

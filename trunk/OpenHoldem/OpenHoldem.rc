@@ -184,6 +184,7 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
+		MENUITEM "&OpenPPL Manual",             ID_HELP_OPEN_PPL
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
         MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
@@ -226,6 +227,7 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
+		MENUITEM "&OpenPPL Manual",             ID_HELP_OPEN_PPL
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
         MENUITEM "&About this program...",      ID_APP_ABOUT
@@ -298,7 +300,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,166,8,SS_NOPREFIX
-    LTEXT           "Version 4.3.1",IDC_STATIC,32,22,166,8
+    LTEXT           "Version 4.3.2",IDC_STATIC,32,22,166,8
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,166,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,46,166,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,58,166,8
@@ -904,9 +906,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "4.3.1.0"
+            VALUE "FileVersion", "4.3.2.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "4.3.1.0"
+            VALUE "ProductVersion", "4.3.2.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1335,6 +1337,7 @@ BEGIN
 	ID_MAIN_TOOLBAR_TAGLOGFILE "Leave a stamp in the log-file for more easy review"
     ID_HELP_PROBLEMSOLVER      "Detects the most common beginner-mistakes. Give it a try ;-)"
     ID_HELP_HELP               "Starts the help-file"
+	ID_HELP_OPEN_PPL           "Starts the OpenPPL help-file"
     ID_HELP_FORUMS             "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
 
 END

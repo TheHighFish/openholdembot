@@ -61,10 +61,12 @@ protected: // create from serialization only
 	afx_msg void OnPerlEditMainFormula();
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
+	afx_msg void OnHelpProblemSolver();
+
+public:
 	afx_msg void OnHelp();
-	afx_msg void OnHelpWiki();
+	afx_msg void OnHelpOpenPPL();
 	afx_msg void OnHelpForums();
-	afx_msg void CMainFrame::OnHelpProblemSolver();
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -72,6 +74,7 @@ public:
 	virtual BOOL DestroyWindow();
 
 	void	SetMainWindowTitle(LPCSTR title);
+	void	OpenHelpFile(CString windows_help_file_chm);
 	CString	_exec_filename;
 
 public:

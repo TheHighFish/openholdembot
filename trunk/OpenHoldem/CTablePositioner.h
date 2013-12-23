@@ -26,11 +26,12 @@ public:
 	void AlwaysKeepPositionIfEnabled();
 private:
 	void PositionMyWindow(HWND *list_of_tables);
-	bool TryRightSideOfTable(HWND HWND_of_potential_neighbour_table);
-	bool TryBottomSideOfTable(HWND HWND_of_potential_neighbour_table);
+	bool TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table);
+	bool TryTopSideOfTable(HWND HWND_of_potential_neighbour_table);
+	bool TryBottomRightPosition();
 	bool TryPosition(int left_x, int top_y);
 	bool PotentialNewPositionOverlapsTable(int left_x, int top_y, HWND table_to_check_for_overlapping);
-	void MoveToBottomRight();
+	void MoveToTopLeft();
 	void MoveWindowToItsPosition();
 private:
 	int _number_of_tables;

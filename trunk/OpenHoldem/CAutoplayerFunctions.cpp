@@ -58,7 +58,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 	int			e = SUCCESS;
 	CGrammar	gram;
 
-	write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %i\n", Bool2CString(preferences.trace_enabled()));
+	write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
 	bool trace_needed = preferences.trace_enabled();
 
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
