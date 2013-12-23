@@ -174,27 +174,38 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to load file history\n");
 	MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
 	// Register the application's document templates.  Document templates
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(COpenHoldemDoc),
 		RUNTIME_CLASS(CMainFrame),	   // main SDI frame window
 		RUNTIME_CLASS(COpenHoldemView));
 	if (!pDocTemplate)
+	{
+		write_log(preferences.debug_alltherest(), "[OpenHoldem] Creating CSingleDocTemplate() failed\n");
 		return FALSE;
+	}
+
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to AddDocTemplate()\n");
 	AddDocTemplate(pDocTemplate);
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to EnableShellOpen()\n");
 	EnableShellOpen();
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to RegisterShellFileTypes(false)\n");
 	RegisterShellFileTypes(false);
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to parse command-line info\n");
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Goint to open last reacently used file\n");
 	// Open the most recently saved file. (First on the MRU list.) Get the last
 	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
@@ -218,10 +229,14 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to dispatch command-line\n");
 	// Dispatch commands specified on the command line.  Will return FALSE if
-	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
+	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.	
 	if (!ProcessShellCommand(cmdInfo))
+	{
+		write_log(preferences.debug_alltherest(), "[OpenHoldem] Dispatching command-line failed\n");
 		return FALSE;
+	}
 
 	write_log(preferences.debug_alltherest(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);

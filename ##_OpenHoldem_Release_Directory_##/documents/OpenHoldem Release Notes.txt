@@ -6,7 +6,16 @@ BUG FIXES:
   This has now been fixed.
   Thanks to R2D3 and Pawko for reporting and providing screenshots.
   [THF]
-
+  
+MAINTENANCE:
+- The table-positioner now moves the lobby to the top-left-position,
+  so that lobby-coordinates always equal screen-coordinates.
+  This makes hoppers more reliable, as we don't have to worry
+  if the lobby is active or if any casino-table pops up
+  and steals the mouse-focus. The positions of the other tables 
+  will then start at bottom-right of the screen.
+  [THF]
+  
 v4.3.1 2013-12-09
 ==================
 BUG FIXES:

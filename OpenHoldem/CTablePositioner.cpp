@@ -109,17 +109,19 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	{
 		// No other tables at the moment, 
 		// so we don't really have to care about overlaps.
-		// Moving this table to the bottom-right however,
+		// Moving this table to the top-left (0, 0) however,
 		// as the first "table" might be the lobby
-		// that doesn't fit together with the future tables in the grid.
-		MoveToBottomRight();
+		// and mouse-movements at the lobby are more reliable
+		// if relative lobby-coordinates are equal to absolute screen-coordinates
+		// and we don't have to care if the right window is active.
+		MoveToTopLeft();
 		return;
 	}
-	// Thereafter always try the top-left-position first
-	// and then try to dock at the bottom or right of known windows.
+	// Thereafter always try the bottom-right-position first
+	// and then try to dock at the left or top of known windows.
 	// Main advantage: we have to search in 2 direction only
 	// if the desktop gets empty again.
-	if (TryPosition(0, 0))
+	if (TryBottomRightPosition())
 	{
 		return;
 	}
@@ -127,42 +129,50 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	{
 		HWND HWND_of_potential_neighbour_table = list_of_tables[i];
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Trying neighbour-table %i\n", HWND_of_potential_neighbour_table);
-		if (TryRightSideOfTable(HWND_of_potential_neighbour_table))
+		if (TryLeftSideOfTable(HWND_of_potential_neighbour_table))
 		{
 			return;
 		}
-		if (TryBottomSideOfTable(HWND_of_potential_neighbour_table))
+		if (TryTopSideOfTable(HWND_of_potential_neighbour_table))
 		{
 			return;
 		}
 	}
-	// If we couldn't position a table we move it to bottom-right
+	// If we couldn't position a table we move it to top-left
 	// and hope that it occludes only the lobby 
 	// and not multiple tables in the middle of the screen
-	MoveToBottomRight();
+	MoveToTopLeft();
 }
 
-bool CTablePositioner::TryRightSideOfTable(HWND HWND_of_potential_neighbour_table)
+bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table)
 {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
-	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryRightSideOfTable() Neighbours position: %i, %i, %i, %i\n", 
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Neighbours position: %i, %i, %i, %i\n", 
 		position_of_potential_neigbour_table.left, position_of_potential_neigbour_table.top,
 		position_of_potential_neigbour_table.right, position_of_potential_neigbour_table.bottom);
-	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryRightSideOfTable() Trying right side of neighbour\n");
-	int my_left_x = position_of_potential_neigbour_table.right + 1;
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Trying right side of neighbour\n");
+	int my_left_x = position_of_potential_neigbour_table.left - _table_size_x;
 	int my_top_y  = position_of_potential_neigbour_table.top;
 	return TryPosition(my_left_x, my_top_y);
 }
 
-bool CTablePositioner::TryBottomSideOfTable(HWND HWND_of_potential_neighbour_table)
+bool CTablePositioner::TryTopSideOfTable(HWND HWND_of_potential_neighbour_table)
 {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
-	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryBottomSideOfTable() Trying bottom side of neighbour\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryTopSideOfTable() Trying bottom side of neighbour\n");
 	int my_left_x = position_of_potential_neigbour_table.left;
-	int my_top_y  = position_of_potential_neigbour_table.bottom + 1;
+	int my_top_y  = position_of_potential_neigbour_table.bottom - _table_size_y;
 	return TryPosition(my_left_x, my_top_y);
+}
+
+bool CTablePositioner::TryBottomRightPosition()
+{
+	int left_x = _desktop_rectangle.right  - _table_size_x + 1;
+	int top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryBottomRightPosition()\n");
+	return TryPosition(left_x, top_y);
 }
 
 bool CTablePositioner::TryPosition(int left_x, int top_y)
@@ -205,21 +215,23 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() Not a window, therefore no overlap\n");
 		return false;
 	}
-	// Too small values can't happen by design.
-	assert(left_x >= 0);
-	assert(top_y >= 0);
-	// Calculate the other corners of my window
-	int right_x  = left_x + _table_size_x - 1;
-	int bottom_y = top_y  + _table_size_y - 1;
 	// Make sure, we don't exceed the desktop
-	if ((right_x > _desktop_rectangle.right)
-		|| (bottom_y > _desktop_rectangle.bottom))
+	if ((left_x < 0) || (top_y < 0))
 	{
 		// No good position
 		// Treat it as overlap
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() Out of desktop. No valid position\n");
 		return true;
 	}
+	// Calculate the other corners of my window
+	int right_x  = left_x + _table_size_x - 1;
+	int bottom_y = top_y  + _table_size_y - 1;
+	// The other corners can't be out of desktop,
+	// as we start at bottom-right and then search 
+	// to the left and upwards. 
+	assert(right_x <= _desktop_rectangle.right);
+	assert(bottom_y <= _desktop_rectangle.bottom);
+	
 	// Now check for overlap...
 	RECT position_of_table_to_check_for_overlapping;
 	GetWindowRect(table_to_check_for_overlapping,
@@ -245,11 +257,11 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 	return true;
 }
 
-void CTablePositioner::MoveToBottomRight()
+void CTablePositioner::MoveToTopLeft()
 {
-	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToBottomRight()\n");
-	_new_left_x = _desktop_rectangle.right  - _table_size_x + 1;
-	_new_top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
+	_new_left_x = 0;
+	_new_top_y  = 0;
 	MoveWindowToItsPosition();
 }
 

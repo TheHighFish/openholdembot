@@ -66,9 +66,10 @@ CAutoConnector::~CAutoConnector()
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() deleted auto-connector-mutex\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() table marked as not atached\n");
 }
 
 

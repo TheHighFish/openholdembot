@@ -103,7 +103,7 @@ void CSharedMem::RememberTimeOfLastFailedAttemptToConnect()
 	time(&last_failed_attempt_to_connect);
 	write_log(preferences.debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
 	session_ID_of_last_instance_that_failed_to_connect = p_sessioncounter->session_id();
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(preferences.debug_autoconnector(), "[CSharedMem] Instance %d failed to connect\n", session_ID_of_last_instance_that_failed_to_connect);
 }
 
 

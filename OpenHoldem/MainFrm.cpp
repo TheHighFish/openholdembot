@@ -105,6 +105,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
 	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
+	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 	ON_COMMAND(ID_HELP_PROBLEMSOLVER, &CMainFrame::OnHelpProblemSolver)
 
@@ -386,7 +387,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");
-	dlg.AddPage(page6,  "Poker Tracker");
+	dlg.AddPage(page6,  "Poker Tracker v3");
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
 	dlg.AddPage(page4,  "Scraper");
@@ -891,20 +892,27 @@ void CMainFrame::KillTimer()
 	CFrameWnd::KillTimer(HWND_CHECK_TIMER);
 }
 
+void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
+{
+	long long int RetValue = long long int(ShellExecute(NULL, "open", windows_help_file_chm, NULL, NULL, SW_SHOW));
+	if (RetValue <= 32)
+	{
+		CString error_message;
+		error_message.Format("Could not open help-file %s\n"
+			"Please put it into your OpenHoldem folder\n",
+			windows_help_file_chm);
+		OH_MessageBox_Interactive(error_message, "Error", 0);
+	}
+}
+
 void CMainFrame::OnHelp()
 {
-	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
-	{
-		OH_MessageBox_Interactive("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error", 0);
-	}
-	else 
-	{
-		long long int RetValue = long long int(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
-		if (RetValue <= 32)
-		{
-			OH_MessageBox_Interactive("Error opening help-file", "Error", 0);
-		}
-	}
+	OpenHelpFile("OpenHoldem_Manual.chm");
+}
+
+void CMainFrame::OnHelpOpenPPL()
+{
+	OpenHelpFile("OpenPPL_Manual.chm");
 }
 
 void CMainFrame::OnHelpForums()

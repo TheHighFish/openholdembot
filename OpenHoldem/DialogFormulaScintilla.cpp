@@ -349,8 +349,10 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_NEXT, &CDlgFormulaScintilla::OnFindNext)
 	ON_COMMAND(ID_FORMULA_EDIT_FIND_PREV, &CDlgFormulaScintilla::OnFindPrev)
 
-	ON_COMMAND(ID_HELP, &CDlgFormulaScintilla::OnHelp)
-	ON_COMMAND(ID_HELP_FORUMS, &CDlgFormulaScintilla::OnHelpForums)
+	// Help 
+	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
+	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
+	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
 
 	// Keyboard Shortcuts
 	ON_COMMAND(ID_TOGGLE_BOOKMARK, &CDlgFormulaScintilla::OnToggleBookmark)
@@ -2631,27 +2633,6 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 			pWnd->SetForeground(i, RGB(0x00, 0x00, 0x00));
 		}
 	}
-}
-
-void CDlgFormulaScintilla::OnHelp()
-{
-	if (_access("OpenHoldem_Manual.chm", F_OK) != 0)
-	{
-		OH_MessageBox_Error_Warning("\"OpenHoldem_Manual.chm\" not found.\nPlease put it into your OpenHoldem folder.", "Error");
-	}
-	else 
-	{
-		int RetValue = (INT_PTR)(ShellExecute(NULL, "open", "OpenHoldem_Manual.chm", NULL, NULL, SW_SHOW));
-		if (RetValue <= 32)
-		{
-			OH_MessageBox_Error_Warning("Error opening help-file", "Error");
-		}
-	}
-}
-
-void CDlgFormulaScintilla::OnHelpForums()
-{
-	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
 }
 
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
