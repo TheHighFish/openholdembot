@@ -1,7 +1,5 @@
  
 /* start css.sty */
-.ecbx-1000{ font-weight: bold;}
-.ecbx-1000{ font-weight: bold;}
 p.noindent { text-indent: 0em }
 td p.noindent { text-indent: 0em; margin-top:0em; }
 p.nopar { text-indent: 0em; }
@@ -120,9 +118,6 @@ table.multline, table.multline-star {width:100%;}
 td.gather {text-align:center; }
 table.gather {width:100%;}
 div.gather-star {text-align:center;}
-.lstlisting .label{margin-right:0.5em; }
-div.lstlisting{font-family: monospace; white-space: nowrap; margin-top:0.5em; margin-bottom:0.5em; }
-div.lstinputlisting{ font-family: monospace; white-space: nowrap; }
-.lstinputlisting .label{margin-right:0.5em;}
+.figure img.graphics {margin-left:10%;}
 /* end css.sty */
 

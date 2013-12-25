@@ -142,6 +142,67 @@ me_st_ will store a new value, where_as me_re_SYMBOLNAME_VALUE will lookup
 \end_layout
 
 \begin_layout Section
+Ini-functions
+\end_layout
+
+\begin_layout Standard
+All memory-symbols have to be cleared or initialized at some time.
+ To do this in a clean and fail-safe way OpenHoldem provides six initialization-
+functions since version 4.2.0.
+ They get called at various times of execution, but always after the basic
+ symbols have been calculated and before the autoplayer-functions get evaluated.
+ Due to our verbosity-fetish they should be pretty self-explaning:
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_startup
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_connection
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_handreset
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_new_round
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_my_turn
+\end_layout
+
+\begin_layout Itemize
+f$ini_function_on_heartbeat
+\end_layout
+
+\begin_layout Standard
+Simple example:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$ini_function_on_my_turn##
+\end_layout
+
+\begin_layout Plain Layout
+
+f$MonsterHand ? me_st_GoodSlowPlaySituation_1 : 0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Putting it together
 \end_layout
 

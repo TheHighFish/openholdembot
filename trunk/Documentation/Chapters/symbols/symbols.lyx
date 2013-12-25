@@ -322,92 +322,12 @@ true if user defined string “abc” appears within the Table Map symbol s$site
 \end_layout
 
 \begin_layout Section
-Formula File 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="2">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="35text%">
-<column alignment="left" valignment="top" width="65text%">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Symbol
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Meaning
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nit !!!
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-number of iterations used to calculate the prwin/prtie/prlos and associated
- symbols.
- For an analysis of how many iterations to use, see this section: (Iterations
- and Standard Deviation)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 Limits 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="12" columns="2">
+<lyxtabular version="3" rows="9" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -572,66 +492,6 @@ isfl
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-sraiprev
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-the difference between the two largest unique wagers
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-sraimin
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Scraped - (currentbet+call); 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-sraimax
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-balance-call
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -664,7 +524,7 @@ true if a tournament table is detected.
 Hand Rank 
 \end_layout
 
-\begin_layout Remark
+\begin_layout Standard
 Handrank rates your hand-value, assuming you go preflop allin against N
  opponents, who hold random cards (N = nopponents).
  A low handrank means.
@@ -965,12 +825,33 @@ player “abc” chairbit (1 << chair$abc); 0 if not found
 \end_layout
 
 \begin_layout Section
-Rounds / Positions
+Positions
 \end_layout
 
-\begin_layout Remark
+\begin_layout Standard
 To avoid problems with fast folds in early position the dealposition-symbols
- will consider all players as dealt who are sitting in.
+ will consider the following players as dealt 
+\end_layout
+
+\begin_layout Itemize
+any players who are betting, especially the blinds
+\end_layout
+
+\begin_layout Itemize
+all active players between the blinds and the first user who holds cards,
+ i.e.
+ players who are seated and not sitting out.
+ If one of these players does not hold cards, then OpenHoldem will assume
+ that it is due to very fast folds in early positions.
+\end_layout
+
+\begin_layout Itemize
+the user, if he is seated and holds cards
+\end_layout
+
+\begin_layout Itemize
+any players with cardbacks, especially all players between the user and
+ the dealer.
 \end_layout
 
 \begin_layout Standard
@@ -1153,7 +1034,7 @@ the bet position of the raising player (1-10)
 Probabilities 
 \end_layout
 
-\begin_layout Remark
+\begin_layout Standard
 There are several variations of PrWin (standard, weighted and enhanced),
  each with several pros and cons.
  For more info see the chapter about PrWin.
@@ -1199,7 +1080,28 @@ prwin
 \begin_inset Text
 
 \begin_layout Plain Layout
-the probability of winning this hand (0.000 - 1.000) 
+the probability of winning this hand (0.000 - 1.000) .
+\end_layout
+
+\begin_layout Plain Layout
+PrWin might assume:
+\end_layout
+
+\begin_layout Itemize
+concrete ranges for your opponents with weightings for each possible holdings
+ if you use enhanced PrWin at the DLL-level.
+\end_layout
+
+\begin_layout Itemize
+simplified, but reasonable ranges if you use weighted PrWin at the formula-level
+, making use of f$prwin_mustplay, f$prwin_top_clip, f$prwin_willplay and
+ f$prwin_wontplay
+\end_layout
+
+\begin_layout Itemize
+random ranges of your opponents (default), where f$prwin_number_of_opponents
+ specifies the number of opponents for the prwin-simulation to control the
+ over-optimism of this very simple model.
 \end_layout
 
 \end_inset
@@ -1219,7 +1121,8 @@ prlos
 \begin_inset Text
 
 \begin_layout Plain Layout
-the probability of losing this hand (0.000 - 1.000) 
+the probability of losing this hand (0.000 - 1.000) , assuming random ranges
+ of your opponents
 \end_layout
 
 \end_inset
@@ -1239,7 +1142,8 @@ prtie
 \begin_inset Text
 
 \begin_layout Plain Layout
-the probability of pushing this hand (0.000 - 1.000) 
+the probability of pushing this hand (0.000 - 1.000) , assuming random ranges
+ of your opponents
 \end_layout
 
 \end_inset
@@ -1259,7 +1163,8 @@ prwinnow
 \begin_inset Text
 
 \begin_layout Plain Layout
-probability that all opponents have a lower hand right now
+probability that all opponents have a lower hand right now, assuming random
+ ranges of your opponents
 \end_layout
 
 \end_inset
@@ -1279,7 +1184,8 @@ prlosnow
 \begin_inset Text
 
 \begin_layout Plain Layout
-probability that any opponents have a higher hand right now random
+probability that any opponents have a higher hand right now random, assuming
+ random ranges of your opponents
 \end_layout
 
 \end_inset
@@ -1721,6 +1627,14 @@ the total amount of chips in front of all players
 
 \begin_layout Section
 Number of Bets
+\end_layout
+
+\begin_layout Standard
+Please note that in a fixed-limit game (default) the bets double up at the
+ turn.
+ This will affect the symbols below.
+ If you play no-limit or pot-limit please make sure that your tablemap detects
+ the game-type correctly.
 \end_layout
 
 \begin_layout Standard
@@ -2887,43 +2801,7 @@ true when you have the highest flush possible
 Players, Friends, Opponents
 \end_layout
 
-\begin_layout Remark
-OpenHoldem does not support any kind of collusion, so the friend-symbols
- are completely meaningless.
- Only nfriendsseated, nfriendsactive and nfriendsplaying are currently implement
-ed for backward-compatibility, as they are quite convenient to use in the
- f$sitin, f$sitout and f$leave-formulas.
- They will of course consider hero as the one and only 
-\begin_inset Quotes eld
-\end_inset
-
-friend
-\begin_inset Quotes erd
-\end_inset
-
-.
- The other friend symbols got finally removed from the code-base in OpenHoldem
- 2.2.0..
-\end_layout
-
 \begin_layout Standard
-\begin_inset VSpace 1mm*
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Spacing as a workaround to force two individual remarks.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Remark
 Note that 
 \begin_inset Quotes eld
 \end_inset
@@ -2932,7 +2810,7 @@ raising players
 \begin_inset Quotes erd
 \end_inset
 
- do also count forced 
+ does also count forced 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2940,7 +2818,7 @@ blind-raisers
 \begin_inset Quotes erd
 \end_inset
 
-.
+ per definition.
 \end_layout
 
 \begin_layout Standard
@@ -3695,7 +3573,7 @@ true if flag 0 - flag 19 button is pressed, false otherwise
 \begin_inset Text
 
 \begin_layout Plain Layout
-fbits
+flagbits
 \end_layout
 
 \end_inset
@@ -3922,10 +3800,10 @@ the total number of unseen single cards that if dealt to the board might
 
 \begin_layout Remark
 Ray E.
- Bornerts definition of an out is way too optimistic and completely unusable
+ Bornerts definition of an out is way too optimistic and nearly unusable
  (a hand like 72o at a board of AKQ will give you 6 outs, as every 7 and
- every 2 bumps your handlevel to a pair, which beats high-card ace at the
- board).
+ every 2 will bump your handlevel to a pair, which beats high-card ace at
+ the board).
  To calculate outs in a meaningful way, there is f$mh_nouts in Winngys and
  HTCs hand-strength-library and there are also some good outs-counters available
  in the forum.
@@ -4417,7 +4295,7 @@ Rank Bits
 \end_layout
 
 \begin_layout Standard
-Aces are hi and lo.
+Please note: aces are both hi and lo.
 \end_layout
 
 \begin_layout Standard
@@ -6724,7 +6602,7 @@ Action
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="13" columns="2">
+<lyxtabular version="3" rows="12" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35col%">
 <column alignment="left" valignment="top" width="65text%">
@@ -6823,26 +6701,6 @@ foldbitsx (x=1-4)
 
 \begin_layout Plain Layout
 which chairs folded in round x
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-ac_aggressor
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-which chair was aggressor (might be from previous round)
 \end_layout
 
 \end_inset
@@ -7421,6 +7279,61 @@ Note: You have to turn on Log Symbols in the preferences.
  When enabled, up to 4 log symbols will be displayed in OpenHoldem's main
  window.
  
+\end_layout
+
+\begin_layout Section
+MessageBoxes with Info
+\end_layout
+
+\begin_layout Standard
+In addition to logging it might be useful to notify the user at run-time
+ and pause script-execution, mainly in a debugging session.
+ For this usecase OpenHoldem provides a symbol msgbox$TEXT, that --- surprise
+ --- will show a messagebox with text.
+ As the character-set in symbols is slightly limited the following replacements
+ will take place.
+\end_layout
+
+\begin_layout Itemize
+_B will be replaced by a blank 
+\end_layout
+
+\begin_layout Itemize
+_C will be replaced by a comma 
+\end_layout
+
+\begin_layout Itemize
+_D will be replaced by a dot 
+\end_layout
+
+\begin_layout Itemize
+_N will be replaced by a new-line 
+\end_layout
+
+\begin_layout Itemize
+_U will be replaced by a underscore 
+\end_layout
+
+\begin_layout Standard
+The symbol msgbox$TEXT will evaluate to 0.
+ An example: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$OpenPPL_PT_LastCaller_VPIP## 
+\end_layout
+
+\begin_layout Plain Layout
+
+-1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -9951,23 +9864,45 @@ not used
 \end_layout
 
 \begin_layout Standard
-Examples: 
+\begin_inset Graphics
+	filename Images/rankbits_manualmode.JPG
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-$JT = 3072 
+In this example rankbits is 20518 (decimal), which is 0b101000000100110
+ (binary)
 \end_layout
 
 \begin_layout Standard
-$65432 = 124 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+101000000100110
+\end_layout
+
+\begin_layout Plain Layout
+
+A-Q------5--2A-
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-$KJ9753 = 10920 
-\end_layout
-
-\begin_layout Standard
-$AQT8642 = 21846 
+A quick calculation will verify that 20518 is the sum of the card-values
+ in the table above.
+ If you have never worked with binary numbers before then try out MicroSofts
+ calculator and change it to scientif view.
+ Things will become easy.
 \end_layout
 
 \end_body

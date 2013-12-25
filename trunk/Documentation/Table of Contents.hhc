@@ -193,6 +193,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Defining the Game-Type">
+				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraping &quot;10&quot; as T">
 				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
 				</OBJECT>
@@ -329,16 +333,6 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="OHReplay">
 				<param name="Local" value="Chapters\ohreplay\OHReplay.html.LyXconv\OHReplay.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="PokerPro Server">
-			<param name="Local" value="Chapters\pokerpro_server\pokerpro_title.html.LyXconv\pokerpro_title.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Poker Pro Server">
-				<param name="Local" value="Chapters\pokerpro_server\PokerPro.html.LyXconv\PokerPro.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">

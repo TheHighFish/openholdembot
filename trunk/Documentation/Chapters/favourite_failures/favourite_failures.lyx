@@ -100,11 +100,6 @@ size of the window
 table-title
 \end_layout
 
-\begin_layout Itemize
-maybe some tablepoints to distinguish similar maps (e.g.
- FL, NL-SNG or different skins from the same network).
-\end_layout
-
 \begin_layout Standard
 Usually the problem is the window-size caused by incorrect system-settings;
  
@@ -151,84 +146,61 @@ classic-theme.
 \end_layout
 
 \begin_layout Section
-OH does not connect to the table (II)
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: No 
+OH does not play (I) and the 
 \begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
-
-\emph on
-tablemap
-\end_layout
-
-\end_inset
-
-tablemap loaded.
-\end_layout
-
-\begin_layout Standard
-There are two ways to load a tablemap:
-\end_layout
-
-\begin_layout Itemize
-explicitly via the menu: Menu -> File -> Load Table Map
-\end_layout
-
-\begin_layout Itemize
-implicitly from the 
-\begin_inset Quotes eld
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-scraper-folder
-\end_layout
-
-\end_inset
-
-scraper
-\begin_inset Quotes erd
-\end_inset
-
--folder in the installation-directory of OpenHoldem.
-\end_layout
-
-\begin_layout Section
-OH does not play (I)
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: You did not turn on the 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-
-\emph on
 autoplayer
 \end_layout
 
 \end_inset
 
-autoplayer.
+autoplayer-button can't be enabled
 \end_layout
 
 \begin_layout Standard
-Click the diamond-button to the right of the green and red circles in the
- toolbar.
- Alternatively change the preferences to automatically engage the autoplayer
- upon chair-detection.
+
+\emph on
+Reason: 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+Userchair
+\end_layout
+
+\end_inset
+
+Userchair not recognized.
+\end_layout
+
+\begin_layout Standard
+The autoplayer can only be enabled after OpenHoldem has recognized your
+ chair.
+ To do so OpenHoldem must see:
+\end_layout
+
+\begin_layout Itemize
+your cards
+\end_layout
+
+\begin_layout Itemize
+some 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+buttons
+\end_layout
+
+\end_inset
+
+buttons, so OpenHoldem really knows it is your turn and not a gamestate
+ with cards shown for your opponents (i.e.
+ at showdown).
 \end_layout
 
 \begin_layout Section
@@ -333,64 +305,6 @@ always use replay-frames
 \emph default
  for building tablemaps and for investigation if you experience problems
  at a real casino.
-\end_layout
-
-\begin_layout Section
-The 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-autoplayer
-\end_layout
-
-\end_inset
-
-autoplayer-button can't be enabled
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-
-\emph on
-Userchair
-\end_layout
-
-\end_inset
-
-Userchair not recognized.
-\end_layout
-
-\begin_layout Standard
-The autoplayer can only be enabled after OpenHoldem has recognized your
- chair.
- To do so OpenHoldem must see:
-\end_layout
-
-\begin_layout Itemize
-your cards
-\end_layout
-
-\begin_layout Itemize
-some 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-buttons
-\end_layout
-
-\end_inset
-
-buttons, so OpenHoldem really knows it is your turn and not a gamestate
- with cards shown for your opponents (i.e.
- at showdown).
 \end_layout
 
 \begin_layout Section
@@ -674,6 +588,10 @@ players
 So always remember: Bots are very stupid and very volatile beings.
 \end_layout
 
+\begin_layout Standard
+(This can no longer happen as we execute the
+\end_layout
+
 \begin_layout Section
 OpenScrape does recognize something, but OH does not (I)
 \end_layout
@@ -729,7 +647,7 @@ Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem
  It will only scrape names, bets and balances of a certain chair, if that
  chair is occupied.
  If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem
- doesn't do so, then you have most probably forgotten to define pxseated
+ does not do so, then you have most probably forgotten to define pxseated
  or uxseated.
 \end_layout
 
@@ -834,6 +752,13 @@ This error may also occur when debug messages attempt to write to a file
  that has not yet been opened for writing, or if Perl modules are not loaded
  in the correct order.
  
+\end_layout
+
+\begin_layout Standard
+Please note that this issue has been improved as OpenHoldem 4.x now gets
+ linked to the DLL at load-time the normal way and does no longer send any
+ function-pointers at run-time as WinHoldem did.
+ But things like that can still happen to Perl-users.
 \end_layout
 
 \begin_layout Section
@@ -986,16 +911,20 @@ fold
 \end_layout
 
 \begin_layout Section
+\begin_inset Note Note
+status open
+
+\begin_layout Section
 There are only N players dealt, but OH says 10
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \emph on
 Reason: It's a feature, not a bug.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Recognizing dealt players (nplayersdealt) and similar symbols (dealtbits
  and dealposition) has always been a problem due to fast folds in early
  position.
@@ -1014,7 +943,7 @@ obvious
  BB the SB will have a bet in front of him).
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 However --- beginners complained too much and so we had to change the code:
  We do now consider players as dealt, if they are active (e.g.
  sitting in).
@@ -1022,6 +951,11 @@ However --- beginners complained too much and so we had to change the code:
  a player could be sitting out and come back - but that happens less frequently
  than fast folds in early position).
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1047,17 +981,21 @@ Some symbols only require the current gamestate to be calculated (e.g.
 \end_layout
 
 \begin_layout Section
+\begin_inset Note Note
+status open
+
+\begin_layout Section
 I play a tournament, but when the blinds go up OpenHoldem keeps the old
  values
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \emph on
 Reason: You use a cash-TM for a tournament.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Detecting the blind values correctly is extremely important, as it affects
  all kinds of other symbols.
  Therefore OH provides the ability to automatically lock the blinds as soon
@@ -1076,6 +1014,11 @@ c0istournament
 
 .
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1103,7 +1046,7 @@ should take a pause from coding and do some homework.
 \end_layout
 
 \begin_layout Section
-PokerTracker does not work (I)
+PokerTracker does not work
 \end_layout
 
 \begin_layout Standard
@@ -1127,56 +1070,6 @@ network
 .
  Please refer to the PokerTracker and TableMap section of this manual for
  a detailed explanantion what to do.
-\end_layout
-
-\begin_layout Section
-PokerTracker does not work (II)
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: You are sitting out - PokerTracker got turned off
-\end_layout
-
-\begin_layout Standard
-The PT-thread gets turned off, if you are not seated at the table or if
- you are sitting out.
- Therefore an incorrect TM can affect PokerTracker functionality.
- To verify, that the relevant TM-symbols are ok, please put
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-= userchair
-\end_layout
-
-\begin_layout Plain Layout
-
-= issittingin
-\end_layout
-
-\begin_layout Plain Layout
-
-= issittingout
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-into your debug-tab.
- If they don't work like espected you have to revisit the TM-regions pXseated,
- pXactive and activemethod.
- Also make sure, that the buttons and cards are recognized, as this is a
- prerequisite for recognizing the userchair.
 \end_layout
 
 \begin_layout Section

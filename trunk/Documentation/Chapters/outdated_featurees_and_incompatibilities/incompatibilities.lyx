@@ -460,7 +460,7 @@ OpenHoldem is now half a dozen years old.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="62" columns="3">
+<lyxtabular version="3" rows="63" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="30page%">
 <column alignment="center" valignment="top" width="30page%">
@@ -2346,6 +2346,59 @@ Removed the symbols ac_pf_bets, because it was for fixed limit only, worked
  only on the first orbit preflop, because that task can be done with other
  symbols and finally we have the OpenPPL-library, so there is really no
  longer any need for that.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ac_aggressor	
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+which chair was aggressor (might be from previous round)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Removed, as it was duplicate functionality to raischair
 \end_layout
 
 \end_inset
