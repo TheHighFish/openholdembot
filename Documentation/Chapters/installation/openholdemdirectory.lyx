@@ -187,12 +187,12 @@ OpenHoldem_Manual.chm --- this manual.
 
 \begin_layout Itemize
 Documents-directory -- this directory contains useful information like the
- release-notes that document changes and the license-information (gPL v3).
+ release-notes that document changes and the license-information (GPL v3).
  Feel free to peruse these if you have problems falling asleep some night.
 \end_layout
 
 \begin_layout Itemize
-Logs -- this directory contains the log.files the OpenHoldem bots.
+Logs -- this directory contains the log-files of the OpenHoldem bots.
  The logs are named 
 \begin_inset Quotes eld
 \end_inset

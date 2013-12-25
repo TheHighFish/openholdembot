@@ -873,6 +873,11 @@ Valid values for this Symbol are available in a drop down control and are:
 \end_layout
 
 \begin_layout Itemize
+Triple Click' – Triple left click on the SWAG box to select the existing
+ text
+\end_layout
+
+\begin_layout Itemize
 "Click Drag" – Left click on the leftmost pixel of the SWAG box, drag to
  the rightmost pixel of the SWAG box, and then release the left mouse button
  to select the existing text 
