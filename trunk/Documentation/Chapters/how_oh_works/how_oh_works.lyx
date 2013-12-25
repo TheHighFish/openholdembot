@@ -685,7 +685,7 @@ Explanation
 \begin_inset Text
 
 \begin_layout Plain Layout
-Handle f$sitin, f$sitout and f$leave 
+Handle f$sitin, f$sitout and f$leave and f$close
 \end_layout
 
 \end_inset
@@ -694,8 +694,8 @@ Handle f$sitin, f$sitout and f$leave
 \begin_inset Text
 
 \begin_layout Plain Layout
-Evaluate the f$sitin, f$sitout and f$leave functions and take action depending
- on their return values.
+Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action
+ depending on their return values.
 \end_layout
 
 \end_inset

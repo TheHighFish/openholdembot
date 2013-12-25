@@ -7,67 +7,70 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="incompatibilities.tex"> 
-<meta name="date" content="2010-05-01 14:05:00"> 
+<meta name="date" content="2013-12-25 00:48:00"> 
 <link rel="stylesheet" type="text/css" href="incompatibilities.css"> 
-</head><body bgcolor="#CCCCFF" 
+</head><body 
 >
 
 
-   <h2 class="chapterHead"><span class="titlemark"></span></><a 
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;1</span><br /><a 
  id="x1-10001"></a>Outdated Features and Incompatibilities between OpenHoldem and
 WinHoldem</h2>
 <!--l. 33--><p class="noindent" >The original main goal of the OpenHoldem development team was the attempt to create
 a WinHoldem-compatible botting-platform to support existing bots, DLLs and
 TableMaps. However there has been functionality such as &#8220;Teaming&#8221;, that always has
-been a tabu for the OpenHoldem development team. Other functionality did never
-get implemented due to lack of documentation and practical relevance. And
-now that OpenHoldem is far more advanced and WinHoldem is practically
-dead, backward-compatibility is no longer such an important issue. Recently
-the development team does revisit some features that look a bit mal-designed
-and tries to improve them carefully, trying to affect the end-user as little as
-possible.
-<!--l. 45--><p class="indent" >   This chapter will tell you about such incompatibilities.
+been a tabu for the OpenHoldem development team. Other functionality did never get
+implemented due to lack of documentation and practical relevance. And now
+that OpenHoldem is far more advanced and WinHoldem is practically dead,
+backward-compatibility is no longer such an important issue. Recently the development
+team does revisit some features that look a bit mal-designed and tries to improve them
+carefully, trying to affect the end-user as little as possible. This chapter will tell you
+about such incompatibilities.
    <h3 class="sectionHead"><a 
  id="x1-20001"></a>No Collusion aka &#8220;Teaming&#8221;</h3>
-<!--l. 50--><p class="noindent" >OpenHoldem does not support any kind of collusion. There is no support for
+<!--l. 48--><p class="noindent" >OpenHoldem does not support any kind of collusion. There is no support for
 WinHoldems WinTellem-server and card-sharing either because such activities are simply
 illegal in every country of the world, and &#8212; even more important &#8212; because we consider
 them unfair too.
    <h3 class="sectionHead"><a 
  id="x1-30001"></a>TableMaps</h3>
-<!--l. 58--><p class="noindent" >Table Maps are in a different format due to hypothetical copyright-issues; conversion of a
-WinHoldem "profile" to a OpenHoldem "Table Map" is possible if you open the WH
-profile in OpenScrape. But this is no longer of any practical relevance, as all
+<!--l. 56--><p class="noindent" >Table Maps are in a different format due to hypothetical copyright-issues. For some time
+it was possible to convert a WinHoldem "profile" to an OpenHoldem "Table
+Map" with OpenScrape. But this is no longer of any practical relevance, as all
 WinHoldem-&#8221;profiles&#8221; are supposed to be outdated and there is no longer any
-maintenance going on.
+maintenance going on. So finally we removed support for WinHoldem-tablemaps
+completely.
    <h3 class="sectionHead"><a 
  id="x1-40001"></a>Formula-File-Format</h3>
-<!--l. 68--><p class="noindent" >The formula is saved in a single file instead of two. It uses the extension *.ohf instead of
-*.whf and *.whx. Old WH-formulae will be converted once they get saved. OpenHoldem
-does still use a plain-text-format, so *.ohf-files can be edited using your favourite
-text-editor.
+<!--l. 66--><p class="noindent" >The formula is saved in a single file instead of two. It uses the extension *.ohf instead of
+*.whf and *.whx. Old WH-formulae could be converted for some time, but as there was
+no longer any demand for that feature we were happy to simplify OpenHoldems code.
+OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your
+favourite text-editor. or the built-in formula-editor.
    <h3 class="sectionHead"><a 
  id="x1-50001"></a>ManualMode</h3>
-<!--l. 77--><p class="noindent" >ManualMode is not directly integrated into OpenHoldem, but became a stand-alone
+<!--l. 76--><p class="noindent" >ManualMode is not directly integrated into OpenHoldem, but became a stand-alone
 application. This did simplify the GUI of OpenHoldem extremely and made it far more
 easy to use.
    <h3 class="sectionHead"><a 
  id="x1-60001"></a>f$evrais and f$evcall</h3>
-<!--l. 84--><p class="noindent" >Calculating expectation values is only one possible way (out of many) to implement a
+<!--l. 83--><p class="noindent" >Calculating expectation values is only one possible way (out of many) to implement a
 poker bot, but not necessary in general. Furthermore it proved to be cumbersome and
 unpopular. So the functions f$evrais and f$evcall from WinHoldems demo-bot have been
 degraded to user-defined-functions.
 
    <h3 class="sectionHead"><a 
  id="x1-70001"></a>f$play-Function</h3>
-<!--l. 92--><p class="noindent" >The function f$play has been a quite messy concept to handle sitting in, sitting out and
+<!--l. 91--><p class="noindent" >The function f$play has been a quite messy concept to handle sitting in, sitting out and
 leaving the table. Some extra coution was necessary to avoid multiple button-clicks
 within a short time-frame on identical or outdated game-states. With OpenHoldem 2.2.0
 f$play got replaced by three indivudal functions: f$sitin, f$sitout and f$leave, which get
-executed exactly once every 4 seconds.
+executed exactly once every 4 seconds. Furthermore we added a f$close-function
+that to click the [x] in the titlebar of a window if the user desires to leave a
+table.
    <h3 class="sectionHead"><a 
  id="x1-80001"></a>f$swag function</h3>
-<!--l. 102--><p class="noindent" >f$swag (short for &#8220;stated wager&#8221;) was WinHoldems way to define the betsize for No-Limit
+<!--l. 103--><p class="noindent" >f$swag (short for &#8220;stated wager&#8221;) was WinHoldems way to define the betsize for No-Limit
 games. As online casinos interpret your input in at least three different ways some
 adjustment was necessary, including:
 
@@ -78,8 +81,8 @@ id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col
 id="TBL-1-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-1"  
-class="td11"> <!--l. 108--><p class="noindent" >f$srai                                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
-class="td11"> <!--l. 108--><p class="noindent" >the
+class="td11"> <!--l. 109--><p class="noindent" >f$srai                                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-1-2"  
+class="td11"> <!--l. 110--><p class="noindent" >the
   desired
   amount
   to
@@ -96,8 +99,8 @@ class="td11"> <!--l. 108--><p class="noindent" >the
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-1"  
-class="td11"> <!--l. 111--><p class="noindent" >f$swag                                                                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
-class="td11"> <!--l. 111--><p class="noindent" >the
+class="td11"> <!--l. 113--><p class="noindent" >f$swag                                                                </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-2-2"  
+class="td11"> <!--l. 114--><p class="noindent" >the
   final
   amount
   to
@@ -109,8 +112,8 @@ class="td11"> <!--l. 111--><p class="noindent" >the
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-1"  
-class="td11"> <!--l. 113--><p class="noindent" >f$swag_adjust                                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
-class="td11"> <!--l. 113--><p class="noindent" >the
+class="td11"> <!--l. 116--><p class="noindent" >f$swag_adjust                                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-3-2"  
+class="td11"> <!--l. 117--><p class="noindent" >the
   casino-specific
   adjustment
   between
@@ -120,8 +123,8 @@ class="td11"> <!--l. 113--><p class="noindent" >the
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-1"  
-class="td11"> <!--l. 115--><p class="noindent" >swagtextmethod                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
-class="td11"> <!--l. 115--><p class="noindent" >the
+class="td11"> <!--l. 119--><p class="noindent" >swagtextmethod                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-4-2"  
+class="td11"> <!--l. 120--><p class="noindent" >the
   casino-specific
   way
   to
@@ -135,16 +138,16 @@ class="td11"> <!--l. 115--><p class="noindent" >the
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-1"  
-class="td11"> <!--l. 117--><p class="noindent" >sraimin                                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
-class="td11"> <!--l. 117--><p class="noindent" >the
+class="td11"> <!--l. 122--><p class="noindent" >sraimin                                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-5-2"  
+class="td11"> <!--l. 123--><p class="noindent" >the
   smallest
   possible
   raise                                                                  </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-1-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-1"  
-class="td11"> <!--l. 119--><p class="noindent" >sraimax                                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
-class="td11"> <!--l. 119--><p class="noindent" >the
+class="td11"> <!--l. 125--><p class="noindent" >sraimax                                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-1-6-2"  
+class="td11"> <!--l. 126--><p class="noindent" >the
   largest
   possible
   raise.                                                                 </td>
@@ -153,12 +156,13 @@ class="hline"><td><hr></td><td><hr></td></tr><tr
  style="vertical-align:baseline;" id="TBL-1-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-1-7-1"  
 class="td11">                                               </td> </tr></table></div>
 
-<!--l. 123--><p class="indent" >   All these computations had to be done by the user at the formula level. With
+<!--l. 130--><p class="indent" >   All these computations had to be done by the user at the formula level. With
 OpenHoldem 2.2.0 this mess got replaced by a single function f$betsize and OpenHoldem
-cares about all the rest automatically.
+cares about all the rest automatically (depending on the swagtextmethod of your
+tablemap, but that is all that&#8217;s left).
    <h3 class="sectionHead"><a 
  id="x1-90001"></a>Statistic-Symbols: &#8220;risk of ruin&#8221;</h3>
-<!--l. 130--><p class="noindent" >The symbols to calculate &#8220;risk of ruin&#8221; have never been implemented due to lack of
+<!--l. 138--><p class="noindent" >The symbols to calculate &#8220;risk of ruin&#8221; have never been implemented due to lack of
 documentation and lack of practical relevance. As of OpenHoldem 2.0.0 the
 risk-of-ruin-symbols are officially abolished and removed from the code-base. The original
 documentation for these symbols can be found here:
@@ -173,109 +177,1151 @@ class="ectt-1000">http://www.winholdem.net/help/help-formula.html</span></a>)
 href="http://forum.winholdem.net/wbb/viewtopic.php?t=2120" class="url" ><span 
 class="ectt-1000">http://forum.winholdem.net/wbb/viewtopic.php?t=2120</span></a>)</li></ul>
    <h3 class="sectionHead"><a 
- id="x1-100001"></a>Friend-Symbols</h3>
-<!--l. 142--><p class="noindent" >OpenHoldem does not support any kind of collusion, so the friend-symbols are
-completely meaningless. Only nfriendsseated, nfriendsactive and nfriendsplaying are
-currently implemented for backward-compatibility, as they are quite convenient to use in
-the f$sitin, f$sitout and f$leave-formulas. They do of course consider hero as the one and
-only &#8220;friend&#8221;. The other friend symbols got finally removed from the code-base in
-OpenHoldem 2.2.0.
+ id="x1-100001"></a>Outdated Symbols</h3>
+<!--l. 150--><p class="noindent" >OpenHoldem is now half a dozen years old. During these long period of usage it became
+noticeable that some symbols and features of WinHoldem were hardly (if ever) had its
+flaws. Some were unnecessary (risk of ruin), some unusable, some undocumented
+(versus2), some even undesired.
 
    <div class="tabular"> <table id="TBL-2" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-2-1g"><col 
 id="TBL-2-1"></colgroup><colgroup id="TBL-2-2g"><col 
-id="TBL-2-2"></colgroup><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+id="TBL-2-2"></colgroup><colgroup id="TBL-2-3g"><col 
+id="TBL-2-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-1"  
-class="td11"> <!--l. 152--><p class="noindent" >Symbol                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
-class="td11"> <!--l. 152--><p class="noindent" >Meaning                                                            </td>
+class="td11"> <!--l. 157--><p class="noindent" >Symbol                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-2"  
+class="td11"> <!--l. 158--><p class="noindent" >Explanation                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-1-3"  
+class="td11"> <!--l. 159--><p class="noindent" >Reason
+  for
+  removal                                               </td>
 </tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-1"  
-class="td11"> <!--l. 155--><p class="noindent" >nfriendsdealt                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-2"  
-class="td11"> <!--l. 155--><p class="noindent" >1
-  if
-  you
-  are
-  dealt,
-  0
-  otherwise
-  (0-1)                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"> <!--l. 162--><p class="noindent" >nfriendsdealt                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-2"  
+class="td11"> <!--l. 163--><p class="noindent" >1 if you are dealt, 0 otherwise (0-1)          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-2-3"  
+class="td11"> <!--l. 173--><p class="noindent" ><div class="multirow"><!-- rows=7 -->
+OpenHoldem
+does
+not
+support
+any
+kind
+of
+collusion,
+so
+the
+friend-symbols
+are
+completely
+meaningless.
+Only
+nfriendsseated,
+nfriendsactive
+and
+nfriendsplaying
+got
+kept
+for
+some
+time
+for
+backward-compatibility,
+as
+they
+were
+quite
+convenient
+to
+use
+in
+the
+f$sitin,
+f$sitout
+and
+f$leave-formulas.
+They
+did
+consider
+hero
+as
+the
+one
+and
+only
+&#8220;friend&#8221;.
+The
+other
+friend
+symbols
+(with
+the
+same
+restricted
+meaning)
+got
+from
+the
+code-base
+in
+OpenHoldem&#x00A0;2.2.0.
+Finally
+removed
+friend-symbols
+completely
+in
+OpenHoldem&#x00A0;4.0.0,
+as
+OpenHoldem
+does
+not
+support
+any
+kind
+of
+collusion.
+We
+don&#8217;t
+want
+that
+shit,
+not
+even
+for
+backward-compatibility
+to
+WinHoldem.                                       </div>  </td>
+</tr><tr  
  style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-1"  
-class="td11"> <!--l. 157--><p class="noindent" >nfriendsblind                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-3-2"  
-class="td11"> <!--l. 157--><p class="noindent" >1
-  if
-  you
-  are
-  in
-  a
-  blind,
-  0
-  otherwise
-  (0-1)                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-1"  
-class="td11"> <!--l. 159--><p class="noindent" >friendsseatedbits                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-2"  
-class="td11"> <!--l. 159--><p class="noindent" >bits
-  9-0:
-  1=seated
-  0=unseated,
-  you
-  only                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"> <!--l. 175--><p class="noindent" >nfriendsblind                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-2"  
+class="td11"> <!--l. 176--><p class="noindent" >1 if you are in a blind, 0 otherwise (0-1)    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-4-3"  
+class="td11"> <!--l. 177--><p class="noindent" >                                    </td>
+</tr><tr  
  style="vertical-align:baseline;" id="TBL-2-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-5-1"  
-class="td11"> <!--l. 161--><p class="noindent" >friendsactivebits                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-5-2"  
-class="td11"> <!--l. 161--><p class="noindent" >bits
-  9-0:
-  1=active
-  0=inactive,
-  you
-  only                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-1"  
-class="td11"> <!--l. 163--><p class="noindent" >friendsdealtbits                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-2"  
-class="td11"> <!--l. 163--><p class="noindent" >bits
-  9-0:
-  1=dealt
-  0=notdealt,
-  you
-  only                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"> <!--l. 178--><p class="noindent" >friendsseatedbits                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-2"  
+class="td11"> <!--l. 179--><p class="noindent" >bits 9-0: 1=seated 0=unseated, you only    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-6-3"  
+class="td11"> <!--l. 180--><p class="noindent" >                                    </td>
+</tr><tr  
  style="vertical-align:baseline;" id="TBL-2-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-7-1"  
-class="td11"> <!--l. 165--><p class="noindent" >friendsplayingbits                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-7-2"  
-class="td11"> <!--l. 165--><p class="noindent" >bits
-  9-0:
-  1=playing
-  0=notplaying,
-  you
-  only                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
  style="vertical-align:baseline;" id="TBL-2-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-1"  
-class="td11"> <!--l. 167--><p class="noindent" >friendsblindbits                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-2"  
-class="td11"> <!--l. 167--><p class="noindent" >bits
-  9-0:
-  1=blind
-  0=notblind,
-  you
-  only                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
+class="td11"> <!--l. 181--><p class="noindent" >friendsactivebits                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-2"  
+class="td11"> <!--l. 182--><p class="noindent" >bits 9-0: 1=active 0=inactive, you only      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-8-3"  
+class="td11"> <!--l. 183--><p class="noindent" >                                    </td>
+</tr><tr  
  style="vertical-align:baseline;" id="TBL-2-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-9-1"  
-class="td11">                           </td> </tr></table></div>
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-1"  
+class="td11"> <!--l. 184--><p class="noindent" >friendsdealtbits                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-2"  
+class="td11"> <!--l. 185--><p class="noindent" >bits 9-0: 1=dealt 0=notdealt, you only      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-10-3"  
+class="td11"> <!--l. 186--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-11-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-11-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-12-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-12-1"  
+class="td11"> <!--l. 187--><p class="noindent" >friendsplayingbits                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-12-2"  
+class="td11"> <!--l. 188--><p class="noindent" >bits 9-0: 1=playing 0=notplaying, you
+  only                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-12-3"  
+class="td11"> <!--l. 189--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-13-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-13-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-14-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-14-1"  
+class="td11"> <!--l. 190--><p class="noindent" >friendsblindbits                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-14-2"  
+class="td11"> <!--l. 191--><p class="noindent" >bits 9-0: 1=blind 0=notblind, you only      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-14-3"  
+class="td11"> <!--l. 192--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-15-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-15-1"  
+class="td11"> <!--l. 193--><p class="noindent" >swagdelay                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-15-2"  
+class="td11"> <!--l. 194--><p class="noindent" >Autoplayer delay in milliseconds between
+  swag keystrokes and button click as
+  defined in Preferences (formerly
+  TableMap); to be removed soon as there
+  is no need for it at the formula level         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-15-3"  
+class="td11"> <!--l. 198--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-16-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-16-1"  
+class="td11"> <!--l. 199--><p class="noindent" >allidelay                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-16-2"  
+class="td11"> <!--l. 200--><p class="noindent" >Autoplayer delay in milliseconds between
+  alli slider jam and button click as defined
+  in Preferences (formerly TableMap); to be
+  removed soon as there is no need for it at
+  the formula level                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-16-3"  
+class="td11"> <!--l. 203--><p class="noindent" >Some
+  tablemap
+  symbols
+  have
+  been
+  exposed
+  to
+  the
+  scripting
+  level
+  without
+  necessity.
+  They
+  got
+  removed
+  in
+  OpenHoldem
+  2.2.0
+  and
+  are
+  now
+  only
+  accessible
+  internally.                                            </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-17-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-17-1"  
+class="td11"> <!--l. 207--><p class="noindent" >swagtextmethod                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-17-2"  
+class="td11"> <!--l. 208--><p class="noindent" >the site interpretation for swag edit text
+  (Table Map symbol)
+                   <ol  class="enumerate1" >
+              <li 
+  class="enumerate" id="x1-10002x1">f$srai
+                   </li>
+              <li 
+  class="enumerate" id="x1-10004x2">f$srai+call
+                   </li>
+              <li 
+  class="enumerate" id="x1-10006x3">f$srai+call+currentbet;</li></ol>
+  <!--l. 214--><p class="noindent" >Default: 3                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-17-3"  
+class="td11"> <!--l. 216--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-18-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-1"  
+class="td11"> <!--l. 217--><p class="noindent" >islistcall                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-2"  
+class="td11"> <!--l. 218--><p class="noindent" >true if your hand is in list 0                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-18-3"  
+class="td11"> <!--l. 222--><p class="noindent" ><div class="multirow"><!-- rows=8 -->
+The
+list
+symbols
+below
+seem
+to
+be
+mis-conceptions
+by
+WinHoldems
+author
+and
+&#8212;
+to
+our
+best
+knowledge
+&#8212;
+have
+never
+been
+used
+in
+any
+serious
+poker
+bot.
+They
+finally
+got
+removed
+from
+the
+code
+base
+in
+version
+2.2.0
+of
+OpenHoldem.                                     </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-19-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-19-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-20-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-20-1"  
+class="td11"> <!--l. 224--><p class="noindent" >islistrais                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-20-2"  
+class="td11"> <!--l. 225--><p class="noindent" >true if your hand is in list 1                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-20-3"  
+class="td11"> <!--l. 226--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-21-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-21-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-22-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-22-1"  
+class="td11"> <!--l. 227--><p class="noindent" >islistalli                                                </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-22-2"  
+class="td11"> <!--l. 228--><p class="noindent" >true if your hand is in list 7                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-22-3"  
+class="td11"> <!--l. 229--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-23-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-23-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-24-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-24-1"  
+class="td11"> <!--l. 230--><p class="noindent" >isemptylistcall                                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-24-2"  
+class="td11"> <!--l. 231--><p class="noindent" >true if the call list is empty                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-24-3"  
+class="td11"> <!--l. 232--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-25-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-25-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-26-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-26-1"  
+class="td11"> <!--l. 233--><p class="noindent" >isemptylistrais                                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-26-2"  
+class="td11"> <!--l. 234--><p class="noindent" >true if the rais list is empty                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-26-3"  
+class="td11"> <!--l. 235--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-27-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-27-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-28-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-28-1"  
+class="td11"> <!--l. 236--><p class="noindent" >isemptylistalli                                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-28-2"  
+class="td11"> <!--l. 237--><p class="noindent" >true if the alli list is empty                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-28-3"  
+class="td11"> <!--l. 238--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-29-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-29-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-30-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-30-1"  
+class="td11"> <!--l. 239--><p class="noindent" >nlistmax                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-30-2"  
+class="td11"> <!--l. 240--><p class="noindent" >highest list number in which your hand is
+  listed                                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-30-3"  
+class="td11"> <!--l. 241--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-31-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-31-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-32-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-32-1"  
+class="td11"> <!--l. 242--><p class="noindent" >nlistmin                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-32-2"  
+class="td11"> <!--l. 243--><p class="noindent" >lowest list number in which your hand is
+  listed                                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-32-3"  
+class="td11"> <!--l. 244--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-33-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-33-1"  
+class="td11"> <!--l. 245--><p class="noindent" >handnumber                                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-33-2"  
+class="td11"> <!--l. 246--><p class="noindent" >the site hand number if available              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-33-3"  
+class="td11"> <!--l. 247--><p class="noindent" >Removing
+  formula
+  symbol
+  "handnumber"
+  for
+  various
+  reasons
+  from
+  the
+  formula
+  level:
+  *
+  there
+  is
+  no
+  need
+  for
+  it
+  at
+  the
+  formula
+  level.
+  *
+  it
+  may
+  contain
+  characters
+  and
+  therefore
+  doesn&#8217;t
+  fit
+  into
+  a
+  double.
+  *
+  its
+  length
+  may
+  exceed
+  the
+  precision
+  of
+  double.
+  "Handnumber"
+  gets
+  now
+  used
+  only
+  internally
+  to
+  trigger
+  handresets.                                          </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-34-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-34-1"  
+class="td11"> <!--l. 254--><p class="noindent" >isfiveofakind                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-34-2"  
+class="td11"> <!--l. 255--><p class="noindent" >true when you have a five of a kind          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-34-3"  
+class="td11"> <!--l. 256--><p class="noindent" ><div class="multirow"><!-- rows=2 -->
+Removed,
+as
+never
+used
+in
+Texas
+Hold&#8217;em                                            </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-35-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-35-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-36-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-36-1"  
+class="td11"> <!--l. 258--><p class="noindent" >fiveofakind                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-36-2"  
+class="td11"> <!--l. 259--><p class="noindent" >0xff000000 (pokerval constant)                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-36-3"  
+class="td11"> <!--l. 260--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-37-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-37-1"  
+class="td11"> <!--l. 261--><p class="noindent" >isppro                                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-37-2"  
+class="td11"> <!--l. 262--><p class="noindent" >true if you&#8217;re connected to a ppro server    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-37-3"  
+class="td11"> <!--l. 265--><p class="noindent" ><div class="multirow"><!-- rows=2 -->
+Removed
+together
+with
+the
+support
+for
+WinHoldem
+PokerPro-server,
+which
+did
+not
+get
+used
+abd
+did
+no
+longer
+work
+due
+to
+undocumented
+changes
+in
+the
+network-protocal.                                </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-38-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-38-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-39-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-39-1"  
+class="td11"> <!--l. 267--><p class="noindent" >site                                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-39-2"  
+class="td11"> <!--l. 268--><p class="noindent" >0=user/ppro 1=scraped                         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-39-3"  
+class="td11"> <!--l. 269--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-40-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-40-1"  
+class="td11"> <!--l. 270--><p class="noindent" >bankroll                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-40-2"  
+class="td11"> <!--l. 271--><p class="noindent" >the user defined, real world bankroll         </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-40-3"  
+class="td11"> <!--l. 273--><p class="noindent" ><div class="multirow"><!-- rows=2 -->
+Removed,
+as
+these
+symbols
+have
+rarely
+been
+used
+ans
+should
+better
+get
+handled
+by
+a
+user-defined
+formula.                                            </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-41-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-41-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-42-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-42-1"  
+class="td11"> <!--l. 275--><p class="noindent" >rake                                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-42-2"  
+class="td11"> <!--l. 276--><p class="noindent" >percentage amount added/subtracted
+  to/from the pot                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-42-3"  
+class="td11"> <!--l. 277--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-43-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-43-1"  
+class="td11"> <!--l. 278--><p class="noindent" >defcon                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-43-2"  
+class="td11"> <!--l. 279--><p class="noindent" >defense level is typically used in the f$P
+  formula, which defines the adapted
+  number of opponents to be used in
+  standard prwin. defcon therefore controls
+  the optimism of the prwin-simulation.
+  <!--l. 283--><p class="noindent" >0.000=maxoffense 1.000=maxdefense
+  <!--l. 285--><p class="noindent" >The Formula Editor parameters dialog
+  uses values 0-10                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-43-3"  
+class="td11"> <!--l. 289--><p class="noindent" ><div class="multirow"><!-- rows=3 -->
+Defcon
+looked
+like
+a
+WinHoldem-misconception
+which
+has
+been
+very
+rarely
+(if
+ever)
+used.
+People
+who
+need
+it
+can
+create
+a
+UDF
+for
+that,
+but
+it
+clearly
+is
+not
+necessary
+for
+the
+majority
+of
+users
+and
+does
+not
+deserve
+symbols
+and
+an
+extra
+settings
+dialog.                                               </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-44-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-44-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-45-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-45-1"  
+class="td11"> <!--l. 291--><p class="noindent" >isdefmode                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-45-2"  
+class="td11"> <!--l. 292--><p class="noindent" >true when defcon is at max                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-45-3"  
+class="td11"> <!--l. 293--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-46-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-46-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-47-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-47-1"  
+class="td11"> <!--l. 294--><p class="noindent" >isaggmode                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-47-2"  
+class="td11"> <!--l. 295--><p class="noindent" >true when defcon is at min                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-47-3"  
+class="td11"> <!--l. 296--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-48-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-48-1"  
+class="td11"> <!--l. 297--><p class="noindent" >clocks                                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-48-2"  
+class="td11"> <!--l. 298--><p class="noindent" >number of CPU clocks since the last
+  screen scrape                                        </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-48-3"  
+class="td11"> <!--l. 299--><p class="noindent" >!!!                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-49-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-49-1"  
+class="td11"> <!--l. 301--><p class="noindent" >nclockspersecond                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-49-2"  
+class="td11"> <!--l. 302--><p class="noindent" >number of CPU clocks per second ncps
+  number of CPU clocks per second            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-49-3"  
+class="td11"> <!--l. 304--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-50-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-50-1"  
+class="td11"> <!--l. 305--><p class="noindent" >nflopc                                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-50-2"  
+class="td11"> <!--l. 306--><p class="noindent" >short for ncommoncardsknow                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-50-3"  
+class="td11"> <!--l. 308--><p class="noindent" ><div class="multirow"><!-- rows=4 -->
+Removed,
+because
+duplicate
+functionality
+and
+lack
+of
+verbosity
+are
+bad
+software-engineering                             </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-51-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-51-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-52-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-52-1"  
+class="td11"> <!--l. 310--><p class="noindent" >br                                                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-52-2"  
+class="td11"> <!--l. 311--><p class="noindent" >short for betround                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-52-3"  
+class="td11"> <!--l. 312--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-53-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-53-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-54-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-54-1"  
+class="td11"> <!--l. 313--><p class="noindent" >ncps                                                    </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-54-2"  
+class="td11"> <!--l. 314--><p class="noindent" >short for nclockspersecond                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-54-3"  
+class="td11"> <!--l. 315--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-55-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-55-1"  
+class="td11"></td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-56-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-56-1"  
+class="td11"> <!--l. 316--><p class="noindent" >oppdealt                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-56-2"  
+class="td11"> <!--l. 317--><p class="noindent" >short for nopponentsdealt                       </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-56-3"  
+class="td11"> <!--l. 318--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-57-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-57-1"  
+class="td11"> <!--l. 319--><p class="noindent" >isbring                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-57-2"  
+class="td11"> <!--l. 320--><p class="noindent" >true if OpenHoldem is attached to a
+  Bring client window                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-57-3"  
+class="td11"> <!--l. 321--><p class="noindent" >!!!
+  Removed,
+  because
+  there
+  is
+  no
+  need
+  for
+  them
+  at
+  the
+  formula-level                                        </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-58-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-58-1"  
+class="td11"> <!--l. 323--><p class="noindent" >ismanual                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-58-2"  
+class="td11"> <!--l. 324--><p class="noindent" >true if you&#8217;re in manual mode, false
+  otherwise                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-58-3"  
+class="td11"> <!--l. 326--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-59-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-59-1"  
+class="td11"> <!--l. 327--><p class="noindent" >handrank                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-59-2"  
+class="td11"> <!--l. 328--><p class="noindent" >one of the handrank-symbols based on the
+  option specified in preferences                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-59-3"  
+class="td11"> <!--l. 329--><p class="noindent" >Getting
+  rid
+  of
+  the
+  symbol
+  handrank
+  and
+  the
+  option
+  symbols-&#x003E;Value
+  of
+  Handrank.
+  We
+  have
+  handrank169,
+  handrank1000,
+  handrank1326,
+  handrank2625
+  and
+  handrankp
+  at
+  the
+  formula
+  level.
+  So
+  the
+  user
+  can
+  clearly
+  specify
+  what
+  he
+  wants.
+  But
+  these
+  symbols
+  can
+  hardly
+  get
+  used
+  interchangeably,
+  so
+  this
+  option
+  was
+  only
+  confusing
+  and
+  superfluos.                                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-60-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-60-1"  
+class="td11"> <!--l. 335--><p class="noindent" >randomround1 ... randomround4               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-60-2"  
+class="td11"> <!--l. 336--><p class="noindent" >random number between (0.000-1.000) for
+  round 1 - 4. Value is calculated only once
+  in that round.                                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-60-3"  
+class="td11"> <!--l. 338--><p class="noindent" >Removed
+  the
+  symbols
+  randomround1..randomround4
+  from
+  the
+  codebase,
+  because
+  we
+  have
+  randomround
+  for
+  the
+  current
+  betting
+  round
+  and
+  additionally
+  randomhand,
+  randomheartbeat
+  and
+  random,
+  which
+  gets
+  calculated
+  each
+  time
+  new.
+  This
+  simplified
+  the
+  code
+  and
+  looks
+  more
+  clean.                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-61-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-61-1"  
+class="td11"> <!--l. 343--><p class="noindent" >callshort                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-61-2"  
+class="td11"> <!--l. 344--><p class="noindent" >total amount that will be added to the
+  pot if all players call                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-61-3"  
+class="td11"> <!--l. 347--><p class="noindent" ><div class="multirow"><!-- rows=2 -->
+The
+symbols
+"callshort"
+and
+"raisshort"
+got
+removed
+from
+the
+code-base
+because
+they
+got
+designed
+for
+Fixed-Limit
+no-foldem
+Hold&#8217;em
+only.
+Better
+use
+a
+function
+to
+estimate
+future
+pot-sizes.                                           </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-62-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-62-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-63-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-63-1"  
+class="td11"> <!--l. 349--><p class="noindent" >raisshort                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-63-2"  
+class="td11"> <!--l. 350--><p class="noindent" >callshort + bet * nplayersplaying             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-63-3"  
+class="td11"> <!--l. 351--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-64-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-64-1"  
+class="td11"> <!--l. 352--><p class="noindent" >seatposition                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-64-2"  
+class="td11"> <!--l. 353--><p class="noindent" >your seat position relative to the dealer     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-64-3"  
+class="td11"> <!--l. 354--><p class="noindent" >Removing
+  the
+  symbol
+  seatposition
+  which
+  counted
+  both
+  active
+  and
+  inactive
+  players
+  and
+  was
+  of
+  no
+  real
+  use
+  for
+  practical
+  play.                                                   </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-65-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-65-1"  
+class="td11"> <!--l. 357--><p class="noindent" >elapsed1970                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-65-2"  
+class="td11"> <!--l. 358--><p class="noindent" >time in seconds since 1970-01-01 00:00:00
+  GMT (Thursday)                                  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-65-3"  
+class="td11"> <!--l. 359--><p class="noindent" >Removing
+  the
+  symbol
+  elapsed1970
+  because
+  there
+  was
+  no
+  real
+  use
+  for
+  it.                                                      </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-66-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-66-1"  
+class="td11"> <!--l. 362--><p class="noindent" >ncommoncardspresent                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-66-2"  
+class="td11"> <!--l. 363--><p class="noindent" >number of common cards present (normal
+  or highlighted)                                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-66-3"  
+class="td11"> <!--l. 364--><p class="noindent" >Removing
+  the
+  symbol
+  "ncommoncardspresent",
+  because
+  it
+  was
+  never
+  implemented
+  correctly,
+  but
+  always
+  had
+  the
+  same
+  value
+  as
+  "ncommoncardsknown".
+  Furthermore
+  its
+  value
+  would
+  only
+  differ
+  at
+  some
+  casinos
+  and
+  at
+  showdown
+  (highlighted
+  cards
+  /
+  bad
+  scrapes),
+  but
+  this
+  point
+  of
+  time
+  is
+  pretty
+  meaningless
+  for
+  both
+  OH-script
+  and
+  OpenPPL,
+  which
+  evaluate
+  mainly
+  on
+  the
+  users
+  turn,
+  whereas
+  DLLers
+  still
+  have
+  access
+  to
+  all
+  info.                                                   </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-67-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-67-1"  
+class="td11"> <!--l. 372--><p class="noindent" >ac_pf_bets                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-67-2"  
+class="td11"> <!--l. 373--><p class="noindent" >1 for no callers or blinds only 2 for Called
+  Pot - 1 bet to call 3 for Raised Back - 1
+  more bet to call because someone behind
+  you raised after you&#8217;ve already
+  bet/called/raised 4 for Raised Pot - 2 bets
+  to call 5 for Reraised Pot - 3+ bets to call
+  NOTE: Only valid when betround==1      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-67-3"  
+class="td11"> <!--l. 378--><p class="noindent" >Removed
+  the
+  symbols
+  ac_pf_bets,
+  because
+  it
+  was
+  for
+  fixed
+  limit
+  only,
+  worked
+  only
+  on
+  the
+  first
+  orbit
+  preflop,
+  because
+  that
+  task
+  can
+  be
+  done
+  with
+  other
+  symbols
+  and
+  finally
+  we
+  have
+  the
+  OpenPPL-library,
+  so
+  there
+  is
+  really
+  no
+  longer
+  any
+  need
+  for
+  that.                                                  </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-68-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-68-1"  
+class="td11"> <!--l. 383--><p class="noindent" >ron$ / run$ symbols                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-68-2"  
+class="td11"> <!--l. 384--><p class="noindent" >These symbols report the total number of
+  possible river endings for the opponent
+  (ron$) and the user (run$). A value of
+  zero means that type of poker hand is not
+  possible. Any non-zero value means that
+  type of poker hand will be seen that
+  many times                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-68-3"  
+class="td11"> <!--l. 390--><p class="noindent" ><div class="multirow"><!-- rows=17 -->
+Removed
+the
+run$/ron$-symbols,
+because
+they
+looked
+like
+a
+mis-conception,
+nobody
+used
+them,
+some
+numbers
+were
+wrong
+and
+the
+code
+was
+unfixable
+(1000s
+of
+undocumented
+number)                                            </div>  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-69-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-69-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-70-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-70-1"  
+class="td11"> <!--l. 392--><p class="noindent" >ron$royfl                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-70-2"  
+class="td11"> <!--l. 393--><p class="noindent" >river opponent number&#x00A0;: possible royal
+  flush                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-70-3"  
+class="td11"> <!--l. 394--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-71-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-71-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-72-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-72-1"  
+class="td11"> <!--l. 395--><p class="noindent" >ron$strfl                                               </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-72-2"  
+class="td11"> <!--l. 396--><p class="noindent" >river opponent number&#x00A0;: possible straight
+  flush                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-72-3"  
+class="td11"> <!--l. 397--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-73-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-73-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-74-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-74-1"  
+class="td11"> <!--l. 398--><p class="noindent" >ron$4kind                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-74-2"  
+class="td11"> <!--l. 399--><p class="noindent" >river opponent number&#x00A0;: possible four of
+  a kind                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-74-3"  
+class="td11"> <!--l. 400--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-75-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-75-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-76-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-76-1"  
+class="td11"> <!--l. 401--><p class="noindent" >ron$fullh                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-76-2"  
+class="td11"> <!--l. 402--><p class="noindent" >river opponent number&#x00A0;: possible full
+  house                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-76-3"  
+class="td11"> <!--l. 403--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-77-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-77-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-78-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-78-1"  
+class="td11"> <!--l. 404--><p class="noindent" >ron$flush                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-78-2"  
+class="td11"> <!--l. 405--><p class="noindent" >river opponent number&#x00A0;: possible flush      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-78-3"  
+class="td11"> <!--l. 406--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-79-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-79-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-80-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-80-1"  
+class="td11"> <!--l. 407--><p class="noindent" >ron$strai                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-80-2"  
+class="td11"> <!--l. 408--><p class="noindent" >river opponent number&#x00A0;: possible straight  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-80-3"  
+class="td11"> <!--l. 409--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-81-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-81-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-82-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-82-1"  
+class="td11"> <!--l. 410--><p class="noindent" >ron$3kind                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-82-2"  
+class="td11"> <!--l. 411--><p class="noindent" >river opponent number&#x00A0;: possible three of
+  a kind                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-82-3"  
+class="td11"> <!--l. 412--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-83-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-83-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-84-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-84-1"  
+class="td11"> <!--l. 413--><p class="noindent" >ron$2pair                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-84-2"  
+class="td11"> <!--l. 414--><p class="noindent" >river opponent number&#x00A0;: possible two pair  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-84-3"  
+class="td11"> <!--l. 415--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-85-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-85-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-86-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-86-1"  
+class="td11"> <!--l. 416--><p class="noindent" >ron$1pair                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-86-2"  
+class="td11"> <!--l. 417--><p class="noindent" >river opponent number&#x00A0;: possible one pair  </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-86-3"  
+class="td11"> <!--l. 418--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-87-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-87-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-88-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-88-1"  
+class="td11"> <!--l. 419--><p class="noindent" >ron$hcard                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-88-2"  
+class="td11"> <!--l. 420--><p class="noindent" >river opponent number&#x00A0;: possible high
+  card                                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-88-3"  
+class="td11"> <!--l. 421--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-89-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-89-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-90-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-90-1"  
+class="td11"> <!--l. 422--><p class="noindent" >ron$total                                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-90-2"  
+class="td11"> <!--l. 423--><p class="noindent" >river opponent number&#x00A0;: sum of all
+  possible river endings                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-90-3"  
+class="td11"> <!--l. 424--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-91-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-91-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-92-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-92-1"  
+class="td11"> <!--l. 425--><p class="noindent" >ron$pokervalmax                                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-92-2"  
+class="td11"> <!--l. 426--><p class="noindent" >the maximum possible pokerval for the
+  opponent                                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-92-3"  
+class="td11"> <!--l. 427--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-93-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-93-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-94-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-94-1"  
+class="td11"> <!--l. 428--><p class="noindent" >ron$prnuts                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-94-2"  
+class="td11"> <!--l. 429--><p class="noindent" >opponent chances of hitting the nuts on
+  or before the river                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-94-3"  
+class="td11"> <!--l. 430--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-95-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-95-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-96-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-96-1"  
+class="td11"> <!--l. 431--><p class="noindent" >ron$prbest                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-96-2"  
+class="td11"> <!--l. 432--><p class="noindent" >opponent chances of hitting pokervalmax
+  on or before the river                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-96-3"  
+class="td11"> <!--l. 433--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-97-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-97-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-98-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-98-1"  
+class="td11"> <!--l. 434--><p class="noindent" >ron$clocks                                            </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-98-2"  
+class="td11"> <!--l. 435--><p class="noindent" >total number of cpu clocks used to
+  calculate the ron$ symbols                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-98-3"  
+class="td11"> <!--l. 436--><p class="noindent" >                                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-99-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-99-1"  
+class="td11">
+</td></tr><tr 
+class="cline"><td><hr></td><td><hr></td><td></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-100-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-100-1"  
+class="td11"> <!--l. 437--><p class="noindent" >run$...                                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-100-2"  
+class="td11"> <!--l. 438--><p class="noindent" >similar like the ron$symbols above, just
+  for the user                                          </td><td  style="white-space:wrap; text-align:left;" id="TBL-2-100-3"  
+class="td11"> <!--l. 439--><p class="noindent" >                                    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-101-"><td  style="white-space:wrap; text-align:left;" id="TBL-2-101-1"  
+class="td11">                                      </td> </tr></table>
 
+</div>
    <h3 class="sectionHead"><a 
- id="x1-110001"></a>Tablemap Symbols</h3>
-<!--l. 174--><p class="noindent" >Some tablemap symbols have been exposed to the scripting level without necessity. They
-got removed in OpenHoldem 2.2.0.
+ id="x1-110001"></a>TablePoints</h3>
+<!--l. 445--><p class="noindent" >Tablepoints got removed, because nobody used them. They never got implemented
+correctly and nobody noticed it for 3 years.
 
    <div class="tabular"> <table id="TBL-3" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
@@ -283,298 +1329,134 @@ cellspacing="0" cellpadding="0" rules="groups"
 id="TBL-3-1"></colgroup><colgroup id="TBL-3-2g"><col 
 id="TBL-3-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-3-1-1"  
-class="td11"> <!--l. 179--><p class="noindent" >Symbol                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-3-1-2"  
-class="td11"> <!--l. 179--><p class="noindent" >Meaning                                                            </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-3-2-1"  
-class="td11"> <!--l. 182--><p class="noindent" >swagdelay                           </td><td  style="white-space:wrap; text-align:left;" id="TBL-3-2-2"  
-class="td11"> <!--l. 182--><p class="noindent" >Autoplayer
-  delay
-  in
-  milliseconds
-  between
-  swag
-  keystrokes
-  and
-  button
-  click
-  as
-  defined
-  in
-  Preferences
-  (formerly
-  TableMap);
-  to
-  be
-  removed
-  soon
-  as
-  there
+ style="vertical-align:baseline;" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-1"  
+class="td11"> tablepointNNN  </td><td  style="white-space:wrap; text-align:left;" id="TBL-3-1-2"  
+class="td11"> <!--l. 451--><p class="noindent" >These
+  regions
+  are
+  used
+  when
+  the
+  "Green
+  Circle
+  Button"
   is
-  no
-  need
+  clicked
+  on
+  the
+  OpenHoldem
+  toolbar
+  to
+  "automagically"
+  find
+  a
+  table
+  to
+  connect
+  to.
+  These
+  regions
+  must
+  be
+  one
+  pixel
+  wide
+  by
+  one
+  pixel
+  tall
+  and
+  must
+  use
+  a
+  color
+  transform.
+  All
+  tablepoint
+  records
+  must
+  match
+  the
+  pixel
+  colors
+  on
+  the
+  casino
+  window
   for
   it
-  at
-  the
-  formula
-  level                                                                  </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-3-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-3-3-1"  
-class="td11"> <!--l. 186--><p class="noindent" >allidelay                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-3-3-2"  
-class="td11"> <!--l. 186--><p class="noindent" >Autoplayer
-  delay
-  in
-  milliseconds
-  between
-  alli
-  slider
-  jam
-  and
-  button
-  click
-  as
-  defined
-  in
-  Preferences
-  (formerly
-  TableMap);
   to
   be
-  removed
-  soon
-  as
-  there
-  is
-  no
-  need
-  for
-  it
-  at
+  recognized
+  on
+  a
+  connect.
+  See
+  {How
   the
-  formula
-  level                                                                  </td>
+  &#8220;Green
+  Circle
+  Button&#8221;
+  finds
+  tables}
+  for
+  more
+  details.                                                              </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-3-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-3-4-1"  
-class="td11"> <!--l. 190--><p class="noindent" >swagtextmethod                   </td><td  style="white-space:wrap; text-align:left;" id="TBL-3-4-2"  
-class="td11"> <!--l. 190--><p class="noindent" >the site interpretation for swag edit text (Table Map
-  symbol)
-                   <ol  class="enumerate1" >
-              <li 
-  class="enumerate" id="x1-11002x1">
-              f$srai
-                   </li>
-              <li 
-  class="enumerate" id="x1-11004x2">
-              f$srai+call
-                   </li>
-              <li 
-  class="enumerate" id="x1-11006x3">
-              f$srai+call+currentbet;</li></ol>
-  <!--l. 196--><p class="noindent" >Default: 3                                                           </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-3-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-3-5-1"  
-class="td11">                           </td> </tr></table>
+ style="vertical-align:baseline;" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-1"  
+class="td11">               </td> </tr></table>
 
 </div>
    <h3 class="sectionHead"><a 
- id="x1-120001"></a>(Un)known Cards</h3>
-<!--l. 203--><p class="noindent" >The symbols nouts got removed from the code-base, as Ray E. Bornerts definition of an
-out was way too optimistic and completely unusable (a hand like 72o at a board of AKQ
-will give you 6 outs, as every 7 and every 2 bumps your handlavel to a pair, which beats
-high-card ace at the board). To calculate outs in a meaningful way, there is mh_nouts as
-a better symbol and there are also some good outs-counters available in the
-forum.
-
+ id="x1-120001"></a>PrWin-functions</h3>
+<!--l. 466--><p class="noindent" >Some supporting functions and symbols for the PrWin-simulations got renamed in
+OpenHoldem 4.0.0
    <div class="tabular"> <table id="TBL-4" class="tabular" 
 cellspacing="0" cellpadding="0" rules="groups" 
 ><colgroup id="TBL-4-1g"><col 
 id="TBL-4-1"></colgroup><colgroup id="TBL-4-2g"><col 
 id="TBL-4-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-4-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-4-1-1"  
-class="td11"> <!--l. 213--><p class="noindent" >Symbol                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-4-1-2"  
-class="td11"> <!--l. 213--><p class="noindent" >Meaning                                                            </td>
+ style="vertical-align:baseline;" id="TBL-4-1-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-1-1"  
+class="td11"> Former Name  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-1-2"  
+class="td11">          New Name                </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-4-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-4-2-1"  
-class="td11"> <!--l. 216--><p class="noindent" >nouts                                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-4-2-2"  
-class="td11"> <!--l. 216--><p class="noindent" >the
-  total
-  number
-  of
-  unseen
-  single
-  cards
-  that
-  if
-  dealt
-  to
-  the
-  board
-  might
-  put
-  your
-  hand
-  in
-  the
-  lead.
-  to
-  be
-  counted
-  as
-  an
-  out,
-  the
-  card
-  must
-  be
-  able
-  to
-  bump
-  your
-  level
-  and
-  your
-  new
-  level
-  must
-  be
-  higher
-  than
-  the
-  resulting
-  common
-  level.                                                                 </td>
+ style="vertical-align:baseline;" id="TBL-4-2-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-2-1"  
+class="td11">      f$P         </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-2-2"  
+class="td11"> f$prwin_number_of_opponents  </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-4-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-4-3-1"  
-class="td11">                           </td> </tr></table></div>
-
-   <h3 class="sectionHead"><a 
- id="x1-130001"></a>List Tests </h3>
-<!--l. 226--><p class="noindent" >The list symbols below seem to be mis-conceptions by WinHoldems author and &#8212; to our
-best knowledge &#8212; have never been used in any serious poker bot. They finally got
-removed from the code base in version 2.2.0 of OpenHoldem.
-
-   <div class="tabular"> <table id="TBL-5" class="tabular" 
-cellspacing="0" cellpadding="0" rules="groups" 
-><colgroup id="TBL-5-1g"><col 
-id="TBL-5-1"></colgroup><colgroup id="TBL-5-2g"><col 
-id="TBL-5-2"></colgroup><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-1-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-1-1"  
-class="td11"> <!--l. 233--><p class="noindent" >Symbol                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-1-2"  
-class="td11"> <!--l. 233--><p class="noindent" >Meaning                                                            </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-2-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-2-1"  
-class="td11"> <!--l. 236--><p class="noindent" >islistcall                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-2-2"  
-class="td11"> <!--l. 236--><p class="noindent" >true
-  if
-  your
-  hand
-  is
-  in
-  list
-  0                                                                      </td>
+ style="vertical-align:baseline;" id="TBL-4-3-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-3-1"  
+class="td11">     NIT        </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-3-2"  
+class="td11"> f$prwin_number_of_iterations  </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-3-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-3-1"  
-class="td11"> <!--l. 238--><p class="noindent" >islistrais                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-3-2"  
-class="td11"> <!--l. 238--><p class="noindent" >true
-  if
-  your
-  hand
-  is
-  in
-  list
-  1                                                                      </td>
+ style="vertical-align:baseline;" id="TBL-4-4-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-4-1"  
+class="td11">   f$topclip     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-4-2"  
+class="td11">        f$prwin_topclip            </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-4-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-4-1"  
-class="td11"> <!--l. 240--><p class="noindent" >islistalli                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-4-2"  
-class="td11"> <!--l. 240--><p class="noindent" >true
-  if
-  your
-  hand
-  is
-  in
-  list
-  7                                                                      </td>
+ style="vertical-align:baseline;" id="TBL-4-5-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-5-1"  
+class="td11">  f$mustplay    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-5-2"  
+class="td11">       f$prwin_mustplay           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-5-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-5-1"  
-class="td11"> <!--l. 242--><p class="noindent" >isemptylistcall                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-5-2"  
-class="td11"> <!--l. 242--><p class="noindent" >true
-  if
-  the
-  call
-  list
-  is
-  empty                                                                </td>
+ style="vertical-align:baseline;" id="TBL-4-6-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-6-1"  
+class="td11">   f$willplay     </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-6-2"  
+class="td11">       f$prwin_willplay            </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-6-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-6-1"  
-class="td11"> <!--l. 244--><p class="noindent" >isemptylistrais                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-6-2"  
-class="td11"> <!--l. 244--><p class="noindent" >true
-  if
-  the
-  rais
-  list
-  is
-  empty                                                                </td>
+ style="vertical-align:baseline;" id="TBL-4-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-7-1"  
+class="td11">  f$wontplay    </td><td  style="white-space:nowrap; text-align:center;" id="TBL-4-7-2"  
+class="td11">       f$prwin_wontplay           </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-7-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-7-1"  
-class="td11"> <!--l. 246--><p class="noindent" >isemptylistalli                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-7-2"  
-class="td11"> <!--l. 246--><p class="noindent" >true
-  if
-  the
-  alli
-  list
-  is
-  empty                                                                </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-8-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-8-1"  
-class="td11"> <!--l. 248--><p class="noindent" >nlistmax                             </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-8-2"  
-class="td11"> <!--l. 248--><p class="noindent" >highest
-  list
-  number
-  in
-  which
-  your
-  hand
-  is
-  listed                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-9-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-9-1"  
-class="td11"> <!--l. 250--><p class="noindent" >nlistmin                              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-9-2"  
-class="td11"> <!--l. 250--><p class="noindent" >lowest
-  list
-  number
-  in
-  which
-  your
-  hand
-  is
-  listed                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- style="vertical-align:baseline;" id="TBL-5-10-"><td  style="white-space:wrap; text-align:left;" id="TBL-5-10-1"  
-class="td11">                           </td> </tr></table>
-
-</div>  
+ style="vertical-align:baseline;" id="TBL-4-8-"><td  style="white-space:nowrap; text-align:center;" id="TBL-4-8-1"  
+class="td11">              </td> </tr></table></div>
+<!--l. 495--><p class="indent" >   !!!  
 </body></html> 
 
 
