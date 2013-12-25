@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,18 +9,26 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -28,21 +36,31 @@ figs-within-sections
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -381,7 +399,7 @@ Valid Transforms And Their Desciption
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="15text%">
 <column alignment="left" valignment="top" width="85text%">
 <row>
@@ -604,7 +622,7 @@ Valid region records and their descriptions
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="38" columns="2">
-<features islongtable="true">
+<features islongtable="true" longtabularalignment="center">
 <column alignment="center" valignment="top" width="15text%">
 <column alignment="center" valignment="top" width="85text%">
 <row endhead="true">
@@ -705,7 +723,11 @@ Ten regions to specify where the game state engine should find the current
  the remainder skipped.
  c0handnumber is searched first, then c0handnumber1 to c0handnumber9 in
  that order.
- 
+ The handnumber will be used internally to detect handresets (depending
+ on handresetmethod) and is also accessible at the DLL-level.
+ To avoid bad scrapes and invalid handresets the handnumber is optionally
+ ranged between s$handnumber_min_expected_digits and s$handnumber_max_expected_d
+igits.
 \end_layout
 
 \end_inset
@@ -1645,7 +1667,7 @@ These regions are alternatives to the p0seated-p9seated regions, and are
 \begin_inset Text
 
 \begin_layout Plain Layout
-tablepointNNN
+
 \end_layout
 
 \end_inset
@@ -1654,14 +1676,7 @@ tablepointNNN
 \begin_inset Text
 
 \begin_layout Plain Layout
-These regions are used when the "Green Circle Button" is clicked on the
- OpenHoldem toolbar to "automagically" find a table to connect to.
- These regions must be one pixel wide by one pixel tall and must use a color
- transform.
- All tablepoint records must match the pixel colors on the casino window
- for it to be recognized on a connect.
- See {How the “Green Circle Button” finds tables} for more details.
- 
+
 \end_layout
 
 \end_inset
