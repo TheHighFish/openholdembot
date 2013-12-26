@@ -89,41 +89,23 @@ thank you!
 \begin_inset Tabular
 <lyxtabular version="3" rows="1" columns="2">
 <features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="30page%">
-<column alignment="left" valignment="bottom" width="70page%">
+<column alignment="left" valignment="top" width="40page%">
+<column alignment="center" valignment="top" width="0pt">
 <row>
-<cell alignment="center" valignment="top" usebox="none">
+<cell alignment="left" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Note Note
-status collapsed
+\begin_inset Phantom Phantom
+status open
 
 \begin_layout Plain Layout
-Formatting: Ugly workaround with spaces to force a proper vertical alignment
- of the names relative to the picture.
+
 \end_layout
 
 \end_inset
 
 
-\begin_inset VSpace 0.5in*
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\noun on
-Ares®
 \end_layout
 
 \begin_layout Itemize
@@ -135,67 +117,97 @@ Aiku
 \begin_layout Itemize
 
 \noun on
-BuckyBall
+Ares® 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Chucksta
+BotForSale
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-CrumbleSunday
+BuckyBall 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Friday
+Chucksta 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Matrix
+CrumbleSunday 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Nik0
+Friday 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-PokerDog
+Matrix 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-SNGChamp
+Nick Coldhand 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Spud
+Nik0 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Tammelinn
+PokerDog 
 \end_layout
 
 \begin_layout Itemize
 
 \noun on
-Tobiabus
+Ryuk33 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+SNGChamp 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Spud 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Strikles
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Tammelinn 
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Tobiabus 
 \end_layout
 
 \begin_layout Itemize
@@ -207,7 +219,7 @@ USBFreak
 \begin_layout Itemize
 
 \noun on
-VaDe
+VaDe 
 \end_layout
 
 \begin_layout Itemize
@@ -222,14 +234,6 @@ Winngy
 \begin_inset Text
 
 \begin_layout Plain Layout
-\align left
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align left
 \begin_inset Graphics
 	filename images/flowers.gif
 
@@ -238,12 +242,37 @@ status open
 
 \end_layout
 
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="30page%">
+<column alignment="left" valignment="bottom" width="70page%">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 
 \end_layout
 
 \end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
+\begin_layout Plain Layout
+\align left
 
 \end_layout
 

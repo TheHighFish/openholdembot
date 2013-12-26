@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,18 +9,26 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -28,27 +36,37 @@ figs-within-sections
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Chapter
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -66,7 +84,7 @@ Introduction
 
 \begin_layout Standard
 OpenHoldem's 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -79,7 +97,7 @@ scripting language is very similar to the C programming expression syntax.
  If you already know and understand C programming then you have an advantage
  in that the OH scripting language should be very familiar.
  This section is largely based off of Ray Bornert's original WinHoldem "
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -103,7 +121,7 @@ http://www.winholdem.net/help/help-c.html
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -190,7 +208,7 @@ Data Types
 OH-Script is a programming language without typing.
  All values are stored as (double) floating point values on the expression
  stack, regardless if they are 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -200,7 +218,7 @@ floating point
 \end_inset
 
 floating points, 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -210,7 +228,7 @@ integer
 \end_inset
 
 integers, 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -220,7 +238,7 @@ booleans
 \end_inset
 
 booleans (
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -230,7 +248,7 @@ logical
 \end_inset
 
 logicals) or 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -253,7 +271,7 @@ If a value is interpreted as numerical or boolean depends solely on the
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -281,7 +299,7 @@ http://floating-point-gui.de/
 )..
  Rounding errors occur for numerical calculations, but also for conversions
  of floating-point-numbers from 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -291,7 +309,7 @@ decimal format
 \end_inset
 
 decimal format (OH-script) to the internal 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -337,7 +355,7 @@ equal
 
 .
  This applies ofcourse only to OH-script; 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -347,7 +365,7 @@ DLL
 \end_inset
 
 DLL- and 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -360,7 +378,7 @@ Perl-users have to care about correct rounding themselves!
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -399,7 +417,7 @@ http://en.wikipedia.org/wiki/Boolean_logic
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -418,7 +436,7 @@ These operators are listed in order of precedence.
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="16" columns="3">
-<features>
+<features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="30text%">
@@ -928,7 +946,7 @@ Bitwise NOT ~ Logical NOT operation on a bit by bit basis.
 
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1016,7 +1034,7 @@ Bit Count ` (not ANSI-C) Provides a count of the number of bits set in any
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1165,7 +1183,7 @@ Bitwise Shift Left << Slides the entire bit pattern to the left by N bits.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1298,7 +1316,7 @@ a<<32
 \begin_layout Itemize
 Bitwise Shift Right >> Slide the entire bit pattern to the right by N bits.
  Note that the rightmost bits are dropped and that the leftmost bits are
- filled with the leftmost bit of the operand.
+ filled with 0's.
  The shift magnitude is used as modulo 32, meaning that any shift N that
  is specified in excess of 32 bits has a N%32 operation performed prior
  to the shift.
@@ -1309,7 +1327,7 @@ Bitwise Shift Right >> Slide the entire bit pattern to the right by N bits.
 
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1471,7 +1489,7 @@ Bitwise AND & Logical AND operation on a bit by bit basis.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1569,7 +1587,7 @@ Bitwise OR | Logical OR operation on a bit by bit basis.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1667,7 +1685,7 @@ Bitwise XOR ^ Logical XOR operation on a bit by bit basis.
 
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -1766,7 +1784,7 @@ Logical AND && False when any operand is false.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="3">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1932,7 +1950,7 @@ Logical XOR ^^ (not ANSI-C) False when operands are boolean equal.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="3">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -2097,7 +2115,7 @@ Logical OR || False when both operands are false.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="3">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -2262,7 +2280,7 @@ Conditional ?: Standard algorithmic if then else.
  
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="4">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -2430,7 +2448,7 @@ Examples:
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="21" columns="5">
-<features>
+<features tabularvalignment="middle">
 <column alignment="right" valignment="top" width="20text%">
 <column alignment="right" valignment="top" width="20text%">
 <column alignment="right" valignment="top" width="20text%">

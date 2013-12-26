@@ -7,15 +7,15 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="hashrecords.tex"> 
-<meta name="date" content="2010-05-07 03:08:00"> 
+<meta name="date" content="2013-12-26 04:57:00"> 
 <link rel="stylesheet" type="text/css" href="hashrecords.css"> 
-</head><body bgcolor="#CCCCFF" 
+</head><body 
 >
    <h3 class="sectionHead"><a 
  id="x1-1000"></a>Hash Records</h3>
    <h4 class="subsectionHead"><a 
  id="x1-2000"></a>Description </h4>
-<!--l. 30--><p class="noindent" >The purpose of Hash Records is to allow for the rapid lookup of pixel patterns, without
+<!--l. 29--><p class="noindent" >The purpose of Hash Records is to allow for the rapid lookup of pixel patterns, without
 having to scan through each pixel in a region to find a match. For example, if we have a
 card region specified to use a &#8220;Hash0&#8221; transform, the screen scraper engine will first
 reduce the pixels in that region to a 32-bit hash value. (A link to Bob Jenkins&#8217; hash
@@ -27,26 +27,26 @@ screen scraper engine returns the &#x003C;name&#x003E; of the Hash Record to the
 engine.
    <h4 class="subsectionHead"><a 
  id="x1-3000"></a>Manipulating hash records using OpenScrape</h4>
-<!--l. 46--><p class="noindent" >Hash Records are created from specific Image records, so in order to create a Hash
+<!--l. 45--><p class="noindent" >Hash Records are created from specific Image records, so in order to create a Hash
 record, you must first have collected the associated Image record (see section
 {4.9}).
-<!--l. 50--><p class="indent" >   <img 
-src="hashrecords0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
-name="hashrecords0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___s_tablemaps_images_OS_CreateHashPointRecord.eps"  
+<!--l. 49--><p class="indent" >   <img 
+src="hashrecords0x.png" alt="PIC" class="graphics" width="81.30374pt" height="50.1875pt" ><!--tex4ht:graphics  
+name="hashrecords0x.png" src="0E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_CreateHashPointRecord.eps"  
 -->
-<!--l. 52--><p class="indent" >   OpenScrape Create Hash Record buttons!!!
-<!--l. 54--><p class="indent" >   The &#8220;Create Hash&#8221; buttons on the Table Map Editor window are used to create new
+<!--l. 51--><p class="indent" >   OpenScrape Create Hash Record buttons!!!
+<!--l. 53--><p class="indent" >   The &#8220;Create Hash&#8221; buttons on the Table Map Editor window are used to create new
 Hash records. Button &#8220;0&#8221; creates Hash records in the Hash0 group, button &#8220;1&#8221; creates
 Hash records in the Hash1 group, and so on. These buttons are only available if an
 Image record has been selected in the tree display on the Table Map Editor
 window.
-<!--l. 62--><p class="indent" >   Note: Only one Hash record can exist in a Table Map in each hash group for any
+<!--l. 61--><p class="indent" >   Note: Only one Hash record can exist in a Table Map in each hash group for any
 given Image record. Otherwise, there would be collisions, and the screen scraper
 engine would not know which Hash record was the correct match. In the &#8220;Create
 Hash Record buttons&#8221; screenshot above, Hash records for group 0 and 2 have
 already been created for the selected Image record, so those buttons are grayed
 out.
-<!--l. 70--><p class="indent" >   To create a new Hash records:
+<!--l. 69--><p class="indent" >   To create a new Hash records:
            <ol  class="enumerate1" >
         <li 
   class="enumerate" id="x1-3002x1">Select an Image record
@@ -54,10 +54,10 @@ out.
         <li 
   class="enumerate" id="x1-3004x2">Click the &#8220;Create Hash&#8221; button for the hash group that you want to create
         this Hash record in.</li></ol>
-<!--l. 76--><p class="noindent" >The following window will then appear to confirm the addition of the new Hash
+<!--l. 75--><p class="noindent" >The following window will then appear to confirm the addition of the new Hash
 record:
-<!--l. 79--><p class="indent" >   Figure 4.8-24 OpenScrape New Hash record confirmation
-<!--l. 81--><p class="indent" >   When you add a new Hash record with the &#8220;Create Hash&#8221; buttons, OpenScrape will
+<!--l. 78--><p class="indent" >   Figure 4.8-24 OpenScrape New Hash record confirmation
+<!--l. 80--><p class="indent" >   When you add a new Hash record with the &#8220;Create Hash&#8221; buttons, OpenScrape will
 calculate the hash value for you and add it to the record. (This is new behavior in 2.0;
 
 previous versions stored a zero hash value on new record creation) However, sometimes
@@ -68,8 +68,8 @@ on the Edit manu on the Main window, and the hash values on all Hash records wil
 re-calculated. Technical Reference In the Table Map (.tm) file, these records
 will be preceded with the characters "h$". Hash records have the following
 format:
-<!--l. 95--><p class="indent" >   h&#x003C;n&#x003E;$&#x003C;name&#x003E; &#x003C;value&#x003E;
-<!--l. 97--><p class="indent" >   &#x003C;n&#x003E; is the group (1-3) that this hash record belongs to &#x003C;name&#x003E; is the string that is
+<!--l. 94--><p class="indent" >   h&#x003C;n&#x003E;$&#x003C;name&#x003E; &#x003C;value&#x003E;
+<!--l. 96--><p class="indent" >   &#x003C;n&#x003E; is the group (1-3) that this hash record belongs to &#x003C;name&#x003E; is the string that is
 returned to the scraper engine upon a match (the &#8220;result&#8221;) &#x003C;value&#x003E; is a 32bit
 hexadecimal value that contains the calculated hash .
    <h3 class="sectionHead"><a 

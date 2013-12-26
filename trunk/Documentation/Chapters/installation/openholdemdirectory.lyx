@@ -232,5 +232,14 @@ Scraper -- this directory contains the tablemaps for your favourite casinos.
  to connect out-of-the box to any open table and start playing.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Graphics
+	filename Images/Installation.JPG
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

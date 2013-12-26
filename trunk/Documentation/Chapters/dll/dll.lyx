@@ -105,12 +105,87 @@ From this point on, the assumption is that, if you are creating a user-DLL,
 \end_layout
 
 \begin_layout Section
-How OpenHoldem calls DLL functions 
+How OpenHoldem and the DLL cooperate 
 \end_layout
 
 \begin_layout Standard
 The OpenHoldem to DLL interface is small and clean.
- OpenHoldem will send or request information from the DLL when needed, and
+ OpenHoldem exports the following functions and the DLL gets linked to them
+ at load-time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Functions exported by OpenHoldem 
+\end_layout
+
+\begin_layout Plain Layout
+
+extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const
+ int chair, const char* name, bool& iserr); 
+\end_layout
+
+\begin_layout Plain Layout
+
+extern "C" __declspec(dllimport) void __stdcall SendChatMessageFomDll(const
+ char *msg); 
+\end_layout
+
+\begin_layout Plain Layout
+
+extern "C" __declspec(dllimport) void* __stdcall GetPhl1kFromDll(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+extern "C" __declspec(dllimport) void* __stdcall GetPrw1326FromDll(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+extern "C" __declspec(dllimport) void __stdcall WriteLogFromDll(char* fmt,
+ ...); extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And the DLL will export a function too, namely
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+__declspec(dllexport) double process_message( const char* message, const
+ void* param );
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Again linking happens at load-time, so the DLL-interface is ready for cooperatio
+n right from the start.
+ Contrary to WinHoldem and early versions of OpenHoldem no function-pointer
+ get exchanged at run-time, so a very error-prone mechanism could get removed.
+\end_layout
+
+\begin_layout Standard
+OpenHoldem will send or request information from the DLL when needed, and
  it is up to the DLL’s author to process these requests.
  The exported library function process_message is used for this interface
  and has the following prototype:
@@ -140,6 +215,10 @@ The various messages that can be passed in the “pmessage” parameter are
 pmessage meaning and parameters state 
 \end_layout
 
+\begin_layout Subsubsection
+Game-States
+\end_layout
+
 \begin_layout Standard
 Each scrape cycle, OpenHoldem will send the current game state to the DLL.
  As the author of the DLL, you will decide what to do with this game state
@@ -154,8 +233,8 @@ Each scrape cycle, OpenHoldem will send the current game state to the DLL.
  
 \end_layout
 
-\begin_layout Subsection
-query 
+\begin_layout Subsubsection
+Querying dll$-Symbols
 \end_layout
 
 \begin_layout Standard
@@ -178,48 +257,12 @@ Any symbol that begins with the characters “dll$” is interpreted by the
  
 \end_layout
 
-\begin_layout Subsection
-pfgws 
+\begin_layout Subsubsection
+load and unload Messages
 \end_layout
 
 \begin_layout Standard
-Immediately after your User DLL is loaded, OpenHoldem will send a “pfgws”
- message once, which contains a pointer to a function within OpenHoldem
- that allows you to retrieve OpenHoldem symbols for use in your DLL code.
- “pfgws” is an acronym for “Pointer to Function for Get Winholdem Symbol”.
- This has not been renamed to something different for legacy compatibility
- reasons.
- The pointer to the OpenHoldem “get symbol” function is provided in the
- “param” parameter, and should be cast to the p_getsym_t typedef and stored
- in a variable provided by your DLL.
- From then on, any time your DLL needs to know the value of one of the OpenHolde
-m calculated symbols, call this function.
- The Reference User DLL source code provides a function that shows how to
- use the parameter provided in this message.
- The prototype for this function is:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-double getsym( int chair, const char* name, bool& iserr );
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This sample function takes the chair and the symbol name as input parameters
- and returns an error code in the “iserr” output parameter.
- An error will be returned if, for example, the “name” parameter contains
- an invalid OpenHoldem symbol name.
- event There are two event messages that are passed to your DLL.
+There are two event messages that are passed to your DLL.
  Both of these messages have NULL “param” parameters.
  “load” – this message is sent once immediately after your DLL is loaded.
  Typically this is used for some kind of initialization activity by your
@@ -233,15 +276,14 @@ This sample function takes the chair and the symbol name as input parameters
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 phl1k 
 \end_layout
 
 \begin_layout Standard
-This message provides a pointer to OpenHoldem’s internal hand list array,
- for your DLL to read and modify as needed.
- The “param” parameter contains a pointer to this array and should be cast
- to the following type:
+This is a pointer to OpenHoldem’s internal hand list array, for your DLL
+ to read and modify as needed.
+ It points to an array of the following type:
 \end_layout
 
 \begin_layout Standard
@@ -281,75 +323,12 @@ d to mean suited cards, and rank0<rank1 is interpreted to mean unsuited
 \end_layout
 
 \begin_layout Subsection
-p_send_chat_message 
+A Simple Example
 \end_layout
 
 \begin_layout Standard
-This message provides a pointer to a SendChatMessage function in OpenHoldem
- that allows you to send any chat message you want at any time.
- The OH-Script only version of f$chat only allows certain pre-defined chat
- messages to be sent.
- This message is sent once immediately after your DLL is loaded, with the
- pointer to the SendChatMessage function in the “Param” parameter.
- This parameter should be cast to the following prototype:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-void SendChatMessage(char* new_message);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Usage of this function is specified in more detail in the {f$chat} section.
-\end_layout
-
-\begin_layout Subsection
-Order of messages
-\end_layout
-
-\begin_layout Standard
-The order that these messages are passed after the DLL is loaded is as follows:
- 
-\end_layout
-
-\begin_layout Enumerate
-event / load 
-\end_layout
-
-\begin_layout Enumerate
-pfgws 
-\end_layout
-
-\begin_layout Enumerate
-phl1k 
-\end_layout
-
-\begin_layout Enumerate
-prw1326
-\end_layout
-
-\begin_layout Enumerate
-p_send_chat_message
-\end_layout
-
-\begin_layout Standard
-Note: Basic code examples for handling most of these DLL messages are provided
- in the Reference User DLL source code.
-\end_layout
-
-\begin_layout Standard
-A Simple Example An easy way to get started is to override all OH-Script
- processing with DLL functions.
+An easy way to get started is to override all OH-Script processing with
+ DLL functions.
  There are a number of reasons to do this, including:
 \end_layout
 
@@ -729,14 +708,10 @@ dll$iswait is false (see below).
 \end_layout
 
 \begin_layout Subsection
-\begin_inset Note Note
-status open
-
-\begin_layout Subsection
 dll$iswait 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 Prior to the OpenHoldem Autoplayer taking action, it will query your User
  DLL, if one is loaded, for the value of dll$iswait.
  If this query returns non-zero, then OpenHoldem will not execute the Autoplayer
@@ -745,7 +720,7 @@ Prior to the OpenHoldem Autoplayer taking action, it will query your User
  While dll$iswait returns non-zero, isfinalanswer will always be zero.
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 In the forum Matrix explained (
 \begin_inset Flex URL
 status open
@@ -773,9 +748,22 @@ m and always return a valid formula result and set dll$iswait to false on
  
 \end_layout
 
-\end_inset
+\begin_layout Standard
+In short: dll$iswait will be only needed if you do very time-consuming computati
+ons in your DLL that get executed in another thread.
+ Just return true to tell OH: "Hey buddy, I am really busy atm.
+ Please come back later and do something else in the meantime.
+ Scrape some additional frames, sitin/sitout/rebuy etc." Most DLLs should
+ just return false all the time.
+\end_layout
 
-
+\begin_layout Standard
+isfinalanswer: an OH-symbol that becomes true, when all conditions are met
+ that are required that the autoplayer acts (enough stable frames, dll$iswait
+ = false, balance stability, etc.) If you want to execute your DLL-logic
+ only once, you should wait for isfinal-answer = true and then calculate
+ it on the fly.
+ OH will be blocked for a small moment while your DLL is working.
 \end_layout
 
 \begin_layout Subsection
@@ -786,10 +774,6 @@ cmd$recalc
 A User DLL also has the ability to send the request "cmd$recalc", which
  will force OpenHoldem to recompute the versus tables and restart the Iterator
  thread.
-\end_layout
-
-\begin_layout Standard
- 
 \end_layout
 
 \end_body
