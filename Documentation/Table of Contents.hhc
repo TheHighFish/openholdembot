@@ -631,6 +631,10 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Contributing to the Manual">
+			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.html.LyXconv\contributing_to_the_manual.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Outdated Features and known Incompatibilities">
 			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.html.LyXconv\incompatibilities.html">
 			</OBJECT>

@@ -390,7 +390,7 @@ MAINTENANCE:
 v4.1.1 2013-05-20
 ==================
 NEW STUFF:
-- New test-selection-method "Triple Click" for swagging to support 
+- New text-selection-method "Triple Click" for swagging to support 
   some casinos with bad user-interfaces that don't react to double-clicks.
   The complete list of text-selection-methods:
   'Sgl Click', 'Dbl Click', 'Triple Click', 'Click Drag' and 'Nothing'.
@@ -999,11 +999,6 @@ MAINTENANCE:
 - Now always checking for loss of focus and balance-stability when acting.
   These features make OH more reliable, so there is no need to turn them off.
   [THF]
-- Getting rid of the option symbols->Value of Handrank. 
-  We have handrank169, handrank1000, handrank1326, handrank2625 and handrankp at the formula level. 
-  So the user can clearly specify what he wants. 
-  But these symbols can hardly get used interchangeably,
-  so this option was only confusing and superfluos.
   [THF]
 - Removing Winngys "mh_str" handstrength-functions, 
   as such functionality belongs to external libraries and not directly to OH.
@@ -1046,7 +1041,8 @@ MAINTENANCE:
   [THF]
 - Removing the symbol "ncommoncardspresent", because it was never implemented correctly,
   but always had the same value as "ncommoncardsknown". 
-  Furthermore its value would only differ at some casinos and at showdown,
+  Furthermore its value would only differ at some casinos and at showdown
+  (highlighted cards / bad scrapes), 
   but this point of time is pretty meaningless for both OH-script and OpenPPL,
   which evaluate mainly on the users turn, whereas DLLers still have access to all info. 
   [THF]
@@ -1265,7 +1261,7 @@ BUG FIXES:
   This has now been fixed. [JumpingFences]
 - OH tried to read the complete function into the fixed-sized space for the functions name
   and then truncate it. This caused a buffer oberflow in case of large functions.
-  Thanks to KaeKruse for reprting the bug and providing a formula to reproduce it. [THF]
+  Thanks to KaeKruse for reporting the bug and providing a formula to reproduce it. [THF]
 - There were some typos in the symbol names used by the validator.
   This caused false positives. Thanks to MasterNet for reporting. [THF]
 - Betround was undefined after disconnecting from a table,
