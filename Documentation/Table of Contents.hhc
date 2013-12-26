@@ -48,6 +48,10 @@
 				<param name="Local" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
 				<param name="URL" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="License: GPL v3">
+				<param name="Local" value="Chapters\introduction\GPL_v3.htm">
+				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="A (few) Word(s) of caution">
@@ -98,12 +102,6 @@
 				<param name="Name" value="How OpenHoldem Works">
 				<param name="Local" value="Chapters\how_oh_works\How_OH_Works.html.LyXconv\how_oh_works.html">
 				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Favourite Failures">
-			<param name="Local" value="Chapters\favourite_failures\favourite_failures_title.html.LyXconv\favourite_failures_title.html">
-			</OBJECT>
-		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Favourite Failures">
 				<param name="Local" value="Chapters\favourite_failures\Favourite_Failures.html.LyXconv\favourite_failures.html">
@@ -185,6 +183,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="How to create a Table Map">
 				<param name="Local" value="Chapters\scraping_in_practice\HowToCreateATablemap.html.LyXconv\HowToCreateATablemap.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Interface-Buttons explained">
+				<param name="Local" value="Chapters\scraping_in_practice\Interface_buttons_explained.html.LyXconv\Interface_buttons_explained.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -442,6 +444,18 @@
 				<param name="Name" value="ICM - The Independent Chip Model">
 				<param name="Local" value="Chapters\oh_script_explained\icm_explained.html.LyXconv\icm_explained.html">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Rankbits">
+				<param name="Local" value="Chapters\oh_script_explained\rankbits_explained.html.LyXconv\rankbits_explained.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Pokerval explained">
+				<param name="Local" value="Chapters\oh_script_explained\pokerval_explained.html.LyXconv\pokerval_explained.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Handstrength Library">
+				<param name="Local" value="Chapters\oh_script_explained\handstrength_library.html.LyXconv\handstrength_library.html">
+				</OBJECT>
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -516,6 +530,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraper-DLL">
 				<param name="Local" value="Chapters\extensions\ScraperDLL.html.LyXconv\ScraperDLL.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="PokerTracker-Query-Definitions-DLL">
+				<param name="Local" value="Chapters\extensions\pokertracker_query_definitions_dll.html.LyXconv\pokertracker_query_definitions_dll.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
