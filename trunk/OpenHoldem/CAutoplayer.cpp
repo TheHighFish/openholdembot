@@ -11,19 +11,6 @@
 //
 //***************************************************************************** 
 
-//***************************************************************************** 
-//
-// This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
-//
-//***************************************************************************** 
-//
-// Purpose:
-//
-//***************************************************************************** 
-
 #include "StdAfx.h"
 #include "CAutoplayer.h"
 
@@ -59,7 +46,7 @@ CAutoplayer	*p_autoplayer = NULL;
 CAutoplayer::CAutoplayer(void) 
 {
 	// Autoplayer is not enabled at startup.
-	// We can't call set_autoplayer_engaged() here,
+	// We can't call EngageAutoplayer() here,
 	// because the toolbar does not yet exist,
 	// so we can't set the autoplayer-button.
 	// However the toolbar is guaranteed to initialize correctly later.
@@ -73,9 +60,15 @@ CAutoplayer::~CAutoplayer(void)
 	FinishActionSequenceIfNecessary();
 }
 
+void CAutoplayer::EngageAutoPlayerUponConnectionIfNeeded()
+{
+	if (p_autoconnector->IsConnected() && preferences.engage_autoplayer())
+	{
+		EngageAutoplayer(true);
+	}
+}
 
-void
-CAutoplayer::PrepareActionSequence()
+void CAutoplayer::PrepareActionSequence()
 {
 	// This function should be called at the beginning of 
 	// ExecutePrimaryFunctions and ExecuteSecondaryFunctions
@@ -326,13 +319,31 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 
 #define ENT CSLock lock(m_critsec);
 	
-void CAutoplayer::set_autoplayer_engaged(const bool to_be_enabled_or_not) 
+void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) 
 { 
 	ENT 
-	_autoplayer_engaged = to_be_enabled_or_not; 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
+	assert(p_flags_toolbar != NULL);
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
+
+	if (to_be_enabled_or_not) 
+	{
+		// calc hand lists
+		p_formula->CreateHandListMatrices();
+		// one last parse - do not engage if parse fails
+		if (!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd()))
+		{
+			// Invalid formula
+			// Can't autoplay
+			to_be_enabled_or_not = false;
+			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+		}
+	}
+	// Set valuie at the very last to be extra safe
+	// and avoid problems with multiple threads
+	// despite we use synchronization ;-)
+	_autoplayer_engaged = to_be_enabled_or_not;
 }
 
 #undef ENT

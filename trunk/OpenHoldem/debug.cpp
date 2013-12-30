@@ -104,7 +104,7 @@ char * get_time(char * timebuf)
         *(timebuf+6) = '2';
     }
 
-    *(timebuf+7) = '>';
+    *(timebuf+7) = '-';
     memcpy(timebuf+8, tmptime+8, 2); //dd
     *(timebuf+10) = ' ';
     memcpy(timebuf+11, tmptime+11, 8); //HH:mm:ss
@@ -264,6 +264,11 @@ void start_log(void)
 	// Append (or create) log
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
+		write_log("\n%s%s%s%s%s%s",
+			"*************************************************************\n"
+			"OpenHoldem ", VERSION_TEXT, "\n",
+			"LOG FILE OPEN\n",
+			"*************************************************************\n");
 		write_log(k_always_log_basic_information, "! log file open\n");
 		fflush(log_fp);
 	}
@@ -284,7 +289,7 @@ void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl)
 
         vsprintf_s(buff, 10000, fmt, vl);
 		get_time(nowtime);
-        fprintf(log_fp, "%s - %s", nowtime, buff);
+        fprintf(log_fp, "%s > %s", nowtime, buff);
 
         fflush(log_fp);
     }
@@ -470,24 +475,25 @@ void write_logautoplay(const char * action)
 		
 		// More verbose summary in the log
 		// The old WinHoldem format was a complete mess
-		fprintf(log_fp, "**** Basic Info *********************************************\n");
 		fprintf(log_fp, get_time(nowtime));
-		fprintf(log_fp, "  Chairs:		 %1d\n",   p_tablemap->nchairs());
+		fprintf(log_fp, "**** Basic Info *********************************************\n");
+		fprintf(log_fp, "  Version:      $s\n",    VERSION_TEXT); 
+		fprintf(log_fp, "  Chairs:		 %d\n",    p_tablemap->nchairs());
 		fprintf(log_fp, "  Userchair:    %d\n",    userchair);
 		fprintf(log_fp, "  Holecards:    %s\n",    pcards.GetString());
 		fprintf(log_fp, "  Community:    %s\n",    comcards.GetString());
-		fprintf(log_fp, "  Rank:         %4s\n",   rank.GetString());
-		fprintf(log_fp, "  Hand:         %5s\n",   pokerhand.GetString());
-		fprintf(log_fp, "  PrWin:        %4d\n",   (iter_vars.prwin() * 1000));
-		fprintf(log_fp, "  PrLos:        %4d\n",   (iter_vars.prlos() * 1000));
-		fprintf(log_fp, "  PrTie:        %4d\n",   (iter_vars.prtie() * 1000));
-		fprintf(log_fp, "  NOpponents:   %2d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
-		fprintf(log_fp, "  Iterations:   %8d\n",   iter_vars.nit());
+		fprintf(log_fp, "  Rank:         %s\n",    rank.GetString());
+		fprintf(log_fp, "  Hand:         %s\n",    pokerhand.GetString());
+		fprintf(log_fp, "  PrWin:        %d\n",    (iter_vars.prwin() * 1000));
+		fprintf(log_fp, "  PrLos:        %d\n",    (iter_vars.prlos() * 1000));
+		fprintf(log_fp, "  PrTie:        %d\n",    (iter_vars.prtie() * 1000));
+		fprintf(log_fp, "  NOpponents:   %d\n",    p_symbol_engine_prwin->nopponents_for_prwin());
+		fprintf(log_fp, "  Iterations:   %d\n",    iter_vars.nit());
 		fprintf(log_fp, "  Balance:      %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
 		fprintf(log_fp, "  Betsize:      %9.2f\n", p_symbol_engine_tablelimits->bet());
 		fprintf(log_fp, "  Call:         %9.2f\n", p_symbol_engine_chip_amounts->call());
-		fprintf(log_fp, "  Pot:          %9.2f ",  p_symbol_engine_chip_amounts->pot());
-		fprintf(log_fp, "  f$betsize:    %.2f\n",  p_autoplayer_functions->f$betsize());
+		fprintf(log_fp, "  Pot:          %9.2f\n", p_symbol_engine_chip_amounts->pot());
+		fprintf(log_fp, "  f$betsize:    %9.2f\n", p_autoplayer_functions->f$betsize());
 		fprintf(log_fp, "  Formulas:     %s\n",    fcra_formula_status.GetString());
 		fprintf(log_fp, "  Buttons:      %s\n",    fcra_seen.GetString());
 		fprintf(log_fp, "  Best action:  %s\n",    bestaction.GetString());
@@ -511,7 +517,11 @@ void stop_log(void)
 {
     if (log_fp != NULL) 
 	{
-        write_log(k_always_log_basic_information, "! log file closed\n");
+        write_log("\n%s%s%s%s%s%s",
+			"*************************************************************\n"
+			"OpenHoldem ", VERSION_TEXT, "\n",
+			"LOG FILE CLOSED\n",
+			"*************************************************************\n");
         fclose(log_fp);
         log_fp = NULL;
     }

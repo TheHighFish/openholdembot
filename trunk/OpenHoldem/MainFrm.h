@@ -106,7 +106,6 @@ private:
 	int CreateStatusBar(void);
 
 	RECT			_table_view_size;
-	bool			_autoplay_pressed;
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;

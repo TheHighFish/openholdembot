@@ -941,6 +941,17 @@ void CDlgFormulaScintilla::OnTvnExpandedFormulaTree(NMHDR *pNMHDR, LRESULT *pRes
 	SaveSettingsToRegistry();
 }
 
+void CDlgFormulaScintilla::SetExtendedWindowTitle(CString additional_information)
+{
+	CString new_title = CString("Formula Editor [") + CString(VERSION_TEXT) + CString("]");
+	if (additional_information != "")
+	{
+		new_title += " ";
+		new_title += additional_information;
+	}
+	SetWindowText(new_title);
+}
+
 void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
@@ -972,7 +983,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 	{
 		if (s == "notes" || s == "dll") 
 		{
-			SetWindowText("Formula Editor - " + s);
+			SetExtendedWindowTitle(s);
 			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
 			for (int i=0; i<N; i++) 
 			{
@@ -1008,7 +1019,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 		}
 		else if (memcmp(s.GetString(), "f$", 2) == 0) 
 		{
-			SetWindowText("Formula Editor - " + s);
+			SetExtendedWindowTitle(s);
 			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
 			for (int i=0; i<N; i++) 
 			{
@@ -1049,7 +1060,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 			for (int i=0; i<N; i++) {
 				if (m_wrk_formula.formula()->mHandList[i].list == s) 
 				{
-					SetWindowText("Formula Editor - " + s);
+					SetExtendedWindowTitle(s);
 
 					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
 					if (!pCurScin) 
@@ -2033,7 +2044,6 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	int						error = 0;
 	std::string				str = "";
 	struct SDebugTabInfo	debug_struct;
-	LARGE_INTEGER			bcount = {0}, ecount = {0}, lFrequency = {0};
 	char					format[50] = {0};
 
 	StopAutoButton();
@@ -2078,27 +2088,17 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	// Processing for any other formula
 	else 
 	{
-		// time how long it takes
-		QueryPerformanceCounter(&bcount);
-
 		// Execute the currently selected formula
 		error = SUCCESS;
 		ret = gram.CalcF$symbol(&m_wrk_formula, (char *) m_current_edit.GetString(), &error);
 
-		// time how long it takes
-		QueryPerformanceCounter(&ecount);
-		QueryPerformanceFrequency(&lFrequency);
 		if (error == SUCCESS) 
 		{
 			// display result
 			sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
 			Cstr.Format(format, ret);
 			m_CalcResult.SetWindowText(Cstr);
-
-			// display total time for calculation
-			title.Format("Formula Editor - %s - [%.8f]", m_current_edit.GetString(),
-						 ((double) (ecount.LowPart - bcount.LowPart))/((double) lFrequency.LowPart));
-			SetWindowText(title);
+			SetExtendedWindowTitle(m_current_edit.GetString());
 		}
 		else 
 		{
@@ -2432,7 +2432,7 @@ void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 		"We will have to turn the autoplayer off,\n"
 		"but to avoid any problems we skip saving.",
 		"Warning", MB_OK | MB_TOPMOST);
-	p_autoplayer->set_autoplayer_engaged(false);	
+	p_autoplayer->EngageAutoplayer(false);	
 	return;
 }
 

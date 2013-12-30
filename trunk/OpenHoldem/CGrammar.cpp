@@ -549,7 +549,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 			"\n"
 			"Last function: ") + symbol;
 		OH_MessageBox_Error_Warning(error_message, "ERROR");
-		p_autoplayer->set_autoplayer_engaged(false);
+		p_autoplayer->EngageAutoplayer(false);
 		_RecursionDepth--;
 		return 0.0;
 	}

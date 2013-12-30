@@ -239,7 +239,10 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			// Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
-			p_tablemap->LoadTablemap((char *) g_tlist[SelectedItem].path.GetString());
+			assert(p_tablemap != NULL);
+			CString tablemap_to_load = g_tlist[SelectedItem].path.GetString();
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
+			p_tablemap->LoadTablemap(tablemap_to_load);
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap loaded\n");
 
 			// Create bitmaps
@@ -265,9 +268,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			LoadScraperDLL();
 			p_flags_toolbar->DisableButtonsOnConnect();
 
-			// Make sure autoplayer is off
-			p_autoplayer->set_autoplayer_engaged(false);
-
 			// mark symbol result cache as stale
 			p_formula->MarkCacheStale();
 
@@ -288,15 +288,13 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// Reset display
 			PMainframe()->ResetDisplay();
 
-			// Start logging, in case the log-level got changed.
-			start_log();
-			
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
 
 			WriteLogTableReset();
 
 			p_table_positioner->PositionMyWindow();
+			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
 		}
 	}
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
@@ -360,7 +358,7 @@ void CAutoConnector::Disconnect()
 
 	// Make sure autoplayer is off
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
-	p_autoplayer->set_autoplayer_engaged(false);
+	p_autoplayer->EngageAutoplayer(false);
 
 	p_engine_container->ResetOnDisconnection();
 
@@ -411,9 +409,6 @@ void CAutoConnector::Disconnect()
 	}
 	WriteLogTableReset();
 
-	// Stop logging
-	stop_log();
-	
 	// Close OH, when table disappears and leaving enabled in preferences.
 	if (preferences.autoconnector_close_when_table_disappears())
 	{
