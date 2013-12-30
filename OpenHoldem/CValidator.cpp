@@ -92,7 +92,7 @@ void CValidator::ValidateSingleRule()
 			}
 			if (preferences.validator_stop_on_error()) 
 			{ 
-				p_autoplayer->set_autoplayer_engaged(false); 
+				p_autoplayer->EngageAutoplayer(false); 
 			}
 			// Create error message
 			CString the_ErrorMessage = "TESTCASE ID: " 

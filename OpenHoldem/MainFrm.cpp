@@ -171,7 +171,6 @@ END_MESSAGE_MAP()
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
-	_autoplay_pressed = false;
 	_wait_cursor = false;
 
 	_prev_att_rect.bottom = 0;
@@ -487,7 +486,6 @@ void CMainFrame::OnFileOpen()
 	}
 }
 
-
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
 	RECT			att_rect = {0}, wrect = {0};
@@ -497,8 +495,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		if (!IsWindow(p_autoconnector->attached_hwnd()))
 		{
 			// Table disappeared
+			p_autoplayer->EngageAutoplayer(false);
 			p_autoconnector->Disconnect();
-			_autoplay_pressed = false;
 		}
 	}
 
@@ -518,18 +516,6 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 		}
 
-		// Automatically start autoplayer, if set in preferences
-		if (preferences.engage_autoplayer() && !p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER) &&
-				((p_autoconnector->IsConnected() 
-				&& !p_autoplayer->autoplayer_engaged())))
-		{
-			if (!_autoplay_pressed)
-			{
-				p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
-				OnAutoplayer();
-				_autoplay_pressed = true;
-			}
-		}
 		// attach
 		if (p_autoconnector->attached_hwnd() != NULL) 
 		{
@@ -581,26 +567,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 void CMainFrame::OnAutoplayer() 
 {
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_AUTOPLAYER)) 
-	{
-		// calc hand lists
-		p_formula->CreateHandListMatrices();
-
-		// one last parse - do not engage if parse fails
-		if (p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd()))
-		{
-			p_autoplayer->set_autoplayer_engaged(true);
-		}
-		else 
-		{
-			p_autoplayer->set_autoplayer_engaged(false);
-			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-		}
-	}
-	else 
-	{
-		p_autoplayer->set_autoplayer_engaged(false);
-	}
+	bool is_autoplaying = p_autoplayer->autoplayer_engaged();
+	// Toggle the autoplayer-state
+	p_autoplayer->EngageAutoplayer(!is_autoplaying);
 }
 
 void CMainFrame::OnValidator() 
@@ -721,27 +690,6 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-/*
-// ??? conflict and removed in maintenance. Needed?
-void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
-{
-	if (nID == SC_CLOSE)
-	{
-		if (m_formulaScintillaDlg)
-		{
-			if (m_formulaScintillaDlg->m_dirty)
-			{
-				if (OH_MessageBox_Interactive("The Formula Editor has un-applied (and unsaved) changes.\n"
-							   "Really exit?", "Unsaved formula warning", MB_YESNO) == IDNO)
-				{
-					return;
-				}
-			}
-		}
-	}
-	CFrameWnd::OnSysCommand(nID, lParam);
-}
-*/
 void CMainFrame::OnPerlLoadFormula() 
 {
 	if (p_perl->IsAFormulaLoaded())

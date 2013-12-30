@@ -114,7 +114,8 @@ BOOL COpenHoldemApp::InitInstance()
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
 	// Start logging immediatelly after the loading the preferences
-	// and initializing the sessioncounter.
+	// and initializing the sessioncounter, which is necessary for 
+	// the filename of the log (oh_0.log, etc).
 	start_log();
 	InstantiateAllSingletons();
 

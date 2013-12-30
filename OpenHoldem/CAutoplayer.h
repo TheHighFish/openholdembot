@@ -27,6 +27,7 @@ public:
 	CAutoplayer();
 	~CAutoplayer(void);
 public:
+	void EngageAutoPlayerUponConnectionIfNeeded();
 	void DoAutoplayer(void);
 
 public:
@@ -35,7 +36,7 @@ public:
 
 public:
 	// public mutators
-	void set_autoplayer_engaged(const bool to_be_enabled_or_not);
+	void EngageAutoplayer(bool to_be_enabled_or_not);
 
 private:
 	// private functions and variables - not available via accessors or mutators

@@ -242,6 +242,7 @@ protected:
 private:
 	CString ExtractCommentFromHandList(CString HandListAsString);
 	void WarnAboutAutoplayerWhenApplyingFormula();
+	void SetExtendedWindowTitle(CString additional_information);
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;

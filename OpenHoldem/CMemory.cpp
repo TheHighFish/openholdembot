@@ -119,7 +119,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 			OH_MessageBox_Error_Warning("Too many memory symbols.\n"
 						  "Stopping autoplayer.", 
 						  "Error");
-			p_autoplayer->set_autoplayer_engaged(false);
+			p_autoplayer->EngageAutoplayer(false);
 			return;
 		}
 		write_log(preferences.debug_memorysymbols(), "[CMemory] Storing new value in a new slot\n");
