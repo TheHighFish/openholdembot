@@ -75,7 +75,7 @@ protected:
 	CString				playerbalance[10];
 	CString				playerbet[10];
 	double				pot;
-	bool				buttonstate[10]; // fold, call, check, raise, allin, prefold
+	bool				buttonstate[10]; // fold, call, check, raise, allin, sotout, leave table, prefold, autopost
 	CString				handnumber;
 	CString				sblind;
 	CString				bblind;
@@ -123,6 +123,7 @@ protected:
 	void get_click_loc(CPoint p);
 	void set_card(unsigned int c);
 	int get_rank(char r);
+	void do_fold(void);
 	void do_call(void);
 	void do_raise(void);
 	void do_allin(void);
@@ -203,4 +204,14 @@ protected:
 	afx_msg void OnAllin();
 public:
 	afx_msg void OnEnChangeSwag();
+private:
+	int CManualModeDlg::Userchair();
+	bool MyTurnPossible();
+	double MyBalance();
+	double MyTotalBalance();
+	double MyCurrentBet();
+	void DisableAllActionButtons();
+	void SetAllPossibleButtons();
+	void HandleButtonClick(int click_loc);
+	void ExecuteSwag();
 };

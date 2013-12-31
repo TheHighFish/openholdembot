@@ -1294,8 +1294,7 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	// Clicked on a button indicator
 	if  ( click_loc>=FB && click_loc<=APB ) 
 	{
-		buttonstate[click_loc-FB] = !buttonstate[click_loc-FB];
-		InvalidateRect(NULL, true);
+		HandleButtonClick(click_loc);
 	}
 
 	// Clicked on the center info box
@@ -2365,6 +2364,20 @@ void CManualModeDlg::OnBnClickedDplus()
 	}
 }
 
+void CManualModeDlg::do_fold(void)
+{
+	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
+	{
+		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
+	}
+	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
+	{
+		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
+	}
+	card[P0C0+click_chair*2] = CARD_NOCARD; 
+	card[P0C1+click_chair*2] = CARD_NOCARD; 
+}
+
 void CManualModeDlg::do_call(void) 
 {
 	double		diff;
@@ -2497,4 +2510,205 @@ void CManualModeDlg::OnEnChangeSwag()
 	CString tmp;
 	swag.GetWindowText(tmp);
 	raise_amount = atof(tmp);
+}
+
+/*****************************************************
+*
+* Buttons, betsizes, reacting to actions
+*
+*****************************************************/
+
+int CManualModeDlg::Userchair()
+{
+	// Simplified logic:
+	// First chair (clockwise) that has cards
+	for (int i=k_first_chair; i<=k_last_chair; i++)
+	{
+		if ((card[2 * i] != CARD_BACK)
+			&& (card[2 * i] != CARD_NOCARD))
+		{
+			return i;
+		}
+	}
+	return k_not_found;
+}
+
+bool CManualModeDlg::MyTurnPossible()
+{
+	// Simplified logic
+	// My turn is possible, if
+	//   * userchair known
+	//   * somebody else has a higher bet
+	//   * nobody did act (all bets 0)
+	int userchair = Userchair();
+	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	{
+		return false;
+	}
+	bool somebody_betting = false;
+	bool somebody_raising = false;
+	for (int i=k_first_chair; i<=k_last_chair; i++)
+	{
+		if (atof(playerbet[i]) > 0)
+		{
+			somebody_betting = true;
+		}
+		if (atof(playerbet[i]) > MyCurrentBet())
+		{
+			somebody_raising = true;
+		}
+	}
+	return (!somebody_betting || somebody_raising);
+}
+
+double CManualModeDlg::MyBalance()
+{
+	int userchair = Userchair();
+	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	{
+		return 0;
+	}
+	return atof(playerbalance[userchair]);
+}
+
+double CManualModeDlg::MyTotalBalance()
+{
+	return MyBalance() + MyCurrentBet();
+}
+
+double CManualModeDlg::MyCurrentBet()
+{
+	int userchair = Userchair();
+	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	{
+		return 0;
+	}
+	return atof(playerbet[userchair]);
+}
+
+void CManualModeDlg::DisableAllActionButtons()
+{
+	for (int i=0; i<5; i++)
+	{
+		buttonstate[i] = false;
+	}
+	InvalidateRect(NULL, true);
+}
+
+void CManualModeDlg::SetAllPossibleButtons()
+{
+	int userchair = Userchair();
+	if (userchair < 0 || !MyTurnPossible() || MyBalance() <= 0)
+	{
+		MessageBox("Not your turn, Sir.\n"
+			"Please set up a valid situation first"
+			"(e.g. click \"Macro\").\n",
+			"Error", 0);
+		DisableAllActionButtons();
+		return;
+	}
+	// Fold always possible
+	buttonstate[0] = true;
+	// call
+	if (MyCurrentBet() < get_current_bet())
+	{
+		buttonstate[1] = true;
+	}
+	// Check
+	if (get_current_bet() <= 0)
+	{
+		buttonstate[2] = true;
+	}
+	// raise
+	if (MyTotalBalance() > get_current_bet())
+	{
+		buttonstate[3] = true;
+	}
+	// allin
+	if (limit == LIMIT_NL || limit == LIMIT_PL)
+	{
+		// Simplified for PL
+		buttonstate[4] = true;
+	}
+	InvalidateRect(NULL, true);
+}
+
+void CManualModeDlg::HandleButtonClick(int click_loc)
+{
+	int button_ID = click_loc - FB;
+	if ((click_loc==SO) || (click_loc==LT)
+		|| (click_loc==PFB) || (click_loc==APB))
+	{
+		// Simple button like sitout and auto-post
+		// Just toggle its state
+		buttonstate[button_ID] = !buttonstate[button_ID];
+		InvalidateRect(NULL, true);
+		return;
+	}
+	// Otherwise: FB, CB, KB, RB, AB,
+	if (buttonstate[button_ID] == false)
+	{
+		// clicked on a non high-lighted action-button
+		// User wants to set buttons
+		// Do it automatically
+		SetAllPossibleButtons();
+		return;
+	}
+	// Otherwise: highlighted action button clicked
+	// We act and buttons disappear
+	DisableAllActionButtons();
+	// We simply set the clickchair and then continue 
+	// as if the user was handling the popup-menu
+	click_chair = Userchair();
+	switch (click_loc)
+	{
+	case FB: do_fold();
+		break;
+	case CB: do_call();
+		break;
+	case KB: // Nothing to do for check
+		break;
+	case RB: if (raise_amount > 0)
+			{
+				ExecuteSwag();
+			}
+			else
+			{
+				do_raise();
+			}
+		break;
+	case AB: do_allin();
+		break;
+	}
+
+}
+
+void CManualModeDlg::ExecuteSwag()
+{
+	if (raise_amount < MyCurrentBet())
+	{
+		MessageBox("Dear Sir, no chance to take money out of the pot.\n"
+			"The RoboStars Security Team watches you.", "Error", 0);	
+	}
+	else if (raise_amount >= MyTotalBalance())
+	{
+		do_allin();
+	}
+	else if (raise_amount < get_current_bet())
+	{	
+		MessageBox("Dear Sir, didn't you want to top the previous raise a bit?", "Error", 0);
+	}
+	else
+	{
+		// Valid normal swag
+		// Userchair should be valid, otherwise we had no chance to click buttons
+		int userchair = Userchair();
+		double remaining_balance = MyTotalBalance() - raise_amount;
+		playerbet[userchair] = NumberToFormattedString(raise_amount);
+		playerbalance[userchair] = NumberToFormattedString(remaining_balance);
+	}
+	// Clear swag
+	raise_amount = 0;
+	swag.SetWindowTextA("");
+	InvalidateRect(NULL, true);
 }
