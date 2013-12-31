@@ -1,3 +1,13 @@
+v4.4.0 2014-01-02
+=================
+NEW STUFF:
+- ManualMode will now react to clicks at the action-buttons.
+  Swagging is now also fully supported.
+  [THF]
+- ManualMode will now set all valid buttons automatically
+  after a first click to any button-region.
+  [THF]
+
 v4.0.0 2013-01-26
 =================
 MAINTENANCE:
