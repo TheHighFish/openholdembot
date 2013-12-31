@@ -1,18 +1,21 @@
 v4.3.2 2013-12-xx
 ==================
 BUG FIXES:
-- The the dealer-button and sometimes some of the common cards 
+- The dealer-button and sometimes some of the common cards 
   were missing after we improved the GUI in OH 4.3.0.
   This has now been fixed.
   Thanks to R2D3 and Pawko for reporting and providing screenshots.
   [THF]
+- The option "Engage Autoplayer On Connection" had been broken
+  and has been fixed again. Thanks to for reporting.
+  [THF]  
   
 MAINTENANCE:
 - The table-positioner now moves the lobby to the top-left-position,
   so that lobby-coordinates always equal screen-coordinates.
   This makes hoppers more reliable, as we don't have to worry
   if the lobby is active or if any casino-table pops up
-  and steals the mouse-focus. The positions of the other tables 
+  and steals the mouse-input. The positions of the other tables 
   will then start at bottom-right of the screen.
   [THF]
   
