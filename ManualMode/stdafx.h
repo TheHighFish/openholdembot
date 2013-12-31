@@ -65,8 +65,8 @@
 
 
 // Version
-#define VERSION_NUMBER				4.11
-#define VERSION_TEXT				"4.1.1.0"  // change version number in ManualMode.rc also, when needed
+#define VERSION_NUMBER				4.4
+#define VERSION_TEXT				"4.4.0.0"  // change version number in ManualMode.rc also, when needed
 
 
 
