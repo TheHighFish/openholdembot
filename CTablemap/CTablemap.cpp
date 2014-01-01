@@ -21,6 +21,7 @@
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../OpenHoldem/debug.h"
+#include "../OpenHoldem/CPreferences.h"
 #endif
 
 #ifdef OPENSCRAPE_PROGRAM
@@ -41,6 +42,10 @@ CTablemap::~CTablemap(void)
 
 void CTablemap::ClearIMap()
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] ClearIMap\n");
+#endif
+
 	IMap::iterator iter;
 	// For each image in the map: delete.
 	for(iter = _i$.begin(); iter != _i$.end(); iter++ ) 
@@ -55,6 +60,10 @@ void CTablemap::ClearIMap()
 
 void CTablemap::ClearTablemap()
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] ClearTablemap\n");
+#endif
+
 	CSLock lock(m_critsec);
 
 	_valid = false;
@@ -85,8 +94,12 @@ void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
 	OH_MessageBox_Error_Warning(error, "Table map load error");
 }
 
-int CTablemap::LoadTablemap(const char *_fname) 
+int CTablemap::LoadTablemap(const CString _fname) 
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
+#endif
+
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	CString		MaxFontGroup = "", MaxHashGroup = "";
 	int			pos = 0, x = 0, y = 0;
@@ -577,10 +590,19 @@ int CTablemap::LoadTablemap(const char *_fname)
 				}
 			}
 
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Trying to insert image\n");
+#endif
 			// Add the new i$ record to the internal array
 			if (!i$_insert(hold_image))
 			{
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Looking up image\n");
+#endif
 				IMapCI i_iter = _i$.find(CreateI$Index(hold_image.name, hold_image.width, hold_image.height, hold_image.pixel));
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Looked up image\n");
+#endif
 				if (i_iter != _i$.end())
 				{
 					t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.\nYou have to fix that tablemap.", 
@@ -618,8 +640,22 @@ int CTablemap::LoadTablemap(const char *_fname)
 	return SUCCESS;
 }
 
+void CTablemap::WriteSectionHeader(CArchive& ar, CString header)
+{
+	ar.WriteString("//\r\n");
+	CString header_comment;
+	header_comment.Format("// %s\r\n", header);
+	ar.WriteString(header_comment);
+	ar.WriteString("//\r\n");
+	ar.WriteString("\r\n");
+}
+
 int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] SaveTablemap\n");
+#endif
+
 	CString		s = "", t = "", text = "";
 	char		nowtime[26] = {0};
 
@@ -637,11 +673,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// sizes
-	ar.WriteString("//\r\n");
-	ar.WriteString("// sizes\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
-	
+	WriteSectionHeader(ar, "sizes");	
 	for (ZMapCI z_iter=_z$.begin(); z_iter!=_z$.end(); z_iter++)
 	{
 		s.Format("z$%-16s %d  %d\r\n", z_iter->second.name, z_iter->second.width, z_iter->second.height); 
@@ -650,11 +682,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// strings
-	ar.WriteString("//\r\n");
-	ar.WriteString("// strings\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
-
+	WriteSectionHeader(ar, "strings");
 	for (SMapCI s_iter=_s$.begin(); s_iter!=_s$.end(); s_iter++)
 	{
 		s.Format("s$%-25s %s\r\n", s_iter->second.name.GetString(), s_iter->second.text.GetString());
@@ -663,10 +691,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// regions
-	ar.WriteString("//\r\n");
-	ar.WriteString("// regions\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
+	WriteSectionHeader(ar, "regions");
 	for (RMapCI r_iter=_r$.begin(); r_iter!=_r$.end(); r_iter++)
 	{
 		s.Format("r$%-18s %3d %3d %3d %3d %8x %4d %s\r\n", r_iter->second.name.GetString(),
@@ -677,11 +702,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// fonts
-	ar.WriteString("//\r\n");
-	ar.WriteString("// fonts\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
-
+	WriteSectionHeader(ar, "fonts");
 	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
 	{
 		for (TMapCI t_iter =_t$[i].begin(); t_iter != _t$[i].end(); t_iter++)
@@ -699,11 +720,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// points
-	ar.WriteString("//\r\n");
-	ar.WriteString("// points\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
-
+	WriteSectionHeader(ar, "points");
 	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
@@ -715,11 +732,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// hash
-	ar.WriteString("//\r\n");
-	ar.WriteString("// hash\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
-
+	WriteSectionHeader(ar, "hash");
 	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
@@ -731,10 +744,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// images
-	ar.WriteString("//\r\n");
-	ar.WriteString("// images\r\n");
-	ar.WriteString("//\r\n");
-	ar.WriteString("\r\n");
+	WriteSectionHeader(ar, "images");
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 	{
 		int width = i_iter->second.width;
@@ -762,6 +772,10 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
+#endif	
+
 	CString					e = "", s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
@@ -935,6 +949,10 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 // Used by OpenScrape to calculate initial hash when first creating it with "Calculate Hash" button
 uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 {
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] CalculateHashValue\n");
+#endif
+
 	uint32_t pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 
 	// all pixel hash
@@ -977,20 +995,50 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 // Creates the 32bit hash for an image record using name and pixels
 uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels)
 {
-	uint32_t *uints = new uint32_t[MAX_HASH_WIDTH*MAX_HASH_HEIGHT + name.GetLength()];
-	int c = 0;
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] CreateI$Index\n");
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Name %s\n", name);
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Width %i\n", width);
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Height %i\n", height);
+#endif
 
+	assert(width <= MAX_HASH_WIDTH);
+	assert(height <= MAX_HASH_HEIGHT);
+
+	uint32_t *uints = new uint32_t[MAX_HASH_WIDTH*MAX_HASH_HEIGHT + name.GetLength()];
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Buffer created %i\n",
+		uints);
+#endif
+
+	int c = 0;
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Putting the name into the buffer\n");
+#endif
 	// Put the ascii value of each letter into a uint32_t
 	for (int i=0; i<name.GetLength(); i++)
 		uints[c++] = name.Mid(i,1).GetString()[0];
 
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Putting the pixels into the buffer\n");
+#endif
 	// Now the pixels
 	for (int i=0; i<(int) (height * width); i++)
 		uints[c++] = pixels[i];
 
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Calculating the hash value\n");
+#endif
 	uint32_t index = hashword(&uints[0], height * width + name.GetLength(), 0x71e9ff36);
 
-	delete [] uints;
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Releasing the buffer %i\n",
+		uints);
+#endif
+	delete []uints;
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Buffer released successfully\n");
+#endif
 
 	return index;
 }
