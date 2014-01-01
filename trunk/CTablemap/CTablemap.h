@@ -132,7 +132,7 @@ public:
 	CTablemap(void);
 	~CTablemap(void);
 	void ClearTablemap();
-	int LoadTablemap(const char *_filename);
+	int LoadTablemap(const CString _fname);
 	int SaveTablemap(CArchive& ar, const char *version_text);
 	int UpdateHashes(const HWND hwnd, const char *startup_path);
 	uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type);
@@ -283,6 +283,7 @@ public:
 private:
 	// private functions
 	void ClearIMap();
+	void WriteSectionHeader(CArchive& ar, CString header);
 	void WarnAboutGeneralTableMapError(int error_code, int line);
 
 private:
