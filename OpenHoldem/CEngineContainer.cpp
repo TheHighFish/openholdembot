@@ -25,6 +25,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIniFunctions.h"
@@ -139,6 +140,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEnginePokerval
 	p_symbol_engine_pokerval = new CSymbolEnginePokerval();
 	AddSymbolEngine(p_symbol_engine_pokerval);
+	// CSymbolEngineOpenPPLHandAndBoardExpression
+	p_symbol_engine_open_ppl_hand_and_board_expression = new CSymbolEngineOpenPPLHandAndBoardExpression();
+	AddSymbolEngine(p_symbol_engine_open_ppl_hand_and_board_expression);
 	// CSymbolEngineHistory
 	p_symbol_engine_history = new CSymbolEngineHistory();
 	AddSymbolEngine(p_symbol_engine_history);

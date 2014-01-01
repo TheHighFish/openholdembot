@@ -49,9 +49,9 @@ inline void AssertRange(double value, double lower_bound, double upper_bound)
 	assert(value <= upper_bound);
 }
 
-inline void SetBit(int &bit_vector, int n_th_bit)
+inline void SetBit(int *bit_vector, int n_th_bit)
 {
-	bit_vector |= (1 << n_th_bit);
+	*bit_vector |= (1 << n_th_bit);
 }
 
 inline bool IsBitSet(int bit_vector, int n_th_bit)

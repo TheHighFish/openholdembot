@@ -301,6 +301,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\CardFunctions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CEvalInfo.cpp"
 				>
 			</File>
@@ -993,7 +997,10 @@
 						RelativePath=".\CSymbolEngineLists.cpp"
 						>
 					</File>
-
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.cpp"
+						>
+					</File>
 					<File
 						RelativePath=".\CSymbolEnginePokerTracker.cpp"
 						>
@@ -1174,6 +1181,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\CardFunctions.h"
+				>
+			</File>
 			<File
 				RelativePath=".\CEvalInfo.h"
 				>
@@ -1609,7 +1620,7 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineOpenPPLHandExpression.h"
+						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.h"
 						>
 					</File>
 					<File

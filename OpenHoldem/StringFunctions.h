@@ -23,4 +23,7 @@ CString Bool2CString(bool b);
 // * with 9 digits precision for reals
 CString Number2CString(double number);
 
+CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);
+CString CStringRemoveRight(CString string, int number_of_characters_to_remove);
+
 #endif INC_STRINGFUNCTIONS_H
