@@ -35,10 +35,10 @@
 
 /////////////////////////////////////
 //card macros
-#define RANK(c)			((c>>4)&0x0f)
-#define SUIT(c)			((c>>0)&0x0f)
-#define ISCARDBACK(c)	(c==0xff)
-#define ISUNKNOWN(c)	(c==0)
+#define RANK(c)			(((c)>>4)&0x0f)
+#define SUIT(c)			(((c)>>0)&0x0f)
+#define ISCARDBACK(c)	((c)==0xff)
+#define ISUNKNOWN(c)	((c)==0)
 /////////////////////////////////////
 
 ////////////////////////////////////
