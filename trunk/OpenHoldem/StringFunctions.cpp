@@ -50,3 +50,17 @@ CString Number2CString(double number)
 	}
 	return result;
 }
+
+CString CStringRemoveLeft(CString string, int number_of_characters_to_remove)
+{
+	int length = string.GetLength();
+	int number_of_character_to_keep = length - number_of_characters_to_remove;
+	return string.Right(number_of_character_to_keep);
+}
+
+CString CStringRemoveRight(CString string, int number_of_characters_to_remove)
+{
+	int length = string.GetLength();
+	int number_of_character_to_keep = length - number_of_characters_to_remove;
+	return string.Left(number_of_character_to_keep);
+}

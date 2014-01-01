@@ -143,6 +143,7 @@ const int k_number_of_flags = 20;
 const int k_number_of_suits_per_deck  =  4;
 const int k_number_of_ranks_per_deck  = 13;
 const int k_rank_ace                  = 14; 
+const int k_rank_ace_low              =  1;
 const int k_rankbits_all_cards_111_111_111_111_110 = 0x7FFE;
 
 // straingts and flushes
@@ -545,37 +546,6 @@ static UINT indicators[] =
 	ID_INDICATOR_STATUS_NIT,
 	ID_INDICATOR_STATUS_ACTION,
 };
-
-enum PokerTrackerGameTypes
-{
-	k_pokertracker_cashgame,
-	k_pokertracker_sng_mtt
-};
-
-enum PokerTrackerBasicStatIDs
-{
-	// voluntary put in preflop	
-	k_pt_VPIP = 0,
-	//...,
-	k_number_of_basic_queries
-};
-
-enum PokerTrackerPositionalPreflopStatIDs
-{
-	// voluntary put in preflop from BU
-	k_pt_VPIP_BU,
-	//...
-};
-
-enum PokerTrackerPositionalAdvancedStatIDs
-{
-
-};
-
-
-
-
-
 
 #endif // _INC_MAGICNUMBERS_H
 
