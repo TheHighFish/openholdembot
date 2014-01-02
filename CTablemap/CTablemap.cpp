@@ -40,6 +40,70 @@ CTablemap::~CTablemap(void)
 	ClearTablemap();
 }
 
+int CTablemap::GetTMSymbol(CString name, int default)
+{
+	// Tablemap Strings
+	// Strings with the same textual value have to evaluate 
+	// to the same numerical value, as they get later processed
+	// by a single function GetTMSymbol(name, default)
+	// Examples: TEXTDEL_NOTHING = TEXTSEL_NOTHING = BETCONF_NOTHING = 5
+	assert(TEXTSEL_SINGLECLICK == BUTTON_SINGLECLICK);
+	assert(TEXTSEL_DOUBLECLICK == BUTTON_DOUBLECLICK);
+	assert(TEXTSEL_NOTHING == TEXTDEL_NOTHING);
+	assert(TEXTSEL_NOTHING == BETCONF_NOTHING);
+
+	SMapCI it = _s$.find(name); 
+	if (it==_s$.end())
+	{
+		// not found
+		return default;
+	}
+	CString value = it->second.text.GetString();
+	CString s = value.MakeLower();
+	// "sgl click" and "single", "dbl click" and "double"
+	// are inconsistent naming, but can now be used interchangeably
+	// as the named constants have the same value
+	if (s == "sgl click") return TEXTSEL_SINGLECLICK;
+	else if (s == "dbl click") return TEXTSEL_DOUBLECLICK;
+	else if (s == "triple click") return TEXTSEL_TRIPLECLICK;
+	else if (s == "click drag") return TEXTSEL_CLICKDRAG;
+	else if (s == "nothing") return TEXTSEL_NOTHING;
+	else if (s == "delete") return TEXTDEL_DELETE;
+	else if (s == "backspace") return TEXTDEL_BACKSPACE; 
+	else if (s == "nothing") return TEXTDEL_NOTHING;
+	else if (s == "enter") return BETCONF_ENTER;
+	else if (s == "click bet") return BETCONF_CLICKBET; 
+	else if (s == "single") return BUTTON_SINGLECLICK; 
+	else if (s == "double") return BUTTON_DOUBLECLICK; 
+	else if (s == "raise") return BETPOT_RAISE; 
+	else if (s == "true") return true;
+	else if (s == "yes") return true; 
+	else if (s != "")
+	{
+		// Assume it is a number
+		int n = strtoul(value, NULL, 10);
+		return n;
+	}
+	else return default;
+}
+
+CString CTablemap::GetTMSymbol(CString name)
+{
+	SMapCI it = _s$.find(name); 
+	if (it==_s$.end()) return "";
+	return it->second.text.GetString();
+}
+
+#define ENT CSLock lock(m_critsec);
+
+const bool CTablemap::i$_insert(const STablemapImage s) 
+{ 
+	ENT 
+	uint32_t index = CreateI$Index(s.name,s.width,s.height,s.pixel);
+	std::pair<IMapI, bool> r=_i$.insert(IPair(index, s)); 
+	return r.second; 
+}
+
 void CTablemap::ClearIMap()
 {
 #ifdef OPENHOLDEM_PROGRAM
