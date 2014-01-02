@@ -21,8 +21,6 @@
 #include "../CCritSec/CCritSec.h"
 #include "../OpenHoldem/MagicNumbers.h"
 
-#define _0b0111 0x07
-
 ///////////////////////////////
 // structs
 ///////////////////////////////
@@ -152,104 +150,32 @@ public:
 	const RMap *r$() { return &_r$; }
 
 public:
-	/* commonly used strings */
-	inline const int nchairs()		{ SMapCI it = _s$.find("nchairs"); 
-									  if (it==_s$.end()) return 10;
-									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
+	// commonly used strings 
+	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
 									  return (n>=2 && n<=10) ? n : 10; }
-	const int swagtextmethod()		{ SMapCI it = _s$.find("swagtextmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
-	const int potmethod()			{ SMapCI it = _s$.find("potmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
-	const int activemethod()		{ SMapCI it = _s$.find("activemethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; }
-	const CString sitename()		{ SMapCI it = _s$.find("sitename"); if (it!=_s$.end()) return it->second.text; else return ""; }
-	const CString network()			{ SMapCI it = _s$.find("network"); if (it!=_s$.end()) return it->second.text; else return ""; }
 
-	const int allinmethod()			{ SMapCI it = _s$.find("allinmethod"); if (it!=_s$.end()) return strtoul(it->second.text.GetString(), NULL, 10); else return 0; } 
+	const int swagtextmethod()		{ return GetTMSymbol("swagtextmethod", 0); }
+	const int potmethod()			{ return GetTMSymbol("potmethod", 0); }
+	const int activemethod()		{ return GetTMSymbol("activemethod", 0); }
+	const int allinmethod()			{ return GetTMSymbol("allinmethod", 0); }
+	const int swagselectionmethod() { return GetTMSymbol("swagselectionmethod", TEXTSEL_DOUBLECLICK); }
+	const int swagdeletionmethod()	{ return GetTMSymbol("swagdeletionmethod", TEXTDEL_DELETE); }
+	const int swagconfirmationmethod() { return GetTMSymbol("swagconfirmationmethod", BETCONF_ENTER); }
+	const int buttonclickmethod()	{ return GetTMSymbol("buttonclickmethod", BUTTON_SINGLECLICK); }
+	const int betpotmethod()		{ return GetTMSymbol("betpotmethod", BETPOT_DEFAULT); }
+	const int handresetmethod()		{ return GetTMSymbol("handresetmethod", HANDRESET_ALL); }
+	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }
+	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
+	const bool balancenumbersonly()	{ return GetTMSymbol("balancenumbersonly", false); }
+	const CString sitename()		{ return GetTMSymbol("sitename"); } 
+	const CString network()			{ return GetTMSymbol("network"); } 
+	const CString chipscrapemethod(){ return GetTMSymbol("chipscrapemethod"); }
+	const CString scraperdll()		{ return GetTMSymbol("scraperdll"); }
 
-	const int swagselectionmethod() { SMapCI it = _s$.find("swagselectionmethod");
-									  if (it==_s$.end()) return TEXTSEL_DOUBLECLICK;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "sgl click") return TEXTSEL_SINGLECLICK;
-									  else if (s == "dbl click") return TEXTSEL_DOUBLECLICK;
-									  else if (s == "triple click") return TEXTSEL_TRIPLECLICK;
-									  else if (s == "click drag") return TEXTSEL_CLICKDRAG;
-									  else if (s == "nothing") return TEXTSEL_NOTHING;
-									  else return TEXTSEL_DOUBLECLICK; }
-
-	const int swagdeletionmethod()	{ SMapCI it = _s$.find("swagdeletionmethod");
-									  if (it==_s$.end()) return TEXTDEL_DELETE;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "delete") return TEXTDEL_DELETE;
-									  else if (s == "backspace") return TEXTDEL_BACKSPACE; 
-									  else if (s == "nothing") return TEXTDEL_NOTHING;
-									  else return TEXTDEL_DELETE; }
-
-	const int swagconfirmationmethod() { SMapCI it = _s$.find("swagconfirmationmethod");
-									  if (it==_s$.end()) return BETCONF_ENTER;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "enter") return BETCONF_ENTER;
-									  else if (s == "click bet") return BETCONF_CLICKBET; 
-									  else if (s == "nothing") return BETCONF_NOTHING;
-									  else return BETCONF_ENTER; }
-
-	const int buttonclickmethod()	{ SMapCI it = _s$.find("buttonclickmethod");
-									  if (it==_s$.end()) return BUTTON_SINGLECLICK;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "single") return BUTTON_SINGLECLICK;
-									  else if (s == "double") return BUTTON_DOUBLECLICK; 
-									  else return BUTTON_SINGLECLICK; }
-
-	const int betpotmethod()		{ SMapCI it = _s$.find("betpotmethod");
-									  if (it==_s$.end()) return BETPOT_DEFAULT;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "raise") return BETPOT_RAISE; 
-									  else return BETPOT_DEFAULT; }
-
-	const int handresetmethod()		{ SMapCI it = _s$.find("handresetmethod"); 
-									  if (it==_s$.end()) return _0b0111;
-									  int n = strtoul(it->second.text.GetString(), NULL, 10); 
-									  return (n>=1 && n<=_0b0111) ? n : _0b0111; }
-
-	const int HandNumberMinExpectedDigits() 
-	{ 
-		SMapCI it = _s$.find("handnumber_min_expected_digits"); 
-		if (it!=_s$.end()) 
-			return strtoul(it->second.text.GetString(), NULL, 10); 
-		else 
-			return 0; 
-	} 
-
-	const int HandNumberMaxExpectedDigits() 
-	{ 
-		SMapCI it = _s$.find("handnumber_max_expected_digits"); 
-		if (it!=_s$.end()) 
-			return strtoul(it->second.text.GetString(), NULL, 10); 
-		else 
-			return 0; 
-	} 
-
-	const bool balancenumbersonly()	{ SMapCI it = _s$.find("balancenumbersonly"); 
-									  if (it==_s$.end()) return false;
-									  CString t = it->second.text;
-									  CString s = t.MakeLower();
-									  if (s == "true") return true;
-									  else if (s == "yes") return true; 
-									  else return false; }
-
-	const CString chipscrapemethod(){ SMapCI it = _s$.find("chipscrapemethod"); 
-									  if (it==_s$.end()) return "";
-									  else return it->second.text; }
-
-	const CString scraperdll()		{ SMapCI it = _s$.find("scraperdll"); if (it!=_s$.end()) return it->second.text; else return ""; }
-
-	const bool valid() { return _valid; }
+public:
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }
-
+	const bool valid() { return _valid; }
 
 public:
 #define ENT CSLock lock(m_critsec);
@@ -265,7 +191,7 @@ public:
 	const bool	t$_insert(const int i, const STablemapFont s) { ENT if (i>=0 && i<k_max_number_of_font_groups_in_tablemap) { std::pair<TMapI, bool> r=_t$[i].insert(TPair(s.hexmash, s)); return r.second; } else return false; }
 	const bool	p$_insert(const int i, const STablemapHashPoint s) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::pair<PMapI, bool> r=_p$[i].insert(PPair(((s.x&0xffff)<<16) | (s.y&0xffff), s)); return r.second; } else return false; }
 	const bool	h$_insert(const int i, const STablemapHashValue s) { ENT if (i>=0 && i<k_max_number_of_hash_groups_in_tablemap) { std::pair<HMapI, bool> r=_h$[i].insert(HPair(s.hash, s)); return r.second; } else return false; }
-	const bool	i$_insert(const STablemapImage s) { ENT std::pair<IMapI, bool> r=_i$.insert(IPair(CreateI$Index(s.name,s.width,s.height,s.pixel), s)); return r.second; }
+	const bool	i$_insert(const STablemapImage s);
 
 	const size_t	z$_erase(CString s) { ENT std::map<int, int>::size_type c = _z$.erase(s); return c; }
 	const size_t	s$_erase(CString s) { ENT std::map<int, int>::size_type c = _s$.erase(s); return c; }
@@ -285,6 +211,8 @@ private:
 	void ClearIMap();
 	void WriteSectionHeader(CArchive& ar, CString header);
 	void WarnAboutGeneralTableMapError(int error_code, int line);
+	int GetTMSymbol(CString name, int default);
+	CString GetTMSymbol(CString name);
 
 private:
 	// private variables - use public accessors and public mutators to address these
