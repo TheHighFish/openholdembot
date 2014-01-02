@@ -12,8 +12,9 @@
 //***************************************************************************** 
 
 #include <stdafx.h>
-#include "NumericalFunctions.h"
 #include "StringFunctions.h"
+
+#include "NumericalFunctions.h"
 
 bool StringIsExactMatch(const char *string_a, const char *string_b)
 {

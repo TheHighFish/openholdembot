@@ -350,9 +350,8 @@ void write_logautoplay(const char * action)
     int			nCards;
     CString		fcra_formula_status;
 
-	int			sym_userchair = (int) p_symbol_engine_userchair->userchair();
-	int			betround = (int) p_betround_calculator->betround();
-
+	int			userchair = p_symbol_engine_userchair->userchair();
+	int			betround  = p_betround_calculator->betround();
 
 	if (!preferences.trace_enabled())
 		return;
@@ -390,10 +389,10 @@ void write_logautoplay(const char * action)
 		{
 			for (int i=0; i<=1; i++) 
 			{
-				card = StdDeck_cardString(p_scraper->card_player(sym_userchair, i));
+				card = StdDeck_cardString(p_scraper->card_player(userchair, i));
 				temp.Format("%s", card);
 				pcards.Append(temp);
-				CardMask_SET(Cards, p_scraper->card_player(sym_userchair, i));
+				CardMask_SET(Cards, p_scraper->card_player(userchair, i));
 				nCards++;
 			}
 		}
@@ -462,7 +461,6 @@ void write_logautoplay(const char * action)
         else
             bestaction = "Check/Fold";
 
-		int userchair = p_symbol_engine_userchair->userchair();
         // fcra_seen
 		CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
         // fcra formula status
@@ -477,27 +475,29 @@ void write_logautoplay(const char * action)
 		// The old WinHoldem format was a complete mess
 		fprintf(log_fp, get_time(nowtime));
 		fprintf(log_fp, "**** Basic Info *********************************************\n");
-		fprintf(log_fp, "  Version:      $s\n",    VERSION_TEXT); 
-		fprintf(log_fp, "  Chairs:		 %d\n",    p_tablemap->nchairs());
-		fprintf(log_fp, "  Userchair:    %d\n",    userchair);
-		fprintf(log_fp, "  Holecards:    %s\n",    pcards.GetString());
-		fprintf(log_fp, "  Community:    %s\n",    comcards.GetString());
-		fprintf(log_fp, "  Rank:         %s\n",    rank.GetString());
-		fprintf(log_fp, "  Hand:         %s\n",    pokerhand.GetString());
-		fprintf(log_fp, "  PrWin:        %d\n",    (iter_vars.prwin() * 1000));
-		fprintf(log_fp, "  PrLos:        %d\n",    (iter_vars.prlos() * 1000));
-		fprintf(log_fp, "  PrTie:        %d\n",    (iter_vars.prtie() * 1000));
-		fprintf(log_fp, "  NOpponents:   %d\n",    p_symbol_engine_prwin->nopponents_for_prwin());
-		fprintf(log_fp, "  Iterations:   %d\n",    iter_vars.nit());
-		fprintf(log_fp, "  Balance:      %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
-		fprintf(log_fp, "  Betsize:      %9.2f\n", p_symbol_engine_tablelimits->bet());
-		fprintf(log_fp, "  Call:         %9.2f\n", p_symbol_engine_chip_amounts->call());
-		fprintf(log_fp, "  Pot:          %9.2f\n", p_symbol_engine_chip_amounts->pot());
-		fprintf(log_fp, "  f$betsize:    %9.2f\n", p_autoplayer_functions->f$betsize());
-		fprintf(log_fp, "  Formulas:     %s\n",    fcra_formula_status.GetString());
-		fprintf(log_fp, "  Buttons:      %s\n",    fcra_seen.GetString());
-		fprintf(log_fp, "  Best action:  %s\n",    bestaction.GetString());
-		fprintf(log_fp, "  Action taken: %s\n",    action);
+		fprintf(log_fp, "  Version:       %s\n",    VERSION_TEXT); 
+		fprintf(log_fp, "  Chairs:		  %6d\n",   p_tablemap->nchairs());
+		fprintf(log_fp, "  Userchair:     %6d\n",   userchair);
+		fprintf(log_fp, "  Holecards:     %s\n",    pcards.GetString());
+		fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
+		fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
+		fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
+		fprintf(log_fp, "  PrWin:         %6d\n",   (iter_vars.prwin() * 1000));
+		fprintf(log_fp, "  PrLos:         %6d\n",   (iter_vars.prlos() * 1000));
+		fprintf(log_fp, "  PrTie:         %6d\n",   (iter_vars.prtie() * 1000));
+		fprintf(log_fp, "  NOpponents:    %6d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
+		fprintf(log_fp, "  Iterations:    %6d\n",   iter_vars.nit());
+		fprintf(log_fp, "  My balance:    %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
+		fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
+		fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
+		fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
+		fprintf(log_fp, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
+		fprintf(log_fp, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
+		fprintf(log_fp, "  f$betsize:     %9.2f\n", p_autoplayer_functions->f$betsize());
+		fprintf(log_fp, "  Formulas:      %s\n",    fcra_formula_status.GetString());
+		fprintf(log_fp, "  Buttons:       %s\n",    fcra_seen.GetString());
+		fprintf(log_fp, "  Best action:   %s\n",    bestaction.GetString());
+		fprintf(log_fp, "  Action taken:  %s\n",    action);
 
 		if (preferences.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
 		{
