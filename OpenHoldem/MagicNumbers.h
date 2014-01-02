@@ -373,6 +373,12 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define MAX_CHIPS_PER_STACK	20
 #define MAX_CHIP_STACKS		10
 
+// Tablemap Strings
+// Strings with the same textual value have to evaluate 
+// to the same numerical value, as they get later processed
+// by a single function GetTMSymbol(name, default)
+// Examples: TEXTDEL_NOTHING = TEXTSEL_NOTHING = BETCONF_NOTHING = 5
+
 // SWAG options - text selectioin
 const int TEXTSEL_SINGLECLICK =	1;
 const int TEXTSEL_DOUBLECLICK =	2;
@@ -383,21 +389,24 @@ const int TEXTSEL_NOTHING	  =	5;
 // SWAG options - text deletion
 const int TEXTDEL_DELETE	 = 1;
 const int TEXTDEL_BACKSPACE	 = 2;
-const int TEXTDEL_NOTHING	 = 3;
+const int TEXTDEL_NOTHING	 = TEXTSEL_NOTHING;
 
 // SWAG options - bet confirmation
 const int BETCONF_ENTER		 = 1;
 const int BETCONF_CLICKBET	 = 2;
-const int BETCONF_NOTHING	 = 3;
+const int BETCONF_NOTHING	 = TEXTSEL_NOTHING;
 
 // Button click options
-#define BUTTON_SINGLECLICK	1
-#define BUTTON_DOUBLECLICK	2
+const int BUTTON_SINGLECLICK = TEXTSEL_SINGLECLICK;
+const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;
 
 // Hand reset detection options
-#define HANDRESET_DEALER	0x01	// 0b0001
-#define HANDRESET_HANDNUM	0x02	// 0b0010
-#define HANDRESET_CARDS		0x04	// 0b0100
+const int HANDRESET_DEALER	= 0x01;	// 0b0001
+const int HANDRESET_HANDNUM	= 0x02;	// 0b0010
+const int HANDRESET_CARDS	= 0x04;	// 0b0100
+const int HANDRESET_ALL     = HANDRESET_DEALER
+							| HANDRESET_HANDNUM
+							| HANDRESET_CARDS;
 
 // Autoplayer prevaction
 #define PREVACT_FOLD		-1
