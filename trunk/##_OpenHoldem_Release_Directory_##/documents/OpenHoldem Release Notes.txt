@@ -1,18 +1,5 @@
-v4.4.0 2014-01-06
+v4.3.2 2014-01-06
 ==================
-NEW STUFF:
-- New symbol board$xyz to provide a more easy way to check the board-texture
-  Some examples how it might look:
-    * board$ATT
-	* board$Ah3d
-	* board$QJTSuited
-  Cases don't matter after the doller-sign.
-  This symbol got mainly developped for OpenPPl, 
-  but can also be used at OH-script-level.
-  [THF]
-- New symbol hand$xyz, just like board$xyz above.
-  [THF]
-
 BUG FIXES:
 - The dealer-button and sometimes some of the common cards 
   were missing after we improved the GUI in OH 4.3.0.
@@ -22,6 +9,12 @@ BUG FIXES:
 - The option "Engage Autoplayer On Connection" had been broken
   and has been fixed again. Thanks to for reporting.
   [THF]  
+- OpenHoldem could crash when entering a betsize,
+  as one debug-statement had a wrong format-string
+  that didin't fit to the parameter.
+  This problem has now been fixed.
+  Thanks to for reporting.
+  [THF]
   
 MAINTENANCE:
 - The table-positioner now moves the lobby to the top-left-position,
