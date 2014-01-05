@@ -2601,7 +2601,7 @@ void CManualModeDlg::SetAllPossibleButtons()
 	if (userchair < 0 || !MyTurnPossible() || MyBalance() <= 0)
 	{
 		MessageBox("Not your turn, Sir.\n"
-			"Please set up a valid situation first"
+			"Please set up a valid situation first\n"
 			"(e.g. click \"Macro\").\n",
 			"Error", 0);
 		DisableAllActionButtons();
