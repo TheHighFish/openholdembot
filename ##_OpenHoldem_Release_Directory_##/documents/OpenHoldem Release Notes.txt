@@ -7,13 +7,14 @@ BUG FIXES:
   Thanks to R2D3 and Pawko for reporting and providing screenshots.
   [THF]
 - The option "Engage Autoplayer On Connection" had been broken
-  and has been fixed again. Thanks to for reporting.
+  and has been fixed again. Thanks to R2D2 for reporting.
   [THF]  
 - OpenHoldem could crash when entering a betsize,
   as one debug-statement had a wrong format-string
   that didin't fit to the parameter.
   This problem has now been fixed.
-  Thanks to for reporting.
+  Thanks to Mot_real for reporting 
+  and providing good info to locate the problem.
   [THF]
   
 MAINTENANCE:
