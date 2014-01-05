@@ -19,6 +19,7 @@ s$allinmethod               2
 s$nchairs                   10
 s$sitename                  openholdem
 s$swagtextmethod            2
+s$swagconfirmationmethod    Click Bet
 s$titletext                 Poker
 s$ttlimits                  ^*- ^L - blinds ^s/^b - ante ^a
 s$ttlimits0                 ^*- ^L tourney - blinds ^s/^b - ante ^a
