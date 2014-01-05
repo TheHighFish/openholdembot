@@ -98,9 +98,19 @@ CString CTablemap::GetTMSymbol(CString name)
 
 const bool CTablemap::i$_insert(const STablemapImage s) 
 { 
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] i$_insert\n");
+#endif
 	ENT 
 	uint32_t index = CreateI$Index(s.name,s.width,s.height,s.pixel);
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Index %i\n", index);
+#endif
 	std::pair<IMapI, bool> r=_i$.insert(IPair(index, s)); 
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Image inserted\n");
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Success: %i\n", r.second);
+#endif
 	return r.second; 
 }
 
