@@ -206,7 +206,11 @@ BOOL COpenHoldemApp::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to open last reacently used file\n");
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] m_pMainWnd = %i\n",
+		m_pMainWnd);
+
+
+	write_log(preferences.debug_alltherest(), "[OpenHoldem] Going to open last recently used file\n");
 	// Open the most recently saved file. (First on the MRU list.) Get the last
 	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
@@ -238,6 +242,8 @@ BOOL COpenHoldemApp::InitInstance()
 		write_log(preferences.debug_alltherest(), "[OpenHoldem] Dispatching command-line failed\n");
 		return FALSE;
 	}
+
+	//while (m_pMainWnd == 0) Sleep(100); //!!!
 
 	write_log(preferences.debug_alltherest(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);

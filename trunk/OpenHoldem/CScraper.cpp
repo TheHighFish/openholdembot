@@ -330,8 +330,9 @@ void CScraper::ScrapeCommonCards()
 		// try r$c0cardfaceX region first
 		s.Format("c0cardface%d", i);
 		r_iter1 = p_tablemap->r$()->find(s.GetString());
-		if (r_iter1 != p_tablemap->r$()->end() && ProcessRegion(r_iter1))
+		if (r_iter1 != p_tablemap->r$()->end()) 
 		{
+			ProcessRegion(r_iter1);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter1->second.cur_bmp);
 			trans.DoTransform(r_iter1, hdcCompatible, &cardstr);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -754,8 +755,9 @@ void CScraper::ScrapeName(int chair)
 	// Player name uname
 	s.Format("uname");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated && ProcessRegion(r_iter) )
+	if (r_iter != p_tablemap->r$()->end() && p_symbol_engine_userchair->userchair_confirmed() && chair==sym_chair && is_seated)
 	{
+		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -769,8 +771,9 @@ void CScraper::ScrapeName(int chair)
 	// Player name uXname
 	s.Format("u%dname", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && ProcessRegion(r_iter) )
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape)
 	{
+		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -784,8 +787,9 @@ void CScraper::ScrapeName(int chair)
 	// Player name pXname
 	s.Format("p%dname", chair);
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated && ProcessRegion(r_iter))
+	if (r_iter != p_tablemap->r$()->end() && !got_new_scrape && is_seated)
 	{
+		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		ret = trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -1123,8 +1127,9 @@ void CScraper::DoBasicScrapeButtons()
 		// Button state iXstate
 		s.Format("i%dstate", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
+		if (r_iter != p_tablemap->r$()->end())
 		{
+			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -1144,8 +1149,9 @@ void CScraper::DoBasicScrapeButtons()
 		// i86X button state i86Xstate
 		s.Format("i86%dstate", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
+		if (r_iter != p_tablemap->r$()->end())
 		{
+			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -1168,8 +1174,9 @@ void CScraper::DoBasicScrapeButtons()
 
 		s.Format("i%dlabel", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
+		if (r_iter != p_tablemap->r$()->end())
 		{
+			ProcessRegion(r_iter);
 			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			trans.DoTransform(r_iter, hdcCompatible, &text);
 			SelectObject(hdcCompatible, old_bitmap);
@@ -1185,8 +1192,9 @@ void CScraper::DoBasicScrapeButtons()
 		{
 			s.Format("i%dlabel%d", j, k);
 			r_iter = p_tablemap->r$()->find(s.GetString());
-			if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
+			if (r_iter != p_tablemap->r$()->end())
 			{
+				ProcessRegion(r_iter);
 				old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 				trans.DoTransform(r_iter, hdcCompatible, &text);
 				SelectObject(hdcCompatible, old_bitmap);
@@ -1236,7 +1244,7 @@ void CScraper::DoBasicScrapeButtons()
 	}
 
 	// When using MM, grab i5state for PT network //!!
-	if ((bool) p_symbol_engine_autoplayer->ismanual())
+	if (p_symbol_engine_autoplayer->ismanual())
 	{
 		p_tablemap->set_network(p_scraper->button_state(5));
 	}
@@ -1244,8 +1252,9 @@ void CScraper::DoBasicScrapeButtons()
 	// i86 button state
 	s.Format("i86state");
 	r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && ProcessRegion(r_iter))
+	if (r_iter != p_tablemap->r$()->end())
 	{
+		ProcessRegion(r_iter);
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, &text);
 		SelectObject(hdcCompatible, old_bitmap);

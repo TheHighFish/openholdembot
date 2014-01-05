@@ -163,10 +163,10 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 { 
 	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
 	{
-		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
+		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		if (i == k_autoplayer_function_betsize)
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %.2f\n",
 				k_standard_function_names[i], function_result);
 		}
 		else
