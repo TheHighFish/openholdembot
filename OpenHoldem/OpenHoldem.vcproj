@@ -365,18 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CScraper.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CScraperAccess.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CScraperPreprocessor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CStringMatch.cpp"
 				>
 			</File>
@@ -1175,6 +1163,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Scraper"
+				>
+				<File
+					RelativePath=".\CScraper.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CScraperAccess.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CScraperPreprocessor.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1243,18 +1247,6 @@
 			</File>
 			<File
 				RelativePath=".\crc32hash.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CScraper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CScraperAccess.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CScraperPreprocessor.h"
 				>
 			</File>
 			<File
@@ -1498,22 +1490,6 @@
 				>
 				<File
 					RelativePath="..\StructsDefines\structs_defines.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="CTablemap"
-				>
-				<File
-					RelativePath="..\CTablemap\CTablemap.h"
-					>
-				</File>
-				<File
-					RelativePath="..\CTablemap\CTableMapAccess.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CTablemapVersionChecker.h"
 					>
 				</File>
 			</Filter>
@@ -1942,6 +1918,38 @@
 				</File>
 				<File
 					RelativePath=".\CReplayFramesCounter.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Scraper"
+				>
+				<File
+					RelativePath=".\CScraper.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CScraperAccess.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CScraperPreprocessor.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\CTablemap\CTableMapAccess.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTablemapVersionChecker.h"
 					>
 				</File>
 			</Filter>

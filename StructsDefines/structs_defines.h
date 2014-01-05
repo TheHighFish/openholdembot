@@ -100,10 +100,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define MAX_CHIP_STACKS		10
 
 // Button click options
-#define BUTTON_SINGLECLICK	1
-#define BUTTON_DOUBLECLICK	2
-
-// Button click options
 #define BETPOT_DEFAULT	0
 #define BETPOT_RAISE	1
 

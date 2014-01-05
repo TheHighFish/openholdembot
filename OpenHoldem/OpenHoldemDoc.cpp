@@ -97,32 +97,6 @@ BOOL COpenHoldemDoc::OnNewDocument()
 // COpenHoldemDoc serialization
 void COpenHoldemDoc::Serialize(CArchive& ar) 
 {
-	// Extra caution, in case we want to load a formula,
-	// while the autoplayer is engaged.
-	// This currently can only happen via the MRU-list.
-	// The alternative way would be to disable that list...
-	//
-	// MainFrame.cpp:
-	// ON_UPDATE_COMMAND_UI_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, &CMainFrame::OnUpdateLRUList)
-	//
-	// void CMainFrame::OnUpdateLRUList(CCmdUI *pCmdUI)
-	// {
-	//	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
-	// }
-	//
-	// Unfortunatelly this does not work, 
-	// but removes the list and replaces it once with the default: "Recent file".
-	//
-	// And there's very little information about both
-	// ON_UPDATE_COMMAND_UI_RANGE and temporary disabling of MRU-lists.
-	//
-	// So we decided to go that route.
-	//
-	if (p_autoplayer->autoplayer_engaged())
-	{
-		OH_MessageBox_Interactive("Can't load a formula while autoplayer engaged.", "ERROR", 0);
-		return;
-	}
 	// Writing a file
 	if (ar.IsStoring()) 
 	{
@@ -134,6 +108,32 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	// Reading a file
 	else 
 	{
+		// Extra caution, in case we want to load a formula,
+		// while the autoplayer is engaged.
+		// This currently can only happen via the MRU-list.
+		// The alternative way would be to disable that list...
+		//
+		// MainFrame.cpp:
+		// ON_UPDATE_COMMAND_UI_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, &CMainFrame::OnUpdateLRUList)
+		//
+		// void CMainFrame::OnUpdateLRUList(CCmdUI *pCmdUI)
+		// {
+		//	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+		// }
+		//
+		// Unfortunatelly this does not work, 
+		// but removes the list and replaces it once with the default: "Recent file".
+		//
+		// And there's very little information about both
+		// ON_UPDATE_COMMAND_UI_RANGE and temporary disabling of MRU-lists.
+		//
+		// So we decided to go that route.
+		//
+		if (p_autoplayer->autoplayer_engaged())
+		{
+			OH_MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
+			return;
+		}
         // The formula editor gets now handled automatically (Rev. 1425)
 
 		// Read ohf / whf file
