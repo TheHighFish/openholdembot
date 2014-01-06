@@ -20,8 +20,8 @@ CString Bool2CString(bool b);
 
 // Converts any number to a CString
 // * without digits for integers
-// * with 9 digits precision for reals
-CString Number2CString(double number);
+// * with N digits precision for reals
+CString Number2CString(double number, int default_precision=2);
 
 CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);
 CString CStringRemoveRight(CString string, int number_of_characters_to_remove);

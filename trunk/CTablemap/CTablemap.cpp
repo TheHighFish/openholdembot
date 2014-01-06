@@ -130,6 +130,9 @@ void CTablemap::ClearIMap()
 	}
 	// Remove the contents of the map.
 	_i$.clear();
+#ifdef OPENHOLDEM_PROGRAM
+	write_log(preferences.debug_tablemap_loader(), "[CTablemap] ClearIMap finished\n");
+#endif
 }
 
 void CTablemap::ClearTablemap()

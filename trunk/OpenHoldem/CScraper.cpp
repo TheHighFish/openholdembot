@@ -314,6 +314,33 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 	return false;
 }
 
+bool CScraper::EvaluateRegion(CString name, CString *result)
+{
+	__HDC_HEADER
+	CTransform	trans;
+	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
+	if (r_iter != p_tablemap->r$()->end()) 
+	{
+		ProcessRegion(r_iter);
+		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
+		trans.DoTransform(r_iter, hdcCompatible, result);
+		SelectObject(hdcCompatible, old_bitmap);
+		__HDC_FOOTER
+		return true;
+	}
+	__HDC_FOOTER
+	return false;
+}
+
+#define CheckForAndRememberChanges(old_value, new_value, change_ID) \
+{ \
+	if (old_value != new_value) \
+	{ \
+		old_value = new_value; \
+		_scrape_something_changed |= change_ID; \
+	} \
+}
+
 void CScraper::ScrapeCommonCards()
 {
 	__HDC_HEADER
@@ -346,13 +373,7 @@ void CScraper::ScrapeCommonCards()
 			{
 				card = CARD_NOCARD;
 			}
-
-			if (_card_common_last[i] != card)
-			{
-				_card_common_last[i] = card;
-				_scrape_something_changed |= COM_CARD_CHANGED;
-			}
-
+			CheckForAndRememberChanges(_card_common_last[i], card, COM_CARD_CHANGED);
 			set_card_common(i, card);
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0cardface%d, result %s\n", i, cardstr.GetString());
@@ -387,12 +408,7 @@ void CScraper::ScrapeCommonCards()
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 			}
 
-			if (_card_common_last[i] != card)
-			{
-				_card_common_last[i] = card;
-				_scrape_something_changed |= COM_CARD_CHANGED;
-			}
-
+			CheckForAndRememberChanges(_card_common_last[i], card, COM_CARD_CHANGED);
 			set_card_common(i, card);
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0cardface%drank/c0cardface%dsuit, result %s\n", i, i, cardstr.GetString());
@@ -437,11 +453,7 @@ void CScraper::ScrapePlayerCards(int chair)
 			{
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
-				if (_card_player_last[chair][j] != card)
-				{
-					_card_player_last[chair][j] = card;
-					_scrape_something_changed |= PL_CARD_CHANGED;
-				}
+				CheckForAndRememberChanges(_card_player_last[chair][j], card, PL_CARD_CHANGED);
 				set_card_player(chair, j, card);
 			}
 
@@ -502,11 +514,7 @@ void CScraper::ScrapePlayerCards(int chair)
 				cardstr = rankstr + suitstr;
 				StdDeck_stringToCard((char *) cardstr.GetString(), (int *) &card);
 
-				if (_card_player_last[chair][j] != card)
-				{
-					_card_player_last[chair][j] = card;
-					_scrape_something_changed |= PL_CARD_CHANGED;
-				}
+				CheckForAndRememberChanges(_card_player_last[chair][j], card, PL_CARD_CHANGED); 
 				set_card_player(chair, j, card);
 			}
 
@@ -605,12 +613,7 @@ void CScraper::ScrapeSeated(int chair)
 
 		write_log(preferences.debug_scraper(), "[CScraper] u%dseated, result %s\n", chair, result.GetString());
 	}
-
-	if (_seated_last[chair] != _seated[chair])
-	{
-		_seated_last[chair] = _seated[chair];
-		_scrape_something_changed |= SEATED_CHANGED;
-	}
+	CheckForAndRememberChanges(_seated_last[chair], _seated[chair], SEATED_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -661,11 +664,7 @@ void CScraper::ScrapeActive(int chair)
 		write_log(preferences.debug_scraper(), "[CScraper] u%dactive, result %s\n", chair, result.GetString());
 	}
 
-	if (_active_last[chair] != _active[chair])
-	{
-		_active_last[chair] = _active[chair];
-		_scrape_something_changed |= ACTIVE_CHANGED;
-	}
+	CheckForAndRememberChanges(_active_last[chair], _active[chair], ACTIVE_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -722,11 +721,7 @@ void CScraper::ScrapeDealer(int chair)
 
 	set_dealer(chair, found_dealer);
 
-	if (_dealer_last[chair] != _dealer[chair])
-	{
-		_dealer_last[chair] = _dealer[chair];
-		_scrape_something_changed |= DEALER_CHANGED;
-	}
+	CheckForAndRememberChanges(_dealer_last[chair], _dealer[chair], DEALER_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -810,11 +805,7 @@ void CScraper::ScrapeName(int chair)
 		set_name_good_scrape(chair, false);
 	}
 
-	if (_name_last[chair] != _player_name[chair])
-	{
-		_name_last[chair] = _player_name[chair];
-		_scrape_something_changed |= NAME_CHANGED;
-	}
+	CheckForAndRememberChanges(_name_last[chair], _player_name[chair], NAME_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -1005,12 +996,7 @@ void CScraper::ScrapeBalance(int chair)
 	{
 		set_balance_good_scrape(chair, false);
 	}
-
-	if (_balance_last[chair] != _player_balance[chair])
-	{
-		_balance_last[chair] = _player_balance[chair];
-		_scrape_something_changed |= BALANCE_CHANGED;
-	}
+	CheckForAndRememberChanges(_balance_last[chair], _player_balance[chair], BALANCE_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -1084,12 +1070,7 @@ void CScraper::ScrapeBet(int chair)
 
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);
 	}
-
-	if (_playerbet_last[chair] != _player_bet[chair])
-	{
-		_playerbet_last[chair] = _player_bet[chair];
-		_scrape_something_changed |= PLAYERBET_CHANGED;
-	}
+	CheckForAndRememberChanges(_player_bet[chair], _player_bet[chair], PLAYERBET_CHANGED);
 
 	__HDC_FOOTER
 }
@@ -1137,12 +1118,7 @@ void CScraper::DoBasicScrapeButtons()
 			if (text!="")
 				set_button_state(j, text);
 
-			if (_button_state_last[j] != _button_state[j])
-			{
-				_button_state_last[j] = _button_state[j];
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
-
+			CheckForAndRememberChanges(_button_state_last[j], _button_state[j], BUTTONSTATE_CHANGED);
 			write_log(preferences.debug_scraper(), "[CScraper] i%dstate, result %s\n", j, text.GetString());
 		}
 
@@ -1159,11 +1135,7 @@ void CScraper::DoBasicScrapeButtons()
 			if (text!="")
 				set_i86X_button_state(j, text);
 
-			if (_i86X_button_state_last[j] != _i86X_button_state[j])
-			{
-				_i86X_button_state_last[j] = _i86X_button_state[j];
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
+			CheckForAndRememberChanges(_i86X_button_state_last[j], _i86X_button_state[j], BUTTONSTATE_CHANGED);
 
 			write_log(preferences.debug_scraper(), "[CScraper] i86%dstate, result %s\n", j, text.GetString());
 		}
@@ -1206,11 +1178,7 @@ void CScraper::DoBasicScrapeButtons()
 			}
 		}
 
-		if (_button_label_last[j] != _button_label[j])
-		{
-			_button_label_last[j] = _button_label[j];
-			_scrape_something_changed |= BUTTONLABEL_CHANGED;
-		}
+		CheckForAndRememberChanges(_button_label_last[j], _button_label[j], BUTTONSTATE_CHANGED);
 	}
 
 	for (int i = 0; i < k_max_betpot_buttons; i++)
@@ -1233,11 +1201,7 @@ void CScraper::DoBasicScrapeButtons()
 			if (text!="")
 				_betpot_button_state[i] = text;
 
-			if (_betpot_button_state_last[i] != _betpot_button_state[i])
-			{
-				_betpot_button_state_last[i] = _betpot_button_state[i];
-				_scrape_something_changed |= BUTTONSTATE_CHANGED;
-			}
+			CheckForAndRememberChanges(_betpot_button_state_last[j], _betpot_button_state[j], BUTTONSTATE_CHANGED);
 
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result %s\n", k_betpot_button_name[i], text.GetString());
 		}
@@ -1264,11 +1228,7 @@ void CScraper::DoBasicScrapeButtons()
 		else
 			set_i86_button_state("false");
 
-		if (_i86_button_state_last != _i86_button_state)
-		{
-			_i86_button_state_last = _i86_button_state;
-			_scrape_something_changed |= BUTTONSTATE_CHANGED;
-		}
+		CheckForAndRememberChanges(_i86_button_state_last, _i86_button_state, BUTTONSTATE_CHANGED);
 
 		write_log(preferences.debug_scraper(), "[CScraper] i86state, result %s\n", text.GetString());
 	}
@@ -1358,11 +1318,7 @@ void CScraper::ScrapePots()
 			{
 				set_pot(j, trans.StringToMoney(text));
 
-				if (_pot_last[j] != _pot[j])
-				{
-					_pot_last[j] = _pot[j];
-					_scrape_something_changed |= POT_CHANGED;
-				}
+				CheckForAndRememberChanges(_pot_last[j], _pot[j], POT_CHANGED);
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0pot%d, result %s\n", j, text.GetString());
@@ -1386,11 +1342,7 @@ void CScraper::ScrapePots()
 			CScraperPreprocessor::PreprocessMonetaryString(&t);
 			set_pot(j, strtod(t.GetString(), 0));
 
-			if (_pot_last[j] != _pot[j])
-			{
-				_pot_last[j] = _pot[j];
-				_scrape_something_changed |= POT_CHANGED;
-			}
+			CheckForAndRememberChanges(_pot_last[j], _pot[j], POT_CHANGED);
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0pot%dchipXY, result %f\n", j, _pot[j]);
 
@@ -1457,12 +1409,7 @@ void CScraper::ScrapeLimits()
 
 		set_istournament(istournament);
 
-		if (_istournament_last != _s_limit_info.istournament)
-		{
-			_istournament_last = _s_limit_info.istournament;
-			_scrape_something_changed |= LIMITS_CHANGED;
-		}
-
+		CheckForAndRememberChanges(_istournament_last, istournament, LIMITS_CHANGED);
 		write_log(preferences.debug_scraper(), "[CScraper] c0istournament, result %s\n", text.GetString());
 	}
 
@@ -1719,66 +1666,17 @@ void CScraper::ScrapeLimits()
 		}
 	}
 
-
-	// see if anything changed
-	log_blind_change = false;
-
-	if (_limit_last != _s_limit_info.limit)
-	{
-		_limit_last = _s_limit_info.limit;
-		_scrape_something_changed |= LIMITS_CHANGED;
-	}
-
-	if (_sblind_last != _s_limit_info.sblind)
-	{
-		_sblind_last = _s_limit_info.sblind;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_bblind_last != _s_limit_info.bblind)
-	{
-		_bblind_last = _s_limit_info.bblind;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_sb_bb_last != _s_limit_info.sb_bb)
-	{
-		_sb_bb_last = _s_limit_info.sb_bb;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_bb_BB_last != _s_limit_info.bb_BB)
-	{
-		_bb_BB_last = _s_limit_info.bb_BB;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_bbet_last != _s_limit_info.bbet)
-	{
-		_bbet_last = _s_limit_info.bbet;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_ante_last != _s_limit_info.ante)
-	{
-		_ante_last = _s_limit_info.ante;
-		_scrape_something_changed |= LIMITS_CHANGED;
-		log_blind_change = true;
-	}
-
-	if (_handnumber_last != _s_limit_info.handnumber)
-	{
-		_handnumber_last = _s_limit_info.handnumber;
-		_scrape_something_changed |= LIMITS_CHANGED;
-	}
+	CheckForAndRememberChanges(_limit_last, _s_limit_info.limit, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_sblind_last, _s_limit_info.sblind, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_bblind_last, _s_limit_info.bblind, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_sb_bb_last, _s_limit_info.sb_bb, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_bb_BB_last, _s_limit_info.bb_BB, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_bbet_last, _s_limit_info.bbet, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_ante_last, _s_limit_info.ante, LIMITS_CHANGED);
+	CheckForAndRememberChanges(_handnumber_last, _s_limit_info.handnumber, HANDNUMBER_CHANGED);
 
 	// log the stakes change
-	if (log_blind_change)
+	if (_scrape_something_changed & LIMITS_CHANGED)
 	{
 		write_log(k_always_log_basic_information, 
 			"\n"

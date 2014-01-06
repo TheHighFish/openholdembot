@@ -32,10 +32,10 @@ struct SLimitInfo
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
+	bool istournament;
 	CString	handnumber;
 	double	sb_bb;
 	double	bb_BB;
-	bool	istournament;
 
 	bool	found_sblind;
 	bool	found_bblind;
@@ -117,8 +117,8 @@ public:
 	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d;}
 	void	set_ante(const double d) { ENT _s_limit_info.ante = d;}
 	void	set_limit(const int i) { ENT _s_limit_info.limit = i;}
+	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b; }
 	void	set_handnumber(const CString s) { ENT _s_limit_info.handnumber = s;}
-	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b;}
 	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
 	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}
 	void	set_found_sblind(const bool b) { ENT _s_limit_info.found_sblind = b;}
@@ -189,6 +189,7 @@ private:
 	void ScrapeLimits();
 	const CString GetHandnumFromString(const CString t);
 	bool ProcessRegion(RMapCI r_iter);
+	bool EvaluateRegion(CString name, CString *result);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
 	const double DoChipScrape(RMapCI r_iter);
 
@@ -219,9 +220,9 @@ private:
 
 	// pot
 	double			_pot_last[k_max_number_of_pots];
-	// tournament
-	bool			_istournament_last;
+
 	// limits
+	bool			_istournament_last;
 	int				_limit_last;
 	double			_sblind_last, _bblind_last, _sb_bb_last, _bb_BB_last, _bbet_last, _ante_last;
 

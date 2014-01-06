@@ -18,7 +18,7 @@
 #include <Math.h>
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
-
+#include "..\OpenHoldem\StringFunctions.h"
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../OpenHoldem/debug.h"
@@ -961,11 +961,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			}
 
 			number = StringToMoney(token);
-
-			if (number == (int) number)
-				temp.Format("%.0f", number);
-			else
-				temp.Format("%.2f", number);
+			temp = Number2CString(number);
 
 			if (number_type == "^s")
 			{
