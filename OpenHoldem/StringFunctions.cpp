@@ -45,13 +45,13 @@ CString Number2CString(double number, int default_precision)
 	CString result;
 	if (IsInteger(number))
 	{
-		result.Format("%1.0d", number);
+		result.Format("%d", int(number));
 	}
 	else
 	{
 		CString format_string;
 		format_string.Format("%%1.%if", default_precision);
-		result.Format("%1.3f", number);
+		result.Format(format_string, number);
 	}
 	return result;
 }
