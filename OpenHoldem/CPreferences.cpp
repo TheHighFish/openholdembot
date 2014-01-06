@@ -66,6 +66,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_engine_container",
 	"debug_dll_extension",
 	"debug_scraper_preprocessor",
+	"debug_openholdem",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",

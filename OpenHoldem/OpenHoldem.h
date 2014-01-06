@@ -60,6 +60,8 @@ public:
 	HMODULE							_scraper_dll;
 	scraper_process_message_t		_dll_scraper_process_message;
 	scraper_override_t				_dll_scraper_override;
+private:
+	void FinishInitialization();
 };
 
 extern COpenHoldemApp theApp;

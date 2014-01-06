@@ -11,6 +11,9 @@
 //
 //*****************************************************************************
 
+// !!! Bad code
+// !!! * Clone of OpenHoldem\debug.cpp 
+// !!! * Outdated
 
 #include "stdafx.h"
 

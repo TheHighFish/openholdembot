@@ -426,24 +426,12 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	// ante
 	if (sym_ante != 0) 
 	{
-		if ((int) sym_ante != sym_ante) 
-		{
-			s.Format("  Ante: %.2f\n", sym_ante);
-		}
-		else 
-		{
-			s.Format("  Ante: %.0f\n", sym_ante);
-		}
+		s = Number2CString(sym_ante);
 		t.Append(s);
 	}
 
 	// Pot
-	if ((int) sym_pot != sym_pot) 
-		s.Format("  Pot: %.2f\n", sym_pot);
-
-	else 
-		s.Format("  Pot: %.0f\n", sym_pot);
-
+	s = Number2CString(sym_pot);
 	t.Append(s);
 
 	if (preferences.log_symbol_enabled() 
@@ -1050,25 +1038,11 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 		// Format Text
 		if (!p_scraper->sitting_out(chair)) 
 		{
-			if ((int) p_scraper->player_balance(chair) != p_scraper->player_balance(chair)) 
-			{
-				t.Format("%.2f", p_scraper->player_balance(chair));
-			}
-			else 
-			{
-				t.Format("%d", (int) p_scraper->player_balance(chair));
-			}
+			t = Number2CString(p_scraper->player_balance(chair));
 		}
 		else 
 		{
-			if ((int) p_scraper->player_balance(chair) != p_scraper->player_balance(chair)) 
-			{
-				t.Format("Out (%.2f)", p_scraper->player_balance(chair));
-			}
-			else 
-			{
-				t.Format("Out (%d)", (int) p_scraper->player_balance(chair));
-			}
+			t.Format("Out (%s)", Number2CString(p_scraper->player_balance(chair)));
 		}
 	}
 	else 
@@ -1159,14 +1133,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair)
 	// Format text
 	if (p_scraper->player_bet(chair) != 0) 
 	{
-		if ((int) p_scraper->player_bet(chair) != p_scraper->player_bet(chair)) 
-		{
-			t.Format("%.2f", p_scraper->player_bet(chair));
-		}
-		else 
-		{
-			t.Format("%d", (int) p_scraper->player_bet(chair));
-		}
+		t = Number2CString(p_scraper->player_bet(chair));
 	}
 	else 
 	{
