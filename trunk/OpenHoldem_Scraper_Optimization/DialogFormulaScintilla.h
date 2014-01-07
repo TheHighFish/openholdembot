@@ -91,7 +91,7 @@ public:
 	virtual ~CDlgFormulaScintilla();
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	virtual BOOL DestroyWindow();
-	void UpdateDebugAuto(void);
+	void UpdateDebugAuto();
 
 	enum { IDD = IDD_FORMULA_SCINTILLA };
 	
@@ -136,8 +136,8 @@ protected:
 	afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
 	void CreateDebugTab(CString *cs);
 	void WriteFDebugLog(bool write_header);
-	void InitDebugArray(void);
-	void ResizeDialogForControlBars(void);
+	void InitDebugArray();
+	void ResizeDialogForControlBars();
 	void LastChangeToFormula(CFormula *f);
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();

@@ -25,10 +25,10 @@ extern class CAutoplayer
 public:
 	// public functions
 	CAutoplayer();
-	~CAutoplayer(void);
+	~CAutoplayer();
 public:
 	void EngageAutoPlayerUponConnectionIfNeeded();
-	void DoAutoplayer(void);
+	void DoAutoplayer();
 
 public:
 	// public accessors
@@ -40,21 +40,21 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void DoRebuyIfNeccessary(void);
+	void DoRebuyIfNeccessary();
 	bool ExecutePrimaryFormulasIfNecessary();
 	bool ExecuteSecondaryFormulasIfNecessary();
 	bool ExecuteRaiseCallCheckFold();
 	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
-	bool DoAllin(void);
-	bool DoBetPot(void);
-	bool HandleInterfacebuttonsI86(void); 
+	bool DoAllin();
+	bool DoBetPot();
+	bool HandleInterfacebuttonsI86(); 
 	void PrepareActionSequence();
 	void FinishActionSequenceIfNecessary();
-	bool DoSwag(void);
-	bool DoPrefold(void);
+	bool DoSwag();
+	bool DoPrefold();
 	bool TimeToHandleSecondaryFormulas();
-	bool DoChat(void);
+	bool DoChat();
 
 private:
 	// private variables - use public accessors and public mutators to address these

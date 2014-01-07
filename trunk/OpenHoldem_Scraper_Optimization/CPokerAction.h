@@ -25,12 +25,12 @@ public:
 	
 private:
 	// private functions and variables - not available via accessors or mutators
-	const int		PreflopPos(void);
-	const int		PreflopRaisPos(void);
-	const int		PostflopPos(void);
-	const bool		FirstIntoPot(void);	
+	const int		PreflopPos();
+	const int		PreflopRaisPos();
+	const int		PostflopPos();
+	const bool		FirstIntoPot();	
 	const int		BetPosition(const int chairnum);
-	const bool		AgchairAfter(void);
+	const bool		AgchairAfter();
 };
 
 

@@ -56,8 +56,8 @@ private:
 	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
 	void				SetStatGroups();
 	bool				AllConnectionDataSpecified();
-	void				Connect(void);
-	void				Disconnect(void);
+	void				Connect();
+	void				Disconnect();
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);
 	bool				CheckIfNameHasChanged(int chair);

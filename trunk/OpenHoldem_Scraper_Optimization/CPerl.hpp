@@ -69,7 +69,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	void SendCallbackPointers();
 	void DoErrorCheck(const int error_code);
-	bool LoadDLL(void);
+	bool LoadDLL();
 
 } *p_perl;
 

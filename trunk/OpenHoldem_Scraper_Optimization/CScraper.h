@@ -54,6 +54,40 @@ public:
 	CScraper(void);
 	~CScraper(void);
 public:
+	CString		i86_button_state() { return _i86_button_state; }
+	CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
+	CString		betpot_button_state (int n) { if (n >= 0 && n <= k_max_betpot_buttons) return _betpot_button_state[n]; else return ""; }
+
+protected:
+
+private:
+	bool ProcessRegion(RMapCI r_iter);
+	bool EvaluateRegion(CString name, CString *result);
+private:
+	void SetButtonState(CString *button_state, CString text);
+private:
+	void ScrapeInterfaceButtons();
+	void ScrapeActionButtons();
+	void ScrapeActionButtonLabels();
+	void ScrapeBetpotButtons();
+	void ScrapeSeated();
+	void ScrapeDealer();
+	void ScrapeActive();
+	void ScrapeSlider();
+
+	// Private data -- buttons
+private:
+	CString _i86_button_state;
+	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
+	CString	_button_state[k_max_number_of_buttons];
+	CString _button_label[k_max_number_of_buttons];
+	CString	_betpot_button_state[k_max_betpot_buttons];
+
+
+
+
+
+public:
 	void DoBasicScrapeButtons();
 	void DoBasicScrapeAllPlayerCards();
 	int  CompleteBasicScrapeToFullScrape();
@@ -64,7 +98,7 @@ public:
 	void SetLimitInfo(const SLimitInfo LI);
 	bool GetButtonState(const int button_index);
 	bool GetButtonState(CString button_state_as_string);
-	bool IsCommonAnimation(void);
+	bool IsCommonAnimation();
 
 public:
 	// public accessors
@@ -82,9 +116,9 @@ public:
 	const bool			sitting_out(int n) { if (n>=0 && n<=9) return _sitting_out[n]; else return false; }
 	const double		pot(int n) { if (n>=0 && n<=9) return _pot[n]; else return 0.; }
 	const CString		button_state(int n) { if (n>=0 && n<=9) return _button_state[n]; else return ""; }
-	const CString		betpot_button_state (int n) { if (n >= 0 && n <= k_max_betpot_buttons) return _betpot_button_state[n]; else return ""; }
-	const CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
-	const CString		i86_button_state() { return _i86_button_state; }
+	
+	
+	
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
@@ -160,12 +194,8 @@ private:
 	// pot
 	double				_pot[k_max_number_of_pots];
 
-	// iXbuttons
-	CString				_button_state[k_max_number_of_buttons], _button_label[k_max_number_of_buttons];
-	// i86Xbuttons
-	CString				_i86X_button_state[k_max_number_of_i86X_buttons], _i86_button_state;
-	// betpot buttons
-	CString				_betpot_button_state[k_max_betpot_buttons];
+
+	
 	// handle
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
@@ -188,13 +218,10 @@ private:
 	void ScrapePots();
 	void ScrapeLimits();
 	const CString GetHandnumFromString(const CString t);
-	bool ProcessRegion(RMapCI r_iter);
-	bool EvaluateRegion(CString name, CString *result);
 	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
 	const double DoChipScrape(RMapCI r_iter);
 
-	// for change detection
-	bool			_ucf_last;
+
 
 	// cards common
 	unsigned int	_card_common_last[k_number_of_community_cards];

@@ -14,6 +14,6 @@
 #ifndef INC_BRING_KEYBOARD_H
 #define INC_BRING_KEYBOARD_H
 
-void CheckBringKeyboard(void);
+void CheckBringKeyboard();
 
 #endif // INC_BRING_KEYBOARD_H

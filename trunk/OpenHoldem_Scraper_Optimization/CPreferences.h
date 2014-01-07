@@ -334,8 +334,8 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void InitDefaults(void);
-	void ReadPreferences(void);
+	void InitDefaults();
+	void ReadPreferences();
 	void ReadReg(const LPCTSTR registry_key, CString *registry_value);
 	void ReadReg(const LPCTSTR registry_key, double *registry_value);
 	void WriteReg(const LPCTSTR registry_key, const CString &registry_value);
