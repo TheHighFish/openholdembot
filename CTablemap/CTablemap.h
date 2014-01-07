@@ -127,8 +127,8 @@ extern class CTablemap
 	friend class CTablemapAccess;
 public:
 	// public functions
-	CTablemap(void);
-	~CTablemap(void);
+	CTablemap();
+	~CTablemap();
 	void ClearTablemap();
 	int LoadTablemap(const CString _fname);
 	int SaveTablemap(CArchive& ar, const char *version_text);
