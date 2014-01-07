@@ -218,7 +218,7 @@ extern PGconn *PQsetdbLogin(const char *pghost, const char *pgport,
 extern void PQfinish(PGconn *conn);
 
 /* get info about connection options known to PQconnectdb */
-extern PQconninfoOption *PQconndefaults(void);
+extern PQconninfoOption *PQconndefaults();
 
 /* free the data structure returned by PQconndefaults() */
 extern void PQconninfoFree(PQconninfoOption *connOptions);
@@ -366,7 +366,7 @@ extern int	PQendcopy(PGconn *conn);
 /* Set blocking/nonblocking connection to the backend */
 extern int	PQsetnonblocking(PGconn *conn, int arg);
 extern int	PQisnonblocking(const PGconn *conn);
-extern int	PQisthreadsafe(void);
+extern int	PQisthreadsafe();
 
 /* Force the write buffer to be written (or at least try) */
 extern int	PQflush(PGconn *conn);
@@ -502,7 +502,7 @@ extern int	PQmblen(const char *s, int encoding);
 extern int	PQdsplen(const char *s, int encoding);
 
 /* Get encoding id from environment variable PGCLIENTENCODING */
-extern int	PQenv2encoding(void);
+extern int	PQenv2encoding();
 
 /* === in fe-auth.c === */
 

@@ -23,7 +23,7 @@
 
 #include <deck_std.h>
 
-extern POKEREVAL_EXPORT unsigned int wrap_StdDeck_N_CARDS(void);
+extern POKEREVAL_EXPORT unsigned int wrap_StdDeck_N_CARDS();
 extern POKEREVAL_EXPORT StdDeck_CardMask wrap_StdDeck_MASK(int index);
 extern POKEREVAL_EXPORT unsigned int wrap_StdDeck_Rank_2();
 extern POKEREVAL_EXPORT unsigned int wrap_StdDeck_Rank_3();

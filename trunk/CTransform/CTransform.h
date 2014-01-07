@@ -44,8 +44,8 @@ class CTransform
 {
 public:
 	// public functions
-	CTransform(void);
-	~CTransform(void);
+	CTransform();
+	~CTransform();
 	const int DoTransform(RMapCI region, const HDC hdc, CString *text, 
 						  CString *separation=NULL, COLORREF *cr_avg=0);
 	const int TTypeTransform(RMapCI region, const HDC hdc, CString *text, 
