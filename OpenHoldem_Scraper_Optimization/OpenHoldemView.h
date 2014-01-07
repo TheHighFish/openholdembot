@@ -39,8 +39,8 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	void UpdateDisplay(const bool update_all);
-	void DrawCenterInfoBox(void);
-	void DrawButtonIndicators(void);
+	void DrawCenterInfoBox();
+	void DrawButtonIndicators();
 	void DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, const int top, const int right, const int bottom);
 	void DrawSeatedActiveCircle(const int chair);
 	void DrawCard(const unsigned int card, const int left, const int top, const int right, const int bottom, const bool pl_card);
