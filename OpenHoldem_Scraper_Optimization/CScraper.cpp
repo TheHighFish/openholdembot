@@ -255,7 +255,7 @@ void CScraper::ScrapeDealer()
 	CString dealer;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		set_dealer(i, false);
+		set_dealer(i, false); //!!! Attention; might leave dealer-bit at a later chair! Better clear everything at one place!
 		dealer.Format("p%ddealer", i);
 		if (EvaluateRegion(s, &result))
 		{

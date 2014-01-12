@@ -175,6 +175,7 @@ void CEngineContainer::DestroyAllSymbolEngines()
 		_symbol_engines[i] = NULL;
 	}
 	_number_of_symbol_engines_loaded = 0;
+	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines()

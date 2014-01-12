@@ -177,7 +177,8 @@ BOOL COpenHoldemApp::InitInstance()
 	}
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
-	MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
+	//MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
+	//LoadStdProfileSettings(
 	// Register the application's document templates.  Document templates
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
@@ -367,7 +368,7 @@ void COpenHoldemApp::OnForceCrash()
 	}
 }
 
-
+//!!!
 // Added due to inability to get standard LoadStdProfileSettings working properly
 void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) 
 {

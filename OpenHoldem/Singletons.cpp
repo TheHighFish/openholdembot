@@ -169,23 +169,28 @@ void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
 // as these threads might access some variables.
 void StopThreads()
 {
+	write_log(preferences.debug_alltherest(), "[Singletons] StopThreads()\n");
 	if (p_autoconnectorthread) 
 	{ 
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector-thread\n");
 		delete p_autoconnectorthread; 
 		p_autoconnectorthread = NULL; 
 	} 
 	if (p_iterator_thread) 
 	{
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting iterator-thread\n");
 		delete p_iterator_thread;
 		p_iterator_thread = NULL;
 	}
 	if (p_heartbeat_thread)
 	{
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting heartbeat-thread\n");
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
 	if (p_pokertracker_thread)	
 	{ 
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting PokerTracker-thread\n");
 		delete p_pokertracker_thread; 
 		p_pokertracker_thread = NULL; 
 	}
@@ -210,7 +215,11 @@ void DeleteAllSingletons()
 	if (p_engine_container)
 		{ delete p_engine_container; p_engine_container = NULL; }
 	if (p_autoconnector) 
-		{ delete p_autoconnector; p_autoconnector = NULL; }
+	{ 
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
+		delete p_autoconnector; 
+		p_autoconnector = NULL; 
+	}
 	if (p_version_info)
 		{ delete p_version_info; p_version_info = NULL; }
 	if (p_tablemap_loader)

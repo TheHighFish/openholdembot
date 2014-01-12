@@ -63,13 +63,15 @@ CAutoConnector::~CAutoConnector()
 	_autoconnector_mutex->Unlock();
 	if (_autoconnector_mutex != NULL)
 	{
+
+		write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() deleted auto-connector-mutex\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Marking table as not atached\\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() table marked as not atached\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
 }
 
 
@@ -414,6 +416,7 @@ void CAutoConnector::Disconnect()
 	{
 		PostQuitMessage(0);
 	}
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect done\n");
 }
 
 
