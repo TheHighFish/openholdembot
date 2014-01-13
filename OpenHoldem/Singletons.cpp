@@ -165,6 +165,8 @@ void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
 	p_filenames = new CFilenames;
 }
 
+bool all_threads_stopped = false;
+
 // To be executed first,
 // as these threads might access some variables.
 void StopThreads()
@@ -194,16 +196,26 @@ void StopThreads()
 		delete p_pokertracker_thread; 
 		p_pokertracker_thread = NULL; 
 	}
+	all_threads_stopped = true;
 }
 
 void DeleteAllSingletons()
 {
+	// First all threads have to be stopped, then all singletons can (have to) be deleted
+	// StopThreads gets called by CMainFrame::DestroyWindow()
+	// DeleteAllSingletons() by COpenHoldemApp::ExitInstance()
+	// Correct order should be guaranteed, because of
+	//   "At the time ExitInstance is called, the main window no longer exists"
+	//   (http://computer-programming-forum.com/82-mfc/7ad0828fdb127d7b.htm)
+	// AnyWay: we make sure with an assertion
+	assert(all_threads_stopped);
+
 	// Global instances.
 	// Releasing in reverse order should be good,
 	// but we have to be careful, as sometimes we do some work in the destructors,
 	// that depends on other classes, e.g. the destructor of the autoconnector
 	// needs its session_id (CSessionCounter).
-	StopThreads();
+	//
 	if (p_casino_interface)
 		{ delete p_casino_interface; p_casino_interface = NULL; }
 	if (p_handhistory) 
