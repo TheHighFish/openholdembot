@@ -257,7 +257,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
 
 	// Autoplayer Functions
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
+	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i)
 	{
 		m_standard_functions[0].Add(k_standard_function_names[i]);
 	}

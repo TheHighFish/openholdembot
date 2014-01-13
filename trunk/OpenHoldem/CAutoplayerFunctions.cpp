@@ -61,7 +61,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 	write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
 	bool trace_needed = preferences.trace_enabled();
 
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; i++)
+	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++)
 	{
 		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set

@@ -161,7 +161,7 @@ bool CAutoplayer::DoBetPot(void)
 
 bool CAutoplayer::AnyPrimaryFormulaTrue()
 { 
-	for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i)
+	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i)
 	{
 		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		if (i == k_autoplayer_function_betsize)
@@ -210,6 +210,10 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
 		return false;
 	}
+	// Execute beep (if necessary) independent of all other conditions (mutex, etc.)
+	// and with autoplayer-actions.
+	ExecuteBeep();
+
 	assert(p_symbol_engine_autoplayer->isfinalanswer());
 	assert(p_symbol_engine_autoplayer->ismyturn());
 	// Precondition: my turn and isfinalanswer
@@ -262,6 +266,17 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	return false;
 }
 
+bool CAutoplayer::ExecuteBeep()
+{
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
+	if (p_autoplayer_functions->autoplayer_function_values(k_autoplayer_function_beep))
+	{
+		// Pitch standard: 440 Hz, 1/2 second
+		// http://en.wikipedia.org/wiki/A440_%28pitch_standard%29
+		Beep(440, 500);
+	}
+	return false;
+}
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 {

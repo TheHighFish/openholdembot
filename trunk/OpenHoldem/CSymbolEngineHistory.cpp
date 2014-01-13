@@ -73,8 +73,13 @@ void CSymbolEngineHistory::ResetOnHeartbeat()
 
 void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 {
-	AssertRange(autoplayer_action_code, k_autoplayer_function_allin,
+	AssertRange(autoplayer_action_code, k_autoplayer_function_beep,
 		k_autoplayer_function_fold);
+	// Nothing to do of the "action" was "beep".
+	if (autoplayer_action_code == k_autoplayer_function_beep) 
+	{
+		return;
+	}
 	// Special handling for check/call
 	// Some people have problems scraping check and call correctly,
 	// as usually only one of these buttons is visible
