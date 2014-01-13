@@ -1,8 +1,8 @@
-v4.3.2 2014-01-06
+v4.3.2 2014-01-13
 ==================
 BUG FIXES:
 - The dealer-button and sometimes some of the common cards 
-  were missing after we improved the GUI in OH 4.3.0.
+  were missing in the table-view after we improved the GUI in OH 4.3.0.
   This has now been fixed.
   Thanks to R2D3 and Pawko for reporting and providing screenshots.
   [THF]
@@ -16,6 +16,10 @@ BUG FIXES:
   Thanks to Mot_real for reporting 
   and providing good info to locate the problem.
   [THF]
+- OpenHoldem could crash at the very end (even after closing the log-file),
+  because StopThreads() got incorrectly called twice.
+  This has now been fixed.
+  [Nik0, THF]
   
 MAINTENANCE:
 - The table-positioner now moves the lobby to the top-left-position,
