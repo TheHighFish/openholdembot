@@ -36,6 +36,7 @@ public:
 	double	f$call()	{ return _autoplayer_functionvalues[k_autoplayer_function_call]; }
 	double	f$check()	{ return _autoplayer_functionvalues[k_autoplayer_function_check]; }
 	double	f$fold()	{ return _autoplayer_functionvalues[k_autoplayer_function_fold]; }
+	double  f$beep()	{ return _autoplayer_functionvalues[k_autoplayer_function_beep]; }
 	double	f$sitin()	{ return _autoplayer_functionvalues[k_standard_function_sitin]; }
 	double	f$sitout()	{ return _autoplayer_functionvalues[k_standard_function_sitout]; }
 	double	f$leave()	{ return _autoplayer_functionvalues[k_standard_function_leave]; }

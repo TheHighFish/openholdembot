@@ -189,6 +189,7 @@ const int k_mutex_lock_time = 500;
 enum StandardFunctionConstants
 {
 	// Primary autoplayer-functions
+	k_autoplayer_function_beep,
 	k_autoplayer_function_allin,
 	k_autoplayer_function_betpot_2_1,
 	k_autoplayer_function_betpot_1_1,
@@ -249,6 +250,7 @@ const int k_max_length_of_standard_function_names = 28 + 1;
 const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] =
 {
 	// Primary autoplayer-functions
+	"f$beep",
 	"f$alli",
 	"f$betpot_2_1",
 	"f$betpot_1_1",

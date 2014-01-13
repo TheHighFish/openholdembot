@@ -44,6 +44,7 @@ private:
 	bool ExecutePrimaryFormulasIfNecessary();
 	bool ExecuteSecondaryFormulasIfNecessary();
 	bool ExecuteRaiseCallCheckFold();
+	bool ExecuteBeep();
 	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
 	bool DoAllin(void);
