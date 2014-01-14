@@ -392,7 +392,7 @@ f$OpenPPL_Fold
 ##f$OpenPPL_HINT_No_Last_Raiser_Or_Not_Enough_Hands##
 -1
 
-##f$OpenPPL_HINT_We_wont_close_the_table_while_not_sitting_out##
+##f$OpenPPL_HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out##
 f$OpenPPL_False
 
 //*****************************************************************************
@@ -499,13 +499,23 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 [f$OpenPPL_Decision == f$OpenPPL_Close]  ? (me_st_GoBuddySitOut_1 + me_st_GoBuddyClose_1 ) : 0
 
 ##f$beep##
-[f$OpenPPL_Decision == f$OpenPPL_Beep]
+// f$beep is the very first function to be called on each turn,
+// so we abuse it to initialize memory-symbhols as a side-effect
+// and only then we do the real evaluation.
+//
+// We can't use addition here to call the functions in correct sequential order,
+// because OH doesn't add the operands in order:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
+   [f$OpenPPL_InitMemorySymbols * 0]
+|| [f$OpenPPL_RememberToSitoutIfNecessary * 0]
+|| [f$OpenPPL_Decision == f$OpenPPL_Beep]
 
 ##f$alli##
    [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
 || [(f$OpenPPL_Decision > f$OpenPPL_StackSize) && (f$OpenPPL_StackSize > 0)]
 || [f$OpenPPL_DecisionIsPercentagedPotsizedBet 
     && f$OpenPPL_BetSizeForPercentagedPotsizeBet >= f$OpenPPL_MaximumBetsizeInDollars]
+
 
 // Betpot functions
 // OpenPPL knows only the following action-command:
@@ -608,31 +618,9 @@ me_re_GoBuddySitOut
 + [0 * me_st_GoBuddySitOut_0]
 
 ##f$close##
-(me_re_GoBuddyClose + [0 * me_st_GoBuddyClose_0]) ?
-  (issittingin ? f$OpenPPL_HINT_We_wont_close_the_table_while_not_sitting_out :
-  f$OpenPPL_True) :
-f$OpenPPL_False
-
-
-//*****************************************************************************
-//
-// OpenPPL - Ini-functions
-//
-//*****************************************************************************
-
-##f$init_on_startup##
-
-##f$init_on_connection##
-f$init_on_handreset
-
-##f$init_on_handreset##
-me_st_MemBotsLastAction_f$OpenPPL_None
-
-##f$init_on_new_betround##
-
-##f$init_on_my_turn##
-   [f$OpenPPL_InitMemorySymbols * 0]
-|| [f$OpenPPL_RememberToSitoutIfNecessary * 0]
+me_re_GoBuddyClose ?
+  (issittingin ? f$OpenPPL_HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out : f$OpenPPL_True) :
+  f$OpenPPL_False
 
 //*****************************************************************************
 //
@@ -708,6 +696,7 @@ raischair
 // (inside f$OpenPPL_InitMemorySymbols)
 // because it will call the final f$Decision routine.
 //
+[(betround == f$OpenPPL_ConstBetRoundPreflop) && (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks == 0)] ? me_st_MemBotsLastAction_f$OpenPPL_None :
 //
 // "Initialize" first action on other rounds to last value of last round,
 // i.e. do nothing and keep the old value.
