@@ -19,7 +19,7 @@ void ErrorMessage(int error_code, CString invalid_code_snippet);
 
 enum error_codes
 {
-	k_error_beep_not_supported = 0,
+	k_error_shanky_style_delay_not_supported = 0,
 	k_error_invalid_card_expression,
 	k_error_action_without_force,
 	k_error_missing_code_section,

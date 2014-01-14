@@ -397,7 +397,14 @@ struct print_predefined_action
 		{
 			current_output << "f$OpenPPL_SitOut";
 		}
-		// Beep not supported and handled otherwhere.
+		else if (text == "close")
+		{
+			current_output << "f$OpenPPL_Close";
+		}
+		else if (text == "beep")
+		{
+			current_output << "f$OpenPPL_Beep";
+		}
 	} 
 };
 
@@ -536,40 +543,13 @@ struct handle_when_condition
 // Hand and board expressions
 //
 
-struct print_non_suited_board_expression
+struct print_hand_or_board_expression
 { 
 	void operator()(const char *begin, const char *end) const 
 	{ 
 		CString text = std::string(begin, end).c_str();
-		generate_code_for_non_suited_board(text);
+		generate_code_for_hand_or_board_expression(text);
 	} 
-};
-
-struct print_suited_board_expression
-{ 
-	void operator()(const char *begin, const char *end) const 
-	{ 
-		CString text = std::string(begin, end).c_str();
-		generate_code_for_suited_board(text);
-	} 
-};
-
-struct print_hand_expression
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		CString text = std::string(begin, end).c_str();
-		generate_code_for_hand_expression(text);
-	}
-};
-
-struct print_hand_expression_with_specific_suits
-{
-	void operator()(const char *begin, const char *end) const 
-	{
-		CString text = std::string(begin, end).c_str();
-		generate_code_for_hand_expression_with_specific_suits(text);
-	}
 };
 
 //
@@ -728,11 +708,16 @@ struct increase_line_counter
 // Error messages
 //
 
-struct error_beep_not_supported
+struct error_shanky_style_delay_not_supported
 {
 	void operator()(const char *begin, const char *end) const 
 	{
-		ErrorMessage(k_error_beep_not_supported, ErroneousCodeSnippet(begin));
+		if (already_warned_about_shanky_style_delays)
+		{
+			return;
+		}
+		ErrorMessage(k_error_shanky_style_delay_not_supported, ErroneousCodeSnippet(begin));
+		already_warned_about_shanky_style_delays = true;
 	}
 };
 

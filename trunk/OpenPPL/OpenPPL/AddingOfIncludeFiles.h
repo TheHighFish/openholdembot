@@ -23,10 +23,6 @@ const CString k_swag_file_name       = "OpenPPL_SwagFunctions_For_OpenHoldem_2.1
 // Optionally since OH 4.0.0
 const CString k_custom_OHF_file_name = "My_Custom_OH_Script_Code.ohf";
 
-// Mandatory since OH 2.2.0
-const CString k_hand_strength_library_file_name = "mh_str_Handstrength_Library.ohf";
-
-
 void AppendFileToOHFOutputIfFileExists(CString file_name, bool error_on_failure);
 
 

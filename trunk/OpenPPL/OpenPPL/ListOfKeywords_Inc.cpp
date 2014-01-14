@@ -68,7 +68,7 @@ keyword_hand = str_p("hand") | "Hand" | "HAND" | invalid_symbol;
 
 // Actions
 keyword_force = (str_p("force") | "Force" | "FORCE") | invalid_symbol;
-keyword_beep = ((str_p("beep") | "Beep" | "BEEP") | invalid_symbol)[error_beep_not_supported()];
+keyword_beep = ((str_p("beep") | "Beep" | "BEEP") | invalid_symbol);
 keyword_call = str_p("call") | "Call" | "CALL" | invalid_symbol;
 keyword_check = str_p("check") | "Check" | "CHECK" | invalid_symbol;
 keyword_play = str_p("play") | "Play" | "PLAY" | invalid_symbol;
@@ -87,9 +87,13 @@ keyword_bethalfpot = str_p("bethalfpot") | "Bethalfpot" | "BetHalfPot" | "BETHAL
 keyword_betpot = str_p("betpot") | "Betpot" | "BetPot" | "BETPOT" | invalid_symbol;
 keyword_betmax = str_p("betmax") | "Betmax" | "BetMax" | "BETMAX" | invalid_symbol;
 keyword_sitout = str_p("sitout") | "Sitout" | "SitOut" | "SITOUT" | invalid_symbol;
+keyword_sitout = str_p("close")  | "Close"  | "CLOSE"  | invalid_symbol;
 
 // Return statement (not standard PPL)
 keyword_return = str_p("return") | "Return" | "RETURN" | invalid_symbol;
+
+// Shanky-style delay
+keyword_delay = str_p("delay") | "Delay" | "DELAY" | invalid_symbol;
 
 // Boolean constants
 keyword_true = str_p("true") | "True" | "TRUE" | invalid_symbol;
