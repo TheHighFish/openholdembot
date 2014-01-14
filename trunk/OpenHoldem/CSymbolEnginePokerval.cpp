@@ -321,6 +321,18 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	_srankbitscommon = 0;
 	_srankbitspoker  = 0;
 
+	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
+	comsuit = (tsuitcommon==WH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuitcommon==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuitcommon==WH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuitcommon==WH_SUIT_SPADES ? Suit_SPADES : 0);
+
+	int tsuit = p_symbol_engine_cards->tsuit();
+	plcomsuit = (tsuit==WH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuit==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuit==WH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuit==WH_SUIT_SPADES ? Suit_SPADES : 0);
+
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
@@ -376,18 +388,6 @@ void CSymbolEnginePokerval::CalculateRankBits()
 			SetRankBit(&_srankbitscommon, _rank);
 		}
 	}
-
-	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
-	comsuit = (tsuitcommon==WH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuitcommon==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuitcommon==WH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuitcommon==WH_SUIT_SPADES ? Suit_SPADES : 0);
-
-	int tsuit = p_symbol_engine_cards->tsuit();
-	plcomsuit = (tsuit==WH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuit==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuit==WH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuit==WH_SUIT_SPADES ? Suit_SPADES : 0);
 
 	_srankbitspoker =														
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, plcomsuit)) ?

@@ -52,7 +52,7 @@ CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 // Keywords got changed from "char* to "CString"
 // as we want to append PokerTracker-keywords dynamically
 CString keywords = // Standard functions
-				  "f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
+				  "f$beep f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
 				  "f$betpot_2_3 f$betpot_1_2 f$betpot_1_3 f$betpot_1_4 "
 				  "f$rais f$call f$prefold f$rebuy f$delay f$chat "
 				  "f$prwin_number_of_opponents f$test f$sitin f$sitout f$leave f$close "
@@ -166,6 +166,8 @@ CString keywords = // Standard functions
 				  " f$$ "
 				  // Memory Symbols
 				  "me_st_ me_re_ "
+				  // Hand and board expressions
+				  "hand$ board$ "
 				  // Card Symbols
 				  "$$pc0 $$pc1 $$pr0 $$pr1 $$ps0 $$ps1 "
 				  "$$cc0 $$cc1 $$cc2 $$cc3 $$cc4 "
@@ -3207,6 +3209,10 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "$$pcX", "the card value for player card X (X=0-1)");
 	AddSymbol(parent, "$$prX", "the rank value for player card X (X=0-1)");
 	AddSymbol(parent, "$$psX", "the suit value for player card X (X=0-1)");
+
+	mainParent = parent = AddSymbolTitle("Hand and Board Expressions", NULL, hCatItem);
+	AddSymbol(parent, "hand$XYZ", "True, if you have hand XYZ, e.g. hand$ATSuited");
+	AddSymbol(parent, "board$XYZ", "True, if the board contains XYZ, e.g. board$AcTT");
 
 	mainParent = parent = AddSymbolTitle("Debug messages", NULL, hCatItem);
 	AddSymbol(parent, "msgbox$TEXT", "Displays a message-box and evaluates to 0");
