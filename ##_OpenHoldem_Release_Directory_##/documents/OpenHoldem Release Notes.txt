@@ -1,10 +1,30 @@
-v4.3.2 2014-01-13
+v4.4.0 2014-01-14
 ==================
+NEW STUFF:
+- New symbols board$xyz and hand$XYZ to provide a more easy way to check the board-texture
+  Some examples how it might look:
+    * board$ATT
+	* board$Ah3d
+	* board$QJTSuited
+  Cases don't matter after the dollar-sign.
+  This symbol got mainly developped for OpenPPl to support more easy
+  and more readable translations and more readable log-files,
+  but it can also be used at OH-script-level of course.
+  [THF]
+- Implemented a f$beep-function, especially meant for full OpenPPL support 
+  and debugging support. It is possible to combine beep with other actions
+  or to just beep (if you set the new f$check and f$fold functions to false).
+  [THF]
+
 BUG FIXES:
 - The dealer-button and sometimes some of the common cards 
   were missing in the table-view after we improved the GUI in OH 4.3.0.
   This has now been fixed.
   Thanks to R2D3 and Pawko for reporting and providing screenshots.
+  [THF]
+- The symbol srankbitscommon did not work, because the calculation
+  of 2 dependent values got executes in the wrong order.
+  This has now been fixed.
   [THF]
 - The option "Engage Autoplayer On Connection" had been broken
   and has been fixed again. Thanks to R2D2 for reporting.
@@ -25,8 +45,8 @@ MAINTENANCE:
 - The table-positioner now moves the lobby to the top-left-position,
   so that lobby-coordinates always equal screen-coordinates.
   This makes hoppers more reliable, as we don't have to worry
-  if the lobby is active or if any casino-table pops up
-  and steals the mouse-input. The positions of the other tables 
+  if the lobby is active or if any casino-table pops up randomly
+  and steals the mouse-focus. The positions of the regular tables 
   will then start at bottom-right of the screen.
   [THF]
   
