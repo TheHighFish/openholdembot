@@ -14,6 +14,8 @@ MAINTENANCE:
   especially about missing spaces between keywords, 
   which is ok for standard-PPL.
   [THF]
+- Lots of cmall changes to the OpenPPL-library and to OpenPPL.exe to make it compatible with OpenHoldem 4.4.0+.
+  [THF]
 
 v4.0.3 2013-02-24
 =================
