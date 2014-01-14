@@ -273,7 +273,18 @@ FOLD FORCE
 
 \begin_layout Plain Layout
 
-SITOUT FORCE
+BEEP FORCE         // beep, but don#t act
+\end_layout
+
+\begin_layout Plain Layout
+
+SITOUT FORCE       // OpenHoldem will first check/fold, then sitout
+\end_layout
+
+\begin_layout Plain Layout
+
+CLOSE FORCE        // OpenHoldem will check/fold, sitout, then close the
+ table
 \end_layout
 
 \end_inset
