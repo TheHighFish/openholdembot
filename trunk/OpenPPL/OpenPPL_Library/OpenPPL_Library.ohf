@@ -112,16 +112,22 @@ f$OpenPPL_RaiseMax
 ##f$OpenPPL_None##
 -1000007
 
-##f$OpenPPL_SitOut##
+##f$OpenPPL_Raise##
 -1000008
 
-##f$OpenPPL_Raise##
+##f$OpenPPL_SitOut##
 -1000009
+
+##f$OpenPPL_Close##
+-1000010
+
+##f$OpenPPL_Beep##
+-1000011
 
 ##f$OpenPPL_Do_Not_PreFold##
 // Automatically added to the end of the prefold-section
 // for syntactical completeness.
--1000010
+-1000012
 
 ##f$OpenPPL_UndefinedReturnValue##
 // Every user-defined function ends with this return-value
@@ -362,8 +368,8 @@ f$OpenPPL_Fold
 0
 
 ##f$OpenPPL_HINT_There_Are_No_Common_Cards_Preflop##
-1
--
+-1
+
 ##f$OpenPPL_HINT_All_Opponents_Allin##
 // Returning the stacksize of our last opponent
 0
@@ -385,6 +391,9 @@ f$OpenPPL_Fold
 
 ##f$OpenPPL_HINT_No_Last_Raiser_Or_Not_Enough_Hands##
 -1
+
+##f$OpenPPL_HINT_We_wont_close_the_table_while_not_sitting_out##
+f$OpenPPL_False
 
 //*****************************************************************************
 //
@@ -486,7 +495,11 @@ f$OpenPPL_ERROR_Betround_Out_Of_Range
 // contrary to OpenPPL were both can happen only at heros turn.
 // Therefore we have to remember a decision to SitOut somehow
 // and recall it later.
-[f$OpenPPL_Decision == f$OpenPPL_SitOut] ? me_st_GoBuddyTakeABreakAndABeer_1 : 0
+[f$OpenPPL_Decision == f$OpenPPL_SitOut] ? me_st_GoBuddySitOut_1 : 
+[f$OpenPPL_Decision == f$OpenPPL_Close]  ? (me_st_GoBuddySitOut_1 + me_st_GoBuddyClose_1 ) : 0
+
+##f$beep##
+[f$OpenPPL_Decision == f$OpenPPL_Beep]
 
 ##f$alli##
    [f$OpenPPL_Decision == f$OpenPPL_RaiseMax]
@@ -579,12 +592,27 @@ f$OpenPPL_DecisionIsPercentagedPotsizedBet ? f$OpenPPL_BetSizeForPercentagedPots
 || [f$OpenPPL_AmountToCall == 0]
 || f$rais
 
+##f$check##
+// Always check/fold as long as the action is not "Beep".
+(f$OpenPPL_Decision != f$OpenPPL_Beep)
+
+##f$fold##
+// Always check/fold as long as the action is not "Beep".
+(f$OpenPPL_Decision != f$OpenPPL_Beep)
+
 ##f$sitout##
-// Sitout if GoBuddyTakeABreakAndABeer is true
+// Sitout if GoBuddyTakeABreakAndABeer is 1
 // then reset this variable to allow f$sitin later.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
-me_re_GoBuddyTakeABreakAndABeer
-+ [0 * me_st_GoBuddyTakeABreakAndABeer_0]
+me_re_GoBuddySitOut
++ [0 * me_st_GoBuddySitOut_0]
+
+##f$close##
+(me_re_GoBuddyClose + [0 * me_st_GoBuddyClose_0]) ?
+  (issittingin ? f$OpenPPL_HINT_We_wont_close_the_table_while_not_sitting_out :
+  f$OpenPPL_True) :
+f$OpenPPL_False
+
 
 //*****************************************************************************
 //
@@ -2022,7 +2050,7 @@ f$OpenPPL_Had2ndOverPairOnFlop && (($$cr3==f$OpenPPL_TopFlopCard)|| ($$cr3<f$Ope
 && !ispair
 
 ##f$OpenPPL_Have2ndBestKicker##
-(f$f$OpenPPL_NumberOfBetterKickerstter == 1)
+(f$OpenPPL_NumberOfBetterKickers == 1)
 
 ##f$OpenPPL_Have2ndBestKickerOrBetter##
 f$OpenPPL_Have2ndBestKicker || f$OpenPPL_HaveBestKickerOrBetter
@@ -2196,7 +2224,7 @@ f$OpenPPL_RankBitsCommonWithoutTopTwoBits & ~f$OpenPPL_3rdTopBitOfRankBitsCommon
 f$OpenPPL_RankBitsCommonWithoutTopThreeBits & ~f$OpenPPL_4thTopBitOfRankBitsCommon
 
 ##f$OpenPPL_Have3rdBestKicker##
-(f$f$OpenPPL_NumberOfBetterKickerstter == 2)
+(f$OpenPPL_NumberOfBetterKickers == 2)
 
 ##f$OpenPPL_Have3rdBestKickerOrBetter##
 f$OpenPPL_Have3rdBestKicker || f$OpenPPL_Have2ndBestKickerOrBetter
@@ -2359,7 +2387,7 @@ ispair && (f$OpenPPL_RankOfFirstHoleCard < f$OpenPPL_4thBestBoardCard) && (f$Ope
 || f$OpenPPL_HaveBackDoor2ndNutFlushDraw
 
 ##f$OpenPPL_HaveBestKicker##
-(f$f$OpenPPL_NumberOfBetterKickerstter == 0)
+(f$OpenPPL_NumberOfBetterKickers == 0)
 
 ##f$OpenPPL_HaveBestKickerOrBetter##
 (f$OpenPPL_HaveBestKicker || f$OpenPPL_HavePair  || f$OpenPPL_HaveOverPairOrBetter)
@@ -2478,7 +2506,7 @@ f$OpenPPL_ERROR_You_Dont_Have_Any_Kicker
 // Cards better than my kicker...
 [(f$OpenPPL_ConstCardAce - f$OpenPPL_MyKicker)
 // ...minus the cards in my 5-card-hand which are better than my kicker
-- ('(rankbitspoker >> f$OpenPPL_MyKicker))]
+- (`(rankbitspoker >> f$OpenPPL_MyKicker))]
 
 ##f$OpenPPL_RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010

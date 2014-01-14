@@ -11,10 +11,11 @@
 @IF NOT EXIST ..\Release\OpenPPL.Exe Pause 
 
 @COPY OpenPPL_Library\OpenPPL_Library.ohf .
-@COPY ..\mh_str_Handstrength_Library\mh_str_Handstrength_Library.ohf .
+@COPY OpenPPL_Library.ohf ..\Release
+REM @COPY ..\mh_str_Handstrength_Library\mh_str_Handstrength_Library.ohf .
 
 FOR %%f IN (OpenPPL\TestSuite\ok_*.txt) DO ..\Release\OpenPPL.Exe %%f > Temp.OHF
 
-@DEL OpenPPL_Library.ohf
+REM @DEL OpenPPL_Library.ohf
 @DEL mh_str_Handstrength_Library.ohf
 REM DEL Temp.OHF
