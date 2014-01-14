@@ -446,6 +446,7 @@ void write_logautoplay(const char * action)
 		pokerhand = p_symbol_engine_pokerval->HandType();
 
         // best action
+		// !!! needs to be extended for betpot, etc.
         if (p_autoplayer_functions->f$alli())
             bestaction = "Allin";
         else if ((strcmp(action, "SWAG")==0) 
@@ -481,11 +482,11 @@ void write_logautoplay(const char * action)
 		fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
 		fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
 		fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
-		fprintf(log_fp, "  PrWin:         %6d\n",   (iter_vars.prwin() * 1000));
-		fprintf(log_fp, "  PrLos:         %6d\n",   (iter_vars.prlos() * 1000));
-		fprintf(log_fp, "  PrTie:         %6d\n",   (iter_vars.prtie() * 1000));
-		fprintf(log_fp, "  NOpponents:    %6d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
-		fprintf(log_fp, "  Iterations:    %6d\n",   iter_vars.nit());
+		//fprintf(log_fp, "  PrWin:         %6d\n",   (iter_vars.prwin() * 1000));
+		//fprintf(log_fp, "  PrLos:         %6d\n",   (iter_vars.prlos() * 1000));
+		//fprintf(log_fp, "  PrTie:         %6d\n",   (iter_vars.prtie() * 1000));
+		//fprintf(log_fp, "  NOpponents:    %6d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
+		//fprintf(log_fp, "  Iterations:    %6d\n",   iter_vars.nit());
 		fprintf(log_fp, "  My balance:    %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
 		fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
 		fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());

@@ -51,6 +51,7 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineLists.h"
+#include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
@@ -170,6 +171,10 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		*e = ERR_INVALID_SYM;
 		return 0.0;
 	}
+	// HAND and BOARD expressions
+	// We expect these to be used very often, so they get handled first
+	if (memcmp(a, "hand$", 5) == 0)		return p_symbol_engine_open_ppl_hand_and_board_expression->ProcessQuery(a);
+	if (memcmp(a, "board$", 6) == 0)	return p_symbol_engine_open_ppl_hand_and_board_expression->ProcessQuery(a);
 
 	// PLAYERS OPPONENTS 1(7)
 	if (memcmp(a, "nopponents", 10)==0)
@@ -638,8 +643,8 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	if (memcmp(a, "msgbox$", 7)==0 && strlen(a)>7)  					
 	{
 		// Don't show a messagebox if in parsing-mode
-		//if (p_formula->IsParsing())
-		if (!p_autoconnector->IsConnected())
+		if (p_formula->IsParsing() || !p_autoconnector->IsConnected()
+			|| !p_symbol_engine_userchair->userchair_confirmed())
 		{
 			return 0;
 		}

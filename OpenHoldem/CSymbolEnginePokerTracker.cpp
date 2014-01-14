@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
 
+#include "CFormula.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -148,9 +149,9 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 
 	if (!p_pokertracker_thread->IsConnected())
 	{
-		if (!p_symbol_engine_userchair->userchair_confirmed())
+		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula->IsParsing())
 		{
-			// We are not yet seated.
+			// We are not yet seated or formula is getting parsed.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
