@@ -2609,15 +2609,17 @@ void CManualModeDlg::SetAllPossibleButtons()
 	}
 	// Fold always possible
 	buttonstate[0] = true;
-	// call
-	if (MyCurrentBet() < get_current_bet())
-	{
-		buttonstate[1] = true;
-	}
 	// Check
+	// Only posible, if nobody is betting
 	if (get_current_bet() <= 0)
 	{
 		buttonstate[2] = true;
+	}
+	else
+	{
+		// Call
+		// There is always either check or call possible.
+		buttonstate[1] = true;
 	}
 	// raise
 	if (MyTotalBalance() > get_current_bet())
