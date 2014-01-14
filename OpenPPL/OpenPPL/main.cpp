@@ -187,11 +187,6 @@ int main(int argc, char *argv[])
 		// Last step: add include files
 		// Swag-functions are depricated now, as OH 4.0.0s f$betsize-function
 		// cares about that
-
-		/*
-		AppendFileToOHFOutputIfFileExists(CString k_swag_file_name, true);
-		*/
-		AppendFileToOHFOutputIfFileExists(k_hand_strength_library_file_name, true);
 		AppendFileToOHFOutputIfFileExists(k_custom_OHF_file_name, false);
 	}
 } 

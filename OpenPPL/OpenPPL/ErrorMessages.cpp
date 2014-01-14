@@ -21,7 +21,7 @@
 
 static const char *short_error_messages[k_number_of_error_codes] =
 {
-	"ERROR: \"BEEP\" is no valid action for OpenPPL.",
+	"ERROR: Shanky-style delay not supported.",
 	"ERROR: Invalid card expression.",
 	"ERROR: Missing keyword \"FORCE\".",
 	"ERROR: Missing code section.",
@@ -41,11 +41,15 @@ static const char *short_error_messages[k_number_of_error_codes] =
 
 static const char *detailed_error_messages[k_number_of_error_codes] =
 {
-	// k_error_beep_not_supported
-	"OpenHoldem is meant as a bot, not as a tool for manual play.\n"
-	"Human and bot competing for the mouse just calls for troubles.\n"
+	// k_error_shanky_style_delay_not_supported
+	"OpenPPL does not support Shanky-style delays.\n"
+	"These delays will be ignored, but your formula will stay functional.\n"
 	"\n"
-	"Please complete your formula so that all actions are specified.\n",
+	"Instead of (for example) RAISE FORCE DELAY 3 please use\n"
+	"\n"
+	"NEW SYMBOL DELAY\n"
+	"   WHEN ... RETURN 3000 FORCE\n"
+	"END SYMBOL\n",
 
 	// k_error_invalid_card_expression
 	"A card expression looks e.g. like\n"

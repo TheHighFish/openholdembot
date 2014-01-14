@@ -18,6 +18,7 @@
 // otherwise the parser would become way too large to keep it understandable
 // and AFAIK we can't distribute it over multiple modules.
 
+static bool already_warned_about_shanky_style_delays = false;
 
 struct json_grammar: public boost::spirit::grammar<json_grammar> 
 { 
@@ -194,9 +195,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			suit_constant = lexeme_d[ch_p("C") | "c" | "D"| "d" | "H" | "h" | "S" | "s"];
 			
 			// card_expression 
-			card_expression = suited_card_expression[print_hand_expression()]
-				| card_expression_with_specific_suits[print_hand_expression_with_specific_suits()]
-				| non_suited_card_expression[print_hand_expression()]
+			card_expression = suited_card_expression
+				| card_expression_with_specific_suits
+				| non_suited_card_expression
 				| invalid_card_expression;
 			suited_card_expression = (non_suited_card_expression >> keyword_suited);
 			non_suited_card_expression = (lexeme_d[+card_constant]);
@@ -204,21 +205,22 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 			card_expression_with_specific_suits = (card_constant >> suit_constant >> *(card_constant >> !suit_constant));
 
 			// hand expression
-			hand_expression = keyword_hand 
+			hand_expression = (keyword_hand 
 					>> str_p("=") 
-					>> card_expression;
+					>> card_expression)[print_hand_or_board_expression()];
 
 			// board expressions
-			board_expression = suited_board_expression | non_suited_board_expression;
+			board_expression = (suited_board_expression | non_suited_board_expression)
+				[print_hand_or_board_expression()];
 			suited_board_expression = (keyword_board >> str_p("=") 
-					>> suited_card_expression)[print_suited_board_expression()];
+					>> suited_card_expression);
 			non_suited_board_expression = (keyword_board >> str_p("=") 
-					>> non_suited_card_expression)[print_non_suited_board_expression()];	                        
+					>> non_suited_card_expression);	                        
                                  
 			// Actions (and return statements)
 			// We handle both in the same way, as it simplifies things a lot.
-			action = (action_without_force >> keyword_force)
-					[handle_action()]
+			action = (((action_without_force >> keyword_force)[handle_action()])
+					>> !invalid_delay[error_shanky_style_delay_not_supported()])
 			    | set_user_defined_variable
 				| memory_store_command
 				| invalid_operator_instead_of_action
@@ -241,7 +243,8 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 				| keyword_raisepot | keyword_raisemax |	keyword_allin
 				| keyword_raise | keyword_fold
 				| keyword_betmin | keyword_bethalfpot
-				| keyword_betpot | keyword_betmax | keyword_bet | keyword_sitout];
+				| keyword_betpot | keyword_betmax | keyword_bet 
+				| keyword_sitout | keyword_close];
 			betsize_action = (keyword_bet | keyword_raise) 
 				>> (number[print_number()] | bracket_expression)
 				>> ((percentage_operator[print_relative_potsize_action()]) 
@@ -266,6 +269,9 @@ struct json_grammar: public boost::spirit::grammar<json_grammar>
 
 			// Return statement (without force, as this is part of "action")
 			return_statement = keyword_return >> expression;
+
+			// Unsupported shanky-style delays after actions
+			invalid_delay = keyword_delay >> !number;
 
 			// Terminal expressions
 			// Unfortunatelly we can't use "number = real_p[print_number()]";
