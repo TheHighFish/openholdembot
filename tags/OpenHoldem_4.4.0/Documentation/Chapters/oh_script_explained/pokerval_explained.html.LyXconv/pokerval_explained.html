@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="pokerval_explained.tex"> 
+<meta name="date" content="2013-12-26 04:07:00"> 
+<link rel="stylesheet" type="text/css" href="pokerval_explained.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Pokerval explained</h3>
+<!--l. 27--><p class="noindent" >OpenHoldem classifies and orders poker hands into a single 32bit value.
+
+<!--l. 30--><p class="indent" >   <a 
+ id="x1-10011"></a><hr class="float"><div class="float" 
+>
+
+<img 
+src="pokerval_explained0x.png" alt="PIC" class="graphics" width="803.0pt" height="323.8063pt" ><!--tex4ht:graphics  
+name="pokerval_explained0x.png" src="2E__OH_SVN_trunk_Documentation_Chapters_symbols_Images_PokerValue.eps"  
+-->
+<br /> <div class="caption" 
+><span class="id">Table&#x00A0;1: </span><span  
+class="content">PokerValue</span></div><!--tex4ht:label?: x1-10011 -->
+
+   </div><hr class="endfloat" />
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>Bits 31-24 indicate the hand rank </h4>
+           <ul class="itemize1">
+        <li class="itemize">Straight flush = bit 31 set
+           </li>
+        <li class="itemize">Four of a kind = bit 30 set
+           </li>
+        <li class="itemize">Full house = bit 29 set
+           </li>
+        <li class="itemize">Flush = bit 28 set
+           </li>
+        <li class="itemize">Straight = bit 27 set
+           </li>
+        <li class="itemize">Three of a kind = bit 26 set
+           </li>
+        <li class="itemize">Two pair = bit 25 set
+           </li>
+        <li class="itemize">One pair = bit 24 set
+           </li>
+        <li class="itemize">5-of-a-kind is indicated when bits 31-24 are set to 1
+           </li>
+        <li class="itemize">High-card (no pair) is indicated when bits 31-24 are set to 0</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-3000"></a>Bits 23-20 are not used</h4>
+           <ul class="itemize1">
+        <li class="itemize">Bits 19-16 indicate the rank of the top card in the hand
+           </li>
+        <li class="itemize">Bits 15-12 indicate the rank of the second card in the hand
+           </li>
+        <li class="itemize">Bits 11-8 indicate the rank of the third card in the hand
+           </li>
+        <li class="itemize">Bits 7-4 indicate the rank of the fourth card in the hand
+           </li>
+        <li class="itemize">Bits 3-0 indicate the rank of the fifth card in the hand</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-4000"></a>Numeric values for the ranks (bits 19-1) are: </h4>
+           <ul class="itemize1">
+        <li class="itemize">14 Ace
+           </li>
+        <li class="itemize">13 King
+           </li>
+        <li class="itemize">12 Queen
+
+           </li>
+        <li class="itemize">11 Jack
+           </li>
+        <li class="itemize">10-2 Ten-Two
+           </li>
+        <li class="itemize">1 Ace (in lo straight)</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-5000"></a>Pokerval comparisons</h4>
+<!--l. 72--><p class="noindent" >The pokerval symbol maps every 0 to 7 card poker hand onto the 32bit number space in
+correct order of game precedence, allowing two poker hands can be compared to
+see which is the better hand - higher values are better. The lowest possible
+value is 0 (no cards). The highest possible value is 5-aces which is encoded as
+0xFF0EEEEE.
+<!--l. 78--><p class="indent" >   <img 
+src="pokerval_explained1x.png" alt="PIC" class="graphics" width="602.25pt" height="368.37624pt" ><!--tex4ht:graphics  
+name="pokerval_explained1x.png" src="3E__OH_SVN_trunk_Documentation_Chapters_symbols_Images_pokerval_manualmode.eps"  
+-->
+<!--l. 80--><p class="indent" >   Now we feed the pokerval into MicroSofts calculator and then switch to binary
+mode:
+
+<!--l. 83--><p class="indent" >   <img 
+src="pokerval_explained2x.png" alt="PIC" class="graphics" width="361.34999pt" height="232.87pt" ><!--tex4ht:graphics  
+name="pokerval_explained2x.png" src="4E__OH_SVN_trunk_Documentation_Chapters_oh_script_explained_Images_pokerval_calculator.eps"  
+-->
+<!--l. 85--><p class="indent" >   Not that hard to interpret the result.
+   <h4 class="subsectionHead"><a 
+ id="x1-6000"></a>Player/Pocket Card List </h4>
+<!--l. 90--><p class="noindent" >The symbol pcbits is a bit list that indicates where your dealt pocket cards are used in
+your 5 card poker hand. Ony the lower order 5 bits are significant - one bit per card
+in your 5 card poker hand. Each bit corresponds to a pokerval rank field as
+follows:
+<!--l. 95--><p class="indent" >   bit# pokerval bit4 rank5 bit3 rank4 bit2 rank3 bit1 rank2 bit0 rank1.
+<!--l. 97--><p class="indent" >   In the example above pcbits would look like
+   <!--l. 99-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-6001r1"></a></span>pcbits&#x00A0;=&#x00A0;00110
+   </div>
+<!--l. 104--><p class="indent" >   because we contribute 7 and 6 in a 98765-straight.
+<!--l. 106--><p class="indent" >   If all bits in pcbits are zero then neither of your two cards are used in your 5
+card hand. The following formula fragment will be true if you have a sucker
+straight:
+   <!--l. 110-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-6002r1"></a></span>((nstraight==5)&#x00A0;&amp;&amp;&#x00A0;(pcbits==1))
+   </div>
+<!--l. 115--><p class="indent" >   The following formula fragment will be true if you are filling an inside straight:
+   <!--l. 118-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-6003r1"></a></span>((nstraight==5)&#x00A0;&amp;&amp;&#x00A0;(pcbits&amp;14))
+
+   </div>
+<!--l. 123--><p class="indent" >   The formula symbol npcbits contains the number of your pocket cards being used in
+your 5 card poker hand. The possible values are: 0, 1 and 2.  
+</body></html> 
+
+
+
