@@ -22,7 +22,6 @@
 * Add Relhbys OHF-optimizer
 * Add "OpenPPL Release Notes.txt"
 * Add "OpenPPL_Library.ohf"
-* Add "mh_str_Handstrength_Library.ohf" (for OH 4.0.0+)
 * Add "OpenPPL_Manual.chm"
 * Create a rar-file with unique name ("OpenPPL_1.x.y.rar")
 * Double-check the rar-file.

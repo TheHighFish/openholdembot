@@ -29,6 +29,21 @@ BUG FIXES:
   [THF]
 - Small fixes to the mh_handstrength_library
   [Nik0]
+  
+v4.0.1 2013-xx-xx
+=================
+NEW STUFF:
+- New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair, StackSizeAtBeginningOfCurrentRound
+  Had2ndTopPairOnFlop, PT_ButtonVPIP, Had2ndOverPairOnTurn
+ [Lavezzi]
+ - NumberOfOpponentsAllin did not count a villan betting our stack size as being allin. Although this is not an error its easier for bot coding considering him as allin.
+ [Lavezzi]
+ 
+ BUG FIXES:  
+- OpponentStacksizeHeadsUp was not returning any value when HeadsUp with one or more opponents allin - this has now been fixed. 
+  [Lavezzi]
+- OpenEndedStraightDrawPossibleOnFlop was returning wrong value on paired board. Thanks to Invader11 for providing the patch.
+  [Lavezzi]
 
 v4.0.0 2013-01-26
 =================
