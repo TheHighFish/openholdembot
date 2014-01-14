@@ -1,6 +1,13 @@
-v4.2.1 2013-09-xx
+v4.4.0 2014-01-14
 =================
-BUG FIXES:  
+NEW STUFF:
+- Support for "BEEP FORCE" and "CLOSE FORCE".
+  The latter one will check/fold, then sitout and finally close the table.
+  [THF]
+- Support for OpenHoldems new board$-symbol.
+  Finally we are able to translate all board-expresssions and even in a more natural way.
+  This also leads to far smaller and more readable log-files.
+  [THF]
 
 MAINTENANCE:
 - Adding more warnings about bad coding-style to bracketify.pl,
