@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Translating_Your_Bot.tex"> 
-<meta name="date" content="2012-10-11 00:51:00"> 
+<meta name="date" content="2014-01-14 03:25:00"> 
 <link rel="stylesheet" type="text/css" href="Translating_Your_Bot.css"> 
 </head><body 
 >
@@ -15,15 +15,10 @@
 
    <h2 class="likechapterHead"><a 
  id="x1-1000"></a>Translating Your Bot</h2>
-<!--l. 27--><p class="noindent" >Before you can use your bot written in OpenPPL with OpenHoldem you
-have to translate it to OH-script, Openholdems native programming
-language. This job gets done by the converter called &#8220;OpenPPL.exe&#8221;. It
-also adds the library of supporting functions (&#8220;OpenPPL_Library.ohf&#8221;) and
-some functions for NL-betsizing located in a file with the verbose name
-&#8220;OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf&#8221;.
-The reason for this file is the new and simple f$betsize function of OpenHoldem 2.2.0
-that will replace the messy &#8220;f$swag&#8221; functions inherited from WinHoldem. You don&#8217;t
-have to care about the details, everything works automagically here.
+<!--l. 27--><p class="noindent" >Before you can use your bot written in OpenPPL with OpenHoldem you have to
+translate it to OH-script, Openholdems native programming language. This job gets done
+by the converter called &#8220;OpenPPL.exe&#8221;. It also adds the library of supporting functions
+(&#8220;OpenPPL_Library.ohf&#8221;)
    <h3 class="sectionHead"><a 
  id="x1-2000"></a>Prerequisites</h3>
            <ul class="itemize1">
@@ -34,7 +29,7 @@ have to care about the details, everything works automagically here.
         Word-document, 16 bit-encodings or other weird formats.</li></ul>
    <h3 class="sectionHead"><a 
  id="x1-3000"></a>Translation Steps</h3>
-<!--l. 47--><p class="noindent" >
+<!--l. 41--><p class="noindent" >
            <ol  class="enumerate1" >
         <li 
   class="enumerate" id="x1-3002x1">Open the command prompt (DOS-box).
@@ -45,13 +40,13 @@ class="ecti-1000">cd </span>command
         for that.
            </li>
         <li 
-  class="enumerate" id="x1-3006x3">Type at the command line <!--l. 52-->
+  class="enumerate" id="x1-3006x3">Type at the command line <!--l. 46-->
            <div class="lstlisting" id="listing-1"><span class="label"><a 
  id="x1-3007r1"></a></span>OpenPPL.exe&#x00A0;my_source_code.txt&#x00A0;&#x003E;&#x00A0;my_translated_bot.ohf
            </div>
-        <!--l. 55--><p class="indent" >     In case you are not experienced dealing with the console we explain this
+        <!--l. 49--><p class="indent" >     In case you are not experienced dealing with the console we explain this
         step in detail:
-        <!--l. 58--><p class="indent" >
+        <!--l. 52--><p class="indent" >
             <ol  class="enumerate2" >
             <li 
   class="enumerate" id="x1-3009x1">&#8220;OpenPPL.exe&#8221; is the translator that gets executed
@@ -59,7 +54,6 @@ class="ecti-1000">cd </span>command
             <li 
   class="enumerate" id="x1-3011x2">&#8220;my_source_code.txt&#8221; has to be the real name of your bot source of
             course. It is given as a command line argument to the converter.
-
             </li>
             <li 
   class="enumerate" id="x1-3013x3">Usually the generated output gets to the console (which is funny to
@@ -68,24 +62,25 @@ class="ecti-1000">cd </span>command
             <li 
   class="enumerate" id="x1-3015x4">&#8220;my_translated_bot.ohf&#8221; finally is the converted source code after
             successful translation. In case of an error the file is incomplete and
+
             unusable, but does not get deleted for better problem diagnostics.</li></ol>
            </li>
         <li 
   class="enumerate" id="x1-3017x4">After that you have an OH-script file that you can with load with OpenHoldem.
         Give it a try with PokerAcademy, PokerTH or ManualMode and you will see,
         that it will play something that looks like poker.</li></ol>
-<!--l. 72--><p class="noindent" ><img 
+<!--l. 66--><p class="noindent" ><img 
 src="Translating_Your_Bot0x.png" alt="PIC" class="graphics" width="666.0pt" height="329.00087pt" ><!--tex4ht:graphics  
-name="Translating_Your_Bot0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___enPPL_Manual_Chapters_images_command_prompt.eps"  
+name="Translating_Your_Bot0x.png" src="0E__OH_SVN_trunk_OpenPPL_OpenPPL_Manual_Chapters_images_command_prompt.eps"  
 -->
-
    <h3 class="sectionHead"><a 
  id="x1-4000"></a>General tips</h3>
-<!--l. 77--><p class="noindent" >Working with the command-line (DOS-prompt) may be unaccustomed to some younger
+<!--l. 71--><p class="noindent" >Working with the command-line (DOS-prompt) may be unaccustomed to some younger
 people who got born after the DOS-age and who don&#8217;t know Linux either. But once you
 get used to it it is simpler than a GUI and working with a mouse. Two tips to simplify
 your task:
            <ul class="itemize1">
+
         <li class="itemize">You don&#8217;t have to type everything at the command-line. Use the tab-key
         for auto-completion of filenames.
            </li>

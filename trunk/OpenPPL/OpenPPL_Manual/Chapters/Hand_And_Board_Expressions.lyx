@@ -205,31 +205,7 @@ Hand = ATd
 
 , because the parser needs to see a suit after the first card to know how
  he should proceed.
- You also can't mix specific suits with the keyword suited: 
-\begin_inset Quotes eld
-\end_inset
-
- Hand = AT suited
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-Hand = AhTh
-\begin_inset Quotes erd
-\end_inset
-
- are both right, whereas 
-\begin_inset Quotes eld
-\end_inset
-
-Hand = AhT Suited
-\begin_inset Quotes erd
-\end_inset
-
- is no valid OpenPPL-code.
+ 
 \end_layout
 
 \begin_layout Section*

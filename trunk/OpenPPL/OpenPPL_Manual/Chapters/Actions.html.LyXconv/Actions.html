@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
 <!-- html --> 
 <meta name="src" content="Actions.tex"> 
-<meta name="date" content="2012-11-08 15:21:00"> 
+<meta name="date" content="2014-01-14 03:00:00"> 
 <link rel="stylesheet" type="text/css" href="Actions.css"> 
 </head><body 
 >
@@ -71,24 +71,26 @@ class="cmsy-10">-</span>raise&#x00A0;(fixed&#x00A0;limit)&#x00A0;<br /><span cla
  id="x1-4010r10"></a></span>CALL&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-4011r11"></a></span>CHECK&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
  id="x1-4012r12"></a></span>FOLD&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-4013r13"></a></span>SITOUT&#x00A0;FORCE
+ id="x1-4013r13"></a></span>BEEP&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;beep,&#x00A0;but&#x00A0;don#t&#x00A0;act&#x00A0;<br /><span class="label"><a 
+ id="x1-4014r14"></a></span>SITOUT&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;OpenHoldem&#x00A0;will&#x00A0;first&#x00A0;check/fold,&#x00A0;then&#x00A0;sitout&#x00A0;<br /><span class="label"><a 
+ id="x1-4015r15"></a></span>CLOSE&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;OpenHoldem&#x00A0;will&#x00A0;check/fold,&#x00A0;sitout,&#x00A0;then&#x00A0;close&#x00A0;the&#x00A0;table
    </div>
-<!--l. 91--><p class="indent" >   Contrary to standard PPL OpenPPL does not distinguish bets and raises. The
+<!--l. 93--><p class="indent" >   Contrary to standard PPL OpenPPL does not distinguish bets and raises. The
 generated OH-script-code looks exactly the same and OpenHoldem makes no difference
 anyway.
 
    <h3 class="sectionHead"><a 
  id="x1-5000"></a>Using expressions for the bet-amount</h3>
-<!--l. 98--><p class="noindent" >Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for each caller. With
+<!--l. 100--><p class="noindent" >Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for each caller. With
 standard PPL this would result in clumsy code. But with OpenPPL you can simply
 write:
-   <!--l. 102-->
+   <!--l. 104-->
    <div class="lstlisting" id="listing-5"><span class="label"><a 
  id="x1-5001r1"></a></span>WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;0)&#x00A0;RAISE&#x00A0;(3&#x00A0;+&#x00A0;Calls)&#x00A0;FORCE
    </div>
-<!--l. 107--><p class="indent" >   If you want you could take this to extremes and write good code like the
+<!--l. 109--><p class="indent" >   If you want you could take this to extremes and write good code like the
 following:
-   <!--l. 110-->
+   <!--l. 112-->
    <div class="lstlisting" id="listing-6"><span class="label"><a 
  id="x1-5002r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;MyFavouriteBetsizeForDryBoards&#x00A0;<br /><span class="label"><a 
  id="x1-5003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;...&#x00A0;<br /><span class="label"><a 
@@ -96,10 +98,10 @@ following:
  id="x1-5005r4"></a></span>&#x00A0;<br /><span class="label"><a 
  id="x1-5006r5"></a></span>WHEN&#x00A0;(...)&#x00A0;RAISE&#x00A0;(MyFavouriteBetsizeForDryBoards)&#x00A0;FORCE
    </div>
-<!--l. 119--><p class="indent" >   Please note that in both cases extra brackets are mandatory.
+<!--l. 121--><p class="indent" >   Please note that in both cases extra brackets are mandatory.
    <h3 class="sectionHead"><a 
  id="x1-6000"></a>Being strict: using &#8220;FORCE&#8221;</h3>
-<!--l. 124--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
+<!--l. 126--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
 PPL this keyword was optional. If you left it out, it meant, that the bot continued to
 evaluate and finally fell back to the default logic. We deviated from that behaviour,
 as:
@@ -110,12 +112,12 @@ as:
         <li class="itemize">OpenPPL does not provide a default bot.</li></ul>
    <h3 class="sectionHead"><a 
  id="x1-7000"></a>Quickfolding bad hands</h3>
-<!--l. 136--><p class="noindent" >Most poker-sites provide pre-action-buttons to act before it is your turn. Especially
+<!--l. 138--><p class="noindent" >Most poker-sites provide pre-action-buttons to act before it is your turn. Especially
 useful is the prefold-button that makes it possible to click bad hands away and forget
 about them. Being able to click this button with your bot has at least two positive effect:
 more human-like behaviour and playing more hands per hour due to faster actions .
 Nothing could be more easy:
-   <!--l. 143-->
+   <!--l. 145-->
    <div class="lstlisting" id="listing-7"><span class="label"><a 
  id="x1-7001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
  id="x1-7002r2"></a></span>&#x00A0;<br /><span class="label"><a 
@@ -128,23 +130,23 @@ Nothing could be more easy:
 
    <h4 class="subsectionHead"><a 
  id="x1-8000"></a>Be aware of potentially unstable game-states!</h4>
-<!--l. 157--><p class="noindent" >Please note:
+<!--l. 159--><p class="noindent" >Please note:
            <ul class="itemize1">
         <li class="itemize">prefold gets evaluated when it is <span 
 class="ecti-1000">not your turn</span>. Therefore it might happen that
         OpenHoldem takes a screenshot, evaluates and acts while the casino updates its
         table-display and the game-state is unstable. &#8220;Garbage in &#8211; garbage
         out&#8221; will happen. Now lets assume you have some super-nitty bot:
-        <!--l. 164-->
+        <!--l. 166-->
            <div class="lstlisting" id="listing-8"><span class="label"><a 
  id="x1-8001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
  id="x1-8002r2"></a></span>&#x00A0;<br /><span class="label"><a 
  id="x1-8003r3"></a></span>PREFOLD&#x00A0;<br /><span class="label"><a 
  id="x1-8004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(NOT&#x00A0;((Hand&#x00A0;=&#x00A0;AA)&#x00A0;OR&#x00A0;(Hand&#x00A0;=&#x00A0;KK)))&#x00A0;FOLD&#x00A0;FORCE
            </div>
-        <!--l. 170--><p class="indent" >     <img 
+        <!--l. 172--><p class="indent" >     <img 
 src="Actions0x.png" alt="PIC" class="graphics" width="526.03093pt" height="126.00354pt" ><!--tex4ht:graphics  
-name="Actions0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___apters_images_PokerStars_Unstable_Gamestate.eps"  
+name="Actions0x.png" src="0E__OH_SVN_trunk_OpenPPL_OpenPPL_Manual_Chapters_images_PokerStars_Unstable_Gamestate.eps"  
 --><br 
 class="newline" />&#8221;Fold when I don&#8217;t have a good hand&#8221;. But here your good hand can not get
         recognized because your aces get only displayed partially. Your bot would fold
@@ -165,7 +167,7 @@ class="newline" />&#8221;Fold when I don&#8217;t have a good hand&#8221;. But he
 
    <h3 class="sectionHead"><a 
  id="x1-9000"></a>Backup actions</h3>
-<!--l. 190--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
+<!--l. 192--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
 the pot, but this is currently not possible, e.g. because your opponent made a large raise
 and half-pot would be less than the minimum. In such situations OpenPPL behaves in
 the following ways:
@@ -188,7 +190,7 @@ the following ways:
             <li class="itemize">Check if no Call is possible
             </li>
             <li class="itemize">Fold if no Check is possible (default behaviour of OpenHoldem).</li></ul>
-        <!--l. 212--><p class="indent" >     This deviates from standard PPL again. However we have the following
+        <!--l. 214--><p class="indent" >     This deviates from standard PPL again. However we have the following
         reasons:
             <ul class="itemize2">
             <li class="itemize">OpenHoldem evaluates its technical functions in the order above (for

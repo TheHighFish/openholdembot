@@ -89,29 +89,7 @@ OpenPPL_Library.ohf
 \begin_inset Quotes erd
 \end_inset
 
-) and some functions for NL-betsizing located in a file with the verbose
- name 
-\begin_inset Quotes eld
-\end_inset
-
-OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_U
-se_OpenHoldem_2.2.0_And_Later.ohf
-\begin_inset Quotes erd
-\end_inset
-
-.
- The reason for this file is the new and simple f$betsize function of OpenHoldem
- 2.2.0 that will replace the messy 
-\begin_inset Quotes eld
-\end_inset
-
-f$swag
-\begin_inset Quotes erd
-\end_inset
-
- functions inherited from WinHoldem.
- You don't have to care about the details, everything works automagically
- here.
+) 
 \end_layout
 
 \begin_layout Section*
