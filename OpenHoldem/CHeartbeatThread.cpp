@@ -92,6 +92,21 @@ void CHeartbeatThread::SetOpenHoldemWindowTitle()
 	theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
 }
 
+void CHeartbeatThread::FlexibleHeartbeatSleeping()
+{
+	int scrape_delay = preferences.scrape_delay();
+	if (p_scraper_access->UserHasCards() 
+		&& (p_scraper_access->NumberOfVisibleButtons() > 0))
+	{
+		// My turn
+		// Stable frames expected
+		// Shorter reaction times desired
+		scrape_delay /= 2;
+	}
+	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
+	Sleep(scrape_delay);
+}
+
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 {
 	CHeartbeatThread	*pParent = static_cast<CHeartbeatThread*>(pParam);
@@ -221,11 +236,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// with detailed info instead of hint for beginners
 		p_openholdem_statusbar->SwitchToAdvancedStatusbarAfterFirstHand();
 
-		////////////////////////////////////////////////////////////////////////////////////////////
-		// Finally sleeping
-		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", preferences.scrape_delay());
-		Sleep(preferences.scrape_delay());
-
+		FlexibleHeartbeatSleeping();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat end.\n");
 	}
 }

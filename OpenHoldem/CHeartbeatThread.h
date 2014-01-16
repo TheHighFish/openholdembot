@@ -38,6 +38,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
 	static void SetOpenHoldemWindowTitle();
+	static void FlexibleHeartbeatSleeping();
 
 private:
 	HANDLE			_m_stop_thread;
