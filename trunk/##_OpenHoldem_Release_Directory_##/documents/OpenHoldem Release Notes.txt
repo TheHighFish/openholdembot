@@ -1,3 +1,10 @@
+v4.4.1 2014-02-xx
+==================
+NEW STUFF: 
+- Flexible heartbeat-delay: if it is our turn the delay 
+  will be automatically reduced for faster reaction-times.
+  [THF]
+
 v4.4.0 2014-01-14
 ==================
 NEW STUFF:
