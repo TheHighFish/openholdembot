@@ -15,6 +15,7 @@
 #include "CSymbolEngineHistory.h"
 
 #include "CBetroundCalculator.h"
+#include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "..\CTablemap\CTablemap.h"
@@ -164,21 +165,22 @@ void CSymbolEngineHistory::CalculateHistory()
 		// but "Fold" gets displayed where formerly his bet got displayed.
 		// This may lead to ugly mis-scrapes, that's why he have to check
 		// if the user is still playing.
-		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
-		if ((current_players_bet > maxbet)
-			&& IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i))
+		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i))
 		{
-			maxbet = current_players_bet;
+			double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
 
-	if (p_symbol_engine_tablelimits->bet() > 0)
+	double bet = MAX(p_symbol_engine_tablelimits->bet(), p_symbol_engine_tablelimits->bblind());
+	if (bet > 0)
 	{
-		maxbet /= p_symbol_engine_tablelimits->bet();
+		maxbet /= bet;
+		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
 	}
-	if (maxbet > _nbetsround[BETROUND])
+	else
 	{
-		_nbetsround[BETROUND] = maxbet;									// nbetsroundx
+		write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
 }

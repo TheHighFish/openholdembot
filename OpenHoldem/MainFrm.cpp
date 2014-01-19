@@ -168,6 +168,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_SYSCOMMAND()
 END_MESSAGE_MAP()
 
+CString	_openholdem_window_title;	//!!!!
+
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
@@ -181,6 +183,8 @@ CMainFrame::CMainFrame()
 	_prev_wrect.left = 0;
 	_prev_wrect.right = 0;
 	_prev_wrect.top = 0;
+
+	_openholdem_window_title = ""; //!!!!
 }
 
 CMainFrame::~CMainFrame() 
@@ -214,9 +218,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start timer that attaches the OH window when the poker window moves
 	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
-	if (preferences.simple_window_title())
-		SetMainWindowTitle("");
-
+	SetOpenHoldemWindowTitle("");
 	return 0;
 }
 
@@ -444,26 +446,6 @@ BOOL CMainFrame::DestroyWindow()
 	return CFrameWnd::DestroyWindow();
 }
 
-void CMainFrame::SetMainWindowTitle(LPCSTR title)
-{
-	if (preferences.simple_window_title()) {
-		if (_exec_filename.IsEmpty()) {
-			char exec[_MAX_PATH];
-			GetModuleFileName(AfxGetInstanceHandle(), exec, _MAX_PATH);
-			_exec_filename = exec;
-			int index = _exec_filename.ReverseFind('\\');
-			if (index >= 0)
-				_exec_filename = _exec_filename.Mid(index+1);
-			index = _exec_filename.ReverseFind('.');
-			if (index > 0)
-				_exec_filename = _exec_filename.Left(index);
-		}
-		SetWindowText(_exec_filename);
-	} else {
-		SetWindowText(title);
-	}
-}
-
 void CMainFrame::OnFileOpen() 
 {
     COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
@@ -481,7 +463,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
-		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
+		SetOpenHoldemWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
 		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 	}
 }
@@ -819,9 +801,35 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
 
-void CMainFrame::UpdateWindowTitle()
+void CMainFrame::SetOpenHoldemWindowTitle(CString title)
 {
-	SetMainWindowTitle(p_formula->formula_name() + " - " + m_strTitle);
+	_openholdem_window_title = title;
+	RefreshOpenHoldemWindowTitle();
+}
+
+void CMainFrame::RefreshOpenHoldemWindowTitle()
+{
+	CString	messageTitle; // = new CString;
+	if (preferences.simple_window_title())
+	{
+		// _openholdem_window_title might be:
+		//   * default: application name
+		//   * changed via window-messages
+		messageTitle = _openholdem_window_title;
+	}
+	else
+	{
+		// Display extended title:
+		// Formula, pokersite, table-title
+		char title[MAX_WINDOW_TITLE];	
+		::GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
+		messageTitle.Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
+	}
+	// SetTitle("test");//messageTitle.GetString()); !!! causes crashes
+	//PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle.GetString());
+	//SetWindowText("test");//messageTitle);
+	//PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)"test");
+	//SetTitle("test");
 }
 
 void CMainFrame::StartTimer()
@@ -880,3 +888,6 @@ CMainFrame* PMainframe()
 	CMainFrame *p_mainframe = (CMainFrame *) (theApp.m_pMainWnd);
 	return p_mainframe;
 }
+
+
+

@@ -38,12 +38,12 @@ LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 	if (title) 
 	{
 		CString *sTitle = (CString *)title;
-		PMainframe()->SetMainWindowTitle(sTitle->GetString());
+		PMainframe()->SetOpenHoldemWindowTitle(sTitle->GetString());
 		delete sTitle;
 	} 
 	else 
 	{
-		PMainframe()->SetMainWindowTitle("");
+		PMainframe()->SetOpenHoldemWindowTitle("");
 	}
 	return true;
 }

@@ -82,16 +82,6 @@ CHeartbeatThread::~CHeartbeatThread()
 	p_heartbeat_thread = NULL;
 }
 
-void CHeartbeatThread::SetOpenHoldemWindowTitle()
-{
-	char title[MAX_WINDOW_TITLE];
-	CString	*messageTitle = new CString;
-
-	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
-	messageTitle->Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
-	theApp.m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle);
-}
-
 void CHeartbeatThread::FlexibleHeartbeatSleeping()
 {
 	int scrape_delay = preferences.scrape_delay();
@@ -166,8 +156,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
-
-		SetOpenHoldemWindowTitle();
+		PMainframe()->RefreshOpenHoldemWindowTitle();
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Update scraper output dialog if it is present

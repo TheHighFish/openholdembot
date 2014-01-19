@@ -8,6 +8,11 @@ NEW STUFF:
   Finally we are able to translate all board-expresssions and even in a more natural way.
   This also leads to far smaller and more readable log-files.
   [THF]
+  
+BUG FIXES:
+- Translation of memory-symbols missed a prefix in the past.
+  This has now been fixed. Thanks to Hugo1 for reporting.
+  [THF]
 
 MAINTENANCE:
 - Adding more warnings about bad coding-style to bracketify.pl,
@@ -15,6 +20,10 @@ MAINTENANCE:
   which is ok for standard-PPL.
   [THF]
 - Lots of cmall changes to the OpenPPL-library and to OpenPPL.exe to make it compatible with OpenHoldem 4.4.0+.
+  [THF]
+- OpenPPL does no longer require "mh_str_Handstrength_Library.ohf",
+  as it used only one function in the past (mh_kickerbetter)
+  and this symbol got now implemented directly in the OpenPPL-library.
   [THF]
 
 v4.0.3 2013-02-24

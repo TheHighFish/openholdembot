@@ -41,10 +41,12 @@ public:
 	afx_msg void OnAppAbout();
 	afx_msg void OnForceCrash();
 	DECLARE_MESSAGE_MAP()
-
-public:
 	virtual int ExitInstance();
 
+public:
+	void UnloadScraperDLL();
+
+public:
 	mouse_process_message_t		_dll_mouse_process_message;
 	mouse_click_t				_dll_mouse_click;
 	mouse_clickdrag_t			_dll_mouse_click_drag;
@@ -54,8 +56,6 @@ public:
 
 	HMODULE				_mouse_dll;
 	HMODULE				_keyboard_dll;
-
-	void							UnloadScraperDLL();
 
 	HMODULE							_scraper_dll;
 	scraper_process_message_t		_dll_scraper_process_message;

@@ -266,8 +266,7 @@ void COpenHoldemApp::FinishInitialization()
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 
-	if (preferences.simple_window_title())
-		m_pMainWnd->PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)NULL);
+	PMainframe()->RefreshOpenHoldemWindowTitle();
 
 	// The one and only window has been initialized, so show and update it
 	if (preferences.gui_start_minimized())

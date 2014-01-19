@@ -90,6 +90,9 @@ public:
 	void StartTimer();
 	void ResetDisplay();
 	void KillTimer();
+public:
+	void SetOpenHoldemWindowTitle(CString title);
+	void RefreshOpenHoldemWindowTitle();
 
 public:
 #define ENT CSLock lock(m_critsec);
@@ -109,6 +112,7 @@ private:
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
+	//!!!CString			_openholdem_window_title;
 };
 
 // used by EnumProcTopLevelWindowList function
