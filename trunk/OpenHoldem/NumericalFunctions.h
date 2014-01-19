@@ -76,4 +76,7 @@ inline void AdaptValueToMinMaxRange(double *value, double min, double max)
 // returns a random number in the range 0..n-1
 int Random(int n);
 
+#define MAX(x, y)		(((x) > (y)) ? (x) : (y))
+#define MIN(x, y)		(((x) < (y)) ? (x) : (y))
+
 #endif INC_NUMERICALFUNCTIONS_H

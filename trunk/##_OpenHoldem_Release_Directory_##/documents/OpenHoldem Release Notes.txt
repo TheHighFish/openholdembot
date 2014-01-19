@@ -4,6 +4,13 @@ NEW STUFF:
 - Flexible heartbeat-delay: if it is our turn the delay 
   will be automatically reduced for faster reaction-times.
   [THF]
+  
+BUG FIXES:
+- nbetsroundX could sometimes become wrong if shortly after a hand-reset
+  there were bets at the table, but the amount of a min-bet was not yet known.
+  This rare case affected especially simulation-software like ManualMode and has now been fixed.
+  Thanks to Fqfq for reporting.
+  [THF]
 
 v4.4.0 2014-01-14
 ==================

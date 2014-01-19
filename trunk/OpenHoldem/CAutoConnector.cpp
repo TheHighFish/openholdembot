@@ -399,7 +399,7 @@ void CAutoConnector::Disconnect()
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
 
 	// Change window title
-	PMainframe()->UpdateWindowTitle();
+	PMainframe()->RefreshOpenHoldemWindowTitle();
 
 	// Reset Display 
 	PMainframe()->ResetDisplay();
