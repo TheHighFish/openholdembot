@@ -1,4 +1,15 @@
-v4.4.1 2014-02-xx
+v4.5.0 2014-02-xx
+==================
+- We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
+  because they looked like complete mis-conceptions:
+  * the userchair might change
+  * we already scrape pXname, uXname, ... for all 10 chairs, so we have the information anyway
+  * we were unable to find any tablemap which used these symbols
+  * and finally it seemed that even OpenHoldem didn't use these symbols anywhere.
+  [THF]
+
+  
+v4.4.1 2014-01-xx
 ==================
 NEW STUFF: 
 - Flexible heartbeat-delay: if it is our turn the delay 
@@ -14,17 +25,13 @@ BUG FIXES:
 - The symbol lookup of flagbits did no longer work after we renamed the former "fbits".
   Thanks to CiderTime for reporting.
   [THF]
+- The symbol betposition was mostly wrong because we confused 2 variables.
+  Thanks to Fqfq for reporting.
+  [THF]
 
 MAINTENANCE:
 - Fine-tuned lots of validator rules and also improved initialization/reset 
   of some symbols that caused good rules to fire incorrectly sometimes.
-  [THF]
-- We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
-  because they looked like complete mis-conceptions:
-  * the userchair might change
-  * we already scrape pXname, uXname, ... for all 10 chairs, so we have the information anyway
-  * we were unable to find any tablemap which used these symbols
-  * and finally it seemed that even OpenHoldem didn't use these symbols anywhere.
   [THF]
 
   
