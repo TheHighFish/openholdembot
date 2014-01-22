@@ -64,6 +64,11 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 		_foldbits[i] = 0;
 	}
 	_raischair = k_undefined;
+	_nplayerscallshort  = 0;
+	_nopponentsbetting  = 0;
+	_nopponentsfolded   = 0;
+	_nopponentscalling  = 0;
+	_nopponentschecking = 0;
 }
 
 void CSymbolEngineRaisersCallers::ResetOnNewRound()

@@ -46,7 +46,7 @@ const int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, C
 		background[i] = true;
 
 
-	switch (region->second.transform.GetString()[0]) 
+	switch (region->second.transform[0]) 
 	{
 		case 'C':
 			return CTypeTransform(region, hdc, text, cr_avg);
@@ -272,7 +272,7 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 
 	width = region->second.right - region->second.left + 1;
 	height = region->second.bottom - region->second.top + 1;
-	hash_type = region->second.transform.GetString()[1] - '0';
+	hash_type = region->second.transform[1] - '0';
 	
 	if (p_tablemap->h$(hash_type)->empty())
 		return ERR_NO_HASH_MATCH;
@@ -393,7 +393,7 @@ const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text
 	// Get associated s$record
 	s$tXtype = "plain";
 
-	s.Format("t%stype", region->second.transform.Mid(1,1));
+	s.Format("t%stype", region->second.transform[1]);
 
 	SMapCI s_iter = p_tablemap->s$()->find(s.GetString());
 	if (s_iter != p_tablemap->s$()->end())
@@ -572,7 +572,7 @@ const int CTransform::DoFuzzyFontScan(RMapCI region, const int width, const int 
 	int					vert_band_left = 0;
 	bool				backg_band = false;
 	CString				newchar = "";
-	int					font_group = strtoul(region->second.transform.Mid(1, 1).GetString(), NULL, 10);
+	int					font_group = strtoul(CString(region->second.transform[1]), NULL, 10);
 
 	while (vert_band_left<width) 
 	{
@@ -623,7 +623,7 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 	CString				hex_bits = "";
 	double				best_weighted_hd = 999999.;
 	unsigned int		hexval_array[MAX_SINGLE_CHAR_WIDTH] = {0};
-	int					font_group = strtoul(region->second.transform.Mid(1, 1).GetString(), NULL, 10);
+	int					font_group = strtoul(CString(region->second.transform[1]), NULL, 10);
 	TMapCI				best_hd_t_iter = p_tablemap->t$(font_group)->end();
 
 	for (int x=0; x<MAX_SINGLE_CHAR_WIDTH && left+x<width; x++)
@@ -888,11 +888,11 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 		{
 			place_in_format+=2;
 			token = "";
-			while (text.Mid(place_in_text,1).FindOneOf("0123456789-")!=-1 &&
-				   place_in_text < text.GetLength()) 
+			while (place_in_text < text.GetLength()
+				&& (isdigit(text[place_in_text]) || (text[place_in_text] == '-')))
 			{
-				if (text.Mid(place_in_text,1) != "-")
-					token.Append(text.Mid(place_in_text,1));
+				if (text[place_in_text] != '-')
+					token += text[place_in_text];
 
 				place_in_text+=1;
 			}
@@ -915,9 +915,10 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_format+=2;
 			token = "";
 
-			while (text.Mid(place_in_text,1).FindOneOf("$0123456789,¢km")!=-1 && place_in_text<text.GetLength())
+			while (place_in_text<text.GetLength()
+				&& (CString(text[place_in_text]).FindOneOf("$0123456789,¢km")))
 			{
-				token.Append(text.Mid(place_in_text,1));
+				token += (text[place_in_text]);
 				place_in_text++;
 			}
 
@@ -931,9 +932,9 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_format+=2;
 			token = "";
 
-			while (text.Mid(place_in_text,1).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())
+			while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())
 			{
-				token.Append(text.Mid(place_in_text,1));
+				token += text[place_in_text];
 				place_in_text++;
 			}
 
@@ -954,9 +955,9 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_format+=2;
 			token = "";
 
-			while (text.Mid(place_in_text,1).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())
+			while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())
 			{
-				token.Append(text.Mid(place_in_text,1));
+				token += text[place_in_text];
 				place_in_text++;
 			}
 
@@ -1062,15 +1063,15 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			token = "";
 
 			// Get the string that we want to match up to
-			while (format.Mid(place_in_format,1) != "^" && place_in_format < format.GetLength()) 
+			while (format[place_in_format] != '^' && place_in_format < format.GetLength()) 
 			{
-				skip_str.Append(format.Mid(place_in_format,1));
+				skip_str += format[place_in_format];
 				place_in_format+=1;
 			}
 			while (text.Mid(place_in_text, skip_str.GetLength()) != skip_str &&
 				   place_in_text < text.GetLength()) 
 			{
-   				token.Append(text.Mid(place_in_text,1));
+   				token += text[place_in_text];
 				place_in_text+=1;
 			}
 			if (text.Mid(place_in_text, skip_str.GetLength()) == skip_str) 
@@ -1089,14 +1090,14 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			token = "";
 
 			// Get roman numeral
-			while ( ( text.Mid(place_in_text,1).MakeLower() == "i" ||
-					  text.Mid(place_in_text,1).MakeLower() == "v" ||
-					  text.Mid(place_in_text,1).MakeLower() == "x" ||
-					  text.Mid(place_in_text,1).MakeLower() == "l" ||
-					  text.Mid(place_in_text,1).MakeLower() == "c") &&
-				   place_in_text < text.GetLength()) 
+			while ((tolower(text[place_in_text]) == 'i' 
+				|| tolower(text[place_in_text]) == 'v' 
+				|| tolower(text[place_in_text]) == 'x' 
+				|| tolower(text[place_in_text]) == 'l' 
+				|| tolower(text[place_in_text]) == 'c') 
+				&& place_in_text < text.GetLength()) 
 			{
-				token.Append(text.Mid(place_in_text,1).MakeLower());
+				token += (unsigned char)tolower(text[place_in_text]);
 				place_in_text+=1;
 			}
 
@@ -1294,15 +1295,15 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 		}
 		
 		// All other exact matches
-		else if (text.Mid(place_in_text,1) == format.Mid(place_in_format,1))
+		else if (text[place_in_text] == format[place_in_format])
 		{
 			if (results!=NULL)  
 				results->Append("exact match\t= '");
 
-			while (text.Mid(place_in_text,1) == format.Mid(place_in_format,1) && place_in_text<text.GetLength() && place_in_format<format.GetLength()) 
+			while (text[place_in_text] == format[place_in_format] && place_in_text<text.GetLength() && place_in_format<format.GetLength()) 
 			{
 				if (results!=NULL)
-					results->Append(text.Mid(place_in_text,1));
+					results += (text[place_in_text]);
 
 				place_in_text+=1;
 				place_in_format+=1;

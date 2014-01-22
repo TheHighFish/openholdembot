@@ -426,12 +426,12 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	// ante
 	if (sym_ante != 0) 
 	{
-		s = Number2CString(sym_ante);
+		s.Format("  Ante: %s\n", Number2CString(sym_ante));
 		t.Append(s);
 	}
 
 	// Pot
-	s = Number2CString(sym_pot);
+	s.Format("  Pot: %s\n", Number2CString(sym_pot));
 	t.Append(s);
 
 	if (preferences.log_symbol_enabled() 

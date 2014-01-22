@@ -32,7 +32,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1803")
     HEURISTIC_RULE (false)
     REASONING ("If there is a bet to call (to avoid problems with an aggressor-chair from the previous round), then I can't be the aggressor.")
-    PRECONDITION (gws("nbetstocall"))
+    PRECONDITION (gws("nbetstocall") > 0.01)
     POSTCONDITION (gws("raischair") != gws("userchair"))
     SYMBOLS_POSSIBLY_AFFECTED ("nbetstocall, raischair, userchair")
 END_TESTCASE

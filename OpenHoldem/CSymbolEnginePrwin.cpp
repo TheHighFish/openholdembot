@@ -55,7 +55,13 @@ void CSymbolEnginePrwin::ResetOnHandreset()
 }
 
 void CSymbolEnginePrwin::ResetOnNewRound()
-{}
+{
+	_nhandshi = 0;
+	_nhandslo = 0;
+	_nhandsti = 0;
+	_prwinnow = 0;
+	_prlosnow = 0;
+}
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {

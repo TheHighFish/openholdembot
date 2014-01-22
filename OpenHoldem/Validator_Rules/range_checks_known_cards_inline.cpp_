@@ -27,6 +27,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ncardsbetter")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ncardsbetter") >= 0) && (gws("ncardsbetter") <= 50))
+    POSTCONDITION ((gws("ncardsbetter") >= 0) && (gws("ncardsbetter") <= 52))
     SYMBOLS_POSSIBLY_AFFECTED ("ncardsbetter")
 END_TESTCASE
