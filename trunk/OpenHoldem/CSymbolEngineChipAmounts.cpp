@@ -43,8 +43,8 @@ void CSymbolEngineChipAmounts::ResetOnConnection()
 {
 	ResetOnHandreset();
 
-	_maxbalance = k_undefined;
-	_balanceatstartofsession = k_undefined;
+	_maxbalance = k_undefined_zero;
+	_balanceatstartofsession = k_undefined_zero;
 }
 
 void CSymbolEngineChipAmounts::ResetOnHandreset()

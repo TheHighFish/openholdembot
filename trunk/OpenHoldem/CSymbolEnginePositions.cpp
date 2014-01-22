@@ -45,7 +45,15 @@ void CSymbolEnginePositions::ResetOnConnection()
 {}
 
 void CSymbolEnginePositions::ResetOnHandreset()
-{}
+{
+	_betposition  = 0;
+	_dealposition = 0;
+	_callposition = 0;
+	_nchairsdealtright = 0;
+	_nchairsdealtleft  = 0;
+	_betpositionrais  = 0;
+	_dealpositionrais = 0;
+}
 
 void CSymbolEnginePositions::ResetOnNewRound()
 {}
@@ -135,7 +143,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair))
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair))
 		{
 			_betposition++;
 		}

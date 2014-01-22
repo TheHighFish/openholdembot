@@ -43,7 +43,7 @@ public:
 		assert(player < k_max_number_of_players);
 		if (player == k_undefined)
 		{
-			return k_undefined;
+			return k_undefined_zero;
 		}
 		return _balance[player];
 	}

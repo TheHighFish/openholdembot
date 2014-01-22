@@ -153,6 +153,7 @@ public:
 	// commonly used strings 
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
 									  return (n>=2 && n<=10) ? n : 10; }
+	inline int LastChair()			{ return (nchairs() - 1); }
 
 	const int swagtextmethod()		{ return GetTMSymbol("swagtextmethod", 0); }
 	const int potmethod()			{ return GetTMSymbol("potmethod", 0); }

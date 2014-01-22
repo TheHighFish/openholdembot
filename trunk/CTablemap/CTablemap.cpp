@@ -465,17 +465,17 @@ int CTablemap::LoadTablemap(const CString _fname)
 		// Handle t$ lines (fonts)
 		else if (strLineType.Left(2) == "t$" ||
 				 (strLineType.Left(1) == 't' &&
-				  strLineType.Mid(1,1) >= "0" &&
-				  strLineType.Mid(1,1) < MaxFontGroup &&
-				  strLineType.Mid(2,1) == "$")) 
+				  strLineType[1] >= '0' &&
+				  CString(strLineType[1]) < MaxFontGroup &&
+				  strLineType[2] == '$')) 
 		{
 
 			int font_group = 0;
 
 			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
-			t = strLineType.Mid(3,1);
-			hold_font.ch = t.GetString()[0];
-			font_group = strLineType.GetString()[1] - '0';
+			t = strLineType[3];
+			hold_font.ch = t[0];
+			font_group = strLineType[1] - '0';
 
 			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
 			{
@@ -510,13 +510,13 @@ int CTablemap::LoadTablemap(const CString _fname)
 		}
 
 		// Handle p$ lines (hash points)
-		else if (strLineType.Left(1) == "p" &&
-				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) < MaxHashGroup &&
-				 strLineType.Mid(2,1) == "$") 
+		else if (strLineType.Left(1) == 'p' &&
+				 strLineType[1] >= '0' &&
+				 CString(strLineType[1]) < MaxHashGroup &&
+				 strLineType[2] == '$') 
 		{
 			// number
-			token = strLineType.Mid(1,1);
+			token = strLineType[1];
 			int hashpoint_group = atol(token);
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
@@ -563,13 +563,13 @@ int CTablemap::LoadTablemap(const CString _fname)
 		}
 
 		// Handle h$ lines (hash values)
-		else if (strLineType.Left(1) == "h" &&
-				 strLineType.Mid(1,1) >= "0" &&
-				 strLineType.Mid(1,1) < MaxHashGroup &&
-				 strLineType.Mid(2,1) == "$") 
+		else if (strLineType.Left(1) == 'h' &&
+				 strLineType[1] >= '0' &&
+				 CString(strLineType[1]) < MaxHashGroup &&
+				 strLineType[2] == '$') 
 		{
 			// number
-			int hash_group = strLineType.GetString()[1] - '0';
+			int hash_group = strLineType[1] - '0';
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
@@ -1094,7 +1094,7 @@ uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int
 #endif
 	// Put the ascii value of each letter into a uint32_t
 	for (int i=0; i<name.GetLength(); i++)
-		uints[c++] = name.Mid(i,1).GetString()[0];
+		uints[c++] = name[i];
 
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Putting the pixels into the buffer\n");

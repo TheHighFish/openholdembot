@@ -8,7 +8,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol userchair")
     PRECONDITION (true)
-    POSTCONDITION ((gws("userchair") >= 0) && (gws("userchair") <= 9))
+    POSTCONDITION ((gws("userchair") >= -1) && (gws("userchair") <= 9))
     SYMBOLS_POSSIBLY_AFFECTED ("userchair")
 END_TESTCASE
 
