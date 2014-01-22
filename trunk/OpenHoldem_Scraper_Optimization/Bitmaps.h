@@ -7,24 +7,17 @@
 //
 //***************************************************************************** 
 //
-// Purpose:
+// Purpose: Scraping the poker-table and providing access to the scraped data.
+//  As the CScraper is low-level and quite large we created 
+//  a interface SCraperAccess that provides higher-level accessors
+//  like "UserHasCards()".
+//  Better use that interface to access scraper-data whenever possible.
 //
 //***************************************************************************** 
 
-#ifndef INC_CSCRAPERPREPROCESSOR_H
-#define INC_CSCRAPERPREPROCESSOR_H
+#ifndef INC_BITMAPS_H
+#define INC_BITMAPS_H
 
-#include "string.h"
+bool BitmapsAreEqual(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) ;
 
-class CScraperPreprocessor
-{
-public:
-	CScraperPreprocessor();
-	~CScraperPreprocessor();
-public:
-	static void PreprocessMonetaryString(CString *monetary_string);
-	static void PreprocessTitleString(CString *title_string);
-	static void ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text);
-};
-
-#endif INC_CSCRAPERPREPROCESSOR_H
+#endif INC_BITMAPS_H

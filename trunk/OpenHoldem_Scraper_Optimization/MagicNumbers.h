@@ -61,11 +61,12 @@ const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
 
 // Number of cards
-const int k_number_of_community_cards  =   5;
-const int k_number_of_flop_cards       =   3;  
-const int k_number_of_cards_per_player =   2;
-const int k_number_of_cards_per_deck   =  52;
-const int k_number_of_starting_hands   = 169;
+const int k_number_of_community_cards    =   5;
+const int k_index_of_last_community_card = k_number_of_community_cards - 1;
+const int k_number_of_flop_cards         =   3;  
+const int k_number_of_cards_per_player   =   2;
+const int k_number_of_cards_per_deck     =  52;
+const int k_number_of_starting_hands     = 169;
 
 // poker constants
 // The type has to be unsigned int, 

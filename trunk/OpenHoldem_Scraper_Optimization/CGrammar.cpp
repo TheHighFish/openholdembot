@@ -592,7 +592,7 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 
 						for (int c=0; c<newFunc->m_Offset; c++)
 						{
-							if (f->formula()->mFunction[i].func_text.Mid(c, 1)=="\n") 
+							if (f->formula()->mFunction[i].func_text[c]=='\n') 
 							{
 								newFunc->m_Line++;
 								newFunc->m_Column = 1;

@@ -673,20 +673,40 @@ double CSymbolEngineTableLimits::bet()
 
 CString CSymbolEngineTableLimits::GetGametypeAsString()
 {
+	CString result = "";
 	if (isnl())
 	{
-		return "NL";
+		result = "NL";
 	}
 	else if (ispl())
 	{
-		return "PL";
+		result = "PL";
 	}
 	else if (isfl())
 	{
-		return "FL";
+		result = "FL";
 	}
 	else
 	{
-		return "?L";
+		result = "?L";
 	}
+	if (p_symbol_engine_istournament->istournament())
+	{
+		result += "T";
+	}
+	return result;
 }
+
+/*!!!
+// !!! move to CTanblelimite
+	// log the stakes change
+	if (_scrape_something_changed & LIMITS_CHANGED)
+	{
+		write_log(k_always_log_basic_information, 
+			"\n"
+			"*************************************************************\n"
+			"NEW STAKES sb(%.2f) bb(%.2f) BB(%.2f) ante(%.2f)\n"
+			"*************************************************************\n",
+			_s_limit_info.sblind, _s_limit_info.bblind, 
+			_s_limit_info.bbet, _s_limit_info.ante);
+			*/

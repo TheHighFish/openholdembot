@@ -515,7 +515,7 @@ const double CGameState::SortedBalance(const int rank)
 // processed the current frame.
 bool CGameState::ProcessThisFrame (void)
 {
-	int				betround = (int) p_betround_calculator->betround();
+	int				betround =  p_betround_calculator->betround();
 	int				activebits = p_symbol_engine_active_dealt_playing->playersactivebits();
 
 	// check if all balances are known (indicates stability of info passed to DLL)
@@ -766,7 +766,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					&& _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_cards[1]!=0 
 					&& betround == k_betround_preflop)
 				{
-					_chair_actions[index_normalized][(int) betround-1][w_posted_bb] = true;
+					_chair_actions[index_normalized][betround-1][w_posted_bb] = true;
 					_bets_last = _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet;
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) posted the bb: $%.2f\n", index_normalized,
 							  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,

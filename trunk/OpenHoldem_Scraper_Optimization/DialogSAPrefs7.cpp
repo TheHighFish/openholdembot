@@ -54,35 +54,11 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (preferences.icm_prize1() == (int) preferences.icm_prize1())
-		text.Format("%.0f", preferences.icm_prize1());
-	else
-		text.Format("%f", preferences.icm_prize1());
-	m_ICM1.SetWindowText(text);
-
-	if (preferences.icm_prize2() == (int) preferences.icm_prize2())
-		text.Format("%.0f", preferences.icm_prize2());
-	else
-		text.Format("%f", preferences.icm_prize2());
-	m_ICM2.SetWindowText(text);
-
-	if (preferences.icm_prize3() == (int) preferences.icm_prize3())
-		text.Format("%.0f", preferences.icm_prize3());
-	else
-		text.Format("%f", preferences.icm_prize3());
-	m_ICM3.SetWindowText(text);
-
-	if (preferences.icm_prize4() == (int) preferences.icm_prize4())
-		text.Format("%.0f", preferences.icm_prize4());
-	else
-		text.Format("%f", preferences.icm_prize4());
-	m_ICM4.SetWindowText(text);
-
-	if (preferences.icm_prize5() == (int) preferences.icm_prize5())
-		text.Format("%.0f", preferences.icm_prize5());
-	else
-		text.Format("%f", preferences.icm_prize5());
-	m_ICM5.SetWindowText(text);
+	m_ICM1.SetWindowText(Number2CString(preferences.icm_prize1()));
+	m_ICM2.SetWindowText(Number2CString(preferences.icm_prize2()));
+	m_ICM3.SetWindowText(Number2CString(preferences.icm_prize3()));
+	m_ICM4.SetWindowText(Number2CString(preferences.icm_prize4()));
+	m_ICM5.SetWindowText(Number2CString(preferences.icm_prize5()));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

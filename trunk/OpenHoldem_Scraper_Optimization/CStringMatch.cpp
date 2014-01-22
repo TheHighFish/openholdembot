@@ -36,13 +36,13 @@ const bool CStringMatch::IsNumeric(CString t)
 
 	for (int i=0; i<t.GetLength(); i++)
 	{
-		if (t.Mid(i,1).FindOneOf("$0123456789,.¢ckm") == k_undefined)
+		if (CString(t[i]).FindOneOf("$0123456789,.¢ckm") == k_undefined)
 			return false;
 
-		if (t.Mid(i,1)==".")
+		if (t[i]=='.')
 			num_dots++;
 
-		if (num_dots>0 && t.Mid(i,1).FindOneOf("0123456789") != -1)
+		if (num_dots>0 && isdigit(t[i]))
 			nums_after_dot++;
 	}
 

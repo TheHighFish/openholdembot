@@ -143,8 +143,8 @@ void CSymbols::LogHandReset()
 		StdDeck_cardToString(player_card_cur[0], card0);
 		StdDeck_cardToString(player_card_cur[1], card1);
 	}
-	char title[512] = "--- No title specified ---";
-	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
+	char title[MAX_WINDOW_TITLE] = "--- No title specified ---";
+	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
 	write_log(k_always_log_basic_information, 
 		"\n"
 		"*************************************************************\n"
