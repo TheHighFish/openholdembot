@@ -30,6 +30,40 @@ CLazyScraper::~CLazyScraper()
 {
 }
 
+
+// Things we need to scrape every heartbeat,
+// depending on handreset-method:
+//   * handnumber
+//   * action-buttons (standard, no betpot)
+//   * cards of the userchair
+//
+// Things we need to scrape if the userchair is not yet known:
+//   * action-buttons (standard, no betpot)
+//   * all players cards
+//
+// Things we need to scrape on our turn
+//   * betpot-buttons
+//   * slider
+// (only if the game-type is NL or PL)
+//
+// Once everyheartbeat (cash-game):
+//   * scrape "seated" for all chairs
+//   * scrape "active" for all seated chairs
+//   * scrape cards for all active chairs
+//   * scrape bets and balances for all active chairs
+// (but we might skip this if we have folded 
+// and the hand-history-generator is disabled)
+//
+// Tournaments:
+//   * scrape bets and balances for all seated chairs because of ICM
+//
+// Name-scraping
+// Preflop up to our first action only, because:
+//   * once it is our turn we have stable frames
+//   * later name-changes (new players) don't affect the game
+//   * potential occlusion later can no longer affect PT
+//   * improved CPU-usage as name-scraping needs about 40%
+
 void CLazyScraper::DoScrape()
 {
 	write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] DoScrape()\n");

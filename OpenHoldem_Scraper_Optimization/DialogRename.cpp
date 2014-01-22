@@ -56,12 +56,12 @@ BOOL CDlgRename::OnInitDialog()
 
 void CDlgRename::OnBnClickedOk() 
 {
-	char oldstr[512] = {0}, newstr[512] = {0};
+	char oldstr[MAX_WINDOW_TITLE] = {0}, newstr[MAX_WINDOW_TITLE] = {0};
 	int i = 0;
 
 	m_NewName.GetWindowText(CSnewname);
-	strcpy_s(oldstr, 512, CSoldname.GetString());
-	strcpy_s(newstr, 512, CSnewname.GetString());
+	strcpy_s(oldstr, MAX_WINDOW_TITLE, CSoldname.GetString());
+	strcpy_s(newstr, MAX_WINDOW_TITLE, CSnewname.GetString());
 
 	// Changing a list
 	if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)!=0) 

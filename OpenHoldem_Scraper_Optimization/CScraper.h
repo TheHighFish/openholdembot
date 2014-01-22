@@ -21,6 +21,7 @@
 #include "../../CTransform/hash/stdint.h"
 #include "../CTablemap/CTablemap.h"
 #include "MagicNumbers.h"
+#include "NumericalFunctions.h"
 
 struct SLimitInfo
 {
@@ -54,17 +55,25 @@ public:
 	CScraper(void);
 	~CScraper(void);
 public:
-	CString		i86_button_state() { return _i86_button_state; }
-	CString		i86X_button_state(int n) { if (n>=0 && n<=9) return _i86X_button_state[n]; else return ""; }
-	CString		betpot_button_state (int n) { if (n >= 0 && n <= k_max_betpot_buttons) return _betpot_button_state[n]; else return ""; }
-
-protected:
-
-private:
-	bool ProcessRegion(RMapCI r_iter);
-	bool EvaluateRegion(CString name, CString *result);
-private:
-	void SetButtonState(CString *button_state, CString text);
+	// public accessors
+	const char*			title()                    { return _title; }
+	const unsigned int	card_common(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_number_of_community_cards-1), CARD_NOCARD) return _card_common[n]; }
+	const unsigned int	card_player(int p, int c)  { RETURN_DEFAULT_IF_OUT_OF_RANGE(p, k_last_chair, CARD_NOCARD) RETURN_DEFAULT_IF_OUT_OF_RANGE(c, (k_number_of_cards_per_player-1), CARD_NOCARD) return _card_player[p][c]; }
+	const CString		seated(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _seated[n]; }
+	const CString		active(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _active[n]; }
+	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
+	const double		player_bet(int n)          { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _player_bet[n]; }
+	const CString		player_name(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _player_name[n]; }
+	const bool			name_good_scrape(int n)    { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _name_good_scrape[n]; }
+	const double		player_balance(int n);
+	const double		balance_good_scrape(int n) { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _balance_good_scrape[n]; }
+	const bool			sitting_out(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _sitting_out[n]; }
+	const double		pot(int n)                 { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _pot[n]; }
+	const CString		button_state(int n)        { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _button_state[n]; }
+public:	
+	CString		i86_button_state()         { return _i86_button_state; }
+	CString		i86X_button_state(int n)   { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_number_of_i86X_buttons-1), "") return _i86X_button_state[n]; }
+	CString		betpot_button_state(int n) { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_betpot_buttons-1), "")         return _betpot_button_state[n]; }
 private:
 	void ScrapeInterfaceButtons();
 	void ScrapeActionButtons();
@@ -74,6 +83,23 @@ private:
 	void ScrapeDealer();
 	void ScrapeActive();
 	void ScrapeSlider();
+	int ScrapeCard(CString name);
+private:
+	int CardString2CardNumber(CString card);
+
+	
+
+protected:
+
+private:
+	bool ProcessRegion(RMapCI r_iter);
+	bool EvaluateRegion(CString name, CString *result);
+	bool IsExtendedNumberic(CString text);
+	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
+private:
+	void SetButtonState(CString *button_state, CString text);
+private:
+	
 
 	// Private data -- buttons
 private:
@@ -90,7 +116,7 @@ private:
 public:
 	void DoBasicScrapeButtons();
 	void DoBasicScrapeAllPlayerCards();
-	int  CompleteBasicScrapeToFullScrape();
+	void CompleteBasicScrapeToFullScrape();
 public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
@@ -100,23 +126,6 @@ public:
 	bool GetButtonState(CString button_state_as_string);
 	bool IsCommonAnimation();
 
-public:
-	// public accessors
-	const char *		title() { return _title; }
-	const unsigned int	card_common(int n) { if (n>=0 && n<=4) return _card_common[n]; else return CARD_NOCARD; }
-	const unsigned int	card_player(int s, int n) { if (s>=0 && s<=9 && n>=0 && n<=1) return _card_player[s][n]; else return CARD_NOCARD; }
-	const CString		seated(int n) { if (n>=0 && n<=9) return _seated[n]; else return "false"; }
-	const CString		active(int n) { if (n>=0 && n<=9) return _active[n]; else return "false"; }
-	const bool			dealer(int n) { if (n>=0 && n<=9) return _dealer[n]; else return false; }
-	const double		player_bet(int n) { if (n>=0 && n<=9) return _player_bet[n]; else return 0.; }
-	const CString		player_name(int n) { if (n>=0 && n<=9) return _player_name[n]; else return ""; }
-	const bool			name_good_scrape(int n) { if (n>=0 && n<=9) return _name_good_scrape[n]; else return false; }
-	const double		player_balance(int n);
-	const double		balance_good_scrape(int n) { if (n>=0 && n<=9) return _balance_good_scrape[n]; else return 0.; }
-	const bool			sitting_out(int n) { if (n>=0 && n<=9) return _sitting_out[n]; else return false; }
-	const double		pot(int n) { if (n>=0 && n<=9) return _pot[n]; else return 0.; }
-	const CString		button_state(int n) { if (n>=0 && n<=9) return _button_state[n]; else return ""; }
-	
 	
 	
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
@@ -208,7 +217,7 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	void ScrapeCommonCards();
-	void ScrapePlayerCards(const int chair);
+	void ScrapePlayerCards(int chair);
 	void ScrapeSeated(const int chair);
 	void ScrapeActive(const int chair);
 	void ScrapeDealer(const int chair);
@@ -217,8 +226,7 @@ private:
 	void ScrapeBet(const int chair);
 	void ScrapePots();
 	void ScrapeLimits();
-	const CString GetHandnumFromString(const CString t);
-	const bool BitmapsSame(const HBITMAP HBitmapLeft, const HBITMAP HBitmapRight);
+	const CString extractHandnumFromString(const CString t);
 	const double DoChipScrape(RMapCI r_iter);
 
 
