@@ -17,6 +17,7 @@
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
+#include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CTableMaploader.h"
 #include "MainFrm.h"
@@ -35,15 +36,16 @@ END_MESSAGE_MAP()
 LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8001: OnSetWindowText\n"); 
+	if (p_openholdem_title == NULL)	return false;
 	if (title) 
 	{
 		CString *sTitle = (CString *)title;
-		PMainframe()->SetOpenHoldemWindowTitle(sTitle->GetString());
+		p_openholdem_title->SetUserDefinedOpenHoldemTitle(sTitle->GetString());
 		delete sTitle;
 	} 
 	else 
 	{
-		PMainframe()->SetOpenHoldemWindowTitle("");
+		p_openholdem_title->SetUserDefinedOpenHoldemTitle("");
 	}
 	return true;
 }

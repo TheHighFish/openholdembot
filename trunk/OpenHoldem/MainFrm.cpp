@@ -25,11 +25,11 @@
 #include "CDllExtension.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemStatusbar.h"
+#include "COpenHoldemTitle.h"
 #include "CPerl.hpp"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
@@ -218,7 +218,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start timer that attaches the OH window when the poker window moves
 	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
 
-	SetOpenHoldemWindowTitle("");
 	return 0;
 }
 
@@ -463,7 +462,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
-		SetOpenHoldemWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
+		p_openholdem_title->UpdateTitle();
 		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 	}
 }
@@ -800,37 +799,6 @@ void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
-
-void CMainFrame::SetOpenHoldemWindowTitle(CString title)
-{
-	_openholdem_window_title = title;
-	RefreshOpenHoldemWindowTitle();
-}
-
-void CMainFrame::RefreshOpenHoldemWindowTitle()
-{
-	CString	messageTitle; // = new CString;
-	if (preferences.simple_window_title())
-	{
-		// _openholdem_window_title might be:
-		//   * default: application name
-		//   * changed via window-messages
-		messageTitle = _openholdem_window_title;
-	}
-	else
-	{
-		// Display extended title:
-		// Formula, pokersite, table-title
-		char title[MAX_WINDOW_TITLE];	
-		::GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
-		messageTitle.Format("%s - %s (%s)", p_formula->formula_name(), p_tablemap->sitename(), title);
-	}
-	// SetTitle("test");//messageTitle.GetString()); !!! causes crashes
-	//PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)messageTitle.GetString());
-	//SetWindowText("test");//messageTitle);
-	//PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)"test");
-	//SetTitle("test");
-}
 
 void CMainFrame::StartTimer()
 {

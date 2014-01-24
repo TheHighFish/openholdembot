@@ -33,6 +33,7 @@
 #include "CLazyScraper.h"
 #include "CMemory.h"
 #include "COcclusioncheck.h"
+#include "COpenHoldemTitle.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -136,6 +137,9 @@ void InstantiateAllSingletons()
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnector\n");
 	assert(!p_autoconnector);
 	p_autoconnector = new CAutoConnector;
+	write_log(preferences.debug_alltherest(), "[Singletons] Going to create COpenHoldemTitle\n");
+	assert(!p_openholdem_title);
+	p_openholdem_title = new COpenHoldemTitle;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
 	assert(!p_engine_container);
 	p_engine_container = new CEngineContainer;
@@ -226,6 +230,8 @@ void DeleteAllSingletons()
 		{ delete p_rebuymanagement; p_rebuymanagement = NULL; }
 	if (p_engine_container)
 		{ delete p_engine_container; p_engine_container = NULL; }
+	if (p_openholdem_title)
+		{ delete p_openholdem_title; p_openholdem_title = NULL; }
 	if (p_autoconnector) 
 	{ 
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");

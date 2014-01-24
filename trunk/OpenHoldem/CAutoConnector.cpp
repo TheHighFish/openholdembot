@@ -26,6 +26,7 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorVars.h"
 #include "CIteratorThread.h"
+#include "COpenHoldemTitle.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -399,7 +400,7 @@ void CAutoConnector::Disconnect()
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
 
 	// Change window title
-	PMainframe()->RefreshOpenHoldemWindowTitle();
+	p_openholdem_title->UpdateTitle();
 
 	// Reset Display 
 	PMainframe()->ResetDisplay();

@@ -747,6 +747,10 @@
 				Name="GUI"
 				>
 				<File
+					RelativePath=".\COpenHoldemTitle.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\DialogFormulaScintilla.cpp"
 					>
 				</File>
@@ -1238,10 +1242,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\COpenHoldemStatusbar.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CPreferences.h"
 				>
 			</File>
@@ -1251,10 +1251,6 @@
 			</File>
 			<File
 				RelativePath=".\CStringMatch.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CSymbolEngineTableLimits.h"
 				>
 			</File>
 			<File
@@ -1632,6 +1628,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineTableLimits.h"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEngineTime.h"
 						>
 					</File>
@@ -1644,6 +1644,14 @@
 			<Filter
 				Name="GUI"
 				>
+				<File
+					RelativePath=".\COpenHoldemStatusbar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COpenHoldemTitle.h"
+					>
+				</File>
 				<File
 					RelativePath=".\DialogFormulaScintilla.h"
 					>

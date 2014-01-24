@@ -18,6 +18,7 @@
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
 #include "COpenHoldemHopperCommunication.h"
+#include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
@@ -82,7 +83,7 @@ BOOL COpenHoldemDoc::OnNewDocument()
 	// Create parse trees for default formula
 	p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 	SetModifiedFlag(true);
-	PMainframe()->SetOpenHoldemWindowTitle("Default");
+	p_openholdem_title->UpdateTitle();
 
 	p_dll_extension->LoadDll("");
 	return true;
@@ -147,7 +148,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 
 		p_dll_extension->LoadDll("");
-		PMainframe()->RefreshOpenHoldemWindowTitle();
+		p_openholdem_title->UpdateTitle();
 	}
 }
 

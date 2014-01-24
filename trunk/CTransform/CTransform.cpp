@@ -393,7 +393,7 @@ const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text
 	// Get associated s$record
 	s$tXtype = "plain";
 
-	s.Format("t%stype", region->second.transform[1]);
+	s.Format("t%ctype", region->second.transform[1]);
 
 	SMapCI s_iter = p_tablemap->s$()->find(s.GetString());
 	if (s_iter != p_tablemap->s$()->end())

@@ -30,6 +30,7 @@
 #include "CLazyScraper.h"
 #include "CopenHoldemHopperCommunication.h"
 #include "CopenHoldemStatusbar.h"
+#include "CopenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
@@ -156,7 +157,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		}
 
 		LeaveCriticalSection(&pParent->cs_update_in_progress);
-		PMainframe()->RefreshOpenHoldemWindowTitle();
+		p_openholdem_title->UpdateTitle();
 		
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Update scraper output dialog if it is present
