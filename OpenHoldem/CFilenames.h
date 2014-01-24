@@ -29,6 +29,8 @@ public:
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
 	CString PathOfExecutable();
+	CString ExecutableFilename();
+	CString PureExecutableFilename();
 public:
 	void SwitchToOpenHoldemDirectory();
 private:

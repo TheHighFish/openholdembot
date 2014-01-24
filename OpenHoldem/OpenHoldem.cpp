@@ -26,6 +26,7 @@
 #include "CFilenames.h"
 #include "CGrammar.h"
 #include "COpenHoldemHopperCommunication.h"
+#include "CopenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "DialogFormulaScintilla.h"
@@ -77,6 +78,13 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
 {
+	// Since OH 4.0.0 we always use an ini-file,
+	// the one and only in our OH-directory,
+	// no matter how it is named.
+	// For the technical details please see:
+	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
+	InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
+
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
 	// Initialize richedit2 library
@@ -101,13 +109,6 @@ BOOL COpenHoldemApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinApp::InitInstance();
-
-	// Since OH 4.0.0 we always use an ini-file,
-	// the one and only in our OH-directory,
-	// no matter how it is named.
-	// For the technical details please see:
-	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
-	InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
 	free((void*)m_pszProfileName);
 	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
 	preferences.LoadPreferences();
@@ -266,7 +267,8 @@ void COpenHoldemApp::FinishInitialization()
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 
-	PMainframe()->RefreshOpenHoldemWindowTitle();
+	assert(p_openholdem_title != NULL);
+	p_openholdem_title->UpdateTitle();
 
 	// The one and only window has been initialized, so show and update it
 	if (preferences.gui_start_minimized())

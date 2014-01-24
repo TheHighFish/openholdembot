@@ -182,3 +182,25 @@ CString CFilenames::PathOfExecutable()
 	GetModuleFileName(0, exe_path, MAX_PATH+1);
 	return exe_path;
 }
+
+CString CFilenames::ExecutableFilename()
+{
+	CString complete_path = PathOfExecutable();
+	int pos = complete_path.ReverseFind('\\');
+	if (pos > 0)
+	{
+		return complete_path.Mid(pos);
+	}
+	return complete_path;
+}
+
+CString CFilenames::PureExecutableFilename()
+{
+	CString filename = ExecutableFilename();
+	int pos = filename.ReverseFind('.');
+	if (pos > 0)
+	{
+		return filename.Left(pos);
+	}
+	return filename;
+}

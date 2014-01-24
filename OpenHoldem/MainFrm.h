@@ -72,8 +72,6 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
-
-	void	SetMainWindowTitle(LPCSTR title);
 	void	OpenHelpFile(CString windows_help_file_chm);
 	CString	_exec_filename;
 
@@ -86,13 +84,9 @@ public:
 	void EnableButtonsOnDisconnect();
 	void UnattachOHFromPokerWindow();
 public:
-	void UpdateWindowTitle();
 	void StartTimer();
 	void ResetDisplay();
 	void KillTimer();
-public:
-	void SetOpenHoldemWindowTitle(CString title);
-	void RefreshOpenHoldemWindowTitle();
 
 public:
 #define ENT CSLock lock(m_critsec);
@@ -112,7 +106,6 @@ private:
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;
-	//!!!CString			_openholdem_window_title;
 };
 
 // used by EnumProcTopLevelWindowList function
