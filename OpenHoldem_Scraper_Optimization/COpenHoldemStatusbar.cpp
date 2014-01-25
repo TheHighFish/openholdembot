@@ -169,8 +169,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	_status_comcards = "";
 	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
-		if (p_scraper->card_common(i) != CARD_BACK && 
-			p_scraper->card_common(i) != CARD_NOCARD) 
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
 		{
 			char *card = StdDeck_cardString(p_scraper->card_common(i));
 			temp.Format("%s ", card);

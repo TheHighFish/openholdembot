@@ -633,7 +633,8 @@ const bool CHandHistory::cardsDealt()
 	//If any cardbacks are showing, cards have been dealt
 	for (int i = 0;i<nchairs;i++)
 	{
-		if (p_scraper->card_player(i, 0) == CARD_BACK&&p_scraper->card_player(i, 1) == CARD_BACK)
+		if (p_scraper->card_player(i, 0) == CARD_BACK
+			&& p_scraper->card_player(i, 1) == CARD_BACK)
 		{
 			playersdealt++;
 		}

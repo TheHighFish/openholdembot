@@ -19,11 +19,12 @@
 #include "inlines/eval.h"
 
 #include "CBetroundCalculator.h"
-#include "CScraper.h"
-#include "CSymbolEngineUserchair.h"
-#include "CPreferences.h"
-#include "CFormula.h"
 #include "CDllExtension.h"
+#include "CFormula.h"
+#include "CPreferences.h"
+#include "CScraper.h"
+#include "CScraperAccess.h"
+#include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 
 
@@ -174,8 +175,7 @@ bool CVersus::GetCounts(void)
 		return false;
 
 
-	if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
-		card_player[1] == CARD_NOCARD || card_player[1] == CARD_BACK)
+	if (!p_scraper_access->UserHasKnownCards())
 	{
 		return false;
 	}
