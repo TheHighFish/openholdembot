@@ -20,6 +20,7 @@
 #include "CiteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -403,7 +404,7 @@ void CIteratorThread::InitIteratorLoop()
 	// setup masks
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (iter_vars.pcard(i) != CARD_BACK && iter_vars.pcard(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(iter_vars.pcard(i)))
 		{
 			CardMask_SET(_plCards, iter_vars.pcard(i));
 			_nplCards++;
@@ -411,7 +412,7 @@ void CIteratorThread::InitIteratorLoop()
 	}
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (iter_vars.ccard(i) != CARD_BACK && iter_vars.ccard(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(iter_vars.ccard(i)))
 		{
 			CardMask_SET(_comCards, iter_vars.ccard(i));
 			_ncomCards++;

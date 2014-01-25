@@ -23,6 +23,7 @@
 #include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHandrank.h"
@@ -406,8 +407,7 @@ void write_logautoplay(const char * action)
 		{
 			for (int i=0; i<=2; i++) 
 			{
-				if (p_scraper->card_common(i) != CARD_BACK && 
-					p_scraper->card_common(i) != CARD_NOCARD) 
+				if (p_scraper_access->IsKnownCard(p_scraper->card_common(i))) 
 				{
 					card = StdDeck_cardString(p_scraper->card_common(i));
 					temp.Format("%s", card);

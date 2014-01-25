@@ -29,6 +29,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CPreferences.h"
 #include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
@@ -161,10 +162,7 @@ void CGameState::CaptureState()
 	{
 		playing = false;
 	}
-	else if (p_scraper->card_player(sym_chair, 0) == CARD_BACK || 
-			 p_scraper->card_player(sym_chair, 1) == CARD_BACK ||
-			 p_scraper->card_player(sym_chair, 0) == CARD_NOCARD || 
-			 p_scraper->card_player(sym_chair, 1) == CARD_NOCARD)
+	else if (!p_scraper_access->UserHasKnownCards())
 	{
 		playing = false;
 	}
@@ -185,7 +183,7 @@ void CGameState::CaptureState()
 	{
 		if (p_scraper->card_common(i) == CARD_BACK)
 		{
-			card = WH_CARDBACK;
+			card = CARD_BACK;
 		}
 		else if (p_scraper->card_common(i) == CARD_NOCARD)
 		{
@@ -226,7 +224,7 @@ void CGameState::CaptureState()
 		{
 			if (p_scraper->card_player(i, j) == CARD_BACK)
 			{
-				card = WH_CARDBACK;
+				card = CARD_BACK;
 			}
 			else if (p_scraper->card_player(i, j) == CARD_NOCARD)
 			{

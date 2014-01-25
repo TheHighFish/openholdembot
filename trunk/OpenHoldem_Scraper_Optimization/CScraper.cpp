@@ -165,7 +165,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result)
 		trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
 		__HDC_FOOTER
-		write_log(preferences.debug_scraper(), "[CScraper] EvaluateRegion(), %s -> %s\n", 
+		write_log(preferences.debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
 			name, *result);
 		return true;
 	}
@@ -293,90 +293,84 @@ void CScraper::ScrapeBetpotButtons()
 	}
 }
 
-void CScraper::ScrapeSeated()
+void CScraper::ScrapeSeated(int chair)
 {
 	CString seated;
 	CString result;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+
+	set_seated(chair, "false");
+	seated.Format("p%dseated", chair);
+	if (EvaluateRegion(seated, &result))
 	{
-		set_seated(i, "false");
-		seated.Format("p%dseated", i);
-		if (EvaluateRegion(seated, &result))
+		if (result != "")
 		{
-			if (result != "")
-			{
-				set_seated(i, result);
-			}
+			set_seated(chair, result);
 		}
-		//!!! only if not seated
-		// try u region next uXseated,
-		// but only if we didn't get a positive result from the p region
-		seated.Format("u%dseated", i);
-		if (EvaluateRegion(seated, &result))
+	}
+	//!!! only if not seated
+	// try u region next uXseated,
+	// but only if we didn't get a positive result from the p region
+	seated.Format("u%dseated", chair);
+	if (EvaluateRegion(seated, &result))
+	{
+		if (result!="")
 		{
-			if (result!="")
-			{
-				set_seated(i, result);
-			}
+			set_seated(chair, result);
 		}
 	}
 }
 
-void CScraper::ScrapeDealer()
+void CScraper::ScrapeDealer(int chair)
 {
 	CString dealer;
 	CString result;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+
+	set_dealer(chair, false); //!!! Attention; might leave dealer-bit at a later chair! Better clear everything at one place!
+	dealer.Format("p%ddealer", chair);
+	if (EvaluateRegion(dealer, &result))
 	{
-		set_dealer(i, false); //!!! Attention; might leave dealer-bit at a later chair! Better clear everything at one place!
-		dealer.Format("p%ddealer", i);
-		if (EvaluateRegion(dealer, &result))
+		if (p_string_match->IsStringDealer(result))
 		{
-			if (p_string_match->IsStringDealer(result))
-			{
-				set_dealer(i, true);
-				return;
-			}
+			set_dealer(chair, true);
+			return;
 		}
-		// Now search for uXdealer
-		dealer.Format("u%ddealer", i);
-		if (EvaluateRegion(dealer, &result))
+	}
+	// Now search for uXdealer
+	dealer.Format("u%ddealer", chair);
+	if (EvaluateRegion(dealer, &result))
+	{
+		if (p_string_match->IsStringDealer(result))
 		{
-			if (p_string_match->IsStringDealer(result))
-			{
-				set_dealer(i, true);
-				return;
-			}
+			set_dealer(chair, true);
+			return;
 		}
 	}
 }
 
-void CScraper::ScrapeActive()
+void CScraper::ScrapeActive(int chair)
 {
 	CString active;
 	CString result;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		set_active(i, "false");
-		if (!seated(i)) continue;
 
-		// try p region first pXactive
-		active.Format("p%dactive", i);
+	
+	set_active(chair, "false");
+
+	// try p region first pXactive
+	active.Format("p%dactive", chair);
+	if (EvaluateRegion(active, &result))
+	{
+		set_active(chair, result);
+	}
+	// try u region next, but only if we didn't get a key result from the p region
+	
+	// !!! to be improved
+	if (((!p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) ||
+	 (p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
+	{
+		active.Format("u%dactive", chair);
 		if (EvaluateRegion(active, &result))
 		{
-			set_active(i, result);
-		}
-		// try u region next, but only if we didn't get a key result from the p region
-		
-		// !!! to be improved
-		if (((!p_string_match->IsStringActive(_active[i]) && p_tablemap->activemethod() != 2) ||
-		 (p_string_match->IsStringActive(_active[i]) && p_tablemap->activemethod() == 2) ) )
-		{
-			active.Format("u%dactive", i);
-			if (EvaluateRegion(active, &result))
-			{
-				set_active(i, result);
-			}
+			set_active(chair, result);
 		}
 	}
 }
@@ -505,15 +499,13 @@ int CScraper::ScrapeCard(CString name)
 void CScraper::ScrapePlayerCards(int chair)
 {
 	CString card_name;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+
+	// if (!seated) || !active()) continue
+	for (int j=0; j<k_number_of_cards_per_player; j++)
 	{
-		// if (!seated) || !active()) continue
-		for (int j=0; j<k_number_of_cards_per_player; j++)
-		{
-			card_name.Format("p%dcardface%d", i, j);
-			int card = ScrapeCard(card_name);
-			set_card_player(chair, j, card);
-		}
+		card_name.Format("p%dcardface%d", chair, j);
+		int card = ScrapeCard(card_name);
+		set_card_player(chair, j, card);
 	}
 }
 
@@ -937,6 +929,14 @@ void CScraper::DoBasicScrapeAllPlayerCards()
 		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}
+}
+
+void CScraper::DoBasicScrapeButtons(void) //!!!
+{
+	ScrapeInterfaceButtons();
+	ScrapeActionButtons();
+	ScrapeActionButtonLabels();
+	ScrapeBetpotButtons();
 }
 
 void CScraper::ScrapePots()

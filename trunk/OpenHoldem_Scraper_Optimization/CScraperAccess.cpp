@@ -338,16 +338,13 @@ int CScraperAccess::NumberOfVisibleButtons()
 
 bool CScraperAccess::PlayerHasKnownCards(int player)
 {
-	assert(player >= 0);
-	assert(player < p_tablemap->nchairs());
-	if (p_scraper->card_player(player, 0) == CARD_BACK 
-		|| p_scraper->card_player(player, 0) == CARD_NOCARD 
-		|| p_scraper->card_player(player, 1) == CARD_BACK 
-		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
+	RETURN_DEFAULT_IF_OUT_OF_RANGE(player, p_tablemap->nchairs(), false);
+	if (IsKnownCard(p_scraper->card_player(player, 0))
+		&& IsKnownCard(p_scraper->card_player(player, 1)))
 	{
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool CScraperAccess::PlayerHasCards(int player)
@@ -385,6 +382,12 @@ bool CScraperAccess::UserHasCards()
 	return PlayerHasCards(userchair);
 }
 
+bool CScraperAccess::UserHasKnownCards()
+{
+	return PlayerHasKnownCards(USER_CHAIR);
+}
+
+
 bool CScraperAccess::IsPlayerActive(int player)
 {
 	bool result = p_string_match->IsStringActive(p_scraper->active(player));
@@ -401,7 +404,9 @@ bool CScraperAccess::IsPlayerSeated(int player)
 bool CScraperAccess::IsKnownCard(int card)
 {
 	if (card == CARD_NOCARD 
-		|| card == CARD_BACK)
+		|| card == CARD_BACK
+		|| card > 0x0100
+		|| card < 0)
 	{
 		return false;
 	}

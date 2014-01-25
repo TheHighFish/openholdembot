@@ -79,9 +79,9 @@ private:
 	void ScrapeActionButtons();
 	void ScrapeActionButtonLabels();
 	void ScrapeBetpotButtons();
-	void ScrapeSeated();
-	void ScrapeDealer();
-	void ScrapeActive();
+	void ScrapeSeated(int chair);
+	void ScrapeDealer(int chair);
+	void ScrapeActive(int chair);
 	void ScrapeSlider();
 	int ScrapeCard(CString name);
 private:
@@ -218,9 +218,6 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	void ScrapeCommonCards();
 	void ScrapePlayerCards(int chair);
-	void ScrapeSeated(const int chair);
-	void ScrapeActive(const int chair);
-	void ScrapeDealer(const int chair);
 	void ScrapeName(const int chair);
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
