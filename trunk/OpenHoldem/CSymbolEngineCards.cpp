@@ -35,8 +35,8 @@ CSymbolEngineCards::CSymbolEngineCards()
 	// we assure correct ordering by checking if they are initialized.
 	//
 	// We use 2 times the function p_symbol_engine_pokerval->CalculatePokerval,
-	// but luckily this does not create a symbol-dependency.
-	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid a circular dependency.
+	// but luckily this does not create name symbol-dependency.
+	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid name circular dependency.
 	assert(p_symbol_engine_userchair != NULL);
 	// Set up some suit masks
 	CardMaskCreateCMAllCardsOfOfSuit(&heartsCards,   Suit_HEARTS);
@@ -665,49 +665,49 @@ void CSymbolEngineCards::CalcUnknownCards()
 	AssertRange(_ncardsbetter,  0, k_number_of_cards_per_deck);
 }
 
-bool CSymbolEngineCards::IsHand(const char *a, int *e)
+bool CSymbolEngineCards::IsHand(const char *name, int *e)
 {
 	int				cardrank[2] = {0}, temp;
 	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
 	int				cardcnt = 0;
 	int				plcardrank[2] = {0}, plsuited = 0;
 
-	if (strlen(a)<=1)
+	if (strlen(name)<=1)
 	{
 		if (e)
 			*e = ERR_INVALID_SYM;
 		return false;
 	}
-	assert(a[0] == '$');
+	assert(name[0] == '$');
 
 	// passed in symbol query
-	for (int i=1; i<(int) strlen(a); i++)
+	for (int i=1; i<(int) strlen(name); i++)
 	{
-		if (a[i]>='2' && a[i]<='9')
-			cardrank[cardcnt++] =  a[i] - '0';
+		if (name[i]>='2' && name[i]<='9')
+			cardrank[cardcnt++] =  name[i] - '0';
 
-		else if (a[i]=='T' || a[i]=='t')
+		else if (name[i]=='T' || name[i]=='t')
 			cardrank[cardcnt++] = 10;
 
-		else if (a[i]=='J' || a[i]=='j')
+		else if (name[i]=='J' || name[i]=='j')
 			cardrank[cardcnt++] = 11;
 
-		else if (a[i]=='Q' || a[i]=='q')
+		else if (name[i]=='Q' || name[i]=='q')
 			cardrank[cardcnt++] = 12;
 
-		else if (a[i]=='K' || a[i]=='k')
+		else if (name[i]=='K' || name[i]=='k')
 			cardrank[cardcnt++] = 13;
 
-		else if (a[i]=='A' || a[i]=='a')
+		else if (name[i]=='A' || name[i]=='name')
 			cardrank[cardcnt++] = 14;
 
-		else if (a[i]=='X' || a[i]=='x')
+		else if (name[i]=='X' || name[i]=='x')
 			cardrank[cardcnt++] = -1;
 
-		else if (a[i]=='S' || a[i]=='s')
+		else if (name[i]=='S' || name[i]=='s')
 			suited=1;
 
-		else if (a[i]=='O' || a[i]=='o')
+		else if (name[i]=='O' || name[i]=='o')
 			suited=2;
 
 		else
@@ -758,7 +758,7 @@ bool CSymbolEngineCards::IsHand(const char *a, int *e)
 	if (cardrank[0]==-1 && cardrank[1]==-1)
 		return true;
 
-	// one card passed in, or one with a wildcard
+	// one card passed in, or one with name wildcard
 	if (cardrank[1]==0 || cardrank[1]==-1)
 	{
 		if (cardrank[0] != plcardrank[0] &&
@@ -801,4 +801,168 @@ int GetSuitFromCard(int scraper_card)
 			return WH_SUIT_SPADES;
 	}
 	return k_undefined;
+}
+
+bool CSymbolEngineCards::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "ncards", 6)==0)
+	{
+		if (memcmp(name, "ncardsknown", 11)==0 && strlen(name)==11)
+		{
+			*result = ncardsknown();
+		}
+		else if (memcmp(name, "ncardsunknown", 13)==0 && strlen(name)==13)	
+		{
+			*result = ncardsunknown();
+		}
+		else if (memcmp(name, "ncardsbetter", 12)==0 && strlen(name)==12)	
+		{
+			*result = ncardsbetter();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "is", 2)==0)
+	{
+		if (memcmp(name, "ispair", 6)==0 && strlen(name)==6)
+		{
+			*result = ispair();
+		}
+		else if (memcmp(name, "issuited", 8)==0 && strlen(name)==8)
+		{
+			*result = issuited();
+		}
+		else if (memcmp(name, "isconnector", 11)==0 && strlen(name)==11)
+		{
+			*result = isconnector();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nsuited", 7)==0)
+	{
+		if (memcmp(name, "nsuited", 7)==0 && strlen(name)==7)	
+		{
+			*result = nsuited();
+		}
+		else if (memcmp(name, "nsuitedcommon", 13)==0 && strlen(name)==13)	
+		{
+			*result = nsuitedcommon();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "tsuit", 5)==0)
+	{
+		if (memcmp(name, "tsuit", 5)==0 && strlen(name)==5)
+		{
+			*result = tsuit();
+		}
+		else if (memcmp(name, "tsuitcommon", 11)==0 && strlen(name)==11)
+		{
+			*result = tsuitcommon();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nstraight", 9)==0)
+	{
+		if (memcmp(name, "nstraight", 9)==0 && strlen(name)==9)	
+		{
+			*result = nstraight();
+		}
+		else if (memcmp(name, "nstraightcommon", 15)==0 && strlen(name)==15)	
+		{
+			*result = nstraightcommon();
+		}
+		else if (memcmp(name, "nstraightfill", 13)==0 && strlen(name)==13)		
+		{
+			*result = nstraightfill();
+		}
+		else if (memcmp(name, "nstraightfillcommon", 19)==0 && strlen(name)==19)	
+		{
+			*result = nstraightfillcommon();
+		}
+		else if (memcmp(name, "nstraightflush", 14)==0 && strlen(name)==14)		
+		{
+			*result = nstraightflush();
+		}
+		else if (memcmp(name, "nstraightflushcommon", 20)==0 && strlen(name)==20)
+		{
+			*result = nstraightflushcommon();
+		}
+		else if (memcmp(name, "nstraightflushfill", 18)==0 && strlen(name)==18)
+		{
+			*result = nstraightflushfill();
+		}
+		else if (memcmp(name, "nstraightflushfillcommon", 24)==0 && strlen(name)==24)
+		{
+			*result = nstraightflushfillcommon();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nranked", 7)==0)
+	{
+		if (memcmp(name, "nranked", 7)==0 && strlen(name)==7)	
+		{
+			*result = nranked();
+		}
+		else if (memcmp(name, "nrankedcommon", 13)==0 && strlen(name)==13)
+		{
+			*result = nrankedcommon();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "trank", 5)==0)
+	{
+		if (memcmp(name, "trank", 5)==0 && strlen(name)==5)
+		{
+			*result = trank();
+		}
+		else if (memcmp(name, "trankcommon", 11)==0 && strlen(name)==11)
+		{
+			*result = trankcommon();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
 }

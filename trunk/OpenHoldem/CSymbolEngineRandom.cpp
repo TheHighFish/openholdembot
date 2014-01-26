@@ -69,4 +69,34 @@ double CSymbolEngineRandom::Random_0_1()
 	return result;
 }
 
-
+bool CSymbolEngineRandom::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "random", 6) == 0)
+	{
+		if (memcmp(name, "randomheartbeat", 15)==0 && strlen(name)==15)
+		{
+			*result = randomheartbeat();
+		}
+		else if (memcmp(name, "randomhand", 10)==0 && strlen(name)==10)
+		{
+			*result = randomhand();
+		}
+		else if (memcmp(name, "randomround", 11)==0 && strlen(name)==11)
+		{
+			*result = randomround();
+		}
+		else if (memcmp(name, "random", 6) == 0 && strlen(name)==6)
+		{
+			*result = random();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

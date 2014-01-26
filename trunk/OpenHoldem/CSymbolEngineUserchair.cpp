@@ -93,3 +93,14 @@ void CSymbolEngineUserchair::CalculateUserChair()
 			"[CSymbolEngineUserchair] CalculateUserChair() Userchair not found, because no cards found\n");
 	}
 }
+
+bool CSymbolEngineUserchair::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "userchair", 9)==0 && strlen(name)==9)
+	{
+		*result = userchair();
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

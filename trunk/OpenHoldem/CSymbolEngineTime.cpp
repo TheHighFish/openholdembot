@@ -91,4 +91,34 @@ void CSymbolEngineTime::ResetOnAutoPlayerAction()
 	time(&_elapsedautohold);
 }
 
-
+bool CSymbolEngineTime::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "elapsed", 7)==0)
+	{
+		if (memcmp(name, "elapsed", 7)==0 && strlen(name)==7)
+		{
+			*result = elapsed();
+		}
+		else if (memcmp(name, "elapsedhand", 11)==0 && strlen(name)==11)
+		{
+			*result = elapsedhand();
+		}
+		else if (memcmp(name, "elapsedauto", 11)==0 && strlen(name)==11)	
+		{
+			*result = elapsedauto();
+		}
+		else if (memcmp(name, "elapsedtoday", 12)==0 && strlen(name)==12)	
+		{
+			*result = elapsedtoday();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

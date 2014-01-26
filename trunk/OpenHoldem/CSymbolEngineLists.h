@@ -31,6 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(char *name, double *result);
 	bool IsList(const int list) 
 	{ 
 		if ((list >= 0) && (list < MAX_HAND_LISTS))

