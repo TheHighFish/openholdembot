@@ -33,6 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(char *name, double *result);
 	bool DidAct()	
 	{
 		if (!p_symbol_engine_userchair->userchair_confirmed())

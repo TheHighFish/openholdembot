@@ -32,6 +32,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(char *name, double *result);
 	// "random" gets calculated each time new
 	double random()				{ return Random_0_1(); }
 	double randomhand()			{ return _randomhand; }

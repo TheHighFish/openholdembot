@@ -279,3 +279,17 @@ void CEngineContainer::ResetOnHeartbeat()
 	}
 }
 
+bool CEngineContainer::EvaluateSymbol(char *name, double *result)
+{
+	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	{
+		//!!!!if (_symbol_engines[i]->EvaluateSymbol(name, result))
+		{
+			// Symbol successfully evaluated
+			// Result already returned via result-pointer
+			return true;
+		}
+	}
+	return false;
+}

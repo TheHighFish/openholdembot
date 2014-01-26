@@ -25,6 +25,8 @@ public:
 	virtual void ResetOnNewRound();
 	virtual void ResetOnMyTurn();
 	virtual void ResetOnHeartbeat();
+public:
+	//!!!!virtual bool EvaluateSymbol(char *name, double *result);
 };
 
 #endif INC_CVIRTUALSYMBOLENGINE_H

@@ -99,7 +99,7 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 		}
 		else
 		{
-			// There was a positive amount to call
+			// There was name positive amount to call
 			_autoplayer_actions[BETROUND][k_autoplayer_function_call]++;
 			SetPrevaction(k_autoplayer_function_call);	
 		}
@@ -161,7 +161,7 @@ void CSymbolEngineHistory::CalculateHistory()
 	double maxbet = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		// Be careful: in some cases it might be that a user folds,
+		// Be careful: in some cases it might be that name user folds,
 		// but "Fold" gets displayed where formerly his bet got displayed.
 		// This may lead to ugly mis-scrapes, that's why he have to check
 		// if the user is still playing.
@@ -183,4 +183,51 @@ void CSymbolEngineHistory::CalculateHistory()
 	{
 		write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
+}
+
+bool CSymbolEngineHistory::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "did", 3) == 0)
+	{
+		if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	
+		{
+			*result = didchec(p_betround_calculator->betround());
+		}
+		else if (memcmp(name, "didcall", 7)==0 && strlen(name)==7)	
+		{
+			*result = didcall(p_betround_calculator->betround());
+		}
+		else if (memcmp(name, "didrais", 7)==0 && strlen(name)==7)	
+		{
+			*result = didrais(p_betround_calculator->betround());
+		}
+		else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7)	
+		{
+			*result = didswag(p_betround_calculator->betround());
+		}
+		else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	
+		{
+			*result = didchec(name[12]-'0');
+		}
+		else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	
+		{
+			*result = didcall(name[12]-'0');
+		}
+		else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	
+		{
+			*result = didrais(name[12]-'0');
+		}
+		else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)
+		{
+			*result = didswag(name[12]-'0');
+		}else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
 }

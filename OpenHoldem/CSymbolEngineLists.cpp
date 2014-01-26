@@ -98,3 +98,14 @@ void CSymbolEngineLists::ErrorListNumberOutOfRange(int list)
 		"%i should be in the range [0..999]", list);
 	OH_MessageBox_Error_Warning(message, "ERROR");
 }
+
+bool CSymbolEngineLists::EvaluateSymbol(char *name, double *result)
+{
+	if (memcmp(name, "islist", 6) == 0)	
+	{
+		*result = IsList(atoi(name+6));
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

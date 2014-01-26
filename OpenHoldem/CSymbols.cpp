@@ -236,7 +236,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "opponentsblindbits", 18)==0 && strlen(a)==18)		return p_symbol_engine_blinds->opponentsblindbits();
 	}
 
-	// LIST TESTS 1(2)
+	// LIST TESTS 1(2) done!
 	if (memcmp(a, "islist", 6) == 0)	return p_symbol_engine_lists->IsList(atoi(a+6));
 
 	// PokerTracker symbols
@@ -311,7 +311,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	// Probabilities
-	// Part 1(2): random...-symbols
+	// Part 1(2): random...-symbols // done
 	if (memcmp(a, "random", 6) == 0)
 	{
 		if (memcmp(a, "randomheartbeat", 15)==0 && strlen(a)==15)			return p_symbol_engine_random->randomheartbeat();
@@ -321,7 +321,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	}
 
 	// History
-	// Part 1(3): did...-symbols
+	// Part 1(3): did...-symbols !! done
 	if (memcmp(a, "did", 3) == 0)
 	{
 		if (memcmp(a, "didchec", 7)==0 && strlen(a)==7)						return p_symbol_engine_history->didchec(p_betround_calculator->betround());
@@ -363,7 +363,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "srankbitspoker", 14)==0 && strlen(a)==14)			return p_symbol_engine_pokerval->srankbitspoker();
 	}
 	
-	// TIME 1(2)
+	// TIME 1(2) !! done
 	if (memcmp(a, "elapsed", 7)==0)
 	{
 		if (memcmp(a, "elapsed", 7)==0 && strlen(a)==7)			return p_symbol_engine_time->elapsed();
@@ -398,7 +398,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "isstraightflush", 15)==0 && strlen(a)==15)			return p_symbol_engine_pokerval->isstraightflush();
 		if (memcmp(a, "isroyalflush", 12)==0 && strlen(a)==12)				return p_symbol_engine_pokerval->isroyalflush();
 
-		// POCKET TESTS
+		// POCKET TESTS !! done
 		if (memcmp(a, "ispair", 6)==0 && strlen(a)==6)						return p_symbol_engine_cards->ispair();
 		if (memcmp(a, "issuited", 8)==0 && strlen(a)==8)					return p_symbol_engine_cards->issuited();
 		if (memcmp(a, "isconnector", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->isconnector();
@@ -438,7 +438,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "pokervalcommon", 14)==0 && strlen(a)==14)			return p_symbol_engine_pokerval->pokervalcommon();
 	}
 
-	// (UN) KNOWN CARDS 1(3)
+	// (UN) KNOWN CARDS 1(3) !! done
 	if (memcmp(a, "ncards", 6)==0)
 	{
 		if (memcmp(a, "ncardsknown", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->ncardsknown();
@@ -460,35 +460,35 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "prlosnow", 8)==0 && strlen(a)==8)					return p_symbol_engine_prwin->prlosnow();
 	}
 
-	// FLUSHES SETS STRAIGHTS 1(5)
+	// FLUSHES SETS STRAIGHTS 1(5) !! done
 	if (memcmp(a, "nsuited", 7)==0)
 	{
 		if (memcmp(a, "nsuited", 7)==0 && strlen(a)==7)						return p_symbol_engine_cards->nsuited();
 		if (memcmp(a, "nsuitedcommon", 13)==0 && strlen(a)==13)				return p_symbol_engine_cards->nsuitedcommon();
 	}
 
-	// FLUSHES SETS STRAIGHTS 2(5)
+	// FLUSHES SETS STRAIGHTS 2(5) !! done
 	if (memcmp(a, "tsuit", 5)==0)
 	{
 		if (memcmp(a, "tsuit", 5)==0 && strlen(a)==5)						return p_symbol_engine_cards->tsuit();
 		if (memcmp(a, "tsuitcommon", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->tsuitcommon();
 	}
 
-	// FLUSHES SETS STRAIGHTS 3(5)
+	// FLUSHES SETS STRAIGHTS 3(5) !! done
 	if (memcmp(a, "nranked", 7)==0)
 	{
 		if (memcmp(a, "nranked", 7)==0 && strlen(a)==7)						return p_symbol_engine_cards->nranked();
 		if (memcmp(a, "nrankedcommon", 13)==0 && strlen(a)==13)				return p_symbol_engine_cards->nrankedcommon();
 	}
 
-	// FLUSHES SETS STRAIGHTS 4(5)
+	// FLUSHES SETS STRAIGHTS 4(5) !! done
 	if (memcmp(a, "trank", 5)==0)
 	{
 		if (memcmp(a, "trank", 5)==0 && strlen(a)==5)						return p_symbol_engine_cards->trank();
 		if (memcmp(a, "trankcommon", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->trankcommon();
 	}
 
-	// FLUSHES SETS STRAIGHTS 5(5)
+	// FLUSHES SETS STRAIGHTS 5(5) !! done
 	if (memcmp(a, "nstraight", 9)==0)
 	{
 		if (memcmp(a, "nstraight", 9)==0 && strlen(a)==9)					return p_symbol_engine_cards->nstraight();
@@ -501,7 +501,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "nstraightflushfillcommon", 24)==0 && strlen(a)==24)  return p_symbol_engine_cards->nstraightflushfillcommon();
 	}
 
-	// LIMITS 2(3)
+	// LIMITS 2(3) removed?!!!
 	if (memcmp(a, "srai", 4)==0)
 	{
 		if (memcmp(a, "sraiprev", 8)==0 && strlen(a)==8)					return p_symbol_engine_chip_amounts->sraiprev();
@@ -509,7 +509,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 		if (memcmp(a, "sraimax", 7)==0 && strlen(a)==7)						return p_symbol_engine_chip_amounts->sraimax();
 	}
 
-	// (UN)KNOWN CARDS 2(3)
+	// (UN)KNOWN CARDS 2(3) !! done
 	if (memcmp(a, "ncards", 6)==0)
 	{
 		if (memcmp(a, "ncardsknown", 11)==0 && strlen(a)==11)				return p_symbol_engine_cards->ncardsknown();
@@ -536,7 +536,7 @@ double CSymbols::GetSymbolVal(const char *a, int *e)
 	// Various symbols below
 	// without any optimized lookup.
 	//
-	// CHAIRS 2(2)	
+	// CHAIRS 2(2)	!!uc done
 	if (memcmp(a, "userchair", 9)==0 && strlen(a)==9)					return p_symbol_engine_userchair->userchair();
 	if (memcmp(a, "dealerchair", 11)==0 && strlen(a)==11)				return p_symbol_engine_dealerchair->dealerchair();
 	if (memcmp(a, "raischair", 9)==0 && strlen(a)==9)					return p_symbol_engine_raisers_callers->raischair();

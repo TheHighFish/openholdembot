@@ -29,6 +29,7 @@ public:
 	void ResetOnDisconnection();
 public:
 	void CallSymbolEnginesToUpdateSymbolsIfNecessary();
+	bool EvaluateSymbol(char *name, double *result);
 private:
 	void CreateSpecialSymbolEngines();
 	void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);

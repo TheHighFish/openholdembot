@@ -33,6 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(char *name, double *result);
 	int userchair()				{ return _userchair; }
 	int userchairbit()			{ return 1 << (_userchair); }
 	bool userchair_confirmed()	{ return _userchair_locked; }
