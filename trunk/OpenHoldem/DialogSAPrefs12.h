@@ -37,11 +37,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-
-protected:
-	CButton  	m_RadioButton_Disable;
-	CButton		m_Button_Stop_On_Error;   
+	virtual void OnOK();   
 };
 
 #endif

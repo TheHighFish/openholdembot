@@ -114,11 +114,12 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 	_dealpositionrais = 0;
 
 	for (int i=DEALER_CHAIR+1; 
-		i<=(DEALER_CHAIR+p_tablemap->nchairs()) 
-			&& (i%p_tablemap->nchairs())!=p_symbol_engine_raisers_callers->raischair(); 
+		i<=(DEALER_CHAIR+p_tablemap->nchairs());
 		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
+		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
+
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair))
 		{
 			_betpositionrais++;
@@ -151,7 +152,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 		{
 			_dealposition++;
 		}
-		if ((i%p_tablemap->nchairs()) == USER_CHAIR)
+		if ((next_chair) == USER_CHAIR)
 		{
 			// Stop searching
 			break;

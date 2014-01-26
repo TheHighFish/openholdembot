@@ -49,8 +49,6 @@ void CSymbolEngineRaisersCallers::InitOnStartup()
 
 void CSymbolEngineRaisersCallers::ResetOnConnection()
 {
-	_raischair_previous_frame = k_undefined;
-	
 	ResetOnHandreset();
 }
 
@@ -66,13 +64,16 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 	_raischair = k_undefined;
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
+	_nopponentsraising  = 0;
 	_nopponentsfolded   = 0;
 	_nopponentscalling  = 0;
 	_nopponentschecking = 0;
 }
 
 void CSymbolEngineRaisersCallers::ResetOnNewRound()
-{}
+{
+	_raisbits[BETROUND] = 0;
+}
 
 void CSymbolEngineRaisersCallers::ResetOnMyTurn()
 {
@@ -86,10 +87,26 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
 	CalculateFoldBits();
 }
 
+double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
+{
+	// Not yet acted: 0
+	if (p_symbol_engine_history->DidAct())
+	{
+		return 0.0;
+	}
+	if (p_scraper_access->UserHasCards())
+	{
+		// Otherwise: either we are the raiser (highest bet)
+		// Or we called the raise (highest bet too)
+		return p_scraper->player_bet(USER_CHAIR);
+	}
+	// Otherwise meaningless
+	return 0.0;
+}
+
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
-	_raisbits[BETROUND] = 0;
-
+	_nopponentsraising = 0;
 	if (p_symbol_engine_chip_amounts->call() <= 0.0)
 	{
 		// There are no bets and raises.
@@ -101,21 +118,26 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	//
 	int first_possible_raiser = FirstPossibleRaiser();
 	int last_possible_raiser  = LastPossibleRaiser();
-	double last_bet = p_scraper->player_bet(_raischair_previous_frame);
+	double highest_bet = LastOrbitsLastRaisersBet();
 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i%p_tablemap->nchairs());
+		int chair = i % p_tablemap->nchairs();
+		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
 
 		// Raisers are people
-		// * with a higher bet then players before them
+		// * with a higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
-		if (p_scraper_access->PlayerHasCards() && (current_players_bet > last_bet))
+		if (p_scraper_access->PlayerHasCards(chair) && (current_players_bet > highest_bet))
 		{
-			last_bet = current_players_bet;
-			_raischair = i % p_tablemap->nchairs();
-			int new_raisbits = _raisbits[BETROUND] | k_exponents[i%p_tablemap->nchairs()];
+			highest_bet = current_players_bet;
+			_raischair = chair;
+			int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
 			_raisbits[BETROUND] = new_raisbits;
+			if (chair != USER_CHAIR)
+			{
+				_nopponentsraising++;
+			}
 		}
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
@@ -138,10 +160,12 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 		i<=_raischair+p_tablemap->nchairs()-1; 
 		i++)
 	{
-		double CurrentBet = p_scraper->player_bet(i%p_tablemap->nchairs());
+		int chair = i%p_tablemap->nchairs();
+		double CurrentBet = p_scraper->player_bet(chair);
+
 		if ((CurrentBet < SmallestBet) && (CurrentBet > 0))
 		{
-			FirstBettor = i%p_tablemap->nchairs();
+			FirstBettor = chair;
 			SmallestBet = CurrentBet;
 		}
 	}
@@ -151,16 +175,18 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 		i<=FirstBettor+p_tablemap->nchairs()-1; 
 		i++)
 	{
+		int chair = i%p_tablemap->nchairs();
+
 		// Exact match required. Players being allin don't count as callers.
-		if ((p_scraper->player_bet(i%p_tablemap->nchairs()) == CurrentBet) && (CurrentBet > 0))
+		if ((p_scraper->player_bet(chair) == CurrentBet) && (CurrentBet > 0))
 		{
-			int new_callbits = _callbits[BETROUND] | k_exponents[i%p_tablemap->nchairs()];
+			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
 			_nopponentscalling++;
 		}
-		else if (p_scraper->player_bet(i%p_tablemap->nchairs()) > CurrentBet)
+		else if (p_scraper->player_bet(chair) > CurrentBet)
 		{
-			CurrentBet = p_scraper->player_bet(i%p_tablemap->nchairs());
+			CurrentBet = p_scraper->player_bet(chair);
 		}
 	}
 
@@ -288,15 +314,3 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	}
 	_foldbits[BETROUND] = new_foldbits;
 }
-
-int CSymbolEngineRaisersCallers::nopponentsraising()		
-{ 
-	// Be careful: nopponents does not include the user, 
-	// whereas raisbits counts all chairs. 
-	// We have to remove the userchair here.
-	int opponents_raisbits = _raisbits[BETROUND] 
-		& ~p_symbol_engine_userchair->userchairbit();
-	return bitcount(opponents_raisbits); 
-
-}
-

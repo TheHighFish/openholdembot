@@ -443,7 +443,8 @@ int CICMCalculator::GetChairFromDealPos(const char* pquery)
 	{
 		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
 		{
-			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+			int next_chair = i%p_tablemap->nchairs();
+			double p_bet = p_scraper->player_bet(next_chair);
 
 			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
 				sb_offset = 0;

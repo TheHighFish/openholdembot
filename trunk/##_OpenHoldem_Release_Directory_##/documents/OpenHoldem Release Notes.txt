@@ -28,6 +28,12 @@ BUG FIXES:
 - The symbol betposition was mostly wrong because we confused 2 variables.
   Thanks to Fqfq for reporting.
   [THF]
+- The option "simple main window title" did not work, because we confused 2 data-types
+  when we had to clean up that code.
+  Thanks to Angelus for reporting.
+- The symbol nopponentsraising could be wrong in later orbits, 
+  because the a variable was initialized correctly. Thanks to Mariano268 for reporting.
+  [THF]
 
 MAINTENANCE:
 - Fine-tuned lots of validator rules and also improved initialization/reset 

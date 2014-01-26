@@ -310,9 +310,9 @@ public:
 	// versus_path() is implemented in the cpp-file.
 	const CString versus_path(); 	
 	// Obscure
-	const CString &window_class_name()		{ return prefs_CString_values[k_prefs_window_class_name]; }
+	const CString &window_class_name()	{ return prefs_CString_values[k_prefs_window_class_name]; }
 	const CString &mutex_name()			{ return prefs_CString_values[k_prefs_mutex_name]; }
-	bool simple_window_title()			{ return prefs_CString_values[k_prefs_simple_window_title]; }
+	bool simple_window_title()			{ return prefs_numerical_values[k_prefs_simple_window_title]; }
 	// CFileDialog saved paths
 	const CString path_ohf()	{ return prefs_CString_values[k_prefs_path_ohf]; }
 	const CString path_tm()		{ return prefs_CString_values[k_prefs_path_tm]; }

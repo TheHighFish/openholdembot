@@ -383,15 +383,15 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 					// Not heads up - normal blinds
 					if (next_chair != p_symbol_engine_dealerchair->dealerchair())
 					{
-						SetBigBlind(p_scraper->player_bet(i%p_tablemap->nchairs()));
-						write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						SetBigBlind(p_scraper->player_bet(next_chair));
+						write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] found inferred BB at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
 					}
 					// heads up - reversed blinds
 					else
 					{
 						SetBigBlind(tablelimit_unreliable_input.sblind);
 						SetSmallBlind(p_scraper->player_bet(next_chair));
-						write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(i%p_tablemap->nchairs()));
+						write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] found inferred BB headsup at chair %d: %f\n", next_chair, p_scraper->player_bet(next_chair));
 						write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] Swapping blinds.\n");
 					}
 					found_inferred_bb = true;

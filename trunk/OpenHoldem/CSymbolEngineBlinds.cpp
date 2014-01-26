@@ -111,18 +111,19 @@ void CSymbolEngineBlinds::CalculateBlinds()
 
 		for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 		{
-			double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+			int chair = i%p_tablemap->nchairs();
+			double p_bet = p_scraper->player_bet(chair);
 
 			// search SB
 			if (sbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->sblind() && p_bet > 0) 
 			{
-				sbchair = i%p_tablemap->nchairs();
+				sbchair = chair;
 				_playersblindbits |= k_exponents[sbchair];		
 			}
 			// search BB
-			if (bbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->bblind() && p_bet > p_symbol_engine_tablelimits->sblind() && i%p_tablemap->nchairs() != sbchair)
+			if (bbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->bblind() && p_bet > p_symbol_engine_tablelimits->sblind() && chair != sbchair)
 			{
-				bbchair = i%p_tablemap->nchairs();	
+				bbchair = chair;	
 				_bblindbits = k_exponents[bbchair];
 				_playersblindbits |= k_exponents[bbchair];		
 				
@@ -136,12 +137,13 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		{
 			for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 			{
-				double p_bet = p_scraper->player_bet(i%p_tablemap->nchairs());
+				int chair = i%p_tablemap->nchairs();
+				double p_bet = p_scraper->player_bet(chair);
 
 				// 1st caller/raiser after dealer is sb
-				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == k_undefined && i%p_tablemap->nchairs() != bbchair)
+				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == k_undefined && chair != bbchair)
 				{
-					sbchair = i%p_tablemap->nchairs();
+					sbchair = chair;
 					_playersblindbits |= k_exponents[sbchair];
 				}
 			}
