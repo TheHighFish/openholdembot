@@ -18,6 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs13.h"
+#include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 
 
@@ -40,7 +41,7 @@ void CDlgSAPrefs13::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_OMF_CLASS_NAME, _class_name_edit);
 	DDX_Control(pDX, IDC_OMF_MUTEX_NAME, _class_mutex_edit);
-	DDX_Control(pDX, IDC_SIMPLE_TITLE, _simple_window_title);
+	//DDX_Control(pDX, IDC_SIMPLE_TITLE, _simple_window_title);
 }
 
 
@@ -55,7 +56,8 @@ BOOL CDlgSAPrefs13::OnInitDialog()
 
 	_class_name_edit.SetWindowText(preferences.window_class_name());
 	_class_mutex_edit.SetWindowText(preferences.mutex_name());
-	_simple_window_title.SetCheck(preferences.simple_window_title());
+	bool use_simple_title = preferences.simple_window_title();
+	CheckDlgButton(IDC_SIMPLE_TITLE, use_simple_title ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -69,8 +71,8 @@ void CDlgSAPrefs13::OnOK()
 	preferences.SetValue(k_prefs_window_class_name, temp);
 	_class_mutex_edit.GetWindowText(temp);
 	preferences.SetValue(k_prefs_mutex_name, temp);
+	preferences.SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
 
-	preferences.SetValue(k_prefs_simple_window_title, _simple_window_title.GetCheck() == true);
-
+	p_openholdem_title->UpdateTitle();
 	CSAPrefsSubDlg::OnOK();
 }

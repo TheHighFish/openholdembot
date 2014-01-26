@@ -22,7 +22,6 @@
 #include "../CTablemap/CTablemap.h"
 #include "MainFrm.h"
 
-
 COpenHoldemTitle *p_openholdem_title = NULL;
 
 COpenHoldemTitle::COpenHoldemTitle()
@@ -63,8 +62,15 @@ CString COpenHoldemTitle::FullTitle()
 
 	GetWindowText(p_autoconnector->attached_hwnd(), table_title, 
 		MAX_WINDOW_TITLE);
-	full_title.Format("%s - %s (%s)", p_formula->formula_name(), 
-		p_tablemap->sitename(), table_title);
+	if (p_autoconnector->IsConnected())
+	{
+		full_title.Format("%s - %s (%s)", p_formula->formula_name(), 
+			p_tablemap->sitename(), table_title);
+	}
+	else
+	{
+		full_title.Format("%s", p_formula->formula_name());
+	}
 	return full_title;
 }
 
@@ -91,5 +97,7 @@ void COpenHoldemTitle::UpdateTitle()
 	// -> endless recursion
 	static CString current_title;
 	current_title = GetTitle();
-	PMainframe()->SetTitle(current_title);
+	HWND main_window = PMainframe()->GetSafeHwnd();
+	SetWindowText(main_window, current_title);
+
 }

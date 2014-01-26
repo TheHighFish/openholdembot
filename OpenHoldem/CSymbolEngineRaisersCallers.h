@@ -74,7 +74,7 @@ public:
 	}
 public:
 	int nplayerscallshort()		{ return _nplayerscallshort; }
-	int nopponentsraising();
+	int nopponentsraising()		{ return _nopponentsraising; }
 	int nopponentsbetting()		{ return _nopponentsbetting; }
 	int nopponentsfolded()		{ return _nopponentsfolded; }
 	int nopponentscalling()		{ return _nopponentscalling; }
@@ -89,10 +89,12 @@ private:
 	int LastPossibleRaiser();
 private:
 	double RaisersBet();
+	double LastOrbitsLastRaisersBet();
 private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
+	int _nopponentsraising;
 	int _nopponentsfolded;
 	int _nopponentscalling;
 	int _nopponentschecking;
@@ -102,8 +104,6 @@ private:
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
 	int _callbits[k_number_of_betrounds + 1]; 
-private:
-	int _raischair_previous_frame;
 } *p_symbol_engine_raisers_callers;
 
 #endif INC_CSYMBOLENGINERAISERSCALLERS_H

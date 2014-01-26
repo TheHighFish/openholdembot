@@ -189,7 +189,8 @@ CString CFilenames::ExecutableFilename()
 	int pos = complete_path.ReverseFind('\\');
 	if (pos > 0)
 	{
-		return complete_path.Mid(pos);
+		assert(pos < complete_path.GetLength() - 1);
+		return complete_path.Mid(pos + 1);
 	}
 	return complete_path;
 }
