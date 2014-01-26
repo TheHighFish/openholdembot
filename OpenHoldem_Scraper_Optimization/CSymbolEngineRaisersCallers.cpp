@@ -105,7 +105,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		// Raisers are people
 		// * with a higher bet then players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
-		if (p_scraper_access->PlayerHasCards() && (current_players_bet > last_bet))
+		if (p_scraper_access->PlayerHasCards(i) && (current_players_bet > last_bet))
 		{
 			last_bet = current_players_bet;
 			_raischair = i % p_tablemap->nchairs();
