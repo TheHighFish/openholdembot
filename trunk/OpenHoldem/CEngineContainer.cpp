@@ -25,6 +25,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineEventLogging.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
@@ -41,7 +42,8 @@
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
+#include "CSymbolEngineVariousDataLookup.h"
+#include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
 
@@ -92,6 +94,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineDealerchair
 	p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
 	AddSymbolEngine(p_symbol_engine_dealerchair);
+	// CSymbolEngineEventLogging
+	p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
+	AddSymbolEngine(p_symbol_engine_event_logging);
 	// CSymbolEngineTableLimits
 	p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
 	AddSymbolEngine(p_symbol_engine_tablelimits);
@@ -160,8 +165,8 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbols
 	// Deals with symbol-lookups and depends on all the other ones.
 	// Therefore it has to be the very last one.
-	p_symbols = new CSymbols();
-	AddSymbolEngine(p_symbols);
+	p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;
+	AddSymbolEngine(p_symbol_engine_various_data_lookup);
 	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
@@ -227,6 +232,8 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 void CEngineContainer::ResetOnConnection()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
+	logsymbols_collection_removeall();
+	symboltrace_collection_removeall();
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnConnection();
@@ -273,23 +280,38 @@ void CEngineContainer::ResetOnMyTurn()
 void CEngineContainer::ResetOnHeartbeat()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
+
+	// log$ symbols
+	logsymbols_collection_removeall();
+	symboltrace_collection_removeall();
+
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnHeartbeat();
 	}
 }
 
-bool CEngineContainer::EvaluateSymbol(char *name, double *result)
+bool CEngineContainer::EvaluateSymbol(const char *name, double *result)
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+	if (IsOutdatedSymbol(name))
+	{
+		*result = k_undefined;
+		return false;
+	}
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
-		//!!!!if (_symbol_engines[i]->EvaluateSymbol(name, result))
+		if (_symbol_engines[i]->EvaluateSymbol(name, result))
 		{
 			// Symbol successfully evaluated
 			// Result already returned via result-pointer
 			return true;
 		}
 	}
+	// Unknown symbol.
+	// Though we check the syntax, this can still happen
+	// by gws-calls from Perl or a DLL, etc.
+	WarnAboutUnknownSymbol(name);
+	*result = k_undefined;
 	return false;
 }

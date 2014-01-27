@@ -32,7 +32,6 @@
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIniFunctions.h"
-#include "CSymbols.h"
 #include "DialogHandList.h"
 #include "DialogNew.h"
 #include "DialogRename.h"
@@ -2881,9 +2880,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "isnl", "(lim==0)");
 	AddSymbol(parent, "ispl", "(lim==1)");
 	AddSymbol(parent, "isfl", "(lim==2)");
-	AddSymbol(parent, "sraiprev", "the difference between the two largest unique wagers");
-	AddSymbol(parent, "sraimin", "Scraped - (currentbet+call)");
-	AddSymbol(parent, "sraimax", "balance-call");
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
 
 	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);

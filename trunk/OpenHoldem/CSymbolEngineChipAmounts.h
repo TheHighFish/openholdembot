@@ -35,6 +35,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(const char *name, double *result);
 	double maxbalance()					{ return _maxbalance; }
 	double balanceatstartofsession()	{ return _balanceatstartofsession; }
 	double balance(int player)	

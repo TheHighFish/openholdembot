@@ -15,10 +15,10 @@
 #include "CMemory.h"
 
 #include "CAutoplayer.h"
+#include "CEngineContainer.h"
 #include "CFormula.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
-#include "CSymbols.h"
 #include "OH_MessageBox.h"
 
 CMemory		*p_memory = NULL;
@@ -170,7 +170,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	else
 	{
 		// Must be a normal symbol
-		result = p_symbols->GetSymbolVal(value, e);
+		p_engine_container->EvaluateSymbol(value, &result);
 		set_var_value(index, result);
 		set_var_name(index, var);
 	}

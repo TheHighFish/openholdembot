@@ -17,7 +17,6 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "debug.h"
 
 CLazyScraper *p_lazyscraper = NULL;

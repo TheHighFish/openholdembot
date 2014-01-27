@@ -44,6 +44,7 @@ public:
 	void ResetOnHeartbeat();
 	void CalcTableLimits();
 public:
+	bool EvaluateSymbol(const char *name, double *result);
 	// public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
@@ -52,7 +53,7 @@ public:
 	double bet(int betround);
 	double bet(); // for current betting round
 public:
-	int gametype()		{ return _gametype; }	// former p_symbols->sym()->lim
+	int gametype()		{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim
 	bool isnl()			{ return (gametype() == k_gametype_NL); }
 	bool ispl()			{ return (gametype() == k_gametype_PL); }
 	bool isfl()			{ return (gametype() == k_gametype_FL); }

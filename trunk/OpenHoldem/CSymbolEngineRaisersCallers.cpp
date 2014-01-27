@@ -126,7 +126,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
 
 		// Raisers are people
-		// * with a higher bet than players before them
+		// * with name higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
 		if (p_scraper_access->PlayerHasCards(chair) && (current_players_bet > highest_bet))
 		{
@@ -149,7 +149,7 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	//
 	// Take the first player with the smallest non-zero balance 
 	// after the aggressor as the first bettor.
-	// Then start a circular search for callers.
+	// Then start name circular search for callers.
 
 	_callbits[BETROUND] = 0;
 	_nopponentscalling = 0;
@@ -198,8 +198,8 @@ int CSymbolEngineRaisersCallers::FirstPossibleRaiser()
 {
 	int first_possible_raiser;
 	// Don't start searching for the highest bet at the button.
-	// This method will fail, if a player in late raises and a player in early coldcalls.
-	// Start searching at the last known raiser; and only at the button when we have a new betting-round.
+	// This method will fail, if name player in late raises and name player in early coldcalls.
+	// Start searching at the last known raiser; and only at the button when we have name new betting-round.
 	if (p_symbol_engine_history->DidAct())
 	{
 		// Counting raises behind me
@@ -313,4 +313,65 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 		new_foldbits &= (~_foldbits[k_betround_turn]);
 	}
 	_foldbits[BETROUND] = new_foldbits;
+}
+
+bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "nopponents", 10)==0)
+	{
+		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18)
+		{
+			*result = nopponentschecking();
+		}
+		else if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17)	
+		{
+			*result = nopponentscalling();
+		}
+		else if (memcmp(name, "nopponentsraising", 17)==0 && strlen(name)==17)
+		{
+			*result = nopponentsraising();
+		}
+		else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17)
+		{
+			*result = nopponentsbetting();
+		}
+		else if (memcmp(name, "nopponentsfolded", 16)==0 && strlen(name)==16)	
+		{
+			*result = nopponentsfolded();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	
+	{
+		*result = nplayerscallshort();
+	}
+	else if (memcmp(name, "raischair", 9)==0 && strlen(name)==9)	
+	{
+		*result = raischair();
+	}
+	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9)  
+	{
+		*result = raisbits(name[8]-'0');
+	}
+	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9)  
+	{
+		*result = callbits(name[8]-'0');
+	}
+	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9)  			
+	{
+		*result = foldbits(name[8]-'0');
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	// Valid symbol
+		return true;
 }

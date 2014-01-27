@@ -25,6 +25,7 @@ public:
 	CSymbolEngineBlinds();
 	~CSymbolEngineBlinds();
 public:
+	bool EvaluateSymbol(const char *name, double *result);
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();

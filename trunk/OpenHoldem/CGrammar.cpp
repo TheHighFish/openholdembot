@@ -19,6 +19,7 @@
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
+#include "CEngineContainer.h"
 #include "CLogSymbols.h"
 #include "CEvalInfo.h"
 #include "CFormula.h"
@@ -29,7 +30,6 @@
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineRandom.h"
-#include "CSymbols.h"
 #include "CValidator.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
@@ -514,8 +514,9 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 		// that we try to evaluate an OpenPPL-symbol
 		// without prefix (user-input from debug-tab).
 		// Then add this prefix and try to evaluate again.
-		double symbol_value = p_symbols->GetSymbolVal(sym.c_str(), e);
-		if (*e == SUCCESS)
+		double symbol_value;
+		bool success = p_engine_container->EvaluateSymbol(sym.c_str(), &symbol_value);
+		if (success)
 		{
 			return symbol_value;
 		}
@@ -840,12 +841,14 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 	// all other symbols
 	else
 	{
-		e = SUCCESS;
-		p_symbols->GetSymbolVal(sym.c_str(), &e);
+		double symbol_value;
+		bool success = p_engine_container->EvaluateSymbol(sym.c_str(), &symbol_value);
 
-		if (e != SUCCESS)
+		if (!success)
+		{
+			e = ERR_INVALID_SYM;
 			g_parse_symbol_stop_strs.Add(sym);
-
+		}
 		return;
 	}
 }

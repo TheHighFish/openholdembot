@@ -18,7 +18,6 @@
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
-#include "CSymbols.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"

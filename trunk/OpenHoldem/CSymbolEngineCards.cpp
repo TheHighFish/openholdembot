@@ -803,9 +803,48 @@ int GetSuitFromCard(int scraper_card)
 	return k_undefined;
 }
 
-bool CSymbolEngineCards::EvaluateSymbol(char *name, double *result)
+bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result)
 {
-	if (memcmp(name, "ncards", 6)==0)
+	if (memcmp(name, "$", 1)==0)
+	{
+		if (memcmp(name, "$$pc", 4)==0)
+		{
+			*result = $$pc(name[4]-'0');
+		}
+		if (memcmp(name, "$$pr", 4)==0)
+		{
+			*result = $$pr(name[4]-'0');
+		}
+		if (memcmp(name, "$$ps", 4)==0)  
+		{
+			*result = $$ps(name[4]-'0');
+		}
+		if (memcmp(name, "$$cc", 4)==0)  
+		{
+			*result = $$cc(name[4]-'0');
+		}
+		if (memcmp(name, "$$cr", 4)==0)  
+		{
+			*result = $$cr(name[4]-'0');
+		}
+		if (memcmp(name, "$$cs", 4)==0)  
+		{
+			*result = $$cs(name[4]-'0');
+		}
+		if (memcmp(name, "$", 1)==0)  	
+		{
+			int *e = SUCCESS;
+			*result = IsHand(name, e);
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "ncards", 6)==0)
 	{
 		if (memcmp(name, "ncardsknown", 11)==0 && strlen(name)==11)
 		{
@@ -955,12 +994,21 @@ bool CSymbolEngineCards::EvaluateSymbol(char *name, double *result)
 		{
 			*result = trankcommon();
 		}
+		else if (memcmp(name, "nouts", 5)==0 && strlen(name)==5)						
+		{
+			*result = nouts();
+		}
 		else
 		{
 			// Invalid symbol
 			return false;
 		}
 		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "ncommoncardsknown", 17)==0 && strlen(name)==17)	
+	{
+		*result = p_symbol_engine_cards->ncommoncardsknown();
 		return true;
 	}
 	// Symbol of name different symbol-engine

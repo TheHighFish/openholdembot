@@ -32,6 +32,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(const char *name, double *result);
 	bool istournament()		{ return _istournament == true; }
 private:
 	void TryToDetectTournament();

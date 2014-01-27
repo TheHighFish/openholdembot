@@ -38,7 +38,6 @@
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
 #include "CTablePositioner.h"

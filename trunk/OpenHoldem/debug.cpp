@@ -18,6 +18,7 @@
 #include "..\..\dbghelp\dbghelp.h"
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
@@ -29,7 +30,6 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -362,7 +362,7 @@ void write_logautoplay(const char * action)
 		// log$ writing
 		if (preferences.log_symbol_enabled())
 		{
-			int max_log = p_symbols->logsymbols_collection()->GetCount();
+			int max_log = p_engine_container->logsymbols_collection()->GetCount();
 
 			if (max_log > 0)
 			{
@@ -371,11 +371,11 @@ void write_logautoplay(const char * action)
 					max_log = preferences.log_symbol_max_log();
 				}
 
-				write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", p_symbols->logsymbols_collection()->GetCount(), max_log);
+				write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", p_engine_container->logsymbols_collection()->GetCount(), max_log);
 
 				for (int i=0; i<max_log; i++)
 				{
-					write_log(k_always_log_basic_information, "***     %s\n", p_symbols->logsymbols_collection()->GetAt(i));
+					write_log(k_always_log_basic_information, "***     %s\n", p_engine_container->logsymbols_collection()->GetAt(i));
 				}
 			}
 		}
@@ -499,12 +499,12 @@ void write_logautoplay(const char * action)
 		fprintf(log_fp, "  Best action:   %s\n",    bestaction.GetString());
 		fprintf(log_fp, "  Action taken:  %s\n",    action);
 
-		if (preferences.trace_enabled() && p_symbols->symboltrace_collection()->GetSize() > 0)
+		if (preferences.trace_enabled() && p_engine_container->symboltrace_collection()->GetSize() > 0)
 		{
 			write_log_nostamp(1, "***** Autoplayer Trace **************************************\n");
-			for (int i=0; i<p_symbols->symboltrace_collection()->GetSize(); i++)
+			for (int i=0; i<p_engine_container->symboltrace_collection()->GetSize(); i++)
 			{
-				write_log_nostamp(1, "%s\n", p_symbols->symboltrace_collection()->GetAt(i));
+				write_log_nostamp(1, "%s\n", p_engine_container->symboltrace_collection()->GetAt(i));
 			}
 			write_log_nostamp(1, "***** History (might be not accurate) ***********************\n");
 		}

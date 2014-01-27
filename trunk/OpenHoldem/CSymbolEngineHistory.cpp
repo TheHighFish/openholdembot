@@ -185,7 +185,7 @@ void CSymbolEngineHistory::CalculateHistory()
 	}
 }
 
-bool CSymbolEngineHistory::EvaluateSymbol(char *name, double *result)
+bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result)
 {
 	if (memcmp(name, "did", 3) == 0)
 	{
@@ -220,7 +220,8 @@ bool CSymbolEngineHistory::EvaluateSymbol(char *name, double *result)
 		else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)
 		{
 			*result = didswag(name[12]-'0');
-		}else
+		}
+		else
 		{
 			// Invalid symbol
 			return false;
@@ -228,6 +229,41 @@ bool CSymbolEngineHistory::EvaluateSymbol(char *name, double *result)
 		// Valid symbol
 		return true;
 	}
-	// Symbol of name different symbol-engine
-	return false;
+	else if (memcmp(name, "nplayersround", 13)==0)
+	{
+		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13)	
+		{
+			*result = nplayersround(p_betround_calculator->betround());
+		}
+		else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14)	
+		{
+			*result = nplayersround(name[13]-'0');
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "prevaction", 10)==0 && strlen(name)==10)	
+	{
+		*result = prevaction();
+	}
+	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==10)
+	{
+		*result = nbetsround(p_betround_calculator->betround());
+	}
+	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)
+	{
+		*result = nbetsround(name[10]-'0');
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	// Valid symbol
+	return true;
 }

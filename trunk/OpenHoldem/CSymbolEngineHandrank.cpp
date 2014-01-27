@@ -85,12 +85,12 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 {
 	char		cardstr[10] = {0};
 
-	// Get a string containing the players' current cards
+	// Get name string containing the players' current cards
 	GetCardstring(cardstr, 
 		p_scraper->card_player(USER_CHAIR, 0), 
 		p_scraper->card_player(USER_CHAIR, 1));
 
-	// if nopponents<1 or >9 then default to a sane value
+	// if nopponents<1 or >9 then default to name sane value
 	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 		
 	for (int i=0; i<k_number_of_starting_hands; i++)
@@ -138,4 +138,40 @@ void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int
 		c[2] = 's';
 	}
 	c[3]='\0';
+}
+
+bool CSymbolEngineHandrank::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "handrank", 8) == 0)
+	{
+		if (memcmp(name, "handrank169", 11)==0 && strlen(name)==11)
+		{
+			*result = handrank169();
+		}
+		else if (memcmp(name, "handrank2652", 12)==0 && strlen(name)==12)
+		{
+			*result = handrank2652();
+		}
+		else if (memcmp(name, "handrank1326", 12)==0 && strlen(name)==12)
+		{
+			*result = handrank1326();
+		}
+		else if (memcmp(name, "handrank1000", 12)==0 && strlen(name)==12)
+		{
+			*result = handrank1000();
+		}
+		else if (memcmp(name, "handrankp", 9)==0 && strlen(name)==9)
+		{
+			*result = handrankp();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
 }

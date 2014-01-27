@@ -36,7 +36,6 @@
 #include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"

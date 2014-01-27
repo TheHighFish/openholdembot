@@ -91,7 +91,7 @@ void CSymbolEngineTime::ResetOnAutoPlayerAction()
 	time(&_elapsedautohold);
 }
 
-bool CSymbolEngineTime::EvaluateSymbol(char *name, double *result)
+bool CSymbolEngineTime::EvaluateSymbol(const char *name, double *result)
 {
 	if (memcmp(name, "elapsed", 7)==0)
 	{

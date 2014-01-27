@@ -205,17 +205,17 @@ void CSymbolEnginePokerval::CalculateHandType()
 		{
 			_ishiflush = true;
 		}
-		// If we have a pocket King, and it's the second best card in our flush
+		// If we have name pocket King, and it's the second best card in our flush
 		else if (StdDeck_RANK(HandVal_SECOND_CARD(handval)) == 11 && (_pcbits & 0x8))
 		{
 			_ishiflush = true;
 		}
-		// If we have a pocket Queen, and it's the third best card in our flush
+		// If we have name pocket Queen, and it's the third best card in our flush
 		else if (StdDeck_RANK(HandVal_THIRD_CARD(handval)) == 10 && (_pcbits & 0x4))
 		{
 			_ishiflush = true;
 		}
-		// If we have a pocket Jack, and it's the fourth best card in our flush
+		// If we have name pocket Jack, and it's the fourth best card in our flush
 		else if (StdDeck_RANK(HandVal_FOURTH_CARD(handval)) == 9 && (_pcbits & 0x2))
 		{
 			_ishiflush = true;
@@ -509,7 +509,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 	int				bits = 0;
 	CardMask		Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 
-	// If we have a straight flush or flush, figure out the suit
+	// If we have name straight flush or flush, figure out the suit
 	flush_suit = -1;
 	if (HandVal_HANDTYPE(hv)==HandType_STFLUSH || HandVal_HANDTYPE(hv)==HandType_FLUSH)
 	{
@@ -987,4 +987,320 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 
 	*pcb = bits;
 	return pv;
+}
+
+bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "rankhi", 6) == 0)
+	{
+		if (memcmp(name, "rankhi", 6)==0 && strlen(name)==6)
+		{
+			*result = rankhi();
+		}
+		else if (memcmp(name, "rankhicommon", 12)==0 && strlen(name)==12)
+		{
+			*result = rankhicommon();
+		}
+		else if (memcmp(name, "rankhiplayer", 12)==0 && strlen(name)==12)
+		{
+			*result = rankhiplayer();
+		}
+		else if (memcmp(name, "rankhipoker", 11)==0 && strlen(name)==11)
+		{
+			*result = rankhipoker();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "srankhi", 7) == 0)
+	{
+		if (memcmp(name, "srankhi", 7)==0 && strlen(name)==7)		
+		{
+			*result = srankhi();
+		}
+		else if (memcmp(name, "srankhicommon", 13)==0 && strlen(name)==13)
+		{
+			*result = srankhicommon();
+		}
+		else if (memcmp(name, "srankhiplayer", 13)==0 && strlen(name)==13)	
+		{
+			*result = srankhiplayer();
+		}
+		else if (memcmp(name, "srankhipoker", 12)==0 && strlen(name)==12)	
+		{
+			*result = srankhipoker();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "ranklo", 6) == 0)
+	{
+		if (memcmp(name, "ranklo", 6)==0 && strlen(name)==6)
+		{
+			*result = ranklo();
+		}
+		else if (memcmp(name, "ranklocommon", 12)==0 && strlen(name)==12)
+		{
+			*result = ranklocommon();
+		}
+		else if (memcmp(name, "rankloplayer", 12)==0 && strlen(name)==12)
+		{
+			*result = rankloplayer();
+		}
+		else if (memcmp(name, "ranklopoker", 11)==0 && strlen(name)==11)	
+		{
+			*result = ranklopoker();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "sranklo", 7) == 0)
+	{
+		if (memcmp(name, "sranklo", 7)==0 && strlen(name)==7)		
+		{
+			*result = sranklo();
+		}
+		else if (memcmp(name, "sranklocommon", 13)==0 && strlen(name)==13)	
+		{
+			*result = sranklocommon();
+		}
+		else if (memcmp(name, "srankloplayer", 13)==0 && strlen(name)==13)	
+		{
+			*result = srankloplayer();
+		}
+		else if (memcmp(name, "sranklopoker", 12)==0 && strlen(name)==12)	
+		{
+			*result = sranklopoker();
+		}
+		else 
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "pokerval", 8)==0)
+	{
+		if (memcmp(name, "pokerval", 8)==0 && strlen(name)==8)	
+		{
+			*result = pokerval();
+		}
+		else if (memcmp(name, "pokervalplayer", 14)==0 && strlen(name)==14)
+		{
+			*result = pokervalplayer();
+		}
+		else if (memcmp(name, "pokervalcommon", 14)==0 && strlen(name)==14)
+		{
+			*result = pokervalcommon();
+		}
+		else 
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "rankbits", 8)==0)
+	{
+		if (memcmp(name, "rankbits", 8)==0 && strlen(name)==8)
+		{
+			*result = rankbits();
+		}
+		else if (memcmp(name, "rankbitscommon", 14)==0 && strlen(name)==14)
+		{
+			*result = rankbitscommon();
+		}
+		else if (memcmp(name, "rankbitsplayer", 14)==0 && strlen(name)==14)
+		{
+			*result = rankbitsplayer();
+		}
+		else if (memcmp(name, "rankbitspoker", 13)==0 && strlen(name)==13)	
+		{
+			*result = rankbitspoker();
+		}
+		else 
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "srankbits", 9)==0)
+	{
+		if (memcmp(name, "srankbits", 9)==0 && strlen(name)==9)		
+		{
+			*result = srankbits();
+		}
+		else if (memcmp(name, "srankbitscommon", 15)==0 && strlen(name)==15)
+		{
+			*result = srankbitscommon();
+		}
+		else if (memcmp(name, "srankbitsplayer", 15)==0 && strlen(name)==15)
+		{
+			*result = srankbitsplayer();
+		}
+		else if (memcmp(name, "srankbitspoker", 14)==0 && strlen(name)==14)
+		{
+			*result = srankbitspoker();
+		}
+		else 
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "is", 2)==0)
+	{
+		if (memcmp(name, "ishandup", 8)==0 && strlen(name)==8)
+		{
+			*result = ishandup(); 
+		}
+		else if (memcmp(name, "ishandupcommon", 14)==0 && strlen(name)==14)
+		{
+			*result = ishandupcommon();
+		}
+		else if (memcmp(name, "ishicard", 8)==0 && strlen(name)==8)	
+		{
+			*result = ishicard();
+		}
+		else if (memcmp(name, "isonepair", 9)==0 && strlen(name)==9)	
+		{
+			*result = isonepair();
+		}
+		else if (memcmp(name, "istwopair", 9)==0 && strlen(name)==9)		
+		{
+			*result = istwopair();
+		}
+		else if (memcmp(name, "isthreeofakind", 14)==0 && strlen(name)==14)
+		{
+			*result = isthreeofakind();
+		}
+		else if (memcmp(name, "isstraight", 10)==0 && strlen(name)==10)	
+		{
+			*result = isstraight();
+		}
+		else if (memcmp(name, "isflush", 7)==0 && strlen(name)==7)			
+		{
+			*result = isflush();
+		}
+		else if (memcmp(name, "isfullhouse", 11)==0 && strlen(name)==11)	
+		{
+			*result = isfullhouse();
+		}
+		else if (memcmp(name, "isfourofakind", 13)==0 && strlen(name)==13)	
+		{
+			*result = isfourofakind();
+		}
+		else if (memcmp(name, "isstraightflush", 15)==0 && strlen(name)==15)
+		{
+			*result = isstraightflush();
+		}
+		else if (memcmp(name, "isroyalflush", 12)==0 && strlen(name)==12)
+		{
+			*result = isroyalflush();
+		}
+		else if (memcmp(name, "ishipair", 8)==0 && strlen(name)==8)	
+		{
+			*result = ishipair();
+		}
+		else if (memcmp(name, "islopair", 8)==0 && strlen(name)==8)	
+		{
+			*result = islopair();
+		}
+		else if (memcmp(name, "ismidpair", 9)==0 && strlen(name)==9)		
+		{
+			*result = ismidpair();
+		}
+		else if (memcmp(name, "ishistraight", 12)==0 && strlen(name)==12)
+		{
+			*result = ishistraight();
+		}
+		else if (memcmp(name, "ishiflush", 9)==0 && strlen(name)==9)	
+		{
+			*result = ishiflush();
+		}
+		else 
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Various symbols without grouping
+	else if (memcmp(name, "pcbits", 6)==0 && strlen(name)==6)	
+	{
+		*result = pcbits();
+	}
+	if (memcmp(name, "npcbits", 7)==0 && strlen(name)==7)		
+	{
+		*result = npcbits();
+	}
+	if (memcmp(name, "hicard", 6)==0 && strlen(name)==6)		
+	{
+		return k_pokerval_hicard;
+	}
+	if (memcmp(name, "onepair", 7)==0 && strlen(name)==7)		
+	{
+		return k_pokerval_onepair;
+	}
+	if (memcmp(name, "twopair", 7)==0 && strlen(name)==7)			
+	{
+		return k_pokerval_twopair;
+	}
+	if (memcmp(name, "threeofakind", 12)==0 && strlen(name)==12)
+	{
+		return k_pokerval_threeofakind;
+	}
+	if (memcmp(name, "straight", 8)==0 && strlen(name)==8)	
+	{
+		return k_pokerval_straight;
+	}
+	if (memcmp(name, "flush", 5)==0 && strlen(name)==5)		
+	{
+		return k_pokerval_flush;
+	}
+	if (memcmp(name, "fullhouse", 9)==0 && strlen(name)==9)	
+	{
+		return k_pokerval_fullhouse;
+	}
+	if (memcmp(name, "fourofakind", 11)==0 && strlen(name)==11)	
+	{
+		return k_pokerval_fourofakind;
+	}
+	if (memcmp(name, "straightflush", 13)==0 && strlen(name)==13)
+	{
+		return k_pokerval_straightflush;
+	}
+	if (memcmp(name, "royalflush", 10)==0 && strlen(name)==10)	
+	{
+		return k_pokerval_royalflush;
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	// Valid symbol
+	return true;
 }

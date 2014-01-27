@@ -15,6 +15,7 @@
 #include "CopenHoldemStatusbar.h"
 
 #include "CAutoplayerFunctions.h"
+#include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
@@ -24,8 +25,8 @@
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "MagicNumbers.h"
+#include "StringFunctions.h"
 
 
 COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
@@ -198,10 +199,11 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 			(int) (iter_vars.prwin()*1000), 
 			(int) (iter_vars.prtie()*1000),
 			(int) (iter_vars.prlos()*1000));
-		int	e = SUCCESS;
-		_status_nit.Format("%d/%d", 
+		double iterations;
+		p_engine_container->EvaluateSymbol("f$prwin_number_of_iterations", &iterations);
+		_status_nit.Format("%d/%s", 
 			iter_vars.iterator_thread_progress(),
-			(int) p_symbols->GetSymbolVal("f$prwin_number_of_iterations", &e));
+			Number2CString(iterations));
 	}
 	else
 	{

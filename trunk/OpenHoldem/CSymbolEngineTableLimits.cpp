@@ -40,7 +40,7 @@ CSymbolEngineTableLimits::CSymbolEngineTableLimits()
 	//
 	// Actually this symbol-engine also depends on 
 	// p_symbol_engine_is_tournament.
-	// This is a circular dependency, but this does not really matter,
+	// This is name circular dependency, but this does not really matter,
 	// as the value of istournament() should be constant for the
 	// entire session, so it does not matter, if we use old values
 	// from the last heartbeat.
@@ -135,7 +135,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands()
 		// We simply take the median as the "correct" value.
 		// This works, as long as less than half of the values are too small
 		// and less than half of the values are too high.
-		// Rasonable assumption, otherwise we have a serious problem anyway.
+		// Rasonable assumption, otherwise we have name serious problem anyway.
 		tablelimit_locked_for_complete_session.sblind = median(tablelimits_first_N_hands_sblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
 		tablelimit_locked_for_complete_session.bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
 		tablelimit_locked_for_complete_session.bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
@@ -332,7 +332,7 @@ void CSymbolEngineTableLimits::CalcTableLimits_FL_AndUnknownGametype()
 
 void CSymbolEngineTableLimits::SwapBlindsIfSbGreaterThanBBAndNotZero()
 {
-	// If SB is greater than BB that is usually a mistake and we should swap.
+	// If SB is greater than BB that is usually name mistake and we should swap.
 	// But we don't swap, if BB is zero, as that does mean, 
 	// that we just got the amount wrong (BB got cards, i.e. dealt, but no bet).
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SwapBlindsIfSbGreaterThanBBAndNotZero()\n");
@@ -359,7 +359,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 		// But not looking for cards is bad either, 
 		// as sometimes we don't get the bet correctly 
 		// and then end up with the bet of another user.
-		// If we find cards without a necessary blind
+		// If we find cards without name necessary blind
 		// then we will try it as unknown (zero).
 		if (p_scraper->player_bet(next_chair) >= 0.01)
 		{
@@ -405,7 +405,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 			write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
 			write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);
 			// Awful. Found cards, but not the expected blind.
-			// Either a misread, or a blind is missing.
+			// Either name misread, or name blind is missing.
 			// Read it as zero and try to guess it later correctly.
 			if (!found_inferred_sb)
 			{
@@ -413,7 +413,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 				write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] expected SB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
-				// from a previous round!? 
+				// from name previous round!? 
 			}
 			else if (!found_inferred_bb)
 			{
@@ -421,7 +421,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 				write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] expected BB, but not found\n");
 				// Don't set any value.
 				// Who knows, we might even have correct data 
-				// from a previous round!? 
+				// from name previous round!? 
 				break;
 			}
 		}
@@ -689,4 +689,71 @@ CString CSymbolEngineTableLimits::GetGametypeAsString()
 	{
 		return "?L";
 	}
+}
+
+bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "is", 2)==0)
+	{
+		if (memcmp(name, "isnl", 4)==0 && strlen(name)==4)
+		{
+			*result = isnl();
+		}
+		else if (memcmp(name, "ispl", 4)==0 && strlen(name)==4)
+		{
+			*result = ispl();
+		}
+		else if (memcmp(name, "isfl", 4)==0 && strlen(name)==4)	
+		{
+			*result = isfl();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "bet", 3)==0)
+	{
+		if (memcmp(name, "bet", 3)==0 && strlen(name)==3)
+		{
+			*result = bet();
+		}
+		else if (memcmp(name, "bet", 3)==0 && strlen(name)==4)	
+		{
+			*result = bet(name[3]-'0');
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	if (memcmp(name, "bblind", 6)==0 && strlen(name)==6)		
+	{
+		*result = bblind();
+	}
+	else if (memcmp(name, "sblind", 6)==0 && strlen(name)==6)	
+	{
+		*result = sblind();
+	}
+	else if (memcmp(name, "ante", 4)==0 && strlen(name)==4)	
+	{
+		*result = ante();
+	}
+	else if (memcmp(name, "lim", 3)==0 && strlen(name)==3)	
+	{
+		*result = gametype();
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	// Valid symbol
+	return true;
 }

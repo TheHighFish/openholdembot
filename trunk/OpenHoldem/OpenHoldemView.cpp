@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "OpenHoldemView.h"
 
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
@@ -25,7 +26,6 @@
 #include "CStringMatch.h"
 #include "CSymbolengineChipAmounts.h"
 #include "CSymbolEngineIsTournament.h"
-#include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CHeartbeatThread.h"
@@ -438,9 +438,9 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 		&& p_symbol_engine_userchair->userchair_confirmed() 
 		&& p_scraper_access->UserHasCards()) 
 	{
-		for (int i=0; i<min(5, p_symbols->logsymbols_collection()->GetCount()); i++)
+		for (int i=0; i<min(5, p_engine_container->logsymbols_collection()->GetCount()); i++)
 		{
-			s.Format("  Log: %s\n", p_symbols->logsymbols_collection()->GetAt(i));
+			s.Format("  Log: %s\n", p_engine_container->logsymbols_collection()->GetAt(i));
 			t.Append(s);
 		}
 	}

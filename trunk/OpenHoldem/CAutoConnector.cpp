@@ -32,7 +32,6 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSharedMem.h"
-#include "CSymbols.h"
 #include "CTableMapLoader.h"
 #include "CTablePositioner.h"
 #include "CVersionInfo.h"

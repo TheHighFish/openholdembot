@@ -923,10 +923,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CSymbols.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
@@ -963,6 +959,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolengineDealerchair.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineEventLogging.cpp"
 						>
 					</File>
 					<File
@@ -1035,6 +1035,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineUserchair.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineVariousDataLookup.cpp"
 						>
 					</File>
 					<File
@@ -1525,10 +1529,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CSymbols.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CVersus.h"
 					>
 				</File>
@@ -1565,6 +1565,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineDealerchair.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineEventLogging.h"
 						>
 					</File>
 					<File
@@ -1637,6 +1641,10 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolengineUserchair.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineVariousDataLookup.h"
 						>
 					</File>
 				</Filter>

@@ -7,21 +7,21 @@
 //
 //***************************************************************************** 
 //
-// Purpose:
+// Purpose: Not really a symbol-engine, 
+//   but a good way to get important events logged.
 //
 //***************************************************************************** 
 
-#ifndef INC_CSYMBOLENGINERANDOM_H
-#define INC_CSYMBOLENGINERANDOM_H
+#ifndef INC_CSYMBOLENGINEEVENTLOGGING_H
+#define INC_CSYMBOLENGINEEVENTLOGGING_H
 
 #include "CVirtualSymbolEngine.h"
-#include "..\CTransform\CTransform.h"
 
-extern class CSymbolEngineRandom: public CVirtualSymbolEngine
+extern class CSymbolEngineEventLogging: public CVirtualSymbolEngine
 {
 public:
-	CSymbolEngineRandom();
-	~CSymbolEngineRandom();
+	CSymbolEngineEventLogging();
+	~CSymbolEngineEventLogging();
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
@@ -33,17 +33,6 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	// "random" gets calculated each time new
-	double random()				{ return Random_0_1(); }
-	double randomhand()			{ return _randomhand; }
-	double randomheartbeat()	{ return _randomheartbeat; }
-	double randomround()		{ return _randomround; }
-private:
-	double Random_0_1();
-private:
-	double _randomhand;
-	double _randomheartbeat;
-	double _randomround;
-} *p_symbol_engine_random;
+} *p_symbol_engine_event_logging;
 
-#endif INC_CSYMBOLENGINERANDOM_H
+#endif INC_CSYMBOLENGINEEVENTLOGGING_H
