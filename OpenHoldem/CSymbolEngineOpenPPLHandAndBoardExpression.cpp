@@ -83,34 +83,39 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat()
 		_prime_coded_board_cards);
 }
 
-bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_board_expression)
+bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name, double *result)
 {
-	write_log(preferences.debug_symbolengine(), 
-		"[CSymbolEngineOpenPPLHandAndBoardExpression] Evaluating %s\n",
-		hand_or_board_expression);
-
-	int prime_coded_available_ranks;
-
 	// First check, if hand$ or board$ and/or Suited
 	// At the same time remove the unnecessary parts of the expression
-	bool is_hand_expression   = false;
-	bool is_board_expression  = false;
-	bool is_suited_expression = false;
-
-	if (hand_or_board_expression.Left(5) == "hand$")
+	if (memcmp(name, "hand$", 5) == 0)
 	{
-		is_hand_expression = true;
-		hand_or_board_expression = CStringRemoveLeft(
-			hand_or_board_expression, 5);
+		is_hand_expression  = true;
+		is_board_expression = false;
+		hand_or_board_expression = name;
+		write_log(preferences.debug_symbolengine(), 
+			"[CSymbolEngineOpenPPLHandAndBoardExpression] Evaluating %s\n",
+			hand_or_board_expression);
+		hand_or_board_expression = CStringRemoveLeft(hand_or_board_expression, 5);
 		prime_coded_available_ranks = _prime_coded_hole_cards;
 	}
-	else if (hand_or_board_expression.Left(6) == "board$")
+	else if	(memcmp(name, "board$", 6) == 0)
 	{
+		is_hand_expression  = false;
 		is_board_expression = true;
-		hand_or_board_expression = CStringRemoveLeft(
-			hand_or_board_expression, 6);
+		hand_or_board_expression = name;
+		write_log(preferences.debug_symbolengine(), 
+			"[CSymbolEngineOpenPPLHandAndBoardExpression] Evaluating %s\n",
+			hand_or_board_expression);
+		hand_or_board_expression = CStringRemoveLeft(hand_or_board_expression, 6);
 		prime_coded_available_ranks = _prime_coded_board_cards;
 	}
+	else
+	{
+		// Quick exit on other symbols
+		return false;
+	}
+
+	bool is_suited_expression = false;
 	assert(is_hand_expression || is_board_expression);
 
 	if (hand_or_board_expression.Right(6).MakeLower() == "suited")
@@ -132,7 +137,8 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_bo
 		// Therefore ranks that do not fit available ranks.
 		write_log(preferences.debug_symbolengine(), 
 			"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because ranks do not fit\n");
-		return false;
+		*result = false;
+		return true;
 	}
 
 	// This was super-elegant, but unfortunatelly there can be 
@@ -151,7 +157,8 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_bo
 			if (!p_symbol_engine_cards->issuited())
 			{
 				// No suited ranks available
-				return false;
+				*result = false;
+				return true;
 			}
 		}
 		else
@@ -164,7 +171,8 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_bo
 			{
 				write_log(preferences.debug_symbolengine(),
 					"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because suited rankbits do not fit\n");
-				return false;
+				*result = false;
+				return true;
 			}
 		}
 	}
@@ -190,7 +198,8 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_bo
 				{
 					write_log(preferences.debug_symbolengine(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete hole cards do not fit\n");
-					return false;
+					*result = false;
+					return true;
 				}
 			}
 			else
@@ -202,13 +211,15 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::ProcessQuery(CString hand_or_bo
 				{
 					write_log(preferences.debug_symbolengine(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete board cards do not fit\n");
-					return false;
+					*result = false;
+					return true;
 				}
 			}
 		}	
 	}
 	write_log(preferences.debug_symbolengine(),
 		"[CSymbolEngineOpenPPLHandAndBoardExpression] successful match\n");
+	*result = true;
 	return true;
 }
 

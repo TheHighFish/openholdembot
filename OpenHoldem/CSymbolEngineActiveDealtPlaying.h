@@ -33,6 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
+	bool EvaluateSymbol(const char *name, double *result);
 	int playersactivebits()		{ return _playersactivebits & playersseatedbits(); }
 	int opponentsactivebits()	{ return (playersactivebits() & ~userchairbit());}
 	int nplayersactive()		{ return bitcount(playersactivebits()); }

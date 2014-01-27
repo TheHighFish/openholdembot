@@ -31,7 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors	
-	double	ProcessQuery(const char *s);
+	bool EvaluateSymbol(const char *name, double *result);
 private:
 	void	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	void	WarnAboutInvalidPTSymbol(CString s);

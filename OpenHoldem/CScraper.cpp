@@ -26,7 +26,6 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
 #include "debug.h"
 #include "MainFrm.h"

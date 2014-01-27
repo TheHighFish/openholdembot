@@ -12,9 +12,9 @@
 //***************************************************************************** 
 
 #include "stdafx.h"
-
 #include "CLogSymbols.h"
-#include "CSymbols.h"
+
+#include "CEngineContainer.h"
 
 CLogSymbols::CLogSymbols()
 {
@@ -30,9 +30,9 @@ double CLogSymbols::ProcessQuery(const char * pquery, int *e)
 	{
 		bool exists = false;
 
-		for (int i=0; i<p_symbols->logsymbols_collection()->GetCount(); i++)
+		for (int i=0; i<p_engine_container->logsymbols_collection()->GetCount(); i++)
 		{
-			if (p_symbols->logsymbols_collection()->GetAt(i) == pquery+4)
+			if (p_engine_container->logsymbols_collection()->GetAt(i) == pquery+4)
 			{
 				exists = true;
 				break;
@@ -41,7 +41,7 @@ double CLogSymbols::ProcessQuery(const char * pquery, int *e)
 
 		if (!exists)
 		{
-			p_symbols->logsymbols_collection_add(pquery+4);
+			p_engine_container->logsymbols_collection_add(pquery+4);
 		}
 
 		return 1.0;

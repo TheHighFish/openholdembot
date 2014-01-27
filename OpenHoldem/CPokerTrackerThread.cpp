@@ -30,7 +30,6 @@
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 

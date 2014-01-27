@@ -99,7 +99,7 @@ void CSymbolEngineLists::ErrorListNumberOutOfRange(int list)
 	OH_MessageBox_Error_Warning(message, "ERROR");
 }
 
-bool CSymbolEngineLists::EvaluateSymbol(char *name, double *result)
+bool CSymbolEngineLists::EvaluateSymbol(const char *name, double *result)
 {
 	if (memcmp(name, "islist", 6) == 0)	
 	{

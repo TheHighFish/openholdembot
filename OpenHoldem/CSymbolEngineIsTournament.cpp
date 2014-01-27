@@ -280,3 +280,15 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// Main consequence: blinds won't be locked for the entire session,
 	// but only for the current hand. Does this hurt much?
 }
+
+bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result)
+{ 
+	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12)
+	{
+		*result = istournament();
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

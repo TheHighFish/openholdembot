@@ -24,7 +24,6 @@
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
 
 CPokerAction::CPokerAction()

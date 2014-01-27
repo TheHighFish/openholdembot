@@ -172,3 +172,72 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 	AssertRange(_dealposition, k_undefined, k_max_number_of_players);
 	AssertRange(_callposition, k_undefined, k_max_number_of_players);
 }
+
+bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "nchairsdealtright", 17)==0)
+	{
+		if (memcmp(name, "nchairsdealtright", 17)==0 && strlen(name)==17)
+		{
+			*result = nchairsdealtright();
+		}
+		if (memcmp(name, "nchairsdealtleft", 16)==0 && strlen(name)==16)
+		{
+			*result = nchairsdealtleft();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "betposition", 11)==0)
+	{
+		if (memcmp(name, "betposition", 11)==0 && strlen(name)==11)		
+		{
+			*result = betposition();
+		}
+		if (memcmp(name, "betpositionrais", 15)==0 && strlen(name)==15)	
+		{
+			*result = betpositionrais();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "dealposition", 12)==0)
+	{
+		if (memcmp(name, "dealposition", 12)==0 && strlen(name)==12)	
+		{
+			*result = dealposition();
+		}
+		if (memcmp(name, "dealpositionrais", 16)==0 && strlen(name)==16)
+		{
+			*result = dealpositionrais();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "callposition", 12)==0 && strlen(name)==12)	
+	{
+		*result = callposition();
+		// Valid symbol
+		return true;
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+}

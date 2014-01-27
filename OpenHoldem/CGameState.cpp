@@ -17,6 +17,7 @@
 #include "assert.h"
 #include "CAutoConnector.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -27,7 +28,6 @@
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CScraper.h"
 #include "CPreferences.h"
 #include "CSymbolEngineTableLimits.h"
@@ -138,8 +138,9 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	{
 		for (int i=0; i<_hist_sym_count; i++)
 		{
-			int e = SUCCESS;
-			_hist_sym[i][betround-k_betround_preflop] = p_symbols->GetSymbolVal(_hist_sym_strings[i], &e);
+			double result;
+			p_engine_container->EvaluateSymbol(_hist_sym_strings[i], &result);
+			_hist_sym[i][betround-k_betround_preflop] = result;
 		}
 	}
 }

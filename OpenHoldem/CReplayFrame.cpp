@@ -24,7 +24,6 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "OH_MessageBox.h"

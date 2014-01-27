@@ -188,3 +188,59 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 		_nopponents_for_prwin = 1;
 	}
 }
+
+bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "pr", 2)==0)
+	{
+		if (memcmp(name, "prwinnow", 8)==0 && strlen(name)==8)
+		{
+			*result = prwinnow();
+		}
+		else if (memcmp(name, "prlosnow", 8)==0 && strlen(name)==8)
+		{
+			*result = prlosnow();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nhands", 6)==0)
+	{
+		if (memcmp(name, "nhands", 6)==0 && strlen(name)==6)	
+		{
+			*result = nhands();
+		}
+		else if (memcmp(name, "nhandshi", 8)==0 && strlen(name)==8)
+		{
+			*result = nhandshi();
+		}
+		else if (memcmp(name, "nhandslo", 8)==0 && strlen(name)==8)
+		{
+			*result = nhandslo();
+		}
+		else if (memcmp(name, "nhandsti", 8)==0 && strlen(name)==8)
+		{
+			*result = nhandsti();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nopponents", 10)==0 && strlen(name)==10)	
+	{
+		*result = nopponents_for_prwin();
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
+}

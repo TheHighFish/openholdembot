@@ -94,7 +94,7 @@ void CSymbolEngineUserchair::CalculateUserChair()
 	}
 }
 
-bool CSymbolEngineUserchair::EvaluateSymbol(char *name, double *result)
+bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
 {
 	if (memcmp(name, "userchair", 9)==0 && strlen(name)==9)
 	{

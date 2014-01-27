@@ -73,36 +73,6 @@ END_TESTCASE
 
 
 BEGIN_TESTCASE
-    TESTCASE_ID ("0022")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol sraiprev")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("sraiprev") > 0) || (gws("sraiprev") == UNDEFINED_ZERO))
-    SYMBOLS_POSSIBLY_AFFECTED ("sraiprev")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0023")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol sraimin")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("sraimin") > 0) || (gws("sraimin") == UNDEFINED_ZERO))
-    SYMBOLS_POSSIBLY_AFFECTED ("sraimin")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
-    TESTCASE_ID ("0024")
-    HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol sraimax")
-    PRECONDITION (true)
-    POSTCONDITION (gws("sraimax") >= 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("sraimax")
-END_TESTCASE
-
-
-BEGIN_TESTCASE
     TESTCASE_ID ("0025")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol istournament")

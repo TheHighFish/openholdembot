@@ -31,7 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool ProcessQuery(CString hand_expression);
+	bool EvaluateSymbol(const char *name, double *result);
 private:
 	int PrimeCodedRanks(int card_0,	int card_1, 
 		int opt_card_2 = CARD_NOCARD, int opt_card_3 = CARD_NOCARD, 
@@ -40,6 +40,11 @@ private:
 private:
 	int _prime_coded_hole_cards;
 	int _prime_coded_board_cards;
+private:
+	int prime_coded_available_ranks;
+	bool is_hand_expression;
+	bool is_board_expression;
+	CString hand_or_board_expression;
 } *p_symbol_engine_open_ppl_hand_and_board_expression;
 
 #endif INC_CSYMBOLENGINE_HAND_AND_BOARD_EXPRESSION_H

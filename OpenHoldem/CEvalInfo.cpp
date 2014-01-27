@@ -12,9 +12,9 @@
 //***************************************************************************** 
 
 #include "stdafx.h"
-
 #include "CEvalInfo.h"
-#include "CSymbols.h"
+
+#include "CEngineContainer.h"
 
 CEvalInfoFunctionArray::~CEvalInfoFunctionArray()
 {
@@ -43,7 +43,7 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	else
 		message.Format("%s=%.2f", m_Symbol, m_Value);
 
-	p_symbols->symboltrace_collection_add(message);
+	p_engine_container->symboltrace_collection_add(message);
 }
 
 void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
@@ -68,7 +68,7 @@ void CEvalInfoFunction::DumpFunction(int indent)
 	else
 		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
 	
-	p_symbols->symboltrace_collection_add(message);
+	p_engine_container->symboltrace_collection_add(message);
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);

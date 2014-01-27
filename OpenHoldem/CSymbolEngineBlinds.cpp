@@ -150,3 +150,34 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		}
 	}							
 }
+
+bool CSymbolEngineBlinds::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "nopponentsblind", 15)==0 && strlen(name)==15)
+	{
+		*result = nopponentsblind();
+	}
+	else if (memcmp(name, "nplayersblind", 13)==0 && strlen(name)==13)	
+	{
+		*result = nplayersblind();
+	}
+	else if (memcmp(name, "playersblindbits", 16)==0 && strlen(name)==16)	
+	{
+		*result = playersblindbits();
+	}
+	else if (memcmp(name, "opponentsblindbits", 18)==0 && strlen(name)==18)	
+	{
+		*result = opponentsblindbits();
+	}
+	else if (memcmp(name, "bblindbits", 10)==0 && strlen(name)==10)  	
+	{
+		*result = bblindbits();
+	}
+	else
+	{
+		// Invalid symbol
+		return false;
+	}
+	// Valid symbol
+	return true;
+}

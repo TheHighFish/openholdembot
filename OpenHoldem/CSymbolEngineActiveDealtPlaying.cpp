@@ -122,7 +122,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
 		// First we search the blinds only, 
-		// i.e. players with a positive bet.
+		// i.e. players with name positive bet.
 		// We don't consider players who are only "active",
 		// i.e. players who sat out but came back.
 		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters)
@@ -144,7 +144,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			}
 		}
 		// Once the blinds have been found we accept every player as dealt
-		// who is active. Usually these are a fast fold,
+		// who is active. Usually these are name fast fold,
 		// though there might be some people who were sitting out
 		// and came back.
 		// We do so, until we reach somebody who has cards.
@@ -175,4 +175,114 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			AssertRange(_playersdealtbits, 0, k_bits_all_ten_players_1_111_111_111);
 		}
 	}
+}
+
+bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "nopponents", 10)==0)
+	{
+		if (memcmp(name, "nopponentsseated", 16)==0 && strlen(name)==16)	
+		{
+			*result = nopponentsseated();
+		}
+		else if (memcmp(name, "nopponentsactive", 16)==0 && strlen(name)==16)	
+		{
+			*result = nopponentsactive();
+		}
+		else if (memcmp(name, "nopponentsdealt", 15)==0 && strlen(name)==15)	
+		{
+			*result = nopponentsdealt();
+		}
+		else if (memcmp(name, "nopponentsplaying", 17)==0 && strlen(name)==17)	
+		{
+			*result = nopponentsplaying();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "nplayers", 8)==0)
+	{
+		if (memcmp(name, "nplayersseated", 14)==0 && strlen(name)==14)
+		{
+			*result = nplayersseated();
+		}
+		else if (memcmp(name, "nplayersactive", 14)==0 && strlen(name)==14)
+		{
+			*result = nplayersactive();
+		}
+		else if (memcmp(name, "nplayersdealt", 13)==0 && strlen(name)==13)	
+		{
+			*result = nplayersdealt();
+		}
+		else if (memcmp(name, "nplayersplaying", 15)==0 && strlen(name)==15)
+		{
+			*result = nplayersplaying();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "players", 7)==0)
+	{
+		if (memcmp(name, "playersseatedbits", 17)==0 && strlen(name)==17)	
+		{
+			*result = playersseatedbits();
+		}
+		else if (memcmp(name, "playersactivebits", 17)==0 && strlen(name)==17)	
+		{
+			*result = playersactivebits();
+		}
+		else if (memcmp(name, "playersdealtbits", 16)==0 && strlen(name)==16)	
+		{
+			*result = playersdealtbits();
+		}
+		else if (memcmp(name, "playersplayingbits", 18)==0 && strlen(name)==18)
+		{
+			*result = playersplayingbits();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "opponents", 9)==0)
+	{
+		if (memcmp(name, "opponentsseatedbits", 19)==0 && strlen(name)==19)	
+		{
+			*result = opponentsseatedbits();
+		}
+		if (memcmp(name, "opponentsactivebits", 19)==0 && strlen(name)==19)	
+		{
+			*result = opponentsactivebits();
+		}
+		if (memcmp(name, "opponentsdealtbits", 18)==0 && strlen(name)==18)	
+		{
+			*result = opponentsdealtbits();
+		}
+		if (memcmp(name, "opponentsplayingbits", 20)==0 && strlen(name)==20)
+		{
+			*result = opponentsplayingbits();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	// Symbol of name different symbol-engine
+	return false;
 }

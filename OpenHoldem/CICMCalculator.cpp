@@ -37,7 +37,6 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbols.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"

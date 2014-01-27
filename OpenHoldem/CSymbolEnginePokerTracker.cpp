@@ -124,8 +124,14 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 	}
 }
 
-double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
+bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
 {
+	if (memcmp(name,"pt_",3)!=0)
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	CString s = name;
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	if (IsOldStylePTSymbol(s))
 	{
@@ -137,13 +143,15 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		OH_MessageBox_Error_Warning(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
-		return k_undefined;
+		*result = k_undefined;
+		return true;
 	}
 	if (!PT_DLL_IsValidSymbol(CString(s)))
 	{
 		// Invalid PokerTracker symbol
 		WarnAboutInvalidPTSymbol(s);
-		return k_undefined;
+		*result = k_undefined;
+		return true;
 	}
 	int chair = 0;
 
@@ -163,7 +171,8 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
 				"Can't use PokerTracker symbols.", "ERROR");
 		}
-		return k_undefined;
+		*result = k_undefined;
+		return true;
 	}
 
 	CString standard_symbol_name;
@@ -181,7 +190,8 @@ double CSymbolEnginePokerTracker::ProcessQuery(const char *s)
 		chair = atoi(last_character);
 	}
 	AssertRange(chair, k_first_chair, k_last_chair);
-	return PT_DLL_GetStat(s, chair); 
+	*result = PT_DLL_GetStat(s, chair); 
+	return true;
 }
 
 

@@ -31,7 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result);
 	//POCKET TESTS
 	bool ispair()			{ return _ispair; }
 	bool issuited()			{ return _issuited; }		

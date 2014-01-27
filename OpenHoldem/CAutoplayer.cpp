@@ -29,7 +29,6 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
-#include "CSymbols.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"

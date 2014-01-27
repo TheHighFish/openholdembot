@@ -267,3 +267,102 @@ double CSymbolEngineChipAmounts::Largestbet()
 	return largest_bet;
 }
 
+bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "pot", 3)==0)
+	{
+		// CHIP AMOUNTS 1(2)
+		if (memcmp(name, "pot", 3)==0 && strlen(name)==3)	
+		{
+			*result = pot();
+		}
+		else if (memcmp(name, "potcommon", 9)==0 && strlen(name)==9)
+		{
+			*result = potcommon();
+		}
+		else if (memcmp(name, "potplayer", 9)==0 && strlen(name)==9)
+		{
+			*result = potplayer();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	else if (memcmp(name, "balance", 7)==0)	
+	{
+		if (memcmp(name, "balance", 7)==0 && strlen(name)==7)	
+		{
+			*result = balance(p_symbol_engine_userchair->userchair()); 
+		}
+		else if (memcmp(name, "balance", 7)==0 && strlen(name)==8)	
+		{
+			*result = balance(name[7]-'0');
+		}
+		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==24)
+		{
+			*result = balanceatstartofsession();
+		}
+		else
+		{
+			// Invalid symbol
+			return false;
+		}
+		// Valid symbol
+		return true;
+	}
+	if (memcmp(name, "maxbalance", 10)==0 && strlen(name)==10)  
+	{
+		*result = maxbalance();
+	}
+	else if (memcmp(name, "stack", 5)==0 && strlen(name)==6)		
+	{
+		*result = stack(name[5]-'0');
+	}
+	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==10)	
+	{
+		*result = currentbet(p_symbol_engine_userchair->userchair());
+	}
+	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==11)	
+	{
+		*result = currentbet(name[10]-'0');
+	}
+	else if (memcmp(name, "call", 4)==0 && strlen(name)==4)		
+	{
+		*result = call();
+	}
+	else if (memcmp(name, "nbetstocall", 11)==0 && strlen(name)==11)
+	{
+		*result = nbetstocall();
+	}
+	else if (memcmp(name, "nbetstorais", 11)==0 && strlen(name)==11)
+	{
+		*result = nbetstorais();
+	}
+	else if (memcmp(name, "ncurrentbets", 12)==0 && strlen(name)==12)
+	{
+		*result = ncurrentbets();
+	}
+	else if (memcmp(name, "ncallbets", 9)==0 && strlen(name)==9)	
+	{
+		*result = ncallbets();
+	}
+	else if (memcmp(name, "nraisbets", 9)==0 && strlen(name)==9)	
+	{
+		*result = nraisbets();
+	}
+	else
+	{
+		// Symbol of name different symbol-engine
+		return false;
+	}
+	// Valid symbol
+	return true;
+}
+
+
+					
+	

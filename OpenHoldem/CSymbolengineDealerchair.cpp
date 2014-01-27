@@ -68,3 +68,14 @@ void CSymbolEngineDealerchair::ResetOnHeartbeat()
 	// Dealer-button probably just temporary occluded.
 	// Do not reset, as this might cause a hand-reset.
 }
+
+bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result)
+{
+	if (memcmp(name, "dealerchair", 11)==0 && strlen(name)==11)	
+	{
+		*result = p_symbol_engine_dealerchair->dealerchair();
+		return true;
+	}
+	return false;
+}
+	

@@ -23,7 +23,6 @@
 #include "CScraperAccess.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineTime.h"
-#include "CSymbols.h"
 #include "MagicNumbers.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"

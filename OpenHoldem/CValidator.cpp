@@ -19,7 +19,6 @@
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineReplayFrameController.h"
-#include "CSymbols.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"

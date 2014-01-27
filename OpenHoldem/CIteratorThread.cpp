@@ -27,7 +27,6 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
-#include "CSymbols.h"
 #include "CValidator.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
