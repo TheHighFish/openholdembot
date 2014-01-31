@@ -175,13 +175,13 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 
 bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
 {
-	if (memcmp(name, "nchairsdealtright", 17)==0)
+	if (memcmp(name, "nchairsdealt", 12)==0)
 	{
 		if (memcmp(name, "nchairsdealtright", 17)==0 && strlen(name)==17)
 		{
 			*result = nchairsdealtright();
 		}
-		if (memcmp(name, "nchairsdealtleft", 16)==0 && strlen(name)==16)
+		else if (memcmp(name, "nchairsdealtleft", 16)==0 && strlen(name)==16)
 		{
 			*result = nchairsdealtleft();
 		}
@@ -199,7 +199,7 @@ bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
 		{
 			*result = betposition();
 		}
-		if (memcmp(name, "betpositionrais", 15)==0 && strlen(name)==15)	
+		else if (memcmp(name, "betpositionrais", 15)==0 && strlen(name)==15)	
 		{
 			*result = betpositionrais();
 		}
@@ -217,7 +217,7 @@ bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
 		{
 			*result = dealposition();
 		}
-		if (memcmp(name, "dealpositionrais", 16)==0 && strlen(name)==16)
+		else if (memcmp(name, "dealpositionrais", 16)==0 && strlen(name)==16)
 		{
 			*result = dealpositionrais();
 		}

@@ -1252,47 +1252,47 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
 	{
 		*result = pcbits();
 	}
-	if (memcmp(name, "npcbits", 7)==0 && strlen(name)==7)		
+	else if (memcmp(name, "npcbits", 7)==0 && strlen(name)==7)		
 	{
 		*result = npcbits();
 	}
-	if (memcmp(name, "hicard", 6)==0 && strlen(name)==6)		
+	else if (memcmp(name, "hicard", 6)==0 && strlen(name)==6)		
 	{
 		return k_pokerval_hicard;
 	}
-	if (memcmp(name, "onepair", 7)==0 && strlen(name)==7)		
+	else if (memcmp(name, "onepair", 7)==0 && strlen(name)==7)		
 	{
 		return k_pokerval_onepair;
 	}
-	if (memcmp(name, "twopair", 7)==0 && strlen(name)==7)			
+	else if (memcmp(name, "twopair", 7)==0 && strlen(name)==7)			
 	{
 		return k_pokerval_twopair;
 	}
-	if (memcmp(name, "threeofakind", 12)==0 && strlen(name)==12)
+	else if (memcmp(name, "threeofakind", 12)==0 && strlen(name)==12)
 	{
 		return k_pokerval_threeofakind;
 	}
-	if (memcmp(name, "straight", 8)==0 && strlen(name)==8)	
+	else if (memcmp(name, "straight", 8)==0 && strlen(name)==8)	
 	{
 		return k_pokerval_straight;
 	}
-	if (memcmp(name, "flush", 5)==0 && strlen(name)==5)		
+	else if (memcmp(name, "flush", 5)==0 && strlen(name)==5)		
 	{
 		return k_pokerval_flush;
 	}
-	if (memcmp(name, "fullhouse", 9)==0 && strlen(name)==9)	
+	else if (memcmp(name, "fullhouse", 9)==0 && strlen(name)==9)	
 	{
 		return k_pokerval_fullhouse;
 	}
-	if (memcmp(name, "fourofakind", 11)==0 && strlen(name)==11)	
+	else if (memcmp(name, "fourofakind", 11)==0 && strlen(name)==11)	
 	{
 		return k_pokerval_fourofakind;
 	}
-	if (memcmp(name, "straightflush", 13)==0 && strlen(name)==13)
+	else if (memcmp(name, "straightflush", 13)==0 && strlen(name)==13)
 	{
 		return k_pokerval_straightflush;
 	}
-	if (memcmp(name, "royalflush", 10)==0 && strlen(name)==10)	
+	else if (memcmp(name, "royalflush", 10)==0 && strlen(name)==10)	
 	{
 		return k_pokerval_royalflush;
 	}

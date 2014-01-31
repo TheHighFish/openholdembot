@@ -263,15 +263,15 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 		{
 			*result = opponentsseatedbits();
 		}
-		if (memcmp(name, "opponentsactivebits", 19)==0 && strlen(name)==19)	
+		else if (memcmp(name, "opponentsactivebits", 19)==0 && strlen(name)==19)	
 		{
 			*result = opponentsactivebits();
 		}
-		if (memcmp(name, "opponentsdealtbits", 18)==0 && strlen(name)==18)	
+		else if (memcmp(name, "opponentsdealtbits", 18)==0 && strlen(name)==18)	
 		{
 			*result = opponentsdealtbits();
 		}
-		if (memcmp(name, "opponentsplayingbits", 20)==0 && strlen(name)==20)
+		else if (memcmp(name, "opponentsplayingbits", 20)==0 && strlen(name)==20)
 		{
 			*result = opponentsplayingbits();
 		}

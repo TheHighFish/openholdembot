@@ -245,23 +245,23 @@ bool CSymbolEngineAutoplayer::EvaluateSymbol(const char *name, double *result)
 		{
 			*result = isfinaltable();
 		}
-		if (memcmp(name, "ismyturn", 8)==0 && strlen(name)==8)		
+		else if (memcmp(name, "ismyturn", 8)==0 && strlen(name)==8)		
 		{
 			*result = ismyturn();
 		}
-		if (memcmp(name, "issittingin", 11)==0 && strlen(name)==11)	
+		else if (memcmp(name, "issittingin", 11)==0 && strlen(name)==11)	
 		{
 			*result = issittingin();
 		}
-		if (memcmp(name, "issittingout", 12)==0 && strlen(name)==12)
+		else if (memcmp(name, "issittingout", 12)==0 && strlen(name)==12)
 		{
 			*result = issittingout();
 		}
-		if (memcmp(name, "isautopost", 10)==0 && strlen(name)==10)	
+		else if (memcmp(name, "isautopost", 10)==0 && strlen(name)==10)	
 		{
 			*result = isautopost();
 		}
-		if (memcmp(name, "isfinalanswer", 13)==0 && strlen(name)==13)	
+		else if (memcmp(name, "isfinalanswer", 13)==0 && strlen(name)==13)	
 		{
 			*result = isfinalanswer();
 		}
