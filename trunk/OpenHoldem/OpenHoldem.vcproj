@@ -1026,10 +1026,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineTableLimits.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\CSymbolEngineTime.cpp"
 						>
 					</File>

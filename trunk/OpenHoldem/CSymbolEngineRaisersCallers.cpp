@@ -71,9 +71,7 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 }
 
 void CSymbolEngineRaisersCallers::ResetOnNewRound()
-{
-	_raisbits[BETROUND] = 0;
-}
+{}
 
 void CSymbolEngineRaisersCallers::ResetOnMyTurn()
 {
@@ -151,7 +149,6 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	// after the aggressor as the first bettor.
 	// Then start name circular search for callers.
 
-	_callbits[BETROUND] = 0;
 	_nopponentscalling = 0;
 
 	int FirstBettor = _raischair;
