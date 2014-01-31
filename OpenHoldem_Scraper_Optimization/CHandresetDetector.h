@@ -35,7 +35,6 @@ private:
 	bool IsHandresetByCards();
 	bool IsHandresetByHandNumber();
 private:
-	int HandResetMethod();
 	bool IsValidHandNumber(CString handnumber);
 	bool IsValidDealerChair(int dealerchair);
 private:

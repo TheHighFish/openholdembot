@@ -60,7 +60,7 @@ bool CHandresetDetector::CalculateIsHandreset()
 
 bool CHandresetDetector::IsHandresetByDealerChair()
 {
-	if ((HandResetMethod() &  HANDRESET_DEALER) == 0)
+	if (!p_tablemap->HandResetMethodDealer())
 	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset by dealerchair, because that method is not active\n");
 		// We don't want to use this method
@@ -75,7 +75,7 @@ bool CHandresetDetector::IsHandresetByDealerChair()
 
 bool CHandresetDetector::IsHandresetByCards()
 {
-	if ((HandResetMethod() &  HANDRESET_CARDS) == 0)
+	if (!p_tablemap->HandResetMethodCards())
 	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset by cards, because that method is not active\n");
 		// We don't want to use this method
@@ -92,7 +92,7 @@ bool CHandresetDetector::IsHandresetByCards()
 
 bool CHandresetDetector::IsHandresetByHandNumber()
 {
-	if ((HandResetMethod() &  HANDRESET_HANDNUM) == 0)
+	if (!p_tablemap->HandResetMethodHandNumber())
 	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset by handnumber, because that method is not active\n");
 		// We don't want to use this method
@@ -103,15 +103,6 @@ bool CHandresetDetector::IsHandresetByHandNumber()
 		Bool2CString(ishandreset));
 	return ishandreset;
 }
-
-
-int CHandresetDetector::HandResetMethod()
-{
-	 int handresetmethod = (p_tablemap->handresetmethod());
-	 write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] handresetmethod = %i\n", handresetmethod);
-	 return handresetmethod;
-}
-
 
 bool CHandresetDetector::IsValidHandNumber(CString handnumber)
 {

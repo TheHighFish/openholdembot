@@ -16,6 +16,9 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIsTournament.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbols.h"
 #include "debug.h"
@@ -29,7 +32,6 @@ CLazyScraper::CLazyScraper()
 CLazyScraper::~CLazyScraper()
 {
 }
-
 
 // Things we need to scrape every heartbeat,
 // depending on handreset-method:
@@ -46,7 +48,7 @@ CLazyScraper::~CLazyScraper()
 //   * slider
 // (only if the game-type is NL or PL)
 //
-// Once everyheartbeat (cash-game):
+// Once per everyheartbeat (cash-game):
 //   * scrape "seated" for all chairs
 //   * scrape "active" for all seated chairs
 //   * scrape cards for all active chairs
@@ -55,7 +57,7 @@ CLazyScraper::~CLazyScraper()
 // and the hand-history-generator is disabled)
 //
 // Tournaments:
-//   * scrape bets and balances for all seated chairs because of ICM
+//   * scrape bets and balances for all chairs when our turn because of ICM
 //
 // Name-scraping
 // Preflop up to our first action only, because:
@@ -66,6 +68,28 @@ CLazyScraper::~CLazyScraper()
 
 void CLazyScraper::DoScrape()
 {
+	if (p_symbol_engine_userchair->userchair_confirmed())
+	{
+		//ScrapeDataToDetectUserchair();
+	}
+	//ScrapeNamesUpToMyFirstAction();
+	//ScrapeHandresetData();
+	//ScrapeButtonsToDetectMyTurn();
+	if (p_scraper_access->IsMyTurn() /*|| time for secondary formulas*/)
+	{
+		// "everything" except names
+		if (p_symbol_engine_istournament->istournament());
+		if (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl())
+		{
+			//ScrapeBetPotButtons();
+			//ScrapeSlider();
+			//ScrapeSwagBox();
+		}
+	}
+	
+	
+	
+
 	write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] DoScrape()\n");
 	// As scraping is the most time-consuming part
 	// of the heartbeat-cycle, we do optionally
@@ -83,6 +107,24 @@ void CLazyScraper::DoScrape()
 		}
 	}
 }
+
+void ScrapeNamesUpToMyFirstAction()
+{
+	if (p_symbol_engine_history->DidActThisHand());
+}
+
+void ScrapeHandresetData()
+{
+	if (p_tablemap->HandResetMethodDealer());
+	if (p_tablemap->HandResetMethodCards());
+	if (p_tablemap->HandResetMethodHandNumber());
+}
+
+void ScrapeDataToDetectUserchair()
+{}
+
+
+
 
 bool CLazyScraper::IsMyTurn()
 {
@@ -128,3 +170,30 @@ bool CLazyScraper::CompleteScrapeNeeded()
 		|| (HaveCards() && (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards))
 		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
 }
+
+/*
+bool CLazyScraper::ScrapeDataForHandresetDetection()
+{
+	if (p_tablemap->HandResetMothodDealer())
+	{
+
+	}
+	if (p_tablemap->HandResetMothodCards())
+	{
+
+	}
+	if (p_tablemap->HandResetMothodHandNumber())
+	{
+
+	}
+}
+/*
+
+ScrapeDataForUserchairDetection()
+
+
+
+ScrapeDataForOurTurnDetection()
+
+ScrapeBetpotButtonsAndSliderForNoLimit()
+*/
