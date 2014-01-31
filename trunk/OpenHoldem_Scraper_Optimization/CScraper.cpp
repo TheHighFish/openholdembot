@@ -455,9 +455,8 @@ int CScraper::ScrapeCard(CString name)
 	// Next: in case of player cards try to scrape card-backs
 	if (name[0] == 'p')
 	{
-		CString cardback;
+		CString cardback = name.Left(2) + "cardback";
 		CString cardback_result;
-		cardback = name.Left(2);	// includes "p" and a number
 		if (EvaluateRegion(cardback, &cardback_result))
 		{
 			return CARD_BACK;
@@ -511,18 +510,15 @@ void CScraper::ScrapePlayerCards(int chair)
 
 void CScraper::ScrapeCommonCards()
 {
+	CString card_name;
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		CString card_name;
-		CString card_value;
 		card_name.Format("c0cardface%d", i);
-		if (EvaluateRegion(card_name, &card_value))
-		{
-			set_card_common(i, CardString2CardNumber(card_value));
-		}
+		int card = ScrapeCard(card_name);
+		set_card_common(i, card);
 	}
 }
-
+	
 // returns true if common cards are in the middle of an animation
 bool CScraper::IsCommonAnimation(void)
 {

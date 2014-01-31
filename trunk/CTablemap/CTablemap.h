@@ -154,7 +154,6 @@ public:
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
 									  return (n>=2 && n<=10) ? n : 10; }
 	inline int LastChair()			{ return (nchairs() - 1); }
-
 	const int swagtextmethod()		{ return GetTMSymbol("swagtextmethod", 0); }
 	const int potmethod()			{ return GetTMSymbol("potmethod", 0); }
 	const int activemethod()		{ return GetTMSymbol("activemethod", 0); }
@@ -164,7 +163,6 @@ public:
 	const int swagconfirmationmethod() { return GetTMSymbol("swagconfirmationmethod", BETCONF_ENTER); }
 	const int buttonclickmethod()	{ return GetTMSymbol("buttonclickmethod", BUTTON_SINGLECLICK); }
 	const int betpotmethod()		{ return GetTMSymbol("betpotmethod", BETPOT_DEFAULT); }
-	const int handresetmethod()		{ return GetTMSymbol("handresetmethod", HANDRESET_ALL); }
 	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
 	const bool balancenumbersonly()	{ return GetTMSymbol("balancenumbersonly", false); }
@@ -172,7 +170,10 @@ public:
 	const CString network()			{ return GetTMSymbol("network"); } 
 	const CString chipscrapemethod(){ return GetTMSymbol("chipscrapemethod"); }
 	const CString scraperdll()		{ return GetTMSymbol("scraperdll"); }
-
+public:
+	bool HandResetMethodDealer()	{ return (handresetmethod() &  HANDRESET_DEALER); }
+	bool HandResetMethodCards()		{ return (handresetmethod() &  HANDRESET_CARDS); }
+	bool HandResetMethodHandNumber(){ return (handresetmethod() &  HANDRESET_HANDNUM); }
 public:
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }
@@ -214,6 +215,7 @@ private:
 	void WarnAboutGeneralTableMapError(int error_code, int line);
 	int GetTMSymbol(CString name, int default);
 	CString GetTMSymbol(CString name);
+	const int handresetmethod()		{ return GetTMSymbol("handresetmethod", HANDRESET_ALL); }
 
 private:
 	// private variables - use public accessors and public mutators to address these
