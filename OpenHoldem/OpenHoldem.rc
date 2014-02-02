@@ -676,7 +676,7 @@ BEGIN
     DEFPUSHBUTTON   "All suited",IDALLSUITED,194,67,50,14
 END
 
-IDD_SAPREFS8 DIALOGEX 0, 0, 219, 155
+IDD_SAPREFS8 DIALOGEX 0, 0, 222, 238
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -689,7 +689,8 @@ BEGIN
     CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,99,11,12
     LTEXT           "Maximum frames to store ",IDC_STATIC,4,103,96,8
     CONTROL         "When it's my turn",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,20,36,138,10
-    GROUPBOX        "Record",IDC_STATIC,13,24,175,63
+    GROUPBOX        "Record",IDC_STATIC,17,24,175,63
+    LTEXT           "Hint: if you want to shoot replay-frames for a completely new casino you will need at least a very minimalistic tablemap with correct sizes and title-string.",IDC_STATIC,4,161,186,37
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
@@ -770,7 +771,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Auto-connect",IDC_STATIC,8,8,205,64
-    CONTROL         "Never (by hopper messages)",IDC_RADIO_AUTOCONNECTOR_3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,22,187,9
+    CONTROL         "Never (by hopper messages)",IDC_RADIO_AUTOCONNECTOR_3,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,22,187,9
     CONTROL         "Once on start",IDC_RADIO_AUTOCONNECTOR_4,"Button",BS_AUTORADIOBUTTON,12,39,177,9
     CONTROL         "Permanent",IDC_RADIO_AUTOCONNECTOR_5,"Button",BS_AUTORADIOBUTTON,12,56,146,9
     CONTROL         "Close OH when table disappears",IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS,
@@ -1023,10 +1025,13 @@ BEGIN
 
     IDD_SAPREFS8, DIALOG
     BEGIN
+        RIGHTMARGIN, 219
         VERTGUIDE, 4
         VERTGUIDE, 20
         VERTGUIDE, 100
         VERTGUIDE, 150
+        VERTGUIDE, 192
+        BOTTOMMARGIN, 155
         HORZGUIDE, 16
         HORZGUIDE, 32
         HORZGUIDE, 48
