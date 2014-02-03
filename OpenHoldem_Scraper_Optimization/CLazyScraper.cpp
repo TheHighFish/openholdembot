@@ -13,6 +13,7 @@
 
 #include "stdafx.h"
 #include "CLazyScraper.h"
+
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -33,6 +34,9 @@ CLazyScraper::~CLazyScraper()
 {
 }
 
+// Some ideas:
+// ===========
+//
 // Things we need to scrape every heartbeat,
 // depending on handreset-method:
 //   * handnumber
@@ -65,135 +69,165 @@ CLazyScraper::~CLazyScraper()
 //   * later name-changes (new players) don't affect the game
 //   * potential occlusion later can no longer affect PT
 //   * improved CPU-usage as name-scraping needs about 40%
+//
+// DLLs and/or HH-gen might need all data all the time.
+// If in doubt be conservative.
 
 void CLazyScraper::DoScrape()
 {
-	if (p_symbol_engine_userchair->userchair_confirmed())
+	p_scraper->ScrapeLimits();
+	if (NeedDealerChair())
 	{
-		//ScrapeDataToDetectUserchair();
+		p_scraper->ScrapeDealer();
 	}
-	//ScrapeNamesUpToMyFirstAction();
-	//ScrapeHandresetData();
-	//ScrapeButtonsToDetectMyTurn();
-	if (p_scraper_access->IsMyTurn() /*|| time for secondary formulas*/)
+	if (NeedUsersCards())
 	{
-		// "everything" except names
-		if (p_symbol_engine_istournament->istournament());
-		if (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl())
-		{
-			//ScrapeBetPotButtons();
-			//ScrapeSlider();
-			//ScrapeSwagBox();
-		}
+		assert(p_symbol_engine_userchair->userchair_confirmed());
+		p_scraper->ScrapePlayerCards(p_symbol_engine_userchair->userchair());
 	}
-	
-	
-	
-
-	write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] DoScrape()\n");
-	// As scraping is the most time-consuming part
-	// of the heartbeat-cycle, we do optionally
-	// execute only partial scrapes (aka "Lazy Scraping").
-	// Please see the manual for more info about that.
-	p_scraper->DoBasicScrapeButtons();
-	if (1 /* CardScrapeNeeded()!!*/)
+	p_scraper->ScrapeSeatedActive();
+	if (NeedAllPlayersCards())
 	{
-		write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] CardScrape needed\n");
-		p_scraper->DoBasicScrapeAllPlayerCards();
-		if (1 /*CompleteScrapeNeeded()!!*/)
-		{
-			write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] CompleteScrape needed\n");
-			p_scraper->CompleteBasicScrapeToFullScrape();
-		}
+		p_scraper->ScrapeAllPlayerCards(); //!!!
 	}
+	if (NeedCommunityCards())
+	{
+		p_scraper->ScrapeCommonCards();
+	}
+	if (NeedFoldButton())
+	{
+		// For fast detection of my turn
+		// !! Currently included in NeedActionbuttons()
+	}
+	if (NeedActionbuttons())
+	{
+		p_scraper->ScrapeActionButtons();
+		p_scraper->ScrapeActionButtonLabels();
+	}
+	if (NeedInterfaceButtons())
+	{
+		p_scraper->ScrapeInterfaceButtons();
+	}
+	if (NeedBetpotButtons())
+	{
+		p_scraper->ScrapeBetpotButtons();
+	}
+	if (NeedSlider())
+	{
+		p_scraper->ScrapeSlider();
+	}
+	// Swagbox AKA i3edit does not need to be scraped
+	// The CasinoInterface checks the existence and uses this region automatically
+	if (NeedBetsAndBalances())
+	{
+		p_scraper->ScrapeBetsBalances();
+		p_scraper->ScrapePots();
+	}
+	if (NeedAllPlayerNames())
+	{
+		p_scraper->ClearAllPlayerNames();
+		ScrapeUnknownPlayerNames();
+	}
+	if (NeedUnknownPlayerNames())
+	{
+		ScrapeUnknownPlayerNames();
+	}
+	//!!! To be refactored / removed
+	p_scraper->CompleteBasicScrapeToFullScrape();
 }
 
-void ScrapeNamesUpToMyFirstAction()
+bool CLazyScraper::NeedDealerChair()
 {
-	if (p_symbol_engine_history->DidActThisHand());
-}
-
-void ScrapeHandresetData()
-{
-	if (p_tablemap->HandResetMethodDealer());
-	if (p_tablemap->HandResetMethodCards());
-	if (p_tablemap->HandResetMethodHandNumber());
-}
-
-void ScrapeDataToDetectUserchair()
-{}
-
-
-
-
-bool CLazyScraper::IsMyTurn()
-{
-	if (p_scraper_access->visible_buttons[k_autoplayer_function_fold])
-	{
-		write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] IsMyTurn(): true\n");
-		return true;
-	}
-	write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] IsMyTurn(): false\n");
-	return false;
-}
-
-bool CLazyScraper::HaveCards()
-{
-	if (!p_symbol_engine_userchair->userchair_confirmed())
-	{
-		write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] HaveCards(): false, as userchair not confirmed\n");
-		return false;
-	}
-	int userchair = p_symbol_engine_userchair->userchair();
-	int my_first_card  = p_scraper_access->GetPlayerCards(userchair, 0);
-	int my_second_card = p_scraper_access->GetPlayerCards(userchair, 1);
-	if (p_scraper_access->IsValidCard(my_first_card)
-		&& p_scraper_access->IsValidCard(my_second_card))
-	{
-		write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] HaveCards(): false, no cards\n");
-		return false;
-	}
-	write_log(preferences.debug_lazy_scraper(), "[CLazyScraper] HaveCards(): true\n");
+	//if (p_tablemap->HandResetMethodDealer())
 	return true;
 }
 
-bool CLazyScraper::CardScrapeNeeded()
+bool CLazyScraper::NeedHandNumber()
 {
-	return (IsMyTurn() 
-		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
-		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
+	//if (p_tablemap->HandResetMethodHandNumber())
+	return true;
 }
 
-bool CLazyScraper::CompleteScrapeNeeded()
+bool CLazyScraper::NeedUsersCards()
 {
-	return (IsMyTurn() 
-		|| (HaveCards() && (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards))
-		|| (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_always));
+	return (p_tablemap->HandResetMethodCards() && p_symbol_engine_userchair->userchair_confirmed());
 }
 
-/*
-bool CLazyScraper::ScrapeDataForHandresetDetection()
+bool CLazyScraper::NeedAllPlayersCards()
 {
-	if (p_tablemap->HandResetMothodDealer())
-	{
+	// User playing
+	// HH-gen
+	// DLL?
+	return true;
+}
 
-	}
-	if (p_tablemap->HandResetMothodCards())
-	{
+bool CLazyScraper::NeedFoldButton()
+{
+	// To detect my turn
+	return true;
+}
 
-	}
-	if (p_tablemap->HandResetMothodHandNumber())
-	{
+bool CLazyScraper::NeedActionbuttons()
+{
+	// If MyTurn
+	return true;
+}
 
+bool CLazyScraper::NeedInterfaceButtons()
+{
+	// When it is time to handle secondary formulas
+	return true;
+}
+
+bool CLazyScraper::NeedBetpotButtons()
+{
+	// MyTurn
+	//if (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl())
+	return true;
+}
+
+bool CLazyScraper::NeedSlider()
+{
+	NeedBetpotButtons(); 
+	return true;
+}
+
+bool CLazyScraper::NeedBetsAndBalances()
+{
+	return true;
+}
+
+bool CLazyScraper::NeedAllPlayerNames()
+{
+	// Scraping names is the most costly part and mostly needed for PokerTracker.
+	// It is enough if we do this until our turn, because
+	// * at our turn we have stable frames
+	// * new players after our turn can't affect the current hand
+	return (!p_symbol_engine_history->DidActThisHand());
+}
+
+bool CLazyScraper::NeedUnknownPlayerNames()
+{
+	// Always true
+	// If a new player sits down or we missed an existing player
+	// due to occlusion we should always scrape that name.
+	return true;
+}
+
+bool CLazyScraper::NeedCommunityCards()
+{
+	return true;
+}
+
+void CLazyScraper::ScrapeUnknownPlayerNames()
+{
+	for (int i=0; i<NCHAIRS; i++)
+	{
+		if (p_scraper_access->IsPlayerSeated(i) 
+			&& (p_scraper->player_name(i) == ""))
+		{
+			p_scraper->ScrapeName(i);
+		}
 	}
 }
-/*
 
-ScrapeDataForUserchairDetection()
-
-
-
-ScrapeDataForOurTurnDetection()
-
-ScrapeBetpotButtonsAndSliderForNoLimit()
-*/

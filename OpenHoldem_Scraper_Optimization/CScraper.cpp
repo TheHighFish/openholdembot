@@ -174,18 +174,6 @@ bool CScraper::EvaluateRegion(CString name, CString *result)
 	return false;
 }
 
-/* 
-	Full scrape consists of
-		ScrapeInterfaceButtons()
-		ScrapeActionButtons()
-		ScrapeActionButtonLabels()
-		ScrapeBetpotButtons()		-- only needed when ActionButtons
-		ScrapeSeated()
-		ScrapeDealer()
-		ScrapeActive()
-		ScrapeSlider()				-- only needed for NL/PL, myturn(), certain allinmethods
-*/
-
 void CScraper::SetButtonState(CString *button_state, CString text)
 {
 	if (text != "")
@@ -227,7 +215,7 @@ void CScraper::ScrapeActionButtons()
 		button_name.Format("i%dstate", i);
 		if (EvaluateRegion(button_name, &result))
 		{
-			SetButtonState(_button_state, result);	
+			SetButtonState(&_button_state[i], result);	
 		}
 	}
 	// Ugly WinHoldem convention
@@ -293,6 +281,34 @@ void CScraper::ScrapeBetpotButtons()
 	}
 }
 
+void CScraper::ScrapeSeatedActive()
+{
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
+		set_seated(i, "false");
+		set_active(i, "false");
+	}
+	for (int i=0; i<NCHAIRS; i++)
+	{
+		ScrapeSeated(i);
+		ScrapeActive(i);
+	}
+}
+
+void CScraper::ScrapeBetsBalances()
+{
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
+		set_player_bet(i, 0.0);
+		set_player_balance(i, 0.0);
+	}
+	for (int i=0; i<NCHAIRS; i++)
+	{
+		ScrapeBet(i);
+		ScrapeBalance(i);
+	}
+}
+
 void CScraper::ScrapeSeated(int chair)
 {
 	CString seated;
@@ -320,29 +336,38 @@ void CScraper::ScrapeSeated(int chair)
 	}
 }
 
-void CScraper::ScrapeDealer(int chair)
+void CScraper::ScrapeDealer()
 {
+	// The dealer might sit in any chair, even empty ones in some cases
+	// That's why we scrape all chairs
 	CString dealer;
 	CString result;
 
-	set_dealer(chair, false); //!!! Attention; might leave dealer-bit at a later chair! Better clear everything at one place!
-	dealer.Format("p%ddealer", chair);
-	if (EvaluateRegion(dealer, &result))
+	for (int i=0; i<NCHAIRS; i++)
 	{
-		if (p_string_match->IsStringDealer(result))
-		{
-			set_dealer(chair, true);
-			return;
-		}
+		set_dealer(i, false);
 	}
-	// Now search for uXdealer
-	dealer.Format("u%ddealer", chair);
-	if (EvaluateRegion(dealer, &result))
+
+	for (int i=0; i<NCHAIRS; i++)
 	{
-		if (p_string_match->IsStringDealer(result))
+		dealer.Format("p%ddealer", i);
+		if (EvaluateRegion(dealer, &result))
 		{
-			set_dealer(chair, true);
-			return;
+			if (p_string_match->IsStringDealer(result))
+			{
+				set_dealer(i, true);
+				return;
+			}
+		}
+		// Now search for uXdealer
+		dealer.Format("u%ddealer", i);
+		if (EvaluateRegion(dealer, &result))
+		{
+			if (p_string_match->IsStringDealer(result))
+			{
+				set_dealer(i, true);
+				return;
+			}
 		}
 	}
 }
@@ -555,6 +580,14 @@ bool CScraper::IsCommonAnimation(void)
 	return false;
 }
 
+void CScraper::ClearAllPlayerNames()
+{
+	for (int i=0; i<k_max_number_of_players; i++)
+	{
+		set_player_name(i, "");
+	}
+}
+
 void CScraper::ScrapeName(int chair) 
 {
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
@@ -562,7 +595,6 @@ void CScraper::ScrapeName(int chair)
 	bool				got_new_scrape = false;
 	CString				text = "";
 	CString				result;
-	bool				is_seated = p_string_match->IsStringSeated(_seated[chair]);
 	CTransform			trans;
 	CString				s = "";
 
@@ -810,129 +842,14 @@ void CScraper::ClearScrapeAreas(void)
 	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
 }
 
-
-
-// returns true if window has changed and we processed the changes, false otherwise
-void CScraper::CompleteBasicScrapeToFullScrape()
+void CScraper::ScrapeAllPlayerCards()
 {
-	write_log(preferences.debug_scraper(), "[CScraper] Starting Scraper cadence...\n");
-	
-	__HDC_HEADER
-
-	// Get bitmap of whole window
-	RECT		cr = {0};
-	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
-
-	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
-	SelectObject(hdcCompatible, old_bitmap);
-
-	// get window title
-	_title[0] = '\0';
-	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
-
-	// If the bitmaps are the same, then return now
-	// !!! How often does this happen?
-	// !!! How costly is the comparison?
-	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
-		strcmp(_title, _title_last)==0)
-	{
-		DeleteDC(hdcCompatible);
-		DeleteDC(hdcScreen);
-		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
-
-		write_log(preferences.debug_scraper(), "[CScraper] ...ending Scraper cadence early (no change).\n");
-	}
-
-	// Copy into "last" title
-	if (strcmp(_title, _title_last)!=0)
-	{
-		strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
-
-		set_found_handnumber(false);
-		set_found_sblind(false);
-		set_found_bblind(false);
-		set_found_bbet(false);
-		set_found_ante(false);
-		set_found_sb_bb(false);
-		set_found_bb_BB(false);
-		set_found_limit(false);
-	}
-
-	// Copy into "last" bitmap
-	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
-	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
-	SelectObject(hdc, old_bitmap);
-
-	__HDC_FOOTER
-
-	// Common cards
-	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeCommonCards.\n");
-	ScrapeCommonCards();
-
-	// Player information
-	for (int i=0; i<=9; i++)
-	{
-		// ??? Looks strange; should we really scrape cards before seated?
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
-		ScrapePlayerCards(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeSeated, chair %d.\n", i);
-		ScrapeSeated(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeActive, chair %d.\n", i);
-		ScrapeActive(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeDealer, chair %d.\n", i);
-		ScrapeDealer(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeName, chair %d.\n", i);
-		ScrapeName(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeBet, chair %d.\n", i);
-		ScrapeBet(i);
-	
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeBalance, chair %d.\n", i);
-		ScrapeBalance(i);  // Must come after ScrapeBet, as is dependent on ScrapeBet's results
-
-		if (!p_string_match->IsStringSeated(_seated[i]) && !p_string_match->IsStringActive(_active[i]))
-		{
-			set_player_name(i, "");
-			set_name_good_scrape(i, false);
-			set_player_balance(i, 0);
-			set_balance_good_scrape(i, false);
-		}
-	}
-
-	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeButtons.\n");
-	DoBasicScrapeButtons();		// Buttons
-
-	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePots.\n");
-	ScrapePots();		// Pots
-
-	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeLimits.\n");
-	ScrapeLimits();		// limits
-
-	write_log(preferences.debug_scraper(), "[CScraper] ...ending Scraper cadence\n");
-}
-
-
-void CScraper::DoBasicScrapeAllPlayerCards()
-{
-	write_log(preferences.debug_scraper(), "[CScraper] DoBasicScrapeAllPlayerCards()\n");
+	write_log(preferences.debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");
 	for (int i=0; i<=9; i++)
 	{
 		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}
-}
-
-void CScraper::DoBasicScrapeButtons(void) //!!!
-{
-	ScrapeInterfaceButtons();
-	ScrapeActionButtons();
-	ScrapeActionButtonLabels();
-	ScrapeBetpotButtons();
 }
 
 void CScraper::ScrapePots()
@@ -1044,10 +961,8 @@ void CScraper::ScrapeLimits()
 			istournament = true;
 
 		set_istournament(istournament);
-
 		write_log(preferences.debug_scraper(), "[CScraper] c0istournament, result %s\n", text.GetString());
 	}
-
 	// r$c0handnumber
 	if (EvaluateRegion("c0handnumber", &text))
 	{
@@ -1057,7 +972,6 @@ void CScraper::ScrapeLimits()
 			set_handnumber(handnumber);
 			got_new_scrape = true;
 		}
-
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
 
@@ -1073,7 +987,6 @@ void CScraper::ScrapeLimits()
 				set_handnumber(handnumber);
 				got_new_scrape = true;
 			}
-
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
@@ -1517,6 +1430,76 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 bool CScraper::IsExtendedNumberic(CString text)
 {
 	return false;
+}
+
+//!!! To be refactored / removed
+// returns true if window has changed and we processed the changes, false otherwise
+void CScraper::CompleteBasicScrapeToFullScrape()
+{
+	write_log(preferences.debug_scraper(), "[CScraper] Starting Scraper cadence...\n");
+	
+	__HDC_HEADER
+
+	// Get bitmap of whole window
+	RECT		cr = {0};
+	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
+
+	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
+	SelectObject(hdcCompatible, old_bitmap);
+
+	// get window title
+	_title[0] = '\0';
+	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
+
+	// If the bitmaps are the same, then return now
+	// !!! How often does this happen?
+	// !!! How costly is the comparison?
+	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
+		strcmp(_title, _title_last)==0)
+	{
+		DeleteDC(hdcCompatible);
+		DeleteDC(hdcScreen);
+		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
+
+		write_log(preferences.debug_scraper(), "[CScraper] ...ending Scraper cadence early (no change).\n");
+	}
+
+	// Copy into "last" title
+	if (strcmp(_title, _title_last)!=0)
+	{
+		strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
+
+		set_found_handnumber(false);
+		set_found_sblind(false);
+		set_found_bblind(false);
+		set_found_bbet(false);
+		set_found_ante(false);
+		set_found_sb_bb(false);
+		set_found_bb_BB(false);
+		set_found_limit(false);
+	}
+
+	// Copy into "last" bitmap
+	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
+	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
+	SelectObject(hdc, old_bitmap);
+
+	__HDC_FOOTER
+
+	// Common cards
+	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeCommonCards.\n");
+	ScrapeCommonCards();
+/*
+		if (!p_string_match->IsStringSeated(_seated[i]) && !p_string_match->IsStringActive(_active[i]))
+		{
+			set_player_name(i, "");
+			set_name_good_scrape(i, false);
+			set_player_balance(i, 0);
+			set_balance_good_scrape(i, false);
+		}
+	}*/
+	write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapeLimits.\n");
 }
 
 #undef __HDC_HEADER 

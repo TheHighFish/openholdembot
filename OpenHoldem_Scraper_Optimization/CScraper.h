@@ -48,8 +48,11 @@ struct SLimitInfo
 	bool	found_bb_BB;
 };
 
+
 extern class CScraper 
 {
+friend class CLazyScraper;
+
 public:
 	// public functions
 	CScraper(void);
@@ -74,23 +77,29 @@ public:
 	CString		i86_button_state()         { return _i86_button_state; }
 	CString		i86X_button_state(int n)   { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_number_of_i86X_buttons-1), "") return _i86X_button_state[n]; }
 	CString		betpot_button_state(int n) { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_betpot_buttons-1), "")         return _betpot_button_state[n]; }
-private:
-	void ScrapeInterfaceButtons();
+protected:
+	void ScrapeDealer();
 	void ScrapeActionButtons();
 	void ScrapeActionButtonLabels();
+	void ScrapeInterfaceButtons();
 	void ScrapeBetpotButtons();
-	void ScrapeSeated(int chair);
-	void ScrapeDealer(int chair);
-	void ScrapeActive(int chair);
+	void ClearAllPlayerNames();
+	void ScrapeName(const int chair);
+	void ScrapePlayerCards(int chair);
 	void ScrapeSlider();
+	void ScrapeCommonCards();
+	void ScrapeSeatedActive();
+	void ScrapeBetsBalances();
+	void ScrapeAllPlayerCards();
+private:
+	void ScrapeSeated(int chair);
+	
+	void ScrapeActive(int chair);
 	int ScrapeCard(CString name);
 private:
 	int CardString2CardNumber(CString card);
-
-	
-
 protected:
-
+	
 private:
 	bool ProcessRegion(RMapCI r_iter);
 	bool EvaluateRegion(CString name, CString *result);
@@ -113,10 +122,7 @@ private:
 
 
 
-public:
-	void DoBasicScrapeButtons();
-	void DoBasicScrapeAllPlayerCards();
-	void CompleteBasicScrapeToFullScrape();
+
 public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
@@ -126,7 +132,7 @@ public:
 	bool GetButtonState(CString button_state_as_string);
 	bool IsCommonAnimation();
 
-	
+	void CompleteBasicScrapeToFullScrape();
 	
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
@@ -216,9 +222,9 @@ private:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void ScrapeCommonCards();
-	void ScrapePlayerCards(int chair);
-	void ScrapeName(const int chair);
+	
+	
+	
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
 	void ScrapePots();
