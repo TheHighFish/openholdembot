@@ -484,26 +484,29 @@ const int CTransform::DoPlainFontScan(RMapCI region, const int width, const int 
 	CString				newchar = "", hexmash = "";
 	int					text_group = atoi(region->second.transform.Right(1));
 	std::map<CString, int>::const_iterator	fontindex;
-	
-	while (vert_band_left<width) 
+
+	// Skip any background bands
+	backg_band = true;
+
+	while (vert_band_left<width && backg_band==true) 
 	{
-		// Skip any background bands
-		backg_band = true;
-		while (vert_band_left<width && backg_band==true) 
+		for (y = 0; y<=height; y++) 
 		{
-			for (y = 0; y<=height; y++) 
+			if (ch[vert_band_left][y]) 
 			{
-				if (ch[vert_band_left][y]) 
-				{
-						backg_band = false;
-						y = height + 1;
-				}
-			}
-			if (backg_band==true) 
-			{
-				vert_band_left++;
+					backg_band = false;
+					y = height + 1;
 			}
 		}
+		if (backg_band==true) 
+		{
+			vert_band_left++;
+		}
+	}
+
+	while (vert_band_left<width) 
+	{
+
 
 		// Shift left and down to eliminate white space on left and bottom, starting at 
 		// vert_band_left and extending MAX_SINGLE_CHAR_WIDTH pixels to the right
@@ -672,6 +675,7 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 			{
 				best_hd_t_iter = t_iter;
 				best_weighted_hd = weighted_hd;
+				if (tot_hd > lit_pixels) break;
 			}
 		}
 	}
@@ -855,7 +859,7 @@ const void CTransform::CalcHexmash(const int left, const int right, const int to
 	for (x = left; x <= right; x++) 
 	{
 		hexval = 0;
-		for (y = last_fg_row; y>=0; y--)
+		for (y = last_fg_row; y>=top; y--)
 			if (ch[x][y])
 				hexval += (1 << (last_fg_row - y));
 
