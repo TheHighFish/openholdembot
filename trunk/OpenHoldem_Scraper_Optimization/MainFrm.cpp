@@ -481,7 +481,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
-		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE)));
+		SetMainWindowTitle(cfd.GetFileTitle() + " - " + CString(MAKEINTRESOURCE(AFX_IDS_APP_TITLE))); //!!!
 		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 	}
 }

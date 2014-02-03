@@ -341,10 +341,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CLazyScraper.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CLevDistance.cpp"
 				>
 			</File>
@@ -1167,6 +1163,10 @@
 				Name="Scraper"
 				>
 				<File
+					RelativePath=".\CLazyScraper.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CScraper.cpp"
 					>
 				</File>
@@ -1223,10 +1223,6 @@
 			</File>
 			<File
 				RelativePath=".\CHeartbeatThread.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CLazyScraper.h"
 				>
 			</File>
 			<File
@@ -1928,6 +1924,10 @@
 			<Filter
 				Name="Scraper"
 				>
+				<File
+					RelativePath=".\CLazyScraper.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CScraper.h"
 					>

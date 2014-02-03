@@ -22,8 +22,22 @@ public:
 public:
 	void DoScrape();
 private:
-	bool IsMyTurn();
-	bool HaveCards();
+	bool NeedDealerChair();
+	bool NeedHandNumber();
+	bool NeedUsersCards();
+	bool NeedAllPlayersCards();
+	bool NeedFoldButton();
+	bool NeedActionbuttons();
+	bool NeedInterfaceButtons();
+	bool NeedBetpotButtons();
+	bool NeedSlider();
+	bool NeedBetsAndBalances();
+	bool NeedAllPlayerNames();
+	bool NeedUnknownPlayerNames();
+	bool NeedCommunityCards();
+private:
+	void ScrapeUnknownPlayerNames();
+
 private:
 	bool CardScrapeNeeded();
 	bool CompleteScrapeNeeded();

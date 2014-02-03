@@ -100,16 +100,17 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i%p_tablemap->nchairs());
+		int chair = i%p_tablemap->nchairs();
+		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
 
 		// Raisers are people
 		// * with a higher bet then players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
-		if (p_scraper_access->PlayerHasCards(i) && (current_players_bet > last_bet))
+		if (p_scraper_access->PlayerHasCards(chair) && (current_players_bet > last_bet))
 		{
 			last_bet = current_players_bet;
 			_raischair = i % p_tablemap->nchairs();
-			int new_raisbits = _raisbits[BETROUND] | k_exponents[i%p_tablemap->nchairs()];
+			int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
 			_raisbits[BETROUND] = new_raisbits;
 		}
 	}
