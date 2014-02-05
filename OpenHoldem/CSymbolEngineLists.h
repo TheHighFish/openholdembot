@@ -44,7 +44,7 @@ public:
 private:
 	void CalculateLists();
 	// list tests
-	void SetIsList(const int list, const double is_list) 
+	void SetIsList(const int list, bool is_list) 
 	{ 
 		if ((list >= 0) && (list < MAX_HAND_LISTS))
 		{
