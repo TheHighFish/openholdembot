@@ -467,17 +467,9 @@ int CScraper::CardString2CardNumber(CString card)
 //   * cardbacks
 int CScraper::ScrapeCard(CString name)
 {
-	// Scrape "normal" cards first
-	// This includes "no card" and covers the most common cases
-	CString card_str;
-	if (EvaluateRegion(name, &card_str))
-	{
-		if (card_str != "")
-		{
-			return CardString2CardNumber(card_str);
-		}
-	}
-	// Next: in case of player cards try to scrape card-backs
+	// Firstt: in case of player cards try to scrape card-backs
+	// This is a very common case (opponents) and can often be done efficiently
+	// Therefore lots of fast exits.
 	if (name[0] == 'p')
 	{
 		CString cardback = name.Left(2) + "cardback";
@@ -487,22 +479,37 @@ int CScraper::ScrapeCard(CString name)
 			return CARD_BACK;
 		}
 	}
-
-	// Otherwise: try to scrape suits and ranks
-	CString rank = name + "rank";
-	CString suit = name + "suit";
-	CString rank_result, suit_result;
-	if (EvaluateRegion(rank, &rank_result)
-		&& EvaluateRegion(suit, &suit_result))
+	// Then scrape "normal" cards (cardfaces) according to the specification
+	CString card_str;
+	if (EvaluateRegion(name, &card_str))
 	{
-		if (rank_result == "10") rank_result = "T";
-
-		if (rank_result != "" && suit_result !="")
+		if (card_str != "")
 		{
-			card_str = rank_result + suit_result;
 			return CardString2CardNumber(card_str);
 		}
 	}
+
+	// Otherwise: try to scrape suits and ranks individually
+	CString rank = name + "rank";
+	CString suit = name + "suit";
+	CString rank_result, suit_result;
+	// Scrape suit first (usually very fast colour-transform)
+	if (EvaluateRegion(suit, &suit_result))
+	{
+		// If a suit could not be recognized we don't need to scrape the rank at all
+		// which is often an expensive fuzzy font in this case.
+		if (suit_result != "")
+		{
+			EvaluateRegion(rank, &rank_result);
+			if (rank_result != "")
+			{
+				if (rank_result == "10") rank_result = "T";
+				card_str = rank_result + suit_result;
+				return CardString2CardNumber(card_str);
+			}
+		}
+	}
+
 	// Otherwise: in case of playercards try to scrape uXcardfaceY
 	CString uname = name;
 	if (name[0] == 'p')
