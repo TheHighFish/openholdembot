@@ -1741,7 +1741,7 @@ void CDlgFormulaScintilla::OnHandList()
 	if (myDialog.DoModal() == IDOK) 
 	{
 		CString old_comment = ExtractCommentFromHandList(m_wrk_formula.formula()->mHandList[list_index].list_text);
-		CString new_handlist_without_comment = myDialog.GetHandListAsString();
+		CString new_handlist_without_comment = myDialog.HandListToString();
 		CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
 
 		// save it internally

@@ -231,7 +231,7 @@ bool CFormula::IsStandardFormula(CString formula_name)
 	{
 		return true;
 	}
-	for (int i=k_autoplayer_function_allin; i<k_number_of_standard_functions; i++)
+	for (int i=k_autoplayer_function_beep; i<k_number_of_standard_functions; i++)
 	{
 		if (formula_name == k_standard_function_names[i])
 		{
@@ -399,12 +399,11 @@ void CFormula::MarkCacheStale()
 void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 {
 	CSLock lock(m_critsec);
+	bool list_error = false;
 
 	for (int i=0; i<=12; i++)
 		for (int j=0; j<=12; j++)
 			inlist[i][j] = false;
-
-	int	token_card0_rank = 0, token_card1_rank = 0, temp_rank = 0;
 
 	CString list = list_text;
 	list.MakeUpper();
@@ -420,33 +419,65 @@ void CFormula::ParseHandList(const CString &list_text, bool inlist[13][13])
 			pStr += index;
 		}
 
-		token_card0_rank = CardIdentHelper(*pStr++);
-
+		char token_card0_rank = CardIdentHelper(*pStr++);
 		if (token_card0_rank == k_undefined)
 			continue;
 
-		token_card1_rank = CardIdentHelper(*pStr++);
-
+		char token_card1_rank = CardIdentHelper(*pStr++);
 		if (token_card1_rank == k_undefined)
 			continue;
 
-		// make card0 have the higher rank
 		if (token_card0_rank < token_card1_rank)
 		{
-			temp_rank = token_card0_rank;
-			token_card0_rank = token_card1_rank;
-			token_card1_rank = temp_rank;
+			list_error = true;
+			break;
 		}
-
-		if (*pStr == 'S') // suited
+		else if (tolower(*pStr) == 's')		// suited
 		{
 			inlist[token_card0_rank][token_card1_rank] = true;
 			pStr++;
 		}
-		else  // offsuit or pair
+		else if (tolower(*pStr) == 'o')	// offsuit
 		{
 			inlist[token_card1_rank][token_card0_rank] = true;
+			pStr++;
 		}
+		else if (token_card0_rank == token_card1_rank)	// pair
+		{
+			inlist[token_card1_rank][token_card0_rank] = true;
+			// No need to advance the pointer
+		}
+		else
+		{
+			list_error = true;
+			break;
+		}
+	}
+	if (list_error)
+	{
+		OH_MessageBox_Error_Warning(
+			"Old-style WinHoldem handlist format detected.\n"
+			"\n"
+			"Old format:\n"
+			"  AA = paired hand\n"
+			"  AK = AK suited\n"
+			"  KA = AK offsuited\n"
+			"  AK + KA = both\n"
+			"\n"
+			"New format:\n"
+			"  AA = paired hand\n"
+			"  AKs = AK suited\n"
+			"  AKo = AK offsuited\n"
+			"  AKs + AKo = both\n"
+			"  AK and KA not allowed\n"
+			"\n"
+			"This change was necessary because:\n"
+			"  * the old format was very non-standard and counter-intuitive\n"
+			"  * the formats of OpenHoldem and OpenPPL handlists should be made uniform.\n"
+			"\n"
+			"Your lists will need to be changed,\n"
+			"either with a text-editor or with the formula-editor.\n",
+			"List Error");
 	}
 }
 

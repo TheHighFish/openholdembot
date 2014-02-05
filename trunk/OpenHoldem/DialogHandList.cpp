@@ -313,7 +313,7 @@ void CDlgHandList::OnBnClickedClear()
 	OnCheckClick(0);
 }
 
-CString CDlgHandList::GetHandListAsString()
+CString CDlgHandList::HandListToString()
 {
 	CString	handlist = "";
 	bool	do_crlf = false;
@@ -365,9 +365,10 @@ CString CDlgHandList::GetHandListAsString()
 		{
 			if (checked[i][j])
 			{
-				handlist += k_card_chars[i];
+				// j>i. Print the higher card first
 				handlist += k_card_chars[j];
-				handlist += "  ";
+				handlist += k_card_chars[i];
+				handlist += "o ";
 				do_crlf = true;
 			}
 		}
