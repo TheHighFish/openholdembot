@@ -67,9 +67,7 @@ public:
 	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
 	const double		player_bet(int n)          { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _player_bet[n]; }
 	const CString		player_name(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _player_name[n]; }
-	const bool			name_good_scrape(int n)    { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _name_good_scrape[n]; }
 	const double		player_balance(int n);
-	const double		balance_good_scrape(int n) { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _balance_good_scrape[n]; }
 	const bool			sitting_out(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _sitting_out[n]; }
 	const double		pot(int n)                 { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _pot[n]; }
 	const CString		button_state(int n)        { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _button_state[n]; }
@@ -131,8 +129,7 @@ public:
 	bool GetButtonState(const int button_index);
 	bool GetButtonState(CString button_state_as_string);
 	bool IsCommonAnimation();
-
-	void CompleteBasicScrapeToFullScrape();
+	bool IsIdenticalScrape();
 	
 	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
@@ -152,9 +149,7 @@ public:
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
 	void	set_player_bet(const int n, const double d) { ENT if (n>=0 && n<=9) _player_bet[n] = d;}
 	void	set_player_name(const int n, const CString s) { ENT if (n>=0 && n<=9) _player_name[n] = s;}
-	void	set_name_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _name_good_scrape[n] = b;}
 	void	set_player_balance(const int n, const double d) { ENT if (n>=0 && n<=9) _player_balance[n] = d;}
-	void	set_balance_good_scrape(const int n, const bool b) { ENT if (n>=0 && n<=9) _balance_good_scrape[n] = b;}
 	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b;}
 	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d;}
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
@@ -200,11 +195,9 @@ private:
 	// players - seated / active
 	CString				_seated[k_max_number_of_players], _active[k_max_number_of_players];
 	// players - names
-	bool				_name_good_scrape[k_max_number_of_players];
 	CString				_player_name[k_max_number_of_players];
 	// players - money
 	double				_player_balance[k_max_number_of_players], _player_bet[k_max_number_of_players];
-	bool				_balance_good_scrape[k_max_number_of_players];
 
 	// pot
 	double				_pot[k_max_number_of_pots];

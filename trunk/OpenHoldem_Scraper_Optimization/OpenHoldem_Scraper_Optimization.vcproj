@@ -1104,22 +1104,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Programming the Bot"
-				>
-				<File
-					RelativePath=".\CDllExtension.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CFormula.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CPerl.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="PokerTracker"
 				>
 				<File
@@ -1130,6 +1114,22 @@
 					RelativePath=".\CPokerTrackerThread.cpp"
 					>
 				</File>
+				<Filter
+					Name="Programming the Bot"
+					>
+					<File
+						RelativePath=".\CDllExtension.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CFormula.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CPerl.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="PrWin"

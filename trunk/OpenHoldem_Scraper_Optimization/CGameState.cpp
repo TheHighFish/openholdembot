@@ -243,8 +243,8 @@ void CGameState::CaptureState()
 		}
 
 		// player name known, balance known
-		_state[_state_index&0xff].m_player[i].m_name_known = p_scraper->name_good_scrape(i) ? 1 : 0;
-		_state[_state_index&0xff].m_player[i].m_balance_known = p_scraper->balance_good_scrape(i) ? 1 : 0;
+		_state[_state_index&0xff].m_player[i].m_name_known = p_scraper_access->IsGoodPlayername(i);
+		_state[_state_index&0xff].m_player[i].m_balance_known = true;
 		_state[_state_index&0xff].m_player[i].m_fillerbits = 0;
 		_state[_state_index&0xff].m_player[i].m_fillerbyte = 0;
 	}

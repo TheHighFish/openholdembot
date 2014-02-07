@@ -21,8 +21,6 @@
 #include "../CCritSec/CCritSec.h"
 #include "../OpenHoldem/MagicNumbers.h"
 
-#define NCHAIRS p_tablemap->nchairs()
-
 ///////////////////////////////
 // structs
 ///////////////////////////////
