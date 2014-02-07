@@ -2533,6 +2533,33 @@ int CManualModeDlg::Userchair()
 	return k_not_found;
 }
 
+bool CManualModeDlg::UserMaybeBigBlind()
+{
+	if (playerbet[Userchair()] == bblind)
+	{
+		return true;
+	}
+}
+
+bool CManualModeDlg::PreflopUnraised()
+{
+	for (int i=0; i<k_number_of_community_cards; i++) 
+	{ 
+		if (card[CC0+i] != CARD_NOCARD)
+		{
+			return false;
+		}
+	}
+	for (int i=k_first_chair; i<=k_last_chair; i++)
+	{
+		if (atof(playerbet[i]) > atof(bblind))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 bool CManualModeDlg::MyTurnPossible()
 {
 	// Simplified logic
@@ -2558,7 +2585,9 @@ bool CManualModeDlg::MyTurnPossible()
 			somebody_raising = true;
 		}
 	}
-	return (!somebody_betting || somebody_raising);
+	return (!somebody_betting 
+		|| somebody_raising 
+		|| (PreflopUnraised() && UserMaybeBigBlind()));
 }
 
 double CManualModeDlg::MyBalance()
@@ -2610,8 +2639,8 @@ void CManualModeDlg::SetAllPossibleButtons()
 	// Fold always possible
 	buttonstate[0] = true;
 	// Check
-	// Only posible, if nobody is betting
-	if (get_current_bet() <= 0)
+	if ((get_current_bet() <= 0)
+		|| (PreflopUnraised() && UserMaybeBigBlind()))
 	{
 		buttonstate[2] = true;
 	}
