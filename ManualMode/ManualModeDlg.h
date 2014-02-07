@@ -205,7 +205,9 @@ protected:
 public:
 	afx_msg void OnEnChangeSwag();
 private:
-	int CManualModeDlg::Userchair();
+	int Userchair();
+	bool PreflopUnraised();
+	bool UserMaybeBigBlind();
 	bool MyTurnPossible();
 	double MyBalance();
 	double MyTotalBalance();
