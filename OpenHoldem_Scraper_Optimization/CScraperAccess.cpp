@@ -401,6 +401,20 @@ bool CScraperAccess::IsPlayerSeated(int player)
 	return result;
 }
 
+bool CScraperAccess::IsGoodPlayername(int chair)
+{
+	CString playername = p_scraper->player_name(chair);
+	int length = playername.GetLength();
+	if (length == 0) 
+		return false;
+	for (int i=0; i<length; i++)
+	{
+		if (isalnum(playername[i])) 
+			return true;
+	}
+	return false;
+}
+
 bool CScraperAccess::IsKnownCard(int card)
 {
 	if (card == CARD_NOCARD 

@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CLazyScraper.h"
 
+#include "CAutoplayer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -75,6 +76,10 @@ CLazyScraper::~CLazyScraper()
 
 void CLazyScraper::DoScrape()
 {
+	if (p_scraper->IsIdenticalScrape())
+	{
+		return;
+	}
 	p_scraper->ScrapeLimits();
 	if (NeedDealerChair())
 	{
@@ -88,7 +93,7 @@ void CLazyScraper::DoScrape()
 	p_scraper->ScrapeSeatedActive();
 	if (NeedAllPlayersCards())
 	{
-		p_scraper->ScrapeAllPlayerCards(); //!!!
+		p_scraper->ScrapeAllPlayerCards(); 
 	}
 	if (NeedCommunityCards())
 	{
@@ -132,8 +137,6 @@ void CLazyScraper::DoScrape()
 	{
 		ScrapeUnknownPlayerNames();
 	}
-	//!!! To be refactored / removed
-	p_scraper->CompleteBasicScrapeToFullScrape();
 }
 
 bool CLazyScraper::NeedDealerChair()
@@ -175,21 +178,18 @@ bool CLazyScraper::NeedActionbuttons()
 
 bool CLazyScraper::NeedInterfaceButtons()
 {
-	// When it is time to handle secondary formulas
-	return true;
+	return (p_autoplayer->TimeToHandleSecondaryFormulas());
 }
 
 bool CLazyScraper::NeedBetpotButtons()
 {
-	// MyTurn
-	//if (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl())
-	return true;
+	return (p_scraper_access->IsMyTurn()
+		&& (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl()));
 }
 
 bool CLazyScraper::NeedSlider()
 {
-	NeedBetpotButtons(); 
-	return true;
+	return NeedBetpotButtons(); 
 }
 
 bool CLazyScraper::NeedBetsAndBalances()
@@ -221,7 +221,7 @@ bool CLazyScraper::NeedCommunityCards()
 
 void CLazyScraper::ScrapeUnknownPlayerNames()
 {
-	for (int i=0; i<NCHAIRS; i++)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper_access->IsPlayerSeated(i) 
 			&& (p_scraper->player_name(i) == ""))
@@ -230,4 +230,3 @@ void CLazyScraper::ScrapeUnknownPlayerNames()
 		}
 	}
 }
-

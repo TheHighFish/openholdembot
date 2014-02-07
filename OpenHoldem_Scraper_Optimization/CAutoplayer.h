@@ -33,6 +33,7 @@ public:
 public:
 	// public accessors
 	const bool autoplayer_engaged() { return _autoplayer_engaged; }
+	bool TimeToHandleSecondaryFormulas();
 
 public:
 	// public mutators
@@ -53,7 +54,6 @@ private:
 	void FinishActionSequenceIfNecessary();
 	bool DoSwag();
 	bool DoPrefold();
-	bool TimeToHandleSecondaryFormulas();
 	bool DoChat();
 
 private:
