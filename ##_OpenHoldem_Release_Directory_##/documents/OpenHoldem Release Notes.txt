@@ -9,7 +9,7 @@ v4.5.0 2014-02-xx
   [THF]
 
   
-v4.4.1 2014-01-xx
+v4.4.1 2014-02-06
 ==================
 NEW STUFF: 
 - Flexible heartbeat-delay: if it is our turn the delay 
@@ -32,14 +32,22 @@ BUG FIXES:
   when we had to clean up that code.
   Thanks to Angelus for reporting.
 - The symbol nopponentsraising could be wrong in later orbits, 
-  because the a variable was initialized correctly. Thanks to Mariano268 for reporting.
+  because a variable was initialized incorrectly. Thanks to Mariano268 for reporting.
   [THF]
 
 MAINTENANCE:
 - Fine-tuned lots of validator rules and also improved initialization/reset 
   of some symbols that caused good rules to fire incorrectly sometimes.
   [THF]
-
+- The handlist format got changed.
+  Formerly      Meaning             Now				
+    AK            AK suited           AKs  
+    KA            AK offsuited        AKo
+    AK + AK       both                AKs + AKo
+  This change became necessary because the old format was non-standard and counterintuitive 
+  and we needed to unify the formats of OpenHoldem and OpenPPL handlists.
+  Thanks to FpTrader who reminded us about incompatibilities between these two formats.
+  [THF]
   
 v4.4.0 2014-01-14
 ==================
