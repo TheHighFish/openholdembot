@@ -1,4 +1,4 @@
-v4.4.1 2014-02-08
+v4.4.1 2014-02-10
 =================
 BUG FIXES: 
 - The new button-logic did not work if we were in BB and everybody just completed.

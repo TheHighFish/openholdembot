@@ -9,7 +9,7 @@ v4.5.0 2014-02-xx
   [THF]
 
   
-v4.4.1 2014-02-06
+v4.4.1 2014-02-10
 ==================
 NEW STUFF: 
 - Flexible heartbeat-delay: if it is our turn the delay 
