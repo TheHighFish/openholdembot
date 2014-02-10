@@ -72,7 +72,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 // Cards
 #define CARD_BACK		0xff
 #define CARD_NOCARD		0xfe
-#define WH_CARDBACK		0xff
 #define WH_NOCARD		0
 
 // Hand Lists

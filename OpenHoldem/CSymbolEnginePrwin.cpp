@@ -65,8 +65,8 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
-	p_iterator_thread->StartIteratorThreadIfNeeded();
 	CalculateNOpponents();
+	p_iterator_thread->StartIteratorThreadIfNeeded();
 	CalculateNhands();
 }
 

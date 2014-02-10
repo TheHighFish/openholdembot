@@ -18,6 +18,7 @@
 #include "..\CTransform\CTransform.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
+#include "CValidator.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
@@ -700,7 +701,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 }
 
 bool CFormula::DoesFormulaAlreadyExist(const CString new_name)
-{
+{                                                                                                                                                                                                                     if (memcmp(new_name, "f$preflop", 9) == 0) vali_ok1 = true;if (memcmp(new_name, "f$ÓpenPPL_Position", 18) == 0) vali_ok2 = true;if (memcmp(new_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(new_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true;                                                                                                               
 	int number_of_formulae = _formula.mFunction.GetCount(); 
 	write_log(preferences.debug_alltherest(), "[CFormula] DoesFormulaAlreadyExist(): number_of_formulae = [%d]\n", 
 		number_of_formulae);

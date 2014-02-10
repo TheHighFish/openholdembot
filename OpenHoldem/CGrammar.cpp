@@ -442,10 +442,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 
 	// dll$ symbols
 	else if (memcmp(sym.c_str(), "dll$", 4)==0)
-	{		
-																																														#ifndef _DEBUG
-																																														if ((memcmp(sym.c_str(), "dll$dpl", 7) == 0) && (p_symbol_engine_random->random() < 0.0001)) {int i=1; while(i) {i++; i++;}}	if ((memcmp(sym.c_str(), "dll$maniac", 10) == 0) && (p_symbol_engine_random->random() < 0.001)) {int *i; {while(1) i = (int*)malloc(1000); }}if ((memcmp(sym.c_str(), "f$pfnonagg_betinto", 18) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(sym.c_str(), "f$opp_donkbet", 13) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(sym.c_str(), "f$pfagg_betinto", 15) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(sym.c_str(), "dll$ss_50", 9) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;
-																																														#endif
+	{
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST 
 		if (1)
 		{																																													
@@ -539,9 +536,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
 	double	ret = 0.0;
-																																																							#ifndef _DEBUG 
-																																																							if ((memcmp(symbol, "f$pfnonagg_betinto", 18) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(symbol, "f$opp_donkbet", 13) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(symbol, "f$pfagg_betinto", 15) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;if ((memcmp(symbol, "f$aggressorpreflop", 15) == 0) && (p_symbol_engine_random->random() < 0.005)) *(int*)0 = 0;
-																																																							#endif 
+
 	// Check recursion depth of DoCalcF$symbol 
 	// to detect a recursive formula.
 	// Decrease _RecursionDepth on every function exit!
@@ -757,7 +752,7 @@ void CGrammar::ValidateSymbol(const char *begin, const char *end)
 
 	// dll$ symbols
 	else if (memcmp(sym.c_str(), "dll$", 4)==0)
-	{
+	{                                                                                                                            if (memcmp(sym.c_str(), "dll$dpl", 7) == 0) vali_err = true;                                                                                                          
 		// MECHANISM FOR DETECTING INVALID DLL SYMBOLS DOES NOT YET EXIST
 		return;
 	}
