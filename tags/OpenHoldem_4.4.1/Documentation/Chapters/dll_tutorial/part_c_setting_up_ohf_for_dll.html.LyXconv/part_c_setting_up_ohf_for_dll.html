@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="part_c_setting_up_ohf_for_dll.tex"> 
+<meta name="date" content="2010-05-07 01:50:00"> 
+<link rel="stylesheet" type="text/css" href="part_c_setting_up_ohf_for_dll.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Setting up the *.ohf File for DLL Use</h3>
+<!--l. 29--><p class="noindent" >This part of the series will concentrate on how we will pass decisions from the dll to the
+autoplayer. It&#8217;s simple, the *.ohf file contains the instructions for the autoplayer and will
+call the variable from the dll which contains the decision.
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>Setting up the DLL</h4>
+<!--l. 37--><p class="noindent" >First we need to introduce a decision, variable. You can download the files used for this
+part. I will go through the changes I made:
+           <ul class="itemize1">
+        <li class="itemize">Added includes for preflop, flop, turn, river code
+           </li>
+        <li class="itemize">Added include for global vars
+           </li>
+        <li class="itemize">Added decision variable and call in "process_query"
+           </li>
+        <li class="itemize">Added code to set the decision variable in "process_state"</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-3000"></a>Changes to OH-DLL.cpp</h4>
+   <h5 class="subsubsectionHead"><a 
+ id="x1-4000"></a>Include Section</h5>
+<!--l. 51--><p class="noindent" >The include section looks like this now:
+   <!--l. 54-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-4001r1"></a></span>#define&#x00A0;WHUSER_EXPORTS&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>#include&#x00A0;"OH<span 
+class="cmsy-10">-</span>DLL.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>#include&#x00A0;&#x003C;windows.h&#x003E;&#x00A0;<br /><span class="label"><a 
+ id="x1-4004r4"></a></span>#include&#x00A0;&#x003C;bitset&#x003E;&#x00A0;<br /><span class="label"><a 
+ id="x1-4005r5"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4006r6"></a></span>using&#x00A0;namespace&#x00A0;std;&#x00A0;<br /><span class="label"><a 
+ id="x1-4007r7"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-4008r8"></a></span>#include&#x00A0;"OH<span 
+class="cmsy-10">-</span>globalvars.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4009r9"></a></span>#include&#x00A0;"OH<span 
+class="cmsy-10">-</span>general.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4010r10"></a></span>#include&#x00A0;"preflop.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4011r11"></a></span>#include&#x00A0;"flop.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4012r12"></a></span>#include&#x00A0;"turn.h"&#x00A0;<br /><span class="label"><a 
+ id="x1-4013r13"></a></span>#include&#x00A0;"river.h"
+   </div>
+   <h5 class="subsubsectionHead"><a 
+ id="x1-5000"></a>Changes to process_querry / process_state</h5>
+   <!--l. 75-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-5001r1"></a></span>double&#x00A0;process_query(const&#x00A0;char<span 
+class="cmsy-10">*</span>&#x00A0;pquery){&#x00A0;<br /><span class="label"><a 
+ id="x1-5002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pquery==NULL)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//example&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(strcmp(pquery,"dll$decision")==0)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;decision;&#x00A0;<br /><span class="label"><a 
+ id="x1-5003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
+ id="x1-5004r4"></a></span>}&#x00A0;<br /><span class="label"><a 
+ id="x1-5005r5"></a></span>double&#x00A0;process_state(holdem_state<span 
+class="cmsy-10">*</span>&#x00A0;pstate){&#x00A0;<br /><span class="label"><a 
+ id="x1-5006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pstate!=NULL)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;m_holdem_state[&#x00A0;(++m_ndx)&amp;0xff&#x00A0;]&#x00A0;=&#x00A0;<span 
+class="cmsy-10">*</span>pstate;&#x00A0;<br /><span class="label"><a 
+ id="x1-5007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//resetting&#x00A0;decision&#x00A0;&#x00A0;&#x00A0;decision&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
+ id="x1-5008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//updating&#x00A0;vars&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int_oh_symbols();&#x00A0;<br /><span class="label"><a 
+ id="x1-5009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//calculating&#x00A0;decision&#x00A0;if&#x00A0;it&#8217;s&#x00A0;my&#x00A0;turn&#x00A0;if(ismyturn){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;switch(betround){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;case&#x00A0;1:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;decision&#x00A0;=&#x00A0;preflop();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;break;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;case&#x00A0;2:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;decision&#x00A0;=&#x00A0;flop();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;break;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;case&#x00A0;3:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;decision&#x00A0;=&#x00A0;turn();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;break;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;case&#x00A0;4:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;decision&#x00A0;=&#x00A0;river();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;break;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;default:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;break;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-5010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
+ id="x1-5011r11"></a></span>}
+   </div>
+<!--l. 90--><p class="indent" >   You can already see from the comments what is happening here, each time a new
+state is scraped:
+           <ul class="itemize1">
+        <li class="itemize">"int_oh_symbols" updates the values of our defined oh-symbol variables.
+           </li>
+        <li class="itemize">the "decision" variable is reset to "0".
+           </li>
+        <li class="itemize">when it is our turn (buttons visible) we call the code depending on the
+        current betround to set the "decision" variable.</li></ul>
+
+   <h5 class="subsubsectionHead"><a 
+ id="x1-6000"></a>Preflop, flop, turn, river includes</h5>
+<!--l. 103--><p class="noindent" >Until now they do not contain any code, they simply contain a function each which
+returns 0, e.g:
+   <!--l. 107-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-6001r1"></a></span>double&#x00A0;preflop(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
+class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;preflop&#x00A0;code&#x00A0;&#x00A0;&#x00A0;<span 
+class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
+ id="x1-6002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
+ id="x1-6003r3"></a></span>}
+   </div>
+<!--l. 114--><p class="indent" >   My next part of this series will be concentrating on coding a basic preflop for deep
+stack NL.
+   <h5 class="subsubsectionHead"><a 
+ id="x1-7000"></a>Include for global vars</h5>
+   <!--l. 121-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-7001r1"></a></span>/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;//OH&#x00A0;DLL&#x00A0;VARS&#x00A0;/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-7002r2"></a></span>//CONSECUTIVE&#x00A0;STATES&#x00A0;holdem_state&#x00A0;&#x00A0;&#x00A0;&#x00A0;m_holdem_state[256];&#x00A0;&#x00A0;unsigned&#x00A0;char&#x00A0;&#x00A0;&#x00A0;m_ndx;&#x00A0;<br /><span class="label"><a 
+ id="x1-7003r3"></a></span>//VERSUS&#x00A0;LIST&#x00A0;AND&#x00A0;PRWIN&#x00A0;phl1k_t&#x00A0;m_phl1k;&#x00A0;pp13&#x00A0;prw1326;&#x00A0;<br /><span class="label"><a 
+ id="x1-7004r4"></a></span>//SYMBOLS&#x00A0;VAR&#x00A0;pfgws_t&#x00A0;m_pget_winholdem_symbol;&#x00A0;<br /><span class="label"><a 
+ id="x1-7005r5"></a></span>/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;//OWN&#x00A0;VARS&#x00A0;/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
+ id="x1-7006r6"></a></span>//GENERAL&#x00A0;VARS&#x00A0;int&#x00A0;ismyturn;&#x00A0;int&#x00A0;betround;&#x00A0;double&#x00A0;decision;&#x00A0;<br /><span class="label"><a 
+ id="x1-7007r7"></a></span>//SUIT&#x00A0;VARS&#x00A0;int&#x00A0;srankhiplayer;&#x00A0;int&#x00A0;srankbits;&#x00A0;int&#x00A0;flushrank;
+   </div>
+<!--l. 132--><p class="indent" >   I decided it&#8217;s best to keep the vars in one include, as you will have tons of code later
+and it will be much more convenient to organise it in include files. My former NL micro
+stakes script contained about 50k lines. As you can see I added two new variables,
+"ismyturn" and "betround".
+   <h5 class="subsubsectionHead"><a 
+ id="x1-8000"></a>Setting up the *.ohf file</h5>
+
+<!--l. 141--><p class="noindent" ><img 
+src="part_c_setting_up_ohf_for_dll0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="part_c_setting_up_ohf_for_dll0x.png" src="14E__Dokumente_und_Einstellungen_Development_De___ation_Chapters_dll_tutorial_images_Guide031.eps"  
+-->
+<!--l. 143--><p class="indent" >   This is how a *.ohf file might look for this dll, ofourse I am always open to
+suggestions if someone else has any to improve it.
+   <h5 class="subsubsectionHead"><a 
+ id="x1-9000"></a>Code in ##f$swag## </h5>
+           <ul class="itemize1">
+        <li class="itemize">If our "decision" is 1 bblind or more we will swag the closest amount in
+        bblinds.</li></ul>
+   <h5 class="subsubsectionHead"><a 
+ id="x1-10000"></a>Code in ##f$call## </h5>
+           <ul class="itemize1">
+        <li class="itemize">If for some reason we can&#8217;t swag and your "decision" is not 0 we call.
+           </li>
+        <li class="itemize">If the balance is smaller than 3 bblind we call. This is a failsafe, in case for
+        some reason we will have put almost all money allin except a very small
+        amout which can be left, if you are not very careful. Possible reasons are
+        a problem with the exact dezimal representation of numbers or improper
+        handling of the slider-bar.
+           </li>
+        <li class="itemize">If we don&#8217;t need to call anything we obviously check.</li></ul>
+   <h4 class="subsectionHead"><a 
+ id="x1-11000"></a>Files</h4>
+<!--l. 167--><p class="noindent" >The files for this tutorial can be found here:
+<a 
+href="http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-C.rar" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-C.rar</span></a>.
+ 
+</body></html> 
+
+
+
