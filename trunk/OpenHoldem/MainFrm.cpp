@@ -59,6 +59,7 @@
 #include "DialogSAPrefs19.h"
 #include "DialogSAPrefs20.h"
 #include "DialogSAPrefs21.h"
+#include "DialogSAPrefs22.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -167,8 +168,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_SYSCOMMAND()
 END_MESSAGE_MAP()
 
-CString	_openholdem_window_title;	//!!!!
-
 // CMainFrame construction/destruction
 CMainFrame::CMainFrame() 
 {
@@ -182,8 +181,6 @@ CMainFrame::CMainFrame()
 	_prev_wrect.left = 0;
 	_prev_wrect.right = 0;
 	_prev_wrect.top = 0;
-
-	_openholdem_window_title = ""; //!!!!
 }
 
 CMainFrame::~CMainFrame() 
@@ -372,6 +369,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs19 page19;
 	CDlgSAPrefs20 page20;
 	CDlgSAPrefs21 page21;
+	CDlgSAPrefs22 page22;
 
 	// add pages
 	dlg.AddPage(page14, "Auto-Connector");
@@ -387,6 +385,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker v3");
+	dlg.AddPage(page22, "Popup Blocker");
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
 	dlg.AddPage(page4,  "Scraper");

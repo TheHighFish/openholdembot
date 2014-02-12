@@ -36,12 +36,11 @@ public:
 	bool EvaluateSymbol(const char *name, double *result);
 	int userchair()				{ return _userchair; }
 	int userchairbit()			{ return 1 << (_userchair); }
-	bool userchair_confirmed()	{ return _userchair_locked; }
+	bool userchair_confirmed()	{ return (_userchair != k_undefined); }
 private:
 	void CalculateUserChair();
 private:
 	int _userchair;
-	bool _userchair_locked;
 } *p_symbol_engine_userchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

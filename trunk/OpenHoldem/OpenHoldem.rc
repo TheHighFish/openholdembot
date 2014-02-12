@@ -854,7 +854,8 @@ BEGIN
     CONTROL         "Hand-history generator",IDC_DEBUG_HANDHISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,177,135,10
     CONTROL         "DLL extension",IDC_DEBUG_DLL_EXTENSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,191,135,10
     CONTROL         "Hopper-messages",IDC_DEBUG_HOPPER_MESSAGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,205,135,10
-    CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,135,10
+	CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,135,10
+    CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,233,135,10
     CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,139,9,77,10
     CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,23,70,10
     CONTROL         "Autoplayer",IDC_DEBUG_AUTOPLAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,37,69,10
@@ -885,6 +886,19 @@ BEGIN
     CONTROL         "Cascading",IDC_RADIO_POSITION_CASCADED,"Button",BS_AUTORADIOBUTTON,8,36,65,8
     GROUPBOX        "Table Positioner",IDC_STATIC,4,5,166,63
     CONTROL         "Always keep position",IDC_ALWAYS_KEEP_POSITION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,79,120,8
+END
+
+IDD_SAPREFS22 DIALOGEX 0, 0, 237, 213
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Disabled",IDC_RADIO_POPUP_DISABLED,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,22,187,9
+    CONTROL         "Minimize Popups ",IDC_RADIO_POPUP_MINIMIZE,"Button",BS_AUTORADIOBUTTON,12,39,177,9
+    CONTROL         "Kill Popups",IDC_RADIO_POPUP_KILL,"Button",BS_AUTORADIOBUTTON,12,56,146,9
+    LTEXT           "OpenHoldem windows will be ignored. See Preferences -> GUI.",IDC_STATIC,11,175,217,15
+    LTEXT           "Existing windows will be minimized on startup, not killed.",IDC_STATIC,11,158,212,8
+    LTEXT           "You need one minimalistic ""tablemap"" and one instance of OpenHoldem for every window that shall stay alive (lobby, login-window, ...).",IDC_STATIC,11,102,206,28
+    LTEXT           "You need one more unoccupied instance of OpenHoldem to handle popups.",IDC_STATIC,11,135,213,17
 END
 
 
@@ -1183,6 +1197,12 @@ BEGIN
         HORZGUIDE, 52
         HORZGUIDE, 68
         HORZGUIDE, 83
+    END
+
+    IDD_SAPREFS22, DIALOG
+    BEGIN
+        VERTGUIDE, 11
+        BOTTOMMARGIN, 158
     END
 END
 #endif    // APSTUDIO_INVOKED

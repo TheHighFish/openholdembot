@@ -35,6 +35,13 @@ enum
 
 enum
 {
+	k_popup_disabled = 0,
+	k_popup_minimize = 1,
+	k_popup_kill     = 2,
+};
+
+enum
+{
 	// Numerical values
 	// This includes bools, ints and doubles
 	//
@@ -71,6 +78,7 @@ enum
 	k_prefs_debug_dll_extension,
 	k_prefs_debug_scraper_preprocessor,
 	k_prefs_debug_openholdem,
+	k_prefs_debug_popup_blocker,
 	k_prefs_engage_autoplayer,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
@@ -129,6 +137,7 @@ enum
 	k_prefs_lazy_scraping_when_to_scrape,
 	k_prefs_table_positioner_options,
 	k_prefs_scraper_zoom,
+	k_prefs_popup_blocker,
 	// Double values
 	k_prefs_icm_prize1,
 	k_prefs_icm_prize2,
@@ -259,6 +268,7 @@ public:
 	const bool  debug_preferences() { return prefs_numerical_values[k_prefs_debug_preferences]; }
 	const bool  debug_dll_extension() { return prefs_numerical_values[k_prefs_debug_dll_extension]; }
 	const bool  debug_openholdem()  { return prefs_numerical_values[k_prefs_debug_openholdem]; }
+	const bool  debug_popup_blocker()  { return prefs_numerical_values[k_prefs_debug_popup_blocker]; }
 	const bool  debug_scraper_preprocessor() { return prefs_numerical_values[k_prefs_debug_scraper_preprocessor]; }
 
 	// Main window locations
@@ -304,9 +314,10 @@ public:
 	// Table Positioner
 	const int table_positioner_options() { return prefs_numerical_values[k_prefs_table_positioner_options]; }	
 	const bool table_positioner_always_keep_position() { return prefs_numerical_values[k_prefs_table_positioner_always_keep_position]; }
-
 	// Misc
 	const int scraper_zoom() { return prefs_numerical_values[k_prefs_scraper_zoom]; }
+	// Popup blocker
+	const int popup_blocker()	{ return prefs_numerical_values[k_prefs_popup_blocker]; }
 	// versus_path() is implemented in the cpp-file.
 	const CString versus_path(); 	
 	// Obscure

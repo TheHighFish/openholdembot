@@ -42,7 +42,6 @@ void CSymbolEngineUserchair::InitOnStartup()
 void CSymbolEngineUserchair::ResetOnConnection()
 {
 	_userchair = k_undefined;
-	_userchair_locked = false;
 }
 
 void CSymbolEngineUserchair::ResetOnHandreset()
@@ -59,7 +58,7 @@ void CSymbolEngineUserchair::ResetOnMyTurn()
 
 void CSymbolEngineUserchair::ResetOnHeartbeat()
 {
-	if (!_userchair_locked)
+	if (!userchair_confirmed() || (p_scraper_access->NumberOfVisibleButtons() > 0))
 	{
 		CalculateUserChair();
 	}
@@ -73,8 +72,15 @@ void CSymbolEngineUserchair::CalculateUserChair()
 		write_log(preferences.debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Not enough visible buttons\n");
 	}
+	else if (userchair_confirmed() && p_scraper_access->UserHasKnownCards())
+	{
+		write_log(preferences.debug_symbolengine(),
+			"[CSymbolEngineUserchair] CalculateUserChair() Known cards for known chair. Keeping userchair as is\n");
+	}
 	else
 	{
+		// Either not confirmed or no known cards when it is my turn
+		// Looking for known cards and new chair
 		for (int i=0; i<p_tablemap->nchairs(); i++)
 		{
 			if (p_scraper_access->IsKnownCard(p_scraper->card_player(i, 0)) 
@@ -82,7 +88,6 @@ void CSymbolEngineUserchair::CalculateUserChair()
 	
 			{
 				_userchair = i;
-				_userchair_locked = true;
 				write_log(preferences.debug_symbolengine(),
 					"[CSymbolEngineUserchair] CalculateUserChair() Setting userchair to %d\n",
 					_userchair);
@@ -90,7 +95,7 @@ void CSymbolEngineUserchair::CalculateUserChair()
 			}
 		}
 		write_log(preferences.debug_symbolengine(),
-			"[CSymbolEngineUserchair] CalculateUserChair() Userchair not found, because no cards found\n");
+			"[CSymbolEngineUserchair] CalculateUserChair() Userchair not found, because no cards found. Keeping as is\n");
 	}
 }
 

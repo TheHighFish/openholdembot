@@ -67,6 +67,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_dll_extension",
 	"debug_scraper_preprocessor",
 	"debug_openholdem",
+	"debug_popup_blocker",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
@@ -125,6 +126,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"lazy_scraping_when_to_scrape",
 	"table_positioner_options",
 	"scraper_zoom",
+	"popup_blocker",
 	// doubles
 	"icm_prize1",
 	"icm_prize2",

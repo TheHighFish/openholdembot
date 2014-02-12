@@ -37,6 +37,7 @@ public:
 	bool	IsKnownCard(int card);
 	bool	IsCardOrCardBack(int card);
 	bool	UserHasCards();
+	bool	UserHasKnownCards();
 	bool	IsPlayerActive(int player);
 	bool	IsPlayerSeated(int player);
 public:

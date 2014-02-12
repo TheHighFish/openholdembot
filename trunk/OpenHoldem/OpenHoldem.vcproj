@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPopupHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CPreferences.cpp"
 				>
 			</File>
@@ -838,6 +842,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\DialogSAPrefs22.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\DialogSAPrefs3.cpp"
 						>
 					</File>
@@ -1242,6 +1250,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CPopupHandler.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CPreferences.h"
 				>
 			</File>
@@ -1315,6 +1327,10 @@
 			</File>
 			<File
 				RelativePath=".\SwagAdjustment.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WindowFunctions.h"
 				>
 			</File>
 			<Filter
@@ -1741,6 +1757,10 @@
 					</File>
 					<File
 						RelativePath=".\DialogSAPrefs21.h"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogSAPrefs22.h"
 						>
 					</File>
 					<File

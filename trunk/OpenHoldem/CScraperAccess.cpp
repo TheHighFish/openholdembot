@@ -385,6 +385,17 @@ bool CScraperAccess::UserHasCards()
 	return PlayerHasCards(userchair);
 }
 
+bool CScraperAccess::UserHasKnownCards()
+{
+	if (!UserHasCards()) 
+	{
+		return false;
+	}
+	assert(p_symbol_engine_userchair != NULL);
+	int userchair = p_symbol_engine_userchair->userchair();
+	return PlayerHasCards(userchair);
+}
+
 bool CScraperAccess::IsPlayerActive(int player)
 {
 	bool result = p_string_match->IsStringActive(p_scraper->active(player));
