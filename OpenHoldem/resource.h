@@ -57,7 +57,8 @@
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
 #define IDD_SAPREFS21                   187
-#define ID_INDICATOR_GENERAL_HINT       188
+#define IDD_SAPREFS22                   188
+#define ID_INDICATOR_GENERAL_HINT       189
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013
@@ -359,6 +360,7 @@
 #define IDC_REBUY_EDIT_MINIMUM_DELAY    1316
 #define IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR 1317
 #define IDC_SEARCH_ED                   1318
+#define IDC_DEBUG_POPUP_BLOCKER         1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
 #define IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS 1321
 #define IDC_GUI_START_MINIMIZED         1322
@@ -432,6 +434,9 @@
 #define IDC_DEBUG_SCRAPER_PREPROCESSOR  1386
 #define IDC_DEBUG_HOPPER_MESSAGES       1387
 #define IDC_ALWAYS_KEEP_POSITION        1388
+#define IDC_RADIO_POPUP_DISABLED        1389
+#define IDC_RADIO_POPUP_MINIMIZE        1390
+#define IDC_RADIO_POPUP_KILL            1391
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -552,7 +557,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1389
+#define _APS_NEXT_CONTROL_VALUE         1392
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

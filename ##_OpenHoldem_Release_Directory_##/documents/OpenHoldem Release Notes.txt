@@ -1,5 +1,22 @@
 v4.5.0 2014-02-xx
 ==================
+NEW STUFF: 
+- OpenHoldem still locks the userchair for stability reasons,
+  but now OpenHoldem will also search (and lock) the userchair again
+  if it is our turn (visible buttons) but we don't hold any cards.
+  This way OpenHoldem will still behave in a stable way in case of occluded tables,
+  but will also react flexibly on changing userchairs (table-changes in MTTs and simulations at ManualMode.)
+  Note: there are three ways of table-changes in MTTs, all of them can now be handled automatically without a hopper:
+  * same window, same chair: completely harmless
+  * same window, different chair: will now be handled automatically
+  * different window: will be handled by the auto-connector.
+  [THF]
+- Some more hopper-functionality: a general popup-blocker.
+  You will need one extra-instance for popup-blocking and a minimalistic tablemap
+  for every window that shall stay alive.
+  [THF]
+
+MAINTENANCE:
 - We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
   because they looked like complete mis-conceptions:
   * the userchair might change

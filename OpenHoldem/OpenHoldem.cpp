@@ -254,7 +254,6 @@ BOOL COpenHoldemApp::InitInstance()
 		m_pMainWnd);
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Posting message that finishes initialization later\n");
-	//!!!PostMessage(0, WM_COMMAND, ID_FINISH_INITIALIZATION, 0);
 	FinishInitialization();
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] InitInstance done\n");
