@@ -109,9 +109,6 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineAutoplayer
 	p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
 	AddSymbolEngine(p_symbol_engine_autoplayer);
-	// CSymbolEngineLists
-	p_symbol_engine_lists = new CSymbolEngineLists();
-	AddSymbolEngine(p_symbol_engine_lists);
 	// CSymbolEngineRandom
 	p_symbol_engine_random = new CSymbolEngineRandom();
 	AddSymbolEngine(p_symbol_engine_random);
@@ -151,6 +148,9 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineHistory
 	p_symbol_engine_history = new CSymbolEngineHistory();
 	AddSymbolEngine(p_symbol_engine_history);
+	// CSymbolEngineLists
+	p_symbol_engine_lists = new CSymbolEngineLists();
+	AddSymbolEngine(p_symbol_engine_lists);
 	// CSymbolEnginePrwin
 	p_symbol_engine_prwin = new CSymbolEnginePrwin();
 	AddSymbolEngine(p_symbol_engine_prwin);
