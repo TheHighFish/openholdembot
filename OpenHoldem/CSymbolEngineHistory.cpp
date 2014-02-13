@@ -267,3 +267,19 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result)
 	// Valid symbol
 	return true;
 }
+
+bool CSymbolEngineHistory::DidAct()
+{
+	return DidAct(BETROUND);
+}
+
+bool CSymbolEngineHistory::DidAct(int betround)
+{
+	if (!p_symbol_engine_userchair->userchair_confirmed())
+	{
+		return false;
+	}
+	// Not considering fold or allin, because the game would be over.
+	return (didchec(betround) || didcall(betround) 
+		|| didswag(betround) || didrais(betround));
+}

@@ -32,17 +32,16 @@ public:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 public:
-	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	bool DidAct()	
+public:
+	// Public accessors
+	// Public accessors
+	bool DidAct();	
+	bool DidAct(int betround);
+	
+	bool DidActThisHand()
 	{
-		if (!p_symbol_engine_userchair->userchair_confirmed())
-		{
-			return false;
-		}
-		// Not considering fold or allin, because the game would be over.
-		return (didchec(BETROUND) || didcall(BETROUND) 
-			|| didswag(BETROUND) || didrais(BETROUND));
+		return DidAct(k_betround_preflop);
 	}
 public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }

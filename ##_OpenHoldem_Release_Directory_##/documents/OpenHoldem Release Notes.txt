@@ -15,6 +15,11 @@ NEW STUFF:
   You will need one extra-instance for popup-blocking and a minimalistic tablemap
   for every window that shall stay alive.
   [THF]
+  
+BUG FIXES:
+- The islistNNN-symbols got calculated on my turn, but could get used beforehand for f$prefold.
+  Thanks to Spew for finding this problem.
+  [THF]
 
 MAINTENANCE:
 - We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper

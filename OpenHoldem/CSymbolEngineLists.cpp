@@ -17,6 +17,7 @@
 #include "CBetroundCalculator.h"
 #include "CFormula.h"
 #include "CScraper.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 
@@ -47,15 +48,18 @@ void CSymbolEngineLists::ResetOnNewRound()
 
 void CSymbolEngineLists::ResetOnMyTurn()
 {
-	// Calculate only preflop
-	if (p_betround_calculator->betround() == k_betround_preflop)
+}
+
+void CSymbolEngineLists::ResetOnHeartbeat()
+{
+	// Calculate after hand-reset up to my first action
+	// as lists might be used for f$prefold too.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=234&t=16810
+	if (!p_symbol_engine_history->DidActThisHand())
 	{
 		CalculateLists();
 	}
 }
-
-void CSymbolEngineLists::ResetOnHeartbeat()
-{}
 
 void CSymbolEngineLists::CalculateLists()
 {
