@@ -36,6 +36,7 @@
 #include "COpenHoldemTitle.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
+#include "CPopupHandler.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CReplayFramesCounter.h"
@@ -134,6 +135,9 @@ void InstantiateAllSingletons()
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
 	assert(!p_version_info);
 	p_version_info = new CVersionInfo;
+	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPopupHandler\n");
+	assert(!p_popup_handler);
+	p_popup_handler = new CPopupHandler;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnector\n");
 	assert(!p_autoconnector);
 	p_autoconnector = new CAutoConnector;
@@ -232,6 +236,8 @@ void DeleteAllSingletons()
 		{ delete p_engine_container; p_engine_container = NULL; }
 	if (p_openholdem_title)
 		{ delete p_openholdem_title; p_openholdem_title = NULL; }
+	if (p_popup_handler)
+		{ delete p_popup_handler; p_popup_handler = NULL; }
 	if (p_autoconnector) 
 	{ 
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");

@@ -37,11 +37,13 @@ protected:
 	virtual BOOL	OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
+private:
+	afx_msg void OnBnClickedDisableMsgbox();
 
 public:
-	
-	CButton			_gui_start_minimized_Button;
-	CButton			_gui_disable_progress_dialog_Button;
+	CButton		_gui_start_minimized_Button;
+	CButton		_gui_disable_progress_dialog_Button;
+	CButton		m_disable_msgbox;
 };
 
 #endif

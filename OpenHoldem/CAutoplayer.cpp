@@ -504,7 +504,12 @@ bool CAutoplayer::DoSwag(void)
 
 bool CAutoplayer::DoPrefold(void) 
 {
-	assert(p_autoplayer_functions->f$prefold() == 0);
+	assert(p_autoplayer_functions->f$prefold() != 0);
+	if (!p_scraper_access->UserHasKnownCards())
+	{
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");
+	}
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);

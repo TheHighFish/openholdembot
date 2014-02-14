@@ -15,17 +15,23 @@ NEW STUFF:
   You will need one extra-instance for popup-blocking and a minimalistic tablemap
   for every window that shall stay alive.
   [THF]
+- Prefold checks now if both cards are known,
+  as some people wrote sloppy code like "if I don't hold aces then prefold."
+  This was completely dangerous, as we don't have stable frames when it is not our turn
+  and it could have happened that the casino displayed only one of our two nice cards
+  at that point of time.
+  [THF]
   
 BUG FIXES:
-- The islistNNN-symbols got calculated on my turn, but could get used beforehand for f$prefold.
+- The islistNNN-symbols got calculated on my turn, but could get used beforehand.
   Thanks to Spew for finding this problem.
   [THF]
 
 MAINTENANCE:
 - We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
-  because they looked like complete mis-conceptions:
+  because they looked like yet another WinHoldem-misconception:
   * the userchair might change
-  * we already scrape pXname, uXname, ... for all 10 chairs, so we have the information anyway
+  * we already scrape pXname, uXname, . .. for all 10 chairs, so we have the information anyway
   * we were unable to find any tablemap which used these symbols
   * and finally it seemed that even OpenHoldem didn't use these symbols anywhere.
   [THF]

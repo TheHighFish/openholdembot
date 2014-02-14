@@ -15,10 +15,24 @@
 #include "CPopupHandler.h"
 
 #include "CPreferences.h"
+#include "CSessionCounter.h"
 #include "WindowFunctions.h"
 
+CPopupHandler *p_popup_handler = NULL;
+
 CPopupHandler::CPopupHandler()
-{}
+{
+	if (preferences.popup_blocker() != k_popup_disabled)
+	{
+		// Initial minimization of all windows
+		// This should be done exactly once, by instance 0
+		if (p_sessioncounter->session_id() == 0)
+		{
+			write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimizing all windows on startup (session ID 0).\n");
+			MinimizeAllOnstartup();
+		}
+	}
+}
 
 CPopupHandler::~CPopupHandler()
 {}
@@ -40,18 +54,30 @@ void CPopupHandler::HandleAllWindows()
 		HandleAllWindows(true);
 	}
 	// else: disabled
+}
 
-	
+BOOL CALLBACK EnumProcPotentialPopups(HWND hwnd, LPARAM lparam) 
+{
+	bool hard_kill = bool(lparam);
+	p_popup_handler->HandlePotentialPopup(hwnd, hard_kill);
+	return true;  // keep processing through entire list of windows
 }
 
 void CPopupHandler::HandleAllWindows(bool hard_kill)
 {
-	
+	// Use the auto-connectors list of window-candidates
+	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Going to handle all windows\n");
+	EnumWindows(EnumProcPotentialPopups, LPARAM(hard_kill));
 }
 
 
 void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 {
+	char title[MAX_WINDOW_TITLE];
+	GetWindowText(potential_popup, title, MAX_WINDOW_TITLE);
+	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Going to handle [%d] [%s]\n",
+			potential_popup, title);
+
 	// First: ignore all harmless windows
 	if (!IsWindow(potential_popup))			return;
 	if (!IsWindowVisible(potential_popup))	return;
@@ -66,22 +92,26 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 	if (WinIsTaskManager(potential_popup))		return;
 	if (WinIsProgramManager(potential_popup))	return;
 	if (WinIsOpenHoldem(potential_popup))		return;
-	// Minimize or kill the remaining ones
-	char title[MAX_WINDOW_TITLE];
+
 	GetWindowText(potential_popup, title, MAX_WINDOW_TITLE);
+	// Minimize or kill the remaining ones
 	if (hard_kill)
 	{
 		// CloseWindow():
 		// http://msdn.microsoft.com/en-us/library/windows/desktop/ms632678%28v=vs.85%29.aspx
 		// DestroyWindow() can't be used:
 		// http://msdn.microsoft.com/en-us/library/windows/desktop/ms632682%28v=vs.85%29.aspx
-		//!!!CloseWindow(potential_popup);
+		CloseWindow(potential_popup);
 		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Killed [%d] [%s]\n",
 			potential_popup, title);
 	}
 	else
 	{
-		//!!!MinimizeWindow(potential_popup);
+		/*CString message;
+		message.Format("Going to minimize window [%i]\n[%s]",
+			potential_popup, title);
+		MessageBox(0, message, "Popup Blocker", 0);*/
+		MinimizeWindow(potential_popup);
 		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimized [%d] [%s]\n",
 			potential_popup, title);
 	}

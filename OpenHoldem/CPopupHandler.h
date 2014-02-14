@@ -14,17 +14,22 @@
 #ifndef INC_CPOPUPHANDLER_H
 #define INC_CPOPUPHANDLER_H
 
-class CPopupHandler
+extern class CPopupHandler
 {
 public:
 	CPopupHandler();
 	~CPopupHandler();
 public:
-	void MinimizeAllOnstartup();
+	// To be called by the auto-connector-thread
+	// after failed tries to connect
 	void HandleAllWindows();
+	// To be called by callback-function EnumProcPotentialPopups
+	void HandlePotentialPopup(HWND potential_popup, bool hard_kill);
+private:
+	// To be called by instance 0
+	void MinimizeAllOnstartup();
 private:
 	void HandleAllWindows(bool hard_kill);
-	void HandlePotentialPopup(HWND potential_popup, bool hard_kill);
-};
+} *p_popup_handler;
 
 #endif

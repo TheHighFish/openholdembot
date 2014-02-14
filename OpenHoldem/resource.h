@@ -437,6 +437,7 @@
 #define IDC_RADIO_POPUP_DISABLED        1389
 #define IDC_RADIO_POPUP_MINIMIZE        1390
 #define IDC_RADIO_POPUP_KILL            1391
+#define IDC_IPADDRESS1                  1392
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -557,7 +558,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1392
+#define _APS_NEXT_CONTROL_VALUE         1393
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
