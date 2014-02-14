@@ -75,6 +75,21 @@ public:
 	CString		i86_button_state()         { return _i86_button_state; }
 	CString		i86X_button_state(int n)   { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_number_of_i86X_buttons-1), "") return _i86X_button_state[n]; }
 	CString		betpot_button_state(int n) { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_betpot_buttons-1), "")         return _betpot_button_state[n]; }
+public:
+	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
+	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
+	const POINT			handle_xy() { return _handle_xy; }
+	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
+	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
+public: 
+	void ClearScrapeAreas(void);
+	void CreateBitmaps(void);
+	void DeleteBitmaps(void);
+	void SetLimitInfo(const SLimitInfo LI);
+	bool GetButtonState(const int button_index);
+	bool GetButtonState(CString button_state_as_string);
+	bool IsCommonAnimation();
+	bool IsIdenticalScrape();
 protected:
 	void ScrapeDealer();
 	void ScrapeActionButtons();
@@ -91,13 +106,18 @@ protected:
 	void ScrapeAllPlayerCards();
 private:
 	void ScrapeSeated(int chair);
-	
 	void ScrapeActive(int chair);
 	int ScrapeCard(CString name);
 private:
 	int CardString2CardNumber(CString card);
-protected:
-	
+private:
+	// private functions and variables - not available via accessors or mutators
+	void ScrapeBalance(const int chair);
+	void ScrapeBet(const int chair);
+	void ScrapePots();
+	void ScrapeLimits();
+	const CString extractHandnumFromString(const CString t);
+	const double DoChipScrape(RMapCI r_iter);
 private:
 	bool ProcessRegion(RMapCI r_iter);
 	bool EvaluateRegion(CString name, CString *result);
@@ -105,39 +125,7 @@ private:
 	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
 private:
 	void SetButtonState(CString *button_state, CString text);
-private:
-	
-
-	// Private data -- buttons
-private:
-	CString _i86_button_state;
-	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
-	CString	_button_state[k_max_number_of_buttons];
-	CString _button_label[k_max_number_of_buttons];
-	CString	_betpot_button_state[k_max_betpot_buttons];
-
-
-
-
-
-
-public:
-	void ClearScrapeAreas(void);
-	void CreateBitmaps(void);
-	void DeleteBitmaps(void);
-	void SetLimitInfo(const SLimitInfo LI);
-	bool GetButtonState(const int button_index);
-	bool GetButtonState(CString button_state_as_string);
-	bool IsCommonAnimation();
-	bool IsIdenticalScrape();
-	
-	const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
-	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
-	const POINT			handle_xy() { return _handle_xy; }
-	const SLimitInfo*	s_limit_info() { return &_s_limit_info; }
-	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
-
-public:
+private: 
 #define ENT CSLock lock(m_critsec);
 	// public mutators 
 	// Used mainly by the scraper override dll to push their updates into the CScraper structures
@@ -178,93 +166,49 @@ public:
 	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}
 	void	delete_entire_window_cur() { ENT DeleteObject(_entire_window_cur);}
 #undef ENT
-	
+
+private:
+	// Private data -- buttons
+	CString _i86_button_state;
+	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
+	CString	_button_state[k_max_number_of_buttons];
+	CString _button_label[k_max_number_of_buttons];
+	CString	_betpot_button_state[k_max_betpot_buttons];
 private:
 	// private variables - use public accessors and public mutators to address these
 	char				_title[MAX_WINDOW_TITLE];
-
 	// common cards
 	unsigned int		_card_common[k_number_of_community_cards];
 	// player cards
 	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player];
 	// dealer
 	bool				_dealer[k_max_number_of_players];
-
 	// players - sitting out
 	bool				_sitting_out[k_max_number_of_players];
 	// players - seated / active
-	CString				_seated[k_max_number_of_players], _active[k_max_number_of_players];
+	CString				_seated[k_max_number_of_players];
+	CString				_active[k_max_number_of_players];
 	// players - names
 	CString				_player_name[k_max_number_of_players];
 	// players - money
-	double				_player_balance[k_max_number_of_players], _player_bet[k_max_number_of_players];
-
+	double				_player_balance[k_max_number_of_players]; 
+	double				_player_bet[k_max_number_of_players];
 	// pot
 	double				_pot[k_max_number_of_pots];
-
-
-	
-	// handle
+	// i3-slider-handle
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
-
 	// limit
 	SLimitInfo			_s_limit_info;
 	// misc
 	HBITMAP				_entire_window_cur;
-
+	
 private:
-	// private functions and variables - not available via accessors or mutators
-	
-	
-	
-	void ScrapeBalance(const int chair);
-	void ScrapeBet(const int chair);
-	void ScrapePots();
-	void ScrapeLimits();
-	const CString extractHandnumFromString(const CString t);
-	const double DoChipScrape(RMapCI r_iter);
-
-
-
-	// cards common
-	unsigned int	_card_common_last[k_number_of_community_cards];
-	// cards player
-	unsigned int	_card_player_last[k_max_number_of_players][k_number_of_cards_per_player];
-
-	// dealer
-	bool			_dealer_last[k_max_number_of_players];
-
-	// player - seated, active
-	CString			_seated_last[k_max_number_of_players], _active_last[k_max_number_of_players];
-	// player - name
-	CString			_name_last[k_max_number_of_players];
-	// player - money
-	double			_balance_last[k_max_number_of_players], _playerbet_last[k_max_number_of_players];
-
-	// iXbuttons
-	CString			_button_state_last[k_max_number_of_buttons], _button_label_last[k_max_number_of_buttons];
-	// i86Xbuttons
-	CString			_i86X_button_state_last[k_max_number_of_i86X_buttons], _i86_button_state_last;
-	// betpot_buttons
-	CString			_betpot_button_state_last[k_max_betpot_buttons];
-
-	// pot
-	double			_pot_last[k_max_number_of_pots];
-
-	// limits
-	bool			_istournament_last;
-	int				_limit_last;
-	double			_sblind_last, _bblind_last, _sb_bb_last, _bb_BB_last, _bbet_last, _ante_last;
-
-	// misc
-	CString			_handnumber_last;
+	// Old values of last heartbeat
 	char			_title_last[MAX_WINDOW_TITLE];
-	int				_scrape_something_changed;
 	HBITMAP			_entire_window_last;
-
+private:
 	CCritSec		m_critsec;
-
 } *p_scraper;
 
 #endif // INC_CSCRAPER_H

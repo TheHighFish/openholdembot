@@ -57,7 +57,7 @@
 #define IDD_SAPREFS19                   185
 #define IDD_SAPREFS20                   186
 #define IDD_SAPREFS21                   187
-#define ID_INDICATOR_GENERAL_HINT       188
+#define ID_INDICATOR_GENERAL_HINT       189
 #define IDC_NEW                         1006
 #define IDC_DELETE                      1007
 #define IDC_RENAME                      1013

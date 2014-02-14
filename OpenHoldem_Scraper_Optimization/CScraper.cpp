@@ -808,38 +808,6 @@ void CScraper::ClearScrapeAreas(void)
 	set_found_limit(false);
 	set_found_sb_bb(false);
 	set_found_bb_BB(false);
-
-	// change detection
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		_card_common_last[i] = CARD_NOCARD;
-	}
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		_card_player_last[i][0] = CARD_NOCARD;
-		_card_player_last[i][1] = CARD_NOCARD;
-		_seated_last[i] = "false";
-		_active_last[i] = "false";
-		_dealer_last[i] = false;
-		_name_last[i] = "";
-		_balance_last[i] = 0;
-		_playerbet_last[i] = 0;
-		_button_state_last[i] = "";
-		_i86X_button_state_last[i] = "";
-		_button_label_last[i] = "";
-		_pot_last[i] = 0;
-	}
-
-	_i86_button_state_last = "";
-	_istournament_last = false;
-	_limit_last=0;
-	_sblind_last=0;
-	_bblind_last=0;
-	_sb_bb_last=0;
-	_bb_BB_last=0;
-	_bbet_last=0;
-	_ante_last=0;
-	_handnumber_last= "";
 	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
 }
 
