@@ -299,7 +299,6 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-    LTEXT           "Version 4.4.1",IDC_STATIC,32,22,208,8
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,66,208,8
@@ -723,14 +722,12 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,10
-    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,92,76,8
+    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,92,145,8
     CONTROL         "Enable Log Symbols",IDC_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,94,10
     EDITTEXT        IDC_MAXIMUM_LOG,163,90,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,137,157,8
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,158,116,8
-    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,152,31,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,152,11,14
+    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,137,116,8
+    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,131,31,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,131,11,14
     GROUPBOX        "Basic Logging",IDC_STATIC,0,0,205,80
     CONTROL         "Basic Info",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,16,88,9
     CONTROL         "Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,32,139,8
@@ -786,6 +783,8 @@ BEGIN
     CONTROL         "Start minimized",IDC_GUI_START_MINIMIZED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,59,8
     CONTROL         "Don't show progress-dialog (formula-parsing)",IDC_GUI_Disable_Progress_Dialog,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,163,8
+    CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,40,157,8
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -854,7 +853,7 @@ BEGIN
     CONTROL         "Hand-history generator",IDC_DEBUG_HANDHISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,177,135,10
     CONTROL         "DLL extension",IDC_DEBUG_DLL_EXTENSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,191,135,10
     CONTROL         "Hopper-messages",IDC_DEBUG_HOPPER_MESSAGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,205,135,10
-	CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,135,10
+    CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,135,10
     CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,233,135,10
     CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,139,9,77,10
     CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,23,70,10
@@ -947,7 +946,7 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 259
+        RIGHTMARGIN, 258
         VERTGUIDE, 32
         VERTGUIDE, 240
         TOPMARGIN, 7

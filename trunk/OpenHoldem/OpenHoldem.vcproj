@@ -337,10 +337,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CLazyScraper.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CLevDistance.cpp"
 				>
 			</File>
@@ -350,10 +346,6 @@
 			</File>
 			<File
 				RelativePath=".\COcclusionCheck.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\COpenHoldemStatusbar.cpp"
 				>
 			</File>
 			<File
@@ -369,10 +361,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CStringMatch.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.cpp"
 				>
 			</File>
@@ -385,10 +373,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MagicNumbers.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainFrm.cpp"
 				>
 			</File>
@@ -398,18 +382,6 @@
 			</File>
 			<File
 				RelativePath=".\Median.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MyCToolBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NumericalFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OH_MessageBox.cpp"
 				>
 			</File>
 			<File
@@ -451,14 +423,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\StringFunctions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SwagAdjustment.cpp"
-				>
 			</File>
 			<Filter
 				Name="winmgr"
@@ -754,38 +718,6 @@
 					RelativePath=".\COpenHoldemTitle.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\DialogFormulaScintilla.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogHandList.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogNew.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogRename.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DialogScraperOutput.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\OpenHoldemView.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ScintillaWnd.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\UPDialog.cpp"
-					>
-				</File>
 				<Filter
 					Name="prefs_dlg"
 					>
@@ -879,6 +811,54 @@
 					</File>
 					<File
 						RelativePath=".\SAPrefsSubDlg.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Other Dialogs"
+					>
+					<File
+						RelativePath=".\COpenHoldemStatusbar.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogFormulaScintilla.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogHandList.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogNew.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogRename.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\DialogScraperOutput.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MyCToolBar.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\OH_MessageBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\OpenHoldemView.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ScintillaWnd.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\UPDialog.cpp"
 						>
 					</File>
 				</Filter>
@@ -1098,6 +1078,10 @@
 					RelativePath=".\PokerChat.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\SwagAdjustment.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="AutoConnector"
@@ -1179,6 +1163,10 @@
 				Name="Scraper"
 				>
 				<File
+					RelativePath=".\CLazyScraper.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CScraper.cpp"
 					>
 				</File>
@@ -1188,6 +1176,26 @@
 				</File>
 				<File
 					RelativePath=".\CScraperPreprocessor.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Various Function Libraries"
+				>
+				<File
+					RelativePath=".\CStringMatch.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MagicNumbers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NumericalFunctions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\StringFunctions.cpp"
 					>
 				</File>
 			</Filter>

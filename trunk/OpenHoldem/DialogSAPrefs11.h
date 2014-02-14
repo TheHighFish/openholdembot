@@ -28,7 +28,6 @@ class CDlgSAPrefs11 : public CSAPrefsSubDlg
 public:
 	CDlgSAPrefs11(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgSAPrefs11();
-	afx_msg void OnBnClickedDisableMsgbox();
 
 // Dialog Data
 	enum { IDD = IDD_SAPREFS11 };
@@ -37,7 +36,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
-	CButton m_EnableLog, m_EnableTrace, m_disable_msgbox;
+	CButton m_EnableLog, m_EnableTrace;
 	CButton m_EnableBasicInfo, m_EnableErrorLogging, m_EnableDLLLogging;
 	CEdit m_MaximumLog, m_MaximumLogSize;
 	CSpinButtonCtrl m_MaximumLog_Spin, m_MaximumLogSize_Spin;
@@ -45,8 +44,6 @@ public:
 
 protected:
 	virtual void OnOK();
-
-	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnCbnSelchangeDebuglevelPt();
 };

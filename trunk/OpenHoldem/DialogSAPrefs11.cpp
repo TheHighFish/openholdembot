@@ -15,11 +15,10 @@
 //
 
 #include "stdafx.h"
+#include "DialogSAPrefs11.h"
 
 #include <limits.h>
-
 #include "SAPrefsSubDlg.h"
-#include "DialogSAPrefs11.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
@@ -52,7 +51,6 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_EnableErrorLogging);
 	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_EnableDLLLogging);
 
-	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);
 }
@@ -74,8 +72,6 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	m_MaximumLog_Spin.SetPos(preferences.log_symbol_max_log());
 	m_MaximumLog_Spin.SetBuddy(&m_MaximumLog);
 
-	m_disable_msgbox.SetCheck(preferences.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
-
 	text.Format("%d", preferences.log_max_logsize());
 	text.Format("%d", preferences.log_max_logsize());
 	m_MaximumLogSize.SetWindowText(text);
@@ -86,10 +82,6 @@ BOOL CDlgSAPrefs11::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
-
-BEGIN_MESSAGE_MAP(CDlgSAPrefs11, CSAPrefsSubDlg)
-	ON_BN_CLICKED(IDC_DISABLE_MSGBOX, &CDlgSAPrefs11::OnBnClickedDisableMsgbox)
-END_MESSAGE_MAP()
 
 // DialogSAPrefs11 message handlers
 void CDlgSAPrefs11::OnOK()
@@ -108,23 +100,9 @@ void CDlgSAPrefs11::OnOK()
 		return;
 	}
 	preferences.SetValue(k_prefs_log_symbol_max_log, strtoul(text.GetString(), 0, 10));
-	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
-
 	m_MaximumLogSize.GetWindowText(text);
 	preferences.SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }
 
-
-void CDlgSAPrefs11::OnBnClickedDisableMsgbox()
-{
-	if (m_disable_msgbox.GetCheck()==BST_CHECKED)
-		OH_MessageBox_Interactive("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
-				   "displaying ANY runtime informational or error message boxes.  Examples\n"
-				   "include parse errors, DLL load errors, etc.  It is strongly advised that\n"
-				   "this option only be used in a production environment that has been\n"
-				   "completely and thoroughly tested for proper behavior.\n\n"
-				   "Note that interactive messages are not disabled, such as when using the\n"
-				   "formula editor.", "WARNING", MB_OK);
-}

@@ -42,6 +42,7 @@ private:
 	#undef ENT
 private:
 	// private variables - use public accessors and public mutators to address these
+	CArray <STableList, STableList>		g_tlist; 
 	HWND		_attached_hwnd;	 // Table that we are attached to
 	CCritSec	m_critsec;
 private:
