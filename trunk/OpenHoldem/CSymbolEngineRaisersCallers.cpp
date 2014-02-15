@@ -23,6 +23,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
@@ -35,6 +36,7 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
@@ -65,6 +67,7 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
 	_nopponentsraising  = 0;
+	_nopponentstruelyraising = 0;
 	_nopponentsfolded   = 0;
 	_nopponentscalling  = 0;
 	_nopponentschecking = 0;
@@ -105,6 +108,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
 	_nopponentsraising = 0;
+	_nopponentstruelyraising = 0;
 	if (p_symbol_engine_chip_amounts->call() <= 0.0)
 	{
 		// There are no bets and raises.
@@ -135,6 +139,13 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 			if (chair != USER_CHAIR)
 			{
 				_nopponentsraising++;
+				if ((p_betround_calculator->betround() > k_betround_preflop)
+					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))
+				{
+					// Counts true raisers and also first bettors postflop
+					// Does not count blind posters and people posting antes
+					_nopponentstruelyraising++;
+				}
 			}
 		}
 	}
@@ -327,6 +338,10 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 		else if (memcmp(name, "nopponentsraising", 17)==0 && strlen(name)==17)
 		{
 			*result = nopponentsraising();
+		}
+		else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23)
+		{
+			*result = nopponentstruelyraising();
 		}
 		else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17)
 		{

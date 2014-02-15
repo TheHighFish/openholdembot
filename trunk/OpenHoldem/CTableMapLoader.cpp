@@ -41,7 +41,6 @@ typedef struct
 
 
 t_tablemap_connection_data			tablemap_connection_data[k_max_nmber_of_tablemaps];
-CArray <STableList, STableList>		g_tlist; 
 
 
 CTableMapLoader::CTableMapLoader()
