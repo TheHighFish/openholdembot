@@ -21,6 +21,13 @@ NEW STUFF:
   and it could have happened that the casino displayed only one of our two nice cards
   at that point of time.
   [THF]
+- Implemented a new symbol "nopponentstruelyraising".
+  The old (and still implemented) symbol "nopponentsraising" also counted "blind-raisers" 
+  according to Ray E. Bornerts definition (WinHoldem). This regulary caused confusion and problems
+  (e.g. with hero in the blinds, a missing small-blind, an open-completing small-blind, etc.)
+  "nopponentstruelyraising" however counts only true raisers and the first	voluntary bettor postflop,
+  but no longer "blind-raisers".
+  [THF]
   
 BUG FIXES:
 - The islistNNN-symbols got calculated on my turn, but could get used beforehand.
