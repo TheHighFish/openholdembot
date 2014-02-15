@@ -281,3 +281,13 @@ BEGIN_TESTCASE
     POSTCONDITION ((gws("opponentsblindbits") >= 0) && (gws("opponentsblindbits") <= 1023))
     SYMBOLS_POSSIBLY_AFFECTED ("opponentsblindbits")
 END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0122")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol nopponentstruelyraising")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") <= 10))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentstruelyraising")
+END_TESTCASE

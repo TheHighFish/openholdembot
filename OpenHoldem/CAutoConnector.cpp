@@ -43,6 +43,7 @@
 #include "OpenHoldem.h"
 
 CAutoConnector						*p_autoconnector = NULL;
+CArray <STableList, STableList>		g_tlist; 
 
 CAutoConnector::CAutoConnector()
 {
