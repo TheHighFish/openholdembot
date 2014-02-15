@@ -11,11 +11,8 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 4.4.0 or later
-//   * because we make use of the new f$init-functions
-//   * because we make use of the new msgbox$-symbol
-//   * because of new-style PT-naming
-//   * because we make use of the new hand$XYZ and board$XYZ symbols
+// Required OpenHoldem version: 4.5.0 or later
+//   * because we make use of the new symbol nopponentstruelyraising
 //
 // Contributors:
 //   Bob3456
@@ -1058,11 +1055,6 @@ me_re_MemRaises
 ##f$OpenPPL_NumberOfBlindRaisersInThisGame##
 [f$OpenPPL_AntesPresent ? 1 : 0] + [f$OpenPPL_MissingSmallBlind ? 1 : 2]
 
-##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind##
-// If we are in small-blind, there is 1 opponent "blind-raising",
-// And we also have to care about potential antes
-[(nopponentsraising - 1) - (f$OpenPPL_AntesPresent ? 1 : 0)]
-
 ##f$OpenPPL_NumberOfOpponentsLimpingPreflop##
 // First orbit preflop only
 // Does not count the user
@@ -1078,30 +1070,10 @@ me_re_MemRaises
 + [(currentbet8 == bblind) && (userchair != 8) && (f$OpenPPL_BigBlindChair != 8) ? 1 : 0]
 + [(currentbet9 == bblind) && (userchair != 9) && (f$OpenPPL_BigBlindChair != 9) ? 1 : 0]
 
-##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind##
-// If we are in big-blind, there *was* 1 opponent "blind-raising",
-// but he does no longer get counted, as he either did fold,
-// did call or did truely raise.
-// In big blind nopponentsraising does somewhat unexpectedly
-// call an open-limper as blind-raiser, so we have to adapt for that case.
-// Besides of that have to care about potential antes.
-(f$OpenPPL_NumberOfOpponentsLimpingPreflop >= 1) ? 
-  [nopponentsraising - 1 - (f$OpenPPL_AntesPresent ? 1 : 0)] :
-  [nopponentsraising - (f$OpenPPL_AntesPresent ? 1 : 0)]
-
-##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
-// There are (usually) 2 blindraisers which should not get countet
-// And we also have to care about potential antes
-[ (nopponentsraising - 2) 
-- (f$OpenPPL_AntesPresent ? 1 : 0)
-+ (f$OpenPPL_MissingSmallBlind? 1 : 0)]
-
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
 (betround > f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
-(dealposition == 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind :
-(dealposition == 2) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind :
-f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
+nopponentstruelyraising
 
 ##f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.
