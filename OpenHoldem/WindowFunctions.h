@@ -14,7 +14,6 @@
 #ifndef	INC_WINDOW_FUNCTIONS_H
 #define INC_WINDOW_FUNCTIONS_H
 
-
 inline void MinimizeWindow(HWND window)
 {
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548%28v=vs.85%29.aspx
@@ -51,11 +50,12 @@ inline bool WinIsOpenHoldem(HWND window)
 inline bool WinIsOutOfScreen(HWND window)
 {
 	RECT rect;
-	static RECT desktop;
 	if (!GetWindowRect(window, &rect))
 	{
 		return false;
 	}
+	static RECT desktop;
+	GetWindowRect(GetDesktopWindow(), &desktop);
 	return((rect.right < 0)
 		|| (rect.bottom < 0)
 		|| (rect.top > desktop.bottom)

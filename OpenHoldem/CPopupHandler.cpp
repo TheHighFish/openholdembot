@@ -16,9 +16,13 @@
 
 #include "CPreferences.h"
 #include "CSessionCounter.h"
+#include "CSharedMem.h"
 #include "WindowFunctions.h"
 
+#undef MESSAGEBOX_BEFORE_MINIMIZING
+
 CPopupHandler *p_popup_handler = NULL;
+
 
 CPopupHandler::CPopupHandler()
 {
@@ -39,11 +43,13 @@ CPopupHandler::~CPopupHandler()
 
 void CPopupHandler::MinimizeAllOnstartup()
 {
+	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] MinimizeAllOnstartup()\n");
 	HandleAllWindows(false);
 }
 
 void CPopupHandler::HandleAllWindows()
 {
+	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
 	int popup_blocker_method = preferences.popup_blocker();
 	if (popup_blocker_method == k_popup_minimize)
 	{
@@ -66,7 +72,7 @@ BOOL CALLBACK EnumProcPotentialPopups(HWND hwnd, LPARAM lparam)
 void CPopupHandler::HandleAllWindows(bool hard_kill)
 {
 	// Use the auto-connectors list of window-candidates
-	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Going to handle all windows\n");
+	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
 	EnumWindows(EnumProcPotentialPopups, LPARAM(hard_kill));
 }
 
@@ -79,19 +85,60 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 			potential_popup, title);
 
 	// First: ignore all harmless windows
-	if (!IsWindow(potential_popup))			return;
-	if (!IsWindowVisible(potential_popup))	return;
-	if (WinIsMinimized(potential_popup))	return;
-	if (WinIsZeroSized(potential_popup))	return;
-	if (WinIsOutOfScreen(potential_popup))	return;
+	if (!IsWindow(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Not a window\n");
+		return;
+	}
+	if (!IsWindowVisible(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is invisible\n");
+		return;
+	}
+	if (WinIsMinimized(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is minimized\n");
+		return;
+	}
+	if (WinIsZeroSized(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is zero-sized\n");
+		return;
+	}
+	if (WinIsOutOfScreen(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is out of screen\n");
+		return;
+	}
 	// Second: ignore the good windows
 	// This includes:
 	//   * program manager (desktop) to avoid flickering
 	//   * task manager to be able to kill the popup-blocker if necessary ;-)
-	if (WinIsDesktop(potential_popup))			return;
-	if (WinIsTaskManager(potential_popup))		return;
-	if (WinIsProgramManager(potential_popup))	return;
-	if (WinIsOpenHoldem(potential_popup))		return;
+	if (WinIsDesktop(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is desktop\n");
+		return;
+	}
+	if (WinIsTaskManager(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-manager\n");
+		return;
+	}
+	if (WinIsProgramManager(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is program manager\n");
+		return;
+	}
+	if (p_sharedmem->PokerWindowAttached(potential_popup))
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is a served poker table\n");
+		return;
+	}
+	if (WinIsOpenHoldem(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to OpenHoldem\n");
+		return;
+	}
 
 	GetWindowText(potential_popup, title, MAX_WINDOW_TITLE);
 	// Minimize or kill the remaining ones
@@ -107,10 +154,11 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 	}
 	else
 	{
-		/*CString message;
-		message.Format("Going to minimize window [%i]\n[%s]",
+#ifdef MESSAGEBOX_BEFORE_MINIMIZING
+		message.format("going to minimize window [%i]\n[%s]",
 			potential_popup, title);
-		MessageBox(0, message, "Popup Blocker", 0);*/
+		messagebox(0, message, "popup blocker", 0);
+#endif
 		MinimizeWindow(potential_popup);
 		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimized [%d] [%s]\n",
 			potential_popup, title);
