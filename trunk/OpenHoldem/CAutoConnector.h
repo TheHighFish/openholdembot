@@ -41,6 +41,10 @@ private:
 	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
 	#undef ENT
 private:
+	void FailedToConnectBecauseNoWindowInList();
+	void FailedToConnectProbablyBecauseAllTablesAlreadyServed();
+	void GoIntoPopupBlockingMode();
+private:
 	// private variables - use public accessors and public mutators to address these
 	HWND		_attached_hwnd;	 // Table that we are attached to
 	CCritSec	m_critsec;

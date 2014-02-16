@@ -300,7 +300,7 @@ void CPreferences::WriteReg(const LPCTSTR registry_key, const CString &registry_
 void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_value)
 {
 	CString str;
-	str.Format("%f", registry_value);
+	str.Format("%.2f", registry_value);
 	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
 }
 

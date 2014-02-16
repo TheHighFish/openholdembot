@@ -25,6 +25,8 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
+#include "CPreferences.h"
+#include "StringFunctions.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
@@ -122,6 +124,8 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	int last_possible_raiser  = LastPossibleRaiser();
 	double highest_bet = LastOrbitsLastRaisersBet();
 
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Searching for raisers from chair %i to %i with a bet higher than %s\n",
+		first_possible_raiser, last_possible_raiser, Number2CString(highest_bet)); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
 	{
 		int chair = i % p_tablemap->nchairs();
@@ -138,18 +142,30 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 			_raisbits[BETROUND] = new_raisbits;
 			if (chair != USER_CHAIR)
 			{
+				write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
+					chair, Number2CString(highest_bet));
 				_nopponentsraising++;
 				if ((p_betround_calculator->betround() > k_betround_preflop)
 					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))
 				{
 					// Counts true raisers and also first bettors postflop
 					// Does not count blind posters and people posting antes
+					write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i also truely raising (voluntarily).\n", 
+						chair);
 					_nopponentstruelyraising++;
 				}
 			}
 		}
+		else
+		{
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] User raising to %s\n",
+				Number2CString(highest_bet));
+		}
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentsraising: %i\n", _nopponentsraising);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
 }
 
 void CSymbolEngineRaisersCallers::CalculateCallers()

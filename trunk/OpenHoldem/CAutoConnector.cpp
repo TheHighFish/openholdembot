@@ -70,7 +70,7 @@ CAutoConnector::~CAutoConnector()
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Marking table as not atached\\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Marking table as not atached\n");
 	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
@@ -163,6 +163,61 @@ void CAutoConnector::WriteLogTableReset()
 		p_version_info->GetVersionInfo());
 }
 
+void CAutoConnector::FailedToConnectBecauseNoWindowInList()
+{
+	p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
+
+	int cySize = GetSystemMetrics(SM_CYSIZE);
+	int cyMenuSize = GetSystemMetrics(SM_CYMENU);
+
+	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
+	{
+		if (cySize != 18 || cyMenuSize != 19)
+		{
+			OH_MessageBox_Error_Warning(
+				"Cannot find table.\n\n"
+				"It appears that your settings are not configured according to OpenHoldem specifications.\n"
+				"You must ensure that XP themes are not used (Use Windows Classic style) and\n"
+				"font size is set to normal.\n\n"
+				"For more info, read the manual and visit the user forums.", 
+				"Cannot find table");
+		}
+		else
+		{
+			OH_MessageBox_Error_Warning(
+				"No valid tables found\n\n"
+				"There seems to be no unserved table open\n"
+				"or your table does not match the size and titlestring\n"
+				"defined in your tablemaps.\n"
+				"For more info, read the manual and visit the user forums.",
+				"Cannot find table");
+		}
+	}
+	GoIntoPopupBlockingMode();
+}
+
+void CAutoConnector::FailedToConnectProbablyBecauseAllTablesAlreadyServed()
+{
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
+	p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
+	GoIntoPopupBlockingMode();
+}
+
+void CAutoConnector::GoIntoPopupBlockingMode()
+{
+	// We have a free instance that has nothing to do.
+	// Care about potential popups here, once per auto-connector-heartbeat.
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Not connected. Going into popup-blocking mode.\n");
+	if (p_sharedmem->SizeOfDenseListOfAttachedPokerWindows() > 0)
+	{
+		// Only handle popups if at least one bot is connected to a table.
+		// Especially stop popup-handling if the last table got closed
+		// to allow "normal" human work again.
+		assert(p_popup_handler != NULL);
+		p_popup_handler->HandleAllWindows();
+	}
+}
+
 bool CAutoConnector::Connect(HWND targetHWnd)
 {
 	int					N = 0, line = 0, ret = 0;
@@ -197,34 +252,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	N = (int) g_tlist.GetSize();
 	if (N == 0) 
 	{
-		p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
-
-		int cySize = GetSystemMetrics(SM_CYSIZE);
-		int cyMenuSize = GetSystemMetrics(SM_CYMENU);
-
-		if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
-		{
-			if (cySize != 18 || cyMenuSize != 19)
-			{
-				OH_MessageBox_Error_Warning(
-					"Cannot find table.\n\n"
-					"It appears that your settings are not configured according to OpenHoldem specifications.\n"
-					"You must ensure that XP themes are not used (Use Windows Classic style) and\n"
-					"font size is set to normal.\n\n"
-					"For more info, read the manual and visit the user forums.", 
-					"Cannot find table");
-			}
-			else
-			{
-				OH_MessageBox_Error_Warning(
-					"No valid tables found\n\n"
-					"There seems to be no unserved table open\n"
-					"or your table does not match the size and titlestring\n"
-					"defined in your tablemaps.\n"
-					"For more info, read the manual and visit the user forums.",
-					"Cannot find table");
-			}
-		}
+		FailedToConnectBecauseNoWindowInList();
 	}
 	else 
 	{
@@ -232,12 +260,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 		if (SelectedItem == k_undefined)
 		{
-			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Attempt to connect did fail\n");
-			p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
-			// We have a free instance that has nothing to do
-			// Care about potential popups here
-			assert(p_popup_handler != NULL);
-			p_popup_handler->HandleAllWindows();
+			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
 		}
 		else		
 		{
