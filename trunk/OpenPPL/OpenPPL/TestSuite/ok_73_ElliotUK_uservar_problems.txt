@@ -1,0 +1,46 @@
+custom
+
+preflop
+
+FLOP
+WHEN (Others)
+
+WHEN (((HaveStraightFlush)) AND log$line_1321_Var) UserHadStraightFlushOnFlop
+WHEN (((HaveQuads) AND (PairInHand) AND NOT (HaveStraightFlush)) AND log$line_1322_Var) UserHadQuadsOnFlop
+WHEN (((HaveFullHouse) AND NOT (HaveStraightFlush OR HaveQuads) AND NOT (TripsOnBoard)) AND log$line_1323_Var) UserHadFullHouseOnFlop
+WHEN (((HaveFlush) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse) AND NOT (PairOnBoard)) AND log$line_1324_Var) UserHadFlushOnFlop
+WHEN (((HaveStraight) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush) AND NOT (PairOnBoard)) AND log$line_1325_Var) UserHadStraightOnFlop
+WHEN (((HaveSet) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveTrips) AND NOT (PairOnBoard)) AND log$line_1326_Var) UserHadSetOnFlop
+WHEN (((HaveTrips) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveSet OR HaveTwoPair)) AND log$line_1327_Var) UserHadTripsOnFlop
+WHEN (((HaveTwoPair) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveSet) AND NOT (PairOnBoard)) AND log$line_1328_Var) UserHadTwoPairOnFlop
+WHEN (((HaveOverPair) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveSet OR HaveTwoPair OR HaveTopPair)) AND log$line_1329_Var) UserHadOverpairOnFlop
+WHEN (((HavePair) AND NOT (HaveNuts OR HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveSet OR HaveTrips OR HaveTwoPair OR HaveOverPair OR HaveTopPair)) AND log$line_1330_Var) UserHadPoorPairOnFlop
+WHEN ((((Hand = 42) OR (Hand = 52) OR (Hand = 53) OR (Hand = 62) OR (Hand = 63) OR (Hand = 64) OR (Hand = 72) OR (Hand = 73) OR (Hand = 74) OR (Hand = 75) OR (Hand = 82) OR (Hand = 83) OR (Hand = 84) OR (Hand = 85) OR (Hand = 86) OR (Hand = 92) OR (Hand = 93) OR (Hand = 94) OR (Hand = 95) OR (Hand = 96) OR (Hand = 97) OR (Hand = T2) OR (Hand = T3) OR (Hand = T4) OR (Hand = T5) OR (Hand = T6) OR (Hand = T7) OR (Hand = T8) OR (Hand = J2) OR (Hand = J3) OR (Hand = J4) OR (Hand = J5) OR (Hand = J6) OR (Hand = J7) OR (Hand = J8) OR (Hand = Q2) OR (Hand = Q3) OR (Hand = Q4) OR (Hand = Q5) OR (Hand = Q6) OR (Hand = Q7) OR (Hand = Q8) OR (Hand = Q9) OR (Hand = K2) OR (Hand = K3) OR (Hand = K4) OR (Hand = K5) OR (Hand = K6) OR (Hand = K7) OR (Hand = K8))) AND log$line_1331_Var) UserHaveTrashHand
+WHEN ((((Hand = A9) OR (Hand = A8) OR (Hand = A7) OR (Hand = A6) OR (Hand = A5) OR (Hand = A4) OR (Hand = A3) OR (Hand = A2))) AND log$line_1332_Var) UserAceWeakKicker
+
+WHEN (((HaveFlushDraw) AND (SuitsOnFlop = 2) AND NOT (HaveFlush OR PairOnBoard)) AND log$line_1334_Var) UserHadFlushDrawOnFlop
+WHEN (((HaveStraightDraw) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight)) AND log$line_1335_Var) UserHadStraightDrawOnFlop
+WHEN (((HaveInsideStraightDraw) AND NOT (HaveStraightFlush OR HaveQuads OR HaveFullHouse OR HaveFlush OR HaveStraight OR HaveStraightDraw)) AND log$line_1336_Var) UserHadInsideStraightDrawOnFlop
+
+WHEN ((((Board = AKJ) OR (Board = AKT) OR (Board = AQJ) OR (Board = AQT) OR (Board = AJT) OR (Board = KQT) OR (Board = KQ9) OR (Board = KJT) OR (Board = KJ9) OR (Board = KT9) OR (Board = QJ9) OR (Board = QT9) OR (Board = Q98) OR ThreeCardStraightOnBoard OR OneCardStraightPossible)) AND log$line_1338_Var) UserStraightRiskOnFlop
+WHEN ((((Board = KQ) OR (Board = KJ) OR (Board = KT) OR (Board = QT) OR (Board = Q9) OR (Board = JT) OR (Board = J9) OR (Board = T9) OR (Board = 98))) AND log$line_1339_Var) UserStraightDrawRiskOnFlop
+
+WHEN ((((Board = A) AND NOT ((Board = AA) OR (Board = K) OR (Board = Q) OR (Board = J))) OR ((Board = K) AND NOT ((Board = A) OR (Board = KK) OR (Board = Q) OR (Board = J))) OR ((Board = Q) AND NOT ((Board = A) OR (Board = K) OR (Board = QQ) OR (Board = J))) OR ((Board = J) AND NOT ((Board = A) OR (Board = K) OR (Board = Q) OR (Board = JJ)))) AND log$line_1341_Var) UserOnlyOneHighCardOnFlop
+WHEN ((((Board = A) OR (Board = K) OR (Board = Q) OR (Board = J))) AND log$line_1342_Var) UserHighCardOnFlop
+WHEN ((((Board = AK) OR (Board = AQ) OR (Board = AJ) OR (Board = KQ) OR (Board = KJ) OR (Board = QJ))) AND log$line_1343_Var) User2HighCardsOnFlop
+WHEN ((((Board = AKQ) OR (Board = AKJ) OR (Board = AQJ) OR (Board = KQJ))) AND log$line_1344_Var) User3HighCardsOnFlop
+WHEN ((((Board = AA) OR (Board = KK) OR (Board = QQ) OR (Board = JJ))) AND log$line_1345_Var) UserHighPairOnBoardOnFlop
+WHEN ((((Board = 66) OR (Board = 55) OR (Board = 44) OR (Board = 33) OR (Board = 22))) AND log$line_1346_Var) UserLowPairOnBoardOnFlop
+WHEN ((NOT ((Board = A) OR (Board = K) OR (Board = Q) OR (Board = J) OR (Board = T) OR (Board = 9))) AND log$line_1347_Var) UserLowBoardOnFlop
+
+WHEN (((OpponentIsAllin) AND NOT (UserOpponentAllInPreFlop)) AND log$line_1349_Var) UserOpponentAllInOnFlop
+WHEN (((BotsActionsOnThisRound = 0) AND (Bets = 0 AND Raises = 0 AND Checks >= 1) AND (Position = Last)) AND log$line_1350_Var) UserOpponentCheckedBeforeIActOnFlop
+WHEN (((BotsLastAction = Bet) AND (BotsActionsOnThisRound = 1) AND (Raises >= 1) AND (UserOpponentCheckedBeforeIActOnFlop)) AND log$line_1351_Var) UserOpponentCheckRaisedOnFlop
+WHEN (((BotsLastAction = Bet) AND (BotsActionsOnThisRound = 1) AND (Raises = 1) AND (AmountToCall < 29% PotSize)) AND log$line_1352_Var) UserMinRaiserOnFlop
+WHEN (((Bets = 1 AND Raises = 0) AND ((BetSize <= 20% PotSize) OR (BetSize <= 2))) AND log$line_1353_Var) UserFishBettorOnFlop
+WHEN (((BotsActionsOnThisRound = 0) AND (Bets = 1 AND Raises = 0) AND (BetSize < 54% PotSize) AND (BetSize > 47% PotSize)) AND log$line_1354_Var) UserPotSizedBettorOnFlop
+WHEN ((NOT (RaisesBeforeFlop OR BotRaisedBeforeFlop)) AND log$line_1355_Var) UserUnraisedPot
+
+turn
+
+river
