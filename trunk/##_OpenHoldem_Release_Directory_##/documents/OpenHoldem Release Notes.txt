@@ -33,6 +33,10 @@ BUG FIXES:
 - The islistNNN-symbols got calculated on my turn, but could get used beforehand.
   Thanks to Spew for finding this problem.
   [THF]
+- The reset-functions (ResetOnMyTurn / ResetOnHeartBeat / ...) could crash if OH 
+  was loading a new formula at the same time.
+  Thanks to Mr. Equity for reporting this race-condition and providing the fix.
+  [THF]
 
 MAINTENANCE:
 - We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
