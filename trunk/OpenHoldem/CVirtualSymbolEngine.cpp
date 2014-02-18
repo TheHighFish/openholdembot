@@ -41,3 +41,8 @@ bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result)
 	return false;
 }
 
+/*!!!CString CVirtualSymbolEngine::IdentifiersProvided()
+{
+	return "";
+}*/
+

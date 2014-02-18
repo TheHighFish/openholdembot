@@ -76,7 +76,6 @@ void CPopupHandler::HandleAllWindows(bool hard_kill)
 	EnumWindows(EnumProcPotentialPopups, LPARAM(hard_kill));
 }
 
-
 void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 {
 	char title[MAX_WINDOW_TITLE];

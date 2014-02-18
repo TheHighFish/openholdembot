@@ -33,6 +33,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();;
+public:
 	int nchairsdealtright()		{ return _nchairsdealtright;	}
 	int nchairsdealtleft()		{ return _nchairsdealtleft;		}
 	int betpositionrais()		{ return _betpositionrais;		}

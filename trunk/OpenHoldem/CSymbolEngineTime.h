@@ -34,6 +34,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();;
+public:
 	double elapsed()		{ return _elapsed; }
 	double elapsedhand()	{ return _elapsedhand; }
 	double elapsedauto()	{ return _elapsedauto; }

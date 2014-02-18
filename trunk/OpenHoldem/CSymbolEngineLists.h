@@ -32,6 +32,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();
+public:
 	bool IsList(const int list) 
 	{ 
 		if ((list >= 0) && (list < MAX_HAND_LISTS))

@@ -39,6 +39,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();;
+public:
 	// Pokerval
 	int pokerval()			{ return _pokerval; }
 	int pokervalplayer()	{ return _pokervalplayer; }
