@@ -309,10 +309,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CFilenames.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CFileSystemMonitor.cpp"
 				>
 			</File>
@@ -1183,6 +1179,10 @@
 				Name="Various Function Libraries"
 				>
 				<File
+					RelativePath=".\CFilenames.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CStringMatch.cpp"
 					>
 				</File>
@@ -1198,6 +1198,10 @@
 					RelativePath=".\StringFunctions.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\WindowFunctions.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1211,10 +1215,6 @@
 			</File>
 			<File
 				RelativePath=".\CEvalInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CFilenames.h"
 				>
 			</File>
 			<File
@@ -1270,10 +1270,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CStringMatch.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CValidator.h"
 				>
 			</File>
@@ -1286,10 +1282,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MagicNumbers.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MD5_Checksum.h"
 				>
 			</File>
@@ -1299,10 +1291,6 @@
 			</File>
 			<File
 				RelativePath=".\MyCToolBar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NumericalFunctions.h"
 				>
 			</File>
 			<File
@@ -1327,18 +1315,6 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StringFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SwagAdjustment.h"
-				>
-			</File>
-			<File
-				RelativePath=".\WindowFunctions.h"
 				>
 			</File>
 			<Filter
@@ -1652,10 +1628,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineTableLimits.h"
-						>
-					</File>
-					<File
 						RelativePath=".\CSymbolEngineTime.h"
 						>
 					</File>
@@ -1896,6 +1868,10 @@
 					RelativePath=".\PokerChat.hpp"
 					>
 				</File>
+				<File
+					RelativePath=".\SwagAdjustment.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="AutoConnector"
@@ -1990,6 +1966,34 @@
 				</File>
 				<File
 					RelativePath=".\CTablemapVersionChecker.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Various Function Libraries"
+				>
+				<File
+					RelativePath=".\CFilenames.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CStringMatch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\MagicNumbers.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NumericalFunctions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\StringFunctions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\WindowFunctions.h"
 					>
 				</File>
 			</Filter>

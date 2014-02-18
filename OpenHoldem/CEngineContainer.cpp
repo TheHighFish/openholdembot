@@ -202,6 +202,11 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 		// until OnConnection() got executed.
 		return;
 	}
+	if (p_formula->IsParsing())
+	{
+		// Not safe to evaluate anything
+		return;
+	}
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround

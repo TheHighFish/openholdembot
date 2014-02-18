@@ -36,6 +36,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();;
+public:
 	int nhands()		{ return (_nhandshi + _nhandslo + _nhandsti); }
 	int nhandshi()		{ return _nhandshi; }
 	int nhandslo()		{ return _nhandslo; }

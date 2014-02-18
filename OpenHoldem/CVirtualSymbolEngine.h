@@ -27,6 +27,8 @@ public:
 	virtual void ResetOnHeartbeat();
 public:
 	virtual bool EvaluateSymbol(const char *name, double *result);
+	// To build a list of identifiers for the editor
+	//!!!virtual CString IdentifiersProvided();
 };
 
 #endif INC_CVIRTUALSYMBOLENGINE_H

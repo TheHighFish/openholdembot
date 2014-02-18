@@ -20,11 +20,12 @@ inline void MinimizeWindow(HWND window)
 	ShowWindow(window, SW_MINIMIZE);
 }
 
-inline void WinGetProcessPath(HWND window, char* path, int max_length)
+inline void WinGetProcessName(HWND window, char* name, int max_length)
 {
-	//!!!int PID = GetWindowThreadProcessId(window, ));
-	//GetModuleFileName(PID, path, max_length);
+	//!!! Get it from WinGetProcessPath()
 }
+
+void WinGetProcessPath(HWND window, char* path, int max_length);
 
 inline bool WinIsDesktop(HWND window)
 {
@@ -42,25 +43,9 @@ inline bool WinIsMinimized(HWND window)
 	return ::IsIconic(window);
 }
 
-inline bool WinIsOpenHoldem(HWND window)
-{
-	return false; //!!!
-}
+bool WinIsOpenHoldem(HWND window);
 
-inline bool WinIsOutOfScreen(HWND window)
-{
-	RECT rect;
-	if (!GetWindowRect(window, &rect))
-	{
-		return false;
-	}
-	static RECT desktop;
-	GetWindowRect(GetDesktopWindow(), &desktop);
-	return((rect.right < 0)
-		|| (rect.bottom < 0)
-		|| (rect.top > desktop.bottom)
-		|| (rect.left > desktop.right));
-}
+bool WinIsOutOfScreen(HWND window);
 
 inline bool WinIsProgramManager(HWND window)
 {

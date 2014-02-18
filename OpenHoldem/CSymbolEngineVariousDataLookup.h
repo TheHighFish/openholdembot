@@ -33,6 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	bool EvaluateSymbol(const char *name, double *result);
+	CString IdentifiersProvided();
 private:
 } *p_symbol_engine_various_data_lookup;
 

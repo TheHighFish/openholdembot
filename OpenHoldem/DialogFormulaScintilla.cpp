@@ -94,7 +94,7 @@ CString keywords = // Standard functions
 				  // Players, Opponents
 				  "nopponents nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
 				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
-				  "nopponentschecking nopponentscalling nopponentsraising nopponentsbetting nopponentsfolded "
+				  "nopponentschecking nopponentscalling nopponentsraising nopponentstruelyraising nopponentsbetting nopponentsfolded "
 				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
 				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
 				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
@@ -180,8 +180,12 @@ CString keywords = // Standard functions
 				  // Poker Tracker ring symbols and
 				  // Poker Tracker ring symbols for the "raischair"
 				  // get appended dynamically later
-				  
 
+CString OpenPPL_keywords = "Custom Preflop Flop Turn River "
+	"When Allin RaiseMax BetMax RaisePot BetPot RaiseHalfPot BetHalfPot "
+	"Raise Bet Call Play Check Fold Beep Force Delay "
+	"And Or Not XOr BitAnd BitOr BitNot BitXOr Mod ";
+				  
 #define ID_SCIN_SIZERBAR 5555
 
 static UINT WM_FINDREPLACE = ::RegisterWindowMessage(FINDMSGSTRING);
@@ -477,7 +481,6 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 			}
 		}
 	}
-
 }
 
 void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) 
@@ -2606,25 +2609,37 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 
 	if (enabled) 
 	{
+		// Default: black
 		pWnd->SetForeground(0, RGB(0x00, 0x00, 0x00));		// SCE_C_DEFAULT 0
+		// Comments: green
 		pWnd->SetForeground(1, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENT 1	  (//)
 		pWnd->SetForeground(2, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENTLINE 2  (/* */)
-		//pWnd->SetForeground(3, RGB(0x00, 0x00, 0x00));	// SCE_C_COMMENTDOC 3
-		//pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
-		pWnd->SetForeground(5, RGB(0x00, 0x33, 0xcc));		// SCE_C_WORD 5			(keywords)
-		//pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
-		//pWnd->SetForeground(7, RGB(0x00, 0x00, 0x00));	// SCE_C_CHARACTER 7
-		//pWnd->SetForeground(8, RGB(0x00, 0x00, 0x00));	// SCE_C_UUID 8
-		//pWnd->SetForeground(9, RGB(0x00, 0x00, 0x00));	// SCE_C_PREPROCESSOR 9
-		pWnd->SetForeground(10, RGB(0xff, 0x00, 0x00));	// SCE_C_OPERATOR 10	(operators)
-		//pWnd->SetForeground(11, RGB(0x00, 0x00, 0x00));  // SCE_C_IDENTIFIER 11
-		//pWnd->SetForeground(12, RGB(0x00, 0x00, 0x00));  // SCE_C_STRINGEOL 12
-		//pWnd->SetForeground(13, RGB(0x00, 0x00, 0x00));  // SCE_C_VERBATIM 13
-		//pWnd->SetForeground(14, RGB(0x00, 0x00, 0x00));  // SCE_C_REGEX 14
-		//pWnd->SetForeground(15, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTLINEDOC 15
-		//pWnd->SetForeground(16, RGB(0x00, 0x00, 0x00));  // SCE_C_WORD2 16
-		//pWnd->SetForeground(17, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORD 17
-		//pWnd->SetForeground(18, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORDERROR 18
+		/*
+		pWnd->SetForeground(3, RGB(0x00, 0x00, 0x00));	// SCE_C_COMMENTDOC 3
+		*/
+		// Number: black
+		pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
+		// Keywords: !!!
+		pWnd->SetForeground(5, RGB(0x80, 0x33, 0x80));		// SCE_C_WORD 5			(keywords)
+		/*
+		pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
+		pWnd->SetForeground(7, RGB(0x00, 0x00, 0x00));	// SCE_C_CHARACTER 7
+		pWnd->SetForeground(8, RGB(0x00, 0x00, 0x00));	// SCE_C_UUID 8
+		pWnd->SetForeground(9, RGB(0x00, 0x00, 0x00));	// SCE_C_PREPROCESSOR 9
+		*/
+		// Operators: red
+		pWnd->SetForeground(10, RGB(0xff, 0x00, 0x00));		// SCE_C_OPERATOR 10	(operators)
+		/*
+		pWnd->SetForeground(11, RGB(0x00, 0x00, 0x00));  // SCE_C_IDENTIFIER 11
+		pWnd->SetForeground(12, RGB(0x00, 0x00, 0x00));  // SCE_C_STRINGEOL 12
+		pWnd->SetForeground(13, RGB(0x00, 0x00, 0x00));  // SCE_C_VERBATIM 13
+		pWnd->SetForeground(14, RGB(0x00, 0x00, 0x00));  // SCE_C_REGEX 14
+		pWnd->SetForeground(15, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTLINEDOC 15
+		pWnd->SetForeground(16, RGB(0x00, 0x00, 0x00));  // SCE_C_WORD2 16
+		pWnd->SetForeground(17, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORD 17
+		pWnd->SetForeground(18, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORDERROR 18
+		*/
+		// Background:
 		pWnd->SetBackground(19, RGB(250, 240, 0));  // SCE_C_GLOBALCLASS 19
 	}
 	else 

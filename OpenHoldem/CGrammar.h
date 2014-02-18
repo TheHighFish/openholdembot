@@ -274,7 +274,7 @@ struct exec_grammar : public grammar<exec_grammar>
 
 			cond_expr = logical_or_expr >> *(root_node_d[QUEST_OP] >> cond_expr >> COLON_OP >> cond_expr);
 
-			// Epsilon-expressions are no longer allowed to avoid crashed,
+			// Epsilon-expressions are no longer allowed to avoid crashes,
 			// when the expsilon expression gets evaluated e.g. inside empty brackets.
 			// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=12232&start=0
 			// they should however be allowed as top-level expressions,
