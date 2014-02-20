@@ -18,7 +18,7 @@
 #include "..\CTablemap\CTablemap.h"
 
 
-extern class CAutoConnector
+class CAutoConnector
 {
 public:
 	CAutoConnector();
@@ -51,6 +51,8 @@ private:
 private:
 	// Mutex used for cross-instance autoconnector coordination
 	CMutex		*_autoconnector_mutex;
-} *p_autoconnector;
+};
+
+extern  CAutoConnector *p_autoconnector;
 
 #endif INC_CAUTOCONNECTOR_H

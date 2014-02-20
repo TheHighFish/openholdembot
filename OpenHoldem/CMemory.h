@@ -20,7 +20,7 @@
 // Forward declaration
 class CEvalInfoFunction;
 	
-extern class CMemory 
+class CMemory 
 {
 public:
 	// public functions
@@ -51,6 +51,8 @@ private:
 
 	CCritSec			m_critsec;
 
-} *p_memory;
+};
+
+extern CMemory *p_memory;
 
 #endif //INC_MEMORY_H

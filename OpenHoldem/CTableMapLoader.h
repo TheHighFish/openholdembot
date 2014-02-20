@@ -21,7 +21,7 @@
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title);
 
-extern class CTableMapLoader
+class CTableMapLoader
 {
 public:
 	CTableMapLoader();
@@ -40,6 +40,8 @@ private:
 private:
 	bool	tablemaps_in_scraper_folder_already_parsed;
 	int		_number_of_tablemaps_loaded;
-} *p_tablemap_loader;
+};
+
+extern CTableMapLoader *p_tablemap_loader;
 
 #endif // INC_CTABLEMAPLOADER_H

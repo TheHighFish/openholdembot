@@ -17,7 +17,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "..\CTransform\CTransform.h"
 
-extern class CSymbolEnginePositions: public CVirtualSymbolEngine
+class CSymbolEnginePositions: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePositions();
@@ -54,6 +54,8 @@ private:
 	int _betposition;
 	int _dealposition;
 	int _callposition;
-} *p_symbol_engine_positions;
+};
+
+extern CSymbolEnginePositions *p_symbol_engine_positions;
 
 #endif INC_CSYMBOLENGINEPOSITIONS_H

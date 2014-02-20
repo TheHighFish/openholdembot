@@ -16,7 +16,7 @@
 
 #include "MagicNumbers.h"
 
-extern class CSessionCounter
+class CSessionCounter
 {
 public:
 	// public functions
@@ -36,6 +36,8 @@ private:
 	// private functions and variables - not available via accessors or mutators		
 	HANDLE hMutex;
 
-} *p_sessioncounter;
+};
+
+extern CSessionCounter *p_sessioncounter;
 
 #endif //INC_CSESSIONCOUNTER_H

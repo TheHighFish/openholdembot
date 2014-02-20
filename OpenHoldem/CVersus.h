@@ -16,7 +16,7 @@
 
 #include "..\CCritSec\CCritSec.h"
 
-extern class CVersus 
+class CVersus 
 {
 public:
 	// public functions
@@ -47,6 +47,8 @@ private:
 
 	CCritSec		m_critsec;
 
-} *p_versus;
+};
+
+extern CVersus *p_versus;
 
 #endif INC_CVERSUS_H

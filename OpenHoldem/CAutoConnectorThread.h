@@ -14,7 +14,7 @@
 #ifndef INC_CAUTOCONNECTORTHREAD_H
 #define INC_CAUTOCONNECTORTHREAD_H
 
-extern class CAutoConnectorThread
+class CAutoConnectorThread
 {
 public:
 	CAutoConnectorThread();
@@ -25,6 +25,8 @@ public:
 	void StartThread();
 private:
 	static UINT AutoConnectorThreadFunction(LPVOID pParam);
-} *p_autoconnectorthread;
+};
+
+extern CAutoConnectorThread *p_autoconnectorthread;
 
 #endif // INC_CAUTOCONNECTORTHREAD_H

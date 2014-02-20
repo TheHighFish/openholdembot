@@ -21,7 +21,7 @@
 
 #define BETROUND p_betround_calculator->betround()
 
-extern class CBetroundCalculator
+class CBetroundCalculator
 {
 public:
 	CBetroundCalculator();
@@ -42,6 +42,8 @@ public:
 private:
 	int _betround;
 	int _betround_previous_heartbeat;
-} *p_betround_calculator;
+};
+
+extern CBetroundCalculator *p_betround_calculator;
 
 #endif

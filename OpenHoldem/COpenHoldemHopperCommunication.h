@@ -11,6 +11,9 @@
 //
 //***************************************************************************** 
 
+#ifndef INC_COPENHOLDEMHOPPERCOMMUNICATION_H
+#define INC_COPENHOLDEMHOPPERCOMMUNICATION_H
+
 // WM_APP = 0x8000 = 32768
 // Messages 0..WM_APP reserved for Windows
 // Messages (WM_APP + 1)..0xBFFF user-defined
@@ -24,7 +27,7 @@ const int WMA_RESETFLAG     = WM_APP + 6;
 const int WMA_ISREADY       = WM_APP + 7;
 
 
-extern class COpenHoldemHopperCommunication: public CWnd
+class COpenHoldemHopperCommunication: public CWnd
 {
 public:
 	COpenHoldemHopperCommunication();
@@ -39,4 +42,8 @@ public:
 	LRESULT OnIsReadyMessage(WPARAM, LPARAM);
 protected:
 	DECLARE_MESSAGE_MAP()
-} *p_openholdem_hopper_communication;
+};
+
+extern COpenHoldemHopperCommunication *p_openholdem_hopper_communication;
+
+#endif INC_COPENHOLDEMHOPPERCOMMUNICATION_H

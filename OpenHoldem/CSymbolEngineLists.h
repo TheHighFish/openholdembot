@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineLists: public CVirtualSymbolEngine
+class CSymbolEngineLists: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineLists();
@@ -60,6 +60,8 @@ private:
 	void ErrorListNumberOutOfRange(int list);
 private:
 	bool _is_list[MAX_HAND_LISTS];
-} *p_symbol_engine_lists;
+};
+
+extern CSymbolEngineLists *p_symbol_engine_lists;
 
 #endif INC_CSYMBOLENGINELISTS_H

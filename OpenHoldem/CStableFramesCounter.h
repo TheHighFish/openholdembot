@@ -14,7 +14,7 @@
 #ifndef _INC_CSTABLEFRAMESCOUNTER_H
 #define _INC_CSTABLEFRAMESCOUNTER_H
 
-extern class CStableFramesCounter
+class CStableFramesCounter
 {
 public:
 	CStableFramesCounter();
@@ -36,6 +36,8 @@ private:
 	bool			_dealer_last[k_max_number_of_players];
 	double			_playerbalance_last[k_max_number_of_players];
 	double			_playerbet_last[k_max_number_of_players];
-} *p_stableframescounter;
+};
+
+extern CStableFramesCounter *p_stableframescounter;
 
 #endif // _INC_CSTABLEFRAMESCOUNTER_H

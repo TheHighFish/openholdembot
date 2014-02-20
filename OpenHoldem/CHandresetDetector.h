@@ -16,7 +16,7 @@
 
 #include "MagicNumbers.h"
 
-extern class CHandresetDetector
+class CHandresetDetector
 {
 public:
 	CHandresetDetector();
@@ -52,6 +52,8 @@ private:
 	CString last_handnumber;
 private:
 	bool _is_handreset_on_this_heartbeat;
-} *p_handreset_detector;
+};
+
+extern CHandresetDetector *p_handreset_detector;
 
 #endif INC_CHANDRESETDETECTOR_H

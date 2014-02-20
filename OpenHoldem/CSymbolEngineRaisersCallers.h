@@ -18,7 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "NumericalFunctions.h"
 
-extern class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
+class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineRaisersCallers();
@@ -109,6 +109,8 @@ private:
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
 	int _callbits[k_number_of_betrounds + 1]; 
-} *p_symbol_engine_raisers_callers;
+};
+
+extern CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers;
 
 #endif INC_CSYMBOLENGINERAISERSCALLERS_H

@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEnginePokerTracker: public CVirtualSymbolEngine
+class CSymbolEnginePokerTracker: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePokerTracker();
@@ -42,6 +42,8 @@ private:
 	void	ClearAllStats();
 private:
 	bool	check_for_identity_of_players_executed_this_heartbeat;
-} *p_symbol_engine_pokertracker;
+};
+
+extern CSymbolEnginePokerTracker *p_symbol_engine_pokertracker;
 
 #endif INC_CSYMBOLENGINEPOKERTRACKER_H

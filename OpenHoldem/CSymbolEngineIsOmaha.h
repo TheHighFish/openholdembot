@@ -17,7 +17,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineIsOmaha: public CVirtualSymbolEngine
+class CSymbolEngineIsOmaha: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineIsOmaha();
@@ -33,6 +33,8 @@ public:
 public:
 	// Public accessors
 	bool isomaha()		{ return false; }
-} *p_symbol_engine_isomaha;
+};
+
+extern CSymbolEngineIsOmaha *p_symbol_engine_isomaha;
 
 #endif INC_CSYMBOLENGINEISOMAHA_H

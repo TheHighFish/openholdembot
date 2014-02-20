@@ -14,7 +14,7 @@
 #ifndef INC_CCONFIGURATIONCHECK_H
 #define INC_CCONFIGURATIONCHECK_H
 
-extern class CConfigurationCheck
+class CConfigurationCheck
 {
 
 public:
@@ -39,6 +39,8 @@ private:
 	void CheckForMissingMSVCRT();
 	void CheckForMissingActivePerl();
 	void CheckForPerlPath();
-} *p_configurationcheck;
+};
+
+extern CConfigurationCheck *p_configurationcheck;
 
 #endif // INC_CCONFIGURATIONCHECK_H

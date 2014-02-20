@@ -34,7 +34,7 @@ struct SPlayerData
 extern SPlayerData _player_data[k_max_number_of_players];
 
 
-extern class CPokerTrackerThread 
+class CPokerTrackerThread 
 {
 	friend class CSymbolEnginePokerTracker;
 public:
@@ -85,6 +85,8 @@ private:
 
 	CWinThread			*_pt_thread;
 
-} *p_pokertracker_thread;
+};
+
+extern CPokerTrackerThread *p_pokertracker_thread;
 
 #endif //INC_CPOKERTRACKERTHREAD_H

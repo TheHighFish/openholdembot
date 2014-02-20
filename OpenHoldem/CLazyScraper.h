@@ -14,7 +14,7 @@
 #ifndef INC_CLAZYSCRAPER_H
 #define INC_CLAZYSCRAPER_H
 
-extern class CLazyScraper
+class CLazyScraper
 {
 public:
 	CLazyScraper();
@@ -27,6 +27,8 @@ private:
 private:
 	bool CardScrapeNeeded();
 	bool CompleteScrapeNeeded();
-} *p_lazyscraper;
+};
+
+extern CLazyScraper *p_lazyscraper;
 
 #endif // INC_CLAZYSCRAPER_H

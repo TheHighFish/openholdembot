@@ -53,7 +53,7 @@ struct	sData
 	CFormula	*pParent;
 };
 
-extern class CFormula 
+class CFormula 
 {
 public:
 	// public functions
@@ -119,6 +119,7 @@ private:
 
 	CCritSec		m_critsec;
 
-} *p_formula;
+};
+extern CFormula *p_formula;
 
 #endif //INC_CFORMULA_H

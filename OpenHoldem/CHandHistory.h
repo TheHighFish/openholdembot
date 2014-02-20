@@ -19,7 +19,7 @@
 
 using namespace std;
 
-extern class CHandHistory
+class CHandHistory
 {
 public:
 	CHandHistory();
@@ -102,6 +102,8 @@ private:
 	double pot;
 	int bblind;
 	int dealerchair;
-} *p_handhistory;
+};
+
+extern CHandHistory *p_handhistory;
 
 #endif // _INC_CHANDHISTORY_H

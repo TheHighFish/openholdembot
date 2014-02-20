@@ -20,7 +20,7 @@
 
 enum dim {width, height};
 
-extern class CTablemapAccess
+class CTablemapAccess
 {
 
 public:
@@ -47,6 +47,8 @@ public:
 	unsigned int GetClientSizeX();
 	unsigned int GetClientSizeY();
 	
-} *p_tablemap_access;
+};
+
+extern CTablemapAccess *p_tablemap_access;
 
 #endif // INC_CTABLEMAPACCESS_H

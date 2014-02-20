@@ -21,7 +21,7 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
-extern class CSymbolEnginePokerval: public CVirtualSymbolEngine
+class CSymbolEnginePokerval: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePokerval();
@@ -136,6 +136,8 @@ private:
 private:
 	int nCards;
 	HandVal	handval; 
-} *p_symbol_engine_pokerval;
+};
+
+extern CSymbolEnginePokerval *p_symbol_engine_pokerval;
 
 #endif INC_CSYMBOLENGINEPOKERVAL_H

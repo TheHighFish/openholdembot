@@ -14,7 +14,7 @@
 #ifndef INC_CPOPUPHANDLER_H
 #define INC_CPOPUPHANDLER_H
 
-extern class CPopupHandler
+class CPopupHandler
 {
 public:
 	CPopupHandler();
@@ -30,6 +30,8 @@ private:
 	void MinimizeAllOnstartup();
 private:
 	void HandleAllWindows(bool hard_kill);
-} *p_popup_handler;
+};
+
+extern CPopupHandler *p_popup_handler;
 
 #endif

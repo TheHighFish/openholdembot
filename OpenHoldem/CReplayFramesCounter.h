@@ -20,7 +20,7 @@
 
 #include "..\CCritSec\CCritSec.h"
 
-extern class CReplayFramesCounter
+class CReplayFramesCounter
 {
 public:
 	CReplayFramesCounter();
@@ -35,6 +35,8 @@ private:
 	// _current_last_replay_frame holds the value of the last replay-frame in use.
 	int _current_last_replay_frame;
 	CCritSec m_critsec;
-} *p_replayframes_counter;
+};
+
+extern CReplayFramesCounter *p_replayframes_counter;
 
 #endif INC_CREPLAYFRAMESCOUNTER_H

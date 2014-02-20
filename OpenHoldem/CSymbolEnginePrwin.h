@@ -20,7 +20,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
-extern class CSymbolEnginePrwin: public CVirtualSymbolEngine
+class CSymbolEnginePrwin: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEnginePrwin();
@@ -57,6 +57,8 @@ private:
 	double _prlosnow;
 private:
 	int _nopponents_for_prwin;
-} *p_symbol_engine_prwin;
+};
+
+extern CSymbolEnginePrwin *p_symbol_engine_prwin;
 
 #endif INC_CSYMBOLENGINEPRWIN_H

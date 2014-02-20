@@ -14,7 +14,7 @@
 #ifndef INC_OPENHOLDEM_STATUSBAR_H
 #define INC_OPENHOLDEM_STATUSBAR_H
 
-extern class COpenHoldemStatusbar
+class COpenHoldemStatusbar
 {
 public:
 	COpenHoldemStatusbar(CWnd *main_window);
@@ -35,6 +35,8 @@ private:
 	CString		_status_prwin,		_status_nopp,		_status_nit; 
 	CString		_status_action,		_status_handrank;
 	bool is_basic_statusbar;
-} *p_openholdem_statusbar;
+};
+
+extern COpenHoldemStatusbar *p_openholdem_statusbar;
 
 #endif // INC_STATUSBAR_H

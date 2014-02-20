@@ -18,7 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "CSymbolEngineUserChair.h"
 
-extern class CSymbolEngineHistory: public CVirtualSymbolEngine
+class CSymbolEngineHistory: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineHistory();
@@ -71,7 +71,9 @@ private:
 	//   but it does not hurt to have a simple and extensible interface.
 	//   "betpot" gets treated as swag, etc.
 	int _autoplayer_actions[k_number_of_betrounds + 1][k_autoplayer_function_fold];
-} *p_symbol_engine_history;
+};
+
+extern CSymbolEngineHistory *p_symbol_engine_history;
 
 #endif INC_CSYMBOLENGINEHISTORY_H
 

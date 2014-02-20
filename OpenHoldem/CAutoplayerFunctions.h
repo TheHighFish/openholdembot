@@ -14,7 +14,7 @@
 #ifndef INC_CAUTOPLAYER_FUNCTIONS
 #define INC_CAUTOPLAYER_FUNCTIONS
 
-extern class CAutoplayerFunctions
+class CAutoplayerFunctions
 {
 public:
 	CAutoplayerFunctions();
@@ -48,6 +48,8 @@ public:
 private:
 	double _autoplayer_functionvalues[k_number_of_standard_functions];
 	CCritSec	m_critsec;
-} *p_autoplayer_functions;
+};
+
+extern CAutoplayerFunctions *p_autoplayer_functions;
 
 #endif // INC_CAUTOPLAYER_FUNCTIONS

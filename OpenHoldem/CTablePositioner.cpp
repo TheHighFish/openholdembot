@@ -46,6 +46,7 @@ void CTablePositioner::PositionMyWindow()
 		// but if MicroSofts table-arranging functions see a NULL
 		// they will arrange all windows at the desktop.
 		// That's not what we want.
+		MessageBox(0, "No tables", "blocker", 0);
 		return;
 	}
 	if (preferences.table_positioner_options() == k_position_tables_tiled)

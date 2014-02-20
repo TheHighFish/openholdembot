@@ -47,7 +47,7 @@ struct SLimitInfo
 	bool	found_bb_BB;
 };
 
-extern class CScraper 
+class CScraper 
 {
 public:
 	// public functions
@@ -234,6 +234,8 @@ private:
 
 	CCritSec		m_critsec;
 
-} *p_scraper;
+};
+
+extern CScraper *p_scraper;
 
 #endif // INC_CSCRAPER_H

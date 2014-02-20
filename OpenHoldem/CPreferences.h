@@ -170,7 +170,7 @@ enum
 	k_prefs_last_CString_value,
 };
 
-extern class CPreferences
+class CPreferences
 {
 public:
 	// public functions
@@ -354,6 +354,8 @@ private:
 
 	CCritSec		m_critsec;
 	CString			_preferences_heading;
-} preferences;
+};
+
+extern CPreferences preferences;
 
 #endif // INC_CPREFERENCES_H_

@@ -29,7 +29,7 @@ struct STableLimit
 	// They get stored separately and not auto-locked.
 };
 
-extern class CSymbolEngineTableLimits: public CVirtualSymbolEngine
+class CSymbolEngineTableLimits: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineTableLimits();
@@ -110,6 +110,8 @@ private:
 	double	_ante;
 	// Index 1..4 is for current bettinground, 0 is unused
 	double _betsizes_for_all_bettingrounds[k_number_of_betrounds+1]; 
-} *p_symbol_engine_tablelimits;
+};
+
+extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

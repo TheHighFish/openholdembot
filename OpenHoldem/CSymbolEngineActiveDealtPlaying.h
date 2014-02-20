@@ -18,7 +18,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "NumericalFunctions.h"
 
-extern class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine
+class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineActiveDealtPlaying();
@@ -67,6 +67,8 @@ private:
 	int _playersplayingbits;
 	int _playersdealtbits;
 	int _playersseatedbits;
-} *p_symbol_engine_active_dealt_playing;
+};
+
+extern CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing;
 
 #endif INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H

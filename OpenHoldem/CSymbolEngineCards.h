@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineCards: public CVirtualSymbolEngine
+class CSymbolEngineCards: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineCards();
@@ -135,6 +135,8 @@ private:
 private:
 	 // Card masks
 	CardMask heartsCards, diamondsCards, clubsCards, spadesCards;
-} *p_symbol_engine_cards;
+};
+
+extern CSymbolEngineCards *p_symbol_engine_cards;
 
 #endif INC_CSYMBOLENGINECARDS_H

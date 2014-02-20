@@ -48,7 +48,7 @@ struct SHoldemState
 };
 
 
-extern class CDllExtension 
+class CDllExtension 
 {
 public:
 	// public functions
@@ -72,7 +72,9 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	process_message_t	_process_message;
 
-} *p_dll_extension;
+};
+
+extern CDllExtension *p_dll_extension;
 
 
 extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);

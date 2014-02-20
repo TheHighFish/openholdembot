@@ -11,7 +11,7 @@
 //
 //***************************************************************************** 
 
-extern class CFilenames
+class CFilenames
 {
 public:
 	CFilenames();
@@ -37,4 +37,6 @@ private:
 	CString IniFilename();
 private:
 	char _startup_path[MAX_PATH];
-} *p_filenames;
+};
+
+extern CFilenames *p_filenames;
