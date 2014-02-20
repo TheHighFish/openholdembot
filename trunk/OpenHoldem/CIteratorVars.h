@@ -16,7 +16,7 @@
 #ifndef INC_CITERATORVARS_H
 #define INC_CITERATORVARS_H
 
-extern class CIteratorVars
+class CIteratorVars
 {
 public:
 	// public functions
@@ -64,7 +64,8 @@ private:
 private:
 	// private functions and variables - not available via accessors or mutators
 	CCritSec	m_critsec;
+};
 
-} iter_vars;
+extern CIteratorVars iter_vars;
 
 #endif INC_CITERATORVARS_H

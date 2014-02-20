@@ -26,7 +26,7 @@
 // We chose the first solution for its simplicity
 
 
-extern class CSharedMem
+class CSharedMem
 {
 public:
 	CSharedMem();
@@ -47,6 +47,8 @@ private:
 	#define ENT CSLock lock(m_critsec);
 private:
 	CCritSec	m_critsec;
-} *p_sharedmem;
+};
+
+extern CSharedMem *p_sharedmem;
 
 #endif INC_CSHAREDMEM_H

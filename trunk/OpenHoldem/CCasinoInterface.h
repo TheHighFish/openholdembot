@@ -17,7 +17,7 @@
 #include "MagicNumbers.h"
 
 
-extern class CCasinoInterface
+class CCasinoInterface
 {
 
 public:
@@ -54,7 +54,8 @@ public:
 	RECT i3_handle_region;
 	RECT i86_button;
 	RECT i86X_button[k_max_number_of_i86X_buttons];
+}; 
 
-} *p_casino_interface;
+extern CCasinoInterface *p_casino_interface;
 
 #endif // INC_CCasinoInterface_H

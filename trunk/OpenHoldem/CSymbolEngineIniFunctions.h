@@ -22,7 +22,7 @@
 
 #include "CGrammar.h"
 
-extern class CSymbolEngineIniFunctions: public CVirtualSymbolEngine
+class CSymbolEngineIniFunctions: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineIniFunctions();
@@ -38,6 +38,8 @@ public:
 
 private:
 	CGrammar gram;
-} *p_symbol_engine_ini_functions;
+};
+
+extern CSymbolEngineIniFunctions *p_symbol_engine_ini_functions;
 
 #endif INC_CSYMBOLENGINEINIFUNCTIONS_H

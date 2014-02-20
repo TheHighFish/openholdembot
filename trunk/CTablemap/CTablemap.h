@@ -122,7 +122,7 @@ struct SWholeMap
 	CString sitename;
 };
 
-extern class CTablemap 
+class CTablemap 
 {
 	friend class CTablemapAccess;
 public:
@@ -234,6 +234,8 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	CCritSec		m_critsec;
 
-} *p_tablemap;
+};
+
+extern CTablemap *p_tablemap;
 
 #endif //INC_CTABLEMAP_H

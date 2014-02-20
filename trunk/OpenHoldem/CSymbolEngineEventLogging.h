@@ -17,7 +17,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineEventLogging: public CVirtualSymbolEngine
+class CSymbolEngineEventLogging: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineEventLogging();
@@ -33,6 +33,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-} *p_symbol_engine_event_logging;
+};
+
+extern CSymbolEngineEventLogging *p_symbol_engine_event_logging;
 
 #endif INC_CSYMBOLENGINEEVENTLOGGING_H

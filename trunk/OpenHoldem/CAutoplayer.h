@@ -20,7 +20,7 @@
 #include "../CTablemap/CTableMapAccess.h"
 #include "OpenHoldem.h"
 
-extern class CAutoplayer 
+class CAutoplayer 
 {
 public:
 	// public functions
@@ -70,7 +70,9 @@ private:
 	bool	action_sequence_needs_to_be_finished;
 
 	CCritSec	m_critsec;
-} *p_autoplayer;
+};
+
+extern CAutoplayer *p_autoplayer;
 
 
 #endif //INC_CAUTOPLAYER_H

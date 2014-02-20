@@ -17,7 +17,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineIsTournament: public CVirtualSymbolEngine
+class CSymbolEngineIsTournament: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineIsTournament();
@@ -47,6 +47,8 @@ private:
 	// the istournament decision too quickly.
 	int _istournament;
 	bool _decision_locked;
-} *p_symbol_engine_istournament;
+};
+
+extern CSymbolEngineIsTournament *p_symbol_engine_istournament;
 
 #endif INC_CSYMBOLENGINEISTOURNAMENT_H

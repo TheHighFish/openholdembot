@@ -19,7 +19,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
-extern class CSymbolEngineAutoplayer: public CVirtualSymbolEngine
+class CSymbolEngineAutoplayer: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineAutoplayer();
@@ -64,6 +64,8 @@ private:
 	bool _ismanual;
 private:
 	bool _last_myturnbits;
-} *p_symbol_engine_autoplayer;
+};
+
+extern CSymbolEngineAutoplayer *p_symbol_engine_autoplayer;
 
 #endif INC_CSYMBOLENGINEAUTOPLAYER_H

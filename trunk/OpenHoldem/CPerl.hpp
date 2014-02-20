@@ -42,7 +42,7 @@ using namespace std;
 //
 static const unsigned int _size_of_result_buffer = 255;
 	
-extern class CPerl
+class CPerl
 {
 public:
 	// public functions
@@ -71,7 +71,9 @@ private:
 	void DoErrorCheck(const int error_code);
 	bool LoadDLL(void);
 
-} *p_perl;
+};
+
+extern CPerl *p_perl;
 
 #endif /* INC_CPEARL_H */
 

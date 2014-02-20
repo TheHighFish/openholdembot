@@ -16,7 +16,7 @@
 
 #include "NumericalFunctions.h"
 																																												
-extern class CValidator
+class CValidator
 {
 public:
 	// public functions
@@ -44,7 +44,9 @@ private:
 private:
 	bool _enabled_manually;
 	bool _no_errors_this_heartbeat;
-} *p_validator; 
+};
+
+extern CValidator *p_validator; 
 
 // Extern vars (inter-module)
 extern bool vali_ok1;

@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineOpenPPLHandAndBoardExpression: public CVirtualSymbolEngine
+class CSymbolEngineOpenPPLHandAndBoardExpression: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineOpenPPLHandAndBoardExpression();
@@ -46,6 +46,8 @@ private:
 	bool is_hand_expression;
 	bool is_board_expression;
 	CString hand_or_board_expression;
-} *p_symbol_engine_open_ppl_hand_and_board_expression;
+};
+
+extern CSymbolEngineOpenPPLHandAndBoardExpression *p_symbol_engine_open_ppl_hand_and_board_expression;
 
 #endif INC_CSYMBOLENGINE_HAND_AND_BOARD_EXPRESSION_H

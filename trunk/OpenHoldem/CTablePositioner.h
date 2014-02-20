@@ -14,7 +14,7 @@
 #ifndef INC_TABLE_POSITIONER_H
 #define INC_TABLE_POSITIONER_H
 
-extern class CTablePositioner
+class CTablePositioner
 {
 public:
 	CTablePositioner();
@@ -41,6 +41,8 @@ private:
 	int _new_left_x;
 	int _new_top_y;
 	RECT _desktop_rectangle;
-} *p_table_positioner;
+};
+
+extern CTablePositioner *p_table_positioner;
 
 #endif // INC_TABLE_POSITIONER_H

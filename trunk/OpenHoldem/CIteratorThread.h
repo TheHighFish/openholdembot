@@ -19,7 +19,7 @@
 
 extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29
 
-extern class CIteratorThread
+class CIteratorThread
 {
 public:
 	// public functions
@@ -57,7 +57,8 @@ private:
 	CardMask		_plCards, _comCards;
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
-} *p_iterator_thread;
+};
 
+extern CIteratorThread *p_iterator_thread;
 
 #endif //INC_CITERATORTHREAD_H

@@ -18,7 +18,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine
+class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineReplayFrameController();
@@ -36,6 +36,8 @@ public:
 	void ShootReplayFrameIfNotYetDone();
 private:
 	bool _replay_recored_this_turn;
-} *p_symbol_engine_replayframe_controller;
+};
+
+extern CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
 
 #endif INC_CSYMBOLENGINEREPLAYFRAMECONTROLLER_H

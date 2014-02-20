@@ -18,7 +18,7 @@
 
 #define DEALER_CHAIR p_symbol_engine_dealerchair->dealerchair()
 
-extern class CSymbolEngineDealerchair: public CVirtualSymbolEngine
+class CSymbolEngineDealerchair: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineDealerchair();
@@ -39,6 +39,8 @@ private:
 	void CalculateDealerChair();
 private:
 	int _dealerchair;
-} *p_symbol_engine_dealerchair;
+};
+
+extern CSymbolEngineDealerchair *p_symbol_engine_dealerchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

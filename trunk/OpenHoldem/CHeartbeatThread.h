@@ -18,7 +18,7 @@
 
 extern long int	_heartbeat_counter;
 
-extern class CHeartbeatThread
+class CHeartbeatThread
 {
 public:
 	// This critical section does not control access to any variables/members, but is used as 
@@ -45,6 +45,8 @@ private:
 private:
 	// private variables - use public accessors and public mutators to address these	
 	CCritSec		m_critsec;
-} *p_heartbeat_thread;
+};
+
+extern CHeartbeatThread *p_heartbeat_thread;
 
 #endif //INC_CHEARTBEATTHREAD_H

@@ -14,7 +14,7 @@
 #ifndef INC_CTABLEMAPVERSIONCHECKER_H 
 #define INC_CTABLEMAPVERSIONCHECKER_H 
 
-extern class CTablemapVersionChecker
+class CTablemapVersionChecker
 {
 public:
 	CTablemapVersionChecker();
@@ -24,6 +24,8 @@ public:
 	bool IsOutDatedMap();
 private:
 	bool _error_flag;
-} *p_tablemap_versionchecker;
+};
+
+extern CTablemapVersionChecker *p_tablemap_versionchecker;
 
 #endif // INC_CTABLEMAPVERSIONCHECKER_H 

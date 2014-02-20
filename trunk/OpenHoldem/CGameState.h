@@ -18,7 +18,7 @@
 #include "..\CCritSec\CCritSec.h"
 #include "MagicNumbers.h"
 
-extern class CGameState 
+class CGameState 
 {
 public:
 	// public functions
@@ -92,6 +92,8 @@ private:
 
 	CCritSec			m_critsec;
 
-} *p_game_state;
+};
+
+extern CGameState *p_game_state;
 
 #endif //INC_CGAMESTATE_H

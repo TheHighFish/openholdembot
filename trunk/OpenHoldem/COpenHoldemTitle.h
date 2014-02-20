@@ -11,7 +11,7 @@
 //
 //***************************************************************************** 
 
-extern class COpenHoldemTitle
+class COpenHoldemTitle
 {
 public:
 	COpenHoldemTitle();
@@ -25,4 +25,6 @@ private:
 private:
 	CString user_defined_title;		// defined via hopper-messages
 	CString simple_title;			// executale-name
-} *p_openholdem_title;
+};
+
+extern COpenHoldemTitle *p_openholdem_title;

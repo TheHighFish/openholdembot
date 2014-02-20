@@ -362,7 +362,7 @@ void CIteratorThread::InitNumberOfIterations()
 
 	int number_of_iterations = gram.CalcF$symbol(p_formula, 
 		"f$prwin_number_of_iterations", true, &e);
-	iter_vars.set_nit(10000); //!! number_of_iterations); 
+	iter_vars.set_nit(2500); //!! number_of_iterations); 
 }
 
 void CIteratorThread::InitIteratorLoop()

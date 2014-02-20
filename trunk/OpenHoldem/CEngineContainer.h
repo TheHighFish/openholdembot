@@ -18,7 +18,7 @@
 
 const int k_max_number_of_symbol_engines = 50;
 
-extern class CEngineContainer
+class CEngineContainer
 {
 public:
 	CEngineContainer();
@@ -63,6 +63,8 @@ private:
 	CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
 private:
 	CCritSec m_critsec;
-} *p_engine_container;
+};
+
+extern CEngineContainer *p_engine_container;
 
 #endif INC_CENGINECONTAINER_H

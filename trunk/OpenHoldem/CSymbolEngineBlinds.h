@@ -19,7 +19,7 @@
 #include "CSymbolengineUserChair.h"
 #include "NumericalFunctions.h"
 
-extern class CSymbolEngineBlinds: public CVirtualSymbolEngine
+class CSymbolEngineBlinds: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineBlinds();
@@ -46,6 +46,8 @@ private:
 private:
 	int _playersblindbits;
 	int _bblindbits;
-} *p_symbol_engine_blinds;
+};
+
+extern CSymbolEngineBlinds *p_symbol_engine_blinds;
 
 #endif INC_CSYMBOLENGINEBLINDS_H

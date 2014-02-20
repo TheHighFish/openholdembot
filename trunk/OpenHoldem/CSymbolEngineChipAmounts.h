@@ -20,7 +20,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
-extern class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
+class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineChipAmounts();
@@ -137,6 +137,8 @@ private:
 	double _ncallbets;
 	double _nraisbets;
 private:
-} *p_symbol_engine_chip_amounts;
+};
+
+extern CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

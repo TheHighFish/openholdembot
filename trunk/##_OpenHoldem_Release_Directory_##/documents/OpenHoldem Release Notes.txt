@@ -33,9 +33,12 @@ BUG FIXES:
 - The islistNNN-symbols got calculated on my turn, but could get used beforehand.
   Thanks to Spew for finding this problem.
   [THF]
-- The reset-functions (ResetOnMyTurn / ResetOnHeartBeat / ...) could crash if OH 
+- The engine-containers reset-functions (ResetOnMyTurn / ResetOnHeartBeat / ...) could crash if OH 
   was loading a new formula at the same time.
-  Thanks to Mr. Equity for reporting this race-condition and providing the fix.
+  Thanks to MrEquity for reporting this race-condition and providing the fix.
+  [THF]
+- OpenHoldem could crash after a mis-evaluation due to a typo in a functions name.
+  Thanks to for reporting and to MrEquity for providing a screenshot of the call-stack.
   [THF]
 
 MAINTENANCE:

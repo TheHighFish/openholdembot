@@ -19,7 +19,7 @@
 #ifndef INC_CVERSIONINFO_H
 #define INC_CVERSIONINFO_H
 
-extern class CVersionInfo
+class CVersionInfo
 {
 public:
 	CVersionInfo();
@@ -28,6 +28,8 @@ public:
 	CString GetVersionInfo();
 private:
 	CString _openholdem_MD5;
-} *p_version_info;
+};
+
+extern CVersionInfo *p_version_info;
 
 #endif INC_CVERSIONINFO_H

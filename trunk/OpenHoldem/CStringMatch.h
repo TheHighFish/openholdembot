@@ -14,7 +14,7 @@
 #ifndef INC_CSTRINGMATCH_H
 #define INC_CSTRINGMATCH_H
 
-extern class CStringMatch
+class CStringMatch
 {
 public:
 	// public functions
@@ -37,6 +37,8 @@ public:
 	const bool IsStringCardback(const CString s);
 	const bool IsStringDealer(const CString s);
 
-} *p_string_match;
+};
+
+extern CStringMatch *p_string_match;
 
 #endif // INC_CSTRINGMATCH_H

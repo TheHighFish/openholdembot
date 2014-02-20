@@ -16,7 +16,7 @@
 
 #include <map>
 
-extern class CPokerTrackerLookup
+class CPokerTrackerLookup
 {
 public:
 	// public functions
@@ -27,6 +27,8 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	std::map<CString, int>	_pt3_siteid;
-} pt_lookup;
+};
+
+extern CPokerTrackerLookup pt_lookup;
 
 #endif INC_CPOKERTRACKERLOOKUP_H

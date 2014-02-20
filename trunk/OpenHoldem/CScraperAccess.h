@@ -17,7 +17,7 @@
 
 #include <windows.h>
 
-extern class CScraperAccess
+class CScraperAccess
 {
 
 public:
@@ -104,6 +104,8 @@ public:
 public:
 	bool allin_option_available;
 
-} *p_scraper_access;
+};
+
+extern CScraperAccess *p_scraper_access;
 
 #endif // INC_CSCRAPERACCESS_H

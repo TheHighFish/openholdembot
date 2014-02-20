@@ -11,9 +11,12 @@
 //
 //***************************************************************************** 
 
+#ifndef INC_CFLAGSTOOLBAR_H
+#define INC_CFLAGSTOOLBAR_H
+
 #include "MyCtoolbar.h"
 
-extern class CFlagsToolbar: public CWnd
+class CFlagsToolbar: public CWnd
 {
 public:
 	CFlagsToolbar(CFrameWnd *parent_window);
@@ -46,4 +49,8 @@ private:
 	bool		_flags[k_number_of_flags];
 	CFrameWnd	*_parent_window;
 	CCritSec	m_critsec;
-} *p_flags_toolbar;
+};
+
+extern CFlagsToolbar *p_flags_toolbar;
+
+#endif INC_CFLAGSTOOLBAR_H

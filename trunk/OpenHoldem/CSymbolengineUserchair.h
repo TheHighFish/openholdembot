@@ -18,7 +18,7 @@
 
 #define USER_CHAIR p_symbol_engine_userchair->userchair()
 
-extern class CSymbolEngineUserchair: public CVirtualSymbolEngine
+class CSymbolEngineUserchair: public CVirtualSymbolEngine
 {
 public:
 	CSymbolEngineUserchair();
@@ -43,6 +43,8 @@ private:
 	void CalculateUserChair();
 private:
 	int _userchair;
-} *p_symbol_engine_userchair;
+};
+
+extern CSymbolEngineUserchair *p_symbol_engine_userchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

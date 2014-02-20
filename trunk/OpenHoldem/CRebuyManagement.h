@@ -18,8 +18,7 @@
 
 #include <time.h>
 
-
-extern class CRebuyManagement
+class CRebuyManagement
 {
 public:
 	CRebuyManagement();
@@ -51,6 +50,8 @@ private:
 private:
 	time_t	RebuyLastTime, CurrentTime;
 	CString	PreviousRebuyHandNumber;
-} *p_rebuymanagement;
+};
+
+extern CRebuyManagement *p_rebuymanagement;
 
 #endif	

@@ -17,7 +17,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-extern class CSymbolEngineVariousDataLookup: public CVirtualSymbolEngine
+class CSymbolEngineVariousDataLookup: public CVirtualSymbolEngine
 {
 public:
 	// public functions
@@ -35,6 +35,8 @@ public:
 	bool EvaluateSymbol(const char *name, double *result);
 	CString IdentifiersProvided();
 private:
-} *p_symbol_engine_various_data_lookup;
+};
+
+extern CSymbolEngineVariousDataLookup *p_symbol_engine_various_data_lookup;
 
 #endif /* INC_CSYMBOLS_H */
