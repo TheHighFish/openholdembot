@@ -15,6 +15,7 @@
 #include "CProblemSolver.h"
 
 #include "CAutoConnector.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineTime.h"
@@ -58,13 +59,13 @@ bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 
 bool CProblemSolver::NoCardsVisible()
 {
-	return (p_symbol_engine_pokerval->rankhiplayer() < 2);
+	return (!p_scraper_access->UserHasKnownCards());
 }
 
 bool CProblemSolver::NotEnoughButtonsVisible()
 {
 	// We need at least 2 visible buttons to play
-	return (p_symbol_engine_pokerval->npcbits() < 2);
+	return (p_scraper_access->NumberOfVisibleButtons() < 2);
 }
 
 

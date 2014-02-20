@@ -38,7 +38,7 @@ BUG FIXES:
   Thanks to MrEquity for reporting this race-condition and providing the fix.
   [THF]
 - OpenHoldem could crash after a mis-evaluation due to a typo in a functions name.
-  Thanks to for reporting and to MrEquity for providing a screenshot of the call-stack.
+  Thanks to OpenGeek for reporting and to MrEquity for providing a screenshot of the call-stack.
   [THF]
 
 MAINTENANCE:
