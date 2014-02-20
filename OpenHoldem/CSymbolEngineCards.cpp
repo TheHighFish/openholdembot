@@ -135,7 +135,7 @@ void CSymbolEngineCards::CalcPocketTests()
 	_issuited    = false;
 	_isconnector = false;
 
-	if (!p_scraper_access->UserHasCards())
+	if (!p_scraper_access->UserHasKnownCards())
 	{
 		return;
 	}
