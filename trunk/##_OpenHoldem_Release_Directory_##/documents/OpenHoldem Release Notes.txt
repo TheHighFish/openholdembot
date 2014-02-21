@@ -40,6 +40,9 @@ BUG FIXES:
 - OpenHoldem could crash after a mis-evaluation due to a typo in a functions name.
   Thanks to OpenGeek for reporting and to MrEquity for providing a screenshot of the call-stack.
   [THF]
+- Pokervalue constants got broken during a refactoring of a symbol-engine.
+  Thanks to Fqfq for reporting.
+  [THF]
 
 MAINTENANCE:
 - We removed the tablemap-symbols "uname" and "ubalance" (for the user only) when we cleaned up the scraper
