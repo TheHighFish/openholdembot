@@ -42,6 +42,7 @@ __declspec(allocate(".ohshmem"))	static	int		session_ID_of_last_instance_that_fa
 __declspec(allocate(".ohshmem"))	static	HWND	dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
 __declspec(allocate(".ohshmem"))	static	int		size_of_dense_list_of_attached_poker_windows;
 __declspec(allocate(".ohshmem"))	static	int		CRC_of_main_mutexname;
+__declspec(allocate(".ohshmem"))	static	int     openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
 
 
 #pragma data_seg()
@@ -60,11 +61,19 @@ CSharedMem::CSharedMem()
 	// We can verify the mutex here,
 	// because preferences have already been loaded.
 	VerifyMainMutexName();
+	// Share our process ID for the popup-blocker
+	assert(p_sessioncounter != NULL);
+	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
+	int my_PID = GetCurrentProcessId();
+	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
 }
 
 
 CSharedMem::~CSharedMem()
-{}
+{
+	// Clear my process ID
+	openholdem_PIDs[p_sessioncounter->session_id()] = 0;
+}
 
 
 bool CSharedMem::PokerWindowAttached(HWND Window)
@@ -201,4 +210,16 @@ void CSharedMem::VerifyMainMutexName()
 			"Mutex Error", 0);
 		PostQuitMessage(-1);
 	}
+}
+
+bool CSharedMem::IsAnyOpenHoldemProcess(int PID)
+{
+	for (int i=0; i<MAX_SESSION_IDS; i++)
+	{
+		if (openholdem_PIDs[i] == PID)
+		{
+			return true;
+		}
+	}
+	return false;
 }

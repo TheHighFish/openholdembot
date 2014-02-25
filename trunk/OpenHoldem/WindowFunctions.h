@@ -20,13 +20,6 @@ inline void MinimizeWindow(HWND window)
 	ShowWindow(window, SW_MINIMIZE);
 }
 
-inline void WinGetProcessName(HWND window, char* name, int max_length)
-{
-	//!!! Get it from WinGetProcessPath()
-}
-
-void WinGetProcessPath(HWND window, char* path, int max_length);
-
 inline bool WinIsDesktop(HWND window)
 {
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms633504%28v=vs.85%29.aspx

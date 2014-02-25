@@ -41,6 +41,7 @@ public:
 	// Used for the table positioner
 	HWND *GetDenseListOfConnectedPokerWindows();
 	int  SizeOfDenseListOfAttachedPokerWindows();
+	bool IsAnyOpenHoldemProcess(int PID);
 private:
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
