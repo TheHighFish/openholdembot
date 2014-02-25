@@ -15,6 +15,7 @@
 #include "WindowFunctions.h"
 
 #include <assert.h>
+#include "CSharedMem.h"
 #include "Psapi.h"
 
 RECT desktop_dimensions;
@@ -31,44 +32,14 @@ bool WinCalculateDesktopDimensions()
 	return true;
 }
 
-void WinGetProcessPath(HWND window, TCHAR* path, int max_length)
+bool WinIsOpenHoldem(HWND window)
 {
-	//int PID = GetWindowThreadProcessId(window, ));
-	//GetModuleFileName(PID, path, max_length);
-
-	/*HMODULE hModule = (HMODULE)GetClassLongPtr(window, GCLP_HMODULE);
-	if(!hModule)
-	{
-		path = "";
-		return;
-	}
-	if(!GetModuleFileName(hModule, path, sizeof(path) / sizeof(TCHAR)))
-	{
-		path = "";
-		return;
-	}*/
-
-	path = "";
-
 	DWORD PID;
 	if (!GetWindowThreadProcessId(window, &PID))
 	{
-		return;
+		return false;
 	}
-	HANDLE process_handle = OpenProcess(PROCESS_QUERY_INFORMATION, false, PID);
-	if (process_handle != NULL)
-	{
-		GetModuleFileNameEx(process_handle, NULL, path, max_length);
-		CloseHandle(process_handle);
-	}
-}
-
-bool WinIsOpenHoldem(HWND window)
-{
-	//TCHAR path[MAX_PATH];
-	//WinGetProcessPath(window, path, MAX_PATH);
-	//MessageBox(0, path, "WinProcessPath", 0);
-	return false; //!!!
+	return (p_sharedmem->IsAnyOpenHoldemProcess(PID));
 }
 
 bool WinIsOutOfScreen(HWND window)
