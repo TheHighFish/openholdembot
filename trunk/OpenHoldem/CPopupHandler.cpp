@@ -110,12 +110,19 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 		return;
 	}
 	// Second: ignore the good windows
+	//   and always present windows (to avoid flickering)
 	// This includes:
-	//   * program manager (desktop) to avoid flickering
+	//   * program manager (desktop) 
+	//   * task-bar with Start-button
 	//   * task manager to be able to kill the popup-blocker if necessary ;-)
 	if (WinIsDesktop(potential_popup))			
 	{
 		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is desktop\n");
+		return;
+	}
+	if (WinIsTaskbar(potential_popup))
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-bar with Start-button\n");
 		return;
 	}
 	if (WinIsTaskManager(potential_popup))			

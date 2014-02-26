@@ -40,6 +40,8 @@ bool WinIsOpenHoldem(HWND window);
 
 bool WinIsOutOfScreen(HWND window);
 
+bool WinIsTaskbar(HWND window);
+
 inline bool WinIsProgramManager(HWND window)
 {
 	return (FindWindow("Progman", "Program Manager") == window);
