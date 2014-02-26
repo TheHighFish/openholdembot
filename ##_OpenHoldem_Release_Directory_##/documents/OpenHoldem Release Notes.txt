@@ -1,4 +1,4 @@
-v4.5.0 2014-02-xx
+v4.5.0 2014-02-26
 ==================
 NEW STUFF: 
 - OpenHoldem still locks the userchair for stability reasons,
@@ -40,8 +40,13 @@ BUG FIXES:
 - OpenHoldem could crash after a mis-evaluation due to a typo in a functions name.
   Thanks to OpenGeek for reporting and to MrEquity for providing a screenshot of the call-stack.
   [THF]
-- Pokervalue constants got broken during a refactoring of a symbol-engine.
+- The lookup of pokervalue constants and $$pcX/$$prX/$$psX-symbols got broken 
+  during refactoring of some symbol-engine.
   Thanks to Fqfq for reporting.
+  [THF]
+- The symbols dealpositonrais and betpositionrais were broken,
+  because we exited a loop too early.
+  Thanks to Marquitos for reporting.
   [THF]
 
 MAINTENANCE:
@@ -50,7 +55,7 @@ MAINTENANCE:
   * the userchair might change
   * we already scrape pXname, uXname, . .. for all 10 chairs, so we have the information anyway
   * we were unable to find any tablemap which used these symbols
-  * and finally it seemed that even OpenHoldem didn't use these symbols anywhere.
+  * and finally it turned out that even OpenHoldem didn't use these symbols anywhere.
   [THF]
 
   
