@@ -89,7 +89,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 	strOneLine = "";
 	content = FTnone;
 	func.func = "";
-	while(ar.ReadString(strOneLine)) 
+	while (ar.ReadString(strOneLine)) 
 	{ 
 		// If this line marks the beginning of a function, then save the previously
 		// collected function, and start a new one
