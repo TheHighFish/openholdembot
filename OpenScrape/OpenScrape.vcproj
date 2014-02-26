@@ -345,6 +345,10 @@
 					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\OpenHoldem\StringFunctions.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="hscroll-list-box"
@@ -489,6 +493,10 @@
 				</File>
 				<File
 					RelativePath="..\CTransform\hash\stdint.h"
+					>
+				</File>
+				<File
+					RelativePath="..\OpenHoldem\StringFunctions.h"
 					>
 				</File>
 			</Filter>
