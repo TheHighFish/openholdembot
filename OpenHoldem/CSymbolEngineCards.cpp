@@ -63,6 +63,7 @@ void CSymbolEngineCards::ResetOnHandreset()
 	// hand tests
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
+		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
 		_$$pc[i] = WH_NOCARD;
 		_$$pr[i] = 0;
 		_$$ps[i] = 0;
@@ -547,6 +548,14 @@ void CSymbolEngineCards::CalculateHandTests()
 			AssertRange(rank, 0, k_rank_ace);
 			AssertRange(suit, 0, WH_SUIT_SPADES);
 
+			write_log(preferences.debug_symbolengine(), 
+				"[CSymbolEngineCards] Card = %i\n",
+				p_scraper->card_player(USER_CHAIR, i));
+			write_log(preferences.debug_symbolengine(), 
+				"[CSymbolEngineCards] Rank = %i\n", rank);
+			write_log(preferences.debug_symbolengine(), 
+				"[CSymbolEngineCards] Suit = %i\n", suit);
+
 			_$$pc[i] = (rank<<4) | suit;								  
 			_$$pr[i] = rank;						
 			_$$ps[i] = suit;	
@@ -811,27 +820,27 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result)
 		{
 			*result = $$pc(name[4]-'0');
 		}
-		if (memcmp(name, "$$pr", 4)==0)
+		else if (memcmp(name, "$$pr", 4)==0)
 		{
 			*result = $$pr(name[4]-'0');
 		}
-		if (memcmp(name, "$$ps", 4)==0)  
+		else if (memcmp(name, "$$ps", 4)==0)  
 		{
 			*result = $$ps(name[4]-'0');
 		}
-		if (memcmp(name, "$$cc", 4)==0)  
+		else if (memcmp(name, "$$cc", 4)==0)  
 		{
 			*result = $$cc(name[4]-'0');
 		}
-		if (memcmp(name, "$$cr", 4)==0)  
+		else if (memcmp(name, "$$cr", 4)==0)  
 		{
 			*result = $$cr(name[4]-'0');
 		}
-		if (memcmp(name, "$$cs", 4)==0)  
+		else if (memcmp(name, "$$cs", 4)==0)  
 		{
 			*result = $$cs(name[4]-'0');
 		}
-		if (memcmp(name, "$", 1)==0)  	
+		else if (memcmp(name, "$", 1)==0)  	
 		{
 			int *e = SUCCESS;
 			*result = IsHand(name, e);

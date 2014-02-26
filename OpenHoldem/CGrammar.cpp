@@ -363,14 +363,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	double			result = 0.0;
 	char			f$func[k_max_number_of_players] = {0}; 
 	const char		*ranks = "  23456789TJQKA";
-	int				rank_temp = 0;
 	
-	int				$$pc0 = p_symbol_engine_cards->$$pc(0);
-	int				$$pc1 = p_symbol_engine_cards->$$pc(1);
-	int				rank0 = RankOfCard($$pc0);
-	int				rank1 = RankOfCard($$pc1);
-	bool			sym_issuited = p_symbol_engine_cards->issuited();
-
 	// "e" literal
 	if (strcmp(sym.c_str(), "e")==0)
 	{
@@ -380,6 +373,12 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// f$$ symbols (hand multiplexor)
 	else if (memcmp(sym.c_str(), "f$$", 3)==0)
 	{
+		int		$$pc0 = p_symbol_engine_cards->$$pc(0);
+		int		$$pc1 = p_symbol_engine_cards->$$pc(1);
+		int		rank0 = RankOfCard($$pc0);
+		int		rank1 = RankOfCard($$pc1);
+		bool	sym_issuited = p_symbol_engine_cards->issuited();
+
 		if (rank1>rank0)
 		{
 			SwapInts(&rank0, &rank1);
@@ -500,7 +499,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 	// Memory symbols
 	else if (memcmp(sym.c_str(), "me_", 3)==0)
 	{
-				return p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
+		return p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
 	}
 	   
 	// all other symbols
