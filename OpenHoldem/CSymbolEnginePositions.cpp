@@ -118,7 +118,7 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair))
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair))
 		{
 			_betpositionrais++;
 		}
