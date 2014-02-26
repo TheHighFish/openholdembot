@@ -73,6 +73,8 @@ CSharedMem::~CSharedMem()
 {
 	// Clear my process ID
 	openholdem_PIDs[p_sessioncounter->session_id()] = 0;
+	// Clear my attached window
+	attached_poker_windows[p_sessioncounter->session_id()] = NULL;
 }
 
 
@@ -91,6 +93,17 @@ bool CSharedMem::PokerWindowAttached(HWND Window)
 	return false;
 }
 
+bool CSharedMem::AnyWindowAttached()
+{
+	for (int i=0; i<MAX_SESSION_IDS; i++)
+	{
+		if (attached_poker_windows[i] != NULL)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 void CSharedMem::MarkPokerWindowAsAttached(HWND Window)
 {

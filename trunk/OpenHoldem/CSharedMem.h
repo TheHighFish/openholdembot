@@ -34,6 +34,7 @@ public:
 public:
 	// public accessors and mutators
 	bool PokerWindowAttached(HWND Window);
+	bool AnyWindowAttached();
 	void MarkPokerWindowAsAttached(HWND Window);
 	void MarkPokerWindowAsUnAttached();
 	void RememberTimeOfLastFailedAttemptToConnect();
