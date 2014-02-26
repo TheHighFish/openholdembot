@@ -58,3 +58,22 @@ bool WinIsOutOfScreen(HWND window)
 		|| (rect.top > desktop_dimensions.bottom)
 		|| (rect.left > desktop_dimensions.right));
 }
+
+bool WinIsTaskbar(HWND window)
+{
+	RECT rect;
+	if (!GetWindowRect(window, &rect))
+	{
+		return false;
+	}
+	// We don't know a perfect way to detect the taskbar.
+	// Therefore we use some heuristics and assume it is a horizontal taskbar.
+	// For me the size is (1028x30) and the x-position starts at -2.
+	// We assume: height <= 32 and length >= 20 * height.
+	const int kMaxTaskbarHeight = 32;
+	int height = rect.bottom - rect.top;
+	if (height > kMaxTaskbarHeight) return false;
+	int length = rect.right - rect.left;
+	if (length < 20 * height) return false;
+	return true;
+}
