@@ -45,6 +45,7 @@
 #define PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET			(TRUE)
 #define PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET			(TRUE)
 #define PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET			(TRUE)
+#define PT3_QUERY_SUPPORT__PREFLOP_3B					(TRUE)
 
 
 const int k_number_of_pokertracker_stats =  (PT3_QUERY_SUPPORT__ICON ? 1 : 0) +
@@ -75,7 +76,8 @@ const int k_number_of_pokertracker_stats =  (PT3_QUERY_SUPPORT__ICON ? 1 : 0) +
 											(PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET ? 1 : 0) + 
-											(PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET ? 1 : 0);
+											(PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET ? 1 : 0) +
+											(PT3_QUERY_SUPPORT__PREFLOP_3B ? 1 : 0);
 
 // PokerTracker support
 enum PT_Groups
@@ -686,6 +688,25 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		 WHERE  S.id_player = P.id_player AND \
 		        P.id_site = %SITEID% AND \
 		        P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_advanced
+	},
+#endif
+#if PT3_QUERY_SUPPORT__PREFLOP_3B
+	/* PT3  query to get PREFLOP 3 bet percentage */
+	{
+		// name
+		"3betpflop",	
+		// description_for_editor
+		"Poker Tracker 3bet preflop percentage",
+		// query
+		"SELECT (case when sum(case when flg_p_3bet_opp then 1 else 0 end) = 0 then -1 else \
+				cast(sum(case when flg_p_3bet then 1 else 0 end) as real) \
+				/ sum(case when flg_p_3bet_opp then 1 else 0 end) end) as result \
+		FROM  	player as P, %GAMETYPE%player_statistics as S \
+		WHERE 	S.id_player = P.id_player AND \
+				P.id_site = %SITEID% AND \
+				P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
 		pt_group_advanced
 	},
