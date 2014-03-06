@@ -7,6 +7,16 @@ NEW STUFF:
 - The check for duplicate TMs now also considers titlestrings in addition to sitenames.
   Thanky to Fqfq for providing the code.
   [THF]
+ - Lots of code-improvements and optimizations to the scraper and the so-called "LazyScraper".
+  In the past the scraper took 95%-98% of CPU-usage according to our measurments
+  with VerySleepy (a profiler) and especially text-scraping was very costly (~80%).
+  To improve things we tried to reduce scraping without missing any info.
+  For example we scrape names only up to our first action, because:
+  * then we have stable frames (good input)
+  * then we know who participates in the hand and players joining later don't affect the game.
+  Similar for bets and balances (after our first action only for dealt players),
+  for betpot-buttons and slider (only when it is our turn), etc.
+  [Pingvvino and THF]
 
 BUG FIXES:
 - The symbols ishipair, ismidpair and islopair stopped working,
