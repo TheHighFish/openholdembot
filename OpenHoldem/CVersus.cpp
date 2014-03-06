@@ -19,11 +19,12 @@
 #include "inlines/eval.h"
 
 #include "CBetroundCalculator.h"
-#include "CScraper.h"
-#include "CSymbolEngineUserchair.h"
-#include "CPreferences.h"
-#include "CFormula.h"
 #include "CDllExtension.h"
+#include "CFormula.h"
+#include "CPreferences.h"
+#include "CScraper.h"
+#include "CScraperAccess.h"
+#include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 
 
@@ -155,7 +156,7 @@ bool CVersus::GetCounts(void)
 								1617000, 1620675, 1623125, 1624350
 							  };
 	int betround = p_betround_calculator->betround();
-	int sym_userchair = (int) p_symbol_engine_userchair->userchair();
+	int sym_userchair = p_symbol_engine_userchair->userchair();
 
 	unsigned int	pcard[2] = {0};
 	for (int i=0; i<=1; i++)
@@ -174,8 +175,7 @@ bool CVersus::GetCounts(void)
 		return false;
 
 
-	if (card_player[0] == CARD_NOCARD || card_player[0] == CARD_BACK ||
-		card_player[1] == CARD_NOCARD || card_player[1] == CARD_BACK)
+	if (!p_scraper_access->UserHasKnownCards())
 	{
 		return false;
 	}

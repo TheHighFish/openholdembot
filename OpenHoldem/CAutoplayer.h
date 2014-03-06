@@ -25,14 +25,15 @@ class CAutoplayer
 public:
 	// public functions
 	CAutoplayer();
-	~CAutoplayer(void);
+	~CAutoplayer();
 public:
 	void EngageAutoPlayerUponConnectionIfNeeded();
-	void DoAutoplayer(void);
+	void DoAutoplayer();
 
 public:
 	// public accessors
 	const bool autoplayer_engaged() { return _autoplayer_engaged; }
+	bool TimeToHandleSecondaryFormulas();
 
 public:
 	// public mutators
@@ -40,22 +41,21 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	void DoRebuyIfNeccessary(void);
+	void DoRebuyIfNeccessary();
 	bool ExecutePrimaryFormulasIfNecessary();
 	bool ExecuteSecondaryFormulasIfNecessary();
 	bool ExecuteRaiseCallCheckFold();
 	bool ExecuteBeep();
 	bool AnyPrimaryFormulaTrue();
 	bool AnySecondaryFormulaTrue();
-	bool DoAllin(void);
-	bool DoBetPot(void);
-	bool HandleInterfacebuttonsI86(void); 
+	bool DoAllin();
+	bool DoBetPot();
+	bool HandleInterfacebuttonsI86(); 
 	void PrepareActionSequence();
 	void FinishActionSequenceIfNecessary();
-	bool DoSwag(void);
-	bool DoPrefold(void);
-	bool TimeToHandleSecondaryFormulas();
-	bool DoChat(void);
+	bool DoSwag();
+	bool DoPrefold();
+	bool DoChat();
 
 private:
 	// private variables - use public accessors and public mutators to address these

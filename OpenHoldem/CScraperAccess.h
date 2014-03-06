@@ -19,7 +19,7 @@
 
 class CScraperAccess
 {
-
+friend class CCasinoInterface;
 public:
 	CScraperAccess();
 	~CScraperAccess();
@@ -40,11 +40,32 @@ public:
 	bool	UserHasKnownCards();
 	bool	IsPlayerActive(int player);
 	bool	IsPlayerSeated(int player);
+	bool	IsGoodPlayername(int chair);
 public:
 	bool	IsMyTurn()	{ return (NumberOfVisibleButtons() >= k_min_buttons_needed_for_my_turn); }
 
 public:
 	bool get_betpot_button_visible(int numerator, int denominator);
+
+protected:
+	// visible
+	bool visible_buttons[k_number_of_standard_functions];
+	bool i3_button_visible;
+	bool i86_button_visible;
+	bool i86X_button_visible[k_max_number_of_i86X_buttons];
+	// defined
+	bool defined_buttons[k_number_of_standard_functions];
+	bool i3_button_defined;
+	bool i3_edit_defined;
+	bool i3_slider_defined;
+	bool i3_handle_defined;
+	bool i86_button_defined;
+	bool i86X_button_defined[k_max_number_of_i86X_buttons];
+	// available, i.e. defined and visible
+	bool available_buttons[k_number_of_standard_functions];
+	bool i3_button_available;	
+	bool i86_button_available;
+	bool i86X_button_available[k_max_number_of_i86X_buttons];
 
 private:
 	// private functions
@@ -80,26 +101,6 @@ private:
 	CString _i3_edit_name;
 	CString _i3_slider_name;
 	CString _i3_handle_name;
-
-public:
-	// visible
-	bool visible_buttons[k_number_of_standard_functions];
-	bool i3_button_visible;
-	bool i86_button_visible;
-	bool i86X_button_visible[k_max_number_of_i86X_buttons];
-	// defined
-	bool defined_buttons[k_number_of_standard_functions];
-	bool i3_button_defined;
-	bool i3_edit_defined;
-	bool i3_slider_defined;
-	bool i3_handle_defined;
-	bool i86_button_defined;
-	bool i86X_button_defined[k_max_number_of_i86X_buttons];
-	// available, i.e. defined and visible
-	bool available_buttons[k_number_of_standard_functions];
-	bool i3_button_available;	
-	bool i86_button_available;
-	bool i86X_button_available[k_max_number_of_i86X_buttons];
 
 public:
 	bool allin_option_available;

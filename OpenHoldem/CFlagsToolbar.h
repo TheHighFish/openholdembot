@@ -41,9 +41,9 @@ public:
 	afx_msg void OnClickedFlags();
 	DECLARE_MESSAGE_MAP()
 private:
-	void CreateMainToolbar(void);
-	void CreateFlagsToolbar(void);
-	void AlignToolbars(void);
+	void CreateMainToolbar();
+	void CreateFlagsToolbar();
+	void AlignToolbars();
 private:
 	CMyToolBar	m_MainToolBar;
 	bool		_flags[k_number_of_flags];

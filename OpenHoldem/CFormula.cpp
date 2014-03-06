@@ -655,7 +655,7 @@ bool CFormula::ParseLoop(const CUPDUPDATA* pCUPDUPData)
 				linenum = colnum = 1;
 				for (c=0; c<stopchar; c++)
 				{
-					if (data->pParent->formula()->mFunction[i].func_text.Mid(c, 1)=="\n")
+					if (data->pParent->formula()->mFunction[i].func_text[c]=='\n')
 					{
 						linenum++;
 						colnum = 1;

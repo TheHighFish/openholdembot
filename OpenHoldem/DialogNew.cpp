@@ -66,11 +66,11 @@ BOOL CDlgNew::OnInitDialog()
 
 void CDlgNew::OnBnClickedOk() 
 {
-	char str[512] = {0};
+	char str[MAX_WINDOW_TITLE] = {0};
 	int i = 0;
 
 	m_NewName.GetWindowText(CSnewname);
-	strcpy_s(str, 512, CSnewname.GetString());
+	strcpy_s(str, MAX_WINDOW_TITLE, CSnewname.GetString());
 
 	// Changing a list
 	if (type==0 && memcmp(str, "list", 4)!=0) 

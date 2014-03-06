@@ -350,7 +350,6 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_ante			= p_symbol_engine_tablelimits->ante();
 	int sym_lim				= p_symbol_engine_tablelimits->gametype();
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
-	bool sym_istournament	= p_symbol_engine_istournament->istournament();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
 	bool sym_playing		= p_scraper_access->UserHasCards();
 
@@ -415,11 +414,10 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	else
 	{
 		// Display as integer numbers
-		format_string = "  %s%s %.0f/%.0f/%.0f\n";
+		format_string = "  %s %.0f/%.0f/%.0f\n";
 	}
 	s.Format(format_string,
 		p_symbol_engine_tablelimits->GetGametypeAsString(),
-		(sym_istournament ? "T" : ""),
 		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
 	t.Append(s);
 

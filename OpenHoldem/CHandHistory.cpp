@@ -344,7 +344,7 @@ void CHandHistory::scanPlayerChanges()
 					double temp = maxBet;
 					maxBet = _history.chair[i].currentBet;
 
-					if ((int)p_symbol_engine_tablelimits->gametype() != 2)
+					if (p_symbol_engine_tablelimits->gametype() != k_gametype_FL)
 					{
 						SearchForAllinPlayers(i);
 					}
@@ -616,12 +616,12 @@ void CHandHistory::processShowdown()
 // Done
 const bool CHandHistory::isBigBlind(const int i)
 {
-	int			betround = (int) p_betround_calculator->betround();
+	int	betround = p_betround_calculator->betround();
 
 	//Determines if chair passed is the big blind
 	return(_history.chair[i].currentBet == bet[betround-1]
-	&& _history.chair[i].ac_dealpos == 2
-		&& betround == 1);
+		&& _history.chair[i].ac_dealpos == 2
+		&& betround == k_betround_preflop);
 }
 
 // Checked
@@ -632,7 +632,8 @@ const bool CHandHistory::cardsDealt()
 	//If any cardbacks are showing, cards have been dealt
 	for (int i = 0;i<nchairs;i++)
 	{
-		if (p_scraper->card_player(i, 0) == CARD_BACK&&p_scraper->card_player(i, 1) == CARD_BACK)
+		if (p_scraper->card_player(i, 0) == CARD_BACK
+			&& p_scraper->card_player(i, 1) == CARD_BACK)
 		{
 			playersdealt++;
 		}
@@ -655,7 +656,7 @@ const bool CHandHistory::isPlaying(const int chair)
 // OK
 const bool CHandHistory::hasMucked(const int chair)
 {
-	int	betround = (int) p_betround_calculator->betround();
+	int	betround =  p_betround_calculator->betround();
 
 	//Precondition: Betround is 4, player has called and has not folded
 	// !! 3 means here: river and 4 means showdown
@@ -685,7 +686,7 @@ void CHandHistory::checkSeats(const int i, int j)
 // !! Seems like it could be completely removed
 void CHandHistory::SearchForAllinPlayers(const int chair)
 {
-	int	betround = (int) p_betround_calculator->betround();
+	int	betround = p_betround_calculator->betround();
 
 	//Precondition: Player has gone allin, and this hasn't been caught yet
 	if ((_history.chair[chair].currentBalance <= maxBet

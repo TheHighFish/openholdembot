@@ -49,6 +49,9 @@ inline void AssertRange(double value, double lower_bound, double upper_bound)
 	assert(value <= upper_bound);
 }
 
+#define RETURN_DEFAULT_IF_OUT_OF_RANGE(value, upper_bound, _default)	if (((value) < 0) || ((value) > (upper_bound))) return (_default);
+#define RETURN_IF_OUT_OF_RANGE(value, upper_bound)						if (((value) < 0) || ((value) > (upper_bound))) return;
+
 inline void SetBit(int *bit_vector, int n_th_bit)
 {
 	*bit_vector |= (1 << n_th_bit);

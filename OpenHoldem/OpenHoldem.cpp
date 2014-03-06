@@ -217,7 +217,7 @@ BOOL COpenHoldemApp::InitInstance()
 	// Open the most recently saved file. (First on the MRU list.) Get the last
 	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
-	/*
+	
 	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
 	{
 		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
@@ -237,7 +237,7 @@ BOOL COpenHoldemApp::InitInstance()
 			}
 		}
 	}
-*/
+
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 
