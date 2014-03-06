@@ -48,7 +48,7 @@ private:
 	static void ResetGlobalVariables();
 	static bool SimulationFinished(unsigned int nit);
 private:
-	void InitIteratorLoop(void);
+	void InitIteratorLoop();
 	void InitHandranktTableForPrwin();
 	void CloneVanillaChairToAllOtherChairs();
 	void InitNumberOfIterations();

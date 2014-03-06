@@ -111,8 +111,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		if (p_scraper->card_common(i) != CARD_BACK &&
-			p_scraper->card_common(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
 		{
 			CardMask_SET(Cards, p_scraper->card_common(i));
 			nCards++;
@@ -148,8 +147,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK 
-			&& p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD 
+		if (p_scraper_access->UserHasKnownCards() 
 			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_player(USER_CHAIR, i)) )
 		{
 			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
@@ -168,9 +166,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		if (p_scraper->card_common(i) != CARD_BACK 
-			&& p_scraper->card_common(i) != CARD_NOCARD 
-			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_common(i)) )
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i))
+			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_common(i)))
 		{
 			CardMask_SET(Cards, p_scraper->card_common(i));
 			nCards++;
@@ -340,8 +337,7 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK && 
-			p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
+		if (p_scraper_access->UserHasKnownCards())
 		{
 			CardMask_SET(plCards, p_scraper->card_player(USER_CHAIR, i));
 			CardMask_SET(plcomCards, p_scraper->card_player(USER_CHAIR, i));
@@ -351,8 +347,7 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	// common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) != CARD_BACK && 
-			p_scraper->card_common(i) != CARD_NOCARD)
+		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
 		{
 			CardMask_SET(comCards, p_scraper->card_common(i));
 			CardMask_SET(plcomCards, p_scraper->card_common(i));
@@ -582,8 +577,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_RESET(Cards);
 		for (int i=0; i<k_number_of_cards_per_player; i++)
 		{
-			if (p_scraper->card_player(USER_CHAIR, i) != CARD_BACK && 
-				p_scraper->card_player(USER_CHAIR, i) != CARD_NOCARD)
+			if (p_scraper_access->UserHasKnownCards())
 			{
 				CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
 			}

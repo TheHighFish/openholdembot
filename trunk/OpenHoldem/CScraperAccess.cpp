@@ -338,16 +338,13 @@ int CScraperAccess::NumberOfVisibleButtons()
 
 bool CScraperAccess::PlayerHasKnownCards(int player)
 {
-	assert(player >= 0);
-	assert(player < p_tablemap->nchairs());
-	if (p_scraper->card_player(player, 0) == CARD_BACK 
-		|| p_scraper->card_player(player, 0) == CARD_NOCARD 
-		|| p_scraper->card_player(player, 1) == CARD_BACK 
-		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
+	RETURN_DEFAULT_IF_OUT_OF_RANGE(player, p_tablemap->nchairs(), false);
+	if (IsKnownCard(p_scraper->card_player(player, 0))
+		&& IsKnownCard(p_scraper->card_player(player, 1)))
 	{
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool CScraperAccess::PlayerHasCards(int player)
@@ -409,10 +406,26 @@ bool CScraperAccess::IsPlayerSeated(int player)
 	return result;
 }
 
+bool CScraperAccess::IsGoodPlayername(int chair)
+{
+	CString playername = p_scraper->player_name(chair);
+	int length = playername.GetLength();
+	if (length == 0) 
+		return false;
+	for (int i=0; i<length; i++)
+	{
+		if (isalnum(playername[i])) 
+			return true;
+	}
+	return false;
+}
+
 bool CScraperAccess::IsKnownCard(int card)
 {
 	if (card == CARD_NOCARD 
-		|| card == CARD_BACK)
+		|| card == CARD_BACK
+		|| card > 0x0100
+		|| card < 0)
 	{
 		return false;
 	}

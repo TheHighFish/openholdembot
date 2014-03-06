@@ -1293,14 +1293,14 @@ void CDlgFormulaScintilla::OnRename()
 {
 	CDlgRename rendlg;
 	CString	s = "";
-	char str[512] = {0};
+	char str[MAX_WINDOW_TITLE] = {0};
 	int N = 0, i = 0;
 	bool didRename = false;
 
 	StopAutoButton();
 
 	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-	strcpy_s(str, 512, s.GetString());
+	strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
 
 	rendlg.CSoldname = s;
 
@@ -2192,10 +2192,7 @@ void CDlgFormulaScintilla::StopAutoButton()
 
 void CDlgFormulaScintilla::UpdateDebugAuto(void) 
 {
-	int				i = 0;
 	CString			Cstr = "";
-
-	bool			sym_ismyturn = (bool) p_symbol_engine_autoplayer->ismyturn();
 
 	// mark symbol result cache as stale
 	m_wrk_formula.MarkCacheStale();
@@ -2216,7 +2213,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	CreateDebugTab(&Cstr);
 
 	// Always write the tab's contents to a log file, if it is my turn (stable frames!)
-	if (sym_ismyturn)
+	if (p_symbol_engine_autoplayer->ismyturn())
 	{
 		if (!m_wrote_fdebug_header) 
 		{
@@ -2376,16 +2373,16 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 	{
 		// Get next line from entire buffer
 		strLine = "";
-		while (allText.Mid(pos, 2)!="\r\n" && allText.Mid(pos, 1)!="\r" && allText.Mid(pos, 1)!="\n" && pos<allText.GetLength()) 
+		while (allText.Mid(pos, 2)!="\r\n" && allText[pos]!='\r' && allText[pos]!='\n' && pos<allText.GetLength()) 
 		{
-			strLine += allText.Mid(pos, 1);
+			strLine += allText[pos];
 			pos++;
 		}
 		if (allText.Mid(pos, 2)=="\r\n") 
 		{
 			pos += 2;
 		}
-		else if (allText.Mid(pos, 1)=="\r" || allText.Mid(pos, 1)=="\n") 
+		else if (allText[pos]=='\r' || allText[pos]=='\n') 
 		{
 			pos += 1;
 		}

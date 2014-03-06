@@ -147,7 +147,7 @@ void CHandresetDetector::GetNewSymbolValues()
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
 	assert(p_symbol_engine_userchair != NULL);
-	int userchair = (int) p_symbol_engine_userchair->userchair();
+	int userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs()))

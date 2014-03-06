@@ -27,13 +27,13 @@ public:
 	void ProcessGameState(const SHoldemState *pstate);
 	void ProcessFtr(const SHoldemState *pstate);
 	void CaptureState();
-	bool ProcessThisFrame(void);
+	bool ProcessThisFrame();
 	const int LastRaised(const int round);
-	const double FlopPct(void);
-	const double TurnPct(void);
-	const double RiverPct(void);
-	const double AvgBetsPf(void);
-	const double TablePfr(void);
+	const double FlopPct();
+	const double TurnPct();
+	const double RiverPct();
+	const double AvgBetsPf();
+	const double TablePfr();
 	const double SortedBalance(const int rank);
 	const double OHSymHist(const char * sym, const int round);
 

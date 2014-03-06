@@ -1155,6 +1155,10 @@
 				Name="Scraper"
 				>
 				<File
+					RelativePath=".\Bitmaps.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CLazyScraper.cpp"
 					>
 				</File>
@@ -1936,6 +1940,10 @@
 			<Filter
 				Name="Scraper"
 				>
+				<File
+					RelativePath=".\Bitmaps.h"
+					>
+				</File>
 				<File
 					RelativePath=".\CScraper.h"
 					>

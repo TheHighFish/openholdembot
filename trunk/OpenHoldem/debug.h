@@ -26,8 +26,8 @@ char * get_time(char * timebuf);
 char * get_now_time(char * timebuf);
 BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP);
 
-void start_log(void);
-void stop_log(void);
+void start_log();
+void stop_log();
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);

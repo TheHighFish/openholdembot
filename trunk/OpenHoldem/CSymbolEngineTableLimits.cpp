@@ -673,22 +673,28 @@ double CSymbolEngineTableLimits::bet()
 
 CString CSymbolEngineTableLimits::GetGametypeAsString()
 {
+	CString result = "";
 	if (isnl())
 	{
-		return "NL";
+		result = "NL";
 	}
 	else if (ispl())
 	{
-		return "PL";
+		result = "PL";
 	}
 	else if (isfl())
 	{
-		return "FL";
+		result = "FL";
 	}
 	else
 	{
-		return "?L";
+		result = "?L";
 	}
+	if (p_symbol_engine_istournament->istournament())
+	{
+		result += "T";
+	}
+	return result;
 }
 
 bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result)

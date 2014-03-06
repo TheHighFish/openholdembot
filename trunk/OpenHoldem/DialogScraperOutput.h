@@ -53,7 +53,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 private:
-	void AddListboxItems(void);
+	void AddListboxItems();
 };
 
 

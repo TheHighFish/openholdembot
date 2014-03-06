@@ -55,7 +55,8 @@
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
-#include "DialogSAPrefs18.h"
+// !!! Now unused; might be "recycled"
+//#include "DialogSAPrefs18.h"
 #include "DialogSAPrefs19.h"
 #include "DialogSAPrefs20.h"
 #include "DialogSAPrefs21.h"
@@ -365,7 +366,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs15 page15;
 	CDlgSAPrefs16 page16;
 	CDlgSAPrefs17 page17;
-	CDlgSAPrefs18 page18;
+	//!!!CDlgSAPrefs18 page18;
 	CDlgSAPrefs19 page19;
 	CDlgSAPrefs20 page20;
 	CDlgSAPrefs21 page21;
@@ -381,7 +382,8 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
 	dlg.AddPage(page7,  "ICM");
-	dlg.AddPage(page18, "Lazy Scraping");
+	// !!! Now unused; might be "recycled"
+	//dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker v3");

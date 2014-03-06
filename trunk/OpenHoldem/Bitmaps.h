@@ -7,13 +7,17 @@
 //
 //***************************************************************************** 
 //
-// Purpose:
+// Purpose: Scraping the poker-table and providing access to the scraped data.
+//  As the CScraper is low-level and quite large we created 
+//  a interface SCraperAccess that provides higher-level accessors
+//  like "UserHasCards()".
+//  Better use that interface to access scraper-data whenever possible.
 //
 //***************************************************************************** 
 
-#ifndef INC_BRING_KEYBOARD_H
-#define INC_BRING_KEYBOARD_H
+#ifndef INC_BITMAPS_H
+#define INC_BITMAPS_H
 
-void CheckBringKeyboard();
+bool BitmapsAreEqual(HBITMAP HBitmapLeft, HBITMAP HBitmapRight) ;
 
-#endif // INC_BRING_KEYBOARD_H
+#endif INC_BITMAPS_H

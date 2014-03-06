@@ -86,9 +86,9 @@ void SendChatMessage(char* message);
 
 //  Chat enabled in preferences
 //	and safety delay expired?
-bool IsChatAllowed(void);
+bool IsChatAllowed();
 
-void ComputeFirstPossibleNextChatTime(void);
+void ComputeFirstPossibleNextChatTime();
 
 //  Simple messages for the formula guys.
 //	Use f$chat as "the_MessageIndex".

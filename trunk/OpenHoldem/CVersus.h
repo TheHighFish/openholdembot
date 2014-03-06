@@ -22,7 +22,7 @@ public:
 	// public functions
 	CVersus();
 	~CVersus();
-	bool GetCounts(void);
+	bool GetCounts();
 	double GetSymbol(const char *a, int *e);
 	bool VersusBinLoaded()	{ return !versus_bin_not_loaded; }
 
