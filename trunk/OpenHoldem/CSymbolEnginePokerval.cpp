@@ -15,6 +15,7 @@
 #include "CSymbolEnginePokerval.h"
 
 #include <assert.h>
+#include "CardFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -230,7 +231,7 @@ void CSymbolEnginePokerval::CalculateHandType()
 	}
 	else if (HandVal_HANDTYPE(handval) == HandType_ONEPAIR)
 	{
-		// hi lo med pair
+		// hi lo mid pair
 		// Only user cards...
 		if (nCards == 2)
 		{
@@ -239,12 +240,15 @@ void CSymbolEnginePokerval::CalculateHandType()
 		// at least flop seen...
 		else if (nCards >= 5)
 		{
-			if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) >= rankhicommon())
+			if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) 
+				>= OpenHoldemRankToStdDeckLibraryRank(rankhicommon()))
 			{
 				_ishipair = true;										
 			}
-			else if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) < rankhicommon()
-				&& (int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) > ranklocommon())
+			else if ((int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) 
+					< OpenHoldemRankToStdDeckLibraryRank(rankhicommon())
+				&& (int)(StdDeck_RANK(HandVal_TOP_CARD(handval))) 
+					> OpenHoldemRankToStdDeckLibraryRank(ranklocommon()))
 			{
 				_ismidpair = true;
 			}

@@ -76,4 +76,6 @@ inline int CardRankCharacterToCardRank(char rank)
 	}
 }
 
+inline int OpenHoldemRankToStdDeckLibraryRank(int rank)	{ return (rank - 2); }
+
 #endif INC_CARDFUNCTIONS_H
