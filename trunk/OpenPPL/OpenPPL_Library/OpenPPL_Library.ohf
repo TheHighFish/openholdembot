@@ -143,7 +143,7 @@ f$OpenPPL_Fold
 //  OpenPPL - Card Constants
 //  ===========================
 //  
-//  Both ranks and suits accordint to the OpenHoldem docu
+//  Both ranks and suits according to the OpenHoldem docu
 //
 //*****************************************************************************
 
@@ -639,10 +639,10 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 me_re_MemBets
 
 ##f$OpenPPL_BigBlindSittingOut##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+-1 + msgbox$BigBlindStittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
 
 ##f$OpenPPL_SmallBlindSittingOut##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+-1 + msgbox$SmallBlindSittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
 
 ##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
@@ -4129,11 +4129,8 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 //
 //*****************************************************************************
 
-##f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
--1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
-
 ##f$OpenPPL_HaveBackdoorStraightDraw##
-f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+-1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
 
 //*****************************************************************************
 //
