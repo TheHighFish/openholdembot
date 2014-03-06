@@ -141,7 +141,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	else if (memcmp(name, "avgbetspf", 9)==0 && strlen(name)==9)  					*result = p_game_state->AvgBetsPf();
 	else if (memcmp(name, "tablepfr", 8)==0 && strlen(name)==8)  					*result = p_game_state->TablePfr();	
 	else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11)  				*result = p_game_state->hands_played();
-	else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13)  			*result = p_game_state->SortedBalance(name[12]-'0');
+	else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13)  				*result = p_game_state->SortedBalance(name[12]-'0');
 	// OH-script-messagebox
 	else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7)  					
 	{
@@ -151,7 +151,11 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 		{
 			*result = 0;
 		}
-		*result = OH_MessageBox_OH_Script_Messages(name);
+		else
+		{
+			OH_MessageBox_OH_Script_Messages(name);
+			*result = 0;
+		}
 	}
 	else
 	{
