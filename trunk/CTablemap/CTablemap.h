@@ -120,6 +120,7 @@ struct SWholeMap
 	const IMap	*i$;
 	CString filepath;
 	CString sitename;
+	CString titletext;
 };
 
 class CTablemap 
@@ -167,6 +168,7 @@ public:
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
 	const bool balancenumbersonly()	{ return GetTMSymbol("balancenumbersonly", false); }
 	const CString sitename()		{ return GetTMSymbol("sitename"); } 
+	const CString titletext()		{ return GetTMSymbol("titletext"); } 
 	const CString network()			{ return GetTMSymbol("network"); } 
 	const CString chipscrapemethod(){ return GetTMSymbol("chipscrapemethod"); }
 	const CString scraperdll()		{ return GetTMSymbol("scraperdll"); }
