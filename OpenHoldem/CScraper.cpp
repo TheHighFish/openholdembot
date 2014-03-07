@@ -532,7 +532,7 @@ void CScraper::ScrapePlayerCards(int chair)
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		card_name.Format("p%dcardface%d", chair, i);
-		if ((i > 0) && ((card == CARD_NOCARD) || (card != CARD_BACK)))
+		if ((i > 0) && ((card == CARD_NOCARD) || (card == CARD_BACK)))
 		{
 			// Stop scraping if we find missing cards or cardbacks
 		}
