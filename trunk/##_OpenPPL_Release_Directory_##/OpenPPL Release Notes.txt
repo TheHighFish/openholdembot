@@ -1,3 +1,12 @@
+v4.4.1 2014-xx-xx
+=================
+
+  
+BUG FIXES:
+- 2ndTopFlopCard was returning incorrect value with pair of board.
+  This has now been fixed. 
+  [Lavezzi]
+  
 v4.4.0 2014-01-14
 =================
 NEW STUFF:
