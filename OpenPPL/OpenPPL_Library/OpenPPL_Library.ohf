@@ -1797,13 +1797,26 @@ f$OpenPPL_StraightPossible
 && f$OpenPPL_RiverCard > f$OpenPPL_TurnCard ]
 
 ##f$OpenPPL_2ndTopFlopCard##
-f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
-f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
-f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard  :
-f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
-f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard  :
-f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
-// Otherwise: there is no 2ndTopFlopCard, because all ranks are even
+f$OpenPPL_PairOnFlop ? f$OpenPPL_2ndTopFlopCard_PairOnFlop :
+!f$OpenPPL_PairOnFlop ? f$OpenPPL_2ndTopFlopCard_UnpairedFlop :
+-1
+
+##f$OpenPPL_2ndTopFlopCard_UnpairedFlop##
+!f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
+!f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+!f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard  :
+!f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+!f$OpenPPL_PairOnFlop && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard  :
+!f$OpenPPL_PairOnFlop && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
+-1
+
+##f$OpenPPL_2ndTopFlopCard_PairOnFlop##
+f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  > f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard :
+f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  < f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard :
+f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard  > f$OpenPPL_SecondFlopCard  ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard  < f$OpenPPL_SecondFlopCard  ? f$OpenPPL_FirstFlopCard :
+f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard  > f$OpenPPL_FirstFlopCard  ? f$OpenPPL_FirstFlopCard :
+f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard  < f$OpenPPL_FirstFlopCard  ? f$OpenPPL_SecondFlopCard :
 -1
 
 // Shanky is a bit inconsistent with the naming
