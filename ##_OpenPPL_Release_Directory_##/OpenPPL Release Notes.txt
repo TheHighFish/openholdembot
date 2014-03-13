@@ -1,6 +1,8 @@
 v4.4.1 2014-xx-xx
 =================
-
+NEW SYMBOL:
+- New symbols: HadSetOnFlop, HadSetOnTurn (doc not updated)
+ [Lavezzi]
   
 BUG FIXES:
 - 2ndTopFlopCard was returning incorrect value with pair of board.
