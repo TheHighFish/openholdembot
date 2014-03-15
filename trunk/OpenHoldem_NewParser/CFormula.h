@@ -61,7 +61,7 @@ public:
 	~CFormula();
 	void ClearFormula();
 	void SetEmptyDefaultBot();
-	void ReadFormulaFile(CArchive& ar, bool ignoreFirstLine);
+	void ReadFormulaFile(CArchive& ar);
 	void WriteFormula(CArchive& ar);
 	void CreateHandListMatrices();
 	bool ParseAllFormula(HWND hwnd);

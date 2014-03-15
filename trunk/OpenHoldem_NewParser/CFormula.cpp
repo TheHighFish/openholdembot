@@ -51,7 +51,7 @@ void CFormula::SetEmptyDefaultBot()
 	ClearFormula();
 
 	CSLock lock(m_critsec);
-	func.dirty = true;
+	func.dirty = false;
 	_formula_name = "NoName";
 	// Adding empty standard-functions
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -69,160 +69,10 @@ const char *CFormula::GetFunctionText(const char *name)
 }
 
 // Reading a formula
-void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
+void CFormula::ReadFormulaFile(CArchive& ar)
 {
-	CString		strOneLine = ""; 
-	int			content = 0;
-	char		funcname[k_max_size_of_function_name] = {0};
-	int			start = 0, end = 0;
-		
-	SFunction	func;	
-	SHandList	list;		
-
-	CSLock lock(m_critsec);
-
-	// Ignore first line (date/time)
-	if (ignoreFirstLine)
-		ar.ReadString(strOneLine);
-
-	// read data in, one line at a time
-	strOneLine = "";
-	content = FTnone;
-	func.func = "";
-	while (ar.ReadString(strOneLine)) 
-	{ 
-		// If this line marks the beginning of a function, then save the previously
-		// collected function, and start a new one
-		if (strOneLine.Mid(0,2)=="##") 
-		{
-			// Save the previously collected function
-			if (content == FTlist) 
-			{
-				// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
-				list.list_text.TrimRight("\r\n");
-				if (DoesFormulaAlreadyExist(list.list))
-				{
-					CString ErrorMessage = "Handlist does already exist: " + list.list;
-					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
-				}
-				else
-				{
-					_formula.mHandList.Add(list); 
-				}
-			}
-			else if (content == FTfunc) 
-			{
-				func.func_text.TrimRight("\r\n");
-				if (DoesFormulaAlreadyExist(func.func))
-				{
-					CString ErrorMessage = "Function does already exist: " + func.func;
-					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
-				}
-				else
-				{
-					_formula.mFunction.Add(func);
-				}
-			}
-			// Get the function name				
-			start = strOneLine.Find("##",0);
-
-			// No need to check the result of start,
-			// as this code gets executed only,
-			// if a line starts with "##"	
-			end = strOneLine.Find("##", start+2);
-
-			// Checking for malformed function header
-			// without trailing "##"
-			if (end == k_undefined) 
-			{
-				// Trying to continue gracefully.				
-				// Skipping is not possible,
-				// as this crashes the formula editor.											
-				int number_of_chars_to_copy = (strOneLine.GetLength() < k_max_size_of_function_name) ?
-					strOneLine.GetLength() : k_max_size_of_function_name;
-				strncpy_s(funcname, 
-					k_max_size_of_function_name, 
-					strOneLine.GetString()+start+2,
-					number_of_chars_to_copy);
-				funcname[number_of_chars_to_copy]='\0';
-				
-				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
-					+ strOneLine + "\n"
-					+ "Trying to continue...";
-				OH_MessageBox_Error_Warning(the_ErrorMessage, "Syntax Error");
-			}
-
-			else 
-			{
-				int size_of_function_name = end - start + 1;    
-				assert(size_of_function_name < k_max_size_of_function_name);
-				// strncpy_s: http://msdn.microsoft.com/de-de/library/5dae5d43(v=vs.80).aspx
-				strncpy_s(funcname,                              // Destination
-					k_max_size_of_function_name * sizeof(char),  // Size of destination
-					strOneLine.GetString() + start + 2,          // Start of source (without leading "##")
-					size_of_function_name);						 // Elements to copy	
-				funcname[end-2] = '\0';							 // Remove trailing "##"	
-			}
-
-			if (memcmp(funcname, "list", 4) == 0) 
-			{ 
-				content = FTlist;
-				list.list = funcname;
-				list.list_text = "";
-			}
-
-			else 
-			{
-				content = FTfunc;
-				func.func = funcname;
-				func.func_text = "";
-				func.dirty = true;
-			}
-		}
-
-		// Get the function content
-		else 
-		{
-			switch (content) 
-			{
-				 case FTlist:
-					 list.list_text.Append(strOneLine); list.list_text.Append("\r\n");
-					 break;
-				 case FTfunc:
-					 func.func_text.Append(strOneLine); func.func_text.Append("\r\n");
-					 break;
-			}
-		}	
-	}  
-
-	// Add the last list/function to the CArray on EOF, if it was a list being processed
-	if (content == FTlist) 
-	{
-		list.list_text.TrimRight("\r\n");
-		if (DoesFormulaAlreadyExist(list.list))
-		{
-			CString ErrorMessage = "Handlist does already exist: " + list.list;
-			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
-		}
-		else
-		{
-			_formula.mHandList.Add(list); 
-		}
-	}
-	else if (content == FTfunc) 
-	{
-		func.func_text.TrimRight("\r\n");
-		if (DoesFormulaAlreadyExist(func.func))
-		{
-			CString ErrorMessage = "Function does already exist: " + func.func;
-			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
-		}
-		else
-		{
-			_formula.mFunction.Add(func);
-		}
-	}
 }
+
 
 bool CFormula::IsStandardFormula(CString formula_name)
 {
@@ -770,3 +620,162 @@ void CFormula::WarnAboutOutdatedConcepts()
 	}
 
 }
+
+/*
+
+void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
+{
+	CString		strOneLine = ""; 
+	int			content = 0;
+	char		funcname[k_max_size_of_function_name] = {0};
+	int			start = 0, end = 0;
+		
+	SFunction	func;	
+	SHandList	list;		
+
+	CSLock lock(m_critsec);
+
+	// Ignore first line (date/time)
+	if (ignoreFirstLine)
+		ar.ReadString(strOneLine);
+
+	// read data in, one line at a time
+	strOneLine = "";
+	content = FTnone;
+	func.func = "";
+	while (ar.ReadString(strOneLine)) 
+	{ 
+		// If this line marks the beginning of a function, then save the previously
+		// collected function, and start a new one
+		if (strOneLine.Mid(0,2)=="##") 
+		{
+			// Save the previously collected function
+			if (content == FTlist) 
+			{
+				// Strip the LFCR off the last line (we need to add CRLF for all but the last line)
+				list.list_text.TrimRight("\r\n");
+				if (DoesFormulaAlreadyExist(list.list))
+				{
+					CString ErrorMessage = "Handlist does already exist: " + list.list;
+					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
+				}
+				else
+				{
+					_formula.mHandList.Add(list); 
+				}
+			}
+			else if (content == FTfunc) 
+			{
+				func.func_text.TrimRight("\r\n");
+				if (DoesFormulaAlreadyExist(func.func))
+				{
+					CString ErrorMessage = "Function does already exist: " + func.func;
+					OH_MessageBox_Error_Warning(ErrorMessage, "Error");
+				}
+				else
+				{
+					_formula.mFunction.Add(func);
+				}
+			}
+			// Get the function name				
+			start = strOneLine.Find("##",0);
+
+			// No need to check the result of start,
+			// as this code gets executed only,
+			// if a line starts with "##"	
+			end = strOneLine.Find("##", start+2);
+
+			// Checking for malformed function header
+			// without trailing "##"
+			if (end == k_undefined) 
+			{
+				// Trying to continue gracefully.				
+				// Skipping is not possible,
+				// as this crashes the formula editor.											
+				int number_of_chars_to_copy = (strOneLine.GetLength() < k_max_size_of_function_name) ?
+					strOneLine.GetLength() : k_max_size_of_function_name;
+				strncpy_s(funcname, 
+					k_max_size_of_function_name, 
+					strOneLine.GetString()+start+2,
+					number_of_chars_to_copy);
+				funcname[number_of_chars_to_copy]='\0';
+				
+				CString the_ErrorMessage = "Malformed function header!\nMissing trailing '##'.\n" 
+					+ strOneLine + "\n"
+					+ "Trying to continue...";
+				OH_MessageBox_Error_Warning(the_ErrorMessage, "Syntax Error");
+			}
+
+			else 
+			{
+				int size_of_function_name = end - start + 1;    
+				assert(size_of_function_name < k_max_size_of_function_name);
+				// strncpy_s: http://msdn.microsoft.com/de-de/library/5dae5d43(v=vs.80).aspx
+				strncpy_s(funcname,                              // Destination
+					k_max_size_of_function_name * sizeof(char),  // Size of destination
+					strOneLine.GetString() + start + 2,          // Start of source (without leading "##")
+					size_of_function_name);						 // Elements to copy	
+				funcname[end-2] = '\0';							 // Remove trailing "##"	
+			}
+
+			if (memcmp(funcname, "list", 4) == 0) 
+			{ 
+				content = FTlist;
+				list.list = funcname;
+				list.list_text = "";
+			}
+
+			else 
+			{
+				content = FTfunc;
+				func.func = funcname;
+				func.func_text = "";
+				func.dirty = true;
+			}
+		}
+
+		// Get the function content
+		else 
+		{
+			switch (content) 
+			{
+				 case FTlist:
+					 list.list_text.Append(strOneLine); list.list_text.Append("\r\n");
+					 break;
+				 case FTfunc:
+					 func.func_text.Append(strOneLine); func.func_text.Append("\r\n");
+					 break;
+			}
+		}	
+	}  
+
+	// Add the last list/function to the CArray on EOF, if it was a list being processed
+	if (content == FTlist) 
+	{
+		list.list_text.TrimRight("\r\n");
+		if (DoesFormulaAlreadyExist(list.list))
+		{
+			CString ErrorMessage = "Handlist does already exist: " + list.list;
+			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
+		}
+		else
+		{
+			_formula.mHandList.Add(list); 
+		}
+	}
+	else if (content == FTfunc) 
+	{
+		func.func_text.TrimRight("\r\n");
+		if (DoesFormulaAlreadyExist(func.func))
+		{
+			CString ErrorMessage = "Function does already exist: " + func.func;
+			OH_MessageBox_Error_Warning(ErrorMessage, "Error");
+		}
+		else
+		{
+			_formula.mFunction.Add(func);
+		}
+	}
+}
+
+*/

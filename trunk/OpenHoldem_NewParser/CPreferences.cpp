@@ -49,6 +49,8 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_sessioncounter",
 	"debug_stableframescounter",
 	"debug_symbolengine",
+	"debug_symbolengine_open_ppl",
+	"debug_parser",
 	"debug_blindlocking",
 	"debug_memorysymbols",
 	"debug_tablemap_loader",

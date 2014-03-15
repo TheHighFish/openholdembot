@@ -158,7 +158,7 @@ void COpenHoldemDoc::ReadFormula(CArchive& ar)
 	p_formula->ClearFormula();
 
 	// Read *.ohf formula file 
-	p_formula->ReadFormulaFile(ar, true);
+	p_formula->ReadFormulaFile(ar);
 
 	// Check and add missing...
 	p_formula->CheckForDefaultFormulaEntries();
