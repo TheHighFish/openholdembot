@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="1. OpenHoldem"
-	ProjectGUID="{4B4F8898-50C6-4F07-8771-B140482DBA69}"
+	Name="1. OpenHoldem_Parser_Development"
+	ProjectGUID="{F4DC3306-07DB-4502-AB2F-FAD6C58CDED3}"
 	RootNamespace="pokbot"
 	Keyword="MFCProj"
 	>
