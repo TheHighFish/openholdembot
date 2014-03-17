@@ -397,7 +397,7 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 	}
 	else
 	{
-		// Symbol of name different symbol-engine
+		// Symbol of a different symbol-engine
 		return false;
 	}
 	// Valid symbol

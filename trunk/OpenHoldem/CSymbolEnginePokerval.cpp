@@ -1296,7 +1296,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
 	}
 	else
 	{
-		// Symbol of name different symbol-engine
+		// Symbol of a different symbol-engine
 		return false;
 	}
 	// Valid symbol

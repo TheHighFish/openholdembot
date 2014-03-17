@@ -1022,6 +1022,50 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="OpenPPL_Symbol_Engines"
+					>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLBetsizes.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLBettingAction.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLBoard.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLHandStrength.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLNutFullhouse4OAK.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPlayers.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPokerTracker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPositions.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLStacksizes.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Usability"
@@ -1637,6 +1681,50 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineVariousDataLookup.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="OpenPPL_Symbol_Engines"
+					>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLBetsizes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLBettingAction.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLBoard.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLHandStrength.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLNutFullhouse4OAK.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPlayers.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPokerTracker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLPositions.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLStacksizes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.h"
 						>
 					</File>
 				</Filter>

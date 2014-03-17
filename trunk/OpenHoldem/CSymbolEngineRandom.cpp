@@ -97,6 +97,6 @@ bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result)
 		// Valid symbol
 		return true;
 	}
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }

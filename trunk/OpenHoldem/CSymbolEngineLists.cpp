@@ -110,6 +110,6 @@ bool CSymbolEngineLists::EvaluateSymbol(const char *name, double *result)
 		*result = IsList(atoi(name+6));
 		return true;
 	}
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }
