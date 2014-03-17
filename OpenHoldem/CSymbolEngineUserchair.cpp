@@ -106,6 +106,6 @@ bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
 		*result = userchair();
 		return true;
 	}
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }

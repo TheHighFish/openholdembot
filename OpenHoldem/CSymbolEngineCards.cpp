@@ -1020,6 +1020,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result)
 		*result = p_symbol_engine_cards->ncommoncardsknown();
 		return true;
 	}
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }

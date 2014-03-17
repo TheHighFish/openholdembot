@@ -128,7 +128,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
 {
 	if (memcmp(name,"pt_",3)!=0)
 	{
-		// Symbol of name different symbol-engine
+		// Symbol of a different symbol-engine
 		return false;
 	}
 	CString s = name;

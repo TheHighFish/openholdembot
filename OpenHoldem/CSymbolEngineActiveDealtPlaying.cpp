@@ -283,6 +283,6 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 		// Valid symbol
 		return true;
 	}
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }

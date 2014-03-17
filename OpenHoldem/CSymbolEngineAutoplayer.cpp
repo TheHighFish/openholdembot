@@ -282,6 +282,6 @@ bool CSymbolEngineAutoplayer::EvaluateSymbol(const char *name, double *result)
 		return true;
 	}
 
-	// Symbol of name different symbol-engine
+	// Symbol of a different symbol-engine
 	return false;
 }
