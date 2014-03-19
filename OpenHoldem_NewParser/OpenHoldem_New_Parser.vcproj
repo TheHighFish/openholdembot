@@ -469,45 +469,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="CTablemap"
-				>
-				<File
-					RelativePath="..\CTablemap\CTablemap.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release - Optimized|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\CTablemap\CTablemapAccess.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Validator-Rules"
 				>
 				<File
@@ -1204,6 +1165,81 @@
 				</File>
 				<File
 					RelativePath=".\WindowFunctions.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Parser"
+				>
+				<File
+					RelativePath=".\CFormulaFileSplitter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormulaParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseErrors.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTokenizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TokenizerConstants.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release - Optimized|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\CTablemap\CTablemapAccess.cpp"
 					>
 				</File>
 			</Filter>
@@ -2002,6 +2038,42 @@
 				</File>
 				<File
 					RelativePath=".\WindowFunctions.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Parser"
+				>
+				<File
+					RelativePath=".\CFormulaFileSplitter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormulaParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseErrors.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeNode.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTokenizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TokenizerConstants.h"
 					>
 				</File>
 			</Filter>

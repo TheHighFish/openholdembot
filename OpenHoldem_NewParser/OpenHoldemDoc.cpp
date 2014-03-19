@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
+#include "CFormulaParser.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
@@ -133,8 +134,11 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
         // The formula editor gets now handled automatically (Rev. 1425)
 
 		// Read ohf / whf file
-		ReadFormula(ar);
-		SetModifiedFlag(false);
+		CFormulaParser formula_parser;
+		formula_parser.ParseFile(ar);
+
+		// !!! R! ReadFormula(ar);
+		SetModifiedFlag(false); // !!!R?
 
 		p_formula->set_formula_name(ar.GetFile()->GetFileName());
 
@@ -152,6 +156,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	}
 }
 
+// !!! remove?
 void COpenHoldemDoc::ReadFormula(CArchive& ar) 
 {
 	// Clear everything
