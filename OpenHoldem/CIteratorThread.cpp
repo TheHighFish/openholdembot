@@ -533,21 +533,21 @@ void CIteratorThread::InitHandranktTableForPrwin()
 	_prw1326.vanilla_chair.level=1024;
 	_prw1326.vanilla_chair.limit=820; //cut off a little early, since 820-884 very improbable
 
-	const int k_first_third_1362_range  =  442;
-	const int k_second_third_1362_range =  884;
-	const int k_third_third_1362_range  = 1362;
+	const int k_first_third_1326_range  =  442;
+	const int k_second_third_1326_range =  884;
+	const int k_third_third_1326_range  = 1326;
 
 	// now assign a weight table. Assume upper third fully probable, next third reducing
 	// probability, lowest third not played.
-	for(int i=0; i<k_first_third_1362_range; i++)
+	for(int i=0; i<k_first_third_1326_range; i++)
 	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level;
 	}
-	for(int i=k_first_third_1362_range; i<k_second_third_1362_range; i++)
+	for(int i=k_first_third_1326_range; i<k_second_third_1326_range; i++)
 	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level*(884-i)/442;
 	}
-	for(int i=k_second_third_1362_range; i<k_third_third_1362_range; i++)
+	for(int i=k_second_third_1326_range; i<k_third_third_1326_range; i++)
 	{
 		_prw1326.vanilla_chair.weight[i]=0;
 	}
