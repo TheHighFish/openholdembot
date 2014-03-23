@@ -80,7 +80,8 @@ bool CFileSystemMonitor::AnyChanges()
 	{
 		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
 		// Resetting change handle for next query
-		dwWaitStatus = WAIT_FAILED;
+		// http://msdn.microsoft.com/en-us/library/windows/desktop/aa365261%28v=vs.85%29.aspx
+		FindNextChangeNotification(dwChangeHandle);
 		return true;
 	}
 	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
