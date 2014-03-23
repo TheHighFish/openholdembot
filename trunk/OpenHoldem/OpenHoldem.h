@@ -45,6 +45,10 @@ public:
 
 public:
 	void UnloadScraperDLL();
+	void StoreLastRecentlyUsedFileList();
+private:
+	void LoadLastRecentlyUsedFileList();
+	void OpenLastRecentlyUsedFile();
 
 public:
 	mouse_process_message_t		_dll_mouse_process_message;

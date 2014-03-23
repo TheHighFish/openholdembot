@@ -309,10 +309,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			// start heartbeat thread
 			if (p_heartbeat_thread)
 				delete p_heartbeat_thread;
-
 			p_heartbeat_thread = new CHeartbeatThread;
-			p_scraper_access->InitOnConnect();
 
+			p_scraper_access->InitOnConnect();
 			// Start timer that checks for continued existence of attached HWND
 			PMainframe()->StartTimer();
 

@@ -177,9 +177,7 @@ BOOL COpenHoldemApp::InitInstance()
 		}
 	}
 
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
-	//MyLoadStdProfileSettings(k_number_of_last_recently_used_files_in_file_menu);
-	//LoadStdProfileSettings(
+	LoadLastRecentlyUsedFileList();
 	// Register the application's document templates.  Document templates
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
@@ -204,51 +202,7 @@ BOOL COpenHoldemApp::InitInstance()
 	EnableShellOpen();
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to RegisterShellFileTypes(false)\n");
 	RegisterShellFileTypes(false);
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to parse command-line info\n");
-	// Parse command line for standard shell commands, DDE, file open
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
-		m_pMainWnd);
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to open last recently used file\n");
-	// Open the most recently saved file. (First on the MRU list.) Get the last
-	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
-	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
-	
-	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
-	{
-		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
-
-		if (! sLastPath.IsEmpty())
-		{
-			write_log(preferences.debug_openholdem(), "[OpenHoldem] Last path: %s\n", 
-				sLastPath);
-
-			CFile f;
-			// If file is there, set to open!
-			if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
-			{
-				cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
-				cmdInfo.m_strFileName = sLastPath;
-				f.Close();
-			}
-		}
-	}
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
-		m_pMainWnd);
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to dispatch command-line\n");
-	// Dispatch commands specified on the command line.  Will return FALSE if
-	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.	
-	if (!ProcessShellCommand(cmdInfo))
-	{
-		write_log(preferences.debug_openholdem(), "[OpenHoldem] Dispatching command-line failed\n");
-		return FALSE;
-	}
+	OpenLastRecentlyUsedFile();
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
@@ -281,7 +235,7 @@ void COpenHoldemApp::FinishInitialization()
 	
 	m_pMainWnd->UpdateWindow();
 	// call DragAcceptFiles only if there's a suffix
-	//  In an SDI app, this should occur after ProcessShellCommand
+	// In an SDI app, this should occur after ProcessShellCommand
 	// Enable drag/drop open
 	m_pMainWnd->DragAcceptFiles();
 
@@ -368,19 +322,64 @@ void COpenHoldemApp::OnForceCrash()
 	}
 }
 
-//!!!
-// Added due to inability to get standard LoadStdProfileSettings working properly
-void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) 
+void COpenHoldemApp::LoadLastRecentlyUsedFileList()
 {
+	//!!!
+	// Added due to inability to get standard LoadStdProfileSettings working properly
 	ASSERT_VALID(this);
 	ASSERT(m_pRecentFileList == NULL);
 
-	if (nMaxMRU != 0) 
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
+	if (k_number_of_last_recently_used_files_in_file_menu > 0) 
 	{
 		// create file MRU since nMaxMRU not zero
-		m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, nMaxMRU);
+		m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, 
+			k_number_of_last_recently_used_files_in_file_menu);
 		m_pRecentFileList->ReadList();
 	}
 	// 0 by default means not set
 	m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
+}
+
+void COpenHoldemApp::StoreLastRecentlyUsedFileList()
+{
+	m_pRecentFileList->WriteList();
+}
+
+void COpenHoldemApp::OpenLastRecentlyUsedFile()
+{
+	// Parse command line for standard shell commands, DDE, file open
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to open last recently used file\n");
+	// Open the most recently used file. (First on the MRU list.) Get the last
+	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
+	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
+	
+	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)
+	{
+		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
+
+		if (!sLastPath.IsEmpty())
+		{
+			write_log(preferences.debug_openholdem(), "[OpenHoldem] Last path: %s\n", 
+				sLastPath);
+
+			CFile f;
+			// If file is there, set to open!
+			if (f.Open(sLastPath, CFile::modeRead | CFile::shareDenyWrite))
+			{
+				cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
+				cmdInfo.m_strFileName = sLastPath;
+				f.Close();
+			}
+		}
+	}
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to dispatch command-line\n");
+	// Dispatch commands specified on the command line.  Will fail if
+	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.	
+	if (!ProcessShellCommand(cmdInfo))
+	{
+		write_log(preferences.debug_openholdem(), "[OpenHoldem] Dispatching command-line failed\n");
+	}
 }

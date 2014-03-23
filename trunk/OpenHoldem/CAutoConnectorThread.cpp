@@ -16,6 +16,7 @@
 #include "CAutoConnectorThread.h"
 #include "CPreferences.h"
 #include "CSharedMem.h"
+#include "CTableMapLoader.h"
 
 CAutoConnectorThread *p_autoconnectorthread = NULL;
 
@@ -40,7 +41,9 @@ UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
 	write_log(preferences.debug_autoconnector(), "[CAutoConnectorThread] AutoConnectorThreadFunction(..)\n");
 	while (true)
 	{
-		if ((preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) && !p_autoconnector->IsConnected())
+		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+		if ((preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) 
+			&& !p_autoconnector->IsConnected())
 		{
 			if(p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */)
 			{

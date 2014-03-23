@@ -305,10 +305,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CFileSystemMonitor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CFlagsToolbar.cpp"
 				>
 			</File>
@@ -1131,6 +1127,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CFileSystemMonitor.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CTableMapLoader.cpp"
 					>
 				</File>
@@ -1259,10 +1259,6 @@
 			>
 			<File
 				RelativePath=".\CEvalInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CFileSystemMonitor.h"
 				>
 			</File>
 			<File
@@ -1970,6 +1966,10 @@
 				</File>
 				<File
 					RelativePath=".\CAutoConnectorThread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFileSystemMonitor.h"
 					>
 				</File>
 				<File
