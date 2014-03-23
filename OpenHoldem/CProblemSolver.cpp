@@ -150,6 +150,9 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"Good luck, dear friend.\n",
 			k_title_string, 0);
 	}
+	// Cards and buttons get handled after the good case,
+	// because cards and buttons are not always visible,
+	// even if everything is ok.
 	else if (NoCardsVisible())
 	{
 		OH_MessageBox_Interactive(

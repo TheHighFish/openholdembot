@@ -79,11 +79,11 @@ bool CFileSystemMonitor::AnyChanges()
 	if (dwWaitStatus == WAIT_OBJECT_0)
 	{
 		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
+		// Resetting change handle for next query
+		dwWaitStatus = WAIT_FAILED;
 		return true;
 	}
 	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
-	// Resetting change handle for next query
-	dwWaitStatus = WAIT_FAILED;
 	return false;
 }
 
