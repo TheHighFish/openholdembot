@@ -110,6 +110,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 
 	while (true)
 	{
+		if (!p_autoconnector->IsConnected())
+		{
+			FlexibleHeartbeatSleeping();
+			continue;
+		}
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat start\n");
 
 		// Check event for stop thread
@@ -119,7 +124,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
-		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+		//!!!p_tablemap_loader->ReloadAllTablemapsIfChanged();
 		p_table_positioner->AlwaysKeepPositionIfEnabled();
 
 		// This critical section lets other threads know that the internal state is being updated

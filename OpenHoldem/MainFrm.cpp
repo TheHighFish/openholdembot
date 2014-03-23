@@ -464,6 +464,7 @@ void CMainFrame::OnFileOpen()
 		// Update window title, registry
 		p_openholdem_title->UpdateTitle();
 		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
+		theApp.StoreLastRecentlyUsedFileList();
 	}
 }
 

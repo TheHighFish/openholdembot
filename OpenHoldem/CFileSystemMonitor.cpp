@@ -83,7 +83,7 @@ bool CFileSystemMonitor::AnyChanges()
 	}
 	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
 	// Resetting change handle for next query
-	dwChangeHandle = 0;
+	dwWaitStatus = WAIT_FAILED;
 	return false;
 }
 
