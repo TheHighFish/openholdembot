@@ -512,7 +512,8 @@ int CScraper::ScrapeCard(CString name)
 	{
 		CString cardback = name.Left(2) + "cardback";
 		CString cardback_result;
-		if (EvaluateRegion(cardback, &cardback_result))
+		if (EvaluateRegion(cardback, &cardback_result) 
+			&& (cardback_result == "cardback"))
 		{
 			return CARD_BACK;
 		}
@@ -538,7 +539,7 @@ void CScraper::ScrapePlayerCards(int chair)
 		}
 		else
 		{
-			int card = ScrapeCard(card_name);
+			card = ScrapeCard(card_name);
 		}
 		set_card_player(chair, i, card);
 	}
