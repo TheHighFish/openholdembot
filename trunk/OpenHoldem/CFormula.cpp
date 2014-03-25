@@ -51,7 +51,8 @@ void CFormula::SetEmptyDefaultBot()
 	ClearFormula();
 
 	CSLock lock(m_critsec);
-	func.dirty = true;
+	// Empty function: not modified
+	func.dirty = false;
 	_formula_name = "NoName";
 	// Adding empty standard-functions
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -176,7 +177,8 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				content = FTfunc;
 				func.func = funcname;
 				func.func_text = "";
-				func.dirty = true;
+				// Function read from file: not modified
+				func.dirty = false;
 			}
 		}
 
@@ -366,6 +368,7 @@ void CFormula::AddEmptyFunctionIfFunctionDoesNotExist(const CString &FunctionNam
 		// The editor does somehow not work for completely empty formulas.
 		func.func_text = " "; 
 	}
+	// Formula set modified
 	func.dirty = true; 
 	func.func = FunctionName; 
 	_formula.mFunction.Add(func); 
