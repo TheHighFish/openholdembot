@@ -43,6 +43,10 @@
 #include "CSymbolEngineUserchair.h"
 #include "MagicNumbers.h"
 
+// !!! Temporary disabled as we get crashes in release and optimized mode,
+// !!! not in debug-mode unfortunatelly.
+// !!! We expect that problem to disappear with the new parser and evaluator soon.
+
 CSymbolEngineIniFunctions *p_symbol_engine_ini_functions = NULL;
 
 // We can't evaluate ini-functions if no formula is loaded.
@@ -87,7 +91,8 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions()
 void CSymbolEngineIniFunctions::InitOnStartup()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
-		
+	return;//!!!
+
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
 	ResetOnConnection();
@@ -98,18 +103,21 @@ void CSymbolEngineIniFunctions::InitOnStartup()
 void CSymbolEngineIniFunctions::ResetOnConnection()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
+	return;//!!!
 		
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
-	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
-		&dummy_e);
+	write_log(preferences.debug_symbolengine(), "[Symbolengine] evaluating %s %s\n",
+		p_formula->formula_name(), k_standard_function_names[k_init_on_connection]);
+	//gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_connection], 
+	//	&dummy_e);
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
 }
 
 void CSymbolEngineIniFunctions::ResetOnHandreset()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
-	
+	return;//!!!
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_handreset], 
@@ -119,7 +127,7 @@ void CSymbolEngineIniFunctions::ResetOnHandreset()
 void CSymbolEngineIniFunctions::ResetOnNewRound()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
-		
+	return; //!!!	
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_new_round], 
@@ -129,7 +137,7 @@ void CSymbolEngineIniFunctions::ResetOnNewRound()
 void CSymbolEngineIniFunctions::ResetOnMyTurn()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
-		
+	return;//!!!
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
 	gram.CalcF$symbol(p_formula, k_standard_function_names[k_init_on_my_turn], 
@@ -139,7 +147,7 @@ void CSymbolEngineIniFunctions::ResetOnMyTurn()
 void CSymbolEngineIniFunctions::ResetOnHeartbeat()
 {
 	RETURN_IF_LOADING_NEW_FORMULA
-		
+	return;//!!!
 	int dummy_e = SUCCESS;
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
 	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
