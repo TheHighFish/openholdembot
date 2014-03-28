@@ -45,6 +45,7 @@ t_tablemap_connection_data			tablemap_connection_data[k_max_nmber_of_tablemaps];
 
 CTableMapLoader::CTableMapLoader()
 {
+	__TRACE
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CTableMapLoader()\n");
 	tablemaps_in_scraper_folder_already_parsed = false;
 
@@ -55,11 +56,14 @@ CTableMapLoader::CTableMapLoader()
 }
 
 CTableMapLoader::~CTableMapLoader()
-{}
+{
+	__TRACE
+}
 
 
 void CTableMapLoader::CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 {
+	__TRACE
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CTableMapToSWholeMap: %s\n", p_tablemap->filepath());
 	smap->z$ = p_tablemap->z$();
 	smap->s$ = p_tablemap->s$();
@@ -86,6 +90,7 @@ void CTableMapLoader::CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard)
 {
+	__TRACE
 	CFileFind	hFile;
 	SWholeMap	smap;
 	int			line = 0;
@@ -120,6 +125,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 {
+	__TRACE
 	CString TableMapWildcard;
 	
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
@@ -131,6 +137,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 
 bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFilePath)
 {
+	__TRACE
 	for (int i=0; i<=_number_of_tablemaps_loaded; i++)
 	{
 		if (tablemap_connection_data[i].FilePath == TablemapFilePath)
@@ -146,6 +153,7 @@ bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFile
 
 void CTableMapLoader::CheckForDuplicatedTablemaps()
 {
+	__TRACE
 	CString error_message = "";
 	for (int i=0; i<_number_of_tablemaps_loaded; i++)
 	{
@@ -172,6 +180,7 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 
 void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 {
+	__TRACE
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
@@ -225,6 +234,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title) 
 {
+	__TRACE
 	bool			good_pos_title = false, good_neg_title = false, good_table_points = false;
 	int				width = 0, height = 0, x = 0, y = 0;
 	HDC				hdcScreen = NULL, hdcCompatible = NULL;
@@ -319,6 +329,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 
 void CTableMapLoader::ReloadAllTablemapsIfChanged()
 {
+	__TRACE
 	if (p_filesystem_monitor->AnyChanges())
 	{		
 		// Since OpenHoldem 4.0.0 there is no longer any possibility 
@@ -342,6 +353,7 @@ void CTableMapLoader::ReloadAllTablemapsIfChanged()
 
 CString CTableMapLoader::GetTablemapPathToLoad(int tablemap_index)
 {
+	__TRACE
 	assert(tablemap_index >= 0);
 	assert(tablemap_index < _number_of_tablemaps_loaded);
 	return tablemap_connection_data[tablemap_index].FilePath;

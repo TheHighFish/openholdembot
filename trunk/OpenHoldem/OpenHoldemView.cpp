@@ -90,6 +90,7 @@ END_MESSAGE_MAP()
 // COpenHoldemView construction/destruction
 COpenHoldemView::COpenHoldemView() 
 {
+	__TRACE
 	_black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	_green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	_red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -138,10 +139,12 @@ COpenHoldemView::COpenHoldemView()
 
 COpenHoldemView::~COpenHoldemView() 
 {
+	__TRACE
 }
 
 BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) 
 {
+	__TRACE
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 	return CView::PreCreateWindow(cs);
@@ -149,6 +152,7 @@ BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs)
 
 void COpenHoldemView::OnInitialUpdate() 
 {
+	__TRACE
 	CView::OnInitialUpdate();
 
 	// Timer to check for display updates
@@ -158,26 +162,34 @@ void COpenHoldemView::OnInitialUpdate()
 // COpenHoldemView drawing
 void COpenHoldemView::OnDraw(CDC* pDC) 
 {
+	__TRACE
 	UpdateDisplay(true);
 }
 
 void COpenHoldemView::OnTimer(UINT nIDEvent) 
 {
+	__TRACE
 	if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
 		// Only do this if we are not in the middle of a scraper/symbol update
 		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 		{
 			UpdateDisplay(false);
+			__TRACE
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+			__TRACE
+			return;
 		}
 	}
-
+	// Otherwise: not our event: continue with parent class
+	__TRACE
+	assert(nIDEvent != DISPLAY_UPDATE_TIMER);
 	CView::OnTimer(nIDEvent);
 }
 
 void COpenHoldemView::UpdateDisplay(const bool update_all) 
 {
+	__TRACE
 	bool		update_it = false;
 	CDC			*pDC = GetDC();
 
@@ -267,7 +279,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	// Draw collection of player info
 	for (int i=0; i<p_tablemap->nchairs(); i++) 
 	{
-
+		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
 		if (_seated_last[i] != p_scraper->seated(i) ||
@@ -307,6 +319,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 
 		if (update_it || update_all) 
 		{
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
 			if (p_string_match->IsStringSeated(p_scraper->seated(i))) 
 			{
@@ -331,12 +344,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			DrawDealerButton(i);
 		}
 	}
-
+	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
+	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
 }
 
 void COpenHoldemView::DrawCenterInfoBox(void) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		rect = {0};
@@ -457,6 +472,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 void COpenHoldemView::DrawButtonIndicators(void) 
 {
+	__TRACE
 	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
 	bool		autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn = false;
 
@@ -556,6 +572,7 @@ void COpenHoldemView::DrawButtonIndicators(void)
 void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, 
 												  const int top, const int right, const int bottom) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		rect = {0};
@@ -677,6 +694,7 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 
 void COpenHoldemView::DrawSeatedActiveCircle(const int chair) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	int			left = 0, top = 0, right = 0, bottom = 0;
@@ -714,6 +732,7 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair)
 
 void COpenHoldemView::DrawDealerButton(const int chair) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	int			left = 0, top = 0, right = 0, bottom = 0;
@@ -745,6 +764,7 @@ void COpenHoldemView::DrawDealerButton(const int chair)
 void COpenHoldemView::DrawCard(const unsigned int card, const int left, const int top, 
 							   const int right, const int bottom, const bool pl_card) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		rrect = {0}, srect = {0};
@@ -911,6 +931,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 
 void COpenHoldemView::DrawNameBox(const int chair) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		textrect = {0}, drawrect = {0};
@@ -997,6 +1018,7 @@ void COpenHoldemView::DrawNameBox(const int chair)
 
 void COpenHoldemView::DrawBalanceBox(const int chair) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		textrect = {0}, drawrect = {0};
@@ -1092,6 +1114,7 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 
 void COpenHoldemView::DrawPlayerBet(const int chair) 
 {
+	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush		*pTempBrush = NULL, oldbrush;
 	RECT		textrect = {0}, drawrect = {0};
@@ -1182,6 +1205,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair)
 
 void COpenHoldemView::DrawPlayerCards(const int chair) 
 {
+	__TRACE
 	if (!p_scraper_access->IsPlayerActive(chair))
 	{
 		// Forget about inactive players, they have no cards.
