@@ -34,7 +34,14 @@ public:
 	bool EvaluateSymbol(const char *name, double *result);
 	CString IdentifiersProvided();;
 public:
+	// public accessors
+	bool wheel_possible()	{ return _wheel_possible; }
 private:
+	// private functions
+	bool WheelPossible();
+private:
+	// private data
+	bool _wheel_possible;
 };
 
 extern CSymbolEngineOpenPPLBoard *p_symbol_engine_open_ppl_board;

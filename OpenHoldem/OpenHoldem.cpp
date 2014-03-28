@@ -62,6 +62,7 @@ END_MESSAGE_MAP()
 // COpenHoldemApp construction
 COpenHoldemApp::COpenHoldemApp()
 {
+	__TRACE
 	_dll_scraper_process_message = NULL;
 	_dll_scraper_override = NULL;
 }
@@ -69,6 +70,7 @@ COpenHoldemApp::COpenHoldemApp()
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp()
 {
+	__TRACE
 }
 
 // The one and only COpenHoldemApp object
@@ -78,6 +80,7 @@ COpenHoldemApp theApp;
 // COpenHoldemApp initialization
 BOOL COpenHoldemApp::InitInstance()
 {
+	__TRACE
 	// Since OH 4.0.0 we always use an ini-file,
 	// the one and only in our OH-directory,
 	// no matter how it is named.
@@ -216,6 +219,7 @@ BOOL COpenHoldemApp::InitInstance()
 
 void COpenHoldemApp::FinishInitialization()
 {
+	__TRACE
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] FinishInitialization()\n");
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
@@ -257,6 +261,7 @@ void COpenHoldemApp::FinishInitialization()
 
 int COpenHoldemApp::ExitInstance()
 {
+	__TRACE
 	DeleteAllSingletons();
 	stop_log();
 	Scintilla_ReleaseResources();
@@ -265,6 +270,7 @@ int COpenHoldemApp::ExitInstance()
 
 void COpenHoldemApp::UnloadScraperDLL()
 {
+	__TRACE
 	if (_scraper_dll)
 		FreeLibrary(_scraper_dll);
 	_scraper_dll = NULL;
@@ -292,11 +298,13 @@ protected:
 
 CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) 
 {
+	__TRACE
 }
 
 
 void CDlgAbout::DoDataExchange(CDataExchange* pDX) 
 {
+	__TRACE
 	CDialog::DoDataExchange(pDX);
 }
 
@@ -306,12 +314,14 @@ END_MESSAGE_MAP()
 // App command to run the dialog
 void COpenHoldemApp::OnAppAbout() 
 {
+	__TRACE
 	CDlgAbout aboutDlg;
 	aboutDlg.DoModal();
 }
 
 void COpenHoldemApp::OnForceCrash() 
 {
+	__TRACE
 	int choice = OH_MessageBox_Interactive("Do you REALLY want to CRASH?", 
 		"CONFIRMATION", MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
 	if (choice == IDYES) 
@@ -324,6 +334,7 @@ void COpenHoldemApp::OnForceCrash()
 
 void COpenHoldemApp::LoadLastRecentlyUsedFileList()
 {
+	__TRACE
 	//!!!
 	// Added due to inability to get standard LoadStdProfileSettings working properly
 	ASSERT_VALID(this);
@@ -343,11 +354,13 @@ void COpenHoldemApp::LoadLastRecentlyUsedFileList()
 
 void COpenHoldemApp::StoreLastRecentlyUsedFileList()
 {
+	__TRACE
 	m_pRecentFileList->WriteList();
 }
 
 void COpenHoldemApp::OpenLastRecentlyUsedFile()
 {
+	__TRACE
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);

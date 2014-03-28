@@ -54,8 +54,29 @@ void CSymbolEngineOpenPPLVariousOtherSymbols::ResetOnMyTurn()
 void CSymbolEngineOpenPPLVariousOtherSymbols::ResetOnHeartbeat()
 {}
 
+int CSymbolEngineOpenPPLVariousOtherSymbols::IntegerRandom_0_100()
+{
+	// Random does not get pre-calculated and stored
+	// as it should get evaluated each time new.
+	return Random(100);
+}
+
 bool CSymbolEngineOpenPPLVariousOtherSymbols::EvaluateSymbol(const char *name, double *result)
 {
+	if (memcmp(name, "others", 6)==0 && strlen(name)==6)	
+	{
+		// Always true
+		*result = true;
+		return true;
+	}
+	else if (memcmp(name, "random", 6)==0 && strlen(name)==6)	
+	{
+		*result = IntegerRandom_0_100();
+		return true;
+	}
+	// There was a third OpenPPL-symbol tagged as "various others": isfinaltable
+	// but that already is an OpenHoldem symbol, so nothing to do
+	//
 	// Symbol of a different symbol-engine
 	return false;
 }
