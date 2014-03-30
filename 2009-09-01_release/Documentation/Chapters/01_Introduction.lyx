@@ -1,0 +1,586 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+What is OpenHoldem
+\end_layout
+
+\begin_layout Standard
+OpenHoldem, and its supporting applications, OpenScrape, ManualMode and
+ OHReplay, is an open source screen scraping framework and programmable
+ logic engine for the online Texas Hold'em style poker game.
+  This framework provides the capabilities to allow you to build your own
+ Texas Hold'em robot (bot).
+\end_layout
+
+\begin_layout Standard
+There are two major parts to any poker bot, the game state engine, and the
+ action engine.
+ 
+\end_layout
+
+\begin_layout Standard
+There are a number of approaches for getting the game state from a poker
+ client, including directly reading the memory of the poker software, injecting
+ code into the client's address space, parsing the client's chat box, and
+ interpreting the pixels presented on the screen by the client.
+  OpenHoldem's game state engine uses the last approach - it provides a
+ parameter driven method of interpreting the pixels ("
+\emph on
+screen scraping
+\emph default
+"
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Screen_scraping
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+) presented by the poker client to determine the state of the game at any
+ given time.
+  Screen scraping is not a new approach to this kind of problem, poker botting
+ or otherwise.
+ Screen scraping has been a recognized approach for solving a specific set
+ of computer problems almost since computers were invented.
+  Screen scraping has been around for a longer period of time than most
+ of you reading this have been alive! 
+\end_layout
+
+\begin_layout Standard
+The action engine in OpenHoldem is called the 
+\emph on
+Autoplayer
+\emph default
+.
+  The Autoplayer will use logic that is provided by you to decide what poker
+ action to take based on the current game state.
+  The Autoplayer will then click the buttons and enter the text on the screen
+ to make the poker client execute this action.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is a framework.
+  What that means is that you need to provide it with a couple of things
+ to enable the game state engine and the action engine to operate correctly.
+  
+\end_layout
+
+\begin_layout Standard
+The first is the parameters that instruct OpenHoldem how to interpret the
+ pixels presented by the casino that you play at.
+  Each casino presents these pixels in a slightly different manner, and
+ thus these parameters need to be specific for each casino.
+ 
+\end_layout
+
+\begin_layout Standard
+Second is the logic to tell the action engine what to do - just like every
+ person plays live/human poker in a different style, this logic will instruct
+ OpenHoldem how to play the style that you want it to play.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem supports every casino in existence today, as far as we know.
+  If you find a casino that does not work with OpenHoldem's game state or
+ action model, please hit the forums and let us know.
+  The developer team is very responsive to modifying OpenHoldem to work
+ with the continually changing landscape of Texas Hold'em casino client
+ software.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem also supports every sub-flavor of Texas Hold'em poker known to
+ exist today.
+  No-limit, fixed-limit, pot-limit, full ring, heads-up, 6-max, MTT, SNG,
+ double or nothing, turbo, normal speed, whatever.
+ Someone else has already made it work - you can make it work too.
+\end_layout
+
+\begin_layout Section
+What OpenHoldem is not
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is not a complete poker bot.
+  There is much work you need to do to utilize the framework effectively,
+ however this manual and the community on the forums can help you to do
+ so.
+  If you truly desire a poker bot that includes logic written by someone
+ else, a quick Google search will turn up a number of likely candidates.
+  Be aware, however, that a pre-packaged, complete, click-Setup.exe-and-go,
+ poker bot is not a good way to be successful.
+  Consistent and trusted positive results from these pre-packaged bots are
+ impossible to find.
+  If pre-packaged bots really worked, if we could have spent $20 to make
+ $1000's, we certainly would have bought one ourselves, rather than spending
+ the thousands of hours to create this framework!
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does not allow for automated collusion.
+  Poker botting currently is in a gray area of legality and morality, with
+ many strong perspectives on both sides of the argument.
+  The OpenHoldem development team strongly believes that automated collusion
+ is clearly illegal and immoral, and will not provide the facility to help
+ you achieve these ends.
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is not a general-purpose poker botting engine for all styles
+ of poker.
+  It is intentionally suited only to the "Texas Hold'em" flavor of poker
+ favored my the majority of online players today.
+  Don't ask if it supports Omaha - it doesn't.
+\end_layout
+
+\begin_layout Section
+WinHoldem heritage
+\end_layout
+
+\begin_layout Standard
+Reproduced from the original post by Matrix
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?p=28468
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+For the first couple of years of its existence WH (WinHoldEm) was actively
+ developed   and developed an enthusiastic following.
+ Although it was a commercial product   Ray Bornert put in an astonishing
+ amount of time answering queries on the WH BBS, and seemed to respond to
+ opinions and requests there pretty quickly.
+  One of the features he introduced were private forums (fora) which groups
+ could request   and then run their own discussions and developments within
+ them.
+   These must have been problem children for him.
+ because there was a measure of falling-out,   squabbling and bad blood
+ within them.
+ The biggest and most active of these was the infamous Lab1.
+\end_layout
+
+\begin_layout Standard
+The first sign of Ray's movement away from the total nurture and support
+ role was the introduction of Winscrape, a utility to enable the creation
+ of profiles (Table maps).
+ In principle WH users were then not completely dependent on him to generate
+ table maps.
+ This was probably motivated by the increasing tendency of pokersites to
+ change their client display slightly at frequent intervals, and maintaining
+ table maps must have been an increasing burden for Ray.
+ After a period he then stopped creating table maps altogether, and threw
+ the users onto their own abilities with Winscrape.
+ A market economy around them was supposed to develop.
+\end_layout
+
+\begin_layout Standard
+There were external WH groups by this time.
+ Ray had closed down the labs, saying that he did not want to be in the
+ position of one who could be accused of spying on their work, and forced
+ them to find alternative homes.
+ The only one which did this permanently and successfully was Lab1; ending
+ up on a host run by a mysterious presence called MaxinMontreal.
+ The external market economy for table maps did not work very well, because
+ Ray had put no mechanism in WH to enable maps to be given an equivalent
+ of DRM, and piracy and strife soon occurred.
+\end_layout
+
+\begin_layout Standard
+These three threads combined to generate a lot of dissatisfaction amongst
+ the dedicated WH users.
+ The focus of this was in Lab1.
+ The practical result was that a certain element produced a WH functional
+ clone to seed an open source project called OpenHoldem.
+ An open source equivalent of Winscrape followed.
+\end_layout
+
+\begin_layout Standard
+This gamble seems to have paid off.
+ There has always been a dichotomy in botters between their interests in
+ collaborating to develop techniques, and their interest in protecting the
+ final commercial results - the bots.
+ Lab1 helped enormously by making their table maps non-commercial.
+ This established the precedent that the infrastructure for a bot was a
+ community responsibility and development.
+ People seem to have accepted this as a good working model.As to the hatred
+ - the major OH protagonists acknowledge their debt to Ray for WH, and the
+ only comment that Ray has made about OH is that you cannot compete with
+ open source.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Subsection
+OpenHoldem References
+\end_layout
+
+\begin_layout Itemize
+Binary package download site:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source code download:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/source
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source instructions: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewtopic.php?f=113&t=3542
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source license, GPL v3:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.gnu.org/copyleft/gpl.html 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Discussion forums:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Issue tracker:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://code.google.com/p/openholdembot/issues 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Wiki:  
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Other open source projects used in the OpenHoldem project 
+\end_layout
+
+\begin_layout Itemize
+Spirit parser library; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.boost.org
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+HScrollListBox; Nebula Technologies, Inc.; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.nebutech.com
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Dynamic window resizng class; Paul DiLascia; MSDN Magazine -- July 2001
+\end_layout
+
+\begin_layout Itemize
+PokerEval library; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://gna.org/projects/pokersource/
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Hashing algorithm from Bob Jenkins; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://burtleburtle.net/bob/hash/doobs.html
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Visual Leak Detector; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://dmoulding.googlepages.com/vld 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Normalized random distribution Java class; Indiana; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://pokerai.org/pj2/index.php
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Scintilla source code editing component;
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+ http://www.scintilla.org
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Progress Indicator Dialog; P.
+ GopalaKrishna; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.codeproject.com/win32/UPDialog.asp
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Netscape-style preferences dialog; Chris Losinger; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.codeproject.com/KB/tabs/saprefs.aspx
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+Commercial projects used in OpenHoldem
+\end_layout
+
+\begin_layout Itemize
+ActiveState Perl
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+ActiveState Perl is free for personal use
+\end_layout
+
+\end_inset
+
+; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.activestate.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,366 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Installation and Setup
+\end_layout
+
+\begin_layout Section
+Choosing an operating system
+\end_layout
+
+\begin_layout Standard
+OpenHoldem has been designed to work best on the 32-bit versions of Microsoft’s
+ Windows 2000 or Windows XP operating systems.
+ Any service pack level on these two choices seems to be fine.
+\end_layout
+
+\begin_layout Standard
+We recommend you avoid Vista or its dependents (Windows 7, etc).
+ These operating systems add a lot of useless cruft and bloatware that is
+ not useful in this hobby.
+ Most of the poker botters you will interact with in the community use these
+ systems as well, so as you learn and exchange ideas, it is useful to be
+ on the same platform.
+ This is especially true of Table Maps.
+ A TableMap designed for Windows XP is not very likely to work on Vista
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Bomb.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Finally, as you scale your botting operation up, you want to keep things
+ as lightweight as possible to best utilize the limited computing resources
+ at your disposal.
+ For this reason, Windows 2000 is often the choice of poker botters due
+ to its very lean profile.
+\end_layout
+
+\begin_layout Section
+Configuring the operating system 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem requires specific system settings in order to correctly intuit
+ the game state from the pixels on-screen, and to correctly take poker actions.
+ 
+\end_layout
+
+\begin_layout Subsection
+Color depth 
+\end_layout
+
+\begin_layout Standard
+The display color depth must be set to 24-bit or 32-bit.
+ Most Table Maps are designed for 32-bit color depth, so your display should
+ be set to that for maximum compatibility with others’ work.
+\end_layout
+
+\begin_layout Subsection
+Display resolution 
+\end_layout
+
+\begin_layout Standard
+You need enough display resolution to contain both the poker client window
+ and OpenHoldem at it smallest size (i.e.
+ table view off).
+ In general, the minimum acceptable display resolution is 1024x768.
+ The smaller resolutions 800x600 and 640x480 do not have enough real estate
+ to show both the poker client and OpenHoldem without overlapping windows.
+ 
+\end_layout
+
+\begin_layout Subsection
+Font smoothing 
+\end_layout
+
+\begin_layout Standard
+Font smoothing must be turned off in order to interpret fort pixels correctly.
+ Our objective is to interpret the pixels as presented by the poker client,
+ and not post-mangled by the operating system.
+ To disable font smoothing, right click the desktop, and choose Properties-->App
+earance-->Effects.
+ Disable smoothed fonts in this dialog.
+\end_layout
+
+\begin_layout Subsection
+Window style (themes)
+\end_layout
+
+\begin_layout Standard
+Windows 2000 only has one window style.
+ There are no themes, there is no candy blue coloring around windows, so
+ you are OK if you use Windows 2000.
+ With Windows XP, it is suggested to use the “Classic” theme, which will
+ present windows in the same style as Windows 2000.
+ You are of course free to use whatever theme you want, but be aware that
+ public Table Maps usually do not work unless they are used with the same
+ theme that they were designed for.
+ Most OpenHoldem botters use Windows 2000 or the Windows XP Classic theme.
+\end_layout
+
+\begin_layout Subsection
+Windows XP and ClearType 
+\end_layout
+
+\begin_layout Standard
+If you use Windows XP, it is recommended that you disable ClearType fonts,
+ for the same reason that we suggest you disable font smoothing.
+ Here is the link to the Microsoft web page on how to do this: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.microsoft.com/typography/cleartype/tuner/Step1.aspx 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Installing the software 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem and its supporting applications do not come with an installer.
+ This is by design – installers tend to leave traces on your system, and
+ in this hobby, the less traces, the better.
+ Stealth will be discussed in greater depth in a later section, but this
+ installer-less install is an important part of the stealth strategy.
+\end_layout
+
+\begin_layout Standard
+Since you do not have an installer to do the work for you, there are several
+ steps you need to take to correctly configure the software on your machine:
+\end_layout
+
+\begin_layout Enumerate
+Create your “OpenHoldem” base directory.
+ For purposes of this walkthrough, we will create this directory as “c:
+\backslash
+mpb” (“My Poker Bot” – clever, eh?).
+ You can make this directory anything you want, however
+\end_layout
+
+\begin_layout Enumerate
+Under c:
+\backslash
+mpb, create another directory “c:
+\backslash
+mpb
+\backslash
+scraper”; this directory is used by the “Green Circle Button” to automagically
+ connect OpenHoldem to a poker table.
+ More on this later.
+ There is a non-automagic way to connect to tables, but at this point, you
+ probably want this directory.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Download the compiled binary packages.
+ They can be found at the links in the {References} section
+\end_layout
+
+\begin_layout Enumerate
+Extract all the files from the compiled binary packages into the c:
+\backslash
+mpb directory.
+ When done, your directory should look something like this, depending or
+ course, on which programs you chose to extract.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Installation/OHDirectory.bmp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+OpenHoldem directory
+\end_layout
+
+\begin_layout Standard
+In this directory are the following files: 
+\end_layout
+
+\begin_layout Itemize
+ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe – these are the
+ main files for each of the programs in the OpenHoldem project.
+ Details on how to use each of these are throughout this manual.
+\end_layout
+
+\begin_layout Itemize
+dbghelp.dll – this is a Microsoft file that is used to produce memory dumps
+ on critical errors.
+ These memory dumps are useful for the developers to diagnose issues.
+ 
+\end_layout
+
+\begin_layout Itemize
+keyboard.dll, mouse.dll, perl_callback.dll, scraper.dll, user.dll – these files
+ are all extensions to OpenHoldem that you can use to customize the software.
+ More detail on all of these are provided in this document.
+ 
+\end_layout
+
+\begin_layout Itemize
+versus.bin – this file is the large lookup table that is used by the versus
+ symbols that are described in this document.
+ If you want to use versus symbols, you need this file.
+\end_layout
+
+\begin_layout Itemize
+Files with .pdb extensions – these files contain the debug symbols that are
+ required if you want to diagnose crashes or simply trace execution in a
+ debugger.
+ If you need these, you know how to use these.
+ If you don’t know what these are, you can safely ignore or delete them.
+ 
+\end_layout
+
+\begin_layout Itemize
+Files with .txt extensions – these are the release notes for each of the
+ programs in the project.
+ Feel free to peruse these if you have problems falling asleep some night.
+\end_layout
+
+\begin_layout Section
+Finding a Table Map 
+\end_layout
+
+\begin_layout Standard
+The “scraper” directory should be where your Table Map files are stored.
+ Table maps provide the OpenHoldem game state engine the instructions for
+ deriving the state of the game from the pixels on the screen.
+ These files have the “.tm” extension on them.
+ The challenge with table maps is that every casino needs its own map.
+ In some cases, you might need different maps for different game flavors.
+ NL vs.
+ FL, SNG vs.
+ Ring, 10-seat vs.
+ Heads-Up, for example.
+\end_layout
+
+\begin_layout Standard
+The OpenHoldem project team does not provide official Table Maps for any
+ casino or any Texas Hold’em game flavor.
+ The reason for this is that there are thousands of casinos out there, and
+ tens- or hundreds- of thousands of map combinations when you consider the
+ different game flavors.
+ Adding to that is the fact that casinos regularly update their client software
+ and make minor or comprehensive changes to the pixels as they are displayed
+ on the screen.
+ These changes most often require changes to the table map as well.
+ The OpenHoldem Project development team is a group of volunteers – we do
+ not get paid for this, we have real lives and real families, and do this
+ as a hobby.
+ Maintaining working Table Maps would be a more than full time job, and
+ thus instead, we put the power in your hands; we provide Table Map creation
+ tools and testing tools to allow you to be self-sufficient.
+ An explanation of the “OpenScrape” program, which is key to this self-sufficien
+cy, will be provided in more detail later in this document.
+\end_layout
+
+\begin_layout Standard
+That said, there are a number of places you can find pre-created maps for
+ use with OpenHoldem.
+ There is a section on the Wiki
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/wiki/index.php5?title=Table_Maps
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ that contains user-contributed maps.
+ These maps are likely to be more or less out of date, and would require
+ some validation to ensure they are 100% correct.
+ Consider these maps to be a starting point for learning how maps are constructe
+d and how they work.
+ The forums have a lot of discussion on maps, and you can likely find maps
+ attached to posts; same caveats apply as to the Wiki maps.
+ You can try buying or trading maps with other community members – be cautious
+ with this, however, and make sure you protect your interests; the OpenHoldem
+ development team cannot be held accountable if you do something foolish
+ on your own.
+ Caveat emptor.
+\end_layout
+
+\end_body
+\end_document
