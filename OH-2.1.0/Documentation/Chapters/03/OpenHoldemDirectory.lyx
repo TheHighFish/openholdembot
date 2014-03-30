@@ -1,0 +1,164 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem directory
+\end_layout
+
+\begin_layout Standard
+In this directory are the following files: 
+\end_layout
+
+\begin_layout Itemize
+ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe --- these are the
+ main files for each of the programs in the OpenHoldem project.
+ Details on how to use each of these are throughout this manual.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+dbghelp.dll
+\end_layout
+
+\end_inset
+
+dbghelp.dll --- this is a Microsoft file that is used to produce memory dumps
+ on critical errors.
+ These memory dumps are useful for the developers to diagnose issues.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+keyboard.dll
+\end_layout
+
+\end_inset
+
+keyboard.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+mouse
+\end_layout
+
+\end_inset
+
+mouse.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+perl.dll
+\end_layout
+
+\end_inset
+
+perl_callback.dll, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+scraper.dll
+\end_layout
+
+\end_inset
+
+scraper.dll, scraper_preprocessor.dll, user.dll --- these files are all extensions
+ to OpenHoldem that you can use to customize the software.
+ More detail on all of these are provided in this document.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+versus.bin
+\end_layout
+
+\end_inset
+
+versus.bin --- this file is the large lookup table that is used by the versus
+ symbols that are described in this document.
+ If you want to use versus symbols, you need this file.
+\end_layout
+
+\begin_layout Itemize
+Files with .pdb extensions --- these files contain the debug symbols that
+ are required if you want to diagnose crashes or simply trace execution
+ in a debugger.
+ If you need these, you know how to use these.
+ If you don’t know what these are, you can safely ignore or delete them.
+ 
+\end_layout
+
+\begin_layout Itemize
+Files with .txt extensions --- these are the release notes for each of the
+ programs in the project.
+ Feel free to peruse these if you have problems falling asleep some night.
+\end_layout
+
+\begin_layout Itemize
+Files with .ini extensions --- these are configuration files; they can be
+ used for easy deployment on new machines or to avoid traces in the registry.
+\end_layout
+
+\begin_layout Itemize
+OpenHoldem Project 2.1.0 Manual.chm --- this manual.
+\end_layout
+
+\end_body
+\end_document
