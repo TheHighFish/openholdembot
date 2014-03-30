@@ -1,0 +1,59 @@
+Left single click:
+  - On a player's bet to: call
+  - On a button indicator to: toggle it.
+  
+Shift-Left single click:
+  - On a player's bet to: raise
+
+Ctrl-Shift-Left single click:
+  - On a player's bet to: go allin
+
+Left double click:
+  - On a player's cards to: seat the player, sit the player in, and deal the player cardbacks
+  
+Right single click:
+  - On a player's cards to: sit down/stand up, sit in/out, place the dealer button, assign a card,
+    assign cardbacks, or remove cards.
+  - On a common card to: assign a card or remove a card.
+  - On the dealer info box to: set small blind, big blind, big bet, ante, game type and tournament mode.
+  - On a button indicator to: toggle it.
+  
+Reset button:
+  - Clear entire display (reset to start up state).
+  
+P- button:
+  - Decrease the number of players sitting down/sitting in.
+
+P+ button:  
+  - Increase the number of players sitting down/sitting in.
+  
+D- button:
+  - Move the dealer button to the right.
+
+D+ button:  
+  - Move the dealer button to the left.  
+  
+Macro commands:
+	R    = Reset
+	U, u = These have no meaning in the OpenHoldem world.  OH still detects the user chair by the presence of
+	       cards and buttons when connected to a manual mode table.
+	P    = Add player (sit down, sit in, deal card backs)
+	p    = Remove player
+	b    = Post small blind (always the first occupied seat after the button)
+	B    = Post big blind (always the second occupied seat after the button)
+	A,a  = Ace
+	K,k  = King
+	Q,q  = Queen
+	J,j  = Jack
+	T,t  = Ten
+	9-2  = Nine-Two
+	C,c  = Club
+	D,d  = Diamond
+	H,h  = Heart
+	S,s  = Spade
+	
+	N,n  = Set the dealer chair  (*)
+	
+	
+	(*) - Not available in WinHoldem manual-mode macro language. 
+	
