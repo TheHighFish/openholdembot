@@ -1,0 +1,23 @@
+The old Pacific poker client is great as a sample table map, as an exercise to see
+how OpenScrape works.
+
+=========================================
+
+Un-install any client you might have installed (Add/Remove programs - Pacific poker)
+
+Install the old client from the link below:
+http://setupspcp1.888.com/setups/support/full/en/3.509/pacificpokersetup.exe
+
+=========================================
+
+Load the included "pacific.10.tm" into OpenScrape and connect to a Pacific table.
+
+A shot of this table map loaded and connected to a table is included as well.
+
+=========================================
+
+This table map is *not* complete, and will not function on OpenHoldem.  It will need
+to be completed to be usable.  The intention of this sample is not to provide a 
+complete table map, but rather to illustrate how OpenScrape can be used to create
+fully complete and operational table maps.
+ 
