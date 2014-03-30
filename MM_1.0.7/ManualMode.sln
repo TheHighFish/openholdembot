@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManualMode", "ManualMode.vcproj", "{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0829BFDD-AE24-41DE-A19B-50CB2865768A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		OH manual mode docs.txt = OH manual mode docs.txt
+		OpenHoldem.ManualMode.1.0.6.tm = OpenHoldem.ManualMode.1.0.6.tm
+		OpenHoldem.ManualMode.master.1.0.1.ws = OpenHoldem.ManualMode.master.1.0.1.ws
+		Release Notes.txt = Release Notes.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}.Debug|Win32.Build.0 = Debug|Win32
+		{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}.Release|Win32.ActiveCfg = Release|Win32
+		{912CBD08-CFC5-4E5C-A6B5-FD18379467F2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
