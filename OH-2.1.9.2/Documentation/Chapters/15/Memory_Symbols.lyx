@@ -1,0 +1,281 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Memory symbols
+\end_layout
+
+\end_inset
+
+Memory Symbols 
+\end_layout
+
+\begin_layout Section
+Introduction 
+\end_layout
+
+\begin_layout Standard
+One of the most powerful features of OpenHoldem is its ability to remember.
+ Very few other bots have this ability.
+ Planning Working with memory symbols requires a bit of planning and specificall
+y one should keep the following in mind: OpenHoldem does not know your memory
+ symbol before you create it.
+ This sounds simple but one should not forget it because it could create
+ problems with your first hand.
+ Once a memory symbol is created, and a value is stored, OpenHoldem will
+ remember that value until it is altered or replaced by another or until
+ OpenHoldem is closed.
+ This is great if you want OpenHoldem to remember what happened 10 hands
+ ago but could bite you if you forget to reset them.
+ It is of utmost importance to decide when and what should be remembered.
+ 
+\end_layout
+
+\begin_layout Section
+Formulation 
+\end_layout
+
+\begin_layout Standard
+The formulation of the memory symbol is as follows: 
+\end_layout
+
+\begin_layout Standard
+me_st_abc_123_45 - 'me_st_' stores a value "123.45" in variable "abc" (use
+ "_" for the decimal in values) 
+\end_layout
+
+\begin_layout Standard
+A function name can also be passed in, instead of a number, for example:
+ 'me_st_def_f$myfunc' would store the results of function f$myfunc in variable
+ “def”.
+ 
+\end_layout
+
+\begin_layout Standard
+me_re_abc - 'me_re_' retrieves the value from variable "abc" 
+\end_layout
+
+\begin_layout Section
+Putting it together
+\end_layout
+
+\begin_layout Standard
+To make things clear we will be putting two memory symbols into your bot.
+ A) We will create a “Stack to Pot Ratio” memory symbol (the function of
+ this symbol is to store the ratio of our balance to the pot at the start
+ of the betting on the flop to be retrieve later in order to make commitment
+ decisions), and B) We will create a “Slow Play” memory symbol, (the function
+ of this symbol is to store our decision during a betting round that we
+ will check-raise the next betting round regardless of what the next card
+ is)
+\end_layout
+
+\begin_layout Subsection
+STEP 1: Create the symbols:
+\end_layout
+
+\begin_layout Standard
+In f$alli we put:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+(br==1 && !(didchecround1 || didcallround1 || didraisround1 || didswaground1) ?
+\end_layout
+
+\begin_layout Plain Layout
+
+me_st_stpr_0 : 0) + (br==1 && !(didchecround1 || didcallround1 || didraisround1
+ || didswaground1) ? me_st_slowplay_0 : 0) + 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+English translation: it is preflop and we have not yet acted then we will
+ create the memory symbols “stpr” (stack to pot ratio) and “slowplay” and
+ we will reset the values to zero.
+ Comment: we do this in f$alli because it is the first formula that is evaluated
+ by OpenHoldem.
+ If we had put it in a formula that is not evaluated then no value will
+ be stored.
+ 
+\end_layout
+
+\begin_layout Subsection
+STEP 2 (a): 
+\end_layout
+
+\begin_layout Standard
+In f$alli we put 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+(br==2 && !(didchecround2 || didcallround2 || didraisround2 || didswaground2) ?
+ me_st_stpr_f$stpr : 0) + (br==2 && !(didchecround2 || didcallround2 ||
+ didraisround2 || didswaground2) ? me_st_slowplay_f$slowplay : 0) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+English translation: it is on the flop and we have not yet acted then we
+ will store the values of the functions f$stpr and f$slowplay at that moment.
+ Comment: Again this is the first thing we want OpenHoldem to do.
+ It is very important to decide exactly when to pass the value into the
+ memory symbols.
+ Please note that the last line does not have “+” 
+\end_layout
+
+\begin_layout Subsection
+STEP 2(b) 
+\end_layout
+
+\begin_layout Standard
+We create the functions whose value we want to store: f$stpr 
+\end_layout
+
+\begin_layout Standard
+balance/potcommon 
+\end_layout
+
+\begin_layout Standard
+Comment: we don’t use “pot” because that would include any bets during round2
+ before us.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$slowplay 
+\end_layout
+
+\begin_layout Plain Layout
+
+br==2 && nhandshi==0 ? 1 : 0 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comment: this formula will return 1 when we have the nuts and this will
+ be stored into the “slowplay” memory symbol 
+\end_layout
+
+\begin_layout Subsection
+STEP 3 Retrieve and use the memory.
+ 
+\end_layout
+
+\begin_layout Standard
+In f$srai we put 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+br==3 && me_re_slowplay && me_re_stpr<10 ? balance : 0 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+English translation: It is the turn and we, on the flop, decided to slow
+ play and the ratio between the pot (at the start of br==2) and our balance
+ at that time was 1:10 and therefore we will shove.
+ 
+\end_layout
+
+\begin_layout Section
+Conclusion 
+\end_layout
+
+\begin_layout Standard
+The memory symbols are very powerful but need a bit of planning.
+ It is important to decide when to define, store and retrieve the values
+ in these symbols.
+ 
+\end_layout
+
+\end_body
+\end_document
