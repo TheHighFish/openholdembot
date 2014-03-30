@@ -1,0 +1,24 @@
+//
+// Cleaned up and brackets added by "bracketify.pl"
+//
+CUSTOM
+
+PREFLOP
+
+    WHEN ((TotalInvested > 250% StackSize)   AND  log$line_5_Act) CALL FORCE
+
+    WHEN ((BotsLastAction=raise AND AmountToCall <=40% PotSize AND OpponentIsAllin AND Opponents=1 AND (PairInHand OR (hand=A Suited) OR (hand=A7) OR (hand=A8) OR (hand=A9) OR (hand=AT) OR (hand=AJ) OR (hand=AQ) OR (hand=AK) OR (hand=K6 suited) OR (hand=K7 suited) OR (hand=K8 suited) OR (hand=K9 suited) OR (hand=KT) OR (hand=KJ) OR (hand=KQ) OR (hand=Q9 suited) OR (hand=QT) OR (hand=QJ)))   AND  log$line_7_Act) CALL FORCE
+
+    WHEN ((Others)   AND  log$line_9_Act) FOLD FORCE
+
+FLOP
+
+    WHEN ((Others)   AND  log$line_13_Act) FOLD FORCE
+
+TURN
+
+    WHEN ((Others)   AND  log$line_17_Act) FOLD FORCE
+
+RIVER
+
+    WHEN ((Others)   AND  log$line_21_Act) FOLD FORCE
