@@ -1,0 +1,155 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+What is OpenHoldem
+\end_layout
+
+\begin_layout Standard
+OpenHoldem, and its supporting applications, OpenScrape, ManualMode and
+ OHReplay, is an open source screen scraping framework and programmable
+ logic engine for the online Texas Hold'em style poker game.
+  This framework provides the capabilities to allow you to build your own
+ Texas Hold'em robot (bot).
+\end_layout
+
+\begin_layout Standard
+There are two major parts to any poker bot, the game state engine, and the
+ action engine.
+ 
+\end_layout
+
+\begin_layout Standard
+There are a number of approaches for getting the game state from a poker
+ client, including directly reading the memory of the poker software, injecting
+ code into the client's address space, parsing the client's chat box, and
+ interpreting the pixels presented on the screen by the client.
+  OpenHoldem's game state engine uses the last approach - it provides a
+ parameter driven method of interpreting the pixels ("
+\emph on
+screen scraping
+\emph default
+"; 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Screen_scraping
+\end_layout
+
+\end_inset
+
+) presented by the poker client to determine the state of the game at any
+ given time.
+  Screen scraping is not a new approach to this kind of problem, poker botting
+ or otherwise.
+ Screen scraping has been a recognized approach for solving a specific set
+ of computer problems almost since computers were invented.
+  Screen scraping has been around for a longer period of time than most
+ of you reading this have been alive! 
+\end_layout
+
+\begin_layout Standard
+The action engine in OpenHoldem is called the 
+\emph on
+Autoplayer
+\emph default
+.
+  The Autoplayer will use logic that is provided by you to decide what poker
+ action to take based on the current game state.
+  The Autoplayer will then click the buttons and enter the text on the screen
+ to make the poker client execute this action.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem is a framework.
+  What that means is that you need to provide it with a couple of things
+ to enable the game state engine and the action engine to operate correctly.
+  
+\end_layout
+
+\begin_layout Standard
+The first is the parameters that instruct OpenHoldem how to interpret the
+ pixels presented by the casino that you play at.
+  Each casino presents these pixels in a slightly different manner, and
+ thus these parameters need to be specific for each casino.
+ 
+\end_layout
+
+\begin_layout Standard
+Second is the logic to tell the action engine what to do - just like every
+ person plays live/human poker in a different style, this logic will instruct
+ OpenHoldem how to play the style that you want it to play.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem supports every casino in existence today, as far as we know.
+  If you find a casino that does not work with OpenHoldem's game state or
+ action model, please hit the forums and let us know.
+  The developer team is very responsive to modifying OpenHoldem to work
+ with the continually changing landscape of Texas Hold'em casino client
+ software.
+ 
+\end_layout
+
+\begin_layout Standard
+OpenHoldem also supports every sub-flavor of Texas Hold'em poker known to
+ exist today.
+  No-limit, fixed-limit, pot-limit, full ring, heads-up, 6-max, MTT, SNG,
+ double or nothing, turbo, normal speed, whatever.
+ Someone else has already made it work - you can make it work too.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Scraper-Preprocessor.tex"> 
+<meta name="date" content="2009-12-19 11:27:00"> 
+<link rel="stylesheet" type="text/css" href="Scraper-Preprocessor.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
+ id="x1-10000.1"></a>Scraper-Preprocessor DLL</h3>
+<!--l. 23--><p class="noindent" >The scraper-preprocessor DLL extension was added in OH 2.1.0. Some casinos have
+started displaying unusual information in various regions that do not have an obvious
+way to be handled with the current OH design, other than scraper override. One casino,
+for example, displays pots like this "150 + (300)". "150" is the amount that is committed
+to the pot in previous rounds, and "+ (300)" is the amount that has been bet by players
+so far in this round. Scraper override is intended to be used with DLL injection or
+chat box parsing techniques, and what is needed here is a way to massage the
+transform engine&#8217;s output before it gets converted internally into consumable
+numbers.
+<!--l. 35--><p class="indent" >   "scraper-preprocessor" works just like other user DLL extensions. It is different from
+scraper override, in that the string types that come out of the transform engine are
+passed to the DLL, rather than the final resultant types (doubles). This makes the
+interface very straightforward. The scraper engine will pass transformed strings to a
+user-coded DLL, the DLL can do whatever massaging is necessary, and then the
+engine will continue with what the DLL passes back for further processing.
+In the above example, the scraper-preprocessor DLL could be used to simply
+strip everything off of the scraped pot string after + or (. The engine would
+then get "150" back, which would then be processed into the correct double
+type.
+<!--l. 48--><p class="indent" >   Immediately after transforming each region, OpenHoldem will pass a pointer to
+a structure containing the results of the scrape to your override DLL. This
+is not a const pointer reference, so any of the members of the struct can be
+changed directly. The prototype for the method called by OpenHoldem is quite
+straightforward:
+   <!--l. 55-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>SCRAPER_PREPROCESSOR_DLL_API&#x00A0;void&#x00A0;ProcessMessage(const&#x00A0;char&#x00A0;<span 
+class="cmsy-10">*</span>message,&#x00A0;const&#x00A0;void&#x00A0;<span 
+class="cmsy-10">*</span>param);
+   </div>
+<!--l. 60--><p class="indent" >   The &#8220;message&#8221; parameter will contain the name of the region that was
+just transformed. Using our example above for the strange pot, this could be
+&#8220;c0pot0&#8221;.
+<!--l. 64--><p class="indent" >   The &#8220;param&#8221; parameter will contain the actual transformed string, as a
+pointer to a CString type. Continuing the example above, this would be &#8220;150 +
+(300)&#8221;.
+<!--l. 68--><p class="indent" >   Handling this strange pot format could be as easy as code like this:
+   <!--l. 71-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-1002r1"></a></span>SCRAPER_PREPROCESSOR_DLL_API&#x00A0;void&#x00A0;ProcessMessage(const&#x00A0;char&#x00A0;<span 
+class="cmsy-10">*</span>message,&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;const&#x00A0;void&#x00A0;<span 
+class="cmsy-10">*</span>param)&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r3"></a></span>{&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(message==NULL)&#x00A0;return;&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(strncmp(message,&#x00A0;"connect",&#x00A0;7)==0)&#x00A0;target_hwnd&#x00A0;=&#x00A0;(HWND&#x00A0;<span 
+class="cmsy-10">*</span>)&#x00A0;param;&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(strncmp(message,&#x00A0;"disconnect",&#x00A0;10)==0)&#x00A0;target_hwnd&#x00A0;=&#x00A0;(HWND&#x00A0;<span 
+class="cmsy-10">*</span>)&#x00A0;NULL;&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(strncmp(message,&#x00A0;"c0pot0",&#x00A0;6)==0)&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;CString&#x00A0;<span 
+class="cmsy-10">*</span>s&#x00A0;=&#x00A0;(CString&#x00A0;<span 
+class="cmsy-10">*</span>)&#x00A0;param;&#x00A0;<br /><span class="label"><a 
+ id="x1-1011r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;index;&#x00A0;<br /><span class="label"><a 
+ id="x1-1012r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;index&#x00A0;=&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Find(&#8217;(&#8217;);&#x00A0;<br /><span class="label"><a 
+ id="x1-1013r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(index==0)&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Empty();&#x00A0;<br /><span class="label"><a 
+ id="x1-1014r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(index&#x003E;0)&#x00A0;<span 
+class="cmsy-10">*</span>s&#x00A0;=&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Left(index<span 
+class="cmsy-10">-</span>1);&#x00A0;<br /><span class="label"><a 
+ id="x1-1015r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;index&#x00A0;=&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Find(&#8217;+&#8217;);&#x00A0;<br /><span class="label"><a 
+ id="x1-1016r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(index==0)&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Empty();&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if&#x00A0;(index&#x003E;0)&#x00A0;<span 
+class="cmsy-10">*</span>s&#x00A0;=&#x00A0;s<span 
+class="cmsy-10">-</span>&#x003E;Left(index<span 
+class="cmsy-10">-</span>1);&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r18"></a></span>}
+   </div>
+    
+</body></html> 
+
+
+
