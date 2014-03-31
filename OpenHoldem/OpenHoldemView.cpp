@@ -178,13 +178,12 @@ void COpenHoldemView::OnTimer(UINT nIDEvent)
 			__TRACE
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 			__TRACE
-			return;
 		}
 	}
-	// Otherwise: not our event: continue with parent class
+	// Otherwise: continue with parent class
 	__TRACE
-	assert(nIDEvent != DISPLAY_UPDATE_TIMER);
 	CView::OnTimer(nIDEvent);
+	__TRACE
 }
 
 void COpenHoldemView::UpdateDisplay(const bool update_all) 

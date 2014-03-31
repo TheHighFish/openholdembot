@@ -48,6 +48,7 @@ void CSymbolEngineLists::ResetOnNewRound()
 
 void CSymbolEngineLists::ResetOnMyTurn()
 {
+	__TRACE
 }
 
 void CSymbolEngineLists::ResetOnHeartbeat()

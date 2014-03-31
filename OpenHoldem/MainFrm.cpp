@@ -470,10 +470,12 @@ void CMainFrame::OnFileOpen()
 
 void CMainFrame::OnTimer(UINT nIDEvent) 
 {
+	__TRACE
 	RECT			att_rect = {0}, wrect = {0};
 
 	if (nIDEvent == HWND_CHECK_TIMER)
 	{
+		__TRACE
 		if (!IsWindow(p_autoconnector->attached_hwnd()))
 		{
 			// Table disappeared
@@ -484,7 +486,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
 	else if (nIDEvent == ENABLE_BUTTONS_TIMER)
 	{
-
+		__TRACE
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
@@ -519,10 +521,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 	}
 	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) 
 	{
+		__TRACE
 		p_openholdem_statusbar->OnUpdateStatusbar();
 	}
 	else if (nIDEvent == ATTACH_WINDOW_TIMER)
 	{
+		__TRACE
 		::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
 		GetWindowRect(&wrect);
 
@@ -545,6 +549,9 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 			}
 		}
 	}
+	__TRACE
+	CWnd::OnTimer(nIDEvent); //???????
+	__TRACE
 }
 
 void CMainFrame::OnAutoplayer() 

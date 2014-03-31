@@ -162,7 +162,7 @@ void CEngineContainer::CreateSymbolEngines()
 	// as it can only be called after all symbols have been initialized.
 	p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
 	AddSymbolEngine(p_symbol_engine_ini_functions);
-	// CSymbols
+	// CSymbolEngineVariousDataLookup
 	// Deals with symbol-lookups and depends on all the other ones.
 	// Therefore it has to be the very last one.
 	p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;
@@ -275,9 +275,11 @@ void CEngineContainer::ResetOnNewRound()
 
 void CEngineContainer::ResetOnMyTurn()
 {
+	__TRACE
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
+		__TRACE
 		_symbol_engines[i]->ResetOnMyTurn();
 	}
 }

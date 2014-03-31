@@ -65,7 +65,9 @@ void CSymbolEngineHistory::ResetOnNewRound()
 {}
 
 void CSymbolEngineHistory::ResetOnMyTurn()
-{}
+{
+	__TRACE
+}
 
 void CSymbolEngineHistory::ResetOnHeartbeat()
 {

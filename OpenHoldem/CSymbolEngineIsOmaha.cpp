@@ -50,7 +50,9 @@ void CSymbolEngineIsOmaha::ResetOnNewRound()
 {}
 
 void CSymbolEngineIsOmaha::ResetOnMyTurn()
-{}
+{
+	__TRACE
+}
 
 void CSymbolEngineIsOmaha::ResetOnHeartbeat()
 {}
