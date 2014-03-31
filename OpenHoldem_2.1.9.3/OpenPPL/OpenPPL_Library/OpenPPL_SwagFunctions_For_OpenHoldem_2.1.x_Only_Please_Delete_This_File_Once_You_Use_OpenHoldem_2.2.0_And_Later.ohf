@@ -1,0 +1,119 @@
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for the OpenPPL converter
+//
+// OpenPPL is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 2.2.0 or later
+//   Symbols not working with 2.1.x:
+//     * isfinaltable
+//
+// Contributors:
+//   Bob3456
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Gecko
+//   JConner
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+//  OpenPPL - Swag Functions
+//  ========================
+//
+//  Swag-functions for OpenHoldem 2.1.x only.
+//  Please delete this file once you use OpenHoldem 2.2.0 and later.
+//
+//  Swagging (swag = stated wager, a Ray-E.-Bornesian abbreviation)
+//  was the old way to handle NL-betsizing.
+//  It got replaced by a single f$betsize function in OH 2.2.0
+//  and OpenHoldem handles now all adjustments of the betsize to the casino
+//  and all other technical things automatically.
+//
+//*****************************************************************************
+
+##f$OpenPPL_AbsoluteBetSize##
+// OpenPPL uses raise-by semantics
+// OpenHoldem and this function use raise-to.
+// A positive f$Decision means the Raise-size in Dollars.
+(f$OpenPPL_Decision > 0) ? [ncallbets + f$OpenPPL_Decision] : 0
+
+##f$OpenPPL_BetSize_In_Dollars##
+// f$OpenPPL_BetSize is measured in bets but we need it in dollars,
+// as swag-adjustment / OH need it in dollars.
+(f$OpenPPL_AbsoluteBetSize * bet)
+
+##f$OpenPPL_MinimumRaiseAllowed##
+// Final betsize if we raise by the minimum.
+// Aamount in dollars.
+(currentbet + call + sraimin)
+
+##f$OpenPPL_BetSizeAdjustedToMinimumRaise##
+// Aamount in dollars.
+(f$OpenPPL_BetSize_In_Dollars < f$OpenPPL_MinimumRaiseAllowed) ? f$OpenPPL_MinimumRaiseAllowed :
+f$OpenPPL_BetSize_In_Dollars
+
+##f$OpenPPL_PotLimitPotSize##
+// The pot for potsize calculations is the current pot plus the amount if we call
+// Amount in dollars
+(pot + call)
+
+##f$OpenPPL_BetSizeAdjustedToGameType##
+// In pot-limit we can only raise by pot-size ;-)
+// Aamount in dollars.
+[ispl && (f$OpenPPL_BetSizeAdjustedToMinimumRaise > 2 * f$OpenPPL_PotLimitPotSize)] ?
+(2 * f$OpenPPL_PotLimitPotSize) : f$OpenPPL_BetSizeAdjustedToMinimumRaise
+
+##f$OpenPPL_BetSizeAdjustedToUsersBalance##
+// Aamount in dollars.
+(f$OpenPPL_BetSizeAdjustedToGameType > (balance + currentbet)) ?
+(balance + currentbet) : f$OpenPPL_BetSizeAdjustedToGameType
+
+##f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements##
+// There are 3 different ways, how casinos treat swagged input.
+//
+// Swag means, the casino will interpret the amount as
+// 1) f$srai
+// 2) f$srai+call
+// 3) f$srai+call+currentbet
+// As our f$betsize function treats case X as normal and not case 1,
+// we have to do some small calculations in the other direction.
+(swagtextmethod == 1) ? f$OpenPPL_BetSizeAdjustedToUsersBalance :
+(swagtextmethod == 2) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call] :
+(swagtextmethod == 3) ? [f$OpenPPL_BetSizeAdjustedToUsersBalance - call - currentbet] :
+// This should not happen, but we default to 1)
+f$OpenPPL_BetSizeAdjustedToUsersBalance
+
+##f$swag##
+isfl ? 0 : f$OpenPPL_BetSizeAdjustedToCasinosInputRequirements

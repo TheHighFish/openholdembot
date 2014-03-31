@@ -1,0 +1,13 @@
+* Change the version
+* Choose the correct build option (debug or release)
+* Tag the release on googlecode
+* Rebuild everything
+* Copy all files to a new directory
+* Add dbdhelp.dll
+* Add the scraper directory and double-check it (TM for ManualMode, Universal TM)
+* Add the OpenPPL library
+* Add the Documentation
+* Add ReleaseNotes
+* Add "sources of code.txt"
+* Remove the *.lib, *.exp and *.pdb files.
+* Zip or rar and upload
