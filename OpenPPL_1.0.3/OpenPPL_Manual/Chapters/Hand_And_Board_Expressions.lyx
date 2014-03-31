@@ -1,0 +1,262 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+Hand And Board Expressions
+\end_layout
+
+\begin_layout Section*
+Hand expressions
+\end_layout
+
+\begin_layout Standard
+One of the most important decisions of the game happens preflop: shall I
+ play this hand and how? This decision can be coded with the self-explaining
+ hand-expression, like in the example below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AA) RAISEMAX FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AQ Suited) OR (Hand = AJ Suited)) RAISE 3 FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = 22) OR (Hand = 33) OR (Hand = 44)...) CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Remark*
+AK does include both AKs and AKo.
+ So if you want to play suited hands differently you should code them first,
+ as OpenPPL gets evaluated top down.
+ It will stop at the first condition that matches.
+ So always remember: 
+\emph on
+strong hands first, exceptions first, bad hands later.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1pt*
+\end_inset
+
+
+\end_layout
+
+\begin_layout Remark*
+All hand-expressions and board-expressions need to be enclosed in brackets
+ for technical reasons.
+\end_layout
+
+\begin_layout Section*
+Coding For Specific Suits
+\end_layout
+
+\begin_layout Standard
+If you want you can also code for specific suits, like an ace of diamonds
+ in your hand.
+ In the past (before real randomization go introduced to Standard PPL) this
+ has been used to randomize actions.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ((Hand = AcQd) Or (Hand = JhTs)) ...
+\end_layout
+
+\begin_layout Plain Layout
+
+// Randomize your Action, the old way
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AdT)RAISE FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Hand = AT)CALL FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Board Expressions
+\end_layout
+
+\begin_layout Standard
+A lot of the game also depends on the board cards.
+ There are symbols like 
+\begin_inset Quotes eld
+\end_inset
+
+HaveStraightDraw
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+FlushPossibleOnTurn
+\begin_inset Quotes eld
+\end_inset
+
+, but for some cases they might be not concrete enough.
+ Therefore it is possible to specify board-states similar as above:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+// Calling, if any ace is on the board
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Board = A) CALL FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// Raising, if there is a low pair on board
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ((Board = 22) OR (Board = 33) OR (Board = 44)...) RAISE FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// Raising, if there are A and T of the same suit
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN (Board = AT SUITED) RAISEPOT FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You see, this is pretty straight-forward, but sometimes lots of code to
+ write.
+ If you want to create code that is easy to understand, easy to reuse and
+ easy to maintain, then you should encapsulate expressions like the second
+ one in functions:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+NEW SYMBOL LowPairOnBoard
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ((Board = 22) OR (Board = 33) OR (Board = 44)...)) RETURN TRUE
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN Others RETURN FALse
+\end_layout
+
+\begin_layout Plain Layout
+
+END SYMBOL
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+User-defined variables would also be possible, but they are not nearly as
+ good as functions.
+\end_layout
+
+\end_body
+\end_document
