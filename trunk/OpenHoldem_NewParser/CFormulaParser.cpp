@@ -148,47 +148,49 @@ void CFormulaParser::ParseSingleFormula(CString function_content)
 	else if (_token_ID != kTokenIdentifier)
 	{
 		CParseErrors::Error("Malformed function-header. Name expected");
+		return;
+	}
+	_token = _tokenizer.GetTokenString();
+	current_function_name = _token;
+	TPParseTreeNode function_body = NULL;
+	if (_token.Left(2) == "f$")
+	{
+		// ##f$functionXYZ##
+		//printf("Parsing f$function\n");
+		ExpectDoubleShebangAsEndOfFunctionHeader();
+		TPParseTreeNode function_body =	ParseFunctionBody();
+
+	}
+	else if (_token.Left(4) == "list")
+	{
+		// ##listNNN##
+		//printf("Parsing list\n");
+		ExpectDoubleShebangAsEndOfFunctionHeader();
+		ParseListBody();
+	}
+	else if (_token.MakeLower() == "dll")
+	{
+		// ##DLL##
+		//printf("Parsing DLL\n");
+		ExpectDoubleShebangAsEndOfFunctionHeader();
+		// !!! To do
+	}
+	else if (_token.MakeLower() == "notes")
+	{
+		// ##Notes##
+		//printf("Parsing Notes\n");
+		ExpectDoubleShebangAsEndOfFunctionHeader();
+		// Don't do anything.
+		// This is just a special type of global comment.
 	}
 	else
 	{
-		_token = _tokenizer.GetTokenString();
-		current_function_name = _token;
-		if (_token.Left(2) == "f$")
-		{
-			// ##f$functionXYZ##
-			//printf("Parsing f$function\n");
-			ExpectDoubleShebangAsEndOfFunctionHeader();
-			ParseFunctionBody();
-		}
-		else if (_token.Left(4) == "list")
-		{
-			// ##listNNN##
-			//printf("Parsing list\n");
-			ExpectDoubleShebangAsEndOfFunctionHeader();
-			ParseListBody();
-		}
-		else if (_token.MakeLower() == "dll")
-		{
-			// ##DLL##
-			//printf("Parsing DLL\n");
-			ExpectDoubleShebangAsEndOfFunctionHeader();
-			// !!! To do
-		}
-		else if (_token.MakeLower() == "notes")
-		{
-			// ##Notes##
-			//printf("Parsing Notes\n");
-			ExpectDoubleShebangAsEndOfFunctionHeader();
-			// Don't do anything.
-			// This is just a special type of global comment.
-		}
-		else
-		{
-			CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
-		}
+		CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
+		return;
 	}
 	CheckForExtraTokensAfterEndOfFunction();
 	CFunction *p_new_function = new CFunction(current_function_name, "function text!!!");
+	p_new_function->SetParseTree(function_body);
 	p_function_collection->Add(p_new_function);
 }
 
@@ -212,7 +214,7 @@ void CFormulaParser::ParseListBody()
 	}
 }
 
-void CFormulaParser::ParseFunctionBody()
+TPParseTreeNode CFormulaParser::ParseFunctionBody()
 {
 	// Just look-ahead 1 token
 	_token_ID = _tokenizer.LookAhead();
@@ -220,20 +222,22 @@ void CFormulaParser::ParseFunctionBody()
 		|| (_token_ID == kTokenEndOfFunction))
 	{
 		CParseErrors::Error("Function is empty");
+		return NULL;
 	}
-	else if (_token_ID == kTokenOperatorConditionalWhen)
+	if (_token_ID == kTokenOperatorConditionalWhen)
 	{
 		// OpenPPL-function
-		ParseOpenEndedWhenConditionSequence();
+		/// !!!ParseOpenEndedWhenConditionSequence();
 	}
 	else
 	{	
 		// OH-script-function, single expression
-		ParseExpression();
+		return ParseExpression();
 	}
+
 }
 
-void CFormulaParser::ParseExpression()
+TPParseTreeNode CFormulaParser::ParseExpression()
 {
 	_token_ID = _tokenizer.LookAhead();
 	if (TokenIsUnary(_token_ID))
@@ -266,23 +270,48 @@ void CFormulaParser::ParseBracketExpression()
 	//MessageBox(0, "Bracket_Open", "Info", 0);
 	int opening_bracket = _tokenizer.GetToken();
 	assert(TokenIsBracketOpen(opening_bracket));
-	ParseExpression();
+	TPParseTreeNode expression = ParseExpression();
 	ExpectMatchingBracketClose(opening_bracket);
+	TPParseTreeNode bracket_node = new CParseTreeNode();
+	// Brackets get an unary node in the tree
+	// This will lead to a simple way to handle precedence of operators.
+	bracket_node->MakeUnaryOperator(opening_bracket, expression);
+	return bracket_node;
 }
 
-void CFormulaParser::ParseUnaryExpression()
+TPParseTreeNode CFormulaParser::ParseUnaryExpression()
 {
 	//MessageBox(0, "Unary", "Info", 0);
 	int unary_operator = _tokenizer.GetToken();
 	assert(TokenIsUnary(unary_operator));
-	ParseExpression();
+	TPParseTreeNode expression = ParseExpression();
+	TPParseTreeNode unary_node = new CParseTreeNode();
+	unary_node->MakeUnaryOperator(unary_operator, expression);
+	return unary_node;
 }
 
-void CFormulaParser::ParseSimpleExpression()
+TPParseTreeNode CFormulaParser::ParseSimpleExpression()
 {
-	//MessageBox(0, "Terminal", "Info", 0);
+	MessageBox(0, "Terminal", "Info", 0); 
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
+	TPParseTreeNode terminal_node = new CParseTreeNode();
+	if (terminal == kTokenIdentifier)
+	{
+		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
+	}
+	else if (terminal == kTokenNumber)
+	{
+		CString number = _tokenizer.GetTokenString();
+		double value = atof(number);
+		terminal_node->MakeConstant(value);
+	}
+	else
+	{
+		assert(k_this_must_not_happen);
+		terminal_node = NULL;	
+	}
+	return terminal_node;
 }
 
 void CFormulaParser::ParseRightPartOfBinaryOrTernaryExpression()

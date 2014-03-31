@@ -11,7 +11,16 @@ public:
 	CParseTreeNode();
 	~CParseTreeNode();
 public:
+	void MakeConstant(double value);
+	void MakeIdentifier(CString name);
+	void MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling);
+	void MakebinaryOperator(int node_type, TPParseTreeNode first_sibbling,
+		TPParseTreeNode second_sibbling);
+	void MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
+		TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling);
+public:
 	double Evaluate();
+private:
 	double EvaluateIdentifier(CString name);
 	double EvaluateUnaryExpression();
 	double EvaluateBinaryExpression();

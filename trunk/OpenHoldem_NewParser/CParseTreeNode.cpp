@@ -12,6 +12,42 @@ CParseTreeNode::CParseTreeNode()
 CParseTreeNode::~CParseTreeNode()
 {}
 
+void CParseTreeNode::MakeConstant(double value)
+{
+	_node_type = kTokenNumber;
+	_constant_value = value;
+}
+
+void CParseTreeNode::MakeIdentifier(CString name)
+{
+	_node_type = kTokenIdentifier;
+	_terminal_name = name;
+}
+
+void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
+{
+	_node_type = node_type;
+	_first_sibbling = first_sibbling;
+}
+
+void CParseTreeNode::MakebinaryOperator(int node_type, TPParseTreeNode first_sibbling,
+	TPParseTreeNode second_sibbling)
+{
+	_node_type = node_type;
+	_first_sibbling = first_sibbling;
+	_second_sibbling = second_sibbling;
+}
+
+void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
+	TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling)
+{
+	_node_type = node_type;
+	_first_sibbling = first_sibbling;
+	_second_sibbling = second_sibbling;
+	_third_sibbling = third_sibbling;
+
+}
+
 double CParseTreeNode::Evaluate()
 {
 	if (_node_type == kTokenNumber)
@@ -39,7 +75,7 @@ double CParseTreeNode::Evaluate()
 	return k_undefined;
 }
 
-double EvaluateIdentifier(CString name)
+double CParseTreeNode::EvaluateIdentifier(CString name)
 {
 	assert(name != "");
 	// !!! dll$ and more
