@@ -1,0 +1,564 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Main Menu
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_File.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem File menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_Edit.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem Edit menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Edit menu contains three options specific to OpenHoldem:
+\end_layout
+
+\begin_layout Standard
+Figure 5.1-29 OpenHoldem View menuFigure 5.1-30 OpenHoldem DLL menu
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_View.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem View menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The View menu has the standard Windows Toolbar/Status Bar options, plus
+ two options specific to OpenHoldem:Scraper Output:  This option opens a
+ window that allows you to monitor the output from the screen scraper engine.
+  This is useful for debugging purposes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_DLL.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem DLL menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Load:  This option will load the DLL specified in Preferences, or in the
+ Formula file.Load Specific File: This option will present a standard File
+ Open window to allow you to select a specific DLL file that you want to
+ load.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_Perl.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem Perl menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Perl menu is not a standard Windows menu item, but rather is used to
+ load Perl files containing bot logic for use by the OpenHoldem decision
+ and action engine.
+  See the {Perl} section for more information.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Load Formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option will load the Perl file specified in Preferences, or in the
+ Formula file.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reload Formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option will re-load the Perl file specified in Preferences, or in the
+ Formula file.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Load Specific Formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option will present a standard File Open window to allow you to select
+ a specific Perl file that you want to load.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Check Syntax
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option will execute your Perl interpreters function to check the syntax
+ of your Perl script.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Edit Main Formula
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option will launch the editor specified in preferences and load it
+ with your main Perl formula file.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_PokerPro.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem PokerPro menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The PokerPro menu is not a standard Windows menu item, but rather is used
+ to connect OpenHoldem to a PokerPro server.
+  PokerPro is an open server protocol designed by Ray Bornert.
+ Full documentation on the PokerPro protocol can be found at his website
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewforum.php?f=22
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ More details can be found in the {PokerPro} section.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Go
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+This option displays the PokerPro control window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/GUI/GUI_Menu_Help.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenHoldem Help menu
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Force Crash:  This option will literally cause OpenHoldem to crash with
+ an error.
+ Specifically, the error is an assignment to a NULL pointer, like so:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+int *invalid_memory_access = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+*invalid_memory_access = 0;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This option is present primarily for one reason, to allow you to test how
+ your automation system will handle an OpenHoldem crash, if it occurs.
+  OpenHoldem is very stable, but as with all software, the occasional bug
+ creeps in.
+  Also, as OpenHoldem allows the use of user-defined code (via DLLs, Perl
+ scripts, etc), misbehaved user defined code can also cause crashes.
+  See the chapter on {Automation} for more information.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Locking blinds
+\end_layout
+
+\end_inset
+
+Locking Blinds 
+\end_layout
+
+\begin_layout Standard
+There is a button on OpenHoldem’s main toolbar, that looks like a padlock
+ and dollar symbol, which opens up the following window to allow you to
+ “lock blinds”.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 5.20-58 OpenHoldem Lock Blinds window
+\end_layout
+
+\begin_layout Standard
+OpenHoldem has many methods for determining the blinds at any given time,
+ including: Scraping of Title Bar text (as specified in the Table Map) Scraping
+ of Regions from the Table Map Intuiting the blinds from patterns in betting
+ round 1
+\end_layout
+
+\begin_layout Standard
+In some cases, you may want to bypass all of these blind detection methods
+ and force OpenHoldem to use a certain blind setup.
+ A good example of this is if you are playing at a Ring Table, where the
+ blinds never change.
+ This would not be so applicable to SNGs or MTTs, as the blinds regularly
+ change in those games.
+ This window will allow you to specify blinds to be used as long as the
+ “padlock and dollar symbol” button on the main toolbar is depressed.
+\end_layout
+
+\end_body
+\end_document
