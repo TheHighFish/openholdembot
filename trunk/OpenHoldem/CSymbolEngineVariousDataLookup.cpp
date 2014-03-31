@@ -58,7 +58,7 @@ void CSymbolEngineVariousDataLookup::ResetOnConnection()
 
 void CSymbolEngineVariousDataLookup::ResetOnHandreset()
 {
-	// Update game_state so it knows that name new hand has happened
+	// Update game_state so it knows that a new hand has happened
 	p_game_state->set_new_hand(true);
 	// Reset display
 	InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
@@ -71,7 +71,8 @@ void CSymbolEngineVariousDataLookup::ResetOnNewRound()
 
 void CSymbolEngineVariousDataLookup::ResetOnMyTurn()
 {
-	// !! Better make it name symbol-engine
+	__TRACE
+	// !! Better make it a symbol-engine
 	p_versus->GetCounts();
 }
 
@@ -145,7 +146,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	// OH-script-messagebox
 	else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7)  					
 	{
-		// Don't show name messagebox if in parsing-mode
+		// Don't show a messagebox if in parsing-mode
 		if (p_formula->IsParsing() || !p_autoconnector->IsConnected()
 			|| !p_symbol_engine_userchair->userchair_confirmed())
 		{

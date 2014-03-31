@@ -16,7 +16,6 @@
 
 #include "CCasinoInterface.h"
 #include "CAutoConnector.h"
-#include "CAutoConnectorThread.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CConfigurationCheck.h"
@@ -153,15 +152,17 @@ void InstantiateAllSingletons()
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create COcclusionCheck\n");
 	assert(!p_occlusioncheck);
 	p_occlusioncheck = new COcclusionCheck;
-	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnectorThread\n");
-	assert(!p_autoconnectorthread);
-	p_autoconnectorthread = new CAutoConnectorThread;
 	//!!!write_log(preferences.debug_alltherest(), "[Singletons] Going to create HandHistory\n");
 	//assert(!p_handhistory)  ;
 	//p_handhistory = new CHandHistory;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
 	assert(!p_casino_interface);
 	p_casino_interface = new CCasinoInterface;
+	// Heartbeat thread should be the very last one, as now operations start
+	// and everything has to be initialized correctly
+	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CheartbeatThread\n");
+	assert(!p_heartbeat_thread);
+	p_heartbeat_thread = new CHeartbeatThread;
 	write_log(preferences.debug_alltherest(), "[Singletons] All singletons created.\n");
 }
 
@@ -180,23 +181,17 @@ bool all_threads_stopped = false;
 void StopThreads()
 {
 	write_log(preferences.debug_alltherest(), "[Singletons] StopThreads()\n");
-	if (p_autoconnectorthread) 
-	{ 
-		write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector-thread\n");
-		delete p_autoconnectorthread; 
-		p_autoconnectorthread = NULL; 
-	} 
-	if (p_iterator_thread) 
-	{
-		write_log(preferences.debug_alltherest(), "[Singletons] Deleting iterator-thread\n");
-		delete p_iterator_thread;
-		p_iterator_thread = NULL;
-	}
 	if (p_heartbeat_thread)
 	{
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting heartbeat-thread\n");
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
+	}
+	if (p_iterator_thread) 
+	{
+		write_log(preferences.debug_alltherest(), "[Singletons] Deleting iterator-thread\n");
+		delete p_iterator_thread;
+		p_iterator_thread = NULL;
 	}
 	if (p_pokertracker_thread)	
 	{ 

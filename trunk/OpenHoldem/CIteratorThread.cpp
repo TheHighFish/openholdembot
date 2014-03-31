@@ -85,6 +85,7 @@ double			_win, _tie, _los;
 
 CIteratorThread::CIteratorThread()
 {
+	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
 
 	// Create events
@@ -107,6 +108,7 @@ CIteratorThread::CIteratorThread()
 
 CIteratorThread::~CIteratorThread()
 {
+	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
 
 	if (_m_stop_thread)
@@ -128,6 +130,7 @@ CIteratorThread::~CIteratorThread()
 
 void CIteratorThread::StopIteratorThread()
 {
+	__TRACE
 	if (p_iterator_thread)
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
@@ -139,13 +142,15 @@ void CIteratorThread::StopIteratorThread()
 
 void CIteratorThread::RestartIteratorThread()
 {
+	__TRACE
 	StopIteratorThread();
 	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting iterator thread.\n");
 	p_iterator_thread = new CIteratorThread;
 }
 
 void CIteratorThread::StartIteratorThreadIfNeeded()
-{					
+{		
+	__TRACE
 	p_validator->ValidateIt();
 	if (p_iterator_thread)
 	{
@@ -163,6 +168,7 @@ void CIteratorThread::StartIteratorThreadIfNeeded()
 
 void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /* needed ???*/)
 {
+	__TRACE
 	// Cut off from IteratorThreadFunction
 	// Also moved outside of the loop.
 
@@ -182,6 +188,7 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 {
+	__TRACE
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
 
 	// Loop-variables j, k get used inside and outside loops.
@@ -209,6 +216,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	unsigned int nit;
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
+		__TRACE
 		// Check event for thread stop signal
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
 		{
@@ -310,6 +318,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
 {
+	__TRACE
 	// Update display once every 1000 iterations
 	if (SimulationFinished(nit)
 		|| ((nit % 1000 == 0) && (nit >= 1000)))
@@ -328,6 +337,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
 
 bool CIteratorThread::SimulationFinished(unsigned int nit)
 {
+	__TRACE
 	return (nit >= iter_vars.nit());
 }
 
@@ -361,9 +371,10 @@ void CIteratorThread::InitNumberOfIterations()
 	int			e = SUCCESS;
 	CGrammar	gram;
 
+	//!!!looks like it currently leads to crashes
 	int number_of_iterations = gram.CalcF$symbol(p_formula, 
 		"f$prwin_number_of_iterations", true, &e);
-	iter_vars.set_nit(2500); //!! number_of_iterations); 
+	//iter_vars.set_nit(2500); //!! number_of_iterations); 
 }
 
 void CIteratorThread::InitIteratorLoop()

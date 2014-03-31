@@ -120,6 +120,7 @@ void CSymbolEngineIsTournament::ResetOnNewRound()
 
 void CSymbolEngineIsTournament::ResetOnMyTurn()
 {
+	__TRACE
 	TryToDetectTournament();
 }
 
@@ -196,6 +197,7 @@ bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament()
 
 void CSymbolEngineIsTournament::TryToDetectTournament()
 {
+	__TRACE
 	if (_istournament != k_undefined)
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
 	else

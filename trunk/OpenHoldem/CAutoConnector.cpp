@@ -306,11 +306,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			if (theApp._dll_scraper_process_message)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
 
-			// start heartbeat thread
-			if (p_heartbeat_thread)
-				delete p_heartbeat_thread;
-			p_heartbeat_thread = new CHeartbeatThread;
-
 			p_scraper_access->InitOnConnect();
 			// Start timer that checks for continued existence of attached HWND
 			PMainframe()->StartTimer();
@@ -377,14 +372,6 @@ void CAutoConnector::Disconnect()
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
 	_autoconnector_mutex->Lock(INFINITE);
-
-	// stop threads
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping heartbeat-thread\n");
-	if (p_heartbeat_thread)
-	{
-		delete p_heartbeat_thread;
-		p_heartbeat_thread = NULL;
-	}
 
 	// Make sure autoplayer is off
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
@@ -482,52 +469,3 @@ double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 	return _TimeSincelast_failed_attempt_to_connect;
 }
 
-/* !!!???
-BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
-{
-	CString				title, winclass;
-	char				text[512];
-	RECT				crect;
-	STableList			tablelisthold;
-
-	// If this is not a top level window, then return
-	if (GetParent(hwnd) != NULL)
-		return true;
-
-	// If this window is not visible, then return
-	if (!IsWindowVisible(hwnd))
-		return true;
-
-	// We use this when we only want windows with title text
-	// If there is no caption on this window, then return
-	///GetWindowText(hwnd, text, sizeof(text));
-	///if (strlen(text)==0)
-	///	return true;
-
-	///title = text;
-	
-
-	// We use this when we want every existing window
-	// by setting the title text of non title text windows as "HWND: " + hwnd
-	GetWindowText(hwnd, text, sizeof(text));
-	if (strlen(text)==0)
-		title.AppendFormat("HWND: %i", hwnd);
-	else
-		title = text;
-	
-	// Found a window, get client area rect
-	GetClientRect(hwnd, &crect);
-
-	// Save it in the list
-	tablelisthold.hwnd = hwnd;
-	tablelisthold.title = title;
-	tablelisthold.crect.left = crect.left;
-	tablelisthold.crect.top = crect.top;
-	tablelisthold.crect.right = crect.right;
-	tablelisthold.crect.bottom = crect.bottom;
-	g_tlist.Add(tablelisthold);
-
-	return true;  // keep processing through entire list of windows
-}
-
-*/

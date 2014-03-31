@@ -22,9 +22,9 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTablemap\CTableMapAccess.h"
 #include "CAutoConnector.h"
-#include "CAutoConnectorThread.h"
 #include "CFilenames.h"
 #include "CGrammar.h"
+#include "CHeartbeatThread.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "CopenHoldemTitle.h"
 #include "CPreferences.h"
@@ -256,7 +256,7 @@ void COpenHoldemApp::FinishInitialization()
 		p_autoconnector->Connect(NULL);
 	}
 	// Start thread anyway; permanent connection might be enabled later via preferences.
-	p_autoconnectorthread->StartThread();	
+	p_heartbeat_thread->StartThread();	
 }
 
 int COpenHoldemApp::ExitInstance()

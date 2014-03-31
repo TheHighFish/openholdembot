@@ -66,7 +66,9 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnNewRound()
 {}
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnMyTurn()
-{}
+{
+	__TRACE
+}
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat()
 {

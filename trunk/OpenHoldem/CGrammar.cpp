@@ -38,17 +38,20 @@
 
 CGrammar::CGrammar(void)
 {
+	__TRACE
 	_RecursionDepth = 0;
 }
 
 CGrammar::~CGrammar(void)
 {
+	__TRACE
 }
 
 CCritSec		m_critsec_evaluate;
 
 double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFunction **logCallingFunction, int *e)
 {
+	__TRACE
 	CSLock lock(m_critsec_evaluate);
 
 	return EvaluateExpression(f, info.trees.begin(), logCallingFunction, e);
@@ -56,7 +59,11 @@ double CGrammar::EvaluateTree(CFormula * const f, tpi_type info, CEvalInfoFuncti
 
 double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, int *e)
 { 
+	__TRACE
+	write_log(preferences.debug_heartbeat(), "[CGrammar] Evaluating symbol %s\n", symbol);
 	return CalcF$symbol(f, symbol, false, e); 
+	// !!! false crashes some lines below:
+	// (log ? &logCallingFunction : NULL)
 }
 
 // ATTENTION! "e" is an in-out-parameter and needs to be initialized to SUCCESS
@@ -64,7 +71,8 @@ double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, int *e)
 // Candidate for refactoring
 double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, bool log, int *e)
 {
-	CEvalInfoFunction *logCallingFunction = NULL;
+	__TRACE
+	CEvalInfoFunction *logCallingFunction = new CEvalInfoFunction(symbol); //!!!
 	double ret = DoCalcF$symbol(f, symbol, (log ? &logCallingFunction : NULL), log, e);
 
 	if (logCallingFunction) 
@@ -78,22 +86,34 @@ double CGrammar::CalcF$symbol(CFormula * const f, const char *symbol, bool log, 
 
 double CGrammar::EvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
+	__TRACE
+	write_log(preferences.debug_heartbeat(), "[CGrammar] i: %i\n", i);
+	write_log(preferences.debug_heartbeat(), "[CGrammar] i->begin: %i\n", i->value.begin());
+	write_log(preferences.debug_heartbeat(), "[CGrammar] i->end: %i\n", i->value.end());
 	string sym(i->value.begin(), i->value.end());
+	__TRACE
 	parser_id tp = i->value.id();
-
+	__TRACE
 	double ret = DoEvaluateExpression(f, i, logCallingFunction, e);
-
+	__TRACE
 	if (logCallingFunction && *logCallingFunction && tp == exec_grammar::SYMBOL_ID) 
 	{
+		__TRACE
 			if (!(*logCallingFunction)->m_SymbolsUsed.FindSymbol(sym.c_str()) && !(*logCallingFunction)->m_CalledFunctions.FindFunction(sym.c_str()))
-					(*logCallingFunction)->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
+			{
+				__TRACE
+				(*logCallingFunction)->m_SymbolsUsed.Add(new CEvalInfoSymbol(sym.c_str(), ret));
+				__TRACE
+			}
+			__TRACE
 	}
-
+	__TRACE
 	return ret;
 }
 
 double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEvalInfoFunction **logCallingFunction, int *e)
 {
+	__TRACE
 	double			result = 0.;
 	boost::spirit::parser_id		id = i->value.id();
 
@@ -330,6 +350,7 @@ double CGrammar::DoEvaluateExpression(CFormula * const f, iter_t const& i, CEval
 
 double CGrammar::TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
+	__TRACE
 	CString symbol_name = sym.c_str();
 	if (symbol_name.Left(k_lenth_of_open_ppl_symbol_prefix) == k_open_ppl_symbol_prefix) 
 	{
@@ -360,6 +381,7 @@ double CGrammar::TryToEvaluateSymbolAsOpenPPLSymbol(CFormula * const f, string s
 
 double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunction **logCallingFunction, int *e)
 {
+	__TRACE
 	double			result = 0.0;
 	char			f$func[k_max_number_of_players] = {0}; 
 	const char		*ranks = "  23456789TJQKA";
@@ -534,6 +556,7 @@ double CGrammar::EvaluateSymbol(CFormula * const f, string sym, CEvalInfoFunctio
 
 double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInfoFunction **logCallingFunction, bool skipCache, int *e)
 {
+	__TRACE
 	double	ret = 0.0;
 
 	// Check recursion depth of DoCalcF$symbol 
@@ -554,64 +577,97 @@ double CGrammar::DoCalcF$symbol(CFormula * const f, const char *symbol, CEvalInf
 		return 0.0;
 	}
 
+	__TRACE
 	if (strcmp(symbol, "f$debug") != 0 &&
 			strcmp(symbol, "notes") != 0 &&
 			strcmp(symbol, "dll") != 0)
 	{
+		__TRACE
 		for (int i=0; i<(int) f->formula()->mFunction.GetSize(); i++)
 		{
+			__TRACE
 			if (strcmp(f->formula()->mFunction[i].func, symbol)==0)
 			{
 				if (f->formula()->mFunction[i].fresh == true && !skipCache) // !! skipcache?
 				{
+					__TRACE
 					ret = f->formula()->mFunction[i].cache;
 
 					if (logCallingFunction && *logCallingFunction) 
 					{
+						__TRACE
 						if (!(*logCallingFunction)->m_CalledFunctions.FindFunction(symbol))
+						{
+							__TRACE
 							(*logCallingFunction)->m_CalledFunctions.Add(new CEvalInfoFunction(symbol, true, ret));
+						}
 					} 
 					
 					else if (logCallingFunction && !*logCallingFunction)
+					{
+						__TRACE
 						*logCallingFunction = new CEvalInfoFunction(symbol, true, ret);
+					}
 					
 					_RecursionDepth--;
 					return ret;
 				}
 				else
 				{
+					__TRACE
 					if (!logCallingFunction)
+					{
+						__TRACE
 						ret = EvaluateTree(f, f->formula()->mFunction[i].tpi, NULL, e);
+					}
 					else 
 					{
+						__TRACE
 						CEvalInfoFunction *newFunc = new CEvalInfoFunction(symbol);
+						write_log(preferences.debug_heartbeat(), "[CGrammar] tpi = %i\n",
+							f->formula()->mFunction[i].tpi);
 
 						ret = EvaluateTree(f, f->formula()->mFunction[i].tpi, &newFunc, e);
-
+						
 						newFunc->m_Line = newFunc->m_Column = 1;
 
 						for (int c=0; c<newFunc->m_Offset; c++)
 						{
+							__TRACE
 							if (f->formula()->mFunction[i].func_text[c]=='\n') 
 							{
+								__TRACE
 								newFunc->m_Line++;
 								newFunc->m_Column = 1;
 							} 
 							else
+							{
+								__TRACE
 								newFunc->m_Column++;
+								__TRACE
+							}
 						}
 						newFunc->m_Result = ret;
 
 						if (*logCallingFunction)
+						{
+							__TRACE
 							(*logCallingFunction)->m_CalledFunctions.Add(newFunc);
+						}
 						else
+						{
+							__TRACE
 							(*logCallingFunction) = newFunc;
+						}
 					}
 
 					f->set_func_cache(i, ret);
 
 					if (*e == SUCCESS)
+					{
+						__TRACE
 						f->set_func_fresh(i, true);
+					}
 
 					_RecursionDepth--;
 					return ret;
@@ -635,6 +691,7 @@ CCritSec		m_critsec_parse;
 
 bool CGrammar::ParseString(const CString *s, const SFormula *f, tpi_type *i, int *stopchar)
 {
+	__TRACE
 	CSLock lock(m_critsec_parse);	// must come before instantiation of exec_grammar struct on stack
 
 	exec_grammar	gram;
@@ -680,6 +737,7 @@ bool CGrammar::ParseString(const CString *s, const SFormula *f, tpi_type *i, int
 
 void CGrammar::SetOffsets(iter_t &i, const char *start)
 {
+	__TRACE
 	if (i->value.value() != NULL)
 		i->value.value((const char *)(i->value.value()-start));
 
@@ -693,6 +751,7 @@ void CGrammar::SetOffsets(iter_t &i, const char *start)
 
 void CGrammar::ValidateSymbol(const char *begin, const char *end)
 {
+	__TRACE
 	int		 e = 0;
 	string	sym(begin, end);
 	bool	match = false;

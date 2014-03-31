@@ -19,6 +19,7 @@
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "CValidator.h"
+#include "MainFrm.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldemDoc.h"
 #include "UPDialog.h"
@@ -51,8 +52,7 @@ void CFormula::SetEmptyDefaultBot()
 	ClearFormula();
 
 	CSLock lock(m_critsec);
-	// Empty function: not modified
-	func.dirty = false;
+	func.dirty = true;
 	_formula_name = "NoName";
 	// Adding empty standard-functions
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -177,8 +177,7 @@ void CFormula::ReadFormulaFile(CArchive& ar, bool ignoreFirstLine)
 				content = FTfunc;
 				func.func = funcname;
 				func.func_text = "";
-				// Function read from file: not modified
-				func.dirty = false;
+				func.dirty = true;
 			}
 		}
 

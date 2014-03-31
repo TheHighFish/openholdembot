@@ -16,35 +16,35 @@
 
 #include "..\CCritSec\CCritSec.h"
 
-extern long int	_heartbeat_counter;
-
 class CHeartbeatThread
 {
+public:
+	// public functions
+	CHeartbeatThread();
+	~CHeartbeatThread();
+public:
+	// public accessors
+	void StartThread();
+	long int heartbeat_counter() { return _heartbeat_counter; }
 public:
 	// This critical section does not control access to any variables/members, but is used as 
 	// a flag to indicate when the scraper/symbol classes are in an update cycle
 	static CRITICAL_SECTION	cs_update_in_progress;
-
-public:
-	// public functions
-		CHeartbeatThread();
-		~CHeartbeatThread();
-
-public:
-	// public accessors
-	long int	heartbeat_counter() { return _heartbeat_counter; }
-
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
+	static void ScrapeEvaluateAct();
+	static void AutoConnect();
 	static void FlexibleHeartbeatSleeping();
 
 private:
-	HANDLE			_m_stop_thread;
-	HANDLE			_m_wait_thread;
-private:
 	// private variables - use public accessors and public mutators to address these	
-	CCritSec		m_critsec;
+	CCritSec	m_critsec;
+	static		CHeartbeatThread *pParent;
+	static		long int _heartbeat_counter;
+private:
+	HANDLE		_m_stop_thread;
+	HANDLE		_m_wait_thread;
 };
 
 extern CHeartbeatThread *p_heartbeat_thread;

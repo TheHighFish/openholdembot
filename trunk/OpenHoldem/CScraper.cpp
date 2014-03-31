@@ -18,7 +18,7 @@
 #include "StdAfx.h"
 #include "CScraper.h"
 
-#include "Bitmaps.h"
+#include "Bitmaps.h"                                
 #include "CAutoconnector.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"

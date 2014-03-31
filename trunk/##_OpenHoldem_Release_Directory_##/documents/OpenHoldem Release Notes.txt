@@ -1,4 +1,4 @@
-v4.5.1 2014-03-xx
+v4.5.1 2014-03-30
 ==================
 NEW STUFF:
 - PokerTracker_Query_Definitions.DLL: new symbol pt_3bet_preflop.

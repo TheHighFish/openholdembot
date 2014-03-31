@@ -1123,10 +1123,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CAutoConnectorThread.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CFileSystemMonitor.cpp"
 					>
 				</File>
@@ -1962,10 +1958,6 @@
 				>
 				<File
 					RelativePath=".\CAutoConnector.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CAutoConnectorThread.h"
 					>
 				</File>
 				<File

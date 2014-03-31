@@ -31,6 +31,7 @@ CIteratorVars::~CIteratorVars()
 
 void CIteratorVars::ResetVars()
 {
+	__TRACE
 	write_log(preferences.debug_prwin(), "[CiteratorVars] Resetting PrWin variables\n");
 	_nit = 0;
 

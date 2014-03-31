@@ -65,9 +65,13 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 
 void CSymbolEnginePrwin::ResetOnMyTurn()
 {
+	__TRACE
 	CalculateNOpponents();
+	__TRACE
 	p_iterator_thread->StartIteratorThreadIfNeeded();
+	__TRACE
 	CalculateNhands();
+	__TRACE
 }
 
 void CSymbolEnginePrwin::ResetOnHeartbeat()
@@ -174,11 +178,14 @@ void CSymbolEnginePrwin::CalculateNhands()
 
 void CSymbolEnginePrwin::CalculateNOpponents()
 {
+	__TRACE
 	CGrammar gram;
 	int e = SUCCESS;
-	_nopponents_for_prwin = gram.CalcF$symbol(p_formula, 
-		"f$prwin_number_of_opponents", &e);
+	//_nopponents_for_prwin = 2500;
+	// !!!Leads to crashes currently
+	 gram.CalcF$symbol(p_formula, "f$prwin_number_of_opponents", &e);
 
+	__TRACE
 	if (_nopponents_for_prwin > MAX_OPPONENTS)
 	{
 		_nopponents_for_prwin = MAX_OPPONENTS;
@@ -187,6 +194,7 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 	{
 		_nopponents_for_prwin = 1;
 	}
+	__TRACE
 }
 
 bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
