@@ -6,6 +6,7 @@
 #include "afx.h"
 #include "atlstr.h"
 #include "CFormulaFileSplitter.h"
+#include "CParseTreeNode.h"
 #include "CTokenizer.h"
 
 class CFormulaParser
@@ -31,10 +32,10 @@ private:
 	void ParseFunctionBody();
 private:
 	// OH-script
-	void ParseExpression();
+	TPParseTreeNode ParseExpression();
 	void ParseBracketExpression();
-	void ParseUnaryExpression();
-	void ParseSimpleExpression();
+	TPParseTreeNode ParseUnaryExpression();
+	TPParseTreeNode ParseSimpleExpression();
 	void ParseRightPartOfBinaryOrTernaryExpression();
 	void ParseConditionalThenElseExpressions();
 private:

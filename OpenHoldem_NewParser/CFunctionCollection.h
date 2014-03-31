@@ -10,8 +10,10 @@ public:
 	~CFunctionCollection();
 public:
 	void Clear();
-	void Add(CFunction &new_function);
+	void Add(CFunction *new_function);
 	double Evaluate(CString function_name);
+private:
+	CMap< CString*, CString*, CFunction*, CFunction*>_function_hashtable;
 };
 
 extern CFunctionCollection *p_function_collection;

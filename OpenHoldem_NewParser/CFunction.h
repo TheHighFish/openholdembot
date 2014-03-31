@@ -12,6 +12,7 @@ public:
 	void SetParseTree(TPParseTreeNode _new_parse_tree);
 	double Evaluate();
 	void ClearCache();
+	CString name()  { return _name; }
 private:
 	CString _name;
 	CString _function_text;
