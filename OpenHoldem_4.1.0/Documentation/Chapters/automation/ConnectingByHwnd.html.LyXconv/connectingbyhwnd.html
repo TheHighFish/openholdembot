@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="connectingbyhwnd.tex"> 
+<meta name="date" content="2010-04-05 22:53:00"> 
+<link rel="stylesheet" type="text/css" href="connectingbyhwnd.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Connecting To A Table </h3>
+<!--l. 27--><p class="noindent" >There are several ways to connect OpenHoldem to a table:
+           <ul class="itemize1">
+        <li class="itemize">Using the file-menu (or the green button), then choosing &#8220;Connect&#8221; and
+        then selecting the table from a list. Historically that was the first and only
+        way to connect. It is a bit inconvenient and some care has to be taken to
+        make it really fail-safe.
+           </li>
+        <li class="itemize">Sending  messages  to  OpenHoldem,  telling  the  bot  to  connect  or
+        disconnect. This way got introduced with OpenHoldem 2.0.0 and is far
+        more easy for a hopper and far more failsafe.
+           </li>
+        <li class="itemize">Using the auto-connector, that got introduced in OpenHoldem 2.1.0. Here
+        all  instances  of  the  bot  will  be  synchronized  via  shared-memory  and
+        connect automatically, when a new table appears. The behavior of the
+        auto-connector  can  be  adapted  to  your  needs.  See  the  chapter  about
+        preferences for more info.</li></ul>
+<!--l. 42--><p class="noindent" >The third way seems to be the most easy one, however there are reasons to connect by
+messages, be it, that your hopper needs to communicate with the casino-machine, be
+it, that you want to superwise everything. So we will describe these methods
+here.
+   <h4 class="subsectionHead"><a 
+ id="x1-2000"></a>Connecting to a window</h4>
+<!--l. 50--><p class="noindent" >The following AutoIt script demonstrates how to instruct OpenHoldem to connect to a
+window:
+   <!--l. 54-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-2001r1"></a></span>Global&#x00A0;Const&#x00A0;$WMA_DOCONNECT&#x00A0;=&#x00A0;0x8002&#x00A0;<br /><span class="label"><a 
+ id="x1-2002r2"></a></span>Local&#x00A0;$oh_hwnd&#x00A0;=&#x00A0;WinGetHandle("Default&#x00A0;<span 
+class="cmsy-10">-</span>&#x00A0;OpenHoldem")&#x00A0;<br /><span class="label"><a 
+ id="x1-2003r3"></a></span>Local&#x00A0;$oh_manual_mode&#x00A0;=&#x00A0;WinGetHandle("OpenHoldem&#x00A0;Poker")&#x00A0;<br /><span class="label"><a 
+ id="x1-2004r4"></a></span>DllCall("user32.dll",&#x00A0;"lresult",&#x00A0;"SendMessage",&#x00A0;"hwnd",&#x00A0;<br /><span class="label"><a 
+ id="x1-2005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$oh_hwnd,&#x00A0;"uint",&#x00A0;$WMA_DOCONNECT,&#x00A0;"wparam",&#x00A0;0,&#x00A0;<br /><span class="label"><a 
+ id="x1-2006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;"lparam",&#x00A0;$oh_manual_mode)
+   </div>
+   <h4 class="subsectionHead"><a 
+ id="x1-3000"></a>Disconnecting from a window</h4>
+<!--l. 67--><p class="noindent" >The following AutoIt script demonstrates how to instruct OpenHoldem to disconnect
+from a window:
+   <!--l. 71-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-3001r1"></a></span>Global&#x00A0;Const&#x00A0;$WMA_DODISCONNECT&#x00A0;=&#x00A0;0x8003&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>Local&#x00A0;$oh_hwnd&#x00A0;=&#x00A0;WinGetHandle("Default&#x00A0;<span 
+class="cmsy-10">-</span>&#x00A0;OpenHoldem")&#x00A0;<br /><span class="label"><a 
+ id="x1-3003r3"></a></span>DllCall("user32.dll",&#x00A0;"lresult",&#x00A0;"SendMessage",&#x00A0;"hwnd",&#x00A0;<br /><span class="label"><a 
+ id="x1-3004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$oh_hwnd,&#x00A0;"uint",&#x00A0;$WMA_DODISCONNECT,&#x00A0;"wparam",&#x00A0;0,&#x00A0;<br /><span class="label"><a 
+ id="x1-3005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;"lparam",&#x00A0;0)
+   </div>
+   <h4 class="subsectionHead"><a 
+ id="x1-4000"></a>Querying the connection-status</h4>
+<!--l. 83--><p class="noindent" >The following AutoIt script demonstrates how to query OpenHoldem for the window
+that it is connected to:
+   <!--l. 87-->
+
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-4001r1"></a></span>#Include&#x00A0;&#x003C;String.au3&#x003E;&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>Global&#x00A0;Const&#x00A0;$WMA_CONNECTEDHWND&#x00A0;=&#x00A0;0x8004&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>Local&#x00A0;$oh_hwnd&#x00A0;=&#x00A0;WinGetHandle("Default&#x00A0;<span 
+class="cmsy-10">-</span>&#x00A0;OpenHoldem")&#x00A0;<br /><span class="label"><a 
+ id="x1-4004r4"></a></span>Local&#x00A0;$a&#x00A0;=&#x00A0;DllCall("user32.dll",&#x00A0;"lresult",&#x00A0;"SendMessage",&#x00A0;"hwnd",&#x00A0;<br /><span class="label"><a 
+ id="x1-4005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$oh_hwnd,&#x00A0;"uint",&#x00A0;$WMA_CONNECTEDHWND,&#x00A0;"wparam",&#x00A0;0,&#x00A0;<br /><span class="label"><a 
+ id="x1-4006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;"lparam",&#x00A0;0)&#x00A0;<br /><span class="label"><a 
+ id="x1-4007r7"></a></span>ConsoleWrite("Connected&#x00A0;to:&#x00A0;"&#x00A0;&amp;&#x00A0;Hex($a[0])&#x00A0;&amp;&#x00A0;@CRLF)
+   </div>
+    
+</body></html> 
+
+
+
