@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Actions.tex"> 
+<meta name="date" content="2011-12-04 15:23:00"> 
+<link rel="stylesheet" type="text/css" href="Actions.css"> 
+</head><body 
+>
+
+
+   <h2 class="likechapterHead"><a 
+ id="x1-1000"></a>Actions</h2>
+<!--l. 27--><p class="noindent" >The main code sections of Open-PPL consist of when-conditions with actions. They look
+e.g. like this:
+   <!--l. 31-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>//&#x00A0;Openraising&#x00A0;on&#x00A0;the&#x00A0;button&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>WHEN&#x00A0;(Raises&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;Calls&#x00A0;=&#x00A0;0&#x00A0;and&#x00A0;StillToAct&#x00A0;=&#x00A0;2)&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Normal&#x00A0;openraises&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;((Hand&#x00A0;=&#x00A0;AA)&#x00A0;or&#x00A0;(Hand&#x00A0;=&#x00A0;KK)...)&#x00A0;RAISE&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Pushing&#x00A0;according&#x00A0;to&#x00A0;Sklanky&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(StackSize&#x00A0;&#x003C;&#x00A0;20&#x00A0;and&#x00A0;((Hand&#x00A0;=&#x00A0;...)&#x00A0;OR&#x00A0;...))&#x00A0;RAISEMAX&#x00A0;FORCE
+   </div>
+<!--l. 45--><p class="indent" >   OpenPPL provides 3 kinds of actions:
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Actions with Fixed Betsize</h3>
+<!--l. 50--><p class="noindent" >Examples look like
+   <!--l. 53-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-2001r1"></a></span>BET&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-2002r2"></a></span>RAISE&#x00A0;15&#x00A0;FORCE
+   </div>
+<!--l. 57--><p class="indent" >   The final betsize is measured in bigblinds, and not in dollars like for OpenHoldems
+f$betsize function, so it works independent of the limit or blind-level. The translator
+cares about that difference automatically.
+   <h3 class="sectionHead"><a 
+ id="x1-3000"></a>Actions with Relative Betsize</h3>
+<!--l. 64--><p class="noindent" >Examples look like
+   <!--l. 67-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-3001r1"></a></span>BET&#x00A0;30%&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>RAISE&#x00A0;70%&#x00A0;FORCE
+   </div>
+<!--l. 71--><p class="indent" >   Here the betsize gets measured as a certain percentage of the pot (pot = common
+pot + all players bets + the amount to call).
+   <h3 class="sectionHead"><a 
+ id="x1-4000"></a>Fixed Actions</h3>
+<!--l. 77--><p class="noindent" >Examples look like
+   <!--l. 80-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-4001r1"></a></span>BETMAX&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>RAISEMAX&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>AALLIN&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;synonym&#x00A0;for&#x00A0;BetMax&#x00A0;and&#x00A0;RaiseMax,&#x00A0;but&#x00A0;no&#x00A0;standard&#x00A0;PPL&#x00A0;<br /><span class="label"><a 
+ id="x1-4004r4"></a></span>BETPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4005r5"></a></span>RAISEPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4006r6"></a></span>BETHALFPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4007r7"></a></span>RAISEHALFPOT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4008r8"></a></span>BET&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;min<span 
+class="cmsy-10">-</span>bet&#x00A0;(fixed&#x00A0;limit)&#x00A0;<br /><span class="label"><a 
+ id="x1-4009r9"></a></span>RAISE&#x00A0;FORCE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;min<span 
+class="cmsy-10">-</span>raise&#x00A0;(fixed&#x00A0;limit)&#x00A0;<br /><span class="label"><a 
+ id="x1-4010r10"></a></span>CALL&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4011r11"></a></span>CHECK&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4012r12"></a></span>FOLD&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
+ id="x1-4013r13"></a></span>SITOUT&#x00A0;FORCE
+   </div>
+<!--l. 95--><p class="indent" >   Contrary to standard PPL OpenPPL does not distinguish bets and raises. The
+generated OH-script-code looks exactly the same and OpenHoldem makes no difference
+anyway.
+
+   <h3 class="sectionHead"><a 
+ id="x1-5000"></a>Being strict: using &#8220;FORCE&#8221;</h3>
+<!--l. 102--><p class="noindent" >Every action in OpenPPL has to be terminated by the keyword &#8220;FORCE&#8221;. For standard
+PPL this keyword was optional. If you left it out, it meant, that the bot continued to
+evaluate and finally fell back to the default logic. We deviated from that behaviour,
+as:
+           <ul class="itemize1">
+        <li class="itemize">in our opinion it does not make any sense to specify actions that have no
+        effect.
+           </li>
+        <li class="itemize">OpenPPL does not provide a default bot.</li></ul>
+   <h3 class="sectionHead"><a 
+ id="x1-6000"></a>Backup actions</h3>
+<!--l. 114--><p class="noindent" >It may happen, that a certain action is not available, e.g. you might want to raise by half
+the pot, but this is currently not possible, e.g. because your opponent made a large raise
+and half-pot would be less than the minimum. In such situations OpenPPL behaves in
+the following ways:
+           <ul class="itemize1">
+        <li class="itemize">betsize invalid (to less or too much (PotLimit or more than your balance)):
+        betsize  gets  automatically  adapted.  This  happens  also  to  actions  like
+        RaisePot and RaiseHalfPot, that get executed with the f$betsize-function
+        (formerly known as &#8220;f$swag&#8221;).
+           </li>
+        <li class="itemize">action can&#8217;t be executed, because it is not possible, e.g. there might be
+        no raise-button, because you can only call (allin) or fold. Here OpenPPL
+        behaves in the following way:
+            <ul class="itemize2">
+            <li class="itemize">RaisePot if RaiseMax is not possible
+            </li>
+            <li class="itemize">Raise(Min) if RaisePot or RaiseHalfPot is not possible
+            </li>
+            <li class="itemize">Call if no Raise is possible
+            </li>
+            <li class="itemize">Check if no Call is possible
+            </li>
+            <li class="itemize">Fold if no Check is possible (default behaviour of OpenHoldem).</li></ul>
+    <!--l. 135--><p class="noindent" >This deviates from standard PPL again. However we have the following
+        reasons:
+            <ul class="itemize2">
+            <li class="itemize">OpenHoldem evaluates its technical functions in the order above (for
+
+            details please refer to the OpenHoldem Manual).
+            </li>
+            <li class="itemize">we believe, it is better to behave in a more conservative way if an
+            error  occurs.  Most  probably  you  don&#8217;t  want  to  push  allin  if  you
+            specify RaiseHalfPot as your desired action. With a min-raise you
+            are probably more happy (less unhappy).</li></ul>
+        </li></ul>
+    
+</body></html> 
+
+
+
