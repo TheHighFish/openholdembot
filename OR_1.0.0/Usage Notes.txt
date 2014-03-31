@@ -1,0 +1,9 @@
+To open a frame:
+1. System Menu/Open
+2. Ctrl-O
+3. F2
+
+Next frame:Tab
+Previous frame: Shift-Tab
+
+Reset: Esc

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenScrape 1.1.0", "OpenScrape.vcproj", "{24FC33AE-EECA-44F8-924C-D3658612C383}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7CC51847-14AB-4D7D-BC19-C406EC91CD9D}"
+	ProjectSection(SolutionItems) = preProject
+		pacific.10.sample\pacific.10.sample instructions.txt = pacific.10.sample\pacific.10.sample instructions.txt
+		pacific.10.sample\pacific.10.sample.jpg = pacific.10.sample\pacific.10.sample.jpg
+		pacific.10.sample\pacific.10.tm = pacific.10.sample\pacific.10.tm
+		release notes.txt = release notes.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24FC33AE-EECA-44F8-924C-D3658612C383}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24FC33AE-EECA-44F8-924C-D3658612C383}.Debug|Win32.Build.0 = Debug|Win32
+		{24FC33AE-EECA-44F8-924C-D3658612C383}.Release|Win32.ActiveCfg = Release|Win32
+		{24FC33AE-EECA-44F8-924C-D3658612C383}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
