@@ -1,0 +1,508 @@
+v4.0.1 2013-xx-xx
+=================
+NEW STUFF:
+- New symbols: TwoPairOnBoardOnTurn, TripsRank, TripsKickerRank, ThirdTopPairRank, ForthTopPairRank, FifthTopPairRank, Have5thTopPair, StackSizeAtBeginningOfCurrentRound
+  Had2ndTopPairOnFlop
+ [Lavezzi]
+ - NumberOfOpponentsAllin did not count a villan betting our stack size as being allin. Although this is not an error its easier for bot coding considering him as allin.
+ [Lavezzi]
+ 
+ BUG FIXES:  
+- OpponentStacksizeHeadsUp was not returning any value when HeadsUp with one or more opponents allin - this has now been fixed. 
+  [Lavezzi]
+- OpenEndedStraightDrawPossibleOnFlop was returning wrong value on paired board. Thanks to Invader11 for providing the patch.
+  [Lavezzi]
+  
+v4.0.0 2013-01-26
+=================
+NEW STUFF:
+- Adding support for bitwise operations (BitAnd, BitOr, BitNot, BitXor).
+  Thanks to Termitapalahermita for providing the patch.
+  [THF]
+  
+BUG FIXES:   
+- Making DLL-symbols work in combination with OpenPPL.
+  In the past they had been rejected as "unknown".
+  Thanks to Termitapalahermita for providing the patch.
+  [THF]
+  
+MAINTENANCE:
+- OpenPPL does no longer make use of the file
+  "OpenPPL_SwagFunctions_For_OpenHoldem_2.1.x_Only_Please_Delete_This_File_Once_You_Use_OpenHoldem_2.2.0_And_Later.ohf"
+  because that is now built-in functionality of OpenHoldem 4.0.0.
+  [THF]
+- As we moved OpenHoldems hand-strength-symbols to a text-based library
+  OpenPPL does now need the file "mh_str_Handstrength_Library.ohf", which gets shipped as part of the release.
+  [THF]
+- Optionally adding "My_Custom_OH_Script_Code.ohf" if you have custom OH-script-code
+  that you want to use in combination with OpenPPL.
+  [THF]
+
+v1.3.1 2012-11-10
+=================
+BUG FIXES: 
+- The uploaded version of bracketify did print some debug-output that made the generated code unusable.
+  Thanks to Cash for reporting.
+  [THF]
+
+v1.3.0 2012-11-08
+=================
+NEW STUFF:
+- Supporting prefold. Please see the manual for details.
+  [THF]
+
+BUG FIXES: 
+- Bracketify did add an extra closing bracket after memory-store-commands
+  when generating the line-info. This has now been fixed.
+  Thanks to TwinWinNerD for reporting.
+  [THF]
+
+v1.2.0 2012-10-11
+=================
+NEW STUFF:
+- An OHF profile-optimizer, that replaces the code for open-ended when-conditions
+  by functions. This way old Shanky-style profiles with long code-sequences 
+  can get about 20..50% smaller and estimated 2..10 times faster.
+  Please see the updated manual for detailed info.
+  A big thanks to Rehlby for providing this tool.
+  [THF]	
+- Bracketify is now able to modify a profile in a way
+  that it logs line-numbers to the debug-log,
+  but only for statements that get executed,
+  i.e. actions, return statements, user-defined variables to be set
+  and OpenHoldems memory-store-command (me_st_xyz_123).
+  The generated code could e.g. look like
+  "[condition  &&  log$line_123_Act] RAISEMAX FORCE"
+  and "line_123_Act" would appear in the log if that line got executed.
+  [THF]
+- Bracketify does now warn about multi-line-expressions that can't be handled
+  (as long as the word wrap happens in a reasonable way with keywords like AND or OR
+  at the beginning or at the end).
+  [THF]
+- Bracketify does now detect unsafe comparisions such as Stacksize = 17,
+  which don't work on OH-side because OH uses real numbers like 17.28.
+  It does now generate a warning and terminate.  
+  It is highly recommended to use <, <=, > and >= at such spots instead.
+  [THF]
+- Bracketify does now auto-correct "NutFullHouseOrFourOfAKind = 0"
+  to "NutFullHouseOrFourOfAKind = f$OpenPPL_HINT_We_Dont_Have_A_FullHouse_At_All",
+  because OpenPPL uses consistently higher numbers for worse hands
+  and 999 if we don't have a full house at all.
+  [THF]
+- New symbols BotCheckedPreflop, BotCheckedOnFlop, BotCheckedOnTurn, BotCheckedOnRiver,
+  TopPairRank and TopPairKickerRank
+  [Lavezzi]
+- New symbol PokerTracker symbols PT_LastCaller_VPIP, PT_LastCaller_PFR and PT_OpponentVPIPHeadsUp
+  [Lavezzi]
+- New symbol OpponentStacksizeHeadsUp
+  [Lavezzi]
+- New symbol Had2ndOverPairOnFlop, Had2ndOverPairOnTurn
+  [THF]
+  
+
+BUG FIXES: 
+- "Check Force" didn't work - this has now been fixed.
+  Thanks to Studyx for reporting.
+- Resetting variables did sometimes not work in the first hand
+  when the same instance of OpenHoldem connected to a new table
+  to play a second session.
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
+- MaxOpponentStacksize and MinOpponentStacksize were not accurate in the blinds.
+  Thanks to Postenjak for reporting. 
+- The symbols "nhands..." and "nsuited..." did not get accepted by the converter.
+  This has now been fixed.
+  Thanks to LadyBerril for reporting.
+  [THF]
+- Suited board expressions like "WHEN BOARD = AT SUITED"
+  did not work correctly due to missing brackets.
+  Thanks to Chucksta for reporting the problem.
+  [THF]
+- Suited hand expressions didn't work either because we somehow 
+  used the wrong operator. 
+  Thanks to Postenjak for finding this funny bug.
+  [THF]
+- When the user decided to "fold" where a check was possible
+  BotsLastAction was wrong. This has now been fixed.
+  Thanks to Postenjak for finding the problem and suggesting a fix.
+  [THF]
+- Detecting players who are allin did not work at some casinos,
+  because the bet of that player got immediatelly moved to the main-pot,
+  whereas we checked not only for a zero-balance, but also for a positive bet.
+  This has now been fixed (for Ongame; please notify us, if other casinos behave in the same way).
+  Thanks to Postenjak for finding the problem.
+  [THF]
+
+  
+v1.1.1 2012-07-01
+=================
+NEW STUFF:
+- Bracketify was formerly not smart enough to distinguish
+  open-ended when conditions with a user-variable at the end
+  and normal conditions with a user-variable to be set instead of an action.
+  This does now work.
+  [THF]
+- New symbol OpponentsOnTurn 
+  [Lavezzi]
+- New symbol OpponentsOnRiver
+  [Lavezzi]
+- Some PokerTracker-symbols do now require a minimum sample-size.
+  If there are too few hands the symbol will be considered unusable and -1 will be returned.
+  Similar changes are planned for the other PT-symbols.
+  [Lavezzi, THF]
+- New symbol TotalInvestedThisRound
+  [Lavezzi]
+- New symbol PT_LastRaiser_Hands
+  [Lavezzi]
+- New symbol HaveRunnerRunnerFlushAtRiver
+  [Lavezzi]
+- New symbol RunnerRunnerFlushPossibleAtRiver
+  [Lavezzi]
+- New symbol PT_SmallBlind_FoldSBToSteal
+  [Lavezzi]
+- New symbol HaveTopTrips
+  [Lavezzi]
+
+BUG FIXES: 
+- HaveNothing was true also if we had straight or flush draw.
+  This has now been fixed.
+  [Lavezzi]
+- PotSize amount was incorrect if an opponent currentbet was bigger than the sum of our currentbet and balance (giving false pot odds when comparing AmountToCall to PotSize).
+  EffectivePotsize symbol solved the problem but we needed to propagate the solution directly into PotSize symbol. 
+  Thanks to THF for the code.
+  This has now been fixed.   
+  [Lavezzi]
+- RankOfSpareCardWhenTwoPairOnBoard was not returning correct value when the spare card was at river.
+  This has now been fixed.
+  [Lavezzi]
+- StraightPossibleOnFlop and StraightPossibleOnTurn didn't work because of mis-paced brackets
+  in combination with the bit-count-operator. Thanks to Lavezzi for reporting.
+  [THF]
+   
+MAINTENANCE:
+- EffectivePotsize symbol has been removed cause now PotSize returns effective pot size.
+  [Lavezzi]
+- Removing RankOfPairOnBoard again, as it was a duplicate to RankOfTopPairOnBoard.
+  [THF]
+  
+v1.1.0 2012-06-10
+=================
+BUG FIXES: 
+- bracketify.pl forgot the closing paranthesis before a Raise (expression) statement.
+  [Lavezzi]
+- HaveTopSet was not correct due to istreeofakind logic/bug when twopair on board.
+  This has now been fixed.
+  [Lavezzi]
+- The converter did generate code for partial matches,
+  so "RAISE (expression) FORCE did get translated incorrectly.
+  This has now been fixed.
+  [THF]
+- f$OpenPPL_SmallBlind: A dead player between us and the dealer who sits in again
+  changes our dealposition to 2, so we are seen as being BigBlind.
+  This has now been fixed. 
+  [Lavezzi]
+- "WheelPossible" didn't work due to misplaced brackets.
+  Thanks to Lavezzi for reporting.
+  [THF]
+- Raises could be -1 if there were additional blind-posters
+  (incorrect value of nopponentsraising). Thie bsa to be handled
+  on OH-side, but we added some sanity-checks.
+  Thanks to Lavezzi for reporting.
+  [THF]
+  
+NEW STUFF:
+- RankOfPairOnBoard has been implemented
+  [Lavezzi]
+- New symbol RankOfSpareCardWhenTwoPairOnBoard
+  [Lavezzi]
+- New symbol StraighFlushOnBoard
+  [Lavezzi]
+
+v1.0.7 2012-05-28
+=================
+BUG FIXES: 
+- Redesigned decision-function affected BotsLastAction
+  and f$alli (in case a potsized bet was larger than our stack).
+  This has now been fixed. 
+  Thanks to Lavezzi and Postenjak for reporting and for the help.
+  [THF]
+- HaveNutStraight didn't consider NutStraightFlushes.
+  Thanks to Lavezzi for reporting.
+  [THF]
+- OpenPPL didn't automatically execute allin if a potsized bet was larger than our balance.  
+  [Lavezzi]
+- StillToAct did work only preflop.
+  Thanks to Lavezzi for reporting and to Postenjak for the postflop-code.
+  [THF]
+- BotsLastPreflopAction could be initialized twice (read: incorrectly) on the flop.
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
+- InitMissingSmallBlind could be potentially called twice if we check preflop
+  and the action comes back to us (if we post a blind out of order).
+  Thanks to Postenjak for reporting and for suggesting a fix.
+  [THF]
+  
+NEW STUFF:
+- Now supporting expressions after "RAISE" keyword, e.g.
+    * RAISE (3 + Calls) FORCE
+	* RAISE (MyFavouriteBetsizeForDryBoards) FORCE
+  Please not that in both cases brackets are mandatory.	
+  [THF]
+- New symbol HaveBottomTrips.
+  [Lavezzi]
+
+v1.0.6 2012-04-23
+=================
+BUG FIXES: 
+- f$OpenPPL_PlayersBehindDealPosition2ChairDidAct didn't work correctly because of a typo.
+  Thanks to Postenjak for reporting.
+  [THF]
+- Improved betsize for percentaged potsized bets had one division by 100 too much.
+  Thanks to Subiendolo and Kalamees for reporting and to Lavezzi for a log-file.
+  [THF]	
+- some memory symbols got reset only once per hand, 
+  despite they should reset once per turn.
+  Thanks to Postenjak for reporting.
+  [THF]
+- f$OpenPPL_BetSizeForFixedBetInBigBlinds incorrectly assumed, 
+  that ncallbets returns a dollar-value, whereas is returns 
+  the number of bets after we call.
+  Thanks to DonQuay for providing a log-file 
+  and to Postenjak for finding the problem.
+  [THF]
+- New f$Decision function broke some backup-actions.
+  In case of an impossible potsize-bet OH did no longer raise-min.
+  Thanks to PokerValy and Lavezzi for reporting 
+  and to Postenjak for suggesting a fix.
+  [THF]
+- bracketify.pl forgot the closing parenthesis before a return statement.
+  Thanks to Lavezzi for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Now displaying a more lenghty ocde-snippet in case of an error,
+  hoping that we also show a comment with a line-number.
+  [THF]
+  
+NEW STUFF:
+- Bracketify.pl does now add comments with line-numbers 
+  for every single line of code, as we didn't get boosts position-operator to work.
+  This work-around should be good enough to identify the location of an error.
+  [THF]
+
+v1.0.5 2012-04-09
+=================
+BUG FIXES: 
+- CHECK FORCE was implemented in the library 
+  but didn't get translated by the converter.
+  Thanks to Subiendolo for reporting.
+  [THF]
+- NutFullhouseOr4OfAKind could return wrong values
+  due to missing brackets at one place.
+  Thanks to Lavezzi for reporting the problem and providing a log-file.
+  [THF]
+- f$Decision-function and calculation of potsized bets
+  got reworked. Potsized bet and automatic betsize-adaption 
+  should now work.
+  Thanks to Postenjak and Lavezzi who helped to fix the problem.
+  [THF]
+  
+NEW STUFF:
+- New symbols InEarlyPosition, InMiddlePosition, InLatePosition, InTheBlinds
+  to simplify the cases where you don't care about your exact positions.
+  [THF]
+
+v1.0.4 2012-03-19
+=================
+BUG FIXES: 
+- User-defined variables did reset every heartbeat
+  instead of once per hand.
+  Thanks to Postenjak for reporting.
+  [THF]
+- bracketify.pl did not recognize user-defined-variables
+  with numbers in the name.
+  Thanks to SuperBlak for reporting.
+  [THF]
+- NumberOfOpponentsLimpingPreflop didn't work due to misplaced brackets.
+  Thanks to KaeKruse for reporting and for providing the fix.
+  [THF]
+- antes are considered "blind-raisers", 
+  so "Raises" needs some adaption, if antes are present.
+  Unfortunatelly "ante" can be true without antes being visible (as bets)
+  on some casinos, which causes incorrect results.
+  f$OpenPPL_AntesPresent does now consider only visible antes
+  like nopponentsraising does to avoid this  problem.
+  Thanks to Postenjak for reporting.
+  [THF]
+- Additional spaces and comments together with "New Symbol XYZ"
+  could throw OpenPPL off in the preprocessing stage (building a list of symbols).
+  Thanks to Relhby for reporting the problem and to PhBot1 
+  for suggesting an inprovement.
+  Additional white-spaces get now deleted, but comments 
+  are still a problem at this place.
+  [THF]
+- BetPot incorrectly used RaiseHalfPot instead of RaisePot.
+  Thanks to Postenjak for reporting.
+  [THF}
+- Calculation of botsized bets was not correct.
+  Thanks to Postenjak for reporting the problem and for providing the info to fix it.
+  [/HF]
+- bracketify.pl didn't replace all tabs by spaces.
+  Thanks to Volker0866 for reporting.
+  [THF]
+- Opponents and OpponentsLeft was incorrect, 
+  trying to meet Shankys somewhat strange definition.
+  We do now consider all active players as live opponents,
+  including players who are allin.
+  Thanks to Rehlby for reporting and for suggesting the fix.
+  [THF]
+  
+MAINTENANCE:
+- Considering MissingSmallBlind when calculating positions of the players at the table.
+  [THF]
+  
+NEW STUFF: 
+- MissingSmallBlind
+  [THF]
+
+v1.0.3 2012-02-21
+=================
+BUG FIXES: 
+- The sitout command was designed to work with OpenHoldem 2.2.0+,
+  which has not yet been released. Support for OH 2.1.9.x has been added.
+  Thanks to Postenjak for reporting.
+  [THF]
+- f$OpenPPL_RankBitsCommonWithoutTopBit used rankbits instead of
+  rankbitscommon. This affected the calculation of 2ndbestBoardCard,
+  Have2ndTopPair, Have2ndOverPair, etc.
+  Thanks to MarkShmiter for reporting and to KaeKruse and JokeDoke for the fix.
+  [THF]
+- Some backup-actions didn't work. 
+  OpenPPL didn't raise or call when we wanted to go allin,
+  but no allin-button was found. This has now been fixed.
+  Thanks to Postenjak for reporting.
+  [THF]  
+- TwoPairOnBoard confused istwopair (boolean) and twopair (a bit-value).
+  This did affect the calculation of NutFullHouseOrFourOfAKind.
+  Thanks to SteveG1963 for reporting.
+  [THF]  
+- RaisesSinceLastPlay did use f$OpenPPL_BotsActionsOnThisRound 
+  instead of f$OpenPPL_BotsActionsOnThisRoundIncludingChecks.
+  This could lead to wrong initializations.
+  Thanks to MarkShmiter for reporting.
+  [THF]
+- InitBotsLastActionPreflop did incorrectly use an undefined BotsLastAction
+  for initialization on first orbit preflop and therefore didn't work. 
+  To make things worse it did affect BotsLastAction also, 
+  because the value of this symbol got cached and later reused. 
+  This has now been fixed.
+  Thanks to Postenjak for reporting.
+  [THF]
+- MiddlePosition3, MP2 and MP1 didn't work because of a typo.
+  Thanky to Kyo for reporting.
+  [THF]
+- SuitsOnBoard did also count "undefined" suits.
+  Thanks to Postenjak for reporting and providing good info.
+  [THF]
+
+MAINTENANCE:
+- Some new option settings for deletion in bracketify.pl.
+  Thanks to Postenjak for reporting.
+  [THF]
+
+NEW STUFF: 
+- Added symbol HavePocketPair.
+  [THF]
+- New symbols SuitsOnTurn and SuitsOnRiver.
+  [THF]
+  
+  
+  
+v1.0.2 2012-02-03
+=================
+BUG FIXES: 
+- f$alli confused balance (counted in dollars) and f$OpenPPL_StackSize
+  (counted in bets). This could cause incorrect allins.
+  Thanks to Postenjak for reporting and providing the fix.
+  [THF]
+- OneCardStraightPosibleOnTurn had been missing in the library.
+  Thanks to Postenjak for reporting.
+  [THF]
+
+  
+  
+v1.0.1 2012-02-02
+=================
+BUG FIXES: 
+- Automatic betsize-adjustmeant could lead to minraises
+  even if we didn't want to raise. Thanks to Postenjak for reporting. 
+  [THF]
+- HaveTwoPair didn't work. Ace gets set twice in rankbits, 
+  as high (bit 14 = ace) and as low (bit 1). This got counted as two pairs.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- f$OpenPPL_LowestBitOfRankBitsCommon did a bit-shift in the wrong direction,
+  which affected the calculation of HaveBottomTwoPair.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- f$OpenPPL_NumberOfUnknownSuitedOvercards didn't search for overcards
+  to heros holecards, but to the high card of the flush(draw).
+  This affected the result of HaveNutFlushDraw, etc.
+  Thanks to JokeDoke for reporting. 
+  [THF]
+- RaisesbeforeOurFirstActionPreflopInbigBlind was wrong.
+  This affected the symbol Raises if we were in big blind.
+  Thanks to MarkShmiter for reporting.
+  [THF]
+- Bracketify.pl split InBigBlind etc. into two words,
+  even if it was part of a larger lexeme (like UserVillainBigBlind).
+  Thanks to Jaredlee for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Some symbols like Raises depend on game-history.
+  They get calculated and updated whenever the autoplayer acts.
+  However: the autoplayer can possibly act more than once per turn
+  (because of incorrect delay settings or too many buttons in ManualMode)
+  which could throw the calculation off.
+  To prevent this we do now remember the gamestate
+  (by dealerchair, pot and currentbet) and do only update the symbols
+  if at least one of these symbols did change.
+  This way the calculation of more complex symbols
+  should become way more stable. 
+  [THF]
+  
+NEW STUFF:
+- Support for specific suits in hand-expressions, 
+  e.g. "WHEN Hand = AcTh" or "WHEN Hand = AdK".
+  [THF]
+
+  
+
+v1.0.0 2012-01-25
+=================
+- First public release: OpenPPL converter and supporting library.
+  The OpenPPL converter translates (Open)PPL to OH-script.
+
+  OpenPPL is part of the OpenHoldem project
+    Download page:         http://code.google.com/p/openholdembot/
+    Forums:                http://www.maxinmontreal.com/forums/index.php
+    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+ 
+  The original PPL (Poker Programming Language) got invented by
+    Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl
+ 
+  Required OpenHoldem version: 2.2.0 or later
+    (if you want to use all symbols. 
+    "isfinaltable" is not supported by OH 2.1.x and earlier versions.)
+
+ Thank you very much to all contributors who helped to get this project done:
+
+   Bob3456         CoolBotMe123    CrumbleSunday   Dr.Kaktuz
+   Efu             Fn101           Gecko           JConner         
+   JokeDoke        KaeKruse        Kyo             MerzkiyTipon
+   Morello         MrRuder         Nik0            NPNG            
+   Poker_Dog       Postenjak       Rambam          Satanikut       
+   Stangelnator    SteveG1963      Strikles        TheHighFish
+   ThemAndMe       Want2Learn      Zolp
+
