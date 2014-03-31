@@ -1,0 +1,116 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Choosing an operating system
+\end_layout
+
+\begin_layout Standard
+OpenHoldem has been designed to work best on the 32-bit versions of Microsoft’s
+ Windows 2000 or Windows XP operating systems.
+ Any service pack level on these two choices seems to be fine.
+\end_layout
+
+\begin_layout Standard
+We recommend you avoid 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows Vista
+\end_layout
+
+\end_inset
+
+Vista or its dependents (
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 7
+\end_layout
+
+\end_inset
+
+Windows 7, etc).
+ These operating systems add a lot of useless cruft and bloatware that is
+ not useful in this hobby.
+ Most of the poker botters you will interact with in the community use these
+ systems as well, so as you learn and exchange ideas, it is useful to be
+ on the same platform.
+ This is especially true of Table Maps.
+ A TableMap designed for 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows XP
+\end_layout
+
+\end_inset
+
+Windows XP is not very likely to work on Vista.
+\end_layout
+
+\begin_layout Standard
+Finally, as you scale your botting operation up, you want to keep things
+ as lightweight as possible to best utilize the limited computing resources
+ at your disposal.
+ For this reason, 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Windows 2000
+\end_layout
+
+\end_inset
+
+Windows 2000 is often the choice of poker botters due to its very lean profile.
+\end_layout
+
+\end_body
+\end_document
