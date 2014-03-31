@@ -1,0 +1,322 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Building Symbols On Your Own
+\end_layout
+
+\begin_layout Standard
+The philosophy of (standard) PPL is: provide poker-logical symbols, that
+ can be used by any poker-playing person, no matter how much (or less) programmi
+ng experience he has.
+ Examples are:
+\end_layout
+
+\begin_layout Standard
+However this approach has some drawbacks: it shifts all work to the developers
+ and limits the users, who might need additional symbols for their bot-logic.
+ Staying with the example above, they might need: SmallBlindStacksize, BigBlindS
+tacksize, UTGStacksize, ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacks
+ize, 3BetterStacksize, FlopCheckRaiserStacksize, TurnDonkerStacksize, etc.
+ No matter how busy the development team is, they will never be able to
+ satisfy all needs.
+ Therefore OpenHoldems (and OpenPPLs) philosophy is slightly different:
+ provide technical symbols like stack0..stack9 (the stacksizes for chair0..chair9)
+ and let the user figure out the rest.
+ This way the end-user is far more flexible; however at the cost of a bit
+ more work.
+\end_layout
+
+\begin_layout Standard
+As an example we develop a symbol BigBlindStacksize.
+ As a first step we need to know the chair of the big blind.
+ Then as a second step we are able to return the stacksize for this chair.
+ To solve the first problem we use the OpenHoldem symbol ac_dealposX which
+ returns the deal-position of chair X.
+ The big blind is (with some very rare exceptions) always the second player
+ to be dealt, so we search for a the chair, that got dealt as second player.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+New Symbol BigBlindChair
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos0 = 2 Return 0 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos1 = 2 Return 1 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos2 = 2 Return 2 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos3 = 2 Return 3 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos4 = 2 Return 4 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos5 = 2 Return 5 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos6 = 2 Return 6 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos7 = 2 Return 7 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos8 = 2 Return 8 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When ac_dealpos9 = 2 Return 9 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Other cases should not happen
+\end_layout
+
+\begin_layout Plain Layout
+
+    When Others Return -1 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+End Symbol
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Having this information we can continue with the second step (the dull part).
+ We return the stacksize for the chair of the big blind.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+New Symbol BigBlindStacksize
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 0 Return stack0 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 1 Return stack1 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 2 Return stack2 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 3 Return stack3 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 4 Return stack4 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 5 Return stack5 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 6 Return stack6 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 7 Return stack7 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 8 Return stack8 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+    When BigBlindChair = 9 Return stack9 Force
+\end_layout
+
+\begin_layout Plain Layout
+
+End Symbol
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You see: it is not that difficult to extend OpenPPL on your own.
+ The possibilites are nearly endless.
+ For a moment we skipped some details, but creating new symbols is self-explaini
+ng: each new symbol start with 
+\begin_inset Quotes eld
+\end_inset
+
+New Symbol <Name>
+\begin_inset Quotes erd
+\end_inset
+
+ and ends with 
+\begin_inset Quotes eld
+\end_inset
+
+End Symbol
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Inbetween is an (optionally open-ended) when-condition-sequence with return-sta
+tements instead of actions.
+ These symbol-definitions go to an extra-part of your code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Custom
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Handlists
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Symbols
+\end_layout
+
+\begin_layout Plain Layout
+
+// All your symbol definitions belong here
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Preflop
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+That's all.
+ OpenPPL is easy.
+\end_layout
+
+\end_body
+\end_document
