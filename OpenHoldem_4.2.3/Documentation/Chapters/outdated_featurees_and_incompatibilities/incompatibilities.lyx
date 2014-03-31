@@ -1,0 +1,977 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
+\end_layout
+
+\begin_layout Standard
+The original main goal of the OpenHoldem development team was the attempt
+ to create a WinHoldem-compatible botting-platform to support existing bots,
+ DLLs and TableMaps.
+ However there has been functionality such as 
+\begin_inset Quotes eld
+\end_inset
+
+Teaming
+\begin_inset Quotes erd
+\end_inset
+
+, that always has been a tabu for the OpenHoldem development team.
+ Other functionality did never get implemented due to lack of documentation
+ and practical relevance.
+ And now that OpenHoldem is far more advanced and WinHoldem is practically
+ dead, backward-compatibility is no longer such an important issue.
+ Recently the development team does revisit some features that look a bit
+ mal-designed and tries to improve them carefully, trying to affect the
+ end-user as little as possible.
+\end_layout
+
+\begin_layout Standard
+This chapter will tell you about such incompatibilities.
+\end_layout
+
+\begin_layout Section
+No Collusion aka 
+\begin_inset Quotes eld
+\end_inset
+
+Teaming
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does not support any kind of collusion.
+ There is no support for WinHoldems WinTellem-server and card-sharing either
+ because such activities are simply illegal in every country of the world,
+ and --- even more important --- because we consider them unfair too.
+\end_layout
+
+\begin_layout Section
+TableMaps
+\end_layout
+
+\begin_layout Standard
+Table Maps are in a different format due to hypothetical copyright-issues;
+ conversion of a WinHoldem "profile" to a OpenHoldem "Table Map" is possible
+ if you open the WH profile in OpenScrape.
+ But this is no longer of any practical relevance, as all WinHoldem-
+\begin_inset Quotes erd
+\end_inset
+
+profiles
+\begin_inset Quotes erd
+\end_inset
+
+ are supposed to be outdated and there is no longer any maintenance going
+ on.
+\end_layout
+
+\begin_layout Section
+Formula-File-Format
+\end_layout
+
+\begin_layout Standard
+The formula is saved in a single file instead of two.
+ It uses the extension *.ohf instead of *.whf and *.whx.
+ Old WH-formulae will be converted once they get saved.
+ OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited
+ using your favourite text-editor.
+ 
+\end_layout
+
+\begin_layout Section
+ManualMode
+\end_layout
+
+\begin_layout Standard
+ManualMode is not directly integrated into OpenHoldem, but became a stand-alone
+ application.
+ This did simplify the GUI of OpenHoldem extremely and made it far more
+ easy to use.
+ 
+\end_layout
+
+\begin_layout Section
+f$evrais and f$evcall
+\end_layout
+
+\begin_layout Standard
+Calculating expectation values is only one possible way (out of many) to
+ implement a poker bot, but not necessary in general.
+ Furthermore it proved to be cumbersome and unpopular.
+ So the functions f$evrais and f$evcall from WinHoldems demo-bot have been
+ degraded to user-defined-functions.
+\end_layout
+
+\begin_layout Section
+f$play-Function
+\end_layout
+
+\begin_layout Standard
+The function f$play has been a quite messy concept to handle sitting in,
+ sitting out and leaving the table.
+ Some extra coution was necessary to avoid multiple button-clicks within
+ a short time-frame on identical or outdated game-states.
+ With OpenHoldem 2.2.0 f$play got replaced by three indivudal functions: f$sitin,
+ f$sitout and f$leave, which get executed exactly once every 4 seconds.
+\end_layout
+
+\begin_layout Section
+f$swag function
+\end_layout
+
+\begin_layout Standard
+f$swag (short for 
+\begin_inset Quotes eld
+\end_inset
+
+stated wager
+\begin_inset Quotes erd
+\end_inset
+
+) was WinHoldems way to define the betsize for No-Limit games.
+ As online casinos interpret your input in at least three different ways
+ some adjustment was necessary, including:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="left" valignment="top" width="65text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+f$srai
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the desired amount to raise (the part which exceeds the bet of the aggressor)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+f$swag
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the final amount to be entered into the software
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+f$swag_adjust
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the casino-specific adjustment between f$srai and f$swag
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagtextmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the casino-specific way to interpret swag, as defined in the tablemap
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sraimin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the smallest possible raise
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sraimax
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the largest possible raise.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All these computations had to be done by the user at the formula level.
+ With OpenHoldem 2.2.0 this mess got replaced by a single function f$betsize
+ and OpenHoldem cares about all the rest automatically.
+\end_layout
+
+\begin_layout Section
+Statistic-Symbols: 
+\begin_inset Quotes eld
+\end_inset
+
+risk of ruin
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The symbols to calculate 
+\begin_inset Quotes eld
+\end_inset
+
+risk of ruin
+\begin_inset Quotes erd
+\end_inset
+
+ have never been implemented due to lack of documentation and lack of practical
+ relevance.
+ As of OpenHoldem 2.0.0 the risk-of-ruin-symbols are officially abolished
+ and removed from the code-base.
+ The original documentation for these symbols can be found here: 
+\end_layout
+
+\begin_layout Itemize
+WinHoldEm Help - Formula Editor (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.winholdem.net/help/help-formula.html
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+WinHoldem-Forum: Risk Of Ruin (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=2120
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Section
+Friend-Symbols
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does not support any kind of collusion, so the friend-symbols
+ are completely meaningless.
+ Only nfriendsseated, nfriendsactive and nfriendsplaying are currently implement
+ed for backward-compatibility, as they are quite convenient to use in the
+ f$sitin, f$sitout and f$leave-formulas.
+ They do of course consider hero as the one and only 
+\begin_inset Quotes eld
+\end_inset
+
+friend
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The other friend symbols got finally removed from the code-base in OpenHoldem
+ 2.2.0.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nfriendsdealt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 if you are dealt, 0 otherwise (0-1) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nfriendsblind 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 if you are in a blind, 0 otherwise (0-1) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+friendsseatedbits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bits 9-0: 1=seated 0=unseated, you only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+friendsactivebits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bits 9-0: 1=active 0=inactive, you only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+friendsdealtbits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bits 9-0: 1=dealt 0=notdealt, you only 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+friendsplayingbits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bits 9-0: 1=playing 0=notplaying, you only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+friendsblindbits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bits 9-0: 1=blind 0=notblind, you only 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Tablemap Symbols
+\end_layout
+
+\begin_layout Standard
+Some tablemap symbols have been exposed to the scripting level without necessity.
+ They got removed in OpenHoldem 2.2.0.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagdelay
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Autoplayer delay in milliseconds between swag keystrokes and button click
+ as defined in Preferences (formerly TableMap); to be removed soon as there
+ is no need for it at the formula level
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+allidelay
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Autoplayer delay in milliseconds between alli slider jam and button click
+ as defined in Preferences (formerly TableMap); to be removed soon as there
+ is no need for it at the formula level
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagtextmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the site interpretation for swag edit text (Table Map symbol) 
+\end_layout
+
+\begin_layout Enumerate
+f$srai 
+\end_layout
+
+\begin_layout Enumerate
+f$srai+call 
+\end_layout
+
+\begin_layout Enumerate
+f$srai+call+currentbet; 
+\end_layout
+
+\begin_layout Plain Layout
+Default: 3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+(Un)known Cards
+\end_layout
+
+\begin_layout Standard
+The symbols nouts got removed from the code-base, as Ray E.
+ Bornerts definition of an out was way too optimistic and completely unusable
+ (a hand like 72o at a board of AKQ will give you 6 outs, as every 7 and
+ every 2 bumps your handlevel to a pair, which beats high-card ace at the
+ board).
+ To calculate outs in a meaningful way, there is mh_nouts as a better symbol
+ and there are also some good outs-counters available in the forum.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nouts 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the total number of unseen single cards that if dealt to the board might
+ put your hand in the lead.
+ to be counted as an out, the card must be able to bump your level and your
+ new level must be higher than the resulting common level.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+List Tests 
+\end_layout
+
+\begin_layout Standard
+The list symbols below seem to be mis-conceptions by WinHoldems author and
+ --- to our best knowledge --- have never been used in any serious poker
+ bot.
+ They finally got removed from the code base in version 2.2.0 of OpenHoldem.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features>
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="65text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islistcall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if your hand is in list 0 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islistrais
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if your hand is in list 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islistalli
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if your hand is in list 7 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isemptylistcall
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if the call list is empty 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isemptylistrais
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if the rais list is empty 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isemptylistalli
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if the alli list is empty 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nlistmax
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+highest list number in which your hand is listed
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nlistmin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lowest list number in which your hand is listed 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
