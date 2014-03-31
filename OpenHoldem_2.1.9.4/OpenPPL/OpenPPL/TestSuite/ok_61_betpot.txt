@@ -1,0 +1,13 @@
+custom
+
+preflop
+when others call force
+
+flop
+when others BetPot force
+
+turn
+when others fold force
+
+river
+when others fold force
