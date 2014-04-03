@@ -15,8 +15,7 @@
 #include "CDllExtension.h"
 
 #include "CFilenames.h"
-#include "CFormula.h"
-#include "CGrammar.h"
+#include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CHandHistory.h"
 #include "CIteratorThread.h"
@@ -49,25 +48,6 @@ void CDllExtension::PassStateToDll(const SHoldemState *pstate)
 	(_process_message) ("state", pstate);
 }
 
-
-CString CDllExtension::GetDLLSpecifiedInFormula()
-{
-	CString formula_dll;
-	int N = p_formula->formula()->mFunction.GetSize();
-	formula_dll = "";
-	for (int i=0; i<N; i++)
-	{
-		if (p_formula->formula()->mFunction[i].func == "dll")
-		{
-			formula_dll = p_formula->formula()->mFunction[i].func_text;
-			break;
-		}
-	}
-	formula_dll.Trim();
-	return formula_dll;
-}
-
-
 void CDllExtension::LoadDll(const char * path)
 {
 	CString		dll_path;
@@ -86,7 +66,7 @@ void CDllExtension::LoadDll(const char * path)
 	{
 		// Nothing passed in, so we try the DLL of the formula
 		// and the DLL from preferences.
-		dll_path = GetDLLSpecifiedInFormula();
+		dll_path = p_function_collection->DLLPath();
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
 		if (dll_path == "")
@@ -167,12 +147,10 @@ const bool CDllExtension::IsDllLoaded()
 
 extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr)
 {
-	int			e = SUCCESS, stopchar = 0;
+	int			stopchar = 0;
 	double		res = 0.;
 	CString		str = "";
-	tpi_type	tpi;
 	bool		result = false;
-	CGrammar	gram;
 
 	str.Format("%s", name);
 
@@ -194,26 +172,9 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		return 0;
 	}
 
-	result = gram.ParseString(&str, (const SFormula *) p_formula, &tpi, &stopchar);
-
-	if (result)
-	{
-		e = SUCCESS;
-		res = gram.EvaluateTree(p_formula, tpi, NULL, &e);
-	}
-	else
-	{
-		res = 0;
-		e = ERR_INVALID_FUNC_SYM;
-	}
-
-	if (e == SUCCESS)
-		iserr = false;
-
-	else
-		iserr = true;
-
-	return res;
+	result = p_function_collection->Evaluate(str);
+	iserr = false; //??? still needed?
+	return result;
 }
 
 
@@ -225,7 +186,7 @@ extern "C" __declspec(dllexport) void __stdcall SendChatMessageFomDll(const char
 
 extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 {
-	return (void *)(p_formula->formula()->inlist);
+	return (void *)NULL; //!!!(p_formula->formula()->inlist);
 }
 
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()

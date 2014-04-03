@@ -15,7 +15,6 @@
 #include "CSymbolEngineLists.h"
 
 #include "CBetroundCalculator.h"
-#include "CFormula.h"
 #include "CScraper.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
@@ -78,19 +77,19 @@ void CSymbolEngineLists::CalculateLists()
 		card1 = p_scraper->card_player(USER_CHAIR, 0);
 	}
 
-	int number_of_lists = p_formula->formula()->mHandList.GetSize();
-	for (int i=0; i<number_of_lists; i++)
+	//!!!int number_of_lists = p_formula->formula()->mHandList.GetSize();
+	//for (int i=0; i<number_of_lists; i++)
 	{
-		int listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
+		//!!!int listnum = atoi(p_formula->formula()->mHandList[i].list.Mid(4).GetString());
 
-		if ((StdDeck_SUIT(card0)==StdDeck_SUIT(card1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(card0)][StdDeck_RANK(card1)]) ||
-			(StdDeck_SUIT(card0)!=StdDeck_SUIT(card1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(card1)][StdDeck_RANK(card0)]))
+		//!!!if ((StdDeck_SUIT(card0)==StdDeck_SUIT(card1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(card0)][StdDeck_RANK(card1)]) ||
+		//	(StdDeck_SUIT(card0)!=StdDeck_SUIT(card1) && p_formula->formula()->inlist[listnum][StdDeck_RANK(card1)][StdDeck_RANK(card0)]))
 		{
-			SetIsList(listnum, true);													// islistxx
+			//SetIsList(listnum, true);													// islistxx
 		}
-		else
+		//!!!else
 		{
-			SetIsList(listnum, false);
+			//SetIsList(listnum, false);
 		}
 	}
 }

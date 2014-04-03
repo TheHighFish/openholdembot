@@ -65,4 +65,23 @@ double CFunctionCollection::Evaluate(CString function_name)
 	return function.Evaluate();
 }
 
+/*!!!
+CString CDllExtension::GetDLLSpecifiedInFormula()
+{
+	CString formula_dll;
+	int N = p_formula->formula()->mFunction.GetSize();
+	formula_dll = "";
+	for (int i=0; i<N; i++)
+	{
+		if (p_formula->formula()->mFunction[i].func == "dll")
+		{
+			formula_dll = p_formula->formula()->mFunction[i].func_text;
+			break;
+		}
+	}
+	formula_dll.Trim();
+	return formula_dll;
+}
+*/
+
 

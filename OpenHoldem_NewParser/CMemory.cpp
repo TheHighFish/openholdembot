@@ -17,7 +17,6 @@
 #include "CAutoplayer.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
-#include "CGrammar.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
@@ -88,7 +87,6 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	char		var[k_max_length_of_memory_symbols] = {0};
 	char		value[k_max_length_of_memory_symbols] = {0};
 	double		result = 0.0;
-	CGrammar	gram;
 
 	// Copy without "me_st_"
 	strcpy_s(var, k_max_length_of_memory_symbols, &pquery[6]);
