@@ -1306,10 +1306,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FloatingPoint_Comparisions.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MD5_Checksum.h"
 				>
 			</File>
@@ -2014,6 +2010,10 @@
 				</File>
 				<File
 					RelativePath=".\CStringMatch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FloatingPoint_Comparisions.h"
 					>
 				</File>
 				<File

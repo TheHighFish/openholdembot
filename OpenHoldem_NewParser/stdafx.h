@@ -99,8 +99,8 @@
 
 // Important project headers
 #include "debug.h"
-#include "..\StructsDefines\structs_defines.h"
+#include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
-
+#include "..\StructsDefines\structs_defines.h"
 
 #endif //INC_STDAFX_H

@@ -367,7 +367,7 @@ void COpenHoldemApp::OnForceCrash()
 	}
 }
 
-//!!!
+//!!
 // Added due to inability to get standard LoadStdProfileSettings working properly
 void COpenHoldemApp::MyLoadStdProfileSettings(UINT nMaxMRU) 
 {

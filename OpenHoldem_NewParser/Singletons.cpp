@@ -156,7 +156,7 @@ void InstantiateAllSingletons()
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnectorThread\n");
 	assert(!p_autoconnectorthread);
 	p_autoconnectorthread = new CAutoConnectorThread;
-	//!!!write_log(preferences.debug_alltherest(), "[Singletons] Going to create HandHistory\n");
+	//!!write_log(preferences.debug_alltherest(), "[Singletons] Going to create HandHistory\n");
 	//assert(!p_handhistory)  ;
 	//p_handhistory = new CHandHistory;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");

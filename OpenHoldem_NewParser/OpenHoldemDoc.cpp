@@ -18,6 +18,7 @@
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
 #include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
@@ -37,7 +38,7 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	//!!!p_formula->ClearFormula();
+	p_function_collection->Clear();
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 
@@ -98,7 +99,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring()) 
 	{
 		// Store archive in the new OpenHoldem format
-		//!!!p_formula->WriteFormula(ar);
+		p_function_collection->Save(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
 	}
