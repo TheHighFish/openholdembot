@@ -17,8 +17,6 @@
 #include "ScintillaWnd.h"
 #include "WinMgr.h"
 #include "SizerBar.h"
-#include "CGrammar.h"
-
 
 // CDlgFormulaScintilla dialog
 #define	MENU_UPDATE_TIMER		1
@@ -138,7 +136,7 @@ protected:
 	void WriteFDebugLog(bool write_header);
 	void InitDebugArray();
 	void ResizeDialogForControlBars();
-	void LastChangeToFormula(CFormula *f);
+	//!!!void LastChangeToFormula(CFormula *f);
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
 	afx_msg void OnEditCopy();
@@ -222,7 +220,7 @@ protected:
 	bool			ok_to_update_debug;
 
 	// This is the copy of the formula class that is being worked on in the dialog
-	CFormula		m_wrk_formula;
+	//!!!CFormula		m_wrk_formula;
 
 	CStringArray	m_standard_headings;
 	// Tree view for function grouping
@@ -233,10 +231,6 @@ protected:
 	//   * Debug functions
 	static const int	k_number_of_standard_headings = 5;
 	CStringArray		m_standard_functions[k_number_of_standard_headings];
-
-	// This is used for formula parsing and evaluation
-	CGrammar		gram;
-
 	DECLARE_MESSAGE_MAP()
 
 private:

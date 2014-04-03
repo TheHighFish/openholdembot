@@ -290,8 +290,8 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[4].Add("f$debug");
 
 	// Copy current doc formula into working set
-	m_wrk_formula.ClearFormula();
-	m_wrk_formula.CopyFormulaFrom(p_formula);
+	//!!!m_wrk_formula.ClearFormula();
+	//!!!m_wrk_formula.CopyFormulaFrom(p_formula);
 
 	m_current_edit = "";
 	m_dirty = false;
@@ -453,7 +453,7 @@ void CDlgFormulaScintilla::ConstructKeywordsForPokerTracker(CString &keys)
 }
 
 void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
-{
+{/*!!!
 	keys = keywords;
 	int i = 0;
 	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) {
@@ -478,7 +478,7 @@ void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
 				keys.AppendFormat(" $%c%co", k_card_chars[i], k_card_chars[j]);
 			}
 		}
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) 
@@ -623,7 +623,7 @@ void CDlgFormulaScintilla::OnCancel()
 }
 
 void CDlgFormulaScintilla::RemoveSingleItemGroups()
-{
+{/*
 	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
 	HTREEITEM hNextLevelItem = NULL, hNextItem = NULL;
 	CString fnName = 0;
@@ -646,7 +646,7 @@ void CDlgFormulaScintilla::RemoveSingleItemGroups()
 			m_FormulaTree.DeleteItem(hUDFChildItem);
 		}
 		hUDFChildItem = hNextItem;
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::GetGroupName(const char *functionName, CString &groupName)
@@ -700,7 +700,7 @@ void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const C
 }
 
 void CDlgFormulaScintilla::PopulateFormulaTree()
-{
+{/*!!!
 	m_FormulaTree.DeleteAllItems();
 
 	CString filter;
@@ -752,7 +752,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree()
 			ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
 	}
 
-	GroupUDFs();
+	GroupUDFs();*/
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -808,7 +808,7 @@ void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *p
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
-	LastChangeToFormula(&m_wrk_formula);
+	//!!!LastChangeToFormula(&m_wrk_formula);
 
 	*pResult = 0;
 }
@@ -955,7 +955,7 @@ void CDlgFormulaScintilla::SetExtendedWindowTitle(CString additional_information
 }
 
 void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
-{
+{/*!!!
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	CString			s = "";
 	int				N = 0, i = 0;
@@ -1101,7 +1101,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
 
 	HandleEnables(true);
 
-	*pResult = 0;
+	*pResult = 0;*/
 }
 
 HTREEITEM CDlgFormulaScintilla::FindUDFGroupItem(const char *groupName)
@@ -1168,7 +1168,7 @@ HTREEITEM CDlgFormulaScintilla::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewPare
 }
 
 void CDlgFormulaScintilla::OnNew() 
-{
+{/*!!!
 	CDlgNew newdlg;
 	SFunction Func;
 	SHandList List;
@@ -1284,11 +1284,11 @@ void CDlgFormulaScintilla::OnNew()
 		m_FormulaTree.SetFocus();
 		m_dirty = true;
 		HandleEnables(true);
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::OnRename() 
-{
+{/*!!!
 	CDlgRename rendlg;
 	CString	s = "";
 	char str[MAX_WINDOW_TITLE] = {0};
@@ -1436,7 +1436,7 @@ void CDlgFormulaScintilla::OnRename()
 			m_dirty = true;
 			HandleEnables(true);
 		}
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::OnDelete() 
@@ -1513,6 +1513,7 @@ void CDlgFormulaScintilla::OnDelete()
 	HandleEnables(true);
 	*/
 
+	/*!!!
 	int ret, N;
 		HTREEITEM h = m_FormulaTree.GetSelectedItem();
 		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
@@ -1579,7 +1580,7 @@ void CDlgFormulaScintilla::OnDelete()
 					}
 				}
 			}
-		}
+		}*/
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
@@ -1714,7 +1715,7 @@ CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsStrin
 }
 
 void CDlgFormulaScintilla::OnHandList() 
-{
+{/*!!!
 	CDlgHandList		myDialog;
 	CString				s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 	int					list_index = 0, i = 0, j = 0;
@@ -1757,9 +1758,9 @@ void CDlgFormulaScintilla::OnHandList()
 
 		m_dirty = true;
 	}
-	HandleEnables(true);
+	HandleEnables(true);*/
 }
-
+/*!!!
 void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f) 
 {
 	CString		s = "", text = "";
@@ -1820,10 +1821,10 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 			}
 		}
 	}
-}
+}*/
 
 BOOL CDlgFormulaScintilla::DestroyWindow()
-{
+{/*
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
 	StopAutoButton();
@@ -1834,7 +1835,8 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	// Uncheck formula button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
-	return CDialog::DestroyWindow();
+	return CDialog::DestroyWindow();*/
+	return 0;//!!!
 }
 
 void CDlgFormulaScintilla::PostNcDestroy()
@@ -2040,7 +2042,7 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 }
 
 void CDlgFormulaScintilla::OnBnClickedCalc() 
-{
+{/*!!!
 	CString					Cstr = "", title = "", s = "";
 	double					ret = 0.;
 	int						error = 0;
@@ -2081,7 +2083,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	//
 	if (m_current_edit == "f$debug") 
 	{
-		LastChangeToFormula(&m_wrk_formula);
+		//!!!LastChangeToFormula(&m_wrk_formula);
 
 		InitDebugArray();
 		UpdateDebugAuto();
@@ -2132,11 +2134,11 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::OnBnClickedAuto()
-{
+{/*!!!
 	if (m_ButtonAuto.GetCheck() == 1)
 	{
 		boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
@@ -2176,7 +2178,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 	{
 		ok_to_update_debug = false;
 		m_ButtonAuto.SetWindowText("Auto");
-	}
+	}*/
 }
 
 void CDlgFormulaScintilla::StopAutoButton()
@@ -2189,7 +2191,7 @@ void CDlgFormulaScintilla::StopAutoButton()
 }
 
 void CDlgFormulaScintilla::UpdateDebugAuto(void) 
-{
+{/*!!!
 	CString			Cstr = "";
 
 	// mark symbol result cache as stale
@@ -2229,7 +2231,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
 	m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
 	m_pActiveScinCtrl->GotoPosition(0);
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);*/
 }
 
 void CDlgFormulaScintilla::CreateDebugTab(CString *cs) 
@@ -2396,18 +2398,18 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 			// parse
 			debug_struct.exp.Format("%s", eq);
 
-			parse_result = gram.ParseString(&debug_struct.exp, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
+			//!!!parse_result = gram.ParseString(&debug_struct.exp, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
 			debug_struct.valid = true;
-			debug_struct.error = parse_result && gram.parse_symbol_stop_strs()->GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
+			//!!!debug_struct.error = parse_result && gram.parse_symbol_stop_strs()->GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
 		}
 		else 
 		{
 			debug_struct.exp = buf;
 			Cstr = "";
 
-			gram.ParseString(&Cstr, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
+			//!!!gram.ParseString(&Cstr, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
 			debug_struct.valid = false;
@@ -2436,7 +2438,7 @@ void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() 
-{
+{/*
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
@@ -2489,7 +2491,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 
 	m_dirty = false;
 
-	HandleEnables(true);
+	HandleEnables(true);*/
 }
 
 void CDlgFormulaScintilla::OnBnClickedOk() 
@@ -2543,7 +2545,7 @@ void CDlgFormulaScintilla::OnSearchUpdate()
 			m_ScinArray[iScint]._pWnd->Refresh();
 		}
 	}
-	LastChangeToFormula(&m_wrk_formula);
+	//!!!LastChangeToFormula(&m_wrk_formula);
 	PopulateFormulaTree();
 }
 

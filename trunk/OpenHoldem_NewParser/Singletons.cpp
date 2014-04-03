@@ -24,7 +24,6 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
-#include "CFormula.h"
 #include "CFunctionCollection.h"
 #include "CGameState.h"
 #include "CHandHistory.h"
@@ -100,9 +99,6 @@ void InstantiateAllSingletons()
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFunctionCollection\n");
 	assert(!p_function_collection);
 	p_function_collection = new CFunctionCollection;
-	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormula\n");
-	assert(!p_formula);
-	p_formula = new CFormula;
 	write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayer\n");
 	assert(!p_autoplayer);
 	p_autoplayer = new CAutoplayer();
@@ -272,8 +268,6 @@ void DeleteAllSingletons()
 		{ delete p_autoplayer; p_autoplayer = NULL; }
 	if (p_function_collection)
 		{ delete p_function_collection; p_function_collection = NULL; }
-	if (p_formula)  
-		{ delete p_formula; p_formula = NULL; }
 	if (p_replayframes_counter)
 		{ delete p_replayframes_counter; p_replayframes_counter = NULL; }
 	if (p_tablemap_access)  

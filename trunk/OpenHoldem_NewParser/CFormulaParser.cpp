@@ -25,6 +25,7 @@ CFormulaParser::~CFormulaParser()
 void CFormulaParser::ParseFile(CArchive& formula_file)
 {
 	_is_parsing = true;
+	p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
 	while (true)
 	{
 		CString function_content = _formula_file_splitter.GetNextFunctionOrList(formula_file);

@@ -20,8 +20,6 @@
 
 #include "CVirtualSymbolEngine.h"
 
-#include "CGrammar.h"
-
 class CSymbolEngineIniFunctions: public CVirtualSymbolEngine
 {
 public:

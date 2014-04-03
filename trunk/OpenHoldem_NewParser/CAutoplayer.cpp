@@ -20,7 +20,6 @@
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
 #include "CGameState.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -343,6 +342,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 
 	if (to_be_enabled_or_not) 
 	{
+		/* !!! here?
 		// calc hand lists
 		p_formula->CreateHandListMatrices();
 		// one last parse - do not engage if parse fails
@@ -352,7 +352,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 			// Can't autoplay
 			to_be_enabled_or_not = false;
 			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-		}
+		}*/
 	}
 	// Set valuie at the very last to be extra safe
 	// and avoid problems with multiple threads

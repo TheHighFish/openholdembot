@@ -16,8 +16,8 @@
 
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
 #include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CTableMaploader.h"
@@ -105,7 +105,7 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
-	if (p_formula->formula_name() == "" 
+	if (p_function_collection->Title() == "" 
 		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{

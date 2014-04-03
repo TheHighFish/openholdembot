@@ -37,7 +37,7 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	p_formula->ClearFormula();
+	//!!!p_formula->ClearFormula();
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 
@@ -73,16 +73,16 @@ BOOL COpenHoldemDoc::OnNewDocument()
 		return FALSE;
 
 	// Default bot
-	p_formula->SetEmptyDefaultBot();
+	//!!!p_formula->SetEmptyDefaultBot();
 
 	// Try to unload dll
 	p_dll_extension->UnloadDll();
 
 	// Create hand list matrices
-	p_formula->CreateHandListMatrices();
+	//!!!p_formula->CreateHandListMatrices();
 
 	// Create parse trees for default formula
-	p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
+	//!!!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 	SetModifiedFlag(true);
 	p_openholdem_title->UpdateTitle();
 
@@ -98,7 +98,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring()) 
 	{
 		// Store archive in the new OpenHoldem format
-		p_formula->WriteFormula(ar);
+		//!!!p_formula->WriteFormula(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
 	}
@@ -136,37 +136,17 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		// Read ohf / whf file
 		CFormulaParser formula_parser;
 		formula_parser.ParseFile(ar);
-
-		// !!! R! ReadFormula(ar);
 		SetModifiedFlag(false); // !!!R?
-
-		p_formula->set_formula_name(ar.GetFile()->GetFileName());
 
 		// Try to unload dll
 		p_dll_extension->UnloadDll();
 
 		// Create hand list matrices
-		p_formula->CreateHandListMatrices();
-
-		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
+		//!!!p_formula->CreateHandListMatrices();
 
 		p_dll_extension->LoadDll("");
 		p_openholdem_title->UpdateTitle();
 	}
-}
-
-// !!! remove?
-void COpenHoldemDoc::ReadFormula(CArchive& ar) 
-{
-	// Clear everything
-	p_formula->ClearFormula();
-
-	// Read *.ohf formula file 
-	p_formula->ReadFormulaFile(ar);
-
-	// Check and add missing...
-	p_formula->CheckForDefaultFormulaEntries();
 }
 
 COpenHoldemDoc * COpenHoldemDoc::GetDocument() 

@@ -313,10 +313,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CGrammar.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CHandHistory.cpp"
 				>
 			</File>
@@ -1061,10 +1057,6 @@
 				>
 				<File
 					RelativePath=".\CDllExtension.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CFormula.cpp"
 					>
 				</File>
 				<File
