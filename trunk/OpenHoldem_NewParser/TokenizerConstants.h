@@ -66,6 +66,11 @@ enum
 	kTokenKeywordForce,
 	// Shanky-style delay (unsupported)
 	kTokenUnsupportedDelay,
+	// Special action-constants for node-types
+	// Not really tokens, but handled here for consistency
+	kTokenActionRaiseByBigBlinds,
+	kTokenActionRaiseByPercentagedPotsize,
+	kTokenActionUserVariableToBeSet,
 	// Always leave that at the very end
 	kNumberOfTokens,
 };
@@ -85,6 +90,11 @@ inline bool TokenIsTernary(int token)
 		|| (token == kTokenOperatorConditionalWhen));
 }
 
+inline bool TokenIsElementaryAction(int token)
+{
+	return ((token >= kTokenActionBeep)
+		&& (token <= kTokenActionClose));
+}
 
 inline bool TokenIsBracketClose(int token)
 {

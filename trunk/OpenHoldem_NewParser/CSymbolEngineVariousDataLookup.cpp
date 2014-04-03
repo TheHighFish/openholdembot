@@ -22,7 +22,7 @@
 #include "CAutoconnector.h"
 #include "CBetroundCalculator.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
+#include "CFormulaParser.h"
 #include "inlines/eval.h"
 #include "CGameState.h"
 #include "Chair$Symbols.h"
@@ -146,7 +146,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7)  					
 	{
 		// Don't show name messagebox if in parsing-mode
-		if (p_formula->IsParsing() || !p_autoconnector->IsConnected()
+		if (p_formula_parser->IsParsing() || !p_autoconnector->IsConnected()
 			|| !p_symbol_engine_userchair->userchair_confirmed())
 		{
 			*result = 0;

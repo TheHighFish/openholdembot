@@ -24,8 +24,6 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
-#include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPreferences.h"

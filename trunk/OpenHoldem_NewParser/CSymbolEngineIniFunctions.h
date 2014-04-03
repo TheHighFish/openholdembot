@@ -35,9 +35,6 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-
-private:
-	CGrammar gram;
 };
 
 extern CSymbolEngineIniFunctions *p_symbol_engine_ini_functions;
