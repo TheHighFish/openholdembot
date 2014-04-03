@@ -26,6 +26,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file)
 {
 	_is_parsing = true;
 	p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
+	p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
 	while (true)
 	{
 		CString function_content = _formula_file_splitter.GetNextFunctionOrList(formula_file);
@@ -205,7 +206,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		write_log(preferences.debug_parser(), 
 			"[Parser] Parsing ##DLL##\n");
 		ExpectDoubleShebangAsEndOfFunctionHeader();
-		// !!! To do
+		// Nothing more to do
+		// We extract the DLL later
 	}
 	else if (_token.MakeLower() == "notes")
 	{
@@ -311,7 +313,7 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 	}
 	else if (_token_ID == kTokenOperatorConditionalIf)
 	{
-		// Binary or ternary condition!!!
+		// Ternary condition
 		TPParseTreeNode then_expression;
 		TPParseTreeNode else_expression;
 		ParseConditionalPartialThenElseExpressions(

@@ -2,9 +2,10 @@
 #include "CParseTreeNode.h"
 
 #include "CEngineContainer.h"
+#include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
+#include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
-
 
 CParseTreeNode::CParseTreeNode()
 {}
@@ -103,8 +104,9 @@ double CParseTreeNode::Evaluate()
 	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)
 	{
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling);
-		double raise_by_amount = 0.01 * raise_by_percentage; 
-			// * potsize after I call !!!
+		double pot_size_after_call_in_big_blinds = 0; // !! PotSize() + AmountToCall();
+		double raise_by_amount = 0.01 * raise_by_percentage
+			* pot_size_after_call_in_big_blinds;
 		return raise_by_amount;
 	}
 	else if (_node_type == kTokenActionUserVariableToBeSet)
@@ -193,25 +195,39 @@ double CParseTreeNode::EvaluateBinaryExpression()
 	case kTokenOperatorMultiplication: 
 		return value_of_first_sibbling * value_of_second_sibbling;
 	case kTokenOperatorDivision: 
-		// !!! div 0
-		return value_of_first_sibbling / value_of_second_sibbling;
-	case kTokenOperatorModulo: // div 0!!!
-		return (unsigned long)value_of_first_sibbling 
-			% (unsigned long)value_of_second_sibbling;
+		if (value_of_second_sibbling == 0)
+		{
+			OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			return k_undefined;
+		}
+		else
+		{
+			return value_of_first_sibbling / value_of_second_sibbling;
+		}
+	case kTokenOperatorModulo: if (value_of_second_sibbling == 0)
+		{
+			OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			return k_undefined;
+		}
+		else
+		{
+			return (unsigned long)value_of_first_sibbling 
+				% (unsigned long)value_of_second_sibbling;
+		}
 	case kTokenOperatorExponentiation: 
 		return pow(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorEquality: 
-		return value_of_first_sibbling == value_of_second_sibbling; //!!!
+		return IsEqual(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorApproximatellyEqual: 
-		return value_of_first_sibbling * value_of_second_sibbling; //!!!
+		return IsApproximatellyEqual(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorSmaller: 
-		return value_of_first_sibbling < value_of_second_sibbling;
+		return IsSmaller(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorSmallerOrEqual: 
-		return value_of_first_sibbling <= value_of_second_sibbling;
+		return IsSmallerOrEqual(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorGreater: 
-		return value_of_first_sibbling > value_of_second_sibbling;
+		return IsGreater(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorGreaterOrEqual: 
-		return value_of_first_sibbling >= value_of_second_sibbling;
+		return IsGreaterOrEqual(value_of_first_sibbling, value_of_second_sibbling);
 	case kTokenOperatorNotEqual: 
 	case kTokenOperatorLogicalXOr: 
 		return value_of_first_sibbling != value_of_second_sibbling;

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CFunctionCollection.h"
 
-
+// CString hashtable below by Sam NG
+// http://www.codeproject.com/Articles/13458/CMap-How-to
 template<> 
 UINT AFXAPI HashKey<CString*> (CString* key)
 {
@@ -28,18 +29,17 @@ BOOL AFXAPI CompareElements<LPCString, LPCString>
     }
 }
 
-
+// End of CString hashtable below by Sam NG
 
 CFunctionCollection *p_function_collection = NULL;
-/*
-CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT, UINT&  > m_dlgMap;
-  E:\OH_SVN\trunk\OpenHoldem_NewParser\SAPrefsDialog.cpp(205):				m_dlgMap.SetAt(pPS->pDlg, uipTree);
-  E:\OH_SVN\trunk\OpenHoldem_NewParser\SAPrefsDialog.cpp(255):		if (m_dlgMap.Lookup(pParent, dwHTree))
-*/
 
 CFunctionCollection::CFunctionCollection()
 {
-	_function_hashtable.InitHashTable(1031); //!!!
+	// Hash-table-size must be 
+	// * a prime number
+	// * if possible at least 20% larger than the number of entries
+	//   (OpenPPL-library 4.4.0 contains 710 functions)
+	_function_hashtable.InitHashTable(1031);	
 	Clear();
 }
 
@@ -65,6 +65,49 @@ double CFunctionCollection::Evaluate(CString function_name)
 	return function.Evaluate();
 }
 
+void CFunctionCollection::Save(CArchive &ar)
+{
+	//!! old code
+	/*CString		s = "";
+	char		nowtime[26] = {0};
+
+	//  First write the standard formula functions...
+	//  These are functions and symbols, that
+	//	* are essential to control the behaviour 
+	//	  of (nearly) every poker bot.
+	//	* configure some very important constants.
+	//  
+	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
+
+	// DLL  and notes are a bit special "functions",
+	// so they get extra treatment.
+	WriteStandardFunction(ar, "notes");
+	WriteStandardFunction(ar, "dll");
+	for (int i=k_autoplayer_function_allin; i<k_number_of_standard_functions; i++)
+	{
+		WriteStandardFunction(ar, k_standard_function_names[i]);
+	}
+	// f$test and f$debug are again special
+	WriteStandardFunction(ar, "f$test");
+	WriteStandardFunction(ar, "f$debug");
+
+	// handlists for both ohf and old whf style
+	for (int i=0; i<(int) _formula.mHandList.GetSize(); i++) 
+		ar.WriteString("##" + _formula.mHandList[i].list + "##\r\n" + _formula.mHandList[i].list_text + "\r\n\r\n");
+
+	// User defined functions for new ohf style only.
+	// We don't ever have to save them, as for a conversion
+	// we only have to generate an ohf file and (for technical reasons)
+	// recreate the old whf (which is already open for storing).
+	//
+	for (int i=0; i<(int) _formula.mFunction.GetSize(); i++) 
+	{
+		if (!IsStandardFormula(_formula.mFunction[i].func))
+		{
+			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
+		}
+	}*/
+}
 /*!!!
 CString CDllExtension::GetDLLSpecifiedInFormula()
 {

@@ -366,7 +366,7 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs15 page15;
 	CDlgSAPrefs16 page16;
 	CDlgSAPrefs17 page17;
-	//!!!CDlgSAPrefs18 page18;
+	//!!CDlgSAPrefs18 page18; can be recycled
 	CDlgSAPrefs19 page19;
 	CDlgSAPrefs20 page20;
 	CDlgSAPrefs21 page21;
