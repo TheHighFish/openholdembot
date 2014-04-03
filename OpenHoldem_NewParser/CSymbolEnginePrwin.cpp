@@ -15,8 +15,7 @@
 #include "CSymbolEnginePrwin.h"
 
 #include <assert.h>
-#include "CFormula.h"
-#include "CGrammar.h"
+#include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
 #include "CScraper.h"
@@ -174,10 +173,8 @@ void CSymbolEnginePrwin::CalculateNhands()
 
 void CSymbolEnginePrwin::CalculateNOpponents()
 {
-	CGrammar gram;
-	int e = SUCCESS;
-	_nopponents_for_prwin = gram.CalcF$symbol(p_formula, 
-		"f$prwin_number_of_opponents", &e);
+	_nopponents_for_prwin = p_function_collection->Evaluate(
+		"f$prwin_number_of_opponents");
 
 	if (_nopponents_for_prwin > MAX_OPPONENTS)
 	{

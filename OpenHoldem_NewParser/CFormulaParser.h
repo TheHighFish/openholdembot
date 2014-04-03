@@ -16,39 +16,43 @@ public:
 	~CFormulaParser();
 public:
 	void ParseFile(CArchive & formula_file);
-	void ParseSingleFormula(CString function_content);
+	void ParseSingleFormula(CString function_text);
 public:
 	static CString CurrentFunctionName();
+	bool IsParsing()	{ return _is_parsing; }
 private:
-	void ExpectDoubleShebangAsStartOfFunctionHeader();
-	void ExpectDoubleShebangAsEndOfFunctionHeader();
+	bool ExpectDoubleShebangAsStartOfFunctionHeader();
+	bool ExpectDoubleShebangAsEndOfFunctionHeader();
 	void ExpectMatchingBracketClose(int opening_bracket);
-	void ExpectConditionalThen();
-	void ExpectKeywordForce();
+	bool ExpectConditionalThen();
+	bool ExpectKeywordForce();
 	void CheckForExtraTokensAfterEndOfFunction();
 private:
 	// OH-script and OpenPPL
 	void ParseListBody();
-	void ParseFunctionBody();
+	TPParseTreeNode ParseFunctionBody();
 private:
 	// OH-script
 	TPParseTreeNode ParseExpression();
-	void ParseBracketExpression();
+	TPParseTreeNode ParseBracketExpression();
 	TPParseTreeNode ParseUnaryExpression();
 	TPParseTreeNode ParseSimpleExpression();
-	void ParseRightPartOfBinaryOrTernaryExpression();
-	void ParseConditionalThenElseExpressions();
+	void ParseConditionalPartialThenElseExpressions(
+		TPParseTreeNode *then_expression, TPParseTreeNode *else_expression);
 private:
 	// OpenPPL
-	void ParseOpenEndedWhenConditionSequence();
-	void ParseOpenPPLAction();
-	void ParseOpenPPLRaiseExpression();
+	TPParseTreeNode ParseOpenEndedWhenConditionSequence();
+	TPParseTreeNode ParseOpenPPLAction();
+	TPParseTreeNode ParseOpenPPLRaiseExpression();
 private:
 	CFormulaFileSplitter _formula_file_splitter;
 	CTokenizer _tokenizer;
 private:
 	int _token_ID;
 	CString _token;
+	bool _is_parsing;
 };
+
+extern CFormulaParser *p_formula_parser;
 
 #endif INC_CFORMULAPARSER_H

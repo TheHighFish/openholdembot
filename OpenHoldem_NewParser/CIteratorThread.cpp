@@ -16,7 +16,7 @@
 
 #include <process.h>
 #include "CBetroundCalculator.h"
-#include "CGrammar.h"
+#include "CFunctionCollection.h"
 #include "CiteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -358,19 +358,13 @@ void CIteratorThread::ResetGlobalVariables()
 
 void CIteratorThread::InitNumberOfIterations()
 {
-	int			e = SUCCESS;
-	CGrammar	gram;
-
-	int number_of_iterations = gram.CalcF$symbol(p_formula, 
-		"f$prwin_number_of_iterations", true, &e);
-	iter_vars.set_nit(2500); //!! number_of_iterations); 
+	int number_of_iterations = p_function_collection->Evaluate(
+		"f$prwin_number_of_iterations");
+	iter_vars.set_nit(number_of_iterations); 
 }
 
 void CIteratorThread::InitIteratorLoop()
 {
-	int			e = SUCCESS;
-	CGrammar	gram;
-
 	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 	// Set starting status and parameters
 	iter_vars.set_iterator_thread_running(true);
@@ -420,14 +414,10 @@ void CIteratorThread::InitIteratorLoop()
 	}
 
 	//Weighted prwin only for nopponents <=13
-	e = SUCCESS;
-	_willplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_willplay", &e);
-	e = SUCCESS;
-	_wontplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_wontplay", &e);
-	e = SUCCESS;
-	_mustplay = (int) gram.CalcF$symbol(p_formula, "f$prwin_mustplay", &e);
-	e = SUCCESS;
-	_topclip = (int) gram.CalcF$symbol(p_formula, "f$prwin_topclip", &e);
+	_willplay = p_function_collection->Evaluate("f$prwin_willplay");
+	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay");
+	_mustplay = p_function_collection->Evaluate("f$prwin_mustplay");
+	_topclip = p_function_collection->Evaluate("f$prwin_topclip");
 
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 

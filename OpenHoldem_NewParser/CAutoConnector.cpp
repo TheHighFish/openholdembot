@@ -22,7 +22,6 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorVars.h"
 #include "CIteratorThread.h"
@@ -298,9 +297,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			LoadScraperDLL();
 			p_flags_toolbar->DisableButtonsOnConnect();
-
-			// mark symbol result cache as stale
-			p_formula->MarkCacheStale();
 
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)

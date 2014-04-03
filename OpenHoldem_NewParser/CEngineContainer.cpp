@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
+#include "CFormulaParser.h"
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
@@ -202,7 +203,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 		// until OnConnection() got executed.
 		return;
 	}
-	if (p_formula->IsParsing())
+	if (p_formula_parser->IsParsing())
 	{
 		// Not safe to evaluate anything
 		return;

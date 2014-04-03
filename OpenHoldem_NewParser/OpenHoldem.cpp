@@ -24,7 +24,6 @@
 #include "CAutoConnector.h"
 #include "CAutoConnectorThread.h"
 #include "CFilenames.h"
-#include "CGrammar.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "CopenHoldemTitle.h"
 #include "CPreferences.h"

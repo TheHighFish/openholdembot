@@ -139,7 +139,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Caclulate symbols
 
 		// mark symbol result cache as stale
-		p_formula->MarkCacheStale();
+		p_formula->MarkCacheStale(); //!!!  Turn it into symbol engine
 
 		if (new_scrape!=NOTHING_CHANGED)
 		{

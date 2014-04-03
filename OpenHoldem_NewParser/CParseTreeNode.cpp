@@ -30,7 +30,7 @@ void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibb
 	_first_sibbling = first_sibbling;
 }
 
-void CParseTreeNode::MakebinaryOperator(int node_type, TPParseTreeNode first_sibbling,
+void CParseTreeNode::MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,
 	TPParseTreeNode second_sibbling)
 {
 	_node_type = node_type;
@@ -48,8 +48,36 @@ void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_si
 
 }
 
+void CParseTreeNode::MakeAction(int action_constant)
+{
+	_node_type = action_constant;
+}
+
+void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds)
+{
+	_node_type = kTokenActionRaiseByBigBlinds;
+	_first_sibbling = raise_by_amount_in_big_blinds;
+}
+
+// Values to be expected in the range (0..100] or more, not (0..1]
+void CParseTreeNode::MakeRaiseByPercentagedPotsizeAction(
+	TPParseTreeNode raise_by_amount_percentage)
+{
+	_node_type = kTokenActionRaiseByPercentagedPotsize;
+	_first_sibbling = raise_by_amount_percentage;
+}
+
+void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
+{
+	assert(uservariable.Left(4) == "user");
+	_node_type = kTokenActionUserVariableToBeSet;
+	_terminal_name = uservariable;
+	// !!! also needs a continue on execution!
+}
+
 double CParseTreeNode::Evaluate()
 {
+	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
 		return _constant_value;
@@ -59,6 +87,33 @@ double CParseTreeNode::Evaluate()
 		assert(_terminal_name != "");
 		return EvaluateIdentifier(_terminal_name);
 	}
+	// Actions second, which are also "unary".
+	// We have to encode all possible outcomes in a single floating-point,
+	// therefore:
+	// * positive values mean: raise size (by big-blinds, raise-by-semantics)
+	// * negative values mean: elementary actions
+	else if (TokenIsElementaryAction(_node_type))
+	{
+		return (0 - _node_type);
+	}
+	else if (_node_type == kTokenActionRaiseByBigBlinds)
+	{
+		return EvaluateSibbling(_first_sibbling);
+	}
+	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)
+	{
+		double raise_by_percentage = EvaluateSibbling(_first_sibbling);
+		double raise_by_amount = 0.01 * raise_by_percentage; 
+			// * potsize after I call !!!
+		return raise_by_amount;
+	}
+	else if (_node_type == kTokenActionUserVariableToBeSet)
+	{
+		// !!! set user variable
+		// Continue with next open-ended when-condition
+		EvaluateSibbling(_second_sibbling);
+	}
+	// Finally operators
 	else if (TokenIsUnary(_node_type))
 	{
 		return EvaluateUnaryExpression();

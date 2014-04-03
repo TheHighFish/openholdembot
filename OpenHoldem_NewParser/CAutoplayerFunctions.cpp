@@ -15,7 +15,7 @@
 #include "CAutoplayerFunctions.h"
 
 #include <assert.h>
-#include "CGrammar.h"
+#include "CFunctionCollection.h"
 #include "MagicNumbers.h"
 #include "CPreferences.h"
 #include "StringFunctions.h"
@@ -55,17 +55,13 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_to_bn
 
 void CAutoplayerFunctions::CalcPrimaryFormulas()
 {
-	int			e = SUCCESS;
-	CGrammar	gram;
-
 	write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
 	bool trace_needed = preferences.trace_enabled();
 
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++)
 	{
-		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
+			p_function_collection->Evaluate(k_standard_function_names[i]));
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
@@ -74,16 +70,10 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 {
-	int			e = SUCCESS;
-	CGrammar	gram;
-
-	bool trace_needed = preferences.trace_enabled();
-
 	for (int i=k_standard_function_prefold; i<=k_standard_function_delay; i++)
 	{
-		e = SUCCESS;
 		p_autoplayer_functions->SetAutoplayerFunction(i, // function to be set
-			gram.CalcF$symbol(p_formula, k_standard_function_names[i], trace_needed, &e));
+			p_function_collection->Evaluate(k_standard_function_names[i]));
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
@@ -92,8 +82,5 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 
 void CAutoplayerFunctions::CalcAutoTrace()
 {
-	int			e = SUCCESS;
-	CGrammar	gram;
-
-	gram.CalcF$symbol(p_formula, "f$autotrace", true, &e);
+	p_function_collection->Evaluate("f$autotrace");
 }

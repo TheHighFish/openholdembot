@@ -3,6 +3,13 @@
 
 #include "CFunction.h"
 
+
+
+
+
+
+
+
 class CFunctionCollection
 {
 public:
@@ -13,7 +20,7 @@ public:
 	void Add(CFunction *new_function);
 	double Evaluate(CString function_name);
 private:
-	CMap< CString*, CString*, CFunction*, CFunction*>_function_hashtable;
+	CMap<CString*, CString*, CFunction*, CFunction*> _function_hashtable;
 };
 
 extern CFunctionCollection *p_function_collection;

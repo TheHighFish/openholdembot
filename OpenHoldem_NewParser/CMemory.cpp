@@ -16,7 +16,7 @@
 
 #include "CAutoplayer.h"
 #include "CEngineContainer.h"
-#include "CFormula.h"
+#include "CFunctionCollection.h"
 #include "CGrammar.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
@@ -150,22 +150,10 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	}
 	else if (RightValueIsFunction(value))
 	{
-		*e = SUCCESS;
-		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
+		result = p_function_collection->Evaluate(value);
 
-		if (*e == SUCCESS)
-		{
-			set_var_value(index, result);
-			set_var_name(index, var);
-		}
-		else
-		{
-			*e = ERR_INVALID_EXPR;
-			// And decreasing the var_count again,
-			// otherwise we get a reach the maximum number of symbols soon,
-			// despite we didn't save anything.
-			set_var_count(_var_count - 1);
-		}
+		set_var_value(index, result);
+		set_var_name(index, var);
 	}
 	else
 	{

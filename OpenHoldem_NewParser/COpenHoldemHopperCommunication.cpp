@@ -17,6 +17,7 @@
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
 #include "CFormula.h"
+#include "CFormulaParser.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CTableMaploader.h"
@@ -105,7 +106,7 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	//   * no formula
 	//   * no tablemap
 	if (p_formula->formula_name() == "" 
-		|| p_formula->IsParsing()
+		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{
 		write_log(preferences.debug_hopper_messages(), 
