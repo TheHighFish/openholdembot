@@ -21,6 +21,7 @@
 
 #include "CAutoconnector.h"
 #include "CBetroundCalculator.h"
+#include "CDllExtension.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
 #include "inlines/eval.h"
@@ -28,6 +29,7 @@
 #include "Chair$Symbols.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
+#include "CPerl.hpp"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "CPokerTrackerThread.h"
@@ -81,9 +83,22 @@ void CSymbolEngineVariousDataLookup::ResetOnHeartbeat()
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result)
 {
-	// Versus
-	if (memcmp(name, "vs$", 3) == 0)
+	// DLL
+	if (memcmp(name, "dll$", 4) == 0)
 	{
+		assert(p_dll_extension != NULL);
+		//!!*result = p_dll_extension->
+	}
+	// Perl
+	else if (memcmp(name, "pl_", 3) == 0)
+	{
+		assert(p_perl != NULL);
+		*result = p_perl->GetPerlSymbol(name);
+	}
+	// Versus
+	else if (memcmp(name, "vs$", 3) == 0)
+	{
+		assert(p_versus != NULL);
 		int *e = SUCCESS;
 		*result = p_versus->GetSymbol(name, e);
 	}

@@ -471,7 +471,7 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 
 double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 {
-	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
+	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); 
 	time_t CurrentTime;
 	time(&CurrentTime);
 	double _TimeSincelast_failed_attempt_to_connect = difftime(CurrentTime, last_failed_attempt_to_connect);
@@ -479,7 +479,7 @@ double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 	return _TimeSincelast_failed_attempt_to_connect;
 }
 
-/* !!!???
+/* !!???
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {
 	CString				title, winclass;

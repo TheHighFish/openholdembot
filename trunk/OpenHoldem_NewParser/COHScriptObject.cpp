@@ -11,26 +11,15 @@
 //
 //***************************************************************************** 
 
-#ifndef INC_CFORMULAFILESPLITTER_H
-#define INC_CFORMULAFILESPLITTER_H
+#include "stdafx.h"
+#include "COHScriptObject.h"
 
-#define _AFXDLL 
-
-#include "afx.h"
-#include "atlstr.h"
-
-class CFormulaFileSplitter
+COHScriptObject::COHScriptObject(CString *new_name, CString *new_function_text)
 {
-public:
-	CFormulaFileSplitter();
-	~CFormulaFileSplitter();
-public:
-	CString GetNextFunctionOrList(CArchive &formula_file);
-private:
-	bool IsFunctionHeader(CString line_of_code);
-private:
-	CString _next_formula_content;
-	CString _next_line;
-};
+	_name = *new_name;
+	_function_text = *new_function_text;
+}
 
-#endif INC_CFORMULAFILESPLITTER_H
+COHScriptObject::~COHScriptObject()
+{}
+

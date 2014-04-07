@@ -51,7 +51,7 @@ const int k_betround_showdown = k_betround_river + 1;
 // OK
 CHandHistory::CHandHistory()
 {
-	return; //!!! disabled
+	return; //!! disabled
 
 	CreateHandHistoryFile();
 	// Attempt to create a random starting game number
@@ -127,7 +127,7 @@ void CHandHistory::WriteHistory()
 // Done
 void CHandHistory::UpdateSymbols()
 {
-	// !!! Attention!
+	// !! Attention!
 	// It seems that these pointers can be undefined the very first time
 	// Result: crashes!
 	// Better turn everything into a "symbol engine"

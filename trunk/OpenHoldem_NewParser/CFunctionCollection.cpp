@@ -1,35 +1,20 @@
+//***************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//***************************************************************************** 
+//
+// Purpose:
+//
+//***************************************************************************** 
+
 #include "stdafx.h"
+#include "CFunction.h"
 #include "CFunctionCollection.h"
-
-// CString hashtable below by Sam NG
-// http://www.codeproject.com/Articles/13458/CMap-How-to
-template<> 
-UINT AFXAPI HashKey<CString*> (CString* key)
-{
-    return (NULL == key) ? 0 : HashKey((LPCTSTR)(*key));
-}
-
-// I don't know why, but CompareElements can't work with CString*
-// have to define this
-typedef CString* LPCString;
-
-template<>
-BOOL AFXAPI CompareElements<LPCString, LPCString> 
-     (const LPCString* pElement1, const LPCString* pElement2)
-{
-    if ( *pElement1 == *pElement2 ) {
-        // true even if pE1==pE2==NULL
-        return true;
-    } else if ( NULL != *pElement1 && NULL != *pElement2 ) {
-        // both are not NULL
-        return **pElement1 == **pElement2;
-    } else {
-        // either one is NULL
-        return false;
-    }
-}
-
-// End of CString hashtable below by Sam NG
+#include "CStringHashtableTemplate.h"
 
 CFunctionCollection *p_function_collection = NULL;
 
@@ -39,19 +24,21 @@ CFunctionCollection::CFunctionCollection()
 	// * a prime number
 	// * if possible at least 20% larger than the number of entries
 	//   (OpenPPL-library 4.4.0 contains 710 functions)
-	_function_hashtable.InitHashTable(1031);	
-	Clear();
+	_function_hashtable.InitHashTable(1031);
+	_title = "";
+	_path = "";
+	DeleteAll();
 }
 
 CFunctionCollection::~CFunctionCollection()
 {}
 
-void CFunctionCollection::Clear()
+void CFunctionCollection::DeleteAll()
 {
 	_function_hashtable.RemoveAll();
 }
 
-void CFunctionCollection::Add(CFunction *new_function)
+void CFunctionCollection::Add(COHScriptObject *new_function)
 {
 	CString name = new_function->name();
 	_function_hashtable.SetAt(&name, new_function);
@@ -59,15 +46,85 @@ void CFunctionCollection::Add(CFunction *new_function)
 
 double CFunctionCollection::Evaluate(CString function_name)
 {
-	CFunction function("f$alli", "1");
-	CFunction *p_function = &function;
+	COHScriptObject *p_function;
 	_function_hashtable.Lookup(&function_name, p_function);
-	return function.Evaluate();
+	return p_function->Evaluate();
+}
+
+CString CFunctionCollection::DLLPath()
+{
+	COHScriptObject *dll_node = LookUp("DLL");
+	if (dll_node == NULL)
+	{
+		return "";
+	}
+	CString dll_path = dll_node->function_text();
+	// Remove "##DLL##"
+	dll_path.Delete(0, 7);
+	dll_path.Trim();
+	return dll_path;
+}
+
+void CFunctionCollection::SetEmptyDefaultBot()
+{
+	DeleteAll();
+	//!!CSLock lock(m_critsec);
+	_title = "NoName";
+	// Adding empty standard-functions
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
+	CheckForDefaultFormulaEntries();
+}
+
+void CFunctionCollection::CheckForDefaultFormulaEntries()
+{
+	//!!CSLock lock(m_critsec);
+
+	// Header comment
+	AddEmptyFunctionIfFunctionDoesNotExist(CString("notes"));
+	// DLL to be loaded
+	AddEmptyFunctionIfFunctionDoesNotExist(CString("dll"));
+	// Autoplayer, standard, ini and PrWin functions
+	for (int i=0; i<k_number_of_standard_functions; ++i)
+	{
+		AddEmptyFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+	}
+	// Debug functions	
+	AddEmptyFunctionIfFunctionDoesNotExist(CString("f$test"));
+	AddEmptyFunctionIfFunctionDoesNotExist(CString("f$debug"));
+}
+
+void CFunctionCollection::AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name)
+{
+	if (Exists(function_name))
+	{
+		return;
+	}
+	// Formula not found.
+	// Add the standard one.
+	CString function_text;
+	if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
+		|| (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
+	{
+		// f$check and f$fold should evaluate to true per default
+		// for auto-check-folding instead of time-outs.
+		function_text = "1 "; //!! header?
+	}
+	else
+	{
+		// Add an empty function.
+		// The function-text should contain at least one space.
+		// The editor does somehow not work for completely empty formulas.
+		function_text = " "; //!! header?
+	}
+	CFunction *p_function = new CFunction(&function_name, 
+		&function_text); // ##name##?
+	Add((COHScriptObject *)p_function); //!!
 }
 
 void CFunctionCollection::Save(CArchive &ar)
 {
-	//!! old code
+	//function_hashtable.
+	//!!! old code
 	/*CString		s = "";
 	char		nowtime[26] = {0};
 
@@ -108,23 +165,3 @@ void CFunctionCollection::Save(CArchive &ar)
 		}
 	}*/
 }
-/*!!!
-CString CDllExtension::GetDLLSpecifiedInFormula()
-{
-	CString formula_dll;
-	int N = p_formula->formula()->mFunction.GetSize();
-	formula_dll = "";
-	for (int i=0; i<N; i++)
-	{
-		if (p_formula->formula()->mFunction[i].func == "dll")
-		{
-			formula_dll = p_formula->formula()->mFunction[i].func_text;
-			break;
-		}
-	}
-	formula_dll.Trim();
-	return formula_dll;
-}
-*/
-
-

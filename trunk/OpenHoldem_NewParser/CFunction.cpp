@@ -1,14 +1,24 @@
+//***************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//***************************************************************************** 
+//
+// Purpose:
+//
+//***************************************************************************** 
+
 #include "stdafx.h"
 #include "CFunction.h"
 
 #include "CParseTreeNode.h"
 
-CFunction::CFunction(CString _new_name, CString _new_function_text)
+CFunction::CFunction(CString *new_name, CString *new_function_text)
 {
-	_name = _new_name;
-	_function_text = _new_function_text;
-	_parse_tree_node = NULL;
-	ClearCache();
+	COHScriptObject(new_name, new_function_text);
 }
 
 CFunction::~CFunction()

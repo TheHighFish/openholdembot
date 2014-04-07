@@ -11,26 +11,21 @@
 //
 //***************************************************************************** 
 
-#ifndef INC_CFORMULAFILESPLITTER_H
-#define INC_CFORMULAFILESPLITTER_H
+#ifndef INC_COHSCRIPTLIST_H
+#define INC_COHSCRIPTLIST_H
 
-#define _AFXDLL 
+#include "COHScriptObject.h"
 
-#include "afx.h"
-#include "atlstr.h"
-
-class CFormulaFileSplitter
+class COHScriptList: COHScriptObject
 {
 public:
-	CFormulaFileSplitter();
-	~CFormulaFileSplitter();
+	COHScriptList(CString *new_name, CString *new_function_text);
+	~COHScriptList();
 public:
-	CString GetNextFunctionOrList(CArchive &formula_file);
-private:
-	bool IsFunctionHeader(CString line_of_code);
-private:
-	CString _next_formula_content;
-	CString _next_line;
+	void Set(CString list_member);
+	// Actually Evaluate() returns true/false if our hand is in the list or not
+	// but the function is inheritzed from the base-class.
+	double Evaluate();
 };
 
-#endif INC_CFORMULAFILESPLITTER_H
+#endif INC_COHSCRIPTLIST_H

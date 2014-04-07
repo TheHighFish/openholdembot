@@ -186,7 +186,8 @@ extern "C" __declspec(dllexport) void __stdcall SendChatMessageFomDll(const char
 
 extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 {
-	return (void *)NULL; //!!!(p_formula->formula()->inlist);
+	//!!broken in OH 4.6.0 / 5.0.0 because hand list array removed
+	return (void *)NULL; //(p_formula->formula()->inlist);
 }
 
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()

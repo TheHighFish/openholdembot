@@ -32,7 +32,6 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
-#include "CSymbolEngineLists.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
@@ -70,7 +69,6 @@ CSymbolEngineIniFunctions::CSymbolEngineIniFunctions()
 	assert(p_symbol_engine_history != NULL);
 	assert(p_symbol_engine_isomaha != NULL);
 	assert(p_symbol_engine_istournament != NULL);
-	assert(p_symbol_engine_lists != NULL);
 	assert(p_symbol_engine_pokertracker != NULL);
 	assert(p_symbol_engine_pokerval != NULL);
 	assert(p_symbol_engine_positions != NULL);

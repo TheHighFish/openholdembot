@@ -33,7 +33,7 @@
 #include "CSymbolEngineIniFunctions.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
-#include "CSymbolEngineLists.h"
+#include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
@@ -149,9 +149,6 @@ void CEngineContainer::CreateSymbolEngines()
 	// CSymbolEngineHistory
 	p_symbol_engine_history = new CSymbolEngineHistory();
 	AddSymbolEngine(p_symbol_engine_history);
-	// CSymbolEngineLists
-	p_symbol_engine_lists = new CSymbolEngineLists();
-	AddSymbolEngine(p_symbol_engine_lists);
 	// CSymbolEnginePrwin
 	p_symbol_engine_prwin = new CSymbolEnginePrwin();
 	AddSymbolEngine(p_symbol_engine_prwin);
@@ -164,9 +161,12 @@ void CEngineContainer::CreateSymbolEngines()
 	p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
 	AddSymbolEngine(p_symbol_engine_ini_functions);
 	// CSymbols
-	// Deals with symbol-lookups and depends on all the other ones.
-	// Therefore it has to be the very last one.
+	// Deals with symbol-lookups and depends on all the other OH-script ones.
+	// Therefore it has to be the last OH-script one.
 	p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;
+	AddSymbolEngine(p_symbol_engine_various_data_lookup);
+	// OpenPPL-symbol-engines
+	p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
 	AddSymbolEngine(p_symbol_engine_various_data_lookup);
 	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }

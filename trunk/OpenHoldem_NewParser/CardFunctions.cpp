@@ -69,7 +69,7 @@ int SuitCharacterToSuitNumber(char suit)
 
 int RankAndSuitToCardNumber(int rank, int suit)
 {
-	// !!! Completely bad unnamed constands
+	// !! Completely bad unnamed constands
 	// * std_deck
 	// * WH-constants 1..4
 	// * DLL-constants 0..3 (need to define names somewhere)
