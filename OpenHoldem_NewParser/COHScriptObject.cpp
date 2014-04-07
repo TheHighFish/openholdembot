@@ -14,6 +14,12 @@
 #include "stdafx.h"
 #include "COHScriptObject.h"
 
+COHScriptObject::COHScriptObject()
+{
+	_name = "";
+	_function_text = "";
+}
+
 COHScriptObject::COHScriptObject(CString *new_name, CString *new_function_text)
 {
 	_name = *new_name;
@@ -22,4 +28,11 @@ COHScriptObject::COHScriptObject(CString *new_name, CString *new_function_text)
 
 COHScriptObject::~COHScriptObject()
 {}
+
+double COHScriptObject::Evaluate()
+{
+	bool this_method_should_always_get_overwritten_and_never_called = false;
+	assert(this_method_should_always_get_overwritten_and_never_called);
+	return 0.0;
+}
 

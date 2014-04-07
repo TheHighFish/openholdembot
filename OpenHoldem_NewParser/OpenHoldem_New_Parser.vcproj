@@ -1144,6 +1144,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CStringHashtableTemplate.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CStringMatch.cpp"
 					>
 				</File>
