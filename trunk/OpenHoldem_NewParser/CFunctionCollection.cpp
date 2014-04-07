@@ -12,8 +12,9 @@
 //***************************************************************************** 
 
 #include "stdafx.h"
-#include "CFunction.h"
 #include "CFunctionCollection.h"
+
+#include "CFunction.h"
 #include "CStringHashtableTemplate.h"
 
 CFunctionCollection *p_function_collection = NULL;
@@ -44,11 +45,25 @@ void CFunctionCollection::Add(COHScriptObject *new_function)
 	_function_hashtable.SetAt(&name, new_function);
 }
 
+COHScriptObject *CFunctionCollection::LookUp(CString name)
+{
+	COHScriptObject *p_script_object;
+	bool success = _function_hashtable.Lookup(&name, p_script_object);
+	return (success ? p_script_object : NULL);
+}
+
 double CFunctionCollection::Evaluate(CString function_name)
 {
 	COHScriptObject *p_function;
 	_function_hashtable.Lookup(&function_name, p_function);
 	return p_function->Evaluate();
+}
+
+bool CFunctionCollection::IsList(int list_ID)
+{
+	CString list_name;
+	list_name.Format("list%0.3d", list_ID);
+	return Evaluate(list_name);
 }
 
 CString CFunctionCollection::DLLPath()

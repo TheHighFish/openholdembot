@@ -17,7 +17,7 @@
 class COHScriptObject
 {
 public:
-	COHScriptObject(); //!! remove
+	COHScriptObject(); 
 	COHScriptObject(CString *new_name, CString *new_function_text);
 	~COHScriptObject();
 public:
