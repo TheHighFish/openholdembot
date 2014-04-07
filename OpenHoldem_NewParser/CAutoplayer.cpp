@@ -343,8 +343,6 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 	if (to_be_enabled_or_not) 
 	{
 		/* !!! here?
-		// calc hand lists
-		p_formula->CreateHandListMatrices();
 		// one last parse - do not engage if parse fails
 		if (!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd()))
 		{

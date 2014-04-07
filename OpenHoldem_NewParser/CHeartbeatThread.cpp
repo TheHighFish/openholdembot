@@ -136,10 +136,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		p_scraper_access->GetNeccessaryTablemapObjects();
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Caclulate symbols
-
-		// mark symbol result cache as stale
-		//p_formula->MarkCacheStale(); //!!!  Turn it into symbol engine
-
 		if (new_scrape!=NOTHING_CHANGED)
 		{
 			p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();

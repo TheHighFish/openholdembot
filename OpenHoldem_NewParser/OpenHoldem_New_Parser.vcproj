@@ -860,6 +860,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CSymbolEngineOpenPPLUserVariables.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CVersus.cpp"
 					>
 				</File>
@@ -1177,6 +1181,14 @@
 				</File>
 				<File
 					RelativePath=".\CFunctionCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.cpp"
 					>
 				</File>
 				<File
@@ -1546,6 +1558,10 @@
 				</File>
 				<File
 					RelativePath=".\CPokerAction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineOpenPPLUserVariables.h"
 					>
 				</File>
 				<File
@@ -2009,6 +2025,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CStringHashtableTemplate.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CStringMatch.h"
 					>
 				</File>
@@ -2050,6 +2070,14 @@
 				</File>
 				<File
 					RelativePath=".\CFunctionCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.h"
 					>
 				</File>
 				<File

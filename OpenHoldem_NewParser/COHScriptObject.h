@@ -7,30 +7,27 @@
 //
 //***************************************************************************** 
 //
-// Purpose:
+// Purpose: virtual base-class for CFunction and COHList
 //
 //***************************************************************************** 
 
-#ifndef INC_CFORMULAFILESPLITTER_H
-#define INC_CFORMULAFILESPLITTER_H
+#ifndef INC_COHSCRIPTOBJECT_H
+#define INC_COHSCRIPTOBJECT_H
 
-#define _AFXDLL 
-
-#include "afx.h"
-#include "atlstr.h"
-
-class CFormulaFileSplitter
+class COHScriptObject
 {
 public:
-	CFormulaFileSplitter();
-	~CFormulaFileSplitter();
+	COHScriptObject(); //!! remove
+	COHScriptObject(CString *new_name, CString *new_function_text);
+	~COHScriptObject();
 public:
-	CString GetNextFunctionOrList(CArchive &formula_file);
+	CString name()			{ return _name; }
+	CString function_text()	{ return _function_text; }
+public:
+	virtual double Evaluate();
 private:
-	bool IsFunctionHeader(CString line_of_code);
-private:
-	CString _next_formula_content;
-	CString _next_line;
+	CString _name;
+	CString _function_text;
 };
 
-#endif INC_CFORMULAFILESPLITTER_H
+#endif INC_COHSCRIPTOBJECT_H

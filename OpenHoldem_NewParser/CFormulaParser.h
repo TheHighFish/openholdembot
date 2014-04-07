@@ -1,3 +1,16 @@
+//***************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//***************************************************************************** 
+//
+// Purpose:
+//
+//***************************************************************************** 
+
 #ifndef INC_CFORMULAPARSER_H
 #define INC_CFORMULAPARSER_H
 
@@ -8,6 +21,8 @@
 #include "CFormulaFileSplitter.h"
 #include "CParseTreeNode.h"
 #include "CTokenizer.h"
+
+class COHScriptList;
 
 class CFormulaParser
 {
@@ -29,7 +44,7 @@ private:
 	void CheckForExtraTokensAfterEndOfFunction();
 private:
 	// OH-script and OpenPPL
-	void ParseListBody();
+	COHScriptList *ParseListBody();
 	TPParseTreeNode ParseFunctionBody();
 private:
 	// OH-script

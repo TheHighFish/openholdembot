@@ -2059,7 +2059,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	//symbols.CalcSymbols();
 
 	// mark symbol result cache as stale
-	m_wrk_formula.MarkCacheStale();
+	//!!m_wrk_formula.MarkCacheStale();
 
 	// Make sure we "calc" the latest
 	LastChangeToFormula(&m_wrk_formula);
@@ -2195,7 +2195,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void)
 	CString			Cstr = "";
 
 	// mark symbol result cache as stale
-	m_wrk_formula.MarkCacheStale();
+	//!!m_wrk_formula.MarkCacheStale();
 
 	// Loop through each line in the debug tab and evaluate it
 	for (int i=0; i<(int) debug_ar.GetSize(); i++) 

@@ -1,9 +1,24 @@
+//***************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//***************************************************************************** 
+//
+// Purpose:
+//
+//***************************************************************************** 
+
 #include "stdafx.h"
 #include "CFormulaParser.h"
 
 #include <assert.h>
 #include "CFunction.h"
 #include "CFunctionCollection.h"
+#include "COHScriptList.h"
+#include "COHScriptObject.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
@@ -197,8 +212,12 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		// ##listNNN##
 		write_log(preferences.debug_parser(), 
 				"[Parser] Parsing list\n");
-		ExpectDoubleShebangAsEndOfFunctionHeader();
-		ParseListBody();
+		if (!ExpectDoubleShebangAsEndOfFunctionHeader())
+		{
+			return;
+		}
+		COHScriptList *new_list = ParseListBody();
+		p_function_collection->Add((COHScriptObject*)new_list); //!!
 	}
 	else if (_token.MakeLower() == "dll")
 	{
@@ -224,15 +243,17 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		return;
 	}
 	CheckForExtraTokensAfterEndOfFunction();
-	CFunction *p_new_function = new CFunction(current_function_name, 
-		function_text);
+	CFunction *p_new_function = new CFunction(&current_function_name, 
+		&function_text);
 	p_new_function->SetParseTree(function_body);
-	p_function_collection->Add(p_new_function);
+	p_function_collection->Add((COHScriptObject*)p_new_function); //!! conversion
 }
 
 // Nearly OK
-void CFormulaParser::ParseListBody()
+COHScriptList *CFormulaParser::ParseListBody()
 {
+	CString temp; //!!!
+	COHScriptList *new_list = new COHScriptList(&temp, &temp);
 	_token_ID = _tokenizer.GetToken();
 	while (_token_ID != kTokenEndOfFunction)
 	{
@@ -241,15 +262,17 @@ void CFormulaParser::ParseListBody()
 			|| (_token_ID == kTokenPocketCards)) // Low unpaired cards like 65s, 92o
 		{
 			_token = _tokenizer.GetTokenString();
-			// !!! ToDo: Add to list
+			// More token-validation happens inside the setter
+			new_list->Set(_token);
 		}
 		else
 		{
 			CParseErrors::Error("Unexpected token inside list");
-			return;
+			return new_list;
 		}
 		_token_ID = _tokenizer.GetToken();
 	}
+	return new_list;
 }
 
 

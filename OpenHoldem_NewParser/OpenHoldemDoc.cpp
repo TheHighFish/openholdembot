@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	p_function_collection->Clear();
+	p_function_collection->DeleteAll();
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 
@@ -74,17 +74,14 @@ BOOL COpenHoldemDoc::OnNewDocument()
 		return FALSE;
 
 	// Default bot
-	//!!!p_formula->SetEmptyDefaultBot();
+	p_function_collection->SetEmptyDefaultBot();
 
 	// Try to unload dll
 	p_dll_extension->UnloadDll();
 
-	// Create hand list matrices
-	//!!!p_formula->CreateHandListMatrices();
-
 	// Create parse trees for default formula
 	//!!!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
-	SetModifiedFlag(true);
+	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
 
 	p_dll_extension->LoadDll("");
@@ -134,18 +131,13 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		}
         // The formula editor gets now handled automatically (Rev. 1425)
 
-		// Read ohf / whf file
+		// Read ohf file
 		CFormulaParser formula_parser;
 		formula_parser.ParseFile(ar);
-		SetModifiedFlag(false); // !!!R?
+		SetModifiedFlag(false);
 
 		// Try to unload dll
 		p_dll_extension->UnloadDll();
-
-		// Create hand list matrices
-		//!!!p_formula->CreateHandListMatrices();
-
-		p_dll_extension->LoadDll("");
 		p_openholdem_title->UpdateTitle();
 	}
 }

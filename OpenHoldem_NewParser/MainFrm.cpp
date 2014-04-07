@@ -55,7 +55,7 @@
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
-// !!! Now unused; might be "recycled"
+// !! Now unused; might be "recycled"
 //#include "DialogSAPrefs18.h"
 #include "DialogSAPrefs19.h"
 #include "DialogSAPrefs20.h"
@@ -382,7 +382,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
 	dlg.AddPage(page7,  "ICM");
-	// !!! Now unused; might be "recycled"
+	// !! Now unused; might be "recycled"
 	//dlg.AddPage(page18, "Lazy Scraping");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");

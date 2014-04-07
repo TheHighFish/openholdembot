@@ -1,7 +1,21 @@
+//***************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//***************************************************************************** 
+//
+// Purpose:
+//
+//***************************************************************************** 
+
 #include "stdafx.h"
 #include "CParseTreeNode.h"
 
 #include "CEngineContainer.h"
+#include "CSymbolEngineOpenPPLUserVariables.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
@@ -111,7 +125,7 @@ double CParseTreeNode::Evaluate()
 	}
 	else if (_node_type == kTokenActionUserVariableToBeSet)
 	{
-		// !!! set user variable
+		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
 		// Continue with next open-ended when-condition
 		EvaluateSibbling(_second_sibbling);
 	}
@@ -135,7 +149,8 @@ double CParseTreeNode::Evaluate()
 double CParseTreeNode::EvaluateIdentifier(CString name)
 {
 	assert(name != "");
-	// !!! dll$ and more
+	// EvaluateSymbol cares about ALL symbols, 
+	// including DLL, PokerTracker and Perl
 	double result;
 	p_engine_container->EvaluateSymbol(name, &result);
 	return result;
