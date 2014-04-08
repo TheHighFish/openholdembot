@@ -927,10 +927,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineLists.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.cpp"
 						>
 					</File>
@@ -1629,10 +1625,6 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolEngineIsTournament.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolEngineLists.h"
 						>
 					</File>
 					<File
