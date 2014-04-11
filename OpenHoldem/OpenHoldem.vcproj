@@ -1061,6 +1061,10 @@
 						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\OpenPPL_ErrorsWarnings.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1717,6 +1721,14 @@
 					</File>
 					<File
 						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.h"
+						>
+					</File>
+					<File
+						RelativePath=".\OpenPPL_Constants.h"
+						>
+					</File>
+					<File
+						RelativePath=".\OpenPPL_ErrorsWarnings.h"
 						>
 					</File>
 				</Filter>
