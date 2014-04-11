@@ -9,7 +9,7 @@
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
-//  a interface SCraperAccess that provides higher-level accessors
+//  an interface SCraperAccess that provides higher-level accessors
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
@@ -18,7 +18,7 @@
 #include "StdAfx.h"
 #include "CScraper.h"
 
-#include "Bitmaps.h"
+#include "Bitmaps.h"                                
 #include "CAutoconnector.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
@@ -50,16 +50,19 @@ CScraper *p_scraper = NULL;
 
 CScraper::CScraper(void)
 {
+	__TRACE
 	ClearScrapeAreas();
 }
 
 CScraper::~CScraper(void)
 {
+	__TRACE
 	ClearScrapeAreas();
 }
 
 const double CScraper::player_balance(int n) 
 { 
+	__TRACE
 	RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0);
 
 	write_log(preferences.debug_scraper(), 
@@ -69,6 +72,7 @@ const double CScraper::player_balance(int n)
 
 const CString CScraper::extractHandnumFromString(CString t)
 {
+	__TRACE
 	CString resulting_handumber_digits_only;
 
 	// Check for bad parameters
@@ -87,6 +91,7 @@ const CString CScraper::extractHandnumFromString(CString t)
 
 bool CScraper::GetButtonState(CString button_state_as_string)
 {
+	__TRACE
 	CString button_state_lower_case = button_state_as_string.MakeLower();
 	return (button_state_lower_case.Left(4) == "true" 
 		|| button_state_lower_case.Left(2) == "on" 
@@ -97,6 +102,7 @@ bool CScraper::GetButtonState(CString button_state_as_string)
 
 bool CScraper::GetButtonState(int button_index)
 {
+	__TRACE
 	CString l_button_state = "";
 	if (button_index<=9)
 	{
@@ -127,6 +133,7 @@ bool CScraper::GetButtonState(int button_index)
 
 bool CScraper::ProcessRegion(RMapCI r_iter)
 {
+	__TRACE
 	__HDC_HEADER
 
 	// Get "current" bitmap
@@ -157,6 +164,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 
 bool CScraper::EvaluateRegion(CString name, CString *result)
 {
+	__TRACE
 	__HDC_HEADER
 	CTransform	trans;
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
@@ -178,6 +186,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result)
 
 void CScraper::SetButtonState(CString *button_state, CString text)
 {
+	__TRACE
 	if (text != "")
 	{
 		*button_state = text;	
@@ -190,6 +199,7 @@ void CScraper::SetButtonState(CString *button_state, CString text)
 
 void CScraper::ScrapeInterfaceButtons()
 {
+	__TRACE
 	CString result;
 	// Normal i86-button
 	if (EvaluateRegion("i86state", &result))
@@ -210,6 +220,7 @@ void CScraper::ScrapeInterfaceButtons()
 
 void CScraper::ScrapeActionButtons()
 {
+	__TRACE
 	CString button_name;
 	CString result;
 	for (int i=0; i<k_max_number_of_buttons; i++)
@@ -230,6 +241,7 @@ void CScraper::ScrapeActionButtons()
 
 void CScraper::ScrapeActionButtonLabels()
 {
+	__TRACE
 	// WinHoldem defaults
 	set_button_label(0, "fold");
 	set_button_label(1, "call");
@@ -251,6 +263,7 @@ void CScraper::ScrapeActionButtonLabels()
 
 void CScraper::ScrapeBetpotButtons()
 {
+	__TRACE
 	CString button_name;
 	CString result;
 	for (int i=0; i<k_max_betpot_buttons; i++)
@@ -264,6 +277,7 @@ void CScraper::ScrapeBetpotButtons()
 
 void CScraper::ScrapeSeatedActive()
 {
+	__TRACE
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		set_seated(i, "false");
@@ -281,6 +295,7 @@ void CScraper::ScrapeSeatedActive()
 
 void CScraper::ScrapeBetsBalances()
 {
+	__TRACE
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		set_player_bet(i, 0.0);
@@ -306,6 +321,7 @@ void CScraper::ScrapeBetsBalances()
 
 void CScraper::ScrapeSeated(int chair)
 {
+	__TRACE
 	CString seated;
 	CString result;
 
@@ -336,6 +352,7 @@ void CScraper::ScrapeSeated(int chair)
 
 void CScraper::ScrapeDealer()
 {
+	__TRACE
 	// The dealer might sit in any chair, even empty ones in some cases
 	// That's why we scrape all chairs
 	CString dealer;
@@ -372,6 +389,7 @@ void CScraper::ScrapeDealer()
 
 void CScraper::ScrapeActive(int chair)
 {
+	__TRACE
 	CString active;
 	CString result;
 	
@@ -398,9 +416,10 @@ void CScraper::ScrapeActive(int chair)
 	}
 }
 
-// !! Needs serious clean-up
+// !!! Needs serious clean-up
 void CScraper::ScrapeSlider()
 {
+	__TRACE
 	__HDC_HEADER
 
 	RMapCI handleCI, slider;
@@ -453,6 +472,7 @@ void CScraper::ScrapeSlider()
 
 int CScraper::CardString2CardNumber(CString card)
 {
+	__TRACE
 	int result;
 	StdDeck_stringToCard((char*) card.GetString(), &result);
 	return result;
@@ -465,6 +485,7 @@ int CScraper::CardString2CardNumber(CString card)
 //   * cardbacks
 int CScraper::ScrapeCard(CString name)
 {
+	__TRACE
 	// First scrape "normal" cards (cardfaces) according to the specification
 	CString card_str;
 	if (EvaluateRegion(name, &card_str))
@@ -512,7 +533,8 @@ int CScraper::ScrapeCard(CString name)
 	{
 		CString cardback = name.Left(2) + "cardback";
 		CString cardback_result;
-		if (EvaluateRegion(cardback, &cardback_result))
+		if (EvaluateRegion(cardback, &cardback_result) 
+			&& (cardback_result == "cardback"))
 		{
 			return CARD_BACK;
 		}
@@ -523,6 +545,7 @@ int CScraper::ScrapeCard(CString name)
 
 void CScraper::ScrapePlayerCards(int chair)
 {
+	__TRACE
 	CString card_name;
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
@@ -538,7 +561,7 @@ void CScraper::ScrapePlayerCards(int chair)
 		}
 		else
 		{
-			int card = ScrapeCard(card_name);
+			card = ScrapeCard(card_name);
 		}
 		set_card_player(chair, i, card);
 	}
@@ -546,6 +569,7 @@ void CScraper::ScrapePlayerCards(int chair)
 
 void CScraper::ScrapeCommonCards()
 {
+	__TRACE
 	CString card_name;
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
@@ -558,6 +582,7 @@ void CScraper::ScrapeCommonCards()
 // returns true if common cards are in the middle of an animation
 bool CScraper::IsCommonAnimation(void)
 {
+	__TRACE
 	int	flop_card_count = 0;
 
 	// Count all the flop cards
@@ -593,6 +618,7 @@ bool CScraper::IsCommonAnimation(void)
 
 void CScraper::ClearAllPlayerNames()
 {
+	__TRACE
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		set_player_name(i, "");
@@ -601,6 +627,7 @@ void CScraper::ClearAllPlayerNames()
 
 void CScraper::ScrapeName(int chair) 
 {
+	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
 
 	bool				got_new_scrape = false;
@@ -630,6 +657,7 @@ void CScraper::ScrapeName(int chair)
 
 void CScraper::ScrapeBalance(int chair)
 {
+	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
 
 	bool				got_new_scrape = false;
@@ -707,6 +735,7 @@ void CScraper::ScrapeBalance(int chair)
 
 void CScraper::ScrapeBet(int chair)
 {
+	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
 
 	__HDC_HEADER
@@ -761,10 +790,11 @@ void CScraper::ScrapeBet(int chair)
 }
 
 //
-// !! All code below not yet refactored
+// !!! All code below not yet refactored
 //
 void CScraper::ClearScrapeAreas(void)
 {
+	__TRACE
 	for (int i=0; i<k_number_of_community_cards; i++)
 		set_card_common(i, CARD_NOCARD);
 
@@ -812,6 +842,7 @@ void CScraper::ClearScrapeAreas(void)
 
 void CScraper::ScrapeAllPlayerCards()
 {
+	__TRACE
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		for (int j=0; j<k_number_of_cards_per_player; j++)
@@ -829,6 +860,7 @@ void CScraper::ScrapeAllPlayerCards()
 
 void CScraper::ScrapePots()
 {
+	__TRACE
 	__HDC_HEADER
 	int					j = 0;
 	CString				text = "";
@@ -893,6 +925,7 @@ void CScraper::ScrapePots()
 
 void CScraper::ScrapeLimits()
 {
+	__TRACE
 	__HDC_HEADER
 	CString				handnumber = "";
 	bool				istournament = false;
@@ -1146,6 +1179,7 @@ void CScraper::ScrapeLimits()
 
 void CScraper::CreateBitmaps(void)
 {
+	__TRACE
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 
 	// Whole window
@@ -1168,6 +1202,7 @@ void CScraper::CreateBitmaps(void)
 
 void CScraper::DeleteBitmaps(void)
 {
+	__TRACE
 	// Whole window
 	DeleteObject(_entire_window_last);
 	delete_entire_window_cur();
@@ -1182,6 +1217,7 @@ void CScraper::DeleteBitmaps(void)
 
 void CScraper::SetLimitInfo(const SLimitInfo LI)
 {
+	__TRACE
 	set_handnumber(LI.handnumber);
 	set_sblind(LI.sblind);
 	set_bblind(LI.bblind);
@@ -1199,6 +1235,7 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 // This is the chip scrape routine
 const double CScraper::DoChipScrape(RMapCI r_iter)
 {
+	__TRACE
 	HDC				hdc = GetDC(p_autoconnector->attached_hwnd());
 
 	int				j = 0, stackindex = 0, chipindex = 0;
@@ -1404,12 +1441,14 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 
 bool CScraper::IsExtendedNumberic(CString text)
 {
-	return false;
+	__TRACE
+	return false; //!!!???
 }
 
 bool CScraper::IsIdenticalScrape()
 {
-		__HDC_HEADER
+	__TRACE
+	__HDC_HEADER
 
 	// Get bitmap of whole window
 	RECT		cr = {0};
@@ -1424,8 +1463,8 @@ bool CScraper::IsIdenticalScrape()
 	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
-	// !! How often does this happen?
-	// !! How costly is the comparison?
+	// !!! How often does this happen?
+	// !!! How costly is the comparison?
 	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
 		strcmp(_title, _title_last)==0)
 	{

@@ -16,5 +16,6 @@ void COHScriptList::Set(CString list_member)
 
 double COHScriptList::Evaluate()
 {
-	return false;
+	write_log(true, "[COHScriptList] Evaluating list %s\n", _name); //!!
+	return false; //!!
 }

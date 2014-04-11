@@ -18,7 +18,8 @@
 
 CFunction::CFunction(CString *new_name, CString *new_function_text)
 {
-	COHScriptObject(new_name, new_function_text);
+	_name = *new_name;
+	_function_text = *new_function_text;
 }
 
 CFunction::~CFunction()
@@ -31,6 +32,7 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 
 double CFunction::Evaluate()
 {
+	write_log(true, "[CFunction] Evaluating function %s\n", _name); //!!
 	if (!_is_result_cached)
 	{
 		if (_parse_tree_node != NULL)

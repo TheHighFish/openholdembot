@@ -96,7 +96,9 @@ inline bool TokenIsBracketOpen(int token)
 }
 
 bool TokenIsUnary(int token);
+
 bool TokenIsBinary(int token);
+
 inline bool TokenIsTernary(int token)
 {
 	return ((token == kTokenOperatorConditionalIf)
@@ -121,5 +123,8 @@ inline bool TokenIsOpenPPLAction(int token)
 	return ((token >= kTokenActionBeep)
 		&& (token <= kTokenActionClose));
 }
+
+// For debugging output
+CString TokenString(int token);
 
 #endif INC_TOKENIZERCONSTANTS_H

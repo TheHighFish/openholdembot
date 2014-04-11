@@ -289,10 +289,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[4].Add("f$test");
 	m_standard_functions[4].Add("f$debug");
 
-	// Copy current doc formula into working set
-	//!!!m_wrk_formula.ClearFormula();
-	//!!!m_wrk_formula.CopyFormulaFrom(p_formula);
-
 	m_current_edit = "";
 	m_dirty = false;
 
@@ -700,7 +696,7 @@ void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const C
 }
 
 void CDlgFormulaScintilla::PopulateFormulaTree()
-{/*!!!
+{/*!!
 	m_FormulaTree.DeleteAllItems();
 
 	CString filter;
@@ -1824,19 +1820,18 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 }*/
 
 BOOL CDlgFormulaScintilla::DestroyWindow()
-{/*
+{
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
 	StopAutoButton();
 	SaveSettingsToRegistry();
 	CloseFindReplaceDialog();
-	m_wrk_formula.ClearFormula();
-
+	
 	// Uncheck formula button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
-	return CDialog::DestroyWindow();*/
-	return 0;//!!!
+	return CDialog::DestroyWindow();
+	return 0;
 }
 
 void CDlgFormulaScintilla::PostNcDestroy()
