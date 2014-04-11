@@ -203,8 +203,11 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 		// until OnConnection() got executed.
 		return;
 	}
-	if (p_formula_parser->IsParsing())
-	{
+	if (p_formula_parser == NULL) {
+		// No formula loaded
+		return;
+	}
+	if (p_formula_parser->IsParsing()) {
 		// Not safe to evaluate anything
 		return;
 	}

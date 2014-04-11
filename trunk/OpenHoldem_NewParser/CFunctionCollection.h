@@ -15,6 +15,7 @@
 #define INC_CFUNCTIONCOLLECTION_H
 
 #include "COHScriptObject.h"
+#include <map>
 
 class CFunctionCollection
 {
@@ -36,7 +37,7 @@ public:
 	void Add(COHScriptObject *new_function);
 	void Save(CArchive &ar);
 	COHScriptObject *LookUp(CString name);
-	bool Exists(CString name)	{ return (LookUp(name) != NULL); }
+	bool Exists(CString name);
 public:
 	CString Title()					{ return _title; }
 	CString FormulaPath()			{ return _path; }
@@ -48,8 +49,7 @@ private:
 	void CheckForDefaultFormulaEntries();
 	void AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name);
 private:
-	CMap<CString*, CString*, COHScriptObject*, COHScriptObject*> 
-		_function_hashtable;
+	std::map<CString, COHScriptObject*> _function_map;
 	CString _title;
 	CString _path;
 };

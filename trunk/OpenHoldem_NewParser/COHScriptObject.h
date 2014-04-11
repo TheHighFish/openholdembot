@@ -25,7 +25,7 @@ public:
 	CString function_text()	{ return _function_text; }
 public:
 	virtual double Evaluate();
-private:
+protected:
 	CString _name;
 	CString _function_text;
 };

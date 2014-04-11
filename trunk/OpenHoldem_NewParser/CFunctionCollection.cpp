@@ -15,17 +15,12 @@
 #include "CFunctionCollection.h"
 
 #include "CFunction.h"
-#include "CStringHashtableTemplate.h"
+#include "CPreferences.h"
 
 CFunctionCollection *p_function_collection = NULL;
 
 CFunctionCollection::CFunctionCollection()
 {
-	// Hash-table-size must be 
-	// * a prime number
-	// * if possible at least 20% larger than the number of entries
-	//   (OpenPPL-library 4.4.0 contains 710 functions)
-	_function_hashtable.InitHashTable(1031);
 	_title = "";
 	_path = "";
 	DeleteAll();
@@ -36,26 +31,57 @@ CFunctionCollection::~CFunctionCollection()
 
 void CFunctionCollection::DeleteAll()
 {
-	_function_hashtable.RemoveAll();
+	write_log(preferences.debug_parser(), 
+			"[CFunctionCollection] DeleteAll()\n");
+	_function_map.clear();
 }
 
 void CFunctionCollection::Add(COHScriptObject *new_function)
 {
 	CString name = new_function->name();
-	_function_hashtable.SetAt(&name, new_function);
+	if (name == "") {
+		write_log(preferences.debug_parser(), 
+			"[CFunctionCollection] Invalid empty name\n");
+		return;
+	}
+	if (Exists(name)) {
+		write_log(preferences.debug_parser(), 
+			"[CFunctionCollection] Name %s already exists. Deleting it\n", name);
+		_function_map.erase(name);
+	}
+	write_log(preferences.debug_parser(), 
+		"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
+	_function_map[name] = new_function;
+}
+
+bool CFunctionCollection::Exists(CString name)
+{
+	std::map<CString, COHScriptObject*>::iterator it; 
+	it = _function_map.find(name); 
+	return (it != _function_map.end());
 }
 
 COHScriptObject *CFunctionCollection::LookUp(CString name)
 {
-	COHScriptObject *p_script_object;
-	bool success = _function_hashtable.Lookup(&name, p_script_object);
-	return (success ? p_script_object : NULL);
+	write_log(true, "[CFunctionCollection] Lookup %s\n", name); //!!
+	std::map<CString, COHScriptObject*>::iterator it; 
+	it = _function_map.find(name); 
+	if (it == _function_map.end()) {
+		// Function or list does not exist
+		write_log(true, "[CFunctionCollection] Function does not exist\n");
+		return NULL;
+	}
+	return it->second;
 }
 
 double CFunctionCollection::Evaluate(CString function_name)
 {
-	COHScriptObject *p_function;
-	_function_hashtable.Lookup(&function_name, p_function);
+	COHScriptObject *p_function = LookUp(function_name);
+	if (p_function == NULL)
+	{
+		// Function does not exist
+		return k_undefined_zero;
+	}
 	return p_function->Evaluate();
 }
 

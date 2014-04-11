@@ -92,6 +92,8 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 
 double CParseTreeNode::Evaluate()
 {
+	write_log(true, "[CParseTreeNode] Evaluating node type %i %s\n", //!!
+		_node_type, TokenString(_node_type));
 	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
