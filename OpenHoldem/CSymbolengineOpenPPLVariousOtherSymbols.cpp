@@ -20,6 +20,32 @@
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
 
+/*
+##f$OpenPPL_IsFinalTable##
+##f$OpenPPL_Others##
+##f$OpenPPL_FloatingPointRandom_0_100##
+##f$OpenPPL_IntegerRandom_0_100##
+##f$OpenPPL_Random##*/
+
+/* technical stuff, probably to be done elsewhere
+##f$OpenPPL_Decision##
+##f$RaiseByBigBlinds##
+##f$RaiseByPercentagedPotsize##
+##f$OpenPPL_DecisionIsPercentagedPotsizedBet##
+##f$OpenPPL_DecisionIsFixedBetInBigBlinds##
+##f$OpenPPL_DecisionIsBetPotOrBetHalfPotOrBetMax##
+##f$OpenPPL_DecisionIsFixedAction##
+##f$OpenPPL_RememberToSitoutIfNecessary##
+
+##f$OpenPPL_TimeToInitMemorySymbols##
+##f$OpenPPL_HandResetHappened##
+##f$OpenPPL_ResetUserVariablesOnHandReset##
+##f$OpenPPL_GameStateChanged##
+##f$OpenPPL_RememberCurrentGameState##
+##f$OpenPPL_InitMemorySymbols##
+##f$OpenPPL_HaveBackdoorStraightDraw##
+*/
+
 CSymbolEngineOpenPPLVariousOtherSymbols *p_symbol_engine_open_ppl_various_other_symbols = NULL;
 
 CSymbolEngineOpenPPLVariousOtherSymbols::CSymbolEngineOpenPPLVariousOtherSymbols()
