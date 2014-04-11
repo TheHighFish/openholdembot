@@ -20,6 +20,34 @@
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
 
+/*##f$OpenPPL_BoardKicker_FourOfAKindOnBoard##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePlayTheBoard##
+##f$OpenPPL_RankOfPairOfFullHouse##
+##f$OpenPPL_RankOfSetOfFullHouse##
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
+##f$OpenPPL_OvercardsOnBoardToRankOfSetOfFullHouse##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopSet##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WeHitTopQuads##
+##f$OpenPPL_NFH4OAK_TwoPairsOnBoard_WePairBothPairs##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairBothBoardCards##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard##
+##f$OpenPPL_NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard##
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitASetWithPocketPair##
+##f$OpenPPL_NFH4OAK_PairOnBoard_WeHitQuads##
+##f$OpenPPL_NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
+##f$OpenPPL_NutFullHouseOrFourOfAKind_FullHouseOnBoard##
+##f$OpenPPL_RankOfSetOnBoard##
+##f$OpenPPL_RankOfSpareCardWhenTwoPairOnBoard##
+##f$OpenPPL_NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
+##f$OpenPPL_NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
+##f$OpenPPL_NutFullHouseOrFourOfAKind_PairOnBoard##
+##f$OpenPPL_NutFullHouseOrFourOfAKind##*/
+
 CSymbolEngineOpenPPLNutFullHouse4OAK *p_symbol_engine_open_ppl_nut_fullhouse_4oak = NULL;
 
 CSymbolEngineOpenPPLNutFullHouse4OAK::CSymbolEngineOpenPPLNutFullHouse4OAK()

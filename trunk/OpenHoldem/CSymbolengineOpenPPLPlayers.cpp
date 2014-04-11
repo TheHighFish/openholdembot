@@ -20,6 +20,20 @@
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
 
+/*
+##f$OpenPPL_PlayersAtStartOfThisRound##
+##f$OpenPPL_Opponents##
+##f$OpenPPL_OpponentsAtTable##
+##f$OpenPPL_NumberOfOpponentsAllin##
+##f$OpenPPL_Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot##
+##f$OpenPPL_OpponentIsAllin##
+##f$OpenPPL_Opponents_AllinBits##
+##f$OpenPPL_OpponentsLeft##
+##f$OpenPPL_OpponentsOnFlop##
+##f$OpenPPL_OpponentsOnTurn##
+##f$OpenPPL_OpponentsOnRiver##
+##f$OpenPPL_OpponentsWithLowerStack##*/
+
 CSymbolEngineOpenPPLPlayers *p_symbol_engine_open_ppl_players = NULL;
 
 CSymbolEngineOpenPPLPlayers::CSymbolEngineOpenPPLPlayers()
