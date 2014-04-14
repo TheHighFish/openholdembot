@@ -49,7 +49,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file)
 		if (function_content.GetLength() < 2)
 		{
 			write_log(preferences.debug_parser(), 
-				"[Parser] Empty function received. Parse finished.\n");
+				"[FormulaParser] Empty function received. Parse finished.\n");
 			goto ExitLoop;
 		}
 		ParseSingleFormula(function_content);
@@ -186,7 +186,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		// To be completely ignored
 		// We don't need it and on saving we create a new one
 		write_log(preferences.debug_parser(), 
-			"[Parser] Found a ##number(##). Probably date. To be ignored.\n");
+			"[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
 		return;
 	}
 	else if (_token_ID != kTokenIdentifier)
@@ -201,18 +201,18 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	{
 		// ##f$functionXYZ##
 		write_log(preferences.debug_parser(), 
-				"[Parser] Parsing f$function\n");
+				"[FormulaParser] Parsing f$function\n");
 		if (!ExpectDoubleShebangAsEndOfFunctionHeader())
 		{
 			return;
 		}
-		TPParseTreeNode function_body =	ParseFunctionBody();
+		function_body =	ParseFunctionBody();
 	}
 	else if (_token.Left(4) == "list")
 	{
 		// ##listNNN##
 		write_log(preferences.debug_parser(), 
-				"[Parser] Parsing list\n");
+				"[FormulaParser] Parsing list\n");
 		if (!ExpectDoubleShebangAsEndOfFunctionHeader())
 		{
 			return;
@@ -224,7 +224,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	{
 		// ##DLL##
 		write_log(preferences.debug_parser(), 
-			"[Parser] Parsing ##DLL##\n");
+			"[FormulaParser] Parsing ##DLL##\n");
 		ExpectDoubleShebangAsEndOfFunctionHeader();
 		// Nothing more to do
 		// We extract the DLL later
@@ -233,7 +233,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	{
 		// ##Notes##
 		write_log(preferences.debug_parser(), 
-			"[Parser] Found ##notes##. Nothing to parse\n");
+			"[FormulaParser] Found ##notes##. Nothing to parse\n");
 		ExpectDoubleShebangAsEndOfFunctionHeader();
 		// Don't do anything.
 		// This is just a special type of global comment.
@@ -288,17 +288,25 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody()
 		// Empty function; evaluating to zero
 		TPParseTreeNode terminal_node = new CParseTreeNode();
 		terminal_node->MakeConstant(0);
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Terminal node %i\n", terminal_node);
 		return terminal_node;
 	}
 	if (_token_ID == kTokenOperatorConditionalWhen)
 	{
 		// OpenPPL-function
-		return ParseOpenEndedWhenConditionSequence();
+		TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
+		return open_ended_when_condition;
 	}
 	else
 	{	
 		// OH-script-function, single expression
-		return ParseExpression();
+		TPParseTreeNode expression = ParseExpression();
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Expression %i\n", expression);
+		return expression;
 	}
 }
 
@@ -333,6 +341,8 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 		TPParseTreeNode binary_node = new CParseTreeNode();
 		binary_node->MakeBinaryOperator(_token_ID, 
 			expression, second_expression);
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Binary node %i\n", binary_node);
 		return binary_node;
 	}
 	else if (_token_ID == kTokenOperatorConditionalIf)
@@ -345,12 +355,16 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 		TPParseTreeNode ternary_node = new CParseTreeNode();
 		ternary_node->MakeTernaryOperator(_token_ID,
 			expression, then_expression, else_expression);
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Ternary node %i\n", ternary_node);
 		return ternary_node;
 	}
 	else
 	{
 		// We got the complete expression
 		// No complex binary or ternary condition
+		write_log(preferences.debug_parser(), 
+			"[FormulaParser] Expression %i\n", expression);
 		return expression;
 	}
 }
@@ -367,6 +381,8 @@ TPParseTreeNode CFormulaParser::ParseBracketExpression()
 	// Brackets get an unary node in the tree
 	// This will lead to a simple way to handle precedence of operators.
 	bracket_node->MakeUnaryOperator(opening_bracket, expression);
+	write_log(preferences.debug_parser(), 
+			"[FormulaParser] Bracket node %i\n", bracket_node);
 	return bracket_node;
 }
 
@@ -379,6 +395,8 @@ TPParseTreeNode CFormulaParser::ParseUnaryExpression()
 	TPParseTreeNode expression = ParseExpression();
 	TPParseTreeNode unary_node = new CParseTreeNode();
 	unary_node->MakeUnaryOperator(unary_operator, expression);
+	write_log(preferences.debug_parser(), 
+			"[FormulaParser] Unary node %i\n", unary_node);
 	return unary_node;
 }
 
@@ -403,6 +421,8 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression()
 		assert(k_this_must_not_happen);
 		terminal_node = NULL;	
 	}
+	write_log(preferences.debug_parser(), 
+			"[FormulaParser] Terminal node %i\n", terminal_node);
 	return terminal_node;
 }
 
