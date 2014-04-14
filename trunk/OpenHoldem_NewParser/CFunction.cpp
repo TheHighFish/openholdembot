@@ -20,6 +20,9 @@ CFunction::CFunction(CString *new_name, CString *new_function_text)
 {
 	_name = *new_name;
 	_function_text = *new_function_text;
+	_is_result_cached = false;
+	_cached_result = k_undefined_zero;
+	_parse_tree_node = NULL;
 }
 
 CFunction::~CFunction()
