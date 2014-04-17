@@ -2493,7 +2493,7 @@ isfullhouse || f$OpenPPL_HaveQuads
 ##f$OpenPPL_MyKicker##
 (isfourofakind || istwopair) ? pokerval & 0x0F :
 isthreeofakind ? (pokerval >> 4) & 0x0F :
-ispair ? (pokerval >> 8) & 0x0F :
+isonepair ? (pokerval >> 8) & 0x0F :
 f$OpenPPL_ERROR_You_Dont_Have_Any_Kicker
 
 ##f$OpenPPL_NumberOfBetterKickers##
