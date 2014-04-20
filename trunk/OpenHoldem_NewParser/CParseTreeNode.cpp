@@ -19,10 +19,16 @@
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
+#include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeNode::CParseTreeNode()
-{}
+CParseTreeNode::CParseTreeNode() {
+  _first_sibbling  = NULL;
+  _second_sibbling = NULL;
+  _third_sibbling  = NULL;
+  _terminal_name   = "";
+  _constant_value  = 0.0;
+}
 
 CParseTreeNode::~CParseTreeNode()
 {}
@@ -97,12 +103,16 @@ double CParseTreeNode::Evaluate()
 	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
+		write_log(true, "[CParseTreeNode] Number evaluates to %6.3f\n",
+			_constant_value);
 		return _constant_value;
 	}
 	else if (_node_type == kTokenIdentifier)
 	{
 		assert(_terminal_name != "");
-		return EvaluateIdentifier(_terminal_name);
+		double value = EvaluateIdentifier(_terminal_name);
+		write_log(true, "[CParseTreeNode] Number evaluates to %6.3f\n", value);
+		return value;
 	}
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
@@ -297,4 +307,72 @@ double CParseTreeNode::EvaluateSibbling(TPParseTreeNode first_second_or_third_si
 	assert(first_second_or_third_sibbling != NULL);
 	double result = first_second_or_third_sibbling->Evaluate();
 	return result;
+}
+
+TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {
+  if (TokenIsTernary(_node_type)) {
+    return _third_sibbling;
+  } else if (TokenIsBinary(_node_type)) {
+    return _second_sibbling;
+  } else if (TokenIsUnary(_node_type)) {
+    return _first_sibbling;
+  } else {
+    // Not an operator
+    return NULL;
+  }
+}
+
+TPParseTreeNode CParseTreeNode::GetLeftMostSibbling() {
+  if (TokenIsUnary(_node_type)
+      || TokenIsBinary(_node_type)
+      || TokenIsTernary(_node_type)) {
+    return _first_sibbling;
+  }
+  // Not an operator
+  return NULL;
+}
+
+void CParseTreeNode::SetRightMostSibbling(TPParseTreeNode sibbling){
+  if (TokenIsTernary(_node_type)) {
+   _third_sibbling = sibbling;
+  } else if (TokenIsBinary(_node_type)) {
+    _second_sibbling = sibbling;
+  } else {
+    // Default: first one is always present
+    _first_sibbling = sibbling;
+  }
+}
+
+void CParseTreeNode::SetLeftMostSibbling(TPParseTreeNode sibbling){
+  _first_sibbling = sibbling;
+}
+
+CString CParseTreeNode::Serialize()
+{
+  if (_node_type == kTokenIdentifier) {
+    return _terminal_name;
+  } else if (_node_type == kTokenNumber) {
+    return Number2CString(_constant_value);
+  } else if (TokenIsBracketOpen(_node_type)) {
+    return ("(" + _first_sibbling->Serialize() + ")");
+  } else if (TokenIsUnary(_node_type)) {
+    assert(_first_sibbling != NULL);
+    return TokenString(_node_type) + "(" + _first_sibbling->Serialize() + ")";
+  } else if (TokenIsBinary(_node_type)) {
+    assert(_first_sibbling != NULL);
+    assert(_second_sibbling != NULL);
+    return "(" + _first_sibbling->Serialize() + " "
+      + TokenString(_node_type) + " " + _second_sibbling->Serialize() + ")";
+  } else if (_node_type == kTokenOperatorConditionalIf) {
+    assert(_first_sibbling != NULL);
+    assert(_second_sibbling != NULL);
+    assert(_third_sibbling != NULL);  
+    return "(" + _first_sibbling->Serialize() + " ? "
+      + _second_sibbling->Serialize() + " : "
+      + _third_sibbling->Serialize() + ")";
+  }
+  else {
+    assert(false);
+    return "ERROR";
+  }
 }

@@ -1200,6 +1200,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CParseTreeRotator.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CTokenizer.cpp"
 					>
 				</File>
@@ -2082,6 +2086,10 @@
 				</File>
 				<File
 					RelativePath=".\CParseTreeNode.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeRotator.h"
 					>
 				</File>
 				<File

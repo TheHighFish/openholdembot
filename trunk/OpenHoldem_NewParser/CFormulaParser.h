@@ -20,6 +20,7 @@
 #include "atlstr.h"
 #include "CFormulaFileSplitter.h"
 #include "CParseTreeNode.h"
+#include "CParseTreeRotator.h"
 #include "CTokenizer.h"
 
 class COHScriptList;
@@ -62,8 +63,8 @@ private:
 private:
 	CFormulaFileSplitter _formula_file_splitter;
 	CTokenizer _tokenizer;
+    CParseTreeRotator parse_tree_rotator;
 private:
-	int _token_ID;
 	CString _token;
 	bool _is_parsing;
 };

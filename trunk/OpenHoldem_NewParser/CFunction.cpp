@@ -35,7 +35,7 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 
 double CFunction::Evaluate()
 {
-	write_log(true, "[CFunction] Evaluating function %s\n", _name); //!!
+	write_log(true, "[CFunction] Evaluating function %s\n", _name); 
 	if (!_is_result_cached)
 	{
 		if (_parse_tree_node != NULL)
@@ -45,6 +45,7 @@ double CFunction::Evaluate()
 		}
 		// Else: keep _cached_result as 0.0
 	}
+	write_log(true, "[CFunction] Function %s -> %6.3f\n", _name, _cached_result); 
 	return _cached_result;
 }
 
@@ -52,4 +53,14 @@ void CFunction::ClearCache()
 {
 	_cached_result = 0.0;
 	_is_result_cached = false;
+}
+
+
+CString CFunction::Serialize() {
+  CString result;
+  if (_parse_tree_node != NULL) {
+    result = _parse_tree_node->Serialize();
+  }
+  MessageBox(0, result, _name, 0);
+  return result;
 }
