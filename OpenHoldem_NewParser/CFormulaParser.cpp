@@ -20,6 +20,7 @@
 #include "COHScriptList.h"
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
+#include "CParseTreeRotator.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
 
@@ -104,8 +105,8 @@ bool CFormulaParser::ExpectDoubleShebangAsStartOfFunctionHeader()
 // OK
 bool CFormulaParser::ExpectDoubleShebangAsEndOfFunctionHeader()
 {
-	_token_ID = _tokenizer.GetToken();
-	if (_token_ID != kTokenDoubleShebang)
+	int token_ID = _tokenizer.GetToken();
+	if (token_ID != kTokenDoubleShebang)
 	{
 		CParseErrors::Error("Malformed function-header. ## expected");
 		return false;
@@ -116,8 +117,8 @@ bool CFormulaParser::ExpectDoubleShebangAsEndOfFunctionHeader()
 // OK
 bool CFormulaParser::ExpectConditionalThen()
 {
-	_token_ID = _tokenizer.GetToken();
-	if (_token_ID != kTokenOperatorConditionalElse)
+	int token_ID = _tokenizer.GetToken();
+	if (token_ID != kTokenOperatorConditionalElse)
 	{
 		CParseErrors::Error("Malformed conditional expression. \":\" expected, but this could also be a missing operator or wrong bracket.");
 		return false;
@@ -128,9 +129,9 @@ bool CFormulaParser::ExpectConditionalThen()
 // OK
 void CFormulaParser::CheckForExtraTokensAfterEndOfFunction()
 {
-	_token_ID = _tokenizer.GetToken();
-	if ((_token_ID != kTokenEndOfFile)
-		&& (_token_ID != kTokenEndOfFunction))
+	int token_ID = _tokenizer.GetToken();
+	if ((token_ID != kTokenEndOfFile)
+		&& (token_ID != kTokenEndOfFunction))
 	{
 		CParseErrors::Error("Unexpected token(s) after end of function");
 	}
@@ -162,9 +163,9 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	_tokenizer.SetInput(function_text);
 
 	// Check for empty function
-	_token_ID = _tokenizer.GetToken();
-	if ((_token_ID == kTokenEndOfFile)
-		|| (_token_ID == kTokenEndOfFunction))
+	int token_ID = _tokenizer.GetToken();
+	if ((token_ID == kTokenEndOfFile)
+		|| (token_ID == kTokenEndOfFunction))
 	{
 		// Parsing finished (for this function or altogether)
 		return;
@@ -179,8 +180,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	{
 		return;
 	}
-	_token_ID = _tokenizer.GetToken();
-	if (_token_ID == kTokenNumber)
+	token_ID = _tokenizer.GetToken();
+	if (token_ID == kTokenNumber)
 	{
 		// Date like ##2014-02-09 23:16:55##
 		// To be completely ignored
@@ -189,12 +190,16 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 			"[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
 		return;
 	}
-	else if (_token_ID != kTokenIdentifier)
+	else if (token_ID != kTokenIdentifier)
 	{
 		CParseErrors::Error("Malformed function-header. Name expected");
 		return;
 	}
 	_token = _tokenizer.GetTokenString();
+    if (_token == "f$debug") { //!!
+      MessageBox(0, "Skipping f$debug.\nNot yet supported", "Warning", 0);
+      return;
+    }
 	current_function_name = _token;
 	TPParseTreeNode function_body = NULL;
 	if (_token.Left(2) == "f$")
@@ -248,6 +253,9 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		&function_text);
 	p_new_function->SetParseTree(function_body);
 	p_function_collection->Add((COHScriptObject*)p_new_function); //!! conversion
+    // Care about operator precendence
+    parse_tree_rotator.Rotate(p_new_function);
+    p_new_function->Serialize(); //!!
 }
 
 // Nearly OK
@@ -255,12 +263,12 @@ COHScriptList *CFormulaParser::ParseListBody()
 {
 	CString temp; //!!!
 	COHScriptList *new_list = new COHScriptList(&temp, &temp);
-	_token_ID = _tokenizer.GetToken();
-	while (_token_ID != kTokenEndOfFunction)
+	int token_ID = _tokenizer.GetToken();
+	while (token_ID != kTokenEndOfFunction)
 	{
-		if ((_token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
-			|| (_token_ID == kTokenNumber)       // Low pairs 99..22
-			|| (_token_ID == kTokenPocketCards)) // Low unpaired cards like 65s, 92o
+		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
+			|| (token_ID == kTokenNumber)       // Low pairs 99..22
+			|| (token_ID == kTokenPocketCards)) // Low unpaired cards like 65s, 92o
 		{
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
@@ -271,7 +279,7 @@ COHScriptList *CFormulaParser::ParseListBody()
 			CParseErrors::Error("Unexpected token inside list");
 			return new_list;
 		}
-		_token_ID = _tokenizer.GetToken();
+		token_ID = _tokenizer.GetToken();
 	}
 	return new_list;
 }
@@ -281,9 +289,9 @@ COHScriptList *CFormulaParser::ParseListBody()
 TPParseTreeNode CFormulaParser::ParseFunctionBody()
 {
 	// Just look-ahead 1 token
-	_token_ID = _tokenizer.LookAhead();
-	if ((_token_ID == kTokenEndOfFile) 
-		|| (_token_ID == kTokenEndOfFunction))
+	int token_ID = _tokenizer.LookAhead();
+	if ((token_ID == kTokenEndOfFile) 
+		|| (token_ID == kTokenEndOfFunction))
 	{
 		// Empty function; evaluating to zero
 		TPParseTreeNode terminal_node = new CParseTreeNode();
@@ -292,7 +300,7 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody()
 			"[FormulaParser] Terminal node %i\n", terminal_node);
 		return terminal_node;
 	}
-	if (_token_ID == kTokenOperatorConditionalWhen)
+	if (token_ID == kTokenOperatorConditionalWhen)
 	{
 		// OpenPPL-function
 		TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
@@ -313,18 +321,18 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody()
 // OK
 TPParseTreeNode CFormulaParser::ParseExpression()
 {
-	_token_ID = _tokenizer.LookAhead();
+	int token_ID = _tokenizer.LookAhead();
 	TPParseTreeNode expression;
-	if (TokenIsUnary(_token_ID))
+	if (TokenIsUnary(token_ID))
 	{
 		expression = ParseUnaryExpression();
 	}
-	else if (TokenIsBracketOpen(_token_ID))
+	else if (TokenIsBracketOpen(token_ID))
 	{
 		expression = ParseBracketExpression();
 	}
-	else if ((_token_ID == kTokenIdentifier)
-		|| (_token_ID == kTokenNumber))
+	else if ((token_ID == kTokenIdentifier)
+		|| (token_ID == kTokenNumber))
 	{
 		expression = ParseSimpleExpression();
 	}
@@ -333,19 +341,19 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 		CParseErrors::Error("Unexpected token inside expression. Expect: Opening Bracket, Unary, Identifier or number");
 		return NULL;
 	}
-	_token_ID = _tokenizer.LookAhead();
-	if (TokenIsBinary(_token_ID))
+	token_ID = _tokenizer.LookAhead();
+	if (TokenIsBinary(token_ID))
 	{
 		_tokenizer.GetToken();
 		TPParseTreeNode second_expression = ParseExpression();
 		TPParseTreeNode binary_node = new CParseTreeNode();
-		binary_node->MakeBinaryOperator(_token_ID, 
+		binary_node->MakeBinaryOperator(token_ID, 
 			expression, second_expression);
 		write_log(preferences.debug_parser(), 
 			"[FormulaParser] Binary node %i\n", binary_node);
 		return binary_node;
 	}
-	else if (_token_ID == kTokenOperatorConditionalIf)
+	else if (token_ID == kTokenOperatorConditionalIf)
 	{
 		// Ternary condition
 		TPParseTreeNode then_expression;
@@ -353,7 +361,7 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 		ParseConditionalPartialThenElseExpressions(
 			&then_expression, &else_expression);
 		TPParseTreeNode ternary_node = new CParseTreeNode();
-		ternary_node->MakeTernaryOperator(_token_ID,
+		ternary_node->MakeTernaryOperator(token_ID,
 			expression, then_expression, else_expression);
 		write_log(preferences.debug_parser(), 
 			"[FormulaParser] Ternary node %i\n", ternary_node);
@@ -456,19 +464,19 @@ CString CFormulaParser::CurrentFunctionName()
 TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence()
 {
 	//MessageBox(0, "When", "Info", 0);
-	_token_ID = _tokenizer.GetToken();
-	assert(_token_ID == kTokenOperatorConditionalWhen);
+	int token_ID = _tokenizer.GetToken();
+	assert(token_ID == kTokenOperatorConditionalWhen);
 	ParseExpression();
 	// Next either:
 	// * another when-condition
 	// * action
 	// * user-variable to be set
-	_token_ID = _tokenizer.LookAhead();
-	if (_token_ID == kTokenOperatorConditionalWhen)
+	token_ID = _tokenizer.LookAhead();
+	if (token_ID == kTokenOperatorConditionalWhen)
 	{
 		ParseOpenEndedWhenConditionSequence();
 	}
-	else if (TokenIsOpenPPLAction(_token_ID))
+	else if (TokenIsOpenPPLAction(token_ID))
 	{
 		ParseOpenPPLAction();
 	}
@@ -476,8 +484,8 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence()
 	{
 		CParseErrors::Error("Missing action after when condition");
 	}
-	_token_ID = _tokenizer.LookAhead();
-	if (_token_ID == kTokenOperatorConditionalWhen)
+	token_ID = _tokenizer.LookAhead();
+	if (token_ID == kTokenOperatorConditionalWhen)
 	{
 		ParseOpenEndedWhenConditionSequence();
 	}
@@ -488,15 +496,15 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence()
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction()
 {
 	//MessageBox(0, "Action", "Info", 0);
-	_token_ID = _tokenizer.GetToken();
-	assert(TokenIsOpenPPLAction(_token_ID));
+	int token_ID = _tokenizer.GetToken();
+	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
-	if (_token_ID == kTokenActionReturn)
+	if (token_ID == kTokenActionReturn)
 	{
 		// RETURN <Expression> FORCE
 		action = ParseExpression();
 	}
-	else if (_token_ID == kTokenActionRaise)
+	else if (token_ID == kTokenActionRaise)
 	{
 		// There are 3 possibilities
 		//   RAISE FORCE
@@ -504,7 +512,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction()
 		//   RAISE <PercentagedPot>% FORCE
 		action = ParseOpenPPLRaiseExpression();
 	}
-	else if (_token_ID == kTokenIdentifier)
+	else if (token_ID == kTokenIdentifier)
 	{
 		// User-variable to be set
 		CString identifier = _tokenizer.GetTokenString();
