@@ -65,7 +65,6 @@ void CAutoplayerFunctions::CalcPrimaryFormulas()
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
-	CalcAutoTrace();
 }
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void)
@@ -77,10 +76,5 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			k_standard_function_names[i], p_autoplayer_functions->GetAutoplayerFunctionValue(i));
 	}
-	CalcAutoTrace();
 }
 
-void CAutoplayerFunctions::CalcAutoTrace()
-{
-	p_function_collection->Evaluate("f$autotrace");
-}

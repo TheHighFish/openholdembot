@@ -1176,22 +1176,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CFunction.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CFunctionCollection.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\COHScriptList.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\COHScriptObject.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CParseErrors.cpp"
 					>
 				</File>
@@ -1248,6 +1232,30 @@
 				</File>
 				<File
 					RelativePath="..\CTablemap\CTablemapAccess.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Formula"
+				>
+				<File
+					RelativePath=".\CAutoplayerTrace.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.cpp"
 					>
 				</File>
 			</Filter>
@@ -2065,22 +2073,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CFunction.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CFunctionCollection.h"
-					>
-				</File>
-				<File
-					RelativePath=".\COHScriptList.h"
-					>
-				</File>
-				<File
-					RelativePath=".\COHScriptObject.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CParseErrors.h"
 					>
 				</File>
@@ -2098,6 +2090,30 @@
 				</File>
 				<File
 					RelativePath=".\TokenizerConstants.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Formula"
+				>
+				<File
+					RelativePath=".\CAutoplayerTrace.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.h"
 					>
 				</File>
 			</Filter>

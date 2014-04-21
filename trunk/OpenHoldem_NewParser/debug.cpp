@@ -16,26 +16,15 @@
 
 #include "..\CTablemap\CTablemap.h"
 #include "..\..\dbghelp\dbghelp.h"
-#include "CAutoplayerFunctions.h"
-#include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
 #include "CPreferences.h"
-#include "CScraper.h"
-#include "CScraperAccess.h"
-#include "CSymbolEngineAutoplayer.h"
-#include "CSymbolEngineChipAmounts.h"
-#include "CSymbolEngineHandrank.h"
-#include "CSymbolEnginePokerval.h"
-#include "CSymbolEnginePrwin.h"
-#include "CSymbolEngineUserchair.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include <sys/stat.h>
-
 
 //#include <vld.h>			// visual leak detector
 
@@ -338,178 +327,6 @@ void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...)
         va_end(ap);
 
         fflush(log_fp);
-    }
-}
-
-void write_logautoplay(const char * action) 
-{
-    char		nowtime[26];
-    CString		pcards, comcards, temp, rank, pokerhand, bestaction;
-    char		*card;
-    CardMask	Cards;
-    int			nCards;
-    CString		fcra_formula_status;
-
-	int			userchair = p_symbol_engine_userchair->userchair();
-	int			betround  = p_betround_calculator->betround();
-
-	if (!preferences.trace_enabled())
-		return;
-
-	if (log_fp != NULL) 
-	{
-		CSLock lock(log_critsec);
-
-		// log$ writing
-		if (preferences.log_symbol_enabled())
-		{
-			int max_log = p_engine_container->logsymbols_collection()->GetCount();
-
-			if (max_log > 0)
-			{
-				if (max_log > preferences.log_symbol_max_log())
-				{
-					max_log = preferences.log_symbol_max_log();
-				}
-
-				write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", p_engine_container->logsymbols_collection()->GetCount(), max_log);
-
-				for (int i=0; i<max_log; i++)
-				{
-					write_log(k_always_log_basic_information, "***     %s\n", p_engine_container->logsymbols_collection()->GetAt(i));
-				}
-			}
-		}
-		
-		CardMask_RESET(Cards);
-		nCards=0;
-
-		// player cards
-		if (p_symbol_engine_userchair->userchair_confirmed()) 
-		{
-			for (int i=0; i<=1; i++) 
-			{
-				card = StdDeck_cardString(p_scraper->card_player(userchair, i));
-				temp.Format("%s", card);
-				pcards.Append(temp);
-				CardMask_SET(Cards, p_scraper->card_player(userchair, i));
-				nCards++;
-			}
-		}
-		else 
-		{
-			pcards = "....";
-		}
-
-		// common cards
-		comcards = "";
-		if (betround >= k_betround_flop) 
-		{
-			for (int i=0; i<=2; i++) 
-			{
-				if (p_scraper_access->IsKnownCard(p_scraper->card_common(i))) 
-				{
-					card = StdDeck_cardString(p_scraper->card_common(i));
-					temp.Format("%s", card);
-					comcards.Append(temp);
-					CardMask_SET(Cards, p_scraper->card_common(i));
-					nCards++;
-				}
-			}
-		}
-
-		if (betround >= k_betround_turn) 
-		{
-			card = StdDeck_cardString(p_scraper->card_common(3));
-			temp.Format("%s", card);
-			comcards.Append(temp);
-			CardMask_SET(Cards, p_scraper->card_common(3));
-			nCards++;
-		}
-
-		if (betround >= k_betround_river) 
-		{
-			card = StdDeck_cardString(p_scraper->card_common(4));
-			temp.Format("%s", card);
-			comcards.Append(temp);
-			CardMask_SET(Cards, p_scraper->card_common(4));
-			nCards++;
-		}
-
-        comcards.Append("..........");
-        comcards = comcards.Left(10);
-
-        // Always use handrank169 here
-		rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
-
-        // poker hand
-		pokerhand = p_symbol_engine_pokerval->HandType();
-
-        // best action
-		// !! needs to be extended for betpot, etc.
-        if (p_autoplayer_functions->f$alli())
-            bestaction = "Allin";
-        else if ((strcmp(action, "SWAG")==0) 
-			|| (p_autoplayer_functions->f$betsize() > 0)) 
-				bestaction.Format("Raise to $%.2f", p_autoplayer_functions->f$betsize());				
-        else if (p_autoplayer_functions->f$rais())
-            bestaction = "Bet/Raise";
-        else if (p_autoplayer_functions->f$call())
-            bestaction = "Call/Check";
-        else if (p_autoplayer_functions->f$prefold())
-            bestaction = "Prefold";
-        else
-            bestaction = "Check/Fold";
-
-        // fcra_seen
-		CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
-        // fcra formula status
-		fcra_formula_status.Format("%s%s%s%s%s",
-			p_autoplayer_functions->f$fold() ? "F" : ".",
-			p_autoplayer_functions->f$call() ? "C" : ".",
-			p_autoplayer_functions->f$call() ? "K" : ".",
-			p_autoplayer_functions->f$rais() ? "R" : ".",
-			p_autoplayer_functions->f$alli() ? "A" : ".");
-		
-		// More verbose summary in the log
-		// The old WinHoldem format was a complete mess
-		fprintf(log_fp, get_time(nowtime));
-		fprintf(log_fp, "**** Basic Info *********************************************\n");
-		fprintf(log_fp, "  Version:       %s\n",    VERSION_TEXT); 
-		fprintf(log_fp, "  Chairs:		  %6d\n",   p_tablemap->nchairs());
-		fprintf(log_fp, "  Userchair:     %6d\n",   userchair);
-		fprintf(log_fp, "  Holecards:     %s\n",    pcards.GetString());
-		fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
-		fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
-		fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
-		//fprintf(log_fp, "  PrWin:         %6d\n",   (iter_vars.prwin() * 1000));
-		//fprintf(log_fp, "  PrLos:         %6d\n",   (iter_vars.prlos() * 1000));
-		//fprintf(log_fp, "  PrTie:         %6d\n",   (iter_vars.prtie() * 1000));
-		//fprintf(log_fp, "  NOpponents:    %6d\n",   p_symbol_engine_prwin->nopponents_for_prwin());
-		//fprintf(log_fp, "  Iterations:    %6d\n",   iter_vars.nit());
-		fprintf(log_fp, "  My balance:    %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
-		fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
-		fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
-		fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
-		fprintf(log_fp, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
-		fprintf(log_fp, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
-		fprintf(log_fp, "  f$betsize:     %9.2f\n", p_autoplayer_functions->f$betsize());
-		fprintf(log_fp, "  Formulas:      %s\n",    fcra_formula_status.GetString());
-		fprintf(log_fp, "  Buttons:       %s\n",    fcra_seen.GetString());
-		fprintf(log_fp, "  Best action:   %s\n",    bestaction.GetString());
-		fprintf(log_fp, "  Action taken:  %s\n",    action);
-
-		if (preferences.trace_enabled() && p_engine_container->symboltrace_collection()->GetSize() > 0)
-		{
-			write_log_nostamp(1, "***** Autoplayer Trace **************************************\n");
-			for (int i=0; i<p_engine_container->symboltrace_collection()->GetSize(); i++)
-			{
-				write_log_nostamp(1, "%s\n", p_engine_container->symboltrace_collection()->GetAt(i));
-			}
-			write_log_nostamp(1, "***** History (might be not accurate) ***********************\n");
-		}
-
-		fflush(log_fp);
     }
 }
 

@@ -15,6 +15,7 @@
 #include "CAutoplayer.h"
 
 #include <complex>
+#include "CAutoplayerTrace.h"
 #include "BringKeyboard.h"
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
@@ -255,7 +256,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 		{
 			if (p_casino_interface->ClickButton(i))
 			{
-				write_logautoplay(ActionConstantNames(i));
+				p_autoplayer_trace->Print(ActionConstantNames(i));
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}
@@ -402,18 +403,18 @@ bool CAutoplayer::DoAllin(void)
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else  if (p_tablemap->allinmethod() == 2)
 	{
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else if (p_tablemap->allinmethod() == 3)
 	{
 		success = p_casino_interface->UseSliderForAllin();
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else
 	{
@@ -511,8 +512,7 @@ bool CAutoplayer::DoPrefold(void)
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
-		write_logautoplay(ActionConstantNames(k_prevaction_fold));
-		p_autoplayer_functions->CalcAutoTrace();
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_fold));
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}
