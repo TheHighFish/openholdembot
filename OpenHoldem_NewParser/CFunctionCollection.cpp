@@ -19,147 +19,133 @@
 
 CFunctionCollection *p_function_collection = NULL;
 
-CFunctionCollection::CFunctionCollection()
-{
-	_title = "";
-	_path = "";
-	DeleteAll();
+CFunctionCollection::CFunctionCollection(){
+  _title = "";
+  _path = "";
+  DeleteAll();
 }
 
 CFunctionCollection::~CFunctionCollection()
 {}
 
-void CFunctionCollection::DeleteAll()
-{
-	write_log(preferences.debug_parser(), 
-			"[CFunctionCollection] DeleteAll()\n");
-	_function_map.clear();
+void CFunctionCollection::DeleteAll() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] DeleteAll()\n");
+  _function_map.clear();
 }
 
-void CFunctionCollection::Add(COHScriptObject *new_function)
-{
-	CString name = new_function->name();
-	if (name == "") {
-		write_log(preferences.debug_parser(), 
-			"[CFunctionCollection] Invalid empty name\n");
-		return;
-	}
-	if (Exists(name)) {
-		write_log(preferences.debug_parser(), 
-			"[CFunctionCollection] Name %s already exists. Deleting it\n", name);
-		_function_map.erase(name);
-	}
-	write_log(preferences.debug_parser(), 
-		"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
-	_function_map[name] = new_function;
+void CFunctionCollection::Add(COHScriptObject *new_function) {
+  CString name = new_function->name();
+  if (name == "") {
+    write_log(preferences.debug_formula(), 
+	  "[CFunctionCollection] Invalid empty name\n");
+    return;
+  }
+  if (Exists(name)) {
+    write_log(preferences.debug_formula(), 
+	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
+    _function_map.erase(name);
+  }
+  write_log(preferences.debug_formula(), 
+	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
+  _function_map[name] = new_function;
 }
 
-bool CFunctionCollection::Exists(CString name)
-{
-	std::map<CString, COHScriptObject*>::iterator it; 
-	it = _function_map.find(name); 
-	return (it != _function_map.end());
+bool CFunctionCollection::Exists(CString name) {
+  std::map<CString, COHScriptObject*>::iterator it; 
+  it = _function_map.find(name); 
+  return (it != _function_map.end());
 }
 
-COHScriptObject *CFunctionCollection::LookUp(CString name)
-{
-	write_log(true, "[CFunctionCollection] Lookup %s\n", name); //!!
-	std::map<CString, COHScriptObject*>::iterator it; 
-	it = _function_map.find(name); 
-	if (it == _function_map.end()) {
-		// Function or list does not exist
-		write_log(true, "[CFunctionCollection] Function does not exist\n");
-		return NULL;
-	}
-	return it->second;
+COHScriptObject *CFunctionCollection::LookUp(CString name) {
+  write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
+  std::map<CString, COHScriptObject*>::iterator it; 
+  it = _function_map.find(name); 
+  if (it == _function_map.end()) {
+    // Function or list does not exist
+    write_log(preferences.debug_formula(), "[CFunctionCollection] Function does not exist\n");
+    return NULL;
+  }
+  return it->second;
 }
 
-double CFunctionCollection::Evaluate(CString function_name)
-{
-	COHScriptObject *p_function = LookUp(function_name);
-	if (p_function == NULL)
-	{
-		// Function does not exist
-		return k_undefined_zero;
-	}
-	return p_function->Evaluate();
+double CFunctionCollection::Evaluate(CString function_name) {
+  COHScriptObject *p_function = LookUp(function_name);
+  if (p_function == NULL) {
+    // Function does not exist
+    return k_undefined_zero;
+  }
+  return p_function->Evaluate();
 }
 
-bool CFunctionCollection::IsList(int list_ID)
-{
-	CString list_name;
-	list_name.Format("list%0.3d", list_ID);
-	return Evaluate(list_name);
+bool CFunctionCollection::IsList(int list_ID) {
+  CString list_name;
+  list_name.Format("list%0.3d", list_ID);
+  return Evaluate(list_name);
 }
 
-CString CFunctionCollection::DLLPath()
-{
-	COHScriptObject *dll_node = LookUp("DLL");
-	if (dll_node == NULL)
-	{
-		return "";
-	}
-	CString dll_path = dll_node->function_text();
-	// Remove "##DLL##"
-	dll_path.Delete(0, 7);
-	dll_path.Trim();
-	return dll_path;
+CString CFunctionCollection::DLLPath() {
+  COHScriptObject *dll_node = LookUp("DLL");
+  if (dll_node == NULL) {
+	  return "";
+  }
+  CString dll_path = dll_node->function_text();
+  // Remove "##DLL##"
+  dll_path.Delete(0, 7);
+  dll_path.Trim();
+  return dll_path;
 }
 
-void CFunctionCollection::SetEmptyDefaultBot()
-{
-	DeleteAll();
-	//!!CSLock lock(m_critsec);
-	_title = "NoName";
-	// Adding empty standard-functions
-	// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
-	CheckForDefaultFormulaEntries();
+void CFunctionCollection::SetEmptyDefaultBot() {
+  DeleteAll();
+  //!!CSLock lock(m_critsec);
+  _title = "NoName";
+  // Adding empty standard-functions
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
+  CheckForDefaultFormulaEntries();
 }
 
-void CFunctionCollection::CheckForDefaultFormulaEntries()
-{
-	//!!CSLock lock(m_critsec);
+void CFunctionCollection::CheckForDefaultFormulaEntries() {
+  //!!CSLock lock(m_critsec);
 
-	// Header comment
-	AddEmptyFunctionIfFunctionDoesNotExist(CString("notes"));
-	// DLL to be loaded
-	AddEmptyFunctionIfFunctionDoesNotExist(CString("dll"));
-	// Autoplayer, standard, ini and PrWin functions
-	for (int i=0; i<k_number_of_standard_functions; ++i)
-	{
-		AddEmptyFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
-	}
-	// Debug functions	
-	AddEmptyFunctionIfFunctionDoesNotExist(CString("f$test"));
-	AddEmptyFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  // Header comment
+  AddEmptyFunctionIfFunctionDoesNotExist(CString("notes"));
+  // DLL to be loaded
+  AddEmptyFunctionIfFunctionDoesNotExist(CString("dll"));
+  // Autoplayer, standard, ini and PrWin functions
+  for (int i=0; i<k_number_of_standard_functions; ++i)
+  {
+	  AddEmptyFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+  }
+  // Debug functions	
+  AddEmptyFunctionIfFunctionDoesNotExist(CString("f$test"));
+  AddEmptyFunctionIfFunctionDoesNotExist(CString("f$debug"));
 }
 
 void CFunctionCollection::AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name)
 {
-	if (Exists(function_name))
-	{
-		return;
-	}
-	// Formula not found.
-	// Add the standard one.
-	CString function_text;
-	if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
-		|| (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
-	{
-		// f$check and f$fold should evaluate to true per default
-		// for auto-check-folding instead of time-outs.
-		function_text = "1 "; //!! header?
-	}
-	else
-	{
-		// Add an empty function.
-		// The function-text should contain at least one space.
-		// The editor does somehow not work for completely empty formulas.
-		function_text = " "; //!! header?
-	}
-	CFunction *p_function = new CFunction(&function_name, 
-		&function_text); // ##name##?
-	Add((COHScriptObject *)p_function); //!!
+  if (Exists(function_name)) {
+	 return;
+  }
+  // Formula not found.
+  // Add the standard one.
+  CString function_text;
+  if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
+	  || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
+  {
+	// f$check and f$fold should evaluate to true per default
+	// for auto-check-folding instead of time-outs.
+	function_text = "1 "; //!! header?
+  }
+  else {
+	// Add an empty function.
+	// The function-text should contain at least one space.
+	// The editor does somehow not work for completely empty formulas.
+	function_text = " "; //!! header?
+  }
+  CFunction *p_function = new CFunction(&function_name, 
+    &function_text); // ##name##??
+  Add((COHScriptObject *)p_function); //!!
 }
 
 void CFunctionCollection::Save(CArchive &ar)

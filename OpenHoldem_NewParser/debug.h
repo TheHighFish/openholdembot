@@ -31,13 +31,12 @@ void stop_log();
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
-void write_logautoplay(const char * action);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
 extern FILE *log_fp;
 extern CCritSec	log_critsec;  // Used to ensure only one thread at a time writes to log file
 
-#define __TRACE write_log(true, "[Trace] %s line %i\n", __FILE__, __LINE__);
+#define __TRACE //write_log(true, "[Trace] %s line %i\n", __FILE__, __LINE__);
 #define __MTRACE msgbox(0, CString(__LINE__), "Debug-Info", 0);
 
 #endif /* INC_DEBUG_H */

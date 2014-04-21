@@ -15,6 +15,7 @@
 #include "CEngineContainer.h"
 
 #include <assert.h>
+#include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CFormulaParser.h"
 #include "CHandresetDetector.h"
@@ -241,8 +242,7 @@ void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
 void CEngineContainer::ResetOnConnection()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
-	logsymbols_collection_removeall();
-	symboltrace_collection_removeall();
+	p_autoplayer_trace->Clear();
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
 		_symbol_engines[i]->ResetOnConnection();
@@ -286,18 +286,13 @@ void CEngineContainer::ResetOnMyTurn()
 	}
 }
 
-void CEngineContainer::ResetOnHeartbeat()
-{
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
-
-	// log$ symbols
-	logsymbols_collection_removeall();
-	symboltrace_collection_removeall();
-
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		_symbol_engines[i]->ResetOnHeartbeat();
-	}
+void CEngineContainer::ResetOnHeartbeat() {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
+  p_autoplayer_trace->Clear();
+  for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+  {
+	  _symbol_engines[i]->ResetOnHeartbeat();
+  }
 }
 
 bool CEngineContainer::EvaluateSymbol(const char *name, double *result)

@@ -30,18 +30,18 @@ double CLogSymbols::ProcessQuery(const char * pquery, int *e)
 	{
 		bool exists = false;
 
-		for (int i=0; i<p_engine_container->logsymbols_collection()->GetCount(); i++)
+		//!!!for (int i=0; i<p_engine_container->logsymbols_collection()->GetCount(); i++)
 		{
-			if (p_engine_container->logsymbols_collection()->GetAt(i) == pquery+4)
+			//!!!if (p_engine_container->logsymbols_collection()->GetAt(i) == pquery+4)
 			{
 				exists = true;
-				break;
+				//!!!break;
 			}
 		}
 
 		if (!exists)
 		{
-			p_engine_container->logsymbols_collection_add(pquery+4);
+			//!!!p_engine_container->logsymbols_collection_add(pquery+4);
 		}
 
 		return 1.0;

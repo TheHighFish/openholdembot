@@ -19,6 +19,7 @@ class CParseTreeNode;
 typedef CParseTreeNode *TPParseTreeNode;
 
 class CParseTreeNode {
+  friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
   CParseTreeNode();
@@ -37,6 +38,7 @@ class CParseTreeNode {
   // Values to be expected in the range (0..100] (or more), not (0..1]
   void MakeRaiseByPercentagedPotsizeAction(TPParseTreeNode raise_by_amount_percentage);
   void MakeUserVariableDefinition(CString uservariable);
+  void MakeWhenCondition(TPParseTreeNode condition);
  public:
   double Evaluate();
   // For debugging output

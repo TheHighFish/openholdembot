@@ -286,36 +286,37 @@ COHScriptList *CFormulaParser::ParseListBody()
 
 
 // OK
-TPParseTreeNode CFormulaParser::ParseFunctionBody()
-{
-	// Just look-ahead 1 token
-	int token_ID = _tokenizer.LookAhead();
-	if ((token_ID == kTokenEndOfFile) 
-		|| (token_ID == kTokenEndOfFunction))
-	{
-		// Empty function; evaluating to zero
-		TPParseTreeNode terminal_node = new CParseTreeNode();
-		terminal_node->MakeConstant(0);
-		write_log(preferences.debug_parser(), 
-			"[FormulaParser] Terminal node %i\n", terminal_node);
-		return terminal_node;
-	}
-	if (token_ID == kTokenOperatorConditionalWhen)
-	{
-		// OpenPPL-function
-		TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
-		write_log(preferences.debug_parser(), 
-			"[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
-		return open_ended_when_condition;
-	}
-	else
-	{	
-		// OH-script-function, single expression
-		TPParseTreeNode expression = ParseExpression();
-		write_log(preferences.debug_parser(), 
-			"[FormulaParser] Expression %i\n", expression);
-		return expression;
-	}
+TPParseTreeNode CFormulaParser::ParseFunctionBody(){
+  // For backpatching pointers to next (open ended)when-condition
+  // Initializing them once (here), not in the recursive(!) functions
+  // to parse (open-ended) when-conditions
+  _last_open_ended_when_condition = NULL;
+  _last_when_condition = NULL;
+  _current__open_ended_when_condition = NULL;
+  // Just look-ahead 1 token
+  int token_ID = _tokenizer.LookAhead();
+  if ((token_ID == kTokenEndOfFile) 
+      || (token_ID == kTokenEndOfFunction)) {
+    // Empty function; evaluating to zero
+    TPParseTreeNode terminal_node = new CParseTreeNode();
+    terminal_node->MakeConstant(0);
+    write_log(preferences.debug_parser(), 
+	    "[FormulaParser] Terminal node %i\n", terminal_node);
+    return terminal_node;
+  }
+  if (token_ID == kTokenOperatorConditionalWhen) {
+  // OpenPPL-function
+    TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
+    write_log(preferences.debug_parser(), 
+	  "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
+    return open_ended_when_condition;
+  } else {	
+  // OH-script-function, single expression
+    TPParseTreeNode expression = ParseExpression();
+    write_log(preferences.debug_parser(), 
+      "[FormulaParser] Expression %i\n", expression);
+    return expression;
+  }
 }
 
 // OK
@@ -461,35 +462,44 @@ CString CFormulaParser::CurrentFunctionName()
 	return current_function_name;
 }
 
-TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence()
-{
-	//MessageBox(0, "When", "Info", 0);
-	int token_ID = _tokenizer.GetToken();
-	assert(token_ID == kTokenOperatorConditionalWhen);
-	ParseExpression();
-	// Next either:
-	// * another when-condition
-	// * action
-	// * user-variable to be set
-	token_ID = _tokenizer.LookAhead();
-	if (token_ID == kTokenOperatorConditionalWhen)
-	{
-		ParseOpenEndedWhenConditionSequence();
-	}
-	else if (TokenIsOpenPPLAction(token_ID))
-	{
-		ParseOpenPPLAction();
-	}
-	else 
-	{
-		CParseErrors::Error("Missing action after when condition");
-	}
-	token_ID = _tokenizer.LookAhead();
-	if (token_ID == kTokenOperatorConditionalWhen)
-	{
-		ParseOpenEndedWhenConditionSequence();
-	}
-	return NULL;
+TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
+  int token_ID = _tokenizer.GetToken();
+  assert(token_ID == kTokenOperatorConditionalWhen);
+  TPParseTreeNode condition = ParseExpression();
+  TPParseTreeNode when_condition = new CParseTreeNode();
+  when_condition->MakeWhenCondition(condition);
+  // Next either:
+  // * another when-condition
+  // * action
+  // * user-variable to be set
+  token_ID = _tokenizer.LookAhead();
+  if (token_ID == kTokenOperatorConditionalWhen) {
+    // 2 consecutive when-conditions
+    // Therefore last condition was an open-ended one
+    BackPatchOpenEndedWhenCondition(when_condition);
+    TPParseTreeNode next_when_condition = ParseOpenEndedWhenConditionSequence();
+    // Setting the "THEN" part of the last open-ended when-condition to this condition
+    when_condition->_second_sibbling = next_when_condition;
+    // For backpatching and creating a list of open-ended when-conditons
+    _last_open_ended_when_condition = when_condition;
+    // For backpatching and creating a list of when-conditons
+    _last_when_condition = next_when_condition;
+    
+  } else if (TokenIsOpenPPLAction(token_ID))  {
+    // Last condition was a normal condition with action
+    BackPatchWhenCondition(when_condition);
+    TPParseTreeNode action = ParseOpenPPLAction();
+    when_condition->_second_sibbling = action;
+    // For backpatching and creating a list of when-conditons
+    _last_when_condition = when_condition;
+  } else {
+    CParseErrors::Error("Missing action after when condition");
+  }
+  token_ID = _tokenizer.LookAhead();
+  if (token_ID == kTokenOperatorConditionalWhen) {
+	  ParseOpenEndedWhenConditionSequence();
+  }
+  return when_condition;
 }
 
 // OK
@@ -603,4 +613,31 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression()
 		return action;
 	}
 	return NULL;
+}
+
+void CFormulaParser::BackPatchOpenEndedWhenCondition(
+    TPParseTreeNode open_ended_when_condition) {
+  if (_last_open_ended_when_condition != NULL) {
+    // Setting the "ELSE"-part of the last open-ended when-condition
+    _last_open_ended_when_condition->SetRightMostSibbling(
+      open_ended_when_condition);
+  }
+  if (_last_when_condition != NULL) {
+    // Setting the "ELSE" part of the last when-condition
+    _last_when_condition->SetRightMostSibbling(open_ended_when_condition);
+  }
+}
+
+void CFormulaParser::BackPatchWhenCondition(
+    TPParseTreeNode when_condition) {
+  if (_last_when_condition != NULL) {
+    // Setting the "ELSE" part of the last when-condition
+    _last_when_condition->SetRightMostSibbling(when_condition);
+    return;
+  }
+  // Last when-condition does not exist, therefore...
+  if (_last_open_ended_when_condition != NULL) {
+    // Setting the "THEN"-part of the last open-ended when-condition
+    _last_open_ended_when_condition->_second_sibbling = when_condition;
+  }
 }

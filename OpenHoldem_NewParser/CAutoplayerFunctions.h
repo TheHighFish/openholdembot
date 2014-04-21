@@ -22,7 +22,6 @@ public:
 	void Reset();
 	void CalcPrimaryFormulas();
 	void CalcSecondaryFormulas();
-	void CalcAutoTrace();
 	double GetAutoplayerFunctionValue(const int function_to_bn_set);
 #define ENT CSLock lock(m_critsec);
 	void SetAutoplayerFunction(const int function_to_bn_set, const double new_value);

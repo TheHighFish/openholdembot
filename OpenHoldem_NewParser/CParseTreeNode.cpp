@@ -15,6 +15,7 @@
 #include "CParseTreeNode.h"
 
 #include "CEngineContainer.h"
+#include "CPreferences.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
@@ -88,6 +89,14 @@ void CParseTreeNode::MakeRaiseByPercentagedPotsizeAction(
 	_first_sibbling = raise_by_amount_percentage;
 }
 
+void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
+  _node_type = kTokenOperatorConditionalWhen;
+  _first_sibbling = condition;
+  // Action and next when-condition or next when-condition
+  // and next open-ended when-condition are currently undefined
+  // and need to get set later
+}
+
 void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 {
 	assert(uservariable.Left(4) == "user");
@@ -98,12 +107,14 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 
 double CParseTreeNode::Evaluate()
 {
-	write_log(true, "[CParseTreeNode] Evaluating node type %i %s\n", //!!
+    write_log(preferences.debug_formula(), 
+        "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
 	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
-		write_log(true, "[CParseTreeNode] Number evaluates to %6.3f\n",
+		write_log(preferences.debug_formula(), 
+            "[CParseTreeNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
 	}
@@ -111,7 +122,8 @@ double CParseTreeNode::Evaluate()
 	{
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name);
-		write_log(true, "[CParseTreeNode] Number evaluates to %6.3f\n", value);
+		write_log(preferences.debug_formula(), 
+            "[CParseTreeNode] Number evaluates to %6.3f\n", value);
 		return value;
 	}
 	// Actions second, which are also "unary".
@@ -329,7 +341,7 @@ TPParseTreeNode CParseTreeNode::GetLeftMostSibbling() {
     return _first_sibbling;
   }
   // Not an operator
-  return NULL;
+   return NULL;
 }
 
 void CParseTreeNode::SetRightMostSibbling(TPParseTreeNode sibbling){
@@ -370,8 +382,13 @@ CString CParseTreeNode::Serialize()
     return "(" + _first_sibbling->Serialize() + " ? "
       + _second_sibbling->Serialize() + " : "
       + _third_sibbling->Serialize() + ")";
-  }
-  else {
+  } else if (_node_type == kTokenOperatorConditionalWhen) {
+    return "WHEN: " + _first_sibbling->Serialize() + " WTHEN: "
+      + (_second_sibbling? _second_sibbling->Serialize(): "")
+      + " WELSE: "
+      + (_third_sibbling? _third_sibbling->Serialize(): "") 
+      + " WEND";
+  } else {
     assert(false);
     return "ERROR";
   }
