@@ -24,8 +24,10 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
+#include "CFunction.h"
+#include "CFunctionCollection.h"
 #include "CHeartbeatThread.h"
-#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
+#include "COHScriptList.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -38,6 +40,7 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "../scintilla/include/SciLexer.h"
 #include "../scintilla/include/Scintilla.h"
 #include "WinMgr.h"
@@ -695,60 +698,45 @@ void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const C
 	}
 }
 
-void CDlgFormulaScintilla::PopulateFormulaTree()
-{/*!!
-	m_FormulaTree.DeleteAllItems();
+void CDlgFormulaScintilla::PopulateFormulaTree() {
+  m_FormulaTree.DeleteAllItems();
 
-	CString filter;
-	m_SearchEdit.GetWindowText(filter);
+  CString filter;
+  m_SearchEdit.GetWindowText(filter);
 
-	// Setup the tree
-	HTREEITEM	parent = NULL, hItem;
+  // Setup the tree
+  HTREEITEM	parent = NULL, hItem;
 
-	for (int j=0; j<m_standard_headings.GetSize(); j++)
-	{
-		if (m_standard_headings[j].IsEmpty()) {
-			parent = NULL;
-		} else {
-			parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
-			m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-		}
-		for (int i=0; i<m_standard_functions[j].GetSize(); i++)
-		{
-			ConditionallyAddFunction(m_standard_functions[j].GetAt(i), m_wrk_formula.GetFunctionText(m_standard_functions[j].GetAt(i)), filter, parent);
-		}
+  for (int j=0; j<m_standard_headings.GetSize(); j++) {
+    if (m_standard_headings[j].IsEmpty()) {
+	    parent = NULL;
+    } else {
+	    parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
+	    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+    }
+    COHScriptObject *p_OH_script_object = p_function_collection->GetFirst();
+    while (p_OH_script_object != NULL) {
+      ConditionallyAddFunction(p_OH_script_object->name(), 
+        p_OH_script_object->function_text(),
+        filter, 
+        parent);
+      p_OH_script_object = p_function_collection->GetNext();
 	}
+  }
+  parent = m_FormulaTree.InsertItem("Hand Lists");
+  m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
-	parent = m_FormulaTree.InsertItem("Hand Lists");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-	
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
-	{
-		hItem = m_FormulaTree.InsertItem(m_wrk_formula.formula()->mHandList[i].list, parent);
-		m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
-	}
+  /*!!!for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
+	  hItem = m_FormulaTree.InsertItem(m_wrk_formula.formula()->mHandList[i].list, parent);
+	  m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
+  }*/
 
-	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-
-	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-	{
-		bool bIsStandardFunction = false;
-		for (int k=0;k<4;k++)
-		{
-			for (int j=0;j<m_standard_functions[k].GetSize(); j++)
-			{
-				if (!m_standard_functions[k].GetAt(j).Compare(m_wrk_formula.formula()->mFunction[i].func)) {
-					bIsStandardFunction = true;
-					break;
-				}
-			}
-		}
-		if (!bIsStandardFunction)
-			ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
-	}
-
-	GroupUDFs();*/
+  hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
+  m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+  /*!!???if (function->IsStandardFunction()) {
+    ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
+  }*/
+  GroupUDFs();
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -1163,124 +1151,79 @@ HTREEITEM CDlgFormulaScintilla::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewPare
 	return hMovedItem;
 }
 
-void CDlgFormulaScintilla::OnNew() 
-{/*!!!
-	CDlgNew newdlg;
-	SFunction Func;
-	SHandList List;
-	CString	s = "";
-	HTREEITEM	p = NULL, newhtitem = NULL;
+void CDlgFormulaScintilla::OnNew() {
+  CDlgNew newdlg;
+  HTREEITEM	p = NULL, newhtitem = NULL;
 
-	StopAutoButton();
+  StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  if (s == "Hand Lists" 
+	  || (s.Find("list") != k_not_found && s.Find("f$") == k_not_found)){
+    newdlg.is_function = false;
+  } else {  
+    newdlg.is_function = true;
+  }
+  if (newdlg.DoModal() != IDOK) return;
+  if (p_function_collection->Exists(s)) {
+	OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
+	return;
+  }
 
-	if (s == "Hand Lists" 
-		|| (s.Find("list") != k_not_found && s.Find("f$") == k_not_found))
-	{
-		newdlg.type = 0;
-	}
-	else
-	{
-		newdlg.type = 1;
-	}
+  if (newdlg.is_function = false) {
+    // Create new list
+    COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, NULL);
+    // Add it to working set CArray
+    p_function_collection->Add((COHScriptObject*)p_new_list);
+    // Add to tree
+    p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
+    if (p == NULL) { 
+      // Selected item is a parent item  
+      newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, m_FormulaTree.GetSelectedItem());
+    } else {
+      newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
+    }
+  } else {
+    // Create new function
+    CFunction *p_new_function = new CFunction(&newdlg.CSnewname, NULL);
+    // Add it to working set CArray
+    p_function_collection->Add((COHScriptObject*)p_new_function);
+    // Add to tree
+    HTREEITEM hNewParent = hUDFItem;
 
-	if (newdlg.DoModal() == IDOK) 
-	{
-		if (newdlg.type == 0) 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
-			{
-				if (m_wrk_formula.formula()->mHandList[i].list == newdlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot proceed as list already exists", "Error", 0);
-				return;
-			}
+    // !!! Candidate for refactoring, probably duplicate functionality
+    // !!! Formula grouping
+    CString tempString;
+    CString groupName;
+    GetGroupName(newdlg.CSnewname, groupName);
+    if (!groupName.IsEmpty()) 
+    {
+	    // Does a group already exist?
+	    HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+	    if (hExistingGroup) 
+		    hNewParent = hExistingGroup;
+	    else 
+	    {
+		    // If a group does not exist, is there another UDF to group together?
+		    HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+		    if (matchingItem) 
+		    {
+			    hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+			    MoveTreeItem(matchingItem, hNewParent, NULL, false);
+		    }
+	    }
+    }
+    newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
+    SortUdfTree();
+  }
 
-			List.list = newdlg.CSnewname;
-			List.list_text = "";
+  UpdateAllScintillaKeywords();
 
-			// Add it to working set CArray
-			m_wrk_formula.set_list_add(List);
-
-			// Add to tree
-			p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
-			if (p == NULL) // Selected item is a parent item
-			{  
-				newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, m_FormulaTree.GetSelectedItem());
-			}
-			else 
-			{
-				newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
-			}
-		}
-		else 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == newdlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot proceed as this function already exists", "Error", 0);
-				return;
-			}
-
-			Func.func = newdlg.CSnewname;
-			Func.func_text = "";
-			Func.fresh = false;
-
-			// Add it to working set CArray
-			m_wrk_formula.set_func_add(Func);
-
-			// Add to tree
-			HTREEITEM hNewParent = hUDFItem;
-
-			CString tempString;
-			CString groupName;
-			GetGroupName(newdlg.CSnewname, groupName);
-			if (!groupName.IsEmpty()) 
-			{
-				// Does a group already exist?
-				HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-				if (hExistingGroup) 
-					hNewParent = hExistingGroup;
-				else 
-				{
-					// If a group does not exist, is there another UDF to group together?
-					HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-					if (matchingItem) 
-					{
-						hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-						MoveTreeItem(matchingItem, hNewParent, NULL, false);
-					}
-				}
-			}
-			newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
-			SortUdfTree();
-		}
-
-		UpdateAllScintillaKeywords();
-
-		// Select newly inserted item
-		m_FormulaTree.SelectItem(newhtitem);
-		m_FormulaTree.SetFocus();
-		m_dirty = true;
-		HandleEnables(true);
-	}*/
+  // Select newly inserted item
+  m_FormulaTree.SelectItem(newhtitem);
+  m_FormulaTree.SetFocus();
+  m_dirty = true;
+  HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnRename() 
@@ -1710,51 +1653,36 @@ CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsStrin
 	return comment;
 }
 
-void CDlgFormulaScintilla::OnHandList() 
-{/*!!!
-	CDlgHandList		myDialog;
-	CString				s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-	int					list_index = 0, i = 0, j = 0;
-	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
-	CString				token = "", hand = "", newstring = "";
-	
-	// Find appropriate list in the internal structure
-	list_index = k_not_found;
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
-	{
-		if (m_wrk_formula.formula()->mHandList[i].list == s)
-		{
-			list_index = i;
-			break;
-		}
-	}
-	if (list_index == k_not_found)  return;
+void CDlgFormulaScintilla::OnHandList()  {
+  CDlgHandList		myDialog;
+  int				list_index = 0, i = 0, j = 0;
+  CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
+  CString			token = "", hand = "", newstring = "";
 
-	m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
+  if (p_handlist == NULL)  return;
 
-	// Window title and static text content
-	myDialog.hand_list_num = atoi(s.Mid(4).GetString());
+  //!!m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
+  // Window title and static text content
+  myDialog.hand_list_num = atoi(s.Mid(4).GetString());
 
-	// Start dialog
-	if (myDialog.DoModal() == IDOK) 
-	{
-		CString old_comment = ExtractCommentFromHandList(m_wrk_formula.formula()->mHandList[list_index].list_text);
-		CString new_handlist_without_comment = myDialog.HandListToString();
-		CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
+  // Start dialog
+  if (myDialog.DoModal() == IDOK) {
+    CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
+    CString new_handlist_without_comment = myDialog.HandListToString();
+    CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
 
-		// save it internally
-		m_wrk_formula.set_list_text(list_index, new_handlist_with_comment);
+    // update scintilla window
+    CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
+    ASSERT(pCurScin != NULL);
+    if (pCurScin) {
+	  pCurScin->SetText(new_handlist_with_comment);
+    }
 
-		// update scintilla window
-		CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-		ASSERT(pCurScin != NULL);
-		if (pCurScin) {
-			pCurScin->SetText(m_wrk_formula.formula()->mHandList[list_index].list_text.GetString());
-		}
-
-		m_dirty = true;
-	}
-	HandleEnables(true);*/
+    m_dirty = true;
+  }
+  HandleEnables(true);
 }
 /*!!!
 void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f) 

@@ -37,7 +37,7 @@ public:
 	afx_msg void OnBnClickedCancel();
 	CEdit m_NewName;
 	CString CSnewname;
-	int type;  // 0 = new list, 1 = new udf
+	bool is_function; // otherwise list
 	virtual BOOL OnInitDialog();
 	CStatic m_Desc;
 };

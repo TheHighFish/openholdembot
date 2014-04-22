@@ -16,7 +16,7 @@
 
 #include "COHScriptObject.h"
 
-class COHScriptList: COHScriptObject
+class COHScriptList: public COHScriptObject
 {
 public:
 	COHScriptList(CString *new_name, CString *new_function_text);
