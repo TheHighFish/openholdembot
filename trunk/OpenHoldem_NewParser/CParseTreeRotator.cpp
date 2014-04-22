@@ -83,7 +83,7 @@ bool CParseTreeRotator::NeedsLeftRotation(TPParseTreeNode parse_tree_node) {
   if (right_most_sibbling == NULL) {
     return false;
   }
-  int sibblings_type = right_most_sibbling->_node_type; //!!!
+  int sibblings_type = right_most_sibbling->_node_type; 
   if (TokenIsBracketOpen(sibblings_type)) {
     // Nothing to do for bracket-expressions as operands.
     // They are "unary" and the parser took care about correct recognition

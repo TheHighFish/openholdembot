@@ -284,7 +284,6 @@ COHScriptList *CFormulaParser::ParseListBody()
 	return new_list;
 }
 
-
 // OK
 TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   // For backpatching pointers to next (open ended)when-condition

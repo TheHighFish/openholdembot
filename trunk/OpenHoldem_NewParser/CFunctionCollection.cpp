@@ -148,6 +148,21 @@ void CFunctionCollection::AddEmptyFunctionIfFunctionDoesNotExist(CString &functi
   Add((COHScriptObject *)p_function); //!!
 }
 
+COHScriptObject *CFunctionCollection::GetFirst() {
+  enumerator_it = _function_map.begin();
+  return GetNext();
+}
+
+COHScriptObject *CFunctionCollection::GetNext() {
+  if (enumerator_it == _function_map.end()) {
+    // "end" points behind the last element
+    return NULL;
+  }
+  COHScriptObject *result = enumerator_it->second;
+  enumerator_it++;
+  return result;
+}
+
 void CFunctionCollection::Save(CArchive &ar)
 {
 	//function_hashtable.
@@ -186,7 +201,7 @@ void CFunctionCollection::Save(CArchive &ar)
 	//
 	for (int i=0; i<(int) _formula.mFunction.GetSize(); i++) 
 	{
-		if (!IsStandardFormula(_formula.mFunction[i].func))
+		if (!function->IsStandardFunction()))
 		{
 			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
 		}

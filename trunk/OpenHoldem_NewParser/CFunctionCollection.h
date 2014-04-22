@@ -17,41 +17,47 @@
 #include "COHScriptObject.h"
 #include <map>
 
-class CFunctionCollection
-{
-	friend class CFormulaParser;
-public:
-	CFunctionCollection();
-	~CFunctionCollection();
-public:
-	double Evaluate(CString function_name);
-	bool IsList(int list_ID);
-public:
-	// To be called by
-	//   * ResetOnHeartbeat() !!
-	//   * the formula editor for the working copy (f$debug and f$test)
-	void ClearCache();
-	void DeleteAll();
-	void SetEmptyDefaultBot();
-public:
-	void Add(COHScriptObject *new_function);
-	void Save(CArchive &ar);
-	COHScriptObject *LookUp(CString name);
-	bool Exists(CString name);
-public:
-	CString Title()					{ return _title; }
-	CString FormulaPath()			{ return _path; }
-	CString DLLPath();
-protected:
-	void SetTitle(CString title)	{ _title = title; }
-	void SetPath(CString path)		{ _path = path; }
-private:
-	void CheckForDefaultFormulaEntries();
-	void AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name);
-private:
-	std::map<CString, COHScriptObject*> _function_map;
-	CString _title;
-	CString _path;
+class CFunctionCollection{
+  friend class CFormulaParser;
+ public:
+  CFunctionCollection();
+  ~CFunctionCollection();
+ public:
+  double Evaluate(CString function_name);
+  bool IsList(int list_ID);
+ public:
+  // To be called by
+  //   * ResetOnHeartbeat() !!
+  //   * the formula editor for the working copy (f$debug and f$test)
+  void ClearCache();
+  void DeleteAll();
+  void SetEmptyDefaultBot();
+ public:
+  void Add(COHScriptObject *new_function);
+  void Save(CArchive &ar);
+  bool Exists(CString name);
+  COHScriptObject *LookUp(CString name);
+ public:
+  // Simply call GetFirst() first, then GetNext()
+  // Once you receive NULL the end has been reached
+  COHScriptObject *GetFirst();
+  COHScriptObject *GetNext();
+ public:
+  CString Title()				{ return _title; }
+  CString FormulaPath()			{ return _path; }
+  CString DLLPath();
+ protected:
+  void SetTitle(CString title)	{ _title = title; }
+  void SetPath(CString path)	{ _path = path; }
+ private:
+  void CheckForDefaultFormulaEntries();
+  void AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name);
+ private:
+  std::map<CString, COHScriptObject*> _function_map;
+  CString _title;
+  CString _path;
+ private:
+  std::map<CString, COHScriptObject*>::iterator enumerator_it;
 };
 
 extern CFunctionCollection *p_function_collection;
