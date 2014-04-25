@@ -169,45 +169,52 @@ void CFunctionCollection::ClearCache() {
 
 void CFunctionCollection::Save(CArchive &ar)
 {
-	//function_hashtable.
-	//!!! old code
-	/*CString		s = "";
-	char		nowtime[26] = {0};
+  // First write the date
+  char nowtime[26] = {0};
+  CString s;
+  s.Format("##%s##\r\n\r\n", get_time(nowtime)); 
+  ar.WriteString(s);
+  // DLL  and notes are a bit special "functions",
+  // so they get extra treatment.
+  SaveObject(ar, LookUp("notes"));
+  SaveObject(ar, LookUp("dll"));
+  // Then write the standard formula functions...
+  // These are functions and symbols, that
+  //   * are essential to control the behaviour 
+  //	 of (nearly) every poker bot.
+  //   * configure some very important constants.
+  for (int i=k_autoplayer_function_allin; 
+      i<k_number_of_standard_functions; 
+      ++i) {
+	SaveObject(ar, LookUp(k_standard_function_names[i]));
+  }
+  // f$test and f$debug are again special
+  SaveObject(ar, LookUp("f$test"));
+  SaveObject(ar, LookUp("f$debug"));
+  // Handlists
+  COHScriptObject *next_object = GetFirst();
+  while (next_object != NULL) {
+    if (next_object->IsList()) {
+      SaveObject(ar, next_object);
+    }
+    next_object = GetNext();
+  }
+  // User defined functions
+  // We already saved the standard-functions
+  next_object = GetFirst();
+  while (next_object != NULL) {
+    if (next_object->IsFunction()
+        && !next_object->IsStandardFunction()) {
+      SaveObject(ar, next_object);
+    }
+    next_object = GetNext();
+  }
+}
 
-	//  First write the standard formula functions...
-	//  These are functions and symbols, that
-	//	* are essential to control the behaviour 
-	//	  of (nearly) every poker bot.
-	//	* configure some very important constants.
-	//  
-	s.Format("##%s##\r\n\r\n", get_time(nowtime)); ar.WriteString(s);
-
-	// DLL  and notes are a bit special "functions",
-	// so they get extra treatment.
-	WriteStandardFunction(ar, "notes");
-	WriteStandardFunction(ar, "dll");
-	for (int i=k_autoplayer_function_allin; i<k_number_of_standard_functions; i++)
-	{
-		WriteStandardFunction(ar, k_standard_function_names[i]);
-	}
-	// f$test and f$debug are again special
-	WriteStandardFunction(ar, "f$test");
-	WriteStandardFunction(ar, "f$debug");
-
-	// handlists for both ohf and old whf style
-	for (int i=0; i<(int) _formula.mHandList.GetSize(); i++) 
-		ar.WriteString("##" + _formula.mHandList[i].list + "##\r\n" + _formula.mHandList[i].list_text + "\r\n\r\n");
-
-	// User defined functions for new ohf style only.
-	// We don't ever have to save them, as for a conversion
-	// we only have to generate an ohf file and (for technical reasons)
-	// recreate the old whf (which is already open for storing).
-	//
-	for (int i=0; i<(int) _formula.mFunction.GetSize(); i++) 
-	{
-		if (!function->IsStandardFunction()))
-		{
-			ar.WriteString("##" + _formula.mFunction[i].func + "##\r\n" + _formula.mFunction[i].func_text + "\r\n\r\n");
-		}
-	}*/
+void CFunctionCollection::SaveObject(
+    CArchive &ar, 
+    COHScriptObject *function_or_list) {
+  if (function_or_list == NULL) return;
+  ar.WriteString(function_or_list->Serialize());
+  
 }

@@ -33,9 +33,11 @@ class CFunctionCollection{
   void SetEmptyDefaultBot();
  public:
   void Add(COHScriptObject *new_function);
-  void Save(CArchive &ar);
   bool Exists(CString name);
   COHScriptObject *LookUp(CString name);
+ public:
+  void Save(CArchive &ar);
+  void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
  public:
   // Simply call GetFirst() first, then GetNext()
   // Once you receive NULL the end has been reached
