@@ -36,3 +36,9 @@ double COHScriptObject::Evaluate()
 	return 0.0;
 }
 
+bool COHScriptObject::IsStandardFunction() {
+  for (int i=0; i<k_number_of_standard_functions; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}

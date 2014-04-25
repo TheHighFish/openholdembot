@@ -32,7 +32,7 @@ public:
 public:
 	// Public accessors	
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();
+	CString SymbolsProvided();
 private:
 	void	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	void	WarnAboutInvalidPTSymbol(CString s);

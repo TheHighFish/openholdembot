@@ -24,7 +24,6 @@ class CFunctionCollection{
   ~CFunctionCollection();
  public:
   double Evaluate(CString function_name);
-  bool IsList(int list_ID);
  public:
   // To be called by
   //   * ResetOnHeartbeat() !!

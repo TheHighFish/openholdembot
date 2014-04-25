@@ -33,7 +33,7 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();
+	CString SymbolsProvided();
 public:
 	bool istournament()		{ return _istournament == true; }
 private:

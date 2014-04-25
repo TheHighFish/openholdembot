@@ -33,7 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();
+	CString SymbolsProvided();
 private:
 };
 

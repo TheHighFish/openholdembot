@@ -50,86 +50,84 @@ CSymbolEngineIniFunctions *p_symbol_engine_ini_functions = NULL;
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=16788&start=30
 #define RETURN_IF_LOADING_NEW_FORMULA if ((p_function_collection == NULL) || ((p_formula_parser != NULL) && (p_formula_parser->IsParsing()))) return;
 
-
-CSymbolEngineIniFunctions::CSymbolEngineIniFunctions()
-{
-	// The values of some symbol-engines depend on other engines.
-	// As the engines get later called in the order of initialization
-	// we assure correct ordering by checking if they are initialized.
-	//
-	// CSymbolEngineIniFunctions() "depends" on all other engines,
-	// as it can only be called after all symbols have been initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_symbol_engine_blinds != NULL);
-	assert(p_symbol_engine_cards != NULL);
-	assert(p_symbol_engine_chip_amounts != NULL);
-	assert(p_symbol_engine_dealerchair != NULL);
-	assert(p_symbol_engine_handrank != NULL);
-	assert(p_symbol_engine_history != NULL);
-	assert(p_symbol_engine_isomaha != NULL);
-	assert(p_symbol_engine_istournament != NULL);
-	assert(p_symbol_engine_pokertracker != NULL);
-	assert(p_symbol_engine_pokerval != NULL);
-	assert(p_symbol_engine_positions != NULL);
-	assert(p_symbol_engine_prwin != NULL);
-	assert(p_symbol_engine_raisers_callers != NULL);
-	assert(p_symbol_engine_random != NULL);
-	assert(p_symbol_engine_time != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+CSymbolEngineIniFunctions::CSymbolEngineIniFunctions() {
+  // The values of some symbol-engines depend on other engines.
+  // As the engines get later called in the order of initialization
+  // we assure correct ordering by checking if they are initialized.
+  //
+  // CSymbolEngineIniFunctions() "depends" on all other engines,
+  // as it can only be called after all symbols have been initialized.
+  assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_symbol_engine_autoplayer != NULL);
+  assert(p_symbol_engine_blinds != NULL);
+  assert(p_symbol_engine_cards != NULL);
+  assert(p_symbol_engine_chip_amounts != NULL);
+  assert(p_symbol_engine_dealerchair != NULL);
+  assert(p_symbol_engine_handrank != NULL);
+  assert(p_symbol_engine_history != NULL);
+  assert(p_symbol_engine_isomaha != NULL);
+  assert(p_symbol_engine_istournament != NULL);
+  assert(p_symbol_engine_pokertracker != NULL);
+  assert(p_symbol_engine_pokerval != NULL);
+  assert(p_symbol_engine_positions != NULL);
+  assert(p_symbol_engine_prwin != NULL);
+  assert(p_symbol_engine_raisers_callers != NULL);
+  assert(p_symbol_engine_random != NULL);
+  assert(p_symbol_engine_time != NULL);
+  assert(p_symbol_engine_userchair != NULL);
 }
 
-CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions()
-{}
-
-void CSymbolEngineIniFunctions::InitOnStartup()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-		
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
-	ResetOnConnection();
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup]); 
+CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {
 }
 
-void CSymbolEngineIniFunctions::ResetOnConnection()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-		
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_connection]);
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
+void CSymbolEngineIniFunctions::InitOnStartup() {
+  RETURN_IF_LOADING_NEW_FORMULA
+  	
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
+  ResetOnConnection();
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup]); 
 }
 
-void CSymbolEngineIniFunctions::ResetOnHandreset()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-	
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_handreset]);
+void CSymbolEngineIniFunctions::ResetOnConnection() {
+  RETURN_IF_LOADING_NEW_FORMULA
+  	
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_connection]);
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
 }
 
-void CSymbolEngineIniFunctions::ResetOnNewRound()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-		
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_new_round]);
+void CSymbolEngineIniFunctions::ResetOnHandreset(){
+  RETURN_IF_LOADING_NEW_FORMULA
+
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_handreset]);
 }
 
-void CSymbolEngineIniFunctions::ResetOnMyTurn()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-		
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_my_turn]);
+void CSymbolEngineIniFunctions::ResetOnNewRound() {
+  RETURN_IF_LOADING_NEW_FORMULA
+  	
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_new_round]);
 }
 
-void CSymbolEngineIniFunctions::ResetOnHeartbeat()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-		
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
-	write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
-		k_standard_function_names[k_init_on_heartbeat]);
-	p_function_collection->Evaluate(k_standard_function_names[k_init_on_heartbeat]);
+void CSymbolEngineIniFunctions::ResetOnMyTurn() {
+  RETURN_IF_LOADING_NEW_FORMULA
+  	
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_my_turn]);
+}
+
+void CSymbolEngineIniFunctions::ResetOnHeartbeat() {
+  RETURN_IF_LOADING_NEW_FORMULA
+  	
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
+  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
+	  k_standard_function_names[k_init_on_heartbeat]);
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_heartbeat]);
+}
+
+CString CSymbolEngineIniFunctions::SymbolsProvided() {
+  // This symbol-engine does not really provide any symbols.
+  // It just makes use of certain events (ResetOnHeartbeat, etc.)
+  return "";
 }

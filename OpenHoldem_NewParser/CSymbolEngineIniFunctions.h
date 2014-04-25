@@ -20,19 +20,20 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineIniFunctions: public CVirtualSymbolEngine
-{
+class CSymbolEngineIniFunctions: public CVirtualSymbolEngine {
 public:
-	CSymbolEngineIniFunctions();
-	~CSymbolEngineIniFunctions();
-public:
-	// Mandatory reset-functions
-	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+  CSymbolEngineIniFunctions();
+  ~CSymbolEngineIniFunctions();
+ public:
+  // Mandatory reset-functions
+  void InitOnStartup();
+  void ResetOnConnection();
+  void ResetOnHandreset();
+  void ResetOnNewRound();
+  void ResetOnMyTurn();
+  void ResetOnHeartbeat();
+ public:
+  CString SymbolsProvided();
 };
 
 extern CSymbolEngineIniFunctions *p_symbol_engine_ini_functions;

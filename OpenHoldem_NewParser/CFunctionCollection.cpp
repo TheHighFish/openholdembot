@@ -78,12 +78,6 @@ double CFunctionCollection::Evaluate(CString function_name) {
   return p_function->Evaluate();
 }
 
-bool CFunctionCollection::IsList(int list_ID) {
-  CString list_name;
-  list_name.Format("list%0.3d", list_ID);
-  return Evaluate(list_name);
-}
-
 CString CFunctionCollection::DLLPath() {
   COHScriptObject *dll_node = LookUp("DLL");
   if (dll_node == NULL) {
@@ -161,6 +155,16 @@ COHScriptObject *CFunctionCollection::GetNext() {
   COHScriptObject *result = enumerator_it->second;
   enumerator_it++;
   return result;
+}
+
+void CFunctionCollection::ClearCache() {
+  COHScriptObject *p_oh_script_object = GetFirst();
+  while (p_oh_script_object != NULL) {
+    if (p_oh_script_object->IsFunction()) {
+      ((CFunction*)p_oh_script_object)->ClearCache();
+    }
+    p_oh_script_object = GetNext();
+  }
 }
 
 void CFunctionCollection::Save(CArchive &ar)
