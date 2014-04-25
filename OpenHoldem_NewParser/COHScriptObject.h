@@ -28,6 +28,10 @@ class COHScriptObject {
   bool IsList()               { return _name.Left(4) == "list"; }
   bool IsFunction()           { return _name.Left(2) == "f$"; }
   bool IsStandardFunction();
+ public:
+  // For saving
+  CString Serialize()         { return "##" + _name + "##\r\n" 
+                                  + _function_text + "\r\n"; }
  protected:
   CString _name;
   CString _function_text;

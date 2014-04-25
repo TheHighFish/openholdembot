@@ -38,8 +38,10 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 double CFunction::Evaluate() {
   write_log(preferences.debug_formula(), 
     "[CFunction] Evaluating function %s\n", _name); 
+  CString log_message;
   if (_is_result_cached) {
-    //!!!
+    log_message.Format("[CFunction] Function %s -> %6.3f [cached]\n", 
+      _name, _cached_result);
   } else {
     if (_parse_tree_node != NULL)
     {
@@ -47,12 +49,13 @@ double CFunction::Evaluate() {
       _cached_result = _parse_tree_node->Evaluate();
       p_autoplayer_trace->Indent(false);
       _is_result_cached = true;
+      log_message.Format("[CFunction] Function %s -> %6.3f\n", 
+        _name, _cached_result);
     }
     // Else: keep _cached_result as 0.0
   }
   p_autoplayer_trace->Add(LogResult());
-  write_log(preferences.debug_formula(), 
-    "[CFunction] Function %s -> %6.3f\n", _name, _cached_result); 
+  write_log(preferences.debug_formula(), (char*)(LPCSTR)log_message); 
   return _cached_result;
 }
 
