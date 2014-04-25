@@ -138,8 +138,8 @@ void CFunctionCollection::AddEmptyFunctionIfFunctionDoesNotExist(CString &functi
 	function_text = " "; //!! header?
   }
   CFunction *p_function = new CFunction(&function_name, 
-    &function_text); // ##name##??
-  Add((COHScriptObject *)p_function); //!!
+    &function_text); // 
+  Add((COHScriptObject *)p_function);
 }
 
 COHScriptObject *CFunctionCollection::GetFirst() {

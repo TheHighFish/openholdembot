@@ -44,7 +44,7 @@ class CFormulaParser {
   void CheckForExtraTokensAfterEndOfFunction();
  private:
   // OH-script and OpenPPL
-  COHScriptList *ParseListBody();
+  void ParseListBody(COHScriptList *list);
   TPParseTreeNode ParseFunctionBody();
  private:
   // OH-script
