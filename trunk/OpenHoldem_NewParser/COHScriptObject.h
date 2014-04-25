@@ -14,20 +14,23 @@
 #ifndef INC_COHSCRIPTOBJECT_H
 #define INC_COHSCRIPTOBJECT_H
 
-class COHScriptObject
-{
-public:
-	COHScriptObject(); 
-	COHScriptObject(CString *new_name, CString *new_function_text);
-	~COHScriptObject();
-public:
-	CString name()			{ return _name; }
-	CString function_text()	{ return _function_text; }
-public:
-	virtual double Evaluate();
-protected:
-	CString _name;
-	CString _function_text;
+class COHScriptObject {
+ public:
+  COHScriptObject(); 
+  COHScriptObject(CString *new_name, CString *new_function_text);
+  ~COHScriptObject();
+ public:
+  CString name()			  { return _name; }
+  CString function_text()	  { return _function_text; }
+ public:
+  virtual double Evaluate();
+ public:
+  bool IsList()               { return _name.Left(4) == "list"; }
+  bool IsFunction()           { return _name.Left(2) == "f$"; }
+  bool IsStandardFunction();
+ protected:
+  CString _name;
+  CString _function_text;
 };
 
 #endif INC_COHSCRIPTOBJECT_H

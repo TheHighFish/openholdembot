@@ -34,7 +34,7 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();;
+	CString SymbolsProvided();;
 public:
 	int userchair()				{ return _userchair; }
 	int userchairbit()			{ return 1 << (_userchair); }

@@ -433,77 +433,27 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 	return pWnd;
 }
 
-void CDlgFormulaScintilla::ConstructKeywordsForPokerTracker(CString &keys)
-{
-	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
-	{
-		CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
-		// Add symbol for raise-chair
-		CString new_symbol = "pt_r_" + basic_symbol_name;
-		keys.AppendFormat(" %s", new_symbol);
-	
-		// Add symbols for all chairs, indexed by trailing numbers
-		for (int j=0; j<k_max_number_of_players; j++)
-		{
-			new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
-			keys.AppendFormat(" %s", new_symbol);
-		}
-	}
+void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) {
+  CString keywords;
+  CString filter;
+  m_SearchEdit.GetWindowText(filter);
+  if (filter.IsEmpty()) {
+    assert(p_engine_container != NULL);
+    keywords = p_engine_container->SymbolsProvided();
+	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keywords.GetString());
+  } else {
+	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) "");
+	pWnd->SendMessage(SCI_SETKEYWORDS, 3, (LPARAM) filter.GetString());
+  }
+  pWnd->Refresh();
 }
 
-void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
-{/*!!!
-	keys = keywords;
-	int i = 0;
-	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) {
-		keys.AppendFormat(" %s", m_wrk_formula.formula()->mFunction[i].func);
-	}
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
-		keys.AppendFormat(" is%s", m_wrk_formula.formula()->mHandList[i].list);
-		if (m_wrk_formula.formula()->mHandList[i].list.GetLength() > 4) {
-			keys.AppendFormat(" vs$%s$prlos", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prwin", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-		}
-	}
-	ConstructKeywordsForPokerTracker(keys);
-	for (int i=0; i<k_number_of_different_cardranks; i++)
-	{
-		for (int j=0; j<k_number_of_different_cardranks;j ++)
-		{
-			keys.AppendFormat(" $%c%c", k_card_chars[i], k_card_chars[j]);
-			if (i!=j) {
-				keys.AppendFormat(" $%c%cs", k_card_chars[i], k_card_chars[j]);
-				keys.AppendFormat(" $%c%co", k_card_chars[i], k_card_chars[j]);
-			}
-		}
-	}*/
-}
-
-void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) 
-{
-	CString keys;
-	CString filter;
-	m_SearchEdit.GetWindowText(filter);
-	if (filter.IsEmpty()) {
-		ConstructKeywords(keys);
-		pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
-	} else {
-		pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) "");
-		pWnd->SendMessage(SCI_SETKEYWORDS, 3, (LPARAM) filter.GetString());
-	}
-
-	pWnd->Refresh();
-}
-
-void CDlgFormulaScintilla::UpdateAllScintillaKeywords() 
-{
-	CString keys;
-	ConstructKeywords(keys);
-	for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++) {
-		m_ScinArray[iScint]._pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
-		m_ScinArray[iScint]._pWnd->Refresh();
-	}
+void CDlgFormulaScintilla::UpdateAllScintillaKeywords() {
+  CString keywords = p_engine_container->SymbolsProvided();
+  for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++) {
+    m_ScinArray[iScint]._pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keywords.GetString());
+    m_ScinArray[iScint]._pWnd->Refresh();
+  }
 }
 
 void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) 
@@ -622,7 +572,7 @@ void CDlgFormulaScintilla::OnCancel()
 }
 
 void CDlgFormulaScintilla::RemoveSingleItemGroups()
-{/*
+{
 	HTREEITEM hUDFChildItem = m_FormulaTree.GetChildItem(hUDFItem);
 	HTREEITEM hNextLevelItem = NULL, hNextItem = NULL;
 	CString fnName = 0;
@@ -645,7 +595,7 @@ void CDlgFormulaScintilla::RemoveSingleItemGroups()
 			m_FormulaTree.DeleteItem(hUDFChildItem);
 		}
 		hUDFChildItem = hNextItem;
-	}*/
+	}
 }
 
 void CDlgFormulaScintilla::GetGroupName(const char *functionName, CString &groupName)
@@ -707,6 +657,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   // Setup the tree
   HTREEITEM	parent = NULL, hItem;
 
+  COHScriptObject *p_OH_script_object = NULL;
   for (int j=0; j<m_standard_headings.GetSize(); j++) {
     if (m_standard_headings[j].IsEmpty()) {
 	    parent = NULL;
@@ -714,7 +665,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 	    parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
 	    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
     }
-    COHScriptObject *p_OH_script_object = p_function_collection->GetFirst();
+    p_OH_script_object = p_function_collection->GetFirst();
     while (p_OH_script_object != NULL) {
       ConditionallyAddFunction(p_OH_script_object->name(), 
         p_OH_script_object->function_text(),
@@ -726,16 +677,20 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   parent = m_FormulaTree.InsertItem("Hand Lists");
   m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
-  /*!!!for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
-	  hItem = m_FormulaTree.InsertItem(m_wrk_formula.formula()->mHandList[i].list, parent);
-	  m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
-  }*/
+  p_OH_script_object = p_function_collection->GetFirst();
+  while (p_OH_script_object != NULL) {
+    if (p_OH_script_object->IsList())
+    {
+      hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
+      //!!m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
+    }
+  }
 
   hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
   m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-  /*!!???if (function->IsStandardFunction()) {
-    ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
-  }*/
+  //!!if (function->IsStandardFunction()) {
+    //!!!ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
+  //}
   GroupUDFs();
 }
 
@@ -1709,7 +1664,7 @@ void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f)
 		//   ASSERT(false);
 		// but it caused incorrect error-messages on empty list-entries. 
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=15395
-		// (post 11 by BotFoirSale).
+		// (post 11 by BotForSale).
 	}
 	
 	// A child item was selected, copy text from rich edit control to working set CArray
@@ -2114,12 +2069,12 @@ void CDlgFormulaScintilla::StopAutoButton()
 }
 
 void CDlgFormulaScintilla::UpdateDebugAuto(void) 
-{/*!!!
+{
 	CString			Cstr = "";
 
 	// mark symbol result cache as stale
-	//!!m_wrk_formula.MarkCacheStale();
-
+	p_function_collection->ClearCache();
+/*!!!
 	// Loop through each line in the debug tab and evaluate it
 	for (int i=0; i<(int) debug_ar.GetSize(); i++) 
 	{

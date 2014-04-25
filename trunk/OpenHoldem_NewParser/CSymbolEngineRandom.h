@@ -33,7 +33,7 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();;
+	CString SymbolsProvided();;
 public:
 	// "random" gets calculated each time new
 	double random()				{ return Random_0_1(); }

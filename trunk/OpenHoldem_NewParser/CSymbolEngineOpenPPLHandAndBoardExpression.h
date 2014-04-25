@@ -32,7 +32,7 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
-	CString IdentifiersProvided();
+	CString SymbolsProvided();
 private:
 	int PrimeCodedRanks(int card_0,	int card_1, 
 		int opt_card_2 = CARD_NOCARD, int opt_card_3 = CARD_NOCARD, 
