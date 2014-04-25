@@ -215,15 +215,17 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	}
 	else if (_token.Left(4) == "list")
 	{
-		// ##listNNN##
+        // ##listNNN##
+        CString list_name = _token;
 		write_log(preferences.debug_parser(), 
 				"[FormulaParser] Parsing list\n");
 		if (!ExpectDoubleShebangAsEndOfFunctionHeader())
 		{
 			return;
 		}
-		COHScriptList *new_list = ParseListBody();
-		p_function_collection->Add((COHScriptObject*)new_list); //!!
+		COHScriptList *new_list = new COHScriptList(&list_name, &function_text);
+        ParseListBody(new_list);
+		p_function_collection->Add((COHScriptObject*)new_list); 
 	}
 	else if (_token.MakeLower() == "dll")
 	{
@@ -259,10 +261,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 }
 
 // Nearly OK
-COHScriptList *CFormulaParser::ParseListBody()
+void CFormulaParser::ParseListBody(COHScriptList *list)
 {
-	CString temp; //!!!
-	COHScriptList *new_list = new COHScriptList(&temp, &temp);
 	int token_ID = _tokenizer.GetToken();
 	while (token_ID != kTokenEndOfFunction)
 	{
@@ -272,16 +272,15 @@ COHScriptList *CFormulaParser::ParseListBody()
 		{
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
-			new_list->Set(_token);
+			list->Set(_token);
 		}
 		else
 		{
 			CParseErrors::Error("Unexpected token inside list");
-			return new_list;
+			return;
 		}
 		token_ID = _tokenizer.GetToken();
 	}
-	return new_list;
 }
 
 // OK
