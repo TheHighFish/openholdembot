@@ -416,7 +416,7 @@ void CScraper::ScrapeActive(int chair)
 	}
 }
 
-// !!! Needs serious clean-up
+// !! Needs serious clean-up
 void CScraper::ScrapeSlider()
 {
 	__TRACE
@@ -790,7 +790,7 @@ void CScraper::ScrapeBet(int chair)
 }
 
 //
-// !!! All code below not yet refactored
+// !! All code below not yet refactored
 //
 void CScraper::ClearScrapeAreas(void)
 {
@@ -1442,7 +1442,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 bool CScraper::IsExtendedNumberic(CString text)
 {
 	__TRACE
-	return false; //!!!???
+	return false; //!!???
 }
 
 bool CScraper::IsIdenticalScrape()
@@ -1463,8 +1463,8 @@ bool CScraper::IsIdenticalScrape()
 	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
-	// !!! How often does this happen?
-	// !!! How costly is the comparison?
+	// !! How often does this happen?
+	// !! How costly is the comparison?
 	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
 		strcmp(_title, _title_last)==0)
 	{
