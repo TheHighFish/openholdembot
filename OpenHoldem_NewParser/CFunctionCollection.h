@@ -39,6 +39,9 @@ class CFunctionCollection{
   void Save(CArchive &ar);
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
  public:
+  void ParseAll();
+  bool CorrectlyParsed();
+ public:
   // Simply call GetFirst() first, then GetNext()
   // Once you receive NULL the end has been reached
   COHScriptObject *GetFirst();
