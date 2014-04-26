@@ -136,7 +136,6 @@ protected:
 	void WriteFDebugLog(bool write_header);
 	void InitDebugArray();
 	void ResizeDialogForControlBars();
-	//!!!void LastChangeToFormula(CFormula *f);
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
 	afx_msg void OnEditCopy();

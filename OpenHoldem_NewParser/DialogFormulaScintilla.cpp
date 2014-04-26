@@ -746,9 +746,6 @@ void CDlgFormulaScintilla::ResizeDialogForControlBars(void)
 void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-
-	//!!!LastChangeToFormula(&m_wrk_formula);
-
 	*pResult = 0;
 }
 
@@ -1639,68 +1636,6 @@ void CDlgFormulaScintilla::OnHandList()  {
   }
   HandleEnables(true);
 }
-/*!!!
-void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f) 
-{
-	CString		s = "", text = "";
-	int			N = 0, i = 0;
-
-	HTREEITEM hSelected = m_FormulaTree.GetSelectedItem();
-	if (hSelected == NULL)
-		return;
-
-	s = m_FormulaTree.GetItemText(hSelected);
-	CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(hSelected));
-
-	// A root item was selected, do nothing
-	if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL || m_FormulaTree.GetChildItem(m_FormulaTree.GetSelectedItem()) != NULL )
-	{
-	}
-	else if (!pCurScin) 
-	{
-		// Empty entry, nothing to do.
-		//
-		// There once was an assertion at this place
-		//   ASSERT(false);
-		// but it caused incorrect error-messages on empty list-entries. 
-		// http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=15395
-		// (post 11 by BotForSale).
-	}
-	
-	// A child item was selected, copy text from rich edit control to working set CArray
-	else 
-	{
-		// check for function
-		N = (int) f->formula()->mFunction.GetSize();
-		for (int i=0; i<N; i++) 
-		{
-			if (f->formula()->mFunction[i].func == s) 
-			{
-				pCurScin->GetText(text);
-				f->set_func_text(i, text);
-				f->set_func_dirty(i, true);
-				f->set_func_fresh(i, false);
-				return;
-			}
-		}
-
-		// check for list
-		if (memcmp(s.GetString(), "list", 4) == 0) 
-		{
-			// Find proper list and load it
-			N = (int) f->formula()->mHandList.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (f->formula()->mHandList[i].list == s) 
-				{
-					pCurScin->GetText(text);
-					f->set_list_text(i, text);
-					return;
-				}
-			}
-		}
-	}
-}*/
 
 BOOL CDlgFormulaScintilla::DestroyWindow()
 {
@@ -1939,9 +1874,6 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	// mark symbol result cache as stale
 	//!!m_wrk_formula.MarkCacheStale();
 
-	// Make sure we "calc" the latest
-	LastChangeToFormula(&m_wrk_formula);
-
 	// calc hand lists
 	m_wrk_formula.CreateHandListMatrices();
 
@@ -1961,8 +1893,6 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	//
 	if (m_current_edit == "f$debug") 
 	{
-		//!!!LastChangeToFormula(&m_wrk_formula);
-
 		InitDebugArray();
 		UpdateDebugAuto();
 	}
@@ -2045,9 +1975,6 @@ void CDlgFormulaScintilla::OnBnClickedAuto()
 		}
 
 		m_ButtonAuto.SetWindowText("* Auto *");
-
-		LastChangeToFormula(&m_wrk_formula);
-
 		InitDebugArray();
 
 		ok_to_update_debug = true;
@@ -2332,9 +2259,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// Re-calc working set hand lists
 	m_wrk_formula.CreateHandListMatrices();
 
-	// Parse working set
-	LastChangeToFormula(&m_wrk_formula);
-
 	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
 	{
 		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
@@ -2423,7 +2347,6 @@ void CDlgFormulaScintilla::OnSearchUpdate()
 			m_ScinArray[iScint]._pWnd->Refresh();
 		}
 	}
-	//!!!LastChangeToFormula(&m_wrk_formula);
 	PopulateFormulaTree();
 }
 
