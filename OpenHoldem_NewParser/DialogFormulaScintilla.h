@@ -217,10 +217,7 @@ protected:
 	bool			in_startup;
 	bool			ok_to_update_debug;
 
-	// This is the copy of the formula class that is being worked on in the dialog
-	//!!!CFormula		m_wrk_formula;
-
-	CStringArray	m_standard_headings;
+    CStringArray	m_standard_headings;
 	// Tree view for function grouping
 	//   * Primary autoplayer functions
 	//   * Secondary autoplayer functions

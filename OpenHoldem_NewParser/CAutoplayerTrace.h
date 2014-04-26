@@ -26,10 +26,12 @@ class CAutoplayerTrace {
  public:
   CString LogSymbolsForGUI();
  public:
-  void logsymbols_collection_add(const char *s);	//!!{ ENT _logsymbols_collection.Add(s);}
-  void logsymbols_collection_removeall();			//!!{ ENT _logsymbols_collection.RemoveAll();}
-  void symboltrace_collection_add(const char *s);	//!!!{ ENT _logsymbols_collection.Add(s);}
+#define ENT CSLock lock(m_critsec);
+  void logsymbols_collection_add(const char *s) 	{ ENT _logsymbols_collection.Add(s);}
+  void logsymbols_collection_removeall() 			{ ENT _logsymbols_collection.RemoveAll();}
+  void symboltrace_collection_add(const char *s)	{ ENT _logsymbols_collection.Add(s);}
   void symboltrace_collection_removeall();
+#undef ENT
  private:
   void LogLogSymbols();
   void LogBasicInfo(const char *action_taken);

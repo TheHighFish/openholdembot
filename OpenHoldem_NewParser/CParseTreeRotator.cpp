@@ -102,7 +102,7 @@ bool CParseTreeRotator::NeedsLeftRotation(TPParseTreeNode parse_tree_node) {
       && !IsOperatorRightAssociativ(parse_tree_node->_node_type)
       && !TokenIsUnary(right_most_sibbling->_node_type)) {
     // No rotation for unary sibbling of equal priority
-    // Otherwise we get an endless recusion for expressions like "!!! true".
+    // Otherwise we get an endless recusion for expressions like "NOT NOT NOT true".
     return true;
   }
   return false;

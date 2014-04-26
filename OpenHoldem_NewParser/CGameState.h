@@ -47,7 +47,8 @@ public:
 	// public mutators
 	void	set_new_hand(const bool b) { ENT _new_hand = b; }
 #undef ENT
-
+private:
+    void WriteSummaryHeading();
 private:
 	// private variables - use public accessors and public mutators to address these
 	int					_hands_played;

@@ -47,7 +47,7 @@ void CAutoplayerTrace::Clear() {
 void CAutoplayerTrace::Add(CString message) {
   ENT
   CString new_message;
-  //!!! _indentation
+  //!! _indentation
   _symboltrace_collection.Add(new_message);
 }
 
@@ -201,8 +201,6 @@ void CAutoplayerTrace::LogAutoPlayerTrace()
   {
 	  write_log_nostamp(true, "%s\n", _symboltrace_collection.GetAt(i));
   }
-  //!!! not here
-  write_log_nostamp(1, "***** History (might be not accurate) ***********************\n"); 
 }
 
 CString CAutoplayerTrace::LogSymbolsForGUI() {
@@ -215,7 +213,7 @@ CString CAutoplayerTrace::LogSymbolsForGUI() {
 }
 
 void symboltrace_collection_add(const char *s) {
-
+  //!!!
 }
 
 
