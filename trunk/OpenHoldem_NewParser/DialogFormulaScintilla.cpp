@@ -1143,8 +1143,8 @@ void CDlgFormulaScintilla::OnNew() {
     // Add to tree
     HTREEITEM hNewParent = hUDFItem;
 
-    // !!! Candidate for refactoring, probably duplicate functionality
-    // !!! Formula grouping
+    // !! Candidate for refactoring, probably duplicate functionality
+    // !! Formula grouping
     CString tempString;
     CString groupName;
     GetGroupName(newdlg.CSnewname, groupName);
