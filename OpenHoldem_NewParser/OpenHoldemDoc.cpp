@@ -78,9 +78,6 @@ BOOL COpenHoldemDoc::OnNewDocument()
 
 	// Try to unload dll
 	p_dll_extension->UnloadDll();
-
-	// Create parse trees for default formula
-	//!!!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
 	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
 

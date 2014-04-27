@@ -20,14 +20,17 @@ class COHScriptObject {
   COHScriptObject(CString *new_name, CString *new_function_text);
   ~COHScriptObject();
  public:
-  CString name()			  { return _name; }
-  CString function_text()	  { return _function_text; }
+  CString name()			    { return _name; }
+  CString function_text()	    { return _function_text; }
+  void SetName(CString name)    { _name = name; }
  public:
   virtual double Evaluate();
  public:
-  bool IsList()               { return _name.Left(4) == "list"; }
-  bool IsFunction()           { return _name.Left(2) == "f$"; }
+  bool IsList()                 { return _name.Left(4) == "list"; }
+  bool IsFunction()             { return _name.Left(2) == "f$"; }
   bool IsStandardFunction();
+  bool IsUserDefinedFunction()  { return (IsFunction() 
+                                    && !IsStandardFunction()); }
  public:
   // For saving
   CString Serialize()         { return "##" + _name + "##\r\n" 

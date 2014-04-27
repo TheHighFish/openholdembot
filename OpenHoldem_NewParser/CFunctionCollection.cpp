@@ -16,6 +16,7 @@
 
 #include "CFunction.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
 CFunctionCollection *p_function_collection = NULL;
 
@@ -97,26 +98,27 @@ void CFunctionCollection::SetEmptyDefaultBot() {
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
+  // After setting the bot we should parse it so that OH can evaluate and act
+  ParseAll();
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
   //!!CSLock lock(m_critsec);
-
   // Header comment
-  AddEmptyFunctionIfFunctionDoesNotExist(CString("notes"));
+  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded
-  AddEmptyFunctionIfFunctionDoesNotExist(CString("dll"));
+  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
   // Autoplayer, standard, ini and PrWin functions
   for (int i=0; i<k_number_of_standard_functions; ++i)
   {
-	  AddEmptyFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
   }
   // Debug functions	
-  AddEmptyFunctionIfFunctionDoesNotExist(CString("f$test"));
-  AddEmptyFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
+  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$debug"));
 }
 
-void CFunctionCollection::AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name)
+void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name)
 {
   if (Exists(function_name)) {
 	 return;
@@ -217,4 +219,18 @@ void CFunctionCollection::SaveObject(
   if (function_or_list == NULL) return;
   ar.WriteString(function_or_list->Serialize());
   
+}
+
+bool CFunctionCollection::Rename(CString from_name, CString to_name) {
+  COHScriptObject *object_to_rename = LookUp(from_name);
+  if (object_to_rename == NULL) return false;
+  if (p_function_collection->LookUp(to_name) != NULL) {
+    OH_MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
+    return false;
+  }
+  // Delete old entry from the binary tree... !!!
+  // ...then rename...
+  object_to_rename->SetName(to_name);
+  // ...and insert again.
+  Add(object_to_rename);
 }
