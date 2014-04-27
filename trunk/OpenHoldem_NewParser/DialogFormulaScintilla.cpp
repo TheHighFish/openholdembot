@@ -1178,156 +1178,69 @@ void CDlgFormulaScintilla::OnNew() {
   HandleEnables(true);
 }
 
-void CDlgFormulaScintilla::OnRename() 
-{/*!!!
-	CDlgRename rendlg;
-	CString	s = "";
-	char str[MAX_WINDOW_TITLE] = {0};
-	int N = 0, i = 0;
-	bool didRename = false;
+void CDlgFormulaScintilla::OnRename() {
+  CDlgRename rendlg;
+  char str[MAX_WINDOW_TITLE] = {0};
 
-	StopAutoButton();
-
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-	strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
-
-	rendlg.CSoldname = s;
-
-	if (rendlg.DoModal() == IDOK) 
-	{
-		bool bRenameUDF = false;
-		// Renaming a list
-		if (memcmp(str, "list", 4) == 0) 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
-			{
-				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot rename to a list that already exists", "Error", 0);
-				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} 
-			else 
-			{
-				// Find proper list
-				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (int i=0; i<N; i++) 
-				{
-					if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
-					{
-						// Update it in the CArray working set
-						m_wrk_formula.set_list_list(i, rendlg.CSnewname);
-						didRename = true;
-						break;
-					}
-				}
-			}
-		}
-
-		// Renaming a UDF
-		else if (memcmp(str, "f$", 2) == 0) 
-		{
-			bRenameUDF = true;
-
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == rendlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot rename to a formula that already exists", "Error", 0);
-				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} 
-			else 
-			{
-				// Find proper UDF and display it
-				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (int i=0; i<N; i++) 
-				{
-					if (m_wrk_formula.formula()->mFunction[i].func == s) 
-					{
-						// Update it in the CArray working set
-						m_wrk_formula.set_func_func(i, rendlg.CSnewname);
-						m_wrk_formula.set_func_fresh(i, false);
-
-						didRename = true;
-						break;
-					}
-				}
-			}
-		}
-		if (didRename) 
-		{
-			UpdateAllScintillaKeywords();
-			HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
-			if (!bRenameUDF)
-				m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-			else 
-			{
-				CString tempString, groupName = rendlg.CSnewname;
-				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
-				HTREEITEM hNewParent = hUDFItem;
-				CString parentName = m_FormulaTree.GetItemText(oldParentItem);
-				if (groupName.Find("f$") == 0) 
-				{
-					int index = groupName.Find("_");
-					if (index > 0) 
-					{
-						groupName = groupName.Mid(2, index-2);
-						if (parentName.Compare(groupName)) 
-						{
-							// Does a group already exist?
-							HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-							if (hExistingGroup)
-								hNewParent = hExistingGroup;
-							else 
-							{
-								// If a group does not exist, is there another UDF to group together?
-								HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-								if (matchingItem) 
-								{
-									hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-									MoveTreeItem(matchingItem, hNewParent, NULL, false);
-								}
-							}
-						}
-					}
-				}
-				if (oldParentItem != hNewParent) 
-				{
-					MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
-					if (oldParentItem != hUDFItem) 
-					{
-						HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-						if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
-						{
-							MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
-							m_FormulaTree.DeleteItem(oldParentItem);
-						}
-					}
-				} else
-					m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-				if (memcmp(str, "f$", 2) == 0)
-					SortUdfTree();
-			}
-			SetWindowText("Formula - " + rendlg.CSnewname);
-			m_FormulaTree.SetFocus();
-			m_dirty = true;
-			HandleEnables(true);
-		}
-	}*/
+  StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
+  rendlg.CSoldname = s;
+  if (rendlg.DoModal() != IDOK) return;
+  if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
+    
+  UpdateAllScintillaKeywords();
+  HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
+  if (!p_function_collection->LookUp(rendlg.CSoldname)->IsUserDefinedFunction()) {
+    // List or standard function
+    // No formula grouping here, therefore easy to rename
+    m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+  } else {
+    // User-defined function
+    CString tempString, groupName = rendlg.CSnewname;
+    HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
+    HTREEITEM hNewParent = hUDFItem;
+    CString parentName = m_FormulaTree.GetItemText(oldParentItem);
+    if (groupName.Find("f$") == 0) {
+      int index = groupName.Find("_");
+      if (index > 0) {
+        groupName = groupName.Mid(2, index-2);
+        if (parentName.Compare(groupName)) {
+          // Does a group already exist?
+          HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+          if (hExistingGroup) {
+	        hNewParent = hExistingGroup;
+          } else {
+            // If a group does not exist, is there another UDF to group together?
+            HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+            if (matchingItem) {
+              hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+              MoveTreeItem(matchingItem, hNewParent, NULL, false);
+            }
+          }
+        }
+      }
+    }
+    if (oldParentItem != hNewParent) {
+      MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
+      if (oldParentItem != hUDFItem) {
+        HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+        if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+          MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
+          m_FormulaTree.DeleteItem(oldParentItem);
+        }
+      }
+    } else{
+	  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+    }
+    if (memcmp(str, "f$", 2) == 0) {
+	  SortUdfTree();
+    }
+  }
+  SetWindowText("Formula - " + rendlg.CSnewname);
+  m_FormulaTree.SetFocus();
+  m_dirty = true;
+  HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnDelete() 
@@ -1878,7 +1791,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	m_wrk_formula.CreateHandListMatrices();
 
 	// Validate parse trees
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
+	if (!p_function_collection->ParseAll())
 	{
 		s.Format("There are syntax errors in one or more formulas that are\n");
 		s.Append("preventing calculation.\n");
@@ -1945,45 +1858,32 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	}*/
 }
 
-void CDlgFormulaScintilla::OnBnClickedAuto()
-{/*!!!
-	if (m_ButtonAuto.GetCheck() == 1)
-	{
-		boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
-		CString  s;
-
-		ok_to_update_debug = false;
-		m_CalcResult.SetWindowText("");
-
-		// cal hand lists
-		m_wrk_formula.CreateHandListMatrices();
-
-		// Validate parse trees
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-		{
-			s.Format("There are syntax errors in one or more formulas that are\n");
-			s.Append("preventing calculation of this formula.\n");
-			s.Append("These errors need to be corrected before the 'Auto'\n");
-			s.Append("button can be used.");
-			OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
-
-			// All we need to do is remove the Auto Check since the button text hasn't been
-			// updated yet and ok_to_update_debug has already been set to false
-			m_ButtonAuto.SetCheck(0);
-
-			return;
-		}
-
-		m_ButtonAuto.SetWindowText("* Auto *");
-		InitDebugArray();
-
-		ok_to_update_debug = true;
+void CDlgFormulaScintilla::OnBnClickedAuto() {
+  if (m_ButtonAuto.GetCheck() == 1)
+  {
+    ok_to_update_debug = false;
+    m_CalcResult.SetWindowText("");
+    p_function_collection->ParseAll();
+	// Validate parse trees
+	if (!p_function_collection->CorrectlyParsed()) {
+      CString s;
+	  s.Format("There are syntax errors in one or more formulas that are\n");
+	  s.Append("preventing calculation of this formula.\n");
+	  s.Append("These errors need to be corrected before the 'Auto'\n");
+	  s.Append("button can be used.");
+	  OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+	  // All we need to do is remove the Auto Check since the button text hasn't been
+      // updated yet and ok_to_update_debug has already been set to false
+	  m_ButtonAuto.SetCheck(0);
+	  return;
 	}
-	else 
-	{
-		ok_to_update_debug = false;
-		m_ButtonAuto.SetWindowText("Auto");
-	}*/
+    m_ButtonAuto.SetWindowText("* Auto *");
+    //!!!InitDebugArray();
+	ok_to_update_debug = true;
+  } else {
+	ok_to_update_debug = false;
+	m_ButtonAuto.SetWindowText("Auto");
+  }
 }
 
 void CDlgFormulaScintilla::StopAutoButton()
@@ -2259,7 +2159,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// Re-calc working set hand lists
 	m_wrk_formula.CreateHandListMatrices();
 
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
+	if (!p_function_collection->ParseAll())
 	{
 		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
 					   "Would you still like to apply changes in the working set to the main set?\n\n"
@@ -2283,7 +2183,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd());
+	p_function_collection->ParseAll());
 
 	// Re-calc symbols
 	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
@@ -2417,7 +2317,7 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 		*/
 		// Number: black
 		pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
-		// Keywords: !!!
+		// Keywords: 
 		pWnd->SetForeground(5, RGB(0x80, 0x33, 0x80));		// SCE_C_WORD 5			(keywords)
 		/*
 		pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6

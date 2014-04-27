@@ -35,11 +35,12 @@ class CFunctionCollection{
   void Add(COHScriptObject *new_function);
   bool Exists(CString name);
   COHScriptObject *LookUp(CString name);
+  bool Rename(CString from_name, CString to_name);
  public:
   void Save(CArchive &ar);
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
  public:
-  void ParseAll();
+  bool ParseAll();
   bool CorrectlyParsed();
  public:
   // Simply call GetFirst() first, then GetNext()
@@ -55,7 +56,7 @@ class CFunctionCollection{
   void SetPath(CString path)	{ _path = path; }
  private:
   void CheckForDefaultFormulaEntries();
-  void AddEmptyFunctionIfFunctionDoesNotExist(CString &function_name);
+  void CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name);
  private:
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;
