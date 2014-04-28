@@ -292,3 +292,8 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result)
 	// Symbol of name different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineIsTournament::SymbolsProvided() {
+  //!!
+  return " todo";
+}

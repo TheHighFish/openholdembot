@@ -233,4 +233,14 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   object_to_rename->SetName(to_name);
   // ...and insert again.
   Add(object_to_rename);
+  return true;
+}
+
+bool CFunctionCollection::CorrectlyParsed() {
+  return true; //!!!
+}
+
+bool CFunctionCollection::ParseAll() {
+  //!!!
+  return true;
 }

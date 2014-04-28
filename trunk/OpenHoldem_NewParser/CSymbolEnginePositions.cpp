@@ -241,3 +241,8 @@ bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
 		return false;
 	}
 }
+
+CString CSymbolEnginePositions::SymbolsProvided() {
+  //!!
+  return " todo";
+}

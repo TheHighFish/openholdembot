@@ -109,3 +109,8 @@ bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
 	// Symbol of name different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineUserchair::SymbolsProvided() {
+  //!!
+  return " todo";
+}

@@ -231,6 +231,8 @@ private:
 	CString ExtractCommentFromHandList(CString HandListAsString);
 	void WarnAboutAutoplayerWhenApplyingFormula();
 	void SetExtendedWindowTitle(CString additional_information);
+ private:
+  void FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl);
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;

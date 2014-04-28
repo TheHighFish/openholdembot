@@ -180,3 +180,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	}
 	return true;
 }
+
+CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
+  //!!
+  return " todo";
+}
