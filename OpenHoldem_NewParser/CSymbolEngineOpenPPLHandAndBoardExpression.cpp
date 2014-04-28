@@ -263,3 +263,8 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(CString card_exp
 	}
 	return result;
 }
+
+CString CSymbolEngineOpenPPLHandAndBoardExpression::SymbolsProvided() {
+  //!!
+  return " todo";
+}

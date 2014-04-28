@@ -403,3 +403,8 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 	// Valid symbol
 		return true;
 }
+
+CString CSymbolEngineRaisersCallers::SymbolsProvided() {
+  //!!
+  return " todo";
+}

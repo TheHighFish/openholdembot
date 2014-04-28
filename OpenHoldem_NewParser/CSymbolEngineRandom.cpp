@@ -100,3 +100,8 @@ bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result)
 	// Symbol of name different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineRandom::SymbolsProvided() {
+  //!!
+  return " todo";
+}

@@ -241,3 +241,8 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
 	// Symbol of name different symbol-engine
 	return false;
 }
+
+CString CSymbolEnginePrwin::SymbolsProvided() {
+  //!!
+  return " todo";
+}

@@ -684,6 +684,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
       hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
       //!!m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
     }
+    p_OH_script_object = p_function_collection->GetNext();
   }
 
   hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
@@ -890,154 +891,53 @@ void CDlgFormulaScintilla::SetExtendedWindowTitle(CString additional_information
 	SetWindowText(new_title);
 }
 
-void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
-{/*!!!
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	CString			s = "";
-	int				N = 0, i = 0;
-	CMenu			*edit_menu = this->GetMenu()->GetSubMenu(1);
+void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) {
+  LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
-	ok_to_update_debug = false;
+  CMenu			*edit_menu = this->GetMenu()->GetSubMenu(1);
 
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  ok_to_update_debug = false;
 
-	StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  StopAutoButton();
 
-	// A root item was selected or a UDF group item
-	if ((m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL && s != "notes") || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem()))
-	{
-		if (m_pActiveScinCtrl)
-		{
-			m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-			m_pActiveScinCtrl->EnableWindow(false);
-		}
-		m_pActiveScinCtrl = &m_EmptyScinCtrl;
-		m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-		m_pActiveScinCtrl->EnableWindow(false);
-	}
+  if ((m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL && s != "notes") 
+      || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem())) {
+    // A root item was selected or a UDF group item
+    FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
+  } else {
+    // A child item was selected
+	if ((s == "notes")
+        || (s == "dll")
+        || (s.Left(2) == "f$")
+        || (s.Left(4) == "list")) {
+      SetExtendedWindowTitle(s);
+      COHScriptObject *p_function_or_list = p_function_collection->LookUp(s);
+      if (p_function_or_list != NULL) {
+        CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
+        if (!pCurScin) 
+        {
+          pCurScin = SetupScintilla(NULL, p_function_or_list->function_text());
+          m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
 
-	// A child item was selected
-	else 
-	{
-		if (s == "notes" || s == "dll") 
-		{
-			SetExtendedWindowTitle(s);
-			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == s) 
-				{
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mFunction[i].func.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mFunction[i].func_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mFunction[i].func;
-					i=N+1;
-				}
-			}
-		}
-		else if (memcmp(s.GetString(), "f$", 2) == 0) 
-		{
-			SetExtendedWindowTitle(s);
-			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == s) 
-				{
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mFunction[i].func.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mFunction[i].func_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mFunction[i].func;
-					i=N+1;
-				}
-			}
-		}
-		else if (memcmp(s.GetString(), "list", 4) == 0) 
-		{
-			// Find proper list and display it
-			N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-			for (int i=0; i<N; i++) {
-				if (m_wrk_formula.formula()->mHandList[i].list == s) 
-				{
-					SetExtendedWindowTitle(s);
-
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mHandList[i].list.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mHandList[i].list_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mHandList[i].list;
-					i=N+1;
-				}
-			}
-		}
-	}
-
-	if (s == "f$debug") 
-	{
-		InitDebugArray();
-	}
-
-	HandleEnables(true);
-
-	*pResult = 0;*/
+          pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+          pCurScin->SetText(p_function_or_list->function_text());
+          pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+          pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
+        }
+        ASSERT(pCurScin != NULL);
+                FormerShowEnableHideCodeClone(pCurScin);
+        SelectFunctionTab(pCurScin);
+        m_current_edit = p_function_or_list->function_text();
+	  } 
+    }
+  }
+  if (s == "f$debug") 
+  {
+	  InitDebugArray();
+  }
+  HandleEnables(true);
+  *pResult = 0;
 }
 
 HTREEITEM CDlgFormulaScintilla::FindUDFGroupItem(const char *groupName)
@@ -1302,14 +1202,7 @@ void CDlgFormulaScintilla::OnDelete()
 		m_dirty = true;
 		m_FormulaTree.SetFocus();
 		SetWindowText("Formula - ");
-		if (m_pActiveScinCtrl)
-		{
-			m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-			m_pActiveScinCtrl->EnableWindow(false);
-		}
-		m_pActiveScinCtrl = &m_EmptyScinCtrl;
-		m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-		m_pActiveScinCtrl->EnableWindow(false);
+        FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
 	}
 
 	UpdateAllScintillaKeywords();
@@ -1787,9 +1680,6 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	// mark symbol result cache as stale
 	//!!m_wrk_formula.MarkCacheStale();
 
-	// calc hand lists
-	m_wrk_formula.CreateHandListMatrices();
-
 	// Validate parse trees
 	if (!p_function_collection->ParseAll())
 	{
@@ -2156,9 +2046,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	// Save settings to registry
 	SaveSettingsToRegistry();
 
-	// Re-calc working set hand lists
-	m_wrk_formula.CreateHandListMatrices();
-
 	if (!p_function_collection->ParseAll())
 	{
 		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
@@ -2178,9 +2065,6 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_formula->CopyFormulaFrom(&m_wrk_formula);
 
 	pDoc->SetModifiedFlag(true);
-
-	// Re-calc global set hand lists
-	p_formula->CreateHandListMatrices();
 
 	// Re-parse global set
 	p_function_collection->ParseAll());
@@ -2930,8 +2814,16 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	m_SymbolTree.SortChildren(hRawItem);
 }
 
-
-
-
-
-
+void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
+  if (m_pActiveScinCtrl) {
+	m_pActiveScinCtrl->ShowWindow(SW_HIDE);
+	m_pActiveScinCtrl->EnableWindow(false);
+  }
+  m_pActiveScinCtrl = new_pActiveScinCtrl;
+  m_pActiveScinCtrl->ShowWindow(SW_SHOW);
+  if (new_pActiveScinCtrl == &m_EmptyScinCtrl) {
+    m_pActiveScinCtrl->EnableWindow(false);
+  } else {
+    m_pActiveScinCtrl->EnableWindow(true);
+  }
+}

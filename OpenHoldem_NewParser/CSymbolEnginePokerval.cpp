@@ -1302,3 +1302,8 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
 	// Valid symbol
 	return true;
 }
+
+CString CSymbolEnginePokerval::SymbolsProvided() {
+  //!!
+  return " todo";
+}
