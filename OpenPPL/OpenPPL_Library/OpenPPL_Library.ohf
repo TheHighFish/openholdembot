@@ -2465,7 +2465,18 @@ ranklocommon
 (nsuited >= 5)
 
 ##f$OpenPPL_HaveFlushDraw##
-(nsuited >= 4)
+// Modified, because Shanky BonusBots definition is not very practical
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
+// 
+// Good one, contributing 2 cards
+  (((nsuited == 4) && (nsuitedcommon == 2))
+// Best one
+|| ff$OpenPPL_HaveNutFlushDraw
+// Contributing only single card:
+//  * Headsup: at least 3rd-best
+//  * 3-handed: at least 2nd-best
+//  * 4-handed: only nut-flush
+|| ((nsuited >= 4) && (nsuitedcommon >2) && (f$OpenPPL_NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
 
 ##f$OpenPPL_HaveFullHouse##
 isfullhouse || f$OpenPPL_HaveQuads
@@ -2484,7 +2495,7 @@ isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNutFlushDraw##
     f$OpenPPL_HaveNutStraightFlush
-|| [f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
+|| [(nsuited >= 4) && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
 
 
 ##f$OpenPPL_HaveNutStraight##
