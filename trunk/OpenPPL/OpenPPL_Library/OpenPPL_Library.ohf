@@ -2471,7 +2471,7 @@ ranklocommon
 // Good one, contributing 2 cards
   (((nsuited == 4) && (nsuitedcommon == 2))
 // Best one
-|| ff$OpenPPL_HaveNutFlushDraw
+|| f$OpenPPL_HaveNutFlushDraw
 // Contributing only single card:
 //  * Headsup: at least 3rd-best
 //  * 3-handed: at least 2nd-best
