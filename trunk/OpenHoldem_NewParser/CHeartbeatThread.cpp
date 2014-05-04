@@ -138,7 +138,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		// Caclulate symbols
 		if (new_scrape!=NOTHING_CHANGED)
 		{
-			p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+			p_engine_container->EvaluateAll();
 			// Shoot replay-frame if desired
 			// a) on every change
 			if (preferences.replay_record_every_change() 

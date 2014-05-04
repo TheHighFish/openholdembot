@@ -185,9 +185,9 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines()
 	delete p_betround_calculator;
 }
 
-void CEngineContainer::CallSymbolEnginesToUpdateSymbolsIfNecessary()
+void CEngineContainer::EvaluateAll()
 {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] CallSymbolEnginesToUpdateSymbolsIfNecessary()\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
 	if (!_reset_on_connection_executed)
 	{
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");

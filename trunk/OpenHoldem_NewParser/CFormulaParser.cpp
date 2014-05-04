@@ -41,6 +41,7 @@ CFormulaParser::~CFormulaParser()
 void CFormulaParser::ParseFile(CArchive& formula_file)
 {
 	_is_parsing = true;
+    CParseErrors::ClearErrorStatus();
 	p_function_collection->DeleteAll();
 	p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
 	p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
@@ -257,7 +258,9 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 	p_function_collection->Add((COHScriptObject*)p_new_function); //!! conversion
     // Care about operator precendence
     parse_tree_rotator.Rotate(p_new_function);
-    p_new_function->Serialize(); //!!
+#ifdef _DEBUG
+    p_new_function->Serialize(); 
+#endif
 }
 
 // Nearly OK
@@ -285,12 +288,6 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
 
 // OK
 TPParseTreeNode CFormulaParser::ParseFunctionBody(){
-  // For backpatching pointers to next (open ended)when-condition
-  // Initializing them once (here), not in the recursive(!) functions
-  // to parse (open-ended) when-conditions
-  _last_open_ended_when_condition = NULL;
-  _last_when_condition = NULL;
-  _current__open_ended_when_condition = NULL;
   // Just look-ahead 1 token
   int token_ID = _tokenizer.LookAhead();
   if ((token_ID == kTokenEndOfFile) 
@@ -307,6 +304,7 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
     TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
+    BackPatchOpenEndedWhenConditionSequence(open_ended_when_condition);
     return open_ended_when_condition;
   } else {	
   // OH-script-function, single expression
@@ -461,43 +459,60 @@ CString CFormulaParser::CurrentFunctionName()
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
-  int token_ID = _tokenizer.GetToken();
-  assert(token_ID == kTokenOperatorConditionalWhen);
-  TPParseTreeNode condition = ParseExpression();
-  TPParseTreeNode when_condition = new CParseTreeNode();
-  when_condition->MakeWhenCondition(condition);
-  // Next either:
-  // * another when-condition
-  // * action
-  // * user-variable to be set
-  token_ID = _tokenizer.LookAhead();
-  if (token_ID == kTokenOperatorConditionalWhen) {
-    // 2 consecutive when-conditions
-    // Therefore last condition was an open-ended one
-    BackPatchOpenEndedWhenCondition(when_condition);
-    TPParseTreeNode next_when_condition = ParseOpenEndedWhenConditionSequence();
-    // Setting the "THEN" part of the last open-ended when-condition to this condition
-    when_condition->_second_sibbling = next_when_condition;
-    // For backpatching and creating a list of open-ended when-conditons
-    _last_open_ended_when_condition = when_condition;
-    // For backpatching and creating a list of when-conditons
-    _last_when_condition = next_when_condition;
-    
-  } else if (TokenIsOpenPPLAction(token_ID))  {
-    // Last condition was a normal condition with action
-    BackPatchWhenCondition(when_condition);
-    TPParseTreeNode action = ParseOpenPPLAction();
-    when_condition->_second_sibbling = action;
-    // For backpatching and creating a list of when-conditons
-    _last_when_condition = when_condition;
-  } else {
-    CParseErrors::Error("Missing action after when condition");
+  TPParseTreeNode last_when_condition = NULL;
+  bool last_when_condition_was_open_ended = false;
+  TPParseTreeNode first_when_condition_of_sequence = NULL;
+  int token_ID = _tokenizer.LookAhead();
+  while (token_ID == kTokenOperatorConditionalWhen) {
+    token_ID = _tokenizer.GetToken();
+    TPParseTreeNode condition = ParseExpression();
+    TPParseTreeNode when_condition = new CParseTreeNode();
+    when_condition->MakeWhenCondition(condition);
+    // Remember first when-condition
+    if (first_when_condition_of_sequence == NULL) {
+      first_when_condition_of_sequence = when_condition;
+    }
+    // Concatenate conditions in sequence
+    if (last_when_condition != NULL) {
+      if (last_when_condition_was_open_ended) {
+        // Open ended when-conditions:
+        // Second sibbling points to next when-condition
+        // Third siblling points to next open-ender
+        last_when_condition->_second_sibbling = when_condition;
+      } else {
+        // When condition with action (2nd sibbling)
+        // Third sibbling oints to next when-conditon
+        last_when_condition->_third_sibbling = when_condition;
+      }
+    }
+    // For future back-patching
+    last_when_condition = when_condition;
+    // Next either:
+    // * action
+    // * another when-condition
+    // * user-variable to be set !!
+    token_ID = _tokenizer.LookAhead();
+    if (TokenIsOpenPPLAction(token_ID))  {
+      TPParseTreeNode action = ParseOpenPPLAction();
+      when_condition->_second_sibbling = action;
+      // For future backpatching
+      last_when_condition_was_open_ended = false;
+      token_ID = _tokenizer.LookAhead();
+    } else if (token_ID == kTokenOperatorConditionalWhen) {
+      // All work to do: in the next loop
+      last_when_condition_was_open_ended = true;
+      // LookAhead() already executed
+      continue;
+    } else if ((token_ID == kTokenEndOfFile) 
+        || (token_ID == kTokenEndOfFunction)) {
+      // Parsing successfully finished
+      break;
+    } else {
+      CParseErrors::Error("Missing action after when-condition");
+      break;
+    }
   }
-  token_ID = _tokenizer.LookAhead();
-  if (token_ID == kTokenOperatorConditionalWhen) {
-	  ParseOpenEndedWhenConditionSequence();
-  }
-  return when_condition;
+  return first_when_condition_of_sequence;
 }
 
 // OK
@@ -613,29 +628,43 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression()
 	return NULL;
 }
 
-void CFormulaParser::BackPatchOpenEndedWhenCondition(
-    TPParseTreeNode open_ended_when_condition) {
-  if (_last_open_ended_when_condition != NULL) {
-    // Setting the "ELSE"-part of the last open-ended when-condition
-    _last_open_ended_when_condition->SetRightMostSibbling(
-      open_ended_when_condition);
-  }
-  if (_last_when_condition != NULL) {
-    // Setting the "ELSE" part of the last when-condition
-    _last_when_condition->SetRightMostSibbling(open_ended_when_condition);
-  }
-}
-
-void CFormulaParser::BackPatchWhenCondition(
-    TPParseTreeNode when_condition) {
-  if (_last_when_condition != NULL) {
-    // Setting the "ELSE" part of the last when-condition
-    _last_when_condition->SetRightMostSibbling(when_condition);
-    return;
-  }
-  // Last when-condition does not exist, therefore...
-  if (_last_open_ended_when_condition != NULL) {
-    // Setting the "THEN"-part of the last open-ended when-condition
-    _last_open_ended_when_condition->_second_sibbling = when_condition;
+void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
+    TPParseTreeNode first_when_condition_of_a_function) {
+  // Backpatching everything after a complete functiuon got parsed
+  TPParseTreeNode last_open_ended_when_condition = NULL;
+  TPParseTreeNode current_when_condition = first_when_condition_of_a_function;
+  while (current_when_condition != NULL) {
+    if (current_when_condition->IsOpenEndedWhenCondition()) {
+      // Setting the "Else"-part of the last open-ended when-condition
+      // to the next open ended when condition
+      if (last_open_ended_when_condition != NULL) {
+        assert(last_open_ended_when_condition != current_when_condition);
+        last_open_ended_when_condition->SetRightMostSibbling(
+          current_when_condition);
+      }
+      last_open_ended_when_condition = current_when_condition;
+      // The "Then"-part (2nd sibbling) of an open-ended when-condition
+      // points to the next (maybe open-ended) when-condition.
+      // The 3rd sibbling is ATM undefined and gets back-patched later.
+      assert(current_when_condition != current_when_condition->_second_sibbling);
+      current_when_condition = current_when_condition->_second_sibbling;
+    } else if (current_when_condition->IsWhenConditionWithAction()) {
+      // Normal when-condition with action (2nd sibbling).
+      // The 3rd sibbling contains the "Else"-part,
+      // i.e. next (maybe open-ended) when-condition
+      TPParseTreeNode right_most_sibbling = current_when_condition->GetRightMostSibbling();
+      assert(current_when_condition != right_most_sibbling);
+      if ((right_most_sibbling == NULL)
+          || !right_most_sibbling->IsAnyKindOfWhenCondition()) {
+        // End of when-condition-sequence reached
+        break;
+      }
+      current_when_condition = right_most_sibbling;
+    } else {
+      // End of when-condition sequence reached
+      assert(current_when_condition != NULL);
+      assert(!current_when_condition->IsAnyKindOfWhenCondition());
+      break;
+    }   
   }
 }

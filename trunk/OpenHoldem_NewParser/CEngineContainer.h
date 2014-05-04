@@ -27,7 +27,7 @@ class CEngineContainer {
   void ResetOnConnection();
   void ResetOnDisconnection();
  public:
-  void CallSymbolEnginesToUpdateSymbolsIfNecessary();
+  void EvaluateAll();
   bool EvaluateSymbol(const char *name, double *result);
   CString SymbolsProvided()       { return _list_of_symbols; }
  private:

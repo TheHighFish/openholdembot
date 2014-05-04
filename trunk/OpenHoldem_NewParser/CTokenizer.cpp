@@ -47,7 +47,7 @@ void CTokenizer::InitVars()
 	_token_start_pointer = 0;
 	_token_end_pointer = 0;
 	_last_token_pushed_back = false;
-	_last_token = -1; //!! k_undefined
+	_last_token = k_undefined;
 	_inside_OpenPPL_function = false;
 }
 

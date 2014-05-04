@@ -36,6 +36,7 @@ class CFunctionCollection{
   bool Exists(CString name);
   COHScriptObject *LookUp(CString name);
   bool Rename(CString from_name, CString to_name);
+  void Delete(CString name);
  public:
   void Save(CArchive &ar);
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);

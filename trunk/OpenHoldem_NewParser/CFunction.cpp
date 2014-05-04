@@ -18,8 +18,7 @@
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
 
-CFunction::CFunction(CString *new_name, CString *new_function_text)
-{
+CFunction::CFunction(CString *new_name, CString *new_function_text) {
   _name = ((new_name != NULL) ? *new_name : "");
   _function_text = ((new_function_text != NULL) ? *new_function_text : "");
   _is_result_cached = false;

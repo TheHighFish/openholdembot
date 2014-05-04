@@ -54,6 +54,10 @@ class CParseTreeNode {
   double EvaluateBinaryExpression();
   double EvaluateTernaryExpression();
   double EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling);
+ private:
+  bool IsAnyKindOfWhenCondition();
+  bool IsWhenConditionWithAction();
+  bool IsOpenEndedWhenCondition();
  protected:
   int _node_type;
   // In case of terminal node (identifier)

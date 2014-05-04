@@ -89,6 +89,16 @@ bool CParseTreeRotator::NeedsLeftRotation(TPParseTreeNode parse_tree_node) {
     // They are "unary" and the parser took care about correct recognition
     return false;
   }
+  if (TokenIsUnary(sibblings_type)) {
+    // Nothing to do for unary expressions as right-hand-operands
+    // e.g. "2 + !false": we clearly can't move the negation to the top.
+    return false;
+  }
+  if (sibblings_type == kTokenOperatorConditionalWhen) {
+    // Nothing to do for when-conditions
+    // We already got them right when constructing the parse-tree
+    return false;
+  }
   int sibblings_priority = GetOperatorPriority(sibblings_type);
   if (sibblings_priority == k_undefined) {
     // Something that is not an operator

@@ -17,7 +17,7 @@
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 
-// !!! looks like some redundancy between CAutoplayerTrace and this
+// !! looks like some redundancy between CAutoplayerTrace and this
 
 CEvalInfoFunctionArray::~CEvalInfoFunctionArray()
 {

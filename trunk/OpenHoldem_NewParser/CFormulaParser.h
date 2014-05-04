@@ -60,9 +60,8 @@ class CFormulaParser {
   TPParseTreeNode ParseOpenPPLAction();
   TPParseTreeNode ParseOpenPPLRaiseExpression();
  private:
-  void BackPatchOpenEndedWhenCondition(
-      TPParseTreeNode open_ended_when_condition);
-  void BackPatchWhenCondition(TPParseTreeNode when_condition);
+  void BackPatchOpenEndedWhenConditionSequence(
+    TPParseTreeNode first_when_condition_of_a_function);
  private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
@@ -70,11 +69,6 @@ class CFormulaParser {
  private:
   CString _token;
   bool _is_parsing;
-private:
-  // For backpatching pointers to next (open ended)when-condition
-  TPParseTreeNode _last_open_ended_when_condition;
-  TPParseTreeNode _last_when_condition;
-  TPParseTreeNode _current__open_ended_when_condition;
 };
 
 extern CFormulaParser *p_formula_parser;
