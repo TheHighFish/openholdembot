@@ -121,26 +121,20 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits()
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
 }
 
-void CSymbolEngineAutoplayer::CalculateSitInState()
-{
-	for (int i=0; i<k_max_number_of_buttons; i++)
-	{
-		if (p_string_match->IsStringSitin(p_scraper->button_label(i)))
-		{
-			// Sitin-button found
-			_issittingin = p_scraper->GetButtonState(i);
-			return;
-		}
-
-		else if (p_string_match->IsStringSitout(p_scraper->button_label(i)))
-		{
-			// Sitout-button found
-			_issittingin = !(p_scraper->GetButtonState(i));
-			return;
-		}
-	}
-	// we have neither a sitout or sitin button
-	_issittingin = true;
+void CSymbolEngineAutoplayer::CalculateSitInState() {
+  for (int i=0; i<k_max_number_of_buttons; i++) {
+    if (p_string_match->IsStringSitin(p_scraper->button_label(i))) {
+	  // Sitin-button found
+      // We are sitting in if that button can NOT be clicked
+	  _issittingin = !p_scraper->GetButtonState(i);
+	  return;
+    } else if (p_string_match->IsStringSitout(p_scraper->button_label(i))) {
+	  // Sitout-button found
+      // We are sitting in if that button CAN be clicked
+	  _issittingin = (p_scraper->GetButtonState(i));
+	  return;
+    }
+  }
 }
 
 void CSymbolEngineAutoplayer::DetectSpecialConnectionLikeBringAndManualMode()
