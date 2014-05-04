@@ -72,7 +72,11 @@ inline int CardRankCharacterToCardRank(char rank)
 		case 'k': return 13;
 		case 'A': return 14;
 		case 'a': return 14;
-		default: return 0;
+		default: 
+          // Just accept silently
+		  // We might get input like "Ac3d" or "KJTsuited"
+		  assert(false);
+		  return -1;
 	}
 }
 
