@@ -314,11 +314,14 @@ double CParseTreeNode::EvaluateTernaryExpression()
 	}
 }
 
-double CParseTreeNode::EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling)
-{
-	assert(first_second_or_third_sibbling != NULL);
-	double result = first_second_or_third_sibbling->Evaluate();
-	return result;
+double CParseTreeNode::EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling) {
+  // We allow NULL-nodes here, because that can happen 
+  // after the end of a sequence of when-conditions
+  if (first_second_or_third_sibbling == NULL) {
+    return k_undefined_zero;
+  }
+  double result = first_second_or_third_sibbling->Evaluate();
+  return result;
 }
 
 TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {
@@ -382,14 +385,37 @@ CString CParseTreeNode::Serialize()
     return "(" + _first_sibbling->Serialize() + " ? "
       + _second_sibbling->Serialize() + " : "
       + _third_sibbling->Serialize() + ")";
-  } else if (_node_type == kTokenOperatorConditionalWhen) {
-    return "WHEN: " + _first_sibbling->Serialize() + " WTHEN: "
+  } else if (IsOpenEndedWhenCondition()) {
+    return "WHEN: " + _first_sibbling->Serialize() + "\n"
       + (_second_sibbling? _second_sibbling->Serialize(): "")
-      + " WELSE: "
-      + (_third_sibbling? _third_sibbling->Serialize(): "") 
-      + " WEND";
+      // No third sibbling to serialize, because this is the next open-ender
+      // and TWO pointers point to it (one from a normal "when")
+      + "WEND";
+  } else if (IsWhenConditionWithAction()) {
+    return "    WHEN: " + _first_sibbling->Serialize() + "WRETURN: "
+      + (_second_sibbling? _second_sibbling->Serialize(): "") + "\n"
+      // Third sibbling: either next when-condition or next open-ended when-condition
+      + (_third_sibbling? _third_sibbling->Serialize(): "");
   } else {
     assert(false);
     return "ERROR";
   }
+}
+
+bool CParseTreeNode::IsAnyKindOfWhenCondition() {
+  return (_node_type == kTokenOperatorConditionalWhen);
+}
+
+bool CParseTreeNode::IsWhenConditionWithAction() {
+  return (IsAnyKindOfWhenCondition() && !IsOpenEndedWhenCondition());
+}
+
+bool CParseTreeNode::IsOpenEndedWhenCondition() {
+  if (!IsAnyKindOfWhenCondition()) return false;
+  if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true;
+  if ((_second_sibbling != NULL) 
+      && (_second_sibbling->_node_type == kTokenOperatorConditionalWhen)) {
+    return true;
+  }
+  return false;
 }

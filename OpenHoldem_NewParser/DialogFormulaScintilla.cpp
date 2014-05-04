@@ -917,7 +917,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
         CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
         if (!pCurScin) 
         {
-          pCurScin = SetupScintilla(NULL, p_function_or_list->function_text());
+          pCurScin = SetupScintilla(NULL, p_function_or_list->name()); //???
           m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
 
           pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
@@ -928,7 +928,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
         ASSERT(pCurScin != NULL);
                 FormerShowEnableHideCodeClone(pCurScin);
         SelectFunctionTab(pCurScin);
-        m_current_edit = p_function_or_list->function_text();
+        m_current_edit = p_function_or_list->name();
 	  } 
     }
   }
@@ -1143,22 +1143,21 @@ void CDlgFormulaScintilla::OnRename() {
   HandleEnables(true);
 }
 
-void CDlgFormulaScintilla::OnDelete() 
-{
-	/*
+void CDlgFormulaScintilla::OnDelete() {
 	HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
 	CString s = m_FormulaTree.GetItemText(hItem);
 	CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
 
-	StopAutoButton();
-
-	if (IDYES != OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", "Confirm Delete", MB_YESNO | MB_ICONWARNING)) 
-	{
-		HandleEnables(true);
-		return;
+    StopAutoButton();
+	if (IDYES != OH_MessageBox_Interactive(
+        "REALLY delete \"" 
+          + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) 
+          + "\" ?", 
+        "Confirm Delete", MB_YESNO | MB_ICONWARNING)) {
+	  HandleEnables(true);
+	  return;
 	}
-
-	bool bDeleted = false;
+	bool bDeleted = false;/*
 	// Delete a UDF
 	if (s.Find("f$") != k_not_found) 
 	{
@@ -1661,10 +1660,9 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 }
 
 void CDlgFormulaScintilla::OnBnClickedCalc() 
-{/*!!!
+{
 	CString					Cstr = "", title = "", s = "";
 	double					ret = 0.;
-	int						error = 0;
 	std::string				str = "";
 	struct SDebugTabInfo	debug_struct;
 	char					format[50] = {0};
@@ -1675,10 +1673,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	m_CalcResult.SetWindowText("");
 
 	// Caclulate symbols
-	//symbols.CalcSymbols();
-
-	// mark symbol result cache as stale
-	//!!m_wrk_formula.MarkCacheStale();
+	p_engine_container->EvaluateAll();
 
 	// Validate parse trees
 	if (!p_function_collection->ParseAll())
@@ -1704,48 +1699,12 @@ void CDlgFormulaScintilla::OnBnClickedCalc()
 	else 
 	{
 		// Execute the currently selected formula
-		error = SUCCESS;
-		ret = gram.CalcF$symbol(&m_wrk_formula, (char *) m_current_edit.GetString(), &error);
-
-		if (error == SUCCESS) 
-		{
-			// display result
-			sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
-			Cstr.Format(format, ret);
-			m_CalcResult.SetWindowText(Cstr);
-			SetExtendedWindowTitle(m_current_edit.GetString());
-		}
-		else 
-		{
-			switch (error) 
-			{
-			case ERR_INVALID_SYM:
-				Cstr.Format("ERROR: Invalid symbol");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_FUNC_SYM:
-				Cstr.Format("ERROR: Invalid f$ reference");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_DLL_SYM:
-				Cstr.Format("ERROR: Invalid dll$ reference");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_EXPR:
-				Cstr.Format("ERROR: Invalid expression");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_DIV_ZERO:
-				Cstr.Format("ERROR: Divide by zero");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			default:
-				Cstr.Format("ERROR: Undefined");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			}
-		}
-	}*/
+        ret = p_function_collection->Evaluate(m_current_edit);
+		sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
+		Cstr.Format(format, ret);
+		m_CalcResult.SetWindowText(Cstr);
+		SetExtendedWindowTitle(m_current_edit.GetString());	
+	}
 }
 
 void CDlgFormulaScintilla::OnBnClickedAuto() {
@@ -2070,7 +2029,7 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 	p_function_collection->ParseAll());
 
 	// Re-calc symbols
-	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+	p_engine_container->EvaluateAll();
 
 	// Rewrite f$debug log header, if required
 	m_wrote_fdebug_header = false;
@@ -2536,7 +2495,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nraisbets", "total number of bets you would have on the table if you raise");
 
 	mainParent = parent = AddSymbolTitle("List Tests", NULL, hCatItem);
-	AddSymbol(parent, "islist0 - islist999 ", "true if your hand is in the numbered (0-999) list");
+	AddSymbol(parent, "listXYZ", "true if your hand is in list XYZ");
 
 	mainParent = parent = AddSymbolTitle("Poker Values", NULL, hCatItem);
 	AddSymbol(parent, "pokerval", "absolute poker value for your 5 card hand");

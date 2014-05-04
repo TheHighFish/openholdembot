@@ -17,6 +17,8 @@
 #include "CFormulaParser.h"
 #include "CTokenizer.h"
 
+bool CParseErrors::_is_error = false;
+
 void CParseErrors::Error(CString short_message)
 {
 	CString message;
@@ -77,4 +79,10 @@ EndOfOuterLoop:
 	return erroneous_code_snippet;
 }
 
+void CParseErrors::ClearErrorStatus() {
+  _is_error = false;
+} 
 
+bool CParseErrors::AnyError() {
+  return _is_error;
+}

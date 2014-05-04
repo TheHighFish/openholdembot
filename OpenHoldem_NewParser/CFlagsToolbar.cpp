@@ -164,7 +164,7 @@ void CFlagsToolbar::OnClickedFlags()
 	SetFlag(18, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER18));
 	SetFlag(19, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER19));
 
-	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+	p_engine_container->EvaluateAll();
 }
 
 void CFlagsToolbar::CreateMainToolbar(void)

@@ -311,11 +311,13 @@ const int kOperatorPriority[kNumberOfTokens] = {
   // kTokenOperatorConditionalWhen,    
   1,    // Like conditional if
   // kTokenBracketOpen_1, 
-  15,
+  //   Brackets have LOWEST priority as everything inside brackets 
+  //   gets evaluated first.
+  0,
   // kTokenBracketOpen_2,              
-  15,
+  0,
   // kTokenBracketOpen_3,              
-  15,
+  0,
   // kTokenBracketClose_1,            
   k_undefined,
   // kTokenBracketClose_2,            

@@ -15,6 +15,7 @@
 #include "CFunctionCollection.h"
 
 #include "CFunction.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
@@ -228,7 +229,8 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
     OH_MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
     return false;
   }
-  // Delete old entry from the binary tree... !!!
+  // Delete old entry from the binary tree... 
+  Delete(from_name);
   // ...then rename...
   object_to_rename->SetName(to_name);
   // ...and insert again.
@@ -236,8 +238,16 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   return true;
 }
 
+void CFunctionCollection::Delete(CString name) {
+  std::map<CString, COHScriptObject*>::iterator it; 
+  it = _function_map.find(name);
+  if (it != _function_map.end()) {
+    _function_map.erase(it);
+  }
+}
+
 bool CFunctionCollection::CorrectlyParsed() {
-  return true; //!!!
+  return (!CParseErrors::AnyError());
 }
 
 bool CFunctionCollection::ParseAll() {
