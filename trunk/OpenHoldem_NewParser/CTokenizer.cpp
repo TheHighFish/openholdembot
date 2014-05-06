@@ -15,6 +15,7 @@
 #include "CTokenizer.h"
 
 #include "assert.h"
+#include "CardFunctions.h"
 #include "CParseErrors.h"
 #include "TokenizerConstants.h"
 
@@ -26,11 +27,12 @@ char last_token_string[kMaxSizeOfToken];
 char* input_buffer;
 int  _token_start_pointer;
 
-#define CURRENT_CHARACTER   input_buffer[_token_end_pointer]
-#define NEXT_CHARACTER      input_buffer[_token_end_pointer+1]
-#define SIZE_OF_TOKEN       (_token_end_pointer - _token_start_pointer)
-#define TOKEN_ADDRESS       &input_buffer[_token_start_pointer]
-#define SKIP_NEXT_CHARACTER _token_end_pointer++;
+#define CURRENT_CHARACTER     input_buffer[_token_end_pointer]
+#define NEXT_CHARACTER        input_buffer[_token_end_pointer+1]
+#define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
+#define SIZE_OF_TOKEN         (_token_end_pointer - _token_start_pointer)
+#define TOKEN_ADDRESS         &input_buffer[_token_start_pointer]
+#define SKIP_NEXT_CHARACTER   _token_end_pointer++;
 
 CTokenizer::CTokenizer()
 {
@@ -219,86 +221,86 @@ bool CTokenizer::IsTokenOpenPPLKeyword()
 		return operator_token; \
 	}
 
-int CTokenizer::ScanForNextToken()
-{
-// "Ugly" goto to get rid of end-recursion
+int CTokenizer::ScanForNextToken() {
+  // "Ugly" goto to get rid of end-recursion
 StartOfScanForNextToken:
+  //printf("Analyzing: %s\n", &CURRENT_CHARACTER);
 
-	//printf("Analyzing: %s\n", &CURRENT_CHARACTER);
-
-	// Useful functions:
-	// http://www.cplusplus.com/reference/cctype/isspace
-	// http://www.cplusplus.com/reference/cctype/isalnum
-	// http://www.cplusplus.com/reference/cctype/isalpha
-	// http://www.cplusplus.com/reference/cctype/isdigit
-	// http://www.cplusplus.com/reference/cctype/isxdigit
-	// http://www.cplusplus.com/reference/cctype/ispunct
-	// http://www.cplusplus.com/reference/cctype/isgraph
-	// http://www.cplusplus.com/reference/cctype/isblank
-	//
-	// White-space: skip
-	while (isspace(CURRENT_CHARACTER))
-	{
-		// [\r][\n]Line break
-		if ((CURRENT_CHARACTER == '\n')
-			|| (CURRENT_CHARACTER == '\r'))
-		{
-			line_absolute++;
-			line_relative++;
-		}
-		SKIP_NEXT_CHARACTER
+  // Useful functions:
+  // http://www.cplusplus.com/reference/cctype/isspace
+  // http://www.cplusplus.com/reference/cctype/isalnum
+  // http://www.cplusplus.com/reference/cctype/isalpha
+  // http://www.cplusplus.com/reference/cctype/isdigit
+  // http://www.cplusplus.com/reference/cctype/isxdigit
+  // http://www.cplusplus.com/reference/cctype/ispunct
+  // http://www.cplusplus.com/reference/cctype/isgraph
+  // http://www.cplusplus.com/reference/cctype/isblank
+  //
+  // White-space: skip
+  while (isspace(CURRENT_CHARACTER)) {
+    // [\r][\n]Line break
+    if ((CURRENT_CHARACTER == '\n')
+	    || (CURRENT_CHARACTER == '\r'))
+    {
+      line_absolute++;
+      line_relative++;
+    }
+    SKIP_NEXT_CHARACTER
+  }
+  // Set start of next token at position after space
+  _token_start_pointer = _token_end_pointer;
+  // [a..zA..Z\$] Identifiers, 
+  // including OpenPPL-style operators and keywords
+  // including OpenHoldem-style $AA-symbols, etc.
+  if (isalpha(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '$')) {
+    while(isalnum(CURRENT_CHARACTER)
+        || (CURRENT_CHARACTER == '$')
+	    || (CURRENT_CHARACTER == '_')) {
+	  _token_end_pointer++;
 	}
-	// Set start of next token at position after space
-	_token_start_pointer = _token_end_pointer;
-	// [a..zA..Z\$] Identifiers, 
-	// including OpenPPL-style operators and keywords
-	// including OpenHoldem-style $AA-symbols, etc.
-	if (isalpha(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '$'))
-	{
-		while(isalnum(CURRENT_CHARACTER)
-			|| (CURRENT_CHARACTER == '$')
-			|| (CURRENT_CHARACTER == '_'))
-		{
-			_token_end_pointer++;
-		}
-		if (IsTokenOpenPPLKeyword())
-		{
-			return _OpenPPL_token_ID;
-		}
-		return kTokenIdentifier;
+	if (IsTokenOpenPPLKeyword()) {
+	  return _OpenPPL_token_ID;
 	}
-	// [0..9\.] Numbers
-	// This includes 
-	// * 12345
-	// * .85
-	// * 0xCE
-	else if (isdigit(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '.'))
-	{
-		// Entry-point for negative numbers after unary minus
+	return kTokenIdentifier;
+  }
+  // [0..9\.] Numbers
+  // This includes 
+  // * 12345
+  // * .85
+  // * 0xCE
+  else if (isdigit(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '.'))
+  {
+    // Special case suited and offsuited hands like 72o or 54s
+    if (IsCardRankCharacter(NEXT_CHARACTER)) {
+      char third_character_lowercase = tolower(SECOND_NEXT_CHARACTER);
+	  if ((third_character_lowercase == 's')
+          || (third_character_lowercase == 'o')) {
+        _token_end_pointer += 3;
+        return kTokenCards;
+      }
+    }
+	// Entry-point for negative numbers after unary minus
 NegativeNumber:
-		while(isxdigit(CURRENT_CHARACTER)
-			|| (CURRENT_CHARACTER == '.')
-			|| (CURRENT_CHARACTER == 'x'))
-		{
-			_token_end_pointer++;
-		}
-		return kTokenNumber;
+    while(isxdigit(CURRENT_CHARACTER)
+	    || (CURRENT_CHARACTER == '.')
+	    || (CURRENT_CHARACTER == 'x')) {
+	  _token_end_pointer++;
 	}
-	// [/] Single-line-comments
-	else if ((CURRENT_CHARACTER == '/')
-			&& (NEXT_CHARACTER == '/'))
-	{
-		SkipToEndOfLine();
-		goto StartOfScanForNextToken;
-	}
-	// [/] Multi-line comments
-	else if ((CURRENT_CHARACTER == '/')
-			&& (NEXT_CHARACTER == '*'))
-	{
-		SkipToEndOfMultiLineComment();
-		goto StartOfScanForNextToken;	
-	}
-	// [+-*/<>=!?:%&|~^] OpenHoldem-style-Operators
+	return kTokenNumber;
+  }
+  // [/] Single-line-comments
+  else if ((CURRENT_CHARACTER == '/')
+      && (NEXT_CHARACTER == '/')) {
+	SkipToEndOfLine();
+	goto StartOfScanForNextToken;
+  }
+  // [/] Multi-line comments
+  else if ((CURRENT_CHARACTER == '/')
+      && (NEXT_CHARACTER == '*')) {
+    SkipToEndOfMultiLineComment();
+	goto StartOfScanForNextToken;	
+  }
+  // [+-*/<>=!?:%&|~^] OpenHoldem-style-Operators
 	else if (IsOperatorCharacter(CURRENT_CHARACTER)) 
 	{
 		switch (CURRENT_CHARACTER)

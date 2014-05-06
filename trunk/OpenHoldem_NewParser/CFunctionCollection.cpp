@@ -72,12 +72,9 @@ COHScriptObject *CFunctionCollection::LookUp(CString name) {
 }
 
 double CFunctionCollection::Evaluate(CString function_name) {
-  COHScriptObject *p_function = LookUp(function_name);
-  if (p_function == NULL) {
-    // Function does not exist
-    return k_undefined_zero;
-  }
-  return p_function->Evaluate();
+  double result = k_undefined;
+  EvaluateSymbol(function_name, &result);
+  return result;
 }
 
 CString CFunctionCollection::DLLPath() {
@@ -253,4 +250,39 @@ bool CFunctionCollection::CorrectlyParsed() {
 bool CFunctionCollection::ParseAll() {
   //!!!
   return true;
+}
+
+void CFunctionCollection::InitOnStartup() {
+}
+
+void CFunctionCollection::ResetOnConnection() {
+  ClearCache();
+}
+
+void CFunctionCollection::ResetOnHandreset() {
+}
+
+void CFunctionCollection::ResetOnNewRound() {
+}
+
+void CFunctionCollection::ResetOnMyTurn() {
+}
+
+void CFunctionCollection::ResetOnHeartbeat() {
+  ClearCache();
+}
+
+bool CFunctionCollection::EvaluateSymbol(const char *name, double *result) {
+  if ((memcmp(name, "f$", 2) == 0) 
+      || (memcmp(name, "list", 4) == 0)) { 
+    COHScriptObject *p_function = LookUp(name);
+    if (p_function == NULL) {
+      // Function does not exist
+      *result = k_undefined_zero;
+      return false;
+    }
+    *result = p_function->Evaluate();
+    return true;
+  }
+  return false;
 }

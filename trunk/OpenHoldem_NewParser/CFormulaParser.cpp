@@ -227,6 +227,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text)
 		COHScriptList *new_list = new COHScriptList(&list_name, &function_text);
         ParseListBody(new_list);
 		p_function_collection->Add((COHScriptObject*)new_list); 
+        return;
 	}
 	else if (_token.MakeLower() == "dll")
 	{
@@ -271,7 +272,7 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
 	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
 			|| (token_ID == kTokenNumber)       // Low pairs 99..22
-			|| (token_ID == kTokenPocketCards)) // Low unpaired cards like 65s, 92o
+			|| (token_ID == kTokenCards)) // Low unpaired cards like 65s, 92o
 		{
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
@@ -320,13 +321,14 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 {
 	int token_ID = _tokenizer.LookAhead();
 	TPParseTreeNode expression;
-	if (TokenIsUnary(token_ID))
-	{
-		expression = ParseUnaryExpression();
-	}
-	else if (TokenIsBracketOpen(token_ID))
+    // Handle brackets before unary, because brackets are also "unary"
+    if (TokenIsBracketOpen(token_ID))
 	{
 		expression = ParseBracketExpression();
+	}
+	else if (TokenIsUnary(token_ID))
+	{
+		expression = ParseUnaryExpression();
 	}
 	else if ((token_ID == kTokenIdentifier)
 		|| (token_ID == kTokenNumber))
@@ -377,7 +379,6 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 // OK
 TPParseTreeNode CFormulaParser::ParseBracketExpression()
 {
-	//MessageBox(0, "Bracket_Open", "Info", 0);
 	int opening_bracket = _tokenizer.GetToken();
 	assert(TokenIsBracketOpen(opening_bracket));
 	TPParseTreeNode expression = ParseExpression();
@@ -394,7 +395,6 @@ TPParseTreeNode CFormulaParser::ParseBracketExpression()
 // OK
 TPParseTreeNode CFormulaParser::ParseUnaryExpression()
 {
-	//MessageBox(0, "Unary", "Info", 0);
 	int unary_operator = _tokenizer.GetToken();
 	assert(TokenIsUnary(unary_operator));
 	TPParseTreeNode expression = ParseExpression();
@@ -518,7 +518,6 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 // OK
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction()
 {
-	//MessageBox(0, "Action", "Info", 0);
 	int token_ID = _tokenizer.GetToken();
 	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
