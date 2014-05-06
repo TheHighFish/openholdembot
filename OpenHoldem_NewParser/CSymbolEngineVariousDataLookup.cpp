@@ -87,13 +87,25 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	if (memcmp(name, "dll$", 4) == 0)
 	{
 		assert(p_dll_extension != NULL);
-		//!!*result = p_dll_extension->
+		if (p_dll_extension->IsDllLoaded())
+		{
+			return (p_dll_extension->process_message()) ("query", sym.c_str());
+		}
+		else 
+		{
+			return k_undefined_zero;
+		}
 	}
 	// Perl
 	else if (memcmp(name, "pl_", 3) == 0)
 	{
 		assert(p_perl != NULL);
 		*result = p_perl->GetPerlSymbol(name);
+	}
+    // Memory symbols
+    else if (memcmp(sym.c_str(), "me_", 3)==0)
+	{
+		*result =  p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
 	}
 	// Versus
 	else if (memcmp(name, "vs$", 3) == 0)
@@ -134,8 +146,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	//
 	//ROUND&POSITIONS
 	else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)					*result = p_betround_calculator->betround();
-	//FORMULA FILE
-	else if (memcmp(name, "f$prwin_number_of_iterations", 28)==0 && strlen(name)==28)	*result = iter_vars.nit(); 
 	//FLAGS
 	else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)						*result = p_flags_toolbar->GetFlagMax();
 	else if (memcmp(name, "f", 1)==0 && strlen(name)==2)							*result = p_flags_toolbar->GetFlag(name[1]-'0');
