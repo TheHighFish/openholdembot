@@ -15,15 +15,26 @@
 #define INC_CFUNCTIONCOLLECTION_H
 
 #include "COHScriptObject.h"
+#include "CVirtualSymbolEngine.h"
 #include <map>
 
-class CFunctionCollection{
+// We make the collection a symbol-engine
+// because of reset-functions and Evaluate()-function.
+class CFunctionCollection: public CVirtualSymbolEngine {
   friend class CFormulaParser;
  public:
   CFunctionCollection();
   ~CFunctionCollection();
  public:
+  bool EvaluateSymbol(const char *name, double *result);
   double Evaluate(CString function_name);
+  // Mandatory reset-functions
+  void InitOnStartup();
+  void ResetOnConnection();
+  void ResetOnHandreset();
+  void ResetOnNewRound();
+  void ResetOnMyTurn();
+  void ResetOnHeartbeat();
  public:
   // To be called by
   //   * ResetOnHeartbeat() !!

@@ -95,7 +95,7 @@ const bool kTokenIsUnary[kNumberOfTokens] = {
   false,
   // kTokenNumber,
   false,
-  // kTokenPocketCards,
+  // kTokenCards,
   false,
   // kTokenDoubleShebang,
   false,
@@ -180,7 +180,7 @@ const bool kTokenIsBinary[kNumberOfTokens] = {
   false,
   // kTokenNumber,
   false,
-  // kTokenPocketCards,
+  // kTokenCards,
   false,
   // kTokenDoubleShebang,
   false,
@@ -239,7 +239,7 @@ CString TokenString(int token) {
 	case kTokenBracketClose_3: return "}";
 	case kTokenIdentifier: return "identifier";
 	case kTokenNumber: return "number";
-	case kTokenPocketCards: return "cards";
+	case kTokenCards: return "cards";
 	case kTokenDoubleShebang: return "##";
 	default:
 		assert(k_this_must_not_happen);
@@ -328,7 +328,7 @@ const int kOperatorPriority[kNumberOfTokens] = {
   k_undefined,
   // kTokenNumber,
   k_undefined,
-  // kTokenPocketCards,
+  // kTokenCards,
   k_undefined,
   // kTokenDoubleShebang,
   k_undefined,
@@ -381,6 +381,6 @@ kTokenEndOfFile = 0,
 	kTokenBracketClose_3,           
 	kTokenIdentifier,
 	kTokenNumber,
-	kTokenPocketCards,
+	kTokenCards,
 	kTokenDoubleShebang,
 	*/

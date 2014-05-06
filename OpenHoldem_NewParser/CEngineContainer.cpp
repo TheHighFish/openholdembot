@@ -18,6 +18,7 @@
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
@@ -84,6 +85,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // The engines inserted first will be called first later.
   // But we assure correct ordering by assertions in the constructors of the engines.
 
+  // CFunctionCollection
+  p_function_collection = new CFunctionCollection;
+  AddSymbolEngine(p_function_collection);
   // CSymbolEngineUserchair
   p_symbol_engine_userchair = new CSymbolEngineUserchair();
   AddSymbolEngine(p_symbol_engine_userchair);

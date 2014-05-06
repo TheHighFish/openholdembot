@@ -58,7 +58,7 @@ enum {
   // Numbers, Identifier, Cards
   kTokenIdentifier,
   kTokenNumber,
-  kTokenPocketCards,
+  kTokenCards,
   // ## as start and end of list and function-headers
   kTokenDoubleShebang,              // ##
   // OpenPPL actions

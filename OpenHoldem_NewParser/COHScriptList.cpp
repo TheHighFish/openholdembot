@@ -8,7 +8,9 @@
 #include "NumericalFunctions.h"
 
 COHScriptList::COHScriptList(CString *new_name, CString *new_function_text) {
-  COHScriptObject(new_name, new_function_text);
+  _name = ((new_name != NULL) ? *new_name : "");
+  _function_text = ((new_function_text != NULL) ? *new_function_text : "");
+  Clear();
 }
 
 COHScriptList::~COHScriptList() {

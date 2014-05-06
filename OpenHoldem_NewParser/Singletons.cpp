@@ -26,7 +26,6 @@
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormulaParser.h"
-#include "CFunctionCollection.h"
 #include "CGameState.h"
 #include "CHandHistory.h"
 #include "CHandresetDetector.h"
@@ -100,9 +99,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CReplayFramesCounter\n");
   assert(!p_replayframes_counter);
   p_replayframes_counter = new CReplayFramesCounter;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFunctionCollection\n");
-  assert(!p_function_collection);
-  p_function_collection = new CFunctionCollection;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
@@ -274,8 +270,6 @@ void DeleteAllSingletons() {
 	{ delete p_autoplayer; p_autoplayer = NULL; }
   if (p_formula_parser)
 	{ delete p_formula_parser; p_formula_parser = NULL; }
-  if (p_function_collection)
-	{ delete p_function_collection; p_function_collection = NULL; }
   if (p_replayframes_counter)
 	{ delete p_replayframes_counter; p_replayframes_counter = NULL; }
   if (p_tablemap_access)  

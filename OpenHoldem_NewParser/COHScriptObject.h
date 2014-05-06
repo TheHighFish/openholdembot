@@ -20,9 +20,9 @@ class COHScriptObject {
   COHScriptObject(CString *new_name, CString *new_function_text);
   ~COHScriptObject();
  public:
-  CString name()			    { return _name; }
-  CString function_text()	    { return _function_text; }
-  void SetName(CString name)    { _name = name; }
+  CString name()			      { return _name; }
+  virtual CString function_text() { return _function_text; }
+  void SetName(CString name)      { _name = name; }
  public:
   virtual double Evaluate();
  public:
