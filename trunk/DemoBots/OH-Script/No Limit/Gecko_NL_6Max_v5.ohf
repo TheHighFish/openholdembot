@@ -37,7 +37,7 @@ call>0 && f$srai>0 ? {
 // Bet/raise strategy
 [ betround==1 ] ? f$preflop_raise : 
 
-[ br>1 && br<4 && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 :
+[ betround>1 && betround<4 && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 :
 
 [ betround==2 ] ? f$flop_raise    :
 [ betround==3 ] ? f$turn_raise    :
@@ -51,11 +51,11 @@ call>0 && f$srai>0 ? {
 [ prwin>=0.98 ] ? 1 :
 [ call<=0.001 ] ? 1 :
 [ f$srai>0    ] ? 1 :
-[ br==1 && ($AA||$KK) ] ? 1 :
+[ betround==1 && ($AA||$KK) ] ? 1 :
 
-[ br>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
-[ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 :
-[ br>1 && f$committed                                  ] ? 1 :
+[ betround>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
+[ betround>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 :
+[ betround>1 && f$committed                                  ] ? 1 :
 
 [ betround==1 ] ? f$preflop_call :
 [ betround==2 ] ? f$flop_call    : 
@@ -119,8 +119,8 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 ##f$draws##
 (!f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && nstraightcommon<3 && !f$wheeldraw && nrankedcommon==1) ||
 (!f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==1) ||
-(br==2 && !f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && nstraightcommon<3 && nrankedcommon==2) ||
-(br==2 && !f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==2) ? 4 :
+(betround==2 && !f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && nstraightcommon<3 && nrankedcommon==2) ||
+(betround==2 && !f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==2) ? 4 :
 
 
 ((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon==1) ||
@@ -139,17 +139,17 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 (!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
 (!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nrankedcommon<3) ||
 (!f$twopair && nsuited==4 && nsuitedcommon==2 && nrankedcommon<3) ||
-(isthreeofakind && br<4 && nrankedcommon==1) ||
-(rankloplayer>rankhicommon && br<4 && f$safeboard && isonepair && !ispair) ||
-(rankloplayer>rankhicommon && br<4 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && istwopair && nrankedcommon==2) ||
-(nstraightfill==1 && br<4 && istwopair && nrankedcommon==2 && nsuitedcommon<3) ||
-(nstraightfill==1 && br<4 && rankloplayer>rankhicommon && f$safeboard) ||
-(nstraightfill==1 && br<4 && nsuited==3 && br==2 && rankhiplayer>rankhicommon && f$safeboard) ||
-(!f$twopair && br<4 && nsuited==4 && nsuitedcommon==3 && rankloplayer>11 && nrankedcommon<3) ||
-(!f$twopair && br<4 && nsuited==3 && nsuitedcommon==1 && nstraight==3 && nstraightcommon<=2 && rankloplayer>rankhicommon && nrankedcommon==1 && br==2) ||
-(!f$twopair && br==2 && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && nsuitedcommon<3 && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
+(isthreeofakind && betround<4 && nrankedcommon==1) ||
+(rankloplayer>rankhicommon && betround<4 && f$safeboard && isonepair && !ispair) ||
+(rankloplayer>rankhicommon && betround<4 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && istwopair && nrankedcommon==2) ||
+(nstraightfill==1 && betround<4 && istwopair && nrankedcommon==2 && nsuitedcommon<3) ||
+(nstraightfill==1 && betround<4 && rankloplayer>rankhicommon && f$safeboard) ||
+(nstraightfill==1 && betround<4 && nsuited==3 && betround==2 && rankhiplayer>rankhicommon && f$safeboard) ||
+(!f$twopair && betround<4 && nsuited==4 && nsuitedcommon==3 && rankloplayer>11 && nrankedcommon<3) ||
+(!f$twopair && betround<4 && nsuited==3 && nsuitedcommon==1 && nstraight==3 && nstraightcommon<=2 && rankloplayer>rankhicommon && nrankedcommon==1 && betround==2) ||
+(!f$twopair && betround==2 && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && nsuitedcommon<3 && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
 (!f$twopair && nstraight==4 && nstraightcommon<=2 && nsuitedcommon<3 && nrankedcommon<3 && !f$wheeldraw && nrankedcommon<3) ||
-(!f$twopair && br<4 && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && rankloplayer>ranklocommon && rankhiplayer>rankhicommon && nrankedcommon<3)) ? 2 :
+(!f$twopair && betround<4 && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && rankloplayer>ranklocommon && rankhiplayer>rankhicommon && nrankedcommon<3)) ? 2 :
 
 
 ((!f$twopair && (nstraight==2 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)||(nstraight==3 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)) ||
@@ -335,19 +335,19 @@ nopponentsseated==2 ? (dealpositionrais==3 ? 6 : 0):
 (opponentsplayingbits==32) ? pt_aggr5*(pt_wsdp5*4) : 0 ]
 
 ##f$Initiative_Hero##
-br<=2 && nbetsround1>1 && !didcallround1 ? 1 :
-br==3 && nbetsround2>0 && !didcallround2 ? 1 :
-br==4 && nbetsround3>0 && !didcallround3 ? 1 : 0
+betround<=2 && nbetsround1>1 && !didcallround1 ? 1 :
+betround==3 && nbetsround2>0 && !didcallround2 ? 1 :
+betround==4 && nbetsround3>0 && !didcallround3 ? 1 : 0
 
 ##f$Initiative_Nobody##
-br<=2 ? nbetsround1<=1 :
-br==3 ? nbetsround2<=0 :
-br==4 ? nbetsround3<=0 : 0
+betround<=2 ? nbetsround1<=1 :
+betround==3 ? nbetsround2<=0 :
+betround==4 ? nbetsround3<=0 : 0
 
 ##f$Initiative_Villian##
-br<=2 ? didcallround1 && nbetsround1>1 :
-br==3 ? !didswaground2 && didcallround2 && nbetsround2>0 :
-br==4 ? !didswaground2 && didcallround3 && nbetsround3>0 : 0
+betround<=2 ? didcallround1 && nbetsround1>1 :
+betround==3 ? !didswaground2 && didcallround2 && nbetsround2>0 :
+betround==4 ? !didswaground2 && didcallround3 && nbetsround3>0 : 0
 
 ##f$prwin##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -832,14 +832,14 @@ betposition==1
 betposition==nplayersplaying 
 
 ##f$Betsize_Adjusted##
-[ br==1 ] ? {
+[ betround==1 ] ? {
 
     [ ncallbets<=1 ] ? 2.5*bblind+(nopponentscalling*sblind) :
     [ ncallbets>1  ] ? f$currentbet_raischair*4              : 0 } :
 
 [ nplayersplaying==2 ] ? {
 
-[ br==2 ] ? {
+[ betround==2 ] ? {
 
    [ call<=bblind ] ? {
 
@@ -862,7 +862,7 @@ betposition==nplayersplaying
                 [  f$ptype_lag  ] ? f$currentbet_raischair*2 :
                 [ !f$ptype_lag  ] ? balance : 0 } : 0 } : 0 } : 0 } :
            
-[ br==3 ] ? {
+[ betround==3 ] ? {
 
     [ call<=0 ] ? {
 
@@ -883,7 +883,7 @@ betposition==nplayersplaying
             [ call<=potcommon*.33 ] ? pot :
             [ call> potcommon*.33 ] ? f$currentbet_raischair*3 : 0 } : 0 } : 0 } :
 
-[ br==4 ] ? {
+[ betround==4 ] ? {
 
     [ call<=0 ] ? {
 
@@ -905,7 +905,7 @@ betposition==nplayersplaying
 
 [ nplayersplaying>=3 ] ? {
 
-[ br==2 ] ? {
+[ betround==2 ] ? {
 
     [ call<=bblind ] ? {
 
@@ -924,7 +924,7 @@ betposition==nplayersplaying
             [ nbetsround1<=1 ] ? f$currentbet_raischair*4 :
             [ nbetsround1>1  ] ? balance                  : 0 } : 0 } : 0 } :
 
-[ br==3 ] ? {
+[ betround==3 ] ? {
 
     [ call<=bblind ] ? {
 
@@ -936,7 +936,7 @@ betposition==nplayersplaying
         [ call<=potcommon*.33 ] ? pot :
         [ call> potcommon*.33 ] ? f$currentbet_raischair*4 : 0 } : 0 } :
 
-[ br==4 ] ? {
+[ betround==4 ] ? {
 
     [ call<=bblind ]                  ? {
 
@@ -1289,16 +1289,16 @@ betposition==nplayersplaying
 0
 
 ##f$Odds_and_Outs##
-br==2 ? (f$OutOdds*2.0)>f$PotOdds :
-br==3 ? (f$OutOdds*1.2)>f$PotOdds : 0
+betround==2 ? (f$OutOdds*2.0)>f$PotOdds :
+betround==3 ? (f$OutOdds*1.2)>f$PotOdds : 0
 
 ##f$nOuts##
 [0+
 
-(br==2 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
-(br==2 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 8 : 0) +
-(br==3 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
-(br==3 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 9 : 0) +
+(betround==2 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
+(betround==2 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 8 : 0) +
+(betround==3 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
+(betround==3 && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 9 : 0) +
 
 (nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nsuitedcommon==3 && nrankedcommon==1 ? 7 : 0) + 
 (nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nsuitedcommon==3 && nrankedcommon==2 ? 5 : 0) + 
@@ -1307,10 +1307,10 @@ br==3 ? (f$OutOdds*1.2)>f$PotOdds : 0
 (nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==1 ? 9 : 0) + 
 (nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==2 ? 7 : 0) + 
 
-(br==2 && rankloplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair                                                                                                              ? 6 : 0) +
-(br==2 && rankhiplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair && !(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
-(br==3 && rankloplayer>rankhicommon && nbetsround2<3 && nplayersplaying==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
-(br==3 && rankloplayer>rankhicommon && nbetsround2<2 && nplayersplaying==3 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
+(betround==2 && rankloplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair                                                                                                              ? 6 : 0) +
+(betround==2 && rankhiplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair && !(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
+(betround==3 && rankloplayer>rankhicommon && nbetsround2<3 && nplayersplaying==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
+(betround==3 && rankloplayer>rankhicommon && nbetsround2<2 && nplayersplaying==3 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
 
 (nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==1 && !f$wheeldraw      ? 4 : 0) +
 (nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==2 && !f$wheeldraw      ? 2 : 0) +
@@ -1326,13 +1326,13 @@ br==3 ? (f$OutOdds*1.2)>f$PotOdds : 0
 (nrankedcommon==1 && istwopair && !f$twopair                                                    ? 4 : 0) +
 (nrankedcommon==2 && istwopair && !f$twopair                                                    ? 1 : 0) +
 
-(br==2 && isthreeofakind && nrankedcommon==2                                                    ? 7 : 0) +
-(br==3 && isthreeofakind && nrankedcommon==2                                                    ? 9 : 0) +
-(br==2 && isthreeofakind && nrankedcommon==1                                                    ? 7 : 0) +
-(br==3 && isthreeofakind && nrankedcommon==1                                                    ? 12: 0) +
+(betround==2 && isthreeofakind && nrankedcommon==2                                                    ? 7 : 0) +
+(betround==3 && isthreeofakind && nrankedcommon==2                                                    ? 9 : 0) +
+(betround==2 && isthreeofakind && nrankedcommon==1                                                    ? 7 : 0) +
+(betround==3 && isthreeofakind && nrankedcommon==1                                                    ? 12: 0) +
 
-(br==2 && nsuited==3 && nsuitedcommon==2 && nrankedcommon==1 && srankhiplayer>12                ? 3 : 0) +
-(br==2 && nstraightfill==1 && nstraightcommon<3 && nsuitedcommon<2 && nrankedcommon==1          ? 2 : 0) + 0 ]
+(betround==2 && nsuited==3 && nsuitedcommon==2 && nrankedcommon==1 && srankhiplayer>12                ? 3 : 0) +
+(betround==2 && nstraightfill==1 && nstraightcommon<3 && nsuitedcommon<2 && nrankedcommon==1          ? 2 : 0) + 0 ]
 
 ##f$OutOdds##
 [ f$nOuts/46 ]
@@ -1343,13 +1343,13 @@ call>0  ? [ (call/(pot+f$ImpliedOdds)) ] : 0
     
 
 ##f$ImpliedOdds##
-br==2 ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
-br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4) : 0
+betround==2 ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
+betround==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4) : 0
 
 ##f$AF##
-[ br==2 ] ? f$AF_flop  :
-[ br==3 ] ? f$AF_turn  :
-[ br==4 ] ? f$AF_river : 0
+[ betround==2 ] ? f$AF_flop  :
+[ betround==3 ] ? f$AF_turn  :
+[ betround==4 ] ? f$AF_river : 0
 
 ##f$AF_flop##
 [ call<=0 ] ? 0 :
@@ -1499,9 +1499,9 @@ br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)
 0
 
 ##f$threat##
-br==2 ? (f$AF_flop+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
-br==3 ? (f$AF_turn+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
-br==4 ? (f$AF_river+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair) : 0
+betround==2 ? (f$AF_flop+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
+betround==3 ? (f$AF_turn+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
+betround==4 ? (f$AF_river+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair) : 0
 
 ##f$pt_pfrr##
 f$oppchair<=0 ? f$stats_pfr     :
@@ -2098,7 +2098,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 
     [ f$Position_Early ] ? {
 
-        [ br==2 && pot<6*bblind ] ? {
+        [ betround==2 && pot<6*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -2111,7 +2111,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==3 && pot<12*bblind ] ? {
+        [ betround==3 && pot<12*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -2124,7 +2124,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==4 && !didcallround2 && pot<32*bblind ] ? {
+        [ betround==4 && !didcallround2 && pot<32*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -2140,7 +2140,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 
     [ f$Position_Late ] ? {
 
-        [ br==2 && pot<6*bblind ] ? {
+        [ betround==2 && pot<6*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -2153,7 +2153,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==3 && pot<12*bblind ] ? {
+        [ betround==3 && pot<12*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -2166,7 +2166,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==4 && !didcallround2 && pot<32*bblind ] ? {
+        [ betround==4 && !didcallround2 && pot<32*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -3601,7 +3601,7 @@ me_re_rais0
 +me_re_rais9
 
 ##f$memory##
-[br==1 &&(
+[betround==1 &&(
    raischair==0 && currentbet0>currentbet && me_st_rais0_1  ||1     
 && raischair==1 && currentbet1>currentbet && me_st_rais1_2  ||1
 && raischair==2 && currentbet2>currentbet && me_st_rais2_4  ||1
@@ -3610,7 +3610,7 @@ me_re_rais0
 && raischair==5 && currentbet5>currentbet && me_st_rais5_32 ||1
 && 0)]
 
-|| [br==1 && ncallbets<=1 &&(
+|| [betround==1 && ncallbets<=1 &&(
    me_st_rais0_0||1
 && me_st_rais1_0||1
 && me_st_rais2_0||1
@@ -3797,8 +3797,8 @@ me_re_rais0
 0
 
 ##f$Initiative_GotRaised##
-br==3 ? didswaground2 && didcallround2 && nbetsround2>0 :
-br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
+betround==3 ? didswaground2 && didcallround2 && nbetsround2>0 :
+betround==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
 
 ##f$nuts##
    [ nhandshi<=0 ]
@@ -3808,7 +3808,7 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
 [ nhandshi<=1 ]
 
 ##f$villiantakeover##
-[ br==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
+[ betround==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
 
     [ pt_raggf<=0.00 ] ?  0.50 :
 
@@ -3826,7 +3826,7 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
     [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
     [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ br==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
+[ betround==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
 
     [ pt_raggf<=0.00 ] ? 0.50 :
 
@@ -3858,9 +3858,9 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
 [prwin+(prtie/2)]**(1+f$threat)
 
 ##f$threat1##
-br==2 ? (f$AF_flop1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1)  :
-br==3 ? (f$AF_turn1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1)  :
-br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1) : 0
+betround==2 ? (f$AF_flop1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1)  :
+betround==3 ? (f$AF_turn1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1)  :
+betround==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_have_twopair1) : 0
 
 ##f$AF_flop1##
 [ call<=0 ] ? 0 :
@@ -4014,7 +4014,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 
     [ f$Position_Early ] ? {
 
-        [ br==2 && pot<6*bblind ] ? {
+        [ betround==2 && pot<6*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4027,7 +4027,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==3 && pot<12*bblind ] ? {
+        [ betround==3 && pot<12*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4040,7 +4040,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==4 && !didcallround2 && pot<32*bblind ] ? {
+        [ betround==4 && !didcallround2 && pot<32*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4056,7 +4056,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 
     [ f$Position_Late ] ? {
 
-        [ br==2 && pot<6*bblind ] ? {
+        [ betround==2 && pot<6*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4069,7 +4069,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==3 && pot<12*bblind ] ? {
+        [ betround==3 && pot<12*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4082,7 +4082,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
             [ f$stats_wsdp>0.50 && f$stats_wsdp<=0.70 ] ?  0.40 :
             [ f$stats_wsdp>0.70                       ] ?  0.50 : 0 } :
 
-        [ br==4 && !didcallround2 && pot<32*bblind ] ? {
+        [ betround==4 && !didcallround2 && pot<32*bblind ] ? {
 
             [                      f$stats_wsdp<=0.00 ] ?  0.00 :
             [ f$stats_wsdp>0.00 && f$stats_wsdp<=0.10 ] ? -0.50 :
@@ -4100,7 +4100,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 0
 
 ##f$villiantakeover1##
-[ br==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && f$Position_Late ] ? {
+[ betround==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && f$Position_Late ] ? {
 
     [ pt_raggf<=0.00 ] ?  0.50 :
 
@@ -4118,7 +4118,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
     [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
     [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ br==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
+[ betround==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
 
     [ pt_raggf<=0.00 ] ? 0.50 :
 
@@ -4142,7 +4142,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 [ nrankedcommon==2 && istwopair && nplayersround2>2 && trankcommon>7 && !f$twopair ] ? 0.4 : 0
 
 ##f$realbalance##
-br==1 ? {
+betround==1 ? {
 
     ncallbets<=1 ? {
 
@@ -4158,7 +4158,7 @@ br==1 ? {
 
 0 } :
 
-br>1 ? balance-f$mycurrentbet : 0
+betround>1 ? balance-f$mycurrentbet : 0
 
 ##f$currentbetopponent##
 [ 
@@ -4231,7 +4231,7 @@ f$pt_vpip>0.50 && f$stats_wsdp>0 && f$stats_wsdp<0.25 ? 3 :
 [prwin+(prtie/2)]**(1+f$threat2)
 
 ##f$threat2##
-br==2 ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
+betround==2 ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$AF_turn2##
 [ 
