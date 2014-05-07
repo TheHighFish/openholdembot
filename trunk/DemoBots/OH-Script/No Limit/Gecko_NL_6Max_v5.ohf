@@ -65,12 +65,12 @@ call>0 && f$srai>0 ? {
 0
 
 ##f$prefold##
-f$dealposition==1 && !islist900          ? 1 :
-f$dealposition==2 && !islist07 && call>0 ? 1 :
-f$dealposition==3 && !islist01           ? 1 :
-f$dealposition==4 && !islist02           ? 1 :
-f$dealposition==5 && !islist05           ? 1 :
-f$dealposition==6 && !islist900          ? 1 : 0
+f$dealposition==1 && !list900          ? 1 :
+f$dealposition==2 && !list07 && call>0 ? 1 :
+f$dealposition==3 && !list01           ? 1 :
+f$dealposition==4 && !list02           ? 1 :
+f$dealposition==5 && !list05           ? 1 :
+f$dealposition==6 && !list900          ? 1 : 0
 
 ##f$rebuy##
 
@@ -2060,15 +2060,15 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
     [ ncallbets<=1 ] ? {
 
         [ nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling==1 && (islist301||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling>=2 && (islist300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
+        [ nopponentscalling==1 && (list301||dealposition==1 && handrank169<50) ] ? 1 :
+        [ nopponentscalling>=2 && (list300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
 
-    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && islist17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
 
 [ didswag ] ? {
 
     [ call*4<pot                                                             ] ? 1 :
-    [ (call*8)<balance && (call*2)<pot && islist17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+    [ (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
 
 0
 
@@ -2202,13 +2202,13 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 (f$BettingAction_Two_Limpers && f$Chart_TwoLimpers) ? 1 : 0
 
 ##f$Preflop_Raiser_And_Callers_In_Front_Of_Me##
-(f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && islist100) ? 1 : 0
+(f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && list100) ? 1 : 0
 
 ##f$Preflop_Multiple_Raisers##
-(nopponentsraising>3 && islist100) ? 1 : 0
+(nopponentsraising>3 && list100) ? 1 : 0
 
 ##f$Preflop_React_To_Reraise##
-(f$BettingAction_Raisers_Behind_Us && islist100) ? 1 : 0
+(f$BettingAction_Raisers_Behind_Us && list100) ? 1 : 0
 
 ##f$Preflop_Raise_After_One_Limper##
 (f$BettingAction_One_Limper && f$Chart_OneLimper) ? 1 : 0
@@ -2274,31 +2274,31 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 log$SERIOUS_ERROR 
 
 ##f$BettingAction_Freeplay##
-(nbetstocall == 0 || f$Position_SmallBlind && call==sblind && islist40 )
+(nbetstocall == 0 || f$Position_SmallBlind && call==sblind && list40 )
 
 ##f$BettingAction_First_In##
 (f$BettingAction_Unraised_Pot && nopponentscalling<=0)
 
 ##f$Chart_OpenRaise##
-   [ f$dealposition==1 && islist900 ] // 50%
-|| [ f$dealposition==3 && islist01  ] // 10%
-|| [ f$dealposition==4 && islist02  ] // 15%
-|| [ f$dealposition==5 && islist05  ] // 27%
-|| [ f$dealposition==6 && islist900 ] // 40%
+   [ f$dealposition==1 && list900 ] // 50%
+|| [ f$dealposition==3 && list01  ] // 10%
+|| [ f$dealposition==4 && list02  ] // 15%
+|| [ f$dealposition==5 && list05  ] // 27%
+|| [ f$dealposition==6 && list900 ] // 40%
 
 
-//|| [ f$Position_CutOff     && (    f$Punten_Preflop_Cutoff<=2 && islist05   // 27%
-//                                || f$Punten_Preflop_Cutoff==3 && islist04   // 23%
-//                                || f$Punten_Preflop_Cutoff>=4 && islist03)] // 16%
+//|| [ f$Position_CutOff     && (    f$Punten_Preflop_Cutoff<=2 && list05   // 27%
+//                                || f$Punten_Preflop_Cutoff==3 && list04   // 23%
+//                                || f$Punten_Preflop_Cutoff>=4 && list03)] // 16%
 //
 
-//|| [ f$Position_Button     && (    f$Punten_Preflop_Button<=0 && islist08   // 50%
-//                                || f$Punten_Preflop_Button==1 && islist07   // 40%
-//                                || f$Punten_Preflop_Button>=2 && islist06)] // 30%
+//|| [ f$Position_Button     && (    f$Punten_Preflop_Button<=0 && list08   // 50%
+//                                || f$Punten_Preflop_Button==1 && list07   // 40%
+//                                || f$Punten_Preflop_Button>=2 && list06)] // 30%
 
-//|| [ f$Position_SmallBlind && (    f$Punten_Preflop_Sblind<=0 && islist07   // 40%
-//                                || f$Punten_Preflop_Sblind==1 && islist05   // 27%
-//                                || f$Punten_Preflop_Sblind>=2 && islist04)] // 23%
+//|| [ f$Position_SmallBlind && (    f$Punten_Preflop_Sblind<=0 && list07   // 40%
+//                                || f$Punten_Preflop_Sblind==1 && list05   // 27%
+//                                || f$Punten_Preflop_Sblind>=2 && list04)] // 23%
 
 ##f$Position_CutOff##
 (nchairsdealtleft == 1)
@@ -2321,33 +2321,33 @@ log$SERIOUS_ERROR
 ##f$Chart_ReRaise##
 [ f$dealposition==1 ] ? { // sb
 
-    [ f$dealpositionrais==3 ] ? islist13 : // 04%
-    [ f$dealpositionrais==4 ] ? islist14 : // 08%
-    [ f$dealpositionrais==5 ] ? islist15 : // 12%
-    [ f$dealpositionrais==6 ] ? islist02 : 0 } :
+    [ f$dealpositionrais==3 ] ? list13 : // 04%
+    [ f$dealpositionrais==4 ] ? list14 : // 08%
+    [ f$dealpositionrais==5 ] ? list15 : // 12%
+    [ f$dealpositionrais==6 ] ? list02 : 0 } :
 
 [ f$dealposition==2 ] ? { // bb
 
-    [ f$dealpositionrais==1 ] ? islist03 : // 04%
-    [ f$dealpositionrais==3 ] ? islist13 : // 04%
-    [ f$dealpositionrais==4 ] ? islist14 : // 08%
-    [ f$dealpositionrais==5 ] ? islist15 : // 12%
-    [ f$dealpositionrais==6 ] ? islist02 : 0 } :
+    [ f$dealpositionrais==1 ] ? list03 : // 04%
+    [ f$dealpositionrais==3 ] ? list13 : // 04%
+    [ f$dealpositionrais==4 ] ? list14 : // 08%
+    [ f$dealpositionrais==5 ] ? list15 : // 12%
+    [ f$dealpositionrais==6 ] ? list02 : 0 } :
 
 [ f$dealposition==4 ] ? { // utg+1
 
-    [ f$dealpositionrais==3 ] ? islist13 : 0 } : // 04%
+    [ f$dealpositionrais==3 ] ? list13 : 0 } : // 04%
 
 [ f$dealposition==5 ] ? { // co
 
-    [ f$dealpositionrais==3 ] ? islist13 :       // 04%
-    [ f$dealpositionrais==4 ] ? islist14 : 0 } : // 08%
+    [ f$dealpositionrais==3 ] ? list13 :       // 04%
+    [ f$dealpositionrais==4 ] ? list14 : 0 } : // 08%
 
 [ f$dealposition==6 ] ? { // button
 
-    [ f$dealpositionrais==3 ] ? islist13 :       // 04%
-    [ f$dealpositionrais==4 ] ? islist14 :       // 08%
-    [ f$dealpositionrais==5 ] ? islist15 : 0 } : // 12%
+    [ f$dealpositionrais==3 ] ? list13 :       // 04%
+    [ f$dealpositionrais==4 ] ? list14 :       // 08%
+    [ f$dealpositionrais==5 ] ? list15 : 0 } : // 12%
 
 0
 
@@ -2364,44 +2364,44 @@ log$SERIOUS_ERROR
 (nopponentscalling >= 3 && ncallbets<=1)
 
 ##f$Chart_MultiLimpers##
-   (f$Position_UTG1       && islist01)
-|| (f$Position_UTG2       && islist01)
-|| (f$Position_CutOff     && islist01)
-|| (f$Position_Button     && islist01)
-|| (f$Position_SmallBlind && islist01)
-|| (f$Position_BigBlind   && islist01)
+   (f$Position_UTG1       && list01)
+|| (f$Position_UTG2       && list01)
+|| (f$Position_CutOff     && list01)
+|| (f$Position_Button     && list01)
+|| (f$Position_SmallBlind && list01)
+|| (f$Position_BigBlind   && list01)
 
 ##f$Chart_OneLimper##
-   [ f$dealposition==1 && islist06 ]  // 30%
-|| [ f$dealposition==2 && islist01 ]  // 13%
-|| [ f$dealposition==3 && islist01 ]  // 13%
-|| [ f$dealposition==4 && islist03 ]  // 16%
-|| [ f$dealposition==5 && islist04 ]  // 23%
-|| [ f$dealposition==6 && islist06 ]  // 30%
+   [ f$dealposition==1 && list06 ]  // 30%
+|| [ f$dealposition==2 && list01 ]  // 13%
+|| [ f$dealposition==3 && list01 ]  // 13%
+|| [ f$dealposition==4 && list03 ]  // 16%
+|| [ f$dealposition==5 && list04 ]  // 23%
+|| [ f$dealposition==6 && list06 ]  // 30%
 
-//|| [ f$dealposition==5     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && islist04   // 23%
-  //                              || f$Punten_Limper_Cutoff1     >= 1.00 && f$Punten_Limper_Cutoff1     < 2.00 && islist03   // 16%
-    //                            || f$Punten_Limper_Cutoff1     >= 2.00                                       && islist02)] // 15%
+//|| [ f$dealposition==5     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && list04   // 23%
+  //                              || f$Punten_Limper_Cutoff1     >= 1.00 && f$Punten_Limper_Cutoff1     < 2.00 && list03   // 16%
+    //                            || f$Punten_Limper_Cutoff1     >= 2.00                                       && list02)] // 15%
 
-//|| [ f$dealposition==6     && (                                           f$Punten_Limper_Button1     < 1.00 && islist07   // 40%
-  //                              || f$Punten_Limper_Button1     >= 1.00 && f$Punten_Limper_Button1     < 2.00 && islist06   // 30%
-    //                            || f$Punten_Limper_Button1     >= 2.00                                       && islist05)] // 27%
+//|| [ f$dealposition==6     && (                                           f$Punten_Limper_Button1     < 1.00 && list07   // 40%
+  //                              || f$Punten_Limper_Button1     >= 1.00 && f$Punten_Limper_Button1     < 2.00 && list06   // 30%
+    //                            || f$Punten_Limper_Button1     >= 2.00                                       && list05)] // 27%
 
-//|| [ f$dealposition==1     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && islist04   // 23%
-  //                              || f$Punten_Limper_Smallblind1 >= 1.00 && f$Punten_Limper_Smallblind1 < 2.00 && islist03   // 16%
-    //                            || f$Punten_Limper_Smallblind1 >= 2.00                                       && islist01)] // 13%
+//|| [ f$dealposition==1     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && list04   // 23%
+  //                              || f$Punten_Limper_Smallblind1 >= 1.00 && f$Punten_Limper_Smallblind1 < 2.00 && list03   // 16%
+    //                            || f$Punten_Limper_Smallblind1 >= 2.00                                       && list01)] // 13%
 
-//|| [ f$dealposition==2     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && islist04   // 23%
-  //                              || f$Punten_Limper_Bigblind1   >= 1.00 && f$Punten_Limper_Bigblind1   < 2.00 && islist03   // 16%
-    //                            || f$Punten_Limper_Bigblind1   >= 2.00                                       && islist01)] // 13%
+//|| [ f$dealposition==2     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && list04   // 23%
+  //                              || f$Punten_Limper_Bigblind1   >= 1.00 && f$Punten_Limper_Bigblind1   < 2.00 && list03   // 16%
+    //                            || f$Punten_Limper_Bigblind1   >= 2.00                                       && list01)] // 13%
 
 ##f$Chart_TwoLimpers##
-   (f$Position_UTG1       && islist01)
-|| (f$Position_UTG2       && islist01)
-|| (f$Position_CutOff     && islist01)
-|| (f$Position_Button     && islist02)
-|| (f$Position_SmallBlind && islist01)
-|| (f$Position_BigBlind   && islist01)
+   (f$Position_UTG1       && list01)
+|| (f$Position_UTG2       && list01)
+|| (f$Position_CutOff     && list01)
+|| (f$Position_Button     && list02)
+|| (f$Position_SmallBlind && list01)
+|| (f$Position_BigBlind   && list01)
 
 ##f$BettingAction_Raisers_Behind_Us##
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
@@ -3220,8 +3220,8 @@ f$pt_icon==14
 (opponentsplayingbits==32) ? pt_fsbts5 : 0 ]
 
 ##f$Chart_CallRaise##
-   (f$Position_SmallBlind && islist09)
-|| (f$Position_BigBlind   && islist09)
+   (f$Position_SmallBlind && list09)
+|| (f$Position_BigBlind   && list09)
 
 ##f$real_pfr##
 f$dealpositionrais == 1 ? pt_rpfr * 0.50 :
@@ -3231,30 +3231,30 @@ f$dealpositionrais == 5 ? pt_rpfr * 0.50 :
 f$dealpositionrais == 6 ? pt_rpfr * 0.50 : 0
 
 ##f$real_pfr_range##
-   f$real_pfr<=0.00                       && islist99
-|| f$real_pfr> 0.00 && f$real_pfr <= 0.02 && islist10
-|| f$real_pfr> 0.02 && f$real_pfr <= 0.04 && islist11 
-|| f$real_pfr> 0.04 && f$real_pfr <= 0.07 && islist12 
-|| f$real_pfr> 0.07 && f$real_pfr <= 0.10 && islist13 
-|| f$real_pfr> 0.10 && f$real_pfr <= 0.14 && islist13 
-|| f$real_pfr> 0.14 && f$real_pfr <= 0.18 && islist13 
-|| f$real_pfr> 0.18 && f$real_pfr <= 0.22 && islist13 
-|| f$real_pfr> 0.22 && f$real_pfr <= 0.26 && islist13 
-|| f$real_pfr> 0.26 && f$real_pfr <= 0.30 && islist13 
-|| f$real_pfr> 0.30                       && islist13 
+   f$real_pfr<=0.00                       && list99
+|| f$real_pfr> 0.00 && f$real_pfr <= 0.02 && list10
+|| f$real_pfr> 0.02 && f$real_pfr <= 0.04 && list11 
+|| f$real_pfr> 0.04 && f$real_pfr <= 0.07 && list12 
+|| f$real_pfr> 0.07 && f$real_pfr <= 0.10 && list13 
+|| f$real_pfr> 0.10 && f$real_pfr <= 0.14 && list13 
+|| f$real_pfr> 0.14 && f$real_pfr <= 0.18 && list13 
+|| f$real_pfr> 0.18 && f$real_pfr <= 0.22 && list13 
+|| f$real_pfr> 0.22 && f$real_pfr <= 0.26 && list13 
+|| f$real_pfr> 0.26 && f$real_pfr <= 0.30 && list13 
+|| f$real_pfr> 0.30                       && list13 
 
 ##f$Chart_Squeeze##
-   [ f$Position_BigBlind   && islist100 ]
-|| [ f$Position_SmallBlind && islist100 ]
-|| [ f$Position_UTG2       && islist100 ]
+   [ f$Position_BigBlind   && list100 ]
+|| [ f$Position_SmallBlind && list100 ]
+|| [ f$Position_UTG2       && list100 ]
 
-|| [ f$Position_Button && (      dealpositionrais==3 && islist100
-                              || dealpositionrais==4 && islist100  
-                              || dealpositionrais==5 && islist100 )] 
+|| [ f$Position_Button && (      dealpositionrais==3 && list100
+                              || dealpositionrais==4 && list100  
+                              || dealpositionrais==5 && list100 )] 
 
 
-|| [ f$Position_CutOff && (      dealpositionrais==3 && islist100
-                              || dealpositionrais==4 && islist100 )] 
+|| [ f$Position_CutOff && (      dealpositionrais==3 && list100
+                              || dealpositionrais==4 && list100 )] 
 
 ##f$Punten_Limper_Smallblind##
 userchair==0 ? {
@@ -4275,7 +4275,7 @@ betround==2 ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 ##list01##
 66  77  88  99  TT  JJ  QQ  KK  AA  
 ATS AJS AQS AKS KQS QJS JTS  
-JAo QAo KAo
+AJo AQo AKo
 
 ##list02##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4285,8 +4285,8 @@ QJS
 JTS  
 T9S  
 98S  
-TAo JAo QAo KAo 
-JKo QKo 
+ATo AJo AQo AKo 
+KJo KQo 
 
 ##list03##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4296,8 +4296,8 @@ QTS QJS
 JTS  
 T9S  
 98S  
-TAo JAo QAo KAo 
-QKo 
+ATo AJo AQo AKo 
+KQo 
 
 ##list04##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4310,10 +4310,10 @@ T8S T9S
 87S  
 76S  
 65S  
-9Ao TAo JAo QAo KAo 
-TKo JKo QKo 
-TQo JQo 
-TJo 
+A9o ATo AJo AQo AKo 
+KTo KJo KQo 
+QTo QJo 
+JTo 
 
 ##list05##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4327,10 +4327,10 @@ T8S T9S
 76S  
 65S  
 54S  
-8Ao 9Ao TAo JAo QAo KAo 
-9Ko TKo JKo QKo 
-TQo JQo 
-TJo 
+A8o A9o ATo AJo AQo AKo 
+K9o KTo KJo KQo 
+QTo QJo 
+JTo 
 
 ##list100##
 AA  KK  QQ  
@@ -4341,28 +4341,28 @@ KK  AA  QQ
 ##list12##
 KK  AA  QQ  
 AKS  
-KAo
+AKo
 
 ##list13##
 KK  AA  QQ  JJ  TT  
 AKS  
-KAo
+AKo
 
 ##list14##
 KK  AA  QQ  JJ  TT  99  88  
 AKS AQS  
-KAo
+AKo
 
 ##list15##
 KK  AA  QQ  JJ  TT  99  88  77  
 AKS AQS AJS ATS  
-KAo QAo JAo 
+AKo AQo AJo 
 KQS  
 
 ##list16##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
 AKS AQS AJS ATS  
-KAo QAo JAo 
+AKo AQo AJo 
 KQS  
 
 ##list06##
@@ -4377,10 +4377,10 @@ T8S T9S
 76S  
 65S  
 54S  
-6Ao  7Ao  8Ao  9Ao  TAo JAo QAo KAo 
-8Ko 9Ko TKo JKo QKo 
-TQo JQo 
-TJo 
+A6o  A7o  A8o  A9o  ATo AJo AQo AKo 
+K8o K9o KTo KJo KQo 
+QTo QJo 
+JTo 
 
 ##list07##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4394,11 +4394,11 @@ T7S T8S T9S
 75S 76S  
 64S 65S  
 54S  
-5Ao  6Ao  7Ao  8Ao  9Ao  TAo  JAo  QAo  KAo  
-9Ko  TKo  JKo  QKo  
-9Qo  TQo  JQo  
-9Jo  TJo  
-9To  
+A5o  A6o  A7o  A8o  A9o  ATo  AJo  AQo  AKo  
+K9o  KTo  KJo  KQo  
+Q9o  QTo  QJo  
+J9o  JTo  
+T9o  
 
 ##list08##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4412,12 +4412,12 @@ T6S T7S T8S T9S
 75S 76S  
 64S 65S  
 54S  
-2Ao  3Ao  4Ao  5Ao  6Ao  7Ao  8Ao  9Ao  TAo  JAo  QAo  KAo  
-8Ko  9Ko  TKo  JKo  QKo  
-9Qo  TQo  JQo  
-8Jo  9Jo  TJo
-8To  9To  
-89o 
+A2o  A3o  A4o  A5o  A6o  A7o  A8o  A9o  ATo  AJo  AQo  AKo  
+K8o  K9o  KTo  KJo  KQo  
+Q9o  QTo  QJo  
+J8o  J9o  JTo
+T8o  T9o  
+98o 
 
 ##list00##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -4433,18 +4433,18 @@ T2S T3S T4S T5S T6S T7S T8S T9S
 52S 53S 54S  
 42S 43S  
 32S  
-2Ao  3Ao  4Ao  5Ao  6Ao  7Ao  8Ao  9Ao  TAo  JAo  QAo  KAo  
-2Ko  3Ko  4Ko  5Ko  6Ko  7Ko  8Ko  9Ko  TKo  JKo  QKo  
-2Qo  3Qo  4Qo  5Qo  6Qo  7Qo  8Qo  9Qo  TQo  JQo  
-2Jo  3Jo  4Jo  5Jo  6Jo  7Jo  8Jo  9Jo  TJo  
-2To  3To  4To  5To  6To  7To  8To  9To  
-29o 39o 49o 59o 69o 79o 89o 
-28o 38o 48o 58o 68o 78o 
-27o 37o 47o 57o 67o 
-26o 36o 46o 56o 
-25o 35o 45o 
-24o 34o 
-23o 
+A2o  A3o  A4o  A5o  A6o  A7o  A8o  A9o  ATo  AJo  AQo  AKo  
+K2o  K3o  K4o  K5o  K6o  K7o  K8o  K9o  KTo  KJo  KQo  
+Q2o  Q3o  Q4o  Q5o  Q6o  Q7o  Q8o  Q9o  QTo  QJo  
+J2o  J3o  J4o  J5o  J6o  J7o  J8o  J9o  JTo  
+T2o  T3o  T4o  T5o  T6o  T7o  T8o  T9o  
+92o 93o 94o 95o 96o 97o 98o 
+82o 83o 84o 85o 86o 87o 
+72o 73o 74o 75o 76o 
+62o 63o 64o 65o 
+52o 53o 54o 
+42o 43o 
+32o 
 
 ##list10##
 KK  AA  
@@ -4452,31 +4452,31 @@ KK  AA
 ##list17##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
-KAo  
+AKo  
 KQS
 
 ##list18##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
-KAo  QKo  
+AKo  KQo  
 KQS QJS JTS
 
 ##list19##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
-KAo  QKo  
+AKo  KQo  
 KQS QJS JTS T9S 98S
 
 ##list99##
 QQ  KK  AA  
 AKS  
-KAo
+AKo
 
 ##list09##
 88  99  TT  JJ  QQ  KK  AA  
 AJS AQS AKS  
 KQS  
-KAo  QAo  
+AKo  AQo  
 
 ##list101##
 AA  KK  QQ  
@@ -4490,113 +4490,113 @@ AA  KK  QQ  JJ  TT
 ##list106##
 AA  KK  QQ  JJ  TT  99  
 AKS AQS  
-KAo  
+AKo  
 
 ##list107##
 AA  KK  QQ  JJ  TT  99  
 AKS AQS AJS  
-KAo  QAo
+AKo  AQo
 
 ##list108##
 AA  KK  QQ  JJ  TT  99  88  
 AKS AQS AJS ATS  
-KAo  QAo  JAo  
+AKo  AQo  AJo  
 KQS 
 
 ##list109##
 AA  KK  QQ  JJ  TT  99  88  77  66  
 AKS AQS AJS ATS  
-KAo  QAo  JAo  
+AKo  AQo  AJo  
 KQS 
 
 ##list110##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  9Ao  
+AKo  AQo  AJo  ATo  A9o  
 KQS  
-QKo
+KQo
 
 ##list111##
 AA  KK  QQ  JJ  TT  99  88  77  66  
 AKS AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  9Ao  
+AKo  AQo  AJo  ATo  A9o  
 KQS KJS  
 QJS   
-QKo
+KQo
 
 ##list112##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  
 AKS AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  9Ao  
+AKo  AQo  AJo  ATo  A9o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
-QKo
+KQo
 
 ##list113##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
 AKS AQS AJS ATS A9S A8S A7S   
-KAo  QAo  JAo  TAo  9Ao  8Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
-QKo
+KQo
 
 ##list114##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S   
-KAo  QAo  JAo  TAo  9Ao  8Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
 98S  
-QKo
+KQo
 
 ##list115##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S   
-KAo  QAo  JAo  TAo  9Ao  8Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  
 KQS KJS KTS   
 QJS QTS  
 JTS  
 T9S  
 98S  
-QKo  JKo  
+KQo  KJo  
 
 ##list116##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  
 KQS KJS KTS   
 QJS QTS  
 JTS  
 T9S  
 98S  
 87S  
-QKo  JKo  
-JQo  
+KQo  KJo  
+QJo  
 
 ##list117##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  
 KQS KJS KTS   
 QJS QTS  
 JTS  
 T9S  
 98S  
 87S  
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
 
 ##list118##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  
 KQS KJS KTS K9S    
 QJS QTS  
 JTS  
@@ -4604,15 +4604,15 @@ T9S
 98S  
 87S  
 76S  
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
-9To  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
+T9o  
 
 ##list119##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S    
 QJS QTS Q9S  
 JTS  
@@ -4624,15 +4624,15 @@ T9S
 54S  
 43S  
 32S  
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
-9To  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
+T9o  
 
 ##list120##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S     
 QJS QTS Q9S  
 JTS J9S J8S    
@@ -4644,15 +4644,15 @@ T9S T8S
 54S  
 43S  
 32S  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
 
 ##list121##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
 QJS QTS Q9S Q8S  
 JTS J9S J8S    
@@ -4664,15 +4664,15 @@ T9S T8S
 54S 53S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  8Jo  
-9To  
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  J8o  
+T9o  
 
 ##list122##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
 QJS QTS Q9S Q8S Q7S Q6S Q5S    
 JTS J9S J8S J7S J6S      
@@ -4684,17 +4684,17 @@ T9S T8S T7S T6S
 54S 53S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  8Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o 
+KQo  KJo  KTo  K9o  K8o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o 
 
 ##list123##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
 QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
 JTS J9S J8S J7S J6S J5S J4S J3S J2S  
@@ -4706,12 +4706,12 @@ T9S T8S T7S T6S
 54S 53S 52S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  8Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o 
+KQo  KJo  KTo  K9o  K8o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o 
 
 ##list124##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
@@ -4727,22 +4727,22 @@ T9S T8S T7S T6S T5S T4S T3S T2S
 54S 53S 52S  
 43S 42S  
 32S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  8Ko  7Ko  6Ko  5Ko  4Ko  3Ko  2Ko
-JQo  TQo  9Qo  8Qo  7Qo  6Qo  5Qo  4Qo  3Qo  2Qo  
-TJo  9Jo  8Jo  7Jo  6Jo  5Jo  4Jo  3Jo  2Jo  
-9To  8To  7To  6To  5To  4To  3To  2To  
-89o 79o 69o 59o 49o 39o 29o 
-78o 68o 58o 48o 38o 28o 
-67o 57o 47o 37o 27o 
-56o 46o 36o 26o 
-45o 35o 25o 
-34o 24o 
+AKo  AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  K8o  K7o  K6o  K5o  K4o  K3o  K2o
+QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o  
+JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  J2o  
+T9o  T8o  T7o  T6o  T5o  T4o  T3o  T2o  
+98o 97o 96o 95o 94o 93o 92o 
+87o 86o 85o 84o 83o 82o 
+76o 75o 74o 73o 72o 
+65o 64o 63o 62o 
+54o 53o 52o 
+43o 42o 
 
 ##list125##
 TT  99  88  77  
 AQS AJS ATS 
-KAo  QAo  
+AKo  AQo  
 KQS  
 QJS  
 JTS  
@@ -4750,7 +4750,7 @@ JTS
 ##list126##
 TT  99  88  77  66  55  
 AQS AJS ATS 
-KAo  QAo  JAo  
+AKo  AQo  AJo  
 KQS  
 QJS  
 JTS  
@@ -4758,7 +4758,7 @@ JTS
 ##list127##
 TT  99  88  77  66  55  
 AQS AJS ATS A9S 
-KAo  QAo  JAo  TAo  
+AKo  AQo  AJo  ATo  
 KQS KJS  
 QJS   
 JTS  
@@ -4766,35 +4766,35 @@ JTS
 ##list128##
 TT  99  88  77  66  55  44  
 AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  
+AKo  AQo  AJo  ATo  
 KQS KJS  
 QJS   
 JTS  
-QKo
+KQo
 
 ##list129##
 TT  99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  9Ao  
+AKo  AQo  AJo  ATo  A9o  
 KQS KJS  
 QJS   
 JTS  
-QKo
+KQo
 
 ##list130##
 TT  99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S  
-KAo  QAo  JAo  TAo  9Ao  8Ao  
+AKo  AQo  AJo  ATo  A9o  A8o  
 KQS KJS KTS   
 QJS   
 JTS 
 T9S  
-QKo
+KQo
 
 ##list131##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S 
-QAo  JAo  TAo  9Ao  8Ao  7Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  
 KQS KJS KTS 
 QJS QTS 
 JTS 
@@ -4802,13 +4802,13 @@ T9S
 98S 
 87S 
 76S 
-QKo  JKo  TKo  
-JQo  TQo  
+KQo  KJo  KTo  
+QJo  QTo  
 
 ##list132##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S 
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  
 KQS KJS KTS 
 QJS QTS 
 JTS 
@@ -4816,14 +4816,14 @@ T9S
 98S 
 87S 
 76S 
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
 
 ##list133##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  
 KQS KJS KTS K9S 
 QJS QTS Q9S 
 JTS J9S 
@@ -4831,14 +4831,14 @@ T9S T8S
 98S 97S 
 87S 
 76S 
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
 
 ##list134##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  
 KQS KJS KTS K9S 
 QJS QTS Q9S 
 JTS J9S 
@@ -4848,14 +4848,14 @@ T9S T8S
 76S 75S   
 65S 64S  
 54S 
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
 
 ##list135##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S 
 QJS QTS Q9S 
 JTS J9S 
@@ -4867,15 +4867,15 @@ T9S T8S
 54S 
 43S 
 32S  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
 
 ##list136##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S 
 QJS QTS Q9S Q8S 
 JTS J9S J8S 
@@ -4887,17 +4887,17 @@ T9S T8S T7S
 54S 53S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o 
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o 
 
 ##list137##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
 QJS QTS Q9S Q8S Q7S Q6S Q5S    
 JTS J9S J8S J7S J6S      
@@ -4909,17 +4909,17 @@ T9S T8S T7S T6S
 54S 53S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  8Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o 
+KQo  KJo  KTo  K9o  K8o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o 
 
 ##list138##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
 QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
 JTS J9S J8S J7S J6S J5S J4S J3S J2S  
@@ -4931,12 +4931,12 @@ T9S T8S T7S T6S
 54S 53S 52S  
 43S 42S  
 32S  
-QKo  JKo  TKo  9Ko  8Ko  7Ko  6Ko  5Ko  
-JQo  TQo  9Qo  8Qo  
-TJo  9Jo  8Jo  
-9To  
-89o 
-78o 
+KQo  KJo  KTo  K9o  K8o  K7o  K6o  K5o  
+QJo  QTo  Q9o  Q8o  
+JTo  J9o  J8o  
+T9o  
+98o 
+87o 
 
 ##list139##
 99  88  77  66  55  44  33  22  
@@ -4952,32 +4952,32 @@ T9S T8S T7S T6S T5S T4S T3S T2S
 54S 53S 52S  
 43S 42S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  8Ko  7Ko  6Ko  5Ko  4Ko  3Ko  2Ko
-JQo  TQo  9Qo  8Qo  7Qo  6Qo  5Qo  4Qo  3Qo  
-TJo  9Jo  8Jo  7Jo  6Jo  5Jo  4Jo  3Jo  
-9To  8To  7To  6To  5To  4To  3To  
-89o 79o 69o 59o 49o 39o 
-78o 68o 58o 48o 38o 
-67o 57o 47o 37o 
-56o 46o 36o 
-45o 35o 
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  K8o  K7o  K6o  K5o  K4o  K3o  K2o
+QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  
+JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  
+T9o  T8o  T7o  T6o  T5o  T4o  T3o  
+98o 97o 96o 95o 94o 93o 
+87o 86o 85o 84o 83o 
+76o 75o 74o 73o 
+65o 64o 63o 
+54o 53o 
 
 ##list140##
 99  88  77  66  55  44  33  22  
 AJS KQS QJS JTS T9S  
-QAo  QKo
+AQo  KQo
 
 ##list141##
 99  88  77  66  55  44  33  22  
 AJS ATS KQS QJS JTS T9S  
-QAo  JAo  QKo  
+AQo  AJo  KQo  
 KQS
 
 ##list142##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
-QAo  JAo  TAo  
+AQo  AJo  ATo  
 KQS  
 QJS  
 JTS  
@@ -4986,51 +4986,51 @@ T9S
 ##list143##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
-QAo  JAo  TAo  9Ao  
+AQo  AJo  ATo  A9o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
 98S  
-QKo
+KQo
 
 ##list144##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
-QAo  JAo  TAo  9Ao  8Ao  
+AQo  AJo  ATo  A9o  A8o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
-QKo
+KQo
 
 ##list145##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
-QAo  JAo  TAo  9Ao  8Ao  
+AQo  AJo  ATo  A9o  A8o  
 KQS KJS KTS   
 QJS QTS  
 JTS  
 T9S  
-QKo  JKo  
+KQo  KJo  
 
 ##list146##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  
 KQS KJS KTS   
 QJS QTS  
 JTS  
 T9S  
 98S  
 87S  
-QKo  JKo  
-JQo  
+KQo  KJo  
+QJo  
 
 ##list147##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  
 KQS KJS KTS K9S    
 QJS QTS  
 JTS  
@@ -5038,15 +5038,15 @@ T9S
 98S  
 87S  
 76S  
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
-9To  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
+T9o  
 
 ##list148##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
 KQS KJS KTS K9S    
 QJS QTS Q9S  
 JTS  
@@ -5058,10 +5058,10 @@ T9S
 54S  
 43S  
 32S  
-QKo  JKo  TKo  
-JQo  TQo  
-TJo  
-9To  
+KQo  KJo  KTo  
+QJo  QTo  
+JTo  
+T9o  
 
 ##list149##
 99  88  77  66  55  44  33  22  
@@ -5077,11 +5077,11 @@ T9S T8S
 54S  
 43S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
 
 ##list150##
 99  88  77  66  55  44  33  22  
@@ -5097,11 +5097,11 @@ T9S T8S
 54S 53S  
 43S 42S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
 
 ##list151##
 99  88  77  66  55  44  33  22  
@@ -5117,13 +5117,13 @@ T9S T8S T7S T6S
 54S 53S  
 43S 42S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  8Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  K8o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o
 
 ##list152##
 99  88  77  66  55  44  33  22  
@@ -5139,13 +5139,13 @@ T9S T8S T7S T6S
 54S 53S 52S  
 43S 42S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  8Ko  
-JQo  TQo  9Qo  
-TJo  9Jo  
-9To  
-89o 
-78o 
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  K8o  
+QJo  QTo  Q9o  
+JTo  J9o  
+T9o  
+98o 
+87o 
 
 ##list153##
 99  88  77  66  55  44  33  22  
@@ -5161,22 +5161,22 @@ T9S T8S T7S T6S T5S T4S T3S T2S
 54S 53S 52S  
 43S 42S  
 32S  
-QAo  JAo  TAo  9Ao  8Ao  7Ao  6Ao  5Ao  4Ao  3Ao  2Ao  
-QKo  JKo  TKo  9Ko  8Ko  7Ko  6Ko  5Ko  4Ko  3Ko  2Ko
-JQo  TQo  9Qo  8Qo  7Qo  6Qo  5Qo  4Qo  3Qo  2Qo  
-TJo  9Jo  8Jo  7Jo  6Jo  5Jo  4Jo  3Jo  2Jo  
-9To  8To  7To  6To  5To  4To  3To  2To  
-89o 79o 69o 59o 49o 39o 29o
-78o 68o 58o 48o 38o 28o 
-67o 57o 47o 37o 27o 
-56o 46o 36o 26o 
-45o 35o 25o 
-34o 24o 
+AQo  AJo  ATo  A9o  A8o  A7o  A6o  A5o  A4o  A3o  A2o  
+KQo  KJo  KTo  K9o  K8o  K7o  K6o  K5o  K4o  K3o  K2o
+QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o  
+JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  J2o  
+T9o  T8o  T7o  T6o  T5o  T4o  T3o  T2o  
+98o 97o 96o 95o 94o 93o 92o
+87o 86o 85o 84o 83o 82o 
+76o 75o 74o 73o 72o 
+65o 64o 63o 62o 
+54o 53o 52o 
+43o 42o 
 
 ##list154##
 88  77  66  55  44  33  22  
 AJS ATS A9S A8S  
-JAo  
+AJo  
 KQS  
 QJS  
 JTS  
@@ -5187,7 +5187,7 @@ T9S
 ##list155##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
-JAo  TAo  
+AJo  ATo  
 KQS  
 QJS  
 JTS  
@@ -5198,40 +5198,40 @@ T9S
 ##list156##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
-JAo  TAo  9Ao  
+AJo  ATo  A9o  
 KQS KJS  
 QJS   
 JTS T9S  
-QKo
+KQo
 
 ##list157##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
-JAo  TAo  9Ao  8Ao  
+AJo  ATo  A9o  A8o  
 KQS KJS  
 QJS   
 JTS  
 T9S  
 98S  
-QKo
+KQo
 
 ##list300##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS KQS QJS JTS T9S 98S 87S 76S 65S  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS J9S 
-KAo  QAo  JAo  TAo  
+AKo  AQo  AJo  ATo  
 
 ##list301##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS KQS QJS JTS T9S 98S 
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS 
-KAo  QAo  JAo  TAo  
+AKo  AQo  AJo  ATo  
 
 ##list302##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS KQS QJS JTS T9S 
 AQS AJS ATS A9S KJS KTS QTS 
-KAo  QAo  JAo  TAo  
+AKo  AQo  AJo  ATo  
 
 ##list900##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
@@ -5247,11 +5247,12 @@ T5S T6S T7S T8S T9S
 54S  
 43S  
 32S  
-2Ao  3Ao  4Ao  5Ao  6Ao  7Ao  8Ao  9Ao  TAo  JAo  QAo  KAo  
-2Ko 3Ko 4Ko 5Ko 6Ko 7Ko 8Ko 9Ko  TKo  JKo  QKo  
-2Qo 3Qo 4Qo 5Qo 6Qo 7Qo 8Qo 9Qo  TQo  JQo  
-7Jo 8Jo 9Jo  TJo
-7To 8To 9To  
-79o 89o 
-78o  
-67o  
+A2o  A3o  A4o  A5o  A6o  A7o  A8o  A9o  ATo  AJo  AQo  AKo  
+K2o K3o K4o K5o K6o K7o K8o K9o  KTo  KJo  KQo  
+Q2o Q3o Q4o Q5o Q6o Q7o Q8o Q9o  QTo  QJo  
+J7o J8o J9o  JTo
+T7o T8o T9o  
+97o 98o 
+87o  
+76o  
+
