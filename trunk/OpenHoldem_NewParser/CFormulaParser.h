@@ -36,8 +36,7 @@ class CFormulaParser {
   static CString CurrentFunctionName();
   bool IsParsing()	{ return _is_parsing; }
  private:
-  bool ExpectDoubleShebangAsStartOfFunctionHeader();
-  bool ExpectDoubleShebangAsEndOfFunctionHeader();
+  bool VerifyFunctionHeader(CString function_header);
   void ExpectMatchingBracketClose(int opening_bracket);
   bool ExpectConditionalThen();
   bool ExpectKeywordForce();

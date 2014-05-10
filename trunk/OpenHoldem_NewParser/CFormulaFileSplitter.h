@@ -19,18 +19,22 @@
 #include "afx.h"
 #include "atlstr.h"
 
-class CFormulaFileSplitter
-{
+class CFormulaFileSplitter {
 public:
-	CFormulaFileSplitter();
-	~CFormulaFileSplitter();
+  CFormulaFileSplitter();
+  ~CFormulaFileSplitter();
 public:
-	CString GetNextFunctionOrList(CArchive &formula_file);
+  void ScanForNextFunctionOrList(CArchive &formula_file);
+public:
+  CString GetFunctionHeader()   { return _function_header; }
+  CString GetFunctionText()     { return _function_text; }
 private:
-	bool IsFunctionHeader(CString line_of_code);
+  bool IsFunctionHeader(CString line_of_code);
 private:
-	CString _next_formula_content;
-	CString _next_line;
+  CString _function_header;
+  CString _function_text;
+  CString _next_line;
+  bool _first_function_processed;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H

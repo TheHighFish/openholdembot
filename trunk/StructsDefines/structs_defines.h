@@ -14,11 +14,8 @@
 #ifndef INC_STRUCTS_DEFINES_H
 #define INC_STRUCTS_DEFINES_H
 
-#include <boost/spirit/tree/ast.hpp>
 #include "..\pokereval\include\poker_defs.h"
 #include "..\OpenHoldem\MagicNumbers.h"
-
-typedef boost::spirit::node_val_data_factory<const char *> int_factory_t;
 
 // thread timeout
 #define THREAD_WAIT					3000
@@ -73,9 +70,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define CARD_BACK		0xff
 #define CARD_NOCARD		0xfe
 #define WH_NOCARD		0
-
-// Hand Lists
-#define MAX_HAND_LISTS	1000		// e.g. islist0 - islist999 Matrix 2008-05-14
 
 // Preferences
 #define MAX_OPPONENTS		22	
@@ -188,7 +182,6 @@ struct SDebugTabInfo
 	bool				valid; // Does it have an "="
 	int					error; 
 	CString				exp;
-	boost::spirit::tree_parse_info<const char *, int_factory_t>	tree;
 	double				ret;
 };
 
