@@ -29,9 +29,8 @@
 #include "Chair$Symbols.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
+#include "CMemory.h"
 #include "CPerl.hpp"
-#include "MagicNumbers.h"
-#include "OpenHoldem.h"
 #include "CPokerTrackerThread.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -41,6 +40,8 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CVersus.h"
+#include "MagicNumbers.h"
+#include "OpenHoldem.h"
 #include "OH_MessageBox.h"
 
 CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
@@ -89,7 +90,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 		assert(p_dll_extension != NULL);
 		if (p_dll_extension->IsDllLoaded())
 		{
-			return (p_dll_extension->process_message()) ("query", sym.c_str());
+			return (p_dll_extension->process_message()) ("query", name);
 		}
 		else 
 		{
@@ -103,9 +104,9 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 		*result = p_perl->GetPerlSymbol(name);
 	}
     // Memory symbols
-    else if (memcmp(sym.c_str(), "me_", 3)==0)
+    else if (memcmp(name, "me_", 3)==0)
 	{
-		*result =  p_memory->ProcessQuery(sym.c_str(), logCallingFunction, e);
+		//!!*result =  p_memory->ProcessQuery(name, logCallingFunction, e);
 	}
 	// Versus
 	else if (memcmp(name, "vs$", 3) == 0)

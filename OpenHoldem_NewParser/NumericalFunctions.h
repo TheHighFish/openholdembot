@@ -42,7 +42,8 @@ inline int RankOfCard(int card) {
 // Making this a macro, because we want source-code information
 // about the call-site if an assertion fires, and not
 // "numeri...tions.h  Line 45"
-#define AssertRange(double value, double lower_bound, double upper_bound) {	assert(value >= lower_bound); assert(value <= upper_bound); }
+#define AssertRange(/*double*/ value, /*double*/ lower_bound, /*double*/ upper_bound) \
+    { assert((value) >= (lower_bound)); assert((value) <= (upper_bound)); }
 
 #define RETURN_DEFAULT_IF_OUT_OF_RANGE(value, upper_bound, _default)	if (((value) < 0) || ((value) > (upper_bound))) return (_default);
 #define RETURN_IF_OUT_OF_RANGE(value, upper_bound)						if (((value) < 0) || ((value) > (upper_bound))) return;

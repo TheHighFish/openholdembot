@@ -15,6 +15,7 @@
 #include "CSymbolEnginePrwin.h"
 
 #include <assert.h>
+#include <math.h>
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"

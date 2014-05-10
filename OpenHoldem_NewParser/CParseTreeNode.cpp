@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CParseTreeNode.h"
 
+#include <math.h>
 #include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
