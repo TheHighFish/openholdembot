@@ -50,137 +50,8 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 // Keywords got changed from "char* to "CString"
-// as we want to append PokerTracker-keywords dynamically
-CString keywords = // Standard functions
-				  "f$beep f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
-				  "f$betpot_2_3 f$betpot_1_2 f$betpot_1_3 f$betpot_1_4 "
-				  "f$rais f$call f$prefold f$rebuy f$delay f$chat "
-				  "f$prwin_number_of_opponents f$test f$sitin f$sitout f$leave f$close "
-				  // General
-				  "site nchairs session version "
-				  // Tablemap
-				  "sitename$ network$ " 
-				  // Formula File
-				  "f$prwin_number_of_iterations"
-				  // Limits
-				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
-				  // Hand Rank
-				  "handrank169 handrank2652 handrank1326 handrank1000 handrankp "
-				  // Chairs
-				  "userchair dealerchair raischair chair$ chairbit$ "
-				  // Rounds / Positions
-				  "betround betposition dealposition callposition dealpositionrais betpositionrais "
-				  // Probabilities
-				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround "
-				  // Chip Amounts
-				  "balance balance0 balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
-				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 "
-				  "currentbet currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 currentbet7 currentbet8 currentbet9 "
-				  "call bet bet1 bet2 bet3 bet4 pot potcommon potplayer callshort raisshort "
-				  // Number of Bets	
-				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
-				  // List Tests
-				  "pokerval "
-				  // Poker Values
-				  "pokervalplayer pokervalcommon pcbits npcbits "
-				  // Poker Value Constants
-				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
-				  // Hand Tests
-				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush "
-				  // Pocket Tests
-				  "ispair issuited isconnector "
-				  // Pocket / Common Tests
-				  "ishipair islopair ismidpair ishistraight ishiflush "
-				  // Players, Opponents
-				  "nopponents nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
-				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
-				  "nopponentschecking nopponentscalling nopponentsraising nopponentstruelyraising nopponentsbetting nopponentsfolded "
-				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
-				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
-				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
-				  // Flags
-				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 flagbits"
-				  // Common Cards
-				  "ncommoncardsknown "
-				  // (Un)known Cards
-				  "nouts ncardsknown ncardsunknown ncardsbetter "
-				  // nhands
-				  "nhands nhandshi nhandslo nhandsti " 
-				  // Flushes / Straights / Sets
-				  "nsuited nsuitedcommon tsuit tsuitcommon nranked nrankedcommon trank trankcommon nstraight nstraightcommon "
-				  "nstraightfill nstraightfillcommon nstraightflush nstraightflushcommon nstraightflushfill nstraightflushfillcommon "
-				  // Rank Bits
-				  "rankbits rankbitscommon rankbitsplayer rankbitspoker srankbits "
-				  "srankbitscommon srankbitsplayer srankbitspoker "
-				  // Rank Hi
-				  "rankhi rankhicommon rankhiplayer rankhipoker srankhi srankhicommon srankhiplayer srankhipoker "
-				  // Rank Lo
-				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
-				  // Time
-				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  // Autoplayer
-				  "myturnbits ismyturn issittingin issittingout "
-				  "isautopost isfinalanswer "
-				  // History
-				  "nplayersround1 nplayersround2 nplayersround3 nplayersround4 "
-				  "nplayersround prevaction didchec didcall didrais didswag nbetsround1 nbetsround2 nbetsround3 "
-				  "nbetsround4 nbetsround didchecround1 didchecround2 didchecround3 didchecround4 "
-				  "didcallround1 didcallround2 didcallround3 didcallround4 didraisround1 didraisround2 "
-				  "didraisround3 didraisround4 didswaground1 didswaground2 didswaground3 didswaground4 "
-				  // Versus
-				  "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
-				  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
-				  "vs$prwinlo vs$prtielo vs$prloslo "
-                  "vs$prwinhinow vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow vs$prlostinow "
-				  "vs$prwinlonow vs$prtielonow vs$prloslonow vs$nhandshinow vs$nhandstinow vs$nhandslonow "
-				  // History	
-				  "hi_"
-				  //Table statistics 
-				  "floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
-				  // Action
-				  "lastraised1 lastraised2 lastraised3 lastraised4 "
-				  "raisbits1 raisbits2 raisbits3 raisbits4 "
-				  "callbits1 callbits2 callbits3 callbits4 "
-				  "foldbits1 foldbits2 foldbits3 foldbits4 "
-				  "ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
-				  "ac_postflop_pos ac_first_into_pot "
-				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
-				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
-				  // Logging
-				  "log$ "
-				  // ICM calculator
-				  "icm icm_fold icm_callwin icm_calllose icm_calltie "
-				  "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
-				  "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
-				  "icm_allilose0 icm_allilose1 icm_allilose2 icm_allilose3 icm_allilose4 "
-				  "icm_allilose5 icm_allilose6 icm_allilose7 icm_allilose8 icm_allilose9 "
-				  "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 icm_alliwinUTG2 icm_alliwinUTG3 "
-				  "icm_alliwinUTG4 icm_alliwinUTG5 icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
-				  "icm_allitieSB icm_allitieBB icm_allitieUTG icm_allitieUTG1 icm_allitieUTG2 "
-				  "icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 icm_allitieUTG6 icm_allitieCO "
-				  "icm_allitieD icm_alliloseSB icm_alliloseBB icm_alliloseUTG icm_alliloseUTG1 "
-				  "icm_alliloseUTG2 icm_alliloseUTG3 icm_alliloseUTG4 icm_alliloseUTG5 icm_alliloseUTG6 "
-				  "icm_alliloseCO icm_alliloseD "
-				  // Hand multiplexor
-				  " f$$ "
-				  // Memory Symbols
-				  "me_st_ me_re_ "
-				  // Hand and board expressions
-				  "hand$ board$ "
-				  // Card Symbols
-				  "$$pc0 $$pc1 $$pr0 $$pr1 $$ps0 $$ps1 "
-				  "$$cc0 $$cc1 $$cc2 $$cc3 $$cc4 "
-				  "$$cr0 $$cr1 $$cr2 $$cr3 $$cr4 "
-				  "$$cs0 $$cs1 $$cs2 $$cs3 $$cs4 "
-				  // Undocumented
-				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
-				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
-				  // Messagebox
-				  "msgbox$ ";
-				  // Poker Tracker ring symbols and
-				  // Poker Tracker ring symbols for the "raischair"
-				  // get appended dynamically later
+// as we want to create this list dynamically
+CString keywords;
 
 CString OpenPPL_keywords = "Custom Preflop Flop Turn River "
 	"When Allin RaiseMax BetMax RaisePot BetPot RaiseHalfPot BetHalfPot "
@@ -653,11 +524,10 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 
   CString filter;
   m_SearchEdit.GetWindowText(filter);
-
   // Setup the tree
   HTREEITEM	parent = NULL, hItem;
-
   COHScriptObject *p_OH_script_object = NULL;
+
   for (int j=0; j<m_standard_headings.GetSize(); j++) {
     if (m_standard_headings[j].IsEmpty()) {
 	    parent = NULL;
@@ -682,16 +552,22 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     if (p_OH_script_object->IsList())
     {
       hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
-      //!!m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
+      m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
+        p_OH_script_object->name()));
     }
     p_OH_script_object = p_function_collection->GetNext();
   }
 
   hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
-  m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-  //!!if (function->IsStandardFunction()) {
-    //!!!ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
-  //}
+  p_OH_script_object = p_function_collection->GetFirst();
+  while (p_OH_script_object != NULL) {
+    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+    if (p_OH_script_object->IsStandardFunction()) {
+      ConditionallyAddFunction(p_OH_script_object->name(), 
+        p_OH_script_object->function_text(), filter, hUDFItem);
+    }
+    p_OH_script_object = p_function_collection->GetNext();
+  }
   GroupUDFs();
 }
 
@@ -1156,58 +1032,23 @@ void CDlgFormulaScintilla::OnDelete() {
         "Confirm Delete", MB_YESNO | MB_ICONWARNING)) {
 	  HandleEnables(true);
 	  return;
+    }
+	// Delete a UDF or list
+    p_function_collection->Delete(s);
+      
+	HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
+	HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+	if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+      MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
+	  m_FormulaTree.DeleteItem(oldParentItem); // List only this???
 	}
-	bool bDeleted = false;/*
-	// Delete a UDF
-	if (s.Find("f$") != k_not_found) 
-	{
-		for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-		{
-			if (m_wrk_formula.formula()->mFunction[i].func.Compare(s) != k_CString_identical) 
-			{
-				bDeleted = true;
-				m_wrk_formula.set_func_remove(i);
-
-				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
-
-				HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-				if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
-				{
-					MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
-					m_FormulaTree.DeleteItem(oldParentItem);
-				}
-				break;
-			}
-		}
-	}
-
-	// Delete a list
-	else if (s.Find("list") != k_not_found) 
-	{
-		for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
-		{			
-			if (m_wrk_formula.formula()->mHandList[i].list.Compare(s) != k_CString_identical) 
-			{
-				bDeleted = true;
-				m_wrk_formula.set_list_remove(i);
-
-				m_FormulaTree.DeleteItem(hItem);
-				break;
-			}
-		}
-	}
-	if (bDeleted) 
-	{
-		m_dirty = true;
-		m_FormulaTree.SetFocus();
-		SetWindowText("Formula - ");
-        FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
-	}
-
+	m_dirty = true;
+	m_FormulaTree.SetFocus();
+	SetWindowText("Formula - ");
+    FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
 	UpdateAllScintillaKeywords();
-
 	HandleEnables(true);
-	*/
+	
 
 	/*!!!
 	int ret, N;
