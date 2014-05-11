@@ -50,7 +50,6 @@ void CSymbolEngineOpenPPLUserVariables::Set(CString symbol)
 
 bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double *result)
 {
-	// !! conflict with userchhair
 	if (memcmp(name, "user", 4) != 0)
 	{
 		// Not a user-variable

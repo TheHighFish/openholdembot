@@ -21,6 +21,7 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
+#include "CDebugTab.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -408,10 +409,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.formula_x(), max_x), min(preferences.formula_y(), max_y),
 				   preferences.formula_dx(), preferences.formula_dy(), SWP_NOCOPYBITS);
-
-	// Debug logging preferences
-	m_wrote_fdebug_header = false;
-
 	// Always sort UDFs
 	SortUdfTree();
 
@@ -509,16 +506,23 @@ void CDlgFormulaScintilla::GroupUDFs()
 	RemoveSingleItemGroups();
 }
 
-void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const CString &content, const CString &filter, HTREEITEM hParent)
-{
-	HTREEITEM hItem;
-	if (filter.IsEmpty() || name.Find(filter) >= 0 || content.Find(filter) >= 0)
-	{
-		hItem = m_FormulaTree.InsertItem(name, hParent);
-		m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(name));
-	}
+void CDlgFormulaScintilla::AddFunctionToTree(HTREEITEM hParent, CString name) {
+  assert(name != "");
+  HTREEITEM hItem = m_FormulaTree.InsertItem(name, hParent);
+  m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(name));
 }
 
+void CDlgFormulaScintilla::AddStandardFunctionsToTree(
+    HTREEITEM hParent, 
+    int first, 
+    int last) {
+  assert(first >= 0);
+  assert(last < k_number_of_standard_functions);
+  for (int i=first; i<=last; ++i) {
+    AddFunctionToTree(hParent, k_standard_function_names[i]);
+  }
+}
+	
 void CDlgFormulaScintilla::PopulateFormulaTree() {
   m_FormulaTree.DeleteAllItems();
 
@@ -535,14 +539,34 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 	    parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
 	    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
     }
-    p_OH_script_object = p_function_collection->GetFirst();
-    while (p_OH_script_object != NULL) {
-      ConditionallyAddFunction(p_OH_script_object->name(), 
-        p_OH_script_object->function_text(),
-        filter, 
-        parent);
-      p_OH_script_object = p_function_collection->GetNext();
-	}
+    switch(j) {
+      case 0: 
+        // Autoplayer functions
+        AddStandardFunctionsToTree(parent, 
+          k_autoplayer_function_beep, k_autoplayer_function_fold);
+        break;
+      case 1:
+        // Standard functions, including "notes" and "DLL"
+        AddFunctionToTree(parent, "notes");
+        AddFunctionToTree(parent, "DLL");
+        AddStandardFunctionsToTree(parent, 
+          k_standard_function_prefold, k_standard_function_delay);
+        break;
+      case 2:
+        // Ini functions
+        AddStandardFunctionsToTree(parent,
+          k_init_on_startup, k_init_on_heartbeat);
+        break;
+      case 3:
+        // PrWin functions
+        AddStandardFunctionsToTree(parent,
+          k_prwin_number_of_opponents, k_prwin_wontplay);
+        break;
+      case 4:
+        // Debug functions
+        AddFunctionToTree(parent, "f$debug");
+        AddFunctionToTree(parent, "f$test");
+    }
   }
   parent = m_FormulaTree.InsertItem("Hand Lists");
   m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
@@ -562,9 +586,8 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
     m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-    if (p_OH_script_object->IsStandardFunction()) {
-      ConditionallyAddFunction(p_OH_script_object->name(), 
-        p_OH_script_object->function_text(), filter, hUDFItem);
+    if (p_OH_script_object->IsUserDefinedFunction()) {
+      AddFunctionToTree(parent, p_OH_script_object->name());
     }
     p_OH_script_object = p_function_collection->GetNext();
   }
@@ -807,10 +830,6 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
         m_current_edit = p_function_or_list->name();
 	  } 
     }
-  }
-  if (s == "f$debug") 
-  {
-	  InitDebugArray();
   }
   HandleEnables(true);
   *pResult = 0;
@@ -1500,52 +1519,41 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
-void CDlgFormulaScintilla::OnBnClickedCalc() 
-{
-	CString					Cstr = "", title = "", s = "";
-	double					ret = 0.;
-	std::string				str = "";
-	struct SDebugTabInfo	debug_struct;
-	char					format[50] = {0};
+void CDlgFormulaScintilla::OnBnClickedCalc() {
+  CString					Cstr = "", title = "", s = "";
+  double					ret = 0.;
+  std::string				str = "";
+  char					    format[50] = {0};
 
-	StopAutoButton();
+  StopAutoButton();
+  // Clear result box
+  m_CalcResult.SetWindowText("");
+  // Caclulate symbols
+  p_engine_container->EvaluateAll();
 
-	// Clear result box
-	m_CalcResult.SetWindowText("");
+  // Validate parse trees
+  if (!p_function_collection->ParseAll()) {
+    s.Format("There are syntax errors in one or more formulas that are\n");
+    s.Append("preventing calculation.\n");
+    s.Append("These errors need to be corrected before the 'Calc'\n");
+    s.Append("button can be used.");
+    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+    return;
+  }
 
-	// Caclulate symbols
-	p_engine_container->EvaluateAll();
-
-	// Validate parse trees
-	if (!p_function_collection->ParseAll())
-	{
-		s.Format("There are syntax errors in one or more formulas that are\n");
-		s.Append("preventing calculation.\n");
-		s.Append("These errors need to be corrected before the 'Calc'\n");
-		s.Append("button can be used.");
-		OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
-		return;
-	}
-
-	//
-	// f$debug is a special case, handle it first
-	//
-	if (m_current_edit == "f$debug") 
-	{
-		InitDebugArray();
-		UpdateDebugAuto();
-	}
-
-	// Processing for any other formula
-	else 
-	{
-		// Execute the currently selected formula
-        ret = p_function_collection->Evaluate(m_current_edit);
-		sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
-		Cstr.Format(format, ret);
-		m_CalcResult.SetWindowText(Cstr);
-		SetExtendedWindowTitle(m_current_edit.GetString());	
-	}
+  // f$debug is a special case, handle it first
+  if (m_current_edit == "f$debug") {
+    UpdateDebugAuto();
+  } 
+  // Processing for any other formula
+  else {
+    // Execute the currently selected formula
+    ret = p_function_collection->Evaluate(m_current_edit);
+    sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
+    Cstr.Format(format, ret);
+    m_CalcResult.SetWindowText(Cstr);
+    SetExtendedWindowTitle(m_current_edit.GetString());	
+  }
 }
 
 void CDlgFormulaScintilla::OnBnClickedAuto() {
@@ -1568,7 +1576,6 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
 	  return;
 	}
     m_ButtonAuto.SetWindowText("* Auto *");
-    //!!!InitDebugArray();
 	ok_to_update_debug = true;
   } else {
 	ok_to_update_debug = false;
@@ -1585,48 +1592,15 @@ void CDlgFormulaScintilla::StopAutoButton()
 	}
 }
 
-void CDlgFormulaScintilla::UpdateDebugAuto(void) 
-{
-	CString			Cstr = "";
-
-	// mark symbol result cache as stale
-	p_function_collection->ClearCache();
-/*!!!
-	// Loop through each line in the debug tab and evaluate it
-	for (int i=0; i<(int) debug_ar.GetSize(); i++) 
-	{
-		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
-		{
-			debug_ar[i].ret = gram.EvaluateTree(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-		} 
-		else
-		{
-			debug_ar[i].ret = 0;
-		}
-	}
-	// Format the text
-	CreateDebugTab(&Cstr);
-
-	// Always write the tab's contents to a log file, if it is my turn (stable frames!)
-	if (p_symbol_engine_autoplayer->ismyturn())
-	{
-		if (!m_wrote_fdebug_header) 
-		{
-			WriteFDebugLog(true);
-			m_wrote_fdebug_header = true;
-		}
-		else 
-		{
-			WriteFDebugLog(false);
-		}
-	}
-
-	// Display the text in the debug tab
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-	m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
-	m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
-	m_pActiveScinCtrl->GotoPosition(0);
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);*/
+void CDlgFormulaScintilla::UpdateDebugAuto(void) {
+  p_function_collection->ClearCache();
+  CDebugTab debug_tab; //!!
+  CString result = debug_tab.EvaluateAll();
+  m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+  m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)result.GetString());
+  m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
+  m_pActiveScinCtrl->GotoPosition(0);
+  m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 }
 
 void CDlgFormulaScintilla::CreateDebugTab(CString *cs) 
@@ -1699,53 +1673,6 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 	// Remove last trailing \n so we don't extend field length
 	if (cs->GetLength()>=1)
 		*cs = cs->Mid(0, cs->GetLength()-1);
-}
-
-void CDlgFormulaScintilla::WriteFDebugLog(bool write_header) 
-{
-	int			N = 0, i = 0;
-	CString		temp = "", line = "", header = "";
-	char		format[50] = {0}, nowtime[26] = {0};
-
-	sprintf_s(format, 50, "%%0.%df", k_precision_for_debug_tab);
-	line.Format("%s,", get_time(nowtime));
-	header.Format("date/time,");
-
-	N = (int) debug_ar.GetSize();
-	for (int i=0; i<N; i++) 
-	{
-		if (debug_ar[i].valid) 
-		{
-			if (debug_ar[i].error == SUCCESS) 
-			{
-				temp.Format(format, debug_ar[i].ret);
-			}
-			else 
-			{
-				temp="";
-			}
-			line.Append(temp);
-			header.Append(debug_ar[i].exp);
-			if (i != N-1) 
-			{
-				line.Append(",");
-				header.Append(",");
-			}
-		}
-	}
-
-	// write the line to the log
-	CString fn = p_filenames->DebugTabLogFilename();
-	FILE *fp;
-	if (fopen_s(&fp, fn.GetString(), "a")==0)
-	{
-		if (write_header) 
-		{
-			fprintf(fp, "%s\n", header.GetString());
-		}
-		fprintf(fp, "%s\n", line.GetString());
-		fclose(fp);
-	}
 }
 
 void CDlgFormulaScintilla::InitDebugArray(void) 
@@ -2259,7 +2186,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
-	AddSymbol(parent, "session", "the current logging instance (0-9)");
+	AddSymbol(parent, "session", "the current logging instance (0-24)");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
 	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);

@@ -28,11 +28,11 @@ CUPDialog::_tagInitCommonControls::_tagInitCommonControls()
 
 CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpUserProcParam,LPCTSTR lpszDlgTitle/*=_T("Please Wait..")*/,bool bAllowCancel/*=true*/)
 {
-    m_hThread = NULL;							//No Thread Yet !!
+    m_hThread = NULL;							//No Thread Yet 
 
     m_hParentWnd = hParentWnd;					//Needed to Create the DialogBox - DlgProc asks this as Parameter
 
-    m_bAllowCancel = bAllowCancel;				//Is Dialog Terminatable ??
+    m_bAllowCancel = bAllowCancel;				//Is Dialog Terminatable 
 
     m_ThreadData.pUserProcParam	= lpUserProcParam;	//We send this as Parameter to the UserProc
 
@@ -45,7 +45,7 @@ CUPDialog::CUPDialog(HWND hParentWnd,LP_CUPDIALOG_USERPROC lpUserProc,LPVOID lpU
 
 CUPDialog::~CUPDialog(void)
 {
-    Cleanup();			//It is possible that the Dialog object can be destroyed while Thread is still running..!!
+    Cleanup();			//It is possible that the Dialog object can be destroyed while Thread is still running..
 }
 
 void CUPDialog::Cleanup()
@@ -73,7 +73,7 @@ void CUPDialog::Cleanup()
 
 INT_PTR CUPDialog::DoModal()
 {
-    Cleanup();		//If this is not first time, we had better Terminate any previous instance Threads !!
+    Cleanup();		//If this is not first time, we had better Terminate any previous instance Threads 
 
     return DialogBoxParam(NULL,MAKEINTRESOURCE(IDD),m_hParentWnd,ProgressDlgProc,(LPARAM)this);
 }
@@ -179,7 +179,7 @@ INT_PTR CALLBACK ProgressDlgProc(HWND hDlg,UINT Message,WPARAM wParam,LPARAM lPa
             if (pThreadData->bAlive)
                 Sleep(CUPDIALOG_TERMINATE_DELAY);
             if (pThreadData->bAlive)
-                SendMessage(GetDlgItem(hDlg,CUPDIALOG_TEXTBOX_ID),WM_SETTEXT,0,(LPARAM)(_T("Termination Complete ..Shutting Down !!")));
+                SendMessage(GetDlgItem(hDlg,CUPDIALOG_TEXTBOX_ID),WM_SETTEXT,0,(LPARAM)(_T("Termination Complete ..Shutting Down ")));
             if (pThreadData->bAlive)
                 Sleep(CUPDIALOG_TERMINATE_DELAY);
             EndDialog(hDlg, MAKEWPARAM(IDCANCEL,1));

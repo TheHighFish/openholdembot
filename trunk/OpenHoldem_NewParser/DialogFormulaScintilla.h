@@ -133,7 +133,6 @@ protected:
 	afx_msg void OnPrevBookmark();
 	afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
 	void CreateDebugTab(CString *cs);
-	void WriteFDebugLog(bool write_header);
 	void InitDebugArray();
 	void ResizeDialogForControlBars();
 	afx_msg void OnEditUndo();
@@ -168,8 +167,11 @@ protected:
 	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
 	HTREEITEM hRawItem, hCatItem;
 
+private:
 	void	  PopulateFormulaTree();
-	void	  ConditionallyAddFunction(const CString &name, const CString &content, const CString &filter, HTREEITEM hParent);
+    void      AddFunctionToTree(HTREEITEM hParent, CString name);
+    void      AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
+protected:
 	HTREEITEM FindUDFGroupItem(const char *groupName);
 	HTREEITEM FindUDFStartingItem(const char *groupName);
 	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);

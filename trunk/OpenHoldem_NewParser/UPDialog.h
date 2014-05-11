@@ -40,14 +40,14 @@ protected:
 		ZeroMemory(this,sizeof(_ProgressThreadData));
 	}
 public:
-	HWND	hThreadWnd;				//The Dialog that Created the Thread !!
+	HWND	hThreadWnd;				//The Dialog that Created the Thread 
 	LPVOID	pUserProcParam;			//Parameter that shoud be sent to the UserProc
 	bool	bAlive;					//Indicates the Thread State Alive/Dead
 	bool	bTerminate;				//Thread Monitors this to Know if it has to Terminate itself
 
 	LP_CUPDIALOG_USERPROC	m_lpUserProc;	//User Progress Procedure - Called by ProgressDialogBox From the ThreadProc
 
-	enum							//These would be used by Thread - Should be inSync with DlgProc Values !!
+	enum							//These would be used by Thread - Should be inSync with DlgProc Values 
 	{
 		WM_DISABLECONTROLS = CUPDIALOG_WM_MESSAGE,
 		WM_PROGRESSTHREADCOMPLETED,

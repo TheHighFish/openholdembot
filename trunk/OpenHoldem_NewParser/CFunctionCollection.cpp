@@ -129,13 +129,13 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   {
 	// f$check and f$fold should evaluate to true per default
 	// for auto-check-folding instead of time-outs.
-	function_text = "1 "; //!! header?
+	function_text = "1 "; 
   }
   else {
 	// Add an empty function.
 	// The function-text should contain at least one space.
 	// The editor does somehow not work for completely empty formulas.
-	function_text = " "; //!! header?
+	function_text = " "; 
   }
   CFunction *p_function = new CFunction(&function_name, 
     &function_text); // 

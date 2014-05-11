@@ -29,8 +29,6 @@ class CFunction: public COHScriptObject{
   double Evaluate();
   // For debugging output
   CString Serialize();
-  // Autoplayer, Secondary, Ini, PrWin
-  bool IsStandardFunction();
  private:
   // For autoplayer-trace
   CString LogResult();

@@ -1247,6 +1247,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CDebugTab.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CFunction.cpp"
 					>
 				</File>
@@ -2106,6 +2110,10 @@
 				>
 				<File
 					RelativePath=".\CAutoplayerTrace.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CDebugTab.h"
 					>
 				</File>
 				<File

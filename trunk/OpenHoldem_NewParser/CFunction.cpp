@@ -79,12 +79,3 @@ CString CFunction:: LogResult() {
     _is_result_cached ? "[cached]" : "");
   return message;
 }
-
-bool CFunction::IsStandardFunction() {
-  for (int i=0; i<k_number_of_standard_functions; i++) {
-    if (strcmp(_name, k_standard_function_names[i]) == 0) {
-      return true;
-    }
-  }
-  return false;
-}
