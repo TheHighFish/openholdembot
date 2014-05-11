@@ -42,3 +42,11 @@ bool COHScriptObject::IsStandardFunction() {
   }
   return false;
 }
+
+bool COHScriptObject::IsSpecialFunction() {
+  if (_name == "f$debug") return true;
+  if (_name == "f$test")  return true;
+  if (_name == "notes")   return true;
+  if (_name == "DLL")     return true;
+  return false;
+}

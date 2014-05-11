@@ -28,9 +28,13 @@ class COHScriptObject {
  public:
   bool IsList()                 { return _name.Left(4) == "list"; }
   bool IsFunction()             { return _name.Left(2) == "f$"; }
+  // Autoplayer, Secondary, Ini, PrWin
   bool IsStandardFunction();
+  // f$debug, f$test, notes, DLL
+  bool IsSpecialFunction();
   bool IsUserDefinedFunction()  { return (IsFunction() 
-                                    && !IsStandardFunction()); }
+                                    && !IsStandardFunction()
+                                    && !IsSpecialFunction()); }
  public:
   // For saving
   CString Serialize()         { return "##" + _name + "##\r\n" 

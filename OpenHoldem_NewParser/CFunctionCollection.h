@@ -37,9 +37,10 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   void ResetOnHeartbeat();
  public:
   // To be called by
-  //   * ResetOnHeartbeat() !!
+  //   * ResetOnHeartbeat() 
   //   * the formula editor for the working copy (f$debug and f$test)
   void ClearCache();
+public:
   void DeleteAll();
   void SetEmptyDefaultBot();
  public:

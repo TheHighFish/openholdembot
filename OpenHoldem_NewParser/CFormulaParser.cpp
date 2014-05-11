@@ -24,6 +24,8 @@
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
 
+#undef DEBUG_PARSER
+
 CFormulaParser *p_formula_parser = NULL;
 
 // Global for static accessor-function
@@ -218,7 +220,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   p_function_collection->Add((COHScriptObject*)p_new_function); //!! conversion
   // Care about operator precendence
   parse_tree_rotator.Rotate(p_new_function);
-#ifdef _DEBUG
+#ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
 #endif
 }
