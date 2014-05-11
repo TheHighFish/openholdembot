@@ -18,6 +18,7 @@
 #include "OpenHoldem.h"
 #include "DialogNew.h"
 #include "OH_MessageBox.h"
+#include "VerifyFunctionAndListNames.h"
 
 // CDlgNew dialog
 
@@ -67,50 +68,14 @@ BOOL CDlgNew::OnInitDialog()
 void CDlgNew::OnBnClickedOk() 
 {
 	char str[MAX_WINDOW_TITLE] = {0};
-	int i = 0;
 
-	m_NewName.GetWindowText(CSnewname);
+    m_NewName.GetWindowText(CSnewname);
 	strcpy_s(str, MAX_WINDOW_TITLE, CSnewname.GetString());
-
-	// Changing a list
-	if (is_function == false && memcmp(str, "list", 4)!=0) 
-	{
-		OH_MessageBox_Interactive("Lists must begin with the name 'list'.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (is_function == false && memcmp(str, "list", 4)==0 && strlen(str)==4) 
-	{
-		OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand be followed by a number.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (is_function == false) {
-		for (int i=4; i<(int) strlen(str); i++) {
-
-			if (str[i]<'0' || str[i]>'9') 
-			{
-				OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand have all numbers to end.  e.g. 'list45'", "Invalid Name", MB_ICONERROR);
-				return;
-			}
-		}
-	}
-	if (is_function == false && memcmp(str, "list", 4)==0 && (atoi(str+4)>(MAX_HAND_LISTS-1))) 
-	{
-		OH_MessageBox_Interactive("List is above the highest list number which can be used", "Invalid List", MB_ICONERROR);
-		return;
-	}
-
-	// Changing a UDF
-	else if (is_function == true && memcmp(str, "f$", 2)!=0) 
-	{
-		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (is_function == true && strlen(str)==2) 
-	{
-		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'\r\nand be followed be the name of the function.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-
+    if (is_function) {
+      if (!VerifyFunctionName(str)) return;
+    } else {
+      if (!VerifyListName(str)) return;
+    }
 	OnOK();
 }
 
