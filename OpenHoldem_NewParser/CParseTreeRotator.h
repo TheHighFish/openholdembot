@@ -43,14 +43,16 @@
 class CFunction;
 
 class CParseTreeRotator {
+  friend class CFormulaParser;
  public:
   CParseTreeRotator();
   ~CParseTreeRotator();
  public:
   void Rotate(CFunction *function);
- private:
+ protected:
   void Rotate(TPParseTreeNode parse_tree_node,
     TPParseTreeNode *pointer_to_parent_pointer_for_back_patching);
+ private:
   bool NeedsLeftRotation(TPParseTreeNode parse_tree_node);
   bool NeedsRightRotation(TPParseTreeNode parse_tree_node);
   void RotateLeft(TPParseTreeNode parse_tree_node,
