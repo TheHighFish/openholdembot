@@ -68,176 +68,174 @@
 #define SCE_C_GLOBALCLASS 19
 #define MAX_STYLE_NUM 19
 
-class CScintillaInfo
-{
-public:
-	CScintillaInfo() { _pWnd = NULL; }
-	CScintillaInfo(CScintillaWnd *pWnd, const char *name) { _pWnd = pWnd; _name = name; }
-	CScintillaInfo(const CScintillaInfo &in) { operator=(in); }
-
-	CScintillaInfo &operator=(const CScintillaInfo &in) { _pWnd = in._pWnd; _name = in._name; return *this; }
-
-public:
-	CScintillaWnd *_pWnd;
-	CString _name;
+class CScintillaInfo {
+ public:
+  CScintillaInfo() { _pWnd = NULL; }
+  CScintillaInfo(CScintillaWnd *pWnd, const char *name) { _pWnd = pWnd; _name = name; }
+  CScintillaInfo(const CScintillaInfo &in) { operator=(in); }
+  CScintillaInfo &operator=(const CScintillaInfo &in) { _pWnd = in._pWnd; _name = in._name; return *this; }
+ public:
+  CScintillaWnd *_pWnd;
+  CString _name;
 };
 
-class CDlgFormulaScintilla : public CDialog 
-{
-public:
-	CDlgFormulaScintilla(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CDlgFormulaScintilla();
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	virtual BOOL DestroyWindow();
-	void UpdateDebugAuto();
+class CDlgFormulaScintilla : public CDialog {
+ public:
+  CDlgFormulaScintilla(CWnd* pParent = NULL);   // standard constructor
+  virtual ~CDlgFormulaScintilla();
+  virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+  virtual BOOL DestroyWindow();
+  void UpdateDebugAuto();
 
-	enum { IDD = IDD_FORMULA_SCINTILLA };
-	
-	CScintillaWnd	m_EmptyScinCtrl;
-	CArray<CScintillaInfo, CScintillaInfo &> m_ScinArray;
-	CScintillaWnd	*m_pActiveScinCtrl;
-	CScintillaWnd	*FindScintillaWindow(const char *name);
+  enum { IDD = IDD_FORMULA_SCINTILLA };
 
-	CButton			m_ButtonAuto;
-	bool			m_wrote_fdebug_header;
-	bool			m_dirty;
+  CScintillaWnd	m_EmptyScinCtrl;
+  CArray<CScintillaInfo, CScintillaInfo &> m_ScinArray;
+  CScintillaWnd	*m_pActiveScinCtrl;
+  CScintillaWnd	*FindScintillaWindow(const char *name);
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnCancel();
-	virtual void PostNcDestroy();
-	afx_msg void OnBnClickedApply();
-	afx_msg void OnBnClickedApplySave();
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCalc();
-	afx_msg void OnNew();
-	afx_msg void OnRename();
-	afx_msg void OnDelete();
-	afx_msg void OnFont();
-	afx_msg void OnHandList();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
-	afx_msg void OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTvnExpandedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnFunctionTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnSearchUpdate();
-	afx_msg void OnBnClickedAuto();
-	afx_msg void OnToggleBookmark();
-	afx_msg void OnNextBookmark();
-	afx_msg void OnPrevBookmark();
-	afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
-	void CreateDebugTab(CString *cs);
-	void InitDebugArray();
-	void ResizeDialogForControlBars();
-	afx_msg void OnEditUndo();
-	afx_msg void OnEditRedo();
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditPaste();
-	afx_msg void OnEditDeleteText();
-	afx_msg void OnEditSelectAll();
-	void SortUdfTree();
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	void OnTimer(UINT nIDEvent);
-	void SaveSettingsToRegistry();
-	void SetStyleColors(CScintillaWnd *pWnd, bool enabled);
+  CButton		m_ButtonAuto;
+  bool			m_wrote_fdebug_header;
+  bool			m_dirty;
 
-	BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
-	CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
-	void UpdateAllScintillaKeywords();
-	void UpdateScintillaKeywords(CScintillaWnd *pWnd);
-	void DeleteScintilla(CScintillaWnd *pWnd);
+ protected:
+  virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual void OnCancel();
+  virtual void PostNcDestroy();
+  afx_msg void OnBnClickedApply();
+  afx_msg void OnBnClickedApplySave();
+  afx_msg void OnBnClickedOk();
+  afx_msg void OnBnClickedCalc();
+  afx_msg void OnNew();
+  afx_msg void OnRename();
+  afx_msg void OnDelete();
+  afx_msg void OnFont();
+  afx_msg void OnHandList();
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
+  afx_msg void OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnTvnExpandedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnFunctionTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnBnClickedCancel();
+  afx_msg void OnSearchUpdate();
+  afx_msg void OnBnClickedAuto();
+  afx_msg void OnToggleBookmark();
+  afx_msg void OnNextBookmark();
+  afx_msg void OnPrevBookmark();
+  afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
+  void CreateDebugTab(CString *cs);
+  void InitDebugArray();
+  void ResizeDialogForControlBars();
+  afx_msg void OnEditUndo();
+  afx_msg void OnEditRedo();
+  afx_msg void OnEditCopy();
+  afx_msg void OnEditCut();
+  afx_msg void OnEditPaste();
+  afx_msg void OnEditDeleteText();
+  afx_msg void OnEditSelectAll();
+  void SortUdfTree();
+  afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+  void OnTimer(UINT nIDEvent);
+  void SaveSettingsToRegistry();
+  void SetStyleColors(CScintillaWnd *pWnd, bool enabled);
 
-	// Support Functions for the Dialog
-	void StopAutoButton();
-	bool PromptToSave();
-	void ResizeScintillaWindows();
-	void SelectFunctionTab(CScintillaWnd *pCurScin);
+  BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
+  CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
+  void UpdateAllScintillaKeywords();
+  void UpdateScintillaKeywords(CScintillaWnd *pWnd);
+  void DeleteScintilla(CScintillaWnd *pWnd);
 
-	void PopulateSymbols();
-	void PopulatePokerTrackerSymbols();
-	HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
-	HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
-	HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
-	HTREEITEM hRawItem, hCatItem;
+  // Support Functions for the Dialog
+  void StopAutoButton();
+  bool PromptToSave();
+  void ResizeScintillaWindows();
+  void SelectFunctionTab(CScintillaWnd *pCurScin);
 
-private:
-	void	  PopulateFormulaTree();
-    void      AddFunctionToTree(HTREEITEM hParent, CString name);
-    void      AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
-protected:
-	HTREEITEM FindUDFGroupItem(const char *groupName);
-	HTREEITEM FindUDFStartingItem(const char *groupName);
-	HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);
-	HTREEITEM FindFormulaWithWindow(const CScintillaWnd *pWnd, HTREEITEM hFirstItem);
-	void	  GetGroupName(const char *functionName, CString &groupName);
-	void	  RemoveSingleItemGroups();
-	void	  GroupUDFs();
-	HTREEITEM hUDFItem;
+  void PopulateSymbols();
+  void PopulatePokerTrackerSymbols();
+  HTREEITEM AddSymbolTitle(const char *title, const char *description=NULL, HTREEITEM parentItem=NULL);
+  HTREEITEM AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description=NULL);
+  HTREEITEM AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description);
+  HTREEITEM hRawItem, hCatItem;
 
-	void HandleEnables(bool All);
+ private:
+  void	  PopulateFormulaTree();
+  void    AddFunctionToTree(HTREEITEM hParent, CString name);
+  void    AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
+ protected:
+  HTREEITEM FindUDFGroupItem(const char *groupName);
+  HTREEITEM FindUDFStartingItem(const char *groupName);
+  HTREEITEM MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewParent, const char *name, bool bSelect);
+  HTREEITEM FindFormulaWithWindow(const CScintillaWnd *pWnd, HTREEITEM hFirstItem);
+  void	  GetGroupName(const char *functionName, CString &groupName);
+  void	  RemoveSingleItemGroups();
+  void	  GroupUDFs();
+  HTREEITEM hUDFItem;
 
-	// Find/Replace Support Functions and Variables
-	afx_msg void OnFindReplaceDlg();
-	afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnFindNext();
-	afx_msg void OnFindPrev();
-			void CloseFindReplaceDialog();
+  void HandleEnables(bool All);
 
-			void DoFind(bool DirDown);
+  // Find/Replace Support Functions and Variables
+  afx_msg void OnFindReplaceDlg();
+  afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
+  afx_msg void OnFindNext();
+  afx_msg void OnFindPrev();
+		  void CloseFindReplaceDialog();
 
-	CFindReplaceDialog *m_pFRDlg;
-	CString			m_FindLastSearch;
-	bool			m_FindWholeWord;
-	bool			m_FindMatchCase;
+		  void DoFind(bool DirDown);
 
-	CMenu			m_Menu;
-	CToolBar		m_toolBar;
-	CStatusBar		m_wndStatusBar;
-	CTreeCtrl		m_FormulaTree;
-	CTreeCtrl		m_SymbolTree;
-	CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply, m_FormulaOK;
-	CEdit			m_CalcResult;
-	CEdit			m_SearchEdit;
-	CWinMgr			m_winMgr;				// window manager
-	CSizerBar		m_winMgrSizerBar;		// sizer bar
-	CTabCtrl		m_TabControl;
-	CTabCtrl		m_FunctionTab;
+  CFindReplaceDialog *m_pFRDlg;
+  CString			m_FindLastSearch;
+  bool			m_FindWholeWord;
+  bool			m_FindMatchCase;
 
-	HACCEL			m_hEditAccelTable;
-	HACCEL			m_hDialogAccelTable;
+  CMenu			m_Menu;
+  CToolBar		m_toolBar;
+  CStatusBar		m_wndStatusBar;
+  CTreeCtrl		m_FormulaTree;
+  CTreeCtrl		m_SymbolTree;
+  CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply, m_FormulaOK;
+  CEdit			m_CalcResult;
+  CEdit			m_SearchEdit;
+  CWinMgr			m_winMgr;				// window manager
+  CSizerBar		m_winMgrSizerBar;		// sizer bar
+  CTabCtrl		m_TabControl;
+  CTabCtrl		m_FunctionTab;
 
-	CString			m_current_edit;			// Name of formula currently in edit window
-	CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
-	bool			in_startup;
-	bool			ok_to_update_debug;
+  HACCEL			m_hEditAccelTable;
+  HACCEL			m_hDialogAccelTable;
 
-    CStringArray	m_standard_headings;
-	// Tree view for function grouping
-	//   * Primary autoplayer functions
-	//   * Secondary autoplayer functions
-	//   * Ini functions
-	//   * PrWin functions
-	//   * Debug functions
-	static const int	k_number_of_standard_headings = 5;
-	CStringArray		m_standard_functions[k_number_of_standard_headings];
-	DECLARE_MESSAGE_MAP()
+  CString			m_current_edit;			// Name of formula currently in edit window
+  CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
+  bool			in_startup;
+  bool			ok_to_update_debug;
 
-private:
-	CString ExtractCommentFromHandList(CString HandListAsString);
-	void WarnAboutAutoplayerWhenApplyingFormula();
-	void SetExtendedWindowTitle(CString additional_information);
+  CStringArray	m_standard_headings;
+  // Tree view for function grouping
+  //   * Primary autoplayer functions
+  //   * Secondary autoplayer functions
+  //   * Ini functions
+  //   * PrWin functions
+  //   * Debug functions
+  static const int	k_number_of_standard_headings = 5;
+  CStringArray		m_standard_functions[k_number_of_standard_headings];
+  DECLARE_MESSAGE_MAP()
+
+ private:
+  CString ExtractCommentFromHandList(CString HandListAsString);
+  void WarnAboutAutoplayerWhenApplyingFormula();
+  void SetExtendedWindowTitle(CString additional_information);
  private:
   void FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl);
+ private:
+   HTREEITEM _subtree_handlists;
+   HTREEITEM _subtree_user_defined_functions;
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;
-
 
 #endif //INC_DIALOGFORMULASCINTILLA_H

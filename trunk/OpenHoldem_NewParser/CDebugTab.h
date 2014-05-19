@@ -17,17 +17,30 @@
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 
+const int kMaxSizeOfDebugTab = 50;
+
 class CDebugTab: public COHScriptObject{
+  friend class CFormulaParser;
  public:
   CDebugTab();
   ~CDebugTab();
  public:
-  // f$debug is not a normaö function
-  // Always returning zero.
+  // f$debug is not a normal function
+  // We always return zero when evaluated.
   double Evaluate()   { return k_undefined_zero; }
   // To be used by the formula-editor
   CString EvaluateAll(); 
+  CString function_text();
+ protected:
+  void Clear();
+  void AddExpression(CString expression_text, TPParseTreeNode expression);
+ private:
+  CString *_expression_texts[kMaxSizeOfDebugTab];;
+  TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
+  int _number_of_expressions;
 };
+
+extern CDebugTab *p_debug_tab;
 
 #endif INC_CDEBUGTAB_H
 

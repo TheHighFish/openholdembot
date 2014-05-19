@@ -502,7 +502,6 @@ void CDlgFormulaScintilla::GroupUDFs()
 		}
 		hUDFChildItem = hNextItem;
 	}
-
 	RemoveSingleItemGroups();
 }
 
@@ -568,7 +567,8 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
         AddFunctionToTree(parent, "f$test");
     }
   }
-  parent = m_FormulaTree.InsertItem("Hand Lists");
+  _subtree_handlists = m_FormulaTree.InsertItem("Hand Lists");
+  parent = _subtree_handlists;
   m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
   p_OH_script_object = p_function_collection->GetFirst();
@@ -581,8 +581,9 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     }
     p_OH_script_object = p_function_collection->GetNext();
   }
-
-  hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
+ 
+  _subtree_user_defined_functions = m_FormulaTree.InsertItem("User Defined Functions");
+  hUDFItem = parent = _subtree_user_defined_functions;
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
     m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
@@ -906,18 +907,18 @@ void CDlgFormulaScintilla::OnNew() {
   CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
   if (s == "Hand Lists" 
-	  || (s.Find("list") != k_not_found && s.Find("f$") == k_not_found)){
+	  || (s.Find("list") != k_not_found && s.Left(2) != "f$")){
     newdlg.is_function = false;
   } else {  
     newdlg.is_function = true;
   }
   if (newdlg.DoModal() != IDOK) return;
-  if (p_function_collection->Exists(s)) {
+  if (p_function_collection->Exists(newdlg.CSnewname)) {
 	OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
 	return;
   }
 
-  if (newdlg.is_function = false) {
+  if (newdlg.is_function == false) {
     // Create new list
     COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, NULL);
     // Add it to working set CArray
@@ -986,7 +987,85 @@ void CDlgFormulaScintilla::OnRename() {
     
   UpdateAllScintillaKeywords();
   HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
-  if (!p_function_collection->LookUp(rendlg.CSoldname)->IsUserDefinedFunction()) {
+  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+  
+  PopulateFormulaTree();
+  SortUdfTree();
+  SetWindowText("Formula - " + rendlg.CSnewname);
+
+  //m_FormulaTree.UpdateDialogControls(); //???
+  m_FormulaTree.UpdateWindow();
+  m_FormulaTree.Expand(_subtree_user_defined_functions, 1); //???
+
+  m_FormulaTree.SetFocus();
+  m_dirty = true;
+  HandleEnables(true);
+
+  return;
+
+  if (!p_function_collection->LookUp(rendlg.CSnewname)->IsUserDefinedFunction()) {
+    // List or standard function
+    // No formula grouping here, therefore easy to rename
+    
+  } else {
+    // User-defined function
+    CString tempString, groupName = rendlg.CSnewname;
+    HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
+    HTREEITEM hNewParent = hUDFItem;
+    CString parentName = m_FormulaTree.GetItemText(oldParentItem);
+    if (groupName.Find("f$") == 0) {
+      int index = groupName.Find("_");
+      if (index > 0) {
+        groupName = groupName.Mid(2, index-2);
+        if (parentName.Compare(groupName)) {
+          // Does a group already exist?
+          HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+          if (hExistingGroup) {
+	        hNewParent = hExistingGroup;
+          } else {
+            // If a group does not exist, is there another UDF to group together?
+            HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+            if (matchingItem) {
+              hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+              MoveTreeItem(matchingItem, hNewParent, NULL, false);
+            }
+          }
+        }
+      }
+    }
+    if (oldParentItem != hNewParent) {
+      MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
+      if (oldParentItem != hUDFItem) {
+        HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+        if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+          MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
+          m_FormulaTree.DeleteItem(oldParentItem);
+        }
+      }
+    } else{
+	  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+    }
+    if (memcmp(str, "f$", 2) == 0) {
+	  
+    }
+  }
+  
+}
+
+/*void CDlgFormulaScintilla::OnRename() {
+  CDlgRename rendlg;
+  char str[MAX_WINDOW_TITLE] = {0};
+
+  StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
+  rendlg.CSoldname = s;
+  if (rendlg.DoModal() != IDOK) return;
+  if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
+    
+  UpdateAllScintillaKeywords();
+  HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
+  if (!p_function_collection->LookUp(rendlg.CSnewname)->IsUserDefinedFunction()) {
     // List or standard function
     // No formula grouping here, therefore easy to rename
     m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
@@ -1036,7 +1115,7 @@ void CDlgFormulaScintilla::OnRename() {
   m_FormulaTree.SetFocus();
   m_dirty = true;
   HandleEnables(true);
-}
+}*/
 
 void CDlgFormulaScintilla::OnDelete() {
 	HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
@@ -1594,8 +1673,7 @@ void CDlgFormulaScintilla::StopAutoButton()
 
 void CDlgFormulaScintilla::UpdateDebugAuto(void) {
   p_function_collection->ClearCache();
-  CDebugTab debug_tab; //!!
-  CString result = debug_tab.EvaluateAll();
+  CString result = p_debug_tab->EvaluateAll();
   m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
   m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)result.GetString());
   m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
@@ -2067,7 +2145,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	m_FormulaTree.EnableWindow(true); // Spew: Just in Case?
 
 	// Enable the Buttons
-	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesOrDllActive && iWhichTypeSelected != 1);
+	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesOrDllActive);
 	m_ButtonAuto.EnableWindow(bDebugActive);
 
 	// File Menu
@@ -2554,3 +2632,4 @@ void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pAct
     m_pActiveScinCtrl->EnableWindow(true);
   }
 }
+

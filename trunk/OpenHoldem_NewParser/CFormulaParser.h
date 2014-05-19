@@ -45,6 +45,7 @@ class CFormulaParser {
   // OH-script and OpenPPL
   void ParseListBody(COHScriptList *list);
   TPParseTreeNode ParseFunctionBody();
+  void ParseDebugTab(CString function_text);
  private:
   // OH-script
   TPParseTreeNode ParseExpression();

@@ -97,3 +97,7 @@ bool CFormulaFileSplitter::IsFunctionHeader(CString line_of_code)
 	return ((line_of_code.GetAt(0) == '#')
 		&& (line_of_code.GetAt(1) == '#'));
 }
+
+void CFormulaFileSplitter::SetInput(CString line_of_debug_tab) {
+  _function_text = line_of_debug_tab;
+}

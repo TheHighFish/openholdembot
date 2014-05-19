@@ -15,6 +15,7 @@
 #include "CFormulaParser.h"
 
 #include <assert.h>
+#include "CDebugTab.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "COHScriptList.h"
@@ -166,11 +167,9 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
 	  CParseErrors::Error("Malformed function-header. Name expected");
 	  return;
   }
-  if (_function_name == "f$debug") { //R!!!
-    MessageBox(0, 
-      "Skipping f$debug.\n"
-      "Not yet supported", 
-      "Warning", 0);
+  if (_function_name == "f$debug") {
+    ParseDebugTab(function_text);
+    p_function_collection->Add((COHScriptObject*)p_debug_tab);
     return;
   }
   TPParseTreeNode function_body = NULL;
@@ -184,10 +183,9 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   else if (_function_name.Left(4) == "list")
   {
         // ##listXYZ##
-        CString list_name = _token;
 	  write_log(preferences.debug_parser(), 
 			  "[FormulaParser] Parsing list\n");
-	  COHScriptList *new_list = new COHScriptList(&list_name, &function_text);
+	  COHScriptList *new_list = new COHScriptList(&_function_name, &function_text);
         ParseListBody(new_list);
 	  p_function_collection->Add((COHScriptObject*)new_list); 
         return;
@@ -217,7 +215,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   CFunction *p_new_function = new CFunction(&_function_name, 
 	  &function_text);
   p_new_function->SetParseTree(function_body);
-  p_function_collection->Add((COHScriptObject*)p_new_function); //!! conversion
+  p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence
   parse_tree_rotator.Rotate(p_new_function);
 #ifdef DEBUG_PARSER
@@ -615,5 +613,31 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
       assert(!current_when_condition->IsAnyKindOfWhenCondition());
       break;
     }   
+  }
+}
+
+void CFormulaParser::ParseDebugTab(CString function_text) {
+  p_debug_tab->Clear();
+  CString next_line;
+  int separator_index = 0;
+  // Split lines
+  while (AfxExtractSubString(next_line, function_text, separator_index, '\n')) {
+    ++separator_index;
+    int pos = next_line.Find('=');
+    if (pos < 0) {
+      // No equality-sign found. Empty line or not valid
+      continue;
+    }
+    // Expression-text: everything behind first "="
+    int expresion_length = next_line.GetLength() - pos - 1;
+    CString expression_text = next_line.Right(expresion_length);
+    // Parse this line
+    //!!!_formula_file_splitter.SetInput(expression_text);
+    _tokenizer.SetInput(expression_text);
+    TPParseTreeNode expression = ParseExpression();
+    // Care about operator precendence
+    parse_tree_rotator.Rotate(expression, &expression);
+    // Add line and expression to debug-tab
+    p_debug_tab->AddExpression(expression_text, expression);
   }
 }

@@ -21,6 +21,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CAutoplayerTrace.h"
 #include "CConfigurationCheck.h"
+#include "CDebugTab.h"
 #include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
@@ -99,6 +100,9 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CReplayFramesCounter\n");
   assert(!p_replayframes_counter);
   p_replayframes_counter = new CReplayFramesCounter;
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDebugTab\n");
+  assert(p_debug_tab == NULL);
+  p_debug_tab = new CDebugTab;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
@@ -270,6 +274,8 @@ void DeleteAllSingletons() {
 	{ delete p_autoplayer; p_autoplayer = NULL; }
   if (p_formula_parser)
 	{ delete p_formula_parser; p_formula_parser = NULL; }
+  if (p_debug_tab) 
+    { delete p_debug_tab; p_debug_tab = NULL; }
   if (p_replayframes_counter)
 	{ delete p_replayframes_counter; p_replayframes_counter = NULL; }
   if (p_tablemap_access)  
