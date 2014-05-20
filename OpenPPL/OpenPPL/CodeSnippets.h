@@ -18,7 +18,7 @@
 static const char *k_code_snippet_license =
 	"//************************************************************************\n"
 	"//                                                                        \n"
-	"// Converted with OpenPPL 4.4.0                                           \n"
+	"// Converted with OpenPPL 4.5.1                                           \n"
 	"//                                                                        \n"
 	"// OpenPPL is part of the OpenHoldem project                              \n"
 	"//   Download page:         http://code.google.com/p/openholdembot/       \n"
@@ -28,7 +28,7 @@ static const char *k_code_snippet_license =
 	"// The original PPL (Poker Programming Language) got invented by          \n"
 	"//   Shanky Bonusbots:      http://www.bonusbots.com/supportforum/YaBB.pl \n"
 	"//                                                                        \n"
-	"// Required OpenHoldem version: 4.4.0 or later                            \n"
+	"// Required OpenHoldem version: 4.5.0 or later                            \n"
 	"//                                                                        \n"
 	"// Contributors:                                                          \n"
 	"//   Bob3456                                                              \n"
