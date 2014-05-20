@@ -30,7 +30,9 @@ class CFormulaParser {
   CFormulaParser();
   ~CFormulaParser();
  public:
+  void InitNewParse();
   void ParseFile(CArchive & formula_file);
+  void ParseSingleFormula(CString name, CString function_text);
   void ParseSingleFormula(CString function_text);
  public:
   static CString CurrentFunctionName();

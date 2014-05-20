@@ -14,6 +14,8 @@
 #include "stdafx.h"
 #include "COHScriptObject.h"
 
+#include "CFormulaParser.h"
+
 COHScriptObject::COHScriptObject()
 {
 	_name = "";
@@ -50,3 +52,7 @@ bool COHScriptObject::IsSpecialFunction() {
   if (_name == "DLL")     return true;
   return false;
 }
+
+void COHScriptObject::Parse() {
+  p_formula_parser->ParseSingleFormula(_name, function_text());
+};

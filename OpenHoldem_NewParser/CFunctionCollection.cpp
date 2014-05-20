@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CFunctionCollection.h"
 
+#include "CFormulaParser.h"
 #include "CFunction.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
@@ -248,7 +249,14 @@ bool CFunctionCollection::CorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
-  //!!!
+  p_formula_parser->InitNewParse();
+  COHScriptObject *p_oh_script_object = GetFirst();
+  while (p_oh_script_object != NULL) {
+    if (p_oh_script_object->IsFunction()) {
+      p_oh_script_object->Parse();
+    }
+    p_oh_script_object = GetNext();  
+  }
   return true;
 }
 

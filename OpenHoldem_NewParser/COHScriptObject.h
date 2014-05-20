@@ -39,6 +39,8 @@ class COHScriptObject {
   // For saving
   CString Serialize()         { return "##" + _name + "##\r\n" 
                                   + _function_text + "\r\n"; }
+ public:
+  void Parse();
  protected:
   CString _name;
   CString _function_text;
