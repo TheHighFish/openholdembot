@@ -1838,7 +1838,7 @@ void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() 
-{/*
+{
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
@@ -1866,23 +1866,20 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 		}
 	}
 
-	// Copy working set to global set
-	p_formula->CopyFormulaFrom(&m_wrk_formula);
+	// Copy working set to global set !!!
+
 
 	pDoc->SetModifiedFlag(true);
 
 	// Re-parse global set
-	p_function_collection->ParseAll());
+	p_function_collection->ParseAll();
 
 	// Re-calc symbols
 	p_engine_container->EvaluateAll();
 
-	// Rewrite f$debug log header, if required
-	m_wrote_fdebug_header = false;
-
 	m_dirty = false;
 
-	HandleEnables(true);*/
+	HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnBnClickedOk() 

@@ -39,9 +39,16 @@ CFormulaParser::CFormulaParser() {
 CFormulaParser::~CFormulaParser() {
 }
 
-void CFormulaParser::ParseFile(CArchive& formula_file) {
+void CFormulaParser::InitNewParse() {
   _is_parsing = true;
-    CParseErrors::ClearErrorStatus();
+  CParseErrors::ClearErrorStatus();
+  // We do NOT clear the function collection here,
+  // because we might want to reparse the function-collection!
+  // (Formula Editor -> Apply)
+}
+
+void CFormulaParser::ParseFile(CArchive& formula_file) {
+  InitNewParse();
   p_function_collection->DeleteAll();
   p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
@@ -68,7 +75,7 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   // and especially throw warnings on old-style and Shanky-style PPL.
   // Most common error: identifier instead of function header
   // This can only happen before the first function
-    _function_name = "-- undefined --";
+  _function_name = "-- undefined --";
   _token = function_header.MakeLower();
   if (_token.Left(6) == "custom") {
     CParseErrors::Error("Superfluous keyword custom");
@@ -141,6 +148,11 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
 		if (expected_bracket_close == kTokenBracketClose_3) return;
 	}
 	CParseErrors::Error("Expecting closing bracket (of another type)"); 
+}
+
+void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
+  _function_name = name;
+  ParseSingleFormula(function_text);
 }
 
 void CFormulaParser::ParseSingleFormula(CString function_text) {
