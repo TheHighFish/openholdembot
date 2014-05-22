@@ -987,7 +987,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 	return pv;
 }
 
-bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "rankhi", 6) == 0)
 	{

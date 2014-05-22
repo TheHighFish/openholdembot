@@ -812,7 +812,7 @@ int GetSuitFromCard(int scraper_card)
 	return k_undefined;
 }
 
-bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "$", 1)==0)
 	{

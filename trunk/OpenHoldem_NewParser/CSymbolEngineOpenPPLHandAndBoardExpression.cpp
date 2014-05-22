@@ -83,7 +83,7 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat()
 		_prime_coded_board_cards);
 }
 
-bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	// First check, if hand$ or board$ and/or Suited
 	// At the same time remove the unnecessary parts of the expression

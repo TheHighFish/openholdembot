@@ -38,7 +38,7 @@ public:
 	int CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();;
 public:
 	// Pokerval

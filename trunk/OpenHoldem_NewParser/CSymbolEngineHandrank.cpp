@@ -139,7 +139,7 @@ void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int
 	c[3]='\0';
 }
 
-bool CSymbolEngineHandrank::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineHandrank::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "handrank", 8) == 0)
 	{

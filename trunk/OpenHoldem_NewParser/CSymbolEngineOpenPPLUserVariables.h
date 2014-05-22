@@ -31,7 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	void Set(CString symbol);
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 private:
 	CMap<CString*, CString*, bool, bool> _user_variable_hashtable;
 };

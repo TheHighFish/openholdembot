@@ -281,7 +281,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// but only for the current hand. Does this hurt much?
 }
 
-bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 { 
 	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12)
 	{

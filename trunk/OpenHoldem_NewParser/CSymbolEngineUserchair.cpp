@@ -46,8 +46,6 @@ void CSymbolEngineUserchair::ResetOnConnection()
 
 void CSymbolEngineUserchair::ResetOnHandreset()
 {
-	// !! TODO: option to reset it on every hand-reset 
-	// (for table-changes in tournaments)
 }
 
 void CSymbolEngineUserchair::ResetOnNewRound()
@@ -99,7 +97,7 @@ void CSymbolEngineUserchair::CalculateUserChair()
 	}
 }
 
-bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "userchair", 9)==0 && strlen(name)==9)
 	{

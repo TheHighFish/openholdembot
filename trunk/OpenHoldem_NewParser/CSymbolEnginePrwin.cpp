@@ -187,7 +187,7 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 	}
 }
 
-bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "pr", 2)==0)
 	{

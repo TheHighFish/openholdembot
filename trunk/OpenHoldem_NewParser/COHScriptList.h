@@ -41,7 +41,7 @@ class COHScriptList: public COHScriptObject {
   void Set(CString list_member);
   // Actually Evaluate() returns true/false if our hand is in the list or not
   // but the function is inheritzed from the base-class.
-  double Evaluate();
+  double Evaluate(bool log = false);
  private:
   void ErrorInvalidMember(CString list_member); 
   void ErrorOldStyleFormat(CString list_member);

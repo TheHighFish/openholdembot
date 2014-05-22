@@ -294,7 +294,9 @@ void CEngineContainer::ResetOnHeartbeat() {
   }
 }
 
-bool CEngineContainer::EvaluateSymbol(const char *name, double *result)
+bool CEngineContainer::EvaluateSymbol(const char *name, 
+                                      double *result, 
+                                      bool log /* = false */)
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
 	if (IsOutdatedSymbol(name))
@@ -304,11 +306,14 @@ bool CEngineContainer::EvaluateSymbol(const char *name, double *result)
 	}
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
 	{
-		if (_symbol_engines[i]->EvaluateSymbol(name, result))
+		if (_symbol_engines[i]->EvaluateSymbol(name, result, log))
 		{
 			// Symbol successfully evaluated
 			// Result already returned via result-pointer
-			return true;
+          if (log) {
+            p_autoplayer_trace->Add(name, *result);
+          }
+		  return true;
 		}
 	}
 	// Unknown symbol.

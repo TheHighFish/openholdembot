@@ -1238,6 +1238,10 @@
 					RelativePath="..\CTablemap\CTablemapAccess.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\CTablemapCompletenessChecker.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Formula"
@@ -2029,7 +2033,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CTablemapVersionChecker.h"
+					RelativePath=".\CTablemapCompletenessChecker.h"
 					>
 				</File>
 			</Filter>

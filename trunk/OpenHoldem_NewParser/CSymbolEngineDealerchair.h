@@ -33,7 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	inline int dealerchair()			{ return _dealerchair; }
 private:
 	void CalculateDealerChair();

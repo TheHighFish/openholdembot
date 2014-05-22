@@ -26,12 +26,9 @@ class CFunction: public COHScriptObject{
   void SetParseTree(TPParseTreeNode _new_parse_tree);
   void ClearCache();
  public:
-  double Evaluate();
+  double Evaluate(bool log = false);
   // For debugging output
   CString Serialize();
- private:
-  // For autoplayer-trace
-  CString LogResult();
  protected:
   // Used by the parse-tree-rotator
   TPParseTreeNode _parse_tree_node;

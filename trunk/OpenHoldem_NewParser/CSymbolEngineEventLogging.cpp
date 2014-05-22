@@ -82,7 +82,7 @@ void CSymbolEngineEventLogging::ResetOnMyTurn()
 void CSymbolEngineEventLogging::ResetOnHeartbeat()
 {}
 
-bool CSymbolEngineEventLogging::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineEventLogging::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	// We don't provide any symbols
 	return false;

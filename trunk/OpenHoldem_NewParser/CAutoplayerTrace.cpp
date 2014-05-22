@@ -40,15 +40,50 @@ CAutoplayerTrace::~CAutoplayerTrace()
 
 void CAutoplayerTrace::Clear() {
   ENT
-  _symboltrace_collection.RemoveAll();
   _indentation = 0;
+  _number_of_log_lines = 0;
+  _symboltrace_collection.RemoveAll();
 }
 
-void CAutoplayerTrace::Add(CString message) {
+int CAutoplayerTrace::Add(CString symbol) {
+  ENT
+  // This function for symbols without value is for f$functions only.
+  // The value will be backpatched later.
+  assert(symbol.Left(2) == "f$");
+  CString new_message;
+  new_message.Format("%s%s = ",
+    Indentation(), symbol);
+  _symboltrace_collection.Add(new_message);
+  _number_of_log_lines++;
+  return (_number_of_log_lines - 1); 
+}
+
+void CAutoplayerTrace::Add(CString symbol, double value) {
   ENT
   CString new_message;
-  //!! _indentation
+  if (symbol.Left(2) == "f$") {
+    // Function with known value a priori
+    new_message.Format("%s%s = %.3f {cached]",
+      Indentation(), symbol, value);
+  } else {
+    // "Normal" symbol
+    new_message.Format("%s%s = %.3f",
+      Indentation(), symbol, value); 
+  }
   _symboltrace_collection.Add(new_message);
+  _number_of_log_lines++;
+}
+
+void CAutoplayerTrace::BackPatchValue(int index, double value) {
+  assert(index >= 0);
+  assert(index < _number_of_log_lines);
+  // Already done:
+  // Indentation, symbol, " = "
+  CString complete_message;
+  complete_message.Format("%s%.3f", 
+    _symboltrace_collection.GetAt(index),
+    value);
+  _symboltrace_collection.SetAt(index, complete_message);
 }
 
 void CAutoplayerTrace::Indent(bool more) {
@@ -58,6 +93,15 @@ void CAutoplayerTrace::Indent(bool more) {
     _indentation -= 2;
   }
   assert(_indentation >= 0);
+}
+
+CString CAutoplayerTrace::Indentation() {
+  assert(_indentation >= 0);
+  CString format;
+  format.Format("%%%ds", _indentation);
+  CString indentation;
+  indentation.Format(format, "");
+  return indentation;
 }
 
 void CAutoplayerTrace::Print(const char *action_taken) {
@@ -71,6 +115,7 @@ void CAutoplayerTrace::Print(const char *action_taken) {
   LogBasicInfo(action_taken);
   LogAutoPlayerTrace();
   fflush(log_fp);
+  Clear();
 }
 
 void CAutoplayerTrace::LogLogSymbols() {
@@ -134,13 +179,10 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   }
   comcards.Append("..........");
   comcards = comcards.Left(10);
-
   // Always use handrank169 here
   rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
-
   // poker hand
   pokerhand = p_symbol_engine_pokerval->HandType();
-
   // best action
   // !! needs to be extended for betpot, etc.
   if (p_autoplayer_functions->f$alli())
@@ -155,7 +197,6 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
     bestaction = "Prefold";
   else
     bestaction = "Check/Fold";
-
   // fcra_seen
   CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
   // fcra formula status
@@ -165,7 +206,6 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
 	p_autoplayer_functions->f$call() ? "K" : ".",
 	p_autoplayer_functions->f$rais() ? "R" : ".",
 	p_autoplayer_functions->f$alli() ? "A" : ".");
-		
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
   fprintf(log_fp, get_time(nowtime));
@@ -211,12 +251,4 @@ CString CAutoplayerTrace::LogSymbolsForGUI() {
   }
   return result;
 }
-
-void symboltrace_collection_add(const char *s) {
-  //!!!
-}
-
-
-
-
 

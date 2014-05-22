@@ -267,7 +267,7 @@ double CSymbolEngineChipAmounts::Largestbet()
 	return largest_bet;
 }
 
-bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "pot", 3)==0)
 	{

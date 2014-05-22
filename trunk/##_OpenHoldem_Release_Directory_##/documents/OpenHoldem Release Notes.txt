@@ -1,6 +1,8 @@
 v4.5.1 2014-03-30
 ==================
 NEW STUFF:
+- A tablemap-completeness-checker that warns about most cases of incomplete tablemaps.
+  [THF]
 - PokerTracker_Query_Definitions.DLL: new symbol pt_3bet_preflop.
   Thanks to Fqfq for providing the code.
   [THF]

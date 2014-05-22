@@ -82,7 +82,7 @@ void CSymbolEngineVariousDataLookup::ResetOnMyTurn()
 void CSymbolEngineVariousDataLookup::ResetOnHeartbeat()
 {}
 
-bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	// DLL
 	if (memcmp(name, "dll$", 4) == 0)

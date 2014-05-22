@@ -107,7 +107,7 @@ void COHScriptList::ErrorOldStyleFormat(CString list_member) {
   CParseErrors::Error(error_message);
 }
 
-double COHScriptList::Evaluate() {
+double COHScriptList::Evaluate(bool log /* = false */) {
   write_log(true, "[COHScriptList] Evaluating list %s\n", _name); 
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),

@@ -31,7 +31,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
 private:
 	int PrimeCodedRanks(int card_0,	int card_1, 

@@ -69,7 +69,7 @@ void CSymbolEngineDealerchair::ResetOnHeartbeat()
 	// Do not reset, as this might cause a hand-reset.
 }
 
-bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "dealerchair", 11)==0 && strlen(name)==11)	
 	{
