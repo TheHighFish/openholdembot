@@ -20,9 +20,13 @@ class CAutoplayerTrace {
    ~CAutoplayerTrace();
  public:
   void Clear();
-  void Add(CString message);
-  void Print(const char *action_taken);
+  void Add(CString symbol, double value);
+  // Logging function, value currently unknown
+  // Returning index (line number)
+  int  Add(CString symbol); 
+  void BackPatchValue(int index, double value);  
   void Indent(bool more);
+  void Print(const char *action_taken);
  public:
   CString LogSymbolsForGUI();
  public:
@@ -35,7 +39,9 @@ class CAutoplayerTrace {
  private:
   void LogLogSymbols();
   void LogBasicInfo(const char *action_taken);
-  void LogAutoPlayerTrace();			
+  void LogAutoPlayerTrace();	
+ private:
+  CString Indentation();
  private:
   //!!!const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
   //const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
@@ -43,6 +49,7 @@ class CAutoplayerTrace {
   CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
   CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
   int _indentation;
+  int _number_of_log_lines;
   CCritSec m_critsec;
 };
 

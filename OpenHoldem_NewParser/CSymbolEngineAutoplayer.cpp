@@ -239,7 +239,7 @@ bool CSymbolEngineAutoplayer::IsFirstHeartbeatOfMyTurn()
 		&& (_last_myturnbits == 0));
 }
 
-bool CSymbolEngineAutoplayer::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineAutoplayer::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "is", 2)==0)
 	{

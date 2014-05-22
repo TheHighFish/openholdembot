@@ -47,6 +47,10 @@ void CFormulaParser::InitNewParse() {
   // (Formula Editor -> Apply)
 }
 
+void CFormulaParser::MarkParseAsFinished() {
+  _is_parsing = false;
+}
+
 void CFormulaParser::ParseFile(CArchive& formula_file) {
   InitNewParse();
   p_function_collection->DeleteAll();
@@ -67,7 +71,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     ParseSingleFormula(_formula_file_splitter.GetFunctionText());
   }
 ExitLoop:
-  _is_parsing = false;
+  MarkParseAsFinished();
 }
 
 bool CFormulaParser::VerifyFunctionHeader(CString function_header) {

@@ -24,7 +24,7 @@ class COHScriptObject {
   virtual CString function_text() { return _function_text; }
   void SetName(CString name)      { _name = name; }
  public:
-  virtual double Evaluate();
+  virtual double Evaluate(bool log = false);
  public:
   bool IsList()                 { return _name.Left(4) == "list"; }
   bool IsFunction()             { return _name.Left(2) == "f$"; }

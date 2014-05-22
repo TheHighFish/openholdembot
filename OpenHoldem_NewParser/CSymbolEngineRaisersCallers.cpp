@@ -339,7 +339,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	_foldbits[BETROUND] = new_foldbits;
 }
 
-bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nopponents", 10)==0)
 	{

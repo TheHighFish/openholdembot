@@ -48,7 +48,7 @@ void CSymbolEngineOpenPPLUserVariables::Set(CString symbol)
 	_user_variable_hashtable.SetAt(&symbol, true);
 }
 
-bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "user", 4) != 0)
 	{

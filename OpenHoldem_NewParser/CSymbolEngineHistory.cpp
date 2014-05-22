@@ -185,7 +185,7 @@ void CSymbolEngineHistory::CalculateHistory()
 	}
 }
 
-bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "did", 3) == 0)
 	{

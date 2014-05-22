@@ -124,7 +124,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 	}
 }
 
-bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name,"pt_",3)!=0)
 	{

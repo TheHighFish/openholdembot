@@ -177,7 +177,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 	}
 }
 
-bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nopponents", 10)==0)
 	{

@@ -34,26 +34,27 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 	_parse_tree_node = _new_parse_tree;
 }
 
-double CFunction::Evaluate() {
+double CFunction::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
     "[CFunction] Evaluating function %s\n", _name); 
-  CString log_message;
   if (_is_result_cached) {
-    log_message.Format("[CFunction] Function %s -> %6.3f [cached]\n", 
-      _name, _cached_result);
+    p_autoplayer_trace->Add(_name, _cached_result);  
   } else {
     if (_parse_tree_node != NULL)
     {
+      int log_line = p_autoplayer_trace->Add(_name);
       p_autoplayer_trace->Indent(true);
       _cached_result = _parse_tree_node->Evaluate();
-      p_autoplayer_trace->Indent(false);
       _is_result_cached = true;
-      log_message.Format("[CFunction] Function %s -> %6.3f\n", 
-        _name, _cached_result);
+      p_autoplayer_trace->BackPatchValue(log_line, _cached_result);
+      p_autoplayer_trace->Indent(false);
     }
     // Else: keep _cached_result as 0.0
   }
-  p_autoplayer_trace->Add(LogResult());
+  //p_autoplayer_trace->Add(LogResult());
+  CString log_message;
+  log_message.Format("[CFunction] Function %s -> %6.3f\n", 
+    _name, _cached_result);
   write_log(preferences.debug_formula(), (char*)(LPCSTR)log_message); 
   return _cached_result;
 }
@@ -73,9 +74,4 @@ CString CFunction::Serialize() {
   return result;
 }
 
-CString CFunction:: LogResult() {
-  CString message;
-  message.Format("%s = %8.3f %s", _name, _cached_result,
-    _is_result_cached ? "[cached]" : "");
-  return message;
-}
+

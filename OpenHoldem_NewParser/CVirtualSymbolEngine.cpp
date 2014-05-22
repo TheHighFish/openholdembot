@@ -35,7 +35,7 @@ void CVirtualSymbolEngine::ResetOnMyTurn()
 void CVirtualSymbolEngine::ResetOnHeartbeat()
 {}
 
-bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result)
+bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	// We don't provide any symbols
 	return false;

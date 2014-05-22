@@ -32,7 +32,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 };
 
 extern CSymbolEngineEventLogging *p_symbol_engine_event_logging;

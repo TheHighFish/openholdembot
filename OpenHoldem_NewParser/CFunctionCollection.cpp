@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CFunctionCollection.h"
 
+#include "CAutoplayerTrace.h"
 #include "CFormulaParser.h"
 #include "CFunction.h"
 #include "CParseErrors.h"
@@ -257,6 +258,7 @@ bool CFunctionCollection::ParseAll() {
     }
     p_oh_script_object = GetNext();  
   }
+  p_formula_parser->MarkParseAsFinished();
   return true;
 }
 
@@ -280,16 +282,19 @@ void CFunctionCollection::ResetOnHeartbeat() {
   ClearCache();
 }
 
-bool CFunctionCollection::EvaluateSymbol(const char *name, double *result) {
+bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   if ((memcmp(name, "f$", 2) == 0) 
       || (memcmp(name, "list", 4) == 0)) { 
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
       // Function does not exist
       *result = k_undefined_zero;
+      if (log) {
+        p_autoplayer_trace->Add(name, *result);
+      }
       return false;
     }
-    *result = p_function->Evaluate();
+    *result = p_function->Evaluate(log);
     return true;
   }
   return false;

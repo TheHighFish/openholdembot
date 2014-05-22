@@ -28,7 +28,7 @@ class CEngineContainer {
   void ResetOnDisconnection();
  public:
   void EvaluateAll();
-  bool EvaluateSymbol(const char *name, double *result);
+  bool EvaluateSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided()       { return _list_of_symbols; }
  private:
   void BuildListOfSymbolsProvided();

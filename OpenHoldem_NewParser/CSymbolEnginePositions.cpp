@@ -173,7 +173,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 	AssertRange(_callposition, k_undefined, k_max_number_of_players);
 }
 
-bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nchairsdealt", 12)==0)
 	{

@@ -69,7 +69,7 @@ double CSymbolEngineRandom::Random_0_1()
 	return result;
 }
 
-bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "random", 6) == 0)
 	{

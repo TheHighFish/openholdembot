@@ -151,7 +151,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 	}							
 }
 
-bool CSymbolEngineBlinds::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineBlinds::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nopponentsblind", 15)==0 && strlen(name)==15)
 	{

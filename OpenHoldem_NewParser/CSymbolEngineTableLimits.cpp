@@ -697,7 +697,7 @@ CString CSymbolEngineTableLimits::GetGametypeAsString()
 	return result;
 }
 
-bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "is", 2)==0)
 	{

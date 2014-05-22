@@ -31,7 +31,7 @@ COHScriptObject::COHScriptObject(CString *new_name, CString *new_function_text)
 COHScriptObject::~COHScriptObject()
 {}
 
-double COHScriptObject::Evaluate()
+double COHScriptObject::Evaluate(bool log /* = false */)
 {
 	bool this_method_should_always_get_overwritten_and_never_called = false;
 	assert(this_method_should_always_get_overwritten_and_never_called);
