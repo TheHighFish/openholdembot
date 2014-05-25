@@ -51,7 +51,7 @@ double CFunction::Evaluate(bool log /* = false */) {
   // to detect a recursive formula.
   // Decrease recursion_depth on every function exit!
   recursion_depth++;
-  if (recursion_depth > kMaxRecursionDepthH) {
+  if (recursion_depth > kMaxRecursionDepth) {
     CString error_message = CString(
       "Recursion to deep.\n"
       "Probably endless.\n"

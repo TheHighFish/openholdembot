@@ -25,6 +25,7 @@ class CTablemapCompletenessChecker {
   void CheckItem(CString prefix, int infix, CString postfix);
   void CheckCardFaces(CString prefix, int infix, CString postfix);
   void CheckBetsOrStacks();
+  void CheckMainPot();
  private:
    void ErrorMissingItem(CString item);
   bool IsNoLimitMap();
