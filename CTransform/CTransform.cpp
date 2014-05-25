@@ -16,6 +16,7 @@
 #include "CTransform.h"
 
 #include <Math.h>
+#include "..\OpenHoldem\CPreferences.h"
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
 #include "..\OpenHoldem\StringFunctions.h"
@@ -1324,6 +1325,26 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_text = text.GetLength()+1;
 		}
 	}
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] parsed title string\n");
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] text = %s, format = %s\n", 
+      text, format);
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] handnumber = %s, sblind = %f, bblind = %f\n",
+      *handnumber,  *sblind, *bblind);
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
+      *bbet, *ante,  *limit, *sb_bb, *bb_BB);
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] isfinaltable = %d, found_handnumber = %d, found_sblind = %d\n",
+      *isfinaltable, *found_handnumber, *found_sblind);
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] found_bblind = %d, found_bbet = %s, found_ante = %d\n",
+      *found_bblind, *found_bbet, *found_ante);
+    write_log(preferences.debug_scraper(), 
+      "[CTransform] found_limit = %d, found_sb_bb = %d, found_bb_BB = %d\n",
+      *found_limit, *found_sb_bb, *found_bb_BB);
 }
 
 const double CTransform::StringToMoney(const CString inStr)
