@@ -20,23 +20,28 @@
 #include "atlstr.h"
 
 class CFormulaFileSplitter {
-public:
+ public:
   CFormulaFileSplitter();
   ~CFormulaFileSplitter();
-public:
+ public:
   void ScanForNextFunctionOrList(CArchive &formula_file);
   // For debug-tab, which has to parse line by line
   void SetInput(CString line_of_debug_tab);
-public:
+ public:
   CString GetFunctionHeader()   { return _function_header; }
   CString GetFunctionText()     { return _function_text; }
-private:
+ public:
+   int starting_line_of_current_function() { return _starting_line_of_current_function; }
+ private:
   bool IsFunctionHeader(CString line_of_code);
-private:
+ private:
   CString _function_header;
   CString _function_text;
   CString _next_line;
+ private:
   bool _first_function_processed;
+  int _total_line_processed;
+  int _starting_line_of_current_function;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H

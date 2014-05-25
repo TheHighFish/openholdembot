@@ -3,13 +3,18 @@
 
 #include "CardFunctions.h"
 #include "CParseErrors.h"
+#include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
 #include "NumericalFunctions.h"
 
-COHScriptList::COHScriptList(CString *new_name, CString *new_function_text) {
+COHScriptList::COHScriptList(
+    CString *new_name, 
+    CString *new_function_text,
+    int absolute_line) {
   _name = ((new_name != NULL) ? *new_name : "");
   _function_text = ((new_function_text != NULL) ? *new_function_text : "");
+  _absolute_line = absolute_line;
   Clear();
 }
 
@@ -94,7 +99,7 @@ void COHScriptList::Set(CString list_member) {
 void COHScriptList::ErrorInvalidMember(CString list_member) {
   CString error_message;
   error_message.Format("Invalid list member %s\n"
-    "Valid are entries like \"AA AKs ATo 22",
+    "Valid are entries look like \"AA AKs ATo 22",
     list_member);
   CParseErrors::Error(error_message);
 }
@@ -109,6 +114,7 @@ void COHScriptList::ErrorOldStyleFormat(CString list_member) {
 
 double COHScriptList::Evaluate(bool log /* = false */) {
   write_log(true, "[COHScriptList] Evaluating list %s\n", _name); 
+  if (!p_scraper_access->UserHasKnownCards()) return false;
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),
     p_symbol_engine_cards->issuited());

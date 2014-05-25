@@ -20,7 +20,10 @@
 class CFunction: public COHScriptObject{
   friend class CParseTreeRotator;
  public:
-  CFunction(CString *new_name, CString *new_function_text);
+  CFunction(
+      CString *new_name, 
+      CString *new_function_text,
+      int absolute_line);
   ~CFunction();
  public:
   void SetParseTree(TPParseTreeNode _new_parse_tree);

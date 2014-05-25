@@ -171,6 +171,32 @@ void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
 	OH_MessageBox_Error_Warning(error, "Table map load error");
 }
 
+bool CTablemap::ItemExists(CString name) {
+  // We check only strings, sizes and regions
+  ZMapCI zit = _z$.find(name); 
+  if (zit !=_z$.end()) return true;
+  SMapCI sit = _s$.find(name); 
+  if (sit !=_s$.end()) return true;
+  //TMapCI tit = _t$.find(name); 
+  //if (tit !=_t$.end()) return true;
+  //PMapCI pit = _p$.find(name); 
+  //if (pit !=_p$.end()) return true;
+  //HMapCI hit = _h$.find(name); 
+  //if (hit !=_h$.end()) return true;
+  //IMapCI iit = _i$.find(name); 
+  //if (iit !=_i$.end()) return true;
+  RMapCI rit = _r$.find(name); 
+  if (rit !=_r$.end()) return true;
+  return false;
+}
+
+bool CTablemap::FontGroupInUse(int font_index) {
+  assert(font_index >= 0);
+  assert(font_index < k_max_number_of_font_groups_in_tablemap);
+  TMap font_group = _t$[font_index];
+  return (!font_group.empty());
+}
+
 int CTablemap::LoadTablemap(const CString _fname) 
 {
 #ifdef OPENHOLDEM_PROGRAM

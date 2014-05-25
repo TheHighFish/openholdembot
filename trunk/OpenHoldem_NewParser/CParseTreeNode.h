@@ -22,7 +22,7 @@ class CParseTreeNode {
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
-  CParseTreeNode();
+  CParseTreeNode(int relative_line_number);
   ~CParseTreeNode();
  public:
   void MakeConstant(double value);
@@ -79,6 +79,8 @@ class CParseTreeNode {
   CString _terminal_name;
   // In case of terminal node (number)
   double _constant_value;
+  // Line number relative to current function
+  double _relative_line_number;
 };
 
 #endif INC_CPARSETREENODE_H

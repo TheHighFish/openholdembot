@@ -27,7 +27,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   ~CFunctionCollection();
  public:
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
-  double Evaluate(CString function_name);
+  double Evaluate(CString function_name, bool log = false);
   // Mandatory reset-functions
   void InitOnStartup();
   void ResetOnConnection();

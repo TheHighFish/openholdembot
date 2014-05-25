@@ -149,7 +149,10 @@ public:
 	// Ongoing work: Making all the iterators private and providing
 	// accessor-functions in CTablemapAccess.
 	const RMap *r$() { return &_r$; }
-
+public:
+  // For TM-verification
+  bool ItemExists(CString name);
+  bool FontGroupInUse(int font_index);
 public:
 	// commonly used strings 
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);

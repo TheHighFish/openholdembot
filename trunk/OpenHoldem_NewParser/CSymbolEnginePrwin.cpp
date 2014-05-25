@@ -74,11 +74,9 @@ void CSymbolEnginePrwin::ResetOnHeartbeat()
 {
 	// Taken from heartbeat-thread:
 	// If we've folded, stop iterator thread and set prwin/tie/los to zero
-	if (!p_scraper_access->UserHasCards())
-	{
-		p_iterator_thread->StopIteratorThread();
-	}
-
+	if (p_scraper_access->UserHasCards()) return;
+    if (p_iterator_thread == NULL) return;
+	p_iterator_thread->StopIteratorThread();
 }
 
 void CSymbolEnginePrwin::CalculateNhands()

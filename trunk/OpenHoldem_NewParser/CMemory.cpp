@@ -148,7 +148,7 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	}
 	else if (RightValueIsFunction(value))
 	{
-		result = p_function_collection->Evaluate(value);
+		result = p_function_collection->Evaluate(value); //!!!
 
 		set_var_value(index, result);
 		set_var_name(index, var);

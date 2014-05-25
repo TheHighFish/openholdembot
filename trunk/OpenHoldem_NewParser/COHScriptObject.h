@@ -17,7 +17,10 @@
 class COHScriptObject {
  public:
   COHScriptObject(); 
-  COHScriptObject(CString *new_name, CString *new_function_text);
+  COHScriptObject(
+      CString *new_name, 
+      CString *new_function_text,
+      int absolute_line);
   ~COHScriptObject();
  public:
   CString name()			      { return _name; }
@@ -44,6 +47,7 @@ class COHScriptObject {
  protected:
   CString _name;
   CString _function_text;
+  int _absolute_line; // !! bad name starting_line_of_function
 };
 
 #endif INC_COHSCRIPTOBJECT_H

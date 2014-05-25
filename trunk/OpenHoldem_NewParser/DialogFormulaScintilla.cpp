@@ -920,7 +920,8 @@ void CDlgFormulaScintilla::OnNew() {
 
   if (newdlg.is_function == false) {
     // Create new list
-    COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, NULL);
+    COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, 
+      NULL, kNoAbsoluteLineNumberExists);
     // Add it to working set CArray
     p_function_collection->Add((COHScriptObject*)p_new_list);
     // Add to tree
@@ -933,7 +934,8 @@ void CDlgFormulaScintilla::OnNew() {
     }
   } else {
     // Create new function
-    CFunction *p_new_function = new CFunction(&newdlg.CSnewname, NULL);
+    CFunction *p_new_function = new CFunction(&newdlg.CSnewname, 
+      NULL, kNoAbsoluteLineNumberExists);
     // Add it to working set CArray
     p_function_collection->Add((COHScriptObject*)p_new_function);
     // Add to tree
