@@ -79,15 +79,15 @@ void CAutoplayerTrace::BackPatchValueAndLine(
   assert(index >= 0);
   assert(index < _number_of_log_lines);
   assert(starting_line_of_function > 0);
-  int executed_relative_line = 0; //!!!
-  int executed_absolute_line = starting_line_of_function + executed_relative_line;
+  int executed_absolute_line = starting_line_of_function 
+    + _last_evaluated_relative_line_number;
   // Already done:
   // Indentation, symbol, " = "
   CString complete_message;
   complete_message.Format("%s%.3f [Line %d/%d]", 
     _symboltrace_collection.GetAt(index),
     value,
-    executed_relative_line,
+    _last_evaluated_relative_line_number,
     executed_absolute_line);
   _symboltrace_collection.SetAt(index, complete_message);
 }

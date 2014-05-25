@@ -81,6 +81,15 @@ void CTablemapCompletenessChecker::CheckCardFaces(CString prefix, int infix, CSt
   }
 }
 
+void CTablemapCompletenessChecker::CheckMainPot() {
+  if (p_tablemap->ItemExists("c0pot0chip00")) {
+     CheckItem("c0pot0chip01");
+     CheckItem("c0pot0chip10");
+  } else {
+    CheckItem("c0pot0");
+  }
+}
+
 void CTablemapCompletenessChecker::VerifyMap() {
   // Only session 0 verifies the tablemaps
   // for better performance amd to avoid driving users crazy.
@@ -116,8 +125,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   for (int i=0; i<k_number_of_community_cards; ++i) {
     CheckCardFaces("c0cardface", i, "");
   }
-  // Main pot
-  CheckItem("c0pot0");
+  CheckMainPot();
   // Action buttons
   int number_of_buttons_seen = 0;
   for (int i=0; i<k_max_number_of_buttons; ++i) {
@@ -165,4 +173,3 @@ void CTablemapCompletenessChecker::VerifyMap() {
   //   * betpotmethod
   // and some others  
 }
-
