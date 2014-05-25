@@ -1325,6 +1325,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			place_in_text = text.GetLength()+1;
 		}
 	}
+#ifdef OPENHOLDEM_PROGRAM
     write_log(preferences.debug_scraper(), 
       "[CTransform] parsed title string\n");
     write_log(preferences.debug_scraper(), 
@@ -1345,6 +1346,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
     write_log(preferences.debug_scraper(), 
       "[CTransform] found_limit = %d, found_sb_bb = %d, found_bb_BB = %d\n",
       *found_limit, *found_sb_bb, *found_bb_BB);
+#endif
 }
 
 const double CTransform::StringToMoney(const CString inStr)
