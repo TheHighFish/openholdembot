@@ -32,6 +32,7 @@ const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 const int k_not_found      = -1;
 const int k_undefined      = -1;
 const int k_undefined_zero =  0;
+const int kNoAbsoluteLineNumberExists = 1;
 
 // CString compare results
 // http://msdn.microsoft.com/en-us/library/aa314313(v=vs.60).aspx

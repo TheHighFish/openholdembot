@@ -15,6 +15,7 @@
 #include "CParseTreeNode.h"
 
 #include <math.h>
+#include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -24,7 +25,8 @@
 #include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeNode::CParseTreeNode() {
+CParseTreeNode::CParseTreeNode(int relative_line_number) {
+  _relative_line_number = relative_line_number;
   _first_sibbling  = NULL;
   _second_sibbling = NULL;
   _third_sibbling  = NULL;
@@ -111,6 +113,7 @@ double CParseTreeNode::Evaluate()
     write_log(preferences.debug_formula(), 
         "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
+    p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
@@ -124,7 +127,11 @@ double CParseTreeNode::Evaluate()
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name);
 		write_log(preferences.debug_formula(), 
-            "[CParseTreeNode] Number evaluates to %6.3f\n", value);
+            "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
+        // In case of f$-functions the line changed inbetween,
+        // so we have to set it to the current location (again)
+        // for the next log.
+        p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 		return value;
 	}
 	// Actions second, which are also "unary".

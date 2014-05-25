@@ -20,12 +20,16 @@ COHScriptObject::COHScriptObject()
 {
 	_name = "";
 	_function_text = "";
+    _absolute_line = 0;
 }
 
-COHScriptObject::COHScriptObject(CString *new_name, CString *new_function_text)
-{
-	_name = *new_name;
-	_function_text = *new_function_text;
+COHScriptObject::COHScriptObject(
+    CString *new_name, 
+    CString *new_function_text,
+    int absolute_line) {
+  _name = *new_name;
+  _function_text = *new_function_text;
+  _absolute_line = absolute_line;
 }
 
 COHScriptObject::~COHScriptObject()

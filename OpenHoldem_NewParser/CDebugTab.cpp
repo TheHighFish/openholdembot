@@ -25,7 +25,7 @@ CDebugTab *p_debug_tab = NULL;
 // no matter if CStrings or CString* or char*,
 // no matter if CArray or normal arrays.
 // But now it works. ;-)
-CString *_expression_texts[kMaxSizeOfDebugTab];;
+CString _expression_texts[kMaxSizeOfDebugTab];
 TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
 
 CDebugTab::CDebugTab() {
@@ -44,9 +44,9 @@ CString CDebugTab::EvaluateAll() {
   for (int i=0; i<_number_of_expressions; ++i) {
     double result = _expressions[i]->Evaluate();
     CString current_line;
-    assert(_expression_texts[i] != NULL);
+    assert(_expression_texts[i] != "");
     current_line.Format("%10.3f = %s\n", result,
-      *_expression_texts[i]);
+      _expression_texts[i]);
     all_results += current_line;
   }
   return all_results;
@@ -55,11 +55,8 @@ CString CDebugTab::EvaluateAll() {
 void CDebugTab::Clear() {
   assert(_number_of_expressions >= 0);
   assert(_number_of_expressions <= kMaxSizeOfDebugTab);
-  for (int i=0; i<_number_of_expressions; ++i) {
-    delete _expression_texts[i];
-  }
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
-    _expression_texts[i] = NULL;
+    _expression_texts[i] = "";
   }
   _number_of_expressions = 0;
 }
@@ -73,7 +70,7 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
     assert(too_many_expressions_for_debug_tab);
     return;
   }
-  _expression_texts[_number_of_expressions] = new CString(text); 
+  _expression_texts[_number_of_expressions] = CString(text); 
   _expressions[_number_of_expressions] = expression;
   ++_number_of_expressions;
 }
@@ -84,7 +81,9 @@ CString CDebugTab::function_text() {
   CString function_text;
   for (int i=0; i<_number_of_expressions; ++i) {
     function_text += " = ";
-    function_text += *_expression_texts[i];
+    if (_expression_texts[i] != "") {
+      function_text += _expression_texts[i];
+    }
     function_text += "\n";
   }
   return function_text;

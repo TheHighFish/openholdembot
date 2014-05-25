@@ -63,7 +63,7 @@ void CAutoplayerTrace::Add(CString symbol, double value) {
   CString new_message;
   if (symbol.Left(2) == "f$") {
     // Function with known value a priori
-    new_message.Format("%s%s = %.3f {cached]",
+    new_message.Format("%s%s = %.3f [cached]",
       Indentation(), symbol, value);
   } else {
     // "Normal" symbol
@@ -74,15 +74,21 @@ void CAutoplayerTrace::Add(CString symbol, double value) {
   _number_of_log_lines++;
 }
 
-void CAutoplayerTrace::BackPatchValue(int index, double value) {
+void CAutoplayerTrace::BackPatchValueAndLine(
+    int index, double value, int starting_line_of_function) {
   assert(index >= 0);
   assert(index < _number_of_log_lines);
+  assert(starting_line_of_function > 0);
+  int executed_relative_line = 0; //!!!
+  int executed_absolute_line = starting_line_of_function + executed_relative_line;
   // Already done:
   // Indentation, symbol, " = "
   CString complete_message;
-  complete_message.Format("%s%.3f", 
+  complete_message.Format("%s%.3f [Line %d/%d]", 
     _symboltrace_collection.GetAt(index),
-    value);
+    value,
+    executed_relative_line,
+    executed_absolute_line);
   _symboltrace_collection.SetAt(index, complete_message);
 }
 

@@ -73,9 +73,9 @@ COHScriptObject *CFunctionCollection::LookUp(CString name) {
   return it->second;
 }
 
-double CFunctionCollection::Evaluate(CString function_name) {
+double CFunctionCollection::Evaluate(CString function_name, bool log /* = false */) {
   double result = k_undefined;
-  EvaluateSymbol(function_name, &result);
+  EvaluateSymbol(function_name, &result, log);
   return result;
 }
 
@@ -140,7 +140,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
 	function_text = " "; 
   }
   CFunction *p_function = new CFunction(&function_name, 
-    &function_text); // 
+    &function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
 }
 

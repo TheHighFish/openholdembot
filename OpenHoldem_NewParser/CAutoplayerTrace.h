@@ -22,11 +22,12 @@ class CAutoplayerTrace {
   void Clear();
   void Add(CString symbol, double value);
   // Logging function, value currently unknown
-  // Returning index (line number)
+  // Returning index (line number in log)
   int  Add(CString symbol); 
-  void BackPatchValue(int index, double value);  
+  void BackPatchValueAndLine(int index, double value, int starting_line_of_function);  
   void Indent(bool more);
   void Print(const char *action_taken);
+  void SetLastEvaluatedRelativeLineNumber(int relative_line_number) { _last_evaluated_relative_line_number = relative_line_number; }
  public:
   CString LogSymbolsForGUI();
  public:
@@ -51,6 +52,7 @@ class CAutoplayerTrace {
   int _indentation;
   int _number_of_log_lines;
   CCritSec m_critsec;
+  int _last_evaluated_relative_line_number;
 };
 
 extern CAutoplayerTrace *p_autoplayer_trace;

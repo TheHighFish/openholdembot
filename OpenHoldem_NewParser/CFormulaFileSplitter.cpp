@@ -37,6 +37,8 @@
 
 CFormulaFileSplitter::CFormulaFileSplitter() {
   _first_function_processed = false; //!!!
+  _total_line_processed = 0;
+  _starting_line_of_current_function = 0;
 }
 
 CFormulaFileSplitter::~CFormulaFileSplitter() {
@@ -65,6 +67,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
     catch (CException *e) {
 	    // break;
     }
+    ++_total_line_processed;
 #ifdef DEBUG_FORMULA_FILESPLITTER
     //printf("[CFormulaFileSplitter] next line: %s\n", _next_line);
 #endif
@@ -74,6 +77,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       // Only continue, if we found the first one
       //
       // In case of break: keep that function-header for the next query
+      _starting_line_of_current_function = _total_line_processed;
       break;
 	}
     _first_function_processed = true;

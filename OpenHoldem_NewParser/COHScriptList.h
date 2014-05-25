@@ -34,7 +34,10 @@ typedef bool THandListMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_d
 
 class COHScriptList: public COHScriptObject {
  public:
-  COHScriptList(CString *new_name, CString *new_function_text);
+  COHScriptList( 
+    CString *new_name, 
+    CString *new_function_text,
+    int absolute_line);
   ~COHScriptList();
  public:
   void Clear();

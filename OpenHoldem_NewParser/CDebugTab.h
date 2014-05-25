@@ -34,9 +34,6 @@ class CDebugTab: public COHScriptObject{
  protected:
   void Clear();
   void AddExpression(CString expression_text, TPParseTreeNode expression);
- private:
-  CString *_expression_texts[kMaxSizeOfDebugTab];;
-  TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
   int _number_of_expressions;
 };
 

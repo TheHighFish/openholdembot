@@ -14,13 +14,23 @@
 #include "stdafx.h"
 #include "CFunction.h"
 
+#include "CAutoplayer.h"
 #include "CAutoplayerTrace.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 
-CFunction::CFunction(CString *new_name, CString *new_function_text) {
+// Global counter to detect potentially endless recursion_depth
+int recursion_depth = 0;
+const int kMaxRecursionDepth = 100;
+
+CFunction::CFunction(
+    CString *new_name, 
+    CString *new_function_text,
+    int absolute_line) {
   _name = ((new_name != NULL) ? *new_name : "");
   _function_text = ((new_function_text != NULL) ? *new_function_text : "");
+  _absolute_line = absolute_line;
   _is_result_cached = false;
   _cached_result = k_undefined_zero;
   _parse_tree_node = NULL;
@@ -37,25 +47,49 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 double CFunction::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
     "[CFunction] Evaluating function %s\n", _name); 
+  // Check recursion depth of DoCalcF$symbol 
+  // to detect a recursive formula.
+  // Decrease recursion_depth on every function exit!
+  recursion_depth++;
+  if (recursion_depth > kMaxRecursionDepthH) {
+    CString error_message = CString(
+      "Recursion to deep.\n"
+      "Probably endless.\n"
+      "Stopping autoplayer.\n"
+      "\n"
+      "Last function: ") + _name;
+	OH_MessageBox_Error_Warning(error_message, "ERROR");
+	p_autoplayer->EngageAutoplayer(false);
+	++recursion_depth;
+	return k_undefined_zero;
+  }
+  // Result already cached
   if (_is_result_cached) {
-    p_autoplayer_trace->Add(_name, _cached_result);  
+    if (log) {
+      p_autoplayer_trace->Add(_name, _cached_result);  
+    }
+    // Keep cached result: do nothing
   } else {
+    // Evaluate symbol
     if (_parse_tree_node != NULL)
     {
-      int log_line = p_autoplayer_trace->Add(_name);
+      int log_line;
+      if (log) {
+        // Reserve a line in the log, without result ATM
+        log_line = p_autoplayer_trace->Add(_name);
+      }
       p_autoplayer_trace->Indent(true);
       _cached_result = _parse_tree_node->Evaluate();
       _is_result_cached = true;
-      p_autoplayer_trace->BackPatchValue(log_line, _cached_result);
+      if (log) {
+        p_autoplayer_trace->BackPatchValueAndLine(
+          log_line, _cached_result, _absolute_line);
+      }
       p_autoplayer_trace->Indent(false);
     }
     // Else: keep _cached_result as 0.0
   }
-  //p_autoplayer_trace->Add(LogResult());
-  CString log_message;
-  log_message.Format("[CFunction] Function %s -> %6.3f\n", 
-    _name, _cached_result);
-  write_log(preferences.debug_formula(), (char*)(LPCSTR)log_message); 
+  --recursion_depth;
   return _cached_result;
 }
 
