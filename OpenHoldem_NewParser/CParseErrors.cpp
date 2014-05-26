@@ -34,6 +34,12 @@ void CParseErrors::Error(CString short_message)
 	MessageBox(0, message, "Parse Error", 0);
 }
 
+void CParseErrors::ErrorUnknownIdentifier(CString name) {
+  CString message;
+  message.Format("Unknown identifier: %s", name);
+  Error(message);
+}
+
 CString CParseErrors::ErroneousCodeSnippet()
 {
 	// We have seen functions up to several 1000 lines 

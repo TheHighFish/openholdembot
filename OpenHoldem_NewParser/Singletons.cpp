@@ -36,6 +36,7 @@
 #include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
+#include "CParserSymbolTable.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPopupHandler.h"
@@ -103,6 +104,9 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDebugTab\n");
   assert(p_debug_tab == NULL);
   p_debug_tab = new CDebugTab;
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CParserSymbolTable\n");
+  assert(!p_parser_symbol_table);
+  p_parser_symbol_table = new CParserSymbolTable;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
@@ -274,6 +278,8 @@ void DeleteAllSingletons() {
 	{ delete p_autoplayer; p_autoplayer = NULL; }
   if (p_formula_parser)
 	{ delete p_formula_parser; p_formula_parser = NULL; }
+  if (p_parser_symbol_table)
+    { delete p_parser_symbol_table; p_parser_symbol_table = NULL; }
   if (p_debug_tab) 
     { delete p_debug_tab; p_debug_tab = NULL; }
   if (p_replayframes_counter)

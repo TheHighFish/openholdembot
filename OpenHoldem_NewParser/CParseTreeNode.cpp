@@ -17,6 +17,7 @@
 #include <math.h>
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+#include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "FloatingPoint_Comparisions.h"
@@ -47,6 +48,8 @@ void CParseTreeNode::MakeIdentifier(CString name)
 {
 	_node_type = kTokenIdentifier;
 	_terminal_name = name;
+    assert(p_parser_symbol_table != NULL);
+    p_parser_symbol_table->VerifySymbol(name);
 }
 
 void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)

@@ -21,6 +21,7 @@
 #include "COHScriptList.h"
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
+#include "CParserSymbolTable.h"
 #include "CParseTreeRotator.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
@@ -45,9 +46,11 @@ void CFormulaParser::InitNewParse() {
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
+  p_parser_symbol_table->Clear();
 }
 
-void CFormulaParser::MarkParseAsFinished() {
+void CFormulaParser::FinishParse() {
+  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
 
@@ -71,7 +74,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     ParseSingleFormula(_formula_file_splitter.GetFunctionText());
   }
 ExitLoop:
-  MarkParseAsFinished();
+  FinishParse();
 }
 
 bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
@@ -234,7 +237,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence
-  parse_tree_rotator.Rotate(p_new_function);
+  _parse_tree_rotator.Rotate(p_new_function);
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
 #endif
@@ -653,7 +656,7 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     _tokenizer.SetInput(expression_text);
     TPParseTreeNode expression = ParseExpression();
     // Care about operator precendence
-    parse_tree_rotator.Rotate(expression, &expression);
+    _parse_tree_rotator.Rotate(expression, &expression);
     // Add line and expression to debug-tab
     p_debug_tab->AddExpression(expression_text, expression);
   }

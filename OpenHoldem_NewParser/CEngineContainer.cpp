@@ -20,6 +20,7 @@
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -296,32 +297,39 @@ void CEngineContainer::ResetOnHeartbeat() {
 
 bool CEngineContainer::EvaluateSymbol(const char *name, 
                                       double *result, 
-                                      bool log /* = false */)
-{
-	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
-	if (IsOutdatedSymbol(name))
-	{
-		*result = k_undefined;
-		return false;
-	}
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		if (_symbol_engines[i]->EvaluateSymbol(name, result, log))
-		{
-			// Symbol successfully evaluated
-			// Result already returned via result-pointer
-          if (log) {
-            p_autoplayer_trace->Add(name, *result);
-          }
-		  return true;
-		}
-	}
-	// Unknown symbol.
-	// Though we check the syntax, this can still happen
-	// by gws-calls from Perl or a DLL, etc.
-	WarnAboutUnknownSymbol(name);
+                                      bool log /* = false */) {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+  if (IsOutdatedSymbol(name)) {
 	*result = k_undefined;
 	return false;
+  }
+  for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
+    if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
+      // Symbol successfully evaluated
+      // Result already returned via result-pointer
+        if (log) {
+          p_autoplayer_trace->Add(name, *result);
+        }
+      return true;
+    }
+  }
+  // Unknown symbol
+  if (p_formula_parser->IsParsing()) {
+    // Generate a verbose error-message
+    // with line number and code-snippet
+    CParseErrors::ErrorUnknownIdentifier(name);
+    // Don't change the result, which is a magic number
+    // (ATM unused)
+    return false;
+  }
+  else {
+    // Error found during execution
+    // Though we check the syntax, this can still happen
+    // by gws-calls from Perl or a DLL, etc.
+    WarnAboutUnknownSymbol(name);
+    *result = k_undefined;
+    return false;
+  }
 }
 
 void CEngineContainer::BuildListOfSymbolsProvided() {

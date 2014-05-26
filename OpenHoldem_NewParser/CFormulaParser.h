@@ -19,11 +19,10 @@
 #include "afx.h"
 #include "atlstr.h"
 #include "CFormulaFileSplitter.h"
+#include "COHScriptList.h"
 #include "CParseTreeNode.h"
 #include "CParseTreeRotator.h"
 #include "CTokenizer.h"
-
-class COHScriptList;
 
 class CFormulaParser {
  public:
@@ -31,7 +30,7 @@ class CFormulaParser {
   ~CFormulaParser();
  public:
   void InitNewParse();
-  void MarkParseAsFinished();
+  void FinishParse();
  public:
   void ParseFile(CArchive & formula_file);
   void ParseSingleFormula(CString name, CString function_text);
@@ -69,7 +68,7 @@ class CFormulaParser {
  private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
-  CParseTreeRotator parse_tree_rotator;
+  CParseTreeRotator _parse_tree_rotator;
  private:
   CString _token;
   bool _is_parsing;
