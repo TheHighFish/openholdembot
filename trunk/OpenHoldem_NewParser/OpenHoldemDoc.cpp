@@ -129,8 +129,8 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
         // The formula editor gets now handled automatically (Rev. 1425)
 
 		// Read ohf file
-		CFormulaParser formula_parser;
-		formula_parser.ParseFile(ar);
+        assert(p_formula_parser != NULL);
+		p_formula_parser->ParseFile(ar);
 		SetModifiedFlag(false);
 
 		// Try to unload dll

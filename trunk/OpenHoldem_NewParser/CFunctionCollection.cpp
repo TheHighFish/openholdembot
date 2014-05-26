@@ -258,7 +258,7 @@ bool CFunctionCollection::ParseAll() {
     }
     p_oh_script_object = GetNext();  
   }
-  p_formula_parser->MarkParseAsFinished();
+  p_formula_parser->FinishParse();
   return true;
 }
 

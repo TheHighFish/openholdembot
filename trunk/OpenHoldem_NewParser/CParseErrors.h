@@ -24,7 +24,7 @@ class CParseErrors {
   // These functions are static,
   // as we want to encapsulate everything in a class,
   // but have no state and don't want/need the instantiation of an object.
-  static void ErrorUnknownIdentifier();
+  static void ErrorUnknownIdentifier(CString name);
   static void Error(CString short_message);
  public:
   static void ClearErrorStatus();

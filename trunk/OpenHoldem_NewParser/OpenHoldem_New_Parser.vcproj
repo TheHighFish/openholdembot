@@ -1184,6 +1184,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CParserSymbolTable.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CParseTreeNode.cpp"
 					>
 				</File>
@@ -2090,6 +2094,10 @@
 				</File>
 				<File
 					RelativePath=".\CParseErrors.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParserSymbolTable.h"
 					>
 				</File>
 				<File
