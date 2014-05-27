@@ -307,9 +307,12 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
     if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
       // Symbol successfully evaluated
       // Result already returned via result-pointer
-        if (log) {
-          p_autoplayer_trace->Add(name, *result);
-        }
+      if (log && (memcmp(name, "f$", 2))) {
+        // Log the symbol and its value
+        // But only if it is a basic symbol and not a function
+        // Functions receive special treatment (indentation, etc)
+        p_autoplayer_trace->Add(name, *result);
+      }
       return true;
     }
   }

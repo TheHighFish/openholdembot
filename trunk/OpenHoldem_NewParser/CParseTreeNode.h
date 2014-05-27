@@ -40,7 +40,7 @@ class CParseTreeNode {
   void MakeUserVariableDefinition(CString uservariable);
   void MakeWhenCondition(TPParseTreeNode condition);
  public:
-  double Evaluate();
+  double Evaluate(bool log = false);
   // For debugging output
   CString Serialize();
  public:
@@ -49,11 +49,11 @@ class CParseTreeNode {
   void SetRightMostSibbling(TPParseTreeNode sibbling);
   void SetLeftMostSibbling(TPParseTreeNode sibbling);
  private:
-  double EvaluateIdentifier(CString name);
-  double EvaluateUnaryExpression();
-  double EvaluateBinaryExpression();
-  double EvaluateTernaryExpression();
-  double EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling);
+  double EvaluateIdentifier(CString name, bool log);
+  double EvaluateUnaryExpression(bool log_symbol);
+  double EvaluateBinaryExpression(bool log);
+  double EvaluateTernaryExpression(bool log);
+  double EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling, bool log);
  private:
   bool IsAnyKindOfWhenCondition();
   bool IsWhenConditionWithAction();
