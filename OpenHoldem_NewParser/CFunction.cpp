@@ -79,7 +79,7 @@ double CFunction::Evaluate(bool log /* = false */) {
         log_line = p_autoplayer_trace->Add(_name);
       }
       p_autoplayer_trace->Indent(true);
-      _cached_result = _parse_tree_node->Evaluate();
+      _cached_result = _parse_tree_node->Evaluate(log);
       _is_result_cached = true;
       if (log) {
         p_autoplayer_trace->BackPatchValueAndLine(

@@ -111,7 +111,7 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 	// !!! also needs a continue on execution!
 }
 
-double CParseTreeNode::Evaluate()
+double CParseTreeNode::Evaluate(bool log /* = false */)
 {
     write_log(preferences.debug_formula(), 
         "[CParseTreeNode] Evaluating node type %i %s\n", 
@@ -128,7 +128,7 @@ double CParseTreeNode::Evaluate()
 	else if (_node_type == kTokenIdentifier)
 	{
 		assert(_terminal_name != "");
-		double value = EvaluateIdentifier(_terminal_name);
+		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
             "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
         // In case of f$-functions the line changed inbetween,
@@ -148,11 +148,11 @@ double CParseTreeNode::Evaluate()
 	}
 	else if (_node_type == kTokenActionRaiseByBigBlinds)
 	{
-		return EvaluateSibbling(_first_sibbling);
+		return EvaluateSibbling(_first_sibbling, log);
 	}
 	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)
 	{
-		double raise_by_percentage = EvaluateSibbling(_first_sibbling);
+		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
 		double pot_size_after_call_in_big_blinds = 0; // !! PotSize() + AmountToCall();
 		double raise_by_amount = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
@@ -162,56 +162,56 @@ double CParseTreeNode::Evaluate()
 	{
 		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
 		// Continue with next open-ended when-condition
-		EvaluateSibbling(_second_sibbling);
+		EvaluateSibbling(_second_sibbling, log);
 	}
 	// Finally operators
 	else if (TokenIsUnary(_node_type))
 	{
-		return EvaluateUnaryExpression();
+		return EvaluateUnaryExpression(log);
 	}
 	else if (TokenIsBinary(_node_type))
 	{
-		return EvaluateBinaryExpression();
+		return EvaluateBinaryExpression(log);
 	}
 	else if (TokenIsTernary(_node_type))
 	{
-		return EvaluateTernaryExpression();
+		return EvaluateTernaryExpression(log);
 	}
 	assert(false);
 	return k_undefined;
 }
 
-double CParseTreeNode::EvaluateIdentifier(CString name)
+double CParseTreeNode::EvaluateIdentifier(CString name, bool log)
 {
 	assert(name != "");
 	// EvaluateSymbol cares about ALL symbols, 
 	// including DLL, PokerTracker and Perl
 	double result;
-	p_engine_container->EvaluateSymbol(name, &result);
+	p_engine_container->EvaluateSymbol(name, &result, log);
 	return result;
 }
 
-double CParseTreeNode::EvaluateUnaryExpression()
-{
-	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling);
-	switch (_node_type)
-	{
-	case kTokenOperatorLog:            return log(value_of_first_sibbling);		
-	case kTokenOperatorLogicalNot:     return !value_of_first_sibbling;
-	case kTokenOperatorBinaryNot:      return ~ ((unsigned long)value_of_first_sibbling);
-	case kTokenOperatorBitCount:       return bitcount((unsigned long)value_of_first_sibbling);
-	case kTokenBracketOpen_1: 
-	case kTokenBracketOpen_2: 
-	case kTokenBracketOpen_3:          return value_of_first_sibbling;
-	default: 
-		assert(false);
-		return k_undefined;
-	}
+double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
+  // Paramater named "log_symbol" instead of "log"
+  // due to naming conflict with mathematical function
+  double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log_symbol);
+    switch (_node_type) {
+    case kTokenOperatorLog:            return log(value_of_first_sibbling);		
+    case kTokenOperatorLogicalNot:     return !value_of_first_sibbling;
+    case kTokenOperatorBinaryNot:      return ~ ((unsigned long)value_of_first_sibbling);
+    case kTokenOperatorBitCount:       return bitcount((unsigned long)value_of_first_sibbling);
+    case kTokenBracketOpen_1: 
+    case kTokenBracketOpen_2: 
+    case kTokenBracketOpen_3:          return value_of_first_sibbling;
+    default: 
+	  assert(false);
+	  return k_undefined;
+  }
 }
 
-double CParseTreeNode::EvaluateBinaryExpression()
+double CParseTreeNode::EvaluateBinaryExpression(bool log)
 {
-	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling);
+	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
 	double value_of_second_sibbling = 0.0;
 	// Short circuiting
 	// Don't evaluate unnecessary parts of expressions
@@ -221,7 +221,7 @@ double CParseTreeNode::EvaluateBinaryExpression()
 		{
 			return false;
 		}
-		value_of_second_sibbling = EvaluateSibbling(_second_sibbling);
+		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
 		return value_of_second_sibbling;
 	}
 	else if (_node_type == kTokenOperatorLogicalOr)
@@ -230,12 +230,12 @@ double CParseTreeNode::EvaluateBinaryExpression()
 		{
 			return true;
 		}
-		value_of_second_sibbling = EvaluateSibbling(_second_sibbling);
+		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
 		return value_of_second_sibbling;
 	}
 	// Short circuiting done
 	// Now normal evaluation of operators that need both operands
-	value_of_second_sibbling = EvaluateSibbling(_second_sibbling);
+	value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
 	switch (_node_type)
 	{
 	case kTokenOperatorPlus: 
@@ -303,7 +303,7 @@ double CParseTreeNode::EvaluateBinaryExpression()
 	return k_undefined;
 }
 
-double CParseTreeNode::EvaluateTernaryExpression()
+double CParseTreeNode::EvaluateTernaryExpression(bool log)
 {
 	// This function covers both OH-style ternary expressions
 	// and OpenPPL-style (open-ended) when-conditions.
@@ -312,26 +312,27 @@ double CParseTreeNode::EvaluateTernaryExpression()
 	// Again we use short circuiting.
 	assert((_node_type == kTokenOperatorConditionalIf)
 		|| (_node_type == kTokenOperatorConditionalWhen));
-	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling);
+	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
 	if (value_of_first_sibbling)
 	{
-		double value_of_second_sibbling  = EvaluateSibbling(_second_sibbling);
+		double value_of_second_sibbling  = EvaluateSibbling(_second_sibbling, log);
 		return value_of_second_sibbling;
 	}
 	else
 	{
-		double value_of_third_sibbling  = EvaluateSibbling(_third_sibbling);
+		double value_of_third_sibbling  = EvaluateSibbling(_third_sibbling, log);
 		return value_of_third_sibbling;
 	}
 }
 
-double CParseTreeNode::EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling) {
+double CParseTreeNode::EvaluateSibbling(
+    TPParseTreeNode first_second_or_third_sibbling, bool log) {
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {
     return k_undefined_zero;
   }
-  double result = first_second_or_third_sibbling->Evaluate();
+  double result = first_second_or_third_sibbling->Evaluate(log);
   return result;
 }
 

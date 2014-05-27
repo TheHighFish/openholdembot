@@ -78,7 +78,9 @@ void CAutoplayerTrace::BackPatchValueAndLine(
     int index, double value, int starting_line_of_function) {
   assert(index >= 0);
   assert(index < _number_of_log_lines);
-  assert(starting_line_of_function > 0);
+  // Starting line should be > 0, but auto-generated missing 
+  // vital functions like f$check can have line == 0.
+  assert(starting_line_of_function >= 0);
   int executed_absolute_line = starting_line_of_function 
     + _last_evaluated_relative_line_number;
   // Already done:
