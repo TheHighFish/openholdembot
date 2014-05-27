@@ -43,6 +43,26 @@ void CAutoplayerTrace::Clear() {
   _indentation = 0;
   _number_of_log_lines = 0;
   _symboltrace_collection.RemoveAll();
+  _already_logged_symbols.clear();
+}
+
+bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
+  // DLL and Perl, as there is no caching and value might change
+  if (memcmp(name, "dll$", 4) == 0) return true;
+  if (memcmp(name, "pl_", 3) == 0) return true;
+  // Memory-store and recall-commands
+  if (memcmp(name, "me_", 3) == 0) return true;
+  // OpenPPL-user-variables might also change (once)
+  // We don't care about multiple loggings of userchair here
+  if (memcmp(name, "user", 4) == 0) return true;
+  // True random numbers that don't get cached,
+  // i.e. OH-script "random" and OpenPPL "Random"
+  if (memcmp(name, "random", 6) == 0) return true;
+  if (memcmp(name, "Random", 6) == 0) return true;
+  // Values that already got logged can be ignored
+  if (_already_logged_symbols[name] == true) return false;
+  // Everything else needs to be logged
+  return true;
 }
 
 int CAutoplayerTrace::Add(CString symbol) {
@@ -54,12 +74,16 @@ int CAutoplayerTrace::Add(CString symbol) {
   new_message.Format("%s%s = ",
     Indentation(), symbol);
   _symboltrace_collection.Add(new_message);
+  // Nothing to do for _already_logged_symbols here,
+  // as this Add()-function is for the first-time-evaluation
+  // of f$functions.
   _number_of_log_lines++;
   return (_number_of_log_lines - 1); 
 }
 
 void CAutoplayerTrace::Add(CString symbol, double value) {
   ENT
+  if (!SymbolNeedsToBeLogged(symbol)) return;
   CString new_message;
   if (symbol.Left(2) == "f$") {
     // Function with known value a priori
@@ -71,6 +95,7 @@ void CAutoplayerTrace::Add(CString symbol, double value) {
       Indentation(), symbol, value); 
   }
   _symboltrace_collection.Add(new_message);
+  _already_logged_symbols[symbol] = true;
   _number_of_log_lines++;
 }
 

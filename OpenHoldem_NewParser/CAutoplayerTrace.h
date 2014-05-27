@@ -14,6 +14,8 @@
 #ifndef INC_CAUTOPLAYER_TRACE_H
 #define INC_CAUTOPLAYER_TRACE_H
 
+#include <map>
+
 class CAutoplayerTrace {
  public:
    CAutoplayerTrace();
@@ -40,7 +42,8 @@ class CAutoplayerTrace {
  private:
   void LogLogSymbols();
   void LogBasicInfo(const char *action_taken);
-  void LogAutoPlayerTrace();	
+  void LogAutoPlayerTrace();
+  bool SymbolNeedsToBeLogged(CString name);
  private:
   CString Indentation();
  private:
@@ -49,6 +52,7 @@ class CAutoplayerTrace {
   // private variables - use public accessors and public mutators to address these
   CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
   CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
+  std::map<CString, bool> _already_logged_symbols;
   int _indentation;
   int _number_of_log_lines;
   CCritSec m_critsec;
