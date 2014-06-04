@@ -18,9 +18,14 @@ z$clientsize       1018  693
 s$allinmethod               2
 s$nchairs                   10
 s$potmethod                 2
+s$network                   PokerStars
 s$sitename                  pokeracademy_pro_nl_fr
+s$swagdeletionmethod        Nothing
 s$swagtextmethod            1
+s$swagconfirmationmethod    Click Bet
 s$t0type                    fuzzy
+s$t1type                    fuzzy
+s$t2type                    fuzzy
 s$titletext                 Academy
 s$ttlimits                  ^*- ^s/^b ^L
 
