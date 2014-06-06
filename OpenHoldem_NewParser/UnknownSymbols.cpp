@@ -83,8 +83,7 @@ char *outdated_symbols_ptt =
   "to simplify OpenHoldem and its supporting libraries (OpenPPL)\n"
   "\n"
   "OpenHoldem does now only support \"pt_\" symbols\n"
-  "and fetches cash-game or tournament-stats automatically,\n"
-  "provided your c0istournament-symbol returns the correct value.\n";
+  "and fetches cash-game or tournament-stats automatically.\n";
 
 char *outdated_symbols_lists =
   "The following list-symbols got removed from the code-base\n"
@@ -107,7 +106,7 @@ char *outdated_symbols_islist_symbols =
   "WHEN list0fTr4sh1W4ntToCa11 AND ... CALL FORCE\n"
   "\n"
   "As a consequence the islistNNN-symbols got removed.\n"
-  "We now just use name of the list.";
+  "We now just use the name of the list.";
 
 char *outdated_symbols_tablemap =
   "The following tablemap-symbols got removed from the code-base:\n"

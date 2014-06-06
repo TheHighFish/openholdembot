@@ -820,7 +820,6 @@ void CScraper::ClearScrapeAreas(void)
 	set_button_label(2, "raise");
 	set_button_label(3, "allin");
 
-	set_istournament(false); // !! duplicated code?
 	set_handnumber(0);
 	set_sblind(0);
 	set_bblind(0);
@@ -928,7 +927,6 @@ void CScraper::ScrapeLimits()
 	__TRACE
 	__HDC_HEADER
 	CString				handnumber = "";
-	bool				istournament = false;
 	CString				text = "";
 	CString				titletext = "";
 	char				c_titletext[MAX_WINDOW_TITLE] = {0};
@@ -946,31 +944,13 @@ void CScraper::ScrapeLimits()
 	set_found_sb_bb(false);
 	set_found_bb_BB(false);
 
-	// These persist after scraping the istournament/handnumber regions
-	// to seed l_istournament and l_handnumber when we scrape info from
-	// the titlebar.  That way if we do not find tournament or handnumber
+	// These persist after scraping the handnumber region
+	// to seed l_handnumber when we scrape info from
+	// the titlebar.  That way if we do not find handnumber
 	// information in the titlebar we won't overwrite the values we scraped
-	// from the istournament/handnumber regions.
-	istournament = false;
+	// from the handnumber region.
 	handnumber = "";
 
-	// c0istournament
-	r_iter = p_tablemap->r$()->find("c0istournament");
-	if (r_iter != p_tablemap->r$()->end())
-	{
-		ProcessRegion(r_iter);
-		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-		trans.DoTransform(r_iter, hdcCompatible, &text);
-		SelectObject(hdcCompatible, old_bitmap);
-
-		if (text == "" || text == "false")
-			istournament = false;
-		else 
-			istournament = true;
-
-		set_istournament(istournament);
-		write_log(preferences.debug_scraper(), "[CScraper] c0istournament, result %s\n", text.GetString());
-	}
 	// r$c0handnumber
 	if (EvaluateRegion("c0handnumber", &text))
 	{
@@ -1010,7 +990,6 @@ void CScraper::ScrapeLimits()
 	// information we scraped from those specific regions with
 	// default values if we can't find them in the titlebar.
 	CString l_handnumber = handnumber;
-	bool l_istournament = istournament;
 
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
 	s_iter = p_tablemap->s$()->find("ttlimits");
@@ -1019,10 +998,11 @@ void CScraper::ScrapeLimits()
 		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 		titletext = c_titletext;
 	 	
+        bool l_is_final_table = false; //!!dummy
 		CScraperPreprocessor::PreprocessTitleString(&titletext);
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
-			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
+			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
 			&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
@@ -1043,7 +1023,7 @@ void CScraper::ScrapeLimits()
 				CScraperPreprocessor::PreprocessTitleString(&titletext);
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
+					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
@@ -1063,7 +1043,7 @@ void CScraper::ScrapeLimits()
 			{
 				trans.ParseStringBSL(
 					text, s_iter->second.text, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
+					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
@@ -1086,7 +1066,7 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 				{
 					trans.ParseStringBSL(text, s_iter->second.text, NULL,
-						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_istournament, 
+						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
 						&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 						&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 				}
@@ -1105,7 +1085,6 @@ void CScraper::ScrapeLimits()
 			set_limit(l_limit);
 			set_sb_bb(l_sb_bb);
 			set_bb_BB(l_bb_BB);
-			set_istournament(l_istournament);
 			set_found_handnumber(l_found_handnumber);
 			set_found_sblind(l_found_sblind);
 			set_found_bblind(l_found_bblind);
@@ -1224,7 +1203,6 @@ void CScraper::SetLimitInfo(const SLimitInfo LI)
 	set_bbet(LI.bbet);
 	set_ante(LI.ante);
 	set_limit(LI.limit);
-	set_istournament(LI.istournament);
 	set_found_sblind(LI.found_sblind);
 	set_found_bblind(LI.found_bblind);
 	set_found_bbet(LI.found_bbet);
