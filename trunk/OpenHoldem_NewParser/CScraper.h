@@ -33,7 +33,6 @@ struct SLimitInfo
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
-	bool istournament;
 	CString	handnumber;
 	double	sb_bb;
 	double	bb_BB;
@@ -148,7 +147,6 @@ private:
 	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d;}
 	void	set_ante(const double d) { ENT _s_limit_info.ante = d;}
 	void	set_limit(const int i) { ENT _s_limit_info.limit = i;}
-	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b; }
 	void	set_handnumber(const CString s) { ENT _s_limit_info.handnumber = s;}
 	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
 	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}

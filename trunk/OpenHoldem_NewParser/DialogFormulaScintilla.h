@@ -164,9 +164,10 @@ class CDlgFormulaScintilla : public CDialog {
   HTREEITEM hRawItem, hCatItem;
 
  private:
-  void	  PopulateFormulaTree();
-  void    AddFunctionToTree(HTREEITEM hParent, CString name);
-  void    AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
+  void PopulateFormulaTree();
+  void AddFunctionToTree(HTREEITEM hParent, CString name);
+  void AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
+  void DeleteFormerParentItemIfEmpty(HTREEITEM sibbling);
  protected:
   HTREEITEM FindUDFGroupItem(const char *groupName);
   HTREEITEM FindUDFStartingItem(const char *groupName);
@@ -176,6 +177,7 @@ class CDlgFormulaScintilla : public CDialog {
   void	  RemoveSingleItemGroups();
   void	  GroupUDFs();
   HTREEITEM hUDFItem;
+  HTREEITEM hHandListItem;
 
   void HandleEnables(bool All);
 

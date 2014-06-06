@@ -31,6 +31,13 @@ void CTablemapCompletenessChecker::ErrorMissingItem(CString item) {
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
+void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
+  CString message;
+  message.Format("Deprecated item in tablemap: %s\n%s", 
+    item, p_tablemap->filepath());
+  OH_MessageBox_Interactive(message, "Error", 0);
+}
+
 void CTablemapCompletenessChecker::CheckItem(CString item) {
   if (!p_tablemap->ItemExists(item)) {
     ErrorMissingItem(item);
@@ -160,12 +167,15 @@ void CTablemapCompletenessChecker::VerifyMap() {
       CheckItem("t", i, "type");
     }
   }
+  // r$c0istournament no longer supported, works automatically
+  if (p_tablemap->ItemExists("c0istournament")) {
+    ErrorDeprecatedItem("c0istournament");
+  }
   // Not checked, despite nice to have
   //   * betpot-buttons
   //   * i86-buttons
   //
   // Not necessary, as optional
-  //   * r$c0istournament (deprecated)
   //   * r$c0isfinaltable
   //   * potmethod
   //   * activemethod

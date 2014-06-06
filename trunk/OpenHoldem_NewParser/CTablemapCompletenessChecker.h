@@ -28,6 +28,7 @@ class CTablemapCompletenessChecker {
   void CheckMainPot();
  private:
    void ErrorMissingItem(CString item);
+   void ErrorDeprecatedItem(CString item);
   bool IsNoLimitMap();
  private:
   bool _error_flag;

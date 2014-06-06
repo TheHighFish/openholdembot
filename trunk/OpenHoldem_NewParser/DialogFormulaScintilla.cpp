@@ -990,234 +990,58 @@ void CDlgFormulaScintilla::OnRename() {
   UpdateAllScintillaKeywords();
   HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
   m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-  
+    
   PopulateFormulaTree();
   SortUdfTree();
+  m_FormulaTree.Expand(_subtree_user_defined_functions, TVE_EXPAND); 
   SetWindowText("Formula - " + rendlg.CSnewname);
 
-  //m_FormulaTree.UpdateDialogControls(); //???
+  //m_FormulaTree.UpdateDialogControls(); 
   m_FormulaTree.UpdateWindow();
-  m_FormulaTree.Expand(_subtree_user_defined_functions, 1); //???
 
   m_FormulaTree.SetFocus();
   m_dirty = true;
   HandleEnables(true);
-
-  return;
-
-  if (!p_function_collection->LookUp(rendlg.CSnewname)->IsUserDefinedFunction()) {
-    // List or standard function
-    // No formula grouping here, therefore easy to rename
-    
-  } else {
-    // User-defined function
-    CString tempString, groupName = rendlg.CSnewname;
-    HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
-    HTREEITEM hNewParent = hUDFItem;
-    CString parentName = m_FormulaTree.GetItemText(oldParentItem);
-    if (groupName.Find("f$") == 0) {
-      int index = groupName.Find("_");
-      if (index > 0) {
-        groupName = groupName.Mid(2, index-2);
-        if (parentName.Compare(groupName)) {
-          // Does a group already exist?
-          HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-          if (hExistingGroup) {
-	        hNewParent = hExistingGroup;
-          } else {
-            // If a group does not exist, is there another UDF to group together?
-            HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-            if (matchingItem) {
-              hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-              MoveTreeItem(matchingItem, hNewParent, NULL, false);
-            }
-          }
-        }
-      }
-    }
-    if (oldParentItem != hNewParent) {
-      MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
-      if (oldParentItem != hUDFItem) {
-        HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-        if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
-          MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
-          m_FormulaTree.DeleteItem(oldParentItem);
-        }
-      }
-    } else{
-	  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-    }
-    if (memcmp(str, "f$", 2) == 0) {
-	  
-    }
-  }
-  
 }
 
-/*void CDlgFormulaScintilla::OnRename() {
-  CDlgRename rendlg;
-  char str[MAX_WINDOW_TITLE] = {0};
 
-  StopAutoButton();
-  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-  strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
-  rendlg.CSoldname = s;
-  if (rendlg.DoModal() != IDOK) return;
-  if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
-    
-  UpdateAllScintillaKeywords();
-  HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
-  if (!p_function_collection->LookUp(rendlg.CSnewname)->IsUserDefinedFunction()) {
-    // List or standard function
-    // No formula grouping here, therefore easy to rename
-    m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-  } else {
-    // User-defined function
-    CString tempString, groupName = rendlg.CSnewname;
-    HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
-    HTREEITEM hNewParent = hUDFItem;
-    CString parentName = m_FormulaTree.GetItemText(oldParentItem);
-    if (groupName.Find("f$") == 0) {
-      int index = groupName.Find("_");
-      if (index > 0) {
-        groupName = groupName.Mid(2, index-2);
-        if (parentName.Compare(groupName)) {
-          // Does a group already exist?
-          HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-          if (hExistingGroup) {
-	        hNewParent = hExistingGroup;
-          } else {
-            // If a group does not exist, is there another UDF to group together?
-            HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-            if (matchingItem) {
-              hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-              MoveTreeItem(matchingItem, hNewParent, NULL, false);
-            }
-          }
-        }
-      }
-    }
-    if (oldParentItem != hNewParent) {
-      MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
-      if (oldParentItem != hUDFItem) {
-        HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-        if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
-          MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
-          m_FormulaTree.DeleteItem(oldParentItem);
-        }
-      }
-    } else{
-	  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-    }
-    if (memcmp(str, "f$", 2) == 0) {
-	  SortUdfTree();
+void CDlgFormulaScintilla::DeleteFormerParentItemIfEmpty(HTREEITEM sibbling) {
+  HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(sibbling);
+  HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+  if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+    if ((oldParentItem != hUDFItem) && (oldParentItem != _subtree_handlists)) {
+      // Delete empty sub-groups, but never delete the main groups 
+      // for UDFs and hand lists
+      m_FormulaTree.DeleteItem(oldParentItem); 
     }
   }
-  SetWindowText("Formula - " + rendlg.CSnewname);
-  m_FormulaTree.SetFocus();
-  m_dirty = true;
-  HandleEnables(true);
-}*/
+}
 
 void CDlgFormulaScintilla::OnDelete() {
-	HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
-	CString s = m_FormulaTree.GetItemText(hItem);
-	CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
-
-    StopAutoButton();
-	if (IDYES != OH_MessageBox_Interactive(
-        "REALLY delete \"" 
-          + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) 
-          + "\" ?", 
-        "Confirm Delete", MB_YESNO | MB_ICONWARNING)) {
-	  HandleEnables(true);
-	  return;
-    }
-	// Delete a UDF or list
-    p_function_collection->Delete(s);
-      
-	HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
-	HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-	if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
-      MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
-	  m_FormulaTree.DeleteItem(oldParentItem); // List only this???
-	}
-	m_dirty = true;
-	m_FormulaTree.SetFocus();
-	SetWindowText("Formula - ");
-    FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
-	UpdateAllScintillaKeywords();
-	HandleEnables(true);
-	
-
-	/*!!!
-	int ret, N;
-		HTREEITEM h = m_FormulaTree.GetSelectedItem();
-		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-		CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
-
-		StopAutoButton();
-
-		ret = OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", 
-			"Confirm Delete", MB_YESNO | MB_ICONWARNING);
-
-		if (ret == IDYES) {
-
-			// Delete a UDF
-			if (s.Find("f$") != -1) {
-				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (int i=0; i<N; i++) {
-					if (m_wrk_formula.formula()->mFunction[i].func == s) 
-					{
-						// Update the dialog
-						//m_FormulaTree.SelectItem(NULL);
-						m_FormulaTree.SetFocus();
-						SetWindowText("Formula - ");
-						m_pActiveScinCtrl->SetText("");
-						m_pActiveScinCtrl->EnableWindow(false);
-						m_FormulaApply.EnableWindow(true);
-						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
-						m_FormulaOK.EnableWindow(true);
-						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
-						m_ButtonCalc.EnableWindow(false);
-						// Remove it from the CArray working set
-						//m_wrk_formula.formula()->mFunction. RemoveAt(i, 1);
-						m_wrk_formula.set_func_remove(i);
-						// Update the tree
-						m_FormulaTree.DeleteItem(h);
-						m_dirty = true;
-						i=N+1;
-					}
-				}
-			}
-
-			// Delete a list
-			else if (s.Find("list") != -1) {
-				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (int i=0; i<N; i++) {
-					if (m_wrk_formula.formula()->mHandList[i].list == s) {
-						// Update the dialog
-						//m_FormulaTree.SelectItem(NULL);
-						m_FormulaTree.SetFocus();
-						SetWindowText("Formula - ");
-						m_pActiveScinCtrl->SetText("");
-						m_pActiveScinCtrl->EnableWindow(false);
-						m_FormulaApply.EnableWindow(true);
-						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
-						m_FormulaOK.EnableWindow(true);
-						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
-						m_ButtonCalc.EnableWindow(false);
-						// Remove it from the CArray working set
-						//m_wrk_formula.formula()->mHandList.RemoveAt(i, 1);
-						m_wrk_formula.set_list_remove(i);
-						// Update the tree
-						m_FormulaTree.DeleteItem(h);
-						m_dirty = true;
-						i=N+1;
-					}
-				}
-			}
-		}*/
+  if (IDYES != OH_MessageBox_Interactive(
+      "REALLY delete \"" 
+      + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) 
+      + "\" ?", 
+      "Confirm Delete", MB_YESNO | MB_ICONWARNING)) {
+    HandleEnables(true);
+    return;
+  }
+  HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
+  CString s = m_FormulaTree.GetItemText(hItem);
+  CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
+  StopAutoButton();
+  // Delete a UDF or list
+  p_function_collection->Delete(s);
+  m_dirty = true;
+  // Update the dialog
+  m_FormulaTree.SetFocus();
+  SetWindowText("Formula - ");
+  m_pActiveScinCtrl->SetText("");
+  DeleteFormerParentItemIfEmpty(hItem);
+  FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
+  UpdateAllScintillaKeywords();
+  m_FormulaTree.DeleteItem(hItem);
+  HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
