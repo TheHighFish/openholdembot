@@ -76,6 +76,8 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
 }
 
 CString CDebugTab::function_text() {
+  return _function_text; // !!! because we need it for parsing
+  /*
   // Clean function text,
   // nicely formatted without results
   CString function_text;
@@ -87,4 +89,5 @@ CString CDebugTab::function_text() {
     function_text += "\n";
   }
   return function_text;
+  */
 }

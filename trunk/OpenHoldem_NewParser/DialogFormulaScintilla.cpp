@@ -999,6 +999,7 @@ void CDlgFormulaScintilla::OnRename() {
   //m_FormulaTree.UpdateDialogControls(); 
   m_FormulaTree.UpdateWindow();
 
+  m_FormulaTree.SelectItem(hSelectedItem);
   m_FormulaTree.SetFocus();
   m_dirty = true;
   HandleEnables(true);
@@ -1663,6 +1664,18 @@ void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 	return;
 }
 
+void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == "") {
+      // This should only happen for the default "Empty" tab
+      continue;
+    }
+    p_function_collection->SetFunctionText(name, 
+      m_ScinArray.GetAt(i)._pWnd->GetText());  
+  }
+}
+
 void CDlgFormulaScintilla::OnBnClickedApply() 
 {
 	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
@@ -1691,8 +1704,12 @@ void CDlgFormulaScintilla::OnBnClickedApply()
 			return;
 		}
 	}
+    CopyTabContentsToFormulaSet();
 
-	// Copy working set to global set !!!
+
+    
+
+	
 
 
 	pDoc->SetModifiedFlag(true);
