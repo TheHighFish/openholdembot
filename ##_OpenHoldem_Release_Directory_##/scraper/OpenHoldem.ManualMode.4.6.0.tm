@@ -38,7 +38,6 @@ r$c0cardface2        271 144 302 185        0    0 H0
 r$c0cardface3        310 144 341 185        0    0 H0
 r$c0cardface4        349 144 380 185        0    0 H0
 r$c0handnumber       282   6 308  16        0    0 T0
-r$c0istournament     247  21 253  29        0    0 H0
 r$c0pot0             255  49 345  58        0    0 T0
 r$i0button           491 320 502 331   ff0000    0 N
 r$i0label            493 322 499 330   ffffff    0 H0
