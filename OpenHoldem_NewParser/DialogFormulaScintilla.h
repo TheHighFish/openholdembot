@@ -168,6 +168,7 @@ class CDlgFormulaScintilla : public CDialog {
   void AddFunctionToTree(HTREEITEM hParent, CString name);
   void AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
   void DeleteFormerParentItemIfEmpty(HTREEITEM sibbling);
+  void CopyTabContentsToFormulaSet();
  protected:
   HTREEITEM FindUDFGroupItem(const char *groupName);
   HTREEITEM FindUDFStartingItem(const char *groupName);

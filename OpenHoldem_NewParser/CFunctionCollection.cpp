@@ -245,6 +245,20 @@ void CFunctionCollection::Delete(CString name) {
   }
 }
 
+void CFunctionCollection::SetFunctionText(CString name, CString content) {
+  COHScriptObject *function = LookUp(name);
+  if (function == NULL) {
+    // Function does not yet exist; new one
+    // We need to create name and text on the heap, can't point to the stack
+    CString *my_text = new CString(content);
+    CString *my_name = new CString(name);
+    function = new CFunction(my_name, my_text, k_undefined_zero);
+    Add(function);
+  } else {
+    function->SetText(content);
+  }
+}
+
 bool CFunctionCollection::CorrectlyParsed() {
   return (!CParseErrors::AnyError());
 }
