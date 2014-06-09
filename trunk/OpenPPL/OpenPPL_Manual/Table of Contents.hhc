@@ -24,10 +24,6 @@
 			<param name="URL" value="Chapters\What_Is_OpenPPL.html.LyXconv\What_Is_OpenPPL.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Translating Your Bot">
-			<param name="Local" value="Chapters\Translating_Your_Bot.html.LyXconv\Translating_Your_Bot.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="License - GPL">
 			<param name="Local" value="Chapters\GPL_v3.htm">
 			</OBJECT>
