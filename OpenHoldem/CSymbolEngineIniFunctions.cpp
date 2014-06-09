@@ -130,10 +130,6 @@ void CSymbolEngineIniFunctions::ResetOnHeartbeat() {
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_heartbeat]);
 }
 
-void CSymbolEngineIniFunctions::ResetOnHeartbeat()
-{
-	RETURN_IF_LOADING_NEW_FORMULA
-	return; //!!!
 CString CSymbolEngineIniFunctions::SymbolsProvided() {
   // This symbol-engine does not really provide any symbols.
   // It just makes use of certain events (ResetOnHeartbeat, etc.)

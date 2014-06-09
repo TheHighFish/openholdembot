@@ -167,13 +167,9 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 	p_scraper_access->GetNeccessaryTablemapObjects();
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Caclulate symbols
-
-	// mark symbol result cache as stale
-	p_formula->MarkCacheStale();
-
 	if (new_scrape!=NOTHING_CHANGED)
 	{
-		p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+		p_engine_container->EvaluateAll();
 		// Shoot replay-frame if desired
 		// a) on every change
 		if (preferences.replay_record_every_change() 
