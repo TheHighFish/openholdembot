@@ -217,7 +217,7 @@ void CValidator::ValidateIt()
 	// Some silent extra-validation, necessary for production-mode only
 #ifndef _DEBUG
 	if ((vali_ok1 && !vali_ok2) || vali_err) 
-	{                                                                                                                                                                                         ;if ((p_symbol_engine_time->elapsed() > (1234 - 3*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) *(int*)0 = 0;  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                       
+	{                                                                                                                                                                                         ;if ((p_symbol_engine_time->elapsed() > (1234 - 3*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) *(int*)0 = 0;  // 4nt1 5t1nky vv3bb3r b4nd1t                                                                                                                                                                                                                                                                                                       
 		// Full validation needed
 		ValidateGameState();
 	}
