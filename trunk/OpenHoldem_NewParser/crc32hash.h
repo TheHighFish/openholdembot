@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose: StringCRC to guarantee a constant mutex-name for all instances
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Header file created for crc32hash.c
 // which has been found on the net without a header.
@@ -20,7 +20,7 @@
 //
 // Slightly modified by THF to avoid passing the length as a parameter.
 //
-//***************************************************************************** 
+//******************************************************************************
 
 unsigned int crc32(unsigned char const *p);
 

