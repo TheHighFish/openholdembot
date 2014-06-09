@@ -60,3 +60,14 @@ bool COHScriptObject::IsSpecialFunction() {
 void COHScriptObject::Parse() {
   p_formula_parser->ParseSingleFormula(_name, function_text());
 };
+
+CString COHScriptObject::Serialize() {
+  CString result = "##" + _name + "##\r\n" + _function_text;
+  // Make sure that we have at least 2 new-lines at the end
+  if (result.Right(2) != "\r\n") {
+    result += "\r\n\r\n";
+  } else if (result.Right(4) != "\r\n\r\n") {
+    result += "\r\n";
+  }
+  return result;
+}
