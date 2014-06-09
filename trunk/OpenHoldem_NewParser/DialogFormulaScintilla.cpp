@@ -199,15 +199,12 @@ void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SYMBOL_TREE, m_SymbolTree);
 	DDX_Control(pDX, IDCANCEL, m_FormulaCancel);
 	DDX_Control(pDX, IDC_SCINTILLA_APPLY, m_FormulaApply);
-	DDX_Control(pDX, IDOK, m_FormulaOK);
 }
 
 BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	// Menu items
 	ON_COMMAND(ID_FORMULA_FILE_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
-	ON_COMMAND(ID_FORMULA_FILE_APPLYANDSAVE, &CDlgFormulaScintilla::OnBnClickedApplySave)
-	ON_COMMAND(ID_FORMULA_FILE_OK, &CDlgFormulaScintilla::OnBnClickedOk)
-	ON_COMMAND(ID_FORMULA_FILE_CANCEL, &CDlgFormulaScintilla::OnBnClickedCancel)
+	ON_COMMAND(ID_FORMULA_FILE_CANCEL, &CDlgFormulaScintilla::OnCancel)
 	ON_COMMAND(ID_FORMULA_EDIT_NEW, &CDlgFormulaScintilla::OnNew)
 	ON_COMMAND(ID_FORMULA_EDIT_RENAME, &CDlgFormulaScintilla::OnRename)
 	ON_COMMAND(ID_FORMULA_EDIT_DELETE, &CDlgFormulaScintilla::OnDelete)
@@ -240,10 +237,9 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	
 	// Buttons
-	ON_BN_CLICKED(IDOK, &CDlgFormulaScintilla::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_SCINTILLA_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
 	ON_BN_CLICKED(IDC_SCINTILLA_CALC, &CDlgFormulaScintilla::OnBnClickedCalc)
-	ON_BN_CLICKED(IDCANCEL, &CDlgFormulaScintilla::OnBnClickedCancel)
+	ON_BN_CLICKED(IDCANCEL, &CDlgFormulaScintilla::OnCancel)
 
 	ON_REGISTERED_MESSAGE( WM_FINDREPLACE, OnFindReplace )
 
@@ -986,6 +982,15 @@ void CDlgFormulaScintilla::OnRename() {
   rendlg.CSoldname = s;
   if (rendlg.DoModal() != IDOK) return;
   if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
+
+  // Rename the tab
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == s) {
+      m_ScinArray.GetAt(i)._name = s;
+      break;
+    }
+  }
     
   UpdateAllScintillaKeywords();
   HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
@@ -1034,6 +1039,14 @@ void CDlgFormulaScintilla::OnDelete() {
   // Delete a UDF or list
   p_function_collection->Delete(s);
   m_dirty = true;
+  // Close the tab
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == s) {
+      //!!!m_ScinArray.GetAt(i)._pWnd->c;
+      break;
+    }
+  }
   // Update the dialog
   m_FormulaTree.SetFocus();
   SetWindowText("Formula - ");
@@ -1438,7 +1451,8 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   p_engine_container->EvaluateAll();
 
   // Validate parse trees
-  if (!p_function_collection->ParseAll()) {
+  p_function_collection->ParseAll();
+  if (!p_function_collection->CorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");
     s.Append("preventing calculation.\n");
     s.Append("These errors need to be corrected before the 'Calc'\n");
@@ -1646,12 +1660,6 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 	}
 }
 
-void CDlgFormulaScintilla::OnBnClickedApplySave()
-{
-	OnBnClickedApply();
-	PMainframe()->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
-}
-
 void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 {
 	OH_MessageBox_Interactive("Editing the formula while the autoplayer is enabled\n"
@@ -1676,59 +1684,34 @@ void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
   }
 }
 
-void CDlgFormulaScintilla::OnBnClickedApply() 
-{
-	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
-	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-
-	// If autoplayer is engaged, dis-engage it
-	if (p_autoplayer->autoplayer_engaged())
-	{
-		WarnAboutAutoplayerWhenApplyingFormula();
-	}
-
-	// Save settings to registry
-	SaveSettingsToRegistry();
-
-	if (!p_function_collection->ParseAll())
-	{
-		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
-					   "Would you still like to apply changes in the working set to the main set?\n\n"
-					   "Note that if you choose yes here, then the main formula set will \n"
-					   "contain errors, will likely not act as you expect, and may cause you\n"
-					   "to lose money at the tables.\n\n"
-					   "Please only click 'Yes' if you really know what you are doing.",
-					   "PARSE ERROR", 
-					   MB_YESNO) != IDYES)
-		{
-			return;
-		}
-	}
-    CopyTabContentsToFormulaSet();
-
-
-    
-
-	
-
-
-	pDoc->SetModifiedFlag(true);
-
-	// Re-parse global set
-	p_function_collection->ParseAll();
-
-	// Re-calc symbols
-	p_engine_container->EvaluateAll();
-
-	m_dirty = false;
-
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::OnBnClickedOk() 
-{
-	OnBnClickedApply();
-	DestroyWindow();
+void CDlgFormulaScintilla::OnBnClickedApply() {
+  CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
+  COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
+  // If autoplayer is engaged, dis-engage it
+  if (p_autoplayer->autoplayer_engaged()) {
+	  WarnAboutAutoplayerWhenApplyingFormula();
+  }
+  // Save settings to registry
+  SaveSettingsToRegistry();
+  CopyTabContentsToFormulaSet();
+  p_function_collection->ParseAll();
+  if (!p_function_collection->CorrectlyParsed()) {
+    if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
+        "Would you still like to apply changes in the working set to the main set?\n\n"
+        "Note that if you choose yes here, then the main formula set will \n"
+        "contain errors, will likely not act as you expect, and may cause you\n"
+        "to lose money at the tables.\n\n"
+        "Please only click 'Yes' if you really know what you are doing.",
+        "PARSE ERROR", 
+        MB_YESNO) != IDYES) {
+      return;
+    }
+  }
+  pDoc->SetModifiedFlag(true);
+  // Re-calc symbols
+  p_engine_container->EvaluateAll();
+  m_dirty = false;
+  HandleEnables(true);
 }
 
 bool CDlgFormulaScintilla::PromptToSave()
@@ -1736,11 +1719,11 @@ bool CDlgFormulaScintilla::PromptToSave()
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
 	int response = OH_MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
-				   "Save changes?", 
+				   "Apply changes?", 
 				   MB_YESNOCANCEL);
 	if (response == IDYES)
 	{
-		OnBnClickedOk();
+		OnBnClickedApply();
 		return true;
 	}
 	
@@ -1749,18 +1732,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		m_dirty = false;
 		return true;
 	}
-
 	return false;
-}
-
-void CDlgFormulaScintilla::OnBnClickedCancel()
-{
-	// Prompt for changes if needed
-	if (m_dirty)
-		if(!PromptToSave())
-			return;
-
-	DestroyWindow();
 }
 
 void CDlgFormulaScintilla::OnSearchUpdate()
@@ -1996,7 +1968,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 
 	// File Menu Buttons
 	m_FormulaApply.EnableWindow(m_dirty);
-	m_FormulaOK.EnableWindow(m_dirty);
 	m_FormulaCancel.EnableWindow(true);
 
 	bool ModifiableSelected = (bTreeValidLeafSelected && iWhichTypeSelected>0);

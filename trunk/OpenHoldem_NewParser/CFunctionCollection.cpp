@@ -205,8 +205,7 @@ void CFunctionCollection::Save(CArchive &ar)
   // We already saved the standard-functions
   next_object = GetFirst();
   while (next_object != NULL) {
-    if (next_object->IsFunction()
-        && !next_object->IsStandardFunction()) {
+    if (next_object->IsUserDefinedFunction()) {
       SaveObject(ar, next_object);
     }
     next_object = GetNext();

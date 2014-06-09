@@ -104,8 +104,6 @@ class CDlgFormulaScintilla : public CDialog {
   virtual void OnCancel();
   virtual void PostNcDestroy();
   afx_msg void OnBnClickedApply();
-  afx_msg void OnBnClickedApplySave();
-  afx_msg void OnBnClickedOk();
   afx_msg void OnBnClickedCalc();
   afx_msg void OnNew();
   afx_msg void OnRename();
@@ -121,7 +119,6 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg void OnFunctionTabSelectionChange(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult);
-  afx_msg void OnBnClickedCancel();
   afx_msg void OnSearchUpdate();
   afx_msg void OnBnClickedAuto();
   afx_msg void OnToggleBookmark();
@@ -201,7 +198,7 @@ class CDlgFormulaScintilla : public CDialog {
   CStatusBar		m_wndStatusBar;
   CTreeCtrl		m_FormulaTree;
   CTreeCtrl		m_SymbolTree;
-  CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply, m_FormulaOK;
+  CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply;
   CEdit			m_CalcResult;
   CEdit			m_SearchEdit;
   CWinMgr			m_winMgr;				// window manager
