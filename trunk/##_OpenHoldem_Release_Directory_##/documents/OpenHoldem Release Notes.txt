@@ -36,6 +36,9 @@ BUG FIXES:
   Now OpenHoldem will disconnect, reload the tablemaps and connect again
   if there are updates in the scraper-directory.
   [THF]
+- The symbols issittingin ande issittingout returned inverted values since we optimized the scraper.
+  Thanks to SuperBlak for reporting.
+  [THF]
 
 v4.5.0 2014-02-26
 ==================
