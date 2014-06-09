@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_FLOATINGPOINT_COMPARISIONS_H
 #define INC_FLOATINGPOINT_COMPARISIONS_H
@@ -64,5 +64,16 @@ inline bool IsFalse(double d)
 	return (!IsTrue(d));
 }
 
+inline int Round(double d)
+{
+	// Rounding to nearest integer
+	return int(d + 0.5);
+}
+
+inline int IsApproximatellyEqual(double d1, double d2)
+{
+	// True, if after rounding both are equal
+	return (Round(d1) == Round(d2));
+}
 
 #endif // #ifndef INC_FLOATINGPOINT_COMPARISIONS_H

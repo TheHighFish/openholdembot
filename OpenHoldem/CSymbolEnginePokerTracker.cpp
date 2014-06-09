@@ -1,20 +1,20 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
 
-#include "CFormula.h"
+#include "CFormulaParser.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -124,7 +124,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 	}
 }
 
-bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name,"pt_",3)!=0)
 	{
@@ -157,7 +157,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
 
 	if (!p_pokertracker_thread->IsConnected())
 	{
-		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula->IsParsing())
+		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula_parser->IsParsing())
 		{
 			// We are not yet seated or formula is getting parsed.
 			// Symbol-lookup happens, because of Formula-validation.
@@ -194,6 +194,20 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result)
 	return true;
 }
 
+CString CSymbolEnginePokerTracker::SymbolsProvided() {
+  CString list;
+  for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i) {
+    CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
+    // Add symbol for raise-chair
+    CString new_symbol = "pt_r_" + basic_symbol_name;
+    list.AppendFormat(" %s", new_symbol);
 
-
-
+    // Add symbols for all chairs, indexed by trailing numbers
+    for (int j=0; j<k_max_number_of_players; j++)
+    {
+	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
+	    list.AppendFormat(" %s", new_symbol);
+    }
+  }
+  return list;
+}

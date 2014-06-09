@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_DIALOGNEW_H
 #define INC_DIALOGNEW_H
@@ -37,7 +37,7 @@ public:
 	afx_msg void OnBnClickedCancel();
 	CEdit m_NewName;
 	CString CSnewname;
-	int type;  // 0 = new list, 1 = new udf
+	bool is_function; // otherwise list
 	virtual BOOL OnInitDialog();
 	CStatic m_Desc;
 };

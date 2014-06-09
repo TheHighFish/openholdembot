@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "COpenHoldemTitle.h"
@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "CAutoConnector.h"
 #include "CFilenames.h"
-#include "CFormula.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
 #include "MainFrm.h"
@@ -54,7 +54,7 @@ CString COpenHoldemTitle::GetTitle()
 CString COpenHoldemTitle::FullTitle()
 {
 	assert(p_autoconnector != NULL);
-	assert(p_formula != NULL);
+	assert(p_function_collection != NULL);
 	assert(p_tablemap != NULL);
 
 	CString full_title;
@@ -64,12 +64,12 @@ CString COpenHoldemTitle::FullTitle()
 		MAX_WINDOW_TITLE);
 	if (p_autoconnector->IsConnected())
 	{
-		full_title.Format("%s - %s (%s)", p_formula->formula_name(), 
+		full_title.Format("%s - %s (%s)", p_function_collection->Title(), 
 			p_tablemap->sitename(), table_title);
 	}
 	else
 	{
-		full_title.Format("%s", p_formula->formula_name());
+		full_title.Format("%s", p_function_collection->Title());
 	}
 	return full_title;
 }

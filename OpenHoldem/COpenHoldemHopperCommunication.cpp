@@ -1,22 +1,23 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "COpenHoldemHopperCommunication.h"
 
 #include "CAutoConnector.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
+#include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CTableMaploader.h"
@@ -104,8 +105,8 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
-	if (p_formula->formula_name() == "" 
-		|| p_formula->IsParsing()
+	if (p_function_collection->Title() == "" 
+		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{
 		write_log(preferences.debug_hopper_messages(), 

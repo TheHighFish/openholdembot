@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 // RenameDialog.cpp : implementation file
 //
@@ -18,6 +18,7 @@
 #include "OpenHoldem.h"
 #include "DialogRename.h"
 #include "OH_MessageBox.h"
+#include "VerifyFunctionAndListNames.h"
 
 // CDlgRename dialog
 
@@ -57,47 +58,16 @@ BOOL CDlgRename::OnInitDialog()
 void CDlgRename::OnBnClickedOk() 
 {
 	char oldstr[MAX_WINDOW_TITLE] = {0}, newstr[MAX_WINDOW_TITLE] = {0};
-	int i = 0;
 
 	m_NewName.GetWindowText(CSnewname);
 	strcpy_s(oldstr, MAX_WINDOW_TITLE, CSoldname.GetString());
 	strcpy_s(newstr, MAX_WINDOW_TITLE, CSnewname.GetString());
 
-	// Changing a list
-	if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)!=0) 
-	{
-		OH_MessageBox_Interactive("Lists must begin with the name 'list'.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (memcmp(oldstr, "list", 4)==0 && memcmp(newstr, "list", 4)==0 && strlen(newstr)==4) 
-	{
-		OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand be followed by a number.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (memcmp(oldstr, "list", 4)==0) 
-	{
-		for (int i=4; i<(int) strlen(newstr); i++) 
-		{
-			if (newstr[i]<'0' || newstr[i]>'9') 
-			{
-				OH_MessageBox_Interactive("Lists must begin with the name 'list'\r\nand have all numbers to end.\r\ne.g. 'list45'", "Invalid Name", MB_ICONERROR);
-				return;
-			}
-		}
-	}
-
-	// Changing a UDF
-	else if (memcmp(oldstr, "f$", 2)==0 && memcmp(newstr, "f$", 2)!=0) 
-	{
-		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-	else if (memcmp(oldstr, "f$", 2)==0 && strlen(newstr)==2) 
-	{
-		OH_MessageBox_Interactive("UDF's must begin with the name 'f$'\r\nand be followed be the name of the function.\r\ne.g. 'f$myfunc'", "Invalid Name", MB_ICONERROR);
-		return;
-	}
-
+    if (memcmp(oldstr, "f$", 2)==0) {
+      if (!VerifyFunctionName(newstr)) return;
+    } else {
+      if (!VerifyListName(newstr)) return;
+    }
 	OnOK();
 }
 

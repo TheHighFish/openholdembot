@@ -1,11 +1,11 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
@@ -13,7 +13,7 @@
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CSCRAPER_H
 #define INC_CSCRAPER_H
@@ -33,7 +33,6 @@ struct SLimitInfo
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
-	bool istournament;
 	CString	handnumber;
 	double	sb_bb;
 	double	bb_BB;
@@ -148,7 +147,6 @@ private:
 	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d;}
 	void	set_ante(const double d) { ENT _s_limit_info.ante = d;}
 	void	set_limit(const int i) { ENT _s_limit_info.limit = i;}
-	void	set_istournament(const bool b) { ENT _s_limit_info.istournament = b; }
 	void	set_handnumber(const CString s) { ENT _s_limit_info.handnumber = s;}
 	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
 	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}

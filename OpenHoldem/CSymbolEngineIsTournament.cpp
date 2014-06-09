@@ -1,16 +1,16 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose: Detecting if we play a tournament, especially
 //   to enable / disable automatic blind-locking (stability) 
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineIsTournament.h"
@@ -283,7 +283,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// but only for the current hand. Does this hurt much?
 }
 
-bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 { 
 	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12)
 	{
@@ -293,4 +293,9 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result)
 	}
 	// Symbol of a different symbol-engine
 	return false;
+}
+
+CString CSymbolEngineIsTournament::SymbolsProvided() {
+  //!!
+  return " todo";
 }

@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CARDFUNCTIONS_H
 #define INC_CARDFUNCTIONS_H
@@ -72,7 +72,11 @@ inline int CardRankCharacterToCardRank(char rank)
 		case 'k': return 13;
 		case 'A': return 14;
 		case 'a': return 14;
-		default: return 0;
+		default: 
+          // Just accept silently
+		  // We might get input like "Ac3d" or "KJTsuited"
+		  assert(false);
+		  return -1;
 	}
 }
 

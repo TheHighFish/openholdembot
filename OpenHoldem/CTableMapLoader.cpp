@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "StdAfx.h"
 #include "CTableMaploader.h"
@@ -18,6 +18,7 @@
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
+#include "CTablemapCompletenessChecker.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
@@ -116,6 +117,8 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 			{
 				CTableMapToSWholeMap(p_tablemap, &smap);
 				ExtractConnectionDataFromCurrentTablemap(&smap);
+                CTablemapCompletenessChecker tablemap_completeness_checker;
+                tablemap_completeness_checker.VerifyMap();
 				write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 			}
 		}

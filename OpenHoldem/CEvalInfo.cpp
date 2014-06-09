@@ -1,20 +1,23 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CEvalInfo.h"
 
+#include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+
+// !! looks like some redundancy between CAutoplayerTrace and this
 
 CEvalInfoFunctionArray::~CEvalInfoFunctionArray()
 {
@@ -43,7 +46,7 @@ void CEvalInfoSymbol::DumpSymbol(int indent)
 	else
 		message.Format("%s=%.2f", m_Symbol, m_Value);
 
-	p_engine_container->symboltrace_collection_add(message);
+	p_autoplayer_trace->Add(message);
 }
 
 void CEvalInfoSymbolArray::DumpSymbolArray(int indent)
@@ -68,7 +71,7 @@ void CEvalInfoFunction::DumpFunction(int indent)
 	else
 		message.Format("%s%s=%.2f [Line: %d, Col: %d]", space, m_FunctionName, m_Result, m_Line, m_Column);
 	
-	p_engine_container->symboltrace_collection_add(message);
+	p_autoplayer_trace->Add(message);
 
 	m_CalledFunctions.DumpFunctionArray(indent+1);
 	m_SymbolsUsed.DumpSymbolArray(indent+1);

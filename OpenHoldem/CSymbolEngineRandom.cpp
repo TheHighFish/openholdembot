@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineRandom.h"
@@ -69,7 +69,7 @@ double CSymbolEngineRandom::Random_0_1()
 	return result;
 }
 
-bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "random", 6) == 0)
 	{
@@ -99,4 +99,9 @@ bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result)
 	}
 	// Symbol of a different symbol-engine
 	return false;
+}
+
+CString CSymbolEngineRandom::SymbolsProvided() {
+  //!!
+  return " todo";
 }

@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CGameState.h"
@@ -600,6 +600,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 					_end_of_hand==false )
 			{
 				_end_of_hand = true;
+                WriteSummaryHeading();
 				write_log(k_always_log_basic_information, ">>> SHOWDOWN\n");
 			}
 		}
@@ -639,7 +640,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 
 			// Track some stats
 			_hands_played++;
-
+            WriteSummaryHeading();
 			write_log(k_always_log_basic_information, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
@@ -665,6 +666,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 				_m_holdem_state[(_m_ndx)&0xff].m_player[sym_userchair].m_cards[1] != 0)
 			{
 				_process_game_state = true;
+                WriteSummaryHeading();
 				write_log(k_always_log_basic_information, ">>> My turn, betround=%d\n", betround);
 			}
 			else
@@ -977,6 +979,10 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 	"srankloplayer", "sranklopoker", 
 };
 
+const int CGameState::hands_played() { 
+  return _hands_played; 
+}
 
-const int CGameState::hands_played() 
-{ return _hands_played; }
+void CGameState::WriteSummaryHeading() {
+  write_log_nostamp(1, "***** History (might be not accurate) ***********************\n"); 
+}

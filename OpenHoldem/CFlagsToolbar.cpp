@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CFlagsToolbar.h"
@@ -164,7 +164,7 @@ void CFlagsToolbar::OnClickedFlags()
 	SetFlag(18, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER18));
 	SetFlag(19, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER19));
 
-	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
+	p_engine_container->EvaluateAll();
 }
 
 void CFlagsToolbar::CreateMainToolbar(void)

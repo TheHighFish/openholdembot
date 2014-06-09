@@ -1,22 +1,22 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePrwin.h"
 
 #include <assert.h>
-#include "CFormula.h"
-#include "CGrammar.h"
+#include <math.h>
+#include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
 #include "CScraper.h"
@@ -78,11 +78,9 @@ void CSymbolEnginePrwin::ResetOnHeartbeat()
 {
 	// Taken from heartbeat-thread:
 	// If we've folded, stop iterator thread and set prwin/tie/los to zero
-	if (!p_scraper_access->UserHasCards())
-	{
-		p_iterator_thread->StopIteratorThread();
-	}
-
+	if (p_scraper_access->UserHasCards()) return;
+    if (p_iterator_thread == NULL) return;
+	p_iterator_thread->StopIteratorThread();
 }
 
 void CSymbolEnginePrwin::CalculateNhands()
@@ -178,12 +176,8 @@ void CSymbolEnginePrwin::CalculateNhands()
 
 void CSymbolEnginePrwin::CalculateNOpponents()
 {
-	__TRACE
-	CGrammar gram;
-	int e = SUCCESS;
-	//_nopponents_for_prwin = 2500;
-	// !!!Leads to crashes currently
-	 gram.CalcF$symbol(p_formula, "f$prwin_number_of_opponents", &e);
+	_nopponents_for_prwin = p_function_collection->Evaluate(
+		"f$prwin_number_of_opponents");
 
 	__TRACE
 	if (_nopponents_for_prwin > MAX_OPPONENTS)
@@ -197,7 +191,7 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 	__TRACE
 }
 
-bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "pr", 2)==0)
 	{
@@ -251,4 +245,9 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result)
 	}
 	// Symbol of a different symbol-engine
 	return false;
+}
+
+CString CSymbolEnginePrwin::SymbolsProvided() {
+  //!!
+  return " todo";
 }

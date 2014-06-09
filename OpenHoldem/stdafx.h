@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_STDAFX_H
 #define INC_STDAFX_H
@@ -51,7 +51,8 @@
 #define _CRT_SECURE_NO_DEPRECATE 1  // secure functions with checks for buffer size 
 #pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
 #pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
-#pragma warning(disable:4319)		// zero extending 'unsigned long' to 'double' of greater size
+#pragma warning(disable:4319)       // zero extending 'unsigned long' to 'double' of greater size
+#pragma warning(disable:4800)       // forcing value to bool 'true' or 'false' (performance warning)
 #pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
 
 // Turn some warnings on, because we consider them helpful
@@ -97,10 +98,13 @@
 #include "evx_defs.h"
 //#include "inlines/evx_inlines.h"
 
+// Assertions
+#include <assert.h>
+
 // Important project headers
 #include "debug.h"
-#include "..\StructsDefines\structs_defines.h"
+#include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
-
+#include "..\StructsDefines\structs_defines.h"
 
 #endif //INC_STDAFX_H

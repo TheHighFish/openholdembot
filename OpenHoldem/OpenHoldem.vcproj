@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="1. OpenHoldem"
+	Name="1. OpenHoldem_Parser_Development"
 	ProjectGUID="{4B4F8898-50C6-4F07-8771-B140482DBA69}"
 	RootNamespace="pokbot"
 	Keyword="MFCProj"
@@ -305,11 +305,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CFlagsToolbar.cpp"
+				RelativePath=".\CFileSystemMonitor.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CGrammar.cpp"
+				RelativePath=".\CFlagsToolbar.cpp"
 				>
 			</File>
 			<File
@@ -461,45 +461,6 @@
 				</File>
 				<File
 					RelativePath="..\CTransform\pdiff\RGBAImage.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="CTablemap"
-				>
-				<File
-					RelativePath="..\CTablemap\CTablemap.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release - Optimized|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\CTablemap\CTablemapAccess.cpp"
 					>
 				</File>
 			</Filter>
@@ -849,6 +810,10 @@
 						RelativePath=".\UPDialog.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\VerifyFunctionAndListNames.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -896,6 +861,10 @@
 				</File>
 				<File
 					RelativePath=".\CPokerAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CSymbolEngineOpenPPLUserVariables.cpp"
 					>
 				</File>
 				<File
@@ -962,10 +931,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineLists.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.cpp"
 						>
 					</File>
@@ -1015,54 +980,6 @@
 					</File>
 					<File
 						RelativePath=".\CVirtualSymbolEngine.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="OpenPPL_Symbol_Engines"
-					>
-					<File
-						RelativePath=".\CSymbolEngineOpenPPLBetsizes.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolEngineOpenPPLBettingAction.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLBoard.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLHandStrength.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLNutFullhouse4OAK.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPlayers.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPokerTracker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPositions.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolEngineOpenPPLStacksizes.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\OpenPPL_ErrorsWarnings.cpp"
 						>
 					</File>
 				</Filter>
@@ -1127,7 +1044,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CFileSystemMonitor.cpp"
+					RelativePath=".\CAutoConnectorThread.cpp"
 					>
 				</File>
 				<File
@@ -1144,10 +1061,6 @@
 				>
 				<File
 					RelativePath=".\CDllExtension.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CFormula.cpp"
 					>
 				</File>
 				<File
@@ -1231,6 +1144,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CStringHashtableTemplate.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\CStringMatch.cpp"
 					>
 				</File>
@@ -1251,6 +1168,113 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Parser"
+				>
+				<File
+					RelativePath=".\CFormulaFileSplitter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormulaParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseErrors.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParserSymbolTable.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeRotator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTokenizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TokenizerConstants.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CTablemap"
+				>
+				<File
+					RelativePath="..\CTablemap\CTablemap.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release - Optimized|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\CTablemap\CTablemapAccess.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CTablemapCompletenessChecker.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Formula"
+				>
+				<File
+					RelativePath=".\CAutoplayerTrace.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CDebugTab.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1259,6 +1283,10 @@
 			>
 			<File
 				RelativePath=".\CEvalInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CFileSystemMonitor.h"
 				>
 			</File>
 			<File
@@ -1315,10 +1343,6 @@
 			</File>
 			<File
 				RelativePath=".\debug.h"
-				>
-			</File>
-			<File
-				RelativePath=".\FloatingPoint_Comparisions.h"
 				>
 			</File>
 			<File
@@ -1565,6 +1589,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CSymbolEngineOpenPPLUserVariables.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CVersus.h"
 					>
 				</File>
@@ -1628,10 +1656,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\CSymbolEngineLists.h"
-						>
-					</File>
-					<File
 						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.h"
 						>
 					</File>
@@ -1680,58 +1704,6 @@
 						>
 					</File>
 				</Filter>
-				<Filter
-					Name="OpenPPL_Symbol_Engines"
-					>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLBetsizes.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLBettingAction.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLBoard.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLHandStrength.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLNutFullhouse4OAK.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPlayers.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPokerTracker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLPositions.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLStacksizes.h"
-						>
-					</File>
-					<File
-						RelativePath=".\CSymbolengineOpenPPLVariousOtherSymbols.h"
-						>
-					</File>
-					<File
-						RelativePath=".\OpenPPL_Constants.h"
-						>
-					</File>
-					<File
-						RelativePath=".\OpenPPL_ErrorsWarnings.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="GUI"
@@ -1774,6 +1746,10 @@
 				</File>
 				<File
 					RelativePath=".\UPDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\VerifyFunctionAndListNames.h"
 					>
 				</File>
 				<Filter
@@ -1973,7 +1949,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CFileSystemMonitor.h"
+					RelativePath=".\CAutoConnectorThread.h"
 					>
 				</File>
 				<File
@@ -2061,7 +2037,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CTablemapVersionChecker.h"
+					RelativePath=".\CTablemapCompletenessChecker.h"
 					>
 				</File>
 			</Filter>
@@ -2077,7 +2053,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CStringHashtableTemplate.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CStringMatch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FloatingPoint_Comparisions.h"
 					>
 				</File>
 				<File
@@ -2094,6 +2078,70 @@
 				</File>
 				<File
 					RelativePath=".\WindowFunctions.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Parser"
+				>
+				<File
+					RelativePath=".\CFormulaFileSplitter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFormulaParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseErrors.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParserSymbolTable.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeNode.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CParseTreeRotator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CTokenizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TokenizerConstants.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Formula"
+				>
+				<File
+					RelativePath=".\CAutoplayerTrace.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CDebugTab.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CFunctionCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\COHScriptObject.h"
 					>
 				</File>
 			</Filter>

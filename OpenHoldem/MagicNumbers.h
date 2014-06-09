@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef _INC_MAGICNUMBERS_H 
 #define _INC_MAGICNUMBERS_H
@@ -32,6 +32,7 @@ const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 const int k_not_found      = -1;
 const int k_undefined      = -1;
 const int k_undefined_zero =  0;
+const int kNoAbsoluteLineNumberExists = 1;
 
 // CString compare results
 // http://msdn.microsoft.com/en-us/library/aa314313(v=vs.60).aspx
@@ -510,11 +511,6 @@ const int k_storage_index_for_current_round = 0;
 
 // Functions names, both user-defined and standard, e.g. "f$alli"
 const int k_max_size_of_function_name = 256;
-
-// Prefix of PPL-symbols that got translated to OH-script.
-// Also prefix of symbols in the OpenPPL function library.
-const static char *k_open_ppl_symbol_prefix = "f$OpenPPL_";
-const int k_lenth_of_open_ppl_symbol_prefix = 10;
 
 // ??? Any longer needed?
 const int nTraceFunctions = 9;
