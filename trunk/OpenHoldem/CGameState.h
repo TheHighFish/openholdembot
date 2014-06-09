@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CGAMESTATE_H
 #define INC_CGAMESTATE_H
@@ -47,7 +47,8 @@ public:
 	// public mutators
 	void	set_new_hand(const bool b) { ENT _new_hand = b; }
 #undef ENT
-
+private:
+    void WriteSummaryHeading();
 private:
 	// private variables - use public accessors and public mutators to address these
 	int					_hands_played;

@@ -439,7 +439,7 @@
 #define IDC_RADIO_POPUP_KILL            1391
 #define IDC_IPADDRESS1                  1392
 #define IDC_DEBUG_SYMBOLENGINE_OPENPPL  1393
-#define IDC_DEBUG_PARSER	            1394
+#define IDC_DEBUG_PARSER                1394
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -541,8 +541,6 @@
 #define ID_MAIN_TOOLBAR_VALIDATOR       32983
 #define ID_HELP_PROBLEMSOLVER           32984
 #define ID_MAIN_TOOLBAR_TAGLOGFILE      32985
-#define ID_FILE_APPLYANDSAVE            32986
-#define ID_FORMULA_FILE_APPLYANDSAVE    32987
 #define ID_HELP_HELP                    32988
 #define ID_HELP_OPEN_PPL                32989
 #define ID_HELP_FORUMS                  32990

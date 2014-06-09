@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CVersus.h"
@@ -20,7 +20,7 @@
 
 #include "CBetroundCalculator.h"
 #include "CDllExtension.h"
-#include "CFormula.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -275,14 +275,14 @@ bool CVersus::GetCounts(void)
 					}
 
 					for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-					{
-						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c0rank][c1rank]) ||
-								(StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c1rank][c0rank]))
+					{/*!!
+						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum))
+							|| (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
 						{
 							_nlistwin[listnum] += wintemp;
 							_nlisttie[listnum] += 1712304 - wintemp - lostemp;
 							_nlistlos[listnum] += lostemp;
-						}
+						}*/
 					}
 				}
 			}
@@ -409,14 +409,14 @@ bool CVersus::GetCounts(void)
 					}
 
 					for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-					{
-						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c0rank][c1rank]) ||
-								(StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_formula->formula()->inlist[listnum][c1rank][c0rank]))
+					{/*!!
+						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum)) 
+							|| (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
 						{
 							_nlistwin[listnum] += wintemp;
 							_nlisttie[listnum] += tietemp;
 							_nlistlos[listnum] += lostemp;
-						}
+						}*/
 					}
 				}
 			}

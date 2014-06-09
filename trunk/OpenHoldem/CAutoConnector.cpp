@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CAutoConnector.h"
@@ -22,7 +22,6 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorVars.h"
 #include "CIteratorThread.h"
@@ -299,9 +298,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			LoadScraperDLL();
 			p_flags_toolbar->DisableButtonsOnConnect();
 
-			// mark symbol result cache as stale
-			p_formula->MarkCacheStale();
-
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
@@ -461,11 +457,10 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 
 double CAutoConnector::TimeSincelast_failed_attempt_to_connect()
 {
-	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); //???
+	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); 
 	time_t CurrentTime;
 	time(&CurrentTime);
 	double _TimeSincelast_failed_attempt_to_connect = difftime(CurrentTime, last_failed_attempt_to_connect);
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] TimeSincelast_failed_attempt_to_connect %f\n", _TimeSincelast_failed_attempt_to_connect);
 	return _TimeSincelast_failed_attempt_to_connect;
 }
-

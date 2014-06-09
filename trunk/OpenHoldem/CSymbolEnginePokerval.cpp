@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerval.h"
@@ -989,7 +989,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 	return pv;
 }
 
-bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "rankhi", 6) == 0)
 	{
@@ -1303,4 +1303,9 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result)
 	}
 	// Valid symbol
 	return true;
+}
+
+CString CSymbolEnginePokerval::SymbolsProvided() {
+  //!!
+  return " todo";
 }

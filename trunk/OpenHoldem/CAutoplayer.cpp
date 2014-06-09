@@ -1,27 +1,28 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "StdAfx.h"
 #include "CAutoplayer.h"
 
 #include <complex>
+#include "CAutoplayerTrace.h"
 #include "BringKeyboard.h"
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
 #include "CFlagsToolbar.h"
+#include "CFunctionCollection.h"
 #include "CGameState.h"
-#include "CGrammar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
@@ -268,7 +269,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 		{
 			if (p_casino_interface->ClickButton(i))
 			{
-				write_logautoplay(ActionConstantNames(i));
+				p_autoplayer_trace->Print(ActionConstantNames(i));
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}
@@ -358,11 +359,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 
 	if (to_be_enabled_or_not) 
 	{
-		__TRACE
-		// calc hand lists
-		p_formula->CreateHandListMatrices();
-		// one last parse - do not engage if parse fails
-		if (!p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd()))
+		if (!p_function_collection->CorrectlyParsed())
 		{
 			__TRACE
 			// Invalid formula
@@ -424,18 +421,18 @@ bool CAutoplayer::DoAllin(void)
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else  if (p_tablemap->allinmethod() == 2)
 	{
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
 
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else if (p_tablemap->allinmethod() == 3)
 	{
 		success = p_casino_interface->UseSliderForAllin();
-		write_logautoplay(ActionConstantNames(k_prevaction_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_allin));
 	}
 	else
 	{
@@ -536,8 +533,7 @@ bool CAutoplayer::DoPrefold(void)
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
-		write_logautoplay(ActionConstantNames(k_prevaction_fold));
-		p_autoplayer_functions->CalcAutoTrace();
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_fold));
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}

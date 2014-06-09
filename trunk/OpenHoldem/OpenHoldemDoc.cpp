@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 // OpenHoldemDoc.cpp : implementation of the COpenHoldemDoc class
 //
@@ -17,6 +17,8 @@
 #include "stdafx.h"
 #include "CAutoplayer.h"
 #include "CDllExtension.h"
+#include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
@@ -36,7 +38,7 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	p_formula->ClearFormula();
+	p_function_collection->DeleteAll();
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 
@@ -72,17 +74,11 @@ BOOL COpenHoldemDoc::OnNewDocument()
 		return FALSE;
 
 	// Default bot
-	p_formula->SetEmptyDefaultBot();
+	p_function_collection->SetEmptyDefaultBot();
 
 	// Try to unload dll
 	p_dll_extension->UnloadDll();
-
-	// Create hand list matrices
-	p_formula->CreateHandListMatrices();
-
-	// Create parse trees for default formula
-	p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
-	SetModifiedFlag(true);
+	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
 
 	p_dll_extension->LoadDll("");
@@ -97,7 +93,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring()) 
 	{
 		// Store archive in the new OpenHoldem format
-		p_formula->WriteFormula(ar);
+		p_function_collection->Save(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
 	}
@@ -132,36 +128,15 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		}
         // The formula editor gets now handled automatically (Rev. 1425)
 
-		// Read ohf / whf file
-		ReadFormula(ar);
+		// Read ohf file
+        assert(p_formula_parser != NULL);
+		p_formula_parser->ParseFile(ar);
 		SetModifiedFlag(false);
-
-		p_formula->set_formula_name(ar.GetFile()->GetFileName());
 
 		// Try to unload dll
 		p_dll_extension->UnloadDll();
-
-		// Create hand list matrices
-		p_formula->CreateHandListMatrices();
-
-		// Create parse trees for newly loaded formula
-		p_formula->ParseAllFormula(PMainframe()->GetSafeHwnd());
-
-		p_dll_extension->LoadDll("");
 		p_openholdem_title->UpdateTitle();
 	}
-}
-
-void COpenHoldemDoc::ReadFormula(CArchive& ar) 
-{
-	// Clear everything
-	p_formula->ClearFormula();
-
-	// Read *.ohf formula file 
-	p_formula->ReadFormulaFile(ar, true);
-
-	// Check and add missing...
-	p_formula->CheckForDefaultFormulaEntries();
 }
 
 COpenHoldemDoc * COpenHoldemDoc::GetDocument() 

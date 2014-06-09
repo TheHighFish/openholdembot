@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CAUTOPLAYER_FUNCTIONS
 #define INC_CAUTOPLAYER_FUNCTIONS
@@ -22,7 +22,6 @@ public:
 	void Reset();
 	void CalcPrimaryFormulas();
 	void CalcSecondaryFormulas();
-	void CalcAutoTrace();
 	double GetAutoplayerFunctionValue(const int function_to_bn_set);
 #define ENT CSLock lock(m_critsec);
 	void SetAutoplayerFunction(const int function_to_bn_set, const double new_value);

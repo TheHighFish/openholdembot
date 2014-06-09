@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_DEBUG_H
 #define INC_DEBUG_H
@@ -31,7 +31,6 @@ void stop_log();
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
-void write_logautoplay(const char * action);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
 extern FILE *log_fp;

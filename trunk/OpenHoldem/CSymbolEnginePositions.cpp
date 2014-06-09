@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePositions.h"
@@ -173,7 +173,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 	AssertRange(_callposition, k_undefined, k_max_number_of_players);
 }
 
-bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nchairsdealt", 12)==0)
 	{
@@ -240,4 +240,9 @@ bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result)
 		// Symbol of a different symbol-engine
 		return false;
 	}
+}
+
+CString CSymbolEnginePositions::SymbolsProvided() {
+  //!!
+  return " todo";
 }

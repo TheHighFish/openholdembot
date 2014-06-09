@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CCasinoInterface.h"
@@ -17,6 +17,7 @@
 #include "..\CTableMap\CTableMapAccess.h"
 #include "CAutoConnector.h"
 #include "CAutoplayerFunctions.h"
+#include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -180,7 +181,7 @@ bool CCasinoInterface::UseSliderForAllin()
 		return false;
 	}
 
-	write_logautoplay(ActionConstantNames(k_prevaction_jam));
+	p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_jam));
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
 
 	// reset elapsedauto symbol
@@ -389,7 +390,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 			return false;
 		}
 		
-		write_logautoplay(ActionConstantNames(k_prevaction_betsize));
+		p_autoplayer_trace->Print(ActionConstantNames(k_prevaction_betsize));
 
 	}
 	int betround = p_betround_calculator->betround();

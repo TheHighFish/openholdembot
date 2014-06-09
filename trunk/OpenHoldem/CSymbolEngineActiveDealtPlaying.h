@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
 #define INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
@@ -33,7 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	int playersactivebits()		{ return _playersactivebits & playersseatedbits(); }
 	int opponentsactivebits()	{ return (playersactivebits() & ~userchairbit());}
 	int nplayersactive()		{ return bitcount(playersactivebits()); }

@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineRaisersCallers.h"
@@ -339,7 +339,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	_foldbits[BETROUND] = new_foldbits;
 }
 
-bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "nopponents", 10)==0)
 	{
@@ -402,4 +402,9 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 	}
 	// Valid symbol
 		return true;
+}
+
+CString CSymbolEngineRaisersCallers::SymbolsProvided() {
+  //!!
+  return " todo";
 }

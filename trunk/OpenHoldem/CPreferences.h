@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #ifndef INC_CPREFERENCES_H_
 #define INC_CPREFERENCES_H_
@@ -274,6 +274,7 @@ public:
 	const bool  debug_openholdem()  { return prefs_numerical_values[k_prefs_debug_openholdem]; }
 	const bool  debug_popup_blocker()  { return prefs_numerical_values[k_prefs_debug_popup_blocker]; }
 	const bool  debug_scraper_preprocessor() { return prefs_numerical_values[k_prefs_debug_scraper_preprocessor]; }
+    const bool  debug_formula() { return false; } //!!
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }

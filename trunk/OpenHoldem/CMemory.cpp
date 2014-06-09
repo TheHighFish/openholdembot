@@ -1,23 +1,22 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CMemory.h"
 
 #include "CAutoplayer.h"
 #include "CEngineContainer.h"
-#include "CFormula.h"
-#include "CGrammar.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
@@ -88,7 +87,6 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	char		var[k_max_length_of_memory_symbols] = {0};
 	char		value[k_max_length_of_memory_symbols] = {0};
 	double		result = 0.0;
-	CGrammar	gram;
 
 	// Copy without "me_st_"
 	strcpy_s(var, k_max_length_of_memory_symbols, &pquery[6]);
@@ -150,22 +148,10 @@ void CMemory::StoreValue(const char *pquery, CEvalInfoFunction **logCallingFunct
 	}
 	else if (RightValueIsFunction(value))
 	{
-		*e = SUCCESS;
-		result = gram.DoCalcF$symbol(p_formula, value, logCallingFunction, logCallingFunction!=NULL, e);
+		result = p_function_collection->Evaluate(value); //!!!
 
-		if (*e == SUCCESS)
-		{
-			set_var_value(index, result);
-			set_var_name(index, var);
-		}
-		else
-		{
-			*e = ERR_INVALID_EXPR;
-			// And decreasing the var_count again,
-			// otherwise we get a reach the maximum number of symbols soon,
-			// despite we didn't save anything.
-			set_var_count(_var_count - 1);
-		}
+		set_var_value(index, result);
+		set_var_name(index, var);
 	}
 	else
 	{

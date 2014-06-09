@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineUserchair.h"
@@ -46,8 +46,6 @@ void CSymbolEngineUserchair::ResetOnConnection()
 
 void CSymbolEngineUserchair::ResetOnHandreset()
 {
-	// !! TODO: option to reset it on every hand-reset 
-	// (for table-changes in tournaments)
 }
 
 void CSymbolEngineUserchair::ResetOnNewRound()
@@ -99,7 +97,7 @@ void CSymbolEngineUserchair::CalculateUserChair()
 	}
 }
 
-bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
+bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
 	if (memcmp(name, "userchair", 9)==0 && strlen(name)==9)
 	{
@@ -108,4 +106,9 @@ bool CSymbolEngineUserchair::EvaluateSymbol(const char *name, double *result)
 	}
 	// Symbol of a different symbol-engine
 	return false;
+}
+
+CString CSymbolEngineUserchair::SymbolsProvided() {
+  //!!
+  return " todo";
 }

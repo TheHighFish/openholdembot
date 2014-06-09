@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CHeartbeatThread.h"
@@ -22,7 +22,6 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CEngineContainer.h"
-#include "CFormula.h"
 #include "CGameState.h"
 #include "CHandhistory.h"
 #include "CHandresetDetector.h"
@@ -149,9 +148,19 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
 
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-	new_scrape = !NOTHING_CHANGED;
-	p_lazyscraper->DoScrape();
+		if (new_scrape!=NOTHING_CHANGED)
+		{
+			p_engine_container->EvaluateAll();
+			// Shoot replay-frame if desired
+			// a) on every change
+			if (preferences.replay_record_every_change() 
+				// b) on every change when in hand
+				|| (preferences.replay_record_every_change_playing()
+					&& p_scraper_access->UserHasCards()))
+			{
+				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+			}
+		}
 
 	// Necessary to pre-compute some info 
 	// which is needed by the symbol-engines.

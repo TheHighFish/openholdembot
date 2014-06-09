@@ -1,15 +1,15 @@
-//***************************************************************************** 
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//***************************************************************************** 
+//******************************************************************************
 //
 // Purpose:
 //
-//***************************************************************************** 
+//******************************************************************************
 
 // DialogFormulaScintilla.cpp : implementation file
 //
@@ -21,13 +21,14 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
+#include "CDebugTab.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
-#include "CFormula.h"
-#include "CGrammar.h"
+#include "CFunction.h"
+#include "CFunctionCollection.h"
 #include "CHeartbeatThread.h"
-#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
+#include "COHScriptList.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -40,6 +41,7 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
+#include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "../scintilla/include/SciLexer.h"
 #include "../scintilla/include/Scintilla.h"
 #include "WinMgr.h"
@@ -49,137 +51,8 @@
 CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 
 // Keywords got changed from "char* to "CString"
-// as we want to append PokerTracker-keywords dynamically
-CString keywords = // Standard functions
-				  "f$beep f$alli f$betsize f$betpot_2_1  f$betpot_1_1 f $betpot_3_4 "
-				  "f$betpot_2_3 f$betpot_1_2 f$betpot_1_3 f$betpot_1_4 "
-				  "f$rais f$call f$prefold f$rebuy f$delay f$chat "
-				  "f$prwin_number_of_opponents f$test f$sitin f$sitout f$leave f$close "
-				  // General
-				  "site nchairs session version "
-				  // Tablemap
-				  "sitename$ network$ " 
-				  // Formula File
-				  "f$prwin_number_of_iterations"
-				  // Limits
-				  "bblind sblind ante lim isnl ispl isfl sraiprev sraimin sraimax istournament "
-				  // Hand Rank
-				  "handrank169 handrank2652 handrank1326 handrank1000 handrankp "
-				  // Chairs
-				  "userchair dealerchair raischair chair$ chairbit$ "
-				  // Rounds / Positions
-				  "betround betposition dealposition callposition dealpositionrais betpositionrais "
-				  // Probabilities
-				  "prwin prtie prlos prwinnow prlosnow random randomhand randomround "
-				  // Chip Amounts
-				  "balance balance0 balance1 balance2 balance3 balance4 balance5 balance6 balance7 balance8 balance9 "
-				  "stack0 stack1 stack2 stack3 stack4 stack5 stack6 stack7 stack8 stack9 "
-				  "currentbet currentbet0 currentbet1 currentbet2 currentbet3 currentbet4 currentbet5 currentbet6 currentbet7 currentbet8 currentbet9 "
-				  "call bet bet1 bet2 bet3 bet4 pot potcommon potplayer callshort raisshort "
-				  // Number of Bets	
-				  "nbetstocall nbetstorais ncurrentbets ncallbets nraisbets "
-				  // List Tests
-				  "pokerval "
-				  // Poker Values
-				  "pokervalplayer pokervalcommon pcbits npcbits "
-				  // Poker Value Constants
-				  "hicard onepair twopair threeofakind straight flush fullhouse fourofakind straightflush royalflush fiveofakind "
-				  // Hand Tests
-				  "ishandup ishandupcommon ishicard isonepair istwopair isthreeofakind isstraight "
-				  "isflush isfullhouse isfourofakind isstraightflush isroyalflush "
-				  // Pocket Tests
-				  "ispair issuited isconnector "
-				  // Pocket / Common Tests
-				  "ishipair islopair ismidpair ishistraight ishiflush "
-				  // Players, Opponents
-				  "nopponents nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersblind "
-				  "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsblind "
-				  "nopponentschecking nopponentscalling nopponentsraising nopponentstruelyraising nopponentsbetting nopponentsfolded "
-				  "nplayerscallshort nchairsdealtright nchairsdealtleft playersseatedbits playersactivebits "
-				  "playersdealtbits playersplayingbits playersblindbits opponentsseatedbits opponentsactivebits "
-				  "opponentsdealtbits opponentsplayingbits opponentsblindbits "
-				  // Flags
-				  "fmax f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 f18 f19 flagbits"
-				  // Common Cards
-				  "ncommoncardsknown "
-				  // (Un)known Cards
-				  "nouts ncardsknown ncardsunknown ncardsbetter "
-				  // nhands
-				  "nhands nhandshi nhandslo nhandsti " 
-				  // Flushes / Straights / Sets
-				  "nsuited nsuitedcommon tsuit tsuitcommon nranked nrankedcommon trank trankcommon nstraight nstraightcommon "
-				  "nstraightfill nstraightfillcommon nstraightflush nstraightflushcommon nstraightflushfill nstraightflushfillcommon "
-				  // Rank Bits
-				  "rankbits rankbitscommon rankbitsplayer rankbitspoker srankbits "
-				  "srankbitscommon srankbitsplayer srankbitspoker "
-				  // Rank Hi
-				  "rankhi rankhicommon rankhiplayer rankhipoker srankhi srankhicommon srankhiplayer srankhipoker "
-				  // Rank Lo
-				  "ranklo ranklocommon rankloplayer ranklopoker sranklo sranklocommon srankloplayer sranklopoker "
-				  // Time
-				  "elapsed elapsedhand elapsedauto elapsedtoday "
-				  // Autoplayer
-				  "myturnbits ismyturn issittingin issittingout "
-				  "isautopost isfinalanswer "
-				  // History
-				  "nplayersround1 nplayersround2 nplayersround3 nplayersround4 "
-				  "nplayersround prevaction didchec didcall didrais didswag nbetsround1 nbetsround2 nbetsround3 "
-				  "nbetsround4 nbetsround didchecround1 didchecround2 didchecround3 didchecround4 "
-				  "didcallround1 didcallround2 didcallround3 didcallround4 didraisround1 didraisround2 "
-				  "didraisround3 didraisround4 didswaground1 didswaground2 didswaground3 didswaground4 "
-				  // Versus
-				  "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
-				  "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi vs$prwinti vs$prtieti vs$prlosti "
-				  "vs$prwinlo vs$prtielo vs$prloslo "
-                  "vs$prwinhinow vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow vs$prlostinow "
-				  "vs$prwinlonow vs$prtielonow vs$prloslonow vs$nhandshinow vs$nhandstinow vs$nhandslonow "
-				  // History	
-				  "hi_"
-				  //Table statistics 
-				  "floppct turnpct riverpct avgbetspf tablepfr maxbalance handsplayed "
-				  // Action
-				  "lastraised1 lastraised2 lastraised3 lastraised4 "
-				  "raisbits1 raisbits2 raisbits3 raisbits4 "
-				  "callbits1 callbits2 callbits3 callbits4 "
-				  "foldbits1 foldbits2 foldbits3 foldbits4 "
-				  "ac_agchair_after ac_preflop_pos ac_prefloprais_pos "
-				  "ac_postflop_pos ac_first_into_pot "
-				  "ac_betpos0 ac_betpos1 ac_betpos2 ac_betpos3 ac_betpos4 ac_betpos5 ac_betpos6 ac_betpos7 ac_betpos8 ac_betpos9 "
-				  "ac_dealpos0 ac_dealpos1 ac_dealpos2 ac_dealpos3 ac_dealpos4 ac_dealpos5 ac_dealpos6 ac_dealpos7 ac_dealpos8 ac_dealpos9 "
-				  // Logging
-				  "log$ "
-				  // ICM calculator
-				  "icm icm_fold icm_callwin icm_calllose icm_calltie "
-				  "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
-				  "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
-				  "icm_allilose0 icm_allilose1 icm_allilose2 icm_allilose3 icm_allilose4 "
-				  "icm_allilose5 icm_allilose6 icm_allilose7 icm_allilose8 icm_allilose9 "
-				  "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 icm_alliwinUTG2 icm_alliwinUTG3 "
-				  "icm_alliwinUTG4 icm_alliwinUTG5 icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
-				  "icm_allitieSB icm_allitieBB icm_allitieUTG icm_allitieUTG1 icm_allitieUTG2 "
-				  "icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 icm_allitieUTG6 icm_allitieCO "
-				  "icm_allitieD icm_alliloseSB icm_alliloseBB icm_alliloseUTG icm_alliloseUTG1 "
-				  "icm_alliloseUTG2 icm_alliloseUTG3 icm_alliloseUTG4 icm_alliloseUTG5 icm_alliloseUTG6 "
-				  "icm_alliloseCO icm_alliloseD "
-				  // Hand multiplexor
-				  " f$$ "
-				  // Memory Symbols
-				  "me_st_ me_re_ "
-				  // Hand and board expressions
-				  "hand$ board$ "
-				  // Card Symbols
-				  "$$pc0 $$pc1 $$pr0 $$pr1 $$ps0 $$ps1 "
-				  "$$cc0 $$cc1 $$cc2 $$cc3 $$cc4 "
-				  "$$cr0 $$cr1 $$cr2 $$cr3 $$cr4 "
-				  "$$cs0 $$cs1 $$cs2 $$cs3 $$cs4 "
-				  // Undocumented
-				  "balance_rank0 balance_rank1 balance_rank2 balance_rank3 balance_rank4 balance_rank5 "
-				  "balance_rank6 balance_rank7 balance_rank8 balance_rank9 "
-				  // Messagebox
-				  "msgbox$ ";
-				  // Poker Tracker ring symbols and
-				  // Poker Tracker ring symbols for the "raischair"
-				  // get appended dynamically later
+// as we want to create this list dynamically
+CString keywords;
 
 CString OpenPPL_keywords = "Custom Preflop Flop Turn River "
 	"When Allin RaiseMax BetMax RaisePot BetPot RaiseHalfPot BetHalfPot "
@@ -291,10 +164,6 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_standard_functions[4].Add("f$test");
 	m_standard_functions[4].Add("f$debug");
 
-	// Copy current doc formula into working set
-	m_wrk_formula.ClearFormula();
-	m_wrk_formula.CopyFormulaFrom(p_formula);
-
 	m_current_edit = "";
 	m_dirty = false;
 
@@ -330,15 +199,12 @@ void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SYMBOL_TREE, m_SymbolTree);
 	DDX_Control(pDX, IDCANCEL, m_FormulaCancel);
 	DDX_Control(pDX, IDC_SCINTILLA_APPLY, m_FormulaApply);
-	DDX_Control(pDX, IDOK, m_FormulaOK);
 }
 
 BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	// Menu items
 	ON_COMMAND(ID_FORMULA_FILE_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
-	ON_COMMAND(ID_FORMULA_FILE_APPLYANDSAVE, &CDlgFormulaScintilla::OnBnClickedApplySave)
-	ON_COMMAND(ID_FORMULA_FILE_OK, &CDlgFormulaScintilla::OnBnClickedOk)
-	ON_COMMAND(ID_FORMULA_FILE_CANCEL, &CDlgFormulaScintilla::OnBnClickedCancel)
+	ON_COMMAND(ID_FORMULA_FILE_CANCEL, &CDlgFormulaScintilla::OnCancel)
 	ON_COMMAND(ID_FORMULA_EDIT_NEW, &CDlgFormulaScintilla::OnNew)
 	ON_COMMAND(ID_FORMULA_EDIT_RENAME, &CDlgFormulaScintilla::OnRename)
 	ON_COMMAND(ID_FORMULA_EDIT_DELETE, &CDlgFormulaScintilla::OnDelete)
@@ -371,10 +237,9 @@ BEGIN_MESSAGE_MAP(CDlgFormulaScintilla, CDialog)
 	ON_COMMAND(ID_FORMULA_TOOLBAR_HANDLIST, &CDlgFormulaScintilla::OnHandList)
 	
 	// Buttons
-	ON_BN_CLICKED(IDOK, &CDlgFormulaScintilla::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_SCINTILLA_APPLY, &CDlgFormulaScintilla::OnBnClickedApply)
 	ON_BN_CLICKED(IDC_SCINTILLA_CALC, &CDlgFormulaScintilla::OnBnClickedCalc)
-	ON_BN_CLICKED(IDCANCEL, &CDlgFormulaScintilla::OnBnClickedCancel)
+	ON_BN_CLICKED(IDCANCEL, &CDlgFormulaScintilla::OnCancel)
 
 	ON_REGISTERED_MESSAGE( WM_FINDREPLACE, OnFindReplace )
 
@@ -436,77 +301,27 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 	return pWnd;
 }
 
-void CDlgFormulaScintilla::ConstructKeywordsForPokerTracker(CString &keys)
-{
-	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
-	{
-		CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
-		// Add symbol for raise-chair
-		CString new_symbol = "pt_r_" + basic_symbol_name;
-		keys.AppendFormat(" %s", new_symbol);
-	
-		// Add symbols for all chairs, indexed by trailing numbers
-		for (int j=0; j<k_max_number_of_players; j++)
-		{
-			new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
-			keys.AppendFormat(" %s", new_symbol);
-		}
-	}
+void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) {
+  CString keywords;
+  CString filter;
+  m_SearchEdit.GetWindowText(filter);
+  if (filter.IsEmpty()) {
+    assert(p_engine_container != NULL);
+    keywords = p_engine_container->SymbolsProvided();
+	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keywords.GetString());
+  } else {
+	pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) "");
+	pWnd->SendMessage(SCI_SETKEYWORDS, 3, (LPARAM) filter.GetString());
+  }
+  pWnd->Refresh();
 }
 
-void CDlgFormulaScintilla::ConstructKeywords(CString &keys)
-{
-	keys = keywords;
-	int i = 0;
-	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) {
-		keys.AppendFormat(" %s", m_wrk_formula.formula()->mFunction[i].func);
-	}
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) {
-		keys.AppendFormat(" is%s", m_wrk_formula.formula()->mHandList[i].list);
-		if (m_wrk_formula.formula()->mHandList[i].list.GetLength() > 4) {
-			keys.AppendFormat(" vs$%s$prlos", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prwin", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-			keys.AppendFormat(" vs$%s$prtie", m_wrk_formula.formula()->mHandList[i].list.GetString()+4);
-		}
-	}
-	ConstructKeywordsForPokerTracker(keys);
-	for (int i=0; i<k_number_of_different_cardranks; i++)
-	{
-		for (int j=0; j<k_number_of_different_cardranks;j ++)
-		{
-			keys.AppendFormat(" $%c%c", k_card_chars[i], k_card_chars[j]);
-			if (i!=j) {
-				keys.AppendFormat(" $%c%cs", k_card_chars[i], k_card_chars[j]);
-				keys.AppendFormat(" $%c%co", k_card_chars[i], k_card_chars[j]);
-			}
-		}
-	}
-}
-
-void CDlgFormulaScintilla::UpdateScintillaKeywords(CScintillaWnd *pWnd) 
-{
-	CString keys;
-	CString filter;
-	m_SearchEdit.GetWindowText(filter);
-	if (filter.IsEmpty()) {
-		ConstructKeywords(keys);
-		pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
-	} else {
-		pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) "");
-		pWnd->SendMessage(SCI_SETKEYWORDS, 3, (LPARAM) filter.GetString());
-	}
-
-	pWnd->Refresh();
-}
-
-void CDlgFormulaScintilla::UpdateAllScintillaKeywords() 
-{
-	CString keys;
-	ConstructKeywords(keys);
-	for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++) {
-		m_ScinArray[iScint]._pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keys.GetString());
-		m_ScinArray[iScint]._pWnd->Refresh();
-	}
+void CDlgFormulaScintilla::UpdateAllScintillaKeywords() {
+  CString keywords = p_engine_container->SymbolsProvided();
+  for (int iScint=0; iScint<m_ScinArray.GetSize(); iScint++) {
+    m_ScinArray[iScint]._pWnd->SendMessage(SCI_SETKEYWORDS, 0, (LPARAM) keywords.GetString());
+    m_ScinArray[iScint]._pWnd->Refresh();
+  }
 }
 
 void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) 
@@ -590,10 +405,6 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.formula_x(), max_x), min(preferences.formula_y(), max_y),
 				   preferences.formula_dx(), preferences.formula_dy(), SWP_NOCOPYBITS);
-
-	// Debug logging preferences
-	m_wrote_fdebug_header = false;
-
 	// Always sort UDFs
 	SortUdfTree();
 
@@ -687,74 +498,97 @@ void CDlgFormulaScintilla::GroupUDFs()
 		}
 		hUDFChildItem = hNextItem;
 	}
-
 	RemoveSingleItemGroups();
 }
 
-void CDlgFormulaScintilla::ConditionallyAddFunction(const CString &name, const CString &content, const CString &filter, HTREEITEM hParent)
-{
-	HTREEITEM hItem;
-	if (filter.IsEmpty() || name.Find(filter) >= 0 || content.Find(filter) >= 0)
-	{
-		hItem = m_FormulaTree.InsertItem(name, hParent);
-		m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(name));
-	}
+void CDlgFormulaScintilla::AddFunctionToTree(HTREEITEM hParent, CString name) {
+  assert(name != "");
+  HTREEITEM hItem = m_FormulaTree.InsertItem(name, hParent);
+  m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(name));
 }
 
-void CDlgFormulaScintilla::PopulateFormulaTree()
-{
-	m_FormulaTree.DeleteAllItems();
-
-	CString filter;
-	m_SearchEdit.GetWindowText(filter);
-
-	// Setup the tree
-	HTREEITEM	parent = NULL, hItem;
-
-	for (int j=0; j<m_standard_headings.GetSize(); j++)
-	{
-		if (m_standard_headings[j].IsEmpty()) {
-			parent = NULL;
-		} else {
-			parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
-			m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-		}
-		for (int i=0; i<m_standard_functions[j].GetSize(); i++)
-		{
-			ConditionallyAddFunction(m_standard_functions[j].GetAt(i), m_wrk_formula.GetFunctionText(m_standard_functions[j].GetAt(i)), filter, parent);
-		}
-	}
-
-	parent = m_FormulaTree.InsertItem("Hand Lists");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+void CDlgFormulaScintilla::AddStandardFunctionsToTree(
+    HTREEITEM hParent, 
+    int first, 
+    int last) {
+  assert(first >= 0);
+  assert(last < k_number_of_standard_functions);
+  for (int i=first; i<=last; ++i) {
+    AddFunctionToTree(hParent, k_standard_function_names[i]);
+  }
+}
 	
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
-	{
-		hItem = m_FormulaTree.InsertItem(m_wrk_formula.formula()->mHandList[i].list, parent);
-		m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(m_wrk_formula.formula()->mHandList[i].list));
-	}
+void CDlgFormulaScintilla::PopulateFormulaTree() {
+  m_FormulaTree.DeleteAllItems();
 
-	hUDFItem = parent = m_FormulaTree.InsertItem("User Defined Functions");
-	m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+  CString filter;
+  m_SearchEdit.GetWindowText(filter);
+  // Setup the tree
+  HTREEITEM	parent = NULL, hItem;
+  COHScriptObject *p_OH_script_object = NULL;
 
-	for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-	{
-		bool bIsStandardFunction = false;
-		for (int k=0;k<4;k++)
-		{
-			for (int j=0;j<m_standard_functions[k].GetSize(); j++)
-			{
-				if (!m_standard_functions[k].GetAt(j).Compare(m_wrk_formula.formula()->mFunction[i].func)) {
-					bIsStandardFunction = true;
-					break;
-				}
-			}
-		}
-		if (!bIsStandardFunction)
-			ConditionallyAddFunction(m_wrk_formula.formula()->mFunction[i].func, m_wrk_formula.formula()->mFunction[i].func_text, filter, hUDFItem);
-	}
+  for (int j=0; j<m_standard_headings.GetSize(); j++) {
+    if (m_standard_headings[j].IsEmpty()) {
+	    parent = NULL;
+    } else {
+	    parent = m_FormulaTree.InsertItem(m_standard_headings[j]);
+	    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+    }
+    switch(j) {
+      case 0: 
+        // Autoplayer functions
+        AddStandardFunctionsToTree(parent, 
+          k_autoplayer_function_beep, k_autoplayer_function_fold);
+        break;
+      case 1:
+        // Standard functions, including "notes" and "DLL"
+        AddFunctionToTree(parent, "notes");
+        AddFunctionToTree(parent, "DLL");
+        AddStandardFunctionsToTree(parent, 
+          k_standard_function_prefold, k_standard_function_delay);
+        break;
+      case 2:
+        // Ini functions
+        AddStandardFunctionsToTree(parent,
+          k_init_on_startup, k_init_on_heartbeat);
+        break;
+      case 3:
+        // PrWin functions
+        AddStandardFunctionsToTree(parent,
+          k_prwin_number_of_opponents, k_prwin_wontplay);
+        break;
+      case 4:
+        // Debug functions
+        AddFunctionToTree(parent, "f$debug");
+        AddFunctionToTree(parent, "f$test");
+    }
+  }
+  _subtree_handlists = m_FormulaTree.InsertItem("Hand Lists");
+  parent = _subtree_handlists;
+  m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
-	GroupUDFs();
+  p_OH_script_object = p_function_collection->GetFirst();
+  while (p_OH_script_object != NULL) {
+    if (p_OH_script_object->IsList())
+    {
+      hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
+      m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
+        p_OH_script_object->name()));
+    }
+    p_OH_script_object = p_function_collection->GetNext();
+  }
+ 
+  _subtree_user_defined_functions = m_FormulaTree.InsertItem("User Defined Functions");
+  hUDFItem = parent = _subtree_user_defined_functions;
+  p_OH_script_object = p_function_collection->GetFirst();
+  while (p_OH_script_object != NULL) {
+    m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
+    if (p_OH_script_object->IsUserDefinedFunction()) {
+      AddFunctionToTree(parent, p_OH_script_object->name());
+    }
+    p_OH_script_object = p_function_collection->GetNext();
+  }
+  GroupUDFs();
 }
 
 BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg)
@@ -809,9 +643,6 @@ void CDlgFormulaScintilla::ResizeDialogForControlBars(void)
 void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-
-	LastChangeToFormula(&m_wrk_formula);
-
 	*pResult = 0;
 }
 
@@ -956,154 +787,49 @@ void CDlgFormulaScintilla::SetExtendedWindowTitle(CString additional_information
 	SetWindowText(new_title);
 }
 
-void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) 
-{
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	CString			s = "";
-	int				N = 0, i = 0;
-	CMenu			*edit_menu = this->GetMenu()->GetSubMenu(1);
+void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pResult) {
+  LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
-	ok_to_update_debug = false;
+  CMenu			*edit_menu = this->GetMenu()->GetSubMenu(1);
 
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  ok_to_update_debug = false;
 
-	StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  StopAutoButton();
 
-	// A root item was selected or a UDF group item
-	if ((m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL && s != "notes") || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem()))
-	{
-		if (m_pActiveScinCtrl)
-		{
-			m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-			m_pActiveScinCtrl->EnableWindow(false);
-		}
-		m_pActiveScinCtrl = &m_EmptyScinCtrl;
-		m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-		m_pActiveScinCtrl->EnableWindow(false);
-	}
+  if ((m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL && s != "notes") 
+      || m_FormulaTree.ItemHasChildren(m_FormulaTree.GetSelectedItem())) {
+    // A root item was selected or a UDF group item
+    FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
+  } else {
+    // A child item was selected
+	if ((s == "notes")
+        || (s == "dll")
+        || (s.Left(2) == "f$")
+        || (s.Left(4) == "list")) {
+      SetExtendedWindowTitle(s);
+      COHScriptObject *p_function_or_list = p_function_collection->LookUp(s);
+      if (p_function_or_list != NULL) {
+        CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
+        if (!pCurScin) 
+        {
+          pCurScin = SetupScintilla(NULL, p_function_or_list->name()); //???
+          m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
 
-	// A child item was selected
-	else 
-	{
-		if (s == "notes" || s == "dll") 
-		{
-			SetExtendedWindowTitle(s);
-			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == s) 
-				{
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mFunction[i].func.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mFunction[i].func_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mFunction[i].func;
-					i=N+1;
-				}
-			}
-		}
-		else if (memcmp(s.GetString(), "f$", 2) == 0) 
-		{
-			SetExtendedWindowTitle(s);
-			N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == s) 
-				{
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mFunction[i].func.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mFunction[i].func_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mFunction[i].func;
-					i=N+1;
-				}
-			}
-		}
-		else if (memcmp(s.GetString(), "list", 4) == 0) 
-		{
-			// Find proper list and display it
-			N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-			for (int i=0; i<N; i++) {
-				if (m_wrk_formula.formula()->mHandList[i].list == s) 
-				{
-					SetExtendedWindowTitle(s);
-
-					CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-					if (!pCurScin) 
-					{
-						pCurScin = SetupScintilla(NULL, m_wrk_formula.formula()->mHandList[i].list.GetString());
-						m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
-
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-						pCurScin->SetText(m_wrk_formula.formula()->mHandList[i].list_text.GetString());
-						pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
-						pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
-					}
-
-					ASSERT(pCurScin != NULL);
-					if (m_pActiveScinCtrl) 
-					{
-						m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-						m_pActiveScinCtrl->EnableWindow(false);
-					}
-					m_pActiveScinCtrl = pCurScin;
-					m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-					m_pActiveScinCtrl->EnableWindow(true);
-					SelectFunctionTab(pCurScin);
-
-					m_current_edit = m_wrk_formula.formula()->mHandList[i].list;
-					i=N+1;
-				}
-			}
-		}
-	}
-
-	if (s == "f$debug") 
-	{
-		InitDebugArray();
-	}
-
-	HandleEnables(true);
-
-	*pResult = 0;
+          pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+          pCurScin->SetText(p_function_or_list->function_text());
+          pCurScin->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+          pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
+        }
+        ASSERT(pCurScin != NULL);
+                FormerShowEnableHideCodeClone(pCurScin);
+        SelectFunctionTab(pCurScin);
+        m_current_edit = p_function_or_list->name();
+	  } 
+    }
+  }
+  HandleEnables(true);
+  *pResult = 0;
 }
 
 HTREEITEM CDlgFormulaScintilla::FindUDFGroupItem(const char *groupName)
@@ -1169,419 +895,167 @@ HTREEITEM CDlgFormulaScintilla::MoveTreeItem(HTREEITEM hItem, HTREEITEM hNewPare
 	return hMovedItem;
 }
 
-void CDlgFormulaScintilla::OnNew() 
-{
-	CDlgNew newdlg;
-	SFunction Func;
-	SHandList List;
-	CString	s = "";
-	HTREEITEM	p = NULL, newhtitem = NULL;
+void CDlgFormulaScintilla::OnNew() {
+  CDlgNew newdlg;
+  HTREEITEM	p = NULL, newhtitem = NULL;
 
-	StopAutoButton();
+  StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  if (s == "Hand Lists" 
+	  || (s.Find("list") != k_not_found && s.Left(2) != "f$")){
+    newdlg.is_function = false;
+  } else {  
+    newdlg.is_function = true;
+  }
+  if (newdlg.DoModal() != IDOK) return;
+  if (p_function_collection->Exists(newdlg.CSnewname)) {
+	OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
+	return;
+  }
 
-	if (s == "Hand Lists" 
-		|| (s.Find("list") != k_not_found && s.Find("f$") == k_not_found))
-	{
-		newdlg.type = 0;
-	}
-	else
-	{
-		newdlg.type = 1;
-	}
+  if (newdlg.is_function == false) {
+    // Create new list
+    COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, 
+      NULL, kNoAbsoluteLineNumberExists);
+    // Add it to working set CArray
+    p_function_collection->Add((COHScriptObject*)p_new_list);
+    // Add to tree
+    p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
+    if (p == NULL) { 
+      // Selected item is a parent item  
+      newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, m_FormulaTree.GetSelectedItem());
+    } else {
+      newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
+    }
+  } else {
+    // Create new function
+    CFunction *p_new_function = new CFunction(&newdlg.CSnewname, 
+      NULL, kNoAbsoluteLineNumberExists);
+    // Add it to working set CArray
+    p_function_collection->Add((COHScriptObject*)p_new_function);
+    // Add to tree
+    HTREEITEM hNewParent = hUDFItem;
 
-	if (newdlg.DoModal() == IDOK) 
-	{
-		if (newdlg.type == 0) 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
-			{
-				if (m_wrk_formula.formula()->mHandList[i].list == newdlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot proceed as list already exists", "Error", 0);
-				return;
-			}
+    // !! Candidate for refactoring, probably duplicate functionality
+    // !! Formula grouping
+    CString tempString;
+    CString groupName;
+    GetGroupName(newdlg.CSnewname, groupName);
+    if (!groupName.IsEmpty()) 
+    {
+	    // Does a group already exist?
+	    HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
+	    if (hExistingGroup) 
+		    hNewParent = hExistingGroup;
+	    else 
+	    {
+		    // If a group does not exist, is there another UDF to group together?
+		    HTREEITEM matchingItem = FindUDFStartingItem(groupName);
+		    if (matchingItem) 
+		    {
+			    hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
+			    MoveTreeItem(matchingItem, hNewParent, NULL, false);
+		    }
+	    }
+    }
+    newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
+    SortUdfTree();
+  }
 
-			List.list = newdlg.CSnewname;
-			List.list_text = "";
+  UpdateAllScintillaKeywords();
 
-			// Add it to working set CArray
-			m_wrk_formula.set_list_add(List);
-
-			// Add to tree
-			p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
-			if (p == NULL) // Selected item is a parent item
-			{  
-				newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, m_FormulaTree.GetSelectedItem());
-			}
-			else 
-			{
-				newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
-			}
-		}
-		else 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == newdlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot proceed as this function already exists", "Error", 0);
-				return;
-			}
-
-			Func.func = newdlg.CSnewname;
-			Func.func_text = "";
-			Func.fresh = false;
-
-			// Add it to working set CArray
-			m_wrk_formula.set_func_add(Func);
-
-			// Add to tree
-			HTREEITEM hNewParent = hUDFItem;
-
-			CString tempString;
-			CString groupName;
-			GetGroupName(newdlg.CSnewname, groupName);
-			if (!groupName.IsEmpty()) 
-			{
-				// Does a group already exist?
-				HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-				if (hExistingGroup) 
-					hNewParent = hExistingGroup;
-				else 
-				{
-					// If a group does not exist, is there another UDF to group together?
-					HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-					if (matchingItem) 
-					{
-						hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-						MoveTreeItem(matchingItem, hNewParent, NULL, false);
-					}
-				}
-			}
-			newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, hNewParent);
-			SortUdfTree();
-		}
-
-		UpdateAllScintillaKeywords();
-
-		// Select newly inserted item
-		m_FormulaTree.SelectItem(newhtitem);
-		m_FormulaTree.SetFocus();
-		m_dirty = true;
-		HandleEnables(true);
-	}
+  // Select newly inserted item
+  m_FormulaTree.SelectItem(newhtitem);
+  m_FormulaTree.SetFocus();
+  m_dirty = true;
+  HandleEnables(true);
 }
 
-void CDlgFormulaScintilla::OnRename() 
-{
-	CDlgRename rendlg;
-	CString	s = "";
-	char str[MAX_WINDOW_TITLE] = {0};
-	int N = 0, i = 0;
-	bool didRename = false;
+void CDlgFormulaScintilla::OnRename() {
+  CDlgRename rendlg;
+  char str[MAX_WINDOW_TITLE] = {0};
 
-	StopAutoButton();
+  StopAutoButton();
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
+  rendlg.CSoldname = s;
+  if (rendlg.DoModal() != IDOK) return;
+  if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
 
-	s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-	strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
+  // Rename the tab
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == s) {
+      m_ScinArray.GetAt(i)._name = s;
+      break;
+    }
+  }
+    
+  UpdateAllScintillaKeywords();
+  HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
+  m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
+    
+  PopulateFormulaTree();
+  SortUdfTree();
+  m_FormulaTree.Expand(_subtree_user_defined_functions, TVE_EXPAND); 
+  SetWindowText("Formula - " + rendlg.CSnewname);
 
-	rendlg.CSoldname = s;
+  //m_FormulaTree.UpdateDialogControls(); 
+  m_FormulaTree.UpdateWindow();
 
-	if (rendlg.DoModal() == IDOK) 
-	{
-		bool bRenameUDF = false;
-		// Renaming a list
-		if (memcmp(str, "list", 4) == 0) 
-		{
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++)
-			{
-				if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot rename to a list that already exists", "Error", 0);
-				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} 
-			else 
-			{
-				// Find proper list
-				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (int i=0; i<N; i++) 
-				{
-					if (m_wrk_formula.formula()->mHandList[i].list == rendlg.CSoldname) 
-					{
-						// Update it in the CArray working set
-						m_wrk_formula.set_list_list(i, rendlg.CSnewname);
-						didRename = true;
-						break;
-					}
-				}
-			}
-		}
-
-		// Renaming a UDF
-		else if (memcmp(str, "f$", 2) == 0) 
-		{
-			bRenameUDF = true;
-
-			bool bAlreadyExists = false;
-			for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-			{
-				if (m_wrk_formula.formula()->mFunction[i].func == rendlg.CSnewname) 
-				{
-					bAlreadyExists = true;
-					break;
-				}
-			}
-
-			if (bAlreadyExists) 
-			{
-				OH_MessageBox_Interactive("Cannot rename to a formula that already exists", "Error", 0);
-				PostMessage(WM_COMMAND, ID_FORMULA_EDIT_RENAME);
-			} 
-			else 
-			{
-				// Find proper UDF and display it
-				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (int i=0; i<N; i++) 
-				{
-					if (m_wrk_formula.formula()->mFunction[i].func == s) 
-					{
-						// Update it in the CArray working set
-						m_wrk_formula.set_func_func(i, rendlg.CSnewname);
-						m_wrk_formula.set_func_fresh(i, false);
-
-						didRename = true;
-						break;
-					}
-				}
-			}
-		}
-		if (didRename) 
-		{
-			UpdateAllScintillaKeywords();
-			HTREEITEM hSelectedItem = m_FormulaTree.GetSelectedItem();
-			if (!bRenameUDF)
-				m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-			else 
-			{
-				CString tempString, groupName = rendlg.CSnewname;
-				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hSelectedItem);
-				HTREEITEM hNewParent = hUDFItem;
-				CString parentName = m_FormulaTree.GetItemText(oldParentItem);
-				if (groupName.Find("f$") == 0) 
-				{
-					int index = groupName.Find("_");
-					if (index > 0) 
-					{
-						groupName = groupName.Mid(2, index-2);
-						if (parentName.Compare(groupName)) 
-						{
-							// Does a group already exist?
-							HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-							if (hExistingGroup)
-								hNewParent = hExistingGroup;
-							else 
-							{
-								// If a group does not exist, is there another UDF to group together?
-								HTREEITEM matchingItem = FindUDFStartingItem(groupName);
-								if (matchingItem) 
-								{
-									hNewParent = m_FormulaTree.InsertItem(groupName, hUDFItem);
-									MoveTreeItem(matchingItem, hNewParent, NULL, false);
-								}
-							}
-						}
-					}
-				}
-				if (oldParentItem != hNewParent) 
-				{
-					MoveTreeItem(hSelectedItem, hNewParent, rendlg.CSnewname, true);
-					if (oldParentItem != hUDFItem) 
-					{
-						HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-						if (hOldSiblingItem != NULL && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
-						{
-							MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, false);
-							m_FormulaTree.DeleteItem(oldParentItem);
-						}
-					}
-				} else
-					m_FormulaTree.SetItemText(hSelectedItem, rendlg.CSnewname);
-				if (memcmp(str, "f$", 2) == 0)
-					SortUdfTree();
-			}
-			SetWindowText("Formula - " + rendlg.CSnewname);
-			m_FormulaTree.SetFocus();
-			m_dirty = true;
-			HandleEnables(true);
-		}
-	}
+  m_FormulaTree.SelectItem(hSelectedItem);
+  m_FormulaTree.SetFocus();
+  m_dirty = true;
+  HandleEnables(true);
 }
 
-void CDlgFormulaScintilla::OnDelete() 
-{
-	/*
-	HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
-	CString s = m_FormulaTree.GetItemText(hItem);
-	CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
 
-	StopAutoButton();
+void CDlgFormulaScintilla::DeleteFormerParentItemIfEmpty(HTREEITEM sibbling) {
+  HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(sibbling);
+  HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
+  if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) {
+    if ((oldParentItem != hUDFItem) && (oldParentItem != _subtree_handlists)) {
+      // Delete empty sub-groups, but never delete the main groups 
+      // for UDFs and hand lists
+      m_FormulaTree.DeleteItem(oldParentItem); 
+    }
+  }
+}
 
-	if (IDYES != OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", "Confirm Delete", MB_YESNO | MB_ICONWARNING)) 
-	{
-		HandleEnables(true);
-		return;
-	}
-
-	bool bDeleted = false;
-	// Delete a UDF
-	if (s.Find("f$") != k_not_found) 
-	{
-		for (int i=0; i<m_wrk_formula.formula()->mFunction.GetSize(); i++) 
-		{
-			if (m_wrk_formula.formula()->mFunction[i].func.Compare(s) != k_CString_identical) 
-			{
-				bDeleted = true;
-				m_wrk_formula.set_func_remove(i);
-
-				HTREEITEM oldParentItem = m_FormulaTree.GetParentItem(hItem);
-
-				HTREEITEM hOldSiblingItem = m_FormulaTree.GetChildItem(oldParentItem);
-				if (hOldSiblingItem && m_FormulaTree.GetNextSiblingItem(hOldSiblingItem) == NULL) 
-				{
-					MoveTreeItem(hOldSiblingItem, hUDFItem, NULL, true);
-					m_FormulaTree.DeleteItem(oldParentItem);
-				}
-				break;
-			}
-		}
-	}
-
-	// Delete a list
-	else if (s.Find("list") != k_not_found) 
-	{
-		for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize(); i++) 
-		{			
-			if (m_wrk_formula.formula()->mHandList[i].list.Compare(s) != k_CString_identical) 
-			{
-				bDeleted = true;
-				m_wrk_formula.set_list_remove(i);
-
-				m_FormulaTree.DeleteItem(hItem);
-				break;
-			}
-		}
-	}
-	if (bDeleted) 
-	{
-		m_dirty = true;
-		m_FormulaTree.SetFocus();
-		SetWindowText("Formula - ");
-		if (m_pActiveScinCtrl)
-		{
-			m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-			m_pActiveScinCtrl->EnableWindow(false);
-		}
-		m_pActiveScinCtrl = &m_EmptyScinCtrl;
-		m_pActiveScinCtrl->ShowWindow(SW_SHOW);
-		m_pActiveScinCtrl->EnableWindow(false);
-	}
-
-	UpdateAllScintillaKeywords();
-
-	HandleEnables(true);
-	*/
-
-	int ret, N;
-		HTREEITEM h = m_FormulaTree.GetSelectedItem();
-		CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-		CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
-
-		StopAutoButton();
-
-		ret = OH_MessageBox_Interactive("REALLY delete \"" + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) + "\" ?", 
-			"Confirm Delete", MB_YESNO | MB_ICONWARNING);
-
-		if (ret == IDYES) {
-
-			// Delete a UDF
-			if (s.Find("f$") != -1) {
-				N = (int) m_wrk_formula.formula()->mFunction.GetSize();
-				for (int i=0; i<N; i++) {
-					if (m_wrk_formula.formula()->mFunction[i].func == s) 
-					{
-						// Update the dialog
-						//m_FormulaTree.SelectItem(NULL);
-						m_FormulaTree.SetFocus();
-						SetWindowText("Formula - ");
-						m_pActiveScinCtrl->SetText("");
-						m_pActiveScinCtrl->EnableWindow(false);
-						m_FormulaApply.EnableWindow(true);
-						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
-						m_FormulaOK.EnableWindow(true);
-						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
-						m_ButtonCalc.EnableWindow(false);
-						// Remove it from the CArray working set
-						//m_wrk_formula.formula()->mFunction. RemoveAt(i, 1);
-						m_wrk_formula.set_func_remove(i);
-						// Update the tree
-						m_FormulaTree.DeleteItem(h);
-						m_dirty = true;
-						i=N+1;
-					}
-				}
-			}
-
-			// Delete a list
-			else if (s.Find("list") != -1) {
-				N = (int) m_wrk_formula.formula()->mHandList.GetSize();
-				for (int i=0; i<N; i++) {
-					if (m_wrk_formula.formula()->mHandList[i].list == s) {
-						// Update the dialog
-						//m_FormulaTree.SelectItem(NULL);
-						m_FormulaTree.SetFocus();
-						SetWindowText("Formula - ");
-						m_pActiveScinCtrl->SetText("");
-						m_pActiveScinCtrl->EnableWindow(false);
-						m_FormulaApply.EnableWindow(true);
-						file_menu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
-						m_FormulaOK.EnableWindow(true);
-						file_menu->EnableMenuItem(1, MF_BYPOSITION | MF_ENABLED);
-						m_ButtonCalc.EnableWindow(false);
-						// Remove it from the CArray working set
-						//m_wrk_formula.formula()->mHandList.RemoveAt(i, 1);
-						m_wrk_formula.set_list_remove(i);
-						// Update the tree
-						m_FormulaTree.DeleteItem(h);
-						m_dirty = true;
-						i=N+1;
-					}
-				}
-			}
-		}
+void CDlgFormulaScintilla::OnDelete() {
+  if (IDYES != OH_MessageBox_Interactive(
+      "REALLY delete \"" 
+      + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) 
+      + "\" ?", 
+      "Confirm Delete", MB_YESNO | MB_ICONWARNING)) {
+    HandleEnables(true);
+    return;
+  }
+  HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
+  CString s = m_FormulaTree.GetItemText(hItem);
+  CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
+  StopAutoButton();
+  // Delete a UDF or list
+  p_function_collection->Delete(s);
+  m_dirty = true;
+  // Close the tab
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == s) {
+      //!!!m_ScinArray.GetAt(i)._pWnd->c;
+      break;
+    }
+  }
+  // Update the dialog
+  m_FormulaTree.SetFocus();
+  SetWindowText("Formula - ");
+  m_pActiveScinCtrl->SetText("");
+  DeleteFormerParentItemIfEmpty(hItem);
+  FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
+  UpdateAllScintillaKeywords();
+  m_FormulaTree.DeleteItem(hItem);
+  HandleEnables(true);
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
@@ -1715,113 +1189,36 @@ CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsStrin
 	return comment;
 }
 
-void CDlgFormulaScintilla::OnHandList() 
-{
-	CDlgHandList		myDialog;
-	CString				s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-	int					list_index = 0, i = 0, j = 0;
-	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
-	CString				token = "", hand = "", newstring = "";
-	
-	// Find appropriate list in the internal structure
-	list_index = k_not_found;
-	for (int i=0; i<m_wrk_formula.formula()->mHandList.GetSize() && list_index == k_undefined; i++) 
-	{
-		if (m_wrk_formula.formula()->mHandList[i].list == s)
-		{
-			list_index = i;
-			break;
-		}
-	}
-	if (list_index == k_not_found)  return;
+void CDlgFormulaScintilla::OnHandList()  {
+  CDlgHandList		myDialog;
+  int				list_index = 0, i = 0, j = 0;
+  CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
+  CString			token = "", hand = "", newstring = "";
 
-	m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
+  CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
+  COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
+  if (p_handlist == NULL)  return;
 
-	// Window title and static text content
-	myDialog.hand_list_num = atoi(s.Mid(4).GetString());
+  //!!m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
+  // Window title and static text content
+  myDialog.hand_list_num = atoi(s.Mid(4).GetString());
 
-	// Start dialog
-	if (myDialog.DoModal() == IDOK) 
-	{
-		CString old_comment = ExtractCommentFromHandList(m_wrk_formula.formula()->mHandList[list_index].list_text);
-		CString new_handlist_without_comment = myDialog.HandListToString();
-		CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
+  // Start dialog
+  if (myDialog.DoModal() == IDOK) {
+    CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
+    CString new_handlist_without_comment = myDialog.HandListToString();
+    CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
 
-		// save it internally
-		m_wrk_formula.set_list_text(list_index, new_handlist_with_comment);
+    // update scintilla window
+    CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
+    ASSERT(pCurScin != NULL);
+    if (pCurScin) {
+	  pCurScin->SetText(new_handlist_with_comment);
+    }
 
-		// update scintilla window
-		CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
-		ASSERT(pCurScin != NULL);
-		if (pCurScin) {
-			pCurScin->SetText(m_wrk_formula.formula()->mHandList[list_index].list_text.GetString());
-		}
-
-		m_dirty = true;
-	}
-	HandleEnables(true);
-}
-
-void CDlgFormulaScintilla::LastChangeToFormula(CFormula *f) 
-{
-	CString		s = "", text = "";
-	int			N = 0, i = 0;
-
-	HTREEITEM hSelected = m_FormulaTree.GetSelectedItem();
-	if (hSelected == NULL)
-		return;
-
-	s = m_FormulaTree.GetItemText(hSelected);
-	CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(hSelected));
-
-	// A root item was selected, do nothing
-	if (m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem()) == NULL || m_FormulaTree.GetChildItem(m_FormulaTree.GetSelectedItem()) != NULL )
-	{
-	}
-	else if (!pCurScin) 
-	{
-		// Empty entry, nothing to do.
-		//
-		// There once was an assertion at this place
-		//   ASSERT(false);
-		// but it caused incorrect error-messages on empty list-entries. 
-		// http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=15395
-		// (post 11 by BotFoirSale).
-	}
-	
-	// A child item was selected, copy text from rich edit control to working set CArray
-	else 
-	{
-		// check for function
-		N = (int) f->formula()->mFunction.GetSize();
-		for (int i=0; i<N; i++) 
-		{
-			if (f->formula()->mFunction[i].func == s) 
-			{
-				pCurScin->GetText(text);
-				f->set_func_text(i, text);
-				f->set_func_dirty(i, true);
-				f->set_func_fresh(i, false);
-				return;
-			}
-		}
-
-		// check for list
-		if (memcmp(s.GetString(), "list", 4) == 0) 
-		{
-			// Find proper list and load it
-			N = (int) f->formula()->mHandList.GetSize();
-			for (int i=0; i<N; i++) 
-			{
-				if (f->formula()->mHandList[i].list == s) 
-				{
-					pCurScin->GetText(text);
-					f->set_list_text(i, text);
-					return;
-				}
-			}
-		}
-	}
+    m_dirty = true;
+  }
+  HandleEnables(true);
 }
 
 BOOL CDlgFormulaScintilla::DestroyWindow()
@@ -1831,12 +1228,12 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	StopAutoButton();
 	SaveSettingsToRegistry();
 	CloseFindReplaceDialog();
-	m_wrk_formula.ClearFormula();
-
+	
 	// Uncheck formula button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
 	return CDialog::DestroyWindow();
+	return 0;
 }
 
 void CDlgFormulaScintilla::PostNcDestroy()
@@ -2041,144 +1438,69 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
-void CDlgFormulaScintilla::OnBnClickedCalc() 
-{
-	CString					Cstr = "", title = "", s = "";
-	double					ret = 0.;
-	int						error = 0;
-	std::string				str = "";
-	struct SDebugTabInfo	debug_struct;
-	char					format[50] = {0};
+void CDlgFormulaScintilla::OnBnClickedCalc() {
+  CString					Cstr = "", title = "", s = "";
+  double					ret = 0.;
+  std::string				str = "";
+  char					    format[50] = {0};
 
-	StopAutoButton();
+  StopAutoButton();
+  // Clear result box
+  m_CalcResult.SetWindowText("");
+  // Caclulate symbols
+  p_engine_container->EvaluateAll();
 
-	// Clear result box
-	m_CalcResult.SetWindowText("");
+  // Validate parse trees
+  p_function_collection->ParseAll();
+  if (!p_function_collection->CorrectlyParsed()) {
+    s.Format("There are syntax errors in one or more formulas that are\n");
+    s.Append("preventing calculation.\n");
+    s.Append("These errors need to be corrected before the 'Calc'\n");
+    s.Append("button can be used.");
+    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+    return;
+  }
 
-	// Caclulate symbols
-	//symbols.CalcSymbols();
-
-	// mark symbol result cache as stale
-	m_wrk_formula.MarkCacheStale();
-
-	// Make sure we "calc" the latest
-	LastChangeToFormula(&m_wrk_formula);
-
-	// calc hand lists
-	m_wrk_formula.CreateHandListMatrices();
-
-	// Validate parse trees
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-	{
-		s.Format("There are syntax errors in one or more formulas that are\n");
-		s.Append("preventing calculation.\n");
-		s.Append("These errors need to be corrected before the 'Calc'\n");
-		s.Append("button can be used.");
-		OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
-		return;
-	}
-
-	//
-	// f$debug is a special case, handle it first
-	//
-	if (m_current_edit == "f$debug") 
-	{
-		LastChangeToFormula(&m_wrk_formula);
-
-		InitDebugArray();
-		UpdateDebugAuto();
-	}
-
-	// Processing for any other formula
-	else 
-	{
-		// Execute the currently selected formula
-		error = SUCCESS;
-		ret = gram.CalcF$symbol(&m_wrk_formula, (char *) m_current_edit.GetString(), &error);
-
-		if (error == SUCCESS) 
-		{
-			// display result
-			sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
-			Cstr.Format(format, ret);
-			m_CalcResult.SetWindowText(Cstr);
-			SetExtendedWindowTitle(m_current_edit.GetString());
-		}
-		else 
-		{
-			switch (error) 
-			{
-			case ERR_INVALID_SYM:
-				Cstr.Format("ERROR: Invalid symbol");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_FUNC_SYM:
-				Cstr.Format("ERROR: Invalid f$ reference");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_DLL_SYM:
-				Cstr.Format("ERROR: Invalid dll$ reference");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_INVALID_EXPR:
-				Cstr.Format("ERROR: Invalid expression");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			case ERR_DIV_ZERO:
-				Cstr.Format("ERROR: Divide by zero");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			default:
-				Cstr.Format("ERROR: Undefined");
-				m_CalcResult.SetWindowText(Cstr);
-				break;
-			}
-		}
-	}
+  // f$debug is a special case, handle it first
+  if (m_current_edit == "f$debug") {
+    UpdateDebugAuto();
+  } 
+  // Processing for any other formula
+  else {
+    // Execute the currently selected formula
+    ret = p_function_collection->Evaluate(m_current_edit);
+    sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
+    Cstr.Format(format, ret);
+    m_CalcResult.SetWindowText(Cstr);
+    SetExtendedWindowTitle(m_current_edit.GetString());	
+  }
 }
 
-void CDlgFormulaScintilla::OnBnClickedAuto()
-{
-	if (m_ButtonAuto.GetCheck() == 1)
-	{
-		boost::spirit::tree_parse_info<const char *, int_factory_t>	tpi;
-		CString  s;
-
-		ok_to_update_debug = false;
-		m_CalcResult.SetWindowText("");
-
-		// cal hand lists
-		m_wrk_formula.CreateHandListMatrices();
-
-		// Validate parse trees
-		if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-		{
-			s.Format("There are syntax errors in one or more formulas that are\n");
-			s.Append("preventing calculation of this formula.\n");
-			s.Append("These errors need to be corrected before the 'Auto'\n");
-			s.Append("button can be used.");
-			OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
-
-			// All we need to do is remove the Auto Check since the button text hasn't been
-			// updated yet and ok_to_update_debug has already been set to false
-			m_ButtonAuto.SetCheck(0);
-
-			return;
-		}
-
-		m_ButtonAuto.SetWindowText("* Auto *");
-
-		LastChangeToFormula(&m_wrk_formula);
-
-		InitDebugArray();
-
-		ok_to_update_debug = true;
+void CDlgFormulaScintilla::OnBnClickedAuto() {
+  if (m_ButtonAuto.GetCheck() == 1)
+  {
+    ok_to_update_debug = false;
+    m_CalcResult.SetWindowText("");
+    p_function_collection->ParseAll();
+	// Validate parse trees
+	if (!p_function_collection->CorrectlyParsed()) {
+      CString s;
+	  s.Format("There are syntax errors in one or more formulas that are\n");
+	  s.Append("preventing calculation of this formula.\n");
+	  s.Append("These errors need to be corrected before the 'Auto'\n");
+	  s.Append("button can be used.");
+	  OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+	  // All we need to do is remove the Auto Check since the button text hasn't been
+      // updated yet and ok_to_update_debug has already been set to false
+	  m_ButtonAuto.SetCheck(0);
+	  return;
 	}
-	else 
-	{
-		ok_to_update_debug = false;
-		m_ButtonAuto.SetWindowText("Auto");
-	}
+    m_ButtonAuto.SetWindowText("* Auto *");
+	ok_to_update_debug = true;
+  } else {
+	ok_to_update_debug = false;
+	m_ButtonAuto.SetWindowText("Auto");
+  }
 }
 
 void CDlgFormulaScintilla::StopAutoButton()
@@ -2190,48 +1512,14 @@ void CDlgFormulaScintilla::StopAutoButton()
 	}
 }
 
-void CDlgFormulaScintilla::UpdateDebugAuto(void) 
-{
-	CString			Cstr = "";
-
-	// mark symbol result cache as stale
-	m_wrk_formula.MarkCacheStale();
-
-	// Loop through each line in the debug tab and evaluate it
-	for (int i=0; i<(int) debug_ar.GetSize(); i++) 
-	{
-		if (debug_ar[i].valid && debug_ar[i].error==SUCCESS) 
-		{
-			debug_ar[i].ret = gram.EvaluateTree(&m_wrk_formula, debug_ar[i].tree, NULL, &debug_ar[i].error);
-		} 
-		else
-		{
-			debug_ar[i].ret = 0;
-		}
-	}
-	// Format the text
-	CreateDebugTab(&Cstr);
-
-	// Always write the tab's contents to a log file, if it is my turn (stable frames!)
-	if (p_symbol_engine_autoplayer->ismyturn())
-	{
-		if (!m_wrote_fdebug_header) 
-		{
-			WriteFDebugLog(true);
-			m_wrote_fdebug_header = true;
-		}
-		else 
-		{
-			WriteFDebugLog(false);
-		}
-	}
-
-	// Display the text in the debug tab
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
-	m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)Cstr.GetString());
-	m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
-	m_pActiveScinCtrl->GotoPosition(0);
-	m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
+void CDlgFormulaScintilla::UpdateDebugAuto(void) {
+  p_function_collection->ClearCache();
+  CString result = p_debug_tab->EvaluateAll();
+  m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
+  m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)result.GetString());
+  m_pActiveScinCtrl->SendMessage(SCI_EMPTYUNDOBUFFER);
+  m_pActiveScinCtrl->GotoPosition(0);
+  m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT, 0);
 }
 
 void CDlgFormulaScintilla::CreateDebugTab(CString *cs) 
@@ -2306,53 +1594,6 @@ void CDlgFormulaScintilla::CreateDebugTab(CString *cs)
 		*cs = cs->Mid(0, cs->GetLength()-1);
 }
 
-void CDlgFormulaScintilla::WriteFDebugLog(bool write_header) 
-{
-	int			N = 0, i = 0;
-	CString		temp = "", line = "", header = "";
-	char		format[50] = {0}, nowtime[26] = {0};
-
-	sprintf_s(format, 50, "%%0.%df", k_precision_for_debug_tab);
-	line.Format("%s,", get_time(nowtime));
-	header.Format("date/time,");
-
-	N = (int) debug_ar.GetSize();
-	for (int i=0; i<N; i++) 
-	{
-		if (debug_ar[i].valid) 
-		{
-			if (debug_ar[i].error == SUCCESS) 
-			{
-				temp.Format(format, debug_ar[i].ret);
-			}
-			else 
-			{
-				temp="";
-			}
-			line.Append(temp);
-			header.Append(debug_ar[i].exp);
-			if (i != N-1) 
-			{
-				line.Append(",");
-				header.Append(",");
-			}
-		}
-	}
-
-	// write the line to the log
-	CString fn = p_filenames->DebugTabLogFilename();
-	FILE *fp;
-	if (fopen_s(&fp, fn.GetString(), "a")==0)
-	{
-		if (write_header) 
-		{
-			fprintf(fp, "%s\n", header.GetString());
-		}
-		fprintf(fp, "%s\n", line.GetString());
-		fclose(fp);
-	}
-}
-
 void CDlgFormulaScintilla::InitDebugArray(void) 
 {
 	char				buf[1000] = {0}, *eq = NULL;
@@ -2398,18 +1639,18 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 			// parse
 			debug_struct.exp.Format("%s", eq);
 
-			parse_result = gram.ParseString(&debug_struct.exp, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
+			//!!!parse_result = gram.ParseString(&debug_struct.exp, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
 			debug_struct.valid = true;
-			debug_struct.error = parse_result && gram.parse_symbol_stop_strs()->GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
+			//!!!debug_struct.error = parse_result && gram.parse_symbol_stop_strs()->GetSize()==0 ? SUCCESS : ERR_BAD_PARSE;
 		}
 		else 
 		{
 			debug_struct.exp = buf;
 			Cstr = "";
 
-			gram.ParseString(&Cstr, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
+			//!!!gram.ParseString(&Cstr, m_wrk_formula.formula(), &debug_struct.tree, &stopchar);
 
 			debug_struct.ret = 0;
 			debug_struct.valid = false;
@@ -2417,12 +1658,6 @@ void CDlgFormulaScintilla::InitDebugArray(void)
 		}
 		debug_ar.Add(debug_struct);
 	}
-}
-
-void CDlgFormulaScintilla::OnBnClickedApplySave()
-{
-	OnBnClickedApply();
-	PMainframe()->SendMessage(WM_COMMAND, ID_FILE_SAVE, 0);
 }
 
 void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
@@ -2437,67 +1672,46 @@ void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 	return;
 }
 
-void CDlgFormulaScintilla::OnBnClickedApply() 
-{
-	CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
-	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
-
-	// If autoplayer is engaged, dis-engage it
-	if (p_autoplayer->autoplayer_engaged())
-	{
-		WarnAboutAutoplayerWhenApplyingFormula();
-	}
-
-	// Save settings to registry
-	SaveSettingsToRegistry();
-
-	// Re-calc working set hand lists
-	m_wrk_formula.CreateHandListMatrices();
-
-	// Parse working set
-	LastChangeToFormula(&m_wrk_formula);
-
-	if (!m_wrk_formula.ParseAllFormula(this->GetSafeHwnd()))
-	{
-		if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
-					   "Would you still like to apply changes in the working set to the main set?\n\n"
-					   "Note that if you choose yes here, then the main formula set will \n"
-					   "contain errors, will likely not act as you expect, and may cause you\n"
-					   "to lose money at the tables.\n\n"
-					   "Please only click 'Yes' if you really know what you are doing.",
-					   "PARSE ERROR", 
-					   MB_YESNO) != IDYES)
-		{
-			return;
-		}
-	}
-
-	// Copy working set to global set
-	p_formula->CopyFormulaFrom(&m_wrk_formula);
-
-	pDoc->SetModifiedFlag(true);
-
-	// Re-calc global set hand lists
-	p_formula->CreateHandListMatrices();
-
-	// Re-parse global set
-	p_formula->ParseAllFormula(this->GetSafeHwnd());
-
-	// Re-calc symbols
-	p_engine_container->CallSymbolEnginesToUpdateSymbolsIfNecessary();
-
-	// Rewrite f$debug log header, if required
-	m_wrote_fdebug_header = false;
-
-	m_dirty = false;
-
-	HandleEnables(true);
+void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    CString name = m_ScinArray.GetAt(i)._name;
+    if (name == "") {
+      // This should only happen for the default "Empty" tab
+      continue;
+    }
+    p_function_collection->SetFunctionText(name, 
+      m_ScinArray.GetAt(i)._pWnd->GetText());  
+  }
 }
 
-void CDlgFormulaScintilla::OnBnClickedOk() 
-{
-	OnBnClickedApply();
-	DestroyWindow();
+void CDlgFormulaScintilla::OnBnClickedApply() {
+  CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
+  COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
+  // If autoplayer is engaged, dis-engage it
+  if (p_autoplayer->autoplayer_engaged()) {
+	  WarnAboutAutoplayerWhenApplyingFormula();
+  }
+  // Save settings to registry
+  SaveSettingsToRegistry();
+  CopyTabContentsToFormulaSet();
+  p_function_collection->ParseAll();
+  if (!p_function_collection->CorrectlyParsed()) {
+    if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
+        "Would you still like to apply changes in the working set to the main set?\n\n"
+        "Note that if you choose yes here, then the main formula set will \n"
+        "contain errors, will likely not act as you expect, and may cause you\n"
+        "to lose money at the tables.\n\n"
+        "Please only click 'Yes' if you really know what you are doing.",
+        "PARSE ERROR", 
+        MB_YESNO) != IDYES) {
+      return;
+    }
+  }
+  pDoc->SetModifiedFlag(true);
+  // Re-calc symbols
+  p_engine_container->EvaluateAll();
+  m_dirty = false;
+  HandleEnables(true);
 }
 
 bool CDlgFormulaScintilla::PromptToSave()
@@ -2505,11 +1719,11 @@ bool CDlgFormulaScintilla::PromptToSave()
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
 	int response = OH_MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
-				   "Save changes?", 
+				   "Apply changes?", 
 				   MB_YESNOCANCEL);
 	if (response == IDYES)
 	{
-		OnBnClickedOk();
+		OnBnClickedApply();
 		return true;
 	}
 	
@@ -2518,18 +1732,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 		m_dirty = false;
 		return true;
 	}
-
 	return false;
-}
-
-void CDlgFormulaScintilla::OnBnClickedCancel()
-{
-	// Prompt for changes if needed
-	if (m_dirty)
-		if(!PromptToSave())
-			return;
-
-	DestroyWindow();
 }
 
 void CDlgFormulaScintilla::OnSearchUpdate()
@@ -2545,7 +1748,6 @@ void CDlgFormulaScintilla::OnSearchUpdate()
 			m_ScinArray[iScint]._pWnd->Refresh();
 		}
 	}
-	LastChangeToFormula(&m_wrk_formula);
 	PopulateFormulaTree();
 }
 
@@ -2618,7 +1820,7 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 		*/
 		// Number: black
 		pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
-		// Keywords: !!!
+		// Keywords: 
 		pWnd->SetForeground(5, RGB(0x80, 0x33, 0x80));		// SCE_C_WORD 5			(keywords)
 		/*
 		pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
@@ -2757,7 +1959,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	m_FormulaTree.EnableWindow(true); // Spew: Just in Case?
 
 	// Enable the Buttons
-	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesOrDllActive && iWhichTypeSelected != 1);
+	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesOrDllActive);
 	m_ButtonAuto.EnableWindow(bDebugActive);
 
 	// File Menu
@@ -2768,7 +1970,6 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 
 	// File Menu Buttons
 	m_FormulaApply.EnableWindow(m_dirty);
-	m_FormulaOK.EnableWindow(m_dirty);
 	m_FormulaCancel.EnableWindow(true);
 
 	bool ModifiableSelected = (bTreeValidLeafSelected && iWhichTypeSelected>0);
@@ -2876,7 +2077,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	HTREEITEM mainParent, parent;
 	mainParent = parent = AddSymbolTitle("General symbols", NULL, hCatItem);
 	AddSymbol(parent, "nchairs", "the integer value for the Table Map symbol _s$nchairs");
-	AddSymbol(parent, "session", "the current logging instance (0-9)");
+	AddSymbol(parent, "session", "the current logging instance (0-24)");
 	AddSymbol(parent, "version", "returns the version number of OpenHoldem that is currently running");
 
 	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
@@ -2953,7 +2154,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nraisbets", "total number of bets you would have on the table if you raise");
 
 	mainParent = parent = AddSymbolTitle("List Tests", NULL, hCatItem);
-	AddSymbol(parent, "islist0 - islist999 ", "true if your hand is in the numbered (0-999) list");
+	AddSymbol(parent, "listXYZ", "true if your hand is in list XYZ");
 
 	mainParent = parent = AddSymbolTitle("Poker Values", NULL, hCatItem);
 	AddSymbol(parent, "pokerval", "absolute poker value for your 5 card hand");
@@ -3231,8 +2432,17 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	m_SymbolTree.SortChildren(hRawItem);
 }
 
-
-
-
-
+void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
+  if (m_pActiveScinCtrl) {
+	m_pActiveScinCtrl->ShowWindow(SW_HIDE);
+	m_pActiveScinCtrl->EnableWindow(false);
+  }
+  m_pActiveScinCtrl = new_pActiveScinCtrl;
+  m_pActiveScinCtrl->ShowWindow(SW_SHOW);
+  if (new_pActiveScinCtrl == &m_EmptyScinCtrl) {
+    m_pActiveScinCtrl->EnableWindow(false);
+  } else {
+    m_pActiveScinCtrl->EnableWindow(true);
+  }
+}
 
