@@ -16,24 +16,25 @@
 #ifndef INC_CSYMBOL_ENGINE_OPENPPL_USER_VARIABLES_H
 #define INC_CSYMBOL_ENGINE_OPENPPL_USER_VARIABLES_H
 
-class CSymbolEngineOpenPPLUserVariables
-{
-public:
-	CSymbolEngineOpenPPLUserVariables();
-	~CSymbolEngineOpenPPLUserVariables();
-public:
-	// Mandatory reset-functions
-	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
-public:
-	void Set(CString symbol);
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
-private:
-	CMap<CString*, CString*, bool, bool> _user_variable_hashtable;
+#include <map>
+
+class CSymbolEngineOpenPPLUserVariables {
+ public:
+  CSymbolEngineOpenPPLUserVariables();
+  ~CSymbolEngineOpenPPLUserVariables();
+ public:
+  // Mandatory reset-functions
+  void InitOnStartup();
+  void ResetOnConnection();
+  void ResetOnHandreset();
+  void ResetOnNewRound();
+  void ResetOnMyTurn();
+  void ResetOnHeartbeat();
+ public:
+  void Set(CString symbol);
+  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+ private:
+  std::map<CString, bool> _user_variables;
 };
 
 extern CSymbolEngineOpenPPLUserVariables *p_symbol_engine_openppl_user_variables;
