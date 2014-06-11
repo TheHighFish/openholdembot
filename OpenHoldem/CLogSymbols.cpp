@@ -41,7 +41,7 @@ double CLogSymbols::ProcessQuery(const char * pquery, int *e)
 
 		if (!exists)
 		{
-			//!!!p_engine_container->logsymbols_collection_add(pquery+4);
+			//!!!!p_engine_container->logsymbols_collection_add(pquery+4);
 		}
 
 		return 1.0;

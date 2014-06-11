@@ -248,14 +248,19 @@ void COpenHoldemApp::FinishInitialization()
 	m_pMainWnd->SetFocus();
 	m_pMainWnd->SetForegroundWindow();
 
+    // Heartbeat thread cares about everything: connecting, scraping, playing
+    write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
+    assert(p_heartbeat_thread == NULL);
+    p_heartbeat_thread = new CHeartbeatThread;
+    assert(p_heartbeat_thread != NULL);
+    p_heartbeat_thread->StartThread();
+
+    // autoconnect on start, if preferred
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");
-	// autoconnect on start, if preferred
 	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
 		p_autoconnector->Connect(NULL);
 	}
-	// Start thread anyway; permanent connection might be enabled later via preferences.
-	p_heartbeat_thread->StartThread();	
 }
 
 int COpenHoldemApp::ExitInstance()
@@ -334,7 +339,6 @@ void COpenHoldemApp::OnForceCrash()
 void COpenHoldemApp::LoadLastRecentlyUsedFileList()
 {
 	__TRACE
-	//!!!
 	// Added due to inability to get standard LoadStdProfileSettings working properly
 	ASSERT_VALID(this);
 	ASSERT(m_pRecentFileList == NULL);

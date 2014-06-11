@@ -42,8 +42,7 @@ bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool
 }
 
 CString CVirtualSymbolEngine::SymbolsProvided() {
-  const bool kThisVirtualFunctionShouldNeverGetCalled_AllDerivedClassesMustOverwriteIt = false;
-  //!!assert(kThisVirtualFunctionShouldNeverGetCalled_AllDerivedClassesMustOverwriteIt);
+  // Default for symbol-engines that don't provide any symbols
   return "";
 }
 

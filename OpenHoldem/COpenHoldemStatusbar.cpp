@@ -199,9 +199,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 			(int) (iter_vars.prtie()*1000),
 			(int) (iter_vars.prlos()*1000));
 		double iterations;
-		//!!!looks like it currently leads to crashes
 		p_engine_container->EvaluateSymbol("f$prwin_number_of_iterations", &iterations);
-		//iterations = 2500; //!!!
 		_status_nit.Format("%d/%s", 
 			iter_vars.iterator_thread_progress(),
 			Number2CString(iterations));

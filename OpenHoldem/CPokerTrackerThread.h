@@ -46,8 +46,8 @@ public:
 	void				StopThread();
 	bool				IsConnected();
 	CString				CreateConnectionString(const CString ip_address, 
-		const CString port, const CString username,
-		const CString password, const CString DB_name);
+	const CString port, const CString username,
+	const CString password, const CString DB_name);
 
 private:
 	// private functions and variables - not available via accessors or mutators

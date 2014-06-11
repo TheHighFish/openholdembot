@@ -301,10 +301,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CEvalInfo.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CFileSystemMonitor.cpp"
 				>
 			</File>
@@ -852,15 +848,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CMemory.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerAction.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CSymbolEngineOpenPPLUserVariables.cpp"
 					>
 				</File>
 				<File
@@ -927,7 +915,15 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineMemorySymbols.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLUserVariables.cpp"
 						>
 					</File>
 					<File
@@ -1278,10 +1274,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CEvalInfo.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CFileSystemMonitor.h"
 				>
 			</File>
@@ -1577,15 +1569,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CMemory.h"
-					>
-				</File>
-				<File
 					RelativePath=".\CPokerAction.h"
-					>
-				</File>
-				<File
-					RelativePath=".\CSymbolEngineOpenPPLUserVariables.h"
 					>
 				</File>
 				<File
@@ -1652,7 +1636,15 @@
 						>
 					</File>
 					<File
+						RelativePath=".\CSymbolEngineMemorySymbols.h"
+						>
+					</File>
+					<File
 						RelativePath=".\CSymbolEngineOpenPPLHandAndBoardExpression.h"
+						>
+					</File>
+					<File
+						RelativePath=".\CSymbolEngineOpenPPLUserVariables.h"
 						>
 					</File>
 					<File

@@ -275,7 +275,7 @@ bool CVersus::GetCounts(void)
 					}
 
 					for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-					{/*!!
+					{/*!!!
 						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum))
 							|| (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
 						{
@@ -409,7 +409,7 @@ bool CVersus::GetCounts(void)
 					}
 
 					for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-					{/*!!
+					{/*!!!
 						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum)) 
 							|| (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
 						{

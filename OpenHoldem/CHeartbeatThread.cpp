@@ -83,6 +83,7 @@ void CHeartbeatThread::StartThread()
 {
 	// Start thread
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Starting heartbeat thread\n");
+    assert(this != NULL);
 	AfxBeginThread(HeartbeatThreadFunction, this);
 }
 
@@ -127,10 +128,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam)
 		{
 			ScrapeEvaluateAct();
 		}
-		FlexibleHeartbeatSleeping();
-
-		
-
 		FlexibleHeartbeatSleeping();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}

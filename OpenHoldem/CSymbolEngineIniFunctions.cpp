@@ -42,10 +42,6 @@
 #include "CSymbolEngineUserchair.h"
 #include "MagicNumbers.h"
 
-// !!! Temporary disabled as we get crashes in release and optimized mode,
-// !!! not in debug-mode unfortunatelly.
-// !!! We expect that problem to disappear with the new parser and evaluator soon.
-
 CSymbolEngineIniFunctions *p_symbol_engine_ini_functions = NULL;
 
 // We can't evaluate ini-functions if no formula is loaded.

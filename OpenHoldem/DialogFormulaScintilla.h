@@ -125,8 +125,6 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg void OnNextBookmark();
   afx_msg void OnPrevBookmark();
   afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult); 
-  void CreateDebugTab(CString *cs);
-  void InitDebugArray();
   void ResizeDialogForControlBars();
   afx_msg void OnEditUndo();
   afx_msg void OnEditRedo();
@@ -210,7 +208,6 @@ class CDlgFormulaScintilla : public CDialog {
   HACCEL			m_hDialogAccelTable;
 
   CString			m_current_edit;			// Name of formula currently in edit window
-  CArray <SDebugTabInfo, SDebugTabInfo> debug_ar;		// holds debug tab information
   bool			in_startup;
   bool			ok_to_update_debug;
 
