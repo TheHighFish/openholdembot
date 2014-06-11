@@ -19,6 +19,14 @@ NEW STUFF:
   Similar for bets and balances (after our first action only for dealt players),
   for betpot-buttons and slider (only when it is our turn), etc.
   [Pingvvino and THF]
+- Completely reimplemented parser and formula-evaluator (super-fast!),
+  as the former boost-implementation was based on a misunderstanding,
+  worked only due to a miracle and was extremely slow.
+  [THF]
+- Now unlimited memory-symbols with fast lookup.
+  [THF]
+- New command me_inc_XXX that increments a memory-symbol to build easy counters.
+  [THF]
 
 BUG FIXES:
 - The symbols ishipair, ismidpair and islopair stopped working,
