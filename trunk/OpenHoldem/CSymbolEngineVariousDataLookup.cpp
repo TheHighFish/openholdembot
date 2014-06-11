@@ -29,7 +29,6 @@
 #include "Chair$Symbols.h"
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
-#include "CMemory.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CScraper.h"
@@ -91,10 +90,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "pl_", 3) == 0) {
     assert(p_perl != NULL);
     *result = p_perl->GetPerlSymbol(name);
-  }
-  // Memory symbols
-  else if (memcmp(name, "me_", 3)==0) {
-	  //!!*result =  p_memory->ProcessQuery(name, logCallingFunction, e);
   }
   // Versus
   else if (memcmp(name, "vs$", 3) == 0)
@@ -172,7 +167,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 }
 
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
-  //!!
+  //!!!
   return " todo";
 }
 

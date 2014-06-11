@@ -494,7 +494,7 @@ const double CGameState::SortedBalance(const int rank)
 	for (int i=0; i<k_max_number_of_players; i++)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
-	// bubble sort stacks //!! duplicate code?
+	// bubble sort stacks //!!!! duplicate code?
 	for (int i=0; i<(k_max_number_of_players-1); i++)
 	{
 		for (int n=i+1; n<k_max_number_of_players; n++)

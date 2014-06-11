@@ -32,7 +32,6 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
-#include "CMemory.h"
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
 #include "CParserSymbolTable.h"
@@ -124,9 +123,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPerl\n");
   assert(!p_perl);
   p_perl = new CPerl;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CMemory\n");
-  assert(!p_memory);
-  p_memory = new CMemory;	
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersus\n");
   assert(!p_versus);
   p_versus = new CVersus;	
@@ -256,8 +252,6 @@ void DeleteAllSingletons() {
 	{ delete p_validator; p_validator = NULL; }
   if (p_versus)  
 	{ delete p_versus; p_versus = NULL; }
-  if (p_memory)  
-	{ delete p_memory; p_memory = NULL; }
   if (p_perl)  
 	{ delete p_perl; p_perl = NULL; }
   if (p_game_state)  

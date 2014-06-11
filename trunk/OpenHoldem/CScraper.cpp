@@ -1417,10 +1417,11 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	return result;
 }
 
-bool CScraper::IsExtendedNumberic(CString text)
-{
-	__TRACE
-	return false; //!!!???
+bool CScraper::IsExtendedNumberic(CString text) {
+  __TRACE
+  bool currently_unused = false;
+  assert(currently_unused);
+  return false;
 }
 
 bool CScraper::IsIdenticalScrape()

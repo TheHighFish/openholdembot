@@ -36,6 +36,7 @@
 #include "CSymbolEngineIniFunctions.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
+#include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
@@ -155,6 +156,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineHandrank
   p_symbol_engine_handrank = new CSymbolEngineHandrank();
   AddSymbolEngine(p_symbol_engine_handrank);
+  // CSymbolEngineMemorySymbols
+  p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
+  AddSymbolEngine(p_symbol_engine_memory_symbols);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.

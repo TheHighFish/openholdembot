@@ -177,14 +177,6 @@ struct STableList
 	RECT		crect;
 };
 
-struct SDebugTabInfo 
-{
-	bool				valid; // Does it have an "="
-	int					error; 
-	CString				exp;
-	double				ret;
-};
-
 struct ftr_info 
 {
 	unsigned int	elapsed_time;			//time this hand started
