@@ -102,6 +102,5 @@ bool CSymbolEngineRandom::EvaluateSymbol(const char *name, double *result, bool 
 }
 
 CString CSymbolEngineRandom::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "random randomheartbeat randomhand randomround ";
 }

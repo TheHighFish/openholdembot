@@ -78,4 +78,8 @@ bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result, 
 	}
 	return false;
 }
+
+CString CSymbolEngineDealerchair::SymbolsProvided() {
+  return "dealerchair ";
+}
 	

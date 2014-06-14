@@ -401,10 +401,11 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 		return false;
 	}
 	// Valid symbol
-		return true;
+	return true;
 }
 
 CString CSymbolEngineRaisersCallers::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "nopponentschecking nopponentscalling nopponentsraising "
+    "nopponentstruelyraising nopponentsbetting nopponentsfolded "
+    "nplayerscallshort raischair raisbits callbits foldbits ";
 }

@@ -248,6 +248,7 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool l
 }
 
 CString CSymbolEnginePrwin::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "prwinnow prlosnow ";
+    "nhands nhandshi nhandslo nhandsti "
+    "nopponents ";
 }

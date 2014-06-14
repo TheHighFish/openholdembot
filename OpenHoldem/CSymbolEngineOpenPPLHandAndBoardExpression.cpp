@@ -267,6 +267,5 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(CString card_exp
 }
 
 CString CSymbolEngineOpenPPLHandAndBoardExpression::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "hand$ board$";
 }

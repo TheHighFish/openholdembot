@@ -17,7 +17,6 @@
 #include "LineCounter.h"
 #include <assert.h>
 #include <iostream> 
-#include <windows.h>
 
 static const char *short_error_messages[k_number_of_error_codes] =
 {

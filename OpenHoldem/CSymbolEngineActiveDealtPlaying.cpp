@@ -286,3 +286,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 	// Symbol of a different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineActiveDealtPlaying::SymbolsProvided() {
+  return "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying "
+    "nplayersseated nplayersactive nplayersdealt nplayersplaying "
+    "playersseatedbits playersactivebits playersdealtbits playersplayingbits "
+    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits ";
+}

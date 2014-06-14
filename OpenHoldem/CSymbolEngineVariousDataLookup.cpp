@@ -167,8 +167,15 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 }
 
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
-  //!!!
-  return " todo";
+  // This list includes some prefixes of symbols that can't be verified,
+  // e.g. "dll$, pl_chair$, ....
+  return "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ "
+    "prwin prlos prtie "
+    "betround fmax f flagbits "
+    "nchairs session version "
+    "lastraised "
+    "floppct turnpct riverpct avgbetspf tablepfr handsplayed "
+    "balance_rank ";
 }
 
 void CSymbolEngineVariousDataLookup::ResetOnHeartbeat()
