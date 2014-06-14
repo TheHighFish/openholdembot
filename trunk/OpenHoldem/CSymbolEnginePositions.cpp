@@ -243,6 +243,8 @@ bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bo
 }
 
 CString CSymbolEnginePositions::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "nchairsdealt nchairsdealtright nchairsdealtleft "
+    "betposition betpositionrais "
+    "dealposition dealpositionrais "
+    "callposition ";
 }

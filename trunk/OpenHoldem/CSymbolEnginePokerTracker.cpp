@@ -201,10 +201,8 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
     // Add symbol for raise-chair
     CString new_symbol = "pt_r_" + basic_symbol_name;
     list.AppendFormat(" %s", new_symbol);
-
     // Add symbols for all chairs, indexed by trailing numbers
-    for (int j=0; j<k_max_number_of_players; j++)
-    {
+    for (int j=0; j<k_max_number_of_players; j++) {
 	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
 	    list.AppendFormat(" %s", new_symbol);
     }

@@ -1306,6 +1306,19 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 }
 
 CString CSymbolEnginePokerval::SymbolsProvided() {
-  //!!
-  return " todo";
+  return "rankhi rankhicommon rankhiplayer rankhipoker "
+    "srankhi srankhicommon srankhiplayer srankhipoker "
+    "ranklo ranklocommon rankloplayer ranklopoker "
+    "sranklo sranklocommon srankloplayer sranklopoker "
+    "pokerval pokervalplayer pokervalcommon "
+    "rankbits rankbitscommon rankbitsplayer rankbitspoker "
+    "srankbits srankbitscommon srankbitsplayer srankbitspoker "
+    "ishandup ishandupcommon "
+    "ishicard isonepair istwopair isthreeofakind isstraight "
+    "isflush isfullhouse isfourofakind isstraightflush isroyalflush "
+    "ishipair islopair ismidpair "
+    "ishistraight ishiflush "
+    "pcbits npcbits "
+    "hicard onepair twopair threeofakind straight "
+    "flush fullhouse fourofakind straightflush royalflush ";
 }
