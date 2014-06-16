@@ -41,7 +41,7 @@ class COHScriptList: public COHScriptObject {
   ~COHScriptList();
  public:
   void Clear();
-  void Set(CString list_member);
+  bool Set(CString list_member);
   // Actually Evaluate() returns true/false if our hand is in the list or not
   // but the function is inheritzed from the base-class.
   double Evaluate(bool log = false);

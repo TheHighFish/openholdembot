@@ -64,7 +64,7 @@ void CSymbolEngineEventLogging::ResetOnHandreset()
 	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
 	write_log(k_always_log_basic_information, 
 		"\n"
-		"*************************************************************\n"
+		"==============================================\n"
 		"%s"					// Version info already contains a newline 
 		"HAND RESET (num: %s dealer: %d cards: %s%s): %s\n",
 		p_version_info->GetVersionInfo(),

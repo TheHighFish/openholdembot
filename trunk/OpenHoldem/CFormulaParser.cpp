@@ -44,6 +44,7 @@ CFormulaParser::~CFormulaParser() {
 void CFormulaParser::InitNewParse() {
   _is_parsing = true;
   CParseErrors::ClearErrorStatus();
+  _formula_file_splitter.InitNewParse();
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
@@ -51,6 +52,7 @@ void CFormulaParser::InitNewParse() {
 }
 
 void CFormulaParser::FinishParse() {
+  p_function_collection->CheckForDefaultFormulaEntries();
   p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
@@ -248,7 +250,11 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
 		{
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
-			list->Set(_token);
+			if (!list->Set(_token)) {
+        // Looked like a card on first sight, but is invalid.
+        // Avoid too many errors on bad lists
+        return;
+      }
 		}
 		else
 		{

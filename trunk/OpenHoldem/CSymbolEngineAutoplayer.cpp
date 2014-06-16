@@ -279,3 +279,8 @@ bool CSymbolEngineAutoplayer::EvaluateSymbol(const char *name, double *result, b
 	// Symbol of a different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineAutoplayer::SymbolsProvided() {
+  return "isfinaltable ismyturn issittingin issittingout isautopost "
+    "isfinalanswer myturnbits ";
+}

@@ -63,11 +63,11 @@ bool COHScriptList::IsOnList(int first_rank, int second_rank, bool suited) {
   }
 }
 
-void COHScriptList::Set(CString list_member) {
+bool COHScriptList::Set(CString list_member) {
   int length = list_member.GetLength();
   if ((length < 2) || (length > 3)) {
     ErrorInvalidMember(list_member);
-    return;
+    return false;
   }
   char first_rank_string = tolower(list_member.GetAt(0));
   char second_rank_string = tolower(list_member.GetAt(1));
@@ -75,15 +75,15 @@ void COHScriptList::Set(CString list_member) {
   int second_rank = CardRankCharacterToCardRank(second_rank_string);
   if ((first_rank < 0) || (second_rank < 0)) {
     ErrorInvalidMember(list_member);
-    return;
+    return false;
   }
   if (length == 2) {
     if (first_rank_string == second_rank_string) {
       Set(first_rank, second_rank, false);
-      return;
+      return true;
     }
     ErrorOldStyleFormat(list_member);
-    return;
+    return false;
   }
   assert(length == 3);
   char suit = tolower(list_member.GetAt(2));
@@ -93,7 +93,9 @@ void COHScriptList::Set(CString list_member) {
     Set(first_rank, second_rank, false);
   } else {
     ErrorInvalidMember(list_member);
+    return false;
   }
+  return true;
 }
 
 void COHScriptList::ErrorInvalidMember(CString list_member) {

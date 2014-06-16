@@ -116,6 +116,9 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  // PrWin-functions, used by the GUI
+  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(
+    CString(k_standard_function_names[k_prwin_number_of_iterations]));
 }
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name)
@@ -129,15 +132,15 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
 	  || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
   {
-	// f$check and f$fold should evaluate to true per default
-	// for auto-check-folding instead of time-outs.
-	function_text = "1 "; 
+    // f$check and f$fold should evaluate to true per default
+    // for auto-check-folding instead of time-outs.
+    function_text = "1 "; 
   }
   else {
-	// Add an empty function.
-	// The function-text should contain at least one space.
-	// The editor does somehow not work for completely empty formulas.
-	function_text = " "; 
+    // Add an empty function.
+    // The function-text should contain at least one space.
+    // The editor does somehow not work for completely empty formulas.
+    function_text = " "; 
   }
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
@@ -263,6 +266,7 @@ bool CFunctionCollection::CorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
+  CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
@@ -310,5 +314,6 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
     *result = p_function->Evaluate(log);
     return true;
   }
+  // Not a function and not a list
   return false;
 }

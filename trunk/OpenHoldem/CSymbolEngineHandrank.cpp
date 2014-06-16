@@ -175,3 +175,7 @@ bool CSymbolEngineHandrank::EvaluateSymbol(const char *name, double *result, boo
 	// Symbol of a different symbol-engine
 	return false;
 }
+
+CString CSymbolEngineHandrank::SymbolsProvided() {
+  return "handrank169 handrank2652 handrank1326 handrank1000 handrankp ";
+}

@@ -233,7 +233,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	}
 	else if (memcmp(name, "nplayersround", 13)==0)
 	{
-		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13)	
+		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13) //???	
 		{
 			*result = nplayersround(p_betround_calculator->betround());
 		}
@@ -284,4 +284,10 @@ bool CSymbolEngineHistory::DidAct(int betround)
 	// Not considering fold or allin, because the game would be over.
 	return (didchec(betround) || didcall(betround) 
 		|| didswag(betround) || didrais(betround));
+}
+
+CString CSymbolEngineHistory::SymbolsProvided() {
+  return "didchec didcall didrais didswag "
+    "didchecround didcallround didraisround didswaground "
+    "nplayersround nbetsround prevaction ";
 }

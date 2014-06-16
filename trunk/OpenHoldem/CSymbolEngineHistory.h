@@ -33,6 +33,7 @@ public:
 	void ResetOnHeartbeat();
 public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  CString SymbolsProvided();
 public:
 	// Public accessors
 	// Public accessors

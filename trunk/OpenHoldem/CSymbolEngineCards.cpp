@@ -1005,10 +1005,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 		{
 			*result = trankcommon();
 		}
-		else if (memcmp(name, "nouts", 5)==0 && strlen(name)==5)						
-		{
-			*result = nouts();
-		}
 		else
 		{
 			// Invalid symbol
@@ -1022,6 +1018,24 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 		*result = p_symbol_engine_cards->ncommoncardsknown();
 		return true;
 	}
+  else if (memcmp(name, "nouts", 5)==0 && strlen(name)==5)						
+	{
+			*result = nouts();
+      return true;
+	}
 	// Symbol of a different symbol-engine
 	return false;
+}
+
+CString CSymbolEngineCards::SymbolsProvided() {
+  // Not included ATM $$... and $... symbols
+  return "ncardsknown ncardsunknown ncardsbetter "
+    "ispair issuited isconnector "
+    "nsuited nsuitedcommon "
+    "tsuit tsuitcommon "
+    "nstraight nstraightcommon nstraightfill nstraightfillcommon "
+    "nstraightflush nstraightflushcommon nstraightflushfill nstraightflushfillcommon "
+    "nranked nrankedcommon "
+    "trank trankcommon "
+    "ncommoncardsknown nouts ";
 }

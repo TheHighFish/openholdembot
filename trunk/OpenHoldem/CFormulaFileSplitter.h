@@ -27,6 +27,7 @@ class CFormulaFileSplitter {
   void ScanForNextFunctionOrList(CArchive &formula_file);
   // For debug-tab, which has to parse line by line
   void SetInput(CString line_of_debug_tab);
+  void InitNewParse();
  public:
   CString GetFunctionHeader()   { return _function_header; }
   CString GetFunctionText()     { return _function_text; }
