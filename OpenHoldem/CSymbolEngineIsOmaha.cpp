@@ -57,3 +57,16 @@ void CSymbolEngineIsOmaha::ResetOnMyTurn()
 void CSymbolEngineIsOmaha::ResetOnHeartbeat()
 {}
 
+bool CSymbolEngineIsOmaha::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	{
+    // Up to now only Hold'Em supported
+		*result = false;
+    return true;
+	}
+  // Symbol of a different symbol-engine
+  return false;
+}
+
+CString CSymbolEngineIsOmaha::SymbolsProvided() {
+  return "isomaha ";
+}

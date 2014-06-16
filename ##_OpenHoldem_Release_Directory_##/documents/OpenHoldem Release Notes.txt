@@ -1,4 +1,4 @@
-v4.5.1 2014-03-30
+v4.6.0 2014-xx-yy
 ==================
 NEW STUFF:
 - A tablemap-completeness-checker that warns about most cases of incomplete tablemaps.
@@ -9,7 +9,7 @@ NEW STUFF:
 - The check for duplicate TMs now also considers titlestrings in addition to sitenames.
   Thanky to Fqfq for providing the code.
   [THF]
- - Lots of code-improvements and optimizations to the scraper and the so-called "LazyScraper".
+- Lots of code-improvements and optimizations to the scraper and the so-called "LazyScraper".
   In the past the scraper took 95%-98% of CPU-usage according to our measurments
   with VerySleepy (a profiler) and especially text-scraping was very costly (~80%).
   To improve things we tried to reduce scraping without missing any info.
@@ -19,9 +19,8 @@ NEW STUFF:
   Similar for bets and balances (after our first action only for dealt players),
   for betpot-buttons and slider (only when it is our turn), etc.
   [Pingvvino and THF]
-- Completely reimplemented parser and formula-evaluator (super-fast!),
-  as the former boost-implementation was based on a misunderstanding,
-  worked only due to a miracle and was extremely slow.
+- Completely reimplemented parser and formula-evaluator,
+  super-fast and providing about 2 dozen verbose messages in case of syntax errors.
   [THF]
 - Now unlimited memory-symbols with fast lookup.
   [THF]

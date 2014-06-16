@@ -363,6 +363,9 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	return true;
 }
 
-
-					
-	
+CString CSymbolEngineChipAmounts::SymbolsProvided() {
+  return "pot potcommon potplayer "
+    "balance balanceatstartofsession maxbalance "
+    "stack currentbet call nbetstocall nbetstorais "
+    "ncurrentbets ncallbets nraisbets ";
+}

@@ -76,3 +76,6 @@ bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double 
   return true;
 }
 
+// SymbolsProvided() does not make much sense here
+// as we only know the prefixes
+

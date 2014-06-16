@@ -45,7 +45,9 @@ public:
 	void CalcTableLimits();
 public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
-	// public accessors, formerly part of the symbol-structure.
+  CString SymbolsProvided();
+public:
+  // public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
 	double bigbet();

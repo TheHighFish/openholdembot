@@ -26,6 +26,8 @@ public:
 	~CSymbolEngineBlinds();
 public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  CString SymbolsProvided();
+public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();

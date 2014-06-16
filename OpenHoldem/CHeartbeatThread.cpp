@@ -144,6 +144,13 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
+  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+  new_scrape = !NOTHING_CHANGED;
+  p_lazyscraper->DoScrape();
+
+  // Necessary to pre-compute some info
+  // which is needed by the symbol-engines. ???
+  p_scraper_access->GetNeccessaryTablemapObjects();
 
 		if (new_scrape!=NOTHING_CHANGED)
 		{

@@ -32,6 +32,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  CString SymbolsProvided();
+public:
 	double handrank169()      { return _handrank169; }
 	double handrank2652()     { return _handrank2652; }
 	double handrank1326()     { return _handrank1326; }

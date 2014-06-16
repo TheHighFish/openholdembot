@@ -56,6 +56,7 @@ public:
  public:
   bool ParseAll();
   bool CorrectlyParsed();
+  void CheckForDefaultFormulaEntries();
  public:
   // Simply call GetFirst() first, then GetNext()
   // Once you receive NULL the end has been reached
@@ -69,7 +70,6 @@ public:
   void SetTitle(CString title)	{ _title = title; }
   void SetPath(CString path)	{ _path = path; }
  private:
-  void CheckForDefaultFormulaEntries();
   void CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name);
  private:
   std::map<CString, COHScriptObject*> _function_map;

@@ -181,3 +181,7 @@ bool CSymbolEngineBlinds::EvaluateSymbol(const char *name, double *result, bool 
 	// Valid symbol
 	return true;
 }
+
+CString CSymbolEngineBlinds::SymbolsProvided() {
+  return "nopponentsblind nplayersblind playersblindbits opponentsblindbits bblindbits ";
+}

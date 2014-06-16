@@ -35,6 +35,8 @@ public:
 public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  CString SymbolsProvided();
+public:
 	int  myturnbits()		{ return _myturnbits; }
 	bool ismyturn()			{ return ((_myturnbits & k_my_turn_bits_fold_call_raise) != 0); }
 	bool issittingin()		{ return _issittingin; }

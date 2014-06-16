@@ -763,3 +763,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 	// Valid symbol
 	return true;
 }
+
+CString CSymbolEngineTableLimits::SymbolsProvided() {
+  return "isnl ispl isfl lim bet bblind sblind ante ";
+}

@@ -255,10 +255,10 @@ void start_log(void)
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
 	{
 		write_log(k_always_log_basic_information, "\n%s%s%s%s%s%s",
-			"*************************************************************\n",
+			"==============================================\n",
 			"OpenHoldem ", VERSION_TEXT, "\n",
 			"LOG FILE OPEN\n",
-			"*************************************************************\n");
+			"==============================================\n");
 		fflush(log_fp);
 	}
 
@@ -335,10 +335,10 @@ void stop_log(void)
     if (log_fp != NULL) 
 	{
         write_log(k_always_log_basic_information, "\n%s%s%s%s%s%s",
-			"*************************************************************\n",
+			"==============================================\n",
 			"OpenHoldem ", VERSION_TEXT, "\n",
 			"LOG FILE CLOSED\n",
-			"*************************************************************\n");
+			"==============================================\n");
         fclose(log_fp);
         log_fp = NULL;
     }
