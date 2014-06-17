@@ -145,6 +145,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
+  p_function->Parse();
 }
 
 COHScriptObject *CFunctionCollection::GetFirst() {
@@ -309,8 +310,14 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
       if (log) {
         p_autoplayer_trace->Add(name, *result);
       }
-      return false;
+      // This symbol is something that HAS TO be evaluated here,
+      // We didn't find it, so we treat it as zero/false/whatever.
+      // Symbol-verification happens at parse-time,
+      // so this kind of error can only happen for DLL-guys
+      // who call OH-script-functions.
+      return true;
     }
+    // Function/list found
     *result = p_function->Evaluate(log);
     return true;
   }

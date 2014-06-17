@@ -306,17 +306,6 @@ void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_va
 	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
 }
 
-const CString CPreferences::versus_path()
-{
-	// Take the OpenHoldem-installation-directory as versus_path.
-	TCHAR Buffer[MAX_PATH];
-	GetModuleFileName(NULL, Buffer, MAX_PATH);
-	CString ExecutableFileName = Buffer;
-	int PositionOfLastDelimiter = ExecutableFileName.ReverseFind('\\');
-	// Truncate path. Keep last "\" to get versus_path.
-	return(ExecutableFileName.Left(PositionOfLastDelimiter + 1));
-}
-
 #define ENT CSLock lock(m_critsec);
 
 void CPreferences::SetValue(int index_of_variable, CString value)

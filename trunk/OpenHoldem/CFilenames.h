@@ -11,12 +11,14 @@
 //
 //******************************************************************************
 
-class CFilenames
-{
-public:
+#ifndef INC_CFILENAMES_H
+#define INC_CFILENAMES_H
+
+class CFilenames {
+ public:
 	CFilenames();
 	~CFilenames();
-public:
+ public:
 	CString OpenHoldemDirectory();
 	CString IniFilePath();
 	CString TableMapWildcard();
@@ -31,12 +33,15 @@ public:
 	CString PathOfExecutable();
 	CString ExecutableFilename();
 	CString PureExecutableFilename();
-public:
+  CString VersusPath();
+ public:
 	void SwitchToOpenHoldemDirectory();
-private:
+ private:
 	CString IniFilename();
-private:
+ private:
 	char _startup_path[MAX_PATH];
 };
 
 extern CFilenames *p_filenames;
+
+#endif INC_CFILENAMES_H
