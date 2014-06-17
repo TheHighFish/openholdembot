@@ -322,9 +322,7 @@ public:
 	// Misc
 	const int scraper_zoom() { return prefs_numerical_values[k_prefs_scraper_zoom]; }
 	// Popup blocker
-	const int popup_blocker()	{ return prefs_numerical_values[k_prefs_popup_blocker]; }
-	// versus_path() is implemented in the cpp-file.
-	const CString versus_path(); 	
+	const int popup_blocker()	{ return prefs_numerical_values[k_prefs_popup_blocker]; }	
 	// Obscure
 	const CString &window_class_name()	{ return prefs_CString_values[k_prefs_window_class_name]; }
 	const CString &mutex_name()			{ return prefs_CString_values[k_prefs_mutex_name]; }

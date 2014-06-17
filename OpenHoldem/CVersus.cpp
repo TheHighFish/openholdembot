@@ -20,8 +20,8 @@
 
 #include "CBetroundCalculator.h"
 #include "CDllExtension.h"
+#include "CFilenames.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
@@ -30,25 +30,13 @@
 
 CVersus		*p_versus = NULL;
 
-CVersus::CVersus() 
-{
-	// Find the versus data.  First check in the current directory
-	// then in the path provided by the registry.  If both fail,
-	// disable versus.
-	_sopen_s(&_versus_fh, "versus.bin", _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	if (_versus_fh == k_undefined)
-	{
-		_sopen_s(&_versus_fh, preferences.versus_path(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	}
-
-	if (_versus_fh == k_undefined) 
-	{
+CVersus::CVersus() {
+	_sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+	if (_versus_fh == k_undefined) {
 		// We do no longer warn directly, 
 		// but only when versus symbols get used without the file.
 		versus_bin_not_loaded = true;
-	}
-	else
-	{
+	}	else {
 		versus_bin_not_loaded = false;
 	}
 }
@@ -113,7 +101,9 @@ double CVersus::GetSymbol(const char *a, int *e)
 			  (memcmp(&a[5], "$pr", 3)==0 && strlen(a)==11) ||
 			  (memcmp(&a[6], "$pr", 3)==0 && strlen(a)==12)))
 	{
-
+    MessageBox(0, "Versus vs$ against hand-lists currently not supported",
+      "Warning", 0);
+    return 0.0;
 		// Get the list num we need
 		n = atoi(a+3);
 

@@ -639,6 +639,9 @@
     <ClCompile Include="COHScriptObject.cpp">
       <Filter>Source Files\Formula</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineVersus.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug_Database.cpp_">
@@ -1410,6 +1413,9 @@
     </ClInclude>
     <ClInclude Include="COHScriptObject.h">
       <Filter>Header Files\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineVersus.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
