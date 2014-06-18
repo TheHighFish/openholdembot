@@ -256,7 +256,6 @@
     <ClCompile Include="CICMCalculator.cpp" />
     <ClCompile Include="CLogSymbols.cpp" />
     <ClCompile Include="CPokerAction.cpp" />
-    <ClCompile Include="CVersus.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
     <ClCompile Include="CGameState.cpp" />
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
@@ -488,7 +487,6 @@
     <ClInclude Include="CICMCalculator.h" />
     <ClInclude Include="CLogSymbols.h" />
     <ClInclude Include="CPokerAction.h" />
-    <ClInclude Include="CVersus.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />
     <ClInclude Include="CSymbolEngineActiveDealtPlaying.h" />

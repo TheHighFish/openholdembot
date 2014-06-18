@@ -39,7 +39,6 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
-#include "CVersus.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
@@ -72,8 +71,6 @@ void CSymbolEngineVariousDataLookup::ResetOnNewRound() {
 void CSymbolEngineVariousDataLookup::ResetOnMyTurn()
 {
 	__TRACE
-	// !! Better make it a symbol-engine; Already done???????
-	p_versus->GetCounts();
 }
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
@@ -90,13 +87,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "pl_", 3) == 0) {
     assert(p_perl != NULL);
     *result = p_perl->GetPerlSymbol(name);
-  }
-  // Versus
-  else if (memcmp(name, "vs$", 3) == 0)
-  {
-    assert(p_versus != NULL);
-    int *e = SUCCESS;
-    *result = p_versus->GetSymbol(name, e);
   }
   // History symbols
   else if (memcmp(name, "hi_", 3)==0) {
