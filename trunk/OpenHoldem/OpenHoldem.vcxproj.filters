@@ -387,9 +387,6 @@
     <ClCompile Include="CPokerAction.cpp">
       <Filter>Source Files\Symbols</Filter>
     </ClCompile>
-    <ClCompile Include="CVersus.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
     <ClCompile Include="UnknownSymbols.cpp">
       <Filter>Source Files\Symbols</Filter>
     </ClCompile>
@@ -1046,9 +1043,6 @@
       <Filter>Header Files\Symbols</Filter>
     </ClInclude>
     <ClInclude Include="CPokerAction.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CVersus.h">
       <Filter>Header Files\Symbols</Filter>
     </ClInclude>
     <ClInclude Include="CVirtualSymbolEngine.h">
