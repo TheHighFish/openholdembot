@@ -20,16 +20,16 @@ COHScriptObject::COHScriptObject()
 {
 	_name = "";
 	_function_text = "";
-    _absolute_line = 0;
+    _starting_line_of_function = 0;
 }
 
 COHScriptObject::COHScriptObject(
     CString *new_name, 
     CString *new_function_text,
-    int absolute_line) {
+    int starting_line_of_function) {
   _name = *new_name;
   _function_text = *new_function_text;
-  _absolute_line = absolute_line;
+  _starting_line_of_function = starting_line_of_function;
 }
 
 COHScriptObject::~COHScriptObject()
