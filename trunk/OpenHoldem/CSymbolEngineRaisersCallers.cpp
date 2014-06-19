@@ -341,6 +341,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 
 bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponents", 10)==0)
 	{
 		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18)

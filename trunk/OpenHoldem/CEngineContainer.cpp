@@ -175,7 +175,7 @@ void CEngineContainer::CreateSymbolEngines() {
   AddSymbolEngine(p_symbol_engine_various_data_lookup);
   // OpenPPL-symbol-engines
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
-  AddSymbolEngine(p_symbol_engine_various_data_lookup);
+  AddSymbolEngine(p_symbol_engine_openppl_user_variables);
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
   BuildListOfSymbolsProvided();
 }

@@ -72,6 +72,7 @@ double CSymbolEngineMemorySymbols::Recall(CString command) {
 bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   // memory-commands
   // "name" = query
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "me_", 3) == 0) {
     if (memcmp(name, "me_st_", 6) == 0) {  
       Store(name);

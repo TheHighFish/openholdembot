@@ -86,6 +86,7 @@ void CSymbolEngineTime::ResetOnAutoPlayerAction() {
 }
 
 bool CSymbolEngineTime::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "elapsed", 7)==0) {
 	if (memcmp(name, "elapsed", 7)==0 && strlen(name)==7) {
       *result = elapsed();

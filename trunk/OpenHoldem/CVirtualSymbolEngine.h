@@ -14,6 +14,11 @@
 #ifndef INC_CVIRTUALSYMBOLENGINE_H
 #define INC_CVIRTUALSYMBOLENGINE_H
 
+// OH-symbols are lower-case
+// OpenPPL-symbols are upper-case
+// To be used in EvaluateSymbol()
+#define FAST_EXIT_ON_OPENPPL_SYMBOLS(name) if (isupper(name[0])) return false;
+
 class CVirtualSymbolEngine
 {
 public:

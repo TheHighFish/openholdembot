@@ -179,6 +179,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponents", 10)==0)
 	{
 		if (memcmp(name, "nopponentsseated", 16)==0 && strlen(name)==16)	
