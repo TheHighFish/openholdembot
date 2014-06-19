@@ -11,7 +11,7 @@
 //
 //******************************************************************************
 
-// !! Now unused; might be "recycled"
+// Now unused; might be "recycled"
 
 #ifndef INC_DIALOGSAPREFS18_H
 #define INC_DIALOGSAPREFS1_H

@@ -43,7 +43,7 @@ CFormulaFileSplitter::~CFormulaFileSplitter() {
 }
 
 void CFormulaFileSplitter::InitNewParse() {
-  _first_function_processed = false; //!!!
+  _first_function_processed = false; 
   _total_line_processed = 0;
   _starting_line_of_current_function = 0;
 }

@@ -66,6 +66,8 @@ class CFormulaParser {
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);
  private:
+  bool IsValidFunctionName(CString name);
+ private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
   CParseTreeRotator _parse_tree_rotator;
