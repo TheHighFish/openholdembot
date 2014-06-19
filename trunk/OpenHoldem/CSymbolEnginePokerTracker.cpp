@@ -66,21 +66,18 @@ void CSymbolEnginePokerTracker::ResetOnHeartbeat()
 	check_for_identity_of_players_executed_this_heartbeat = false;
 }
 
-void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s)
-{
+void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
 	CString error_message = "Error: Invalid PT-symbol: " + s;
-	OH_MessageBox_Error_Warning(error_message, "Error");
+	OH_MessageBox_Formula_Error(error_message, "Error");
 }
 
-bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s)
-{
+bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s) {
 	return ((s.Left(2) == "pt") 
 		&& (s.Left(3) != "pt_")
 		&& (s.Left(5) != "pt_r_"));
 }
 
-void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup()
-{
+void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup() {
 	if (check_for_identity_of_players_executed_this_heartbeat)
 	{
 		return;
@@ -89,14 +86,12 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 	ClearAllStatsOfChangedPlayers();
 }
 
-void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound)
-{
+void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound) {
 	assert(chair >= k_first_chair); 
 	assert(chair <= k_last_chair);
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
-	if (clearNameAndFound)
-	{
+	if (clearNameAndFound) {
 		_player_data[chair].found = false;
 		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
 		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
@@ -104,8 +99,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
 }
 
-void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers()
-{
+void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
@@ -140,7 +134,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 			"Old style PokerTracker symbol detected: %s.\n"
 			"\n"
 			"PokerTracker symbol either start with \"pt_\" or \"pt_r_\".\n", s);
-		OH_MessageBox_Error_Warning(
+		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
 		*result = k_undefined;

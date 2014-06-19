@@ -52,7 +52,6 @@
 #include "CTablePositioner.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
-#include "CVersus.h"
 
 void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
@@ -123,9 +122,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPerl\n");
   assert(!p_perl);
   p_perl = new CPerl;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersus\n");
-  assert(!p_versus);
-  p_versus = new CVersus;	
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
@@ -250,8 +246,6 @@ void DeleteAllSingletons() {
 	{ delete p_table_positioner; p_table_positioner = NULL; }
   if (p_validator) 
 	{ delete p_validator; p_validator = NULL; }
-  if (p_versus)  
-	{ delete p_versus; p_versus = NULL; }
   if (p_perl)  
 	{ delete p_perl; p_perl = NULL; }
   if (p_game_state)  

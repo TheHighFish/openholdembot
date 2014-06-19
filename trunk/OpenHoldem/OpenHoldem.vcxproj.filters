@@ -641,9 +641,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug_Database.cpp_">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
       <Filter>Source Files\Validator-Rules</Filter>
     </None>

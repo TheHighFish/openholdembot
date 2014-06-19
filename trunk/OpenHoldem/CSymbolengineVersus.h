@@ -38,15 +38,15 @@ class CSymbolEngineVersus: public CVirtualSymbolEngine {
  public:
   // Public accessors
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateVersusHandListSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
+  bool VersusBinLoaded()  { return !_versus_bin_not_loaded; }
+ public:
+  bool GetCounts();
  private:
   void DoCalc(const CardMask plCards, const CardMask oppCards, const CardMask comCards, 
 	  unsigned int *wintemp, unsigned int *tietemp, unsigned int *lostemp);
   inline bool CheckForLoadedVersusBin();
- private:
-  bool GetCounts();
-  //bool GetCountsPreflop();
-  //bool GetCountsPostflop();
  private:
   int	_versus_fh;
   bool _versus_bin_not_loaded;
@@ -62,6 +62,14 @@ class CSymbolEngineVersus: public CVirtualSymbolEngine {
 	double		_vsprwintinow, _vsprtietinow, _vsprlostinow;
 	double		_vsprwinlonow, _vsprtielonow, _vsprloslonow;
  private:
+  // Number of winning/tieing/losing outcomes of my current hand 
+  // at the current board against a concrete holding.
+  // Precomputed against all possible opponents card combinations.
+  int _n_win_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
+  int _n_tie_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
+  int _n_los_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
+ private:
+  
   unsigned int card_player[2];
   unsigned int card_common[5];
   unsigned int pcard[2];

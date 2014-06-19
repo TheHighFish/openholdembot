@@ -16,6 +16,8 @@
 #include "OH_MessageBox.h"
 
 #include <assert.h>
+#include "CFormulaParser.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 
 
@@ -23,28 +25,24 @@ const int k_messagebox_standard_flags = MB_OK | MB_TOPMOST;
 const int k_messagebox_error_flags = k_messagebox_standard_flags | MB_ICONWARNING;
 
 
-void OH_MessageBox_Error_Warning(CString Message, CString Title)
-{
+void OH_MessageBox_Error_Warning(CString Message, CString Title) {
 #ifdef OPENHOLDEM_PROGRAM
 	// Only OpenHoldem supports this setting,
 	// but not OpenScrape or other potential applications
-	if (preferences.disable_msgbox())
-	{
+	if (preferences.disable_msgbox())	{
 		return;
 	}
 #endif
 	MessageBox(0, Message, Title, k_messagebox_error_flags);
 }
 
-int OH_MessageBox_Interactive(CString Message, CString Title, int Flags)
-{
+int OH_MessageBox_Interactive(CString Message, CString Title, int Flags) {
 	return MessageBox(0, Message, Title, (Flags | k_messagebox_standard_flags));
 }
 
 // MessageBox for the msgbox$MESSAGE-command of OH-script
 // Returns 0 as a result
-int OH_MessageBox_OH_Script_Messages(CString message)
-{
+int OH_MessageBox_OH_Script_Messages(CString message) {
 	// Preprocess message
 	const CString msgbox_prefix = "msgbox$";
 	assert(message.Left(msgbox_prefix.GetLength()) == msgbox_prefix);
@@ -58,4 +56,12 @@ int OH_MessageBox_OH_Script_Messages(CString message)
 	message.Replace("_U", "_");
 	OH_MessageBox_Error_Warning(message, "OH-Script Message");
 	return 0;
+}
+
+void OH_MessageBox_Formula_Error(CString Message, CString Title) {
+  if (p_formula_parser->IsParsing()) {
+    CParseErrors::Error(Message);
+  } else {
+    OH_MessageBox_Error_Warning(Message, Title);
+  }
 }

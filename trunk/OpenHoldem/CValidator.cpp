@@ -22,7 +22,7 @@
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
-#include "CVersus.h"
+#include "CSymbolEngineVersus.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
 
@@ -294,7 +294,7 @@ void CValidator::ValidateGameState()
 
 void CValidator::ValidateVersusDBOnlyIfInstalled()
 {
-	if(p_versus->VersusBinLoaded())
+	if(p_symbol_engine_versus->VersusBinLoaded())
 	{
 #include "Validator_Rules\range_checks_versus_inline.cpp_"
 	}

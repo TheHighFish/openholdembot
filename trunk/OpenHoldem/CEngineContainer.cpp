@@ -48,6 +48,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineVariousDataLookup.h"
+#include "CSymbolEngineVersus.h"
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
@@ -114,6 +115,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineRandom
   p_symbol_engine_random = new CSymbolEngineRandom();
   AddSymbolEngine(p_symbol_engine_random);
+  // CSymbolEngineVersus
+  p_symbol_engine_versus = new CSymbolEngineVersus;
+  AddSymbolEngine(p_symbol_engine_versus);
   // CSymbolEngineActiveDealtPlaying
   p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
   AddSymbolEngine(p_symbol_engine_active_dealt_playing);
