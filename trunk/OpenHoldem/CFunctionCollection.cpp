@@ -93,7 +93,7 @@ CString CFunctionCollection::DLLPath() {
 
 void CFunctionCollection::SetEmptyDefaultBot() {
   DeleteAll();
-  //!!CSLock lock(m_critsec);
+  //!!!CSLock lock(m_critsec);
   _title = "NoName";
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -103,7 +103,7 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
-  //!!CSLock lock(m_critsec);
+  //!!!CSLock lock(m_critsec);
   // Header comment
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded

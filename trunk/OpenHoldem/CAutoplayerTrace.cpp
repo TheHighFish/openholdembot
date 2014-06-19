@@ -217,7 +217,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // poker hand
   pokerhand = p_symbol_engine_pokerval->HandType();
   // best action
-  // !! needs to be extended for betpot, etc.
+  // !!! needs to be extended for betpot, etc.
   if (p_autoplayer_functions->f$alli())
     bestaction = "Allin";
   else if (p_autoplayer_functions->f$betsize() > 0)
