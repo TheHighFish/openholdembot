@@ -190,151 +190,151 @@ bool IsOutdatedSymbol(CString symbol) {
   switch (first_character) {
     case 'a':
       if (symbol == "ac_aggressor ") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_ac_aggressor, title_outdated_symbol);
+	      OH_MessageBox_Formula_Error(outdated_symbol_ac_aggressor, title_outdated_symbol);
 	    return true;
       }
       if ((symbol == "allidelay") || (symbol == "activemethod")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_tablemap, title_outdated_symbol);
+	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
 	    return true;
       }
     case 'b':
       if (symbol == "br") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	    OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	    return true;
       }
       if (symbol == "bankroll") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      return true;
       } 
     case 'c': 
       if (symbol == "chair") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "callshort") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_callshort_raisshort, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "clocks") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_clocks, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
+	      return true;
       }
     case 'd':
       if (symbol == "defcon") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      return true;
       } 
     case 'e':
       if (symbol == "elapsed1970") {
-	    OH_MessageBox_Error_Warning(outdated_various_symbols, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      return true;
       }
     case 'f':
       if (symbol.Left(7) == "friends") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_friends, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
+	      return true;
       }
     case 'h':
       if (symbol == "handrank") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_handrank, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_handrank, title_outdated_symbol);
+	      return true;
       }
     case 'i': 
       if ((symbol == "islistcall") || (symbol == "islistrais") 
-	      || (symbol == "islistalli") || (symbol == "isemptylistcall") 
-	      || (symbol == "isemptylistrais") || (symbol == "isemptylistalli")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_lists, title_outdated_symbol);
-	    return true;
+	        || (symbol == "islistalli") || (symbol == "isemptylistcall") 
+	        || (symbol == "isemptylistrais") || (symbol == "isemptylistalli")) {
+	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
+	      return true;
       }
       if (symbol.Left(6) == "islist") {
-        OH_MessageBox_Error_Warning(outdated_symbols_islist_symbols, title_outdated_symbol);
+        OH_MessageBox_Formula_Error(outdated_symbols_islist_symbols, title_outdated_symbol);
         return true;
       }
       if ((symbol == "isbring") || (symbol == "ismanual")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_isbring_ismanual, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_isbring_ismanual, title_outdated_symbol);
+	      return true;
       }
       if ((symbol == "isfiveofakind") || (symbol == "isaggmode") 
-	      || (symbol == "isdefmode")) {
-	    OH_MessageBox_Error_Warning(outdated_various_symbols, title_outdated_symbol);
-	    return true;
+	       || (symbol == "isdefmode")) {
+	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      return true;
       }
     case 'm':
       if (symbol.Left(3) == "mh_") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_handstrength, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_handstrength, title_outdated_symbol);
+	      return true;
       }
     case 'n':
       if ((symbol == "nlistmax") || (symbol == "nlistmin")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_lists, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "nopponentsmax") {
-	    OH_MessageBox_Error_Warning(outdated_various_symbols, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "ncommoncardspresent") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_ncommoncardspresent, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_ncommoncardspresent, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "nclockspersecond") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_clocks, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
+	      return true;
       }
       if ((symbol == "ncps") || (symbol == "nflopc")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      return true;
       }
       if (symbol.Left(8) == "nfriends") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_friends, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
+	      return true;
       }
     case 'o':
       if (symbol == "originaldealposition") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_originaldealposition, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_originaldealposition, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "oppdealt") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      return true;
       }
     case 'p':
       if (symbol.Left(3) == "ptt") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_ptt, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_ptt, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "potdelay") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_tablemap, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      return true;
       }
     case 'r':
       if (symbol == "raisshort") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_callshort_raisshort, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
+	      return true;
       }
       if (// Attention: "randomround" is valid
 	      // Only randomround1..rnadomround4 are outdated
 	      (symbol.GetLength() == 12) && (symbol.Left(11) == "randomround")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_randomround, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_randomround, title_outdated_symbol);
+	      return true;
       }
       if ((symbol.Left(4) == "run$") || (symbol.Left(4) == "ron$")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_runron, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_runron, title_outdated_symbol);
+	      return true;
       }
       if (symbol == "rake") {
-	    OH_MessageBox_Error_Warning(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      return true;
       } 
     case 's': 
       if ((symbol == "swagdelay") || (symbol == "swagtextmethod")) {
-	    OH_MessageBox_Error_Warning(outdated_symbols_tablemap, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      return true;
       }
     case 'N':
       if (symbol == "NIT") {
-	    OH_MessageBox_Error_Warning(outdated_symbol_NIT, title_outdated_symbol);
-	    return true;
+	      OH_MessageBox_Formula_Error(outdated_symbol_NIT, title_outdated_symbol);
+	      return true;
       }
     default: 
 	  // Good symbol for sure
@@ -347,5 +347,5 @@ void WarnAboutUnknownSymbol(CString symbol) {
   CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
   + symbol + CString("\"\nThis is most probably a typo in the symbols name.\n")
   + CString("Please check your formula and your DLL or Perl-script.");
-  OH_MessageBox_Error_Warning(error_message, title_unknown_symbol);
+  OH_MessageBox_Formula_Error(error_message, title_unknown_symbol);
 }

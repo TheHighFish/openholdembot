@@ -348,7 +348,6 @@
     <ClCompile Include="COHScriptObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug_Database.cpp_" />
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
     <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
     <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_" />

@@ -16,6 +16,7 @@
 
 #include "CFormulaParser.h"
 #include "CTokenizer.h"
+#include "OH_MessageBox.h"
 
 bool CParseErrors::_is_error = false;
 
@@ -31,7 +32,7 @@ void CParseErrors::Error(CString short_message)
 		"============================================================\n",
 		ErroneousCodeSnippet(), "\n",
 		"============================================================\n");
-	MessageBox(0, message, "Parse Error", 0);
+	OH_MessageBox_Interactive(message, "Parse Error", 0);
 }
 
 void CParseErrors::ErrorUnknownIdentifier(CString name) {

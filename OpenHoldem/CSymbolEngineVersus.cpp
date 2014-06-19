@@ -24,7 +24,14 @@
 #include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
 
+CSymbolEngineVersus *p_symbol_engine_versus = NULL;
+
 CSymbolEngineVersus::CSymbolEngineVersus() {
+  // The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+  assert(p_symbol_engine_userchair != NULL);
+  // Check versus.bin
   _sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (_versus_fh == k_undefined) {
 		// We do no longer warn directly, 
@@ -83,8 +90,9 @@ bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
 	if (_versus_bin_not_loaded)	{
 		OH_MessageBox_Error_Warning("Impossible to use versus-symbols.\n"
 			"Versus.bin not loaded and probably not installed.\n"
-			"Please download this file from googlecode.", 
-			"Versus Error");
+			"Please download this file from our download page:\n"
+      "https://sites.google.com/site/openholdempokerbot/downloads", 
+			"Versus Error"); 
     return false;
 	}
   return true;
@@ -192,16 +200,9 @@ bool CSymbolEngineVersus::GetCounts() {
 					  c0rank = c1rank;
 					  c1rank = temprank;
 				  }
-				  for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-				  {/*!!!
-					  if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum))
-						  || (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
-					  {
-						  _nlistwin[listnum] += wintemp;
-						  _nlisttie[listnum] += 1712304 - wintemp - lostemp;
-						  _nlistlos[listnum] += lostemp;
-					  }*/
-				  }
+				  _n_win_against_hand[i][j] = wintemp;
+          _n_tie_against_hand[i][j] = tietemp;
+          _n_los_against_hand[i][j] = lostemp;
 			  }
 		  }
 	  }		
@@ -235,9 +236,9 @@ bool CSymbolEngineVersus::GetCounts() {
 		player_hv_now = Hand_EVAL_N(playerEvalCardsNow, betround+3);
 	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
-		for (int i=0; i<=50; i++)
+		for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
 		{
-			for (int j=i+1; j<=51; j++)
+			for (int j=i+1; j<k_number_of_cards_per_deck; j++)
 			{
 				if (!CardMask_CARD_IS_SET(usedCards, i) && !CardMask_CARD_IS_SET(usedCards, j))
 				{
@@ -308,13 +309,12 @@ bool CSymbolEngineVersus::GetCounts() {
 						nlonowtie += tietemp;
 						nlonowlos += lostemp;
 					}
-	            else
-               {
-                  _nhandstinow = _nhandstinow + 1;
-						ntinowwin += wintemp;
-						ntinowtie += tietemp;
-						ntinowlos += lostemp;
-               }
+	        else {
+              _nhandstinow = _nhandstinow + 1;
+						  ntinowwin += wintemp;
+						  ntinowtie += tietemp;
+						  ntinowlos += lostemp;
+          }
 		            
 					// Calculations for vs$xx$prwin, vs$xx$prtie, vs$xx$prlos
 					c0rank = StdDeck_RANK(i);
@@ -326,21 +326,9 @@ bool CSymbolEngineVersus::GetCounts() {
 						c1rank = temprank;
 					}
 
-          /*
-          nwin 
-            ntie
-            nlos*/
-
-					for (listnum=0; listnum<MAX_HAND_LISTS; listnum++)
-					{/*!!!
-						if ((StdDeck_SUIT(i)==StdDeck_SUIT(j) && p_function_collection->IsList(listnum)) 
-							|| (StdDeck_SUIT(i)!=StdDeck_SUIT(j) && p_function_collection->IsList(listnum)))
-						{
-							_nlistwin[listnum] += wintemp;
-							_nlisttie[listnum] += tietemp;
-							_nlistlos[listnum] += lostemp;
-						}*/
-					}
+          _n_win_against_hand[i][j] = wintemp;
+          _n_tie_against_hand[i][j] = tietemp;
+          _n_los_against_hand[i][j] = lostemp;
 				}
 			}
 		}
@@ -416,7 +404,7 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
 	  else if (memcmp(name, "vs$nhandslonow", 14)==0 && strlen(name)==14)	return _nhandslonow;
   } else if (memcmp(name, "vs$pr", 5) == 0) {
     // vs$pr...symbols
-    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		      return _vsprwin;
+    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		          return _vsprwin;
 	  else if (memcmp(name, "vs$prtie", 8)==0 && strlen(name)==8)		      return _vsprtie;
 	  else if (memcmp(name, "vs$prlos", 8)==0 && strlen(name)==8)		      return _vsprlos;
 	  else if (memcmp(name, "vs$prwinhi", 10)==0 && strlen(name)==10)	    return _vsprwinhi;
@@ -439,52 +427,62 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
 	  else if (memcmp(name, "vs$prloslonow", 13)==0 && strlen(name)==13)	return _vsprloslonow;
   } else if (memcmp(name, "vs$list", 7) == 0) {
     // vs$list...$prwin/prtie/prlos-symbols
-    //!!
+    return EvaluateVersusHandListSymbol(name, result, log);
   } else if (isdigit(name[3])) {
-    MessageBox(0,
+    OH_MessageBox_Formula_Error(
       "Old style versus-list format, like vs$123$win.\n"
       "No longer valid, as we do no longer have 1000 lists,\n"
       "but arbitrary many named lists.\n"
       "\n"
       "Example: vs$listTop30$prwin",
-      "Error", 0);
+      "Error");
     *result = k_undefined_zero;
     return true;
   }
-  MessageBox(0, "Not a valid versus-symbol", "Error", 0); //!!!
+  CString message;
+  message.Format("Not a valid versus-symbol: %s", name);
+  OH_MessageBox_Formula_Error(message, "Error");
   *result = k_undefined_zero;
   return true; 
 }
 
-/*
-double CVersus::GetSymbol(const char *a, int *e) 
-{
-
-	else if (memcmp(a, "vs$", 3)==0 &&
-			 ((memcmp(&a[4], "$pr", 3)==0 && strlen(a)==10) ||
-			  (memcmp(&a[5], "$pr", 3)==0 && strlen(a)==11) ||
-			  (memcmp(&a[6], "$pr", 3)==0 && strlen(a)==12)))
-	{
-		// Get the list num we need
-		n = atoi(a+3);
-
-		// win, los or tie?
-		b = (char *)strstr(a+3,"$pr")+3;
-
-		if (!memcmp(b,"win",3))
-			return (double) _nlistwin[n] / ((double) _nlistwin[n] + (double) _nlisttie[n] + (double) _nlistlos[n]);
-
-		else if (!memcmp(b,"tie",3))
-			return (double) _nlisttie[n] / ((double) _nlistwin[n] + (double) _nlisttie[n] + (double) _nlistlos[n]);
-
-		else if (!memcmp(b,"los",3))
-			return (double) _nlistlos[n] / ((double) _nlistwin[n] + (double) _nlisttie[n] + (double) _nlistlos[n]);
-	}
-
-	*e = ERR_INVALID_SYM;
-	return 0.0;
+bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double *result, bool log /* = false */) {
+  CString symbol = name;
+  assert(symbol.Left(7) == "vs$list");
+  CString postfix = symbol.Right(5);
+  double n_win = 0; 
+  double n_tie = 0;
+  double n_los = 0;
+  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
+	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+      if (1) { //!!!
+        // Hand in list
+        // If not possible _n_win_against_hand etc. will be zero  
+        n_win += _n_win_against_hand[i][j];
+        n_tie += _n_tie_against_hand[i][j];
+        n_los += _n_los_against_hand[i][j];
+     }
+   }
+  }
+  double n_total = n_win + n_tie + n_los;
+  assert(n_win >= 0);
+  assert(n_tie >= 0);
+  assert(n_los >= 0);
+  assert(n_total >= 0);
+  if (postfix == "prwin") {
+    *result = n_win / n_total;
+    return true;
+  } else if (postfix == "prtie") {
+    *result = n_tie / n_total;
+    return true;
+  } else if (postfix == "prlos") {
+    *result = n_los / n_total;
+    return true;
+  } else {
+    // invalid !!  
+    return false;
+  }
 }
-*/
 
 CString CSymbolEngineVersus::SymbolsProvided() {
   return "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "

@@ -22,7 +22,7 @@
 #include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"
-#include "Cversus.h"
+#include "CSymbolEngineVersus.h"
 #include "debug.h"
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
@@ -167,7 +167,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		}
 
 		// Recompute versus tables
-		p_versus->GetCounts ();
+		p_symbol_engine_versus->GetCounts ();
 		iserr = false;
 		return 0;
 	}
