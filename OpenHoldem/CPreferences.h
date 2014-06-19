@@ -81,6 +81,7 @@ enum
 	k_prefs_debug_scraper_preprocessor,
 	k_prefs_debug_openholdem,
 	k_prefs_debug_popup_blocker,
+  k_prefs_debug_formula,
 	k_prefs_engage_autoplayer,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
@@ -274,7 +275,7 @@ public:
 	const bool  debug_openholdem()  { return prefs_numerical_values[k_prefs_debug_openholdem]; }
 	const bool  debug_popup_blocker()  { return prefs_numerical_values[k_prefs_debug_popup_blocker]; }
 	const bool  debug_scraper_preprocessor() { return prefs_numerical_values[k_prefs_debug_scraper_preprocessor]; }
-  const bool  debug_formula() { return false; } //!!
+  const bool  debug_formula() { return prefs_numerical_values[k_prefs_debug_formula]; }
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
