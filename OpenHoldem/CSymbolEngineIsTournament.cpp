@@ -285,6 +285,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 
 bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 { 
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12)
 	{
 		*result = istournament();

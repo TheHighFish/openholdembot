@@ -17,8 +17,9 @@
 #define INC_CSYMBOL_ENGINE_OPENPPL_USER_VARIABLES_H
 
 #include <map>
+#include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineOpenPPLUserVariables {
+class CSymbolEngineOpenPPLUserVariables: public CVirtualSymbolEngine {
  public:
   CSymbolEngineOpenPPLUserVariables();
   ~CSymbolEngineOpenPPLUserVariables();

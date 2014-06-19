@@ -58,7 +58,8 @@ void CSymbolEngineIsOmaha::ResetOnHeartbeat()
 {}
 
 bool CSymbolEngineIsOmaha::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
-  if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	{
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
+  if (memcmp(name, "isomaha", 7)==0 && strlen(name)==7)	{
     // Up to now only Hold'Em supported
 		*result = false;
     return true;

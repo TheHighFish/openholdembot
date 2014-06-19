@@ -187,7 +187,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
     return;
-  } else if (!IsValidFunctionName(name))  {
+  } else if (!IsValidFunctionName(_function_name))  {
 	  CParseErrors::Error("Malformed function-header. Name expected");
 	  return;
   }

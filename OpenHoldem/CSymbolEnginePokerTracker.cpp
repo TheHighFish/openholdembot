@@ -120,6 +120,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 
 bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name,"pt_",3)!=0)
 	{
 		// Symbol of a different symbol-engine

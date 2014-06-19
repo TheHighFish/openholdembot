@@ -30,7 +30,7 @@ CFunction::CFunction(
     int absolute_line) {
   _name = ((new_name != NULL) ? *new_name : "");
   _function_text = ((new_function_text != NULL) ? *new_function_text : "");
-  _absolute_line = absolute_line;
+  _starting_line_of_function = absolute_line;
   _is_result_cached = false;
   _cached_result = k_undefined_zero;
   _parse_tree_node = NULL;
@@ -83,7 +83,7 @@ double CFunction::Evaluate(bool log /* = false */) {
       _is_result_cached = true;
       if (log) {
         p_autoplayer_trace->BackPatchValueAndLine(
-          log_line, _cached_result, _absolute_line);
+          log_line, _cached_result, _starting_line_of_function);
       }
       p_autoplayer_trace->Indent(false);
     }

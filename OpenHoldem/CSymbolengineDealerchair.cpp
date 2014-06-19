@@ -71,6 +71,7 @@ void CSymbolEngineDealerchair::ResetOnHeartbeat()
 
 bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "dealerchair", 11)==0 && strlen(name)==11)	
 	{
 		*result = p_symbol_engine_dealerchair->dealerchair();
