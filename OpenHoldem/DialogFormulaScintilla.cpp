@@ -1198,8 +1198,6 @@ void CDlgFormulaScintilla::OnHandList()  {
   CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
   COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
   if (p_handlist == NULL)  return;
-
-  //!!m_wrk_formula.ParseHandList(m_wrk_formula.formula()->mHandList[list_index].list_text, myDialog.checked);
   // Window title and static text content
   myDialog.hand_list_num = atoi(s.Mid(4).GetString());
 
@@ -1208,6 +1206,8 @@ void CDlgFormulaScintilla::OnHandList()  {
     CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
     CString new_handlist_without_comment = myDialog.HandListToString();
     CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
+    p_handlist->SetText(new_handlist_with_comment);
+    p_handlist->Parse();
 
     // update scintilla window
     CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));

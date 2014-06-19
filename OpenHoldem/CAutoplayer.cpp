@@ -146,7 +146,7 @@ bool CAutoplayer::DoBetPot(void)
 				k_standard_function_names[i]);
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
 			{
-				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, /*betpot_delay* !! */ 400);
+				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, preferences.swag_delay_3());
 			}
 			else 
 			{

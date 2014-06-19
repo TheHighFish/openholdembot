@@ -27,6 +27,7 @@
 #include "MagicNumbers.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
+#include "PokerChat.hpp"
 #include "SwagAdjustment.h"
 #include "CMyMutex.h"
 
@@ -225,8 +226,8 @@ bool CCasinoInterface::EnterChatMessage(CString &message)
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_chatbox, message, false, GetFocus(), cur_pos);
 
 	// Clear old chat_message to allow new ones.
-	//!!_the_chat_message = NULL;
-	//ComputeFirstPossibleNextChatTime();
+	_the_chat_message = NULL;
+	ComputeFirstPossibleNextChatTime();
 	return true;
 }
 

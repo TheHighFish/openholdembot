@@ -166,7 +166,15 @@ void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
 }
 
 bool CFormulaParser::IsValidFunctionName(CString name) {
-  return true; //!!
+  int length = name.GetLength();
+  for (int i=0; i<length; ++i) {
+    char next_character = name[i];
+    if (isalnum(next_character)) continue;
+    else if (next_character == '_') continue;
+    else if (next_character == '$') continue;
+    else return false;
+  }
+  return true; 
 }
 
 void CFormulaParser::ParseSingleFormula(CString function_text) {
@@ -465,7 +473,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
     // Next either:
     // * action
     // * another when-condition
-    // * user-variable to be set !!
+    // * user-variable to be set !!!
     token_ID = _tokenizer.LookAhead();
     if (TokenIsOpenPPLAction(token_ID))  {
       TPParseTreeNode action = ParseOpenPPLAction();
