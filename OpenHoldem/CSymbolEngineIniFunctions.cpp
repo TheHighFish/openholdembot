@@ -129,6 +129,7 @@ void CSymbolEngineIniFunctions::ResetOnHeartbeat() {
 CString CSymbolEngineIniFunctions::SymbolsProvided() {
   // This symbol-engine does not really provide any symbols.
   // It just makes use of certain events (ResetOnHeartbeat, etc.)
-  // and all f$-functions will get added by !!! at once.
+  // and all f$-functions will get added by the function-collection
+  // for syntax-highlighting at once.
   return "";
 }

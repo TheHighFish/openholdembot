@@ -76,7 +76,10 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
 }
 
 CString CDebugTab::function_text() {
-  return _function_text; // !!! because we need it for parsing
+  // It seems we need the current _function_text for parsing,
+  // if changed in the editor, so we can't construct a new 
+  // clean one from the old parsed data.
+  return _function_text; 
   /*
   // Clean function text,
   // nicely formatted without results

@@ -165,6 +165,10 @@ void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
   ParseSingleFormula(function_text);
 }
 
+bool CFormulaParser::IsValidFunctionName(CString name) {
+  return true; //!!
+}
+
 void CFormulaParser::ParseSingleFormula(CString function_text) {
   _tokenizer.SetInput(function_text);
   // Check for empty function
@@ -183,7 +187,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
     return;
-  } else if (/*token_ID != kTokenIdentifier !!!*/ false)  {
+  } else if (!IsValidFunctionName(name))  {
 	  CParseErrors::Error("Malformed function-header. Name expected");
 	  return;
   }
@@ -652,7 +656,6 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     int expresion_length = next_line.GetLength() - pos - 1;
     CString expression_text = next_line.Right(expresion_length);
     // Parse this line
-    //!!!_formula_file_splitter.SetInput(expression_text);
     _tokenizer.SetInput(expression_text);
     TPParseTreeNode expression = ParseExpression();
     // Care about operator precendence

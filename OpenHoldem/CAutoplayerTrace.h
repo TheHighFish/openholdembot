@@ -47,9 +47,6 @@ class CAutoplayerTrace {
  private:
   CString Indentation();
  private:
-  //!!!const CArray <CString, CString> *logsymbols_collection() { return &_logsymbols_collection; }
-  //const CArray <CString, CString> *symboltrace_collection() { return &_symboltrace_collection; }
-  // private variables - use public accessors and public mutators to address these
   CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
   CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
   std::map<CString, bool> _already_logged_symbols;
