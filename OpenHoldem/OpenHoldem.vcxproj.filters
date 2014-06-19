@@ -163,6 +163,9 @@
     <Filter Include="Documents\Checklist for Releases">
       <UniqueIdentifier>{3bf1dc87-afa3-4653-8298-deb869573cff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI\Unused_might_be_recycled">
+      <UniqueIdentifier>{94d59cbb-2478-484c-a4a0-0f28a192adfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -280,9 +283,6 @@
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
     <ClCompile Include="DialogSAPrefs17.cpp">
-      <Filter>Source Files\GUI\prefs_dlg</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogSAPrefs18.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
     <ClCompile Include="DialogSAPrefs19.cpp">
@@ -638,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="CSymbolEngineVersus.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs18.cpp">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1180,9 +1183,6 @@
     <ClInclude Include="DialogSAPrefs17.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
-    <ClInclude Include="DialogSAPrefs18.h">
-      <Filter>Header Files\GUI\prefs_dlg</Filter>
-    </ClInclude>
     <ClInclude Include="DialogSAPrefs19.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
@@ -1407,6 +1407,9 @@
     </ClInclude>
     <ClInclude Include="CSymbolengineVersus.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs18.h">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

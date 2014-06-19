@@ -439,11 +439,15 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
     *result = k_undefined_zero;
     return true;
   }
+  ErrorInvalidSymbol(name);
+  *result = k_undefined_zero;
+  return true; 
+}
+
+void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
   CString message;
   message.Format("Not a valid versus-symbol: %s", name);
   OH_MessageBox_Formula_Error(message, "Error");
-  *result = k_undefined_zero;
-  return true; 
 }
 
 bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double *result, bool log /* = false */) {
@@ -479,7 +483,7 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     *result = n_los / n_total;
     return true;
   } else {
-    // invalid !!  
+    ErrorInvalidSymbol(name);
     return false;
   }
 }
