@@ -254,7 +254,6 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="CICMCalculator.cpp" />
-    <ClCompile Include="CLogSymbols.cpp" />
     <ClCompile Include="CPokerAction.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
     <ClCompile Include="CGameState.cpp" />
@@ -484,7 +483,6 @@
     <ClInclude Include="CGameState.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CICMCalculator.h" />
-    <ClInclude Include="CLogSymbols.h" />
     <ClInclude Include="CPokerAction.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />

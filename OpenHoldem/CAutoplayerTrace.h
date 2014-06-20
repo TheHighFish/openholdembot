@@ -46,6 +46,7 @@ class CAutoplayerTrace {
   bool SymbolNeedsToBeLogged(CString name);
  private:
   CString Indentation();
+  CString BestAction();
  private:
   CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
   CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution

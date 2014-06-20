@@ -142,8 +142,7 @@ char *outdated_symbols_randomround =
 char *outdated_symbols_callshort_raisshort =
   "The symbols \"callshort\" and \"raisshort\"\n"
   "got removed from the code-base\n"
-  "because they got designed for Fixed-Limit\n"
-  "no-foldem Hold'em only.\n"
+  "because they got designed for Fixed-Limit no-foldem Hold'em only.\n"
   "Better use a function to estimate future pot-sizes.\n";
 
 char *outdated_various_symbols =

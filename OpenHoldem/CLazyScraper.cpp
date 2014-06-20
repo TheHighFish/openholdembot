@@ -101,7 +101,8 @@ void CLazyScraper::DoScrape()
 	if (NeedFoldButton())
 	{
 		// For fast detection of my turn
-		// !! Currently included in NeedActionbuttons()
+		// Currently included in NeedActionbuttons()
+    // No extra-scrape of fold-button for improved reaction time
 	}
 	if (NeedActionbuttons())
 	{

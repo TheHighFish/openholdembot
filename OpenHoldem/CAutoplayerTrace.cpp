@@ -171,9 +171,29 @@ void CAutoplayerTrace::LogLogSymbols() {
   }
 }
 
+CString CAutoplayerTrace::BestAction() {
+  for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i) {
+    if (p_autoplayer_functions->GetAutoplayerFunctionValue(i)) {
+      if (i == k_autoplayer_function_betsize) {
+        // Special treatment for f$betsize
+        // e.g. "f$betsize = 201.47"
+        CString best_action;
+        best_action.Format("%s = %.2f", k_standard_function_names[i],
+          p_autoplayer_functions->f$betsize());
+        return best_action;
+      }
+      else {
+        return k_standard_function_names[i];
+      }
+    }
+  }
+  assert(k_this_must_not_happen);
+  return "undefined";
+}
+
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   char		nowtime[26];
-  CString	pcards, comcards, temp, rank, pokerhand, bestaction;
+  CString	pcards, comcards, temp, rank, pokerhand;
   char		*card;
   CString	fcra_formula_status;
   int		userchair = p_symbol_engine_userchair->userchair();
@@ -216,20 +236,6 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
   // poker hand
   pokerhand = p_symbol_engine_pokerval->HandType();
-  // best action
-  // !!! needs to be extended for betpot, etc.
-  if (p_autoplayer_functions->f$alli())
-    bestaction = "Allin";
-  else if (p_autoplayer_functions->f$betsize() > 0)
-    bestaction.Format("Raise to $%.2f", p_autoplayer_functions->f$betsize());				
-  else if (p_autoplayer_functions->f$rais())
-    bestaction = "Bet/Raise";
-  else if (p_autoplayer_functions->f$call())
-    bestaction = "Call/Check";
-  else if (p_autoplayer_functions->f$prefold())
-    bestaction = "Prefold";
-  else
-    bestaction = "Check/Fold";
   // fcra_seen
   CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
   // fcra formula status
@@ -259,7 +265,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   fprintf(log_fp, "  f$betsize:     %9.2f\n", p_autoplayer_functions->f$betsize());
   fprintf(log_fp, "  Formulas:      %s\n",    fcra_formula_status.GetString());
   fprintf(log_fp, "  Buttons:       %s\n",    fcra_seen.GetString());
-  fprintf(log_fp, "  Best action:   %s\n",    bestaction.GetString());
+  fprintf(log_fp, "  Best action:   %s\n",    BestAction().GetString());
   fprintf(log_fp, "  Action taken:  %s\n",    action_taken);
 }
 

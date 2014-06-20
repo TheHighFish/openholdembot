@@ -13,8 +13,9 @@
 
 #include "stdafx.h"
 #include "CSymbolEngineMemorySymbols.h"
+#include "CParseTreeNode.h"
 
-//?? autoplayer-trace??
+//!!!?? autoplayer-trace??
 
 CSymbolEngineMemorySymbols *p_symbol_engine_memory_symbols = NULL;
 
@@ -45,16 +46,31 @@ void CSymbolEngineMemorySymbols::ResetOnHeartbeat() {
 
 void CSymbolEngineMemorySymbols::Store(CString command) {
   assert(command.Left(6) == "me_st_");
-  CString command_without_prefix = command.Mid(6);
-  double result = k_undefined_zero;  
+  CString command_without_prefix = command.Mid(6); 
   // Get the name of the symbol, up to the next underscore
   int position_of_first_underscore = command_without_prefix.Find('_');
   CString symbol_name = command_without_prefix.Left(position_of_first_underscore);
   // Get the right hand value after the underscore
   CString right_hand_value = command_without_prefix.Mid(position_of_first_underscore + 1);
-  // !!! Eval
-  MessageBox(0, right_hand_value, "Thou shall evaluate", 0);
+  double result = EvaluateRightHandExpression(right_hand_value);
   _memory_symbols[symbol_name] = result;
+}
+
+double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
+  // Possible use-case
+  //   * constants        me_st_x_3_141
+  //   * functions        me_st_x_f$myfunc
+  //   * symbols          me_st_x_userchair
+  //   * memory-symbols   me_st_x_re_re_y
+  // Already removed: "me_st_x_"
+  // All we have is the oure right-hand-side
+  if (isdigit(right_hand_value[0])) {
+    // Constant
+    // Remove possible underscore by decimal point
+    right_hand_value.Replace('_', '.');
+    return atof(right_hand_value);
+  }
+  return CParseTreeNode::EvaluateIdentifier(right_hand_value, true);
 }
 
 void CSymbolEngineMemorySymbols::Increment(CString command) {

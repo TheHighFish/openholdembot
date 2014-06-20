@@ -153,7 +153,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */)
 	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)
 	{
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
-		double pot_size_after_call_in_big_blinds = 0; // !! PotSize() + AmountToCall();
+		double pot_size_after_call_in_big_blinds = 0; // !!! PotSize() + AmountToCall();
 		double raise_by_amount = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
 		return raise_by_amount;

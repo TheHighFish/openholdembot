@@ -813,7 +813,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
         CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
         if (!pCurScin) 
         {
-          pCurScin = SetupScintilla(NULL, p_function_or_list->name()); //???
+          pCurScin = SetupScintilla(NULL, p_function_or_list->name()); 
           m_FormulaTree.SetItemData(m_FormulaTree.GetSelectedItem(), (DWORD_PTR)pCurScin);
 
           pCurScin->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
