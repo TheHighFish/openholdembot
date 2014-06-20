@@ -512,18 +512,6 @@ const int k_storage_index_for_current_round = 0;
 // Functions names, both user-defined and standard, e.g. "f$alli"
 const int k_max_size_of_function_name = 256;
 
-// ??? Any longer needed?
-const int nTraceFunctions = 9;
-const int nTraceAlli      = 0;
-const int nTraceSwag      = 1;
-const int nTraceRais      = 2;
-const int nTraceCall      = 3;
-const int nTracePrefold   = 4;
-const int nTraceRebuy     = 5;
-const int nTraceSitIn     = 6;
-const int nTraceSitOut    = 7;
-const int nTraceLeave     = 8;
-
 // Player history struct
 const int k_assumed_max_number_of_actions_per_player_and_round = 8;
 

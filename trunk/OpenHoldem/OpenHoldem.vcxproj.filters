@@ -166,6 +166,12 @@
     <Filter Include="Source Files\GUI\Unused_might_be_recycled">
       <UniqueIdentifier>{94d59cbb-2478-484c-a4a0-0f28a192adfd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Symbols\ToDo">
+      <UniqueIdentifier>{deb1712a-592a-4104-b014-17c41e0e4556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Symbols\ToDo">
+      <UniqueIdentifier>{6220de77-6c73-4d28-b85f-15ad2e3e35a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -369,22 +375,7 @@
     <ClCompile Include="CSharedMem.cpp">
       <Filter>Source Files\Synchronization</Filter>
     </ClCompile>
-    <ClCompile Include="CBetroundCalculator.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
     <ClCompile Include="CEngineContainer.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
-    <ClCompile Include="Chair$Symbols.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
-    <ClCompile Include="CICMCalculator.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
-    <ClCompile Include="CLogSymbols.cpp">
-      <Filter>Source Files\Symbols</Filter>
-    </ClCompile>
-    <ClCompile Include="CPokerAction.cpp">
       <Filter>Source Files\Symbols</Filter>
     </ClCompile>
     <ClCompile Include="UnknownSymbols.cpp">
@@ -641,6 +632,18 @@
     </ClCompile>
     <ClCompile Include="DialogSAPrefs18.cpp">
       <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClCompile>
+    <ClCompile Include="CBetroundCalculator.cpp">
+      <Filter>Source Files\Symbols\ToDo</Filter>
+    </ClCompile>
+    <ClCompile Include="Chair$Symbols.cpp">
+      <Filter>Source Files\Symbols\ToDo</Filter>
+    </ClCompile>
+    <ClCompile Include="CICMCalculator.cpp">
+      <Filter>Source Files\Symbols\ToDo</Filter>
+    </ClCompile>
+    <ClCompile Include="CPokerAction.cpp">
+      <Filter>Source Files\Symbols\ToDo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1024,28 +1027,7 @@
     <ClInclude Include="..\StructsDefines\structs_defines.h">
       <Filter>Header Files\StructsDefines</Filter>
     </ClInclude>
-    <ClInclude Include="CBetroundCalculator.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
     <ClInclude Include="CEngineContainer.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameState.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="Chair$Symbols.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CICMCalculator.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CLogSymbols.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CPokerAction.h">
-      <Filter>Header Files\Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="CVirtualSymbolEngine.h">
       <Filter>Header Files\Symbols</Filter>
     </ClInclude>
     <ClInclude Include="UnknownSymbols.h">
@@ -1410,6 +1392,24 @@
     </ClInclude>
     <ClInclude Include="DialogSAPrefs18.h">
       <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClInclude>
+    <ClInclude Include="CBetroundCalculator.h">
+      <Filter>Header Files\Symbols\ToDo</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameState.h">
+      <Filter>Header Files\Symbols\ToDo</Filter>
+    </ClInclude>
+    <ClInclude Include="Chair$Symbols.h">
+      <Filter>Header Files\Symbols\ToDo</Filter>
+    </ClInclude>
+    <ClInclude Include="CICMCalculator.h">
+      <Filter>Header Files\Symbols\ToDo</Filter>
+    </ClInclude>
+    <ClInclude Include="CPokerAction.h">
+      <Filter>Header Files\Symbols\ToDo</Filter>
+    </ClInclude>
+    <ClInclude Include="CVirtualSymbolEngine.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -48,8 +48,11 @@ class CParseTreeNode {
   TPParseTreeNode GetLeftMostSibbling();
   void SetRightMostSibbling(TPParseTreeNode sibbling);
   void SetLeftMostSibbling(TPParseTreeNode sibbling);
+ public:
+  // Might be called by CSymbolEngineMemorySymbols
+  // to evaluate right-hand-side expressions
+  static double EvaluateIdentifier(CString name, bool log);
  private:
-  double EvaluateIdentifier(CString name, bool log);
   double EvaluateUnaryExpression(bool log_symbol);
   double EvaluateBinaryExpression(bool log);
   double EvaluateTernaryExpression(bool log);

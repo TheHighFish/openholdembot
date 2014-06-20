@@ -234,8 +234,9 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	}
 	else if (memcmp(name, "nplayersround", 13)==0)
 	{
-		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13) //???	
+		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13) 	
 		{
+      // For current betting round
 			*result = nplayersround(p_betround_calculator->betround());
 		}
 		else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14)	

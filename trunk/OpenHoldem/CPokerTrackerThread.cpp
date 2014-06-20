@@ -721,7 +721,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 		// Avoiding division by zero and setting sleep time
 		AdaptValueToMinMaxRange(&players, 1, k_max_number_of_players);
-		int sleep_time = (int) ((double)(/*preferences.pt_cache_refresh() !!*/ 30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+		int sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleep_time);
 		LightSleep(sleep_time, pParent);
 		

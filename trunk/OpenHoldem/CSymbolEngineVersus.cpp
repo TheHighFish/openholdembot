@@ -460,7 +460,7 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   double n_los = 0;
   for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
 	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
-      if (1) { //!!!
+      if (1) { //!!!!!
         // Hand in list
         // If not possible _n_win_against_hand etc. will be zero  
         n_win += _n_win_against_hand[i][j];

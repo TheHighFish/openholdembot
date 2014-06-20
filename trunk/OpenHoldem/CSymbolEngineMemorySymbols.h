@@ -36,6 +36,8 @@ class CSymbolEngineMemorySymbols: public CVirtualSymbolEngine {
   void Increment(CString command);
   double Recall(CString command);
  private:
+  double EvaluateRightHandExpression(CString right_hand_value);
+ private:
   std::map<CString, double> _memory_symbols;
 };
 

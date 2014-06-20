@@ -546,7 +546,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 		}
 	}
 	__TRACE
-	CWnd::OnTimer(nIDEvent); //???????
+	CWnd::OnTimer(nIDEvent); 
 	__TRACE
 }
 

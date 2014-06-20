@@ -171,9 +171,8 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		iserr = false;
 		return 0;
 	}
-
 	result = p_function_collection->Evaluate(str);
-	iserr = false; //??? still needed?
+	iserr = false; 
 	return result;
 }
 
@@ -186,7 +185,7 @@ extern "C" __declspec(dllexport) void __stdcall SendChatMessageFomDll(const char
 
 extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 {
-	//!!!broken in OH 4.6.0 / 5.0.0 because hand list array removed
+	//!!broken in OH 4.6.0 / 5.0.0 because hand list array removed
 	return (void *)NULL; //(p_formula->formula()->inlist);
 }
 
@@ -213,8 +212,7 @@ extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
 	va_list args;
 
 	va_start(args, fmt);
-	// !! should true be replaced by an option?
-	write_log_vl(true, fmt, args);
+	write_log_vl(preferences.dll_logging_enabled(), fmt, args);
 	va_end(args);
 }
 

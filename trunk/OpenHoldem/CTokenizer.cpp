@@ -399,13 +399,15 @@ NegativeNumber:
 	// [\0] End of string = end of function
 	else if (CURRENT_CHARACTER == '\0')
 	{
-		line_absolute++; //???
+		line_absolute++; 
 		return kTokenEndOfFunction;
 	}
 	// Do not advance the input pointer,
 	// as we don't accept anything
 	CParseErrors::Error("Unexpected character");
-	return 0;//!!kTokenUnexpectedCharacter;
+  // Can't really continue parsing
+  // Treat it as end of function
+	return kTokenEndOfFunction;
 }
 
 char* CTokenizer::GetTokenString()

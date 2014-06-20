@@ -166,7 +166,7 @@ void CIteratorThread::StartIteratorThreadIfNeeded()
 	// Otherwise: nothing to do, e.g. not my turn
 }
 
-void CIteratorThread::AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent /* needed ???*/)
+void CIteratorThread::AdjustPrwinVariablesIfNecessary()
 {
 	__TRACE
 	// Cut off from IteratorThreadFunction
@@ -212,7 +212,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 
 	// "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
-	AdjustPrwinVariablesIfNecessary(pParent);
+	AdjustPrwinVariablesIfNecessary();
 	unsigned int nit;
 	for (nit=0; nit < iter_vars.nit(); nit++)
 	{
@@ -297,7 +297,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	{
 		iter_vars.set_iterator_thread_running(false);
 		iter_vars.set_iterator_thread_complete(false);
-		iter_vars.set_iterator_thread_progress(0); //???
+		iter_vars.set_iterator_thread_progress(0);
 		iter_vars.set_nit(0);
 
 		for (int i=0; i<k_number_of_cards_per_player; i++)

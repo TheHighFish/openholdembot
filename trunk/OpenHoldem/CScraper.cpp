@@ -779,7 +779,6 @@ void CScraper::ScrapeBet(int chair)
 		double chipscrape_res = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
 
-		//???
 		t.Format("%.2f", chipscrape_res);
 		CScraperPreprocessor::PreprocessMonetaryString(&t);
 		set_player_bet(chair, strtod(t.GetString(), 0));
@@ -998,7 +997,7 @@ void CScraper::ScrapeLimits()
 		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 		titletext = c_titletext;
 	 	
-        bool l_is_final_table = false; //!!dummy
+    bool l_is_final_table = false; //!!dummy
 		CScraperPreprocessor::PreprocessTitleString(&titletext);
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,

@@ -64,7 +64,7 @@ private:
 
 	SHoldemState		_m_holdem_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_m_ndx;
-	ftr_info			_m_ftr[k_number_of_holdem_states_for_DLL]; // ??? WTF is ftr?
+	ftr_info			_m_ftr[k_number_of_holdem_states_for_DLL]; // ?? WTF is ftr?
 	int					_m_ftr_ndx;
 	int					_nopponentsplaying_last;
 	bool				_process_game_state;

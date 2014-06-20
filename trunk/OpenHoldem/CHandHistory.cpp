@@ -196,7 +196,7 @@ void CHandHistory::roundStart()
 	for (int i=0; i<nchairs; i++)
 	{
 		if (_history.chair[i].currentBet == bblind
-			&& i != (_history.bblindpos+1)%nchairs //???
+			&& i != (_history.bblindpos+1)%nchairs //??
 			&& i != _history.bblindpos)
 		{
 			_history.chair[i].postBlind = true;
@@ -245,7 +245,7 @@ void CHandHistory::checkBetround()
 		&&turnSeen==false
 		&&showdownReady==false
 		&&showdownSeen==false
-		&&card_common[3][1]!= NULL) //???
+		&&card_common[3][1]!= NULL) //??
 	{
 		turnSeen = true;
 		ResetPostflopHistory();

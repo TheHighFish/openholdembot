@@ -35,7 +35,7 @@ public:
 private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
-	static void AdjustPrwinVariablesIfNecessary(CIteratorThread *pParent);
+	static void AdjustPrwinVariablesIfNecessary();
 	static void StandardDealingAlgorithm(int nopponents);
 	static void SwapDealingAlgorithmForMoreThan13Opponents(int nopponents);
 	static void StandardDealingAlgorithmForUpTo13Opponents(int nopponents);
