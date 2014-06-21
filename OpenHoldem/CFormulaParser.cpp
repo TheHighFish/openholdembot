@@ -210,6 +210,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Parsing f$function\n");
     function_body =	ParseFunctionBody();
+    CheckForExtraTokensAfterEndOfFunction();
   }
   else if (_function_name.Left(4) == "list") {
     // ##listXYZ##
@@ -239,7 +240,6 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
     return;
   }
-  CheckForExtraTokensAfterEndOfFunction();
   CFunction *p_new_function = new CFunction(&_function_name, 
 	&function_text, _formula_file_splitter.starting_line_of_current_function());
   p_new_function->SetParseTree(function_body);
