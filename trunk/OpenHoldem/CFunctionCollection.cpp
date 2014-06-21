@@ -39,6 +39,7 @@ void CFunctionCollection::DeleteAll() {
 }
 
 void CFunctionCollection::Add(COHScriptObject *new_function) {
+  CSLock lock(m_critsec);
   CString name = new_function->name();
   if (name == "") {
     write_log(preferences.debug_formula(), 
@@ -56,12 +57,14 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
 }
 
 bool CFunctionCollection::Exists(CString name) {
+  CSLock lock(m_critsec);
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name); 
   return (it != _function_map.end());
 }
 
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
+  CSLock lock(m_critsec);
   write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name); 
@@ -74,12 +77,14 @@ COHScriptObject *CFunctionCollection::LookUp(CString name) {
 }
 
 double CFunctionCollection::Evaluate(CString function_name, bool log /* = false */) {
+  CSLock lock(m_critsec);
   double result = k_undefined;
   EvaluateSymbol(function_name, &result, log);
   return result;
 }
 
 CString CFunctionCollection::DLLPath() {
+  CSLock lock(m_critsec);
   COHScriptObject *dll_node = LookUp("DLL");
   if (dll_node == NULL) {
 	  return "";
@@ -92,8 +97,8 @@ CString CFunctionCollection::DLLPath() {
 }
 
 void CFunctionCollection::SetEmptyDefaultBot() {
+  CSLock lock(m_critsec);
   DeleteAll();
-  //!!CSLock lock(m_critsec);
   _title = "NoName";
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -103,7 +108,7 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
-  //!!CSLock lock(m_critsec);
+  CSLock lock(m_critsec);
   // Header comment
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded
@@ -149,11 +154,13 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
 }
 
 COHScriptObject *CFunctionCollection::GetFirst() {
+  CSLock lock(m_critsec);
   enumerator_it = _function_map.begin();
   return GetNext();
 }
 
 COHScriptObject *CFunctionCollection::GetNext() {
+  CSLock lock(m_critsec);
   if (enumerator_it == _function_map.end()) {
     // "end" points behind the last element
     return NULL;
@@ -164,6 +171,7 @@ COHScriptObject *CFunctionCollection::GetNext() {
 }
 
 void CFunctionCollection::ClearCache() {
+  CSLock lock(m_critsec);
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
     if (p_oh_script_object->IsFunction()) {
@@ -175,6 +183,7 @@ void CFunctionCollection::ClearCache() {
 
 void CFunctionCollection::Save(CArchive &ar)
 {
+  CSLock lock(m_critsec);
   // First write the date
   char nowtime[26] = {0};
   CString s;
@@ -219,12 +228,14 @@ void CFunctionCollection::Save(CArchive &ar)
 void CFunctionCollection::SaveObject(
     CArchive &ar, 
     COHScriptObject *function_or_list) {
+  CSLock lock(m_critsec);
   if (function_or_list == NULL) return;
   ar.WriteString(function_or_list->Serialize());
   
 }
 
 bool CFunctionCollection::Rename(CString from_name, CString to_name) {
+  CSLock lock(m_critsec);
   COHScriptObject *object_to_rename = LookUp(from_name);
   if (object_to_rename == NULL) return false;
   if (p_function_collection->LookUp(to_name) != NULL) {
@@ -241,6 +252,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
 }
 
 void CFunctionCollection::Delete(CString name) {
+  CSLock lock(m_critsec);
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name);
   if (it != _function_map.end()) {
@@ -249,6 +261,7 @@ void CFunctionCollection::Delete(CString name) {
 }
 
 void CFunctionCollection::SetFunctionText(CString name, CString content) {
+  CSLock lock(m_critsec);
   COHScriptObject *function = LookUp(name);
   if (function == NULL) {
     // Function does not yet exist; new one
@@ -267,11 +280,12 @@ bool CFunctionCollection::CorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
+  CSLock lock(m_critsec);
   CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    if (p_oh_script_object->IsFunction()) {
+    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
       p_oh_script_object->Parse();
     }
     p_oh_script_object = GetNext();  
@@ -301,6 +315,7 @@ void CFunctionCollection::ResetOnHeartbeat() {
 }
 
 bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  CSLock lock(m_critsec);
   if ((memcmp(name, "f$", 2) == 0) 
       || (memcmp(name, "list", 4) == 0)) { 
     COHScriptObject *p_function = LookUp(name);

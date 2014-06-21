@@ -42,6 +42,8 @@ class COHScriptList: public COHScriptObject {
  public:
   void Clear();
   bool Set(CString list_member);
+  // Public for CSymbolEngineVersus
+  bool IsOnList(int first_rank, int second_rank, bool suited);
   // Actually Evaluate() returns true/false if our hand is in the list or not
   // but the function is inheritzed from the base-class.
   double Evaluate(bool log = false);
@@ -50,7 +52,6 @@ class COHScriptList: public COHScriptObject {
   void ErrorOldStyleFormat(CString list_member);
  private:
   void Set(int first_rank, int second_rank, bool suited);
-  bool IsOnList(int first_rank, int second_rank, bool suited);
  private:
   THandListMatrix _handlist_matrix;
 };

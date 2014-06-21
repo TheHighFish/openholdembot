@@ -187,8 +187,8 @@ CString CAutoplayerTrace::BestAction() {
       }
     }
   }
-  assert(k_this_must_not_happen);
-  return "undefined";
+  // No action can happen if it is not our turn (best action in GUI)
+  return "no action";
 }
 
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {

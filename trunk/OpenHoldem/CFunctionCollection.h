@@ -14,6 +14,7 @@
 #ifndef INC_CFUNCTIONCOLLECTION_H
 #define INC_CFUNCTIONCOLLECTION_H
 
+#include "..\CCritSec\CCritSec.h"
 #include "COHScriptObject.h"
 #include "CVirtualSymbolEngine.h"
 #include <map>
@@ -77,6 +78,7 @@ public:
   CString _path;
  private:
   std::map<CString, COHScriptObject*>::iterator enumerator_it;
+  CCritSec m_critsec;
 };
 
 extern CFunctionCollection *p_function_collection;
