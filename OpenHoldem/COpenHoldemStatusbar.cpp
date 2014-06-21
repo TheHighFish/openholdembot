@@ -15,6 +15,7 @@
 #include "CopenHoldemStatusbar.h"
 
 #include "CAutoplayerFunctions.h"
+#include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
@@ -218,12 +219,11 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	}
 	else if (p_symbol_engine_userchair->userchair_confirmed() && iter_vars.iterator_thread_complete())
 	{
-		if (!p_symbol_engine_autoplayer->isfinalanswer())	_status_action = "N/A";
-		else if (p_autoplayer_functions->f$alli())			_status_action = "Allin";
-		else if (p_autoplayer_functions->f$betsize())		_status_action.Format("Betsize: %.2f", p_autoplayer_functions->f$betsize());
-		else if (p_autoplayer_functions->f$rais())			_status_action = "Bet/Raise";
-		else if (p_autoplayer_functions->f$call())			_status_action = "Call/Check";
-		else  _status_action = "Fold/Check";
+		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
+      _status_action = "N/A";
+    } else {
+      _status_action = p_autoplayer_trace->BestAction();
+    }
 	}
 
 	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0)

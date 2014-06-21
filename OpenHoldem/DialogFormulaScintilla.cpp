@@ -1043,7 +1043,7 @@ void CDlgFormulaScintilla::OnDelete() {
   for (int i=0; i<m_ScinArray.GetSize(); ++i) {
     CString name = m_ScinArray.GetAt(i)._name;
     if (name == s) {
-      //!!m_ScinArray.GetAt(i)._pWnd->c;
+      //!!!m_ScinArray.GetAt(i)._pWnd->CloseWindow
       break;
     }
   }
@@ -1439,19 +1439,15 @@ void CDlgFormulaScintilla::OnSize(UINT nType, int cx, int cy)
 }
 
 void CDlgFormulaScintilla::OnBnClickedCalc() {
-  CString					Cstr = "", title = "", s = "";
+  CString					Cstr = "", s = "";
   double					ret = 0.;
-  std::string				str = "";
-  char					    format[50] = {0};
+  std::string			str = "";
+  char					  format[50] = {0};
 
-  StopAutoButton();
   // Clear result box
   m_CalcResult.SetWindowText("");
-  // Caclulate symbols
-  p_engine_container->EvaluateAll();
-
-  // Validate parse trees
-  p_function_collection->ParseAll();
+  OnBnClickedApply();
+  
   if (!p_function_collection->CorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");
     s.Append("preventing calculation.\n");
@@ -1477,29 +1473,28 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
 }
 
 void CDlgFormulaScintilla::OnBnClickedAuto() {
-  if (m_ButtonAuto.GetCheck() == 1)
-  {
+  if (m_ButtonAuto.GetCheck() == 1) {
     ok_to_update_debug = false;
     m_CalcResult.SetWindowText("");
-    p_function_collection->ParseAll();
-	// Validate parse trees
-	if (!p_function_collection->CorrectlyParsed()) {
-      CString s;
-	  s.Format("There are syntax errors in one or more formulas that are\n");
-	  s.Append("preventing calculation of this formula.\n");
-	  s.Append("These errors need to be corrected before the 'Auto'\n");
-	  s.Append("button can be used.");
-	  OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
-	  // All we need to do is remove the Auto Check since the button text hasn't been
-      // updated yet and ok_to_update_debug has already been set to false
-	  m_ButtonAuto.SetCheck(0);
-	  return;
-	}
+    OnBnClickedApply();
+	  // Validate parse trees
+	  if (!p_function_collection->CorrectlyParsed()) {
+        CString s;
+	    s.Format("There are syntax errors in one or more formulas that are\n");
+	    s.Append("preventing calculation of this formula.\n");
+	    s.Append("These errors need to be corrected before the 'Auto'\n");
+	    s.Append("button can be used.");
+	    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+	    // All we need to do is remove the Auto Check since the button text hasn't been
+        // updated yet and ok_to_update_debug has already been set to false
+	    m_ButtonAuto.SetCheck(0);
+	    return;
+	  }
     m_ButtonAuto.SetWindowText("* Auto *");
-	ok_to_update_debug = true;
+	  ok_to_update_debug = true;
   } else {
-	ok_to_update_debug = false;
-	m_ButtonAuto.SetWindowText("Auto");
+	  ok_to_update_debug = false;
+	  m_ButtonAuto.SetWindowText("Auto");
   }
 }
 

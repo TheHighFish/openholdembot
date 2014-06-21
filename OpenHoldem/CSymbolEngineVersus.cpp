@@ -16,13 +16,16 @@
 
 #include <io.h>
 #include <fcntl.h>
+#include "CardFunctions.h"
 #include "CBetroundCalculator.h"
 #include "inlines/eval.h"
 #include "CFilenames.h"
+#include "CFunctionCollection.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
 #include "OH_MessageBox.h"
+#include "COHScriptList.h"
 
 CSymbolEngineVersus *p_symbol_engine_versus = NULL;
 
@@ -454,13 +457,30 @@ void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
 bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double *result, bool log /* = false */) {
   CString symbol = name;
   assert(symbol.Left(7) == "vs$list");
-  CString postfix = symbol.Right(5);
+  CString postfix = symbol.Right(6);
+  int list_name_lenght = symbol.GetLength() - 13;
+  if (list_name_lenght <= 0) {
+    ErrorInvalidSymbol(name);
+    return k_undefined_zero;
+  }
+  CString list_name = symbol.Mid(7, list_name_lenght);
+  COHScriptList *hand_list = (COHScriptList*)p_function_collection->LookUp(list_name);
+  if (hand_list == NULL) {
+    // List not found
+    // Symbol valid anyway
+    return k_undefined_zero;
+  }
   double n_win = 0; 
   double n_tie = 0;
   double n_los = 0;
   for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
 	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
-      if (1) { //!!!!!
+      int first_rank = RANK(i);
+      int second_rank = RANK(j);
+      int first_suit = SUIT(i);
+      int second_suit = SUIT(j);
+      bool is_suited = (first_suit == second_suit);
+      if (hand_list->IsOnList(first_rank, second_rank, is_suited)) {
         // Hand in list
         // If not possible _n_win_against_hand etc. will be zero  
         n_win += _n_win_against_hand[i][j];
@@ -474,13 +494,13 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   assert(n_tie >= 0);
   assert(n_los >= 0);
   assert(n_total >= 0);
-  if (postfix == "prwin") {
+  if (postfix == "$prwin") {
     *result = n_win / n_total;
     return true;
-  } else if (postfix == "prtie") {
+  } else if (postfix == "$prtie") {
     *result = n_tie / n_total;
     return true;
-  } else if (postfix == "prlos") {
+  } else if (postfix == "$prlos") {
     *result = n_los / n_total;
     return true;
   } else {

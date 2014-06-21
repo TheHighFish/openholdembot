@@ -140,8 +140,7 @@ char *outdated_symbols_randomround =
   "randomheartbeat or random instead.\n";
 
 char *outdated_symbols_callshort_raisshort =
-  "The symbols \"callshort\" and \"raisshort\"\n"
-  "got removed from the code-base\n"
+  "The symbols \"callshort\" and \"raisshort\" got removed from the code-base\n"
   "because they got designed for Fixed-Limit no-foldem Hold'em only.\n"
   "Better use a function to estimate future pot-sizes.\n";
 
