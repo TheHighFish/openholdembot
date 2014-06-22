@@ -304,7 +304,8 @@ void CScraper::ScrapeBetsBalances()
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		// We have to scrape "every" player,
-		// as people might bet-fold-standup.
+    //   * as people might bet-fold-standup.
+    //   * as people might be missing in tournament, but we use ICM
 		// Improvement: 
 		//   * scrape everybody up to my first action (then we know who was dealt)
 		//   * after that we scrape only dealt players
@@ -474,8 +475,12 @@ int CScraper::CardString2CardNumber(CString card)
 {
 	__TRACE
 	int result;
-	StdDeck_stringToCard((char*) card.GetString(), &result);
-	return result;
+	if (StdDeck_stringToCard((char*) card.GetString(), &result)) {
+    AssertRange(result, 0, 255);
+	  return result;
+  } else {
+    return CARD_NOCARD;
+  }
 }
 
 
@@ -565,6 +570,23 @@ void CScraper::ScrapePlayerCards(int chair)
 		}
 		set_card_player(chair, i, card);
 	}
+  CheckPlayerCardsForConsistency(chair);
+}
+
+void CScraper::CheckPlayerCardsForConsistency(int chair) {
+  AssertRange(chair, 0, k_max_chair_number);
+  if ((_card_player[chair][0] == _card_player[chair][1])
+      && (_card_player[chair][0] != CARD_NOCARD)
+      && (_card_player[chair][0] != CARD_BACK)) {
+    // Identical cards, something clearly went wrong.
+    // We assume, that we see something that differs from the background,
+    // probably cardbacks, that sometimes get scraped as JJsuited or 88suited
+    // by bad tablemaps.
+    _card_player[chair][0] = CARD_BACK;
+    _card_player[chair][1] = CARD_BACK;
+    write_log(preferences.debug_scraper(), 
+		  "[CScraper] Bad cards for chair %i. Auto-correcting to card-backs\n", chair);
+  }
 }
 
 void CScraper::ScrapeCommonCards()
