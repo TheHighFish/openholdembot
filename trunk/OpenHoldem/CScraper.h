@@ -105,7 +105,9 @@ protected:
 private:
 	void ScrapeSeated(int chair);
 	void ScrapeActive(int chair);
+private:
 	int ScrapeCard(CString name);
+  void CheckPlayerCardsForConsistency(int chair);
 private:
 	int CardString2CardNumber(CString card);
 private:

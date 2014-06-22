@@ -1039,18 +1039,20 @@ void CDlgFormulaScintilla::OnDelete() {
   // Delete a UDF or list
   p_function_collection->Delete(s);
   m_dirty = true;
+  // Clear the tab
+  m_pActiveScinCtrl->SetText("");
   // Close the tab
   for (int i=0; i<m_ScinArray.GetSize(); ++i) {
     CString name = m_ScinArray.GetAt(i)._name;
     if (name == s) {
       //!!!m_ScinArray.GetAt(i)._pWnd->CloseWindow
+      delete m_ScinArray.GetAt(i)._pWnd;
       break;
     }
   }
   // Update the dialog
   m_FormulaTree.SetFocus();
   SetWindowText("Formula - ");
-  m_pActiveScinCtrl->SetText("");
   DeleteFormerParentItemIfEmpty(hItem);
   FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
   UpdateAllScintillaKeywords();
