@@ -458,12 +458,13 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   CString symbol = name;
   assert(symbol.Left(7) == "vs$list");
   CString postfix = symbol.Right(6);
-  int list_name_lenght = symbol.GetLength() - 13;
+  // List name contains everything except "vs$" and postfix
+  int list_name_lenght = symbol.GetLength() - 9;
   if (list_name_lenght <= 0) {
     ErrorInvalidSymbol(name);
     return k_undefined_zero;
   }
-  CString list_name = symbol.Mid(7, list_name_lenght);
+  CString list_name = symbol.Mid(3, list_name_lenght);
   COHScriptList *hand_list = (COHScriptList*)p_function_collection->LookUp(list_name);
   if (hand_list == NULL) {
     // List not found
@@ -473,21 +474,29 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   double n_win = 0; 
   double n_tie = 0;
   double n_los = 0;
-  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
-	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
-      int first_rank = RANK(i);
-      int second_rank = RANK(j);
-      int first_suit = SUIT(i);
-      int second_suit = SUIT(j);
-      bool is_suited = (first_suit == second_suit);
-      if (hand_list->IsOnList(first_rank, second_rank, is_suited)) {
-        // Hand in list
-        // If not possible _n_win_against_hand etc. will be zero  
-        n_win += _n_win_against_hand[i][j];
-        n_tie += _n_tie_against_hand[i][j];
-        n_los += _n_los_against_hand[i][j];
-     }
-   }
+  for (int first_rank=2; first_rank<=k_rank_ace; ++first_rank) {
+    for (int second_rank=2; second_rank<=k_rank_ace; ++second_rank) {
+      for (int first_suit=0; first_suit<k_number_of_suits_per_deck; ++first_suit) {
+        for (int second_suit=0; second_suit<k_number_of_suits_per_deck; ++second_suit) {
+          // Ignore invalid hands with duplicate cards
+          if ((first_rank == second_rank) && (first_suit == second_suit)) continue;
+          bool is_suited = (first_suit == second_suit);
+          if (hand_list->IsOnList(first_rank, second_rank, is_suited)) {
+            // Calculate indices
+            int i=13*first_suit + first_rank;
+            int j=13*second_suit + second_rank;
+            // Hand in list
+            // If not possible _n_win_against_hand etc. will be zero  
+            assert(_n_win_against_hand[i][j] >= 0);
+            assert(_n_tie_against_hand[i][j] >= 0);
+            assert(_n_los_against_hand[i][j] >= 0);
+            n_win += _n_win_against_hand[i][j];
+            n_tie += _n_tie_against_hand[i][j];
+            n_los += _n_los_against_hand[i][j];
+         }
+        }
+      }
+    }
   }
   double n_total = n_win + n_tie + n_los;
   assert(n_win >= 0);
