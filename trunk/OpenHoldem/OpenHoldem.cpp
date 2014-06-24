@@ -323,13 +323,11 @@ void COpenHoldemApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
-void COpenHoldemApp::OnForceCrash() 
-{
+void COpenHoldemApp::OnForceCrash()  {
 	__TRACE
 	int choice = OH_MessageBox_Interactive("Do you REALLY want to CRASH?", 
 		"CONFIRMATION", MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
-	if (choice == IDYES) 
-	{
+	if (choice == IDYES) 	{
 		// FORCE A CRASH
 		int *invalid_memory_access = NULL;
 		*invalid_memory_access = 0;

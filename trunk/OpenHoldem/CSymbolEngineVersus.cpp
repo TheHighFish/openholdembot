@@ -61,10 +61,10 @@ void CSymbolEngineVersus::ResetOnNewRound() {
 }
 
 void CSymbolEngineVersus::ResetOnMyTurn() {
-  GetCounts();
 }
 
 void CSymbolEngineVersus::ResetOnHeartbeat() {
+  GetCounts();
 }
 
 void CSymbolEngineVersus::DoCalc(const CardMask plCards, const CardMask oppCards, const CardMask comCards,
@@ -101,6 +101,16 @@ bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
   return true;
 }
 
+void CSymbolEngineVersus::ClearWinTieLosData() {
+  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
+	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+      _n_win_against_hand[i][j] = 0;
+      _n_tie_against_hand[i][j] = 0;
+      _n_los_against_hand[i][j] = 0;
+    }
+  }
+}
+
 bool CSymbolEngineVersus::GetCounts() {
 	if (_versus_fh == k_undefined) return false;
 
@@ -127,7 +137,7 @@ bool CSymbolEngineVersus::GetCounts() {
   }
   // Get the lock
 	CSLock lock(m_critsec);
-
+  ClearWinTieLosData();
 	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
 
   if (!p_scraper_access->UserHasKnownCards()) return false;
@@ -471,30 +481,30 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     // Symbol valid anyway
     return k_undefined_zero;
   }
+  GetCounts(); // !!! not here
   double n_win = 0; 
   double n_tie = 0;
   double n_los = 0;
-  for (int first_rank=2; first_rank<=k_rank_ace; ++first_rank) {
-    for (int second_rank=2; second_rank<=k_rank_ace; ++second_rank) {
-      for (int first_suit=0; first_suit<k_number_of_suits_per_deck; ++first_suit) {
-        for (int second_suit=0; second_suit<k_number_of_suits_per_deck; ++second_suit) {
-          // Ignore invalid hands with duplicate cards
-          if ((first_rank == second_rank) && (first_suit == second_suit)) continue;
-          bool is_suited = (first_suit == second_suit);
-          if (hand_list->IsOnList(first_rank, second_rank, is_suited)) {
-            // Calculate indices
-            int i=13*first_suit + first_rank;
-            int j=13*second_suit + second_rank;
-            // Hand in list
-            // If not possible _n_win_against_hand etc. will be zero  
-            assert(_n_win_against_hand[i][j] >= 0);
-            assert(_n_tie_against_hand[i][j] >= 0);
-            assert(_n_los_against_hand[i][j] >= 0);
-            n_win += _n_win_against_hand[i][j];
-            n_tie += _n_tie_against_hand[i][j];
-            n_los += _n_los_against_hand[i][j];
-         }
-        }
+  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) {
+    for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+      // StdDeck-ranks 0..12
+      int c0rank = StdDeck_RANK(i);
+		  int c1rank = StdDeck_RANK(j);
+      int c0suit = StdDeck_SUIT(i);
+		  int c1suit = StdDeck_SUIT(j);
+      bool is_suited = (c0suit == c1suit);
+      // OH-ranks 2..14
+      int c0_OHrank = c0rank + 2;
+      int c1_OHrank = c1rank + 2;
+      if (hand_list->IsOnList(c0_OHrank, c1_OHrank, is_suited)) {
+        // Hand in list
+        // If not possible _n_win_against_hand etc. will be zero  
+        assert(_n_win_against_hand[i][j] >= 0);
+        assert(_n_tie_against_hand[i][j] >= 0);
+        assert(_n_los_against_hand[i][j] >= 0);
+        n_win += _n_win_against_hand[i][j];
+        n_tie += _n_tie_against_hand[i][j];
+        n_los += _n_los_against_hand[i][j];
       }
     }
   }
@@ -503,7 +513,10 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   assert(n_tie >= 0);
   assert(n_los >= 0);
   assert(n_total >= 0);
-  if (postfix == "$prwin") {
+  if (n_total == 0) {
+    // Catch division by zero
+    return k_undefined_zero;
+  } else if (postfix == "$prwin") {
     *result = n_win / n_total;
     return true;
   } else if (postfix == "$prtie") {

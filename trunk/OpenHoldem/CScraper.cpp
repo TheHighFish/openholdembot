@@ -18,7 +18,8 @@
 #include "StdAfx.h"
 #include "CScraper.h"
 
-#include "Bitmaps.h"                                
+#include "Bitmaps.h" 
+#include "CardFunctions.h"
 #include "CAutoconnector.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
@@ -488,15 +489,12 @@ int CScraper::CardString2CardNumber(CString card)
 //   * cardfaces
 //   * ranks and suits
 //   * cardbacks
-int CScraper::ScrapeCard(CString name)
-{
+int CScraper::ScrapeCard(CString name) {
 	__TRACE
 	// First scrape "normal" cards (cardfaces) according to the specification
 	CString card_str;
-	if (EvaluateRegion(name, &card_str))
-	{
-		if (card_str != "")
-		{
+	if (EvaluateRegion(name, &card_str)) {
+		if (card_str != "") {
 			return CardString2CardNumber(card_str);
 		}
 	}
@@ -505,14 +503,12 @@ int CScraper::ScrapeCard(CString name)
 	CString suit = name + "suit";
 	CString rank_result, suit_result;
 	// Scrape suit first (usually very fast colour-transform)
-	if (EvaluateRegion(suit, &suit_result))
-	{
+	if (EvaluateRegion(suit, &suit_result))	{
 		// If a suit could not be recognized we don't need to scrape the rank at all
 		// which is often an expensive fuzzy font in this case.
-		if (suit_result != "")
-		{
+		if (IsSuitString(suit_result)) {
 			EvaluateRegion(rank, &rank_result);
-			if (rank_result != "")
+			if (IsRankString(rank_result))
 			{
 				if (rank_result == "10") rank_result = "T";
 				card_str = rank_result + suit_result;
@@ -522,25 +518,20 @@ int CScraper::ScrapeCard(CString name)
 	}
 	// Otherwise: in case of playercards try to scrape uXcardfaceY
 	CString uname = name;
-	if (name[0] == 'p')
-	{
+	if (name[0] == 'p')	{
 		uname.SetAt(0, 'u');
 	}
-	if (EvaluateRegion(uname, &card_str))
-	{
-		if (card_str!="")
-		{
+	if (EvaluateRegion(uname, &card_str))	{
+		if (card_str!="") {
 			return CardString2CardNumber(card_str);
 		}
 	}
 	// Finally: in case of player cards try to scrape card-backs
-	if (name[0] == 'p')
-	{
+	if (name[0] == 'p')	{
 		CString cardback = name.Left(2) + "cardback";
 		CString cardback_result;
 		if (EvaluateRegion(cardback, &cardback_result) 
-			&& (cardback_result == "cardback"))
-		{
+			  && (cardback_result == "cardback"))	{
 			return CARD_BACK;
 		}
 	}
@@ -548,24 +539,18 @@ int CScraper::ScrapeCard(CString name)
 	return CARD_NOCARD;
 }
 
-void CScraper::ScrapePlayerCards(int chair)
-{
+void CScraper::ScrapePlayerCards(int chair) {
 	__TRACE
 	CString card_name;
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		set_card_player(chair, i, CARD_NOCARD);
 	}
 	int card = CARD_NOCARD;
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		card_name.Format("p%dcardface%d", chair, i);
-		if ((i > 0) && ((card == CARD_NOCARD) || (card == CARD_BACK)))
-		{
+		if ((i > 0) && ((card == CARD_NOCARD) || (card == CARD_BACK))) {
 			// Stop scraping if we find missing cards or cardbacks
-		}
-		else
-		{
+		} else {
 			card = ScrapeCard(card_name);
 		}
 		set_card_player(chair, i, card);

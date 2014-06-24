@@ -188,6 +188,7 @@
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
+    <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -254,7 +255,6 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="CICMCalculator.cpp" />
-    <ClCompile Include="CPokerAction.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
     <ClCompile Include="CGameState.cpp" />
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
@@ -429,6 +429,7 @@
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
+    <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="debug.h" />
@@ -483,7 +484,6 @@
     <ClInclude Include="CGameState.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CICMCalculator.h" />
-    <ClInclude Include="CPokerAction.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />
     <ClInclude Include="CSymbolEngineActiveDealtPlaying.h" />

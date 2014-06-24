@@ -46,6 +46,7 @@ class CSymbolEngineVersus: public CVirtualSymbolEngine {
  private:
   void DoCalc(const CardMask plCards, const CardMask oppCards, const CardMask comCards, 
 	  unsigned int *wintemp, unsigned int *tietemp, unsigned int *lostemp);
+  void ClearWinTieLosData();
   inline bool CheckForLoadedVersusBin();
   void ErrorInvalidSymbol(CString name);
 private:
