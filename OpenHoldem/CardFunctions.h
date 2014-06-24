@@ -30,6 +30,9 @@ int RankAndSuitToCardNumber(int rank, int suit);
 int CardStringToCardNumber(char* single_card);
 int CardStringToRankbits(char* one_or_more_cards_cases_and_suits_dont_matter);
 
+bool IsRankString(CString rank);
+bool IsSuitString(CString suit);
+
 // Support for hand$xyz and board$xyz-symbols
 // Checking if a card is in the hand or on the board
 bool IsCardInCollection(int card, int col_card_0, int col_card_1,

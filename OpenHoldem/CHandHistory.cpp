@@ -21,13 +21,13 @@
 #include "CBetroundCalculator.h"
 #include "CGameState.h"
 #include "CHandresetDetector.h"
-#include "CPokerAction.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEnginePokerAction.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTableLimits.h"
 #include "enumerate.h"
@@ -715,7 +715,6 @@ void CHandHistory::resetVars()
 	maxBet = bblind;
 	passChecks = false;
 	_history.last_player_to_act = WTF_means_minus_five; 
-	CPokerAction action;
 
 	for (int i=k_betround_preflop; i<k_betround_river; i++)
 	{
@@ -724,7 +723,7 @@ void CHandHistory::resetVars()
 	}
 	for (int i=0; i<nchairs; i++)
 	{
-		_history.chair[i].ac_dealpos = action.DealPosition(i);
+		_history.chair[i].ac_dealpos = p_symbol_engine_poker_action->DealPosition(i);
 		if (_history.chair[i].ac_dealpos == 1)
 		{
 			_history.sblindpos = i;

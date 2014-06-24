@@ -38,6 +38,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEnginePokerAction.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
@@ -136,6 +137,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEnginePokerTracker
   p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
   AddSymbolEngine(p_symbol_engine_pokertracker);
+  // CSymbolEnginePokerActio
+  p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
+  AddSymbolEngine(p_symbol_engine_poker_action);
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);
@@ -168,7 +172,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // as it can only be called after all symbols have been initialized.
   p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
   AddSymbolEngine(p_symbol_engine_ini_functions);
-  // CSymbols
+  // CSymbolEngineVariousDataLookup
   // Deals with symbol-lookups and depends on all the other OH-script ones.
   // Therefore it has to be the last OH-script one.
   p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;

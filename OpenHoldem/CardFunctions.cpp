@@ -105,6 +105,31 @@ int CardStringToRankbits(char* one_or_more_cards_cases_and_suits_dont_matter)
 	return rankbits;
 }
 
+bool IsSuitString(CString suit) {
+  if (suit.GetLength() != 1) return false;
+  char suit_char = tolower(suit[0]);
+  return ((suit_char == 'c') || (suit_char == 'd')
+    || (suit_char == 'h') || (suit_char == 's'));
+}
+
+bool IsRankString(CString rank) {
+  rank = rank.MakeLower();
+  if (rank.GetLength() == 2) {
+    return (rank == "10");
+  } else if (rank.GetLength() == 1) {
+    char rank_char = tolower(rank[0]);
+    if (isdigit(rank_char)) {
+      // Also accepting 0 and 1, but we want to filter out only the gratest nonsense
+      return true;
+    }
+    return ((rank_char == 'a') || (rank_char == 'k')
+      || (rank_char == 'q') || (rank_char == 'j') 
+      || (rank_char == 't'));
+  } else {
+    return false;
+  }
+}
+
 bool IsCardInCollection(int card, int col_card_0, int col_card_1,
 						int opt_col_card_2, 
 						int opt_col_card_3, 
