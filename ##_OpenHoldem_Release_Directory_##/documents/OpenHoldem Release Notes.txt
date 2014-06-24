@@ -1,4 +1,4 @@
-v4.6.0 2014-xx-yy
+v5.0.0 2014-06-24
 ==================
 NEW STUFF:
 - A tablemap-completeness-checker that warns about most cases of incomplete tablemaps.
