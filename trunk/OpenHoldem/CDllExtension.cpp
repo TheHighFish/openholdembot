@@ -163,7 +163,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		}
 		else
 		{
-			p_iterator_thread->RestartIteratorThread();
+      p_iterator_thread->RestartPrWinComputations();
 		}
 
 		// Recompute versus tables

@@ -58,6 +58,8 @@ int OH_MessageBox_OH_Script_Messages(CString message) {
 	return 0;
 }
 
+#ifdef OPENHOLDEM_PROGRAM
+// For OpenHoldem only, not for OpenScrape
 void OH_MessageBox_Formula_Error(CString Message, CString Title) {
   if (p_formula_parser->IsParsing()) {
     CParseErrors::Error(Message);
@@ -65,3 +67,4 @@ void OH_MessageBox_Formula_Error(CString Message, CString Title) {
     OH_MessageBox_Error_Warning(Message, Title);
   }
 }
+#endif OPENHOLDEM_PROGRAM

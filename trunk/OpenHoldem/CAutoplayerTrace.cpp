@@ -39,7 +39,7 @@ CAutoplayerTrace::~CAutoplayerTrace()
 {}
 
 void CAutoplayerTrace::Clear() {
-  ENT
+  ENT 
   _indentation = 0;
   _number_of_log_lines = 0;
   _symboltrace_collection.RemoveAll();
@@ -125,7 +125,12 @@ void CAutoplayerTrace::Indent(bool more) {
   } else {
     _indentation -= 2;
   }
-  assert(_indentation >= 0);
+  if (_indentation < 0) {
+    // This could happen if we calculate and log prwin functions
+    // and the heartbeat-threat resets the autoplayer-trace inbetween.
+    // Most easy way to fix it: continue gracefully
+    _indentation = 0;
+  }
 }
 
 CString CAutoplayerTrace::Indentation() {

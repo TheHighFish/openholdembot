@@ -30,10 +30,14 @@ int OH_MessageBox_Interactive(CString Message, CString Title, int Flags);
 // Returns 0 as a result
 int OH_MessageBox_OH_Script_Messages(CString message);
 
+#ifdef OPENHOLDEM_PROGRAM
 // In parsing mode: very detailed error-message
 // Otherwise; normal error-message
 // It might happen that we detect errors only at run-time,
 // e.g. if a DLL requests an invalid symbol.
+//
+// For OpenHoldem only, not for OpenScrape
 void OH_MessageBox_Formula_Error(CString Message, CString Title);
+#endif
 
 #endif

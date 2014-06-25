@@ -26,11 +26,14 @@ public:
 	CIteratorThread();
 	~CIteratorThread();
 public:
-	static void StopIteratorThread();
-	void	StartIteratorThreadIfNeeded();
-	void	RestartIteratorThread();
-	void	set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
-	const	sprw1326 *prw1326()	            { return &_prw1326; }
+	static void PausePrWinComputations();
+	void StartPrWinComputationsIfNeeded();
+  void StartIteratorThread();
+	void set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
+	const	sprw1326 *prw1326()	          { return &_prw1326; }
+public:
+  // For the DLL "cmd$recalc"
+  void RestartPrWinComputations();
 #undef ENT
 private:
 	// private functions and variables - not available via accessors or mutators
