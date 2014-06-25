@@ -24,8 +24,9 @@
 #include "CAutoConnector.h"
 #include "CFilenames.h"
 #include "CHeartbeatThread.h"
+#include "CIteratorThread.h"
 #include "COpenHoldemHopperCommunication.h"
-#include "CopenHoldemTitle.h"
+#include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "DialogFormulaScintilla.h"
@@ -248,12 +249,14 @@ void COpenHoldemApp::FinishInitialization()
 	m_pMainWnd->SetFocus();
 	m_pMainWnd->SetForegroundWindow();
 
-    // Heartbeat thread cares about everything: connecting, scraping, playing
-    write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
-    assert(p_heartbeat_thread == NULL);
-    p_heartbeat_thread = new CHeartbeatThread;
-    assert(p_heartbeat_thread != NULL);
-    p_heartbeat_thread->StartThread();
+  // Heartbeat thread cares about everything: connecting, scraping, playing
+  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
+  assert(p_heartbeat_thread == NULL);
+  p_heartbeat_thread = new CHeartbeatThread;
+  assert(p_heartbeat_thread != NULL);
+  p_heartbeat_thread->StartThread();
+  // Iterator thread
+  p_iterator_thread = new CIteratorThread();
 
     // autoconnect on start, if preferred
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");

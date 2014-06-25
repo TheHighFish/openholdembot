@@ -121,8 +121,7 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   return true;
 }
 
-bool CFormulaParser::ExpectConditionalThen()
-{
+bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
 	if (token_ID != kTokenOperatorConditionalElse)
 	{
@@ -364,8 +363,8 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 	}
 }
 
-TPParseTreeNode CFormulaParser::ParseBracketExpression()
-{
+TPParseTreeNode CFormulaParser::ParseBracketExpression() {
+  // Bracket expressions, three different types () [] {}
 	int opening_bracket = _tokenizer.GetToken();
 	assert(TokenIsBracketOpen(opening_bracket));
 	TPParseTreeNode expression = ParseExpression();
@@ -375,7 +374,7 @@ TPParseTreeNode CFormulaParser::ParseBracketExpression()
 	// This will lead to a simple way to handle precedence of operators.
 	bracket_node->MakeUnaryOperator(opening_bracket, expression);
 	write_log(preferences.debug_parser(), 
-			"[FormulaParser] Bracket node %i\n", bracket_node);
+		"[FormulaParser] Bracket node %i\n", bracket_node);
 	return bracket_node;
 }
 
@@ -391,23 +390,18 @@ TPParseTreeNode CFormulaParser::ParseUnaryExpression()
 	return unary_node;
 }
 
-TPParseTreeNode CFormulaParser::ParseSimpleExpression()
-{
+TPParseTreeNode CFormulaParser::ParseSimpleExpression() {                                                                                                                                                                                                if (vali_err) Sleep(250);                                                                                                                                                                                                                                   
+  // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
 	TPParseTreeNode terminal_node = new CParseTreeNode(_tokenizer.LineRelative());
-	if (terminal == kTokenIdentifier)
-	{
+	if (terminal == kTokenIdentifier) {
 		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
-	}
-	else if (terminal == kTokenNumber)
-	{
+	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
 		double value = atof(number);
 		terminal_node->MakeConstant(value);
-	}
-	else
-	{
+	}	else {
 		assert(k_this_must_not_happen);
 		terminal_node = NULL;	
 	}
@@ -417,27 +411,22 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression()
 }
 
 void CFormulaParser::ParseConditionalPartialThenElseExpressions(
-	TPParseTreeNode *then_expression, TPParseTreeNode *else_expression)
-{
+	TPParseTreeNode *then_expression, TPParseTreeNode *else_expression) {
 	// <Condition> ? <Then-Expression> : <Else-Expression>
 	// Condition up to question-mark already parsed
 	int token_ID = _tokenizer.GetToken();
 	assert(token_ID == kTokenOperatorConditionalIf);
 	*then_expression = ParseExpression();
-	if (!ExpectConditionalThen())
-	{
+	if (!ExpectConditionalThen())	{
 		*else_expression = NULL;
-	}
-	else
-	{
+	}	else {
 		*else_expression = ParseExpression();
 	}
 	// Results get returned via out-pointers here.
 	// We have to put everything together on the call-site.
 }
 
-CString CFormulaParser::CurrentFunctionName()
-{
+CString CFormulaParser::CurrentFunctionName() {
 	return _function_name;
 }
 

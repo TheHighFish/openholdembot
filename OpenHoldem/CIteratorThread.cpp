@@ -128,39 +128,33 @@ CIteratorThread::~CIteratorThread()
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
 
-void CIteratorThread::StopIteratorThread()
+void CIteratorThread::PausePrWinComputations()
 {
 	__TRACE
-	if (p_iterator_thread)
+	if (p_iterator_thread != NULL)
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
-		// Delete does implicitly call the destructor.
-		// All other stuff gets handled there.
-		delete p_iterator_thread;
+		//!!!!!!
 	}
 }
 
-void CIteratorThread::RestartIteratorThread()
+void CIteratorThread::RestartPrWinComputations()
 {
 	__TRACE
-	StopIteratorThread();
-	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting iterator thread.\n");
-	p_iterator_thread = new CIteratorThread;
+	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
+	//!!!!!!
 }
 
-void CIteratorThread::StartIteratorThreadIfNeeded()
-{		
+void CIteratorThread::StartPrWinComputationsIfNeeded() {		
 	__TRACE
 	p_validator->ValidateIt();
-	if (p_iterator_thread)
-	{
-		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread running. No need to restart.\n");
+	if (p_iterator_thread != NULL) {
+		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread not running. Can't restart computations.\n");
 		return;
 	}
 	write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
-	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())
-	{
-		RestartIteratorThread();
+	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
+    RestartPrWinComputations();
 		return;
 	}
 	// Otherwise: nothing to do, e.g. not my turn
@@ -311,7 +305,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
-	StopIteratorThread();
+	PausePrWinComputations();
 
 	return 0;
 }
@@ -376,6 +370,7 @@ void CIteratorThread::InitNumberOfIterations()
 void CIteratorThread::InitIteratorLoop()
 {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
+
 	// Set starting status and parameters
 	iter_vars.set_iterator_thread_running(true);
 	iter_vars.set_iterator_thread_complete(false);
