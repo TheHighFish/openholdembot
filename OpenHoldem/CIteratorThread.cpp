@@ -134,7 +134,9 @@ void CIteratorThread::PausePrWinComputations()
 	if (p_iterator_thread != NULL)
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
-		//!!!!!!
+		iter_vars.set_iterator_thread_running(false); //??
+	  iter_vars.set_iterator_thread_complete(true);
+    iter_vars.set_nit(0);
 	}
 }
 
@@ -142,6 +144,10 @@ void CIteratorThread::RestartPrWinComputations()
 {
 	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
+  iter_vars.set_nit(0);
+  InitIteratorLoop();
+  ResetIteratorVars();
+	ResetGlobalVariables();
 	//!!!!!!
 }
 
@@ -301,7 +307,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		{
 			iter_vars.set_ccard(i, CARD_NOCARD);
 		}
-		ResetIteratorVars();
+		ResetIteratorVars(); //??
 	}
 
 	::SetEvent(pParent->_m_wait_thread);
@@ -329,46 +335,39 @@ void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
 	}
 }
 
-bool CIteratorThread::SimulationFinished(unsigned int nit)
-{
+bool CIteratorThread::SimulationFinished(unsigned int nit) {
 	__TRACE
 	return (nit >= iter_vars.nit());
 }
 
-void CIteratorThread::ResetIteratorVars()
-{
+void CIteratorThread::ResetIteratorVars() {
 	iter_vars.set_prwin(0);
 	iter_vars.set_prtie(0);
 	iter_vars.set_prlos(0);
 }
 
-void CIteratorThread::ResetGlobalVariables()
-{
+void CIteratorThread::ResetGlobalVariables() {
 	CardMask_RESET(usedCards);
 	CardMask_RESET(temp_usedCards);
 	CardMask_RESET(addlcomCards);
 	CardMask_RESET(evalCards);
 	CardMask_RESET(opp_evalCards);
-	for (int i=0; i<k_number_of_cards_per_deck; i++)
-	{
+	for (int i=0; i<k_number_of_cards_per_deck; i++) {
 		deck[i] = 0;
 	}
-	for (int i=0; i<MAX_OPPONENTS; i++)
-	{
+	for (int i=0; i<MAX_OPPONENTS; i++) {
 		ocard[2*i] = 0;
 		ocard[2*i + 1] = 0;
 	}
 }
 
-void CIteratorThread::InitNumberOfIterations()
-{
+void CIteratorThread::InitNumberOfIterations() {
 	int number_of_iterations = p_function_collection->Evaluate(
 		"f$prwin_number_of_iterations");
 	iter_vars.set_nit(number_of_iterations); 
 }
 
-void CIteratorThread::InitIteratorLoop()
-{
+void CIteratorThread::InitIteratorLoop() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 
 	// Set starting status and parameters
@@ -378,16 +377,13 @@ void CIteratorThread::InitIteratorLoop()
 	InitNumberOfIterations();
 
 	// Users cards
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		iter_vars.set_pcard(i, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
 	}
 	// Community cards
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
+	for (int i=0; i<k_number_of_community_cards; i++) {
 		iter_vars.set_ccard(i, p_scraper->card_common(i));
 	}
-
 	iter_vars.set_prwin(0);
 	iter_vars.set_prtie(0);
 	iter_vars.set_prlos(0);
@@ -401,18 +397,14 @@ void CIteratorThread::InitIteratorLoop()
 	_win = _tie = _los = 0;
 
 	// setup masks
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		if (p_scraper_access->IsKnownCard(iter_vars.pcard(i)))
-		{
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
+		if (p_scraper_access->IsKnownCard(iter_vars.pcard(i))) {
 			CardMask_SET(_plCards, iter_vars.pcard(i));
 			_nplCards++;
 		}
 	}
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		if (p_scraper_access->IsKnownCard(iter_vars.ccard(i)))
-		{
+	for (int i=0; i<k_number_of_community_cards; i++) {
+		if (p_scraper_access->IsKnownCard(iter_vars.ccard(i))) {
 			CardMask_SET(_comCards, iter_vars.ccard(i));
 			_ncomCards++;
 		}
@@ -426,18 +418,14 @@ void CIteratorThread::InitIteratorLoop()
 
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
-		&& _prw1326.usecallback==1326 
-		&& (p_betround_calculator->betround()!= k_betround_preflop
-			|| _prw1326.preflop==1326) )
-	{
+		  && _prw1326.usecallback==1326 
+		  && (p_betround_calculator->betround()!= k_betround_preflop
+			  || _prw1326.preflop==1326) ){
 		_prw1326.prw_callback(); //Matrix 2008-05-09
 	}
 }
 
-
-
-void CIteratorThread::InitHandranktTableForPrwin()
-{
+void CIteratorThread::InitHandranktTableForPrwin() {
 	int		vndx = 0;
 	char	*ptr = NULL;
 
