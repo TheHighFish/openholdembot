@@ -1679,8 +1679,8 @@ void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled)
 		*/
 		// Number: black
 		pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
-		// Keywords: 
-		pWnd->SetForeground(5, RGB(0x80, 0x33, 0x80));		// SCE_C_WORD 5			(keywords)
+		// Keywords: blue
+		pWnd->SetForeground(5, RGB(0x00, 0x0, 0xFF));		// SCE_C_WORD 5			(keywords)
 		/*
 		pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
 		pWnd->SetForeground(7, RGB(0x00, 0x00, 0x00));	// SCE_C_CHARACTER 7
