@@ -126,11 +126,14 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CheckItem("p", i, "cardback");
     CheckCardFaces("p", i, "cardface0");
     CheckCardFaces("p", i, "cardface1");
+    CheckCardFaces("p", i, "cardface0nocard");
+    CheckCardFaces("p", i, "cardface1nocard");
   }
   CheckBetsOrStacks();
   // Community cards
   for (int i=0; i<k_number_of_community_cards; ++i) {
     CheckCardFaces("c0cardface", i, "");
+    CheckCardFaces("c0cardface", i, "nocard");
   }
   CheckMainPot();
   // Action buttons

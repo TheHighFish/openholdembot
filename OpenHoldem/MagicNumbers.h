@@ -34,6 +34,11 @@ const int k_undefined      = -1;
 const int k_undefined_zero =  0;
 const int kNoAbsoluteLineNumberExists = 1;
 
+// Cards
+const int CARD_BACK		   = 0xff;
+const int CARD_NOCARD	   = 0xfe;
+const int CARD_UNDEFINED = 0xfd;
+
 // CString compare results
 // http://msdn.microsoft.com/en-us/library/aa314313(v=vs.60).aspx
 // http://www.cplusplus.com/reference/cstring/strcmp/

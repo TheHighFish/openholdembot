@@ -153,7 +153,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
 									r_iter->second.bottom - r_iter->second.top + 1, 
 									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
-		SelectObject(hdcCompatible, old_bitmap);
+		SelectObject(hdcCompatible, old_bitmap);  
 
 		__HDC_FOOTER
 		return true;
@@ -528,14 +528,27 @@ int CScraper::ScrapeCardback(CString base_name) {
   return CARD_NOCARD;
 }
 
+bool CScraper::ScrapeNoCard(CString base_name){
+  CString card_no_card = base_name + "nocard";
+  CString no_card_result;
+  if (EvaluateRegion(cardback, &no_card_result) 
+		  && (cardback_result == "true"))	{
+    return CARD_NOCARD;
+  }
+  return CARD_UNDEFINED;
+}
+
 // Cares about "everything"
 //   * cardfaces
 //   * ranks and suits
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
 	__TRACE
-	// First scrape "normal" cards (cardfaces) according to the specification
-	int result = ScrapeCardface(name);
+  // First try to scrape "no card"
+  int result = ScrapeNoCard(name)) 
+  if (result != CARD_UNDEFINED) return result;
+	// Then scrape "normal" cards (cardfaces) according to the specification
+	result = ScrapeCardface(name);
   if (result != CARD_NOCARD) return result;
 	// Otherwise: try to scrape suits and ranks individually
   result = ScrapeCardByRankAndSuit(name);
@@ -551,7 +564,9 @@ int CScraper::ScrapeCard(CString name) {
   result = ScrapeCardback(uname);
   if (result != CARD_NOCARD) return result;
 	// Nothing found
-	return CARD_NOCARD;
+  // !!! Currently we have a problem with cardbacks,
+  // but whatever we try to scrape is not NOCARD and not a card.
+	return CARD_BACK;
 }
 
 void CScraper::ScrapePlayerCards(int chair) {
