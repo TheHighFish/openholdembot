@@ -484,23 +484,20 @@ int CScraper::CardString2CardNumber(CString card)
   }
 }
 
-
-// Cares about "everything"
-//   * cardfaces
-//   * ranks and suits
-//   * cardbacks
-int CScraper::ScrapeCard(CString name) {
-	__TRACE
-	// First scrape "normal" cards (cardfaces) according to the specification
-	CString card_str;
-	if (EvaluateRegion(name, &card_str)) {
+int CScraper::ScrapeCardface(CString base_name) {
+  CString card_str;
+  // Here name = base_name
+	if (EvaluateRegion(base_name, &card_str)) {
 		if (card_str != "") {
 			return CardString2CardNumber(card_str);
 		}
 	}
-	// Otherwise: try to scrape suits and ranks individually
-	CString rank = name + "rank";
-	CString suit = name + "suit";
+  return CARD_NOCARD;
+}
+
+int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
+  CString rank = base_name + "rank";
+	CString suit = base_name + "suit";
 	CString rank_result, suit_result;
 	// Scrape suit first (usually very fast colour-transform)
 	if (EvaluateRegion(suit, &suit_result))	{
@@ -511,30 +508,48 @@ int CScraper::ScrapeCard(CString name) {
 			if (IsRankString(rank_result))
 			{
 				if (rank_result == "10") rank_result = "T";
-				card_str = rank_result + suit_result;
+				CString card_str = rank_result + suit_result;
 				return CardString2CardNumber(card_str);
 			}
 		}
 	}
-	// Otherwise: in case of playercards try to scrape uXcardfaceY
+  return CARD_NOCARD;
+}
+
+int CScraper::ScrapeCardback(CString base_name) {
+  if (base_name[0] == 'p')	{
+	  CString cardback = base_name.Left(2) + "cardback";
+	  CString cardback_result;
+	  if (EvaluateRegion(cardback, &cardback_result) 
+		    && (cardback_result == "cardback"))	{
+		  return CARD_BACK;
+	  }
+  }
+  return CARD_NOCARD;
+}
+
+// Cares about "everything"
+//   * cardfaces
+//   * ranks and suits
+//   * cardbacks
+int CScraper::ScrapeCard(CString name) {
+	__TRACE
+	// First scrape "normal" cards (cardfaces) according to the specification
+	int result = ScrapeCardface(name);
+  if (result != CARD_NOCARD) return result;
+	// Otherwise: try to scrape suits and ranks individually
+  result = ScrapeCardByRankAndSuit(name);
+  if (result != CARD_NOCARD) return result;
+  // Otherwise: in case of playercards try to scrape uXcardfaceY
 	CString uname = name;
 	if (name[0] == 'p')	{
 		uname.SetAt(0, 'u');
 	}
-	if (EvaluateRegion(uname, &card_str))	{
-		if (card_str!="") {
-			return CardString2CardNumber(card_str);
-		}
-	}
+  result = ScrapeCardface(uname);
+  if (result != CARD_NOCARD) return result;
 	// Finally: in case of player cards try to scrape card-backs
-	if (name[0] == 'p')	{
-		CString cardback = name.Left(2) + "cardback";
-		CString cardback_result;
-		if (EvaluateRegion(cardback, &cardback_result) 
-			  && (cardback_result == "cardback"))	{
-			return CARD_BACK;
-		}
-	}
+  result = ScrapeCardback(uname);
+  if (result != CARD_NOCARD) return result;
 	// Nothing found
 	return CARD_NOCARD;
 }
