@@ -107,6 +107,9 @@ private:
 	void ScrapeActive(int chair);
 private:
 	int ScrapeCard(CString name);
+  int ScrapeCardback(CString base_name);
+  int ScrapeCardByRankAndSuit(CString base_name);
+  int ScrapeCardface(CString base_name);
   void CheckPlayerCardsForConsistency(int chair);
 private:
 	int CardString2CardNumber(CString card);
