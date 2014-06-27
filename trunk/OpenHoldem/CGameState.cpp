@@ -188,7 +188,7 @@ void CGameState::CaptureState()
 		}
 		else if (p_scraper->card_common(i) == CARD_NOCARD)
 		{
-			card = WH_NOCARD;
+			card = CARD_NOCARD;
 		}
 		else
 		{
@@ -229,7 +229,7 @@ void CGameState::CaptureState()
 			}
 			else if (p_scraper->card_player(i, j) == CARD_NOCARD)
 			{
-				card = WH_NOCARD;
+				card = CARD_NOCARD;
 			}
 			else
 			{
@@ -590,14 +590,14 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 		{
 			int index_normalized = i%k_max_number_of_players;
 			// if new card fronts have appeared, then players are showing down, and its the end of the hand
-			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[index_normalized].m_cards[0]    == CARD_BACK &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx-1)&0xff].m_player[index_normalized].m_cards[1] == CARD_BACK &&		// was card backs last scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[0]   != CARD_BACK &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[1]   != CARD_BACK &&		// is not card backs this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[0]   != WH_NOCARD &&		// is not 'no cards' this scrape
-					_m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[1]   != WH_NOCARD &&		// is not 'no cards' this scrape
-					i != sym_userchair &&												// it's not me
-					_end_of_hand==false )
+			if ( _m_holdem_state[(_m_ndx-1)&0xff].m_player[index_normalized].m_cards[0]   == CARD_BACK   // was card backs last scrape
+					&& _m_holdem_state[(_m_ndx-1)&0xff].m_player[index_normalized].m_cards[1] == CARD_BACK   // was card backs last scrape
+					&& _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[0]   != CARD_BACK   // is not card backs this scrape
+					&& _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[1]   != CARD_BACK   // is not card backs this scrape
+					&& _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[0]   != CARD_NOCARD // is not 'no cards' this scrape
+					&& _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_cards[1]   != CARD_NOCARD // is not 'no cards' this scrape
+					&& i != sym_userchair                                   												         // it's not me
+					&& _end_of_hand==false )
 			{
 				_end_of_hand = true;
                 WriteSummaryHeading();

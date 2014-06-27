@@ -64,14 +64,14 @@ void CSymbolEngineCards::ResetOnHandreset()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
-		_$$pc[i] = WH_NOCARD;
+		_$$pc[i] = CARD_NOCARD;
 		_$$pr[i] = 0;
 		_$$ps[i] = 0;
 	}
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		_$$cc[i] = WH_NOCARD;
+		_$$cc[i] = CARD_NOCARD;
 		_$$cs[i] = 0;
 		_$$cr[i] = 0;
 	}

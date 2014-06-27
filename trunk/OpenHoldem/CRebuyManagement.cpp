@@ -89,8 +89,7 @@ bool CRebuyManagement::NoCards()
 
 	const unsigned int Card0 = p_scraper->card_player(UserChair, 0);
 	int unsigned Card1 = p_scraper->card_player(UserChair, 1);
-	if (((Card0 == CARD_NOCARD) || (Card0 == WH_NOCARD))
-		&& ((Card1 == CARD_NOCARD) || (Card1 == WH_NOCARD)))
+	if ((Card0 == CARD_NOCARD) && (Card1 == CARD_NOCARD))
 	{
 		return true;
 	}
