@@ -79,9 +79,9 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   if (memcmp(name, "dll$", 4) == 0) {                                                                                                                                                                                                                    if (memcmp(name, "dll$dpl", 7) == 0) vali_err = true;if (memcmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (memcmp(name, "dll$oewc", 8) == 0) vali_err = true;if (memcmp(name, "dll$unknown_player", 18) == 0) vali_err = true;                                                                                                                                                                                                 
     assert(p_dll_extension != NULL);
     if (p_dll_extension->IsDllLoaded()) {
-	  return (p_dll_extension->process_message()) ("query", name);
+	    *result = (p_dll_extension->process_message()) ("query", name);
     } else {
-	  return k_undefined_zero;
+	    *result = k_undefined_zero;
     }
   }
   // Perl
@@ -143,14 +143,13 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
     if (p_formula_parser->IsParsing() || !p_autoconnector->IsConnected()
-	    || !p_symbol_engine_userchair->userchair_confirmed()) {
-	  *result = 0;
+	      || !p_symbol_engine_userchair->userchair_confirmed()) {
+	    *result = 0;
     } else {
-	  OH_MessageBox_OH_Script_Messages(name);
-	  *result = 0;
+	    OH_MessageBox_OH_Script_Messages(name);
+	    *result = 0;
     }
   } else {
-    //*e = ERR_INVALID_SYM;
     *result = k_undefined;
     return false;
   }

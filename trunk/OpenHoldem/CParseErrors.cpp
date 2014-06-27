@@ -51,8 +51,9 @@ CString CParseErrors::ErroneousCodeSnippet()
 	const int kLinesOfCodeToShow = 5;
 	const int kMaxCharactersPerLineToShow = 60;
 	char* remaining_input = CTokenizer::RemainingInput();
-	CString erroneous_code_snippet;
+  if (remaining_input == NULL) return "";
 
+	CString erroneous_code_snippet;
 	for (int i=0; i<kLinesOfCodeToShow; i++)
 	{ 
 		for (int j=0; j<kMaxCharactersPerLineToShow; j++)

@@ -86,34 +86,35 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   // Most common error: identifier instead of function header
   // This can only happen before the first function
   _function_name = "-- undefined --";
-  _token = function_header.MakeLower();
-  if (_token.Left(6) == "custom") {
+  CString function_name_lower_case = function_header.MakeLower();
+  if (function_name_lower_case.Left(6) == "custom") {
     CParseErrors::Error("Superfluous keyword custom");
     return false;
-  } else if ((_token.Left(7) == "preflop")
-	  || (_token.Left(4) == "flop")
-	  || (_token.Left(4) == "turn")
-	  || (_token.Left(5) == "river")) {
+  } else if ((function_name_lower_case.Left(7) == "preflop")
+	    || (function_name_lower_case.Left(4) == "flop")
+	    || (function_name_lower_case.Left(4) == "turn")
+	    || (function_name_lower_case.Left(5) == "river")) {
     CParseErrors::Error("Shanky-style betrounds. OpenHoldem-style ##f$function## expected");
     return false;
-  } else if (_token.Left(3) == "new") {
+  } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function. OpenHoldem-style ##f$function## expected");
     return false;
-  } else if (_token.Left(2) != "##") {
+  } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
       "Expecting a ##f$function## or ##listXYZ##");
     return false;
   }
   // Leading ## found
-  _token = _token.TrimRight();
-  if (_token.Right(2) != "##") {
+  _function_name = function_header.TrimRight();
+  if (_function_name.Right(2) != "##") {
     CParseErrors::Error("Malformed function-header. Trailing ## expected");
     return false;
   }
-  int length = _token.GetLength();
+  // Get rid pf ## at both ends
+  int length = _function_name.GetLength();
   assert(length >= 4);
-  _token = _token.Left(length - 2);
-  _function_name = _token.Right(length - 4);
+  _function_name = _function_name.Left(length - 2);
+  _function_name = _function_name.Right(length - 4);
   if (_function_name.GetLength() <= 0) {
     CParseErrors::Error("Empty function or list name");
     return false;
