@@ -25,6 +25,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 
@@ -77,7 +78,7 @@ bool CRebuyManagement::NoCards()
 	{
 		return true;
 	}
-	double UserChair = p_symbol_engine_userchair->userchair();
+	int UserChair = p_symbol_engine_userchair->userchair();
 	if ((UserChair < 0) || (UserChair > 9)) 
 	{
 		// "No cards", but not even seated.
@@ -86,10 +87,7 @@ bool CRebuyManagement::NoCards()
 		// If all goes wrong, the rebuy-script has to handle that case.
 		return true;
 	}
-
-	const unsigned int Card0 = p_scraper->card_player(UserChair, 0);
-	int unsigned Card1 = p_scraper->card_player(UserChair, 1);
-	if ((Card0 == CARD_NOCARD) && (Card1 == CARD_NOCARD))
+	if (p_table_state->_players[UserChair].HasKnownCards())
 	{
 		return true;
 	}

@@ -34,13 +34,6 @@ void CIteratorVars::ResetVars()
 	__TRACE
 	write_log(preferences.debug_prwin(), "[CiteratorVars] Resetting PrWin variables\n");
 	_nit = 0;
-
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-		_pcard[i] = CARD_NOCARD;
-
-	for (int i=0; i<k_number_of_community_cards; i++)
-		_ccard[i] = CARD_NOCARD;
-
 	_prwin = 0;
 	_prtie = 0;
 	_prlos = 0;

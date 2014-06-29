@@ -6,6 +6,7 @@
 #include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
+#include "CTableState.h"
 #include "NumericalFunctions.h"
 
 COHScriptList::COHScriptList(
@@ -116,7 +117,7 @@ void COHScriptList::ErrorOldStyleFormat(CString list_member) {
 
 double COHScriptList::Evaluate(bool log /* = false */) {
   write_log(true, "[COHScriptList] Evaluating list %s\n", _name); 
-  if (!p_scraper_access->UserHasKnownCards()) return false;
+  if (!p_table_state->_players[USER_CHAIR].HasKnownCards()) return false;
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),
     p_symbol_engine_cards->issuited());

@@ -21,6 +21,7 @@
 #include "CScraperAccess.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineIsTournament.h"
+#include "CTableState.h"
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
@@ -399,8 +400,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 				break;
 			}
 		}
-		else if ((p_scraper->card_player(next_chair, 0) != CARD_NOCARD)  
-			&& (p_scraper->card_player(next_chair, 0) != CARD_NOCARD))
+    else if (p_table_state->_players[next_chair].HasAnyCards())
 		{
 			write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SearchTableForSbAndBbValue found no bet for chair %d\n", next_chair);
 			write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SearchTableForSbAndBbValue but found cards for chair %d\n", next_chair);

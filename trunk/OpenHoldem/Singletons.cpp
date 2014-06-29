@@ -50,6 +50,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CTableMaploader.h"
 #include "CTablePositioner.h"
+#include "CTableState.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
 
@@ -62,9 +63,12 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStringMatch\n");
   assert(!p_string_match);
   p_string_match = new CStringMatch;
-    write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayerTrace\n");
-    assert(!p_autoplayer_trace);
-    p_autoplayer_trace = new CAutoplayerTrace;
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayerTrace\n");
+  assert(!p_autoplayer_trace);
+  p_autoplayer_trace = new CAutoplayerTrace;
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableState\n");
+  assert(!p_table_state);
+  p_table_state = new CTableState;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
   assert(!p_handreset_detector);
   p_handreset_detector = new CHandresetDetector;
@@ -200,6 +204,8 @@ void StopThreads()
 	all_threads_stopped = true;
 }
 
+#define DELETE_AND_CLEAR(object_pointer) if (object_pointer)	{ delete object_pointer; object_pointer = NULL; }
+
 void DeleteAllSingletons() {
   // First all threads have to be stopped, then all singletons can (have to) be deleted
   // StopThreads gets called by CMainFrame::DestroyWindow()
@@ -209,86 +215,51 @@ void DeleteAllSingletons() {
   //   (http://computer-programming-forum.com/82-mfc/7ad0828fdb127d7b.htm)
   // AnyWay: we make sure with an assertion
   assert(all_threads_stopped);
-
   // Global instances.
   // Releasing in reverse order should be good,
   // but we have to be careful, as sometimes we do some work in the destructors,
   // that depends on other classes, e.g. the destructor of the autoconnector
   // needs its session_id (CSessionCounter).
   //
-  if (p_casino_interface)
-	{ delete p_casino_interface; p_casino_interface = NULL; }
-  if (p_handhistory) 
-	{ delete p_handhistory; p_handhistory = NULL; }
-  if (p_occlusioncheck) 
-	{ delete p_occlusioncheck; p_occlusioncheck = NULL; }
-  if (p_rebuymanagement) 
-	{ delete p_rebuymanagement; p_rebuymanagement = NULL; }
-  if (p_engine_container)
-	{ delete p_engine_container; p_engine_container = NULL; }
-  if (p_openholdem_title)
-	{ delete p_openholdem_title; p_openholdem_title = NULL; }
-  if (p_popup_handler)
-	{ delete p_popup_handler; p_popup_handler = NULL; }
-  if (p_autoconnector) 
-  { 
-    write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
-	  delete p_autoconnector; 
-	  p_autoconnector = NULL; 
-  }
-  if (p_version_info)
-	{ delete p_version_info; p_version_info = NULL; }
-  if (p_tablemap_loader)
-	{ delete p_tablemap_loader; p_tablemap_loader = NULL; }
-  if (p_filesystem_monitor)
-	{ delete p_filesystem_monitor; p_filesystem_monitor = NULL; }
-  if (p_table_positioner)
-	{ delete p_table_positioner; p_table_positioner = NULL; }
-  if (p_validator) 
-	{ delete p_validator; p_validator = NULL; }
-  if (p_perl)  
-	{ delete p_perl; p_perl = NULL; }
-  if (p_game_state)  
-	{ delete p_game_state; p_game_state = NULL; }
-  if (p_dll_extension)  
-	{ delete p_dll_extension; p_dll_extension = NULL; }
-  if (p_autoplayer)  
-	{ delete p_autoplayer; p_autoplayer = NULL; }
-  if (p_formula_parser)
-	{ delete p_formula_parser; p_formula_parser = NULL; }
-  if (p_parser_symbol_table)
-    { delete p_parser_symbol_table; p_parser_symbol_table = NULL; }
-  if (p_debug_tab) 
-    { delete p_debug_tab; p_debug_tab = NULL; }
-  if (p_replayframes_counter)
-	{ delete p_replayframes_counter; p_replayframes_counter = NULL; }
-  if (p_tablemap_access)  
-	{ delete p_tablemap_access; p_tablemap_access = NULL; }
-  if (p_tablemap)  
-	{ delete p_tablemap; p_tablemap = NULL; }
-  if (p_lazyscraper)	        
-	{ delete p_lazyscraper; p_lazyscraper = NULL; }
-  if (p_scraper_access)       
-	{ delete p_scraper_access; p_scraper_access = NULL; }
-  if (p_scraper)              
-	{ delete p_scraper; p_scraper = NULL; }
-  if (p_stableframescounter)  
-	{ delete p_stableframescounter; p_stableframescounter = NULL; }
-  if (p_sharedmem)            
-	{ delete p_sharedmem; p_sharedmem = NULL; }
-  if (p_sessioncounter)       
-	{ delete p_sessioncounter; p_sessioncounter = NULL; }
-  if (p_autoplayer_functions) 
-	{ delete p_autoplayer_functions; p_autoplayer_functions = NULL; }
-  if (p_configurationcheck)   
-	{ delete p_configurationcheck; p_configurationcheck = NULL; }
-  if (p_handreset_detector)   
-	{ delete p_handreset_detector; p_handreset_detector = NULL; }
-  if (p_autoplayer_trace)
-    { delete p_autoplayer_trace; p_autoplayer_trace = NULL; }
-  if (p_string_match)         
-	{delete p_string_match; p_string_match = NULL; }
-  if (p_filenames)
-	{ delete p_filenames; p_filenames = NULL; }
+  DELETE_AND_CLEAR(p_casino_interface)
+  DELETE_AND_CLEAR(p_handhistory)
+  DELETE_AND_CLEAR(p_occlusioncheck)
+  DELETE_AND_CLEAR(p_rebuymanagement)
+  DELETE_AND_CLEAR(p_engine_container)
+  DELETE_AND_CLEAR(p_openholdem_title)
+  DELETE_AND_CLEAR(p_popup_handler)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
+  DELETE_AND_CLEAR(p_autoconnector)
+  DELETE_AND_CLEAR(p_version_info)
+  DELETE_AND_CLEAR(p_tablemap_loader)
+  DELETE_AND_CLEAR(p_filesystem_monitor)
+  DELETE_AND_CLEAR(p_table_positioner)
+  DELETE_AND_CLEAR(p_validator)
+  DELETE_AND_CLEAR(p_perl)
+  DELETE_AND_CLEAR(p_game_state)
+  DELETE_AND_CLEAR(p_dll_extension)
+  DELETE_AND_CLEAR(p_autoplayer)
+  DELETE_AND_CLEAR(p_formula_parser)
+  DELETE_AND_CLEAR(p_parser_symbol_table)
+  DELETE_AND_CLEAR(p_debug_tab)
+  DELETE_AND_CLEAR(p_replayframes_counter)
+  DELETE_AND_CLEAR(p_tablemap_access)
+  DELETE_AND_CLEAR(p_tablemap)
+  DELETE_AND_CLEAR(p_lazyscraper)
+  DELETE_AND_CLEAR(p_scraper_access)
+  DELETE_AND_CLEAR(p_scraper)
+  DELETE_AND_CLEAR(p_stableframescounter)
+  DELETE_AND_CLEAR(p_sharedmem)
+  DELETE_AND_CLEAR(p_sessioncounter)
+  DELETE_AND_CLEAR(p_autoplayer_functions)
+  DELETE_AND_CLEAR(p_configurationcheck)
+  DELETE_AND_CLEAR(p_handreset_detector)
+  DELETE_AND_CLEAR(p_autoplayer_trace)
+  DELETE_AND_CLEAR(p_table_state)
+  DELETE_AND_CLEAR(p_string_match)
+  DELETE_AND_CLEAR(p_filenames)
 }
+  
+  
+
 

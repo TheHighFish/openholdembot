@@ -17,6 +17,7 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "NumericalFunctions.h"
 
 
@@ -127,7 +128,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	// simple bubble sort for 10 stack values
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_scraper_access->PlayerHasCards(i))
+		if (p_table_state->_players[i].HasAnyCards())
 		{
 			_stack[i] = _balance[i];
 		}

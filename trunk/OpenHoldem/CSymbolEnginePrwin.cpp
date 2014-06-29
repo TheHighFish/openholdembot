@@ -22,6 +22,7 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolenginePokerval.h"
+#include "CTableState.h"
 
 CSymbolEnginePrwin *p_symbol_engine_prwin = NULL;
 
@@ -78,13 +79,12 @@ void CSymbolEnginePrwin::ResetOnHeartbeat()
 {
 	// Taken from heartbeat-thread:
 	// If we've folded, stop iterator thread and set prwin/tie/los to zero
-	if (p_scraper_access->UserHasCards()) return;
+	if (p_table_state->_players[USER_CHAIR].HasKnownCards()) return;
   if (p_iterator_thread == NULL) return;
 	p_iterator_thread->PausePrWinComputations();
 }
 
-void CSymbolEnginePrwin::CalculateNhands()
-{
+void CSymbolEnginePrwin::CalculateNhands() {
 	CardMask		plCards = {0}, comCards = {0}, oppCards = {0}, playerEvalCards = {0}, opponentEvalCards = {0};
 	HandVal			hv_player = 0, hv_opponent = 0;
 	unsigned int	pl_pokval = 0, opp_pokval = 0;
@@ -98,11 +98,10 @@ void CSymbolEnginePrwin::CalculateNhands()
 	// player cards
 	CardMask_RESET(plCards);
 	nplCards = 0;
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_player(USER_CHAIR, i)))
-		{
-			CardMask_SET(plCards, p_scraper->card_player(USER_CHAIR, i));
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
+    Card card = p_table_state->_players[USER_CHAIR].hole_cards[i];
+    if (card.IsKnownCard()) {
+      CardMask_SET(plCards, card.GetValue());
 			nplCards++;
 		}
 	}
@@ -110,11 +109,10 @@ void CSymbolEnginePrwin::CalculateNhands()
 	// common cards
 	CardMask_RESET(comCards);
 	ncomCards = 0;
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
-		{
-			CardMask_SET(comCards, p_scraper->card_common(i));
+	for (int i=0; i<k_number_of_community_cards; i++) {
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard()) {
+      CardMask_SET(comCards, card.GetValue());
 			ncomCards++;
 		}
 	}

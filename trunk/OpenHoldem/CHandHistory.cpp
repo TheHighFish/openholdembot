@@ -23,6 +23,7 @@
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -30,6 +31,7 @@
 #include "CSymbolEnginePokerAction.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "enumerate.h"
 #include "inlines/eval.h"
 #include "inlines/eval_type.h"
@@ -141,12 +143,12 @@ void CHandHistory::UpdateSymbols()
 	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
 	//Set individual player variables
-	for (int i=0; i<nchairs; i++)	
-	{
-		if ((p_scraper->card_player(i, 0) != CARD_NOCARD)
-			|| ((i != userchair) && (userchair != 0)))
-		{
-			GetPCstring(_history.chair[i].card_player, p_scraper->card_player(i,0), p_scraper->card_player(i,1));
+	for (int i=0; i<nchairs; i++)	{
+    if ((p_table_state->_players[i].hole_cards[0].IsKnownCard())
+			  || ((i != userchair) && (userchair != 0))) {
+			GetPCstring(_history.chair[i].card_player, 
+        p_table_state->_players[i].hole_cards[0].GetValue(),
+        p_table_state->_players[i].hole_cards[1].GetValue());
 		}
 
 		_history.chair[i].playersPlayingBits = IsBitSet(players_playing_bits, i);
@@ -212,7 +214,7 @@ void CHandHistory::checkBetround()
 	char			card_common[k_number_of_community_cards][5]; // WTF is 5?
 
 	for (int i = 0;i<k_number_of_community_cards;i++)	//Set board card letters
-		GetBCstring(card_common[i], p_scraper->card_common(i));
+    GetBCstring(card_common[i], p_table_state->_common_cards[i].GetValue());
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
@@ -591,13 +593,15 @@ void CHandHistory::processShowdown()
 			handText[i] = ss.str()+" ";	//Stores hand output to be displayed later
 
 			//Creates a complete hand mask for each player
-			for (int j = 0;j<2;j++)
-				CardMask_SET(_history.chair[i].hand,p_scraper->card_player(i,j));
-			for (int j = 2;j<7;j++)
-				CardMask_SET(_history.chair[i].hand,p_scraper->card_common(j-2));
-
+			for (int j=0; j<k_number_of_cards_per_player; ++j) {
+				CardMask_SET(_history.chair[i].hand,
+          p_table_state->_players[i].hole_cards[j].GetValue());
+      }
+			for (int j=0;j<k_number_of_community_cards; j++) {
+				CardMask_SET(_history.chair[i].hand,
+          p_table_state->_common_cards[j].GetValue());
+      }
 			_history.chair[i].handval = Hand_EVAL_N(_history.chair[i].hand, 7);	//Evaluate cards
-
 			pCardsSeen++;
 			_history.chair[i].cardsSeen = true;	
 		}
@@ -630,11 +634,9 @@ const bool CHandHistory::cardsDealt()
 	int				playersdealt = 0;
 
 	//If any cardbacks are showing, cards have been dealt
-	for (int i = 0;i<nchairs;i++)
+	for (int i=0; i<nchairs; ++i)
 	{
-		if (p_scraper->card_player(i, 0) == CARD_BACK
-			&& p_scraper->card_player(i, 1) == CARD_BACK)
-		{
+    if (p_table_state->_players[i].HasKnownCards()) {
 			playersdealt++;
 		}
 	}

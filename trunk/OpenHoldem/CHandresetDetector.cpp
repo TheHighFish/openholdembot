@@ -20,6 +20,7 @@
 #include "CScraperAccess.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
@@ -30,8 +31,8 @@ CHandresetDetector *p_handreset_detector = NULL;
 CHandresetDetector::CHandresetDetector()
 {
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
-	playercards[0] = CARD_NOCARD;
-	playercards[1] = CARD_NOCARD;
+	playercards[0] = CARD_UNDEFINED;
+	playercards[1] = CARD_UNDEFINED;
 	dealerchair = k_undefined;
 	handnumber = "";
 	_is_handreset_on_this_heartbeat = false;
@@ -81,7 +82,7 @@ bool CHandresetDetector::IsHandresetByCards()
 		// We don't want to use this method
 		return false;
 	}
-	bool ishandreset = (p_scraper_access->UserHasCards()
+	bool ishandreset = (p_table_state->_players[USER_CHAIR].HasKnownCards()
 		&& (playercards[0] != last_playercards[0]) 
 		&& (playercards[1] != last_playercards[1]));
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by cards: %s\n",
@@ -132,31 +133,23 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair)
 void CHandresetDetector::GetNewSymbolValues()
 {
 	assert(p_symbol_engine_dealerchair != NULL);
-	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))
-	{
+	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))	{
 		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
-	if (IsValidHandNumber(p_scraper->s_limit_info()->handnumber))
-	{
+	if (IsValidHandNumber(p_scraper->s_limit_info()->handnumber))	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s]\n", handnumber);
 		handnumber = p_scraper->s_limit_info()->handnumber;	
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
 	assert(p_symbol_engine_userchair != NULL);
 	int userchair = p_symbol_engine_userchair->userchair();
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		if ((userchair >= 0) && (userchair < p_tablemap->nchairs()))
-		{
-			playercards[i] = p_scraper->card_player(userchair, i);
-		}
-		else
-		{
-			playercards[i] = CARD_NOCARD;
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
+		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
+      playercards[i] = p_table_state->_players[userchair].hole_cards[i].GetValue();
+		} else {
+			playercards[i] = CARD_UNDEFINED;
 		}
 	}
 }

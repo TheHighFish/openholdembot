@@ -22,6 +22,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "NumericalFunctions.h"
 
 CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing = NULL;
@@ -86,13 +87,10 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 	}
 }
 
-void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits()
-{
+void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (p_scraper->card_player(i, 0) != CARD_NOCARD && p_scraper->card_player(i, 1) != CARD_NOCARD)
-		{
+	for (int i=0; i<k_max_number_of_players; ++i)	{
+    if (p_table_state->_players[i].HasKnownCards()) {
 			_playersplayingbits |= (1<<i);			
 		}
 	}
@@ -155,7 +153,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			if (p_scraper_access->IsPlayerActive(chair_to_consider))
 			{
 				this_player_got_dealt = true;
-				if (p_scraper_access->PlayerHasCards(chair_to_consider))
+        if (p_table_state->_players[chair_to_consider].HasAnyCards())
 				{
 					first_non_blind_with_cards_found = true;
 				}
@@ -164,7 +162,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		else
 		{
 			assert(first_non_blind_with_cards_found);
-			if (p_scraper_access->PlayerHasCards(chair_to_consider))
+      if (p_table_state->_players[chair_to_consider].HasAnyCards())
 			{
 				this_player_got_dealt = true;
 			}

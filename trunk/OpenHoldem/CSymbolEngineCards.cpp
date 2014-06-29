@@ -21,6 +21,7 @@
 #include "CScraperAccess.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "inlines/eval.h"
 #include "..\CTransform\CTransform.h"
 #include "MagicNumbers.h"
@@ -64,14 +65,14 @@ void CSymbolEngineCards::ResetOnHandreset()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
-		_$$pc[i] = CARD_NOCARD;
+		_$$pc[i] = CARD_UNDEFINED;
 		_$$pr[i] = 0;
 		_$$ps[i] = 0;
 	}
 
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		_$$cc[i] = CARD_NOCARD;
+		_$$cc[i] = CARD_UNDEFINED;
 		_$$cs[i] = 0;
 		_$$cr[i] = 0;
 	}
@@ -138,24 +139,21 @@ void CSymbolEngineCards::CalcPocketTests()
 	_issuited    = false;
 	_isconnector = false;
 
-	if (!p_scraper_access->UserHasKnownCards())
+	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		return;
 	}
 
-	if (StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 0)) 
-			== StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 1)))
-	{
+  if (p_table_state->_players[USER_CHAIR].hole_cards[0].GetOpenHoldemRank()
+			== p_table_state->_players[USER_CHAIR].hole_cards[0].GetOpenHoldemRank()) {
 		_ispair = true;															
 	}
-	if (StdDeck_SUIT(p_scraper->card_player(USER_CHAIR, 0)) 
-		== StdDeck_SUIT(p_scraper->card_player(USER_CHAIR, 1)))
-	{
+	if (p_table_state->_players[USER_CHAIR].hole_cards[0].GetSuit()
+			== p_table_state->_players[USER_CHAIR].hole_cards[0].GetSuit())	{
 		_issuited = true;														
 	}
-	if (abs(int(StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 0))  
-		- StdDeck_RANK(p_scraper->card_player(USER_CHAIR, 1)))) == 1)
-	{
+	if (abs((p_table_state->_players[USER_CHAIR].hole_cards[0].GetOpenHoldemRank()
+			- p_table_state->_players[USER_CHAIR].hole_cards[0].GetOpenHoldemRank())) == 1)	{
 		_isconnector = true;														
 	}
 }
@@ -192,22 +190,22 @@ int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_s
 	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades))
 	{
 		*max_cards_of_same_suit = n_clubs;
-		return WH_SUIT_CLUBS;
+		return OH_SUIT_CLUBS;
 	}
 	else if ((n_diamonds >= n_hearts) && (n_diamonds >= n_spades))
 	{
 		*max_cards_of_same_suit = n_diamonds;
-		return WH_SUIT_DIAMONDS;
+		return OH_SUIT_DIAMONDS;
 	}
 	else if (n_hearts >= n_spades)
 	{
 		*max_cards_of_same_suit = n_hearts;
-		return WH_SUIT_HEARTS;
+		return OH_SUIT_HEARTS;
 	}
 	else
 	{
 		*max_cards_of_same_suit = n_spades;
-		return WH_SUIT_SPADES;
+		return OH_SUIT_SPADES;
 	}
 }
 
@@ -239,12 +237,12 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(plCards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		int card = p_scraper->card_player(USER_CHAIR, i);
-		if (p_scraper_access->IsKnownCard(card))
+    Card card = p_table_state->_players[USER_CHAIR].hole_cards[i];
+		if (card.IsKnownCard())
 		{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
 				card);
-			CardMask_SET(plCards, card);
+      CardMask_SET(plCards, card.GetValue());
 		}
 	}
 
@@ -252,13 +250,13 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	CardMask_RESET(comCards);
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		int card = p_scraper->card_common(i);
-		if (p_scraper_access->IsKnownCard(card))
+		Card card = p_table_state->_common_cards[i];
+		if (card.IsKnownCard())
 		{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
-				card);
-			CardMask_SET(comCards, card);
-			CardMask_SET(plCards, card);
+        card.GetValue());
+      CardMask_SET(comCards, card.GetValue());
+      CardMask_SET(plCards, card.GetValue());
 		}
 	}
 
@@ -541,18 +539,17 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		int card = p_scraper->card_player(USER_CHAIR, i);
-		if (p_scraper_access->IsKnownCard(card))
+    Card card = p_table_state->_players[USER_CHAIR].hole_cards[i];
+		if (card.IsKnownCard())
 		{
-			int rank = GetRankFromCard(p_scraper->card_player(USER_CHAIR, i));
-			int suit = GetSuitFromCard(p_scraper->card_player(USER_CHAIR, i));
+      int rank = card.GetOpenHoldemRank();
+			int suit = card.GetSuit();
 
 			AssertRange(rank, 0, k_rank_ace);
-			AssertRange(suit, 0, WH_SUIT_SPADES);
+			AssertRange(suit, 0, OH_SUIT_SPADES);
 
 			write_log(preferences.debug_symbolengine(), 
-				"[CSymbolEngineCards] Card = %i\n",
-				p_scraper->card_player(USER_CHAIR, i));
+        "[CSymbolEngineCards] Card = %i\n", card.GetValue());
 			write_log(preferences.debug_symbolengine(), 
 				"[CSymbolEngineCards] Rank = %i\n", rank);
 			write_log(preferences.debug_symbolengine(), 
@@ -566,26 +563,20 @@ void CSymbolEngineCards::CalculateHandTests()
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		int card = p_scraper->card_common(i);
-		if (p_scraper_access->IsKnownCard(card))
+		Card card = p_table_state->_common_cards[i];
+		if (card.IsKnownCard())
 		{
-			int rank = GetRankFromCard(p_scraper->card_common(i));
-			int suit = GetSuitFromCard(p_scraper->card_common(i));
-
-			_$$cc[i] = (rank<<4) | suit;								  
-			_$$cr[i] = rank;						
-			_$$cs[i] = suit;							
+      _$$cc[i] = card.GetValueEncodedForDLL();
+      _$$cr[i] = card.GetOpenHoldemRank();
+      _$$cs[i] = card.GetSuit();
 		}
 	}
 }
 
-void CSymbolEngineCards::CalculateCommonCards()
-{
+void CSymbolEngineCards::CalculateCommonCards() {
 	_ncommoncardsknown = 0;
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		if (p_scraper->card_common(i) != CARD_NOCARD)
-		{
+	for (int i=0; i<k_number_of_community_cards; i++)	{
+    if (p_table_state->_common_cards[i].IsKnownCard())		{
 			_ncommoncardsknown++;							
 		}
 	}
@@ -606,22 +597,22 @@ void CSymbolEngineCards::CalcUnknownCards()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		int card = p_scraper->card_player(p_symbol_engine_userchair->userchair(), i);
-		if (p_scraper_access->IsKnownCard(card))
+    Card card = p_table_state->_players[USER_CHAIR].hole_cards[i];
+		if (card.IsKnownCard())
 		{
-			CardMask_SET(stdCards, card);
+      CardMask_SET(stdCards, card.GetValue());
 			nstdCards++;
 		}
 	}
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		int card = p_scraper->card_common(i);
-		if (p_scraper_access->IsKnownCard(card))
+		Card card = p_table_state->_common_cards[i];
+		if (card.IsKnownCard())
 		{
-			CardMask_SET(stdCards, card);
+      CardMask_SET(stdCards, card.GetValue());
 			nstdCards++;
-			CardMask_SET(commonCards, p_scraper->card_common(i));
+      CardMask_SET(commonCards, card.GetValue());
 		}
 	}
 
@@ -638,14 +629,13 @@ void CSymbolEngineCards::CalcUnknownCards()
 		// iterate through every unseen card and see what happens to our handvals
 		for (int i=0; i<k_number_of_cards_per_deck; i++)
 		{
-			if (i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)  
-				&& i!=p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1) 
-				&& i!=p_scraper->card_common(0) 
-				&& i!=p_scraper->card_common(1) 
-				&& i!=p_scraper->card_common(2) 
-				&& i!=p_scraper->card_common(3) 
-				&& i!=p_scraper->card_common(4))
-			{
+      if (i!=p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue()  
+				  && i!=p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue() 
+          && i!=p_table_state->_common_cards[0].GetValue()
+          && i!=p_table_state->_common_cards[1].GetValue()
+          && i!=p_table_state->_common_cards[2].GetValue()
+          && i!=p_table_state->_common_cards[3].GetValue()
+          && i!=p_table_state->_common_cards[4].GetValue()) {
 				CardMask_SET(stdCards, i);
 				handval_std_plus1 = Hand_EVAL_N(stdCards, nstdCards+1);
 				CardMask_UNSET(stdCards, i);
@@ -681,7 +671,7 @@ bool CSymbolEngineCards::IsHand(const char *name, int *e)
 	int				cardrank[2] = {0}, temp;
 	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
 	int				cardcnt = 0;
-	int				plcardrank[2] = {0}, plsuited = 0;
+	int				plcardrank[2] = {0}; 
 
 	if (strlen(name)<=1)
 	{
@@ -741,27 +731,22 @@ bool CSymbolEngineCards::IsHand(const char *name, int *e)
 	}
 
 	// playercards
-	plcardrank[0] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0))+2;
-	plcardrank[1] = Deck_RANK(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1))+2;
+	plcardrank[0] = p_table_state->_players[USER_CHAIR].hole_cards[0].GetOpenHoldemRank();
+	plcardrank[1] = p_table_state->_players[USER_CHAIR].hole_cards[1].GetOpenHoldemRank();
 	if (plcardrank[1] > plcardrank[0])
 	{
 		SwapInts(&plcardrank[0], &plcardrank[1]);
 	}
-	if (Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0)) == 
-		Deck_SUIT(p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1)))
-	{
-		plsuited = 1;
+  bool plsuited = false;
+  if (p_table_state->_players[USER_CHAIR].hole_cards[0].GetSuit() == 
+		  p_table_state->_players[USER_CHAIR].hole_cards[1].GetSuit()) {
+		plsuited = true;
 	}
-	else
-	{
-		plsuited = 0;
-	}
-
 	// check for non suited/offsuit match
-	if (suited==1 && plsuited==0)
+	if (suited==1 && !plsuited)
 		return false;
 
-	if (suited==2 && plsuited==1)
+	if (suited==2 && plsuited)
 		return 0;
 
 	// check for non rank match
@@ -803,13 +788,13 @@ int GetSuitFromCard(int scraper_card)
 	switch StdDeck_SUIT(scraper_card)
 	{
 		case StdDeck_Suit_CLUBS:  
-			return WH_SUIT_CLUBS;
+			return OH_SUIT_CLUBS;
 		case StdDeck_Suit_DIAMONDS: 
-			return WH_SUIT_DIAMONDS;
+			return OH_SUIT_DIAMONDS;
 		case StdDeck_Suit_HEARTS: 
-			return WH_SUIT_HEARTS;
+			return OH_SUIT_HEARTS;
 		case StdDeck_Suit_SPADES: 
-			return WH_SUIT_SPADES;
+			return OH_SUIT_SPADES;
 	}
 	return k_undefined;
 }

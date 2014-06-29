@@ -354,12 +354,6 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define VER_OPENSCRAPE_1		".osdb1"
 #define VER_OPENSCRAPE_2		".osdb2"
 
-// Cards
-#define CARD_BACK		0xff
-#define CARD_NOCARD		0xfe
-#define CARD_BACK		0xff
-#define WH_NOCARD		0
-
 // Hand Lists
 #define MAX_HAND_LISTS	1000		// e.g. islist0 - islist999 Matrix 2008-05-14
 
@@ -374,10 +368,10 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define MIN_SCRAPEDELAY		100
 
 // WH SUIT Defs
-#define WH_SUIT_CLUBS		1
-#define WH_SUIT_DIAMONDS	2
-#define WH_SUIT_HEARTS		3
-#define WH_SUIT_SPADES		4
+#define OH_SUIT_CLUBS		1
+#define OH_SUIT_DIAMONDS	2
+#define OH_SUIT_HEARTS		3
+#define OH_SUIT_SPADES		4
 
 // Chipstacks
 #define MAX_CHIPS_PER_STACK	20

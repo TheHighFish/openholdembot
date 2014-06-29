@@ -21,6 +21,8 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
+#include "CTableState.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -103,9 +105,9 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	CardMask_RESET(Cards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_scraper_access->UserHasCards())
+		if (p_table_state->_players[USER_CHAIR].HasKnownCards())
 		{
-			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
+      CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
 			nCards++;
 		}
 	}
@@ -113,9 +115,10 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard())
 		{
-			CardMask_SET(Cards, p_scraper->card_common(i));
+      CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
 	}
@@ -124,8 +127,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 	_pcbits = 0;
 	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
-	  	p_scraper->card_player(USER_CHAIR, 0), 
-		p_scraper->card_player(USER_CHAIR, 1));
+    p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue(), 
+    p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue());
 
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
@@ -149,10 +152,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		if (p_scraper_access->UserHasKnownCards() 
-			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_player(USER_CHAIR, i)) )
-		{
-			CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
+		if (p_table_state->_players[USER_CHAIR].HasKnownCards()) {
+			CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
 			nCards++;
 		}
 	}
@@ -168,10 +169,10 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i))
-			&& !CardMask_CARD_IS_SET(Cards, p_scraper->card_common(i)))
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard())
 		{
-			CardMask_SET(Cards, p_scraper->card_common(i));
+      CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
 	}
@@ -325,34 +326,33 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	_srankbitspoker  = 0;
 
 	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
-	comsuit = (tsuitcommon==WH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuitcommon==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuitcommon==WH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuitcommon==WH_SUIT_SPADES ? Suit_SPADES : 0);
+	comsuit = (tsuitcommon==OH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuitcommon==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuitcommon==OH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuitcommon==OH_SUIT_SPADES ? Suit_SPADES : 0);
 
 	int tsuit = p_symbol_engine_cards->tsuit();
-	plcomsuit = (tsuit==WH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuit==WH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuit==WH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuit==WH_SUIT_SPADES ? Suit_SPADES : 0);
+	plcomsuit = (tsuit==OH_SUIT_CLUBS ? Suit_CLUBS :
+		tsuit==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
+		tsuit==OH_SUIT_HEARTS ? Suit_HEARTS :
+		tsuit==OH_SUIT_SPADES ? Suit_SPADES : 0);
 
 	// player cards
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		if (p_scraper_access->UserHasKnownCards())
-		{
-			CardMask_SET(plCards, p_scraper->card_player(USER_CHAIR, i));
-			CardMask_SET(plcomCards, p_scraper->card_player(USER_CHAIR, i));
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
+		if (p_table_state->_players[USER_CHAIR].HasKnownCards()) {
+      int card = p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue();
+			CardMask_SET(plCards, card);
+			CardMask_SET(plcomCards, card);
 		}
 	}
 
 	// common cards
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
+	for (int i=0; i<k_number_of_community_cards; i++) {
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard())
 		{
-			CardMask_SET(comCards, p_scraper->card_common(i));
-			CardMask_SET(plcomCards, p_scraper->card_common(i));
+      CardMask_SET(comCards, card.GetValue());
+			CardMask_SET(plcomCards, card.GetValue());
 		}
 	}
 
@@ -472,9 +472,10 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	// common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard())
 		{
-			CardMask_SET(comCards, p_scraper->card_common(i));
+      CardMask_SET(comCards, card.GetValue());
 		}
 	}
 	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
@@ -579,18 +580,17 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_RESET(Cards);
 		for (int i=0; i<k_number_of_cards_per_player; i++)
 		{
-			if (p_scraper_access->UserHasKnownCards())
+			if (p_table_state->_players[USER_CHAIR].HasKnownCards())
 			{
-				CardMask_SET(Cards, p_scraper->card_player(USER_CHAIR, i));
+        CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
 			}
 		}
 
 		for (int i=0; i<k_number_of_community_cards; i++)
 		{
-			if (p_scraper->card_common(i) != CARD_BACK && 
-				p_scraper->card_common(i) != CARD_NOCARD)
-			{
-				CardMask_SET(Cards, p_scraper->card_common(i));
+      Card card = p_table_state->_common_cards[i];
+      if (card.IsKnownCard()) {
+        CardMask_SET(Cards, card.GetValue());
 			}
 		}
 

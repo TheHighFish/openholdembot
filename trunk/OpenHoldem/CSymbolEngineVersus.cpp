@@ -24,6 +24,7 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "OH_MessageBox.h"
 #include "COHScriptList.h"
 
@@ -126,21 +127,18 @@ bool CSymbolEngineVersus::GetCounts() {
 	int betround = p_betround_calculator->betround();
 	int sym_userchair = p_symbol_engine_userchair->userchair();
 
-	for (int i=0; i<=1; i++) {
-		pcard[i] = CARD_NOCARD;
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
+    card_player[i] = p_table_state->_players[sym_userchair].hole_cards[i].GetValue();
   }
-	for (int i=0; i<=1; i++) {
-		card_player[i] = p_scraper->card_player(sym_userchair, i);
-  }
-	for (int i=0; i<=4; i++) {
-		card_common[i] = p_scraper->card_common(i);
+	for (int i=0; i<k_number_of_community_cards; i++) {
+    card_common[i] = p_table_state->_common_cards[i].GetValue();
   }
   // Get the lock
 	CSLock lock(m_critsec);
   ClearWinTieLosData();
 	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
 
-  if (!p_scraper_access->UserHasKnownCards()) return false;
+  if (!p_table_state->_players[USER_CHAIR].HasKnownCards()) return false;
 
 	_nwin = _ntie = _nlos = _nhands = 0;
 	_nhandshi = _nhandsti = _nhandslo = 0;
@@ -156,18 +154,14 @@ bool CSymbolEngineVersus::GetCounts() {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// PREFLOP
 	if (betround == k_betround_preflop) {
-    if (card_player[0] < card_player[1]) {
-		  pcard[0] = card_player[0];
-		  pcard[1] = card_player[1];
-	  } else {
-		  pcard[0] = card_player[1];
-		  pcard[1] = card_player[0];
-	  }
+    if (card_player[0] >= card_player[1]) {
+		  SwapInts(&card_player[0], &card_player[1]);
+    }
 	  // figure out offset into file
 	  unsigned int offset = 0;
-	  //for (int i=1; i<pcard[0]; i++)  offset += (52-i)*1225;
-	  offset += card0_offset[pcard[0]];
-	  offset += (pcard[1]-pcard[0]-1)*1225;
+	  //for (int i=1; i<card_player[0]; i++)  offset += (52-i)*1225;
+	  offset += card0_offset[card_player[0]];
+	  offset += (card_player[1]-card_player[0]-1)*1225;
 	  offset *= sizeof(byte);
 
 	  // seek to right position in file
@@ -178,7 +172,7 @@ bool CSymbolEngineVersus::GetCounts() {
 	  wintemp = lostemp = 0;
 	  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
 		  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
-			  if (i!=pcard[0] && i!=pcard[1] && j!=pcard[0] && j!=pcard[1]) {
+			  if (i!=card_player[0] && i!=card_player[1] && j!=card_player[0] && j!=card_player[1]) {
 				  _read(_versus_fh, &byte, sizeof(byte));
 				  memcpy(&wintemp, &byte[0], sizeof(unsigned int));
 				  memcpy(&lostemp, &byte[4], sizeof(unsigned int));

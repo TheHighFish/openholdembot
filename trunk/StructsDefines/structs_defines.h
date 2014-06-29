@@ -66,11 +66,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define ERR_NO_IMAGE_MATCH			-6
 #define	ERR_GOOD_SCRAPE_GENERAL		1
 
-// Cards
-#define CARD_BACK		0xff
-#define CARD_NOCARD	0xfe
-#define WH_NOCARD		0
-
 // Preferences
 #define MAX_OPPONENTS		22	
 #define MAX_FRAMEDELAY		9
@@ -81,12 +76,6 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define MAX_ALLINDELAY		5000	
 #define MAX_SCRAPEDELAY		5000
 #define MIN_SCRAPEDELAY		100
-
-// WH SUIT Defs
-#define WH_SUIT_CLUBS		1
-#define WH_SUIT_DIAMONDS	2
-#define WH_SUIT_HEARTS		3
-#define WH_SUIT_SPADES		4
 
 // Chipstacks
 #define MAX_CHIPS_PER_STACK	20

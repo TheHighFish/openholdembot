@@ -16,6 +16,7 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
@@ -45,29 +46,22 @@ void CBetroundCalculator::OnNewHeartbeat()
 	// Betround is a very important prerequisite
 	// to determine what symbols shall be calculated.
 	// So we can hardly do it with a symbol-engine and do it here
-	if (!p_scraper->IsCommonAnimation())
-	{
-		if (p_scraper->card_common(4) != CARD_NOCARD)
-		{
+	if (!p_scraper->IsCommonAnimation()) {
+    if (p_table_state->_common_cards[4].IsKnownCard()) {
 			_betround = k_betround_river;
 		}
-		else if (p_scraper->card_common(3) != CARD_NOCARD)
-		{
+		else if (p_table_state->_common_cards[3].IsKnownCard()) {
 			_betround = k_betround_turn;
 		}
-		else if (p_scraper->card_common(2) != CARD_NOCARD 
-			&& p_scraper->card_common(1) != CARD_NOCARD 
-			&& p_scraper->card_common(0) != CARD_NOCARD)
-		{
+		else if (p_table_state->_common_cards[2].IsKnownCard() 
+			  && p_table_state->_common_cards[1].IsKnownCard() 
+			  && p_table_state->_common_cards[0].IsKnownCard()) {
 			_betround = k_betround_flop;
-		}
-		else
-		{
+		}	else {
 			_betround = k_betround_preflop;
 		}
 	}
-	else
-	{
+	else {
 		// There is a common card animation going on currently
 		// so lets not try to determine the betround,
 		// but if it's a new hand then lets default to pre-flop

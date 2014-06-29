@@ -20,10 +20,10 @@
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "CVersionInfo.h"
 
 CSymbolEngineEventLogging *p_symbol_engine_event_logging = NULL;
-
 
 CSymbolEngineEventLogging::CSymbolEngineEventLogging()
 {}
@@ -40,8 +40,10 @@ void CSymbolEngineEventLogging::ResetOnConnection()
 void CSymbolEngineEventLogging::ResetOnHandreset()
 {
 	int player_card_cur[2] = {0};
-	player_card_cur[0] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 0);
-	player_card_cur[1] = p_scraper->card_player(p_symbol_engine_userchair->userchair(), 1);
+  player_card_cur[0] = p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue();
+	player_card_cur[1] = p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue();
+
+  //!!! ToLogString
 	char card0[10];
 	char card1[10];
 	// log new hand
