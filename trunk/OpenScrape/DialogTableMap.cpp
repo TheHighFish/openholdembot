@@ -15,6 +15,7 @@
 // DialogTableMap.cpp : implementation file
 //
 #include "stdafx.h"
+#include <assert.h>
 #include <math.h>
 
 #include "DialogTableMap.h"
@@ -1597,12 +1598,20 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
+    assert(r$strings[num_r$strings] != NULL);
 		for (int i=0; i<num_r$strings; i++)
 		{
 			bool used_string = false;
-			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
-				if (r_iter->second.name == r$strings[i])  
-					used_string=true;
+			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
+        CString tablemap_string = r_iter->second.name;
+        char *allowed_string = r$strings[i];
+        assert(tablemap_string != "");
+        assert(allowed_string != NULL);
+				if (tablemap_string == allowed_string) {  
+					used_string = true;
+          break;
+        }
+      }
 
 			if (!used_string)
 				dlgregions.strings.Add(r$strings[i]);

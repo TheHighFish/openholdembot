@@ -37,9 +37,9 @@ char * const s$strings[num_s$strings] =
 	  "allinmethod", "handresetmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 	  "chipscrapemethod"};
 
-int	const num_r$strings = 358;
+int	const num_r$strings = 382;
 
-char * const r$strings[358] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
+char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
 								"c0cardface0suit", "c0cardface1suit", "c0cardface2suit", "c0cardface3suit", "c0cardface4suit", 
 								"c0handnumber", "c0handnumber1", "c0handnumber2", "c0handnumber3", "c0handnumber4", "c0handnumber5", "c0handnumber6",
@@ -52,6 +52,8 @@ char * const r$strings[358] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"c0pot3chip00", "c0pot3chip01", "c0pot3chip10",
 								"c0pot4chip00", "c0pot4chip01", "c0pot4chip10", 
 								//50
+                "c0cardface0nocard", "c0cardface1nocard", "c0cardface2nocard", "c0cardface3nocard", "c0cardface4nocard"
+                // 5
 								"c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
 								"c0limits8", "c0limits9", 
 								"i0button", "i1button", "i2button", "i3button", "i4button", "i5button", "i6button", "i7button", 
@@ -95,6 +97,11 @@ char * const r$strings[358] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0
 								"p0seated", "p1seated", "p2seated", "p3seated", "p4seated", "p5seated", "p6seated", "p7seated", 
 								"p8seated", "p9seated", 
 								//100
+                "p0cardface0nocard", "p1cardface0nocard", "p2cardface0nocard", "p3cardface0nocard", "p4cardface0nocard", 
+                "p5cardface0nocard", "p6cardface0nocard", "p7cardface0nocard", "p8cardface0nocard", "p9cardface0nocard", 
+								"p0cardface1nocard", "p1cardface1nocard", "p2cardface1nocard", "p3cardface1nocard", "p4cardface1nocard", 
+                "p5cardface1nocard", "p6cardface1nocard", "p7cardface1nocard", "p8cardface1nocard", "p9cardface1nocard", 
+                // 20
 								"p0chip00", "p1chip00", "p2chip00", "p3chip00", "p4chip00", "p5chip00", "p6chip00", "p7chip00", 
 								"p8chip00", "p9chip00", 
 								"p0chip01", "p1chip01", "p2chip01", "p3chip01", "p4chip01", "p5chip01", "p6chip01", "p7chip01", 
