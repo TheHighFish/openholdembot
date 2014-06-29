@@ -25,6 +25,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -236,8 +237,8 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		player_info += text;  
 		// Cards
 		text.Format("      <td>%s%s</td>\n",
-			GetCardHtml(p_scraper->card_player(i, 0)),
-			GetCardHtml(p_scraper->card_player(i, 1)));
+      GetCardHtml(p_table_state->_players[i].hole_cards[0].GetValue()),
+      GetCardHtml(p_table_state->_players[i].hole_cards[1].GetValue()));
 		player_info += text;  
 		// Bet
 		text.Format("      <td>%11.2f</td>\n", p_scraper->player_bet(i));
@@ -302,11 +303,11 @@ CString CReplayFrame::GetCommonCardsAsHTML()
 	common_cards += "<tr>\n";
 	// Common cards
 	text.Format("<td>%s%s%s%s%s</td>\n",
-		GetCardHtml(p_scraper->card_common(0)),
-		GetCardHtml(p_scraper->card_common(1)),
-		GetCardHtml(p_scraper->card_common(2)),
-		GetCardHtml(p_scraper->card_common(3)),
-		GetCardHtml(p_scraper->card_common(4)));
+    GetCardHtml(p_table_state->_common_cards[0].GetValue()),
+    GetCardHtml(p_table_state->_common_cards[1].GetValue()),
+    GetCardHtml(p_table_state->_common_cards[2].GetValue()),
+    GetCardHtml(p_table_state->_common_cards[3].GetValue()),
+    GetCardHtml(p_table_state->_common_cards[4].GetValue()));
 	common_cards += text;
 	// Table footer
 	common_cards += "</tr>\n";

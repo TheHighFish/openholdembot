@@ -17,6 +17,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 CStableFramesCounter *p_stableframescounter = NULL;
@@ -54,15 +55,15 @@ void CStableFramesCounter::SaveCurrentState()
 	_myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
 
 	for (int i=0; i<k_number_of_community_cards; i++)
-		_card_common_last[i] = p_scraper->card_common(i);
+    _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
 
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		_card_player_last[i][0]	= p_scraper->card_player(i, 0);
-		_card_player_last[i][1]	= p_scraper->card_player(i, 1);
-		_dealer_last[i]			= p_scraper->dealer(i);
-		_playerbalance_last[i]	= p_scraper->player_balance(i);
-		_playerbet_last[i]		= p_scraper->player_bet(i);
+    _card_player_last[i][0]	= p_table_state->_players[i].hole_cards[0].GetValue();
+		_card_player_last[i][1]	= p_table_state->_players[i].hole_cards[1].GetValue();
+		_dealer_last[i]         = p_scraper->dealer(i);
+		_playerbalance_last[i]  = p_scraper->player_balance(i);
+		_playerbet_last[i]      = p_scraper->player_bet(i);
 	}
 }
 
@@ -105,7 +106,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 		if(!same_scrape)
 			break;
 
-		if (p_scraper->card_common(i) != _card_common_last[i])  
+    if (p_table_state->_common_cards[i].GetValue() != _card_common_last[i])  
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Community-cards don't match\n");
@@ -119,12 +120,12 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
 
-		if (p_scraper->card_player(i, 0) != _card_player_last[i][0])	
+    if (p_table_state->_players[i].hole_cards[0].GetValue() != _card_player_last[i][0])	
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
 		}
-		else if (p_scraper->card_player(i, 1) != _card_player_last[i][1])	
+		else if (p_table_state->_players[i].hole_cards[1].GetValue() != _card_player_last[i][1])	
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);

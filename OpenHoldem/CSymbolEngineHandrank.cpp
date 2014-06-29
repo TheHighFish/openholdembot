@@ -18,6 +18,7 @@
 #include "CScraper.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineHandrank *p_symbol_engine_handrank = NULL;
@@ -87,8 +88,8 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 
 	// Get name string containing the players' current cards
 	GetCardstring(cardstr, 
-		p_scraper->card_player(USER_CHAIR, 0), 
-		p_scraper->card_player(USER_CHAIR, 1));
+    p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue(),
+		p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue());
 
 	// if nopponents<1 or >9 then default to name sane value
 	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();

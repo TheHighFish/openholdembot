@@ -21,11 +21,12 @@
 #include "CIteratorThread.h"
 #include "CIteratorVars.h"
 #include "CPreferences.h"
-#include "CScraper.h"
+#include "CScraper.h"  
 #include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
@@ -178,7 +179,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_scraper_access->UserHasCards())
+	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_symbol_engine_userchair->userchair());

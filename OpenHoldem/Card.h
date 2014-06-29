@@ -28,15 +28,17 @@ class Card {
    void ClearValue();
  public:
    int GetValue();
+   int GetValueEncodedForDLL(); // WinHoldem DLL-interface
    int GetOpenHoldemRank();
-   int GetOpenHoldemSuit();
    int GetStdDeckRank();
-   int GetStdDeckSuit();
+   int GetSuit();
  public:
    bool IsKnownCard();
    bool IsCardBack();
    bool IsNoCard();     // Empty, missing
    bool IsAnyCard();    // Card or cardback
+ public:
+  CString ToString();
  private:
    int _value;
 };

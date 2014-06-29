@@ -21,6 +21,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableMapLoader.h"
+#include "CTableState.h"
 #include "OH_MessageBox.h"
 
 CProblemSolver::CProblemSolver()
@@ -59,7 +60,7 @@ bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 
 bool CProblemSolver::NoCardsVisible()
 {
-	return (!p_scraper_access->UserHasKnownCards());
+	return (!p_table_state->_players[USER_CHAIR].HasKnownCards());
 }
 
 bool CProblemSolver::NotEnoughButtonsVisible()

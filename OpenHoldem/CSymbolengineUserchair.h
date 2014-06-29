@@ -41,6 +41,7 @@ public:
 	bool userchair_confirmed()	{ return (_userchair != k_undefined); }
 private:
 	void CalculateUserChair();
+  bool IsNotShowdown();
 private:
 	int _userchair;
 };

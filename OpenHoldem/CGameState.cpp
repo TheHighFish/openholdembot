@@ -32,9 +32,9 @@
 #include "CScraperAccess.h"
 #include "CPreferences.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "Numericalfunctions.h"
-
 
 CGameState			*p_game_state = NULL;
 
@@ -154,7 +154,7 @@ void CGameState::ProcessFtr(const SHoldemState *pstate)
 
 void CGameState::CaptureState()
 {
-	bool				playing = true;
+	bool				    playing = true;
 	unsigned char		card = CARD_NOCARD;
 
 	// figure out if I am playing
@@ -163,7 +163,7 @@ void CGameState::CaptureState()
 	{
 		playing = false;
 	}
-	else if (!p_scraper_access->UserHasKnownCards())
+	else if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		playing = false;
 	}
@@ -182,23 +182,8 @@ void CGameState::CaptureState()
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-		if (p_scraper->card_common(i) == CARD_BACK)
-		{
-			card = CARD_BACK;
-		}
-		else if (p_scraper->card_common(i) == CARD_NOCARD)
-		{
-			card = CARD_NOCARD;
-		}
-		else
-		{
-			card = ((StdDeck_RANK(p_scraper->card_common(i))+2)<<4) |
-					(StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-					 StdDeck_SUIT(p_scraper->card_common(i)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-		}
-
+    Card common_card = p_table_state->_common_cards[i];
+    int card = common_card.GetValueEncodedForDLL();
 		_state[_state_index&0xff].m_cards[i] = card;
 	}
 
@@ -223,23 +208,8 @@ void CGameState::CaptureState()
 		// player cards
 		for (int j=0; j<k_number_of_cards_per_player; j++)
 		{
-			if (p_scraper->card_player(i, j) == CARD_BACK)
-			{
-				card = CARD_BACK;
-			}
-			else if (p_scraper->card_player(i, j) == CARD_NOCARD)
-			{
-				card = CARD_NOCARD;
-			}
-			else
-			{
-				card = ((StdDeck_RANK(p_scraper->card_player(i, j))+2)<<4) |
-					   (StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_CLUBS ? WH_SUIT_CLUBS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_DIAMONDS ? WH_SUIT_DIAMONDS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_HEARTS ? WH_SUIT_HEARTS :
-						StdDeck_SUIT(p_scraper->card_player(i, j)) == StdDeck_Suit_SPADES ? WH_SUIT_SPADES : 0) ;
-			}
-
+      Card player_card = p_table_state->_players[i].hole_cards[j];
+      int card = player_card.GetValueEncodedForDLL();
 			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 

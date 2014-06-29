@@ -28,16 +28,10 @@ public:
 	// public functions
 	void	GetNeccessaryTablemapObjects();
 	void	InitOnConnect();
-	int		GetPlayerCards(int seat_number, int first_or_second_card);
 	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
 	int		NumberOfVisibleButtons();
-	bool	PlayerHasCards(int player);
-	bool	PlayerHasKnownCards(int player);
 	bool	IsKnownCard(int card);
-	bool	IsCardOrCardBack(int card);
-	bool	UserHasCards();
-	bool	UserHasKnownCards();
 	bool	IsPlayerActive(int player);
 	bool	IsPlayerSeated(int player);
 	bool	IsGoodPlayername(int chair);

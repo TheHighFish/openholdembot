@@ -19,12 +19,12 @@
 #define LOW_NIBBLE(c)	((c)&0x0F)
 
 // Rank and suits as used by the DLL
-#define RANK(c)			( ISKNOWN(c) ? HIGH_NIBBLE(c) : 0 )
-#define SUIT(c)			( ISKNOWN(c) ? LOW_NIBBLE(c) : 0 )
+#define RANK(c)			  ( ISKNOWN(c) ? HIGH_NIBBLE(c) : 0 )
+#define SUIT(c)			  ( ISKNOWN(c) ? LOW_NIBBLE(c) : 0 )
 #define ISCARDBACK(c)	((c) == CARD_BACK)
-#define ISUNKNOWN(c)	((c) == 0)
+#define ISUNKNOWN(c)	((c) == CARD_UNDEFINED)
 #define ISNOCARD(c)		((c) == CARD_NOCARD)
-#define ISKNOWN(c)      (!ISCARDBACK(c) && !ISUNKNOWN(c) && !ISNOCARD(c))
+#define ISKNOWN(c)    (!ISCARDBACK(c) && !ISUNKNOWN(c) && !ISNOCARD(c))
 
 int RankAndSuitToCardNumber(int rank, int suit);
 int CardStringToCardNumber(char* single_card);
@@ -35,10 +35,11 @@ bool IsSuitString(CString suit);
 
 // Support for hand$xyz and board$xyz-symbols
 // Checking if a card is in the hand or on the board
+//!!!
 bool IsCardInCollection(int card, int col_card_0, int col_card_1,
-						int opt_col_card_2 = CARD_NOCARD, 
-						int opt_col_card_3 = CARD_NOCARD, 
-						int opt_col_card_4 = CARD_NOCARD);
+						int opt_col_card_2 = CARD_UNDEFINED, 
+						int opt_col_card_3 = CARD_UNDEFINED, 
+						int opt_col_card_4 = CARD_UNDEFINED);
 
 inline bool IsCardSuitCharacter(char c)
 {

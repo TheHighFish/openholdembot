@@ -30,6 +30,7 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
 #include "debug.h"
@@ -313,7 +314,7 @@ void CScraper::ScrapeBetsBalances()
 		//   * and also players who have cards (fresh sitdown and hand-reset, former playersdealt is wrong)
 		if ((!p_symbol_engine_history->DidActThisHand())
 			|| IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), i)
-			|| p_scraper_access->PlayerHasCards(i))
+      || p_table_state->_players[i].HasAnyCards())
 		{
 			ScrapeBet(i);
 			ScrapeBalance(i);
@@ -480,7 +481,7 @@ int CScraper::CardString2CardNumber(CString card)
     AssertRange(result, 0, 255);
 	  return result;
   } else {
-    return CARD_NOCARD;
+    return CARD_UNDEFINED;
   }
 }
 
@@ -492,7 +493,7 @@ int CScraper::ScrapeCardface(CString base_name) {
 			return CardString2CardNumber(card_str);
 		}
 	}
-  return CARD_NOCARD;
+  return CARD_UNDEFINED;
 }
 
 int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
@@ -513,7 +514,7 @@ int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
 			}
 		}
 	}
-  return CARD_NOCARD;
+  return CARD_UNDEFINED;
 }
 
 int CScraper::ScrapeCardback(CString base_name) {
@@ -525,14 +526,14 @@ int CScraper::ScrapeCardback(CString base_name) {
 		  return CARD_BACK;
 	  }
   }
-  return CARD_NOCARD;
+  return CARD_UNDEFINED;
 }
 
-bool CScraper::ScrapeNoCard(CString base_name){
+int CScraper::ScrapeNoCard(CString base_name){
   CString card_no_card = base_name + "nocard";
   CString no_card_result;
-  if (EvaluateRegion(cardback, &no_card_result) 
-		  && (cardback_result == "true"))	{
+  if (EvaluateRegion(card_no_card, &no_card_result) 
+		  && (no_card_result == "true"))	{
     return CARD_NOCARD;
   }
   return CARD_UNDEFINED;
@@ -545,63 +546,51 @@ bool CScraper::ScrapeNoCard(CString base_name){
 int CScraper::ScrapeCard(CString name) {
 	__TRACE
   // First try to scrape "no card"
-  int result = ScrapeNoCard(name)) 
+  int result = ScrapeNoCard(name);
   if (result != CARD_UNDEFINED) return result;
 	// Then scrape "normal" cards (cardfaces) according to the specification
 	result = ScrapeCardface(name);
-  if (result != CARD_NOCARD) return result;
+  if (result != CARD_UNDEFINED) return result;
 	// Otherwise: try to scrape suits and ranks individually
   result = ScrapeCardByRankAndSuit(name);
-  if (result != CARD_NOCARD) return result;
+  if (result != CARD_UNDEFINED) return result;
   // Otherwise: in case of playercards try to scrape uXcardfaceY
 	CString uname = name;
 	if (name[0] == 'p')	{
 		uname.SetAt(0, 'u');
 	}
   result = ScrapeCardface(uname);
-  if (result != CARD_NOCARD) return result;
+  if (result != CARD_UNDEFINED) return result;
 	// Finally: in case of player cards try to scrape card-backs
   result = ScrapeCardback(uname);
-  if (result != CARD_NOCARD) return result;
+  if (result != CARD_UNDEFINED) return result;
 	// Nothing found
-  // !!! Currently we have a problem with cardbacks,
-  // but whatever we try to scrape is not NOCARD and not a card.
-	return CARD_BACK;
+  if (name[0] == 'p') {
+    // !! Currently we have a problem with cardbacks,
+    // but whatever we try to scrape is not NOCARD and not a card.
+	  return CARD_BACK;
+  } else {
+    // Treat undefined community card as no card
+    assert(name[0] == 'c');
+    return CARD_NOCARD;
+  }
 }
 
 void CScraper::ScrapePlayerCards(int chair) {
 	__TRACE
 	CString card_name;
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
-		set_card_player(chair, i, CARD_NOCARD);
-	}
-	int card = CARD_NOCARD;
+	int card = CARD_UNDEFINED;
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		card_name.Format("p%dcardface%d", chair, i);
-		if ((i > 0) && ((card == CARD_NOCARD) || (card == CARD_BACK))) {
+		if ((i > 0) 
+      && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
 			// Stop scraping if we find missing cards or cardbacks
 		} else {
 			card = ScrapeCard(card_name);
 		}
-		set_card_player(chair, i, card);
+    p_table_state->_players[chair].hole_cards[i].SetValue(card);
 	}
-  CheckPlayerCardsForConsistency(chair);
-}
-
-void CScraper::CheckPlayerCardsForConsistency(int chair) {
-  AssertRange(chair, 0, k_max_chair_number);
-  if ((_card_player[chair][0] == _card_player[chair][1])
-      && (_card_player[chair][0] != CARD_NOCARD)
-      && (_card_player[chair][0] != CARD_BACK)) {
-    // Identical cards, something clearly went wrong.
-    // We assume, that we see something that differs from the background,
-    // probably cardbacks, that sometimes get scraped as JJsuited or 88suited
-    // by bad tablemaps.
-    _card_player[chair][0] = CARD_BACK;
-    _card_player[chair][1] = CARD_BACK;
-    write_log(preferences.debug_scraper(), 
-		  "[CScraper] Bad cards for chair %i. Auto-correcting to card-backs\n", chair);
-  }
+  p_table_state->_players[chair].CheckPlayerCardsForConsistency();
 }
 
 void CScraper::ScrapeCommonCards()
@@ -612,42 +601,38 @@ void CScraper::ScrapeCommonCards()
 	{
 		card_name.Format("c0cardface%d", i);
 		int card = ScrapeCard(card_name);
-		set_card_common(i, card);
+    p_table_state->_common_cards[i].SetValue(card);
 	}
 }
 	
 // returns true if common cards are in the middle of an animation
-bool CScraper::IsCommonAnimation(void)
-{
+bool CScraper::IsCommonAnimation(void) {
 	__TRACE
 	int	flop_card_count = 0;
 
 	// Count all the flop cards
-	for (int i=0; i<k_number_of_flop_cards; i++)
-	{
-		if (_card_common[i] != CARD_NOCARD)
-		{
+	for (int i=0; i<k_number_of_flop_cards; i++) {
+    if (p_table_state->_common_cards[i].IsKnownCard()) {
 			flop_card_count++;
 		}
 	}
 
 	// If there are some flop cards present,
 	// but not all 3 then there is an animation going on
-	if (flop_card_count > 0 && flop_card_count < k_number_of_flop_cards)
-	{
+	if (flop_card_count > 0 && flop_card_count < k_number_of_flop_cards) {
 		return true;
 	}
 	// If the turn card is present,
 	// but not all 3 flop cards are present then there is an animation going on
-	else if (_card_common[3] != CARD_NOCARD && flop_card_count != k_number_of_flop_cards)
-	{
+	else if (p_table_state->_common_cards[3].IsKnownCard()
+      && flop_card_count != k_number_of_flop_cards) {
 		return true;
 	}
 	// If the river card is present,
 	// but the turn card isn't
 	// OR not all 3 flop cards are present then there is an animation going on
-	else if (_card_common[4] != CARD_NOCARD && (_card_common[3] == CARD_NOCARD || flop_card_count != k_number_of_flop_cards))
-	{
+	else if (p_table_state->_common_cards[4].IsKnownCard() 
+      && (!p_table_state->_common_cards[3].IsKnownCard() || flop_card_count != k_number_of_flop_cards)) {
 		return true;
 	}
 	return false;
@@ -828,16 +813,14 @@ void CScraper::ScrapeBet(int chair)
 //
 // !! All code below not yet refactored
 //
-void CScraper::ClearScrapeAreas(void)
-{
+void CScraper::ClearScrapeAreas(void) {
 	__TRACE
-	for (int i=0; i<k_number_of_community_cards; i++)
-		set_card_common(i, CARD_NOCARD);
-
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		set_card_player(i, 0, CARD_NOCARD);
-		set_card_player(i, 1, CARD_NOCARD);
+	for (int i=0; i<k_number_of_community_cards; i++) {
+    p_table_state->_common_cards[i].ClearValue();
+  }
+	for (int i=0; i<k_max_number_of_players; i++) {
+    p_table_state->_players[i].hole_cards[0].ClearValue();
+    p_table_state->_players[i].hole_cards[1].ClearValue();
 		set_seated(i, "false");
 		set_active(i, "false");
 		set_dealer(i, false);
@@ -875,19 +858,15 @@ void CScraper::ClearScrapeAreas(void)
 	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
 }
 
-void CScraper::ScrapeAllPlayerCards()
-{
+void CScraper::ScrapeAllPlayerCards() {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		for (int j=0; j<k_number_of_cards_per_player; j++)
-		{
-			set_card_player(i, j, CARD_NOCARD);
+	for (int i=0; i<k_max_number_of_players; i++){
+		for (int j=0; j<k_number_of_cards_per_player; j++) {
+			p_table_state->_players[i].hole_cards[j].ClearValue();
 		}
 	}
 	write_log(preferences.debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}

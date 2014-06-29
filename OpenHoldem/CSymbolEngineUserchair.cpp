@@ -14,10 +14,12 @@
 #include "stdafx.h"
 #include "CSymbolEngineUserchair.h"
 
+#include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineUserchair *p_symbol_engine_userchair = NULL;
@@ -62,29 +64,23 @@ void CSymbolEngineUserchair::ResetOnHeartbeat()
 	}
 }
 
-void CSymbolEngineUserchair::CalculateUserChair()
-{
-	int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
-	if (num_buttons_enabled < k_min_buttons_needed_for_my_turn)
-	{
-		write_log(preferences.debug_symbolengine(),
-			"[CSymbolEngineUserchair] CalculateUserChair() Not enough visible buttons\n");
-	}
-	else if (userchair_confirmed() && p_scraper_access->UserHasKnownCards())
-	{
+bool CSymbolEngineUserchair::IsNotShowdown() {
+  int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
+  if (num_buttons_enabled >= k_min_buttons_needed_for_my_turn) return true;
+  if (p_betround_calculator->betround() < k_betround_river) return true;
+  return false;
+}
+
+void CSymbolEngineUserchair::CalculateUserChair() {
+	if (userchair_confirmed() && p_table_state->_players[USER_CHAIR].HasKnownCards()) {
 		write_log(preferences.debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Known cards for known chair. Keeping userchair as is\n");
-	}
-	else
-	{
+	}	else {
 		// Either not confirmed or no known cards when it is my turn
 		// Looking for known cards and new chair
 		for (int i=0; i<p_tablemap->nchairs(); i++)
 		{
-			if (p_scraper_access->IsKnownCard(p_scraper->card_player(i, 0)) 
-				&& p_scraper_access->IsKnownCard(p_scraper->card_player(i, 1)))
-	
-			{
+			if (p_table_state->_players[i].HasKnownCards() && IsNotShowdown()) {
 				_userchair = i;
 				write_log(preferences.debug_symbolengine(),
 					"[CSymbolEngineUserchair] CalculateUserChair() Setting userchair to %d\n",

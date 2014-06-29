@@ -29,6 +29,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
@@ -122,7 +123,7 @@ COpenHoldemView::COpenHoldemView()
 	_iterator_thread_progress_last = 0;
 	
 	for (int i = 0; i<k_number_of_community_cards; i++)
-		_card_common_last[i] = CARD_NOCARD;
+		_card_common_last[i] = CARD_UNDEFINED;
 
 	for (int i = 0; i<k_max_number_of_players ; i++)
 	{
@@ -262,10 +263,11 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	// Draw common cards
 	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
-		if (_card_common_last[i] != p_scraper->card_common(i) || update_all) 
+    int card_common_i_th = p_table_state->_common_cards[i].GetValue();
+		if (_card_common_last[i] != card_common_i_th || update_all) 
 		{
-			_card_common_last[i] = p_scraper->card_common(i);
-			int common_card = p_scraper->card_common(i);
+			_card_common_last[i] = card_common_i_th;
+			int common_card = card_common_i_th;
 			
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
 				i, common_card);
@@ -289,11 +291,10 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			_active_last[i] = p_scraper->active(i);
 			update_it = true;
 		}
-		if (_card_player_last[i][0] != p_scraper->card_player(i, 0) ||
-			_card_player_last[i][1] != p_scraper->card_player(i, 1)) 
-		{
-			_card_player_last[i][0] = p_scraper->card_player(i, 0);
-			_card_player_last[i][1] = p_scraper->card_player(i, 1);
+    if (_card_player_last[i][0] != p_table_state->_players[i].hole_cards[0].GetValue()
+        || _card_player_last[i][1] != p_table_state->_players[i].hole_cards[1].GetValue()) 		{
+			_card_player_last[i][0] = p_table_state->_players[i].hole_cards[0].GetValue();
+			_card_player_last[i][1] = p_table_state->_players[i].hole_cards[1].GetValue();
 			update_it = true;
 		}
 		if (_dealer_last[i] != p_scraper->dealer(i)) 
@@ -366,7 +367,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	int sym_lim				= p_symbol_engine_tablelimits->gametype();
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-	bool sym_playing		= p_scraper_access->UserHasCards();
+	bool sym_playing		= p_table_state->_players[USER_CHAIR].HasKnownCards();
 
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
@@ -449,7 +450,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	if (preferences.log_symbol_enabled() 
 		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_scraper_access->UserHasCards()) {
+		&& p_table_state->_players[USER_CHAIR].HasKnownCards()) {
       t.Append(p_autoplayer_trace->LogSymbolsForGUI());
 	}
 
@@ -1211,16 +1212,17 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 	// Get size of current client window
 	GetClientRect(&_client_rect);
 	// Draw player cards
-	int player_card_0 = p_scraper->card_player(chair, 0);
+  int player_card_0 = p_table_state->_players[chair].hole_cards[0].GetValue();
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%i]\n",
 		chair, player_card_0);
-	DrawCard(p_scraper->card_player(chair, 0),
+	DrawCard(player_card_0,
 		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 2,
 		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
 		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2,
 		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEY/2 - 1,
 		true);
-	DrawCard(p_scraper->card_player(chair, 1),
+  int player_card_1 = p_table_state->_players[chair].hole_cards[1].GetValue();
+	DrawCard(player_card_1,
 		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 1,
 		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
 		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 1,

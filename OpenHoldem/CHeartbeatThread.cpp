@@ -40,6 +40,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
 #include "CTablePositioner.h"
+#include "CTableState.h"
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
@@ -90,7 +91,7 @@ void CHeartbeatThread::StartThread()
 void CHeartbeatThread::FlexibleHeartbeatSleeping()
 {
 	int scrape_delay = preferences.scrape_delay();
-	if (p_scraper_access->UserHasCards() 
+	if (p_table_state->_players[USER_CHAIR].HasKnownCards() 
 		&& (p_scraper_access->NumberOfVisibleButtons() > 0))
 	{
 		// My turn
@@ -160,7 +161,7 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 			if (preferences.replay_record_every_change() 
 				// b) on every change when in hand
 				|| (preferences.replay_record_every_change_playing()
-					&& p_scraper_access->UserHasCards()))
+					&& p_table_state->_players[USER_CHAIR].HasKnownCards()))
 			{
 				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 			}
@@ -179,7 +180,7 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 		if (preferences.replay_record_every_change() 
 			// b) on every change when in hand
 			|| (preferences.replay_record_every_change_playing()
-				&& p_scraper_access->UserHasCards()))
+				&& p_table_state->_players[USER_CHAIR].HasKnownCards()))
 		{
 			p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 		}

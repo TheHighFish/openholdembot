@@ -35,8 +35,8 @@ public:
 	CString SymbolsProvided();
 private:
 	int PrimeCodedRanks(int card_0,	int card_1, 
-		int opt_card_2 = CARD_NOCARD, int opt_card_3 = CARD_NOCARD, 
-		int opt_card_4 = CARD_NOCARD);
+		int opt_card_2 = CARD_UNDEFINED, int opt_card_3 = CARD_UNDEFINED, 
+		int opt_card_4 = CARD_UNDEFINED);
 	int PrimeCodedRanks(CString card_expression);
 private:
 	int _prime_coded_hole_cards;

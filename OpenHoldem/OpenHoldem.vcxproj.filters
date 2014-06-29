@@ -648,6 +648,12 @@
     <ClCompile Include="Card.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CTableState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1415,6 +1421,12 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="Card.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTableState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

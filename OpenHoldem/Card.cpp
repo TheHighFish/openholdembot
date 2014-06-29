@@ -37,23 +37,45 @@ void Card::ClearValue(){
 }
 
 int Card::GetValue() {
-  return 0; //!!!
+  return _value;
 }
 
+int Card::GetValueEncodedForDLL() {
+  if (!IsKnownCard()) {
+    // Cardback, no-card or undefined
+    return _value;
+  }
+  // High nibble: OpenHoldem rank
+  // Low nibble: suit
+  return ((GetOpenHoldemRank() << 4) | GetSuit());
+}
+
+// StdDeck uses 0..12 for deuce..ace
+// OpenHoldem uses 2..14
 int Card::GetOpenHoldemRank() {
-  return 0; //!!!
+  if (IsKnownCard()) {
+    return (GetStdDeckRank() + 2);
+  } else {
+    return k_undefined;
+  }
 }
 
-int Card::GetOpenHoldemSuit() {
-  return 0; //!!!
-}
-
+// StdDeck uses 0..12 for deuce..ace
+// OpenHoldem uses 2..14
 int Card::GetStdDeckRank() {
-  return 0; //!!!
+  if (IsKnownCard()) {
+    return StdDeck_RANK(_value);
+  } else {
+    return k_undefined;
+  }
 }
 
-int Card::GetStdDeckSuit() {
-  return 0; //!!!
+int Card::GetSuit() {
+  if (IsKnownCard()) {
+    return StdDeck_SUIT(_value);
+  } else {
+    return k_undefined;
+  }
 }
 
 bool Card::IsKnownCard() {
@@ -67,9 +89,13 @@ bool Card::IsCardBack(){
 }
 
 bool Card::IsNoCard() {
-  return (_value == CARD_NOCARD);
+  return ((_value == CARD_NOCARD) || (_value == CARD_UNDEFINED));
 }
    
 bool Card::IsAnyCard() {
   return (IsKnownCard() || IsCardBack());
+}
+
+CString Card::ToString() {
+  return StdDeck_cardString(_value);  
 }

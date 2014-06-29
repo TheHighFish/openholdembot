@@ -28,6 +28,7 @@
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
+#include "CTableState.h"
 #include "CValidator.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -93,7 +94,6 @@ CIteratorThread::CIteratorThread()
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
 
 	// Initialize variables
-	InitIteratorLoop();
 	InitHandranktTableForPrwin();
 
 	// FIRST mark thread as running,
@@ -240,7 +240,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
 		CardMask_OR(evalCards, evalCards, addlcomCards);
 		pl_hv = Hand_EVAL_N(evalCards, 7);
-		pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+		pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
 
 		// Scan through opponents' handvals/pokervals
 		// - if we find one better than ours, then we are done, increment los
@@ -299,14 +299,6 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
 		iter_vars.set_iterator_thread_complete(false);
 		iter_vars.set_iterator_thread_progress(0);
 		iter_vars.set_nit(0);
-
-		for (int i=0; i<k_number_of_cards_per_player; i++)
-			iter_vars.set_pcard(i, CARD_NOCARD);
-
-		for (int i=0; i<k_number_of_community_cards; i++)
-		{
-			iter_vars.set_ccard(i, CARD_NOCARD);
-		}
 		ResetIteratorVars(); //??
 	}
 
@@ -375,15 +367,6 @@ void CIteratorThread::InitIteratorLoop() {
 	iter_vars.set_iterator_thread_complete(false);
 	iter_vars.set_iterator_thread_progress(0);
 	InitNumberOfIterations();
-
-	// Users cards
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
-		iter_vars.set_pcard(i, p_scraper->card_player(p_symbol_engine_userchair->userchair(), i));
-	}
-	// Community cards
-	for (int i=0; i<k_number_of_community_cards; i++) {
-		iter_vars.set_ccard(i, p_scraper->card_common(i));
-	}
 	iter_vars.set_prwin(0);
 	iter_vars.set_prtie(0);
 	iter_vars.set_prlos(0);
@@ -397,15 +380,19 @@ void CIteratorThread::InitIteratorLoop() {
 	_win = _tie = _los = 0;
 
 	// setup masks
+  int userchair = p_symbol_engine_userchair->userchair();
+  AssertRange(userchair, 0, k_max_chair_number);
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
-		if (p_scraper_access->IsKnownCard(iter_vars.pcard(i))) {
-			CardMask_SET(_plCards, iter_vars.pcard(i));
+    Card card = p_table_state->_players[userchair].hole_cards[i];
+    if (card.IsKnownCard()) {
+      CardMask_SET(_plCards, card.GetValue());
 			_nplCards++;
 		}
 	}
 	for (int i=0; i<k_number_of_community_cards; i++) {
-		if (p_scraper_access->IsKnownCard(iter_vars.ccard(i))) {
-			CardMask_SET(_comCards, iter_vars.ccard(i));
+    Card card = p_table_state->_common_cards[i];
+    if (card.IsKnownCard()) {
+      CardMask_SET(_comCards, card.GetValue());
 			_ncomCards++;
 		}
 	}

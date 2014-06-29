@@ -24,8 +24,8 @@
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
-
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 
 #define ENT CSLock lock(m_critsec);
 
@@ -199,7 +199,6 @@ CString CAutoplayerTrace::BestAction() {
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   char		nowtime[26];
   CString	pcards, comcards, temp, rank, pokerhand;
-  char		*card;
   CString	fcra_formula_status;
   int		userchair = p_symbol_engine_userchair->userchair();
   int		betround  = p_betround_calculator->betround();
@@ -207,9 +206,8 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // player cards
   if (p_symbol_engine_userchair->userchair_confirmed()) {
     for (int i=0; i<=1; i++) {
-      card = StdDeck_cardString(p_scraper->card_player(userchair, i));
-      temp.Format("%s", card);
-      pcards.Append(temp);
+      Card card = p_table_state->_players[userchair].hole_cards[i];
+      pcards.Append(card.ToString());
     }
   } else {
 	pcards = "....";
@@ -218,22 +216,16 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   comcards = "";
   if (betround >= k_betround_flop) {
     for (int i=0; i<k_number_of_flop_cards; i++) {
-      if (p_scraper_access->IsKnownCard(p_scraper->card_common(i))) {
-	      card = StdDeck_cardString(p_scraper->card_common(i));
-	      temp.Format("%s", card);
-	      comcards.Append(temp);
+      if (p_table_state->_common_cards[i].IsKnownCard()) {
+        comcards.Append(p_table_state->_common_cards[i].ToString());
       }
     }
   }
   if (betround >= k_betround_turn) {
-    card = StdDeck_cardString(p_scraper->card_common(3));
-    temp.Format("%s", card);
-    comcards.Append(temp);
+    comcards.Append(p_table_state->_common_cards[3].ToString());
   }
   if (betround >= k_betround_river) {
-    card = StdDeck_cardString(p_scraper->card_common(4));
-    temp.Format("%s", card);
-    comcards.Append(temp);
+    comcards.Append(p_table_state->_common_cards[4].ToString());
   }
   comcards.Append("..........");
   comcards = comcards.Left(10);

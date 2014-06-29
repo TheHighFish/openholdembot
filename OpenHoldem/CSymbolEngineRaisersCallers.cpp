@@ -26,6 +26,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
+#include "CTableState.h"
 #include "StringFunctions.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
@@ -97,7 +98,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 	{
 		return 0.0;
 	}
-	if (p_scraper_access->UserHasCards())
+	if (p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)
@@ -134,8 +135,8 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		// Raisers are people
 		// * with name higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
-		if (p_scraper_access->PlayerHasCards(chair) && (current_players_bet > highest_bet))
-		{
+    if (p_table_state->_players[chair].HasAnyCards()
+        && (current_players_bet > highest_bet)) {
 			highest_bet = current_players_bet;
 			_raischair = chair;
 			int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
@@ -255,7 +256,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet < RaisersBet()
-			&& p_scraper_access->PlayerHasCards(i))
+      && p_table_state->_players[i].HasAnyCards())
 		{
 			_nplayerscallshort++;
 		}
@@ -271,15 +272,11 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 		}
 		// Players might have been betting, but folded, so no else for the if
 		if ((p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<(i)))
-			&& ((p_scraper->card_player(i, 0) == CARD_NOCARD)
-				|| (p_scraper->card_player(i, 1) == CARD_NOCARD)))
-		{
+        && !p_table_state->_players[i].HasAnyCards())	{
 			_nopponentsfolded++;					
 		}
-		if (p_scraper->card_player(i, 0) != CARD_NOCARD 
-			&& p_scraper->card_player(i, 1) != CARD_NOCARD 
-			&& current_players_bet == 0)
-		{
+		if (p_table_state->_players[i].HasAnyCards() 
+			  && current_players_bet == 0) {
 			_nopponentschecking++;
 		}
 	}
@@ -300,7 +297,7 @@ double CSymbolEngineRaisersCallers::RaisersBet()
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet > result
-			&& p_scraper_access->PlayerHasCards(i))
+      && p_table_state->_players[i].HasAnyCards())
 		{
 			result = current_players_bet;
 		}
@@ -314,9 +311,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	int new_foldbits = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_scraper->card_player(i, 0) == CARD_NOCARD &&
-			p_scraper->card_player(i, 1) == CARD_NOCARD)
-		{
+		if (!p_table_state->_players[i].HasAnyCards()) {
 			new_foldbits |= k_exponents[i];
 		}
 	}

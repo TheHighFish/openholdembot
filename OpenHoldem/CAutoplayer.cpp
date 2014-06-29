@@ -34,6 +34,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
@@ -525,7 +526,7 @@ bool CAutoplayer::DoPrefold(void)
 {
 	__TRACE
 	assert(p_autoplayer_functions->f$prefold() != 0);
-	if (!p_scraper_access->UserHasKnownCards())
+	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");

@@ -26,6 +26,7 @@
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
@@ -134,32 +135,23 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	int nCards = 0;
 	_status_plcards = "";
 	 
-	if (p_scraper_access->PlayerHasKnownCards(userchair))
-	{
-		for (int i=0; i<k_number_of_cards_per_player; i++) 
-		{
+  if (p_table_state->_players[userchair].HasKnownCards()) {
+		for (int i=0; i<k_number_of_cards_per_player; i++) {	
 			// This condition got already checked: "playing"
-			assert(p_scraper->card_player(userchair, i) != CARD_BACK);
-			assert(p_scraper->card_player(userchair, i) != CARD_NOCARD); 
-
-			char *card = StdDeck_cardString(p_scraper->card_player(userchair, i));
-			temp.Format("%s ", card);
-			_status_plcards.Append(temp);
-			CardMask_SET(Cards, p_scraper->card_player(userchair, i));
+      Card card = p_table_state->_players[userchair].hole_cards[i];
+			assert(card.IsKnownCard()); 
+		  _status_plcards.Append(card.ToString());
+      CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
 		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
-	}
-	else 
-	{
-		for (int i=0; i<k_number_of_cards_per_player; i++) 
-		{
-			if (p_scraper_access->UserHasCards())
+	}	else 	{
+		for (int i=0; i<k_number_of_cards_per_player; i++) {
+			if (p_table_state->_players[USER_CHAIR].HasKnownCards())
 			{
-				char *card = StdDeck_cardString(p_scraper_access->GetPlayerCards(userchair, i));
-				temp.Format("%s ", card);
-				_status_plcards.Append(temp);
-				CardMask_SET(Cards, p_scraper_access->GetPlayerCards(userchair, i));
+				Card card = p_table_state->_players[userchair].hole_cards[i];
+				_status_plcards.Append(card.ToString());
+        CardMask_SET(Cards, card.GetValue());
 				nCards++;
 			}
 		}
@@ -171,12 +163,11 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	_status_comcards = "";
 	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
-		if (p_scraper_access->IsKnownCard(p_scraper->card_common(i)))
+    Card card = p_table_state->_common_cards[i];
+		if (card.IsKnownCard())
 		{
-			char *card = StdDeck_cardString(p_scraper->card_common(i));
-			temp.Format("%s ", card);
-			_status_comcards.Append(temp);
-			CardMask_SET(Cards, p_scraper->card_common(i));
+			_status_comcards.Append(card.ToString());
+			CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
 	}
@@ -193,7 +184,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 
 	// Always update prwin/nit
 	if (p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_scraper_access->UserHasCards())
+		&& p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (iter_vars.prwin()*1000), 

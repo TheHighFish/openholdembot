@@ -58,8 +58,6 @@ public:
 public:
 	// public accessors
 	const char*			title()                    { return _title; }
-	const unsigned int	card_common(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_number_of_community_cards-1), CARD_NOCARD) return _card_common[n]; }
-	const unsigned int	card_player(int p, int c)  { RETURN_DEFAULT_IF_OUT_OF_RANGE(p, k_last_chair, CARD_NOCARD) RETURN_DEFAULT_IF_OUT_OF_RANGE(c, (k_number_of_cards_per_player-1), CARD_NOCARD) return _card_player[p][c]; }
 	const CString		seated(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _seated[n]; }
 	const CString		active(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _active[n]; }
 	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
@@ -111,7 +109,6 @@ private:
   int ScrapeCardByRankAndSuit(CString base_name);
   int ScrapeCardface(CString base_name);
   int ScrapeNoCard(CString base_name);
-  void CheckPlayerCardsForConsistency(int chair);
 private:
 	int CardString2CardNumber(CString card);
 private:
@@ -134,8 +131,6 @@ private:
 	// public mutators 
 	// Used mainly by the scraper override dll to push their updates into the CScraper structures
 	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE);}
-	void	set_card_common(const int n, const unsigned int c) { ENT if (n>=0 && n<=4) _card_common[n] = c;}
-	void	set_card_player(const int s, const int n, const unsigned int c) { ENT if (s>=0 && s<=9 && n>=0 && n<=1) _card_player[s][n] = c;}
 	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s;}
 	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
@@ -180,10 +175,6 @@ private:
 private:
 	// private variables - use public accessors and public mutators to address these
 	char				_title[MAX_WINDOW_TITLE];
-	// common cards
-	unsigned int		_card_common[k_number_of_community_cards];
-	// player cards
-	unsigned int		_card_player[k_max_number_of_players][k_number_of_cards_per_player];
 	// dealer
 	bool				_dealer[k_max_number_of_players];
 	// players - sitting out

@@ -186,11 +186,13 @@
     <ClCompile Include="CLevDistance.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
+    <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -428,11 +430,13 @@
     <ClInclude Include="CLevDistance.h" />
     <ClInclude Include="CMyMutex.h" />
     <ClInclude Include="COcclusionCheck.h" />
+    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
+    <ClInclude Include="CTableState.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="MD5_Checksum.h" />

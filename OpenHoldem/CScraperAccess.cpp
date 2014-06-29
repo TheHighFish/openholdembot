@@ -36,17 +36,6 @@ CScraperAccess::~CScraperAccess()
 {
 }
 
-// Card Functions
-int CScraperAccess::GetPlayerCards(int seat_number, int first_or_second_card)
-{
-	return p_scraper->card_player(seat_number, first_or_second_card);
-}
-
-int CScraperAccess::GetCommonCard(int index_zero_to_four)
-{
-	return p_scraper->card_common(index_zero_to_four);
-}
-
 bool CScraperAccess::IsValidCard(int Card)
 {
 	if (Card >= 0 && Card < k_number_of_cards_per_deck)
@@ -336,63 +325,6 @@ int CScraperAccess::NumberOfVisibleButtons()
 	return number_of_visible_buttons;
 }
 
-bool CScraperAccess::PlayerHasKnownCards(int player)
-{
-	RETURN_DEFAULT_IF_OUT_OF_RANGE(player, p_tablemap->nchairs(), false);
-	if (IsKnownCard(p_scraper->card_player(player, 0))
-		&& IsKnownCard(p_scraper->card_player(player, 1)))
-	{
-		return true;
-	}
-	return false;
-}
-
-bool CScraperAccess::PlayerHasCards(int player)
-{
-	assert(player >= 0);
-	assert(player < p_tablemap->nchairs());
-	// We do no longer check for cardbacks,
-	// but for cardbacks or cards.
-	// This way we can play all cards face-up at PokerAcademy.
-	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
-	if (!IsPlayerActive(player))
-	{
-		return false;
-	}
-	if (p_scraper->card_player(player, 0) == CARD_NOCARD 
-		|| p_scraper->card_player(player, 1) == CARD_NOCARD)
-	{
-		return false;
-	}
-	return true;
-}
-
-
-bool CScraperAccess::UserHasCards()
-{
-	if (p_symbol_engine_userchair == NULL)
-	{
-		return false;
-	}
-	int userchair = p_symbol_engine_userchair->userchair();
-	if (userchair == k_undefined)
-	{
-		return false;
-	}
-	return PlayerHasCards(userchair);
-}
-
-bool CScraperAccess::UserHasKnownCards()
-{
-	if (!UserHasCards()) 
-	{
-		return false;
-	}
-	assert(p_symbol_engine_userchair != NULL);
-	int userchair = p_symbol_engine_userchair->userchair();
-	return PlayerHasCards(userchair);
-}
-
 bool CScraperAccess::IsPlayerActive(int player)
 {
 	bool result = p_string_match->IsStringActive(p_scraper->active(player));
@@ -432,7 +364,3 @@ bool CScraperAccess::IsKnownCard(int card)
 	return true;
 }
 
-bool IsCardOrCardBack(int card)
-{
-	return (card != CARD_NOCARD);
-}

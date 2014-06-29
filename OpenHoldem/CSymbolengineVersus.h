@@ -74,7 +74,6 @@ private:
   
   unsigned int card_player[2];
   unsigned int card_common[5];
-  unsigned int pcard[2];
 };
 
 extern CSymbolEngineVersus *p_symbol_engine_versus;
