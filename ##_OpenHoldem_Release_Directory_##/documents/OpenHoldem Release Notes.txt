@@ -1,3 +1,33 @@
+v5.0.0 2014-xx-yy
+==================
+NEW STUFF:
+- Improved userchair detection.
+  Previously we needed to see both cards and buttons
+  to make sure that it is our turn and not opponents cards at showdown.
+  Now we only need to see cards when it is clearly not showdown.
+  This change does not affect real casinos,
+  but is meant for confused newbies that simulate with ManualMode.
+  {THF]
+
+BUG FIXES:
+- The new parser incorrectly changed all function names to lower-cases.
+  Thanks to R2D2 for reporting.
+  [THF]
+- Symbol lookup for DLL-symbols was broken.
+  [THF]
+
+
+- The improved scraper got cardbacks wrong for some tablemaps.
+  Thanks to Ares and Nik0 for reporting and providing replay-frames.
+  [THF]
+
+MAINTENANCE:
+- Getting rid of the constant WH_NOCARD (0).
+  We use now only CARD_NOCARD (0xfe = 254).
+  This will affect the DLL-interface.
+  Having multiple constants for the same purpose is bad.
+  [THF]
+
 v5.0.0 2014-06-24
 ==================
 NEW STUFF:
