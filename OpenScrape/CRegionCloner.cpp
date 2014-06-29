@@ -22,39 +22,41 @@
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "OpenScrape.h"
 
-const int k_number_of_circular_cloneable_regions = 29;
+const int k_number_of_circular_cloneable_regions = 31;
 
 // 1st string: name of 0-region
 // 2nd string: prefix before number
 // 3rd string: postfix after number
 const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions][3] =
-{{"p0active",        "p", "active"},  
- {"p0balance",       "p", "balance"},
- {"p0bet",           "p", "bet"},
- {"p0cardback",      "p", "cardback"},
- {"p0cardface0",     "p", "cardface0"},
- {"p0cardface1",     "p", "cardface1"},
- {"p0cardface0rank", "p", "cardface0rank"},
- {"p0cardface0suit", "p", "cardface0suit"},
- {"p0cardface1rank", "p", "cardface1rank"},
- {"p0cardface1suit", "p", "cardface1suit"},
- {"p0dealer",        "p", "dealer",},
- {"p0name",          "p", "name"},
- {"p0seated",        "p", "seated"},
+{{"p0active",          "p", "active"},  
+ {"p0balance",         "p", "balance"},
+ {"p0bet",             "p", "bet"},
+ {"p0cardback",        "p", "cardback"},
+ {"p0cardface0",       "p", "cardface0"},
+ {"p0cardface1",       "p", "cardface1"},
+ {"p0cardface0nocard", "p", "cardface0"},
+ {"p0cardface1nocard", "p", "cardface1"},
+ {"p0cardface0rank",   "p", "cardface0rank"},
+ {"p0cardface0suit",   "p", "cardface0suit"},
+ {"p0cardface1rank",   "p", "cardface1rank"},
+ {"p0cardface1suit",   "p", "cardface1suit"},
+ {"p0dealer",          "p", "dealer",},
+ {"p0name",            "p", "name"},
+ {"p0seated",          "p", "seated"},
  // Alternative for blinking fonts, etc.
- {"u0active",        "u", "active"},  
- {"u0balance",       "u", "balance"},
- {"u0bet",           "u", "bet"},
- {"u0cardback",      "u", "cardback"},
- {"u0cardface0",     "u", "cardface0"},
- {"u0cardface1",     "u", "cardface1"},
- {"u0cardface0rank", "u", "cardface0rank"},
- {"u0cardface0suit", "u", "cardface0suit"},
- {"u0cardface1rank", "u", "cardface1rank"},
- {"u0cardface1suit", "u", "cardface1suit"},
- {"u0dealer",        "u", "dealer"},
- {"u0name",          "u", "name"},
- {"u0seated",        "u", "seated"},
+ {"u0active",          "u", "active"},  
+ {"u0balance",         "u", "balance"},
+ {"u0bet",             "u", "bet"},
+ {"u0cardback",        "u", "cardback"},
+ {"u0cardface0",       "u", "cardface0"},
+ {"u0cardface1",       "u", "cardface1"},
+ {"u0cardface0rank",   "u", "cardface0rank"},
+ {"u0cardface0suit",   "u", "cardface0suit"},
+ {"u0cardface1rank",   "u", "cardface1rank"},
+ {"u0cardface1suit",   "u", "cardface1suit"},
+ {"u0dealer",          "u", "dealer"},
+ {"u0name",            "u", "name"},
+ {"u0seated",          "u", "seated"},
  // Scraping chip-stacks
  // We handle only chip-positions 00, 01 and 10,
  // because these are mostly used.
