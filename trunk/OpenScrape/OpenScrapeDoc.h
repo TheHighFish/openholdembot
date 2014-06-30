@@ -37,7 +37,7 @@ char * const s$strings[num_s$strings] =
 	  "allinmethod", "handresetmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 	  "chipscrapemethod"};
 
-int	const num_r$strings = 382;
+int	const num_r$strings = 383;
 
 char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
@@ -52,7 +52,7 @@ char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardf
 								"c0pot3chip00", "c0pot3chip01", "c0pot3chip10",
 								"c0pot4chip00", "c0pot4chip01", "c0pot4chip10", 
 								//50
-                "c0cardface0nocard", "c0cardface1nocard", "c0cardface2nocard", "c0cardface3nocard", "c0cardface4nocard"
+                "c0cardface0nocard", "c0cardface1nocard", "c0cardface2nocard", "c0cardface3nocard", "c0cardface4nocard",
                 // 5
 								"c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
 								"c0limits8", "c0limits9", 
