@@ -1,3 +1,10 @@
+v5.0.1 2014-xx-yy
+==================
+NEW STUFF: 
+- support fr pXcardfaceYnocard and c0cardfaceXbocard regions
+  for better error-detection and faster scraping.
+  [THF]
+
 v4.2.4 2013-09-xx
 ==================
 NEW STUFF: 
