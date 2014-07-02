@@ -1,1 +1,0 @@
-(function(){var a=0,c;b();window.onunload=function(){img=new Image();img.src="http://clck.yandex.ru/click/dtype=hghltd/time="+a+"0/*"+loc};function b(){a++;c=setTimeout(b,10)}})();
