@@ -960,7 +960,6 @@ void CDlgTableMap::update_display(void)
 
 			// See which hash types are already present for this image
 			// and disable the relevant create hash button
-			int j;
 			for (int j=0; j<=3; j++)
 			{
 				bool found = false;
@@ -1262,7 +1261,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 
 void CDlgTableMap::update_t$_display(void)
 {
-	int					j, x, bit, top;
+	int					x, bit, top;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				separation, text, charstr;
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = { false };	
@@ -1598,7 +1597,7 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
-    assert(r$strings[num_r$strings] != NULL);
+    assert(r$strings[num_r$strings - 1] != NULL);
 		for (int i=0; i<num_r$strings; i++)
 		{
 			bool used_string = false;
@@ -2844,7 +2843,6 @@ COLORREF CDlgTableMap::get_color_under_mouse(UINT *nFlags, CPoint *point)
 
 void CDlgTableMap::create_tree(void)
 {
-	int							i;
 	HTREEITEM					parent, newitem;
 	COpenScrapeDoc				*pDoc = COpenScrapeDoc::GetDocument();
 	CArray<CString, CString>	strings;
@@ -3301,7 +3299,7 @@ int CDlgTableMap::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CDlgTableMap::UpdateStatus(void)
 {
-	int			i, k, fontNum, cardNum;
+  int k, fontNum, cardNum;
 	CString		statusFonts, statusCards, node_text, fontSet;
 	HTREEITEM	node;
 
