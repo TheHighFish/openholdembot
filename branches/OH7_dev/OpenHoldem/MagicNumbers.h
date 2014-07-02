@@ -49,11 +49,11 @@ const int k_CString_identical = 0;
 // This is IMO (THF) superfluous and  dangerous, but lots of work
 // and even more dangerous to change.
 const int k_number_of_betrounds = 4;
-const int k_betround_current	= 0;
-const int k_betround_preflop	= 1;
-const int k_betround_flop		= 2;
-const int k_betround_turn		= 3;
-const int k_betround_river		= 4;
+const int k_betround_current	  = 0;
+const int k_betround_preflop	  = 1;
+const int k_betround_flop		    = 2;
+const int k_betround_turn	    	= 3;
+const int k_betround_river	  	= 4;
 
 // Players
 const int k_max_number_of_players         = 10;
@@ -236,6 +236,12 @@ enum StandardFunctionConstants
 	k_prwin_mustplay,
 	k_prwin_willplay,
 	k_prwin_wontplay,
+  // ICM functions
+  k_icm_prize1,
+  k_icm_prize2,
+  k_icm_prize3,
+  k_icm_prize4,
+  k_icm_prize5,
 	// Attention! Always keep this at last place.
 	k_number_of_standard_functions
 };
@@ -297,6 +303,12 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 	"f$prwin_mustplay",
 	"f$prwin_willplay",
 	"f$prwin_wontplay",
+  // ICM functions
+  "f$icm_prize1",
+  "f$icm_prize2",
+  "f$icm_prize3",
+  "f$icm_prize4",
+  "f$icm_prize5",
 };
 
 enum table_positioner_options

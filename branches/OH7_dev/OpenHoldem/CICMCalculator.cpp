@@ -29,6 +29,7 @@
 #include "stdafx.h"
 #include "CICMCalculator.h"
 
+#include "CFunctionCollection.h"
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -82,25 +83,25 @@ CICMCalculator::~CICMCalculator ()
 {
 }
 
-const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
-{
+//!!! remove e
+const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e) { 
 	double		prizes[MAX_PLAYERS] = {0};
 	double		stacks[MAX_PLAYERS] = {0};
-	int			i = 0, j = 0;
-	prizes[0] = preferences.icm_prize1();
-	prizes[1] = preferences.icm_prize2();
-	prizes[2] = preferences.icm_prize3();
-	prizes[3] = preferences.icm_prize4();
-	prizes[4] = preferences.icm_prize5();
-
+  int number_of_ICM_prizes = k_icm_prize5 - k_icm_prize1 + 1;
+  for (int i=0; i<number_of_ICM_prizes; ++i) {
+    assert (p_function_collection != NULL);
+    int function_index = k_icm_prize1 + i;
+    prizes[i] = p_function_collection->Evaluate(k_standard_function_names[function_index]);
+  }
+  
 	int			sym_userchair = p_symbol_engine_userchair->userchair();
 	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
 	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
 	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
-	double		sym_pot = p_symbol_engine_chip_amounts->pot();
-	double		sym_call = p_symbol_engine_chip_amounts->call();
-	double		sym_currentbet[MAX_PLAYERS]={0};
+	double	sym_pot = p_symbol_engine_chip_amounts->pot();
+	double	sym_call = p_symbol_engine_chip_amounts->call();
+	double	sym_currentbet[MAX_PLAYERS]={0};
 
 	if (sym_userchair == k_undefined)
 	{

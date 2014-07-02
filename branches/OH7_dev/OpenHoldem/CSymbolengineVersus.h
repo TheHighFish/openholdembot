@@ -72,8 +72,8 @@ private:
   int _n_los_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
  private:
   
-  unsigned int card_player[2];
-  unsigned int card_common[5];
+  int card_player[k_number_of_cards_per_player];
+  int card_common[k_number_of_community_cards];
 };
 
 extern CSymbolEngineVersus *p_symbol_engine_versus;

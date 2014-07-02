@@ -50,6 +50,7 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs7 message handlers
 BOOL CDlgSAPrefs7::OnInitDialog()
 {
+  /*
 	CString text = "";
 
 	CSAPrefsSubDlg::OnInitDialog();
@@ -59,6 +60,7 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 	m_ICM3.SetWindowText(Number2CString(preferences.icm_prize3()));
 	m_ICM4.SetWindowText(Number2CString(preferences.icm_prize4()));
 	m_ICM5.SetWindowText(Number2CString(preferences.icm_prize5()));
+  */
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -67,7 +69,7 @@ BOOL CDlgSAPrefs7::OnInitDialog()
 void CDlgSAPrefs7::OnOK()
 {
 	CString			text = "";
-
+  /*
 	m_ICM1.GetWindowText(text);
 	preferences.SetValue(k_prefs_icm_prize1, atof(text.GetString()));
 	m_ICM2.GetWindowText(text);
@@ -78,6 +80,6 @@ void CDlgSAPrefs7::OnOK()
 	preferences.SetValue(k_prefs_icm_prize4, atof(text.GetString()));
 	m_ICM5.GetWindowText(text);
 	preferences.SetValue(k_prefs_icm_prize5, atof(text.GetString()));
-
+  */
 	CSAPrefsSubDlg::OnOK();
 }

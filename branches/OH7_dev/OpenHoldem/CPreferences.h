@@ -142,11 +142,9 @@ enum
 	k_prefs_scraper_zoom,
 	k_prefs_popup_blocker,
 	// Double values
+  // Only on double left, just to check for outdated ICM-config
 	k_prefs_icm_prize1,
-	k_prefs_icm_prize2,
-	k_prefs_icm_prize3,
-	k_prefs_icm_prize4,
-	k_prefs_icm_prize5,
+  //
 	// leave this always at the last position
 	k_prefs_last_numerical_value,
 };
@@ -200,12 +198,6 @@ public:
 	const CString dll_name() { return prefs_CString_values[k_prefs_dll_name]; }
 	// Scraper
 	const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
-	// ICM
-	const double icm_prize1() { return prefs_numerical_values[k_prefs_icm_prize1]; }
-	const double icm_prize2() { return prefs_numerical_values[k_prefs_icm_prize2]; }
-	const double icm_prize3() { return prefs_numerical_values[k_prefs_icm_prize3]; }
-	const double icm_prize4() { return prefs_numerical_values[k_prefs_icm_prize4]; }
-	const double icm_prize5() { return prefs_numerical_values[k_prefs_icm_prize5]; }
 	// Replay Frames
 	const bool replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
 	const bool replay_record_every_change() { return prefs_numerical_values[k_prefs_replay_record_every_change]; }
@@ -341,6 +333,8 @@ public:
 	// otherwise we get an "error c2668  ambiguous call to overloaded function"
 	// http://msdn.microsoft.com/en-us/library/da60x087.aspx
 	void SetValue(int index_of_variable, double value);
+private:
+  void CheckForOutdatedICMConfig();
 
 private:
 	// private variables - use public accessors and public mutators to address these

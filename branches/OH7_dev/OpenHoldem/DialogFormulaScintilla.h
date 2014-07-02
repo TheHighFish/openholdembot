@@ -217,8 +217,9 @@ class CDlgFormulaScintilla : public CDialog {
   //   * Secondary autoplayer functions
   //   * Ini functions
   //   * PrWin functions
+  //   * ICM Functions
   //   * Debug functions
-  static const int	k_number_of_standard_headings = 5;
+  static const int k_number_of_standard_headings = 6;
   CStringArray		m_standard_functions[k_number_of_standard_headings];
   DECLARE_MESSAGE_MAP()
 
