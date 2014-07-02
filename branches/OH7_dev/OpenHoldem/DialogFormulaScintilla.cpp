@@ -555,10 +555,12 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
         // ICM functions
         AddStandardFunctionsToTree(parent,
           k_icm_prize1, k_icm_prize5);
+        break;
       case 5:
         // Debug functions
         AddFunctionToTree(parent, "f$debug");
         AddFunctionToTree(parent, "f$test");
+        break;
     }
   }
   _subtree_handlists = m_FormulaTree.InsertItem("Hand Lists");
