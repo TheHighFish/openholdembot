@@ -23,24 +23,27 @@ class Card {
   Card();
   ~Card();
  public:
-   void SetValue(int value);
-   void SetValue(int openholdem_rank, int openholdem_suit);
-   void ClearValue();
+  void SetValue(int value);
+  void SetValue(int openholdem_rank, int openholdem_suit);
+  void ClearValue();
  public:
-   int GetValue();
-   int GetValueEncodedForDLL(); // WinHoldem DLL-interface
-   int GetOpenHoldemRank();
-   int GetStdDeckRank();
-   int GetSuit();
+  int GetValue();
+  int GetValueEncodedForDLL(); // WinHoldem DLL-interface
+  int GetOpenHoldemRank();
+  int GetStdDeckRank();
+  int GetSuit();
  public:
-   bool IsKnownCard();
-   bool IsCardBack();
-   bool IsNoCard();     // Empty, missing
-   bool IsAnyCard();    // Card or cardback
+  char GetRankCharacter();
+  char GetSuitCharacter(bool uppercase = false);
+ public:
+  bool IsKnownCard();
+  bool IsCardBack();
+  bool IsNoCard();     // Empty, missing
+  bool IsAnyCard();    // Card or cardback
  public:
   CString ToString();
  private:
-   int _value;
+  int _value;
 };
 
 #endif

@@ -78,6 +78,26 @@ int Card::GetSuit() {
   }
 }
 
+char Card::GetRankCharacter() {
+  if (!IsKnownCard()) {
+    return '?';
+  }
+  return StdDeck_rankChars[GetStdDeckRank()];
+}
+
+char Card::GetSuitCharacter(bool uppercase /* = false */) {
+  if (!IsKnownCard()) {
+    return '?';
+  }
+  char suit_character = StdDeck_suitChars[GetSuit()];
+  if (uppercase) {
+    return toupper(suit_character);
+  }
+  else {
+    return suit_character;
+  }
+}
+
 bool Card::IsKnownCard() {
   return (!IsCardBack()
     && !IsNoCard()

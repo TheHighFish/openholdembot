@@ -39,8 +39,6 @@ CIteratorThread		*p_iterator_thread = NULL;
 
 // weighted prwin lookup tables for non-suited and suited cards
 int pair2rank_offsuited[170] = {0}, pair2rank_suited[170] = {0};
-// used to resolve ascii cards to numbers for init of above
-char ctonum[k_number_of_ranks_per_deck + 1]="23456789TJQKA";
 // int willplay = 0, wontplay = 0, topclip = 0, mustplay = 0
 sprw1326	_prw1326;	//prwin 1326 data structure Matrix 2008-04-29
 
@@ -422,7 +420,7 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 	{
 		//normal weighted prwin table
 		ptr = prwin_handrank_table_169[i];
-		int j=(strchr(ctonum,*ptr)-ctonum)*13 + (strchr(ctonum,*(ptr+1))-ctonum);
+		int j=(strchr(k_card_chars,*ptr)-k_card_chars)*13 + (strchr(k_card_chars,*(ptr+1))-k_card_chars);
 		if (*(ptr+2)=='s')
 		{
 			pair2rank_suited[j]= i+1;
@@ -432,8 +430,8 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 			pair2rank_offsuited[j] = i+1;
 		}
 		//prw1326 vanilla table
-		j=strchr(ctonum,*ptr)-ctonum;
-		int k=strchr(ctonum,*(ptr+1))-ctonum;
+		j=strchr(k_card_chars,*ptr)-k_card_chars;
+		int k=strchr(k_card_chars,*(ptr+1))-k_card_chars;
 		for(;;)
 		{
 			//I originally had an algorithm to do this, but it was obscure and impenetrable

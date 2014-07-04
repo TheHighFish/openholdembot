@@ -7,7 +7,18 @@ NEW STUFF:
   Now we only need to see cards when it is clearly not showdown.
   This change does not affect real casinos,
   but is meant for confused newbies that simulate with ManualMode.
-  {THF]
+  [THF]
+- Introducing mandatory "nocard"-regions:
+  r$p0cardface0nocard..r$p9cardface1nocard and r$c0cardface0nocard..r$c0cardface4nocard.
+  These regions should return true if no card is present,
+  but false for card-faces and cardbacks.
+  Recommended usage: single pixel, colour-transform, background-colour, positive radius. 
+  Benefits:
+  * better error-detection (in the past a card became implicitly "nocard"
+    after all other options failed)
+  * Significantly improved performance, as colour-transforms are very cheap
+    and we can often avoid expensive operations like fuzzy fonts.
+  [THF]  
 
 BUG FIXES:
 - The new parser incorrectly changed all function names to lower-cases.
@@ -15,8 +26,6 @@ BUG FIXES:
   [THF]
 - Symbol lookup for DLL-symbols was broken.
   [THF]
-
-
 - The improved scraper got cardbacks wrong for some tablemaps.
   Thanks to Ares and Nik0 for reporting and providing replay-frames.
   [THF]
@@ -25,7 +34,7 @@ MAINTENANCE:
 - Getting rid of the constant WH_NOCARD (0).
   We use now only CARD_NOCARD (0xfe = 254).
   This will affect the DLL-interface.
-  Having multiple constants for the same purpose is bad.
+  Having multiple constants for the same purpose is simply bad.
   [THF]
 
 v5.0.0 2014-06-24
