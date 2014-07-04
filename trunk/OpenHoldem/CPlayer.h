@@ -21,6 +21,8 @@ class CPlayer {
   CPlayer();
   ~CPlayer();
  public:
+  void Reset();
+ public:
   bool HasAnyCards();
   bool HasKnownCards();
  public:

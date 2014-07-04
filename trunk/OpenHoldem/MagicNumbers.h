@@ -499,6 +499,7 @@ enum ActionConstant
 const char* ActionConstantNames(int action_constant);
 
 // for rank to card translation
+// Suits
 const static char *k_card_chars = "23456789TJQKA";
 const int k_number_of_different_cardranks = 13;
 

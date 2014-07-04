@@ -20,6 +20,12 @@ CPlayer::CPlayer() {
 CPlayer::~CPlayer() {
 }
 
+void CPlayer::Reset() {
+  for (int i=0; i<k_number_of_cards_per_player; ++i) {
+    hole_cards[i].ClearValue();
+  }
+}
+
 bool CPlayer::HasAnyCards() {
   return (hole_cards[0].IsAnyCard() && hole_cards[1].IsAnyCard());
 }

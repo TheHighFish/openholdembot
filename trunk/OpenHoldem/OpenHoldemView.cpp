@@ -263,15 +263,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	// Draw common cards
 	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
-    int card_common_i_th = p_table_state->_common_cards[i].GetValue();
-		if (_card_common_last[i] != card_common_i_th || update_all) 
+    Card *p_card = &p_table_state->_common_cards[i];
+    int card_value = p_table_state->_common_cards[i].GetValue();
+		if (_card_common_last[i] != card_value || update_all) 
 		{
-			_card_common_last[i] = card_common_i_th;
-			int common_card = card_common_i_th;
-			
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
-				i, common_card);
-			DrawCard(common_card,
+			_card_common_last[i] = card_value;
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
+        i, p_card->ToString());
+			DrawCard(p_card,
 					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
 					  _client_rect.right/2 + cc[i][0] + CARDSIZEX, _client_rect.bottom/2 + cc[i][1] + CARDSIZEY,
 					  false);
@@ -757,7 +756,7 @@ void COpenHoldemView::DrawDealerButton(const int chair)
 	ReleaseDC(pDC);
 }
 
-void COpenHoldemView::DrawCard(const unsigned int card, const int left, const int top, 
+void COpenHoldemView::DrawCard(Card *card, const int left, const int top, 
 							   const int right, const int bottom, const bool pl_card) 
 {
 	__TRACE
@@ -777,7 +776,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// CARD BACK
-	if (card == CARD_BACK) 
+  if (card->IsCardBack()) 
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -793,7 +792,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 	}
 
 	// NO CARD
-	else if (card == CARD_NOCARD) 
+  else if (card->IsNoCard())
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -826,7 +825,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Set colors
-		switch (StdDeck_SUIT(card)) 
+    switch (card->GetSuit())
 		{
 			case Suit_CLUBS:
 				pDC->SetTextColor(COLOR_GREEN);
@@ -854,66 +853,11 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 		pDC->SetBkMode(OPAQUE);
 		pDC->RoundRect(left, top, right, bottom, 5, 5);
 		pDC->SetBkMode(TRANSPARENT);
-		switch (StdDeck_SUIT(card)) 
-		{
-			case Suit_CLUBS:
-				pDC->DrawText("C", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_DIAMONDS:
-				pDC->DrawText("D", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_HEARTS:
-				pDC->DrawText("H", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_SPADES:
-				pDC->DrawText("S", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-		}
-
-
-		// Draw card rank
-		switch (StdDeck_RANK(card)) 
-		{
-			case Rank_2:
-				pDC->DrawText("2", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_3:
-				pDC->DrawText("3", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_4:
-				pDC->DrawText("4", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_5:
-				pDC->DrawText("5", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_6:
-				pDC->DrawText("6", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_7:
-				pDC->DrawText("7", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_8:
-				pDC->DrawText("8", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_9:
-				pDC->DrawText("9", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_TEN:
-				pDC->DrawText("T", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_JACK:
-				pDC->DrawText("J", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_QUEEN:
-				pDC->DrawText("Q", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_KING:
-				pDC->DrawText("K", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_ACE:
-				pDC->DrawText("A", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-		}
+    // Draw card rank and suit
+    pDC->DrawText(CString(card->GetSuitCharacter(true)), 
+      -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+    pDC->DrawText(CString(card->GetRankCharacter()), 
+      -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
 
 		// Restore original pen and brush
 		pDC->SelectObject(oldpen);
@@ -1211,21 +1155,19 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 	}
 	// Get size of current client window
 	GetClientRect(&_client_rect);
-	// Draw player cards
-  int player_card_0 = p_table_state->_players[chair].hole_cards[0].GetValue();
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%i]\n",
-		chair, player_card_0);
-	DrawCard(player_card_0,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 2,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEY/2 - 1,
-		true);
-  int player_card_1 = p_table_state->_players[chair].hole_cards[1].GetValue();
-	DrawCard(player_card_1,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 1,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 1,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEY/2 - 1,
-		true);
+	// Draw player cards (first)
+  Card *player_card_0 = &p_table_state->_players[chair].hole_cards[0];
+	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
+    chair, player_card_0->ToString());
+  int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2;
+  int pos_x_left   = pos_x_right - CARDSIZEX;
+  int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
+  int pos_y_bottom = pos_y_top + CARDSIZEY/2 - 1;
+	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+
+  // Draw player cards (second)
+  Card *player_card_1 = &p_table_state->_players[chair].hole_cards[1];
+  pos_x_right = pos_x_right + CARDSIZEX + 3;
+  pos_x_left  = pos_x_left + CARDSIZEX + 3;
+	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
 }

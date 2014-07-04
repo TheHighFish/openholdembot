@@ -15,6 +15,7 @@
 #define INC_OPENHOLDEMVIEW_H
 
 #include "OpenHoldemDoc.h"
+#include "Card.h"
 
 #define DISPLAY_UPDATE_TIMER	111
 
@@ -43,7 +44,7 @@ private:
 	void DrawButtonIndicators();
 	void DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, const int top, const int right, const int bottom);
 	void DrawSeatedActiveCircle(const int chair);
-	void DrawCard(const unsigned int card, const int left, const int top, const int right, const int bottom, const bool pl_card);
+	void DrawCard(Card *card, const int left, const int top, const int right, const int bottom, const bool pl_card);
 	void DrawDealerButton(const int chair); 
 	void DrawNameBox(const int chair); 
 	void DrawBalanceBox(const int chair); 

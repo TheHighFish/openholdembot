@@ -137,20 +137,3 @@ sub empty_space {
 	print;
 }
 
-#Finally generate class declaration
-print "\n\n\n\n";
-print "class ";
-print $classname;
-print " {\n";
-print " public:\n";
-print "  ";
-print $classname; 
-print "();\n";
-print "  ~" . $classname . "();\n";
-print " private:\n";
-foreach (@list_of_headers) {
-	print "  ";
-	print;
-	print ";\n";
-}
-print "};"

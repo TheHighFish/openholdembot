@@ -20,6 +20,12 @@
 CTableState *p_table_state = NULL;
 
 CTableState::CTableState() {
+  for (int i=0; i<k_number_of_community_cards; ++i) {
+    _common_cards[i].ClearValue();
+  }
+  for (int i=0; i<k_max_number_of_players; ++i) {
+    _players[i].Reset();
+  }
 }
 
 CTableState::~CTableState() {
