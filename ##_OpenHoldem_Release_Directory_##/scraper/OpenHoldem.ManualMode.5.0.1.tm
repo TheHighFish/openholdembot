@@ -1,10 +1,9 @@
 .osdb2
 
-// OpenScrape 4.1.1
+// OpenScrape 5.0.1
 
-// 2013-10-02 23:09:43
+// 2014-07-04 16:36:34
 // 32 bits per pixel
-
 
 //
 // sizes
@@ -18,7 +17,7 @@ z$clientsize       574  335
 
 s$allinmethod               2
 s$nchairs                   10
-s$network                   PokerStars
+s$network                   pokerstars
 s$sitename                  openholdem
 s$swagconfirmationmethod    Click Bet
 s$swagdeletionmethod        Nothing
@@ -33,10 +32,15 @@ s$ttlimits0                 ^*- ^L tourney - blinds ^s/^b - ante ^a
 //
 
 r$c0cardface0        193 144 224 185        0    0 H0
+r$c0cardface0nocard  213 170 213 170   b6b6b6   10 C
 r$c0cardface1        232 144 263 185        0    0 H0
+r$c0cardface1nocard  243 170 243 170   b6b6b6   10 C
 r$c0cardface2        271 144 302 185        0    0 H0
+r$c0cardface2nocard  282 170 282 170   b6b6b6   10 C
 r$c0cardface3        310 144 341 185        0    0 H0
+r$c0cardface3nocard  317 170 317 170   b6b6b6   10 C
 r$c0cardface4        349 144 380 185        0    0 H0
+r$c0cardface4nocard  360 170 360 170   b6b6b6   10 C
 r$c0handnumber       282   6 308  16        0    0 T0
 r$c0pot0             255  49 345  58        0    0 T0
 r$i0button           491 320 502 331   ff0000    0 N
@@ -61,7 +65,9 @@ r$p0balance          365  68 413  80        0    0 T0
 r$p0bet              309  82 350  95   ffffff    0 T0
 r$p0cardback         354  43 360  49     ffff    0 H0
 r$p0cardface0        354   8 385  49        0    0 H0
+r$p0cardface0nocard  360  20 360  20   b6b6b6   10 C
 r$p0cardface1        393   8 424  49        0    0 H0
+r$p0cardface1nocard  400  20 400  20   b6b6b6   10 C
 r$p0dealer           328  99 331 101       ff    0 C
 r$p0name             355  53 423  65        0    0 T0
 r$p0seated           400   0 402   0        0    0 C
@@ -70,7 +76,9 @@ r$p1balance          451 102 499 114        0    0 T0
 r$p1bet              395 100 436 113   ffffff    0 T0
 r$p1cardback         440  77 446  83     ffff    0 H0
 r$p1cardface0        440  42 471  83        0    0 H0
+r$p1cardface0nocard  460  55 460  55   b6b6b6   10 C
 r$p1cardface1        479  42 510  83        0    0 H0
+r$p1cardface1nocard  500  55 500  55   b6b6b6   10 C
 r$p1dealer           414 117 417 119       ff    0 C
 r$p1name             441  87 509  99        0    0 T0
 r$p1seated           471  31 479  31        0    0 C
@@ -79,7 +87,9 @@ r$p2balance          508 189 556 201        0    0 T0
 r$p2bet              452 150 493 163   ffffff    0 T0
 r$p2cardback         497 164 503 170     ffff    0 H0
 r$p2cardface0        497 129 528 170        0    0 H0
+r$p2cardface0nocard  500 150 500 150   b6b6b6   10 C
 r$p2cardface1        536 129 567 170        0    0 H0
+r$p2cardface1nocard  540 150 540 150   b6b6b6   10 C
 r$p2dealer           471 167 474 169       ff    0 C
 r$p2name             498 174 566 186        0    0 T0
 r$p2seated           528 118 536 118        0    0 C
@@ -88,7 +98,9 @@ r$p3balance          451 276 499 288        0    0 T0
 r$p3bet              395 217 436 230   ffffff    0 T0
 r$p3cardback         440 251 446 257     ffff    0 H0
 r$p3cardface0        440 216 471 257        0    0 H0
+r$p3cardface0nocard  460 218 460 218   b6b6b6   10 C
 r$p3cardface1        479 216 510 257        0    0 H0
+r$p3cardface1nocard  500 218 500 218   b6b6b6   10 C
 r$p3dealer           414 200 417 202       ff    0 C
 r$p3name             441 261 509 273        0    0 T0
 r$p3seated           471 205 479 205        0    0 C
@@ -97,7 +109,9 @@ r$p4balance          365 310 413 322        0    0 T0
 r$p4bet              309 231 350 244   ffffff    0 T0
 r$p4cardback         354 285 360 291     ffff    0 H0
 r$p4cardface0        354 250 385 291        0    0 H0
+r$p4cardface0nocard  360 270 360 270   b6b6b6   10 C
 r$p4cardface1        393 250 424 291        0    0 H0
+r$p4cardface1nocard  400 270 400 270   b6b6b6   10 C
 r$p4dealer           328 214 331 216       ff    0 C
 r$p4name             355 295 423 307        0    0 T0
 r$p4seated           385 239 393 239        0    0 C
@@ -106,7 +120,9 @@ r$p5balance          158 310 206 322        0    0 T0
 r$p5bet              222 231 263 244   ffffff    0 T0
 r$p5cardback         147 285 153 291     ffff    0 H0
 r$p5cardface0        147 250 178 291        0    0 H0
+r$p5cardface0nocard  160 270 160 270   b6b6b6   10 C
 r$p5cardface1        186 250 217 291        0    0 H0
+r$p5cardface1nocard  200 270 200 270   b6b6b6   10 C
 r$p5dealer           241 214 244 216       ff    0 C
 r$p5name             148 295 216 307        0    0 T0
 r$p5seated           178 239 186 239        0    0 C
@@ -115,7 +131,9 @@ r$p6balance           72 276 120 288        0    0 T0
 r$p6bet              136 217 177 230   ffffff    0 T0
 r$p6cardback          61 251  67 257     ffff    0 H0
 r$p6cardface0         61 216  92 257        0    0 H0
+r$p6cardface0nocard   70 218  70 218   b6b6b6   10 C
 r$p6cardface1        100 216 131 257        0    0 H0
+r$p6cardface1nocard  110 218 110 218   b6b6b6   10 C
 r$p6dealer           155 200 158 202       ff    0 C
 r$p6name              62 261 130 273        0    0 T0
 r$p6seated            92 205 100 205        0    0 C
@@ -124,7 +142,9 @@ r$p7balance           15 189  63 201        0    0 T0
 r$p7bet               79 150 120 163   ffffff    0 T0
 r$p7cardback           4 164  10 170     ffff    0 H0
 r$p7cardface0          4 129  35 170        0    0 H0
+r$p7cardface0nocard   20 150  20 150   b6b6b6   10 C
 r$p7cardface1         43 129  74 170        0    0 H0
+r$p7cardface1nocard   60 150  60 150   b6b6b6   10 C
 r$p7dealer            98 167 101 169       ff    0 C
 r$p7name               5 174  73 186        0    0 T0
 r$p7seated            35 118  43 118        0    0 C
@@ -133,7 +153,9 @@ r$p8balance           72 102 120 114        0    0 T0
 r$p8bet              136 100 177 113   ffffff    0 T0
 r$p8cardback          61  77  67  83     ffff    0 H0
 r$p8cardface0         61  42  92  83        0    0 H0
+r$p8cardface0nocard   71  55  71  55   b6b6b6   10 C
 r$p8cardface1        100  42 131  83        0    0 H0
+r$p8cardface1nocard  110  55 110  55   b6b6b6   10 C
 r$p8dealer           155 117 158 119       ff    0 C
 r$p8name              62  87 130  99        0    0 T0
 r$p8seated            92  31 100  31        0    0 C
@@ -142,7 +164,9 @@ r$p9balance          158  68 206  80        0    0 T0
 r$p9bet              222  82 263  95   ffffff    0 T0
 r$p9cardback         147  43 153  49     ffff    0 H0
 r$p9cardface0        147   8 178  49        0    0 H0
+r$p9cardface0nocard  160  20 160  20   b6b6b6   10 C
 r$p9cardface1        186   8 217  49        0    0 H0
+r$p9cardface1nocard  200  20 200  20   b6b6b6   10 C
 r$p9dealer           241  99 244 101       ff    0 C
 r$p9name             148  53 216  65        0    0 T0
 r$p9seated           169   0 171   0        0    0 C
