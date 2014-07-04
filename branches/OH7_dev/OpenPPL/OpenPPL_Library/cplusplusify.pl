@@ -5,21 +5,23 @@
 # Simple script that translates the OpenPPL-library to (nearly) C++
 # for the new OpenPPL symbol-engines.
 
-print "//*****************************************************************************\n";
-print "//\n";
-print "// This file is part of the OpenHoldem project\n";
-print "//   Download page:         http://code.google.com/p/openholdembot/\n";
-print "//   Forums:                http://www.maxinmontreal.com/forums/index.php\n";
-print "//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html\n";
-print "//\n";
-print "//*****************************************************************************\n";
-print "//\n";
-print "// Purpose:\n";
-print "//\n";
-print "//*****************************************************************************\n";
-print "\n";
-
 use strict;
+
+my $license = 
+	"//*****************************************************************************\n"
+  . "//\n"
+  . "// This file is part of the OpenHoldem project\n"
+  . "//   Download page:         http://code.google.com/p/openholdembot/\n"
+  . "//   Forums:                http://www.maxinmontreal.com/forums/index.php\n"
+  . "//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html\n"
+  . "//\n"
+  . "//*****************************************************************************\n"
+  . "//\n"
+  . "// Purpose:\n"
+  . "//\n"
+  . "//*****************************************************************************\n"
+  . "\n";
+
 my $classname          = "CSymbolEngineOpenPPLHandStrength";	# Configure this
 my $outside_function   = 0;
 my $start_of_function  = 1;
@@ -27,7 +29,21 @@ my $inside_function    = 2;
 my $parsing_state      = $outside_function;
 my $current_line;
 my @list_of_headers;
+my @var_names;
 
+print $license;
+
+## Constructor 
+print $classname . "::" . $classname . "() {\n";
+print "}\n";
+print "\n";
+
+## Destructor 
+print $classname . "::~" . $classname . "() {\n";
+print "}\n";
+print "\n";
+
+## Translated functions
 while (<>) {
 	chomp;
 	if (m/^##/) {
@@ -74,10 +90,58 @@ while (<>) {
 	}
 }
 
+## Ini-function(s)
+
+
+
+
+print "\n\n\n\n";
+#Finally generate class declaration
+print $license;
+print "class ";
+print $classname;
+print " {\n";
+# Constructor and destructor
+print " public:\n";
+print "  ";
+print $classname; 
+print "();\n";
+print "  ~" . $classname . "();\n";
+# Public accessors
+print " public:\n";
+foreach (@var_names) {
+	print "  double ";
+	print;
+	print "() { return _";
+	print "$_; }\n";
+}
+# CalculateXYZ-functions
+print " private:\n";
+foreach (@list_of_headers) {
+	print "  ";
+	print;
+	print ";\n";
+}
+# Variables
+print " private:\n";
+foreach (@var_names) {
+	print "  double _";
+	print;
+	print ";\n";
+}
+print "};";
+
+#########################################´
+#
+# Subrouttines
+#
+#########################################
+
 sub function_header {		
 	$parsing_state = $start_of_function;
 	s/##//g;
 	s/^f\$//;
+	push(@var_names, $_);
 	my $function_header = "double " . $classname . "::Calculate" . $_ . "()";
 	push(@list_of_headers, $function_header);
 	print $function_header;
@@ -87,15 +151,13 @@ sub function_header {
 }
 
 sub comment {
-	if ($parsing_state == $inside_function)
-	{
+	if ($parsing_state == $inside_function)	{
 		# Indent
 		print "\n";
 		print "        ";
 		print;
 	}
-	elsif ($parsing_state == $start_of_function) 
-	{
+	elsif ($parsing_state == $start_of_function) 	{
 		# Do not indent
 		# No line break
 		$parsing_state = $inside_function;
@@ -125,8 +187,7 @@ sub code {
 sub empty_space {
 	# Empty line
 	# End of function
-	if (($parsing_state == $start_of_function) || ($parsing_state == $inside_function))
-	{
+	if (($parsing_state == $start_of_function) || ($parsing_state == $inside_function))	{
 		$parsing_state = $outside_function;
 		# Finish return statement		
 		print ");\n}\n\n";
@@ -136,21 +197,3 @@ sub empty_space {
 	print "\n";
 	print;
 }
-
-#Finally generate class declaration
-print "\n\n\n\n";
-print "class ";
-print $classname;
-print " {\n";
-print " public:\n";
-print "  ";
-print $classname; 
-print "();\n";
-print "  ~" . $classname . "();\n";
-print " private:\n";
-foreach (@list_of_headers) {
-	print "  ";
-	print;
-	print ";\n";
-}
-print "};"
