@@ -1162,8 +1162,8 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
   int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2;
   int pos_x_left   = pos_x_right - CARDSIZEX;
   int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
-  int pos_y_bottom = pos_y_top + CARDSIZEY/2 - 1;
-	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+  int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
+	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
 
   // Draw player cards (second)
   Card *player_card_1 = &p_table_state->_players[chair].hole_cards[1];

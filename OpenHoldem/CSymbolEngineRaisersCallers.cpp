@@ -252,6 +252,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	_nopponentsfolded   = 0;
 	_nopponentschecking = 0;
 
+  assert(p_tablemap->nchairs() <= k_max_number_of_players);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
