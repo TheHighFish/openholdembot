@@ -1,4 +1,4 @@
-v5.0.1 2014-xx-yy
+v5.0.1 2014-07-05
 ==================
 NEW STUFF: 
 - support fr pXcardfaceYnocard and c0cardfaceXbocard regions
