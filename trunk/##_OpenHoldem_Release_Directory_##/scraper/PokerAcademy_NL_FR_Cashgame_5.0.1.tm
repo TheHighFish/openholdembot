@@ -44,7 +44,6 @@ r$c0cardface3        447 300 460 331   ffffff    0 H0
 r$c0cardface3nocard  446 362 446 364   dadada   -1 C
 r$c0cardface4        502 300 515 331   ffffff    0 H0
 r$c0cardface4nocard  501 362 501 364   dadada   -1 C
-r$c0istournament     803  30 804  33 ff1b1b5d   -1 C
 r$c0pot0             118 320 184 335 ff00ffff  340 T1
 r$i0button           158 653 278 675 ff1313c1    0 N
 r$i0label            203 657 234 669 ff1b1b5d  274 T0
