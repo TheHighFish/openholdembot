@@ -166,7 +166,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	if (iter_vars.iterator_thread_running())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
-		_isfinalanswer = false;
+		//!!!!!_isfinalanswer = false;
 	}
 
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
