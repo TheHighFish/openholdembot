@@ -133,6 +133,7 @@ void CDllExtension::UnloadDll(void)
 		return;
 	}
 	(_process_message) ("event", "unload");
+  assert(p_iterator_thread != NULL);
 	p_iterator_thread->set_prw1326_useme(0);
 	if (FreeLibrary(_hmod_dll))
 	{
@@ -163,6 +164,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		}
 		else
 		{
+      assert(p_iterator_thread != NULL);
       p_iterator_thread->RestartPrWinComputations();
 		}
 
@@ -191,6 +193,7 @@ extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 {
+  assert(p_iterator_thread != NULL);
 	return (void *)(p_iterator_thread->prw1326());
 }
 

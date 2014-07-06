@@ -69,6 +69,7 @@ void CSymbolEnginePrwin::ResetOnMyTurn()
 	__TRACE
 	CalculateNOpponents();
 	__TRACE
+  assert(p_iterator_thread != NULL);
 	p_iterator_thread->StartPrWinComputationsIfNeeded();
 	__TRACE
 	CalculateNhands();

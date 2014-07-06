@@ -108,7 +108,7 @@ CIteratorThread::~CIteratorThread()
 {
 	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
-
+  assert(p_iterator_thread != NULL);
 	if (_m_stop_thread)
 	{
 		// Trigger thread to die
@@ -131,8 +131,8 @@ void CIteratorThread::PausePrWinComputations()
 	__TRACE
 	if (p_iterator_thread != NULL)
 	{
-		write_log(preferences.debug_prwin(), "[PrWinThread] Stopping iterator thread.\n");
-		iter_vars.set_iterator_thread_running(false); //??
+		write_log(preferences.debug_prwin(), "[PrWinThread] Pausing iterator thread.\n");
+		iter_vars.set_iterator_thread_running(false);
 	  iter_vars.set_iterator_thread_complete(true);
     iter_vars.set_nit(0);
 	}
@@ -142,22 +142,22 @@ void CIteratorThread::RestartPrWinComputations()
 {
 	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
+  iter_vars.set_iterator_thread_running(true);
+	iter_vars.set_iterator_thread_complete(false);
   iter_vars.set_nit(0);
   InitIteratorLoop();
   ResetIteratorVars();
 	ResetGlobalVariables();
-	//!!!!!!
 }
 
 void CIteratorThread::StartPrWinComputationsIfNeeded() {		
 	__TRACE
 	p_validator->ValidateIt();
-	if (p_iterator_thread != NULL) {
-		write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread not running. Can't restart computations.\n");
-		return;
-	}
-	write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread not running. Going to restart.\n");
+	assert(p_iterator_thread != NULL);
 	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
+    write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
+    assert(iter_vars.iterator_thread_running() == false);
+    assert(iter_vars.iterator_thread_complete() == true);
     RestartPrWinComputations();
 		return;
 	}
@@ -377,8 +377,10 @@ void CIteratorThread::InitIteratorLoop() {
 	// Counters
 	_win = _tie = _los = 0;
 
-	// setup masks
   int userchair = p_symbol_engine_userchair->userchair();
+  if (userchair == k_undefined) return;
+
+	// setup masks
   AssertRange(userchair, 0, k_max_chair_number);
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
     Card card = p_table_state->_players[userchair].hole_cards[i];
