@@ -17,7 +17,6 @@
 #include <process.h>
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
-#include "CiteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -36,6 +35,13 @@
 #include "PrWinHandranges.h"
 
 CIteratorThread		*p_iterator_thread = NULL;
+
+// Static variables
+int CIteratorThread::_iterations_calculated;
+int CIteratorThread::_iterations_required;
+double CIteratorThread::_prwin;
+double CIteratorThread::_prtie;
+double CIteratorThread::_prlos;
 
 // weighted prwin lookup tables for non-suited and suited cards
 int pair2rank_offsuited[170] = {0}, pair2rank_suited[170] = {0};
@@ -93,12 +99,6 @@ CIteratorThread::CIteratorThread()
 
 	// Initialize variables
 	InitHandranktTableForPrwin();
-
-	// FIRST mark thread as running,
-	// THEN start thread.
-	// The other way can lead to an ugly race-condition,
-	// if the thread has already stopped, when we mark it as running.
-	iter_vars.set_iterator_thread_running(true);
 	AfxBeginThread(IteratorThreadFunction, this);
 
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
@@ -126,25 +126,9 @@ CIteratorThread::~CIteratorThread()
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
 
-void CIteratorThread::PausePrWinComputations()
-{
-	__TRACE
-	if (p_iterator_thread != NULL)
-	{
-		write_log(preferences.debug_prwin(), "[PrWinThread] Pausing iterator thread.\n");
-		iter_vars.set_iterator_thread_running(false);
-	  iter_vars.set_iterator_thread_complete(true);
-    iter_vars.set_nit(0);
-	}
-}
-
-void CIteratorThread::RestartPrWinComputations()
-{
+void CIteratorThread::RestartPrWinComputations() {
 	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
-  iter_vars.set_iterator_thread_running(true);
-	iter_vars.set_iterator_thread_complete(false);
-  iter_vars.set_nit(0);
   InitIteratorLoop();
   ResetIteratorVars();
 	ResetGlobalVariables();
@@ -156,8 +140,7 @@ void CIteratorThread::StartPrWinComputationsIfNeeded() {
 	assert(p_iterator_thread != NULL);
 	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
     write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
-    assert(iter_vars.iterator_thread_running() == false);
-    assert(iter_vars.iterator_thread_complete() == true);
+    assert(IteratorThreadWorking() == false);
     RestartPrWinComputations();
 		return;
 	}
@@ -184,156 +167,109 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary()
 	}
 }
 
-UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam)
-{
+UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	__TRACE
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
-
-	// Loop-variables j, k get used inside and outside loops.
+  // Loop-variables j, k get used inside and outside loops.
 	// It is a bit messy, nearly impossible to fix it.
 	// At least the outer loops ("f$prwin_number_of_iterations" and "i") could be improved.
 	unsigned int	pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
-	HandVal			pl_hv = 0, opp_hv = 0;
+	HandVal		pl_hv = 0, opp_hv = 0;
 	int				dummy = 0;
-
-	int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	bool			hand_lost;
 
 	ResetGlobalVariables();
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
-
-	//
+  //
 	// Main iterator loop
 	//
 	write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
-
-	// "f$prwin_number_of_iterations" has to be declared outside of the loop,
+  // "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
 	AdjustPrwinVariablesIfNecessary();
-	unsigned int nit;
-	for (nit=0; nit < iter_vars.nit(); nit++)
-	{
+	for (_iterations_calculated=1; _iterations_calculated <= _iterations_required; ++_iterations_calculated) {
 		__TRACE
 		// Check event for thread stop signal
-		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-		{
+		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
-
-		CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
-		
-		if (UseEnhancedPrWin())
-		{
+    CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
+		if (UseEnhancedPrWin())	{
 			EnhancedDealingAlgorithm();
-		}
-		else
-		{ 
+		}	else { 
 			StandardDealingAlgorithm(sym_nopponents);
 		}
-
-		// Get my handval/pokerval
+    // Get my handval/pokerval
 		CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
 		CardMask_OR(evalCards, evalCards, addlcomCards);
 		pl_hv = Hand_EVAL_N(evalCards, 7);
 		pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
-
-		// Scan through opponents' handvals/pokervals
+    // Scan through opponents' handvals/pokervals
 		// - if we find one better than ours, then we are done, increment los
 		// - for win/tie, we need to wait until we scan them all
 		opp_pokvalmax = 0;
 		hand_lost = false;
-		for (int i=0; i<sym_nopponents; i++)
-		{
+		for (int i=0; i<sym_nopponents; i++) {
 			CardMask_RESET(opp_evalCards);
 			CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
 			CardMask_SET(opp_evalCards, ocard[i*2]);
 			CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
 			opp_hv = Hand_EVAL_N(opp_evalCards, 7);
 			opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
-
-			if (opp_pokval>pl_pokval)
-			{
+      if (opp_pokval>pl_pokval) {
 				_los++;
 				hand_lost = true;
 				break;
-			}
-			else
-			{
-				if (opp_pokval > opp_pokvalmax)
-				{
+			}	else {
+				if (opp_pokval > opp_pokvalmax)	{
 					opp_pokvalmax = opp_pokval;
 				}
 			}
 		}
-		if (!hand_lost)
-		{
-			if (pl_pokval > opp_pokvalmax)
-			{
+		if (!hand_lost)	{
+			if (pl_pokval > opp_pokvalmax) {
 				_win++;
-			}
-			else
-			{
+			}	else {
 				_tie++;
 			}
 		}
-
-		UpdateIteratorVarsForDisplay(nit);
+		UpdateIteratorVarsForDisplay();
 	}
-
 	write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
-
-	if (SimulationFinished(nit))
-	{
-		iter_vars.set_iterator_thread_running(false);
-		iter_vars.set_iterator_thread_complete(true);
-		UpdateIteratorVarsForDisplay(nit);
+  if (!IteratorThreadComplete()) {
+    // Computation stopped with some kind of error.
+    // Reset vars to avoid bogus data
+		ResetIteratorVars();
 	}
-	else
-	{
-		iter_vars.set_iterator_thread_running(false);
-		iter_vars.set_iterator_thread_complete(false);
-		iter_vars.set_iterator_thread_progress(0);
-		iter_vars.set_nit(0);
-		ResetIteratorVars(); //??
-	}
-
-	::SetEvent(pParent->_m_wait_thread);
-	PausePrWinComputations();
-
+  UpdateIteratorVarsForDisplay();
+  ::SetEvent(pParent->_m_wait_thread);
 	return 0;
 }
 
-void CIteratorThread::UpdateIteratorVarsForDisplay(unsigned int nit)
+void CIteratorThread::UpdateIteratorVarsForDisplay()
 {
 	__TRACE
 	// Update display once every 1000 iterations
-	if (SimulationFinished(nit)
-		|| ((nit % 1000 == 0) && (nit >= 1000)))
+	if (IteratorThreadComplete()
+		|| ((_iterations_calculated % 1000 == 0) && (_iterations_calculated >= 1000)))
 	{
-		iter_vars.set_iterator_thread_progress(nit);
-		iter_vars.set_prwin(_win / (double) nit);
-		iter_vars.set_prtie(_tie / (double) nit);
-		iter_vars.set_prlos(_los / (double) nit);
+		_prwin = _win / (double) _iterations_calculated;
+		_prtie = _tie / (double) _iterations_calculated;
+		_prtie = _los / (double) _iterations_calculated;
 		write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
-			nit, 
-			iter_vars.prwin(),
-			iter_vars.prtie(), 
-			iter_vars.prlos());
+			_iterations_calculated, _prwin, _prtie, _prlos);
 	}
 }
 
-bool CIteratorThread::SimulationFinished(unsigned int nit) {
-	__TRACE
-	return (nit >= iter_vars.nit());
-}
-
 void CIteratorThread::ResetIteratorVars() {
-	iter_vars.set_prwin(0);
-	iter_vars.set_prtie(0);
-	iter_vars.set_prlos(0);
+	_prwin = 0.0;
+	_prtie = 0.0;
+	_prlos = 0.0;
+  _iterations_calculated = 0;
 }
 
 void CIteratorThread::ResetGlobalVariables() {
@@ -352,23 +288,15 @@ void CIteratorThread::ResetGlobalVariables() {
 }
 
 void CIteratorThread::InitNumberOfIterations() {
-	int number_of_iterations = p_function_collection->Evaluate(
-		"f$prwin_number_of_iterations");
-	iter_vars.set_nit(number_of_iterations); 
+	_iterations_required = p_function_collection->Evaluate(
+		k_standard_function_names[k_prwin_number_of_iterations]);
 }
 
 void CIteratorThread::InitIteratorLoop() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 
 	// Set starting status and parameters
-	iter_vars.set_iterator_thread_running(true);
-	iter_vars.set_iterator_thread_complete(false);
-	iter_vars.set_iterator_thread_progress(0);
 	InitNumberOfIterations();
-	iter_vars.set_prwin(0);
-	iter_vars.set_prtie(0);
-	iter_vars.set_prlos(0);
-
 	// player cards
 	CardMask_RESET(_plCards);
 	CardMask_RESET(_comCards);

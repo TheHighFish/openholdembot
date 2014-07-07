@@ -19,7 +19,6 @@
 #include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -187,13 +186,13 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		&& p_table_state->_players[USER_CHAIR].HasKnownCards())
 	{
 		_status_prwin.Format("%d/%d/%d", 
-			(int) (iter_vars.prwin()*1000), 
-			(int) (iter_vars.prtie()*1000),
-			(int) (iter_vars.prlos()*1000));
+			(int) (p_iterator_thread->prwin()*1000), 
+			(int) (p_iterator_thread->prtie()*1000),
+			(int) (p_iterator_thread->prlos()*1000));
 		double iterations;
 		p_engine_container->EvaluateSymbol("f$prwin_number_of_iterations", &iterations);
 		_status_nit.Format("%d/%s", 
-			iter_vars.iterator_thread_progress(),
+			p_iterator_thread->IteratorThreadProgress(),
 			Number2CString(iterations));
 	}
 	else
@@ -208,7 +207,8 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	{
 		_status_action = "Pre-fold";
 	}
-	else if (p_symbol_engine_userchair->userchair_confirmed() && iter_vars.iterator_thread_complete())
+	else if (p_symbol_engine_userchair->userchair_confirmed() 
+    && p_iterator_thread->IteratorThreadComplete())
 	{
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
       _status_action = "N/A";

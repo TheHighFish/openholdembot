@@ -19,7 +19,6 @@
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "inlines/eval.h"
 #include "OH_MessageBox.h"

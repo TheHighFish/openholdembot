@@ -19,7 +19,6 @@
 #include "CHandresetDetector.h"
 #include "CHandHistory.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"
 #include "CSymbolEngineVersus.h"
@@ -158,16 +157,8 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 	if (strcmp (str, "cmd$recalc") == 0)
 	{
 		// restart iterator thread
-		if (p_symbol_engine_prwin->nopponents_for_prwin() == 0)
-		{
-			iter_vars.set_iterator_thread_complete(true);
-		}
-		else
-		{
-      assert(p_iterator_thread != NULL);
-      p_iterator_thread->RestartPrWinComputations();
-		}
-
+    p_iterator_thread->RestartPrWinComputations();
+		
 		// Recompute versus tables
 		p_symbol_engine_versus->GetCounts ();
 		iserr = false;
