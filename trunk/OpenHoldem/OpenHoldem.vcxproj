@@ -307,7 +307,6 @@
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
     <ClCompile Include="CPokerTrackerThread.cpp" />
     <ClCompile Include="CIteratorThread.cpp" />
-    <ClCompile Include="CIteratorVars.cpp" />
     <ClCompile Include="PrWinHandranges.cpp" />
     <ClCompile Include="CReplayFrame.cpp" />
     <ClCompile Include="CReplayFramesCounter.cpp" />
@@ -577,7 +576,6 @@
     <ClInclude Include="CProblemSolver.h" />
     <ClInclude Include="CVersionInfo.h" />
     <ClInclude Include="CIteratorThread.h" />
-    <ClInclude Include="CIteratorVars.h" />
     <ClInclude Include="PrWinHandranges.h" />
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="CReplayFramesCounter.h" />

@@ -19,23 +19,30 @@
 
 extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29
 
-class CIteratorThread
-{
-public:
+class CIteratorThread {
+ public:
 	// public functions
 	CIteratorThread();
 	~CIteratorThread();
-public:
-	static void PausePrWinComputations();
+ public:
+  // Public accessors()
+  double prwin()   { return _prwin; }
+  double prtie()   { return _prtie; }
+  double prlos()   { return _prlos; }
+ public:
+  static bool IteratorThreadComplete() { return _iterations_calculated >= _iterations_required; }
+  bool IteratorThreadWorking()    { return ((_iterations_calculated > 0) && (_iterations_calculated < _iterations_required)); }
+  int  IteratorThreadProgress()   { return _iterations_calculated; }
+ public:
 	void StartPrWinComputationsIfNeeded();
   void StartIteratorThread();
 	void set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
 	const	sprw1326 *prw1326()	          { return &_prw1326; }
-public:
+ public:
   // For the DLL "cmd$recalc"
   void RestartPrWinComputations();
 #undef ENT
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT IteratorThreadFunction(LPVOID pParam);
 	static void AdjustPrwinVariablesIfNecessary();
@@ -45,21 +52,25 @@ private:
 	static void EnhancedDealingAlgorithm();
 	static bool UseEnhancedPrWin();
 	static int  GetRandomCard();
-private:
-	static void UpdateIteratorVarsForDisplay(unsigned int nit);
+ private:
+	static void UpdateIteratorVarsForDisplay();
 	static void ResetIteratorVars();
 	static void ResetGlobalVariables();
-	static bool SimulationFinished(unsigned int nit);
-private:
+ private:
 	void InitIteratorLoop();
 	void InitHandranktTableForPrwin();
 	void CloneVanillaChairToAllOtherChairs();
 	void InitNumberOfIterations();
-private:
+ private:
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
 	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
+ private:
+  static int _iterations_calculated;
+  static int _iterations_required;
+ private:
+  static double _prwin, _prtie, _prlos;
 };
 
 extern CIteratorThread *p_iterator_thread;

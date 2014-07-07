@@ -19,7 +19,6 @@
 #include "CCasinoInterface.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CScraper.h"  
 #include "CScraperAccess.h"
@@ -163,10 +162,10 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 
 	_isfinalanswer = true;
 	// check factors that affect isFinalAnswer status
-	if (iter_vars.iterator_thread_running())
+	if (p_iterator_thread->IteratorThreadWorking())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
-		//!!!!!_isfinalanswer = false;
+		_isfinalanswer = false;
 	}
 
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)

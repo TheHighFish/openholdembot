@@ -20,6 +20,7 @@
 #include <float.h>
 
 #include "CAutoconnector.h"
+#include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CDllExtension.h"
 #include "CFlagsToolbar.h"
@@ -28,7 +29,6 @@
 #include "CGameState.h"
 #include "Chair$Symbols.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CScraper.h"
@@ -98,15 +98,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     sym[strlen(sym)-1] = '\0';
     *result = p_game_state->OHSymHist(sym, round);
   }
-  // Varios probabilities
-  else if (memcmp(name, "pr", 2)==0) {
-    // PROBABILITIES
-    // Part 2(2)
-    if (memcmp(name, "prwin", 5)==0 && strlen(name)==5)			*result = iter_vars.prwin();
-    else if (memcmp(name, "prlos", 5)==0 && strlen(name)==5)	*result = iter_vars.prlos();
-    else if (memcmp(name, "prtie", 5)==0 && strlen(name)==5)	*result = iter_vars.prtie();
-    else return false;
-  }
   // CHAIRS 1(2)
   else if (memcmp(name, "chair", 5)==0) {
     if (memcmp(name, "chair$", 6)==0)							*result = Chair$(&name[6]);
@@ -142,13 +133,20 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
-    if (p_formula_parser->IsParsing() || !p_autoconnector->IsConnected()
+    if (p_formula_parser->IsParsing()
+        || !p_autoconnector->IsConnected()
 	      || !p_symbol_engine_userchair->userchair_confirmed()) {
 	    *result = 0;
     } else {
 	    OH_MessageBox_OH_Script_Messages(name);
 	    *result = 0;
     }
+  }
+  else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
+    if (!p_formula_parser->IsParsing()) {
+      p_autoplayer_trace->Add(name, 0);
+    }
+    *result = 0;
   } else {
     *result = k_undefined;
     return false;
@@ -159,7 +157,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_chair$, ....
-  return "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ "
+  return "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
     "prwin prlos prtie "
     "betround fmax f flagbits "
     "nchairs session version "

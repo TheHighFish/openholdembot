@@ -23,7 +23,6 @@
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
-#include "CIteratorVars.h"
 #include "CIteratorThread.h"
 #include "COpenHoldemTitle.h"
 #include "CPokerTrackerThread.h"

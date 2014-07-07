@@ -525,9 +525,6 @@
     <ClCompile Include="CIteratorThread.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
-    <ClCompile Include="CIteratorVars.cpp">
-      <Filter>Source Files\PrWin</Filter>
-    </ClCompile>
     <ClCompile Include="PrWinHandranges.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
@@ -1292,9 +1289,6 @@
       <Filter>Header Files\Usability</Filter>
     </ClInclude>
     <ClInclude Include="CIteratorThread.h">
-      <Filter>Header Files\PrWin</Filter>
-    </ClInclude>
-    <ClInclude Include="CIteratorVars.h">
       <Filter>Header Files\PrWin</Filter>
     </ClInclude>
     <ClInclude Include="PrWinHandranges.h">
