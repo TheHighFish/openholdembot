@@ -1,3 +1,11 @@
+v5.0.2 2014-07-xx
+==================
+BUG FIXES:
+- log$-symbols supported again.
+  They had been forgotten when we reimplemented the parser and evaluator for OpenHoldem 5.0.0.
+  Thanks to Lavezzi for reporting.
+  [THF]
+
 v5.0.1 2014-07-05
 ==================
 NEW STUFF:
