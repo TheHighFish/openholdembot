@@ -438,6 +438,7 @@ bool CAutoplayer::DoAllin(void)
 	else
 	{
 		// Fourth case (default = 0): swagging the balance
+    int user_chair = p_symbol_engine_userchair->userchair();
 		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
 			+ p_table_state->User()->_balance; 
 		success = p_casino_interface->EnterBetsize(betsize_for_allin);
@@ -504,17 +505,15 @@ void CAutoplayer::DoAutoplayer(void)
 }
 
 
-bool CAutoplayer::DoSwag(void) 
-{
+bool CAutoplayer::DoSwag(void) {
 	__TRACE
-	if (p_autoplayer_functions->f$betsize() > 0)
-	{
+	if (p_autoplayer_functions->f$betsize() > 0) 	{
 		int success = p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
-		if (success)
-		{
+		if (success) {
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
+    return false;
 	}
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
