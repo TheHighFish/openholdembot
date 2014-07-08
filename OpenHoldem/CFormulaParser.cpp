@@ -99,6 +99,14 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function. OpenHoldem-style ##f$function## expected");
     return false;
+  } else if ((function_name_lower_case.Left(2) != "//")
+      || (function_name_lower_case.Left(2) != "/*")) {
+    CParseErrors::Error("Top-level comment outside function.\n"
+      "Technically a formula-file is a set of functions\n");
+      "and every comment belongs to such a function.\n"
+      "A top-level comments outside of a function would get lost.\n"
+      "Please put it for example into \"##f$notes##\".";
+    return false;
   } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
       "Expecting a ##f$function## or ##listXYZ##");
@@ -232,7 +240,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Found ##notes##. Nothing to parse\n");
+	  "[FormulaParser] Found ##Notes##. Nothing to parse\n");
     // Don't do anything.
     // This is just a special type of global comment.
   }
