@@ -26,6 +26,8 @@ class CTableState {
   CTableState();
   ~CTableState();
  public:
+  CPlayer *User();
+ public:
   Card _common_cards[k_number_of_community_cards];
   CPlayer _players[k_max_number_of_players];
 };

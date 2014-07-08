@@ -163,7 +163,7 @@ void CGameState::CaptureState()
 	{
 		playing = false;
 	}
-	else if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
+	else if (!p_table_state->User()->HasKnownCards())
 	{
 		playing = false;
 	}
@@ -201,14 +201,14 @@ void CGameState::CaptureState()
 	{
 
 		// player name, balance, currentbet
-		strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_scraper->player_name(i).GetString(), _TRUNCATE);
-		_state[_state_index&0xff].m_player[i].m_balance = p_symbol_engine_chip_amounts->balance(i);
+    strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i]._name.GetString(), _TRUNCATE);
+    _state[_state_index&0xff].m_player[i].m_balance = p_table_state->_players[i]._balance;
 		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbol_engine_chip_amounts->currentbet(i);
 
 		// player cards
 		for (int j=0; j<k_number_of_cards_per_player; j++)
 		{
-      Card player_card = p_table_state->_players[i].hole_cards[j];
+      Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValueEncodedForDLL();
 			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
 		}
@@ -537,14 +537,14 @@ bool CGameState::ProcessThisFrame (void)
 
 void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstate_changed)
 {
-	double			sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double			sym_bblind = p_symbol_engine_tablelimits->bblind();
-	int				from_chair = 0, to_chair = 0;
-	int				betround = p_betround_calculator->betround();
-	int				sym_userchair = p_symbol_engine_userchair->userchair();
-	bool			sym_ismyturn = p_symbol_engine_autoplayer->ismyturn();
-	double			sym_balance = p_symbol_engine_chip_amounts->balance(sym_userchair);
-	CString			sym_handnumber = p_handreset_detector->GetHandNumber();
+	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
+	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
+	int     from_chair = 0, to_chair = 0;
+	int     betround = p_betround_calculator->betround();
+	int     sym_userchair = p_symbol_engine_userchair->userchair();
+	bool    sym_ismyturn = p_symbol_engine_autoplayer->ismyturn();
+	double  sym_balance = p_table_state->User()->_balance;
+	CString sym_handnumber = p_handreset_detector->GetHandNumber();
 
 	_m_holdem_state[ (++_m_ndx)&0xff ] = *pstate;
 

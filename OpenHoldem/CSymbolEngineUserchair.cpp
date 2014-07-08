@@ -72,7 +72,7 @@ bool CSymbolEngineUserchair::IsNotShowdown() {
 }
 
 void CSymbolEngineUserchair::CalculateUserChair() {
-	if (userchair_confirmed() && p_table_state->_players[USER_CHAIR].HasKnownCards()) {
+	if (userchair_confirmed() && p_table_state->User()->HasKnownCards()) {
 		write_log(preferences.debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Known cards for known chair. Keeping userchair as is\n");
 	}	else {

@@ -21,6 +21,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "debug.h"
 #include "NumericalFunctions.h"
 
@@ -54,7 +55,7 @@ double MaximumPossibleBetsizeBecauseOfBalance()
 	int userchair = p_symbol_engine_userchair->userchair();
 	AssertRange(userchair, k_first_chair, k_last_chair);
 	double maximum_betsize = p_symbol_engine_chip_amounts->currentbet(userchair)
-		+ p_symbol_engine_chip_amounts->balance(userchair);
+		+ p_table_state->User()->_balance;
 	assert (maximum_betsize > 0);
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %f\n",
 		maximum_betsize);

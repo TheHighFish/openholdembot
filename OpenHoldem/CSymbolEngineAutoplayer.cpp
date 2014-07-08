@@ -178,7 +178,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	}
 
 	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
+	if (!p_table_state->User()->HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_symbol_engine_userchair->userchair());

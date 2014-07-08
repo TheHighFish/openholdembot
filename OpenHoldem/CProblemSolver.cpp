@@ -60,7 +60,7 @@ bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 
 bool CProblemSolver::NoCardsVisible()
 {
-	return (!p_table_state->_players[USER_CHAIR].HasKnownCards());
+	return (!p_table_state->User()->HasKnownCards());
 }
 
 bool CProblemSolver::NotEnoughButtonsVisible()

@@ -37,6 +37,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
@@ -111,7 +112,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
-			stacks[i] = p_symbol_engine_chip_amounts->balance(i);
+			stacks[i] = p_table_state->_players[i]._balance;
 			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
 		}
 	}

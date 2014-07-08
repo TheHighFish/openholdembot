@@ -98,7 +98,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 	{
 		return 0.0;
 	}
-	if (p_table_state->_players[USER_CHAIR].HasKnownCards())
+	if (p_table_state->User()->HasKnownCards())
 	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)

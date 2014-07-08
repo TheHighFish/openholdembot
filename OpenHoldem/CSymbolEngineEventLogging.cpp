@@ -40,8 +40,8 @@ void CSymbolEngineEventLogging::ResetOnConnection()
 void CSymbolEngineEventLogging::ResetOnHandreset()
 {
 	int player_card_cur[2] = {0};
-  player_card_cur[0] = p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue();
-	player_card_cur[1] = p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue();
+  player_card_cur[0] = p_table_state->User()->_hole_cards[0].GetValue();
+	player_card_cur[1] = p_table_state->User()->_hole_cards[1].GetValue();
 
   //!!! ToLogString
 	char card0[10];

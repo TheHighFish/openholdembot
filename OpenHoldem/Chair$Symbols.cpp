@@ -17,12 +17,13 @@
 #include "CScraper.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 
 double Chair$(const char *name)
 {
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_scraper->player_name(i).Find(&name[0]) != k_not_found)
+		if (p_table_state->_players[i]._name.Find(&name[0]) != k_not_found)
 			return i;
 	}
 	return k_undefined;

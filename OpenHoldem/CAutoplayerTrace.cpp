@@ -206,7 +206,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // player cards
   if (p_symbol_engine_userchair->userchair_confirmed()) {
     for (int i=0; i<=1; i++) {
-      Card card = p_table_state->_players[userchair].hole_cards[i];
+      Card card = p_table_state->User()->_hole_cards[i];
       pcards.Append(card.ToString());
     }
   } else {
@@ -253,7 +253,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
   fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
   fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
-  fprintf(log_fp, "  My balance:    %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
+  fprintf(log_fp, "  My balance:    %9.2f\n", p_table_state->User()->_balance);
   fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
   fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
   fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());

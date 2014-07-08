@@ -40,16 +40,6 @@ public:
 public:
 	double maxbalance()					{ return _maxbalance; }
 	double balanceatstartofsession()	{ return _balanceatstartofsession; }
-	double balance(int player)	
-	{
-		assert((player >= 0) || (player == k_undefined));
-		assert(player < k_max_number_of_players);
-		if (player == k_undefined)
-		{
-			return k_undefined_zero;
-		}
-		return _balance[player];
-	}
 public:
 	double stack(int nth_best)
 	{
@@ -108,7 +98,6 @@ private:
 	void SetMaxBalanceConditionally(const double d);
 	void SetBalanceAtStartOfSessionConditionally(const double d);
 private:
-	void CalculateBalances();
 	void CalculateStacks();
 	void CalculateCurrentbets();
 	void CalculatePots();
@@ -116,8 +105,7 @@ private:
 	void CalculateBetsToCallToRaise();
 private:
 	double Largestbet();
-private:
-	double _balance[k_max_number_of_players];				
+private:			
 	double _maxbalance;
 	double _balanceatstartofsession;
 	double _stack[k_max_number_of_players];
