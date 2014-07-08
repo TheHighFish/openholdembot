@@ -88,8 +88,8 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 
 	// Get name string containing the players' current cards
 	GetCardstring(cardstr, 
-    p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue(),
-		p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue());
+    p_table_state->User()->_hole_cards[0].GetValue(),
+		p_table_state->User()->_hole_cards[1].GetValue());
 
 	// if nopponents<1 or >9 then default to name sane value
 	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();

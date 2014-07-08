@@ -144,11 +144,11 @@ void CHandHistory::UpdateSymbols()
 
 	//Set individual player variables
 	for (int i=0; i<nchairs; i++)	{
-    if ((p_table_state->_players[i].hole_cards[0].IsKnownCard())
+    if ((p_table_state->_players[i]._hole_cards[0].IsKnownCard())
 			  || ((i != userchair) && (userchair != 0))) {
 			GetPCstring(_history.chair[i].card_player, 
-        p_table_state->_players[i].hole_cards[0].GetValue(),
-        p_table_state->_players[i].hole_cards[1].GetValue());
+        p_table_state->_players[i]._hole_cards[0].GetValue(),
+        p_table_state->_players[i]._hole_cards[1].GetValue());
 		}
 
 		_history.chair[i].playersPlayingBits = IsBitSet(players_playing_bits, i);
@@ -159,9 +159,9 @@ void CHandHistory::UpdateSymbols()
 		{
 			_history.chair[i].currentBet = p_symbol_engine_chip_amounts->currentbet(i);
 		}
-		_history.chair[i].currentBalance = p_symbol_engine_chip_amounts->balance(i);
+    _history.chair[i].currentBalance = p_table_state->_players[i]._balance;
 
-		playerName[i] = p_scraper->player_name(i).GetString();
+		playerName[i] = p_table_state->_players[i]._name.GetString();
 	}
 }
 
@@ -595,7 +595,7 @@ void CHandHistory::processShowdown()
 			//Creates a complete hand mask for each player
 			for (int j=0; j<k_number_of_cards_per_player; ++j) {
 				CardMask_SET(_history.chair[i].hand,
-          p_table_state->_players[i].hole_cards[j].GetValue());
+          p_table_state->_players[i]._hole_cards[j].GetValue());
       }
 			for (int j=0;j<k_number_of_community_cards; j++) {
 				CardMask_SET(_history.chair[i].hand,

@@ -25,6 +25,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
@@ -135,7 +136,7 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike()
 	double sum_of_all_cips = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		sum_of_all_cips += p_symbol_engine_chip_amounts->balance(i);
+		sum_of_all_cips += p_table_state->_players[i]._balance;
 		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
 	}
 	if (sum_of_all_cips != int(sum_of_all_cips))

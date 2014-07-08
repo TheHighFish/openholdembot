@@ -438,9 +438,8 @@ bool CAutoplayer::DoAllin(void)
 	else
 	{
 		// Fourth case (default = 0): swagging the balance
-		int userchair = p_symbol_engine_userchair->userchair();
 		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
-			+ p_symbol_engine_chip_amounts->balance(userchair); 
+			+ p_table_state->User()->_balance; 
 		success = p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
 	if (success)
@@ -526,7 +525,7 @@ bool CAutoplayer::DoPrefold(void)
 {
 	__TRACE
 	assert(p_autoplayer_functions->f$prefold() != 0);
-	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
+	if (!p_table_state->User()->HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");

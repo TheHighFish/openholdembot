@@ -128,7 +128,7 @@ bool CSymbolEngineVersus::GetCounts() {
 	int sym_userchair = p_symbol_engine_userchair->userchair();
 
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
-    card_player[i] = p_table_state->_players[sym_userchair].hole_cards[i].GetValue();
+    card_player[i] = p_table_state->_players[sym_userchair]._hole_cards[i].GetValue();
   }
 	for (int i=0; i<k_number_of_community_cards; i++) {
     card_common[i] = p_table_state->_common_cards[i].GetValue();
@@ -138,7 +138,7 @@ bool CSymbolEngineVersus::GetCounts() {
   ClearWinTieLosData();
 	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
 
-  if (!p_table_state->_players[USER_CHAIR].HasKnownCards()) return false;
+  if (!p_table_state->User()->HasKnownCards()) return false;
 
 	_nwin = _ntie = _nlos = _nhands = 0;
 	_nhandshi = _nhandsti = _nhandslo = 0;

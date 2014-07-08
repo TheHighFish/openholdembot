@@ -59,10 +59,10 @@ void CStableFramesCounter::SaveCurrentState()
 
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-    _card_player_last[i][0]	= p_table_state->_players[i].hole_cards[0].GetValue();
-		_card_player_last[i][1]	= p_table_state->_players[i].hole_cards[1].GetValue();
+    _card_player_last[i][0]	= p_table_state->_players[i]._hole_cards[0].GetValue();
+		_card_player_last[i][1]	= p_table_state->_players[i]._hole_cards[1].GetValue();
 		_dealer_last[i]         = p_scraper->dealer(i);
-		_playerbalance_last[i]  = p_scraper->player_balance(i);
+		_playerbalance_last[i]  = p_table_state->_players[i]._balance;
 		_playerbet_last[i]      = p_scraper->player_bet(i);
 	}
 }
@@ -120,12 +120,12 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
 
-    if (p_table_state->_players[i].hole_cards[0].GetValue() != _card_player_last[i][0])	
+    if (p_table_state->_players[i]._hole_cards[0].GetValue() != _card_player_last[i][0])	
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
 		}
-		else if (p_table_state->_players[i].hole_cards[1].GetValue() != _card_player_last[i][1])	
+		else if (p_table_state->_players[i]._hole_cards[1].GetValue() != _card_player_last[i][1])	
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
@@ -135,7 +135,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames()
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Dealer%d-position does not match\n", i);
 		}
-		else if (p_scraper->player_balance(i) != _playerbalance_last[i])	
+		else if (p_table_state->_players[i]._balance != _playerbalance_last[i])	
 		{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-balance does not match\n", i);

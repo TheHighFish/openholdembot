@@ -22,6 +22,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTableMapAccess.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 
@@ -340,7 +341,7 @@ bool CScraperAccess::IsPlayerSeated(int player)
 
 bool CScraperAccess::IsGoodPlayername(int chair)
 {
-	CString playername = p_scraper->player_name(chair);
+	CString playername = p_table_state->_players[chair]._name;
 	int length = playername.GetLength();
 	if (length == 0) 
 		return false;

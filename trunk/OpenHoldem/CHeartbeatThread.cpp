@@ -91,7 +91,7 @@ void CHeartbeatThread::StartThread()
 void CHeartbeatThread::FlexibleHeartbeatSleeping()
 {
 	int scrape_delay = preferences.scrape_delay();
-	if (p_table_state->_players[USER_CHAIR].HasKnownCards() 
+	if (p_table_state->User()->HasKnownCards() 
 		&& (p_scraper_access->NumberOfVisibleButtons() > 0))
 	{
 		// My turn
@@ -161,7 +161,7 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 			if (preferences.replay_record_every_change() 
 				// b) on every change when in hand
 				|| (preferences.replay_record_every_change_playing()
-					&& p_table_state->_players[USER_CHAIR].HasKnownCards()))
+					&& p_table_state->User()->HasKnownCards()))
 			{
 				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 			}
@@ -180,7 +180,7 @@ void CHeartbeatThread::ScrapeEvaluateAct()
 		if (preferences.replay_record_every_change() 
 			// b) on every change when in hand
 			|| (preferences.replay_record_every_change_playing()
-				&& p_table_state->_players[USER_CHAIR].HasKnownCards()))
+				&& p_table_state->User()->HasKnownCards()))
 		{
 			p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 		}

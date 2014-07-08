@@ -153,7 +153,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			if (p_scraper_access->IsPlayerActive(chair_to_consider))
 			{
 				this_player_got_dealt = true;
-        if (p_table_state->_players[chair_to_consider].HasAnyCards())
+        if (p_table_state->User()->HasAnyCards())
 				{
 					first_non_blind_with_cards_found = true;
 				}
@@ -162,7 +162,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		else
 		{
 			assert(first_non_blind_with_cards_found);
-      if (p_table_state->_players[chair_to_consider].HasAnyCards())
+      if (p_table_state->User()->HasAnyCards())
 			{
 				this_player_got_dealt = true;
 			}

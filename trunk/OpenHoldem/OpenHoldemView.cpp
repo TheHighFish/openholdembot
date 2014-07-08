@@ -290,10 +290,10 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			_active_last[i] = p_scraper->active(i);
 			update_it = true;
 		}
-    if (_card_player_last[i][0] != p_table_state->_players[i].hole_cards[0].GetValue()
-        || _card_player_last[i][1] != p_table_state->_players[i].hole_cards[1].GetValue()) 		{
-			_card_player_last[i][0] = p_table_state->_players[i].hole_cards[0].GetValue();
-			_card_player_last[i][1] = p_table_state->_players[i].hole_cards[1].GetValue();
+    if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
+        || _card_player_last[i][1] != p_table_state->_players[i]._hole_cards[1].GetValue()) 		{
+			_card_player_last[i][0] = p_table_state->_players[i]._hole_cards[0].GetValue();
+			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
 			update_it = true;
 		}
 		if (_dealer_last[i] != p_scraper->dealer(i)) 
@@ -301,14 +301,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			_dealer_last[i] = p_scraper->dealer(i);
 			update_it = true;
 		}
-		if (_playername_last[i] != p_scraper->player_name(i)) 
+		if (_playername_last[i] != p_table_state->_players[i]._name) 
 		{
-			_playername_last[i] = p_scraper->player_name(i);
+			_playername_last[i] = p_table_state->_players[i]._name;
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_scraper->player_balance(i)) 
+		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) 
 		{
-			_playerbalance_last[i] = p_scraper->player_balance(i);
+			_playerbalance_last[i] = p_table_state->_players[i]._balance;
 			update_it = true;
 		}
 		if (_playerbet_last[i] != p_scraper->player_bet(i)) 
@@ -366,7 +366,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	int sym_lim				= p_symbol_engine_tablelimits->gametype();
 	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-	bool sym_playing		= p_table_state->_players[USER_CHAIR].HasKnownCards();
+	bool sym_playing		= p_table_state->User()->HasKnownCards();
 
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
@@ -449,7 +449,7 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 
 	if (preferences.log_symbol_enabled() 
 		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->_players[USER_CHAIR].HasKnownCards()) {
+		&& p_table_state->User()->HasKnownCards()) {
       t.Append(p_autoplayer_trace->LogSymbolsForGUI());
 	}
 
@@ -912,7 +912,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 		textrect.top = 0;
 		textrect.right = 0;
 		textrect.bottom = 0;
-		pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &textrect, DT_CALCRECT);
+		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
+      p_table_state->_players[chair]._name.GetLength(), &textrect, DT_CALCRECT);
 
 		// Figure out placement of rectangle
 		drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
@@ -930,7 +931,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 		pDC->SetBkMode(OPAQUE);
 		pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &drawrect,
+		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
+      p_table_state->_players[chair]._name.GetLength(), &drawrect,
 					  DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 		name_rect_last[chair].left = drawrect.left;
 		name_rect_last[chair].top = drawrect.top;
@@ -998,11 +1000,11 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 		// Format Text
 		if (!p_scraper->sitting_out(chair)) 
 		{
-			t = Number2CString(p_scraper->player_balance(chair));
+			t = Number2CString(p_table_state->_players[chair]._balance);
 		}
 		else 
 		{
-			t.Format("Out (%s)", Number2CString(p_scraper->player_balance(chair)));
+			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
 		}
 	}
 	else 
@@ -1156,7 +1158,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 	// Get size of current client window
 	GetClientRect(&_client_rect);
 	// Draw player cards (first)
-  Card *player_card_0 = &p_table_state->_players[chair].hole_cards[0];
+  Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
     chair, player_card_0->ToString());
   int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2;
@@ -1166,7 +1168,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
 
   // Draw player cards (second)
-  Card *player_card_1 = &p_table_state->_players[chair].hole_cards[1];
+  Card *player_card_1 = &p_table_state->_players[chair]._hole_cards[1];
   pos_x_right = pos_x_right + CARDSIZEX + 3;
   pos_x_left  = pos_x_left + CARDSIZEX + 3;
 	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
