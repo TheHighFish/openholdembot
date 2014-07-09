@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -114,9 +123,7 @@ For the same reason there is no support for encrypted PPL-profiles.
 \end_layout
 
 \begin_layout Section*
-
-\emph on
-No option settings.
+No option settings
 \end_layout
 
 \begin_layout Standard
@@ -182,8 +189,106 @@ Preflop
 
 \end_layout
 
+\begin_layout Section
+No Keyword Custom
+\end_layout
+
+\begin_layout Standard
+As no built-in default bot exists the whole bot-logic is 
+\begin_inset Quotes eld
+\end_inset
+
+custom
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Sure, we could ignore that superfluous keyword, however it is an indication
+ of old-style or Shanky-style (Open)PPL.
+ There will be more things 
+\begin_inset Quotes eld
+\end_inset
+
+wrong
+\begin_inset Quotes erd
+\end_inset
+
+ for sure, so we prefer to show you a warning as early as possible.
+\end_layout
+
 \begin_layout Section*
-Known differences
+Preflop, Flop, Turn and River Sections
+\end_layout
+
+\begin_layout Standard
+The four main code-sections are functions (technically speaking), therefore
+ they have OH-script-style function-syntax:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$preflop##
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN ...
+ RAISEMAX FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##f$flop##
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##f$turn##
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##f$river##
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All four code-sections must be present for OpenHoldem to switch into OpenPPL-mod
+e.
+\end_layout
+
+\begin_layout Section*
+Naming Conventions
+\end_layout
+
+\begin_layout Section*
+Floating Point Numbers
 \end_layout
 
 \begin_layout Standard
@@ -262,12 +367,11 @@ However: you will get warned about the first case and the second case will
 \end_layout
 
 \begin_layout Section*
+Hand and board expressions
+\end_layout
 
-\emph on
-Cases matter (partially).
-
-\emph default
- 
+\begin_layout Section*
+Cases matter (partially)
 \end_layout
 
 \begin_layout Standard
@@ -384,148 +488,27 @@ However: you will probably use these symbols very rarely in your code.
 \end_layout
 
 \begin_layout Section*
-OpenPPL needs lots of brackets
+No Shanky-Style Delay
 \end_layout
 
 \begin_layout Standard
-Without them the converter worked only 98% of the time.
- It managed to translate everything, except the most simple cases (of course).
- In detail:
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-When-conditions need brackets
-\emph default
-.
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-WHEN (StackSize < 10 AND Raises >= 2) RAISEMAX FORCE
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Hand- and board-expressions need brackets.
-\emph default
-
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-WHEN (Hand = AA) RAISEMAX FORCE
+##f$delay##
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN (StackSize < 10 AND (Hand = AK) AND Raises >= 2) RAISEMAX FORCE
+WHEN UncoordinatedFlop AND Random < 10 RETURN 2500 FORCE
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Not-expressions with equality operators need brackets
-\emph default
-.
- In boolean logic the expression
-\begin_inset listings
-inline false
-status open
 
 \begin_layout Plain Layout
 
-NOT (a = b)
-\end_layout
-
-\end_inset
-
- is always semantical identical to
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-(NOT a) = b
-\end_layout
-
-\end_inset
-
-However there are 2 problems:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-it is impossible to support the Shanky-semantics of programming here, as
- a and b can be more complex expressions in OpenPPL and then it would be
- completely undefined to which sub-expression the not-operator should bind
- to.
-\end_layout
-
-\begin_layout Itemize
-if a and b are no boolean values (true / false), but numbers, like in 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-NOT StillToAct = 5
-\end_layout
-
-\end_inset
-
- then C++ / OpenPPL would first evaluate 
-\begin_inset Quotes eld
-\end_inset
-
-NOT StillToAct
-\begin_inset Quotes erd
-\end_inset
-
- in a boolean context and make every non-zero value false (0) and zero true
- (1), which is probably not what you want.
-\end_layout
-
-\begin_layout Standard
-Therefore we decided to stick to 
-\begin_inset Quotes eld
-\end_inset
-
-normal
-\begin_inset Quotes erd
-\end_inset
-
- semantical rules and give the not-operator highest priority.
- You have 2 ways to get what you want:
-\end_layout
-
-\begin_layout Itemize
-add brackets
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-NOT (StillToAct = 5)
+WHEN ...
 \end_layout
 
 \end_inset
@@ -533,62 +516,8 @@ NOT (StillToAct = 5)
 
 \end_layout
 
-\begin_layout Itemize
-or use the inequality-operator (that is good maths and that is what Shanky
- really means with their somewhat crude logic)
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-StillToAct != 5
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We are sorry for the confusion, but we had no other choice but to make it
- right here.
-\end_layout
-
-\end_deeper
-\begin_layout Standard
-However: things are not as bad as it may sound: if you have existing code
- (without the brackets), there is a tool to make it right --- bracketify.pl.
-\end_layout
-
-\begin_layout Itemize
-Prerequisite: 
-\begin_inset CommandInset href
-LatexCommand href
-name "ActiveState Perl"
-target "http://www.activestate.com/activeperl/downloads"
-
-\end_inset
-
- installed
-\end_layout
-
-\begin_layout Itemize
-Usage: at the command prompt type: 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-perl bracketify.pl < INPUTFILE.TXT > OUTPUTFILE.TXT
-\end_layout
-
-\end_inset
-
-After that you will have a nice profile, with all necessary brackets added
- and a very nice to read layout.
- Ready for translation and for execution...
+\begin_layout Section*
+f$sitout function
 \end_layout
 
 \end_body
