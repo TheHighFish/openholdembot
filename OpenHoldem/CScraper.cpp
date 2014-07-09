@@ -659,14 +659,11 @@ void CScraper::ScrapeName(int chair) {
 	}
 }
 
-double CScraper::ScrapeUPBalance(int chair, bool scrape_u_else_p) {
+double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   CString	name;
   CString text;
-  if (scrape_u_else_p) {
-    name.Format("u%dbalance", chair);
-  } else {
-    name.Format("p%dbalance", chair);
-  }
+  assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
+  name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) {
       return 0.0;
@@ -698,13 +695,16 @@ void CScraper::ScrapeBalance(int chair)
   // but this is a bad place 
   set_sitting_out(chair, false); //!!!
 
-  double result;
-  for (bool u_or_p=false; u_or_p<=true; ++u_or_p) {
-    result = ScrapeUPBalance(chair, u_or_p);
-    if (result >= 0) {
-      p_table_state->_players[chair]._balance = result;
-      return;
-    }
+  // Scrape uXbalance and pXbalance
+  double result = ScrapeUPBalance(chair, 'p');
+  if (result >= 0) {
+    p_table_state->_players[chair]._balance = result;
+    return;
+  }
+  result = ScrapeUPBalance(chair, 'u');
+  if (result >= 0) {
+    p_table_state->_players[chair]._balance = result;
+    return;
   }
 }
 

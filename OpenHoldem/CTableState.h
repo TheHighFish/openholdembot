@@ -21,6 +21,12 @@
 #include "MagicNumbers.h"
 #include "CPlayer.h"
 
+// One fake-entry for the case of unknown user-chair
+// This way we can avoid the handling of special cases
+// and the danger of NULL-pointers for the User()-function.
+const int kNumberOfPlayerEntries        = k_max_number_of_players + 1;
+const int kFakeEntryForUnknownUserchair = k_max_number_of_players;
+
 class CTableState {
  public:
   CTableState();
@@ -29,7 +35,7 @@ class CTableState {
   CPlayer *User();
  public:
   Card _common_cards[k_number_of_community_cards];
-  CPlayer _players[k_max_number_of_players];
+  CPlayer _players[kNumberOfPlayerEntries];
 };
 
 extern CTableState *p_table_state;

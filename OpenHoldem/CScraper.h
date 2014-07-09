@@ -111,7 +111,7 @@ private:
 	int CardString2CardNumber(CString card);
 private:
 	// private functions and variables - not available via accessors or mutators
-  double ScrapeUPBalance(int chair, bool scrape_u_else_p);
+  double ScrapeUPBalance(int chair, char scrape_u_else_p);
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
 	void ScrapePots();

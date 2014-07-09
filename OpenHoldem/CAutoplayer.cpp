@@ -438,7 +438,7 @@ bool CAutoplayer::DoAllin(void)
 	else
 	{
 		// Fourth case (default = 0): swagging the balance
-    int user_chair = p_symbol_engine_userchair->userchair();
+    int userchair = p_symbol_engine_userchair->userchair();
 		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
 			+ p_table_state->User()->_balance; 
 		success = p_casino_interface->EnterBetsize(betsize_for_allin);

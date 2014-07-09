@@ -129,7 +129,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
         // The formula editor gets now handled automatically (Rev. 1425)
 
 		// Read ohf file
-        assert(p_formula_parser != NULL);
+    assert(p_formula_parser != NULL);
 		p_formula_parser->ParseFile(ar);
 		SetModifiedFlag(false);
 

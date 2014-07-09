@@ -363,8 +363,8 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	double sym_bblind		= p_symbol_engine_tablelimits->bblind();
 	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
 	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				= p_symbol_engine_tablelimits->gametype();
-	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
+	int sym_lim				  = p_symbol_engine_tablelimits->gametype();
+	CString sym_handnumber = p_handreset_detector->GetHandNumber();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
 	bool sym_playing		= p_table_state->User()->HasKnownCards();
 
