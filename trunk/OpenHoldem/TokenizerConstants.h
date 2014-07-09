@@ -23,6 +23,7 @@ enum {
   kTokenOperatorMinus,              // +
   kTokenOperatorMultiplication,     // *
   kTokenOperatorDivision,           // /
+  kTokenOperatorUnaryMinus,         // -
   kTokenOperatorModulo,             // % (OpenHoldem)
   kTokenOperatorExponentiation,     // **
   kTokenOperatorLog,                // ln

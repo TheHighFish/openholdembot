@@ -29,6 +29,8 @@ const bool kTokenIsUnary[kNumberOfTokens] = {
   false,
   // kTokenOperatorDivision,           
   false,
+  // kTokenOperatorUnaryMinus
+  true,
   // kTokenOperatorModulo,             
   false,
   // kTokenOperatorExponentiation,     
@@ -114,6 +116,8 @@ const bool kTokenIsBinary[kNumberOfTokens] = {
   true,
   // kTokenOperatorDivision,           
   true,
+  // kTokenOperatorUnaryMinus,
+  false,
   // kTokenOperatorModulo,             
   true,
   // kTokenOperatorExponentiation,     
@@ -206,6 +210,7 @@ CString TokenString(int token) {
 	case kTokenOperatorMinus: return "-";
 	case kTokenOperatorMultiplication: return "*";    
 	case kTokenOperatorDivision: return "/";
+  case kTokenOperatorUnaryMinus: return "-";
 	case kTokenOperatorModulo: return "modulo";	// because % can also mean percentage
 	case kTokenOperatorExponentiation: return "**";
 	case kTokenOperatorLog: return "ln";
@@ -260,6 +265,8 @@ const int kOperatorPriority[kNumberOfTokens] = {
   12,
   // kTokenOperatorDivision,           
   12,
+  // kTokenOperatorUnaryMinus,
+  13,
   // kTokenOperatorModulo,             
   12,
   // kTokenOperatorExponentiation,    
@@ -348,6 +355,7 @@ kTokenEndOfFile = 0,
 	kTokenOperatorMinus,              
 	kTokenOperatorMultiplication,     
 	kTokenOperatorDivision,           
+  kTokenOperatorUnaryMinus,
 	kTokenOperatorModulo,             
 	kTokenOperatorExponentiation,     
 	kTokenOperatorLog,                

@@ -314,10 +314,14 @@ NegativeNumber:
 			}
 			else
 			{
-				// Unary minus, start of negative number
-				// Accept and then continue as number
+				// Unary minus
 				_token_end_pointer++;
-				goto NegativeNumber;
+        if (isdigit(CURRENT_CHARACTER)) {
+          // Start of negative number
+				  goto NegativeNumber;
+        }
+        // Unary minus, starting an unary expression
+        return kTokenOperatorUnaryMinus;
 			}
 		case '*': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('*', kTokenOperatorExponentiation)
