@@ -1,9 +1,19 @@
 v5.0.2 2014-07-xx
 ==================
+NEW STUFF:
+- Full support for unary minuses in expressions;
+  initially we only supported negative numbers and thought that was enough.
+  Thanks to Lavezzi for reporting this deficit.
+  [THF]  
+
 BUG FIXES:
 - log$-symbols supported again.
   They had been forgotten when we reimplemented the parser and evaluator for OpenHoldem 5.0.0.
   Thanks to Lavezzi for reporting.
+  [THF]
+- The parser did still/again convert function-names to lovercases
+  due to unexpected side-effects of a function.
+  Thanks to Mariano268 for reporting.
   [THF]
 
 v5.0.1 2014-07-05
