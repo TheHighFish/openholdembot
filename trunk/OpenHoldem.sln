@@ -67,8 +67,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reference User DLL", "Refer
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenPPL", "OpenPPL\OpenPPL\OpenPPL.vcxproj", "{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PokerTracker_Query_Definitions", "PokerTracker_Query_Definitions\pokertracker_query_definitions.vcxproj", "{DAE7979B-3014-4B86-8EFD-FA155A58FE78}"
 EndProject
 Global
@@ -144,12 +142,6 @@ Global
 		{AC9135D2-9C77-41E4-BB36-81600D7F0812}.Release - Optimized|Win32.Build.0 = Release|Win32
 		{AC9135D2-9C77-41E4-BB36-81600D7F0812}.Release|Win32.ActiveCfg = Release|Win32
 		{AC9135D2-9C77-41E4-BB36-81600D7F0812}.Release|Win32.Build.0 = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Debug|Win32.ActiveCfg = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Debug|Win32.Build.0 = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release - Optimized|Win32.ActiveCfg = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release - Optimized|Win32.Build.0 = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release|Win32.ActiveCfg = Release|Win32
-		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release|Win32.Build.0 = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Debug|Win32.ActiveCfg = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Debug|Win32.Build.0 = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release - Optimized|Win32.ActiveCfg = Release|Win32
