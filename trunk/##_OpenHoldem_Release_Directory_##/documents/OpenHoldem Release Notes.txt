@@ -16,6 +16,11 @@ BUG FIXES:
   Thanks to Mariano268 for reporting.
   [THF]
 
+MAINTENANCE:
+- Removed the superfluous symbol "nopponents" which just contained 
+  the value of former f$P, now f$prwin_number_of_opponents.
+  [THF]
+
 v5.0.1 2014-07-05
 ==================
 NEW STUFF:

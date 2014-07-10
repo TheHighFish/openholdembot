@@ -284,10 +284,6 @@ e.
 \end_layout
 
 \begin_layout Section*
-Naming Conventions
-\end_layout
-
-\begin_layout Section*
 Floating Point Numbers
 \end_layout
 
@@ -518,7 +514,7 @@ f$sitout function
 For similar reasons OpenPPL does no longer support a SitOut-command.
  We prefer to separate the playing logic from hopper-logic.
  Therefore OpenHoldem has a f$sitout-function.
- Furthermore OpenHoldem supports f$sitout, f$autopost, f$leavce and f$close.
+ Furthermore OpenHoldem supports f$sitout, f$autopost, f$leave and f$close.
  
 \begin_inset listings
 inline false
@@ -531,7 +527,7 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN Others RETURN (dealposition = 3) FORCE
+    WHEN (dealposition = 3) RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -590,7 +586,7 @@ status open
 
 \begin_layout Plain Layout
 
-     SitOut Force  
+     RETURN True Force  
 \end_layout
 
 \end_inset

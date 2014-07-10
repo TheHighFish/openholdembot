@@ -1961,7 +1961,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handrank2652", "your pocket holdem hand rank 12-2652 (see table)");
 	AddSymbol(parent, "handrank1326", "your pocket holdem hand rank 6-1326 (handrank2652/2)");
 	AddSymbol(parent, "handrank1000", "your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)");
-	AddSymbol(parent, "handrankp", "2652 / (1+nopponents)");
+	AddSymbol(parent, "handrankp", "2652 / (1+f$prwin_number_of_opponents)");
 
 	mainParent = parent = AddSymbolTitle("Chairs", NULL, hCatItem);
 	AddSymbol(parent, "userchair", "user chair number (0-9)");
@@ -2062,7 +2062,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ishiflush", "true when you have the highest flush possible");
 
 	mainParent = parent = AddSymbolTitle("Players, Opponents", NULL, hCatItem);
-	AddSymbol(parent, "nopponents", "P formula value for the userchair iterator");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
 	AddSymbol(parent, "nplayersactive", "number of players active (including you) (0-10)");
 	AddSymbol(parent, "nplayersdealt", "number of players dealt (including you) (0-10)");

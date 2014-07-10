@@ -97,6 +97,11 @@ char *outdated_symbols_lists =
   "  * nlistmax\n"
   "  * nlistmin\n";
 
+char *outdated_symbol_nopponents =
+  "The symbol \"nopponents\" got removed from the code-base,\n"
+  "because it just contained the value of former f$P\n"
+  "now f$prwin_number_of_opponents.";
+
 char *outdated_symbols_islist_symbols =
   "The restriction to 1000 handlists got removed in OH 5.0\n"
   "and you can name your lists any way you want:\n"
@@ -266,6 +271,10 @@ bool IsOutdatedSymbol(CString symbol) {
       if ((symbol == "nlistmax") || (symbol == "nlistmin")) {
 	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
 	      return true;
+      }
+      if (symbol == "nopponents") {
+        OH_MessageBox_Formula_Error(outdated_symbol_nopponents, title_outdated_symbol);
+        return true;
       }
       if (symbol == "nopponentsmax") {
 	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);

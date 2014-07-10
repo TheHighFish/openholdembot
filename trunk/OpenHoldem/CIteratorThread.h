@@ -69,6 +69,7 @@ class CIteratorThread {
  private:
   static int _iterations_calculated;
   static int _iterations_required;
+  static int _nopponents;;
  private:
   static double _prwin, _prtie, _prlos;
 };

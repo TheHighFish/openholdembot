@@ -39,6 +39,7 @@ CIteratorThread		*p_iterator_thread = NULL;
 // Static variables
 int CIteratorThread::_iterations_calculated;
 int CIteratorThread::_iterations_required;
+int CIteratorThread::_nopponents;
 double CIteratorThread::_prwin;
 double CIteratorThread::_prtie;
 double CIteratorThread::_prlos;
@@ -152,13 +153,12 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary()
 	__TRACE
 	// Cut off from IteratorThreadFunction
 	// Also moved outside of the loop.
-
-	int	sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
-	//Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
-	if (_willplay && (_willplay < 2 * sym_nopponents + 1))
+	// Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
+  _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+	if (_willplay && (_willplay < 2 * _nopponents + 1))
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
-		_willplay = 2 * sym_nopponents + 1; //too low a value can give lockup
+		_willplay = 2 * _nopponents + 1; //too low a value can give lockup
 	}
 	if (_wontplay < _willplay)
 	{
@@ -176,77 +176,96 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	unsigned int	pl_pokval = 0, opp_pokval = 0, opp_pokvalmax = 0;
 	HandVal		pl_hv = 0, opp_hv = 0;
 	int				dummy = 0;
-  int				sym_nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	bool			hand_lost;
 
 	ResetGlobalVariables();
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
-  //
-	// Main iterator loop
-	//
-	write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
-  // "f$prwin_number_of_iterations" has to be declared outside of the loop,
-	// as we check afterwards, if the loop terminated successfully.
-	AdjustPrwinVariablesIfNecessary();
-	for (_iterations_calculated=1; _iterations_calculated <= _iterations_required; ++_iterations_calculated) {
-		__TRACE
-		// Check event for thread stop signal
-		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
-			// Set event
-			::SetEvent(pParent->_m_wait_thread);
-			AfxEndThread(0);
-		}
-    CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
-		if (UseEnhancedPrWin())	{
-			EnhancedDealingAlgorithm();
-		}	else { 
-			StandardDealingAlgorithm(sym_nopponents);
-		}
-    // Get my handval/pokerval
-		CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
-		CardMask_OR(evalCards, evalCards, addlcomCards);
-		pl_hv = Hand_EVAL_N(evalCards, 7);
-		pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
-    // Scan through opponents' handvals/pokervals
-		// - if we find one better than ours, then we are done, increment los
-		// - for win/tie, we need to wait until we scan them all
-		opp_pokvalmax = 0;
-		hand_lost = false;
-		for (int i=0; i<sym_nopponents; i++) {
-			CardMask_RESET(opp_evalCards);
-			CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
-			CardMask_SET(opp_evalCards, ocard[i*2]);
-			CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
-			opp_hv = Hand_EVAL_N(opp_evalCards, 7);
-			opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
-      if (opp_pokval>pl_pokval) {
-				_los++;
-				hand_lost = true;
-				break;
-			}	else {
-				if (opp_pokval > opp_pokvalmax)	{
-					opp_pokvalmax = opp_pokval;
-				}
-			}
-		}
-		if (!hand_lost)	{
-			if (pl_pokval > opp_pokvalmax) {
-				_win++;
-			}	else {
-				_tie++;
-			}
-		}
-		UpdateIteratorVarsForDisplay();
-	}
-	write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
-  if (!IteratorThreadComplete()) {
-    // Computation stopped with some kind of error.
-    // Reset vars to avoid bogus data
-		ResetIteratorVars();
-	}
-  UpdateIteratorVarsForDisplay();
-  ::SetEvent(pParent->_m_wait_thread);
+  //!!!!!
+  while (true) {
+    Sleep(500);
+    if (!p_symbol_engine_autoplayer->ismyturn()) {
+      // Not my turn;
+      // Nothing to simulate
+      continue;
+    }
+    if (IteratorThreadComplete()) {
+      // No longer anything to do
+      continue;
+    }
+
+    //
+	  // Main iterator loop
+	  //
+	  write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
+    // "f$prwin_number_of_iterations" has to be declared outside of the loop,
+	  // as we check afterwards, if the loop terminated successfully.
+    _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+	  AdjustPrwinVariablesIfNecessary();
+	  for (_iterations_calculated=1; _iterations_calculated <= _iterations_required; ++_iterations_calculated) {
+		  __TRACE
+		  // Check event for thread stop signal
+		  if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
+			  // Set event
+			  ::SetEvent(pParent->_m_wait_thread);
+			  AfxEndThread(0);
+		  }
+      CardMask_OR(usedCards, pParent->_plCards, pParent->_comCards);
+		  if (UseEnhancedPrWin())	{
+			  EnhancedDealingAlgorithm();
+		  }	else { 
+			  StandardDealingAlgorithm(_nopponents);
+		  }
+      // Get my handval/pokerval
+		  CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
+		  CardMask_OR(evalCards, evalCards, addlcomCards);
+		  pl_hv = Hand_EVAL_N(evalCards, 7);
+		  pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
+      // Scan through opponents' handvals/pokervals
+		  // - if we find one better than ours, then we are done, increment los
+		  // - for win/tie, we need to wait until we scan them all
+		  opp_pokvalmax = 0;
+		  hand_lost = false;
+		  for (int i=0; i<_nopponents; i++) {
+			  CardMask_RESET(opp_evalCards);
+			  CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
+			  CardMask_SET(opp_evalCards, ocard[i*2]);
+			  CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
+			  opp_hv = Hand_EVAL_N(opp_evalCards, 7);
+			  opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+        write_log(preferences.debug_prwin(), "[PrWinThread] PlayerPV: %i OppPV: %i\n",
+          pl_pokval, opp_pokval);
+        if (opp_pokval > pl_pokval) {
+          write_log(preferences.debug_prwin(), "[PrWinThread] Lost\n");
+				  _los++;
+				  hand_lost = true;
+				  break;
+			  }	else {
+				  if (opp_pokval > opp_pokvalmax)	{
+					  opp_pokvalmax = opp_pokval;
+				  }
+			  }
+		  }
+		  if (!hand_lost)	{
+			  if (pl_pokval > opp_pokvalmax) {
+          write_log(preferences.debug_prwin(), "[PrWinThread] Won\n");
+				  _win++;
+			  }	else {
+          write_log(preferences.debug_prwin(), "[PrWinThread] Tie\n");
+				  _tie++;
+			  }
+		  }
+		  UpdateIteratorVarsForDisplay();
+	  }
+	  write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
+    if (!IteratorThreadComplete()) {
+      // Computation stopped with some kind of error.
+      // Reset vars to avoid bogus data
+		  ResetIteratorVars();
+	  }
+    UpdateIteratorVarsForDisplay();
+    ::SetEvent(pParent->_m_wait_thread);
+  }
 	return 0;
 }
 
@@ -259,7 +278,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay()
 	{
 		_prwin = _win / (double) _iterations_calculated;
 		_prtie = _tie / (double) _iterations_calculated;
-		_prtie = _los / (double) _iterations_calculated;
+		_prlos = _los / (double) _iterations_calculated;
 		write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
 			_iterations_calculated, _prwin, _prtie, _prlos);
 	}
@@ -556,7 +575,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 	write_log(preferences.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 	// random replacement algorithm
 	// opponent cards
-	if (nopponents < 1)
+	if (nopponents < 1) //!!!!!
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] No opponents.\n");
 	}
