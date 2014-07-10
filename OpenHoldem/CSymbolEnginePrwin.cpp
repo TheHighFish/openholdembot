@@ -234,12 +234,6 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool l
 		// Valid symbol
 		return true;
 	}
-	else if (memcmp(name, "nopponents", 10)==0 && strlen(name)==10)	
-	{
-		*result = nopponents_for_prwin();
-		// Valid symbol
-		return true;
-	}
 	// Symbol of a different symbol-engine
 	return false;
 }
@@ -247,6 +241,5 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool l
 CString CSymbolEnginePrwin::SymbolsProvided() {
   return "prwinnow prlosnow ";
     "prwin prlos prtie "
-    "nhands nhandshi nhandslo nhandsti "
-    "nopponents ";
+    "nhands nhandshi nhandslo nhandsti ";
 }
