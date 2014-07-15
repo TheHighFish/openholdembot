@@ -137,9 +137,23 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
 	  || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
   {
-    // f$check and f$fold should evaluate to true per default
-    // for auto-check-folding instead of time-outs.
-    function_text = "1 "; 
+    function_text = 
+      "// f$check and f$fold should evaluate to true per default\n"
+      "// for auto-check-folding instead of time-outs.\n"
+      "1 "; 
+  }
+  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
+    function_text = 
+      "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
+      "// Works even with \"no opponents\".\n"
+      "nopponentsplaying + 1 ";
+  }
+  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
+    function_text = 
+      "// \"Reasonable\" default to get PrWin running for beginners.\n"
+      "// Large enough to get usable results,\n"
+      "// small enough to save CPU-time.\n"
+      "1000 ";
   }
   else {
     // Add an empty function.

@@ -15,20 +15,19 @@
 #define INC_DIALOGHANDLIST_H
 
 #include "resource.h"
+#include "COHScriptList.h"
 
 // CDlgHandList dialog
 
-class CDlgHandList : public CDialog
-{
+class CDlgHandList : public CDialog {
+  friend class DialogFormulaScintilla;
 public:
 	CDlgHandList(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgHandList();
 	virtual BOOL OnInitDialog();
-	CString HandListToString();
 
 	enum { IDD = IDD_HANDLIST };
-	int		hand_list_num;
-	bool	checked[13][13];
+  COHScriptList *p_list;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
@@ -40,10 +39,12 @@ protected:
 	afx_msg void OnBnClickedClear();
 
 	CStatic m_HandList_Name, m_CommentST;
-	CButton m_Check[13][13];
+  // Indices 2..k_rank_ace get used.
+  // 0 and 1 exist only for technical reasons; unused.
+	CButton m_Check[k_rank_ace+1][k_rank_ace+1];
 
+private:
 	int nhands;
-
 	DECLARE_MESSAGE_MAP()
 };
 

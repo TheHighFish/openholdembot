@@ -181,8 +181,14 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	ResetGlobalVariables();
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
-  //!!!!!
   while (true) {
+    // Check event for thread stop signal once per main iterator loop
+    // (and additionally once every 1000 iterations later)
+		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
+			// Set event
+			::SetEvent(pParent->_m_wait_thread);
+			AfxEndThread(0);
+		}
     Sleep(500);
     if (!p_symbol_engine_autoplayer->ismyturn()) {
       // Not my turn;
@@ -204,8 +210,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	  AdjustPrwinVariablesIfNecessary();
 	  for (_iterations_calculated=1; _iterations_calculated <= _iterations_required; ++_iterations_calculated) {
 		  __TRACE
-		  // Check event for thread stop signal
-		  if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
+		  // Check event for thread stop signal once every 1000 iterations
+      if ((_iterations_calculated % 1000 == 0)
+          && (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)) {
 			  // Set event
 			  ::SetEvent(pParent->_m_wait_thread);
 			  AfxEndThread(0);

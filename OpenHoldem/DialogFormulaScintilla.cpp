@@ -1201,14 +1201,14 @@ void CDlgFormulaScintilla::OnHandList()  {
   COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
   if (p_handlist == NULL)  return;
   // Window title and static text content
-  myDialog.hand_list_num = atoi(s.Mid(4).GetString());
+  myDialog.p_list = p_handlist;
 
   // Start dialog
   if (myDialog.DoModal() == IDOK) {
     CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
-    CString new_handlist_without_comment = myDialog.HandListToString();
+    CString new_handlist_without_comment = p_handlist->function_text();
     CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
-    p_handlist->SetText(new_handlist_with_comment);
+    p_handlist->SetText(new_handlist_with_comment); 
     p_handlist->Parse();
 
     // update scintilla window
@@ -2292,8 +2292,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
   if (m_pActiveScinCtrl) {
-	m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-	m_pActiveScinCtrl->EnableWindow(false);
+	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !!!!! Crashes on delete list
+	  m_pActiveScinCtrl->EnableWindow(false);
   }
   m_pActiveScinCtrl = new_pActiveScinCtrl;
   m_pActiveScinCtrl->ShowWindow(SW_SHOW);
