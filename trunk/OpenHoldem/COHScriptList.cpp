@@ -30,6 +30,8 @@ void COHScriptList::Clear() {
   }
 }
 
+// First_rank, second_rank  don't matter for suitedness here.
+// Suit gets controlled by parameter 3: "suited"
 void COHScriptList::Set(int first_rank, int second_rank, bool suited) {
   AssertRange(first_rank, 2, k_rank_ace);
   AssertRange(second_rank, 2, k_rank_ace);
@@ -37,14 +39,41 @@ void COHScriptList::Set(int first_rank, int second_rank, bool suited) {
   if (first_rank < second_rank) {
     SwapInts(&first_rank, &second_rank);
   }
-  // Normating to [0..12]
-  int x = first_rank - 2;
-  int y = second_rank - 2;
   if (suited) {
-    _handlist_matrix[x][y] = true;
+    Set(first_rank, second_rank);
   } else {
-    _handlist_matrix[y][x] = true;
+    Set(second_rank, first_rank);
   }
+}
+
+// first_rank  > second_rank -> suited
+// second_rank > first_rank  -> offsuited
+void COHScriptList::Set(int first_rank, int second_rank) {
+  AssertRange(first_rank, 2, k_rank_ace);
+  AssertRange(second_rank, 2, k_rank_ace);
+  // Normating to [0..12]
+  first_rank -= 2;
+  second_rank -= 2;
+  // Needs to be [second_rank][first_rank]
+  // for correct view in handlist-editor,
+  // otherwise suited/offsuited would be confused
+  // and we need a single point to get it right
+  _handlist_matrix[second_rank][first_rank] = true;
+}
+
+// first_rank  > second_rank -> suited
+// second_rank > first_rank  -> offsuited
+void COHScriptList::Remove(int first_rank, int second_rank) {
+  AssertRange(first_rank, 2, k_rank_ace);
+  AssertRange(second_rank, 2, k_rank_ace);
+  // Normating to [0..12]
+  first_rank -= 2;
+  // Needs to be [second_rank][first_rank]
+  // for correct view in handlist-editor,
+  // otherwise suited/offsuited would be confused
+  // and we need a single point to get it right
+  second_rank -= 2;
+  _handlist_matrix[second_rank][first_rank] = false;
 }
 
 bool COHScriptList::IsOnList(int first_rank, int second_rank, bool suited) {
@@ -54,15 +83,21 @@ bool COHScriptList::IsOnList(int first_rank, int second_rank, bool suited) {
   if (first_rank < second_rank) {
     SwapInts(&first_rank, &second_rank);
   }
-  // Normating to [0..12]
-  int x = first_rank - 2;
-  int y = second_rank - 2;
   if (suited) {
-    return _handlist_matrix[x][y];
+    return IsOnList(first_rank, second_rank);
   } else {
-    return _handlist_matrix[y][x];
+    return IsOnList(second_rank, first_rank);
   }
 }
+
+bool COHScriptList::IsOnList(int first_rank, int second_rank) {
+  AssertRange(first_rank, 2, k_rank_ace);
+  AssertRange(second_rank, 2, k_rank_ace);
+  // Normating to [0..12]
+  first_rank -= 2;
+  second_rank -= 2;
+  return _handlist_matrix[second_rank][first_rank];
+};
 
 bool COHScriptList::Set(CString list_member) {
   int length = list_member.GetLength();
@@ -121,4 +156,52 @@ double COHScriptList::Evaluate(bool log /* = false */) {
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),
     p_symbol_engine_cards->issuited());
+}
+
+CString COHScriptList::function_text() {
+  CString result;
+  // Pairs
+  bool any_hand_added = false;
+  for (int i=k_rank_ace; i>=2; --i) {
+    if (IsOnList(i, i)) {
+      result += k_card_chars[i-2];
+      result += k_card_chars[i-2];
+      result += " ";
+      any_hand_added = true;
+    }
+  }
+  if (any_hand_added) {
+    result += "\n";
+  }
+  // Suited
+  any_hand_added = false;
+  for (int i=k_rank_ace; i>=2; --i) {
+    for (int j=i-1; j>=2; --j) {
+      if (IsOnList(i, j, true)) {
+        result += k_card_chars[i-2];
+        result += k_card_chars[j-2];
+        result += "s ";
+        any_hand_added = true;
+      }
+    }
+  }
+  if (any_hand_added) {
+    result += "\n";
+  }
+  // Offsuited
+  any_hand_added = false;
+  for (int i=k_rank_ace; i>=2; --i) {
+    for (int j=i-1; j>=2; --j) {
+      if (IsOnList(i, j, false)) {
+        result += k_card_chars[i-2];
+        result += k_card_chars[j-2];
+        result += "o ";
+        any_hand_added = true;
+      }
+    }
+  }
+  if (any_hand_added) {
+    result += "\n";
+  }
+  return result;
 }
