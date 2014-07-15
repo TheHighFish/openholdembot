@@ -883,8 +883,9 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 	double		number = 0.;
 	CString		temp = "";
 
-	if (results!=NULL)
-		*results == "";
+  // Skip on bogus out-pointer
+	if (results == NULL) return;
+  *results = "";
 
 	while (place_in_format < format.GetLength() && place_in_text < text.GetLength()) 
 	{
@@ -901,8 +902,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 				place_in_text+=1;
 			}
-			if (results!=NULL)
-				results->Append("^h (handnumber)\t= " + token + "\r\n");
+			assert (results != NULL);
+			results->Append("^h (handnumber)\t= " + token + "\r\n");
 
 			if (handnumber!=NULL && found_handnumber!=NULL)
 			{
@@ -927,8 +928,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				place_in_text++;
 			}
 
-			if (results!=NULL)
-				results->Append("^d (dummy int)\t= " + token + "\r\n");
+			assert (results != NULL);
+			results->Append("^d (dummy int)\t= " + token + "\r\n");
 		}
 
 		// dummy float
@@ -943,8 +944,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 				place_in_text++;
 			}
 
-			if (results!=NULL)
-				results->Append("^f (dummy float)\t= " + token + "\r\n");
+			assert (results != NULL);
+			results->Append("^f (dummy float)\t= " + token + "\r\n");
 		}
 
 		// numbers
@@ -971,8 +972,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			if (number_type == "^s")
 			{
-				if (results!=NULL)  
-					results->Append("^s (sblind)\t= " + temp + "\r\n");
+				assert (results != NULL);
+				results->Append("^s (sblind)\t= " + temp + "\r\n");
 
 				if (found_sblind!=NULL && sblind!=NULL) 
 				{
@@ -986,8 +987,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (number_type == "^b")  
 			{
-				if (results!=NULL)	
-					results->Append("^b (bblind)\t= " + temp + "\r\n");
+				assert (results != NULL);	
+				results->Append("^b (bblind)\t= " + temp + "\r\n");
 
 				if (found_bblind!=NULL && bblind!=NULL) 
 				{
@@ -1001,8 +1002,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			
 			else if (number_type == "^B")
 			{
-				if (results!=NULL)  
-					results->Append("^B (bbet)\t= " + temp + "\r\n");
+				assert (results != NULL);  
+				results->Append("^B (bbet)\t= " + temp + "\r\n");
 
 				if (found_bbet!=NULL && bbet!=NULL) 
 				{
@@ -1016,8 +1017,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			
 			else if (number_type == "^a")
 			{
-				if (results!=NULL)  
-					results->Append("^a (ante)\t= " + temp + "\r\n");
+				assert (results != NULL); 
+				results->Append("^a (ante)\t= " + temp + "\r\n");
 
 				if (found_ante!=NULL && ante!=NULL) 
 				{
@@ -1031,8 +1032,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			
 			else if (number_type == "^v")
 			{
-				if (results!=NULL)  
-					results->Append("^v (sb_bb)\t= " + temp + "\r\n");
+				assert (results != NULL);
+				results->Append("^v (sb_bb)\t= " + temp + "\r\n");
 
 				if (found_sb_bb!=NULL && sb_bb!=NULL) 
 				{
@@ -1046,8 +1047,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			
 			else if (number_type == "^V")
 			{
-				if (results!=NULL)  
-					results->Append("^V (bb_BB)\t= " + temp + "\r\n");
+				assert (results != NULL); 
+				results->Append("^V (bb_BB)\t= " + temp + "\r\n");
 
 				if (found_bb_BB!=NULL && bb_BB!=NULL) 
 				{
@@ -1084,8 +1085,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
    				token.Append(text.Mid(place_in_text, skip_str.GetLength()));
 				place_in_text += skip_str.GetLength();
 			}
-			if (results!=NULL)
-				results->Append("^* (skip string)\t= '" + token + "'\r\n");
+			assert (results != NULL);
+			results->Append("^* (skip string)\t= '" + token + "'\r\n");
 		}
 
 		// Roman numerals
@@ -1116,8 +1117,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			//	level = 2;
 			//}
 
-			if (results!=NULL)
-				results->Append("^R (roman numeral)\t= " + token + "\r\n");
+			assert (results != NULL);
+			results->Append("^R (roman numeral)\t= " + token + "\r\n");
 
 		}
 
@@ -1128,8 +1129,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			if (text.Mid(place_in_text,8).MakeLower() == "no limit" ||
 				text.Mid(place_in_text,8).MakeLower() == "no-limit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
+				assert (results != NULL);
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1145,8 +1146,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,7).MakeLower() == "nolimit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,7) + "\r\n");
+				assert (results != NULL); 
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,7) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1162,8 +1163,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,2).MakeLower() == "nl") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+				assert (results != NULL); 
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1180,8 +1181,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			else if (text.Mid(place_in_text,9).MakeLower() == "pot limit" ||
 				text.Mid(place_in_text,9).MakeLower() == "pot-limit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,9) + "\r\n");
+				assert (results != NULL);  
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,9) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1197,8 +1198,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,8).MakeLower() == "potlimit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
+				assert (results != NULL);  
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1214,8 +1215,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,2).MakeLower() == "pl") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+				assert (results != NULL); 
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1232,8 +1233,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			else if (text.Mid(place_in_text,11).MakeLower() == "fixed limit" ||
 				text.Mid(place_in_text,11).MakeLower() == "fixed-limit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,11) + "\r\n");
+				assert (results != NULL);  
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,11) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1249,8 +1250,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,10).MakeLower() == "fixedlimit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,10) + "\r\n");
+				assert (results != NULL); 
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,10) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1266,8 +1267,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,2).MakeLower() == "fl") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+				assert (results != NULL);  
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1283,8 +1284,8 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 
 			else if (text.Mid(place_in_text,5).MakeLower() == "limit") 
 			{
-				if (results!=NULL)  
-					results->Append("^L (limit type)\t= " + text.Mid(place_in_text,5) + "\r\n");
+				assert (results != NULL); 
+				results->Append("^L (limit type)\t= " + text.Mid(place_in_text,5) + "\r\n");
 
 				if (found_limit!=NULL && limit!=NULL) 
 				{
@@ -1302,20 +1303,20 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 		// All other exact matches
 		else if (text[place_in_text] == format[place_in_format])
 		{
-			if (results!=NULL)  
-				results->Append("exact match\t= '");
+			assert (results != NULL); 
+			results->Append("exact match\t= '");
 
 			while (text[place_in_text] == format[place_in_format] && place_in_text<text.GetLength() && place_in_format<format.GetLength()) 
 			{
-				if (results!=NULL)
-					results += (text[place_in_text]);
+				assert (results != NULL);
+				results += (text[place_in_text]);
 
 				place_in_text+=1;
 				place_in_format+=1;
 			}
 
-			if (results!=NULL)  
-				results->Append("'\r\n");
+			assert (results != NULL); 
+			results->Append("'\r\n");
 		}
 
 		// Match failed, exit loop
