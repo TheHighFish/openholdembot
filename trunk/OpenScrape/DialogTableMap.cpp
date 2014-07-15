@@ -2012,8 +2012,9 @@ void CDlgTableMap::OnBnClickedEdit()
 			return;
 
 		// If key is changed, search for new key, and error out if found
-		if (dlgsymbols.name != s_iter->second.name &&
-			p_tablemap->s$()->find(dlgsymbols.name) != p_tablemap->s$()->end())
+    CString old_name = s_iter->second.name;
+		if (dlgsymbols.name != old_name 
+      && p_tablemap->s$()->find(dlgsymbols.name) != p_tablemap->s$()->end())
 		{
 			MessageBox("Error editing record - name already exists.", "ERROR", MB_OK | MB_TOPMOST);
 			return;
