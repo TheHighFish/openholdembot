@@ -1,4 +1,4 @@
-v5.0.2 2014-07-xx
+v5.0.2 2014-07-15
 ==================
 NEW STUFF:
 - Full support for unary minuses in expressions;
@@ -14,6 +14,13 @@ BUG FIXES:
 - The parser did still/again convert function-names to lovercases
   due to unexpected side-effects of a function.
   Thanks to Mariano268 for reporting.
+  [THF]
+- The hand-list-editor got broken, when we had to re-implement hand-lists
+  (just like nearly all other internals) for the new parser of 5.0.
+  Thanks to Papa05 for reporting.
+  [THF].
+- PrWin got temporary broken for the same reason but works again.
+  Nobody noticed it. ;-)
   [THF]
 
 MAINTENANCE:
