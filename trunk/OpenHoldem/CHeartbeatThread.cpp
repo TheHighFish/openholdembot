@@ -88,7 +88,7 @@ void CHeartbeatThread::StartThread() {
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
 	int scrape_delay = preferences.scrape_delay();
 	if (p_table_state->User()->HasKnownCards() 
-    && (p_scraper_access->NumberOfVisibleButtons() > 0)) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random_0_1() < 0.0003)) { Sleep(97531); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+    && (p_scraper_access->NumberOfVisibleButtons() > 0)) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(97531); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
 		// My turn
 		// Stable frames expected
 		// Shorter reaction times desired
