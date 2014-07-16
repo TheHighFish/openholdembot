@@ -1,3 +1,13 @@
+v5.0.3 2014-07-xx
+==================
+BUG FIXES:
+
+MAINTENANCE:
+- The did...symbols count how often the autoplayer did raise/call/...
+  However didchec can only be 0 or 1 poker-logically.
+  We changed that now.
+  [THF]
+
 v5.0.2 2014-07-15
 ==================
 NEW STUFF:
