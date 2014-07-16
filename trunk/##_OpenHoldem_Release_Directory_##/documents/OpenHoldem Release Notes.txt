@@ -1,6 +1,9 @@
 v5.0.3 2014-07-xx
 ==================
 BUG FIXES:
+- nopponentsplaying was wrong because we confused HasKnownCards()
+  and HasAnyCards() when we had to do some code-improvement.
+  [THF] 
 
 MAINTENANCE:
 - The did...symbols count how often the autoplayer did raise/call/...

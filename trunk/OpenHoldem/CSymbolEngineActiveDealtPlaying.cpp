@@ -90,7 +90,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
 	for (int i=0; i<k_max_number_of_players; ++i)	{
-    if (p_table_state->_players[i].HasKnownCards()) {
+    if (p_table_state->_players[i].HasAnyCards()) {
 			_playersplayingbits |= (1<<i);			
 		}
 	}
