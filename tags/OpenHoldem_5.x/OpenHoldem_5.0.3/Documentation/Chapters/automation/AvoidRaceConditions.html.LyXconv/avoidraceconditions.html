@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="AvoidRaceConditions.tex"> 
+<meta name="date" content="2009-11-13 23:02:00"> 
+<link rel="stylesheet" type="text/css" href="AvoidRaceConditions.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><span class="titlemark">0.1. </span> <a 
+ id="x1-10000.1"></a>Avoid race-conditions</h3>
+<!--l. 24--><p class="noindent" >race-co. www!!!
+<!--l. 26--><p class="indent" >   OpenHoldem will take care of that problem automatically; it will synchronize the
+autoplayer-actions of all instances, including actions taken by the rebuy-function and
+by the chat-function. It uses a system-wide mutex to ensure exclusive access
+to the keyboard and the mouse. Unfortunatelly OpenHoldem is not the only
+program, which uses that resources; usually the hopper competes for them,
+too.
+<!--l. 33--><p class="indent" >   So any good hopper should wait with its actions, until OpenHoldem has finished its
+input; it has to implement the same protection-mechanism and wait for the same mutex.
+The default name of that mutex is &#8220;OHAntiColl&#8221;, but it can be changed in the
+preferences to your liking.
+<!--l. 38--><p class="indent" >   An example AutoIT-hopper-code has been provided by USBFreak
+(<a 
+href="http://www.maxinmontreal.com/wiki/index.php5?title=System_Wide_Mutex_Handling_-_Sample_Code" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=System_Wide_Mutex_Handling_-_Sample_Code</span></a>):
+<!--l. 39--><p class="indent" >   <center class="quotation"><table class="quotation" 
+border="0" cellpadding="0" cellspacing="15"><tr><td>
+       ========================================
+       <!--l. 42--><p class="indent" >     System Wide Mutex Handling - Sample Code
+       <!--l. 44--><p class="indent" >     Below are 3 functions you&#8217;ll need if you plan to avoid OH and
+       hopper "collisions" over mouse and keyboard inputs. As you may
+       know, OH ensures it can act on the table in a consistent manner
+       by seizing control of mouse / keyboard input (system wide mutex),
+       performing its actions (clicking buttons, entering text in swag field
+       etc.) and then releasing mutex so other applications can perform
+       their tasks.
+       <!--l. 52--><p class="indent" >     This works fine as long as you run one or few OH instances,
+       and do not have a very active hopper to manage them. Once you
+       are past that point and start running many tables with as many
+       OH instances, plus moving tables around, browsing lobby etc., a
+       situation where OH may interfere with hopper operations in the
+       middle of an important task occurs, resulting in very unpredictable
+       behaviour.
+       <!--l. 59--><p class="indent" >     To avoid such a possibility, you may want to implement mutex
+       handling in your hopper using below code.
+       <!--l. 62--><p class="indent" >     The idea:
+<!--l. 62--><p class="noindent" ></td></tr></table></center>
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-1002x1">Create mutex lock at the start of your hopper. This seizes control of
+        keyboard / mouse and no other application can send any input using them
+        until mutex is released/unlocked.
+           </li>
+        <li 
+  class="enumerate" id="x1-1004x2">Find a good time in your hopper loop when game state is stable (no lobby
+        browsing, table opening / closing etc.) and release mutex for a period of
+        time (in my case this is (number of OH instances opened * 1) + 2 seconds).
+        This allows OH instances to grab mutex control for themselves, perform
+
+        any pending actions, and release mutex control again.
+           </li>
+        <li 
+  class="enumerate" id="x1-1006x3">Once the predetermined period of time expires, create mutex lock again,
+        and proceed with hopper operations knowing nothing can interfere with
+        mouse / keyboard.
+           </li>
+        <li 
+  class="enumerate" id="x1-1008x4">At the end of your hopper, release/unlock mutex.</li></ol>
+<!--l. 78--><p class="noindent" >Main hopper loop
+   <!--l. 81-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1009r1"></a></span>;START&#x00A0;YOUR&#x00A0;HOPPER,&#x00A0;CREATE&#x00A0;MUTEX&#x00A0;LOCK&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r2"></a></span>MutexLock()&#x00A0;$Global_Mutex_Handle&#x00A0;=&#x00A0;_CreateMutex("OHAntiColl")&#x00A0;<br /><span class="label"><a 
+ id="x1-1011r3"></a></span>;ENTERING&#x00A0;HOPPER&#x00A0;LOOP&#x00A0;<br /><span class="label"><a 
+ id="x1-1012r4"></a></span>While&#x00A0;(1)&#x00A0;<br /><span class="label"><a 
+ id="x1-1013r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;;...&#x00A0;HOPPER&#x00A0;OPERATIONS&#x00A0;<br /><span class="label"><a 
+ id="x1-1014r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;;...&#x00A0;GAME&#x00A0;STATE&#x00A0;STABLE,&#x00A0;UNLOCK&#x00A0;MUTEX&#x00A0;<br /><span class="label"><a 
+ id="x1-1015r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;MutexUnlock($Global_Mutex_Handle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1016r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;;...&#x00A0;WAIT&#x00A0;FOR&#x00A0;OH&#x00A0;TO&#x00A0;PERFORM&#x00A0;ACTIONS&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;;...&#x00A0;TIME&#x00A0;EXPIRED,&#x00A0;CREATE&#x00A0;MUTEX&#x00A0;LOCK&#x00A0;AGAIN&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;MutexLock()&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r11"></a></span>wend&#x00A0;<br /><span class="label"><a 
+ id="x1-1020r12"></a></span>;END&#x00A0;OF&#x00A0;HOPPER,&#x00A0;RELEASE&#x00A0;MUTEX&#x00A0;<br /><span class="label"><a 
+ id="x1-1021r13"></a></span>MutexUnlock($Global_Mutex_Handle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1022r14"></a></span>;END&#x00A0;OF&#x00A0;HOPPER,&#x00A0;CLOSE&#x00A0;MUTEX&#x00A0;HANDLE&#x00A0;<br /><span class="label"><a 
+ id="x1-1023r15"></a></span>Close_Mutex_Handle($Global_Mutex_Handle)
+   </div>
+<!--l. 100--><p class="indent" >   Hopper functions
+   <!--l. 103-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-1024r1"></a></span>Func&#x00A0;_CreateMutex($sOccurenceName)&#x00A0;<br /><span class="label"><a 
+ id="x1-1025r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Local&#x00A0;$ERROR_ALREADY_EXISTS&#x00A0;=&#x00A0;183&#x00A0;<br /><span class="label"><a 
+ id="x1-1026r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$Global_Mutex_Handle&#x00A0;=&#x00A0;DllCall("kernel32.dll",&#x00A0;<br /><span class="label"><a 
+ id="x1-1027r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"int",&#x00A0;"CreateMutex",&#x00A0;"int",&#x00A0;0,&#x00A0;<br /><span class="label"><a 
+ id="x1-1028r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"long",&#x00A0;1,&#x00A0;"str",&#x00A0;$sOccurenceName)&#x00A0;<br /><span class="label"><a 
+ id="x1-1029r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;$lastError&#x00A0;=&#x00A0;DllCall("kernel32.dll",&#x00A0;"int",&#x00A0;"GetLastError")&#x00A0;<br /><span class="label"><a 
+ id="x1-1030r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;If&#x00A0;$lastError[0]&#x00A0;=&#x00A0;$ERROR_ALREADY_EXISTS&#x00A0;Then&#x00A0;<br /><span class="label"><a 
+ id="x1-1031r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Return&#x00A0;SetError($lastError[0],&#x00A0;$lastError[0],&#x00A0;<br /><span class="label"><a 
+ id="x1-1032r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$Global_Mutex_Handle[0])&#x00A0;<br /><span class="label"><a 
+ id="x1-1033r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;EndIf&#x00A0;<br /><span class="label"><a 
+ id="x1-1034r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Return&#x00A0;SetError(0,&#x00A0;0,&#x00A0;$Global_Mutex_Handle[0])&#x00A0;<br /><span class="label"><a 
+ id="x1-1035r12"></a></span>EndFunc&#x00A0;;==&#x003E;_GetMutex
+   </div>
+   <!--l. 120-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-1036r1"></a></span>Func&#x00A0;MutexUnlock($Global_Mutex_Handle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1037r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Local&#x00A0;$releasemutex&#x00A0;=&#x00A0;DllCall("kernel32.dll",&#x00A0;"int",&#x00A0;<br /><span class="label"><a 
+ id="x1-1038r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"ReleaseMutex",&#x00A0;"long",&#x00A0;$Global_Mutex_Handle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1039r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Return&#x00A0;(IsArray($releasemutex)&#x00A0;And&#x00A0;$releasemutex[0]&#x00A0;&#x003E;&#x00A0;0)&#x00A0;<br /><span class="label"><a 
+ id="x1-1040r5"></a></span>EndFunc&#x00A0;&#x00A0;&#x00A0;;==&#x003E;_ReleaseMutex
+   </div>
+   <!--l. 130-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-1041r1"></a></span>Func&#x00A0;Close_Mutex_Handle($hMutex)&#x00A0;<br /><span class="label"><a 
+ id="x1-1042r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Local&#x00A0;$aCH&#x00A0;=&#x00A0;DllCall("Kernel32.dll",&#x00A0;"int",&#x00A0;<br /><span class="label"><a 
+ id="x1-1043r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"CloseHandle",&#x00A0;"hwnd",&#x00A0;$Global_Mutex_Handle)&#x00A0;<br /><span class="label"><a 
+ id="x1-1044r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Return&#x00A0;(IsArray($aCH)&#x00A0;And&#x00A0;$aCH[0]&#x00A0;&#x003E;&#x00A0;0)&#x00A0;<br /><span class="label"><a 
+ id="x1-1045r5"></a></span>EndFunc
+   </div>
+   <!--l. 140-->
+   <div class="lstlisting" id="listing-5"><span class="label"><a 
+ id="x1-1046r1"></a></span>Func&#x00A0;_API_WaitForSingleObject($Global_Mutex_Handle,&#x00A0;$dwMilliseconds)&#x00A0;<br /><span class="label"><a 
+ id="x1-1047r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Local&#x00A0;$aResult&#x00A0;=&#x00A0;DllCall("kernel32.dll",&#x00A0;"long",&#x00A0;<br /><span class="label"><a 
+ id="x1-1048r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"WaitForSingleObject",&#x00A0;"long",&#x00A0;$Global_Mutex_Handle,&#x00A0;<br /><span class="label"><a 
+ id="x1-1049r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"long",&#x00A0;$dwMilliseconds)&#x00A0;<br /><span class="label"><a 
+ id="x1-1050r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;Return&#x00A0;$aResult[0]&#x00A0;<br /><span class="label"><a 
+ id="x1-1051r6"></a></span>EndFunc&#x00A0;&#x00A0;&#x00A0;;==&#x003E;_API_WaitForSingleObject
+   </div>
+   <!--l. 151-->
+   <div class="lstlisting" id="listing-6"><span class="label"><a 
+ id="x1-1052r1"></a></span>Func&#x00A0;MutexLock()&#x00A0;<br /><span class="label"><a 
+ id="x1-1053r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;While&#x00A0;1&#x00A0;<br /><span class="label"><a 
+ id="x1-1054r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$Global_Mutex_Handle&#x00A0;=&#x00A0;_CreateMutex("OHAntiColl");&#x00A0;<br /><span class="label"><a 
+ id="x1-1055r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;If&#x00A0;@error&#x00A0;=&#x00A0;0&#x00A0;Then&#x00A0;<br /><span class="label"><a 
+ id="x1-1056r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;SUCCESSFULLY&#x00A0;CREATED&#x00A0;AND&#x00A0;LOCKED&#x00A0;MUTEX&#x00A0;<br /><span class="label"><a 
+ id="x1-1057r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ExitLoop&#x00A0;<br /><span class="label"><a 
+ id="x1-1058r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Else&#x00A0;<br /><span class="label"><a 
+ id="x1-1059r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;WE&#x00A0;WILL&#x00A0;EXAMINE&#x00A0;MUTEX&#x00A0;TO&#x00A0;SEE&#x00A0;IF&#x00A0;IT&#x00A0;IS&#x00A0;RELEASED&#x00A0;<br /><span class="label"><a 
+ id="x1-1060r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Local&#x00A0;$result&#x00A0;=&#x00A0;_API_WaitForSingleObject(&#x00A0;<br /><span class="label"><a 
+ id="x1-1061r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$Global_Mutex_Handle,&#x00A0;30000);&#x00A0;<br /><span class="label"><a 
+ id="x1-1062r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WAIT&#x00A0;FOR&#x00A0;MUTEX&#x00A0;FOR&#x00A0;30&#x00A0;SECONDS&#x00A0;<br /><span class="label"><a 
+ id="x1-1063r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;If&#x00A0;$result&#x00A0;=&#x00A0;0&#x00A0;Or&#x00A0;$result&#x00A0;=&#x00A0;128&#x00A0;Then&#x00A0;<br /><span class="label"><a 
+ id="x1-1064r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;SUCCESSFULLY&#x00A0;LOCKED&#x00A0;MUTEX&#x00A0;<br /><span class="label"><a 
+ id="x1-1065r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ExitLoop&#x00A0;<br /><span class="label"><a 
+ id="x1-1066r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;EndIf&#x00A0;<br /><span class="label"><a 
+ id="x1-1067r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;EndIf&#x00A0;<br /><span class="label"><a 
+ id="x1-1068r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;WAIT&#x00A0;A&#x00A0;BIT&#x00A0;BEFORE&#x00A0;TRYING&#x00A0;AGAIN&#x00A0;<br /><span class="label"><a 
+ id="x1-1069r18"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;WE&#x00A0;ARE&#x00A0;NOT&#x00A0;PROCEEDING&#x00A0;UNTIL&#x00A0;WE&#x00A0;HAVE&#x00A0;CONTROL&#x00A0;OF&#x00A0;MUTEX&#x00A0;<br /><span class="label"><a 
+ id="x1-1070r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Sleep(100)&#x00A0;<br /><span class="label"><a 
+ id="x1-1071r20"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WEnd&#x00A0;<br /><span class="label"><a 
+ id="x1-1072r21"></a></span>EndFunc&#x00A0;;==&#x003E;MutexLock
+   </div>
+    
+</body></html> 
+
+
+
