@@ -1,9 +1,14 @@
-v5.0.3 2014-07-xx
+v5.0.3 2014-07-18
 ==================
 BUG FIXES:
 - nopponentsplaying was wrong because we confused HasKnownCards()
   and HasAnyCards() when we had to do some code-improvement.
   [THF] 
+- OpenHoldem and OpenScrape could crash when evaluating ttlimits,
+  as a very rarely executed branch of the code had a missing 
+  pointer-dereference, but the code was compileable anyway.
+  Thanks to SuperBlak for reporting and for providing replay-frames and TM.
+  [THF]
 
 MAINTENANCE:
 - The did...symbols count how often the autoplayer did raise/call/...
