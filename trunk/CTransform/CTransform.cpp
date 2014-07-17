@@ -1309,7 +1309,7 @@ const void CTransform::ParseStringBSL(const CString text, const CString format,
 			while (text[place_in_text] == format[place_in_format] && place_in_text<text.GetLength() && place_in_format<format.GetLength()) 
 			{
 				assert (results != NULL);
-				results += (text[place_in_text]);
+				*results += (text[place_in_text]);
 
 				place_in_text+=1;
 				place_in_format+=1;
