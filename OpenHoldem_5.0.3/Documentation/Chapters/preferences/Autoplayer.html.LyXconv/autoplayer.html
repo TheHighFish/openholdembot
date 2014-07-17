@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="autoplayer.tex"> 
+<meta name="date" content="2010-04-17 14:22:00"> 
+<link rel="stylesheet" type="text/css" href="autoplayer.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>OpenHoldem Preferences &#8211; Autoplayer</h3>
+<!--l. 27--><p class="noindent" >Autoplayer preferences control how the OpenHoldem Autoplayer functions. See the {The
+Autoplayer} section for more information.
+           <ul class="itemize1">
+        <li class="itemize"><span 
+class="ecti-1000">Frame delay</span>: This parameter specifies how many simultaneous identical
+        screen scrapes must occur prior to the Autoplayer taking action. Generally,
+        you want to have a stable poker screen before your take action, and this
+        setting will allow various animations and so forth to finish, ensuring that
+        your poker logic has correct game state information prior to making a
+        decision.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">SWAG Delay, select to delete</span>: For SWAG actions, this setting determines
+        how long (in milliseconds) that OpenHoldem will pause after performing
+        the  SWAG  Select  action  as  specified  in  the  Table  Map,  and  prior  to
+        performing the SWAG Delete action as specified in the Table Map. These
+        preferences  are  not  set  in  the  Table  Map  itself,  as  these  are  highly
+        dependent on your CPU and network capacity and utilization, and thus
+        are largely specific to your particular computing environment.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">SWAG Delay, delete to entry</span>: For SWAG actions, this setting determines
+        how long (in milliseconds) that OpenHoldem will pause after performing
+        the  SWAG  Delete  action  as  specified  in  the  Table  Map  and  prior  to
+        performing the SWAG Entry action. These preferences are not set in the
+        Table Map itself, as these are highly dependent on your CPU and network
+        capacity and utilization, and thus are largely specific to your particular
+        computing environment.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">SWAG Delay, entry to confirm</span>: For SWAG actions, this setting determines
+        how long (in milliseconds) that OpenHoldem will pause after performing
+        the SWAG Entry action, and prior to performing the SWAG Confirm
+        action as specified in the Table Map. These preferences are not set in the
+        Table Map itself, as these are highly dependent on your CPU and network
+        capacity and utilization, and thus are largely specific to your particular
+        computing environment.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Engage Autoplayer automatically</span>: This setting instructs OpenHoldem to
+        automatically start the Autoplayer when it has identified the user&#8217;s chair.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Detect loss of focus on SWAG</span>: The SWAG action is the longest running
+        of the poker actions, due to the need to select the text, delete it, enter the
+        bet and confirm it. Occasionally, focus will be lost from the table that the
+        SWAG action is being executed on, either due to multi-tabling (maybe the
+        casino is set up to pop the table that requires your attention to the front?),
+        or perhaps due to you or your Automation solution clicking elsewhere
+        when the Autoplayer was working. When this loss of focus occurs, and if
+        this setting is checked, then OpenHoldem will cancel the current SWAG
+
+        attempt and retry on the next scrape cycle.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Use &#8216;comma&#8217; instead of &#8216;dot&#8217;</span>: Some casinos require the use of the &#8220;comma&#8221;
+        as a decimal separator rather than the &#8220;dot&#8221;. This setting will instruct
+        OpenHoldem to use a comma if needed. Eventually this setting should be
+        moved to the Table Map file itself, as it is casino-specific.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Only calculate standard function on my turn</span>: Normally, OpenHoldem will
+        calculate the primary functions on every scrape cycle. This setting will
+        instruct OpenHoldem to only calculate these primary functions when it
+        is  your  turn  (card  faces  and  action  buttons  are  present).  It  will  also
+        prevent the calculation of most of the CPU expensive symbols including
+        prwin/prlos/prtie, however the handrank symbols will be calculated as
+        these are commonly used in the f$prefold calculations. f$prefold and f$play
+        are still evaluated regardless if it is your turn or not.
+           </li>
+        <li class="itemize"><span 
+class="ecti-1000">Only act with balance stability</span>: In previous versions of OpenHoldem, the
+        Autoplayer would act even if you had critical misscrapes. Once of those
+        critical misscrapes is a missing player balance, due to the balance box
+        changing to &#8220;All-In&#8221; instead of zero, for example, when a player goes all
+        in. Enabling this option will prevent the Autoplayer from acting when a
+        balance misscrape is detected. If you do not require balance information
+        in your bot logic, you can safely leave this box unchecked.</li></ul>
+
+<!--l. 96--><p class="noindent" ><hr class="figure"><div class="figure" 
+><a 
+ id="x1-10011"></a><img 
+src="autoplayer0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
+name="autoplayer0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___tion_Chapters_preferences_Images_Autoplayer.eps"  
+-->
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;0.0.1: </span><span  
+class="content">Preferences: Autoplayer</span></div><!--tex4ht:label?: x1-10011 -->
+<!--l. 103--><p class="indent" >   </div><hr class="endfigure">
+    
+</body></html> 
+
+
+
