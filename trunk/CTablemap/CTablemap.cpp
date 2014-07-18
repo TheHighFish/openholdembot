@@ -672,7 +672,7 @@ int CTablemap::LoadTablemap(const CString _fname)
 			hold_image.image = new RGBAImage(hold_image.width, hold_image.height, t.GetString());
 
 			// read next "height" lines
-			for (y=0; y < (int) hold_image.height; y++) 
+			for (y=0; y < hold_image.height; y++) 
 			{
 				linenum++;
 				if (!ar.ReadString(strLine)) 
@@ -681,7 +681,7 @@ int CTablemap::LoadTablemap(const CString _fname)
 					return ERR_SYNTAX;
 				}
 				// scan across "width" of line to get values
-				for (x=0; x < (int) hold_image.width; x++) 
+				for (x=0; x < hold_image.width; x++) 
 				{
 					// unreverse bgra to abgr
 					hexval = strLine.Mid(x*8+6, 2) + strLine.Mid(x*8, 6);

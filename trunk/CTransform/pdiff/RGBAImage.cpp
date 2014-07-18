@@ -46,7 +46,7 @@ RGBAImage* RGBAImage::ReadTiff(char *filename)
 					// result is in ABGR
 					fimg = new RGBAImage(img.width, img.height);
 					for (int y = img.height - 1; y >= 0; y--) {
-						for (int x = 0; x < (int) img.width; x++) {
+						for (int x = 0; x < img.width; x++) {
 						   fimg->Set(x,img.height - (y+1), raster[x + y * img.width]);
 						}
 					}

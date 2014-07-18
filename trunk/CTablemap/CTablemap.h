@@ -98,11 +98,11 @@ typedef HMap::const_iterator HMapCI;
 
 struct STablemapImage
 {
-	CString			name;
-	unsigned int	width;
-	unsigned int	height;
-	uint32_t		pixel[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
-	RGBAImage		*image;
+	CString   name;
+	int	      width;
+	int	      height;
+	uint32_t  pixel[MAX_HASH_WIDTH*MAX_HASH_HEIGHT];
+	RGBAImage *image;
 };
 typedef std::pair<uint32_t, STablemapImage> IPair;
 typedef std::map<uint32_t, STablemapImage> IMap;

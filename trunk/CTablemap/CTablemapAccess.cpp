@@ -108,7 +108,7 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 	return false;
 }
 
-bool CTablemapAccess::SetClientSize(CString size_name, unsigned int &width, unsigned int &height)
+bool CTablemapAccess::SetClientSize(CString size_name, int &width, int &height)
 {
 	/*
 		z$ : Extract client size

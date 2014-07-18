@@ -3,6 +3,7 @@
 
 #include "CardFunctions.h"
 #include "CParseErrors.h"
+#include "CPreferences.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
@@ -151,7 +152,8 @@ void COHScriptList::ErrorOldStyleFormat(CString list_member) {
 }
 
 double COHScriptList::Evaluate(bool log /* = false */) {
-  write_log(true, "[COHScriptList] Evaluating list %s\n", _name); 
+  write_log(preferences.debug_formula(), 
+    "[COHScriptList] Evaluating list %s\n", _name); 
   if (!p_table_state->User()->HasKnownCards()) return false;
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),
