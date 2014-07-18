@@ -40,7 +40,7 @@ public:
 public:
 	// z$
 	// Usable for clientsize, clientsizemin and clientsizemax
-	bool SetClientSize(CString size_name, unsigned int &width, unsigned int &height);
+	bool SetClientSize(CString size_name, int &width, int &height);
 	unsigned int GetClientSize(CString size_name, dim dimension);
 
 	// functions below only for clientsize	

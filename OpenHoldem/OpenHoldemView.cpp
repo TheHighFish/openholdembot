@@ -349,25 +349,67 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
 }
 
-void COpenHoldemView::DrawCenterInfoBox(void) 
-{
-	__TRACE
-	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
-	RECT		rect = {0};
-	CString		t = "", s = "";
-	CFont		*oldfont = NULL, cFont;
-	int			left = 0, top = 0, right = 0, bottom = 0;
-	CDC			*pDC = GetDC();
-		
-	double sym_bblind		= p_symbol_engine_tablelimits->bblind();
+CString COpenHoldemView::InfoTextForWhiteBox() {
+  double sym_bblind		= p_symbol_engine_tablelimits->bblind();
 	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
 	double sym_ante			= p_symbol_engine_tablelimits->ante();
 	int sym_lim				  = p_symbol_engine_tablelimits->gametype();
 	CString sym_handnumber = p_handreset_detector->GetHandNumber();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-	bool sym_playing		= p_table_state->User()->HasKnownCards();
+  CString result, s;
+	// handnumber
+	if (sym_handnumber != "") {
+		s.Format("  Hand #: %s\n", sym_handnumber);
+	}	else 	{
+		s.Format("  Hand #: -\n");
+	}
+	result.Append(s);
 
+  // blinds, game-type
+	CString format_string;
+  if (IsInteger(sym_sblind) && IsInteger(sym_bblind)) {
+    // Display as integer numbers
+		format_string = "  %s %.0f/%.0f/%.0f\n";
+  }
+  else {
+		// Fractional nunbers: use 2.00 digits  
+		format_string = "  %s %.2f/%.2f/%.2f\n";
+	}
+	s.Format(format_string,
+		p_symbol_engine_tablelimits->GetGametypeAsString(),
+		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
+	result.Append(s);
+
+	// ante
+	if (sym_ante != 0) {
+		s.Format("  Ante: %s\n", Number2CString(sym_ante));
+		result.Append(s);
+	}
+
+	// Pot
+	s.Format("  Pot: %s\n", Number2CString(sym_pot));
+	result.Append(s);
+
+  // logged symbols
+	if (preferences.log_symbol_enabled() 
+		&& p_symbol_engine_userchair->userchair_confirmed() 
+		&& p_table_state->User()->HasKnownCards()) {
+      result.Append(p_autoplayer_trace->LogSymbolsForGUI());
+	}
+  return result;
+}
+
+void COpenHoldemView::DrawCenterInfoBox(void) 
+{
+	__TRACE
+	CPen		*pTempPen = NULL, oldpen;
+	CBrush	*pTempBrush = NULL, oldbrush;
+	RECT		rect = {0};
+	CFont		*oldfont = NULL, cFont;
+	int			left = 0, top = 0, right = 0, bottom = 0;
+	CDC			*pDC = GetDC();
+		
+	bool sym_playing		= p_table_state->User()->HasKnownCards();
 	// "White box" in the OpenHoldem-GUI with basic important info
 	const int k_basic_height = 2;				// pixels
 	const int k_extra_height_per_line = 16;	// pixels
@@ -407,55 +449,10 @@ void COpenHoldemView::DrawCenterInfoBox(void)
 	rect.right = right;
 	rect.bottom = bottom;
 
-	t = "";
-	// handnumber
-	if (sym_handnumber != "") 
-	{
-		s.Format("  Hand #: %s\n", sym_handnumber);
-	}
-	else 
-	{
-		s.Format("  Hand #: -\n");
-	}
-	t.Append(s);
-
-	CString format_string;
-	// blinds/type
-	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
-	{
-		// Fractional nunbers: use 2.00 digits  
-		format_string = "  %s%s %.2f/%.2f/%.2f\n";
-	}
-	else
-	{
-		// Display as integer numbers
-		format_string = "  %s %.0f/%.0f/%.0f\n";
-	}
-	s.Format(format_string,
-		p_symbol_engine_tablelimits->GetGametypeAsString(),
-		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
-	t.Append(s);
-
-	// ante
-	if (sym_ante != 0) 
-	{
-		s.Format("  Ante: %s\n", Number2CString(sym_ante));
-		t.Append(s);
-	}
-
-	// Pot
-	s.Format("  Pot: %s\n", Number2CString(sym_pot));
-	t.Append(s);
-
-	if (preferences.log_symbol_enabled() 
-		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->User()->HasKnownCards()) {
-      t.Append(p_autoplayer_trace->LogSymbolsForGUI());
-	}
-
+  CString info_txt = InfoTextForWhiteBox();
 	// Draw it
 	pDC->SetBkMode(TRANSPARENT);
-	pDC->DrawText(t.GetString(), t.GetLength(), &rect, NULL);
+	pDC->DrawText(info_txt.GetString(), info_txt.GetLength(), &rect, NULL);
 
 	// Restore original pen, brush and font
 	pDC->SelectObject(oldpen);

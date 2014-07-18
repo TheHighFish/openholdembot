@@ -1,3 +1,11 @@
+v5.0.4 2014-07-xx
+==================
+BUG FIXES:
+- The GUI could crash because of an incorrect format-string
+  for the text in "the white box".
+  Thanks to Lavezzi for providing a replay-frame and tablemap.
+  [THF]
+
 v5.0.3 2014-07-18
 ==================
 BUG FIXES:

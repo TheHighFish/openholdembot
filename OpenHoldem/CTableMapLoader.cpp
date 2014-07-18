@@ -29,15 +29,15 @@ CTableMapLoader *p_tablemap_loader = NULL;
 
 typedef struct
 {
-	CString			FilePath;
-	CString			SiteName;
-	unsigned int	ClientSizeX, ClientSizeY;
-	unsigned int	ClientSizeMinX, ClientSizeMinY;
-	unsigned int	ClientSizeMaxX, ClientSizeMaxY;
-	CString			TitleText;
-	CString			TitleText_0_9[10];
-	CString			NegativeTitleText;
-	CString			NegativeTitleText_0_9[10];
+	CString	FilePath;
+	CString	SiteName;
+	int	    ClientSizeX, ClientSizeY;
+	int	    ClientSizeMinX, ClientSizeMinY;
+	int	    ClientSizeMaxX, ClientSizeMaxY;
+	CString	TitleText;
+	CString	TitleText_0_9[10];
+	CString	NegativeTitleText;
+	CString	NegativeTitleText_0_9[10];
 } t_tablemap_connection_data;
 
 
@@ -260,10 +260,10 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 			&& (tablemap_connection_data[MapIndex].ClientSizeMinY != 0) 
 			&& (tablemap_connection_data[MapIndex].ClientSizeMaxX != 0) 
 			&& (tablemap_connection_data[MapIndex].ClientSizeMaxY != 0) 
-			&& (r.right  >= (int) tablemap_connection_data[MapIndex].ClientSizeMinX)
-			&& (r.right  <= (int) tablemap_connection_data[MapIndex].ClientSizeMaxX)
-			&& (r.bottom >= (int) tablemap_connection_data[MapIndex].ClientSizeMinY)
-			&& (r.bottom <= (int) tablemap_connection_data[MapIndex].ClientSizeMaxY)))
+			&& (r.right  >= tablemap_connection_data[MapIndex].ClientSizeMinX)
+			&& (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
+			&& (r.bottom >= tablemap_connection_data[MapIndex].ClientSizeMinY)
+			&& (r.bottom <= tablemap_connection_data[MapIndex].ClientSizeMaxY)))
 		{
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
 				tablemap_connection_data[MapIndex].ClientSizeX,
