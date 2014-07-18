@@ -41,6 +41,7 @@ protected: // create from serialization only
 
 	afx_msg void OnUpdateMenuFileNew(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateMenuFileEdit(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuDllLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI);

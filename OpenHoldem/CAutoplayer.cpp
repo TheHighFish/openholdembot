@@ -349,8 +349,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 
 #define ENT CSLock lock(m_critsec);
 	
-void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) 
-{ 
+void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) { 
 	ENT 
 	__TRACE
 	// Set correct button state
@@ -358,17 +357,19 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 	assert(p_flags_toolbar != NULL);
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 
-	if (to_be_enabled_or_not) 
-	{
-		if (!p_function_collection->CorrectlyParsed())
-		{
+	if (to_be_enabled_or_not) {
+		if (!p_function_collection->CorrectlyParsed()) {
 			__TRACE
 			// Invalid formula
 			// Can't autoplay
 			to_be_enabled_or_not = false;
-			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-		}
+    }
 	}
+  if (to_be_enabled_or_not) {
+    p_flags_toolbar->ResetButtonsOnAutoplayerOn();
+  } else {
+    p_flags_toolbar->ResetButtonsOnAutoplayerOff();
+  }
 	// Set valuie at the very last to be extra safe
 	// and avoid problems with multiple threads
 	// despite we use synchronization ;-)
