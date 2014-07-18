@@ -6,6 +6,11 @@ BUG FIXES:
   Thanks to Lavezzi for providing a replay-frame and tablemap.
   [THF]
 
+MAINTENANCE:
+- Various improvements to the GUI:
+  Hot-keys, disabling some menu-items on autoplayer, etc.
+  [THF]
+
 v5.0.3 2014-07-18
 ==================
 BUG FIXES:
