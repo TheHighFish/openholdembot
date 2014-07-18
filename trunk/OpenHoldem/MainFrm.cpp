@@ -80,6 +80,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	// Menu updates
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, &CMainFrame::OnUpdateMenuFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
+  ON_UPDATE_COMMAND_UI(ID_EDIT_FORMULA, &CMainFrame::OnUpdateMenuFileEdit)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
@@ -257,31 +258,30 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMainFrame message handlers
 
-void CMainFrame::OnEditFormula() 
-{
-	if (m_formulaScintillaDlg) 
-	{
-		if (m_formulaScintillaDlg->m_dirty)
-		{
+void CMainFrame::OnEditFormula() {
+	if (m_formulaScintillaDlg) {
+		if (m_formulaScintillaDlg->m_dirty)	{
 			if (OH_MessageBox_Interactive(
-				"The Formula Editor has un-applied changes.\n"
-				"Really exit?", 
-				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
-			{
+				  "The Formula Editor has un-applied changes.\n"
+				  "Really exit?", 
+				  "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO) {
 				p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 				return;
 			}
 		}
-
-		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
-
-		m_formulaScintillaDlg->DestroyWindow();
-
-		if (bWasShown)
+    BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
+    m_formulaScintillaDlg->DestroyWindow();
+    if (bWasShown)
+    {
 			return;
+    }
 	}
-
-	m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
+  if (p_autoplayer->autoplayer_engaged()) {
+    // The menu item Edit->Formula is disabled,
+    // this is just an extra failsafe.
+    return;
+  }
+  m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
 	m_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
 	m_formulaScintillaDlg->ShowWindow(SW_SHOW);
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
@@ -731,13 +731,15 @@ void CMainFrame::OnPerlCheckSyntax()
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Menu updaters
 
-void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI) {
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+}
+
+void CMainFrame::OnUpdateMenuFileEdit(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 

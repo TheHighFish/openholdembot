@@ -16,39 +16,40 @@
 
 #include "MyCtoolbar.h"
 
-class CFlagsToolbar: public CWnd
-{
-public:
+class CFlagsToolbar: public CWnd {
+ public:
 	CFlagsToolbar(CFrameWnd *parent_window);
 	~CFlagsToolbar();
-public:
+ public:
 	bool GetFlag(const int i); 
 	int  GetFlagMax();
 	long int  GetFlagBits();
-public:
-	void SetFlag(int flag_number, bool new_value);
-	void DisableButtonsOnConnect();
-	void EnableButtonsOnDisconnect();
+  void SetFlag(int flag_number, bool new_value);
+ public:
+	void ResetButtonsOnConnect();
+	void ResetButtonsOnDisconnect();
+  void ResetButtonsOnAutoplayerOn();
+  void ResetButtonsOnAutoplayerOff();
 	void UnattachOHFromPokerWindow();
-public:
+ public:
 	void EnableButton(int button_ID, bool new_status);
 	void CheckButton(int button_ID, bool new_status);
 	bool IsButtonChecked(int button_ID);
 	bool IsButtonEnabled(int button_ID);
-public:
+ public:
 	CMyToolBar _tool_bar;
-public:
+ public:
 	afx_msg void OnClickedFlags();
 	DECLARE_MESSAGE_MAP()
-private:
+ private:
 	void CreateMainToolbar();
 	void CreateFlagsToolbar();
 	void AlignToolbars();
-private:
-	CMyToolBar	m_MainToolBar;
-	bool		_flags[k_number_of_flags];
-	CFrameWnd	*_parent_window;
-	CCritSec	m_critsec;
+ private:
+	CMyToolBar m_MainToolBar;
+	bool       _flags[k_number_of_flags];
+	CFrameWnd  *_parent_window;
+	CCritSec   m_critsec;
 };
 
 extern CFlagsToolbar *p_flags_toolbar;
