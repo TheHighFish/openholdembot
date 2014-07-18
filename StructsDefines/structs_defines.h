@@ -108,10 +108,10 @@ const CString k_tablemap_errors_and_parse_errors_explained[19] =
 #define	CARDSIZEY		52
 // Colors
 // (more color codes here: http://htmlhelp.com/cgi-bin/color.cgi)
-#define	COLOR_RED		RGB(255,0,0)
+#define	COLOR_RED		  RGB(255,0,0)
 #define	COLOR_BLACK		RGB(0,0,0)
 #define	COLOR_BLUE		RGB(0,0,255)
-#define	COLOR_GREEN		RGB(0,255,0)
+#define	COLOR_GREEN		RGB(0,128,0)
 #define	COLOR_WHITE		RGB(255,255,255)
 #define COLOR_LT_GRAY	RGB(212,208,200)
 #define COLOR_GRAY		RGB(182,182,182)

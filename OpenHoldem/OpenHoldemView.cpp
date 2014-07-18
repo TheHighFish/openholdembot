@@ -758,7 +758,7 @@ void COpenHoldemView::DrawCard(Card *card, const int left, const int top,
 {
 	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		rrect = {0}, srect = {0};
 	CFont		*oldfont = NULL, cFont;
 	CDC			*pDC = GetDC();
