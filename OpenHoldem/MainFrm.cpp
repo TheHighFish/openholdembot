@@ -300,6 +300,7 @@ void CMainFrame::OnEditTagLog()
 {
 	write_log(k_always_log_basic_information,
 		"[*** ATTENTION ***] User tagged this situation for review\n");
+  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_TAGLOGFILE, false);
 }
 
 // Menu -> Edit -> View Scraper Output
@@ -837,6 +838,7 @@ void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
 
 void CMainFrame::OnHelp()
 {
+  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_HELP, false);
 	OpenHelpFile("OpenHoldem_Manual.chm");
 }
 
