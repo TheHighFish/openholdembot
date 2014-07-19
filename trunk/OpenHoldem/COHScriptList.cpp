@@ -135,6 +135,18 @@ bool COHScriptList::Set(CString list_member) {
   return true;
 }
 
+int COHScriptList::NHandsOnList() {
+  int result = 0;
+  for (int i=2; i<=k_rank_ace; ++i) {
+    for (int j=2; j<=k_rank_ace; ++j) {
+      if (_handlist_matrix[i][j]) {
+        result++;
+      }
+    }
+  }
+  return result;
+}
+
 void COHScriptList::ErrorInvalidMember(CString list_member) {
   CString error_message;
   error_message.Format("Invalid list member %s\n"

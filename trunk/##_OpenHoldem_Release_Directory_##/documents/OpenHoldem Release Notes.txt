@@ -1,9 +1,13 @@
-v5.0.4 2014-07-xx
+v5.0.4 2014-07-19
 ==================
 BUG FIXES:
 - The GUI could crash because of an incorrect format-string
   for the text in "the white box".
   Thanks to Lavezzi for providing a replay-frame and tablemap.
+  [THF]
+- Some versus symbols (vs$listXYZ$prwin, ...) did temporary not work
+  after we had to re-implement the hand-lists for the new parser.
+  This work has now been completed.
   [THF]
 
 MAINTENANCE:

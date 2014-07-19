@@ -138,7 +138,8 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		for (int i=0; i<k_number_of_cards_per_player; i++) {	
 			// This condition got already checked: "playing"
       Card card = p_table_state->User()->_hole_cards[i];
-			assert(card.IsKnownCard()); 
+      // Assertion removeed, because the scraper runs in a different thread.
+			// assert(card.IsKnownCard()); 
 		  _status_plcards.Append(card.ToString());
       CardMask_SET(Cards, card.GetValue());
 			nCards++;

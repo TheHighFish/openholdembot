@@ -57,6 +57,9 @@ class COHScriptList: public COHScriptObject {
   // For Hand list editor: higher card first: suited, otherwise offsuited
   void Set(int first_rank, int second_rank);
   void Remove(int first_rank, int second_rank);
+ public:
+  int NHandsOnList();
+  bool IsEmpty()  { return (NHandsOnList() <= 0); }
  private:
   void ErrorInvalidMember(CString list_member); 
   void ErrorOldStyleFormat(CString list_member);
