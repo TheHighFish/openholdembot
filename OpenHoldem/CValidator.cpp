@@ -15,7 +15,7 @@
 #include "CValidator.h"
 
 #include "CAutoPlayer.h"
-#include "CDllExtension.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandRank.h"
@@ -130,9 +130,7 @@ void CValidator::ValidateSingleRule()
 //
 double CValidator::gws(const char *the_Symbol)
 {
-	bool is_Error;
-	double my_Chair = GetSymbolFromDll(0, "userchair", is_Error);
-	return GetSymbolFromDll(int(my_Chair), the_Symbol, is_Error);
+	return p_function_collection->Evaluate(the_Symbol);
 }
 
 // Constants for the validators range-checks
