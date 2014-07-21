@@ -1,3 +1,4 @@
+##OpenPPL_License_Text##
 //*****************************************************************************
 //
 // OpenPPL Library
@@ -112,30 +113,9 @@ RaiseMax
 ##Raise##
 -1000008
 
-##SitOut##
--1000009
+// Sitout and close no longer supported by OpenPPL 7.x
+// Because we have separate functions for that:
 
-##Close##
--1000010
-
-##Beep##
--1000011
-
-##Do_Not_PreFold##
-// Automatically added to the end of the prefold-section
-// for syntactical completeness.
--1000012
-
-##UndefinedReturnValue##
-// Every user-defined function ends with this return-value
-// mainly to ensure syntactical correctness
-// and to avoid undefined return values.
-// OpenHoldem would return 0, when a return-value was not specified,
-// but this might be meaningful in most contexts.
-//
-// To always be on the save site we use...
-// UndefinedReturnValue = Fold = -1
-Fold
 
 //*****************************************************************************
 //
