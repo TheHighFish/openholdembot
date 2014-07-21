@@ -130,7 +130,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 
 		// Read ohf file
         assert(p_formula_parser != NULL);
-		p_formula_parser->ParseFile(ar);
+		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
 
 		// Try to unload dll

@@ -31,6 +31,7 @@ class COHScriptObject {
   virtual double Evaluate(bool log = false);
  public:
   bool IsList()                 { return _name.Left(4) == "list"; }
+  bool IsOpenPPLSymbol()        { return isupper(_name[0]); }
   bool IsFunction()             { return _name.Left(2) == "f$"; }
   // Autoplayer, Secondary, Ini, PrWin
   bool IsStandardFunction();

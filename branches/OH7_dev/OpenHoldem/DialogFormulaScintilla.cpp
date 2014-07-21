@@ -1450,7 +1450,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   m_CalcResult.SetWindowText("");
   OnBnClickedApply();
   
-  if (!p_function_collection->CorrectlyParsed()) {
+  if (!p_function_collection->BotLogicCorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");
     s.Append("preventing calculation.\n");
     s.Append("These errors need to be corrected before the 'Calc'\n");
@@ -1480,7 +1480,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
     m_CalcResult.SetWindowText("");
     OnBnClickedApply();
 	  // Validate parse trees
-	  if (!p_function_collection->CorrectlyParsed()) {
+	  if (!p_function_collection->BotLogicCorrectlyParsed()) {
         CString s;
 	    s.Format("There are syntax errors in one or more formulas that are\n");
 	    s.Append("preventing calculation of this formula.\n");
@@ -1488,7 +1488,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
 	    s.Append("button can be used.");
 	    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
 	    // All we need to do is remove the Auto Check since the button text hasn't been
-        // updated yet and ok_to_update_debug has already been set to false
+      // updated yet and ok_to_update_debug has already been set to false
 	    m_ButtonAuto.SetCheck(0);
 	    return;
 	  }
@@ -1554,7 +1554,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   SaveSettingsToRegistry();
   CopyTabContentsToFormulaSet();
   p_function_collection->ParseAll();
-  if (!p_function_collection->CorrectlyParsed()) {
+  if (!p_function_collection->BotLogicCorrectlyParsed()) {
     if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
         "Would you still like to apply changes in the working set to the main set?\n\n"
         "Note that if you choose yes here, then the main formula set will \n"

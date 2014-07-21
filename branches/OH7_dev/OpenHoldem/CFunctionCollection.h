@@ -29,6 +29,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
+ public:
   // Mandatory reset-functions
   void InitOnStartup();
   void ResetOnConnection();
@@ -41,7 +42,9 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   //   * ResetOnHeartbeat() 
   //   * the formula editor for the working copy (f$debug and f$test)
   void ClearCache();
-public:
+ public:
+  // Deletes all user-defined functions
+  // Keeps OpenPPL-library if correctly parsed.
   void DeleteAll();
   void SetEmptyDefaultBot();
  public:
@@ -56,8 +59,12 @@ public:
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
  public:
   bool ParseAll();
-  bool CorrectlyParsed();
+  void SetOpenPPLLibraryLoadingState(bool is_good) { _openPPL_library_correctly_loaded = is_good; }
   void CheckForDefaultFormulaEntries();
+ public:
+  bool BotLogicCorrectlyParsed();
+  bool OpenPPLLibraryCorrectlyParsed()             { return _openPPL_library_correctly_loaded; }
+  bool IsOpenPPLProfile();
  public:
   // Simply call GetFirst() first, then GetNext()
   // Once you receive NULL the end has been reached
@@ -76,6 +83,7 @@ public:
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;
   CString _path;
+  bool _openPPL_library_correctly_loaded;
  private:
   std::map<CString, COHScriptObject*>::iterator enumerator_it;
   CCritSec m_critsec;

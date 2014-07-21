@@ -187,3 +187,7 @@ CString CFilenames::PureExecutableFilename() {
 CString CFilenames::VersusPath() {
   return (OpenHoldemDirectory() + "\\versus.bin");
 }
+
+CString CFilenames::OpenPPLLibraryPath() {
+  return (OpenHoldemDirectory() + "\\OpenPPL_Library.ohf");
+}

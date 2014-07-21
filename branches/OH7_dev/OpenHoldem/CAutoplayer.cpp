@@ -360,7 +360,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 
 	if (to_be_enabled_or_not) 
 	{
-		if (!p_function_collection->CorrectlyParsed())
+		if (!p_function_collection->BotLogicCorrectlyParsed())
 		{
 			__TRACE
 			// Invalid formula

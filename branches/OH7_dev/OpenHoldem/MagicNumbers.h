@@ -311,6 +311,14 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
   "f$icm_prize5",
 };
 
+const int k_max_length_of_OpenPPL_function_names = 7 + 1;
+const char k_OpenPPL_function_names[k_number_of_betrounds + 1][k_max_length_of_OpenPPL_function_names] = {
+  "",       // 0 unused
+  "preflop",
+  "flop",
+  "turn",
+  "river"
+};
 enum table_positioner_options
 {
 	k_position_tables_never,

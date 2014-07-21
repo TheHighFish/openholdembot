@@ -26,6 +26,7 @@ CFunctionCollection *p_function_collection = NULL;
 CFunctionCollection::CFunctionCollection(){
   _title = "";
   _path = "";
+  _openPPL_library_correctly_loaded = false;
   DeleteAll();
 }
 
@@ -35,7 +36,26 @@ CFunctionCollection::~CFunctionCollection()
 void CFunctionCollection::DeleteAll() {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
-  _function_map.clear();
+  if (_openPPL_library_correctly_loaded) {
+    // Delete only user-defined bot-logic
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Deleting user-defined functions functions, but not OpenPPL\n");
+    COHScriptObject *p_nextObject = GetFirst();
+    while (p_nextObject != NULL) {
+      if (!p_nextObject->IsOpenPPLSymbol()) {
+        write_log(preferences.debug_formula(), 
+          "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
+        Delete(p_nextObject->name());
+      }
+      p_nextObject = GetNext();
+    }
+  } else {
+    // Delete everything, including OpenPPL
+    // to prepare reloading
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Deleting all functions, including OpenPPL\n");
+    _function_map.clear();
+  }
 }
 
 void CFunctionCollection::Add(COHScriptObject *new_function) {
@@ -230,8 +250,10 @@ void CFunctionCollection::SaveObject(
     COHScriptObject *function_or_list) {
   CSLock lock(m_critsec);
   if (function_or_list == NULL) return;
+  // Don't save OpenPPL-symbols from the OpenPPL-library
+  // to user-defined bot-logic files
+  if (function_or_list->IsOpenPPLSymbol()) return;
   ar.WriteString(function_or_list->Serialize());
-  
 }
 
 bool CFunctionCollection::Rename(CString from_name, CString to_name) {
@@ -275,7 +297,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
   }
 }
 
-bool CFunctionCollection::CorrectlyParsed() {
+bool CFunctionCollection::BotLogicCorrectlyParsed() {
   return (!CParseErrors::AnyError());
 }
 
@@ -291,6 +313,16 @@ bool CFunctionCollection::ParseAll() {
     p_oh_script_object = GetNext();  
   }
   p_formula_parser->FinishParse();
+  return true;
+}
+
+bool CFunctionCollection::IsOpenPPLProfile() {
+  // A profile is OpenPPL if preflop, flop, turn, river are present
+  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+    if (!Exists(k_OpenPPL_function_names[i])) {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -316,8 +348,9 @@ void CFunctionCollection::ResetOnHeartbeat() {
 
 bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   CSLock lock(m_critsec);
-  if ((memcmp(name, "f$", 2) == 0) 
-      || (memcmp(name, "list", 4) == 0)) { 
+  if ((memcmp(name, "f$", 2) == 0)      // User-defined function
+      || (memcmp(name, "list", 4) == 0) // hand-list
+      || isupper(name[0])) {            // OpenPPL-symbol 
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
       // Function does not exist

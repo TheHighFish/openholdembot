@@ -14,11 +14,10 @@
 #ifndef INC_CAUTOPLAYER_FUNCTIONS
 #define INC_CAUTOPLAYER_FUNCTIONS
 
-class CAutoplayerFunctions
-{
-public:
+class CAutoplayerFunctions {
+ public:
 	CAutoplayerFunctions();
-public:
+ public:
 	void Reset();
 	void CalcPrimaryFormulas();
 	void CalcSecondaryFormulas();
@@ -26,9 +25,9 @@ public:
 #define ENT CSLock lock(m_critsec);
 	void SetAutoplayerFunction(const int function_to_bn_set, const double new_value);
 #undef ENT
-public:
+ public:
 	double autoplayer_function_values(int autoplayer_function_code)	{ return _autoplayer_functionvalues[autoplayer_function_code]; }
-public:
+ public:
 	double	f$alli()	{ return _autoplayer_functionvalues[k_autoplayer_function_allin]; }
 	double	f$betsize()	{ return _autoplayer_functionvalues[k_autoplayer_function_betsize]; }
 	double	f$rais()	{ return _autoplayer_functionvalues[k_autoplayer_function_raise]; }
@@ -44,7 +43,13 @@ public:
 	double	f$rebuy()	{ return _autoplayer_functionvalues[k_standard_function_rebuy]; }
 	double	f$delay()	{ return _autoplayer_functionvalues[k_standard_function_delay]; }
 	double	f$chat()	{ return _autoplayer_functionvalues[k_standard_function_chat]; }
-private:
+ private:
+   void CalcPrimaryFormulasOHScript();
+   void CalcPrimaryFormulasOpenPPL();
+   void TranslateOpenPPLDecisionToAutoplayerFunctions(double decision);
+   bool IsPercentagePotsizeBet(double decision);
+   double BetSizeForPercentagedPotsizeBet(double decision);
+ private:
 	double _autoplayer_functionvalues[k_number_of_standard_functions];
 	CCritSec	m_critsec;
 };

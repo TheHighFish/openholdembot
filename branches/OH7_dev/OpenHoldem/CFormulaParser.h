@@ -32,12 +32,19 @@ class CFormulaParser {
   void InitNewParse();
   void FinishParse();
  public:
-  void ParseFile(CArchive & formula_file);
+  // This function will
+  // * load the OpenPPL-library, if needed and posisble
+  // * then load the formula file with user-defined bot-logic
+  void ParseFormulaFileWithUserDefinedBotLogic(CArchive & formula_file);
+ public:
   void ParseSingleFormula(CString name, CString function_text);
   void ParseSingleFormula(CString function_text);
  public:
   static CString CurrentFunctionName();
   bool IsParsing()	{ return _is_parsing; }
+ private:
+  void ParseFile(CArchive & formula_file);
+  void ParseOpenPPLLibraryIfNeeded();
  private:
   bool VerifyFunctionHeader(CString function_header);
   void ExpectMatchingBracketClose(int opening_bracket);

@@ -15,7 +15,9 @@
 #include "CFormulaParser.h"
 
 #include <assert.h>
+#include <io.h>
 #include "CDebugTab.h"
+#include "CFilenames.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "COHScriptList.h"
@@ -57,6 +59,38 @@ void CFormulaParser::FinishParse() {
   _is_parsing = false;
 }
 
+void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
+  write_log(preferences.debug_parser(),
+    "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
+  ParseOpenPPLLibraryIfNeeded();
+  ParseFile(formula_file);
+}
+
+void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
+  //
+  assert(p_function_collection != NULL);
+  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+    write_log(preferences.debug_parser(), 
+	    "[FormulaParser] OpenPPL-library already correctly loaded. Nothing to do.\n");
+    return;
+  }
+  assert(p_filenames != NULL);
+  CString openPPL_path = p_filenames->OpenPPLLibraryPath();
+  if (_access(openPPL_path, F_OK) != 0) {
+    write_log(preferences.debug_parser(), 
+	    "[FormulaParser] Can not load OpenPPL-library. File not found.\n");
+    p_function_collection->SetOpenPPLLibraryLoadingState(false);
+    return;
+  }
+  CFile openPPL_file(openPPL_path, 
+    CFile::modeRead | CFile::shareDenyWrite);
+  write_log(preferences.debug_parser(), 
+	    "[FormulaParser] Going to load OpenPPL-library\n");
+  CArchive openPPL_archive(&openPPL_file, CArchive::load); 
+  ParseFile(openPPL_archive);
+  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError());
+}
+ 
 void CFormulaParser::ParseFile(CArchive& formula_file) {
   InitNewParse();
   p_function_collection->DeleteAll();
@@ -205,8 +239,10 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   TPParseTreeNode function_body = NULL;
-  if (_function_name.Left(2) == "f$") {                                                                                                              if (memcmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (memcmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+  if ((_function_name.Left(2) == "f$") // f$-user-defined function
+    || isupper(_function_name[0])) {    // OpenPPL-symbol                                                                                                            if (memcmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (memcmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
     // ##f$functionXYZ##
+    // ##OpenPPL##
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Parsing f$function\n");
     function_body =	ParseFunctionBody();
