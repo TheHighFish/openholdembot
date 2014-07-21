@@ -1,3 +1,10 @@
+v5.0.5 2014-07-xx
+==================
+- The Preferences dialog for debug-options was messed up,
+  because the new option for versus used one wrong constant.
+  Thanks to Lavezzi for reporting.
+  [THF]
+
 v5.0.4 2014-07-19
 ==================
 BUG FIXES:
