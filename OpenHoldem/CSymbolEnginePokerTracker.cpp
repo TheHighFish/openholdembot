@@ -158,6 +158,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
+      write_log(preferences.debug_pokertracker(), "[PokerTracker] Not yet seated or formula parsing.\n");
 		}
 		else
 		{
