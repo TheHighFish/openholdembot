@@ -145,15 +145,15 @@ void CSymbolEngineCards::CalcPocketTests()
 	}
 
   if (p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()
-			== p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()) {
+			== p_table_state->User()->_hole_cards[1].GetOpenHoldemRank()) {
 		_ispair = true;															
 	}
 	if (p_table_state->User()->_hole_cards[0].GetSuit()
-			== p_table_state->User()->_hole_cards[0].GetSuit())	{
+			== p_table_state->User()->_hole_cards[1].GetSuit())	{
 		_issuited = true;														
 	}
 	if (abs((p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()
-			- p_table_state->User()->_hole_cards[0].GetOpenHoldemRank())) == 1)	{
+			- p_table_state->User()->_hole_cards[1].GetOpenHoldemRank())) == 1)	{
 		_isconnector = true;														
 	}
 }
