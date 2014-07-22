@@ -339,8 +339,12 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 }
 
 CString CSymbolEngineChipAmounts::SymbolsProvided() {
-  return "pot potcommon potplayer "
+  CString list = "pot potcommon potplayer "
     "balance balanceatstartofsession maxbalance "
-    "stack currentbet call nbetstocall nbetstorais "
+    "currentbet call nbetstocall nbetstorais "
     "ncurrentbets ncallbets nraisbets ";
+  list += RangeOfSymbols("balance%i", k_first_chair, k_last_chair);
+  list += RangeOfSymbols("currentbet%i", k_first_chair, k_last_chair);
+  list += RangeOfSymbols("stack%i", k_first_chair, k_last_chair);
+  return list;
 }
