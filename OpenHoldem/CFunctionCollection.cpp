@@ -85,13 +85,16 @@ double CFunctionCollection::Evaluate(CString function_name, bool log /* = false 
 
 CString CFunctionCollection::DLLPath() {
   CSLock lock(m_critsec);
+  // First try upper-cases
   COHScriptObject *dll_node = LookUp("DLL");
+  if (dll_node == NULL) {
+    // If not found try lower-cases
+    dll_node = LookUp("dll");
+  }
   if (dll_node == NULL) {
 	  return "";
   }
   CString dll_path = dll_node->function_text();
-  // Remove "##DLL##"
-  dll_path.Delete(0, 7);
   dll_path.Trim();
   return dll_path;
 }

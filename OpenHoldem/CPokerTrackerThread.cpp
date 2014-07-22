@@ -317,12 +317,14 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 {
 	char		likename[k_max_length_of_playername];
-	memset(likename, 0, k_max_length_of_playername);
+  // Attention: likename is 2 times as large as a player-name,
+  // plus 2 for % at the beginning and \0 at the end.
+  // !!! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
+	memset(likename, 0, 2 * k_max_length_of_playername + 2);
 	
 	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
 
-	if (!result)
-	{
+	if (!result) {
 		likename[0]='%';
 		int character_position = 0;
 		for (int character_position=0; character_position<(int) strlen(oh_scraped_name); character_position++)

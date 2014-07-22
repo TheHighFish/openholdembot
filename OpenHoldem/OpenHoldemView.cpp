@@ -30,8 +30,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "CHeartbeatThread.h"
-#include "CPreferences.h"
+#include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
@@ -194,13 +193,13 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	bool		update_it = false;
 	CDC			*pDC = GetDC();
 
-	CString		sym_handnumber = p_handreset_detector->GetHandNumber();
-	double		sym_bblind = p_symbol_engine_tablelimits->bblind();
-	double		sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double		sym_ante = p_symbol_engine_tablelimits->ante();
-	int			sym_lim = p_symbol_engine_tablelimits->gametype();
-	bool		sym_istournament = p_symbol_engine_istournament->istournament();
-	double		sym_pot = p_symbol_engine_chip_amounts->pot();
+	CString sym_handnumber = p_handreset_detector->GetHandNumber();
+	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
+	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
+	double  sym_ante = p_symbol_engine_tablelimits->ante();
+	int     sym_lim = p_symbol_engine_tablelimits->gametype();
+	bool    sym_istournament = p_symbol_engine_istournament->istournament();
+	double  sym_pot = p_symbol_engine_chip_amounts->pot();
 
 	// Get size of current client window
 	GetClientRect(&_client_rect);
@@ -252,9 +251,12 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		update_it = true;
 	}
 
-	if (preferences.log_symbol_enabled() || update_it || update_all) 
+  if ((ismyturn) || update_it || update_all) 
 	{
-		DrawCenterInfoBox();
+		assert(p_white_info_box != NULL);
+    p_white_info_box->Draw(_client_rect, _logfont, pDC,
+      &_black_pen, &_white_brush);
+    ReleaseDC(pDC);
 	}
 
 	// Draw button state indicators
@@ -347,119 +349,6 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
-}
-
-CString COpenHoldemView::InfoTextForWhiteBox() {
-  double sym_bblind		= p_symbol_engine_tablelimits->bblind();
-	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
-	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				  = p_symbol_engine_tablelimits->gametype();
-	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-  CString result, s;
-	// handnumber
-	if (sym_handnumber != "") {
-		s.Format("  Hand #: %s\n", sym_handnumber);
-	}	else 	{
-		s.Format("  Hand #: -\n");
-	}
-	result.Append(s);
-
-  // blinds, game-type
-	CString format_string;
-  if (IsInteger(sym_sblind) && IsInteger(sym_bblind)) {
-    // Display as integer numbers
-		format_string = "  %s %.0f/%.0f/%.0f\n";
-  }
-  else {
-		// Fractional nunbers: use 2.00 digits  
-		format_string = "  %s %.2f/%.2f/%.2f\n";
-	}
-	s.Format(format_string,
-		p_symbol_engine_tablelimits->GetGametypeAsString(),
-		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
-	result.Append(s);
-
-	// ante
-	if (sym_ante != 0) {
-		s.Format("  Ante: %s\n", Number2CString(sym_ante));
-		result.Append(s);
-	}
-
-	// Pot
-	s.Format("  Pot: %s\n", Number2CString(sym_pot));
-	result.Append(s);
-
-  // logged symbols
-	if (preferences.log_symbol_enabled() 
-		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->User()->HasKnownCards()) {
-      result.Append(p_autoplayer_trace->LogSymbolsForGUI());
-	}
-  return result;
-}
-
-void COpenHoldemView::DrawCenterInfoBox(void) 
-{
-	__TRACE
-	CPen		*pTempPen = NULL, oldpen;
-	CBrush	*pTempBrush = NULL, oldbrush;
-	RECT		rect = {0};
-	CFont		*oldfont = NULL, cFont;
-	int			left = 0, top = 0, right = 0, bottom = 0;
-	CDC			*pDC = GetDC();
-		
-	bool sym_playing		= p_table_state->User()->HasKnownCards();
-	// "White box" in the OpenHoldem-GUI with basic important info
-	const int k_basic_height = 2;				// pixels
-	const int k_extra_height_per_line = 16;	// pixels
-	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
-	int height = k_basic_height 
-		+ k_extra_height_per_line * k_number_of_default_lines;
-	if (preferences.log_symbol_enabled())
-	{
-		// Extra lines for symbol-logging
-		height += k_extra_height_per_line * preferences.log_symbol_max_log();
-	}
-
-	// Figure placement of box
-	left = _client_rect.right/2-70;
-	top = 4;
-	right = _client_rect.right/2+70;
-	bottom = top+height;
-
-	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-	pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-	pDC->SetBkMode(OPAQUE);
-	pDC->Rectangle(left, top, right, bottom);
-
-	// Set font basics
-	_logfont.lfHeight = -12;
-	_logfont.lfWeight = FW_NORMAL;
-	cFont.CreateFontIndirect(&_logfont);
-	oldfont = pDC->SelectObject(&cFont);
-	pDC->SetTextColor(COLOR_BLACK);
-
-	// Set rectangle
-	rect.left = left;
-	rect.top = top;
-	rect.right = right;
-	rect.bottom = bottom;
-
-  CString info_txt = InfoTextForWhiteBox();
-	// Draw it
-	pDC->SetBkMode(TRANSPARENT);
-	pDC->DrawText(info_txt.GetString(), info_txt.GetLength(), &rect, NULL);
-
-	// Restore original pen, brush and font
-	pDC->SelectObject(oldpen);
-	pDC->SelectObject(oldbrush);
-	pDC->SelectObject(oldfont);
-	cFont.DeleteObject();
-	ReleaseDC(pDC);
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) 

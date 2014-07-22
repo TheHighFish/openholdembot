@@ -157,10 +157,6 @@ void CAutoplayerTrace::Print(const char *action_taken) {
 }
 
 void CAutoplayerTrace::LogLogSymbols() {
-  // Logging of log$symbols
-  if (!preferences.log_symbol_enabled()) {
-    return;
-  }
   int max_log = _logsymbols_collection.GetCount();
   if (max_log <= 0) {
     return;
@@ -282,8 +278,8 @@ void CAutoplayerTrace::LogAutoPlayerTrace()
 CString CAutoplayerTrace::LogSymbolsForGUI() {
   CString temp, result;
   for (int i=0; i<min(5, _logsymbols_collection.GetCount()); i++) {
-	temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
-	result.Append(temp);
+	  temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
+	  result.Append(temp);
   }
   return result;
 }
