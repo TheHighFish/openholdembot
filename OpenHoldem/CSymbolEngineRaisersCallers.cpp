@@ -402,7 +402,11 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 }
 
 CString CSymbolEngineRaisersCallers::SymbolsProvided() {
-  return "nopponentschecking nopponentscalling nopponentsraising "
+  CString list = "nopponentschecking nopponentscalling nopponentsraising "
     "nopponentstruelyraising nopponentsbetting nopponentsfolded "
-    "nplayerscallshort raischair raisbits callbits foldbits ";
+    "nplayerscallshort raischair ";
+  list += RangeOfSymbols("raisbits%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("callbits%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("foldbits%i", k_betround_flop, k_betround_river);
+  return list;
 }

@@ -766,5 +766,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 }
 
 CString CSymbolEngineTableLimits::SymbolsProvided() {
-  return "isnl ispl isfl lim bet bblind sblind ante ";
+  CString list = "isnl ispl isfl lim bet bblind sblind ante ";
+  list += RangeOfSymbols("bet%i", k_betround_preflop, k_betround_river);
+  return list;
 }
