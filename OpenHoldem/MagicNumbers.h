@@ -527,6 +527,7 @@ const bool k_ThisMustNotHappen = false;
 // For loggong
 const bool k_always_log_errors = true;
 const bool k_always_log_basic_information = true;
+const int  kMaxLogSymbolsForWhiteBox = 3;
 
 // Statusbar
 static UINT basic_statusba_indicators[] =

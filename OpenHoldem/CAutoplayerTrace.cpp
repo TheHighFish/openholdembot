@@ -161,8 +161,8 @@ void CAutoplayerTrace::LogLogSymbols() {
   if (max_log <= 0) {
     return;
   }
-  if (max_log > preferences.log_symbol_max_log()) {
-    max_log = preferences.log_symbol_max_log();
+  if (max_log > kMaxLogSymbolsForWhiteBox) {
+    max_log = kMaxLogSymbolsForWhiteBox;
   }
   write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", 
     _logsymbols_collection.GetCount(), max_log);
