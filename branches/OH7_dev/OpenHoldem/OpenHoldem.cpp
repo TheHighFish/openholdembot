@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // OpenHoldem.cpp : Defines the class behaviors for the application.
 //
@@ -257,6 +257,7 @@ void COpenHoldemApp::FinishInitialization()
   p_heartbeat_thread->StartThread();
   // Iterator thread
   p_iterator_thread = new CIteratorThread();
+  assert(p_iterator_thread != NULL);
 
     // autoconnect on start, if preferred
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");

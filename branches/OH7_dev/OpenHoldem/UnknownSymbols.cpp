@@ -1,17 +1,17 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Warning about unknown (erroneaous) and outdated symbols
 //   Is not able to care about wrong function names; this has to be handled
 //   by CFormula::WarnAboutOutdatedConcepts().
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "UnknownSymbols.h"
@@ -96,6 +96,11 @@ char *outdated_symbols_lists =
   "  * isemptylistalli\n"
   "  * nlistmax\n"
   "  * nlistmin\n";
+
+char *outdated_symbol_nopponents =
+  "The symbol \"nopponents\" got removed from the code-base,\n"
+  "because it just contained the value of former f$P\n"
+  "now f$prwin_number_of_opponents.";
 
 char *outdated_symbols_islist_symbols =
   "The restriction to 1000 handlists got removed in OH 5.0\n"
@@ -266,6 +271,10 @@ bool IsOutdatedSymbol(CString symbol) {
       if ((symbol == "nlistmax") || (symbol == "nlistmin")) {
 	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
 	      return true;
+      }
+      if (symbol == "nopponents") {
+        OH_MessageBox_Formula_Error(outdated_symbol_nopponents, title_outdated_symbol);
+        return true;
       }
       if (symbol == "nopponentsmax") {
 	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);

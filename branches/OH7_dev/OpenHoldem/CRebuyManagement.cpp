@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include <atlstr.h>
@@ -87,7 +87,7 @@ bool CRebuyManagement::NoCards()
 		// If all goes wrong, the rebuy-script has to handle that case.
 		return true;
 	}
-	if (p_table_state->_players[UserChair].HasKnownCards())
+	if (p_table_state->User()->HasKnownCards())
 	{
 		return true;
 	}
@@ -164,7 +164,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	double BigBlind = p_symbol_engine_tablelimits->bblind();
 	double BigBet = p_symbol_engine_tablelimits->bigbet();
 	int UserChair = p_symbol_engine_userchair->userchair();
-	double Balance = p_symbol_engine_chip_amounts->balance(UserChair);
+	double Balance = p_table_state->User()->_balance;
 	double TargetAmount = p_autoplayer_functions->f$rebuy();
 	CString RebuyScript = preferences.rebuy_script();
 	CString CommandLine;

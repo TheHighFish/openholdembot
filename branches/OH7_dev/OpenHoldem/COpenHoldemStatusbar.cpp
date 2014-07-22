@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CopenHoldemStatusbar.h"
@@ -19,7 +19,6 @@
 #include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -135,11 +134,12 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	int nCards = 0;
 	_status_plcards = "";
 	 
-  if (p_table_state->_players[userchair].HasKnownCards()) {
+  if (p_table_state->User()->HasKnownCards()) {
 		for (int i=0; i<k_number_of_cards_per_player; i++) {	
 			// This condition got already checked: "playing"
-      Card card = p_table_state->_players[userchair].hole_cards[i];
-			assert(card.IsKnownCard()); 
+      Card card = p_table_state->User()->_hole_cards[i];
+      // Assertion removeed, because the scraper runs in a different thread.
+			// assert(card.IsKnownCard()); 
 		  _status_plcards.Append(card.ToString());
       CardMask_SET(Cards, card.GetValue());
 			nCards++;
@@ -147,9 +147,9 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
 	}	else 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) {
-			if (p_table_state->_players[USER_CHAIR].HasKnownCards())
+			if (p_table_state->User()->HasKnownCards())
 			{
-				Card card = p_table_state->_players[userchair].hole_cards[i];
+				Card card = p_table_state->User()->_hole_cards[i];
 				_status_plcards.Append(card.ToString());
         CardMask_SET(Cards, card.GetValue());
 				nCards++;
@@ -184,16 +184,16 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 
 	// Always update prwin/nit
 	if (p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->_players[USER_CHAIR].HasKnownCards())
+		&& p_table_state->User()->HasKnownCards())
 	{
 		_status_prwin.Format("%d/%d/%d", 
-			(int) (iter_vars.prwin()*1000), 
-			(int) (iter_vars.prtie()*1000),
-			(int) (iter_vars.prlos()*1000));
+			(int) (p_iterator_thread->prwin()*1000), 
+			(int) (p_iterator_thread->prtie()*1000),
+			(int) (p_iterator_thread->prlos()*1000));
 		double iterations;
 		p_engine_container->EvaluateSymbol("f$prwin_number_of_iterations", &iterations);
 		_status_nit.Format("%d/%s", 
-			iter_vars.iterator_thread_progress(),
+			p_iterator_thread->IteratorThreadProgress(),
 			Number2CString(iterations));
 	}
 	else
@@ -208,7 +208,8 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 	{
 		_status_action = "Pre-fold";
 	}
-	else if (p_symbol_engine_userchair->userchair_confirmed() && iter_vars.iterator_thread_complete())
+	else if (p_symbol_engine_userchair->userchair_confirmed() 
+    && p_iterator_thread->IteratorThreadComplete())
 	{
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
       _status_action = "N/A";

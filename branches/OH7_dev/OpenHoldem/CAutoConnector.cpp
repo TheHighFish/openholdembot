@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CAutoConnector.h"
@@ -23,7 +23,6 @@
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
-#include "CIteratorVars.h"
 #include "CIteratorThread.h"
 #include "COpenHoldemTitle.h"
 #include "CPokerTrackerThread.h"
@@ -296,7 +295,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			}
 
 			LoadScraperDLL();
-			p_flags_toolbar->DisableButtonsOnConnect();
+			p_flags_toolbar->ResetButtonsOnConnect();
 
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message)
@@ -387,7 +386,7 @@ void CAutoConnector::Disconnect()
 	// Stop timer that checks for valid hwnd, then unattach OH.
 	PMainframe()->KillTimer();
 	p_flags_toolbar->UnattachOHFromPokerWindow();
-	p_flags_toolbar->EnableButtonsOnDisconnect();
+	p_flags_toolbar->ResetButtonsOnDisconnect();
 
 	// Mark table as not attached
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");

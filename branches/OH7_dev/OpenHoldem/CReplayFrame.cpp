@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "StdAfx.h"
 #include "CReplayFrame.h"
@@ -237,17 +237,17 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 		player_info += text;  
 		// Cards
 		text.Format("      <td>%s%s</td>\n",
-      GetCardHtml(p_table_state->_players[i].hole_cards[0].GetValue()),
-      GetCardHtml(p_table_state->_players[i].hole_cards[1].GetValue()));
+      GetCardHtml(p_table_state->_players[i]._hole_cards[0].GetValue()),
+      GetCardHtml(p_table_state->_players[i]._hole_cards[1].GetValue()));
 		player_info += text;  
 		// Bet
 		text.Format("      <td>%11.2f</td>\n", p_scraper->player_bet(i));
 		player_info += text; 
 		// Balance
-		text.Format("      <td>%11.2f</td>\n", p_scraper->player_balance(i));
+		text.Format("      <td>%11.2f</td>\n", p_table_state->_players[i]._balance);
 		player_info += text;  
 		// Name
-		text.Format("      <td>%-15s</td>\n", p_scraper->player_name(i).GetString());
+		text.Format("      <td>%-15s</td>\n", p_table_state->_players[i]._name.GetString());
 		player_info += text;
 		player_info += "    </tr>\n";
 	}

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePrwin.h"
@@ -18,7 +18,6 @@
 #include <math.h>
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolenginePokerval.h"
@@ -46,7 +45,7 @@ void CSymbolEnginePrwin::InitOnStartup()
 
 void CSymbolEnginePrwin::ResetOnConnection()
 {
-	iter_vars.ResetVars();
+	//!!!!!iter_vars.ResetVars();
 	ResetOnHandreset();
 }
 
@@ -69,6 +68,7 @@ void CSymbolEnginePrwin::ResetOnMyTurn()
 	__TRACE
 	CalculateNOpponents();
 	__TRACE
+  assert(p_iterator_thread != NULL);
 	p_iterator_thread->StartPrWinComputationsIfNeeded();
 	__TRACE
 	CalculateNhands();
@@ -77,11 +77,6 @@ void CSymbolEnginePrwin::ResetOnMyTurn()
 
 void CSymbolEnginePrwin::ResetOnHeartbeat()
 {
-	// Taken from heartbeat-thread:
-	// If we've folded, stop iterator thread and set prwin/tie/los to zero
-	if (p_table_state->_players[USER_CHAIR].HasKnownCards()) return;
-  if (p_iterator_thread == NULL) return;
-	p_iterator_thread->PausePrWinComputations();
 }
 
 void CSymbolEnginePrwin::CalculateNhands() {
@@ -99,7 +94,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	CardMask_RESET(plCards);
 	nplCards = 0;
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
-    Card card = p_table_state->_players[USER_CHAIR].hole_cards[i];
+    Card card = p_table_state->User()->_hole_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(plCards, card.GetValue());
 			nplCards++;
@@ -189,27 +184,30 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 	__TRACE
 }
 
-bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
-{
+bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "pr", 2)==0)
-	{
-		if (memcmp(name, "prwinnow", 8)==0 && strlen(name)==8)
-		{
+	if (memcmp(name, "pr", 2)==0) {
+    if (memcmp(name, "prwin", 5)==0 && strlen(name)==5) {
+      *result = p_iterator_thread->prwin();
+    } 
+    else if (memcmp(name, "prlos", 5)==0 && strlen(name)==5) {
+      *result = p_iterator_thread->prlos();
+    }
+    else if (memcmp(name, "prtie", 5)==0 && strlen(name)==5) {
+      *result = p_iterator_thread->prtie();
+    }
+		else if (memcmp(name, "prwinnow", 8)==0 && strlen(name)==8) {
 			*result = prwinnow();
 		}
-		else if (memcmp(name, "prlosnow", 8)==0 && strlen(name)==8)
-		{
+		else if (memcmp(name, "prlosnow", 8)==0 && strlen(name)==8)	{
 			*result = prlosnow();
 		}
-		else
-		{
-			// Invalid symbol
-			return false;
-		}
-		// Valid symbol
-		return true;
-	}
+    else {
+      return false;
+    }
+    // Valid symbol
+    return true;
+  }
 	else if (memcmp(name, "nhands", 6)==0)
 	{
 		if (memcmp(name, "nhands", 6)==0 && strlen(name)==6)	
@@ -236,18 +234,12 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool l
 		// Valid symbol
 		return true;
 	}
-	else if (memcmp(name, "nopponents", 10)==0 && strlen(name)==10)	
-	{
-		*result = nopponents_for_prwin();
-		// Valid symbol
-		return true;
-	}
 	// Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEnginePrwin::SymbolsProvided() {
   return "prwinnow prlosnow ";
-    "nhands nhandshi nhandslo nhandsti "
-    "nopponents ";
+    "prwin prlos prtie "
+    "nhands nhandshi nhandslo nhandsti ";
 }

@@ -118,10 +118,6 @@
 			<param name="Local" value="Chapters\Debugging_Your_Code.html.LyXconv\Debugging_Your_Code.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Optimizing your Bot">
-			<param name="Local" value="Chapters\Optimizing_OHF.html.LyXconv\Optimizing_OHF.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="OpenPPL_In_Practice">
 			<param name="Local" value="Chapters\OpenPPL_In_Practice.html.LyXconv\OpenPPL_In_Practice.html">
 			<param name="URL" value="Chapters\OpenPPL_In_Practise.html.LyXconv\OpenPPL_In_Practise.html">

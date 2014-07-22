@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // OpenHoldemView.cpp : implementation of the COpenHoldemView class
 //
@@ -30,8 +30,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "CHeartbeatThread.h"
-#include "CPreferences.h"
+#include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
@@ -194,13 +193,13 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	bool		update_it = false;
 	CDC			*pDC = GetDC();
 
-	CString		sym_handnumber = p_handreset_detector->GetHandNumber();
-	double		sym_bblind = p_symbol_engine_tablelimits->bblind();
-	double		sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double		sym_ante = p_symbol_engine_tablelimits->ante();
-	int			sym_lim = p_symbol_engine_tablelimits->gametype();
-	bool		sym_istournament = p_symbol_engine_istournament->istournament();
-	double		sym_pot = p_symbol_engine_chip_amounts->pot();
+	CString sym_handnumber = p_handreset_detector->GetHandNumber();
+	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
+	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
+	double  sym_ante = p_symbol_engine_tablelimits->ante();
+	int     sym_lim = p_symbol_engine_tablelimits->gametype();
+	bool    sym_istournament = p_symbol_engine_istournament->istournament();
+	double  sym_pot = p_symbol_engine_chip_amounts->pot();
 
 	// Get size of current client window
 	GetClientRect(&_client_rect);
@@ -252,9 +251,12 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 		update_it = true;
 	}
 
-	if (preferences.log_symbol_enabled() || update_it || update_all) 
+  if ((ismyturn) || update_it || update_all) 
 	{
-		DrawCenterInfoBox();
+		assert(p_white_info_box != NULL);
+    p_white_info_box->Draw(_client_rect, _logfont, pDC,
+      &_black_pen, &_white_brush);
+    ReleaseDC(pDC);
 	}
 
 	// Draw button state indicators
@@ -263,15 +265,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	// Draw common cards
 	for (int i=0; i<k_number_of_community_cards; i++) 
 	{
-    int card_common_i_th = p_table_state->_common_cards[i].GetValue();
-		if (_card_common_last[i] != card_common_i_th || update_all) 
+    Card *p_card = &p_table_state->_common_cards[i];
+    int card_value = p_table_state->_common_cards[i].GetValue();
+		if (_card_common_last[i] != card_value || update_all) 
 		{
-			_card_common_last[i] = card_common_i_th;
-			int common_card = card_common_i_th;
-			
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%i]\n",
-				i, common_card);
-			DrawCard(common_card,
+			_card_common_last[i] = card_value;
+			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
+        i, p_card->ToString());
+			DrawCard(p_card,
 					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
 					  _client_rect.right/2 + cc[i][0] + CARDSIZEX, _client_rect.bottom/2 + cc[i][1] + CARDSIZEY,
 					  false);
@@ -291,10 +292,10 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			_active_last[i] = p_scraper->active(i);
 			update_it = true;
 		}
-    if (_card_player_last[i][0] != p_table_state->_players[i].hole_cards[0].GetValue()
-        || _card_player_last[i][1] != p_table_state->_players[i].hole_cards[1].GetValue()) 		{
-			_card_player_last[i][0] = p_table_state->_players[i].hole_cards[0].GetValue();
-			_card_player_last[i][1] = p_table_state->_players[i].hole_cards[1].GetValue();
+    if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
+        || _card_player_last[i][1] != p_table_state->_players[i]._hole_cards[1].GetValue()) 		{
+			_card_player_last[i][0] = p_table_state->_players[i]._hole_cards[0].GetValue();
+			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
 			update_it = true;
 		}
 		if (_dealer_last[i] != p_scraper->dealer(i)) 
@@ -302,14 +303,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 			_dealer_last[i] = p_scraper->dealer(i);
 			update_it = true;
 		}
-		if (_playername_last[i] != p_scraper->player_name(i)) 
+		if (_playername_last[i] != p_table_state->_players[i]._name) 
 		{
-			_playername_last[i] = p_scraper->player_name(i);
+			_playername_last[i] = p_table_state->_players[i]._name;
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_scraper->player_balance(i)) 
+		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) 
 		{
-			_playerbalance_last[i] = p_scraper->player_balance(i);
+			_playerbalance_last[i] = p_table_state->_players[i]._balance;
 			update_it = true;
 		}
 		if (_playerbet_last[i] != p_scraper->player_bet(i)) 
@@ -348,122 +349,6 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
-}
-
-void COpenHoldemView::DrawCenterInfoBox(void) 
-{
-	__TRACE
-	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
-	RECT		rect = {0};
-	CString		t = "", s = "";
-	CFont		*oldfont = NULL, cFont;
-	int			left = 0, top = 0, right = 0, bottom = 0;
-	CDC			*pDC = GetDC();
-		
-	double sym_bblind		= p_symbol_engine_tablelimits->bblind();
-	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
-	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				= p_symbol_engine_tablelimits->gametype();
-	CString sym_handnumber	= p_handreset_detector->GetHandNumber();
-	double sym_pot			= p_symbol_engine_chip_amounts->pot();
-	bool sym_playing		= p_table_state->_players[USER_CHAIR].HasKnownCards();
-
-	// "White box" in the OpenHoldem-GUI with basic important info
-	const int k_basic_height = 2;				// pixels
-	const int k_extra_height_per_line = 16;	// pixels
-	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
-	int height = k_basic_height 
-		+ k_extra_height_per_line * k_number_of_default_lines;
-	if (preferences.log_symbol_enabled())
-	{
-		// Extra lines for symbol-logging
-		height += k_extra_height_per_line * preferences.log_symbol_max_log();
-	}
-
-	// Figure placement of box
-	left = _client_rect.right/2-70;
-	top = 4;
-	right = _client_rect.right/2+70;
-	bottom = top+height;
-
-	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-	pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-	pDC->SetBkMode(OPAQUE);
-	pDC->Rectangle(left, top, right, bottom);
-
-	// Set font basics
-	_logfont.lfHeight = -12;
-	_logfont.lfWeight = FW_NORMAL;
-	cFont.CreateFontIndirect(&_logfont);
-	oldfont = pDC->SelectObject(&cFont);
-	pDC->SetTextColor(COLOR_BLACK);
-
-	// Set rectangle
-	rect.left = left;
-	rect.top = top;
-	rect.right = right;
-	rect.bottom = bottom;
-
-	t = "";
-	// handnumber
-	if (sym_handnumber != "") 
-	{
-		s.Format("  Hand #: %s\n", sym_handnumber);
-	}
-	else 
-	{
-		s.Format("  Hand #: -\n");
-	}
-	t.Append(s);
-
-	CString format_string;
-	// blinds/type
-	if ((int) sym_sblind != sym_sblind || (int) sym_bblind != sym_bblind) 
-	{
-		// Fractional nunbers: use 2.00 digits  
-		format_string = "  %s%s %.2f/%.2f/%.2f\n";
-	}
-	else
-	{
-		// Display as integer numbers
-		format_string = "  %s %.0f/%.0f/%.0f\n";
-	}
-	s.Format(format_string,
-		p_symbol_engine_tablelimits->GetGametypeAsString(),
-		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
-	t.Append(s);
-
-	// ante
-	if (sym_ante != 0) 
-	{
-		s.Format("  Ante: %s\n", Number2CString(sym_ante));
-		t.Append(s);
-	}
-
-	// Pot
-	s.Format("  Pot: %s\n", Number2CString(sym_pot));
-	t.Append(s);
-
-	if (preferences.log_symbol_enabled() 
-		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->_players[USER_CHAIR].HasKnownCards()) {
-      t.Append(p_autoplayer_trace->LogSymbolsForGUI());
-	}
-
-	// Draw it
-	pDC->SetBkMode(TRANSPARENT);
-	pDC->DrawText(t.GetString(), t.GetLength(), &rect, NULL);
-
-	// Restore original pen, brush and font
-	pDC->SelectObject(oldpen);
-	pDC->SelectObject(oldbrush);
-	pDC->SelectObject(oldfont);
-	cFont.DeleteObject();
-	ReleaseDC(pDC);
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) 
@@ -757,12 +642,12 @@ void COpenHoldemView::DrawDealerButton(const int chair)
 	ReleaseDC(pDC);
 }
 
-void COpenHoldemView::DrawCard(const unsigned int card, const int left, const int top, 
+void COpenHoldemView::DrawCard(Card *card, const int left, const int top, 
 							   const int right, const int bottom, const bool pl_card) 
 {
 	__TRACE
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		rrect = {0}, srect = {0};
 	CFont		*oldfont = NULL, cFont;
 	CDC			*pDC = GetDC();
@@ -777,7 +662,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 	pDC->SetBkColor(COLOR_GRAY);
 
 	// CARD BACK
-	if (card == CARD_BACK) 
+  if (card->IsCardBack()) 
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -793,7 +678,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 	}
 
 	// NO CARD
-	else if (card == CARD_NOCARD) 
+  else if (card->IsNoCard())
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
@@ -826,7 +711,7 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Set colors
-		switch (StdDeck_SUIT(card)) 
+    switch (card->GetSuit())
 		{
 			case Suit_CLUBS:
 				pDC->SetTextColor(COLOR_GREEN);
@@ -854,66 +739,11 @@ void COpenHoldemView::DrawCard(const unsigned int card, const int left, const in
 		pDC->SetBkMode(OPAQUE);
 		pDC->RoundRect(left, top, right, bottom, 5, 5);
 		pDC->SetBkMode(TRANSPARENT);
-		switch (StdDeck_SUIT(card)) 
-		{
-			case Suit_CLUBS:
-				pDC->DrawText("C", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_DIAMONDS:
-				pDC->DrawText("D", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_HEARTS:
-				pDC->DrawText("H", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Suit_SPADES:
-				pDC->DrawText("S", -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-		}
-
-
-		// Draw card rank
-		switch (StdDeck_RANK(card)) 
-		{
-			case Rank_2:
-				pDC->DrawText("2", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_3:
-				pDC->DrawText("3", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_4:
-				pDC->DrawText("4", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_5:
-				pDC->DrawText("5", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_6:
-				pDC->DrawText("6", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_7:
-				pDC->DrawText("7", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_8:
-				pDC->DrawText("8", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_9:
-				pDC->DrawText("9", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_TEN:
-				pDC->DrawText("T", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_JACK:
-				pDC->DrawText("J", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_QUEEN:
-				pDC->DrawText("Q", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_KING:
-				pDC->DrawText("K", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-			case Rank_ACE:
-				pDC->DrawText("A", -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
-				break;
-		}
+    // Draw card rank and suit
+    pDC->DrawText(CString(card->GetSuitCharacter(true)), 
+      -1, &srect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
+    pDC->DrawText(CString(card->GetRankCharacter()), 
+      -1, &rrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER );
 
 		// Restore original pen and brush
 		pDC->SelectObject(oldpen);
@@ -968,7 +798,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 		textrect.top = 0;
 		textrect.right = 0;
 		textrect.bottom = 0;
-		pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &textrect, DT_CALCRECT);
+		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
+      p_table_state->_players[chair]._name.GetLength(), &textrect, DT_CALCRECT);
 
 		// Figure out placement of rectangle
 		drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
@@ -986,7 +817,8 @@ void COpenHoldemView::DrawNameBox(const int chair)
 		pDC->SetBkMode(OPAQUE);
 		pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->DrawText(p_scraper->player_name(chair).GetString(), p_scraper->player_name(chair).GetLength(), &drawrect,
+		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
+      p_table_state->_players[chair]._name.GetLength(), &drawrect,
 					  DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 		name_rect_last[chair].left = drawrect.left;
 		name_rect_last[chair].top = drawrect.top;
@@ -1054,11 +886,11 @@ void COpenHoldemView::DrawBalanceBox(const int chair)
 		// Format Text
 		if (!p_scraper->sitting_out(chair)) 
 		{
-			t = Number2CString(p_scraper->player_balance(chair));
+			t = Number2CString(p_table_state->_players[chair]._balance);
 		}
 		else 
 		{
-			t.Format("Out (%s)", Number2CString(p_scraper->player_balance(chair)));
+			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
 		}
 	}
 	else 
@@ -1211,21 +1043,19 @@ void COpenHoldemView::DrawPlayerCards(const int chair)
 	}
 	// Get size of current client window
 	GetClientRect(&_client_rect);
-	// Draw player cards
-  int player_card_0 = p_table_state->_players[chair].hole_cards[0].GetValue();
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%i]\n",
-		chair, player_card_0);
-	DrawCard(player_card_0,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - CARDSIZEX - 2,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEY/2 - 1,
-		true);
-  int player_card_1 = p_table_state->_players[chair].hole_cards[1].GetValue();
-	DrawCard(player_card_1,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 1,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2,
-		_client_rect.right * pc[p_tablemap->nchairs()][chair][0] + CARDSIZEX + 1,
-		_client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + CARDSIZEY/2 - 1,
-		true);
+	// Draw player cards (first)
+  Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
+	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
+    chair, player_card_0->ToString());
+  int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 2;
+  int pos_x_left   = pos_x_right - CARDSIZEX;
+  int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
+  int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
+	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+
+  // Draw player cards (second)
+  Card *player_card_1 = &p_table_state->_players[chair]._hole_cards[1];
+  pos_x_right = pos_x_right + CARDSIZEX + 3;
+  pos_x_left  = pos_x_left + CARDSIZEX + 3;
+	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
 }

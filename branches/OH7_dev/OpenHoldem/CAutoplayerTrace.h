@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_CAUTOPLAYER_TRACE_H
 #define INC_CAUTOPLAYER_TRACE_H
@@ -36,7 +36,7 @@ class CAutoplayerTrace {
  public:
 #define ENT CSLock lock(m_critsec);
   void logsymbols_collection_add(const char *s) 	{ ENT _logsymbols_collection.Add(s);}
-  void logsymbols_collection_removeall() 			{ ENT _logsymbols_collection.RemoveAll();}
+  void logsymbols_collection_removeall() 			    { ENT _logsymbols_collection.RemoveAll();}
   void symboltrace_collection_add(const char *s)	{ ENT _logsymbols_collection.Add(s);}
   void symboltrace_collection_removeall();
 #undef ENT

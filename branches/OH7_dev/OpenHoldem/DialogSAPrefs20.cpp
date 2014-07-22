@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // DialogSAPrefs20.cpp : implementation file
 //
@@ -85,6 +85,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_POPUP_BLOCKER, preferences.debug_popup_blocker() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_FORMULA, preferences.debug_formula() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_ALLTHEREST, preferences.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_VERSUS, preferences.debug_versus() ? MF_CHECKED : MF_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -127,6 +128,7 @@ void CDlgSAPrefs20::OnOK()
 	preferences.SetValue(k_prefs_debug_popup_blocker, IsDlgButtonChecked(IDC_DEBUG_POPUP_BLOCKER));
   preferences.SetValue(k_prefs_debug_formula, IsDlgButtonChecked(IDC_DEBUG_FORMULA));
 	preferences.SetValue(k_prefs_debug_alltherest, IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
+  preferences.SetValue(k_prefs_debug_versus, IsDlgButtonChecked(IDC_DEBUG_VERSUS));
 	CSAPrefsSubDlg::OnOK();
 }
 

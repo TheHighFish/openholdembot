@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -52,12 +52,11 @@ void CSymbolEngineChipAmounts::ResetOnHandreset()
 {
 	for (int i=0; i<k_max_number_of_players; i++)
 	{
-		_balance[i]    = 0;
 		_stack[i]      = 0;
 		_currentbet[i] = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
-		_stacks_at_hand_start[i] = p_scraper->player_balance(i) + p_scraper->player_bet(i);
+		_stacks_at_hand_start[i] = p_table_state->_players[i]._balance + p_scraper->player_bet(i);
 	}
 	_pot = 0;
 	_potplayer = 0;
@@ -70,9 +69,7 @@ void CSymbolEngineChipAmounts::ResetOnNewRound()
 void CSymbolEngineChipAmounts::ResetOnMyTurn()
 {}
 
-void CSymbolEngineChipAmounts::ResetOnHeartbeat()
-{
-	CalculateBalances();
+void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateStacks();
 	CalculateCurrentbets();
 	CalculatePots();
@@ -80,17 +77,8 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat()
 	CalculateAmountsToCallToRaise();
 }
 
-void CSymbolEngineChipAmounts::SetBalance(const int player, const double d) 
-{
-	assert(player >= 0);
-	assert(player < k_max_number_of_players);
-	_balance[player] = d;
-	if (player == USER_CHAIR) 
-	{
-		SetMaxBalanceConditionally(d);
-		SetBalanceAtStartOfSessionConditionally(d);
-	}
-}
+
+//!!!!!SetBalanceAtStartOfSessionConditionally(d);
 
 void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d) 
 { 
@@ -108,21 +96,6 @@ void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally(const dou
 	}
 }
 
-void CSymbolEngineChipAmounts::CalculateBalances()
-{
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (i < p_tablemap->nchairs())
-		{
-			SetBalance(i, p_scraper->player_balance(i));
-		}
-		else
-		{
-			SetBalance(i, 0);
-		}
-	}
-}
-
 void CSymbolEngineChipAmounts::CalculateStacks()
 {
 	// simple bubble sort for 10 stack values
@@ -130,7 +103,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	{
 		if (p_table_state->_players[i].HasAnyCards())
 		{
-			_stack[i] = _balance[i];
+      _stack[i] = p_table_state->_players[i]._balance;
 		}
 		else
 		{
@@ -231,7 +204,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	if (p_symbol_engine_userchair->userchair_confirmed())
 	{
 		_sraimin = largest_bet + _call;
-		_sraimax = _balance[USER_CHAIR] - _call;
+		_sraimax = p_table_state->User()->_balance - _call;
 		if (_sraimax < 0)
 		{
 			_sraimax = 0;
@@ -298,11 +271,11 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	{
 		if (memcmp(name, "balance", 7)==0 && strlen(name)==7)	
 		{
-			*result = balance(p_symbol_engine_userchair->userchair()); 
+			*result = p_table_state->User()->_balance; 
 		}
 		else if (memcmp(name, "balance", 7)==0 && strlen(name)==8)	
 		{
-			*result = balance(name[7]-'0');
+			*result = p_table_state->_players[name[7]-'0']._balance;
 		}
 		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==24)
 		{

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerval.h"
@@ -105,9 +105,9 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	CardMask_RESET(Cards);
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		if (p_table_state->_players[USER_CHAIR].HasKnownCards())
+		if (p_table_state->User()->HasKnownCards())
 		{
-      CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
+      CardMask_SET(Cards, p_table_state->User()->_hole_cards[i].GetValue());
 			nCards++;
 		}
 	}
@@ -127,8 +127,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 	_pcbits = 0;
 	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
-    p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue(), 
-    p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue());
+    p_table_state->User()->_hole_cards[0].GetValue(), 
+    p_table_state->User()->_hole_cards[1].GetValue());
 
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
@@ -152,8 +152,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
-		if (p_table_state->_players[USER_CHAIR].HasKnownCards()) {
-			CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
+		if (p_table_state->User()->HasKnownCards()) {
+			CardMask_SET(Cards, p_table_state->User()->_hole_cards[i].GetValue());
 			nCards++;
 		}
 	}
@@ -339,8 +339,8 @@ void CSymbolEnginePokerval::CalculateRankBits()
 
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
-		if (p_table_state->_players[USER_CHAIR].HasKnownCards()) {
-      int card = p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue();
+		if (p_table_state->User()->HasKnownCards()) {
+      int card = p_table_state->User()->_hole_cards[i].GetValue();
 			CardMask_SET(plCards, card);
 			CardMask_SET(plcomCards, card);
 		}
@@ -580,9 +580,9 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_RESET(Cards);
 		for (int i=0; i<k_number_of_cards_per_player; i++)
 		{
-			if (p_table_state->_players[USER_CHAIR].HasKnownCards())
+			if (p_table_state->User()->HasKnownCards())
 			{
-        CardMask_SET(Cards, p_table_state->_players[USER_CHAIR].hole_cards[i].GetValue());
+        CardMask_SET(Cards, p_table_state->User()->_hole_cards[i].GetValue());
 			}
 		}
 

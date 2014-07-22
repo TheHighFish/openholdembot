@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "StdAfx.h"
 #include "CPokerTrackerThread.h"
@@ -137,6 +137,7 @@ void CPokerTrackerThread::Connect(void)
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Trying to open PostgreSQL DB...\n");
 	if (!AllConnectionDataSpecified())
 	{
+    write_log(preferences.debug_pokertracker(), "[PokerTracker] Can't connect to DB. Vital data missing\n");
 		return;
 	}
 	_conn_str = CreateConnectionString(preferences.pt_ip_addr(), 
@@ -176,6 +177,10 @@ void CPokerTrackerThread::Disconnect(void)
 
 bool CPokerTrackerThread::IsConnected()
 {
+  write_log(preferences.debug_pokertracker(), "[PokerTracker] connected: %s\n",
+    Bool2CString(_connected));
+  write_log(preferences.debug_pokertracker(), "[PokerTracker]PXStatus = %d (0 = CONNECTION_OK)\n",
+    PQstatus(_pgconn));
 	return (_connected && PQstatus(_pgconn) == CONNECTION_OK);
 }
 
@@ -312,12 +317,14 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 {
 	char		likename[k_max_length_of_playername];
-	memset(likename, 0, k_max_length_of_playername);
+  // Attention: likename is 2 times as large as a player-name,
+  // plus 2 for % at the beginning and \0 at the end.
+  // !!! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
+	memset(likename, 0, 2 * k_max_length_of_playername + 2);
 	
 	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
 
-	if (!result)
-	{
+	if (!result) {
 		likename[0]='%';
 		int character_position = 0;
 		for (int character_position=0; character_position<(int) strlen(oh_scraped_name); character_position++)

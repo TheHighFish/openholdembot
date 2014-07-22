@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_COHSCRIPTLIST_H
 #define INC_COHSCRIPTLIST_H
@@ -33,6 +33,7 @@ typedef bool THandListMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_d
 // A                         I
 
 class COHScriptList: public COHScriptObject {
+  friend class DialogHandList;
  public:
   COHScriptList( 
     CString *new_name, 
@@ -41,17 +42,27 @@ class COHScriptList: public COHScriptObject {
   ~COHScriptList();
  public:
   void Clear();
+  virtual CString function_text();
+ public:
   bool Set(CString list_member);
   // Public for CSymbolEngineVersus
   bool IsOnList(int first_rank, int second_rank, bool suited);
+  // For Hand list editor: higher card first: suited, otherwise offsuited
+  bool IsOnList(int first_rank, int second_rank);
   // Actually Evaluate() returns true/false if our hand is in the list or not
   // but the function is inheritzed from the base-class.
   double Evaluate(bool log = false);
+ public:
+  void Set(int first_rank, int second_rank, bool suited);
+  // For Hand list editor: higher card first: suited, otherwise offsuited
+  void Set(int first_rank, int second_rank);
+  void Remove(int first_rank, int second_rank);
+ public:
+  int NHandsOnList();
+  bool IsEmpty()  { return (NHandsOnList() <= 0); }
  private:
   void ErrorInvalidMember(CString list_member); 
   void ErrorOldStyleFormat(CString list_member);
- private:
-  void Set(int first_rank, int second_rank, bool suited);
  private:
   THandListMatrix _handlist_matrix;
 };

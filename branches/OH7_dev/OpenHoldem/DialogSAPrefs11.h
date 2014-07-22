@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_DIALOGSAPREFS11_H
 #define INC_DIALOGSAPREFS11_H
@@ -36,10 +36,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
-	CButton m_EnableLog, m_EnableTrace;
+	CButton m_EnableTrace;
 	CButton m_EnableBasicInfo, m_EnableErrorLogging, m_EnableDLLLogging;
-	CEdit m_MaximumLog, m_MaximumLogSize;
-	CSpinButtonCtrl m_MaximumLog_Spin, m_MaximumLogSize_Spin;
+	CEdit   m_MaximumLogSize;
+	CSpinButtonCtrl m_MaximumLogSize_Spin;
 	virtual BOOL OnInitDialog();
 
 protected:

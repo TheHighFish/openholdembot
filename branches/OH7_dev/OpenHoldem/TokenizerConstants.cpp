@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "TokenizerConstants.h"
@@ -29,6 +29,8 @@ const bool kTokenIsUnary[kNumberOfTokens] = {
   false,
   // kTokenOperatorDivision,           
   false,
+  // kTokenOperatorUnaryMinus
+  true,
   // kTokenOperatorModulo,             
   false,
   // kTokenOperatorExponentiation,     
@@ -114,6 +116,8 @@ const bool kTokenIsBinary[kNumberOfTokens] = {
   true,
   // kTokenOperatorDivision,           
   true,
+  // kTokenOperatorUnaryMinus,
+  false,
   // kTokenOperatorModulo,             
   true,
   // kTokenOperatorExponentiation,     
@@ -206,6 +210,7 @@ CString TokenString(int token) {
 	case kTokenOperatorMinus: return "-";
 	case kTokenOperatorMultiplication: return "*";    
 	case kTokenOperatorDivision: return "/";
+  case kTokenOperatorUnaryMinus: return "-";
 	case kTokenOperatorModulo: return "modulo";	// because % can also mean percentage
 	case kTokenOperatorExponentiation: return "**";
 	case kTokenOperatorLog: return "ln";
@@ -260,6 +265,8 @@ const int kOperatorPriority[kNumberOfTokens] = {
   12,
   // kTokenOperatorDivision,           
   12,
+  // kTokenOperatorUnaryMinus,
+  13,
   // kTokenOperatorModulo,             
   12,
   // kTokenOperatorExponentiation,    
@@ -348,6 +355,7 @@ kTokenEndOfFile = 0,
 	kTokenOperatorMinus,              
 	kTokenOperatorMultiplication,     
 	kTokenOperatorDivision,           
+  kTokenOperatorUnaryMinus,
 	kTokenOperatorModulo,             
 	kTokenOperatorExponentiation,     
 	kTokenOperatorLog,                

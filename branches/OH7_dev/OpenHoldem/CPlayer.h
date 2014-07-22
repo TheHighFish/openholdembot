@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_CPLAYER_H
 #define INC_CPLAYER_H
@@ -21,12 +21,17 @@ class CPlayer {
   CPlayer();
   ~CPlayer();
  public:
+  void Reset(); //!!! LazyScraper!!! comflict?
+ public:
   bool HasAnyCards();
   bool HasKnownCards();
  public:
   void CheckPlayerCardsForConsistency();
  public:
-  Card hole_cards[k_number_of_cards_per_player];
+  CString _name;
+  double  _balance;
+  Card    _hole_cards[k_number_of_cards_per_player];
+
 };
 
 #endif INC_CPLAYER_H
@@ -54,8 +59,8 @@ bool CScraperAccess::PlayerHasCards(int player)
 CheckPlayerCardsForConsistency(int chair) {
   AssertRange(chair, 0, k_max_chair_number);
   if (p_table_state->_players[chair].HasKnownCards
-    && (p_table_state->_players[chair].hole_cards[0].GetValue()
-      == p_table_state->_players[chair].hole_cards[1].GetValue())) {
+    && (p_table_state->_players[chair]._hole_cards[0].GetValue()
+      == p_table_state->_players[chair]._hole_cards[1].GetValue())) {
     // Identical cards, something clearly went wrong.
     // We assume, that we see something that differs from the background,
     // probably cardbacks, that sometimes get scraped as JJsuited or 88suited

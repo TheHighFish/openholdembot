@@ -7,8 +7,95 @@ v7.0.0 2014-xx-yy
     * lower-cases: built-in OpenHoldem symbols
     * upper-cases: OpenPPL-symbols of the OpenPPL-library
 
+v5.0.5 2014-07-22
+==================
+BUG FIXES:
+- The Preferences dialog for debug-options was messed up,
+  because the new option for versus used one wrong constant.
+  Thanks to Lavezzi for reporting.
+  [THF]
+- Fixed 1 buffer overflow in the PT-code.
+  that potentially could corrupt data for long usernames >= 16 characters.
+  [THF]
+- Improved the way if/when/what a DLL gets loaded.
+  Thanks to BruceLee for pointing out some inconsistencies.
+  [THF]
 
-v5.0.0 2014-xx-yy
+MAINTENANCE:
+- Simplified the GUI further and removed the option to disable the progress-dialog,
+  because such a dialog does no longer exist at all, due to our fast new parser.
+  Also removed the option for max number of log-symbols in the white box.
+  This was a very rarely used feature and too much log-symbols
+  caused an occlusion of the community cards.
+  The unchangeable default is now 3.
+  [THF]
+
+v5.0.4 2014-07-19
+==================
+BUG FIXES:
+- The GUI could crash because of an incorrect format-string
+  for the text in "the white box".
+  Thanks to Lavezzi for providing a replay-frame and tablemap.
+  [THF]
+- Some versus symbols (vs$listXYZ$prwin, ...) did temporary not work
+  after we had to re-implement the hand-lists for the new parser.
+  This work has now been completed.
+  [THF]
+
+MAINTENANCE:
+- Various improvements to the GUI:
+  Hot-keys, disabling some menu-items on autoplayer, etc.
+  [THF]
+
+v5.0.3 2014-07-18
+==================
+BUG FIXES:
+- nopponentsplaying was wrong because we confused HasKnownCards()
+  and HasAnyCards() when we had to do some code-improvement.
+  [THF] 
+- OpenHoldem and OpenScrape could crash when evaluating ttlimits,
+  as a very rarely executed branch of the code had a missing 
+  pointer-dereference, but the code was compileable anyway.
+  Thanks to SuperBlak for reporting and for providing replay-frames and TM.
+  [THF]
+
+MAINTENANCE:
+- The did...symbols count how often the autoplayer did raise/call/...
+  However didchec can only be 0 or 1 poker-logically.
+  We changed that now.
+  [THF]
+
+v5.0.2 2014-07-15
+==================
+NEW STUFF:
+- Full support for unary minuses in expressions;
+  initially we only supported negative numbers and thought that was enough.
+  Thanks to Lavezzi for reporting this deficit.
+  [THF]  
+
+BUG FIXES:
+- log$-symbols supported again.
+  They had been forgotten when we reimplemented the parser and evaluator for OpenHoldem 5.0.0.
+  Thanks to Lavezzi for reporting.
+  [THF]
+- The parser did still/again convert function-names to lovercases
+  due to unexpected side-effects of a function.
+  Thanks to Mariano268 for reporting.
+  [THF]
+- The hand-list-editor got broken, when we had to re-implement hand-lists
+  (just like nearly all other internals) for the new parser of 5.0.
+  Thanks to Papa05 for reporting.
+  [THF].
+- PrWin got temporary broken for the same reason but works again.
+  Nobody noticed it. ;-)
+  [THF]
+
+MAINTENANCE:
+- Removed the superfluous symbol "nopponents" which just contained 
+  the value of former f$P, now f$prwin_number_of_opponents.
+  [THF]
+
+v5.0.1 2014-07-05
 ==================
 NEW STUFF:
 - Improved userchair detection.
@@ -17,7 +104,19 @@ NEW STUFF:
   Now we only need to see cards when it is clearly not showdown.
   This change does not affect real casinos,
   but is meant for confused newbies that simulate with ManualMode.
-  {THF]
+  [THF]
+- Introducing mandatory "nocard"-regions:
+  r$p0cardface0nocard..r$p9cardface1nocard and r$c0cardface0nocard..r$c0cardface4nocard.
+  These regions should return true if no card is present,
+  but false for card-faces and cardbacks.
+  Recommended usage: single pixel, colour-transform, background-colour, positive radius. 
+  Benefits:
+  * better error-detection (in the past a card became implicitly "nocard"
+    after all other options failed)
+  * Significantly improved performance, as colour-transforms are very cheap
+    and we can often avoid expensive operations like fuzzy fonts.
+  Special thanks to Ares who updated the "official" maps.
+  [THF]  
 
 BUG FIXES:
 - The new parser incorrectly changed all function names to lower-cases.
@@ -25,8 +124,6 @@ BUG FIXES:
   [THF]
 - Symbol lookup for DLL-symbols was broken.
   [THF]
-
-
 - The improved scraper got cardbacks wrong for some tablemaps.
   Thanks to Ares and Nik0 for reporting and providing replay-frames.
   [THF]
@@ -35,7 +132,7 @@ MAINTENANCE:
 - Getting rid of the constant WH_NOCARD (0).
   We use now only CARD_NOCARD (0xfe = 254).
   This will affect the DLL-interface.
-  Having multiple constants for the same purpose is bad.
+  Having multiple constants for the same purpose is simply bad.
   [THF]
 
 v5.0.0 2014-06-24
@@ -892,7 +989,7 @@ NEW STUFF:
     * maximum possible raise (users balance)
   All you have to do: specify your desired betsize and provide the correct swagtextmethod in your tablemap.
   [THF]
-- new symbol: balanceatstartofsession, which remebers the balance at the start of a session. 
+- new symbol: balanceatstartofsession, which remembers the balance at the start of a session. 
   [THF]
 - Improved possibilities to communicate between hopper and OH.
   Is is now possible to set the flags of the flags-toolbar

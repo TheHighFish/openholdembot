@@ -1,11 +1,11 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
@@ -13,7 +13,7 @@
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_CSCRAPER_H
 #define INC_CSCRAPER_H
@@ -62,8 +62,6 @@ public:
 	const CString		active(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _active[n]; }
 	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
 	const double		player_bet(int n)          { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _player_bet[n]; }
-	const CString		player_name(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _player_name[n]; }
-	const double		player_balance(int n);
 	const bool			sitting_out(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _sitting_out[n]; }
 	const double		pot(int n)                 { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _pot[n]; }
 	const CString		button_state(int n)        { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _button_state[n]; }
@@ -113,6 +111,7 @@ private:
 	int CardString2CardNumber(CString card);
 private:
 	// private functions and variables - not available via accessors or mutators
+  double ScrapeUPBalance(int chair, char scrape_u_else_p);
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
 	void ScrapePots();
@@ -135,8 +134,6 @@ private:
 	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
 	void	set_player_bet(const int n, const double d) { ENT if (n>=0 && n<=9) _player_bet[n] = d;}
-	void	set_player_name(const int n, const CString s) { ENT if (n>=0 && n<=9) _player_name[n] = s;}
-	void	set_player_balance(const int n, const double d) { ENT if (n>=0 && n<=9) _player_balance[n] = d;}
 	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b;}
 	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d;}
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
@@ -182,8 +179,6 @@ private:
 	// players - seated / active
 	CString				_seated[k_max_number_of_players];
 	CString				_active[k_max_number_of_players];
-	// players - names
-	CString				_player_name[k_max_number_of_players];
 	// players - money
 	double				_player_balance[k_max_number_of_players]; 
 	double				_player_bet[k_max_number_of_players];

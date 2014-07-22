@@ -1,21 +1,21 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "StdAfx.h"
 #include "CValidator.h"
 
 #include "CAutoPlayer.h"
-#include "CDllExtension.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandRank.h"
@@ -130,9 +130,7 @@ void CValidator::ValidateSingleRule()
 //
 double CValidator::gws(const char *the_Symbol)
 {
-	bool is_Error;
-	double my_Chair = GetSymbolFromDll(0, "userchair", is_Error);
-	return GetSymbolFromDll(int(my_Chair), the_Symbol, is_Error);
+	return p_function_collection->Evaluate(the_Symbol);
 }
 
 // Constants for the validators range-checks

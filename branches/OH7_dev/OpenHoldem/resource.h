@@ -31,7 +31,6 @@
 #define IDR_FORMULA_EDIT_ACC            148
 #define IDD_FORMULA_SCINTILLA           155
 #define IDD_SCRAPER_OUTPUT              158
-#define IDD_PROGRESS_DIALOG             160
 #define IDD_SAPREFS                     162
 #define IDD_SAPREFS1                    163
 #define IDD_SAPREFS2                    164
@@ -126,9 +125,6 @@
 #define IDC_ZOOM                        1090
 #define IDC_STATIC_ZOOM                 1091
 #define IDC_STATIC_RESULT               1092
-#define IDC_PROGRESS_CTRL               1092
-#define IDC_PROGRESS_BAR                1092
-#define IDC_PROGRESS_TEXT               1093
 #define IDC_TREE1                       1095
 #define IDC_TREE_PREFS                  1095
 #define IDC_SYMBOL_TREE                 1095
@@ -335,10 +331,8 @@
 #define IDC_PERL_EDITOR                 1292
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
-#define IDC_ENABLE_LOG                  1296
 #define IDC_MAXIMUM_LOG                 1297
 #define IDC_MAXIMUM_LOG_SPIN            1298
-#define IDC_ENABLE_LOG2                 1299
 #define IDC_ENABLE_TRACE                1299
 #define IDC_TRACE_LIST                  1300
 #define IDC_COMMENT                     1301
@@ -375,7 +369,6 @@
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
-#define IDC_GUI_Disable_Progress_Dialog 1332
 #define IDC_RADIO_AUTOCONNECTOR_3       1333
 #define IDC_RADIO_AUTOCONNECTOR_4       1334
 #define IDC_RADIO3                      1335
@@ -441,6 +434,7 @@
 #define IDC_DEBUG_SYMBOLENGINE_OPENPPL  1393
 #define IDC_DEBUG_PARSER                1394
 #define IDC_DEBUG_FORMULA               1395
+#define IDC_DEBUG_VERSUS                1396
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -559,7 +553,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1396
+#define _APS_NEXT_CONTROL_VALUE         1397
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

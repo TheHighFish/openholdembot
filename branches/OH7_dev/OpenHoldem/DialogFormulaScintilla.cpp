@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // DialogFormulaScintilla.cpp : implementation file
 //
@@ -1201,14 +1201,14 @@ void CDlgFormulaScintilla::OnHandList()  {
   COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
   if (p_handlist == NULL)  return;
   // Window title and static text content
-  myDialog.hand_list_num = atoi(s.Mid(4).GetString());
+  myDialog.p_list = p_handlist;
 
   // Start dialog
   if (myDialog.DoModal() == IDOK) {
     CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
-    CString new_handlist_without_comment = myDialog.HandListToString();
+    CString new_handlist_without_comment = p_handlist->function_text();
     CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
-    p_handlist->SetText(new_handlist_with_comment);
+    p_handlist->SetText(new_handlist_with_comment); 
     p_handlist->Parse();
 
     // update scintilla window
@@ -1961,7 +1961,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "handrank2652", "your pocket holdem hand rank 12-2652 (see table)");
 	AddSymbol(parent, "handrank1326", "your pocket holdem hand rank 6-1326 (handrank2652/2)");
 	AddSymbol(parent, "handrank1000", "your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)");
-	AddSymbol(parent, "handrankp", "2652 / (1+nopponents)");
+	AddSymbol(parent, "handrankp", "2652 / (1+f$prwin_number_of_opponents)");
 
 	mainParent = parent = AddSymbolTitle("Chairs", NULL, hCatItem);
 	AddSymbol(parent, "userchair", "user chair number (0-9)");
@@ -2062,7 +2062,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ishiflush", "true when you have the highest flush possible");
 
 	mainParent = parent = AddSymbolTitle("Players, Opponents", NULL, hCatItem);
-	AddSymbol(parent, "nopponents", "P formula value for the userchair iterator");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
 	AddSymbol(parent, "nplayersactive", "number of players active (including you) (0-10)");
 	AddSymbol(parent, "nplayersdealt", "number of players dealt (including you) (0-10)");
@@ -2293,8 +2292,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
   if (m_pActiveScinCtrl) {
-	m_pActiveScinCtrl->ShowWindow(SW_HIDE);
-	m_pActiveScinCtrl->EnableWindow(false);
+	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !!!!! Crashes on delete list
+	  m_pActiveScinCtrl->EnableWindow(false);
   }
   m_pActiveScinCtrl = new_pActiveScinCtrl;
   m_pActiveScinCtrl->ShowWindow(SW_SHOW);

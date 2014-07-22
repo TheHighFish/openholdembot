@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef _INC_MAGICNUMBERS_H 
 #define _INC_MAGICNUMBERS_H
@@ -151,6 +151,9 @@ const int k_number_of_flags = 20;
 const int k_number_of_suits_per_deck  =  4;
 const int k_number_of_ranks_per_deck  = 13;
 const int k_rank_ace                  = 14; 
+const int k_rank_king                 = k_rank_ace - 1;
+const int k_rank_queen                = k_rank_ace - 2;
+const int k_rank_jack                 = k_rank_ace - 3; 
 const int k_rank_ace_low              =  1;
 const int k_rankbits_all_cards_111_111_111_111_110 = 0x7FFE;
 
@@ -519,6 +522,7 @@ enum ActionConstant
 const char* ActionConstantNames(int action_constant);
 
 // for rank to card translation
+// Suits
 const static char *k_card_chars = "23456789TJQKA";
 const int k_number_of_different_cardranks = 13;
 

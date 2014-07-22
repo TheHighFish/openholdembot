@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CFormulaParser.h"
@@ -120,7 +120,8 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   // Most common error: identifier instead of function header
   // This can only happen before the first function
   _function_name = "-- undefined --";
-  CString function_name_lower_case = function_header.MakeLower();
+  CString function_name_lower_case = function_header;
+  function_name_lower_case.MakeLower();
   if (function_name_lower_case.Left(6) == "custom") {
     CParseErrors::Error("Superfluous keyword custom");
     return false;
@@ -132,6 +133,14 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
     return false;
   } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function. OpenHoldem-style ##f$function## expected");
+    return false;
+  } else if ((function_name_lower_case.Left(2) == "//")
+      || (function_name_lower_case.Left(2) == "/*")) {
+    CParseErrors::Error("Top-level comment outside function.\n"
+      "Technically a formula-file is a set of functions\n"
+      "and every comment belongs to such a function.\n"
+      "A top-level comment outside of a function would get lost.\n"
+      "Please put it for example into \"##notes##\".");
     return false;
   } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
@@ -268,7 +277,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Found ##notes##. Nothing to parse\n");
+	  "[FormulaParser] Found ##Notes##. Nothing to parse\n");
     // Don't do anything.
     // This is just a special type of global comment.
   }

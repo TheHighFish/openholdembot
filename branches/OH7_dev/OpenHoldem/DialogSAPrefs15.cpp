@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // CDlgSAPrefs15.cpp : implementation file
 //
@@ -40,7 +40,6 @@ void CDlgSAPrefs15::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_GUI_START_MINIMIZED, _gui_start_minimized_Button);
-	DDX_Control(pDX, IDC_GUI_Disable_Progress_Dialog, _gui_disable_progress_dialog_Button);
 	DDX_Control(pDX, IDC_DISABLE_MSGBOX, m_disable_msgbox);
 }
 
@@ -56,7 +55,6 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 
 	_gui_start_minimized_Button.SetCheck(preferences.gui_start_minimized());
-	_gui_disable_progress_dialog_Button.SetCheck(preferences.gui_disable_progress_dialog());
 	m_disable_msgbox.SetCheck(preferences.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -66,7 +64,6 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 void CDlgSAPrefs15::OnOK()
 {
 	preferences.SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_gui_disable_progress_dialog, _gui_disable_progress_dialog_Button.GetCheck() == true);
 	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();

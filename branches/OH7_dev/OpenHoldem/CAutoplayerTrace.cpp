@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CAutoplayerTrace.h"
@@ -157,10 +157,6 @@ void CAutoplayerTrace::Print(const char *action_taken) {
 }
 
 void CAutoplayerTrace::LogLogSymbols() {
-  // Logging of log$symbols
-  if (!preferences.log_symbol_enabled()) {
-    return;
-  }
   int max_log = _logsymbols_collection.GetCount();
   if (max_log <= 0) {
     return;
@@ -206,7 +202,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // player cards
   if (p_symbol_engine_userchair->userchair_confirmed()) {
     for (int i=0; i<=1; i++) {
-      Card card = p_table_state->_players[userchair].hole_cards[i];
+      Card card = p_table_state->User()->_hole_cards[i];
       pcards.Append(card.ToString());
     }
   } else {
@@ -253,7 +249,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
   fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
   fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
-  fprintf(log_fp, "  My balance:    %9.2f\n", p_symbol_engine_chip_amounts->balance(userchair));
+  fprintf(log_fp, "  My balance:    %9.2f\n", p_table_state->User()->_balance);
   fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
   fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
   fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
@@ -282,8 +278,8 @@ void CAutoplayerTrace::LogAutoPlayerTrace()
 CString CAutoplayerTrace::LogSymbolsForGUI() {
   CString temp, result;
   for (int i=0; i<min(5, _logsymbols_collection.GetCount()); i++) {
-	temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
-	result.Append(temp);
+	  temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
+	  result.Append(temp);
   }
   return result;
 }

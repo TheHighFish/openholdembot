@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CHandresetDetector.h"
@@ -82,7 +82,7 @@ bool CHandresetDetector::IsHandresetByCards()
 		// We don't want to use this method
 		return false;
 	}
-	bool ishandreset = (p_table_state->_players[USER_CHAIR].HasKnownCards()
+	bool ishandreset = (p_table_state->User()->HasKnownCards()
 		&& (playercards[0] != last_playercards[0]) 
 		&& (playercards[1] != last_playercards[1]));
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by cards: %s\n",
@@ -147,7 +147,7 @@ void CHandresetDetector::GetNewSymbolValues()
 	int userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
-      playercards[i] = p_table_state->_players[userchair].hole_cards[i].GetValue();
+      playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
 		} else {
 			playercards[i] = CARD_UNDEFINED;
 		}

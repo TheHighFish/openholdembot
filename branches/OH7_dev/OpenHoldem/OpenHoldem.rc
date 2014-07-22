@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -80,7 +78,7 @@ IDR_FLAGS               BITMAP                  "res\\bitmap_flags.bmp"
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR  16, 16
+IDR_MAINFRAME TOOLBAR 16, 16
 BEGIN
     BUTTON      ID_FILE_NEW
     BUTTON      ID_FILE_OPEN
@@ -101,7 +99,7 @@ BEGIN
     BUTTON      ID_MAIN_TOOLBAR_HELP
 END
 
-IDR_FORMULA_BAR TOOLBAR  16, 16
+IDR_FORMULA_BAR TOOLBAR 16, 16
 BEGIN
     BUTTON      ID_FORMULA_TOOLBAR_NEW
     BUTTON      ID_FORMULA_TOOLBAR_RENAME
@@ -110,7 +108,7 @@ BEGIN
     BUTTON      ID_FORMULA_TOOLBAR_HANDLIST
 END
 
-IDR_FLAGS TOOLBAR  10, 14
+IDR_FLAGS TOOLBAR 10, 14
 BEGIN
     BUTTON      ID_NUMBER0
     BUTTON      ID_NUMBER1
@@ -140,7 +138,7 @@ END
 // Menu
 //
 
-IDR_MAINFRAME MENU 
+IDR_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -160,16 +158,16 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Force &Crash",                ID_HELP_FORCECRASH
         MENUITEM SEPARATOR
-        MENUITEM "&Tag Log-File\tF6",           ID_EDIT_TAGLOG
-        MENUITEM "&View Log-file",              ID_EDIT_VIEWLOG
+        MENUITEM "&Tag Log-File\tF5",           ID_EDIT_TAGLOG
+        MENUITEM "&View Log-file\tF6",          ID_EDIT_VIEWLOG
         MENUITEM SEPARATOR
-        MENUITEM "View Scraper &Output",        ID_VIEW_SCRAPEROUTPUT
+        MENUITEM "View Scraper &Output\tF11",   ID_VIEW_SCRAPEROUTPUT
         MENUITEM "Shoot &Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
     POPUP "&DLL"
     BEGIN
-        MENUITEM "&Load\tF4",                   ID_DLL_LOAD
-        MENUITEM "Load &Specific File...\tF5",  ID_DLL_LOADSPECIFICFILE
+        MENUITEM "&Load\tF3",                   ID_DLL_LOAD
+        MENUITEM "Load &Specific File...\tF4",  ID_DLL_LOADSPECIFICFILE
     END
     POPUP "Per&l"
     BEGIN
@@ -177,14 +175,14 @@ BEGIN
         MENUITEM "&Reload Formula\tF8",         ID_PERL_RELOADFORMULA
         MENUITEM "Load &Specific Formula...",   ID_PERL_LOADSPECIFICFORMULA
         MENUITEM SEPARATOR
-        MENUITEM "Check S&yntax\tF10",          ID_PERL_CHECKSYNTAX
-        MENUITEM "&Edit Main Formula\tF11",     ID_PERL_EDITMAINFORMULA
+        MENUITEM "Check S&yntax\tF9",           ID_PERL_CHECKSYNTAX
+        MENUITEM "&Edit Main Formula\tF10",     ID_PERL_EDITMAINFORMULA
     END
     MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help\tF1",                   ID_HELP_HELP
-        MENUITEM "&OpenPPL Manual",             ID_HELP_OPEN_PPL
+        MENUITEM "&OpenPPL Manual\tF2",         ID_HELP_OPEN_PPL
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
         MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
@@ -193,7 +191,7 @@ BEGIN
     END
 END
 
-IDR_FORMULA_MENU MENU 
+IDR_FORMULA_MENU MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -233,7 +231,7 @@ BEGIN
     END
 END
 
-IDR_FORMULA_SYMBOL_MENU MENU 
+IDR_FORMULA_SYMBOL_MENU MENU
 BEGIN
     POPUP "Menu"
     BEGIN
@@ -247,7 +245,7 @@ END
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS 
+IDR_MAINFRAME ACCELERATORS
 BEGIN
     VK_F4,          ID_DLL_LOAD,            VIRTKEY, NOINVERT
     VK_F5,          ID_DLL_LOADSPECIFICFILE, VIRTKEY, NOINVERT
@@ -298,7 +296,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-	  LTEXT           "Version 5.0.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 5.0.4",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,66,208,8
@@ -349,8 +347,8 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Formula Editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_SCINTILLA_FORMULA_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP | 0x800,7,26,105,178,WS_EX_TRANSPARENT
-    CONTROL         "",IDC_SYMBOL_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | NOT WS_VISIBLE | WS_BORDER | WS_TABSTOP | 0x800,7,25,105,178
+    CONTROL         "",IDC_SCINTILLA_FORMULA_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | TVS_INFOTIP | WS_BORDER | WS_TABSTOP,7,26,105,178,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_SYMBOL_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_INFOTIP | NOT WS_VISIBLE | WS_BORDER | WS_TABSTOP,7,25,105,178
     PUSHBUTTON      "Calc",IDC_SCINTILLA_CALC,219,7,50,14
     CONTROL         "ScntillaCtrl",IDC_SCINCTRL,"Scintilla",WS_TABSTOP,116,25,208,178
     PUSHBUTTON      "Apply",IDC_SCINTILLA_APPLY,223,222,50,14
@@ -373,16 +371,6 @@ BEGIN
     EDITTEXT        IDC_SCRAPERRESULT,176,124,50,14,ES_AUTOHSCROLL
     LTEXT           "Zoom:",IDC_STATIC_ZOOM,75,129,21,8
     LTEXT           "Result:",IDC_STATIC_RESULT,150,130,24,8
-END
-
-IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 186, 47
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
-CAPTION "Progress"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_PROGRESS_BAR,"msctls_progress32",WS_BORDER,7,14,172,14
-    LTEXT           "Static",IDC_PROGRESS_TEXT,7,4,172,8
-    PUSHBUTTON      "Cancel",IDCANCEL,68,31,50,14
 END
 
 IDD_SAPREFS2 DIALOGEX 0, 0, 219, 189
@@ -720,13 +708,12 @@ IDD_SAPREFS11 DIALOGEX 0, 0, 219, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,10
-    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,92,145,8
-    CONTROL         "Enable Log Symbols",IDC_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,110,94,10
+    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,7
+    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,89,145,8
     EDITTEXT        IDC_MAXIMUM_LOG,163,90,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,137,116,8
-    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,131,31,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,131,11,14
+    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,104,116,8
+    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,98,31,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,98,11,14
     GROUPBOX        "Basic Logging",IDC_STATIC,0,0,205,80
     CONTROL         "Basic Info",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,16,88,9
     CONTROL         "Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,32,139,8
@@ -780,10 +767,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Start minimized",IDC_GUI_START_MINIMIZED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,59,8
-    CONTROL         "Don't show progress-dialog (formula-parsing)",IDC_GUI_Disable_Progress_Dialog,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,163,8
     CONTROL         "Disable all runtime MessageBox popups",IDC_DISABLE_MSGBOX,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,40,157,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,20,157,8
 END
 
 IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
@@ -832,50 +817,53 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,116,8
 END
 
-IDD_SAPREFS20 DIALOGEX 0, 0, 305, 279
+IDD_SAPREFS20 DIALOGEX 0, 0, 405, 279
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Auto-connector",IDC_DEBUG_AUTOCONNECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,9,96,10
-    CONTROL         "Memory symbols",IDC_DEBUG_MEMORY_SYMBOLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,67,10
-    CONTROL         "Heartbeat-thread",IDC_DEBUG_HEARTBEAT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,37,135,10
-    CONTROL         "PrWin thread",IDC_DEBUG_PRWIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,51,135,10
-    CONTROL         "Blind locking",IDC_DEBUG_BLINDLOCKING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,65,135,10
-    CONTROL         "Occlusion check",IDC_DEBUG_OCCLUSSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,79,135,10
-    CONTROL         "Poker Tracker thread",IDC_DEBUG_POKERTRACKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,93,135,10
-    CONTROL         "Rebuy management",IDC_DEBUG_REBUY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,107,135,10
-    CONTROL         "Replay frames",IDC_DEBUG_REPLAYFRAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,121,135,10
-    CONTROL         "Parser",IDC_DEBUG_PARSER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,135,135,10
-    CONTROL         "Session counter",IDC_DEBUG_SESSIONCOUNTER,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,4,149,135,10
+    CONTROL         "Auto-connector",IDC_DEBUG_AUTOCONNECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,9,103,10
+    CONTROL         "Memory symbols",IDC_DEBUG_MEMORY_SYMBOLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,103,10
+    CONTROL         "Heartbeat-thread",IDC_DEBUG_HEARTBEAT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,37,103,10
+    CONTROL         "PrWin thread",IDC_DEBUG_PRWIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,51,103,10
+    CONTROL         "Blind locking",IDC_DEBUG_BLINDLOCKING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,65,103,10
+    CONTROL         "Occlusion check",IDC_DEBUG_OCCLUSSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,79,103,10
+    CONTROL         "Poker Tracker thread",IDC_DEBUG_POKERTRACKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,93,103,10
+    CONTROL         "Rebuy management",IDC_DEBUG_REBUY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,107,103,10
+    CONTROL         "Replay frames",IDC_DEBUG_REPLAYFRAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,121,103,10
+    CONTROL         "Parser",IDC_DEBUG_PARSER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,135,103,10
+    CONTROL         "Session counter",IDC_DEBUG_SESSIONCOUNTER,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,4,149,103,10
     CONTROL         "Stable frames counter",IDC_DEBUG_STABLEFRAMESCOUNTER,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,163,135,10
-    CONTROL         "Hand-history generator",IDC_DEBUG_HANDHISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,177,135,10
-    CONTROL         "DLL extension",IDC_DEBUG_DLL_EXTENSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,191,135,10
-    CONTROL         "Hopper-messages",IDC_DEBUG_HOPPER_MESSAGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,205,135,10
-    CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,135,10
-	CONTROL         "Symbol engine (OH-script)",IDC_DEBUG_SYMBOLENGINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,233,135,10
-	CONTROL         "Symbol engine (OpenPPL)",IDC_DEBUG_SYMBOLENGINE_OPENPPL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,247,135,10
-    CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,139,9,77,10
-    CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,23,70,10
-    CONTROL         "Autoplayer",IDC_DEBUG_AUTOPLAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,37,69,10
-    CONTROL         "Tablemap loader",IDC_DEBUG_TABLEMAP_LOADER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,51,114,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,163,103,10
+    CONTROL         "Hand-history generator",IDC_DEBUG_HANDHISTORY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,177,103,10
+    CONTROL         "DLL extension",IDC_DEBUG_DLL_EXTENSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,191,103,10
+    CONTROL         "Hopper-messages",IDC_DEBUG_HOPPER_MESSAGES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,205,103,10
+    CONTROL         "Popup blocker",IDC_DEBUG_POPUP_BLOCKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,219,103,10
+    CONTROL         "Symbol engine (OH-script)",IDC_DEBUG_SYMBOLENGINE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,233,103,10
+    CONTROL         "Symbol engine (OpenPPL)",IDC_DEBUG_SYMBOLENGINE_OPENPPL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,247,103,10
+    CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,120,9,77,10
+    CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,23,117,10
+    CONTROL         "Autoplayer",IDC_DEBUG_AUTOPLAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,37,117,10
+    CONTROL         "Tablemap loader",IDC_DEBUG_TABLEMAP_LOADER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,51,114,10
     CONTROL         "Scraper directory monitor",IDC_DEBUG_FILESYSTEM_MONITOR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,65,117,10
-    CONTROL         "Table positioner",IDC_DEBUG_TABLE_POSITIONER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,79,117,10
-    CONTROL         "Istournament",IDC_DEBUG_ISTOURNAMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,93,117,10
-    CONTROL         "GUI (view scraper output, etc.)",IDC_DEBUG_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,107,117,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,65,117,10
+    CONTROL         "Table positioner",IDC_DEBUG_TABLE_POSITIONER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,79,117,10
+    CONTROL         "Istournament",IDC_DEBUG_ISTOURNAMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,93,117,10
+    CONTROL         "GUI",IDC_DEBUG_GUI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,106,117,10
     CONTROL         "Table-limits (blind values)",IDC_DEBUG_TABLE_LIMITS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,121,117,10
-    CONTROL         "Lazy scraper",IDC_DEBUG_LAZY_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,135,117,10
-    CONTROL         "Betsize adjustment",IDC_DEBUG_BETSIZE_ADJUSTMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,149,117,10
-    CONTROL         "Handreset-detector",IDC_DEBUG_HANDRESET_DETECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,163,117,10
-    CONTROL         "Engine container",IDC_DEBUG_ENGINE_CONTAINER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,177,117,10
-    CONTROL         "Preferences",IDC_DEBUG_PREFERENCES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,191,117,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,121,117,10
+    CONTROL         "Lazy scraper",IDC_DEBUG_LAZY_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,135,117,10
+    CONTROL         "Betsize adjustment",IDC_DEBUG_BETSIZE_ADJUSTMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,149,117,10
+    CONTROL         "Handreset-detector",IDC_DEBUG_HANDRESET_DETECTOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,163,117,10
+    CONTROL         "Engine container",IDC_DEBUG_ENGINE_CONTAINER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,177,117,10
+    CONTROL         "Preferences",IDC_DEBUG_PREFERENCES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,191,117,10
     CONTROL         "Scraper-preprocessor",IDC_DEBUG_SCRAPER_PREPROCESSOR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,205,117,10
-    CONTROL         "OpenHoldem.cpp",IDC_DEBUG_OPENHOLDEM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,219,117,10
-    CONTROL         "Formula",IDC_DEBUG_FORMULA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,233,135,10
-	  CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,139,247,135,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,205,117,10
+    CONTROL         "OpenHoldem.cpp",IDC_DEBUG_OPENHOLDEM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,219,117,10
+    CONTROL         "Formula",IDC_DEBUG_FORMULA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,233,117,10
+    CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,247,117,10
+    CONTROL         "Versus",IDC_DEBUG_VERSUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,234,9,111,10
 END
 
 IDD_SAPREFS21 DIALOGEX 0, 0, 219, 154
@@ -925,9 +913,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "5.0.0.0"
+            VALUE "FileVersion", "5.0.4.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "5.0.0.0"
+            VALUE "ProductVersion", "5.0.4.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -943,7 +931,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -1030,6 +1018,14 @@ BEGIN
         HORZGUIDE, 20
     END
 
+    IDD_SAPREFS6, DIALOG
+    BEGIN
+    END
+
+    IDD_SAPREFS7, DIALOG
+    BEGIN
+    END
+
     IDD_HANDLIST, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -1092,10 +1088,9 @@ BEGIN
         HORZGUIDE, 80
         HORZGUIDE, 90
         HORZGUIDE, 96
-        HORZGUIDE, 100
+        HORZGUIDE, 97
         HORZGUIDE, 112
         HORZGUIDE, 120
-        HORZGUIDE, 145
         HORZGUIDE, 166
     END
 
@@ -1176,6 +1171,10 @@ BEGIN
         HORZGUIDE, 149
     END
 
+    IDD_SAPREFS18, DIALOG
+    BEGIN
+    END
+
     IDD_SAPREFS19, DIALOG
     BEGIN
         VERTGUIDE, 4
@@ -1187,10 +1186,12 @@ BEGIN
 
     IDD_SAPREFS20, DIALOG
     BEGIN
-        RIGHTMARGIN, 219
+        RIGHTMARGIN, 351
         VERTGUIDE, 4
-        VERTGUIDE, 100
-        VERTGUIDE, 139
+        VERTGUIDE, 107
+        VERTGUIDE, 146
+        VERTGUIDE, 236
+        VERTGUIDE, 240
         BOTTOMMARGIN, 270
         HORZGUIDE, 18
         HORZGUIDE, 33
@@ -1214,7 +1215,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
     ID_INDICATOR_STATUS_COMCARDS "ComCards"
@@ -1227,13 +1228,13 @@ BEGIN
     ID_INDICATOR_FORMULA_CURPOS "current row"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_APP_TITLE       "OpenHoldem"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -1243,7 +1244,7 @@ BEGIN
     ID_INDICATOR_REC        "REC"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_NEW             "Default formula\nNew"
     ID_FILE_OPEN            "Open an existing formula\nOpen"
@@ -1252,20 +1253,20 @@ BEGIN
     ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
     ID_EDIT_VIEWLOG         "View the log-file of the current OpenHoldem-instance"
     ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_MRU_FILE1       "Open this document"
     ID_FILE_MRU_FILE2       "Open this document"
@@ -1285,18 +1286,18 @@ BEGIN
     ID_FILE_MRU_FILE16      "Open this document"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
     ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
@@ -1311,7 +1312,7 @@ BEGIN
     ID_EDIT_REDO            "Redo the previously undone action\nRedo"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCSIZE          "Change the window size"
     AFX_IDS_SCMOVE          "Change the window position"
@@ -1323,20 +1324,20 @@ BEGIN
     ID_INDICATOR_STATUS_PLCARDS "plcards"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_EDIT_FORMULA         "Edit the current formula\nEdit"
     ID_EDIT_PREFERENCES     "Edit preferences\nPreferences"
     ID_BUTTON32776          "New List/UDF"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_BUTTON32785          "Change Font"
     ID_BUTTON32790          "Delete List/UDF"
@@ -1344,7 +1345,7 @@ BEGIN
     ID_BUTTON32792          "Formula Settings"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FORMULA_TOOLBAR_NEW  "New"
     ID_FORMULA_TOOLBAR_RENAME "Rename"
@@ -1352,14 +1353,14 @@ BEGIN
     ID_FORMULA_TOOLBAR_SETTINGS "Settings"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_AUTOPLAYER "Engage autoplayer\nAutoplayer"
     ID_MAIN_TOOLBAR_FORMULA "Edit the formula\nEdit"
     ID_DLL_LOAD             "Load the pre-defined DLL "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_VALIDATOR "Enable validator\nValidator"
     ID_HELP_PROBLEMSOLVER   "Detects the most common beginner-mistakes. Give it a try ;-)"
@@ -1370,7 +1371,7 @@ BEGIN
     ID_HELP_FORUMS          "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_ATTACH_TOP "Attach to top of poker table\nAttach top"
     ID_MAIN_TOOLBAR_MINMAX  "Show/hide table info\nShow/hide"
@@ -1378,21 +1379,21 @@ BEGIN
                             "Attach to bottom of poker table\nAttach bottom"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
     ID_VIEW_SCRAPEROUTPUT   "View images that get captured by the scraper-engine"
     ID_DLL_LOADSPECIFICFILE "Prompt the user for a DLL to load"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
     ID_VIEW_SHOOTREPLAYFRAME 
                             "Shoot an image of the current table-view for later inspection with OHReplay"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_PERL_LOADFORMULA     "Load the mostt recent Perl formula"
     ID_PERL_LOADSPECIFICFORMULA "Select a Perl formula to load"
@@ -1401,12 +1402,12 @@ BEGIN
     ID_PERL_CHECKSYNTAX     "Check the most recent formula for errors"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_HELP_FORCECRASH      "Force a crash for testing purposes"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -1414,17 +1415,15 @@ END
 // English (Canada) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator
 //
 
-IDR_FORMULA_EDIT_ACC ACCELERATORS 
+IDR_FORMULA_EDIT_ACC ACCELERATORS
 BEGIN
     VK_F2,          ID_TOGGLE_BOOKMARK,     VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_GOTO_NEXT_BOOKMARK,  VIRTKEY, NOINVERT
@@ -1439,7 +1438,7 @@ BEGIN
     "F",            ID_FORMULA_EDIT_FIND,   VIRTKEY, CONTROL, NOINVERT
 END
 
-IDR_FORMULA_DIALOG_ACC ACCELERATORS 
+IDR_FORMULA_DIALOG_ACC ACCELERATORS
 BEGIN
     "F",            ID_FORMULA_EDIT_FIND,   VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_FORMULA_EDIT_FIND_NEXT, VIRTKEY, NOINVERT

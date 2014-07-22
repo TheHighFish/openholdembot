@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 // MainFrm.cpp : implementation of the CMainFrame class
 //
@@ -78,6 +78,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	// Menu updates
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, &CMainFrame::OnUpdateMenuFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
+  ON_UPDATE_COMMAND_UI(ID_EDIT_FORMULA, &CMainFrame::OnUpdateMenuFileEdit)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
@@ -255,31 +256,30 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMainFrame message handlers
 
-void CMainFrame::OnEditFormula() 
-{
-	if (m_formulaScintillaDlg) 
-	{
-		if (m_formulaScintillaDlg->m_dirty)
-		{
+void CMainFrame::OnEditFormula() {
+	if (m_formulaScintillaDlg) {
+		if (m_formulaScintillaDlg->m_dirty)	{
 			if (OH_MessageBox_Interactive(
-				"The Formula Editor has un-applied changes.\n"
-				"Really exit?", 
-				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
-			{
+				  "The Formula Editor has un-applied changes.\n"
+				  "Really exit?", 
+				  "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO) {
 				p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 				return;
 			}
 		}
-
-		BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
-
-		m_formulaScintillaDlg->DestroyWindow();
-
-		if (bWasShown)
+    BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
+    m_formulaScintillaDlg->DestroyWindow();
+    if (bWasShown)
+    {
 			return;
+    }
 	}
-
-	m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
+  if (p_autoplayer->autoplayer_engaged()) {
+    // The menu item Edit->Formula is disabled,
+    // this is just an extra failsafe.
+    return;
+  }
+  m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
 	m_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
 	m_formulaScintillaDlg->ShowWindow(SW_SHOW);
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
@@ -298,6 +298,7 @@ void CMainFrame::OnEditTagLog()
 {
 	write_log(k_always_log_basic_information,
 		"[*** ATTENTION ***] User tagged this situation for review\n");
+  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_TAGLOGFILE, false);
 }
 
 // Menu -> Edit -> View Scraper Output
@@ -412,7 +413,7 @@ BOOL CMainFrame::DestroyWindow()
 	WINDOWPLACEMENT wp;
 
 	//unload dll
-	p_dll_extension->UnloadDll();
+	p_dll_extension->Unload();
 
 	StopThreads();
 
@@ -574,24 +575,21 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI)
 
 void CMainFrame::OnDllLoad() 
 {
-	if (p_dll_extension->IsDllLoaded())
-		p_dll_extension->UnloadDll();
+	if (p_dll_extension->IsLoaded())
+		p_dll_extension->Unload();
 	else
-		p_dll_extension->LoadDll("");
+		p_dll_extension->Load("");
 }
 
-void CMainFrame::OnDllLoadspecificfile()
-{
+void CMainFrame::OnDllLoadspecificfile() {
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = preferences.path_dll();
 	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
-	if (cfd.DoModal() == IDOK) 
-	{
-		p_dll_extension->UnloadDll();
-		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
+	if (cfd.DoModal() == IDOK) {
+		p_dll_extension->Load(cfd.m_ofn.lpstrFile);
 		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
 	}
 }
@@ -727,31 +725,29 @@ void CMainFrame::OnPerlCheckSyntax()
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Menu updaters
 
-void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateMenuFileNew(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
-{
-	if (p_dll_extension->IsDllLoaded())
+void CMainFrame::OnUpdateMenuFileEdit(CCmdUI* pCmdUI) {
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+}
+
+void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI) {
+	if (p_dll_extension->IsLoaded()) {
 		pCmdUI->SetText("&Unload\tF4");
-
-	else
+  } else {
 		pCmdUI->SetText("&Load\tF4");
-
+  }
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(p_dll_extension->IsDllLoaded()
-		&& !p_autoplayer->autoplayer_engaged());
+void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 
@@ -831,6 +827,7 @@ void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
 
 void CMainFrame::OnHelp()
 {
+  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_HELP, false);
 	OpenHelpFile("OpenHoldem_Manual.chm");
 }
 

@@ -1,11 +1,11 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Not really a symbol-engine, 
 //   but a good way to get important events logged.
@@ -40,8 +40,8 @@ void CSymbolEngineEventLogging::ResetOnConnection()
 void CSymbolEngineEventLogging::ResetOnHandreset()
 {
 	int player_card_cur[2] = {0};
-  player_card_cur[0] = p_table_state->_players[USER_CHAIR].hole_cards[0].GetValue();
-	player_card_cur[1] = p_table_state->_players[USER_CHAIR].hole_cards[1].GetValue();
+  player_card_cur[0] = p_table_state->User()->_hole_cards[0].GetValue();
+	player_card_cur[1] = p_table_state->User()->_hole_cards[1].GetValue();
 
   //!!! ToLogString
 	char card0[10];

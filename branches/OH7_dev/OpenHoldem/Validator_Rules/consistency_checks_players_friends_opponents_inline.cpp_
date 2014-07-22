@@ -25,8 +25,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If buttons are visible (it's my turn), there must be at least 1 opponent playing.")
     PRECONDITION (gws("ismyturn"))
-    POSTCONDITION ((int(gws("opponentsplayingbits")) != 0) && (int(gws("nopponentsplaying") > 0)))
-    SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, nopponentsplayingbits, nopponentsplaying")
+    POSTCONDITION ((int(gws("opponentsplayingbits")) != 0) && (int(gws("nopponentsplaying") > 0)) && (int(gws("nopponentsdealt") > 0)))
+    SYMBOLS_POSSIBLY_AFFECTED ("ismyturn, nopponentsplayingbits, nopponentsplaying nopponentsdealt")
 END_TESTCASE
 
 

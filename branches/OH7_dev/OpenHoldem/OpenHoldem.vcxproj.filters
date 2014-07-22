@@ -172,6 +172,9 @@
     <Filter Include="Header Files\Symbols\ToDo">
       <UniqueIdentifier>{6220de77-6c73-4d28-b85f-15ad2e3e35a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI\Other Dialogs">
+      <UniqueIdentifier>{b630c49d-cbec-4435-a417-723d6cffc4d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -522,9 +525,6 @@
     <ClCompile Include="CIteratorThread.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
-    <ClCompile Include="CIteratorVars.cpp">
-      <Filter>Source Files\PrWin</Filter>
-    </ClCompile>
     <ClCompile Include="PrWinHandranges.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
@@ -653,6 +653,9 @@
     </ClCompile>
     <ClCompile Include="DialogSAPrefs7.cpp">
       <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClCompile>
+    <ClCompile Include="CWhiteInfoBox.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1120,34 +1123,7 @@
     <ClInclude Include="CSymbolEngineVariousDataLookup.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
-    <ClInclude Include="COpenHoldemStatusbar.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="COpenHoldemTitle.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogFormulaScintilla.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogHandList.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogNew.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogRename.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogScraperOutput.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenHoldemView.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="ScintillaWnd.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="VerifyFunctionAndListNames.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="DialogSAPrefs10.h">
@@ -1291,9 +1267,6 @@
     <ClInclude Include="CIteratorThread.h">
       <Filter>Header Files\PrWin</Filter>
     </ClInclude>
-    <ClInclude Include="CIteratorVars.h">
-      <Filter>Header Files\PrWin</Filter>
-    </ClInclude>
     <ClInclude Include="PrWinHandranges.h">
       <Filter>Header Files\PrWin</Filter>
     </ClInclude>
@@ -1425,6 +1398,36 @@
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="COpenHoldemStatusbar.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogFormulaScintilla.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogHandList.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogNew.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogRename.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogScraperOutput.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenHoldemView.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ScintillaWnd.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="VerifyFunctionAndListNames.h">
+      <Filter>Header Files\GUI\Other Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="CWhiteInfoBox.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="DialogSAPrefs7.h">
       <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>

@@ -1,11 +1,11 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
@@ -13,7 +13,7 @@
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "StdAfx.h"
 #include "CScraper.h"
@@ -60,16 +60,6 @@ CScraper::~CScraper(void)
 {
 	__TRACE
 	ClearScrapeAreas();
-}
-
-const double CScraper::player_balance(int n) 
-{ 
-	__TRACE
-	RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0);
-
-	write_log(preferences.debug_scraper(), 
-		"[CScraper] player_balance(%i) = %f\n", n, _player_balance[n]);
-	return _player_balance[n]; 
 }
 
 const CString CScraper::extractHandnumFromString(CString t)
@@ -295,13 +285,11 @@ void CScraper::ScrapeSeatedActive()
 	}
 }
 
-void CScraper::ScrapeBetsBalances()
-{
+void CScraper::ScrapeBetsBalances() {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
+	for (int i=0; i<k_max_number_of_players; i++) {
 		set_player_bet(i, 0.0);
-		set_player_balance(i, 0.0);
+    p_table_state->_players[i]._balance = 0.0;
 	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
@@ -588,7 +576,7 @@ void CScraper::ScrapePlayerCards(int chair) {
 		} else {
 			card = ScrapeCard(card_name);
 		}
-    p_table_state->_players[chair].hole_cards[i].SetValue(card);
+    p_table_state->_players[chair]._hole_cards[i].SetValue(card);
 	}
   p_table_state->_players[chair].CheckPlayerCardsForConsistency();
 }
@@ -641,118 +629,83 @@ bool CScraper::IsCommonAnimation(void) {
 void CScraper::ClearAllPlayerNames()
 {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		set_player_name(i, "");
+	for (int i=0; i<k_max_number_of_players; i++) {
+    p_table_state->_players[i]._name = "";
 	}
 }
 
-void CScraper::ScrapeName(int chair) 
-{
+void CScraper::ScrapeName(int chair) {
 	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
 
-	bool				got_new_scrape = false;
-	CString				text = "";
 	CString				result;
-	CTransform			trans;
 	CString				s = "";
 
 	// Player name uXname
 	s.Format("u%dname", chair);
 	EvaluateRegion(s, &result);	
-	write_log(preferences.debug_scraper(), "[CScraper] u%dname, result %s\n", chair, text.GetString());
-	if (result != "")
-	{
-		set_player_name(chair, result);
+	write_log(preferences.debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
+	if (result != "")	{
+    p_table_state->_players[chair]._name = result;
 		return;
 	}
 	// Player name pXname
 	s.Format("p%dname", chair);
 	EvaluateRegion(s, &result);
-	write_log(preferences.debug_scraper(), "[CScraper] p%dname, result %s\n", chair, text.GetString());
-	if (result != "")
-	{
-		set_player_name(chair, result);
+	write_log(preferences.debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
+	if (result != "") {
+		p_table_state->_players[chair]._name = result;
+    return;
 	}
+}
+
+double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
+  CString	name;
+  CString text;
+  assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
+  name.Format("%c%dbalance", scrape_u_else_p, chair);
+  if (EvaluateRegion(name, &text)) {
+		if (p_string_match->IsStringAllin(text)) {
+      return 0.0;
+			write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
+		}
+		else if (text.MakeLower().Find("out")!=-1) {
+			set_sitting_out(chair, true);
+			set_active(chair, "false");
+			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT\n", name);
+      return k_undefined;
+		}	else {
+			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
+			if (text!="" && p_string_match->IsNumeric(text)) {
+        CTransform trans;
+        double result = trans.StringToMoney(text);
+			  write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
+        return result;
+      }
+		}
+	}
+  return k_undefined;
 }
 
 void CScraper::ScrapeBalance(int chair)
 {
 	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
+  // balance can be "OUT"
+  // but this is a bad place 
+  set_sitting_out(chair, false); //!!!
 
-	bool				got_new_scrape = false;
-	CString				text = "";
-	CTransform			trans;
-	int					ret = 0;
-	bool				is_seated = p_string_match->IsStringSeated(_seated[chair]);
-	CString				s = "";
-
-	int	sym_chair = p_symbol_engine_userchair->userchair();
-
-	got_new_scrape = false;
-
-	set_sitting_out(chair, false);
-
-	// Player name uXbalance
-	s.Format("u%dbalance", chair);
-	if (EvaluateRegion(s, &text))
-	{
-		if (p_string_match->IsStringAllin(text))
-		{
-			got_new_scrape = true;
-			text = "0";
-
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result ALLIN", chair);
-		}
-		else if (text.MakeLower().Find("out")!=-1)
-		{
-			set_sitting_out(chair, true);
-			set_active(chair, "false");
-
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result OUT\n", chair);
-		}
-		else
-		{
-			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
-			if (text!="" && p_string_match->IsNumeric(text))
-				got_new_scrape = true;
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
-		}
-	}
-
-	// Player balance pXbalance
-	s.Format("p%dbalance", chair);
-	if (EvaluateRegion(s, &text))
-	{
-		if (p_string_match->IsStringAllin(text))
-		{
-			got_new_scrape = true;
-			text = "0";
-
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result ALLIN\n", chair);
-		}
-		else if (text.MakeLower().Find("out")!=-1)
-		{
-			set_sitting_out(chair, true);
-			set_active(chair, "false");
-
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result OUT\n", chair);
-		}
-		else
-		{
-			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
-			if (text!="" && p_string_match->IsNumeric(text))
-				got_new_scrape = true;
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
-		}
-	}
-
-	if (got_new_scrape)
-	{
-		set_player_balance(chair, trans.StringToMoney(text));
-	}
+  // Scrape uXbalance and pXbalance
+  double result = ScrapeUPBalance(chair, 'p');
+  if (result >= 0) {
+    p_table_state->_players[chair]._balance = result;
+    return;
+  }
+  result = ScrapeUPBalance(chair, 'u');
+  if (result >= 0) {
+    p_table_state->_players[chair]._balance = result;
+    return;
+  }
 }
 
 void CScraper::ScrapeBet(int chair)
@@ -819,14 +772,11 @@ void CScraper::ClearScrapeAreas(void) {
     p_table_state->_common_cards[i].ClearValue();
   }
 	for (int i=0; i<k_max_number_of_players; i++) {
-    p_table_state->_players[i].hole_cards[0].ClearValue();
-    p_table_state->_players[i].hole_cards[1].ClearValue();
+    p_table_state->_players[i].Reset();
 		set_seated(i, "false");
 		set_active(i, "false");
 		set_dealer(i, false);
 		set_player_bet(i, 0.0);
-		set_player_name(i, "");
-		set_player_balance(i, 0.0);
 		set_i86X_button_state(i, "false");
 		set_button_state(i, "false");
 		set_button_label(i, "");
@@ -862,7 +812,7 @@ void CScraper::ScrapeAllPlayerCards() {
 	__TRACE
 	for (int i=0; i<k_max_number_of_players; i++){
 		for (int j=0; j<k_number_of_cards_per_player; j++) {
-			p_table_state->_players[i].hole_cards[j].ClearValue();
+			p_table_state->_players[i]._hole_cards[j].ClearValue();
 		}
 	}
 	write_log(preferences.debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");

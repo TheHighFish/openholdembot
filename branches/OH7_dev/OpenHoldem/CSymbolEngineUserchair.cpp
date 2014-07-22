@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineUserchair.h"
@@ -72,7 +72,7 @@ bool CSymbolEngineUserchair::IsNotShowdown() {
 }
 
 void CSymbolEngineUserchair::CalculateUserChair() {
-	if (userchair_confirmed() && p_table_state->_players[USER_CHAIR].HasKnownCards()) {
+	if (userchair_confirmed() && p_table_state->User()->HasKnownCards()) {
 		write_log(preferences.debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Known cards for known chair. Keeping userchair as is\n");
 	}	else {

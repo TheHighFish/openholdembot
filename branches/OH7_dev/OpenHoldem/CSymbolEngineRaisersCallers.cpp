@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineRaisersCallers.h"
@@ -98,7 +98,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 	{
 		return 0.0;
 	}
-	if (p_table_state->_players[USER_CHAIR].HasKnownCards())
+	if (p_table_state->User()->HasKnownCards())
 	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)
@@ -252,6 +252,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	_nopponentsfolded   = 0;
 	_nopponentschecking = 0;
 
+  assert(p_tablemap->nchairs() <= k_max_number_of_players);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);

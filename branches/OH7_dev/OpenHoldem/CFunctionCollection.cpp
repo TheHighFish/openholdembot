@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CFunctionCollection.h"
@@ -105,13 +105,16 @@ double CFunctionCollection::Evaluate(CString function_name, bool log /* = false 
 
 CString CFunctionCollection::DLLPath() {
   CSLock lock(m_critsec);
+  // First try upper-cases
   COHScriptObject *dll_node = LookUp("DLL");
+  if (dll_node == NULL) {
+    // If not found try lower-cases
+    dll_node = LookUp("dll");
+  }
   if (dll_node == NULL) {
 	  return "";
   }
   CString dll_path = dll_node->function_text();
-  // Remove "##DLL##"
-  dll_path.Delete(0, 7);
   dll_path.Trim();
   return dll_path;
 }
@@ -157,9 +160,23 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
 	  || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
   {
-    // f$check and f$fold should evaluate to true per default
-    // for auto-check-folding instead of time-outs.
-    function_text = "1 "; 
+    function_text = 
+      "// f$check and f$fold should evaluate to true per default\n"
+      "// for auto-check-folding instead of time-outs.\n"
+      "1 "; 
+  }
+  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
+    function_text = 
+      "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
+      "// Works even with \"no opponents\".\n"
+      "nopponentsplaying + 1 ";
+  }
+  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
+    function_text = 
+      "// \"Reasonable\" default to get PrWin running for beginners.\n"
+      "// Large enough to get usable results,\n"
+      "// small enough to save CPU-time.\n"
+      "1000 ";
   }
   else {
     // Add an empty function.

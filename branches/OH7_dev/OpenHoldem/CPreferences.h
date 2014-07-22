@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_CPREFERENCES_H_
 #define INC_CPREFERENCES_H_
@@ -82,12 +82,12 @@ enum
 	k_prefs_debug_openholdem,
 	k_prefs_debug_popup_blocker,
   k_prefs_debug_formula,
+  k_prefs_debug_versus,
 	k_prefs_engage_autoplayer,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
 	k_prefs_replay_record_every_change_playing,
 	k_prefs_replay_record_every_change,
-	k_prefs_log_symbol_enabled,
 	k_prefs_log_basic_info,
 	k_prefs_log_errors_and_warnings,
 	k_prefs_trace_enabled,
@@ -100,7 +100,6 @@ enum
 	k_prefs_validator_shoot_replayframe_on_error,
 	k_prefs_autoconnector_close_when_table_disappears,
 	k_prefs_gui_start_minimized, 
-	k_prefs_gui_disable_progress_dialog,
 	k_prefs_rebuy_condition_no_cards,
 	k_prefs_rebuy_condition_change_in_handnumber,
 	k_prefs_rebuy_condition_heuristic_check_for_occlusion,
@@ -120,7 +119,6 @@ enum
 	k_prefs_scrape_delay,
 	k_prefs_chat_min_delay,
 	k_prefs_chat_random_delay,
-	k_prefs_log_symbol_max_log,
 	k_prefs_log_max_logsize,
 	k_prefs_formula_x,	
 	k_prefs_formula_y,
@@ -216,9 +214,6 @@ public:
 	//  PokerChat
 	const int chat_min_delay() { return prefs_numerical_values[k_prefs_chat_min_delay]; }
 	const int chat_random_delay() { return prefs_numerical_values[k_prefs_chat_random_delay]; }
-	// Log Symbol
-	const bool log_symbol_enabled() { return prefs_numerical_values[k_prefs_log_symbol_enabled]; }
-	const int log_symbol_max_log() { return prefs_numerical_values[k_prefs_log_symbol_max_log]; }
 	
 	// Logging and debugging
 	const bool disable_msgbox() { return prefs_numerical_values[k_prefs_disable_msgbox]; }
@@ -268,6 +263,7 @@ public:
 	const bool  debug_popup_blocker()  { return prefs_numerical_values[k_prefs_debug_popup_blocker]; }
 	const bool  debug_scraper_preprocessor() { return prefs_numerical_values[k_prefs_debug_scraper_preprocessor]; }
   const bool  debug_formula() { return prefs_numerical_values[k_prefs_debug_formula]; }
+  const bool  debug_versus() { return prefs_numerical_values[k_prefs_debug_versus]; }
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
@@ -294,7 +290,6 @@ public:
 	const bool autoconnector_close_when_table_disappears() { return prefs_numerical_values[k_prefs_autoconnector_close_when_table_disappears]; }
 	// GUI
 	const bool gui_start_minimized() { return prefs_numerical_values[k_prefs_gui_start_minimized]; }
-	const bool gui_disable_progress_dialog() { return prefs_numerical_values[k_prefs_gui_disable_progress_dialog]; }
 	// Rebuy
 	const bool rebuy_condition_no_cards() { return prefs_numerical_values[k_prefs_rebuy_condition_no_cards]; }
 	const bool rebuy_condition_change_in_handnumber() { return prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber]; }

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -31,10 +31,11 @@
 
 #include "CPerl.hpp"
 
-#include "CScraper.h"
+#include "CDllExtension.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
-#include "CDllExtension.h"
+#include "CScraper.h"
+#include "CTableState.h"
 #include "OH_MessageBox.h"
 
 using namespace std;
@@ -105,7 +106,7 @@ static void gwt(char* the_ResultString)
 static void gwp(int the_PlayerName, char* the_ResultString)
 {
 	//	We assume a buffer of 80 chars on Perl side.
-	sprintf_s(the_ResultString, 80, "%s", p_scraper->player_name(the_PlayerName % 10));
+	sprintf_s(the_ResultString, 80, "%s", p_table_state->_players[the_PlayerName % 10]._name);
 }
 
 

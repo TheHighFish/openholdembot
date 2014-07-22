@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CPreferences.h"
@@ -72,12 +72,12 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_openholdem",
 	"debug_popup_blocker",
   "debug_formula",
+  "debug_versus",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
 	"replay_record_every_change_playing",
 	"replay_record_every_change",
-	"log_symbol_enabled",
 	"log_basic_info",
 	"log_errors_and_warnings",
 	"trace_enabled",
@@ -90,7 +90,6 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"validator_shoot_replayframe_on_error",
 	"autoconnector_close_when_table_disappears",
 	"gui_start_minimized", 
-	"gui_disable_progress_dialog",
 	"rebuy_condition_no_cards",
 	"rebuy_condition_change_in_handnumber",
 	"rebuy_condition_heuristic_check_for_occlusion",
@@ -110,7 +109,6 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"scrape_delay",
 	"chat_min_delay",
 	"chat_random_delay",
-	"log_symbol_max_log",
 	"log_max_logsize",
 	"formula_x",	
 	"formula_y",
@@ -237,7 +235,6 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_replay_max_frames] = 100;
 	prefs_numerical_values[k_prefs_chat_min_delay] = 600;		//  seconds
 	prefs_numerical_values[k_prefs_chat_random_delay] = 3000;	//  seconds;
-	prefs_numerical_values[k_prefs_log_symbol_max_log] = 5;
 	prefs_numerical_values[k_prefs_log_max_logsize] = 10;		// MB
 	prefs_numerical_values[k_prefs_validator_enabled] = 1;		// 0 = disabled; 1 = when it's my turn; 2 = always
 	prefs_numerical_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;

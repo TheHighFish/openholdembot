@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "StdAfx.h"
 #include "CAutoplayer.h"
@@ -176,12 +176,12 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		if (i == k_autoplayer_function_betsize)
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
 				k_standard_function_names[i], Number2CString(function_result));
 		}
 		else
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
 				k_standard_function_names[i], Bool2CString(function_result));
 		}
 		if (function_result)
@@ -349,8 +349,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 
 #define ENT CSLock lock(m_critsec);
 	
-void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) 
-{ 
+void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) { 
 	ENT 
 	__TRACE
 	// Set correct button state
@@ -366,9 +365,13 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not)
 			// Invalid formula
 			// Can't autoplay
 			to_be_enabled_or_not = false;
-			p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-		}
+    }
 	}
+  if (to_be_enabled_or_not) {
+    p_flags_toolbar->ResetButtonsOnAutoplayerOn();
+  } else {
+    p_flags_toolbar->ResetButtonsOnAutoplayerOff();
+  }
 	// Set valuie at the very last to be extra safe
 	// and avoid problems with multiple threads
 	// despite we use synchronization ;-)
@@ -438,9 +441,9 @@ bool CAutoplayer::DoAllin(void)
 	else
 	{
 		// Fourth case (default = 0): swagging the balance
-		int userchair = p_symbol_engine_userchair->userchair();
+    int userchair = p_symbol_engine_userchair->userchair();
 		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
-			+ p_symbol_engine_chip_amounts->balance(userchair); 
+			+ p_table_state->User()->_balance; 
 		success = p_casino_interface->EnterBetsize(betsize_for_allin);
 	}
 	if (success)
@@ -505,17 +508,15 @@ void CAutoplayer::DoAutoplayer(void)
 }
 
 
-bool CAutoplayer::DoSwag(void) 
-{
+bool CAutoplayer::DoSwag(void) {
 	__TRACE
-	if (p_autoplayer_functions->f$betsize() > 0)
-	{
+	if (p_autoplayer_functions->f$betsize() > 0) 	{
 		int success = p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
-		if (success)
-		{
+		if (success) {
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
+    return false;
 	}
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
 	return false;
@@ -526,7 +527,7 @@ bool CAutoplayer::DoPrefold(void)
 {
 	__TRACE
 	assert(p_autoplayer_functions->f$prefold() != 0);
-	if (!p_table_state->_players[USER_CHAIR].HasKnownCards())
+	if (!p_table_state->User()->HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");

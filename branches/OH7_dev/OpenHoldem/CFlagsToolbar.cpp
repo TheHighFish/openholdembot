@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CFlagsToolbar.h"
@@ -46,21 +46,29 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 CFlagsToolbar::~CFlagsToolbar()
 {}
 
-void CFlagsToolbar::DisableButtonsOnConnect()
-{
-	// Disable buttons, menu items
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
+void CFlagsToolbar::ResetButtonsOnConnect() {
+	ResetButtonsOnAutoplayerOff();
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
 }
 
-void CFlagsToolbar::EnableButtonsOnDisconnect()
-{
-	// Reset toolbar/menu button state
+void CFlagsToolbar::ResetButtonsOnDisconnect() {
+  ResetButtonsOnAutoplayerOff();
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
+	
+}
+
+void CFlagsToolbar::ResetButtonsOnAutoplayerOn() {
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, false);
+	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, false);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_EDIT_FORMULA, false);
+  CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+}
+
+void CFlagsToolbar::ResetButtonsOnAutoplayerOff() {
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_NEW, true);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_FILE_OPEN, true);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_EDIT_FORMULA, true);
+  CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 }
 
 bool CFlagsToolbar::GetFlag(int flag_number)

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CParseTreeNode.h"
@@ -196,6 +196,7 @@ double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
   // due to naming conflict with mathematical function
   double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log_symbol);
     switch (_node_type) {
+    case kTokenOperatorUnaryMinus:     return (0 - value_of_first_sibbling);
     case kTokenOperatorLog:            return log(value_of_first_sibbling);		
     case kTokenOperatorLogicalNot:     return !value_of_first_sibbling;
     case kTokenOperatorBinaryNot:      return ~ ((unsigned long)value_of_first_sibbling);

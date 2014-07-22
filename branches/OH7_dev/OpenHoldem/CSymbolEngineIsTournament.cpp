@@ -1,16 +1,16 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Detecting if we play a tournament, especially
 //   to enable / disable automatic blind-locking (stability) 
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineIsTournament.h"
@@ -25,6 +25,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
@@ -135,7 +136,7 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike()
 	double sum_of_all_cips = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		sum_of_all_cips += p_symbol_engine_chip_amounts->balance(i);
+		sum_of_all_cips += p_table_state->_players[i]._balance;
 		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
 	}
 	if (sum_of_all_cips != int(sum_of_all_cips))

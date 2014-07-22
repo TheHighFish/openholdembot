@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "Singletons.h"
@@ -53,6 +53,7 @@
 #include "CTableState.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
+#include "CWhiteInfoBox.h"
 
 void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
@@ -150,6 +151,9 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create COpenHoldemTitle\n");
   assert(!p_openholdem_title);
   p_openholdem_title = new COpenHoldemTitle;
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CWhiteInfoBox\n");
+  assert(!p_white_info_box);
+  p_white_info_box = new CWhiteInfoBox;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
@@ -226,6 +230,7 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_occlusioncheck)
   DELETE_AND_CLEAR(p_rebuymanagement)
   DELETE_AND_CLEAR(p_engine_container)
+  DELETE_AND_CLEAR(p_white_info_box)
   DELETE_AND_CLEAR(p_openholdem_title)
   DELETE_AND_CLEAR(p_popup_handler)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");

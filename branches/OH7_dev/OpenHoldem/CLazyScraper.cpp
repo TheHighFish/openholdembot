@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CLazyScraper.h"
@@ -22,6 +22,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "debug.h"
 
 CLazyScraper *p_lazyscraper = NULL;
@@ -224,7 +225,7 @@ void CLazyScraper::ScrapeUnknownPlayerNames()
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper_access->IsPlayerSeated(i) 
-			&& (p_scraper->player_name(i) == ""))
+			&& (p_table_state->_players[i]._name == ""))
 		{
 			p_scraper->ScrapeName(i);
 		}

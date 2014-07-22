@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #ifndef INC_CSYMBOLENGINEHISTORY_H
 #define INC_CSYMBOLENGINEHISTORY_H
@@ -48,11 +48,16 @@ public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
 	double nbetsround(int betround)		{ return _nbetsround[betround]; }
-	int didchec(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_check]; }
+  // Didchec can only be 0 or 1 poker-logically,
+  // but the counter might be > 0 if the autoplayer did act more than once
+  // or if the user scraped check- and call-buttons incorrectly.
+	int didchec(int betround)	{ 
+    return ((_autoplayer_actions[betround][k_autoplayer_function_check] > 0) ? 1:0) ; 
+  }
 	int didcall(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_call]; }
 	int didrais(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_raise]; }
 	int didswag(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_betsize]; }
-	int prevaction()					{ return _prevaction; }
+	int prevaction()			    		{ return _prevaction; }
 public:
 	void RegisterAction(int autoplayer_action_code);
 private:

@@ -1,4 +1,12 @@
-v5.0.1 2014-xx-yy
+v5.0.3 2014-07-18
+==================
+- OpenHoldem and OpenScrape could crash when evaluating ttlimits,
+  as a very rarely executed branch of the code had a missing 
+  pointer-dereference, but the code was compileable anyway.
+  Thanks to SuperBlak for reporting and for providing replay-frames and TM.
+  [THF]
+
+v5.0.1 2014-07-05
 ==================
 NEW STUFF: 
 - support fr pXcardfaceYnocard and c0cardfaceXbocard regions

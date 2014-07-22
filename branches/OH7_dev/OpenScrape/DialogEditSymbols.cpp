@@ -87,10 +87,12 @@ void CDlgEditSymbols::OnBnClickedOk()
 	OnOK();
 }
 
+// Making this variable global, because we had problems with corrupt data
+CString	results;
 
 void CDlgEditSymbols::OnBnClickedParsebutton()
 {
-	CString				results, text, format;
+	CString text, format;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CTransform			trans;
 

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -90,7 +90,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
 	for (int i=0; i<k_max_number_of_players; ++i)	{
-    if (p_table_state->_players[i].HasKnownCards()) {
+    if (p_table_state->_players[i].HasAnyCards()) {
 			_playersplayingbits |= (1<<i);			
 		}
 	}
@@ -153,7 +153,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 			if (p_scraper_access->IsPlayerActive(chair_to_consider))
 			{
 				this_player_got_dealt = true;
-        if (p_table_state->_players[chair_to_consider].HasAnyCards())
+        if (p_table_state->User()->HasAnyCards())
 				{
 					first_non_blind_with_cards_found = true;
 				}
@@ -162,7 +162,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		else
 		{
 			assert(first_non_blind_with_cards_found);
-      if (p_table_state->_players[chair_to_consider].HasAnyCards())
+      if (p_table_state->User()->HasAnyCards())
 			{
 				this_player_got_dealt = true;
 			}

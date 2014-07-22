@@ -1,16 +1,16 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose: Providing higher-level accessors to the data
 //  of the CScraper-class like "UserHasCards()".
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CScraperAccess.h"
@@ -22,6 +22,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTableMapAccess.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 
@@ -340,7 +341,7 @@ bool CScraperAccess::IsPlayerSeated(int player)
 
 bool CScraperAccess::IsGoodPlayername(int chair)
 {
-	CString playername = p_scraper->player_name(chair);
+	CString playername = p_table_state->_players[chair]._name;
 	int length = playername.GetLength();
 	if (length == 0) 
 		return false;

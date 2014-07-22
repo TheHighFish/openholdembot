@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 #include "stdafx.h"
 #include "CDllExtension.h"
@@ -19,7 +19,6 @@
 #include "CHandresetDetector.h"
 #include "CHandHistory.h"
 #include "CIteratorThread.h"
-#include "CIteratorVars.h"
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"
 #include "CSymbolEngineVersus.h"
@@ -48,37 +47,29 @@ void CDllExtension::PassStateToDll(const SHoldemState *pstate)
 	(_process_message) ("state", pstate);
 }
 
-void CDllExtension::LoadDll(const char * path)
-{
-	CString		dll_path;
-
-	if (_hmod_dll != NULL)
-		return;
-
+void CDllExtension::Load(const char * path){
+  CString		dll_path;
+	if (IsLoaded()) {
+     Unload(); 
+  }
 	// try to load specific path if passed in as a parameter
-	if (strlen(path) > 0)
-	{
+	if (strlen(path) > 0) {
 		dll_path = path;
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (1) to %s\n", dll_path);
-	}
-	else
-	{
+	}	else {
 		// Nothing passed in, so we try the DLL of the formula
 		// and the DLL from preferences.
 		dll_path = p_function_collection->DLLPath();
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
-		if (dll_path == "")
-		{
+		if (dll_path == "") {
 			dll_path = preferences.dll_name().GetString();
 			write_log(preferences.debug_dll_extension(),
 				"[CDLLExtension] setting path (3) to %s\n", dll_path);
 		}
 	}
-
-	if (dll_path == "")
-	{
+	if (dll_path == "")	{
 		// Nothing to do
 		return;
 	}
@@ -87,8 +78,7 @@ void CDllExtension::LoadDll(const char * path)
 	DWORD dll_error = GetLastError();
 
 	// If the DLL didn't get loaded
-	if (_hmod_dll == NULL)
-	{
+	if (_hmod_dll == NULL) {
 		CString error_message;
 		error_message.Format("Unable to load DLL from:\n"
 			"%s\n"
@@ -97,7 +87,6 @@ void CDllExtension::LoadDll(const char * path)
 		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
 		return;
 	}
-
 	// Get address of process_message from dll
 	// user.dll, as defined in WinHoldem, does not ship with a .def file by default - we must use the ordinal method to get the address
 	//global.process_message = (process_message_t) GetProcAddress(global._hmod_dll, "process_message");
@@ -126,13 +115,14 @@ void CDllExtension::LoadDll(const char * path)
 	//(_process_message) ("history", p_handhistory->history());
 }
 
-void CDllExtension::UnloadDll(void)
+void CDllExtension::Unload(void)
 {
 	if (_hmod_dll==NULL)
 	{
 		return;
 	}
 	(_process_message) ("event", "unload");
+  assert(p_iterator_thread != NULL);
 	p_iterator_thread->set_prw1326_useme(0);
 	if (FreeLibrary(_hmod_dll))
 	{
@@ -140,7 +130,7 @@ void CDllExtension::UnloadDll(void)
 	}
 }
 
-const bool CDllExtension::IsDllLoaded()
+const bool CDllExtension::IsLoaded()
 {
 	return _hmod_dll != NULL;
 }
@@ -157,15 +147,8 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 	if (strcmp (str, "cmd$recalc") == 0)
 	{
 		// restart iterator thread
-		if (p_symbol_engine_prwin->nopponents_for_prwin() == 0)
-		{
-			iter_vars.set_iterator_thread_complete(true);
-		}
-		else
-		{
-      p_iterator_thread->RestartPrWinComputations();
-		}
-
+    p_iterator_thread->RestartPrWinComputations();
+		
 		// Recompute versus tables
 		p_symbol_engine_versus->GetCounts ();
 		iserr = false;
@@ -191,6 +174,7 @@ extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 
 extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 {
+  assert(p_iterator_thread != NULL);
 	return (void *)(p_iterator_thread->prw1326());
 }
 

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 /*
 	   Author	:	spud
@@ -38,6 +38,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
@@ -112,7 +113,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e) {
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
-			stacks[i] = p_symbol_engine_chip_amounts->balance(i);
+			stacks[i] = p_table_state->_players[i]._balance;
 			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
 		}
 	}

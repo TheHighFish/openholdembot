@@ -1,15 +1,15 @@
-//******************************************************************************
+//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*****************************************************************************
 
 
 #ifndef INC_CTABLEMAPACCESS_H
@@ -40,7 +40,7 @@ public:
 public:
 	// z$
 	// Usable for clientsize, clientsizemin and clientsizemax
-	bool SetClientSize(CString size_name, unsigned int &width, unsigned int &height);
+	bool SetClientSize(CString size_name, int &width, int &height);
 	unsigned int GetClientSize(CString size_name, dim dimension);
 
 	// functions below only for clientsize	
