@@ -11,6 +11,10 @@ BUG FIXES:
 - Improved the way if/when/what a DLL gets loaded.
   Thanks to BruceLee for pointing out some inconsistencies.
   [THF]
+- The symbols issuited, ispair and isconnector got broken by a code-improvement.
+  Thanks to Andrewex who reported that hand-lists got affected.
+  This has now been fixed.
+  [THF]
 
 MAINTENANCE:
 - Simplified the GUI further and removed the option to disable the progress-dialog,
