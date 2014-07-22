@@ -11,8 +11,11 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 4.5.0 or later
-//   * because we make use of the new symbol nopponentstruelyraising
+// Required OpenHoldem version: 4.4.0 or later
+//   * because we make use of the new f$init-functions
+//   * because we make use of the new msgbox$-symbol
+//   * because of new-style PT-naming
+//   * because we make use of the new hand$XYZ and board$XYZ symbols
 //
 // Contributors:
 //   Bob3456
@@ -21,7 +24,6 @@
 //   Dr.Kaktuz
 //   Efu
 //   Fn101
-//   Fqfq	
 //   Gecko
 //   JConner
 //   JokeDoke
@@ -143,7 +145,7 @@ f$OpenPPL_Fold
 //  OpenPPL - Card Constants
 //  ===========================
 //  
-//  Both ranks and suits according to the OpenHoldem docu
+//  Both ranks and suits accordint to the OpenHoldem docu
 //
 //*****************************************************************************
 
@@ -639,10 +641,10 @@ f$OpenPPL_HINT_Nothing_To_Do_But_All_OK
 me_re_MemBets
 
 ##f$OpenPPL_BigBlindSittingOut##
--1 + msgbox$BigBlindStittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_SmallBlindSittingOut##
--1 + msgbox$SmallBlindSittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 ##f$OpenPPL_BotCalledBeforeFlop##
 didcallround1
@@ -778,19 +780,6 @@ f$OpenPPL_Calls + nopponentscalling
 
 ##f$OpenPPL_Calls##
 me_re_MemCalls
-
-##f$OpenPPL_PT_LastCaller_Chair##
-// Can't be big blind (0), as it is for the first orbit preflop only
-f$OpenPPL_LastCallerPosition == 1 ? f$OpenPPL_SmallBlindChair :
-f$OpenPPL_LastCallerPosition == 2 ? f$OpenPPL_ButtonChair :
-f$OpenPPL_LastCallerPosition == 3 ? f$OpenPPL_CutOffChair :
-f$OpenPPL_LastCallerPosition == 4 ? f$OpenPPL_MiddlePosition3Chair :
-f$OpenPPL_LastCallerPosition == 5 ? f$OpenPPL_MiddlePosition2Chair :
-f$OpenPPL_LastCallerPosition == 6 ? f$OpenPPL_MiddlePosition1Chair :
-f$OpenPPL_LastCallerPosition == 7 ? f$OpenPPL_EarlyPosition3Chair :
-f$OpenPPL_LastCallerPosition == 8 ? f$OpenPPL_EarlyPosition2Chair :
-f$OpenPPL_LastCallerPosition == 9 ? f$OpenPPL_EarlyPosition1Chair :
-f$OpenPPL_HINT_No_LastCaller
 
 ##f$OpenPPL_LastRaiserCurrentBet##
 raischair == 0 ? currentbet0 :
@@ -1055,6 +1044,11 @@ me_re_MemRaises
 ##f$OpenPPL_NumberOfBlindRaisersInThisGame##
 [f$OpenPPL_AntesPresent ? 1 : 0] + [f$OpenPPL_MissingSmallBlind ? 1 : 2]
 
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind##
+// If we are in small-blind, there is 1 opponent "blind-raising",
+// And we also have to care about potential antes
+[(nopponentsraising - 1) - (f$OpenPPL_AntesPresent ? 1 : 0)]
+
 ##f$OpenPPL_NumberOfOpponentsLimpingPreflop##
 // First orbit preflop only
 // Does not count the user
@@ -1070,10 +1064,30 @@ me_re_MemRaises
 + [(currentbet8 == bblind) && (userchair != 8) && (f$OpenPPL_BigBlindChair != 8) ? 1 : 0]
 + [(currentbet9 == bblind) && (userchair != 9) && (f$OpenPPL_BigBlindChair != 9) ? 1 : 0]
 
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind##
+// If we are in big-blind, there *was* 1 opponent "blind-raising",
+// but he does no longer get counted, as he either did fold,
+// did call or did truely raise.
+// In big blind nopponentsraising does somewhat unexpectedly
+// call an open-limper as blind-raiser, so we have to adapt for that case.
+// Besides of that have to care about potential antes.
+(f$OpenPPL_NumberOfOpponentsLimpingPreflop >= 1) ? 
+  [nopponentsraising - 1 - (f$OpenPPL_AntesPresent ? 1 : 0)] :
+  [nopponentsraising - (f$OpenPPL_AntesPresent ? 1 : 0)]
+
+##f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds##
+// There are (usually) 2 blindraisers which should not get countet
+// And we also have to care about potential antes
+[ (nopponentsraising - 2) 
+- (f$OpenPPL_AntesPresent ? 1 : 0)
++ (f$OpenPPL_MissingSmallBlind? 1 : 0)]
+
 ##f$OpenPPL_RaisesBeforeOurFirstAction##
 (f$OpenPPL_BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
 (betround > f$OpenPPL_ConstBetRoundPreflop) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPostflop :
-nopponentstruelyraising
+(dealposition == 1) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInSmallBlind :
+(dealposition == 2) ? f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopInBigBlind :
+f$OpenPPL_RaisesBeforeOurFirstActionThisRoundPreflopNotInTheBlinds
 
 ##f$OpenPPL_RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.
@@ -1797,26 +1811,13 @@ f$OpenPPL_StraightPossible
 && f$OpenPPL_RiverCard > f$OpenPPL_TurnCard ]
 
 ##f$OpenPPL_2ndTopFlopCard##
-f$OpenPPL_PairOnFlop ? f$OpenPPL_2ndTopFlopCard_PairOnFlop :
-!f$OpenPPL_PairOnFlop ? f$OpenPPL_2ndTopFlopCard_UnpairedFlop :
--1
-
-##f$OpenPPL_2ndTopFlopCard_UnpairedFlop##
-!f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
-!f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
-!f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard  :
-!f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
-!f$OpenPPL_PairOnFlop && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard  :
-!f$OpenPPL_PairOnFlop && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
--1
-
-##f$OpenPPL_2ndTopFlopCard_PairOnFlop##
-f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  > f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard :
-f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  < f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard  > f$OpenPPL_SecondFlopCard  ? f$OpenPPL_SecondFlopCard :
-f$OpenPPL_PairOnFlop && f$OpenPPL_FirstFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_FirstFlopCard  < f$OpenPPL_SecondFlopCard  ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard  > f$OpenPPL_FirstFlopCard  ? f$OpenPPL_FirstFlopCard :
-f$OpenPPL_PairOnFlop && f$OpenPPL_SecondFlopCard  == f$OpenPPL_ThirdFlopCard && f$OpenPPL_SecondFlopCard  < f$OpenPPL_FirstFlopCard  ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_SecondFlopCard :
+f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_SecondFlopCard <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_FirstFlopCard  :
+f$OpenPPL_SecondFlopCard >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_SecondFlopCard >= f$OpenPPL_ThirdFlopCard  && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_ThirdFlopCard  ? f$OpenPPL_ThirdFlopCard  :
+f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  >= f$OpenPPL_SecondFlopCard ? f$OpenPPL_FirstFlopCard  :
+f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_FirstFlopCard  && f$OpenPPL_ThirdFlopCard  >= f$OpenPPL_SecondFlopCard && f$OpenPPL_FirstFlopCard  <= f$OpenPPL_SecondFlopCard ? f$OpenPPL_SecondFlopCard :
+// Otherwise: there is no 2ndTopFlopCard, because all ranks are even
 -1
 
 // Shanky is a bit inconsistent with the naming
@@ -2018,12 +2019,6 @@ f$OpenPPL_Had2ndOverPairOnFlop && (($$cr3==f$OpenPPL_TopFlopCard)|| ($$cr3<f$Ope
 || f$OpenPPL_FlopCardPairedonTurn 
 || f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_TurnCard 
 || f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_TurnCard
-
-##f$OpenPPL_HadSetOnFlop##
-f$OpenPPL_PairInHand && (f$OpenPPL_RankOfFirstHoleCard==$$cr0 || f$OpenPPL_RankOfFirstHoleCard==$$cr1 || f$OpenPPL_RankOfFirstHoleCard==$$cr2) 
-
-##f$OpenPPL_HadSetOnTurn##
-f$OpenPPL_HadSetOnFlop || (f$OpenPPL_PairInHand && f$OpenPPL_RankOfFirstHoleCard==$$cr3) 
 
 ##f$OpenPPL_HadTopPairOnFlop##
 [(f$OpenPPL_RankOfFirstHoleCard == f$OpenPPL_HighestRankOnFlop) || (f$OpenPPL_RankOfSecondHoleCard == f$OpenPPL_HighestRankOnFlop)]
@@ -2465,18 +2460,7 @@ ranklocommon
 (nsuited >= 5)
 
 ##f$OpenPPL_HaveFlushDraw##
-// Modified, because Shanky BonusBots definition is not very practical
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
-// 
-// Good one, contributing 2 cards
-  (((nsuited == 4) && (nsuitedcommon == 2))
-// Best one
-|| f$OpenPPL_HaveNutFlushDraw
-// Contributing only single card:
-//  * Headsup: at least 3rd-best
-//  * 3-handed: at least 2nd-best
-//  * 4-handed: only nut-flush
-|| ((nsuited >= 4) && (nsuitedcommon >2) && (f$OpenPPL_NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
+(nsuited >= 4)
 
 ##f$OpenPPL_HaveFullHouse##
 isfullhouse || f$OpenPPL_HaveQuads
@@ -2495,7 +2479,7 @@ isfullhouse || f$OpenPPL_HaveQuads
 
 ##f$OpenPPL_HaveNutFlushDraw##
     f$OpenPPL_HaveNutStraightFlush
-|| [(nsuited >= 4) && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
+|| [f$OpenPPL_HaveFlushDraw && (f$OpenPPL_NumberOfUnknownSuitedOvercards == 0)]
 
 
 ##f$OpenPPL_HaveNutStraight##
@@ -2504,7 +2488,7 @@ isfullhouse || f$OpenPPL_HaveQuads
 ##f$OpenPPL_MyKicker##
 (isfourofakind || istwopair) ? pokerval & 0x0F :
 isthreeofakind ? (pokerval >> 4) & 0x0F :
-isonepair ? (pokerval >> 8) & 0x0F :
+ispair ? (pokerval >> 8) & 0x0F :
 f$OpenPPL_ERROR_You_Dont_Have_Any_Kicker
 
 ##f$OpenPPL_NumberOfBetterKickers##
@@ -3383,6 +3367,9 @@ ispair
 //*****************************************************************************
 
 ##f$OpenPPL_IsFinalTable##
+// To be implemented by OpenHoldem 2.2.0
+// Currently returning always false (OH 2.1.9.3+)
+//
 isfinaltable
 
 ##f$OpenPPL_Others##
@@ -4159,8 +4146,14 @@ f$OpenPPL_HandResetHappened ? f$OpenPPL_ResetUserVariables : f$OpenPPL_HINT_Noth
 //
 //*****************************************************************************
 
+##f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED##
+-1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+
 ##f$OpenPPL_HaveBackdoorStraightDraw##
--1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
+
+##f$OpenPPL_PT_LastCaller_Chair##
+f$OpenPPL_NOT_YET_IMPLEMENTED_YOUR_HELP_IS_REQUIRED
 
 //*****************************************************************************
 //
