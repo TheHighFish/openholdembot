@@ -36,7 +36,6 @@ class COpenHoldemView : public CView {
  private:
 	// private functions and variables - not available via accessors or mutators
 	void UpdateDisplay(const bool update_all);
-	void DrawCenterInfoBox();
 	void DrawButtonIndicators();
 	void DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, const int top, const int right, const int bottom);
 	void DrawSeatedActiveCircle(const int chair);
@@ -46,8 +45,6 @@ class COpenHoldemView : public CView {
 	void DrawBalanceBox(const int chair); 
 	void DrawPlayerBet(const int chair);
 	void DrawPlayerCards(const int chair);
- private:
-  CString InfoTextForWhiteBox();
  private:
 	CString			  _handnumber_last;
 	double		  	_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;

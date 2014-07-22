@@ -417,7 +417,7 @@ BOOL CMainFrame::DestroyWindow()
 	WINDOWPLACEMENT wp;
 
 	//unload dll
-	p_dll_extension->UnloadDll();
+	p_dll_extension->Unload();
 
 	StopThreads();
 
@@ -579,24 +579,21 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI)
 
 void CMainFrame::OnDllLoad() 
 {
-	if (p_dll_extension->IsDllLoaded())
-		p_dll_extension->UnloadDll();
+	if (p_dll_extension->IsLoaded())
+		p_dll_extension->Unload();
 	else
-		p_dll_extension->LoadDll("");
+		p_dll_extension->Load("");
 }
 
-void CMainFrame::OnDllLoadspecificfile()
-{
+void CMainFrame::OnDllLoadspecificfile() {
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = preferences.path_dll();
 	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
-	if (cfd.DoModal() == IDOK) 
-	{
-		p_dll_extension->UnloadDll();
-		p_dll_extension->LoadDll(cfd.m_ofn.lpstrFile);
+	if (cfd.DoModal() == IDOK) {
+		p_dll_extension->Load(cfd.m_ofn.lpstrFile);
 		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
 	}
 }
@@ -744,21 +741,17 @@ void CMainFrame::OnUpdateMenuFileEdit(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI)
-{
-	if (p_dll_extension->IsDllLoaded())
+void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI) {
+	if (p_dll_extension->IsLoaded()) {
 		pCmdUI->SetText("&Unload\tF4");
-
-	else
+  } else {
 		pCmdUI->SetText("&Load\tF4");
-
+  }
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(p_dll_extension->IsDllLoaded()
-		&& !p_autoplayer->autoplayer_engaged());
+void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
 

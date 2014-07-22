@@ -1,8 +1,24 @@
-v5.0.5 2014-07-xx
+v5.0.5 2014-07-22
 ==================
+BUG FIXES:
 - The Preferences dialog for debug-options was messed up,
   because the new option for versus used one wrong constant.
   Thanks to Lavezzi for reporting.
+  [THF]
+- Fixed 1 buffer overflow in the PT-code.
+  that potentially could corrupt data for long usernames >= 16 characters.
+  [THF]
+- Improved the way if/when/what a DLL gets loaded.
+  Thanks to BruceLee for pointing out some inconsistencies.
+  [THF]
+
+MAINTENANCE:
+- Simplified the GUI further and removed the option to disable the progress-dialog,
+  because such a dialog does no longer exist at all, due to our fast new parser.
+  Also removed the option for max number of log-symbols in the white box.
+  This was a very rarely used feature and too much log-symbols
+  caused an occlusion of the community cards.
+  The unchangeable default is now 3.
   [THF]
 
 v5.0.4 2014-07-19

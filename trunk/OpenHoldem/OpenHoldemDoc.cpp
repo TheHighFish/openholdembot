@@ -68,20 +68,17 @@ BOOL COpenHoldemDoc::SaveModified()
 	return CDocument::SaveModified();
 }
 
-BOOL COpenHoldemDoc::OnNewDocument() 
-{
+BOOL COpenHoldemDoc::OnNewDocument() {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
 	// Default bot
 	p_function_collection->SetEmptyDefaultBot();
-
-	// Try to unload dll
-	p_dll_extension->UnloadDll();
 	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
 
-	p_dll_extension->LoadDll("");
+  // Try to (re)load dll
+	p_dll_extension->Load("");
 	return true;
 }
 
@@ -126,16 +123,14 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 			OH_MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
 			return;
 		}
-        // The formula editor gets now handled automatically (Rev. 1425)
-
 		// Read ohf file
     assert(p_formula_parser != NULL);
 		p_formula_parser->ParseFile(ar);
 		SetModifiedFlag(false);
-
-		// Try to unload dll
-		p_dll_extension->UnloadDll();
 		p_openholdem_title->UpdateTitle();
+
+    // Try to (re)load (new) dll
+		p_dll_extension->Load("");
 	}
 }
 

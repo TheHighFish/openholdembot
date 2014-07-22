@@ -47,37 +47,29 @@ void CDllExtension::PassStateToDll(const SHoldemState *pstate)
 	(_process_message) ("state", pstate);
 }
 
-void CDllExtension::LoadDll(const char * path)
-{
-	CString		dll_path;
-
-	if (_hmod_dll != NULL)
-		return;
-
+void CDllExtension::Load(const char * path){
+  CString		dll_path;
+	if (IsLoaded()) {
+     Unload(); 
+  }
 	// try to load specific path if passed in as a parameter
-	if (strlen(path) > 0)
-	{
+	if (strlen(path) > 0) {
 		dll_path = path;
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (1) to %s\n", dll_path);
-	}
-	else
-	{
+	}	else {
 		// Nothing passed in, so we try the DLL of the formula
 		// and the DLL from preferences.
 		dll_path = p_function_collection->DLLPath();
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
-		if (dll_path == "")
-		{
+		if (dll_path == "") {
 			dll_path = preferences.dll_name().GetString();
 			write_log(preferences.debug_dll_extension(),
 				"[CDLLExtension] setting path (3) to %s\n", dll_path);
 		}
 	}
-
-	if (dll_path == "")
-	{
+	if (dll_path == "")	{
 		// Nothing to do
 		return;
 	}
@@ -86,8 +78,7 @@ void CDllExtension::LoadDll(const char * path)
 	DWORD dll_error = GetLastError();
 
 	// If the DLL didn't get loaded
-	if (_hmod_dll == NULL)
-	{
+	if (_hmod_dll == NULL) {
 		CString error_message;
 		error_message.Format("Unable to load DLL from:\n"
 			"%s\n"
@@ -96,7 +87,6 @@ void CDllExtension::LoadDll(const char * path)
 		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
 		return;
 	}
-
 	// Get address of process_message from dll
 	// user.dll, as defined in WinHoldem, does not ship with a .def file by default - we must use the ordinal method to get the address
 	//global.process_message = (process_message_t) GetProcAddress(global._hmod_dll, "process_message");
@@ -125,7 +115,7 @@ void CDllExtension::LoadDll(const char * path)
 	//(_process_message) ("history", p_handhistory->history());
 }
 
-void CDllExtension::UnloadDll(void)
+void CDllExtension::Unload(void)
 {
 	if (_hmod_dll==NULL)
 	{
@@ -140,7 +130,7 @@ void CDllExtension::UnloadDll(void)
 	}
 }
 
-const bool CDllExtension::IsDllLoaded()
+const bool CDllExtension::IsLoaded()
 {
 	return _hmod_dll != NULL;
 }

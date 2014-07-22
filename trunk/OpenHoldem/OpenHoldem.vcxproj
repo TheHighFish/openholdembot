@@ -194,6 +194,7 @@
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CValidator.cpp" />
+    <ClCompile Include="CWhiteInfoBox.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MD5_Checksum.cpp" />
@@ -437,6 +438,7 @@
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CValidator.h" />
+    <ClInclude Include="CWhiteInfoBox.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="MD5_Checksum.h" />
     <ClInclude Include="Median.h" />

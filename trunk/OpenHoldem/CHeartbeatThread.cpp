@@ -204,7 +204,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer
-	if (p_dll_extension->IsDllLoaded() && p_symbol_engine_autoplayer->ismyturn())	{
+	if (p_dll_extension->IsLoaded() && p_symbol_engine_autoplayer->ismyturn())	{
 		iswait = (p_dll_extension->process_message()) ("query", "dll$iswait");
 	}	else {
 		iswait = false;

@@ -78,7 +78,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   // DLL
   if (memcmp(name, "dll$", 4) == 0) {                                                                                                                                                                                                                    if (memcmp(name, "dll$dpl", 7) == 0) vali_err = true;if (memcmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (memcmp(name, "dll$oewc", 8) == 0) vali_err = true;if (memcmp(name, "dll$unknown_player", 18) == 0) vali_err = true;                                                                                                                                                                                                 
     assert(p_dll_extension != NULL);
-    if (p_dll_extension->IsDllLoaded()) {
+    if (p_dll_extension->IsLoaded()) {
 	    *result = (p_dll_extension->process_message()) ("query", name);
     } else {
 	    *result = k_undefined_zero;
