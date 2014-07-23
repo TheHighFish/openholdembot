@@ -610,7 +610,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int         updatedCount = 0;
-	
+
+  write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair %i\n", chair);  
 	if (pParent->CheckIfNameExistsInDB(chair) == false)
 	{
 		/* Note that checkname fail just when starting, doesn't necessarily mean that there's no user
