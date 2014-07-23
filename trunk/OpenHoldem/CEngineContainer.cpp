@@ -30,13 +30,14 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineEventLogging.h"
-#include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineICM.h"
 #include "CSymbolEngineIniFunctions.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
+#include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEnginePokerAction.h"
 #include "CSymbolEnginePokerTracker.h"
@@ -131,6 +132,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineChipAmounts
   p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();
   AddSymbolEngine(p_symbol_engine_chip_amounts);
+  // CSymbolEngineICM
+  p_symbol_engine_icm = new CSymbolEngineICM();
+  AddSymbolEngine(p_symbol_engine_icm);
   // CSymbolEngineRaisersCallers
   p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
   AddSymbolEngine(p_symbol_engine_raisers_callers);
