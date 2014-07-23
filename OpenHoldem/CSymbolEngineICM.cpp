@@ -545,5 +545,24 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
-  return ""; //!!!!!
+  return "icm_fold icm_callwin icm_calllose icm_calltie "
+    // Winning against 0..9 opponents
+    "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
+    "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
+    // Losing against 1..9 opponents
+    "icm_allilose1 cm_allilose2 cm_allilose3 cm_allilose4 cm_allilose5 "
+    "cm_allilose6 cm_allilose7 cm_allilose8 cm_allilose9 "
+    // Wining allin against a particular opponent
+    "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 "
+    "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwin4 icm_alliwin5 "
+    "icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
+    // Tieing allin against a particular opponent
+    "icm_allitieSB icm_allitieBB icm_allitieUTG icm_allitieUTG1 "
+    "icm_allitieUTG2 icm_allitieUTG3 icm_allitie4 icm_allitie5 "
+    "icm_allitieUTG6 icm_allitieCO icm_allitieD "
+    // Losing allin against a particular opponent
+    "icm_allilosSB icm_allilosBB icm_allilosUTG icm_allilosUTG1 "
+    "icm_allilosUTG2 icm_allilosUTG3 icm_allilos4 icm_allilos5 "
+    "icm_allilosUTG6 icm_allilosCO icm_allilosD ";
 }
+
