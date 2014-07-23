@@ -27,7 +27,7 @@
 */
 
 #include "stdafx.h"
-#include "CICMCalculator.h"
+#include "CSymbolEngineICM.h"
 
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
@@ -41,6 +41,40 @@
 #include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
+
+CSymbolEngineICM *p_symbol_engine_icm = NULL;
+
+CSymbolEngineICM::CSymbolEngineICM() {
+  // The values of some symbol-engines depend on other engines.
+	// As the engines get later called in the order of initialization
+	// we assure correct ordering by checking if they are initialized.
+	assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_symbol_engine_blinds != NULL);
+  assert(p_symbol_engine_chip_amounts != NULL);
+  assert(p_symbol_engine_dealerchair != NULL);
+  assert(p_symbol_engine_userchair != NULL);
+}
+
+CSymbolEngineICM::~CSymbolEngineICM() {
+}
+
+void CSymbolEngineICM::InitOnStartup() {
+}
+
+void CSymbolEngineICM::ResetOnConnection() {
+}
+
+void CSymbolEngineICM::ResetOnHandreset() {
+}
+
+void CSymbolEngineICM::ResetOnNewRound() {
+}
+
+void CSymbolEngineICM::ResetOnMyTurn() {
+}
+
+void CSymbolEngineICM::ResetOnHeartbeat() {
+}
 
 double P(int i, int n, double *s, int N)
 {
@@ -75,18 +109,141 @@ double P(int i, int n, double *s, int N)
 	return p;
 }
 
-CICMCalculator::CICMCalculator ()
+int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
+	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
+	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
+	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
+	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
+	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
+
+	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
+		eb_offset = 0;
+		
+	// if 2 players posted blinds, no sb_offset
+	if (sym_nplayersblind == 2)
+		sb_offset = 0;
+
+	else if (sym_nplayersblind < 2)
+	{
+		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
+		{
+			int next_chair = i%p_tablemap->nchairs();
+			double p_bet = p_scraper->player_bet(next_chair);
+
+			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
+				sb_offset = 0;
+		}
+	}
+
+	// If only 2 players active, we are HU.
+	if (sym_nplayersseated == 2 && eb_offset == 0)
+	{
+		sb_offset = 0;
+		hu_offset = 1;
+	}
+	// If empty button reset other possible offsets
+	if (eb_offset == 1)
+	{
+		sb_offset = 0;
+		hu_offset = 0;
+	}
+
+	if (sym_nplayersseated > 0)
+	{
+		int dealPos = -1;
+
+		if (strcmp(name,"SB")==0)
+		{
+			if (sb_offset == 0) dealPos = 1 - eb_offset - hu_offset;
+		}
+		else if (strcmp(name,"BB")==0)
+			dealPos = 2 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG")==0)
+			dealPos = 3 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG1")==0)
+			dealPos = 4 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG2")==0)
+			dealPos = 5 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG3")==0)
+			dealPos = 6 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG4")==0)
+			dealPos = 7 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG5")==0)
+			dealPos = 8 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"UTG6")==0)
+			dealPos = 9 - eb_offset - sb_offset - hu_offset;
+		else if (strcmp(name,"D")==0)
+		{
+			if (eb_offset == 0) dealPos = 0;
+		}
+		else if (strcmp(name,"CO")==0)
+			dealPos = sym_nplayersseated - 1 - eb_offset;
+
+		if (dealPos >= 0)
+		{
+			chair = sym_dealerchair;
+			while (dealPos >= ( eb_offset == 0 ? 1 : 0 ))
+			{
+				chair = (chair + 1) % k_max_number_of_players;
+				if (IsBitSet(sym_playersseatedbits, chair))
+					dealPos--;
+			}
+		}
+	}
+
+	return chair;
 }
 
-CICMCalculator::~CICMCalculator ()
+double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
+	double ICM = 0.;
+	int i = 0;
+
+	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
+
+	for (int i = 0; i < playerNB; i++)
+	{
+		//printf("player %d  stack = %1.2f \n", i, stacks[i]);
+	}
+
+	// Degenerate case when the player's stack is zero.  Place
+	// him after all opponents who had stacks at the start of this
+	// hand.  This will not tie-break if two players bust on the
+	// same hand.
+
+	if (stacks[player] == 0.)
+	{
+		int place = 0;
+
+		for (int i = 0; i < k_max_number_of_players; i++)
+		{
+			if (IsBitSet(sym_opponentsseatedbits, i))
+			{
+				place++;
+			}
+		}
+
+		return prizes[place];
+
+	}
+
+	i = 0;
+	while (i < playerNB && prizes[i] > 0.)
+	{
+		double p = P(player, i + 1, stacks, playerNB);
+
+		//printf("=> prob place %d = %1.4f \n", i + 1, p);
+		ICM += prizes[i] * p;
+		i++;
+	}
+
+	return ICM;
 }
 
-const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
-{
-	double		prizes[MAX_PLAYERS] = {0};
-	double		stacks[MAX_PLAYERS] = {0};
+bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  double		prizes[k_max_number_of_players] = {0};
+	double		stacks[k_max_number_of_players] = {0};
 	int			i = 0, j = 0;
 	prizes[0] = preferences.icm_prize1();
 	prizes[1] = preferences.icm_prize2();
@@ -101,14 +258,16 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
 	double		sym_pot = p_symbol_engine_chip_amounts->pot();
 	double		sym_call = p_symbol_engine_chip_amounts->call();
-	double		sym_currentbet[MAX_PLAYERS]={0};
+	double		sym_currentbet[k_max_number_of_players]={0};
 
+  if (memcmp(name, "icm_", 4) != 0) return false;
 	if (sym_userchair == k_undefined)
 	{
-		return 0.0;
+		*result = 0.0;
+    return true;
 	}
 
-	for (int i = 0; i < MAX_PLAYERS; i++)
+	for (int i = 0; i < k_max_number_of_players; i++)
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
@@ -117,11 +276,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	if (strncmp(pquery,"_fold",5)==0)
+	if (strncmp(name,"_fold",5)==0)
 	{
 		double to_split = p_symbol_engine_chip_amounts->potcommon();
 
-		for (int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += sym_currentbet[i];
@@ -131,14 +290,14 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 
 		double win = to_split / sym_nopponentsplaying;
 
-		for (int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += win;
 		}
 	}
 
-	else if (strncmp(pquery,"_callwin",8)==0)
+	else if (strncmp(name,"_callwin",8)==0)
 	{
 		double call = sym_call;
 
@@ -146,7 +305,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < k_max_number_of_players; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) && 
 					myTotalBet < sym_currentbet[i])
@@ -161,14 +320,14 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		stacks[sym_userchair] += sym_pot;
 	}
 
-	else if (strncmp(pquery,"_calllose",9)==0)
+	else if (strncmp(name,"_calllose",9)==0)
 	{
 		double mycall = min(sym_call,stacks[sym_userchair]);
 		double win = (sym_pot + mycall) / sym_nopponentsplaying;
 
 		stacks[sym_userchair] -= mycall;
 
-		for (int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -177,7 +336,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else if (strncmp(pquery,"_calltie",8)==0)
+	else if (strncmp(name,"_calltie",8)==0)
 	{
 		double win = 0.;
 
@@ -185,7 +344,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < k_max_number_of_players; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) 
 					&& myTotalBet < sym_currentbet[i])
@@ -200,7 +359,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		sym_pot += min(sym_call, stacks[sym_userchair]);
 		win = sym_pot / (sym_nopponentsplaying +1);
 		stacks[sym_userchair] += win;
-		for (int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -209,20 +368,21 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else if (strncmp(pquery,"_alliwin",8)==0)
+	else if (strncmp(name,"_alliwin",8)==0)
 	{
-		if (isdigit(pquery[8]))
+		if (isdigit(name[8]))
 		{
 			//assume callers are n smallest stacks
-			bool callers[MAX_PLAYERS] = {0};
-			int ncallers = min(pquery[8]-'0', sym_nopponentsplaying);
+			bool callers[k_max_number_of_players] = {0};
+			int ncallers = min(name[8]-'0', sym_nopponentsplaying);
+
 
 			for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
-				double smalleststack = MAX_DOUBLE;
+        double smalleststack = DBL_MAX;
 
-				for (int j = 0; j < MAX_PLAYERS; j++)
+				for (int j = 0; j < k_max_number_of_players; j++)
 				{
 					if (IsBitSet(sym_opponentsplayingbits, j))
 					{
@@ -248,8 +408,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(pquery + 8);
-			if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
+			int oppChair = GetChairFromDealPos(name + 8);
+			if (oppChair == k_undefined || oppChair == sym_userchair) {
+        *result = k_undefined;
+        return true;
+      }
 			if (oppChair >= 0)
 			{
 				double oppCurrentBet = sym_currentbet[oppChair];
@@ -262,16 +425,16 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else if (strncmp(pquery,"_allilose",9)==0)
+	else if (strncmp(name,"_allilose",9)==0)
 	{
-		if (isdigit(pquery[9]))
+		if (isdigit(name[9]))
 		{
 			//assume callers are n biggest stacks
-			int ncallers = min(pquery[9]-'0', sym_nopponentsplaying);
+			int ncallers = min(name[9]-'0', sym_nopponentsplaying);
 
 			if (ncallers > 0)
 			{
-				bool callers[MAX_PLAYERS] = {0};
+				bool callers[k_max_number_of_players] = {0};
 				int *biggest =(int *) calloc(ncallers, sizeof(int));
 				double *sidepots = (double *)calloc(ncallers, sizeof(double));
 				double mybet = 0.;
@@ -283,7 +446,7 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 					int jbiggest = -1;
 					double biggeststack = 0.;
 
-					for (int j = 0; j < MAX_PLAYERS; j++)
+					for (int j = 0; j < k_max_number_of_players; j++)
 					{
 						if (IsBitSet(sym_opponentsplayingbits, j))
 						{
@@ -329,8 +492,11 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(pquery + 9);
-			if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
+			int oppChair = GetChairFromDealPos(name + 9);
+			if (oppChair == k_undefined || oppChair == sym_userchair) {
+        *result = k_undefined;
+        return true;
+      }
 			if (oppChair >= 0)
 			{
 				double oppTotalBet = sym_currentbet[oppChair] + stacks[oppChair];
@@ -343,11 +509,14 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else if (strncmp(pquery,"_allitie",8)==0)
+	else if (strncmp(name,"_allitie",8)==0)
 	{
 		//assume only one particular caller
-		int oppChair = GetChairFromDealPos(pquery + 8);
-		if (oppChair == k_undefined || oppChair == sym_userchair) return -1;
+		int oppChair = GetChairFromDealPos(name + 8);
+		if (oppChair == k_undefined || oppChair == sym_userchair) {
+      *result = k_undefined;
+      return true;
+    }
 		if (oppChair >= 0)
 		{
 			stacks[oppChair]+= sym_pot / 2;
@@ -355,9 +524,9 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 		}
 	}
 
-	else if(strcmp(pquery,"")==0)
+	else if(strcmp(name,"")==0)
 	{
-		for (int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_playersseatedbits, i))
 			{
@@ -365,147 +534,16 @@ const double CICMCalculator::ProcessQueryICM(const char* pquery, int *e)
 			}
 	   }
 	}
-   else
-   {
-      return 0.;
-   } 
+  else
+  {
+    // Not a valid symbol
+    return false;
+  } 
 
-	return EquityICM(stacks, prizes, MAX_PLAYERS, sym_userchair);
+	*result = EquityICM(stacks, prizes, k_max_number_of_players, sym_userchair);
+  return true;
 }
 
-double CICMCalculator::EquityICM(double *stacks, double *prizes, int playerNB, int player)
-{
-	double ICM = 0.;
-	int i = 0;
-
-	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
-
-	for (int i = 0; i < playerNB; i++)
-	{
-		//printf("player %d  stack = %1.2f \n", i, stacks[i]);
-	}
-
-	// Degenerate case when the player's stack is zero.  Place
-	// him after all opponents who had stacks at the start of this
-	// hand.  This will not tie-break if two players bust on the
-	// same hand.
-
-	if (stacks[player] == 0.)
-	{
-		int place = 0;
-
-		for (int i = 0; i < MAX_PLAYERS; i++)
-		{
-			if (IsBitSet(sym_opponentsseatedbits, i))
-			{
-				place++;
-			}
-		}
-
-		return prizes[place];
-
-	}
-
-	i = 0;
-	while (i < playerNB && prizes[i] > 0.)
-	{
-		double p = P(player, i + 1, stacks, playerNB);
-
-		//printf("=> prob place %d = %1.4f \n", i + 1, p);
-		ICM += prizes[i] * p;
-		i++;
-	}
-
-	return ICM;
-}
-
-double CICMCalculator::GetPlayerCurrentBet(int pos)
-{
-	return p_symbol_engine_chip_amounts->currentbet(pos);
-}
-
-int CICMCalculator::GetChairFromDealPos(const char* pquery)
-{
-	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
-	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
-	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
-	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
-	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
-
-	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
-		eb_offset = 0;
-		
-	// if 2 players posted blinds, no sb_offset
-	if (sym_nplayersblind == 2)
-		sb_offset = 0;
-
-	else if (sym_nplayersblind < 2)
-	{
-		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
-		{
-			int next_chair = i%p_tablemap->nchairs();
-			double p_bet = p_scraper->player_bet(next_chair);
-
-			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
-				sb_offset = 0;
-		}
-	}
-
-	// If only 2 players active, we are HU.
-	if (sym_nplayersseated == 2 && eb_offset == 0)
-	{
-		sb_offset = 0;
-		hu_offset = 1;
-	}
-	// If empty button reset other possible offsets
-	if (eb_offset == 1)
-	{
-		sb_offset = 0;
-		hu_offset = 0;
-	}
-
-	if (sym_nplayersseated > 0)
-	{
-		int dealPos = -1;
-
-		if (strcmp(pquery,"SB")==0)
-		{
-			if (sb_offset == 0) dealPos = 1 - eb_offset - hu_offset;
-		}
-		else if (strcmp(pquery,"BB")==0)
-			dealPos = 2 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG")==0)
-			dealPos = 3 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG1")==0)
-			dealPos = 4 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG2")==0)
-			dealPos = 5 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG3")==0)
-			dealPos = 6 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG4")==0)
-			dealPos = 7 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG5")==0)
-			dealPos = 8 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"UTG6")==0)
-			dealPos = 9 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(pquery,"D")==0)
-		{
-			if (eb_offset == 0) dealPos = 0;
-		}
-		else if (strcmp(pquery,"CO")==0)
-			dealPos = sym_nplayersseated - 1 - eb_offset;
-
-		if (dealPos >= 0)
-		{
-			chair = sym_dealerchair;
-			while (dealPos >= ( eb_offset == 0 ? 1 : 0 ))
-			{
-				chair = (chair + 1) % MAX_PLAYERS;
-				if (IsBitSet(sym_playersseatedbits, chair))
-					dealPos--;
-			}
-		}
-	}
-
-	return chair;
+CString CSymbolEngineICM::SymbolsProvided() {
+  return ""; //!!!!!
 }
