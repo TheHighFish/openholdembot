@@ -1,3 +1,23 @@
+v5.0.6 2014-07-xx
+==================
+BUG FIXES:
+- The symbol lookup for some ICM-symbols got broken when we implemented the new evaluator.
+  Thanks to Nik0 for reporting.
+  [THF]
+- The dLL interface incorrectly queried the function-collection 
+  instead of the engine container. Same for the validator.
+  Thanks to BruceLee and R2D2 for reporting problems.
+  [THF]
+- Characters of the extended ASCII-set in the title (outlandish currencies)
+  could cause an assertion in some standard C-functions.
+  Thanks to Kake118 for reporting and to R2D2 for providing a tablemap
+  and a replay-frame to reproduce the problem.
+  [THF]
+
+MAINTENANCE:
+- Improving some rules of the validator.
+  [THF]
+
 v5.0.5 2014-07-22
 ==================
 BUG FIXES:
