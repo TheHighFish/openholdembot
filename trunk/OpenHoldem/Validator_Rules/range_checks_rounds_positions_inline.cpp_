@@ -17,9 +17,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0038")
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol betposition")
-    PRECONDITION (gws("nplayersdealt") > 1)
+    PRECONDITION ((gws("nplayersdealt") > 1) && (gws("userchair") >= 0))
     POSTCONDITION ((gws("betposition") >= 1) && (gws("betposition") <= gws("nplayersdealt")))
-    SYMBOLS_POSSIBLY_AFFECTED ("betposition, nplayersdealt")
+    SYMBOLS_POSSIBLY_AFFECTED ("betposition, nplayersdealt userchair")
 END_TESTCASE
 
 

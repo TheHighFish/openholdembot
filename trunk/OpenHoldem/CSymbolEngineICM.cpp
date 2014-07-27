@@ -256,11 +256,11 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
 	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
-	double		sym_pot = p_symbol_engine_chip_amounts->pot();
-	double		sym_call = p_symbol_engine_chip_amounts->call();
-	double		sym_currentbet[k_max_number_of_players]={0};
+	double	sym_pot = p_symbol_engine_chip_amounts->pot();
+	double	sym_call = p_symbol_engine_chip_amounts->call();
+	double	sym_currentbet[k_max_number_of_players]={0};
 
-  if (memcmp(name, "icm_", 4) != 0) return false;
+  if (memcmp(name, "icm", 3) != 0) return false;
 	if (sym_userchair == k_undefined)
 	{
 		*result = 0.0;
