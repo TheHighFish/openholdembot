@@ -109,15 +109,19 @@ LPSTR CScintillaWnd::GetText(void) {
 // @rvalue int | number of characters needed to display linenumbers
 //
 int CScintillaWnd::GetLinenumberChars(void) {
-    // try to get number of lines in control
-    LRESULT lLines = SendMessage(SCI_GETLINECOUNT, 0, 0);
-
-    int nChars = 1;
-    while (lLines > 0) {
-        lLines = lLines / 10;
-        nChars++;
-    }
-    return nChars; // allow an extra char for safety
+  // !! Unfortunaltelly the "try" below does not work
+  // but it affects only functions longer than 1000 lines,
+  // so we don't really care about a fix or work-around. ;-)
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17579&start=120#p122360
+  //
+  // try to get number of lines in control
+  LRESULT lLines = SendMessage(SCI_GETLINECOUNT, 0, 0);
+  int nChars = 1;
+  while (lLines > 0) {
+    lLines = lLines / 10;
+    nChars++;
+  }
+  return nChars; // allow an extra char for safety
 }
 
 /////////////////////////////////////
