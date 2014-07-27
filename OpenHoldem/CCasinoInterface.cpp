@@ -388,6 +388,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 		else
 		{
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending DoSwag early (invalid swagconfirmationmethod).\n");
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
 			return false;
 		}
 		

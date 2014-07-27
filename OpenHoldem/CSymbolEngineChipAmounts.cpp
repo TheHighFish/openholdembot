@@ -212,18 +212,19 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	}
 }
 
-void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() 
-{
+void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
 	double bet = p_symbol_engine_tablelimits->bet();
-	if (bet <= 0)
-	{
-		return;
+	if (bet <= 0) {
+    // Fail-safe for the case of not being connected 
+    // and completely bogus input
+    bet = 1.00;
 	}
-	if (p_symbol_engine_userchair->userchair_confirmed())
-	{
-		_nbetstocall = _call / bet;
-		_nbetstorais = _nbetstocall + 1;	
-	}
+	if (p_symbol_engine_userchair->userchair_confirmed())	{
+		_nbetstocall = _call / bet;	
+	} else {
+    _nbetstocall = 0;
+  }
+  _nbetstorais = _nbetstocall + 1;
 	_ncallbets = Largestbet() / bet;				
 	_nraisbets = _ncallbets + 1;	// fixed limit											
 }
