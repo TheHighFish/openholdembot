@@ -336,7 +336,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"_calltie",8)==0)
+	else if (strncmp(name,"icm_calltie",8)==0)
 	{
 		double win = 0.;
 
@@ -524,7 +524,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if(strcmp(name,"")==0)
+	else if(strcmp(name,"icm")==0)
 	{
 		for (int i = 0; i < k_max_number_of_players; i++)
 		{
@@ -545,7 +545,8 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
-  return "icm_fold icm_callwin icm_calllose icm_calltie "
+  return "icm "
+    "icm_fold icm_callwin icm_calllose icm_calltie "
     // Winning against 0..9 opponents
     "icm_alliwin0 icm_alliwin1 icm_alliwin2 icm_alliwin3 icm_alliwin4 "
     "icm_alliwin5 icm_alliwin6 icm_alliwin7 icm_alliwin8 icm_alliwin9 "
