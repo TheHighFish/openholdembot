@@ -26,6 +26,13 @@ inline bool IsCurrency(char c) {
 	return (c == '$' || c == '€' || c == '£' || c == '¢'); 
 }
 
+inline char TranslateCurrency(char c) {
+	if (c == '€') return '$';
+  else if (c == '£') return '$';
+  else if (c == '¢') return 'c';
+  else return c;
+}
+
 inline bool IsStandardASCII(char c) {
   return ((c >= 0) && (c <= 0x7F));
 }
@@ -58,10 +65,11 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 	// Special handling required for the first character
 	char first_character  = monetary_string->GetAt(0);
 	char second_character = monetary_string->GetAt(1);
-	if (!IsCurrency(first_character) || !SaveIsDigit(second_character))
-	{
-		result += first_character;
-	}
+	if (IsCurrency(first_character)) {
+		result += TranslateCurrency(first_character);
+	} else {
+    result += first_character;
+  }
 
 	// Now caring about the rest, starting from 2nd character
 	int second_position = 1;
@@ -78,7 +86,7 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 		{
 			// Keep them at the moment, but replace foreign currencys by dollars.
 			// The scraper will deal with them later
-			result += '$'; //!!!!!cent
+			result += TranslateCurrency(ith_character);
 		}
 		else if ((ith_character == '.') || (ith_character == ','))
 		{
@@ -141,13 +149,10 @@ void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
 // Example: "Singlemalt raised to $60"
 void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text)
 {
-	if (p_tablemap->balancenumbersonly())
-	{
-		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)
-		{
+	if (p_tablemap->balancenumbersonly()) {
+		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
       char next_character = balance_and_or_potential_text->GetAt(i);
-			if (SaveIsDigit(next_character)) 
-			{
+			if (SaveIsDigit(next_character)) {
 				continue;
 			}
 			// Remove (more efficiently: replace it)
@@ -157,12 +162,11 @@ void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_pot
 			// * minus-sign
 			// * brackets
 			if (isalpha(next_character) 
-				|| (next_character == '$')
-				|| (next_character == ',')
-				|| (next_character == '-')
-				|| (next_character == '(')
-				|| (next_character == ')'))
-			{
+				  || (next_character == '$')
+				  || (next_character == ',')
+				  || (next_character == '-')
+				  || (next_character == '(')
+				  || (next_character == ')')) {
 				// Replace by space to be removed later
 				balance_and_or_potential_text[i] = ' ';
 			}
