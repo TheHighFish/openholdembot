@@ -1,0 +1,15 @@
+custom
+
+preflop
+when others call force
+
+flop
+when Others Raise force
+
+turn
+when (OpponentCalledOnFlop) BetMax force
+when others Call force
+
+river
+when (OpponentCalledOnTurn) BetMax force
+when others Call force
