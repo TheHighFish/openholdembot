@@ -1,4 +1,4 @@
-v5.0.6 2014-07-xx
+v5.0.6 2014-07-27
 ==================
 BUG FIXES:
 - The symbol lookup for some ICM-symbols got broken when we implemented the new evaluator.
