@@ -69,6 +69,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reference User DLL", "Refer
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PokerTracker_Query_Definitions", "PokerTracker_Query_Definitions\pokertracker_query_definitions.vcxproj", "{DAE7979B-3014-4B86-8EFD-FA155A58FE78}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenPPL", "OpenPPL\OpenPPL\OpenPPL.vcxproj", "{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -148,6 +150,12 @@ Global
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release - Optimized|Win32.Build.0 = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release|Win32.ActiveCfg = Release|Win32
 		{DAE7979B-3014-4B86-8EFD-FA155A58FE78}.Release|Win32.Build.0 = Release|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Debug|Win32.Build.0 = Debug|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release - Optimized|Win32.ActiveCfg = Release|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release - Optimized|Win32.Build.0 = Release|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release|Win32.ActiveCfg = Release|Win32
+		{79F81A71-A7A4-4257-9BCB-1B55E7B40C6F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
