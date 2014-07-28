@@ -115,8 +115,18 @@ BOOL COpenHoldemApp::InitInstance() {
 	wc.lpszClassName = "OpenHoldemFormula";
 	wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 	RegisterClass(&wc);
+  CWinApp::InitInstance();
 
-	CWinApp::InitInstance();
+ 	// Initialize OLE libraries
+	// Mandatory to call those initialisations. 
+	// This will also help win7/8 compatibility 
+	// those line are automatically inserted if you create a new MFC project with VS2010
+	// http://stackoverflow.com/questions/6633515/mfc-app-assert-fail-at-crecentfilelistadd-on-command-line-fileopen
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17579&start=150#p122418
+	if (!AfxOleInit())
+		return FALSE;
+	AfxEnableControlContainer();
+
 	free((void*)m_pszProfileName);
 	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
 	preferences.LoadPreferences();
