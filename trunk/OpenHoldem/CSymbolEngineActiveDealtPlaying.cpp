@@ -15,6 +15,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 #include <assert.h>
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
@@ -109,31 +110,28 @@ void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits()
 	AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
 }
 
-void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
-{
+void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 	int  number_of_blind_posters_found = 0;
 	bool big_blind_found = false;
 	bool first_non_blind_with_cards_found = false;
 
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
 		// First we search the blinds only, 
-		// i.e. players with name positive bet.
+		// i.e. players with a positive bet.
 		// We don't consider players who are only "active",
 		// i.e. players who sat out but came back.
-		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters)
-			&& ! big_blind_found)
-		{
+		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters) && ! big_blind_found) {
 			double bet = p_scraper->player_bet(chair_to_consider);
-			if (bet > 0)
-			{
+			if (bet > 0) {
+        write_log(preferences.debug_symbolengine(),
+          "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is a blind poster\n",
+          chair_to_consider);
 				number_of_blind_posters_found++;
 				this_player_got_dealt = true;
 			}
-			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == k_usual_number_of_blind_posters))
-			{
+			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == k_usual_number_of_blind_posters)) {
 				// big blind might be allin for less than 1 bb
 				// or small blind might be missing.
 				// But we catch both cases, as long as not both happen
@@ -148,31 +146,36 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits()
 		// We do so, until we reach somebody who has cards.
 		// After this player we look for cards only,
 		// because there can be no quick folds after him.
-		else if (!first_non_blind_with_cards_found)
-		{
-			if (p_scraper_access->IsPlayerActive(chair_to_consider))
-			{
-				this_player_got_dealt = true;
-        if (p_table_state->User()->HasAnyCards())
-				{
-					first_non_blind_with_cards_found = true;
-				}
+		else if (p_table_state->_players[chair_to_consider].HasAnyCards()) {
+      // Player with cards found
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i holds cards, therefore dealt\n",
+        chair_to_consider);
+			this_player_got_dealt = true;
+      first_non_blind_with_cards_found = true;
+		}
+    else {
+      // Player has no cards
+      if (first_non_blind_with_cards_found == false) {
+        // Not yet anybody with cards outside the blinds found
+        // Consider active players as dealt with fast folds.
+			  if (p_scraper_access->IsPlayerActive(chair_to_consider)) {
+          write_log(preferences.debug_symbolengine(),
+            "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
+            chair_to_consider);
+				  this_player_got_dealt = true;    
+        }
 			}
 		}
-		else
-		{
-			assert(first_non_blind_with_cards_found);
-      if (p_table_state->User()->HasAnyCards())
-			{
-				this_player_got_dealt = true;
-			}
-		}
-		if (this_player_got_dealt)
-		{
+		if (this_player_got_dealt) {
 			_playersdealtbits |= 1 << chair_to_consider;
 			AssertRange(_playersdealtbits, 0, k_bits_all_ten_players_1_111_111_111);
 		}
 	}
+  write_log(preferences.debug_symbolengine(),
+    // _playersdealtbits once as decimal, once as 4-digit hexadecimal
+    "[CSymbolEngineActiveDealtPlaying] playersdealtbits = %i = %#4x\n",
+    _playersdealtbits, _playersdealtbits);
 }
 
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

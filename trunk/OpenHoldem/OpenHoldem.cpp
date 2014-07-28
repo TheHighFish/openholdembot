@@ -78,9 +78,24 @@ COpenHoldemApp theApp;
 
 
 // COpenHoldemApp initialization
-BOOL COpenHoldemApp::InitInstance()
-{
-	__TRACE
+BOOL COpenHoldemApp::InitInstance() {
+  // InitCommonControlsEx() is required on Windows XP if an application
+	// manifest specifies use of ComCtl32.dll version 6 or later to enable
+	// visual styles.  Otherwise, any window creation will fail.
+  //
+  // This code should probably be called at the VERY beginning,
+  // especially to support UNICODE-filenames on Win7/8,
+  // which might be as early as the ini-file.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17579&p=122399#p122398
+  // http://stackoverflow.com/questions/6633515/mfc-app-assert-fail-at-crecentfilelistadd-on-command-line-fileopen
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	// Set this to include all the common control classes you want to use
+	// in your application.
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls); 
+
+  __TRACE
 	// Since OH 4.0.0 we always use an ini-file,
 	// the one and only in our OH-directory,
 	// no matter how it is named.
@@ -100,16 +115,6 @@ BOOL COpenHoldemApp::InitInstance()
 	wc.lpszClassName = "OpenHoldemFormula";
 	wc.hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 	RegisterClass(&wc);
-
-	// InitCommonControlsEx() is required on Windows XP if an application
-	// manifest specifies use of ComCtl32.dll version 6 or later to enable
-	// visual styles.  Otherwise, any window creation will fail.
-	INITCOMMONCONTROLSEX InitCtrls;
-	InitCtrls.dwSize = sizeof(InitCtrls);
-	// Set this to include all the common control classes you want to use
-	// in your application.
-	InitCtrls.dwICC = ICC_WIN95_CLASSES;
-	InitCommonControlsEx(&InitCtrls);
 
 	CWinApp::InitInstance();
 	free((void*)m_pszProfileName);
@@ -192,12 +197,10 @@ BOOL COpenHoldemApp::InitInstance()
 		RUNTIME_CLASS(CMainFrame),	   // main SDI frame window
 		RUNTIME_CLASS(COpenHoldemView));
 
-	if (!pDocTemplate)
-	{
+	if (!pDocTemplate) {
 		write_log(preferences.debug_openholdem(), "[OpenHoldem] Creating CSingleDocTemplate() failed\n");
 		return FALSE;
 	}
-
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to AddDocTemplate()\n");
 	AddDocTemplate(pDocTemplate);
 
