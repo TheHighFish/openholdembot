@@ -7,7 +7,8 @@ BUG FIXES:
   [THF]
 
 MAINTENANCE:
-- Some code improvements be compatible with UNICODE-filenames on Win7/8.
+- Some code improvements for compatibility with UNICODE-filenames on Win7/8.
+  Special thanks to Nahman78 for providing the patch.
   [THF]
 
 v5.0.6 2014-07-27
