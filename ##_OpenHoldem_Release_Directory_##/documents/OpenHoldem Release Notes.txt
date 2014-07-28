@@ -1,3 +1,15 @@
+v5.0.7 2014-07-xx
+==================
+BUG FIXES:
+- One of the last code-improvements broke the symbols
+  dealposition and nopponentsdealt.
+  Thanks to BruceLee for reporting.
+  [THF]
+
+MAINTENANCE:
+- Some code improvements be compatible with UNICODE-filenames on Win7/8.
+  [THF]
+
 v5.0.6 2014-07-27
 ==================
 BUG FIXES:
