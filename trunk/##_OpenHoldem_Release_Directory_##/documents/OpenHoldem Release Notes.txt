@@ -1,3 +1,12 @@
+v5.0.8 2014-08-xx
+==================
+BUG FIXES:
+- The parser recognized binary and hexadecimal numbers,
+  but translated them to 0, as the standard C-function atof()
+  was not able to deal with binary and hex.
+  Thanks to Nik0 for reporting.
+  [THF]
+
 v5.0.7 2014-07-30
 ==================
 BUG FIXES:
