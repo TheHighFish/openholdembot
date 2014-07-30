@@ -48,8 +48,8 @@ void CParseTreeNode::MakeIdentifier(CString name)
 {
 	_node_type = kTokenIdentifier;
 	_terminal_name = name;
-    assert(p_parser_symbol_table != NULL);
-    p_parser_symbol_table->VerifySymbol(name);
+  assert(p_parser_symbol_table != NULL);
+  p_parser_symbol_table->VerifySymbol(name);
 }
 
 void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
@@ -113,15 +113,15 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 
 double CParseTreeNode::Evaluate(bool log /* = false */)
 {
-    write_log(preferences.debug_formula(), 
-        "[CParseTreeNode] Evaluating node type %i %s\n", 
+  write_log(preferences.debug_formula(), 
+    "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
-    p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	// Most common types fiorst: numbers and identifiers
 	if (_node_type == kTokenNumber)
 	{
 		write_log(preferences.debug_formula(), 
-            "[CParseTreeNode] Number evaluates to %6.3f\n",
+      "[CParseTreeNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
 	}
@@ -130,11 +130,11 @@ double CParseTreeNode::Evaluate(bool log /* = false */)
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
-            "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
-        // In case of f$-functions the line changed inbetween,
-        // so we have to set it to the current location (again)
-        // for the next log.
-        p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
+      "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
+    // In case of f$-functions the line changed inbetween,
+    // so we have to set it to the current location (again)
+    // for the next log.
+    p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 		return value;
 	}
 	// Actions second, which are also "unary".
@@ -210,96 +210,84 @@ double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
   }
 }
 
-double CParseTreeNode::EvaluateBinaryExpression(bool log)
-{
+double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
 	double value_of_second_sibbling = 0.0;
 	// Short circuiting
 	// Don't evaluate unnecessary parts of expressions
-	if (_node_type == kTokenOperatorLogicalAnd)
-	{
-		if (value_of_first_sibbling == false)
-		{
+	if (_node_type == kTokenOperatorLogicalAnd)	{
+		if (value_of_first_sibbling == false) {
 			return false;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
-		return value_of_second_sibbling;
-	}
-	else if (_node_type == kTokenOperatorLogicalOr)
-	{
-		if (value_of_first_sibbling == true)
-		{
+		return (value_of_second_sibbling ? true : false);
+	}	else if (_node_type == kTokenOperatorLogicalOr)	{
+		if (value_of_first_sibbling == true) {
 			return true;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
-		return value_of_second_sibbling;
+		return (value_of_second_sibbling ? true : false);
 	}
 	// Short circuiting done
 	// Now normal evaluation of operators that need both operands
 	value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
-	switch (_node_type)
-	{
-	case kTokenOperatorPlus: 
-		return value_of_first_sibbling + value_of_second_sibbling;
-	case kTokenOperatorMinus: 
-		return value_of_first_sibbling - value_of_second_sibbling;
-	case kTokenOperatorMultiplication: 
-		return value_of_first_sibbling * value_of_second_sibbling;
-	case kTokenOperatorDivision: 
-		if (value_of_second_sibbling == 0)
-		{
-			OH_MessageBox_Error_Warning("Division by zero.", "Error");
-			return k_undefined;
-		}
-		else
-		{
-			return value_of_first_sibbling / value_of_second_sibbling;
-		}
-	case kTokenOperatorModulo: if (value_of_second_sibbling == 0)
-		{
-			OH_MessageBox_Error_Warning("Division by zero.", "Error");
-			return k_undefined;
-		}
-		else
-		{
-			return (unsigned long)value_of_first_sibbling 
-				% (unsigned long)value_of_second_sibbling;
-		}
-	case kTokenOperatorExponentiation: 
-		return pow(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorEquality: 
-		return IsEqual(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorApproximatellyEqual: 
-		return IsApproximatellyEqual(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorSmaller: 
-		return IsSmaller(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorSmallerOrEqual: 
-		return IsSmallerOrEqual(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorGreater: 
-		return IsGreater(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorGreaterOrEqual: 
-		return IsGreaterOrEqual(value_of_first_sibbling, value_of_second_sibbling);
-	case kTokenOperatorNotEqual: 
-	case kTokenOperatorLogicalXOr: 
-		return value_of_first_sibbling != value_of_second_sibbling;
-	case kTokenOperatorBinaryAnd: 
-		return (unsigned long)value_of_first_sibbling 
-			& (unsigned long)value_of_second_sibbling;
-	case kTokenOperatorBinaryOr: 
-		return (unsigned long)value_of_first_sibbling 
-			| (unsigned long)value_of_second_sibbling;
-	case kTokenOperatorBinaryXOr: 
-		return (unsigned long)value_of_first_sibbling 
-			^ (unsigned long)value_of_second_sibbling;
-	case kTokenOperatorBitShiftLeft: 
-		return (unsigned long)value_of_first_sibbling 
-			<< (unsigned long)value_of_second_sibbling;
-	case kTokenOperatorBitShiftRight: 
-		return (unsigned long)value_of_first_sibbling 
-			>> (unsigned long)value_of_second_sibbling;
-	case kTokenOperatorPercentage: 
-		return value_of_first_sibbling * value_of_second_sibbling * 0.01;
-	default: assert(false);
+	switch (_node_type) {
+	  case kTokenOperatorPlus: 
+		  return value_of_first_sibbling + value_of_second_sibbling;
+	  case kTokenOperatorMinus: 
+		  return value_of_first_sibbling - value_of_second_sibbling;
+	  case kTokenOperatorMultiplication: 
+		  return value_of_first_sibbling * value_of_second_sibbling;
+	  case kTokenOperatorDivision: 
+		  if (value_of_second_sibbling == 0) {
+			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  return k_undefined;
+		  } else {
+			  return value_of_first_sibbling / value_of_second_sibbling;
+		  }
+	  case kTokenOperatorModulo: 
+      if (value_of_second_sibbling == 0) {
+			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  return k_undefined;
+		  } else {
+			  return (unsigned long)value_of_first_sibbling 
+				  % (unsigned long)value_of_second_sibbling;
+		  }
+	  case kTokenOperatorExponentiation: 
+		  return pow(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorEquality: 
+		  return IsEqual(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorApproximatellyEqual: 
+		  return IsApproximatellyEqual(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorSmaller: 
+		  return IsSmaller(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorSmallerOrEqual: 
+		  return IsSmallerOrEqual(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorGreater: 
+		  return IsGreater(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorGreaterOrEqual: 
+		  return IsGreaterOrEqual(value_of_first_sibbling, value_of_second_sibbling);
+	  case kTokenOperatorNotEqual: 
+	  case kTokenOperatorLogicalXOr: 
+		  return value_of_first_sibbling != value_of_second_sibbling;
+	  case kTokenOperatorBinaryAnd: 
+		  return (unsigned long)value_of_first_sibbling 
+			  & (unsigned long)value_of_second_sibbling;
+	  case kTokenOperatorBinaryOr: 
+		  return (unsigned long)value_of_first_sibbling 
+			  | (unsigned long)value_of_second_sibbling;
+	  case kTokenOperatorBinaryXOr: 
+		  return (unsigned long)value_of_first_sibbling 
+			  ^ (unsigned long)value_of_second_sibbling;
+	  case kTokenOperatorBitShiftLeft: 
+		  return (unsigned long)value_of_first_sibbling 
+			  << (unsigned long)value_of_second_sibbling;
+	  case kTokenOperatorBitShiftRight: 
+		  return (unsigned long)value_of_first_sibbling 
+			  >> (unsigned long)value_of_second_sibbling;
+	  case kTokenOperatorPercentage: 
+		  return value_of_first_sibbling * value_of_second_sibbling * 0.01;
+	  default: assert(false);
 	}
 	return k_undefined;
 }
@@ -327,7 +315,7 @@ double CParseTreeNode::EvaluateTernaryExpression(bool log)
 }
 
 double CParseTreeNode::EvaluateSibbling(
-    TPParseTreeNode first_second_or_third_sibbling, bool log) {
+  TPParseTreeNode first_second_or_third_sibbling, bool log) {
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {

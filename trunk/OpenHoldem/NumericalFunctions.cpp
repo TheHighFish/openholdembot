@@ -24,7 +24,7 @@ double StringToNumber(CString number) {
     // Hex number
     return strtol(number, NULL, 16);
   }
-  else if (memcmp(number, "0b", 2)) {
+  else if (memcmp(number, "0b", 2) == 0) {
     // Binary number
     return strtol(number, NULL, 16);
   }
