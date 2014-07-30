@@ -1,0 +1,168 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter*
+If you want to buy...
+\end_layout
+
+\begin_layout Standard
+...
+ we don't sell anything.
+\end_layout
+
+\begin_layout Standard
+However if you really need 
+\begin_inset Quotes eld
+\end_inset
+
+more
+\begin_inset Quotes erd
+\end_inset
+
+ than you get here, especially built-in support for some pokersites, a winning
+ bot for the lowest microstakes (NL 2 - yes, that are blinds of $0.01/$0.02)
+ and professional hand-holding, then you might want to consider buying the
+ original Shanky-bot at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+www.bonusbots.com
+\end_layout
+
+\end_inset
+
+.
+ To our best knowledge they offer an advertisement-deal of $30 or $50 or
+ something for every customer who gets referred.
+ However: we do neither want to nor need to make any money advertising such
+ funny things like 
+\begin_inset Quotes eld
+\end_inset
+
+winning poker-bots
+\begin_inset Quotes erd
+\end_inset
+
+, but we don't want to waste that money either.
+ So if you really buy their bot, please register to their forum, send greatings
+ to everybody and ask Egor to send that money to 
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="1">
+<features>
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\noun on
+Doctors without Borders
+\noun default
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+333 7th Avenue, 2nd Floor New York, NY 10001-5004
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Phone: 212-679-6800 Fax: 212-679-7016
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+https://www.doctorswithoutborders.org/donate/
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Thank you very much for your help and cooperation!
+\end_layout
+
+\end_body
+\end_document
