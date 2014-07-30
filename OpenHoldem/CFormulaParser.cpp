@@ -25,6 +25,7 @@
 #include "CParseTreeRotator.h"
 #include "CPreferences.h"
 #include "CValidator.h"
+#include "NumericalFunctions.h"
 #include "TokenizerConstants.h"
 
 #undef DEBUG_PARSER
@@ -409,7 +410,8 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {                       
 		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
 	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
-		double value = atof(number);
+    // Deals with floating points, ints, hex and binary
+		double value = StringToNumber(number);
 		terminal_node->MakeConstant(value);
 	}	else {
 		assert(k_this_must_not_happen);
