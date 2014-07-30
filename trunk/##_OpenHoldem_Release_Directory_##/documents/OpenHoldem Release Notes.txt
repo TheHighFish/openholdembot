@@ -1,4 +1,4 @@
-v5.0.7 2014-07-xx
+v5.0.7 2014-07-30
 ==================
 BUG FIXES:
 - One of the last code-improvements broke the symbols
