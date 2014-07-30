@@ -1,0 +1,176 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Configuration Checks
+\end_layout
+
+\begin_layout Standard
+OpenHoldem will check some parts of your system configuration automatically
+ on start-up to avoid the most common and time-consuming mis-configurations.
+ Some of them (like minimum colour-depth) will always be executed, other
+ can be turned off, if you don't use certain features.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Check Keyboard Settings: 
+\emph default
+this option will, check for an english keyboard layout.
+ Keyboard settings affect especially the decimal point in numbers and therefore
+ the scraper-engine and the auto-player.
+ If you continue with incorrect settings, OpenHoldem may or may not work
+ as expected.
+ If you are an experienced user with a working setup you may turn this warning
+ off, but if you encounter problems (especially with swagging) or are a
+ beginner, you should better get your keyboard layout configured the correct
+ way.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Check Window Theme Settings: 
+\emph default
+this option will check, if the windows theme is set to Windows Classic (Windows
+ 2000), as that is the recommended theme and many TableMaps are build using
+ this configuration.
+ If you know exactly, what you do and are able to adapt your TableMaps to
+ other configurations, then you may turn this setting off.
+ However --- be aware, that any fancy settings might possibly break the
+ scraper and will reduce your possibility to exchange maps with other users.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Check Font Smoothing Settings: 
+\emph default
+This option will check, if Font Smoothing is turned off, as recommended.
+ Font Smoothing does display names and numbers slightly more eye-freindly
+ for a human user, but it will render scraping more difficult.
+ If you know exactly what you do you may again turn this option off.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/configuration_checks.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: Configuration Checks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Other Configuration Checks
+\end_layout
+
+\begin_layout Standard
+OpenHoldem does execute various other configuration checks, but part of
+ them can't be turned off, as they are mandatory settings and the other
+ ones will be triggered automatically.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Mandatory checks
+\end_layout
+
+\begin_layout Itemize
+Mimimum colour depth of 24 bits.
+\end_layout
+
+\begin_layout Subsubsection
+Checks triggered automatically
+\end_layout
+
+\begin_layout Itemize
+Correct installation of Microsoft Visual C++ 2005 redistributable runtime
+ library, which is required for Perl users
+\end_layout
+
+\begin_layout Itemize
+Correct installation of ActivePerl, if the user wants to load the Perl interpret
+er.
+\end_layout
+
+\begin_layout Itemize
+Perl directory being part of the systems PATH-variable.
+\end_layout
+
+\end_body
+\end_document

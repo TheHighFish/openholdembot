@@ -1,0 +1,20 @@
+custom
+
+prefold
+when ((hand = 32) or (hand = 42)) fold force
+
+preflop
+when (hand = AA) raisemax force
+when (hand = kk) raise 10 force
+when (hand = qq) call force
+when (hand = jj) beep force
+
+flop
+when (board = ATT) raisemax force
+
+turn
+when ((calls = 33) or (raises = 42)) raisemax force
+when others fold force
+
+river
+when others fold force

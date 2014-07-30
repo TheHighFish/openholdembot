@@ -1,0 +1,14 @@
+// Invalid characters
+custom
+
+preflop
+when (@@@) fold force
+
+flop
+when (@@@) fold force
+
+turn
+when others fold force
+
+river
+when others fold force
