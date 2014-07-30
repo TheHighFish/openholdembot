@@ -150,18 +150,14 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	}
 	int chair = 0;
 
-	if (!p_pokertracker_thread->IsConnected())
-	{
-		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula_parser->IsParsing())
-		{
+	if (!p_pokertracker_thread->IsConnected()) 	{
+		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula_parser->IsParsing()) {
 			// We are not yet seated or formula is getting parsed.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
       write_log(preferences.debug_pokertracker(), "[PokerTracker] Not yet seated or formula parsing.\n");
-		}
-		else
-		{
+		} else {
 			// We are seated and playing.
 			// Serious problem, if we do not have a DB-connection.
 			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
@@ -173,18 +169,29 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 
 	CString standard_symbol_name;
 	// PokerTracker ymbols for the raise-chair
-	if (StringAIsPrefixOfStringB("pt_r_", s))
-	{
+	if (StringAIsPrefixOfStringB("pt_r_", s)) {
 		chair = p_symbol_engine_raisers_callers->raischair();
 	}
 	// PokerTracker symbols for chair X
-	else 
-	{
+	else {
 		assert(StringAIsPrefixOfStringB("pt_", s));
 		CString symbol = s;
 		CString last_character = symbol.Right(1);
+    if (!isdigit(last_character[0])) {
+      CString error_message;
+      error_message.Format("Invalid PokerTracker Symbol: &s",
+        symbol);
+      OH_MessageBox_Formula_Error(error_message, "ERROR");
+		  *result = k_undefined;
+      return false;
+    }
 		chair = atoi(last_character);
 	}
+  // Catch undefined chair (e.g. pt_r_-symbol without raisee)
+  if (chair < 0) {
+    *result = k_undefined;
+    return true;
+  }
 	AssertRange(chair, k_first_chair, k_last_chair);
 	*result = PT_DLL_GetStat(s, chair); 
 	return true;
