@@ -5,10 +5,17 @@ BUG FIXES:
   dealposition and nopponentsdealt.
   Thanks to BruceLee for reporting.
   [THF]
+- Versus symbols caused a warning on empty lists or unknown user-cards,
+  especially at load-time.
+  Thanks to Nik0 who showed us a screenshot with the error-message.
+  [THF]
 
 MAINTENANCE:
 - Some code improvements for compatibility with UNICODE-filenames on Win7/8.
   Special thanks to Nahman78 for providing the patch.
+  [THF]
+- Improved lookup for PT-symbols (pt_r_ without raiser).
+  Thanks to PkrBot for reporting an assertion.
   [THF]
 
 v5.0.6 2014-07-27
