@@ -41,6 +41,8 @@ class CParseTreeNode {
   void MakeWhenCondition(TPParseTreeNode condition);
  public:
   double Evaluate(bool log = false);
+  CString EvaluateToString(bool log = false);
+ public:
   // For debugging output
   CString Serialize();
  public:
@@ -61,6 +63,7 @@ class CParseTreeNode {
   bool IsAnyKindOfWhenCondition();
   bool IsWhenConditionWithAction();
   bool IsOpenEndedWhenCondition();
+  bool EvaluatesToBinaryNumber();
  protected:
   int _node_type;
   // In case of terminal node (identifier)

@@ -11,7 +11,7 @@
 //
 //*****************************************************************************
 
-#include "stdafx.h"
+#include "stdafx.h" 
 #include "CParseTreeNode.h"
 
 #include <math.h>
@@ -111,22 +111,18 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 	// !!! also needs a continue on execution!
 }
 
-double CParseTreeNode::Evaluate(bool log /* = false */)
-{
+double CParseTreeNode::Evaluate(bool log /* = false */){
   write_log(preferences.debug_formula(), 
     "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	// Most common types fiorst: numbers and identifiers
-	if (_node_type == kTokenNumber)
-	{
+	if (_node_type == kTokenNumber)	{
 		write_log(preferences.debug_formula(), 
       "[CParseTreeNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
-	}
-	else if (_node_type == kTokenIdentifier)
-	{
+	}	else if (_node_type == kTokenIdentifier) {
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
@@ -142,43 +138,45 @@ double CParseTreeNode::Evaluate(bool log /* = false */)
 	// therefore:
 	// * positive values mean: raise size (by big-blinds, raise-by-semantics)
 	// * negative values mean: elementary actions
-	else if (TokenIsElementaryAction(_node_type))
-	{
+	else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
-	}
-	else if (_node_type == kTokenActionRaiseByBigBlinds)
-	{
+	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
 		return EvaluateSibbling(_first_sibbling, log);
-	}
-	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)
-	{
+	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
 		double pot_size_after_call_in_big_blinds = 0; // !!! PotSize() + AmountToCall();
 		double raise_by_amount = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
 		return raise_by_amount;
-	}
-	else if (_node_type == kTokenActionUserVariableToBeSet)
-	{
+	}	else if (_node_type == kTokenActionUserVariableToBeSet) {
 		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
 		// Continue with next open-ended when-condition
 		EvaluateSibbling(_second_sibbling, log);
 	}
 	// Finally operators
-	else if (TokenIsUnary(_node_type))
-	{
+	else if (TokenIsUnary(_node_type)) {
 		return EvaluateUnaryExpression(log);
-	}
-	else if (TokenIsBinary(_node_type))
-	{
+	}	else if (TokenIsBinary(_node_type))	{
 		return EvaluateBinaryExpression(log);
-	}
-	else if (TokenIsTernary(_node_type))
-	{
+	}	else if (TokenIsTernary(_node_type)) {
 		return EvaluateTernaryExpression(log);
 	}
 	assert(false);
 	return k_undefined;
+}
+
+CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
+  double numerical_result = Evaluate(log);
+  CString result;
+  if (IsInteger(numerical_result) && EvaluatesToBinaryNumber()) {
+    // Generqate binary representation;
+    result.Format("%s", IntToBinaryString(int(numerical_result)));
+  } else {
+    // Generate floating-point representation
+    // with 2 digits precision
+    result.Format("%.2f", numerical_result);
+  }
+  return result;
 }
 
 double CParseTreeNode::EvaluateIdentifier(CString name, bool log)
@@ -418,5 +416,10 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
       && (_second_sibbling->_node_type == kTokenOperatorConditionalWhen)) {
     return true;
   }
+  return false;
+}
+
+bool CParseTreeNode::EvaluatesToBinaryNumber() {
+  if (TokenEvaluatesToBinaryNumber(_node_type)) return true;
   return false;
 }
