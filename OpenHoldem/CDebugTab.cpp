@@ -41,11 +41,12 @@ CDebugTab::~CDebugTab() {
 
 CString CDebugTab::EvaluateAll() {
   CString all_results;
+  CString current_line;
   for (int i=0; i<_number_of_expressions; ++i) {
-    double result = _expressions[i]->Evaluate();
-    CString current_line;
+    CString result = _expressions[i]->EvaluateToString();
     assert(_expression_texts[i] != "");
-    current_line.Format("%10.3f = %s\n", result,
+    // Left side at least 12 digits for bitwise values like 0b1011100101
+    current_line.Format("%12s = %s\n", result,
       _expression_texts[i]);
     all_results += current_line;
   }

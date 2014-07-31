@@ -56,6 +56,26 @@ CString Number2CString(double number, int default_precision)
 	return result;
 }
 
+CString IntToBinaryString(int number) {
+  CString result;
+  if (number < 0) {
+    result = "-";
+    number = 0 - number;
+  }
+  result += "0b";
+  CString digits; 
+  do {
+    if ((number % 2) == 0) {
+      digits = "0" + digits;
+    } else {
+      digits = "1" + digits;
+    }
+    number /= 2;
+  } while (number > 0);
+  result += digits;
+  return result;
+};
+
 CString CStringRemoveLeft(CString string, int number_of_characters_to_remove)
 {
 	int length = string.GetLength();
