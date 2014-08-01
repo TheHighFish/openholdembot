@@ -1,7 +1,7 @@
 v4.4.1 2014-xx-xx
 =================
 NEW SYMBOL:
-- New symbols: HadSetOnFlop, HadSetOnTurn (doc not updated)
+- New symbols: HadSetOnFlop, HadSetOnTurn, MaxStacksizeOfActiveOpponents, EffectiveMaxStacksizeOfActiveOpponents
  [Lavezzi]
   
 BUG FIXES:
