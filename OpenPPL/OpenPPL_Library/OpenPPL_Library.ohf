@@ -1507,6 +1507,12 @@ bet1
 ##f$OpenPPL_MaxOpponentStackSize##
 me_re_MaxOpponentStackSize
 
+##f$OpenPPL_MaxStacksizeOfActiveOpponents##
+stack0 == balance ? stack1 : stack0
+
+##f$OpenPPL_EffectiveMaxStacksizeOfActiveOpponents##
+balance<=f$OpenPPL_MaxStacksizeOfActiveOpponents? balance: f$OpenPPL_MaxStacksizeOfActiveOpponents
+
 ##f$OpenPPL_MaxStillToActStackSize##
 userchair == f$OpenPPL_BigBlindChair        ? 0 :
 userchair == f$OpenPPL_SmallBlindChair      ? f$OpenPPL_MaxStillToActStackSizeAfterSmallBlind      :

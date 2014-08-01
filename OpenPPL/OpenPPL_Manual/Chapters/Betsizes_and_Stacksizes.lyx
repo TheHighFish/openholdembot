@@ -97,7 +97,7 @@ It's up to you, what and how you code.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="15" columns="3">
+<lyxtabular version="3" rows="17" columns="3">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -223,6 +223,69 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
+MaxStacksizeOfActiveOpponents
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The biggest stack size of all opponents currently playing the hand.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Could be bigger than you balance.
+ Use EffectiveMaxStacksizeOfActiveOpponents to know exactly the balance
+ at risk.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+EffectiveMaxStacksizeOfActiveOpponents
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The biggest effective stack size of all opponents currently playing the
+ hand.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+You some opponents have more chips/money than you the symbol will return
+ the amout of your balance to reflect how much bot is risking in a specified
+ hand.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 MaxOpponentStackSize
 \end_layout
 
@@ -232,7 +295,7 @@ MaxOpponentStackSize
 \begin_inset Text
 
 \begin_layout Plain Layout
-The biggest stack of all opponents.
+The biggest stack of all opponents (playing and not playing).
  measured in big blinds at the beginning of the hand
 \end_layout
 
@@ -297,7 +360,8 @@ MinOpponentStackSize
 
 \begin_layout Plain Layout
 The smallest stack of all opponents.
- measured in big blinds at the beginning of the hand
+ (playing and not playing) measured in big blinds at the beginning of the
+ hand
 \end_layout
 
 \end_inset
