@@ -296,7 +296,8 @@ CScintillaWnd *CDlgFormulaScintilla::SetupScintilla(CScintillaWnd *pWnd, const c
 	pWnd->SetLexer(SCLEX_CPP);
 	UpdateScintillaKeywords(pWnd);
 	pWnd->EnableWindow(false);
-	SetStyleColors(pWnd, true); // always use syntax-coloring
+	SetStyleColors(pWnd);
+  SetEquiDistantFont(pWnd);  
 
 	return pWnd;
 }
@@ -346,10 +347,12 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	in_startup = true;
 
 	CDialog::OnInitDialog();
+  
+  //SetEquiDistantFont(); //!!!!!!
 
 	// Save tofit windows as current size
-	m_winMgr.InitToFitSizeFromCurrent(this);		// make tofit = current size
-	m_winMgr.CalcLayout(this);						  // recalc
+	m_winMgr.InitToFitSizeFromCurrent(this);	// make tofit = current size
+	m_winMgr.CalcLayout(this);						    // recalc
 	m_winMgr.SetWindowPositions(this);				// set positions
 
 	// Create sizer bar window
@@ -1663,52 +1666,60 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent)
 	__TRACE
 }
 
-void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd, bool enabled) 
-{
-	int i = 0;
+void CDlgFormulaScintilla::SetEquiDistantFont(CScintillaWnd *pWnd) {
+  // http://support.microsoft.com/kb/85518/en-us
+  // http://msdn.microsoft.com/de-de/library/chxkwcsd.aspx
+  // http://en.wikipedia.org/wiki/Monospaced_font
+  // http://en.wikipedia.org/wiki/Courier_%28typeface%29
+  LOGFONT logfont; 
+  assert(logfont != NULL);
+  //!!!_edit_font.DeleteObject();
+	_edit_font.GetLogFont(&logfont);
+	for (int i=0; i<=MAX_STYLE_NUM; i++) {
+		pWnd->SetFontname(i, logfont.lfFaceName);
+		pWnd->SetFontheight(i, -logfont.lfHeight);
+		pWnd->SetBold(i, (logfont.lfWeight==FW_BOLD ? true : false));
+		pWnd->SetItalic(i, logfont.lfItalic);
+	}
+  
+  _edit_font.DeleteObject();
+  bool success = _edit_font.CreatePointFont(100, "Courier");
+  assert(success);
+}
 
-	if (enabled) 
-	{
-		// Default: black
-		pWnd->SetForeground(0, RGB(0x00, 0x00, 0x00));		// SCE_C_DEFAULT 0
-		// Comments: green
-		pWnd->SetForeground(1, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENT 1	  (//)
-		pWnd->SetForeground(2, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENTLINE 2  (/* */)
-		/*
-		pWnd->SetForeground(3, RGB(0x00, 0x00, 0x00));	// SCE_C_COMMENTDOC 3
-		*/
-		// Number: black
-		pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
-		// Keywords: blue
-		pWnd->SetForeground(5, RGB(0x00, 0x0, 0xFF));		// SCE_C_WORD 5			(keywords)
-		/*
-		pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
-		pWnd->SetForeground(7, RGB(0x00, 0x00, 0x00));	// SCE_C_CHARACTER 7
-		pWnd->SetForeground(8, RGB(0x00, 0x00, 0x00));	// SCE_C_UUID 8
-		pWnd->SetForeground(9, RGB(0x00, 0x00, 0x00));	// SCE_C_PREPROCESSOR 9
-		*/
-		// Operators: red
-		pWnd->SetForeground(10, RGB(0xff, 0x00, 0x00));		// SCE_C_OPERATOR 10	(operators)
-		/*
-		pWnd->SetForeground(11, RGB(0x00, 0x00, 0x00));  // SCE_C_IDENTIFIER 11
-		pWnd->SetForeground(12, RGB(0x00, 0x00, 0x00));  // SCE_C_STRINGEOL 12
-		pWnd->SetForeground(13, RGB(0x00, 0x00, 0x00));  // SCE_C_VERBATIM 13
-		pWnd->SetForeground(14, RGB(0x00, 0x00, 0x00));  // SCE_C_REGEX 14
-		pWnd->SetForeground(15, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTLINEDOC 15
-		pWnd->SetForeground(16, RGB(0x00, 0x00, 0x00));  // SCE_C_WORD2 16
-		pWnd->SetForeground(17, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORD 17
-		pWnd->SetForeground(18, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORDERROR 18
-		*/
-		// Background:
-		pWnd->SetBackground(19, RGB(250, 240, 0));  // SCE_C_GLOBALCLASS 19
-	}
-	else 
-	{
-		for (int i=0; i<=MAX_STYLE_NUM; i++) 
-		{
-			pWnd->SetForeground(i, RGB(0x00, 0x00, 0x00));
-		}
-	}
+void CDlgFormulaScintilla::SetStyleColors(CScintillaWnd *pWnd) {
+	// Default: black
+	pWnd->SetForeground(0, RGB(0x00, 0x00, 0x00));		// SCE_C_DEFAULT 0
+	// Comments: green
+	pWnd->SetForeground(1, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENT 1	  (//)
+	pWnd->SetForeground(2, RGB(0x00, 0x99, 0x00));		// SCE_C_COMMENTLINE 2  (/* */)
+	/*
+	pWnd->SetForeground(3, RGB(0x00, 0x00, 0x00));	// SCE_C_COMMENTDOC 3
+	*/
+	// Number: black
+	pWnd->SetForeground(4, RGB(0x00, 0x00, 0x00));	// SCE_C_NUMBER 4
+	// Keywords: blue
+	pWnd->SetForeground(5, RGB(0x00, 0x0, 0xFF));		// SCE_C_WORD 5			(keywords)
+	/*
+	pWnd->SetForeground(6, RGB(0x00, 0x00, 0x00));	// SCE_C_STRING 6
+	pWnd->SetForeground(7, RGB(0x00, 0x00, 0x00));	// SCE_C_CHARACTER 7
+	pWnd->SetForeground(8, RGB(0x00, 0x00, 0x00));	// SCE_C_UUID 8
+	pWnd->SetForeground(9, RGB(0x00, 0x00, 0x00));	// SCE_C_PREPROCESSOR 9
+	*/
+	// Operators: red
+	pWnd->SetForeground(10, RGB(0xff, 0x00, 0x00));		// SCE_C_OPERATOR 10	(operators)
+	/*
+	pWnd->SetForeground(11, RGB(0x00, 0x00, 0x00));  // SCE_C_IDENTIFIER 11
+	pWnd->SetForeground(12, RGB(0x00, 0x00, 0x00));  // SCE_C_STRINGEOL 12
+	pWnd->SetForeground(13, RGB(0x00, 0x00, 0x00));  // SCE_C_VERBATIM 13
+	pWnd->SetForeground(14, RGB(0x00, 0x00, 0x00));  // SCE_C_REGEX 14
+	pWnd->SetForeground(15, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTLINEDOC 15
+	pWnd->SetForeground(16, RGB(0x00, 0x00, 0x00));  // SCE_C_WORD2 16
+	pWnd->SetForeground(17, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORD 17
+	pWnd->SetForeground(18, RGB(0x00, 0x00, 0x00));  // SCE_C_COMMENTDOCKEYWORDERROR 18
+	*/
+	// Background:
+	pWnd->SetBackground(19, RGB(250, 240, 0));  // SCE_C_GLOBALCLASS 19
 }
 
 BOOL CDlgFormulaScintilla::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)

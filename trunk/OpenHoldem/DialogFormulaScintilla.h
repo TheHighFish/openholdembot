@@ -108,7 +108,6 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg void OnNew();
   afx_msg void OnRename();
   afx_msg void OnDelete();
-  afx_msg void OnFont();
   afx_msg void OnHandList();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
@@ -137,7 +136,8 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
   void OnTimer(UINT nIDEvent);
   void SaveSettingsToRegistry();
-  void SetStyleColors(CScintillaWnd *pWnd, bool enabled);
+  void SetEquiDistantFont(CScintillaWnd *pWnd);
+  void SetStyleColors(CScintillaWnd *pWnd);
 
   BOOL CDlgFormulaScintilla::PreTranslateMessage(MSG* pMsg);
   CScintillaWnd *SetupScintilla(CScintillaWnd *pWnd, const char *title);
@@ -182,23 +182,23 @@ class CDlgFormulaScintilla : public CDialog {
   afx_msg LONG OnFindReplace(WPARAM wParam, LPARAM lParam);
   afx_msg void OnFindNext();
   afx_msg void OnFindPrev();
-		  void CloseFindReplaceDialog();
+	void CloseFindReplaceDialog();
 
-		  void DoFind(bool DirDown);
+	void DoFind(bool DirDown);
 
   CFindReplaceDialog *m_pFRDlg;
   CString			m_FindLastSearch;
-  bool			m_FindWholeWord;
-  bool			m_FindMatchCase;
+  bool			  m_FindWholeWord;
+  bool			  m_FindMatchCase;
 
-  CMenu			m_Menu;
+  CMenu			  m_Menu;
   CToolBar		m_toolBar;
-  CStatusBar		m_wndStatusBar;
+  CStatusBar	m_wndStatusBar;
   CTreeCtrl		m_FormulaTree;
   CTreeCtrl		m_SymbolTree;
   CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply;
-  CEdit			m_CalcResult;
-  CEdit			m_SearchEdit;
+  CEdit			  m_CalcResult;
+  CEdit			  m_SearchEdit;
   CWinMgr			m_winMgr;				// window manager
   CSizerBar		m_winMgrSizerBar;		// sizer bar
   CTabCtrl		m_TabControl;
@@ -208,8 +208,8 @@ class CDlgFormulaScintilla : public CDialog {
   HACCEL			m_hDialogAccelTable;
 
   CString			m_current_edit;			// Name of formula currently in edit window
-  bool			in_startup;
-  bool			ok_to_update_debug;
+  bool			  in_startup;
+  bool			  ok_to_update_debug;
 
   CStringArray	m_standard_headings;
   // Tree view for function grouping
@@ -229,8 +229,10 @@ class CDlgFormulaScintilla : public CDialog {
  private:
   void FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl);
  private:
-   HTREEITEM _subtree_handlists;
-   HTREEITEM _subtree_user_defined_functions;
+  HTREEITEM _subtree_handlists;
+  HTREEITEM _subtree_user_defined_functions;
+ private:
+  CFont _edit_font;
 };
 
 extern CDlgFormulaScintilla	*m_formulaScintillaDlg;
