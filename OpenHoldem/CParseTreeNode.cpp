@@ -173,8 +173,8 @@ CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
     result.Format("%s", IntToBinaryString(int(numerical_result)));
   } else {
     // Generate floating-point representation
-    // with 2 digits precision
-    result.Format("%.2f", numerical_result);
+    // with 3 digits precision
+    result.Format("%.3f", numerical_result);
   }
   return result;
 }
