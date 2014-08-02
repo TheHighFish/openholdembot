@@ -225,7 +225,12 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() No name known for this chair\n");
 		return false;
 	}
-	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+
+	if (strlen(p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name) <= k_max_length_of_playername)
+	{
+		strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	}
+
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
 
 	if (NameLooksLikeBadScrape(oh_scraped_name))
@@ -316,7 +321,7 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 //Short Algorithm to query the DB for the best name. returns true if best name is populated.
 bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 {
-	char		likename[k_max_length_of_playername];
+	char		likename[2 * k_max_length_of_playername + 2];
   // Attention: likename is 2 times as large as a player-name,
   // plus 2 for % at the beginning and \0 at the end.
   // !!! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
