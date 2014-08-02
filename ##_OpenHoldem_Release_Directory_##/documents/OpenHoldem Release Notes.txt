@@ -1,10 +1,16 @@
-v5.0.8 2014-08-xx
+v5.0.8 2014-08-03
 ==================
 BUG FIXES:
 - The parser recognized binary and hexadecimal numbers,
   but translated them to 0, as the standard C-function atof()
   was not able to deal with binary and hex.
   Thanks to Nik0 for reporting.
+  [THF]
+- Fixed 2 buffer-overflows in the PokerTracker-code.
+  [Nahman78]
+
+NEW STUFF:
+- Improved detection and display of ninary values in the debug-tab.
   [THF]
 
 v5.0.7 2014-07-30
