@@ -93,6 +93,11 @@ double CFunction::Evaluate(bool log /* = false */) {
   return _cached_result;
 }
 
+bool CFunction::EvaluatesToBinaryNumber() {
+  if (_parse_tree_node == NULL) return false;
+  return _parse_tree_node->EvaluatesToBinaryNumber();
+}
+
 void CFunction::ClearCache()
 {
 	_cached_result = 0.0;

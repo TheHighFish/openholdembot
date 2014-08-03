@@ -42,6 +42,7 @@ class CParseTreeNode {
  public:
   double Evaluate(bool log = false);
   CString EvaluateToString(bool log = false);
+  bool EvaluatesToBinaryNumber();
  public:
   // For debugging output
   CString Serialize();
@@ -63,7 +64,8 @@ class CParseTreeNode {
   bool IsAnyKindOfWhenCondition();
   bool IsWhenConditionWithAction();
   bool IsOpenEndedWhenCondition();
-  bool EvaluatesToBinaryNumber();
+ private:
+  bool IsBinaryIdentifier();
  protected:
   int _node_type;
   // In case of terminal node (identifier)

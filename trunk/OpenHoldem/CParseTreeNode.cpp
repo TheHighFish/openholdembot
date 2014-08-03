@@ -17,6 +17,7 @@
 #include <math.h>
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+#include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -419,7 +420,55 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
   return false;
 }
 
+bool CParseTreeNode::IsBinaryIdentifier() {
+  const int kNumberOfElementaryBinaryIdentifiers = 21;
+  static const CString kElementaryBinaryIdentifiers[kNumberOfElementaryBinaryIdentifiers] = {
+    "pcbits",              "playersactivebits",  "playersdealtbits",
+    "playersplayingbits",  "playersblindbits",   "opponentsseatedbits",
+    "opponentsactivebits", "opponentsdealtbits", "opponentsplayingbits",
+    "opponentsblindbits",  "flabitgs",           "rankbits",
+    "rankbitscommon",      "rankbitsplayer",     "rankbitspoker",
+    "srankbits",           "srankbitscommon",    "srankbitsplayer",
+    "srankbitspoker",      "myturnbits",         "pcbits"};
+  const int kNumberOfParameterizedBinaryIdentifiers = 4;
+  static const CString kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
+    "chairbit$", "raisbits", "callbits", "foldbits"};
+
+  if (_node_type != kTokenIdentifier) return false;
+  assert(_terminal_name != "");
+  // Check elementary binary identifiers first
+  for (int i=0; i<kNumberOfElementaryBinaryIdentifiers; ++i) {
+    if (_terminal_name == kParameterizedBinaryIdentifiers[i]) return true;
+  }
+  // Then check parameterized binary symbols
+  for (int i=0; i<kNumberOfParameterizedBinaryIdentifiers; ++i) {
+    if (StringAIsPrefixOfStringB(kParameterizedBinaryIdentifiers[i],
+        _terminal_name)) {
+      return true;
+    }                                 
+  }
+  // Not a binary identifier
+  return false;
+}
+
 bool CParseTreeNode::EvaluatesToBinaryNumber() {
-  if (TokenEvaluatesToBinaryNumber(_node_type)) return true;
+  if (TokenEvaluatesToBinaryNumber(_node_type)) {
+    // Operation that evaluates to binary number,
+    // e.g. bit-shift, logical and, etc.
+    return true;
+  }
+  else if (TokenIsBracketOpen(_node_type)) {
+    // Have a look at the sub-extreesopn
+    TPParseTreeNode sub_expression = _first_sibbling;
+    // There has to be an expresison inside the brackets
+    assert (_first_sibbling != NULL);
+    return _first_sibbling->EvaluatesToBinaryNumber();
+  }
+  else if (IsBinaryIdentifier()) return true;
+  else if ((_node_type == kTokenIdentifier)
+      && p_function_collection->EvaluatesToBinaryNumber(_terminal_name)) {
+    return true;
+  }
+  // Nothing binary
   return false;
 }

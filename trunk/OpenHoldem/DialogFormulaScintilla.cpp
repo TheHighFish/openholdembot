@@ -345,10 +345,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	int			max_x = 0, max_y = 0;
 
 	in_startup = true;
-
 	CDialog::OnInitDialog();
-  
-  //SetEquiDistantFont(); //!!!!!!
 
 	// Save tofit windows as current size
 	m_winMgr.InitToFitSizeFromCurrent(this);	// make tofit = current size
@@ -1672,9 +1669,8 @@ void CDlgFormulaScintilla::SetEquiDistantFont(CScintillaWnd *pWnd) {
   // http://en.wikipedia.org/wiki/Monospaced_font
   // http://en.wikipedia.org/wiki/Courier_%28typeface%29
   LOGFONT logfont; 
-  assert(logfont != NULL);
-  //!!!_edit_font.DeleteObject();
-	_edit_font.GetLogFont(&logfont);
+  //_edit_font.DeleteObject();
+  _edit_font.GetLogFont(&logfont);
 	for (int i=0; i<=MAX_STYLE_NUM; i++) {
 		pWnd->SetFontname(i, logfont.lfFaceName);
 		pWnd->SetFontheight(i, -logfont.lfHeight);

@@ -30,6 +30,7 @@ class CFunction: public COHScriptObject{
   void ClearCache();
  public:
   double Evaluate(bool log = false);
+  bool EvaluatesToBinaryNumber();
   // For debugging output
   CString Serialize();
  protected:
