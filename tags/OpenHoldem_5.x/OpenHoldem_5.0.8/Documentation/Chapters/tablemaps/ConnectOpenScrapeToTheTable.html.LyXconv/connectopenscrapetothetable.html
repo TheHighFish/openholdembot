@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="connectopenscrapetothetable.tex"> 
+<meta name="date" content="2013-12-26 04:54:00"> 
+<link rel="stylesheet" type="text/css" href="connectopenscrapetothetable.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>First thing&#8217;s first: connect to the poker window</h3>
+<!--l. 26--><p class="noindent" >Start a casino, and open up a play money table. For the greatest part of building a table
+map you could even use &#8220;observer&#8221; mode if you like; only few things like buttons will
+require a &#8220;real&#8221; account . Alternatively, once you learn how to use saved frames and
+OHReplay, you can also connect OpenScrape to these saved frames while offline from the
+casino.
+<!--l. 33--><p class="indent" >   For now, let&#8217;s keep it simple. Once you have a poker table setup, startup the
+OpenScrape program from the &#8220;c:\mpb&#8221; directory that you set up above. Arrange the
+casino table window and the OpenScrape windows on your screen in such a way that
+there is no overlap &#8211; OpenScrape needs a clear view of the poker table window to do its
+job.
+<!--l. 40--><p class="indent" >   <img 
+src="connectopenscrapetothetable0x.png" alt="PIC" class="graphics" width="439.64249pt" height="250.9375pt" ><!--tex4ht:graphics  
+name="connectopenscrapetothetable0x.png" src="0E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_ArrangedWindows.eps"  
+-->
+<!--l. 42--><p class="indent" >   Connect OpenScrape to the casino table by clicking on the Green Circle Button on
+the OpenScrape toolbar. A dialog with a list of top-level windows that are currently
+visible on your screen will appear. Select the one from the list that matches your
+casino table, and select OK. (Note, in this screenshot, we are connecting to a
+&#8220;ManualMode&#8221; window. You will learn more about ManualMode later in this
+document, but for now, just consider ManualMode to be a simulated, offline poker
+table).
+
+<!--l. 51--><p class="indent" >   <img 
+src="connectopenscrapetothetable1x.png" alt="PIC" class="graphics" width="173.64874pt" height="91.34125pt" ><!--tex4ht:graphics  
+name="connectopenscrapetothetable1x.png" src="1E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_WindowSelection.eps"  
+-->
+<!--l. 53--><p class="indent" >   A static image of the poker table window will be displayed in OpenScrape&#8217;s
+main window. Once OpenScrape has the poker table&#8217;s image displayed, you can
+minimize the poker table if you want, to give yourself more room to work. As the
+casino table changes state, and if you want to update the image that is displayed
+in the OpenScrape main window, you can do so at any time by clicking on
+the refresh button on the toolbar (Black and White arrows), or by choosing
+View/Refresh from the menu. When a refresh is requested, OpenScrape will bring the
+connected window to the front, grab the image, and then place it to the back again.
+Additionally, if you have OpenScrape connected to an OHReplay window, it
+automatically moves OHReplay to the next saved frame prior to grabbing the
+image.
+<!--l. 66--><p class="indent" >   <img 
+src="connectopenscrapetothetable2x.png" alt="PIC" class="graphics" width="442.65375pt" height="250.9375pt" ><!--tex4ht:graphics  
+name="connectopenscrapetothetable2x.png" src="2E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_Connected.eps"  
+-->
+<!--l. 68--><p class="indent" >   Once we have the poker table image in OpenScrape, it is time to start building our
+Table Map, and providing the parameters that the OpenHoldem game state engine will
+use to &#8220;read&#8221; the poker table.  
+</body></html> 
+
+
+
