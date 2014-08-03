@@ -7,6 +7,7 @@ BUG FIXES:
   Thanks to Nik0 for reporting.
   [THF]
 - Fixed 2 buffer-overflows in the PokerTracker-code.
+  Also showing a warning on incomplete PT-config when clicking the "Test"-button.
   [Nahman78]
 
 NEW STUFF:
