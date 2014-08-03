@@ -173,6 +173,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 	m_pFRDlg = NULL;
 
 	hUDFItem = NULL;
+	_edit_font.CreatePointFont(100, "Courier");
 }
 
 CDlgFormulaScintilla::~CDlgFormulaScintilla() 
@@ -404,7 +405,7 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.formula_x(), max_x), min(preferences.formula_y(), max_y),
-				   preferences.formula_dx(), preferences.formula_dy(), SWP_NOCOPYBITS);
+	preferences.formula_dx(), preferences.formula_dy(), SWP_NOCOPYBITS);
 	// Always sort UDFs
 	SortUdfTree();
 
