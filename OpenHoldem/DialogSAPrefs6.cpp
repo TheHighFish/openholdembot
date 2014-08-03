@@ -91,8 +91,7 @@ void CDlgSAPrefs6::OnOK()
 	CSAPrefsSubDlg::OnOK();
 }
 
-void CDlgSAPrefs6::OnBnClickedPtTest()
-{
+void CDlgSAPrefs6::OnBnClickedPtTest() {
 	CString			conn_str = "", ip_addr = "", port = "", user = "", pass = "", dbname = "", e = "";
 
 	m_pt_ip.GetWindowText(ip_addr);
@@ -100,6 +99,13 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	m_pt_user.GetWindowText(user);
 	m_pt_pass.GetWindowText(pass);
 	m_pt_dbname.GetWindowText(dbname);
+
+	if (dbname.IsEmpty()) {
+		// http://www.postgresql.org/docs/8.1/static/libpq.html
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB Name not set ! Default : It will be set to '%s'\n", user);
+		OH_MessageBox_Interactive("PostgreSQL DB Name not set !\nBy Default : the same as the Username",
+					   "Warning", MB_OK);
+	}
 
 	conn_str = p_pokertracker_thread->CreateConnectionString(ip_addr, 
 		port, user, pass, dbname);
@@ -115,24 +121,18 @@ void CDlgSAPrefs6::OnBnClickedPtTest()
 	PMainframe()->EndWaitCursor();
 	PMainframe()->set_wait_cursor(false);
 
-	if (PQstatus(pgconn) == CONNECTION_OK) 
-	{
+	if (PQstatus(pgconn) == CONNECTION_OK) {
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
-		if (PQisthreadsafe()) 
-		{
+		if (PQisthreadsafe()) {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is thread safe.\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
-		}
-		else 
-		{
+		} else {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
 		PQfinish(pgconn);
-	}
-	else 
-	{
+	} else {
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
 		e = "ERROR opening PostgreSQL DB:\n";
 		e += PQerrorMessage(pgconn);
