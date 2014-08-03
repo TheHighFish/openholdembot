@@ -42,6 +42,11 @@ double COHScriptObject::Evaluate(bool log /* = false */)
 	return 0.0;
 }
 
+// virtual
+bool COHScriptObject::EvaluatesToBinaryNumber() {
+  return false;
+}
+
 bool COHScriptObject::IsStandardFunction() {
   for (int i=0; i<k_number_of_standard_functions; ++i) {
     if (_name == k_standard_function_names[i]) return true;
