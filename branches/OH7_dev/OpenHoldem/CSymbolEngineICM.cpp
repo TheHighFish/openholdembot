@@ -29,6 +29,8 @@
 #include "stdafx.h"
 #include "CSymbolEngineICM.h"
 
+#include "CFunctionCollection.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -38,7 +40,6 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
@@ -244,12 +245,13 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   double		prizes[k_max_number_of_players] = {0};
 	double		stacks[k_max_number_of_players] = {0};
-	int			i = 0, j = 0;
-	prizes[0] = preferences.icm_prize1();
-	prizes[1] = preferences.icm_prize2();
-	prizes[2] = preferences.icm_prize3();
-	prizes[3] = preferences.icm_prize4();
-	prizes[4] = preferences.icm_prize5();
+
+  int number_of_icm_prizes = k_icm_prize5 - k_icm_prize1 + 1;
+  for (int i=0; i<number_of_icm_prizes; ++i) {
+    int function_name_index = k_icm_prize1 + i;
+    prizes[i] = p_function_collection->Evaluate(
+      k_standard_function_names[function_name_index]);
+  }
 
 	int			sym_userchair = p_symbol_engine_userchair->userchair();
 	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
