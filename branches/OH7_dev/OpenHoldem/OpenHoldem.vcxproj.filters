@@ -636,9 +636,6 @@
     <ClCompile Include="Chair$Symbols.cpp">
       <Filter>Source Files\Symbols\ToDo</Filter>
     </ClCompile>
-    <ClCompile Include="CICMCalculator.cpp">
-      <Filter>Source Files\Symbols\ToDo</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolEnginePokerAction.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
@@ -656,6 +653,9 @@
     </ClCompile>
     <ClCompile Include="CWhiteInfoBox.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineICM.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1379,9 +1379,6 @@
       <Filter>Header Files\Symbols\ToDo</Filter>
     </ClInclude>
     <ClInclude Include="Chair$Symbols.h">
-      <Filter>Header Files\Symbols\ToDo</Filter>
-    </ClInclude>
-    <ClInclude Include="CICMCalculator.h">
       <Filter>Header Files\Symbols\ToDo</Filter>
     </ClInclude>
     <ClInclude Include="CVirtualSymbolEngine.h">

@@ -17,6 +17,9 @@
 
 #include <assert.h>
 
+// Deals with floating points, ints, hex and binary
+double StringToNumber(CString number);
+
 inline void SwapDoubles(double *first, double *second) {
   double temp = *first;
   *first = *second;

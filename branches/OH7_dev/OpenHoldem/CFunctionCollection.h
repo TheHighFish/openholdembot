@@ -29,6 +29,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
+  bool EvaluatesToBinaryNumber(CString function_name);
  public:
   // Mandatory reset-functions
   void InitOnStartup();

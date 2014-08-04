@@ -52,14 +52,23 @@ BEGIN_TESTCASE
 END_TESTCASE
 
 
+BEGIN_TESTCASE
+    TESTCASE_ID ("0098")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol nopponentsseated")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= 10))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsseated")
+END_TESTCASE
+
 
 BEGIN_TESTCASE
     TESTCASE_ID ("0099")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol nopponentsseated")
-    PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= 9))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsseated")
+    REASONING ("Range check for symbol nopponentsseated for known userchair")
+    PRECONDITION (gws("nopponentsseated") >= 0)
+    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= 19))
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsseated userchair")
 END_TESTCASE
 
 

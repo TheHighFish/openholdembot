@@ -29,6 +29,7 @@ class COHScriptObject {
   void SetText(CString text)      { _function_text = text; }
  public:
   virtual double Evaluate(bool log = false);
+  virtual bool EvaluatesToBinaryNumber();
  public:
   bool IsList()                 { return _name.Left(4) == "list"; }
   bool IsOpenPPLSymbol()        { return isupper(_name[0]); }

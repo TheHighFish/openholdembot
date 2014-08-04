@@ -406,39 +406,50 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
     "[CVersus] EvaluateSymbol %s\n", name);
   if (memcmp(name, "vs$nhands", 9) == 0) {
     // vs$nhands...symbols
-    if (memcmp(name, "vs$nhands", 9)==0 && strlen(name)==9)	            return _nhands;
-    else if (memcmp(name, "vs$nhandshi", 11)==0 && strlen(name)==11)  	return _nhandshi;
-	  else if (memcmp(name, "vs$nhandsti", 11)==0 && strlen(name)==11)    return _nhandsti;
-	  else if (memcmp(name, "vs$nhandslo", 11)==0 && strlen(name)==11)	  return _nhandslo;
-    else if (memcmp(name, "vs$nhandshinow", 14)==0 && strlen(name)==14)	return _nhandshinow;
-	  else if (memcmp(name, "vs$nhandstinow", 14)==0 && strlen(name)==14)	return _nhandstinow;
-	  else if (memcmp(name, "vs$nhandslonow", 14)==0 && strlen(name)==14)	return _nhandslonow;
+    if (memcmp(name, "vs$nhands", 9)==0 && strlen(name)==9)	            *result = _nhands;
+    else if (memcmp(name, "vs$nhandshi", 11)==0 && strlen(name)==11)  	*result = _nhandshi;
+	  else if (memcmp(name, "vs$nhandsti", 11)==0 && strlen(name)==11)    *result = _nhandsti;
+	  else if (memcmp(name, "vs$nhandslo", 11)==0 && strlen(name)==11)	  *result = _nhandslo;
+    else if (memcmp(name, "vs$nhandshinow", 14)==0 && strlen(name)==14)	*result = _nhandshinow;
+	  else if (memcmp(name, "vs$nhandstinow", 14)==0 && strlen(name)==14)	*result = _nhandstinow;
+	  else if (memcmp(name, "vs$nhandslonow", 14)==0 && strlen(name)==14)	*result = _nhandslonow;
+    else {
+      // Not a valid symbol
+      return false;
+    }
+    return true;
   } else if (memcmp(name, "vs$pr", 5) == 0) {
     // vs$pr...symbols
-    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		          return _vsprwin;
-	  else if (memcmp(name, "vs$prtie", 8)==0 && strlen(name)==8)		      return _vsprtie;
-	  else if (memcmp(name, "vs$prlos", 8)==0 && strlen(name)==8)		      return _vsprlos;
-	  else if (memcmp(name, "vs$prwinhi", 10)==0 && strlen(name)==10)	    return _vsprwinhi;
-	  else if (memcmp(name, "vs$prtiehi", 10)==0 && strlen(name)==10)	    return _vsprtiehi;
-	  else if (memcmp(name, "vs$prloshi", 10)==0 && strlen(name)==10)	    return _vsprloshi;
-	  else if (memcmp(name, "vs$prwinti", 10)==0 && strlen(name)==10)	    return _vsprwinti;
-	  else if (memcmp(name, "vs$prtieti", 10)==0 && strlen(name)==10)	    return _vsprtieti;
-	  else if (memcmp(name, "vs$prlosti", 10)==0 && strlen(name)==10)	    return _vsprlosti;
-	  else if (memcmp(name, "vs$prwinlo", 10)==0 && strlen(name)==10)	    return _vsprwinlo;
-	  else if (memcmp(name, "vs$prtielo", 10)==0 && strlen(name)==10)	    return _vsprtielo;
-	  else if (memcmp(name, "vs$prloslo", 10)==0 && strlen(name)==10)	    return _vsprloslo;
-	  else if (memcmp(name, "vs$prwinhinow", 13)==0 && strlen(name)==13)	return _vsprwinhinow;
-	  else if (memcmp(name, "vs$prtiehinow", 13)==0 && strlen(name)==13)	return _vsprtiehinow;
-	  else if (memcmp(name, "vs$prloshinow", 13)==0 && strlen(name)==13)	return _vsprloshinow;
-	  else if (memcmp(name, "vs$prwintinow", 13)==0 && strlen(name)==13)	return _vsprwintinow;
-	  else if (memcmp(name, "vs$prtietinow", 13)==0 && strlen(name)==13)	return _vsprtietinow;
-	  else if (memcmp(name, "vs$prlostinow", 13)==0 && strlen(name)==13)	return _vsprlostinow;
-	  else if (memcmp(name, "vs$prwinlonow", 13)==0 && strlen(name)==13)	return _vsprwinlonow;
-	  else if (memcmp(name, "vs$prtielonow", 13)==0 && strlen(name)==13)	return _vsprtielonow;
-	  else if (memcmp(name, "vs$prloslonow", 13)==0 && strlen(name)==13)	return _vsprloslonow;
+    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		          *result = _vsprwin;
+	  else if (memcmp(name, "vs$prtie", 8)==0 && strlen(name)==8)		      *result = _vsprtie;
+	  else if (memcmp(name, "vs$prlos", 8)==0 && strlen(name)==8)		      *result = _vsprlos;
+	  else if (memcmp(name, "vs$prwinhi", 10)==0 && strlen(name)==10)	    *result = _vsprwinhi;
+	  else if (memcmp(name, "vs$prtiehi", 10)==0 && strlen(name)==10)	    *result = _vsprtiehi;
+	  else if (memcmp(name, "vs$prloshi", 10)==0 && strlen(name)==10)	    *result = _vsprloshi;
+	  else if (memcmp(name, "vs$prwinti", 10)==0 && strlen(name)==10)	    *result = _vsprwinti;
+	  else if (memcmp(name, "vs$prtieti", 10)==0 && strlen(name)==10)	    *result = _vsprtieti;
+	  else if (memcmp(name, "vs$prlosti", 10)==0 && strlen(name)==10)	    *result = _vsprlosti;
+	  else if (memcmp(name, "vs$prwinlo", 10)==0 && strlen(name)==10)	    *result = _vsprwinlo;
+	  else if (memcmp(name, "vs$prtielo", 10)==0 && strlen(name)==10)	    *result = _vsprtielo;
+	  else if (memcmp(name, "vs$prloslo", 10)==0 && strlen(name)==10)	    *result = _vsprloslo;
+	  else if (memcmp(name, "vs$prwinhinow", 13)==0 && strlen(name)==13)	*result = _vsprwinhinow;
+	  else if (memcmp(name, "vs$prtiehinow", 13)==0 && strlen(name)==13)	*result = _vsprtiehinow;
+	  else if (memcmp(name, "vs$prloshinow", 13)==0 && strlen(name)==13)	*result = _vsprloshinow;
+	  else if (memcmp(name, "vs$prwintinow", 13)==0 && strlen(name)==13)	*result = _vsprwintinow;
+	  else if (memcmp(name, "vs$prtietinow", 13)==0 && strlen(name)==13)	*result = _vsprtietinow;
+	  else if (memcmp(name, "vs$prlostinow", 13)==0 && strlen(name)==13)	*result = _vsprlostinow;
+	  else if (memcmp(name, "vs$prwinlonow", 13)==0 && strlen(name)==13)	*result = _vsprwinlonow;
+	  else if (memcmp(name, "vs$prtielonow", 13)==0 && strlen(name)==13)	*result = _vsprtielonow;
+	  else if (memcmp(name, "vs$prloslonow", 13)==0 && strlen(name)==13)	*result = _vsprloslonow;
+    else {
+      // Not a valid symbol
+      return false;
+    }
+    return true;
   } else if (memcmp(name, "vs$list", 7) == 0) {
     // vs$list...$prwin/prtie/prlos-symbols
-    return EvaluateVersusHandListSymbol(name, result, log);
+    bool valid_symbol = EvaluateVersusHandListSymbol(name, result, log);
+    return valid_symbol;
   } else if (isdigit(name[3])) {
     OH_MessageBox_Formula_Error(
       "Old style versus-list format, like vs$123$win.\n"
@@ -448,11 +459,11 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
       "Example: vs$listTop30$prwin",
       "Error");
     *result = k_undefined_zero;
-    return true;
+    return false;
   }
   ErrorInvalidSymbol(name);
   *result = k_undefined_zero;
-  return true; 
+  return false; 
 }
 
 void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
@@ -471,14 +482,15 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   int list_name_lenght = symbol.GetLength() - 9;
   if (list_name_lenght <= 0) {
     ErrorInvalidSymbol(name);
-    return k_undefined_zero;
+    *result = k_undefined_zero;
   }
   CString list_name = symbol.Mid(3, list_name_lenght);
   COHScriptList *hand_list = (COHScriptList*)p_function_collection->LookUp(list_name);
   if (hand_list == NULL) {
     // List not found
     // Symbol valid anyway
-    return k_undefined_zero;
+    *result = k_undefined_zero;
+    return true;
   }
   GetCounts(); // !!! not here
   double n_win = 0; 
@@ -486,46 +498,54 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   double n_los = 0;
   write_log(preferences.debug_versus(),
     "[CVersus] EvaluateVersusHandListSymbol enumeration...\n");
-  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) {
-    for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
-      // StdDeck-ranks 0..12
-      int c0rank = StdDeck_RANK(i);
-		  int c1rank = StdDeck_RANK(j);
-      int c0suit = StdDeck_SUIT(i);
-		  int c1suit = StdDeck_SUIT(j);
-      bool is_suited = (c0suit == c1suit);
-      // OH-ranks 2..14
-      int c0_OHrank = c0rank + 2;
-      int c1_OHrank = c1rank + 2;
-      write_log(preferences.debug_versus(),
-        "[CVersus] Hand %d %d %s\n", 
-        c0_OHrank, c1_OHrank, (c0_OHrank ? "suited": "offsuited"));
-      if (hand_list->IsOnList(c0_OHrank, c1_OHrank, is_suited)) {
-        write_log(preferences.debug_versus(), "[CVersus] Hand on list\n");
-        // Hand in list
-        // If not possible _n_win_against_hand etc. will be zero  
-        assert(_n_win_against_hand[i][j] >= 0);
-        assert(_n_tie_against_hand[i][j] >= 0);
-        assert(_n_los_against_hand[i][j] >= 0);
-        n_win += _n_win_against_hand[i][j];
-        n_tie += _n_tie_against_hand[i][j];
-        n_los += _n_los_against_hand[i][j];
+  if (p_table_state->User()->HasKnownCards()) {
+    // Versus makes only sense if we have known cards
+    for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) {
+      for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+        // StdDeck-ranks 0..12
+        int c0rank = StdDeck_RANK(i);
+		    int c1rank = StdDeck_RANK(j);
+        int c0suit = StdDeck_SUIT(i);
+		    int c1suit = StdDeck_SUIT(j);
+        bool is_suited = (c0suit == c1suit);
+        // OH-ranks 2..14
+        int c0_OHrank = c0rank + 2;
+        int c1_OHrank = c1rank + 2;
+        write_log(preferences.debug_versus(),
+          "[CVersus] Hand %d %d %s\n", 
+          c0_OHrank, c1_OHrank, (c0_OHrank ? "suited": "offsuited"));
+        if (hand_list->IsOnList(c0_OHrank, c1_OHrank, is_suited)) {
+          write_log(preferences.debug_versus(), "[CVersus] Hand on list\n");
+          // Hand in list
+          // If not possible _n_win_against_hand etc. will be zero 
+          write_log(preferences.debug_versus(), "[CVersus] Wins against this hand: %i\n", _n_win_against_hand[i][j]);
+          assert(_n_win_against_hand[i][j] >= 0);
+          assert(_n_tie_against_hand[i][j] >= 0);
+          assert(_n_los_against_hand[i][j] >= 0);
+          n_win += _n_win_against_hand[i][j];
+          n_tie += _n_tie_against_hand[i][j];
+          n_los += _n_los_against_hand[i][j];
+        }
       }
     }
-  }
-  write_log(preferences.debug_versus(),
-    "[CVersus] Total hands on list: %d\n", hand_list->NHandsOnList());
+    write_log(preferences.debug_versus(),
+      "[CVersus] Total hands on list: %d\n", hand_list->NHandsOnList());
+  } 
   double n_total = n_win + n_tie + n_los;
+  if (!p_table_state->User()->HasKnownCards() || (n_total == 0)) {
+    // Unknown user-cards or empty list
+    // Win / los / tie are zero.
+    // Set total to 1 to avoid division by zero
+    n_total = 1;
+    write_log(preferences.debug_versus(),
+      "[CVersus]Auto-adapting to 0/0/0, because user has no cards or empty list\n");
+  }
   assert(n_win >= 0);
   assert(n_tie >= 0);
   assert(n_los >= 0);
-  assert(n_total >= 0);
+  assert(n_total > 0);
   assert(hand_list->IsEmpty() || (n_total > 0));
-  if (n_total == 0) {
-    // Catch division by zero
-    *result = k_undefined_zero;
-    return false;
-  } else if (postfix == "$prwin") {
+  if (postfix == "$prwin") {
     *result = n_win / n_total;
     return true;
   } else if (postfix == "$prtie") {

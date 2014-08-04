@@ -145,15 +145,15 @@ void CSymbolEngineCards::CalcPocketTests()
 	}
 
   if (p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()
-			== p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()) {
+			== p_table_state->User()->_hole_cards[1].GetOpenHoldemRank()) {
 		_ispair = true;															
 	}
 	if (p_table_state->User()->_hole_cards[0].GetSuit()
-			== p_table_state->User()->_hole_cards[0].GetSuit())	{
+			== p_table_state->User()->_hole_cards[1].GetSuit())	{
 		_issuited = true;														
 	}
 	if (abs((p_table_state->User()->_hole_cards[0].GetOpenHoldemRank()
-			- p_table_state->User()->_hole_cards[0].GetOpenHoldemRank())) == 1)	{
+			- p_table_state->User()->_hole_cards[1].GetOpenHoldemRank())) == 1)	{
 		_isconnector = true;														
 	}
 }
@@ -1014,8 +1014,7 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 }
 
 CString CSymbolEngineCards::SymbolsProvided() {
-  // Not included ATM $$... and $... symbols
-  return "ncardsknown ncardsunknown ncardsbetter "
+  CString list = "ncardsknown ncardsunknown ncardsbetter "
     "ispair issuited isconnector "
     "nsuited nsuitedcommon "
     "tsuit tsuitcommon "
@@ -1024,4 +1023,11 @@ CString CSymbolEngineCards::SymbolsProvided() {
     "nranked nrankedcommon "
     "trank trankcommon "
     "ncommoncardsknown nouts ";
+  list += RangeOfSymbols("$$pc%i", 0, k_number_of_cards_per_player-1);
+  list += RangeOfSymbols("$$pr%i", 0, k_number_of_cards_per_player-1);
+  list += RangeOfSymbols("$$ps%i", 0, k_number_of_cards_per_player-1);
+  list += RangeOfSymbols("$$cc%i", 0, k_number_of_community_cards-1);
+  list += RangeOfSymbols("$$cr%i", 0, k_number_of_community_cards-1);
+  list += RangeOfSymbols("$$cs%i", 0, k_number_of_community_cards-1);
+  return list;
 }

@@ -30,8 +30,8 @@ CFunctionCollection::CFunctionCollection(){
   DeleteAll();
 }
 
-CFunctionCollection::~CFunctionCollection()
-{}
+CFunctionCollection::~CFunctionCollection() {
+}
 
 void CFunctionCollection::DeleteAll() {
   write_log(preferences.debug_formula(), 
@@ -101,6 +101,12 @@ double CFunctionCollection::Evaluate(CString function_name, bool log /* = false 
   double result = k_undefined;
   EvaluateSymbol(function_name, &result, log);
   return result;
+}
+
+bool CFunctionCollection::EvaluatesToBinaryNumber(CString function_name) {
+  COHScriptObject *p_function = LookUp(function_name);
+  if (p_function == NULL) return false;
+  return p_function->EvaluatesToBinaryNumber();
 }
 
 CString CFunctionCollection::DLLPath() {

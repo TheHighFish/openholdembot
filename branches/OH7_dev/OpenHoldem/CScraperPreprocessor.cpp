@@ -16,15 +16,33 @@
 #include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
 
-CScraperPreprocessor::CScraperPreprocessor()
-{}
+CScraperPreprocessor::CScraperPreprocessor() {
+}
 
-CScraperPreprocessor::~CScraperPreprocessor()
-{}
+CScraperPreprocessor::~CScraperPreprocessor() {
+}
 
-inline bool IsCurrency(char c)
-{
-	return (c == '$' || c == '€' || c == '£');
+inline bool IsCurrency(char c) {
+	return (c == '$' || c == '€' || c == '£' || c == '¢'); 
+}
+
+inline char TranslateCurrency(char c) {
+	if (c == '€') return '$';
+  else if (c == '£') return '$';
+  else if (c == '¢') return 'c';
+  else return c;
+}
+
+inline bool IsStandardASCII(char c) {
+  return ((c >= 0) && (c <= 0x7F));
+}
+
+inline bool SaveIsDigit(char c) {
+  // Characters from the extended ASCII-set >= 0x80 (non-english currencies)
+  // could cause assertions for (signed) chars inside isdigit()
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17579&start=90#p122315
+  if (!IsStandardASCII(c)) return false;
+  return isdigit(c);
 }
 
 void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
@@ -47,10 +65,11 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 	// Special handling required for the first character
 	char first_character  = monetary_string->GetAt(0);
 	char second_character = monetary_string->GetAt(1);
-	if (!IsCurrency(first_character) || !isdigit(second_character))
-	{
-		result += first_character;
-	}
+	if (IsCurrency(first_character)) {
+		result += TranslateCurrency(first_character);
+	} else {
+    result += first_character;
+  }
 
 	// Now caring about the rest, starting from 2nd character
 	int second_position = 1;
@@ -67,12 +86,12 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 		{
 			// Keep them at the moment, but replace foreign currencys by dollars.
 			// The scraper will deal with them later
-			result += '$';
+			result += TranslateCurrency(ith_character);
 		}
 		else if ((ith_character == '.') || (ith_character == ','))
 		{
 			// Accept commans and dots outside numbers
-			if (!isdigit(previous_character) || !isdigit(next_character))
+			if (!SaveIsDigit(previous_character) || !SaveIsDigit(next_character))
 			{
 				result += ith_character;
 			}
@@ -83,7 +102,7 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 				// But if the 3rd digit is a number too then it is only a delimiter-dot
 				// (for better readability) that has to be ignored.
 				char third_next_character = monetary_string->GetAt(i+3);
-				if (!isdigit(third_next_character))
+				if (!SaveIsDigit(third_next_character))
 				{
 					// Append the fractional-dot (implicitly repalcing comma if necessary)
 					result += '.';
@@ -95,7 +114,7 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 			// Spaces inside numbers have to be ignored
 			// Up to now we saw it only for very large blinds of SNGs / MTTs,
 			// for example "$40 000".
-			if (isdigit(previous_character) 
+			if (SaveIsDigit(previous_character) 
 				&& next_character == '0'
 				&& monetary_string->GetAt(i+2) == '0'
 				&& monetary_string->GetAt(i+3) == '0')
@@ -130,14 +149,10 @@ void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
 // Example: "Singlemalt raised to $60"
 void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text)
 {
-	if (p_tablemap->balancenumbersonly())
-	{
-		int length = balance_and_or_potential_text->GetLength();
-		for (int i=0; i<length; i++)
-		{
-			char next_character = *balance_and_or_potential_text[i];
-			if (isdigit(next_character)) 
-			{
+	if (p_tablemap->balancenumbersonly()) {
+		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
+      char next_character = balance_and_or_potential_text->GetAt(i);
+			if (SaveIsDigit(next_character)) {
 				continue;
 			}
 			// Remove (more efficiently: replace it)
@@ -147,12 +162,11 @@ void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_pot
 			// * minus-sign
 			// * brackets
 			if (isalpha(next_character) 
-				|| (next_character == '$')
-				|| (next_character == ',')
-				|| (next_character == '-')
-				|| (next_character == '(')
-				|| (next_character == ')'))
-			{
+				  || (next_character == '$')
+				  || (next_character == ',')
+				  || (next_character == '-')
+				  || (next_character == '(')
+				  || (next_character == ')')) {
 				// Replace by space to be removed later
 				balance_and_or_potential_text[i] = ' ';
 			}

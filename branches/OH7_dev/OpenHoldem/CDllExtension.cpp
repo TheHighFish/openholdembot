@@ -15,6 +15,7 @@
 #include "CDllExtension.h"
 
 #include "CFilenames.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CHandHistory.h"
@@ -140,10 +141,8 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 	int			stopchar = 0;
 	double		res = 0.;
 	CString		str = "";
-	bool		result = false;
 
 	str.Format("%s", name);
-
 	if (strcmp (str, "cmd$recalc") == 0)
 	{
 		// restart iterator thread
@@ -154,8 +153,9 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		iserr = false;
 		return 0;
 	}
-	result = p_function_collection->Evaluate(str);
-	iserr = false; 
+  double result = k_undefined;
+	p_engine_container->EvaluateSymbol(name, &result, false); //!!!!!
+	iserr = false;
 	return result;
 }
 

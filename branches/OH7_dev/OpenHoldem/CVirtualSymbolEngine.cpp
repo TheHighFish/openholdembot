@@ -46,3 +46,15 @@ CString CVirtualSymbolEngine::SymbolsProvided() {
   return "";
 }
 
+CString CVirtualSymbolEngine::RangeOfSymbols(CString format_string, int first, int last) {
+  CString result;
+  CString next_symbol;
+  assert(last >= first);
+  for (int i=first; i<=last; ++i) {
+    next_symbol.Format(format_string, i);
+    result += next_symbol;
+    result += " ";
+  }
+  return result;
+}
+

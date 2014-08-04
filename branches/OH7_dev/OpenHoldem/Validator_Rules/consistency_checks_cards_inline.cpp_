@@ -2,7 +2,7 @@
 // Cards
 //
 
-#define CARD_UNKNOWN 0x00
+#define CARD_UNKNOWN 0xFD
 #define CARDBACK     0xff
 
 

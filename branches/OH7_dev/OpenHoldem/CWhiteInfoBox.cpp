@@ -46,9 +46,9 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 	const int k_number_of_default_lines = 4;	// hand-number, game-type, ante, pot
 	int height = k_basic_height 
 		+ k_extra_height_per_line * k_number_of_default_lines;
-	if (preferences.log_symbol_max_log() > 0)	{
+	if (kMaxLogSymbolsForWhiteBox > 0)	{
 		// Extra lines for symbol-logging
-		height += k_extra_height_per_line * preferences.log_symbol_max_log();
+		height += k_extra_height_per_line * kMaxLogSymbolsForWhiteBox;
 	}
   	// Figure placement of box
 	left = client_rect.right/2-70;
@@ -131,7 +131,7 @@ CString CWhiteInfoBox::InfoText() {
 	result.Append(s);
 
   // logged symbols
-	if ((preferences.log_symbol_max_log() > 0)
+	if ((kMaxLogSymbolsForWhiteBox > 0)
 		&& p_symbol_engine_userchair->userchair_confirmed() 
 		&& p_table_state->User()->HasKnownCards()) {
       result.Append(p_autoplayer_trace->LogSymbolsForGUI());

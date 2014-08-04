@@ -157,13 +157,15 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_chair$, ....
-  return "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
+  CString list = "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
     "prwin prlos prtie "
     "betround fmax f flagbits "
     "nchairs session version "
-    "lastraised "
-    "floppct turnpct riverpct avgbetspf tablepfr handsplayed "
-    "balance_rank ";
+    "floppct turnpct riverpct avgbetspf tablepfr handsplayed ";
+  list += RangeOfSymbols("lastraised%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("balance_rank%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("f%i", 0, 19);
+  return list;
 }
 
 void CSymbolEngineVariousDataLookup::ResetOnHeartbeat()

@@ -51,8 +51,8 @@
 #define _CRT_SECURE_NO_DEPRECATE 1  // secure functions with checks for buffer size 
 #pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
 #pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
-#pragma warning(disable:4319)       // zero extending 'unsigned long' to 'double' of greater size
-#pragma warning(disable:4800)       // forcing value to bool 'true' or 'false' (performance warning)
+#pragma warning(disable:4319)   // zero extending 'unsigned long' to 'double' of greater size
+#pragma warning(disable:4800)   // forcing value to bool 'true' or 'false' (performance warning)
 #pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
 
 // Turn some warnings on, because we consider them helpful
@@ -89,8 +89,8 @@
 #include <string.h>
 
 // Version
-#define VERSION_NUMBER				5.04
-#define VERSION_TEXT				"5.0.4"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			5.08
+#define VERSION_TEXT				"5.0.8"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
