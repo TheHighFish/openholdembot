@@ -1018,8 +1018,7 @@ void CScraper::ScrapeLimits()
 			}
 		}
 
-		int j=0;
-		for (j=0; j<=9; j++)
+		for (int j=0; j<=9; j++)
 		{
 			// r$c0limitsX, s$c0limitsX
 			s.Format("c0limits%d", j);

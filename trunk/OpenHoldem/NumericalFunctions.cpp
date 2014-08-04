@@ -26,7 +26,7 @@ double StringToNumber(CString number) {
   }
   else if (memcmp(number, "0b", 2) == 0) {
     // Binary number
-    return strtol(number, NULL, 16);
+    return strtol(number, NULL, 2);
   }
   else {
     // Decimal number, either int or floating point
