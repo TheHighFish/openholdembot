@@ -1,3 +1,11 @@
+v5.0.9 2014-08-xx
+==================
+BUG FIXES:
+- Conversion of binary niumbers did not work because of a 
+  copy-and-paste-error (hexadecimal).
+  Thanks to Nik0 for reporting
+  [THF]
+
 v5.0.8 2014-08-03
 ==================
 BUG FIXES:
@@ -11,7 +19,8 @@ BUG FIXES:
   [Nahman78]
 
 NEW STUFF:
-- Improved detection and display of ninary values in the debug-tab.
+- Improved detection and display of binary values in the debug-tab.
+  Thanks to Nahman for helping with mono-spaced fonts.
   [THF]
 
 v5.0.7 2014-07-30
