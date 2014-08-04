@@ -7,6 +7,71 @@ v7.0.0 2014-xx-yy
     * lower-cases: built-in OpenHoldem symbols
     * upper-cases: OpenPPL-symbols of the OpenPPL-library
 
+v5.0.9 2014-08-xx
+==================
+BUG FIXES:
+- Conversion of binary numbers did not work because of a 
+  copy-and-paste-error (hexadecimal).
+  Thanks to Nik0 for reporting
+  [THF]
+
+v5.0.8 2014-08-03
+==================
+BUG FIXES:
+- The parser recognized binary and hexadecimal numbers,
+  but translated them to 0, as the standard C-function atof()
+  was not able to deal with binary and hex.
+  Thanks to Nik0 for reporting.
+  [THF]
+- Fixed 2 buffer-overflows in the PokerTracker-code.
+  Also showing a warning on incomplete PT-config when clicking the "Test"-button.
+  [Nahman78]
+
+NEW STUFF:
+- Improved detection and display of binary values in the debug-tab.
+  Thanks to Nahman for helping with mono-spaced fonts.
+  [THF]
+
+v5.0.7 2014-07-30
+==================
+BUG FIXES:
+- One of the last code-improvements broke the symbols
+  dealposition and nopponentsdealt.
+  Thanks to BruceLee for reporting.
+  [THF]
+- Versus symbols caused a warning on empty lists or unknown user-cards,
+  especially at load-time.
+  Thanks to Nik0 who showed us a screenshot with the error-message.
+  [THF]
+
+MAINTENANCE:
+- Some code improvements for compatibility with UNICODE-filenames on Win7/8.
+  Special thanks to Nahman78 for providing the patch.
+  [THF]
+- Improved lookup for PT-symbols (pt_r_ without raiser).
+  Thanks to PkrBot for reporting an assertion.
+  [THF]
+
+v5.0.6 2014-07-27
+==================
+BUG FIXES:
+- The symbol lookup for some ICM-symbols got broken when we implemented the new evaluator.
+  Thanks to Nik0 for reporting.
+  [THF]
+- The dLL interface incorrectly queried the function-collection 
+  instead of the engine container. Same for the validator.
+  Thanks to BruceLee and R2D2 for reporting problems.
+  [THF]
+- Characters of the extended ASCII-set in the title (outlandish currencies)
+  could cause an assertion in some standard C-functions.
+  Thanks to Kake118 for reporting and to R2D2 for providing a tablemap
+  and a replay-frame to reproduce the problem.
+  [THF]
+
+MAINTENANCE:
+- Improving some rules of the validator.
+  [THF]
+
 v5.0.5 2014-07-22
 ==================
 BUG FIXES:
@@ -19,6 +84,10 @@ BUG FIXES:
   [THF]
 - Improved the way if/when/what a DLL gets loaded.
   Thanks to BruceLee for pointing out some inconsistencies.
+  [THF]
+- The symbols issuited, ispair and isconnector got broken by a code-improvement.
+  Thanks to Andrewex who reported that hand-lists got affected.
+  This has now been fixed.
   [THF]
 
 MAINTENANCE:
@@ -55,7 +124,7 @@ BUG FIXES:
   [THF] 
 - OpenHoldem and OpenScrape could crash when evaluating ttlimits,
   as a very rarely executed branch of the code had a missing 
-  pointer-dereference, but the code was compileable anyway.
+  pointer-dereference, but the code was compilable anyway.
   Thanks to SuperBlak for reporting and for providing replay-frames and TM.
   [THF]
 
@@ -78,7 +147,7 @@ BUG FIXES:
   They had been forgotten when we reimplemented the parser and evaluator for OpenHoldem 5.0.0.
   Thanks to Lavezzi for reporting.
   [THF]
-- The parser did still/again convert function-names to lovercases
+- The parser did still/again convert function-names to lowercases
   due to unexpected side-effects of a function.
   Thanks to Mariano268 for reporting.
   [THF]
@@ -144,7 +213,7 @@ NEW STUFF:
   Thanks to Fqfq for providing the code.
   [THF]
 - The check for duplicate TMs now also considers titlestrings in addition to sitenames.
-  Thanky to Fqfq for providing the code.
+  Thanks to Fqfq for providing the code.
   [THF]
 - Lots of code-improvements and optimizations to the scraper and the so-called "LazyScraper".
   In the past the scraper took 95%-98% of CPU-usage according to our measurments
@@ -180,7 +249,7 @@ BUG FIXES:
   Now OpenHoldem will disconnect, reload the tablemaps and connect again
   if there are updates in the scraper-directory.
   [THF]
-- The symbols issittingin ande issittingout returned inverted values since we optimized the scraper.
+- The symbols issittingin and issittingout returned inverted values since we optimized the scraper.
   Thanks to SuperBlak for reporting.
   [THF]
 
@@ -294,7 +363,7 @@ NEW STUFF:
 	* board$Ah3d
 	* board$QJTSuited
   Cases don't matter after the dollar-sign.
-  This symbol got mainly developped for OpenPPl to support more easy
+  This symbol got mainly developed for OpenPPl to support more easy
   and more readable translations and more readable log-files,
   but it can also be used at OH-script-level of course.
   [THF]
@@ -318,7 +387,7 @@ BUG FIXES:
   [THF]  
 - OpenHoldem could crash when entering a betsize,
   as one debug-statement had a wrong format-string
-  that didin't fit to the parameter.
+  that didn't fit to the parameter.
   This problem has now been fixed.
   Thanks to Mot_real for reporting 
   and providing good info to locate the problem.
@@ -343,7 +412,7 @@ BUG FIXES:
 - In the past OpenHoldem (version 4.2.0 .. 4.2.5) could crash at startuo,
   because the ini-functions could get evaluated even if no formula 
   was loaded at that point of time. We prevented this by a sanity-check,
-  but unfortunatelly this safenty-net did also depend on some 
+  but unfortunately this safety-check did also depend on some 
   potentially uninitialized data (depending on multiple threads).
   This has now been fixed and the crashes on startup can no longer get reproduced.
   [THF]
@@ -413,7 +482,7 @@ MAINTENANCE:
   and then wonder why "ITDONOWORKS!!!!" and claim "ITISBUG!!!"
   Now they will see more early that "something" is wrong.
   [THF]
-- Romving Help -> Wiki from the Menu,
+- Removing Help -> Wiki from the Menu,
   because the Wiki got destroyed by spam-bots.
   [THF]
 
@@ -485,7 +554,7 @@ BUG FIXES:
   Thanks to Postenjak for finding both problems.
   [THF] 
 - The symbol nopponentsraising could incorrectly include the userchair
-  on first action preflop if we were sititng in the blinds.
+  on first action preflop if we were sitting in the blinds.
   This has now been fixed.
   Thanks to Triple for reporting.
   [THF]
@@ -569,7 +638,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - The symbol ac_aggressor got removed from the codebase
-  because it provided the same functionality as "raischair.
+  because it provided the same functionality as "raischair".
   [THF]
 
 
