@@ -1472,6 +1472,13 @@ bet1
 ##MaxOpponentStackSize##
 me_re_MaxOpponentStackSize
 
+##MaxStacksizeOfActiveOpponents##
+stack0 == balance ? stack1 : stack0
+
+##EffectiveMaxStacksizeOfActiveOpponents##
+balance<=MaxStacksizeOfActiveOpponents? balance: 
+MaxStacksizeOfActiveOpponents
+
 ##MaxStillToActStackSize##
 userchair == BigBlindChair        ? 0 :
 userchair == SmallBlindChair      ? MaxStillToActStackSizeAfterSmallBlind      :
