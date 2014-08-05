@@ -6,6 +6,12 @@ BUG FIXES:
   Thanks to Nik0 for reporting
   [THF]
 
+MAINTENANCE:
+- Removing the symbol nopponentsraising,
+  because its definition was utter nonsense.
+  Please use nopponentstruelyraising instead.
+  [THF]
+
 v5.0.8 2014-08-03
 ==================
 BUG FIXES:

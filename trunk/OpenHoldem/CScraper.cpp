@@ -1071,7 +1071,7 @@ void CScraper::ScrapeLimits()
 				set_found_sblind(true);
 			}
 
-			write_log(preferences.debug_scraper(), "[CScraper] c0smallblind, result %s\n", j, text.GetString());
+			write_log(preferences.debug_scraper(), "[CScraper] c0smallblind, result %s\n", text.GetString());
 		}
 
 		// r$c0bigblind
@@ -1085,7 +1085,7 @@ void CScraper::ScrapeLimits()
 				set_found_bblind(true);
 			}
 
-			write_log(preferences.debug_scraper(), "[CScraper] c0bigblind, result %s", j, text.GetString());
+			write_log(preferences.debug_scraper(), "[CScraper] c0bigblind, result %s", text.GetString());
 		}
 
 		// r$c0bigbet
@@ -1099,7 +1099,7 @@ void CScraper::ScrapeLimits()
 				set_found_bbet(true);
 			}
 
-			write_log(preferences.debug_scraper(), "[CScraper] c0bigbet, result %s\n", j, text.GetString());
+			write_log(preferences.debug_scraper(), "[CScraper] c0bigbet, result %s\n", text.GetString());
 		}
 
 		// r$c0ante
@@ -1113,7 +1113,7 @@ void CScraper::ScrapeLimits()
 				set_found_ante(true);
 			}
 
-			write_log(preferences.debug_scraper(), "[CScraper] c0ante, result %s\n", j, text.GetString());
+			write_log(preferences.debug_scraper(), "[CScraper] c0ante, result %s\n", text.GetString());
 		}
 	}
 
