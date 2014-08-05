@@ -77,7 +77,6 @@ public:
 	}
 public:
 	int nplayerscallshort()			{ return _nplayerscallshort; }
-	int nopponentsraising()			{ return _nopponentsraising; }
 	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
 	int nopponentsbetting()			{ return _nopponentsbetting; }
 	int nopponentsfolded()			{ return _nopponentsfolded; }
@@ -98,7 +97,6 @@ private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
-	int _nopponentsraising;
 	int _nopponentstruelyraising;
 	int _nopponentsfolded;
 	int _nopponentscalling;
