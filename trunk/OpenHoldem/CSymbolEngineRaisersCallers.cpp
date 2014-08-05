@@ -98,9 +98,15 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
 double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 {
 	// Not yet acted: 0
-	if (p_symbol_engine_history->DidAct())
-	{
-		return 0.0;
+	if (p_symbol_engine_history->DidAct()) {
+    if (p_betround_calculator->betround() == k_betround_preflop) {
+      // Preflop:
+      // Start with big blind and forget about former blind raisers
+      return p_symbol_engine_tablelimits->bblind();
+    } else {
+      // Postflop
+		  return 0.0;
+    }
 	}
 	if (p_table_state->User()->HasKnownCards())
 	{
@@ -220,27 +226,18 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
 }
 
-int CSymbolEngineRaisersCallers::FirstPossibleRaiser()
-{
-	int first_possible_raiser;
-	// Don't start searching for the highest bet at the button.
-	// This method will fail, if name player in late raises and name player in early coldcalls.
-	// Start searching at the last known raiser; and only at the button when we have name new betting-round.
-	if (p_symbol_engine_history->DidAct())
-	{
-		// Counting raises behind me
-		first_possible_raiser = (USER_CHAIR + 1) % p_tablemap->nchairs();
-	}
-	else
-	{
-		// Start with the player after last known raiser
-		first_possible_raiser = (DEALER_CHAIR + 1) % p_tablemap->nchairs();
-	}
+int CSymbolEngineRaisersCallers::FirstPossibleRaiser() {
+  // For nopponentstruelyraising we can always 
+  // start behind the userchair and search clockwise
+  // until the last player in front of the user.
+  // This works both preflop and postflop,
+  // both in and out of the blinds,
+  // both before and after our first action. ;-)
+	int first_possible_raiser = (DEALER_CHAIR + 1) % p_tablemap->nchairs();
 	return first_possible_raiser;
 }
 
-int CSymbolEngineRaisersCallers::LastPossibleRaiser()
-{
+int CSymbolEngineRaisersCallers::LastPossibleRaiser() {
 	// For technical reasons (for-loop) we handle the modulo-operation 
 	// inside the loop and not here.
 	return (FirstPossibleRaiser() + p_tablemap->nchairs() - 1);
