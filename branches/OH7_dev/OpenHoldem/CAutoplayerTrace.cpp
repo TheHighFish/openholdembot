@@ -67,9 +67,11 @@ bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
 
 int CAutoplayerTrace::Add(CString symbol) {
   ENT
-  // This function for symbols without value is for f$functions only.
+  // This function for symbols without value is for functions only.
+  // These functions are eitherpredefined (f$), userdefined (f$)
+  // or OpenPPL (upper-cases).
   // The value will be backpatched later.
-  assert(symbol.Left(2) == "f$");
+  assert((symbol.Left(2) == "f$") || isupper(symbol[0]));
   CString new_message;
   new_message.Format("%s%s = ",
     Indentation(), symbol);

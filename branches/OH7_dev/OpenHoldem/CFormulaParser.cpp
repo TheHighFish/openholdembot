@@ -89,7 +89,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
 	    "[FormulaParser] Going to load OpenPPL-library\n");
   CArchive openPPL_archive(&openPPL_file, CArchive::load); 
   ParseFile(openPPL_archive);
-  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError());
+  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
