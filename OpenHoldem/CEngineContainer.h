@@ -29,7 +29,7 @@ class CEngineContainer {
  public:
   void EvaluateAll();
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
-  CString SymbolsProvided()       { return _list_of_symbols; }
+  CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
  private:
   void BuildListOfSymbolsProvided();
  private:

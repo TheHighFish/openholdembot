@@ -8,6 +8,9 @@ BUG FIXES:
 - Fixing the symbol-lookup for some ICM-symbols,
   that did not work due to some incorrect length-constants.
   [Nik0]
+- Syntax-highlighting did not consider user-defined functions.
+  Thanks to Nik0 for reporting.
+  {THF]
 
 MAINTENANCE:
 - Removing the symbol nopponentsraising,
