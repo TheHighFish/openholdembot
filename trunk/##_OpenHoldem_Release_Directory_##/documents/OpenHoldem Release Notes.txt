@@ -5,6 +5,9 @@ BUG FIXES:
   copy-and-paste-error (hexadecimal).
   Thanks to Nik0 for reporting
   [THF]
+- Fixing the symbol-lookup for some ICM-symbols,
+  that did not work due to some incorrect length-constants.
+  [Nik0]
 
 MAINTENANCE:
 - Removing the symbol nopponentsraising,
