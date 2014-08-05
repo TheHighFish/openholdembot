@@ -276,7 +276,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	if (strncmp(name,"icm_fold",5)==0)
+	if (strncmp(name,"icm_fold",8)==0)
 	{
 		double to_split = p_symbol_engine_chip_amounts->potcommon();
 
@@ -297,7 +297,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"icm_callwin",8)==0)
+	else if (strncmp(name,"icm_callwin",11)==0)
 	{
 		double call = sym_call;
 
@@ -320,7 +320,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		stacks[sym_userchair] += sym_pot;
 	}
 
-	else if (strncmp(name,"icm_calllose",9)==0)
+	else if (strncmp(name,"icm_calllose",12)==0)
 	{
 		double mycall = min(sym_call,stacks[sym_userchair]);
 		double win = (sym_pot + mycall) / sym_nopponentsplaying;
@@ -336,7 +336,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"icm_calltie",8)==0)
+	else if (strncmp(name,"icm_calltie",11)==0)
 	{
 		double win = 0.;
 
@@ -368,13 +368,13 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"icm_alliwin",8)==0)
+	else if (strncmp(name,"icm_alliwin",11)==0)
 	{
-		if (isdigit(name[8]))
+		if (isdigit(name[11]))
 		{
 			//assume callers are n smallest stacks
 			bool callers[k_max_number_of_players] = {0};
-			int ncallers = min(name[8]-'0', sym_nopponentsplaying);
+			int ncallers = min(name[11]-'0', sym_nopponentsplaying);
 
 
 			for (int i = 0; i < ncallers; i++)
@@ -425,12 +425,12 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"icm_allilose",9)==0)
+	else if (strncmp(name,"icm_allilose",12)==0)
 	{
-		if (isdigit(name[9]))
+		if (isdigit(name[12]))
 		{
 			//assume callers are n biggest stacks
-			int ncallers = min(name[9]-'0', sym_nopponentsplaying);
+			int ncallers = min(name[12]-'0', sym_nopponentsplaying);
 
 			if (ncallers > 0)
 			{
@@ -509,7 +509,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		}
 	}
 
-	else if (strncmp(name,"icm_allitie",8)==0)
+	else if (strncmp(name,"icm_allitie",11)==0)
 	{
 		//assume only one particular caller
 		int oppChair = GetChairFromDealPos(name + 8);
