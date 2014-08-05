@@ -380,7 +380,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 			for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
-        double smalleststack = DBL_MAX;
+				double smalleststack = DBL_MAX;
 
 				for (int j = 0; j < k_max_number_of_players; j++)
 				{
