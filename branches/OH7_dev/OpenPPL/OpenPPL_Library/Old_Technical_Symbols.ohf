@@ -180,15 +180,3 @@ DecisionIsPercentagedPotsizedBet ? BetSizeForPercentagedPotsizeBet :
 ##f$fold##
 // Always check/fold as long as the action is not "Beep".
 (Decision != Beep)
-
-##f$sitout##
-// Sitout if GoBuddyTakeABreakAndABeer is 1
-// then reset this variable to allow f$sitin later.
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
-me_re_GoBuddySitOut
-+ [0 * me_st_GoBuddySitOut_0]
-
-##f$close##
-me_re_GoBuddyClose ?
-  (issittingin ? HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out : True) :
-  False
