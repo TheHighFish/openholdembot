@@ -1,0 +1,194 @@
+//***********************************************************
+//                                                           
+//  Technical functions                                      
+//  ===================                                      
+//                                                           
+//  Functions needed for integration into OpenHoldem.        
+//  They translate the f$Decision-function to standard       
+//  autoplayer-functions like f$alli, f$rais and f$call.     
+//
+//  The OpenPPL-logic must be able to handle several
+//  different kinds of actions, that must be distinguishable.
+//  Therefore we use 3 different ranges for these actions: 
+//  * positive values: betsize in big-blinds,
+//    using Shankys RaiseBy-semantics.
+//    "RAISE 3 FORCE" will be translated to
+//    "3 * f$RaiseByBigBlinds"
+//    where f$RaiseByBigBlinds simply is 1.
+//  * small negative values: percentaged potsized bets
+//    "RAISE 70% FORCE" will be translated to 
+//    "70 * f$RaiseByPercentagedPotsize"
+//    where f$RaiseByPercentagedPotsize is -1.
+//    f$betsize will then translate this to the correct bet-amount.
+//  * large negative values (< 1.000.000): 
+//    fixed action constants for check, call, raise, etc. 
+//                                                           
+//***********************************************************
+
+##Decision##
+// f$preflop, f$flop, f$turn and f$river will be added by the translator.
+[betround == ConstBetRoundPreflop] ? f$preflop :
+[betround == ConstBetRoundFlop]    ? f$flop :
+[betround == ConstBetRoundTurn]    ? f$turn :
+[betround == ConstBetRoundRiver]   ? f$river :
+ERROR_Betround_Out_Of_Range
+
+##f$RaiseByBigBlinds##
+// Positive amounts are betsizes in big-blinds
+1
+
+##f$RaiseByPercentagedPotsize##
+// Small negative values are used for percentaged potsized bets.
+// We also do the multiplication with 0.01 here.
+// Don't use " / 100 *" because that can lead to an integer-division,
+// and 70/100 will unexpectedly get evaluated as 0.
+-0.01
+
+##DecisionIsPercentagedPotsizedBet##
+   (Decision <= 0) 
+&& (Decision >= -1000)
+
+##DecisionIsFixedBetInBigBlinds##
+(Decision > 0) 
+
+##DecisionIsBetPotOrBetHalfPotOrBetMax##
+// Used for sanity checks in f$swag
+   (Decision == BetHalfPot)
+|| (Decision == BetPot)
+|| (Decision == BetMax)
+
+##DecisionIsFixedAction##
+(Decision < -1000000) 
+
+##RememberToSitoutIfNecessary##
+// OpenHoldem handles autoplayer actions when it is heros turn,
+// but f$sitin, f$sitout and f$leave once every N heartbeats,
+// contrary to OpenPPL were both can happen only at heros turn.
+// Therefore we have to remember a decision to SitOut somehow
+// and recall it later.
+[Decision == SitOut] ? me_st_GoBuddySitOut_1 : 
+[Decision == Close]  ? (me_st_GoBuddySitOut_1 + me_st_GoBuddyClose_1 ) : 0
+
+##f$beep##
+// f$beep is the very first function to be called on each turn,
+// so we abuse it to initialize memory-symbhols as a side-effect
+// and only then we do the real evaluation.
+//
+// We can't use addition here to call the functions in correct sequential order,
+// because OH doesn't add the operands in order:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
+   [InitMemorySymbols * 0]
+|| [RememberToSitoutIfNecessary * 0]
+|| [Decision == Beep]
+
+##f$alli##
+   [Decision == RaiseMax]
+|| [(Decision > StackSize) && (StackSize > 0)]
+|| [DecisionIsPercentagedPotsizedBet 
+    && BetSizeForPercentagedPotsizeBet >= MaximumBetsizeInDollars]
+
+
+// Betpot functions
+// OpenPPL knows only the following action-command:
+//   * BetPot
+//   * BetHalfPot
+// However we support all betpot-functions as backup-actions.
+
+##f$betpot_2_1##
+f$alli
+	
+##f$betpot_1_1##
+[f$alli  || (Decision == BetPot)]
+
+##f$betpot_3_4##
+f$betpot_1_1
+
+##f$betpot_2_3##
+f$betpot_1_1
+
+##f$betpot_1_2##
+[f$betpot_1_1 || (Decision == BetHalfPot)]
+
+##f$betpot_1_3##
+f$betpot_1_2
+
+##f$betpot_1_4##
+f$betpot_1_2
+	
+##MaximumBetsizeInDollars##
+MaximumPossibleBetsizeIndollars
+
+##BetSizeForBetHalfPot##
+// Calculated in dollars and with raise-to-semantics
+// First we call, then we add half of the pot (after we called)
+// pot already includes currentbet, so we must not consider this twice.
+[currentbet + call + 0.5 * (pot + call)]
+
+##BetSizeForBetPot##
+// Calculated in dollars and with raise-to-semantics
+// pot includes currentbet, call is the amount we need to call.
+[currentbet + call + (pot + call)]
+
+##BetSizeForPercentagedPotsizeBet##
+// f$Decision is negative, -0.70 means: 70% potsize
+[currentbet + call + (-1 * Decision) * (pot + call)]
+
+##BetSizeForFixedBetInBigBlinds##
+// Calculated in dollars and with raise-to-semantics
+[(Decision + ncallbets) * bblind]
+
+##BetSizeForAllin##
+// Calculated in dollars and with raise-to-semantics
+[balance + currentbet]
+
+##f$betsize##
+// f$betsize gets counted in Dollars.
+// OpenHoldems semantics is "raise-to".
+f$alli ? BetSizeForAllin :
+[Decision == BetPot] ? BetSizeForBetPot : 
+[Decision == BetHalfPot] ? BetSizeForBetHalfPot :
+// Finally caring about about absolute betsizes.
+// Shankys semantics is "raise-by" and in big blinds,
+// so we have to translate it.
+DecisionIsFixedBetInBigBlinds ?  BetSizeForFixedBetInBigBlinds :
+DecisionIsPercentagedPotsizedBet ? BetSizeForPercentagedPotsizeBet :
+0
+
+##f$rais##
+   [Decision == Raise]
+|| DecisionIsBetPotOrBetHalfPotOrBetMax
+|| DecisionIsPercentagedPotsizedBet
+|| DecisionIsFixedBetInBigBlinds
+//
+// Below is 2 times the same expression,
+// but we want to log the very verbose explanation
+// only in the case of a true error
+// and not for normal evaluations.
+//
+|| [Decision == 0 && f$betsize == Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise]
+
+##f$call##
+   [Decision == Check]
+|| [Decision == Call]
+|| [AmountToCall == 0]
+|| f$rais
+
+##f$check##
+// Always check/fold as long as the action is not "Beep".
+(Decision != Beep)
+
+##f$fold##
+// Always check/fold as long as the action is not "Beep".
+(Decision != Beep)
+
+##f$sitout##
+// Sitout if GoBuddyTakeABreakAndABeer is 1
+// then reset this variable to allow f$sitin later.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
+me_re_GoBuddySitOut
++ [0 * me_st_GoBuddySitOut_0]
+
+##f$close##
+me_re_GoBuddyClose ?
+  (issittingin ? HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out : True) :
+  False

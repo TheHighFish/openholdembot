@@ -404,201 +404,6 @@ $$cr3
 ##RiverCard##
 $$cr4
 
-//***********************************************************
-//                                                           
-//  Technical functions                                      
-//  ===================                                      
-//                                                           
-//  Functions needed for integration into OpenHoldem.        
-//  They translate the f$Decision-function to standard       
-//  autoplayer-functions like f$alli, f$rais and f$call.     
-//
-//  The OpenPPL-logic must be able to handle several
-//  different kinds of actions, that must be distinguishable.
-//  Therefore we use 3 different ranges for these actions: 
-//  * positive values: betsize in big-blinds,
-//    using Shankys RaiseBy-semantics.
-//    "RAISE 3 FORCE" will be translated to
-//    "3 * f$RaiseByBigBlinds"
-//    where f$RaiseByBigBlinds simply is 1.
-//  * small negative values: percentaged potsized bets
-//    "RAISE 70% FORCE" will be translated to 
-//    "70 * f$RaiseByPercentagedPotsize"
-//    where f$RaiseByPercentagedPotsize is -1.
-//    f$betsize will then translate this to the correct bet-amount.
-//  * large negative values (< 1.000.000): 
-//    fixed action constants for check, call, raise, etc. 
-//                                                           
-//***********************************************************
-
-##Decision##
-// f$preflop, f$flop, f$turn and f$river will be added by the translator.
-[betround == ConstBetRoundPreflop] ? f$preflop :
-[betround == ConstBetRoundFlop]    ? f$flop :
-[betround == ConstBetRoundTurn]    ? f$turn :
-[betround == ConstBetRoundRiver]   ? f$river :
-ERROR_Betround_Out_Of_Range
-
-##f$RaiseByBigBlinds##
-// Positive amounts are betsizes in big-blinds
-1
-
-##f$RaiseByPercentagedPotsize##
-// Small negative values are used for percentaged potsized bets.
-// We also do the multiplication with 0.01 here.
-// Don't use " / 100 *" because that can lead to an integer-division,
-// and 70/100 will unexpectedly get evaluated as 0.
--0.01
-
-##DecisionIsPercentagedPotsizedBet##
-   (Decision <= 0) 
-&& (Decision >= -1000)
-
-##DecisionIsFixedBetInBigBlinds##
-(Decision > 0) 
-
-##DecisionIsBetPotOrBetHalfPotOrBetMax##
-// Used for sanity checks in f$swag
-   (Decision == BetHalfPot)
-|| (Decision == BetPot)
-|| (Decision == BetMax)
-
-##DecisionIsFixedAction##
-(Decision < -1000000) 
-
-##RememberToSitoutIfNecessary##
-// OpenHoldem handles autoplayer actions when it is heros turn,
-// but f$sitin, f$sitout and f$leave once every N heartbeats,
-// contrary to OpenPPL were both can happen only at heros turn.
-// Therefore we have to remember a decision to SitOut somehow
-// and recall it later.
-[Decision == SitOut] ? me_st_GoBuddySitOut_1 : 
-[Decision == Close]  ? (me_st_GoBuddySitOut_1 + me_st_GoBuddyClose_1 ) : 0
-
-##f$beep##
-// f$beep is the very first function to be called on each turn,
-// so we abuse it to initialize memory-symbhols as a side-effect
-// and only then we do the real evaluation.
-//
-// We can't use addition here to call the functions in correct sequential order,
-// because OH doesn't add the operands in order:
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
-   [InitMemorySymbols * 0]
-|| [RememberToSitoutIfNecessary * 0]
-|| [Decision == Beep]
-
-##f$alli##
-   [Decision == RaiseMax]
-|| [(Decision > StackSize) && (StackSize > 0)]
-|| [DecisionIsPercentagedPotsizedBet 
-    && BetSizeForPercentagedPotsizeBet >= MaximumBetsizeInDollars]
-
-
-// Betpot functions
-// OpenPPL knows only the following action-command:
-//   * BetPot
-//   * BetHalfPot
-// However we support all betpot-functions as backup-actions.
-
-##f$betpot_2_1##
-f$alli
-	
-##f$betpot_1_1##
-[f$alli  || (Decision == BetPot)]
-
-##f$betpot_3_4##
-f$betpot_1_1
-
-##f$betpot_2_3##
-f$betpot_1_1
-
-##f$betpot_1_2##
-[f$betpot_1_1 || (Decision == BetHalfPot)]
-
-##f$betpot_1_3##
-f$betpot_1_2
-
-##f$betpot_1_4##
-f$betpot_1_2
-	
-##MaximumBetsizeInDollars##
-MaximumPossibleBetsizeIndollars
-
-##BetSizeForBetHalfPot##
-// Calculated in dollars and with raise-to-semantics
-// First we call, then we add half of the pot (after we called)
-// pot already includes currentbet, so we must not consider this twice.
-[currentbet + call + 0.5 * (pot + call)]
-
-##BetSizeForBetPot##
-// Calculated in dollars and with raise-to-semantics
-// pot includes currentbet, call is the amount we need to call.
-[currentbet + call + (pot + call)]
-
-##BetSizeForPercentagedPotsizeBet##
-// f$Decision is negative, -0.70 means: 70% potsize
-[currentbet + call + (-1 * Decision) * (pot + call)]
-
-##BetSizeForFixedBetInBigBlinds##
-// Calculated in dollars and with raise-to-semantics
-[(Decision + ncallbets) * bblind]
-
-##BetSizeForAllin##
-// Calculated in dollars and with raise-to-semantics
-[balance + currentbet]
-
-##f$betsize##
-// f$betsize gets counted in Dollars.
-// OpenHoldems semantics is "raise-to".
-f$alli ? BetSizeForAllin :
-[Decision == BetPot] ? BetSizeForBetPot : 
-[Decision == BetHalfPot] ? BetSizeForBetHalfPot :
-// Finally caring about about absolute betsizes.
-// Shankys semantics is "raise-by" and in big blinds,
-// so we have to translate it.
-DecisionIsFixedBetInBigBlinds ?  BetSizeForFixedBetInBigBlinds :
-DecisionIsPercentagedPotsizedBet ? BetSizeForPercentagedPotsizeBet :
-0
-
-##f$rais##
-   [Decision == Raise]
-|| DecisionIsBetPotOrBetHalfPotOrBetMax
-|| DecisionIsPercentagedPotsizedBet
-|| DecisionIsFixedBetInBigBlinds
-//
-// Below is 2 times the same expression,
-// but we want to log the very verbose explanation
-// only in the case of a true error
-// and not for normal evaluations.
-//
-|| [Decision == 0 && f$betsize == Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise]
-
-##f$call##
-   [Decision == Check]
-|| [Decision == Call]
-|| [AmountToCall == 0]
-|| f$rais
-
-##f$check##
-// Always check/fold as long as the action is not "Beep".
-(Decision != Beep)
-
-##f$fold##
-// Always check/fold as long as the action is not "Beep".
-(Decision != Beep)
-
-##f$sitout##
-// Sitout if GoBuddyTakeABreakAndABeer is 1
-// then reset this variable to allow f$sitin later.
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=15515
-me_re_GoBuddySitOut
-+ [0 * me_st_GoBuddySitOut_0]
-
-##f$close##
-me_re_GoBuddyClose ?
-  (issittingin ? HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out : True) :
-  False
-
 //*****************************************************************************
 //
 // OpenPPL - BettingAction Symbols
@@ -887,10 +692,10 @@ True
 // True, if SB is missing, false otherwise
 // Should be called at our first action preflop only.
 (CurrentbetOfDealPosition1Chair == sblind) ? False :
-// If we are NOT the 2nd player to be dealt and see a bet 
+// If we are NOT the Second player to be dealt and see a bet 
 // of 1 big blind left to the dealer, then it is the big blind (SB missing)
 [(dealposition != 2) && (CurrentbetOfDealPosition1Chair == bblind)] ? True :
-// Problematic is only the case when I am in "big blind" (2nd player to be dealt)
+// Problematic is only the case when I am in "big blind" (Second player to be dealt)
 // * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
 // * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
 // * if bet = 1 big blind and players behind me still to act, then SB is missing
@@ -1533,7 +1338,7 @@ ncurrentbets
 //
 //*****************************************************************************
 
-##2ndBestBoardCard##
+##SecondBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
 (RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? ConstCardAce   :
@@ -1723,8 +1528,8 @@ OneCardStraightPossible && !MoreThanOneOneCardStraightPossible
 (nstraightcommon == 4 && (`((rankbitscommon >> 10) & 0x1f) < 4) && (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##OpenEndedStraightDrawPossibleOnFlop##
-[(TopFlopCard - 2ndTopFlopCard <= 3) && (TopFlopCard - 2ndTopFlopCard > 0) && (TopFlopCard != ConstCardAce)]
-|| [(2ndTopFlopCard - LowestFlopCard <= 3) && (2ndTopFlopCard - LowestFlopCard >0) && (LowestFlopCard >= ConstCardTwo)]
+[(TopFlopCard - SecondTopFlopCard <= 3) && (TopFlopCard - SecondTopFlopCard > 0) && (TopFlopCard != ConstCardAce)]
+|| [(SecondTopFlopCard - LowestFlopCard <= 3) && (SecondTopFlopCard - LowestFlopCard >0) && (LowestFlopCard >= ConstCardTwo)]
 
 ##IndividualOverCardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
@@ -1761,7 +1566,7 @@ StraightPossible
 ##PairOnTurn##
    PairOnFlop
 || TopFlopCardPairedonTurn
-|| 2ndTopFlopCardPairedOnTurn
+|| SecondTopFlopCardPairedOnTurn
 || LowestFlopCardPairedOnTurn
 
 ##QuadsOnBoard##
@@ -1782,12 +1587,12 @@ StraightPossible
 && RiverCard > ThirdFlopCard
 && RiverCard > TurnCard ]
 
-##2ndTopFlopCard##
-PairOnFlop ? 2ndTopFlopCard_PairOnFlop :
-!PairOnFlop ? 2ndTopFlopCard_UnpairedFlop :
+##SecondTopFlopCard##
+PairOnFlop ? SecondTopFlopCard_PairOnFlop :
+!PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 -1
 
-##2ndTopFlopCard_UnpairedFlop##
+##SecondTopFlopCard_UnpairedFlop##
 !PairOnFlop && FirstFlopCard  >= SecondFlopCard && FirstFlopCard  >= ThirdFlopCard  && SecondFlopCard >= ThirdFlopCard  ? SecondFlopCard :
 !PairOnFlop && FirstFlopCard  >= SecondFlopCard && FirstFlopCard  >= ThirdFlopCard  && SecondFlopCard <= ThirdFlopCard  ? ThirdFlopCard  :
 !PairOnFlop && SecondFlopCard >= FirstFlopCard  && SecondFlopCard >= ThirdFlopCard  && FirstFlopCard  >= ThirdFlopCard  ? FirstFlopCard  :
@@ -1796,7 +1601,7 @@ PairOnFlop ? 2ndTopFlopCard_PairOnFlop :
 !PairOnFlop && ThirdFlopCard  >= FirstFlopCard  && ThirdFlopCard  >= SecondFlopCard && FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
 -1
 
-##2ndTopFlopCard_PairOnFlop##
+##SecondTopFlopCard_PairOnFlop##
 PairOnFlop && FirstFlopCard  == SecondFlopCard && FirstFlopCard  > ThirdFlopCard  ? ThirdFlopCard :
 PairOnFlop && FirstFlopCard  == SecondFlopCard && FirstFlopCard  < ThirdFlopCard  ? FirstFlopCard :
 PairOnFlop && FirstFlopCard  == ThirdFlopCard && FirstFlopCard  > SecondFlopCard  ? SecondFlopCard :
@@ -1806,29 +1611,29 @@ PairOnFlop && SecondFlopCard  == ThirdFlopCard && SecondFlopCard  < FirstFlopCar
 -1
 
 // Shanky is a bit inconsistent with the naming
-// So we provide both 2ndTopFlopCardPairedOnRiver and SecondTopFlopCardPairedOnRiver,
+// So we provide both SecondTopFlopCardPairedOnRiver and SecondTopFlopCardPairedOnRiver,
 // same for turn. "SecondTopFlopCardPairedOnRiver" is the "standard" here.
 
 ##SecondTopFlopCardPairedOnRiver##
-2ndTopFlopCardPairedOnRiver
+SecondTopFlopCardPairedOnRiver
 
 ##SecondTopFlopCardPairedOnTurn##
-2ndTopFlopCardPairedOnTurn
+SecondTopFlopCardPairedOnTurn
 
-##2ndTopFlopCardPairedOnRiver##
-(2ndTopFlopCard == RiverCard)
+##SecondTopFlopCardPairedOnRiver##
+(SecondTopFlopCard == RiverCard)
 
-##2ndTopFlopCardPairedOnTurn##
-(2ndTopFlopCard == TurnCard)
+##SecondTopFlopCardPairedOnTurn##
+(SecondTopFlopCard == TurnCard)
 
-##srankbitshero##
+##Srankbitshero##
  (($$ps0==tsuit ? (RankOfFirstHoleCard!=ConstCardAce ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
 | ($$ps1==tsuit ? (RankOfSecondHoleCard!=ConstCardAce ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
 
-##srankavailable##
+##Srankavailable##
 // Available suited cards for other players,
 // possibly contributing to a flush or straight flush
-~(srankbitscommon | srankbitshero)
+~(srankbitscommon | Srankbitshero)
 
 ##StraightFlushPossibleByOthers##
 (nstraightflushfillcommon <= 2)
@@ -1982,13 +1787,13 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 && RankOfFirstHoleCard > TurnCard 
 ]
 
-##Had2ndOverPairOnFlop##
+##HadSecondOverPairOnFlop##
    ispair
 && rankhiplayer < TopFlopCard
-&& rankhiplayer > 2ndTopFlopCard
+&& rankhiplayer > SecondTopFlopCard
 
-##Had2ndOverPairOnTurn##
-Had2ndOverPairOnFlop && (($$cr3==TopFlopCard)|| ($$cr3<TopFlopCard))
+##HadSecondOverPairOnTurn##
+HadSecondOverPairOnFlop && (($$cr3==TopFlopCard)|| ($$cr3<TopFlopCard))
 
 ##HadPairOnFlop##
    ispair 
@@ -2014,8 +1819,8 @@ HadSetOnFlop || (PairInHand && RankOfFirstHoleCard==$$cr3)
 ##HadTopPairOnFlop##
 [(RankOfFirstHoleCard == HighestRankOnFlop) || (RankOfSecondHoleCard == HighestRankOnFlop)]
 
-##Had2ndTopPairOnFlop##
-[(RankOfFirstHoleCard == 2ndTopFlopCard) || (RankOfSecondHoleCard == 2ndTopFlopCard)]
+##HadSecondTopPairOnFlop##
+[(RankOfFirstHoleCard == SecondTopFlopCard) || (RankOfSecondHoleCard == SecondTopFlopCard)]
 
 
 ##HighestRankOnTurn##
@@ -2029,13 +1834,13 @@ HadSetOnFlop || (PairInHand && RankOfFirstHoleCard==$$cr3)
 && (RankOfSecondHoleCard == SecondFlopCard || RankOfSecondHoleCard == SecondFlopCard || RankOfSecondHoleCard == ThirdFlopCard)
 && !ispair
 
-##Have2ndBestKicker##
+##HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
 
-##Have2ndBestKickerOrBetter##
-Have2ndBestKicker || HaveBestKickerOrBetter
+##HaveSecondBestKickerOrBetter##
+HaveSecondBestKicker || HaveBestKickerOrBetter
 
-##Have2ndBestOverPair##
+##HaveSecondBestOverPair##
    ($KK
 && FirstFlopCard < ConstCardKing
 && SecondFlopCard < ConstCardKing
@@ -2043,16 +1848,16 @@ Have2ndBestKicker || HaveBestKickerOrBetter
 && TurnCard < ConstCardKing
 && RiverCard < ConstCardKing)
 
-##Have2ndBestOverPairOrBetter##
-(Have2ndBestOverPair || HaveBestOverPairOrBetter)
+##HaveSecondBestOverPairOrBetter##
+(HaveSecondBestOverPair || HaveBestOverPairOrBetter)
 
-##Have2ndNutFlush##
+##HaveSecondNutFlush##
 [HaveFlush && (NumberOfUnknownSuitedOvercards == 1)]
 
-##Have2ndNutFlushDraw##
+##HaveSecondNutFlushDraw##
 HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 1)
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsAceHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
 `(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
 `(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
 `(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
@@ -2064,7 +1869,7 @@ HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 1)
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsKingHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
 `(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
 `(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
 `(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
@@ -2075,7 +1880,7 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsQueenHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
 `(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
 `(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
 `(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
@@ -2085,7 +1890,7 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsJackHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
 `(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
 `(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
 `(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
@@ -2094,7 +1899,7 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsTenHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
 `(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
 `(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
 `(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
@@ -2102,25 +1907,25 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsNineHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
 `(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
 `(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
 `(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsEightHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
 `(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
 `(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsSevenHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
 `(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix  :
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
 HINT_Such_A_Straight_Does_Not_Exist
 
-##HighCardOf2ndBestPossibleStraightIfBestStraightIsSixHigh##
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
 HINT_Such_A_Straight_Does_Not_Exist
 
@@ -2137,16 +1942,16 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
 -1
 
-##HighCardOf2ndBestPossibleStraight##
-(HighCardOfBestPossibleStraight == ConstCardAce)   ? HighCardOf2ndBestPossibleStraightIfBestStraightIsAceHigh   :
-(HighCardOfBestPossibleStraight == ConstCardKing)  ? HighCardOf2ndBestPossibleStraightIfBestStraightIsKingHigh  :
-(HighCardOfBestPossibleStraight == ConstCardQueen) ? HighCardOf2ndBestPossibleStraightIfBestStraightIsQueenHigh :
-(HighCardOfBestPossibleStraight == ConstCardJack)  ? HighCardOf2ndBestPossibleStraightIfBestStraightIsJackHigh  :
-(HighCardOfBestPossibleStraight == ConstCardTen)   ? HighCardOf2ndBestPossibleStraightIfBestStraightIsTenHigh   :
-(HighCardOfBestPossibleStraight == ConstCardNine)  ? HighCardOf2ndBestPossibleStraightIfBestStraightIsNineHigh  :
-(HighCardOfBestPossibleStraight == ConstCardEight) ? HighCardOf2ndBestPossibleStraightIfBestStraightIsEightHigh :
-(HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOf2ndBestPossibleStraightIfBestStraightIsSevenHigh :
-(HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOf2ndBestPossibleStraightIfBestStraightIsSixHigh   :
+##HighCardOfSecondBestPossibleStraight##
+(HighCardOfBestPossibleStraight == ConstCardAce)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == ConstCardKing)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == ConstCardQueen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == ConstCardJack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ConstCardTen)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == ConstCardNine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == ConstCardEight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfOurStraight##
@@ -2163,53 +1968,53 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbits & 0b000000000111110) == 5 ? ConstCardFive  :
 ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
 
-##Have2ndNutStraight##
+##HaveSecondNutStraight##
 HaveStraight
-&& (HighCardOf2ndBestPossibleStraight == HighCardOfOurStraight)
+&& (HighCardOfSecondBestPossibleStraight == HighCardOfOurStraight)
 
-##Have2ndOverPair##
-ispair && (RankOfFirstHoleCard < BestBoardCard) && (RankOfFirstHoleCard > 2ndBestBoardCard)
+##HaveSecondOverPair##
+ispair && (RankOfFirstHoleCard < BestBoardCard) && (RankOfFirstHoleCard > SecondBestBoardCard)
 
-##Have2ndTopPair##
-RankOfFirstHoleCard == 2ndBestBoardCard || RankOfSecondHoleCard == 2ndBestBoardCard
+##HaveSecondTopPair##
+RankOfFirstHoleCard == SecondBestBoardCard || RankOfSecondHoleCard == SecondBestBoardCard
 
-##Have2ndTopSet##
-ispair && RankOfFirstHoleCard == 2ndBestBoardCard
+##HaveSecondTopSet##
+ispair && RankOfFirstHoleCard == SecondBestBoardCard
 
 ##TopBitOfRankBitsCommon##
 (1 << rankhicommon)
 
-##2ndTopBitOfRankBitsCommon##
-(1 << 2ndBestBoardCard)
+##SecondTopBitOfRankBitsCommon##
+(1 << SecondBestBoardCard)
 
-##3rdTopBitOfRankBitsCommon##
-(1 << 3rdBestBoardCard)
+##ThirdTopBitOfRankBitsCommon##
+(1 << ThirdBestBoardCard)
 
-##4thTopBitOfRankBitsCommon##
-(1 << 4thBestBoardCard)
+##FourthTopBitOfRankBitsCommon##
+(1 << FourthBestBoardCard)
 
-##5thTopBitOfRankBitsCommon##
-(1 << 5thBestBoardCard)
+##FifthTopBitOfRankBitsCommon##
+(1 << FifthBestBoardCard)
 
 ##RankBitsCommonWithoutTopBit##
 rankbitscommon & ~TopBitOfRankBitsCommon
 
 ##RankBitsCommonWithoutTopTwoBits##
-RankBitsCommonWithoutTopBit & ~2ndTopBitOfRankBitsCommon
+RankBitsCommonWithoutTopBit & ~SecondTopBitOfRankBitsCommon
 
 ##RankBitsCommonWithoutTopThreeBits##
-RankBitsCommonWithoutTopTwoBits & ~3rdTopBitOfRankBitsCommon
+RankBitsCommonWithoutTopTwoBits & ~ThirdTopBitOfRankBitsCommon
 
 ##RankBitsCommonWithoutTopFourBits##
-RankBitsCommonWithoutTopThreeBits & ~4thTopBitOfRankBitsCommon
+RankBitsCommonWithoutTopThreeBits & ~FourthTopBitOfRankBitsCommon
 
-##Have3rdBestKicker##
+##HaveThirdBestKicker##
 (NumberOfBetterKickers == 2)
 
-##Have3rdBestKickerOrBetter##
-Have3rdBestKicker || Have2ndBestKickerOrBetter
+##HaveThirdBestKickerOrBetter##
+HaveThirdBestKicker || HaveSecondBestKickerOrBetter
 
-##Have3rdBestOverPair##
+##HaveThirdBestOverPair##
    $QQ
 && FirstFlopCard < ConstCardQueen
 && SecondFlopCard < ConstCardQueen
@@ -2217,7 +2022,7 @@ Have3rdBestKicker || Have2ndBestKickerOrBetter
 && TurnCard < ConstCardQueen
 && RiverCard < ConstCardQueen
 
-##3rdBestBoardCard##
+##ThirdBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
 (RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? ConstCardAce :
@@ -2237,40 +2042,40 @@ Have3rdBestKicker || Have2ndBestKickerOrBetter
 // Both ignored.
 -1
 
-##Have3rdBestOverPairOrBetter##
-(Have3rdBestOverPair ||  Have2ndBestOverPairOrBetter)
+##HaveThirdBestOverPairOrBetter##
+(HaveThirdBestOverPair ||  HaveSecondBestOverPairOrBetter)
 
-##Have3rdNutFlush##
+##HaveThirdNutFlush##
 [HaveFlush && (NumberOfUnknownSuitedOvercards == 2)]
 
-##Have3rdNutFlushDraw##
+##HaveThirdNutFlushDraw##
 HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 2)
 
-##Have3rdOverPair##
-ispair && (RankOfFirstHoleCard < 2ndBestBoardCard) && (RankOfFirstHoleCard > 3rdBestBoardCard)
+##HaveThirdOverPair##
+ispair && (RankOfFirstHoleCard < SecondBestBoardCard) && (RankOfFirstHoleCard > ThirdBestBoardCard)
 
-##Have3rdTopPair##
-RankOfFirstHoleCard == 3rdBestBoardCard || RankOfSecondHoleCard == 3rdBestBoardCard
+##HaveThirdTopPair##
+RankOfFirstHoleCard == ThirdBestBoardCard || RankOfSecondHoleCard == ThirdBestBoardCard
 
 ##ThirdTopPairRank##
-(RankOfFirstHoleCard == 3rdBestBoardCard || RankOfSecondHoleCard == 3rdBestBoardCard) ? 3rdBestBoardCard :0
+(RankOfFirstHoleCard == ThirdBestBoardCard || RankOfSecondHoleCard == ThirdBestBoardCard) ? ThirdBestBoardCard :0
 
-##Have5thTopPair##
-RankOfFirstHoleCard == 5thBestBoardCard || RankOfSecondHoleCard == 5thBestBoardCard 
+##HaveFifthTopPair##
+RankOfFirstHoleCard == FifthBestBoardCard || RankOfSecondHoleCard == FifthBestBoardCard 
 
 ##FifthTopPairRank##
-(RankOfFirstHoleCard == 5thBestBoardCard || RankOfSecondHoleCard == 5thBestBoardCard) ? 5thBestBoardCard: 0
+(RankOfFirstHoleCard == FifthBestBoardCard || RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
 
-##Have3rdTopSet##
-ispair && RankOfFirstHoleCard == 3rdBestBoardCard
+##HaveThirdTopSet##
+ispair && RankOfFirstHoleCard == ThirdBestBoardCard
 
-##Have4thNutFlush##
+##HaveFourthNutFlush##
 [HaveFlush && (NumberOfUnknownSuitedOvercards == 3)]
 
-##Have4thNutFlushDraw##
+##HaveFourthNutFlushDraw##
 HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 3)
 
-##4thBestBoardCard##
+##FourthBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
 (RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 0 ? ConstCardAce :
@@ -2290,25 +2095,25 @@ HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 3)
 // Both ignored.
 -1
 
-##Have4thOverPair##
-ispair && (RankOfFirstHoleCard < 3rdBestBoardCard) && (RankOfFirstHoleCard > 4thBestBoardCard)
+##HaveFourthOverPair##
+ispair && (RankOfFirstHoleCard < ThirdBestBoardCard) && (RankOfFirstHoleCard > FourthBestBoardCard)
 
-##Have4thTopPair##
-RankOfFirstHoleCard == 4thBestBoardCard || RankOfSecondHoleCard == 4thBestBoardCard
+##HaveFourthTopPair##
+RankOfFirstHoleCard == FourthBestBoardCard || RankOfSecondHoleCard == FourthBestBoardCard
 
 ##ForthTopPairRank##
-(RankOfFirstHoleCard == 4thBestBoardCard || RankOfSecondHoleCard == 4thBestBoardCard) ? 4thBestBoardCard : 0
+(RankOfFirstHoleCard == FourthBestBoardCard || RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
 
-##Have4thTopSet##
-ispair && RankOfFirstHoleCard == 4thBestBoardCard
+##HaveFourthTopSet##
+ispair && RankOfFirstHoleCard == FourthBestBoardCard
 
-##Have5thNutFlush##
+##HaveFifthNutFlush##
 [HaveFlush && (NumberOfUnknownSuitedOvercards == 4)]
 
-##Have5thNutFlushDraw##
+##HaveFifthNutFlushDraw##
 HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 4)
 
-##5thBestBoardCard##
+##FifthBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
 // 14 (ace) can't happen, but anyway...
 (RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 0 ? ConstCardAce :
@@ -2328,8 +2133,8 @@ HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 4)
 // Both ignored.
 -1
 
-##Have5thOverPair##
-ispair && (RankOfFirstHoleCard < 4thBestBoardCard) && (RankOfFirstHoleCard > 5thBestBoardCard)
+##HaveFifthOverPair##
+ispair && (RankOfFirstHoleCard < FourthBestBoardCard) && (RankOfFirstHoleCard > FifthBestBoardCard)
 
 ##HaveAnyKindOfInsideStraightDraw##
 // Note: This does also count straightdraws at the board,
@@ -2349,13 +2154,13 @@ ispair && (RankOfFirstHoleCard < 4thBestBoardCard) && (RankOfFirstHoleCard > 5th
 && (nsuited > nsuitedcommon) 
 && (NumberOfUnknownSuitedOvercards == 0)
 
-##HaveBackDoor2ndNutFlushDraw##
+##HaveBackDoorSecondNutFlushDraw##
    (betround == ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
 && (NumberOfUnknownSuitedOvercards == 1)
 
-##HaveBackDoor3rdNutFlushDraw##
+##HaveBackDoorThirdNutFlushDraw##
    (betround == ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
@@ -2364,7 +2169,7 @@ ispair && (RankOfFirstHoleCard < 4thBestBoardCard) && (RankOfFirstHoleCard > 5th
 ##HaveBackdoorFlushDraw##
    HaveBackdoorFlushDrawContributingTwoCards
 || HaveBackdoorNutFlushDraw
-|| HaveBackDoor2ndNutFlushDraw
+|| HaveBackDoorSecondNutFlushDraw
 
 ##HaveBestKicker##
 (NumberOfBetterKickers == 0)
@@ -2401,7 +2206,7 @@ rankbitscommon & ~LowestBitOfRankBitsCommon
 ##LowestBoardCard##
 ranklocommon
 
-##2ndLowestBoardCard##
+##SecondLowestBoardCard##
 (RankBitsCommonWithoutLowestBit & 0b000000000000100) != 1 ? ConstCardTwo   :
 (RankBitsCommonWithoutLowestBit & 0b000000000001000) != 1 ? ConstCardThree :
 (RankBitsCommonWithoutLowestBit & 0b000000000010000) != 1 ? ConstCardFour  :
@@ -2427,8 +2232,8 @@ ranklocommon
 ($$pr0 == RankOfBottomPairOnBoard || $$pr1 == RankOfBottomPairOnBoard)
 
 ##HaveBottomTwoPair##
-   (RankOfFirstHoleCard == LowestBoardCard && RankOfSecondHoleCard == 2ndLowestBoardCard)
-|| (RankOfFirstHoleCard == 2ndLowestBoardCard && RankOfSecondHoleCard == LowestBoardCard)
+   (RankOfFirstHoleCard == LowestBoardCard && RankOfSecondHoleCard == SecondLowestBoardCard)
+|| (RankOfFirstHoleCard == SecondLowestBoardCard && RankOfSecondHoleCard == LowestBoardCard)
 
 ##HaveDoubleGutshotDraw##
    `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
@@ -2459,8 +2264,8 @@ ranklocommon
 // Best one
 || HaveNutFlushDraw
 // Contributing only single card:
-//  * Headsup: at least 3rd-best
-//  * 3-handed: at least 2nd-best
+//  * Headsup: at least Third-best
+//  * 3-handed: at least Second-best
 //  * 4-handed: only nut-flush
 || ((nsuited >= 4) && (nsuitedcommon >2) && (NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
 
@@ -2898,10 +2703,10 @@ ispair
 
 ##TripsRank##
 HaveTrips && HaveTopPair    ? TopPairRank:
-HaveTrips && Have2ndTopPair ? SecondTopPairRank:
-HaveTrips && Have3rdTopPair ? ThirdTopPairRank:
-HaveTrips && Have4thTopPair ? ForthTopPairRank:
-HaveTrips && Have5thTopPair ? FifthTopPairRank: 0
+HaveTrips && HaveSecondTopPair ? SecondTopPairRank:
+HaveTrips && HaveThirdTopPair ? ThirdTopPairRank:
+HaveTrips && HaveFourthTopPair ? ForthTopPairRank:
+HaveTrips && HaveFifthTopPair ? FifthTopPairRank: 0
 
 ##TripsKickerRank##
 HaveTrips && TripsRank==RankOfFirstHoleCard ? RankOfSecondHoleCard:
@@ -2997,15 +2802,15 @@ HaveTopPair && $$pr1==rankhicommon ? $$pr0:
 0
 
 ##SecondTopPairRank##
-Have2ndTopPair && RankOfFirstHoleCard  == 2ndBestBoardCard ? RankOfFirstHoleCard :
-Have2ndTopPair && RankOfSecondHoleCard == 2ndBestBoardCard ? RankOfSecondHoleCard :
+HaveSecondTopPair && RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
+HaveSecondTopPair && RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
 0
 
 ##HaveTopSet##
 (ispair && (rankhiplayer == rankhicommon))
 
 ##HaveTopTwoPair##
-(HaveTopPair && Have2ndTopPair)
+(HaveTopPair && HaveSecondTopPair)
 
 ##RankbitsCommonWithoutAceLow##
 // Don't count ace twice in HaveTwoPair
@@ -3240,13 +3045,13 @@ HINT_There_Is_No_Pair_On_The_Board
 // There are 7 cases:
 //
 // 1) we pair both board-cards, so we have quads and nobody can have better quads
-[(rankhiplayer == BestBoardCard) && (rankloplayer == 2ndBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
+[(rankhiplayer == BestBoardCard) && (rankloplayer == SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
 //
 // 2) we pair the set on board, which is higher than the pair, so we get the best quads
-[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard > 2ndBestBoardCard)] ? 1: 1/*NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
+[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard > SecondBestBoardCard)] ? 1: 1/*NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
-[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard < 2ndBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
+[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard < SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
 [(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) && (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
@@ -3255,7 +3060,7 @@ HINT_There_Is_No_Pair_On_The_Board
 [((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) && (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
 //
 // 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
-[ispair && (rankhiplayer != BestBoardCard) && (rankhiplayer != 2ndBestBoardCard) && (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
+[ispair && (rankhiplayer != BestBoardCard) && (rankhiplayer != SecondBestBoardCard) && (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
 //
 // 7) we don't have an OverPair to the pair and therefore play the board (probably again 2 cases)
 NFH4OAK_FullHouseOnBoard_WePlayTheBoard
@@ -3294,7 +3099,7 @@ ispair ?
 [
     // Same logic applies as above:
     // Case 3A: Our higher card hits the board
-    (rankhiplayer == BestBoardCard) || (rankhiplayer == 2ndBestBoardCard) || (rankhiplayer == 3rdBestBoardCard) ?
+    (rankhiplayer == BestBoardCard) || (rankhiplayer == SecondBestBoardCard) || (rankhiplayer == ThirdBestBoardCard) ?
     [
         (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer) :
         // Otherwise: set is lower, so there is 1 additional card, that loses for us
