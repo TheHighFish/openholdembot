@@ -971,7 +971,7 @@ void CScraper::ScrapeLimits()
 			&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
 
-		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %f.2 / %f.2 / %f.2 / %f.2 / %s\n", 
+		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %s\n", 
 			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
 			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->GetGametypeAsString());
 
