@@ -1,0 +1,14 @@
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=14664
+custom // this is a comment at the end of a line
+
+preflop
+when others fold force // another comment
+
+flop
+when others fold force
+
+turn
+when others fold force
+
+river
+when others fold force
