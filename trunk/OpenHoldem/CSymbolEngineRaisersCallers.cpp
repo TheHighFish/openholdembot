@@ -233,7 +233,7 @@ int CSymbolEngineRaisersCallers::FirstPossibleRaiser() {
   // This works both preflop and postflop,
   // both in and out of the blinds,
   // both before and after our first action. ;-)
-	int first_possible_raiser = (DEALER_CHAIR + 1) % p_tablemap->nchairs();
+	int first_possible_raiser = (USER_CHAIR + 1) % p_tablemap->nchairs();
 	return first_possible_raiser;
 }
 

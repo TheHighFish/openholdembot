@@ -19,14 +19,17 @@
 double StringToNumber(CString number) {
   // http://www.cplusplus.com/reference/cstdlib/strtol/
   // http://stackoverflow.com/questions/10156409/convert-hex-string-char-to-int
+  // http://stackoverflow.com/questions/2482211/c-converting-binary-to-decimal
   assert(number[0] != NULL);
   if (memcmp(number, "0x", 2) == 0) {
     // Hex number
+    // Prefix 0x is allowed
     return strtol(number, NULL, 16);
   }
   else if (memcmp(number, "0b", 2) == 0) {
     // Binary number
-    return strtol(number, NULL, 2);
+    // Prefix 0b is not allowed: we have to remove it
+    return strtol(number.Mid(2), NULL, 2);
   }
   else {
     // Decimal number, either int or floating point
