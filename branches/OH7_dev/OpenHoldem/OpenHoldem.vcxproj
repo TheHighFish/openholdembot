@@ -191,6 +191,7 @@
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
+    <ClCompile Include="CSymbolEngineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
@@ -439,6 +440,7 @@
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
+    <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />

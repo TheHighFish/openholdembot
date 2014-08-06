@@ -657,6 +657,9 @@
     <ClCompile Include="CSymbolEngineICM.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineOpenPPL.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1428,6 +1431,12 @@
     </ClInclude>
     <ClInclude Include="DialogSAPrefs7.h">
       <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineICM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineOpenPPL.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
