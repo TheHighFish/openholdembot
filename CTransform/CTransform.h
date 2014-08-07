@@ -50,7 +50,8 @@ public:
 						  CString *separation=NULL, COLORREF *cr_avg=0);
 	const int TTypeTransform(RMapCI region, const HDC hdc, CString *text, 
 							 CString *separation, bool background[], bool (*character)[MAX_CHAR_HEIGHT]);
-	const void ParseStringBSL(const CString text, const CString format, CString *results=NULL, 	
+	const void ParseStringBSL(const CString text, const CString format, 
+                CString *results_for_openscrape=NULL, 	
 							  CString *handnumber=NULL, double *sblind=NULL, double *bblind=NULL, double *bbet=NULL, 
 							  double *ante=NULL, int *limit=NULL, double *sb_bb=NULL, double *bb_BB=NULL, bool *isfinaltable=NULL,
 							  bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL, bool *found_bbet=NULL,
