@@ -7,7 +7,8 @@ BUG FIXES:
   Thanks to SuperBlak and Saireks for reporting, to OpenGeek for some replay-frames
   and especially to Maniaco for having a good idea that put us in the right direction.
   [THF]
-- PokerTracker_Query_Definitions.DLL: new symbols: rflopcbet, turncbet.
+- PokerTracker_Query_Definitions.DLL: new symbols for: raise flop cbet, turn cbet, preflop 4bet,
+  3b vs. Steal, big blind 3bet vs. Steal, small blind 3bet vs. Steal, turn check-raise, turn check-call.
   [Lavezzi]
 - The tablemap option "balancenumbersonly" could lead to a crash,
   because we used an invalid method to access the data to be modified.
