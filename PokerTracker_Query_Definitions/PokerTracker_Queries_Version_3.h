@@ -37,6 +37,7 @@
 #define PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL				(TRUE)
 
 #define PT3_QUERY_SUPPORT__FLOP_CBET					(TRUE)
+#define PT3_QUERY_SUPPORT__RAISE_FLOP_CBET				(TRUE)
 #define PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B			(TRUE)
 #define PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B			(TRUE)
 #define PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B				(TRUE)
@@ -69,6 +70,7 @@ const int k_number_of_pokertracker_stats =  (PT3_QUERY_SUPPORT__ICON ? 1 : 0) +
 											(PT3_QUERY_SUPPORT__FOLD_BB_TO_STEAL ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__FOLD_SB_TO_STEAL ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__FLOP_CBET ? 1 : 0) + 
+											(PT3_QUERY_SUPPORT__RAISE_FLOP_CBET ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B ? 1 : 0) + 
 											(PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B ? 1 : 0) + 
@@ -537,6 +539,26 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		        P.id_site = %SITEID% AND \
 		        P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
+		pt_group_advanced
+	},
+#endif
+	
+#if PT3_QUERY_SUPPORT__RAISE_FLOP_CBET
+	/* PT3  query to get cbet on FLOP */
+	{
+		// name
+		"rflopcbet",		
+		// description_for_editor
+		"Poker Tracker raise flop cbet percentage",
+		// query
+		"select (case when (count(*)!=0) then \
+		cast(sum(case when S.enum_f_cbet_action = 'R' then 1 else 0 end) as real) / \
+		cast(sum(case when S.flg_f_cbet_def_opp = 't' then 1 else 0 end) as real) \
+		else (-1) end) as result \
+		FROM player as P,  %GAMETYPE%player_statistics as S \
+		WHERE S.id_player = P.id_player \
+		AND P.player_name LIKE '%SCREENNAME%'AND \
+		 P.id_site=%SITEID%",
 		pt_group_advanced
 	},
 #endif
