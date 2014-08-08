@@ -168,7 +168,7 @@ void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_pot
 				  || (next_character == '(')
 				  || (next_character == ')')) {
 				// Replace by space to be removed later
-				balance_and_or_potential_text[i] = ' ';
+				balance_and_or_potential_text->SetAt(i, ' ');
 			}
 		}
 		// Now remove all bad characters at once
