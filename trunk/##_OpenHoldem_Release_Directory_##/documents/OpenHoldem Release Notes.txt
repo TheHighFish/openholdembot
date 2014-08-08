@@ -7,7 +7,7 @@ BUG FIXES:
   Thanks to SuperBlak and Saireks for reporting, to OpenGeek for some replay-frames
   and especially to Maniaco for having a good idea that put us in the right direction.
   [THF]
-- PokerTracker_Query_Definitions.DLL: new symbol pt_3bet_preflop.
+- PokerTracker_Query_Definitions.DLL: new symbol rflopcbet.
 [Lavezzi]
 
 v5.0.9 2014-08-06
