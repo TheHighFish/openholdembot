@@ -9,6 +9,10 @@ BUG FIXES:
   [THF]
 - PokerTracker_Query_Definitions.DLL: new symbols: rflopcbet, turncbet.
   [Lavezzi]
+- The tablemap option "balancenumbersonly" could lead to a crash,
+  because we used an invalid method to access the data to be modified.
+  Thanks to Maniace for finding the bug and explaining the proper way.
+  [THF]
 
 v5.0.9 2014-08-06
 ==================
