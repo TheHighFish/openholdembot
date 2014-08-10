@@ -144,6 +144,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   }
   else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
+      write_log(true, /* !!!!!!! */ 
+        "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
     }
     *result = 0;

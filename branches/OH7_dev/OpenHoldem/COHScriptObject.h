@@ -31,9 +31,13 @@ class COHScriptObject {
   virtual double Evaluate(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
  public:
+  static bool IsFunction(CString name)      { return name.Left(2) ==  "f$"; }
+  static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
+  static bool IsOpenPPLSymbol(CString name) { return isupper(name[0]); }
+ public:
   bool IsList()                 { return _name.Left(4) == "list"; }
   bool IsOpenPPLSymbol()        { return isupper(_name[0]); }
-  bool IsFunction()             { return _name.Left(2) == "f$"; }
+  bool IsFunction()             { return _name.Left(2) ==  "f$"; }
   // Autoplayer, Secondary, Ini, PrWin
   bool IsStandardFunction();
   // f$debug, f$test, notes, DLL
@@ -43,7 +47,9 @@ class COHScriptObject {
                                     && !IsSpecialFunction()); }
  public:
   // For saving
-  CString Serialize();         
+  CString Serialize();   
+  // For debugging
+  virtual void Dump();
  public:
   void Parse();
  protected:

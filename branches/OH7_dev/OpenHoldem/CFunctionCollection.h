@@ -58,6 +58,8 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   void Save(CArchive &ar);
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
+  // For debugging
+  void Dump();
  public:
   bool ParseAll();
   void SetOpenPPLLibraryLoadingState(bool is_good) { _openPPL_library_correctly_loaded = is_good; }

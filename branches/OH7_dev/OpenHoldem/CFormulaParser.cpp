@@ -113,6 +113,11 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   }
 ExitLoop:
   FinishParse();
+  // Dump function collection to log
+  write_log(preferences.debug_formula() || preferences.debug_parser(),
+    "[CFormulaParser] ParseFile() done: %s\n",
+    formula_file.GetFile()->GetFileName());
+  p_function_collection->Dump();
 }
 
 bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
@@ -249,8 +254,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   TPParseTreeNode function_body = NULL;
-  if ((_function_name.Left(2) == "f$") // f$-user-defined function
-    || isupper(_function_name[0])) {    // OpenPPL-symbol                                                                                                            if (memcmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (memcmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+  if (COHScriptObject::IsFunction(_function_name) 
+    || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (memcmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (memcmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (memcmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 

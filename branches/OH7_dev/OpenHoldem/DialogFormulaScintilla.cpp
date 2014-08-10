@@ -804,10 +804,11 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
     FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
   } else {
     // A child item was selected
+    // (OpenPPL-functions don't get shown in the editor)
 	if ((s == "notes")
         || (s == "dll")
-        || (s.Left(2) == "f$")
-        || (s.Left(4) == "list")) {
+        || COHScriptObject::IsFunction(s)
+        || COHScriptObject::IsList(s)) {
       SetExtendedWindowTitle(s);
       COHScriptObject *p_function_or_list = p_function_collection->LookUp(s);
       if (p_function_or_list != NULL) {
@@ -1467,6 +1468,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   // Processing for any other formula
   else {
     // Execute the currently selected formula
+    p_function_collection->Dump();
     ret = p_function_collection->Evaluate(m_current_edit);
     sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
     Cstr.Format(format, ret);

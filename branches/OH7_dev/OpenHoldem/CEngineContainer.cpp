@@ -325,10 +325,17 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
     if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
       // Symbol successfully evaluated
       // Result already returned via result-pointer
-      if (log && (memcmp(name, "f$", 2))) {
+      if (COHScriptObject::IsFunction(name) 
+          || COHScriptObject::IsOpenPPLSymbol(name)) {
+        // Nothing to do (see below)
+        return true;
+      }
+      if (log) {
         // Log the symbol and its value
         // But only if it is a basic symbol and not a function
         // Functions receive special treatment (indentation, etc)
+        write_log(true, /* !!!!!!! */ 
+          "[EngineContainer] %s -> %.3f [evaluated]\n", name, *result);
         p_autoplayer_trace->Add(name, *result);
       }
       return true;

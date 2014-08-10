@@ -66,6 +66,8 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Result already cached
   if (_is_result_cached) {
     if (log) {
+      write_log(true, /* !!!!!!! */ 
+        "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
       p_autoplayer_trace->Add(_name, _cached_result);  
     }
     // Keep cached result: do nothing
@@ -111,6 +113,16 @@ CString CFunction::Serialize() {
   }
   //MessageBox(0, result, _name, 0);
   return result;
+}
+
+void CFunction::Dump() {
+  CString data;
+  data.Format("%s %s %.3f %i\n",
+    _name,
+    (_is_result_cached ? "[cached]" : "[not chached]"),
+    _cached_result,
+    _parse_tree_node);
+  write_log(true /*!!!!!!!*/, (char*)(LPCTSTR)data);
 }
 
 

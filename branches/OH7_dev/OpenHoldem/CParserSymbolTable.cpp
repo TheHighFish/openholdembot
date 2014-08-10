@@ -36,7 +36,9 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   // No short names, and we have to compare the first N characters later
   if (name.GetLength() < 3) return;
   // f$functions and lists: insert into list (map) for later verification
-  if ((memcmp(name, "f$", 2) == 0) || (memcmp(name, "list", 4) == 0)) {
+  if (COHScriptObject::IsFunction(name) 
+      || COHScriptObject::IsList(name)
+      || COHScriptObject::IsOpenPPLSymbol(name)) {
     _used_functions[name] = true;
     return;
   }

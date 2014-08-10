@@ -217,7 +217,7 @@ void CFunctionCollection::ClearCache() {
   CSLock lock(m_critsec);
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    if (p_oh_script_object->IsFunction()) {
+    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsOpenPPLSymbol()) {
       ((CFunction*)p_oh_script_object)->ClearCache();
     }
     p_oh_script_object = GetNext();
@@ -277,6 +277,14 @@ void CFunctionCollection::SaveObject(
   // to user-defined bot-logic files
   if (function_or_list->IsOpenPPLSymbol()) return;
   ar.WriteString(function_or_list->Serialize());
+}
+
+void CFunctionCollection::Dump() {
+  COHScriptObject *p_oh_script_object = GetFirst();
+  while (p_oh_script_object != NULL) {
+    p_oh_script_object->Dump();
+    p_oh_script_object = GetNext();  
+  }
 }
 
 bool CFunctionCollection::Rename(CString from_name, CString to_name) {
@@ -371,14 +379,23 @@ void CFunctionCollection::ResetOnHeartbeat() {
 
 bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   CSLock lock(m_critsec);
-  if ((memcmp(name, "f$", 2) == 0)      // User-defined function
-      || (memcmp(name, "list", 4) == 0) // hand-list
-      || isupper(name[0])) {            // OpenPPL-symbol 
+  if (COHScriptObject::IsFunction(name)
+      || COHScriptObject::IsList(name)
+      || COHScriptObject::IsOpenPPLSymbol(name)) {
+#ifdef _DEBUG
+    if (COHScriptObject::IsOpenPPLSymbol(name)) {
+      // Just to be able to set a break-point,
+      // that doesn't get triggered every heartbeat by an ini-function
+      int i = 0;
+    }
+#endif
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
       // Function does not exist
       *result = k_undefined_zero;
       if (log) {
+        write_log(true, /* !!!!!!! */ 
+          "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }
       // This symbol is something that HAS TO be evaluated here,
@@ -391,7 +408,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
     // Function/list found
     *result = p_function->Evaluate(log);
     return true;
-  }
+}
   // Not a function and not a list
   return false;
 }

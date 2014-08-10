@@ -76,3 +76,8 @@ CString COHScriptObject::Serialize() {
   }
   return result;
 }
+
+void COHScriptObject::Dump() {
+  // Default: don't do anything
+  // ATM we are only interested in formulas
+}

@@ -16,6 +16,7 @@
 
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "COHScriptObject.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -26,6 +27,8 @@
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
+
+#define DEBUG_AUTOPLAYER_TRACE //!!!!!!!
 
 #define ENT CSLock lock(m_critsec);
 
@@ -67,11 +70,14 @@ bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
 
 int CAutoplayerTrace::Add(CString symbol) {
   ENT
+  write_log(true, /*!!!!!!!*/
+    "[CAutoplayerTrace] Add (%s, ...)\n", symbol);
   // This function for symbols without value is for functions only.
   // These functions are eitherpredefined (f$), userdefined (f$)
   // or OpenPPL (upper-cases).
   // The value will be backpatched later.
-  assert((symbol.Left(2) == "f$") || isupper(symbol[0]));
+  assert(COHScriptObject::IsFunction(symbol)
+    || COHScriptObject::IsOpenPPLSymbol(symbol));
   CString new_message;
   new_message.Format("%s%s = ",
     Indentation(), symbol);
@@ -85,9 +91,13 @@ int CAutoplayerTrace::Add(CString symbol) {
 
 void CAutoplayerTrace::Add(CString symbol, double value) {
   ENT
+  write_log(true, /*!!!!!!!*/
+    "[CAutoplayerTrace] Add (%s, %.3f)\n",
+    symbol, value);
   if (!SymbolNeedsToBeLogged(symbol)) return;
   CString new_message;
-  if (symbol.Left(2) == "f$") {
+  if (COHScriptObject::IsFunction(symbol)
+      || COHScriptObject::IsOpenPPLSymbol(symbol)) {
     // Function with known value a priori
     new_message.Format("%s%s = %.3f [cached]",
       Indentation(), symbol, value);

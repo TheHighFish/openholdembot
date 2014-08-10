@@ -33,6 +33,7 @@ class CFunction: public COHScriptObject{
   bool EvaluatesToBinaryNumber();
   // For debugging output
   CString Serialize();
+  void Dump();
  protected:
   // Used by the parse-tree-rotator
   TPParseTreeNode _parse_tree_node;
