@@ -184,6 +184,16 @@ char *outdated_symbols_pokertracker_tournament =
   "automagically work for both ring-games and tournaments\n"
   "to simplify user-code and supporting libraries (OpenPPL).";
 
+char *outdated_symbol_nopponentsraising =
+  "The symbol nopponentsraising got removed from the code-base,\n"
+  "because its definition (by Ray E. Bornert) was utter nonsense.\n"
+  "It counted so-called \"blind-raisers\", depended on the position\n"
+  "(in or out of the blinds), on antes, with unexpected values\n"
+  "for missing or open-completing or open-raising small blinds, etc.\n"
+  "It always was a pain in the ***, both for the developers and end-users.\n"
+  "\n"
+  "Please use the symbol \"nopponentstruelyraising\" instead.";
+
 bool IsOutdatedSymbol(CString symbol) {
   // This function gets called for every symbol lookup.
   // So we optimize it a bit.
@@ -279,6 +289,10 @@ bool IsOutdatedSymbol(CString symbol) {
       if (symbol == "nopponentsmax") {
 	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
 	      return true;
+      }
+      if (symbol == "nopponentsraising") {
+        OH_MessageBox_Formula_Error(outdated_symbol_nopponentsraising, title_outdated_symbol);
+        return true;
       }
       if (symbol == "ncommoncardspresent") {
 	      OH_MessageBox_Formula_Error(outdated_symbol_ncommoncardspresent, title_outdated_symbol);

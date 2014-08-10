@@ -19,8 +19,10 @@
 #include "CVirtualSymbolEngine.h"
 #include <map>
 
-// We make the collection a symbol-engine
-// because of reset-functions and Evaluate()-function.
+// We make the collection a symbol-engine because of 
+// * reset-functions 
+// * Evaluate()-function,
+// * SymbolsProvided() for syntax-highlighting
 class CFunctionCollection: public CVirtualSymbolEngine {
   friend class CFormulaParser;
  public:
@@ -30,6 +32,8 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
   bool EvaluatesToBinaryNumber(CString function_name);
+ public: 
+  CString SymbolsProvided();
  public:
   // Mandatory reset-functions
   void InitOnStartup();

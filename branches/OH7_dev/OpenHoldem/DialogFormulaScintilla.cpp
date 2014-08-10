@@ -2084,7 +2084,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nopponentsblind", "number of opponents blind (not including you) (0-9)");
 	AddSymbol(parent, "nopponentschecking", "number of opponents playing with a zero current bet equal to the previous bettor (0-9)");
 	AddSymbol(parent, "nopponentscalling", "number of opponents playing with a non-zero current bet equal to the previous bettor (0-9)");
-	AddSymbol(parent, "nopponentsraising", "number of opponents playing with a current bet greater than the previous bettor (0-9). This includes so-called \"blind-raisers\" and people who post antes.");
 	AddSymbol(parent, "nopponentstruelyraising", "number of opponents playing with a current bet greater than the previous bettor (0-9). This does NOT include so-called \"blind-raisers\" and people who post antes, but it includes the first voluntary bettor postflop.");
 	AddSymbol(parent, "nopponentsbetting", "number of opponents playing with a non zero current bet (0-9)");
 	AddSymbol(parent, "nopponentsfolded", "number of opponents that have folded this hand (0-9)");

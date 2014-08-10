@@ -185,7 +185,6 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
   AddSymbolEngine(p_symbol_engine_openppl_user_variables);
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
-  BuildListOfSymbolsProvided();
 }
 
 void CEngineContainer::DestroyAllSymbolEngines()

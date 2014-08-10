@@ -1,18 +1,45 @@
-
 v7.0.0 2014-xx-yy
 ==================
+NEW STUFF:
 
   Naming conventions:
     * f$symbols:   user-defined functions
     * lower-cases: built-in OpenHoldem symbols
     * upper-cases: OpenPPL-symbols of the OpenPPL-library
 
-v5.0.9 2014-08-xx
+BUG FIXES:
+- OpenHoldem did no longer evaluate the titlebar,
+  because ParseStringBSL() reacted in a too conservative way
+  to an unused in-out-pointer.
+  Thanks to SuperBlak and Saireks for reporting, to OpenGeek for some replay-frames
+  and especially to Maniaco for having a good idea that put us in the right direction.
+  [THF]
+- PokerTracker_Query_Definitions.DLL: new symbols for: raise flop cbet, turn cbet, preflop 4bet,
+  3b vs. Steal, big blind 3bet vs. Steal, small blind 3bet vs. Steal, turn check-raise, turn check-call.
+  [Lavezzi]
+- The tablemap option "balancenumbersonly" could lead to a crash,
+  because we used an invalid method to access the data to be modified.
+  Thanks to Maniace for finding the bug and explaining the proper way.
+  [THF]
+
+v5.0.9 2014-08-06
 ==================
 BUG FIXES:
-- Conversion of binary numbers did not work because of a 
-  copy-and-paste-error (hexadecimal).
+- Conversion of binary numbers did not work because 
+  the 0b-prefix was not allowed, contary to 0x.
   Thanks to Nik0 for reporting
+  [THF]
+- Fixing the symbol-lookup for some ICM-symbols,
+  that did not work due to some incorrect length-constants.
+  [Nik0]
+- Syntax-highlighting did not consider user-defined functions.
+  Thanks to Nik0 for reporting.
+  {THF]
+
+MAINTENANCE:
+- Removing the symbol nopponentsraising,
+  because its definition was utter nonsense.
+  Please use nopponentstruelyraising instead.
   [THF]
 
 v5.0.8 2014-08-03

@@ -20,6 +20,7 @@
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHistory.h"
@@ -31,12 +32,16 @@
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
+// Some symbols are only well-defined if it is my turn
+#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = k_undefined; }
+
 CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
@@ -69,7 +74,6 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 	_raischair = k_undefined;
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
-	_nopponentsraising  = 0;
 	_nopponentstruelyraising = 0;
 	_nopponentsfolded   = 0;
 	_nopponentscalling  = 0;
@@ -94,9 +98,15 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
 double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 {
 	// Not yet acted: 0
-	if (p_symbol_engine_history->DidAct())
-	{
-		return 0.0;
+	if (p_symbol_engine_history->DidAct()) {
+    if (p_betround_calculator->betround() == k_betround_preflop) {
+      // Preflop:
+      // Start with big blind and forget about former blind raisers
+      return p_symbol_engine_tablelimits->bblind();
+    } else {
+      // Postflop
+		  return 0.0;
+    }
 	}
 	if (p_table_state->User()->HasKnownCards())
 	{
@@ -110,7 +120,6 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 
 void CSymbolEngineRaisersCallers::CalculateRaisers()
 {
-	_nopponentsraising = 0;
 	_nopponentstruelyraising = 0;
 	if (p_symbol_engine_chip_amounts->call() <= 0.0)
 	{
@@ -119,7 +128,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
 		return;
 	}
-	// Raischair, nopponentsraising, raisbits
+	// Raischair, nopponentstruelyraising, raisbits
 	//
 	int first_possible_raiser = FirstPossibleRaiser();
 	int last_possible_raiser  = LastPossibleRaiser();
@@ -145,7 +154,6 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 			{
 				write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
 					chair, Number2CString(highest_bet));
-				_nopponentsraising++;
 				if ((p_betround_calculator->betround() > k_betround_preflop)
 					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))
 				{
@@ -164,7 +172,6 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		}
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentsraising: %i\n", _nopponentsraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
 }
@@ -219,27 +226,18 @@ void CSymbolEngineRaisersCallers::CalculateCallers()
 	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
 }
 
-int CSymbolEngineRaisersCallers::FirstPossibleRaiser()
-{
-	int first_possible_raiser;
-	// Don't start searching for the highest bet at the button.
-	// This method will fail, if name player in late raises and name player in early coldcalls.
-	// Start searching at the last known raiser; and only at the button when we have name new betting-round.
-	if (p_symbol_engine_history->DidAct())
-	{
-		// Counting raises behind me
-		first_possible_raiser = (USER_CHAIR + 1) % p_tablemap->nchairs();
-	}
-	else
-	{
-		// Start with the player after last known raiser
-		first_possible_raiser = (DEALER_CHAIR + 1) % p_tablemap->nchairs();
-	}
+int CSymbolEngineRaisersCallers::FirstPossibleRaiser() {
+  // For nopponentstruelyraising we can always 
+  // start behind the userchair and search clockwise
+  // until the last player in front of the user.
+  // This works both preflop and postflop,
+  // both in and out of the blinds,
+  // both before and after our first action. ;-)
+	int first_possible_raiser = (USER_CHAIR + 1) % p_tablemap->nchairs();
 	return first_possible_raiser;
 }
 
-int CSymbolEngineRaisersCallers::LastPossibleRaiser()
-{
+int CSymbolEngineRaisersCallers::LastPossibleRaiser() {
 	// For technical reasons (for-loop) we handle the modulo-operation 
 	// inside the loop and not here.
 	return (FirstPossibleRaiser() + p_tablemap->nchairs() - 1);
@@ -346,14 +344,12 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 		}
 		else if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17)	
 		{
+      RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentscalling();
-		}
-		else if (memcmp(name, "nopponentsraising", 17)==0 && strlen(name)==17)
-		{
-			*result = nopponentsraising();
 		}
 		else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23)
 		{
+      RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentstruelyraising();
 		}
 		else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17)
@@ -374,6 +370,7 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 	}
 	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	
 	{
+    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nplayerscallshort();
 	}
 	else if (memcmp(name, "raischair", 9)==0 && strlen(name)==9)	
@@ -382,14 +379,17 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 	}
 	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9)  
 	{
+    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = raisbits(name[8]-'0');
 	}
 	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9)  
 	{
+    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = callbits(name[8]-'0');
 	}
 	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9)  			
 	{
+    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = foldbits(name[8]-'0');
 	}
 	else
@@ -402,7 +402,7 @@ bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *resul
 }
 
 CString CSymbolEngineRaisersCallers::SymbolsProvided() {
-  CString list = "nopponentschecking nopponentscalling nopponentsraising "
+  CString list = "nopponentschecking nopponentscalling "
     "nopponentstruelyraising nopponentsbetting nopponentsfolded "
     "nplayerscallshort raischair ";
   list += RangeOfSymbols("raisbits%i", k_betround_flop, k_betround_river);
