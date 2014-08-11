@@ -131,7 +131,7 @@ bool CTokenizer::IsBinaryMinus()
 		|| (_last_token == kTokenBracketClose_3));
 }
 
-bool CTokenizer::IsTokenOpenPPLKeyword(){
+bool CTokenizer::IsTokenOpenPPLKeyword() {
 #ifdef FAST_TOKENIZER
 	// Fast exit: OpenPPL-keywords are all upper-cases
 	if (islower(*TOKEN_ADDRESS)){
@@ -153,6 +153,9 @@ bool CTokenizer::IsTokenOpenPPLKeyword(){
 		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
 		break;
 	case 3:
+    // Special vase "bet" (lowercases) that is an OH-script-symbol
+    // but also (uppercases) an OPPL-action
+    if (memcmp(TOKEN_ADDRESS,   "bet", 3) == 0)    { return false; }
 		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
 		if (_memicmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
@@ -160,8 +163,10 @@ bool CTokenizer::IsTokenOpenPPLKeyword(){
 		if (_memicmp(TOKEN_ADDRESS, "BET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionRaise;        return true; }
 		break;
 	case 4:
-		if (_memicmp(TOKEN_ADDRESS, "WHEN", 4) == 0)   
-		{ 
+    // Special vase "call" (lowercases) that is an OH-script-symbol
+    // but also (uppercases) an OPPL-action
+    if (memcmp(TOKEN_ADDRESS,   "call", 4) == 0)    { return false; }
+		if (_memicmp(TOKEN_ADDRESS, "WHEN", 4) == 0) { 
 			// Trigger handling of modulo / percentage operator
 			_inside_OpenPPL_function = true;
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
