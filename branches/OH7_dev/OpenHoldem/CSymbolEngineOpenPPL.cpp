@@ -98,3 +98,7 @@ CString CSymbolEngineOpenPPL::SymbolsProvided() {
   // it just triggers initializations and calculations
   return "";
 }
+
+/*void CSymbolEngineOpenPPL::CalculateBackupAction() {
+
+}*/

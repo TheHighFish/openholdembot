@@ -107,13 +107,17 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     assert(decision < -1000);
     //!!!!!
   }
-  /*
-  // CalculateOpenPPLBackupActions !!!
-  // Also be prepared to raise/call if "swagging" is not possible
+  
+  //!!!CalculateOpenPPLBackupActions();
+  /*// Also be prepared to raise/call if "swagging" is not possible
     SetAutoplayerFunction(k_autoplayer_function_raise, true);
     SetAutoplayerFunction(k_autoplayer_function_call,  true);
   // Always be prepared to check/fold, except the decision was Beep*/
 }
+
+/*void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
+
+}*/
 
 bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {
   // Small negative values: percentaged potsized bets

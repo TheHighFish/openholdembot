@@ -19,6 +19,10 @@
 #include "CParseErrors.h"
 #include "TokenizerConstants.h"
 
+// Currently disabled, as we need to catch 
+// mis-spelled key-words like "When"
+#undef FAST_TOKENIZER
+
 // Global vars to be used by static accessors
 int line_absolute = 1;
 int line_relative = 1;
@@ -127,73 +131,75 @@ bool CTokenizer::IsBinaryMinus()
 		|| (_last_token == kTokenBracketClose_3));
 }
 
-bool CTokenizer::IsTokenOpenPPLKeyword()
-{
+bool CTokenizer::IsTokenOpenPPLKeyword(){
+#ifdef FAST_TOKENIZER
 	// Fast exit: OpenPPL-keywords are all upper-cases
-	if (islower(*TOKEN_ADDRESS))
-	{
+	if (islower(*TOKEN_ADDRESS)){
 		return false;
 	}
 	// OpenPPL-symbols are usually mixed
 	// so another fast exit if the 2nd character is lower-case
-	if (islower(*TOKEN_ADDRESS+1))
-	{
+	if (islower(*TOKEN_ADDRESS+1)) {
 		return false;
 	}
+#endif
 	// Now we compare...
+  // Case-insensitive, as we want to catch mis-spelled keywords like "When".
+  // They would otherwice get accepted as OpenPPL-functions 
+  // and cause an error: "function used but never defined".
 	switch (SIZE_OF_TOKEN)
 	{
 	case 2:
-		if (memcmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
 		break;
 	case 3:
-		if (memcmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
-		if (memcmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
-		if (memcmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
-		if (memcmp(TOKEN_ADDRESS, "XOR", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalXOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionRaise;        return true; }
+		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
+		if (_memicmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "XOR", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalXOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionRaise;        return true; }
 		break;
 	case 4:
-		if (memcmp(TOKEN_ADDRESS, "WHEN", 4) == 0)   
+		if (_memicmp(TOKEN_ADDRESS, "WHEN", 4) == 0)   
 		{ 
 			// Trigger handling of modulo / percentage operator
 			_inside_OpenPPL_function = true;
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
 			return true; 
 		}
-		if (memcmp(TOKEN_ADDRESS, "CALL", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "FOLD", 4) == 0)    { _OpenPPL_token_ID = kTokenActionFold;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "PLAY", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "BEEP", 4) == 0)    { _OpenPPL_token_ID = kTokenActionBeep;       return true; }
+		if (_memicmp(TOKEN_ADDRESS, "CALL", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
+		if (_memicmp(TOKEN_ADDRESS, "FOLD", 4) == 0)    { _OpenPPL_token_ID = kTokenActionFold;       return true; }
+		if (_memicmp(TOKEN_ADDRESS, "PLAY", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BEEP", 4) == 0)    { _OpenPPL_token_ID = kTokenActionBeep;       return true; }
 		break;
 	case 5:
-		if (memcmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "RAISE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaise;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "CHECK", 5) == 0)   { _OpenPPL_token_ID = kTokenActionCheck;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
-		if (memcmp(TOKEN_ADDRESS, "LEAVE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionLeave;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "CLOSE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionClose;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "ALLIN", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseMax;   return true; }
-		if (memcmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RAISE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaise;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "CHECK", 5) == 0)   { _OpenPPL_token_ID = kTokenActionCheck;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
+		if (_memicmp(TOKEN_ADDRESS, "LEAVE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionLeave;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "CLOSE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionClose;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "ALLIN", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseMax;   return true; }
+		if (_memicmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
 		break;
 	case 6:
-		if (memcmp(TOKEN_ADDRESS, "BETPOT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaisePot;    return true; }
-		if (memcmp(TOKEN_ADDRESS, "BETMAX", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaiseMax;    return true; }
-		if (memcmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITAND", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryAnd; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
-		if (memcmp(TOKEN_ADDRESS, "SITOUT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionSitOut;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BETPOT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaisePot;    return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BETMAX", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaiseMax;    return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITAND", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryAnd; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "SITOUT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionSitOut;      return true; }
 		break;
 	case 8:
-		if (memcmp(TOKEN_ADDRESS, "RAISEMAX", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaiseMax; return true; }
-		if (memcmp(TOKEN_ADDRESS, "RAISEPOT", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaisePot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RAISEMAX", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaiseMax; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RAISEPOT", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaisePot; return true; }
 		break;
 	case 10:
-		if (memcmp(TOKEN_ADDRESS, "BETHALFPOT", 10) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BETHALFPOT", 10) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
 		break;
 	case 12:
-		if (memcmp(TOKEN_ADDRESS, "RAISEHALFPOT", 12) == 0) { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RAISEHALFPOT", 12) == 0) { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
 		break;
 	default: return false;
 	}
