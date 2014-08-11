@@ -728,10 +728,10 @@ HINT_Nothing_To_Do_But_All_OK
 me_st_MemRaises_Calculate_Raises
 
 ##Raises##
-// Raises may be -1 if there are additional blind-posters,
-// because nopponentsraising is wrong in that case.
-// But this has to be handled in OH 2.2.0.
-// For the moment we add some sanity-checks.
+// Raises might have been -1 if there were additional blind-posters,
+// because nopponentsraising was wrong in that case for old versions
+// But this gets now handled perfectly by nopponentstruelyraising.
+// But we keep the sanity-checks anyway.
 [(me_re_MemRaises < 0) && (betround == ConstBetRoundPreflop) && (ncallbets == 1)] ? 
   (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
 [(me_re_MemRaises < 0) && (betround == ConstBetRoundPreflop) && (ncallbets > 1)]  ? 
@@ -752,7 +752,7 @@ me_re_MemRaises
 (NumberOfRaisesOnTurn > 0)
 
 ##RaisesBeforeOurFirstActionThisRoundPostflop##
-(nopponentsraising > 0) ? (nopponentsraising - 1) : 0
+(nopponentstruelyraising > 0) ? (nopponentstruelyraising - 1) : 0
 
 ##AntesPresent##
 // First orbit preflop only,
@@ -793,16 +793,16 @@ nopponentstruelyraising
 
 ##RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.
-[didchec && (nopponentsraising > 0) ] ? (nopponentsraising - 1) :
-[didchec && (nopponentsraising == 0)] ? 0 :
+[didchec && (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
+[didchec && (nopponentstruelyraising == 0)] ? 0 :
 // Otherwise: either we were the first bettor
 // or there was a bet and maybe raises in front of us,
 // so all technical "raises" behind us are true raises
-nopponentsraising
+nopponentstruelyraising
 
 ##RaisesSinceLastPlayAfterOurSecondAction##
 // Now all technical raises are true raises, no bettors possible
-nopponentsraising
+nopponentstruelyraising
 
 ##RaisesSinceLastPlay##
 (BotsActionsOnThisRoundIncludingChecks == 0) ? RaisesBeforeOurFirstAction :
