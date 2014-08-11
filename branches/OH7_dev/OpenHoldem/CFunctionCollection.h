@@ -54,11 +54,15 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   void SetEmptyDefaultBot();
  public:
   void Add(COHScriptObject *new_function);
-  bool Exists(CString name);
   COHScriptObject *LookUp(CString name);
   bool Rename(CString from_name, CString to_name);
   void Delete(CString name);
   void SetFunctionText(CString name, CString content);
+ public:
+  bool Exists(CString name);
+  // Generates smart error-messages on failure
+  // To be used by the parser
+  void VerifyExistence(CString name);
  public:
   void Save(CArchive &ar);
   void SaveObject(CArchive &ar, COHScriptObject *function_or_list);
@@ -86,6 +90,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   void SetPath(CString path)	{ _path = path; }
  private:
   void CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name);
+  CString GetSimilarNameWithDifferentCases(CString function_name);
  private:
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;

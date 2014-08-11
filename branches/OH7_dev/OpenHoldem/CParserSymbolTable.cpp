@@ -73,11 +73,7 @@ void CParserSymbolTable::VeryfyAllUsedFunctionsAtEndOfParse() {
   while (enumerator_it != _used_functions.end())
   {
     function_name = enumerator_it->first;
-    if (!p_function_collection->Exists(function_name)) {
-      CString message;
-      message.Format("Function used but never defined\n%s", function_name);
-      OH_MessageBox_Interactive(message, "Error", 0);
-    }
+    p_function_collection->VerifyExistence(function_name);
     ++enumerator_it;
   }
 }

@@ -83,6 +83,43 @@ bool CFunctionCollection::Exists(CString name) {
   return (it != _function_map.end());
 }
 
+// Generates smart error-messages on failure
+// To be used by the parser
+void CFunctionCollection::VerifyExistence(CString name) {
+  if (Exists(name)) return;
+  // Error: function does not exist
+  CString similar_name = GetSimilarNameWithDifferentCases(name);
+  if (similar_name != "") {
+    CString message;
+    message.Format("%s%s%s%s%s",
+      "Function used but never defined: ",
+      name, 
+      "\nDid you mean ",
+      similar_name,
+      " instead?");
+    OH_MessageBox_Interactive(message, "Error", 0);
+    return;
+  } 
+  // Else: general error-message
+  CString message;
+  message.Format("Function used but never defined\n%s", name);
+  OH_MessageBox_Interactive(message, "Error", 0);
+}
+
+CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_name) {
+  function_name.MakeLower();
+  COHScriptObject *p_nextObject = GetFirst();
+  while (p_nextObject != NULL) {
+    if (function_name == p_nextObject->name().MakeLower()) {
+      // Found similar name, just different cases
+      return p_nextObject->name();
+    }
+    p_nextObject = GetNext();
+  }
+  // Nothing found
+  return NULL;
+}
+
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
   CSLock lock(m_critsec);
   write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
