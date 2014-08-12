@@ -114,11 +114,6 @@ inline bool TokenIsBracketClose(int token) {
 	|| (token == kTokenBracketClose_3));
 }
 
-inline bool TokenIsOpenPPLAction(int token) {
-  return ((token >= kTokenActionBeep)
-    && (token <= kTokenActionClose));
-}
-
 int GetOperatorPriority(int token);
 
 // Right assopciativ: only **, ln and conditional

@@ -33,6 +33,8 @@ public:
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
+public:
+  bool TokenIsOpenPPLAction(int token);
 private:
 	int  ScanForNextToken();
 	void SkipToEndOfLine();
