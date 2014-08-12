@@ -108,6 +108,10 @@ inline bool TokenIsElementaryAction(int token) {
     && (token <= kTokenActionClose));
 }
 
+inline bool TokenIsOpenPPLAction(int token) {
+  return TokenIsElementaryAction(token); //!!!!!!!
+}
+
 inline bool TokenIsBracketClose(int token) {
   return ((token == kTokenBracketClose_1)
     || (token == kTokenBracketClose_2)

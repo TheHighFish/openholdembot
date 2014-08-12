@@ -474,7 +474,7 @@ int CTokenizer::LineRelative()
 
 const int kNumberOfOpenPPLActions = 14;
 
-const CString kOpenPPLActions[kNumberOfOpenPPLActions] = {
+const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
   // * SitOut
   // * Leave
@@ -496,16 +496,47 @@ const CString kOpenPPLActions[kNumberOfOpenPPLActions] = {
   "RaisePot",
 };
 
-bool CTokenizer::TokenIsOpenPPLAction(int token) { //!!!!
+const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
+  kTokenActionRaise,
+  kTokenActionCall,
+  kTokenActionFold,
+  kTokenActionCall,
+  kTokenActionBeep,
+  kTokenActionRaise,
+  kTokenActionCheck,
+  kTokenActionRaiseMax,
+  kTokenActionRaiseHalfPot,
+  kTokenActionRaiseMax,
+  kTokenActionRaisePot,
+  kTokenActionRaiseHalfPot,
+  kTokenActionRaiseMax,
+  kTokenActionRaisePot,
+};
+
+const int kOneCharacterExtraForTerminatingNull = 1;
+
+void CTokenizer::CheckTokenForOpenPPLAction(int *token) { //!!!! to be moved into OPPL-mode.cpp
   // Actions now treated as identifiers
-  if (token != kTokenIdentifier) return false;
+  if (*token != kTokenIdentifier) return;
   CString token_string = GetTokenString();
-  // Special handling for ambiguous symbols,
-  // because bet and call mean something different for OH-script
-  if ((token_string == "bet") || (token_string == "call")) return false;
   for (int i=0; i<kNumberOfOpenPPLActions; ++i) {
-    int length = kOpenPPLActions[i].GetLength();
-    if (_memicmp(token_string, kOpenPPLActions[i], length) == 0) return true;
+    int length_to_compare = kOpenPPLActionStrings[i].GetLength() + kOneCharacterExtraForTerminatingNull;
+    if (_memicmp(token_string, kOpenPPLActionStrings[i], length_to_compare) == 0) {
+      // Action expected and something action-like found
+      // Now check for exact match, because especially
+      // "bet" and "call" mean something different for OH-script
+      if (token_string != kOpenPPLActionStrings[i]) {
+        CString error_message;
+        error_message.Format(
+          "Found identifier %s\n"
+          "Did you mean %s?",
+          token_string,
+          kOpenPPLActionStrings[i]);
+        MessageBox(0, error_message, "Error", 0); //!!!!!!
+      }
+      // Replace kTokenIdentifier by something more appropriate
+      *token = kOpenPPLActionConstants[i];
+      return;
+    }
   }
-  return false;
 }

@@ -517,8 +517,9 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
     // * another when-condition
     // * user-variable to be set !!!
     token_ID = _tokenizer.LookAhead();
-    if (_tokenizer.TokenIsOpenPPLAction(token_ID))  { //!!!!!!!
-      TPParseTreeNode action = ParseOpenPPLAction(); //!!!!!!!
+    _tokenizer.CheckTokenForOpenPPLAction(&token_ID);
+    if (TokenIsOpenPPLAction(token_ID))  { 
+      TPParseTreeNode action = ParseOpenPPLAction(); 
       when_condition->_second_sibbling = action;
       // For future backpatching
       last_when_condition_was_open_ended = false;
@@ -540,10 +541,10 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   return first_when_condition_of_sequence;
 }
 
-TPParseTreeNode CFormulaParser::ParseOpenPPLAction()
-{
+TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 	int token_ID = _tokenizer.GetToken();
-	assert(_tokenizer.TokenIsOpenPPLAction(token_ID));
+  _tokenizer.CheckTokenForOpenPPLAction(&token_ID);
+	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
 	if (token_ID == kTokenActionReturn)
 	{
