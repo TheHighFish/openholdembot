@@ -516,8 +516,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
     // * action
     // * another when-condition
     // * user-variable to be set !!!
-    token_ID = _tokenizer.LookAhead();
-    _tokenizer.CheckTokenForOpenPPLAction(&token_ID);
+    token_ID = _tokenizer.LookAhead(true);
     if (TokenIsOpenPPLAction(token_ID))  { 
       TPParseTreeNode action = ParseOpenPPLAction(); 
       when_condition->_second_sibbling = action;
@@ -543,7 +542,6 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 	int token_ID = _tokenizer.GetToken();
-  _tokenizer.CheckTokenForOpenPPLAction(&token_ID);
 	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
 	if (token_ID == kTokenActionReturn)
@@ -605,7 +603,7 @@ bool CFormulaParser::ExpectKeywordForce()
 	}
 	else
 	{
-		CParseErrors::Error("Missing keyword force");
+		CParseErrors::Error("Missing keyword FORCE");
 		return false;
 	}
 }

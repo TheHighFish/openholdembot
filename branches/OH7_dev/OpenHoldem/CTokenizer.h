@@ -25,7 +25,7 @@ public:
 public:
 	void SetInput(const char* next_formula_to_be_parsed);
 	int GetToken();
-	int LookAhead();
+	int LookAhead(bool expect_action = false);
 	char* GetTokenString();
 public:
 	void PushBack()	{ _last_token_pushed_back = true; }
@@ -33,8 +33,6 @@ public:
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
-public:
-  void CheckTokenForOpenPPLAction(int *token);
 private:
 	int  ScanForNextToken();
 	void SkipToEndOfLine();
@@ -42,6 +40,8 @@ private:
 private:
 	bool IsBinaryMinus();
 	bool IsTokenOpenPPLKeyword();
+private:
+  void CheckTokenForOpenPPLAction(int *token);
 private:
 	void InitVars();
 private:

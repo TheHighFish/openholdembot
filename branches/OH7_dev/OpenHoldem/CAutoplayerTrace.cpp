@@ -28,8 +28,6 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 
-#define DEBUG_AUTOPLAYER_TRACE //!!!!!!!
-
 #define ENT CSLock lock(m_critsec);
 
 CAutoplayerTrace *p_autoplayer_trace = NULL;

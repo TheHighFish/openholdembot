@@ -61,10 +61,11 @@ void CSymbolEngineChipAmounts::ResetOnHandreset()
 	_pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
+  _call = 0;
 }
 
-void CSymbolEngineChipAmounts::ResetOnNewRound()
-{}
+void CSymbolEngineChipAmounts::ResetOnNewRound() {
+}
 
 void CSymbolEngineChipAmounts::ResetOnMyTurn()
 {}
@@ -181,7 +182,6 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	double largest_bet = Largestbet();
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
-		
 	{
 		_call = largest_bet - _currentbet[USER_CHAIR];
 	}

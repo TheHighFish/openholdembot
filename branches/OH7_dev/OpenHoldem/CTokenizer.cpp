@@ -67,7 +67,7 @@ int CTokenizer::GetToken()
 	return next_token;
 }
 
-int CTokenizer::LookAhead()
+int CTokenizer::LookAhead(bool expect_action /*= false */)
 {
 	if (!_last_token_pushed_back)
 	{
@@ -75,6 +75,10 @@ int CTokenizer::LookAhead()
 	}
 	// Not yet accepted: treat it like "pushed back"
 	_last_token_pushed_back = true;
+  // In case we expect an action watch out for action-like identifiers
+  if (expect_action) {
+    CheckTokenForOpenPPLAction(&_last_token);
+  }
 	return _last_token;
 }
 
@@ -515,7 +519,7 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
 
 const int kOneCharacterExtraForTerminatingNull = 1;
 
-void CTokenizer::CheckTokenForOpenPPLAction(int *token) { //!!!! to be moved into OPPL-mode.cpp
+void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
   // Actions now treated as identifiers
   if (*token != kTokenIdentifier) return;
   CString token_string = GetTokenString();
@@ -532,7 +536,7 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) { //!!!! to be moved int
           "Did you mean %s?",
           token_string,
           kOpenPPLActionStrings[i]);
-        MessageBox(0, error_message, "Error", 0); //!!!!!!
+        CParseErrors::Error(error_message);
       }
       // Replace kTokenIdentifier by something more appropriate
       *token = kOpenPPLActionConstants[i];
