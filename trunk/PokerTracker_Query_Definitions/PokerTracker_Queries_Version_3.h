@@ -627,14 +627,14 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker BB 3bet vs. steal",
 		// query
-		"SELECT (case when count(*) = 0 then -1 else \
-			cast(sum(case when (flg_blind_def_opp AND flg_blind_b AND flg_p_3bet) then 1 else 0 end) as real) / count(*) end) as result \
+		"SELECT (cast (sum(case when ((flg_blind_b=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) as real)/ \
+			cast (sum(case when ((flg_blind_b=TRUE) AND (flg_blind_def_opp=TRUE)) then 1 else 0 end) as real)) as result \
 		FROM   player as P, %GAMETYPE%player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
             P.id_site = %SITEID% AND \
             P.player_name LIKE '%SCREENNAME%'",
-		// stat_group
-		pt_group_positional
+      // stat_group
+      pt_group_positional
 	},
 #endif
 	#if PT3_QUERY_SUPPORT__SB_3B_VS_STEAL
