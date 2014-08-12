@@ -431,7 +431,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
       // Function does not exist
       *result = k_undefined_zero;
       if (log) {
-        write_log(true, /* !!!!!!! */ 
+        write_log(preferences.debug_auto_trace(),
           "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }

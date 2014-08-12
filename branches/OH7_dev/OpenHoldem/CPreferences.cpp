@@ -73,6 +73,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_popup_blocker",
   "debug_formula",
   "debug_versus",
+  "debug_auto_trace",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
@@ -182,8 +183,7 @@ void CPreferences::CheckForOutdatedICMConfig() {
       "but f$icm_prize1 .. f$icm_prize5 functions\n"
       "\n"
       "Now you can adapt the payout-structure at runtime\n"
-      "depending on casino, game-type, number of players...",
-      "Error");
+      "depending on casino, game-type, number of players...");
   }
 }
 

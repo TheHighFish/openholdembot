@@ -161,7 +161,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 			// We are seated and playing.
 			// Serious problem, if we do not have a DB-connection.
 			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
-				"Can't use PokerTracker symbols.", "ERROR");
+				"Can't use PokerTracker symbols.");
 		}
 		*result = k_undefined;
 		return true;

@@ -11,7 +11,6 @@
 //
 //*****************************************************************************
 
-
 #ifndef INC_NUMERICALFUNCTIONS_H
 #define INC_NUMERICALFUNCTIONS_H
 

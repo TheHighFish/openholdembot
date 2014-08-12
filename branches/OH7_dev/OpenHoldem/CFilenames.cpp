@@ -68,8 +68,7 @@ CString CFilenames::IniFilename() {
 			"More than one ini-file in OpenHoldem-directory.\n"
 			"Don't know which one to use.\n"
 			"\n"
-			"Going to terminate...",
-			"ERROR");
+			"Going to terminate...");
 		PostQuitMessage(-1);
 		// Previously we returned "a_result_to_make_the_compiler_happy.ini"
 		// believing the result was meaning-less and would never be used.

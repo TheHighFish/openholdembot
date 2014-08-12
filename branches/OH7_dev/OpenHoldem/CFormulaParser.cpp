@@ -135,10 +135,13 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
 	    || (function_name_lower_case.Left(4) == "flop")
 	    || (function_name_lower_case.Left(4) == "turn")
 	    || (function_name_lower_case.Left(5) == "river")) {
-    CParseErrors::Error("Shanky-style betrounds. OpenHoldem-style ##f$function## expected");
+    CParseErrors::Error("Shanky-style betrounds.\n"
+      "OpenHoldem-style function expected\n"
+      "Example: ##f$preflop##");
     return false;
   } else if (function_name_lower_case.Left(3) == "new") {
-    CParseErrors::Error("Old-style OpenPPL function. OpenHoldem-style ##f$function## expected");
+    CParseErrors::Error("Old-style OpenPPL function.\n"
+      "OpenHoldem-style ##f$function## expected");
     return false;
   } else if ((function_name_lower_case.Left(2) == "//")
       || (function_name_lower_case.Left(2) == "/*")) {
@@ -175,7 +178,8 @@ bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
 	if (token_ID != kTokenOperatorConditionalElse)
 	{
-		CParseErrors::Error("Malformed conditional expression. \":\" expected, but this could also be a missing operator or wrong bracket.");
+		CParseErrors::Error("Malformed conditional expression. \":\" expected,\n"
+      "but this could also be a missing operator or wrong bracket.");
 		return false;
 	}
 	return true;
@@ -206,7 +210,8 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
 	case kTokenBracketOpen_3:
 		if (expected_bracket_close == kTokenBracketClose_3) return;
 	}
-	CParseErrors::Error("Expecting closing bracket (of another type)"); 
+	CParseErrors::Error("Expecting closing bracket\n" 
+    "(or bracket of another type)."); 
 }
 
 void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
@@ -288,7 +293,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     // This is just a special type of global comment.
   }
   else {
-    CParseErrors::Error("Found unknown function type. Did you forget f$?\n");
+    CParseErrors::Error("Found unknown function type. Did you forget \"f$\"?\n");
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
@@ -376,7 +381,8 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 	}
 	else
 	{
-		CParseErrors::Error("Unexpected token inside expression. Expect: Opening Bracket, Unary, Identifier or number");
+		CParseErrors::Error("Unexpected token inside expression.\n" 
+      "Expecting: opening bracket, unary operator, identifier or number.");
 		return NULL;
 	}
 	token_ID = _tokenizer.LookAhead();
@@ -459,7 +465,7 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {                       
 		terminal_node = NULL;	
 	}
 	write_log(preferences.debug_parser(), 
-			"[FormulaParser] Terminal node %i\n", terminal_node);
+		"[FormulaParser] Terminal node %i\n", terminal_node);
 	return terminal_node;
 }
 
@@ -544,39 +550,33 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 	int token_ID = _tokenizer.GetToken();
 	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
-	if (token_ID == kTokenActionReturn)
-	{
+	if (token_ID == kTokenActionReturn) {
 		// RETURN <Expression> FORCE
 		action = ParseExpression();
 	}
-	else if (token_ID == kTokenActionRaise)
-	{
+	else if (token_ID == kTokenActionRaise) {
 		// There are 3 possibilities
 		//   RAISE FORCE
 		//   RAISE <Amount> FORCE
 		//   RAISE <PercentagedPot>% FORCE
 		action = ParseOpenPPLRaiseExpression();
 	}
-	else if (token_ID == kTokenIdentifier)
-	{
+	else if (token_ID == kTokenIdentifier) {
 		// User-variable to be set
 		CString identifier = _tokenizer.GetTokenString();
-		if (identifier.Left(4).MakeLower() != "user")
-		{
+		if (identifier.Left(4).MakeLower() != "user") {
 			CParseErrors::Error("Unexpected identifier. Action expected");
 			return NULL;
 		}
-		else
-		{
+		else {
 			action = new CParseTreeNode(_tokenizer.LineRelative());
 			action->MakeUserVariableDefinition(identifier);
 		}
 	}
-	else 
-	{
-		// Something completely unexpected
-		CParseErrors::Error("Unexpected token. Action expected");
-		return NULL;
+	else {
+		// Predefined action, like Check or Fold
+    action = new CParseTreeNode(_tokenizer.LineRelative());
+		action->MakeAction(token_ID);
 	}
 	ExpectKeywordForce();
 	return action;
@@ -593,7 +593,9 @@ bool CFormulaParser::ExpectKeywordForce()
 		_token_ID = _tokenizer.LookAhead();
 		if (_token_ID == kTokenUnsupportedDelay)
 		{
-			CParseErrors::Error("Unsupported Shanky-style delay");
+			CParseErrors::Error("Unsupported Shanky-style delay.\n"
+        "OpenHoldem provides a far more simple\n"
+        "and far more powerful f$delay-function for that");
 			// And consume 2 tokens to avoid further messages;
 			_token_ID = _tokenizer.GetToken();
 			_token_ID = _tokenizer.GetToken();

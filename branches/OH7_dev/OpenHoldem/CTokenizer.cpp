@@ -150,25 +150,6 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
   // as actions can also appear as part of expressions like
   //   WHEN BotsLastAction = Raise...
   // and some others like Bet and Call are also OH-script symbols (bet, call)
-  /*
-  if (_memicmp(TOKEN_ADDRESS, "BET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionRaise;        return true; }
-  if (_memicmp(TOKEN_ADDRESS, "CALL", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-	if (_memicmp(TOKEN_ADDRESS, "FOLD", 4) == 0)    { _OpenPPL_token_ID = kTokenActionFold;       return true; }
-	if (_memicmp(TOKEN_ADDRESS, "PLAY", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-	if (_memicmp(TOKEN_ADDRESS, "BEEP", 4) == 0)    { _OpenPPL_token_ID = kTokenActionBeep;       return true; }
-  if (_memicmp(TOKEN_ADDRESS, "RAISE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaise;      return true; }
-	if (_memicmp(TOKEN_ADDRESS, "CHECK", 5) == 0)   { _OpenPPL_token_ID = kTokenActionCheck;      return true; }
-	if (_memicmp(TOKEN_ADDRESS, "LEAVE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionLeave;      return true; }
-	if (_memicmp(TOKEN_ADDRESS, "CLOSE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionClose;      return true; }
-	if (_memicmp(TOKEN_ADDRESS, "ALLIN", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseMax;   return true; }
-  if (_memicmp(TOKEN_ADDRESS, "BETPOT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaisePot;    return true; }
-	if (_memicmp(TOKEN_ADDRESS, "BETMAX", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaiseMax;    return true; }
-  if (_memicmp(TOKEN_ADDRESS, "SITOUT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionSitOut;      return true; }
-  if (_memicmp(TOKEN_ADDRESS, "RAISEMAX", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaiseMax; return true; }
-	if (_memicmp(TOKEN_ADDRESS, "RAISEPOT", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaisePot; return true; }
-  if (_memicmp(TOKEN_ADDRESS, "BETHALFPOT", 10) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
-  if (_memicmp(TOKEN_ADDRESS, "RAISEHALFPOT", 12) == 0) { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
-  */
 	switch (SIZE_OF_TOKEN)
 	{
 	case 2:
@@ -412,18 +393,19 @@ NegativeNumber:
 	}
 	// Do not advance the input pointer,
 	// as we don't accept anything
-	CParseErrors::Error("Unexpected character");
+	CParseErrors::Error("Unexpected character.\n"
+    "Maybe you are a little yellow chinese man,\n"
+    "maybe you wrote old greek or hebrew,\n"
+    "maybe you took MS-Word instead of a serious text-editor?");
   // Can't really continue parsing
   // Treat it as end of function
 	return kTokenEndOfFunction;
 }
 
-char* CTokenizer::GetTokenString()
-{
+char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
 	// >= because we need one additional char for \0.
-	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)
-	{
+	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
 		CParseErrors::Error("Identifier exceeds maximum of 256 chars");
 	}
 	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
@@ -532,8 +514,8 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       if (token_string != kOpenPPLActionStrings[i]) {
         CString error_message;
         error_message.Format(
-          "Found identifier %s\n"
-          "Did you mean %s?",
+          "Found identifier \"%s\"\n"
+          "Did you mean \"%s\"?",
           token_string,
           kOpenPPLActionStrings[i]);
         CParseErrors::Error(error_message);

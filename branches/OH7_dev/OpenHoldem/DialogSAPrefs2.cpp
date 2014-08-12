@@ -118,7 +118,7 @@ void CDlgSAPrefs2::OnOK()
 	m_ClickDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_CLICKDELAY)
 	{
-		OH_MessageBox_Error_Warning("Invalid Click Delay", "ERROR");
+		OH_MessageBox_Error_Warning("Invalid Click Delay");
 		return;
 	}
 	preferences.SetValue(k_prefs_click_delay, strtoul(text.GetString(), 0, 10));

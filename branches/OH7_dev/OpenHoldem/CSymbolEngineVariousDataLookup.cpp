@@ -31,6 +31,7 @@
 #include "CIteratorThread.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
@@ -144,7 +145,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   }
   else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
-      write_log(true, /* !!!!!!! */ 
+      write_log(preferences.debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
     }

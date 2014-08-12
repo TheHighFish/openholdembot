@@ -333,7 +333,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
         // Log the symbol and its value
         // But only if it is a basic symbol and not a function
         // Functions receive special treatment (indentation, etc)
-        write_log(true, /* !!!!!!! */ 
+        write_log(preferences.debug_auto_trace(),
           "[EngineContainer] %s -> %.3f [evaluated]\n", name, *result);
         p_autoplayer_trace->Add(name, *result);
       }

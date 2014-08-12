@@ -239,14 +239,14 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 		  return value_of_first_sibbling * value_of_second_sibbling;
 	  case kTokenOperatorDivision: 
 		  if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  OH_MessageBox_Error_Warning("Division by zero.");
 			  return k_undefined;
 		  } else {
 			  return value_of_first_sibbling / value_of_second_sibbling;
 		  }
 	  case kTokenOperatorModulo: 
       if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  OH_MessageBox_Error_Warning("Division by zero.");
 			  return k_undefined;
 		  } else {
 			  return (unsigned long)value_of_first_sibbling 

@@ -6,6 +6,14 @@ NEW STUFF:
     * f$symbols:   user-defined functions
     * lower-cases: built-in OpenHoldem symbols
     * upper-cases: OpenPPL-symbols of the OpenPPL-library
+- Improved logging: dll$-symbols can now be logged and optionally 
+  all following evaluations from the DLL.
+  [THF]
+- Introducing functions for ICM-configuration: f$icm_prize1..f$icm_prize5
+  and removing the old options from the preferences dialog.
+  Now you can adapt the payout-structure at run-time,
+  depending on casino, game-type, number of players, ...
+  [THF]
 
 BUG FIXES:
 - OpenHoldem did no longer evaluate the titlebar,

@@ -80,7 +80,7 @@ double CSymbolEngineOpenPPL::EvaluateOpenPPLMainFunctionForCurrentBetround() {
   if ((betround < k_betround_preflop) || (betround < k_betround_river)) {
     write_log(preferences.debug_symbolengine_open_ppl(),
       "[CSymbolEngineOpenPPL] Invalid betround. Not evaluating OpenPPL\n");
-    return k_undefined; //!!! Better: check/fold!
+    return k_undefined_zero; // will be treated as check/fold
   }
   double result = p_function_collection->Evaluate(
      k_OpenPPL_function_names[betround], true);

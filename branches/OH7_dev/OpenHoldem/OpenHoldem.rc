@@ -296,7 +296,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-    LTEXT           "Version 5.0.9",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 7.0.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,66,208,8
@@ -842,8 +842,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,233,103,10
     CONTROL         "Symbol engine (OpenPPL)",IDC_DEBUG_SYMBOLENGINE_OPENPPL,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,247,103,10
-    CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,120,9,77,10
-    CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,23,117,10
+    CONTROL         "ICM",IDC_DEBUG_ICM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,9,77,10
+    CONTROL         "Autoplayer trace",IDC_DEBUG_AUTO_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,23,117,10
     CONTROL         "Autoplayer",IDC_DEBUG_AUTOPLAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,37,117,10
     CONTROL         "Tablemap loader",IDC_DEBUG_TABLEMAP_LOADER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,51,114,10
     CONTROL         "Scraper directory monitor",IDC_DEBUG_FILESYSTEM_MONITOR,
@@ -864,6 +864,7 @@ BEGIN
     CONTROL         "Formula",IDC_DEBUG_FORMULA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,233,117,10
     CONTROL         "All the rest",IDC_DEBUG_ALLTHEREST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,247,117,10
     CONTROL         "Versus",IDC_DEBUG_VERSUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,234,9,111,10
+    CONTROL         "Scraper",IDC_DEBUG_SCRAPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,234,23,117,10
 END
 
 IDD_SAPREFS21 DIALOGEX 0, 0, 219, 154
@@ -913,9 +914,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "5.0.9.0"
+            VALUE "FileVersion", "7.0.0.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "5.0.9.0"
+            VALUE "ProductVersion", "7.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
