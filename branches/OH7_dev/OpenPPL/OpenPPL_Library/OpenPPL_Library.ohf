@@ -58,8 +58,6 @@
 //  Small negative values: percentaged potsized bets
 //  Large negative values: action constants
 //
-//  Note: Beep is not supported.
-//
 //*****************************************************************************
 
 ##Check##
@@ -68,6 +66,9 @@
 // of non-existing functions.
 // This fits together perfectly.
 0
+
+##Beep##
+-1000000
 
 ##Fold##
 -1000001
