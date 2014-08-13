@@ -453,49 +453,6 @@ int CTokenizer::LineRelative()
 	return line_relative;
 }
 
-const int kNumberOfOpenPPLActions = 14;
-
-const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
-  // No longer considering
-  // * SitOut
-  // * Leave
-  // * Close
-  // Because they will be handled by secondary OH-functions
-  "Bet",
-  "Call",
-  "Fold",
-  "Play",
-  "Beep",
-  "Raise",
-  "Check",
-  "Allin",
-  "BetHalfPot",
-  "BetMax",
-  "BetPot",
-  "RaiseHalfPot",
-  "RaiseMax",
-  "RaisePot",
-};
-
-const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
-  kTokenActionRaise,
-  kTokenActionCall,
-  kTokenActionFold,
-  kTokenActionCall,
-  kTokenActionBeep,
-  kTokenActionRaise,
-  kTokenActionCheck,
-  kTokenActionRaiseMax,
-  kTokenActionRaiseHalfPot,
-  kTokenActionRaiseMax,
-  kTokenActionRaisePot,
-  kTokenActionRaiseHalfPot,
-  kTokenActionRaiseMax,
-  kTokenActionRaisePot,
-};
-
-const int kOneCharacterExtraForTerminatingNull = 1;
-
 void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
   // Actions now treated as identifiers
   if (*token != kTokenIdentifier) return;

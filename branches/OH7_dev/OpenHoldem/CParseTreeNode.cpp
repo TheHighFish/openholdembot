@@ -79,7 +79,10 @@ void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_si
 
 void CParseTreeNode::MakeAction(int action_constant)
 {
-	_node_type = action_constant;
+	assert(TokenIsOpenPPLAction(action_constant));
+  CString name = TokenString(action_constant);
+  assert(name != "");
+  MakeIdentifier(name);
 }
 
 void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds)

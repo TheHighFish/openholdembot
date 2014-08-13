@@ -231,7 +231,7 @@ CString TokenString(int token) {
 	case kTokenOperatorBinaryXOr: return "^";    
 	case kTokenOperatorBitShiftLeft: return "<<";      
 	case kTokenOperatorBitShiftRight: return ">>";
-    case kTokenOperatorBitCount: return "`";
+  case kTokenOperatorBitCount: return "`";
 	case kTokenOperatorPercentage: return "percentage"; // because % can also mean modulo      
 	case kTokenOperatorConditionalIf: return "?";     
 	case kTokenOperatorConditionalElse: return "";    

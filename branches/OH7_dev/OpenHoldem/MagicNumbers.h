@@ -544,10 +544,13 @@ const int k_number_of_pocketcard_combinations_without_order = 1326;
 // For assertions of codes, that should never be executed
 const bool k_ThisMustNotHappen = false;
 
-// For loggong
+// For logging
 const bool k_always_log_errors = true;
 const bool k_always_log_basic_information = true;
 const int  kMaxLogSymbolsForWhiteBox = 3;
+
+// For string handling
+const int kOneCharacterExtraForTerminatingNull = 1;
 
 // Statusbar
 static UINT basic_statusba_indicators[] =
