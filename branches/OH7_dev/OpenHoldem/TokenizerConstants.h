@@ -72,9 +72,6 @@ enum {
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
-  kTokenActionSitOut,
-  kTokenActionLeave,
-  kTokenActionClose,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
@@ -105,7 +102,7 @@ inline bool TokenIsTernary(int token) {
 
 inline bool TokenIsElementaryAction(int token) {
   return ((token >= kTokenActionBeep)
-    && (token <= kTokenActionClose));
+    && (token <= kTokenActionReturn));
 }
 
 inline bool TokenIsOpenPPLAction(int token) {

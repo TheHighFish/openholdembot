@@ -246,6 +246,20 @@ CString TokenString(int token) {
 	case kTokenNumber: return "number";
 	case kTokenCards: return "cards";
 	case kTokenDoubleShebang: return "##";
+  case kTokenActionBeep: return "Beep";
+  case kTokenActionFold: return "Fold";
+  case kTokenActionCheck: return "Check";
+  case kTokenActionCall: return "Call";
+  case kTokenActionRaise: return "Raise";
+  case kTokenActionRaiseHalfPot: return "RaiseHalfPot";
+  case kTokenActionRaisePot: return "RaisePot";
+  case kTokenActionRaiseMax: return "RaiseMax";
+  case kTokenActionReturn: return "Return";
+  case kTokenKeywordForce: return "Force";
+  //kTokenUnsupportedDelay,
+  //kTokenActionRaiseByBigBlinds,
+  //kTokenActionRaiseByPercentagedPotsize,
+  //kTokenActionUserVariableToBeSet,
 	default:
 		assert(k_this_must_not_happen);
 		return "Error: invalid token ID";
