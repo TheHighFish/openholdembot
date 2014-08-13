@@ -132,15 +132,10 @@ bool CTokenizer::IsBinaryMinus()
 }
 
 bool CTokenizer::IsTokenOpenPPLKeyword() {
-	// Fast exit: OpenPPL-keywords are all upper-cases
-	if (islower(*TOKEN_ADDRESS)){
-		return false;
-	}
-	// OpenPPL-symbols are usually mixed
-	// so another fast exit if the 2nd character is lower-case
-	if (islower(*TOKEN_ADDRESS+1)) {
-		return false;
-	}
+  // No longer any fast exit on lower-case symbols, because
+  // * that's no big improvement
+  // * we need to create good error-messages, even on code like "when..."
+  //
 	// Now we compare...
   // Case-insensitive, as we want to catch mis-spelled keywords like "When".
   // They would otherwice get accepted as OpenPPL-functions 
