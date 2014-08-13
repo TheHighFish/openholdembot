@@ -225,7 +225,13 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     // Add an empty function.
     // The function-text should contain at least one space.
     // The editor does somehow not work for completely empty formulas.
-    function_text = " "; 
+    //
+    // Version 5.0.0+ had regular crashes of the formula-editor,
+    // somehow related to Scintillas so-called "position_cache",
+    // that could not get fixed.
+    // Problem seems disappear when we create "empty" functions with
+    // about a dozen spaces.
+    function_text = "            "; 
   }
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
