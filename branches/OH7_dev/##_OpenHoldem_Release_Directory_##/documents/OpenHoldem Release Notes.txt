@@ -29,6 +29,11 @@ BUG FIXES:
   because we used an invalid method to access the data to be modified.
   Thanks to Maniace for finding the bug and explaining the proper way.
   [THF]
+- OpenHoldem 5.x had regular crashes of the formula-editor,
+  somewhere in the scintilla-dialog, somehow related to a "position-cache".
+  We couldn't really find the problem, but creating empty functions
+  with a dozen empty spaces seems to have stopped that problem.
+  [THF]
 
 v5.0.9 2014-08-06
 ==================
