@@ -140,6 +140,12 @@ double CFunctionCollection::Evaluate(CString function_name, bool log /* = false 
   return result;
 }
 
+double CFunctionCollection::EvaluateAutoplayerFunction(int function_code) {
+  CString function_name = k_standard_function_names[function_code];
+  assert(function_name != "");
+  return Evaluate(function_name, true);
+}
+
 bool CFunctionCollection::EvaluatesToBinaryNumber(CString function_name) {
   COHScriptObject *p_function = LookUp(function_name);
   if (p_function == NULL) return false;
@@ -190,6 +196,14 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   // PrWin-functions, used by the GUI
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(
     CString(k_standard_function_names[k_prwin_number_of_iterations]));
+}
+
+void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double value) {
+  CString function_name = k_standard_function_names[function_code];
+  assert(function_name != "");
+  CFunction *p_function = (CFunction *)LookUp(function_name);
+  if (p_function == NULL) return;
+  p_function->SetValue(value);
 }
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name)
@@ -391,13 +405,9 @@ bool CFunctionCollection::ParseAll() {
 }
 
 bool CFunctionCollection::IsOpenPPLProfile() {
-  // A profile is OpenPPL if preflop, flop, turn, river are present
-  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
-    if (!Exists(k_OpenPPL_function_names[i])) {
-      return false;
-    }
-  }
-  return true;
+  // A profile is OpenPPL if at least f$preflop exists
+  if (Exists(k_OpenPPL_function_names[k_betround_preflop])) return true;
+  return false;
 }
 
 void CFunctionCollection::InitOnStartup() {

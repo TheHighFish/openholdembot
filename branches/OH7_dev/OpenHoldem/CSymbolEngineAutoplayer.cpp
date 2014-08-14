@@ -17,6 +17,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
+#include "CFunctionCollection.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
@@ -194,12 +195,17 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = (preferences.scrape_delay() > 0 && p_autoplayer_functions->f$delay() > 0 ? (p_autoplayer_functions->f$delay()/preferences.scrape_delay()) : 0);
+	unsigned int additional_frames_to_wait = 0;
+  double desired_delay_in_seconds = p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay);
+  if (preferences.scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
+    additional_frames_to_wait = desired_delay_in_seconds / preferences.scrape_delay();
+  }
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait)
 	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%d ms)\n", (int)p_autoplayer_functions->f$delay());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
+      p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay));
 		_isfinalanswer = false;
 	}
 

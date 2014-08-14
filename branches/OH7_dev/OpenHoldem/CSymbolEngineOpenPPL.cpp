@@ -53,28 +53,6 @@ void CSymbolEngineOpenPPL::ResetOnMyTurn() {
 void CSymbolEngineOpenPPL::ResetOnHeartbeat() {
 }
 
-bool CSymbolEngineOpenPPL::IsOpenPPLProfile() {
-  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_call; ++i) {
-    if (p_function_collection->Exists(k_standard_function_names[i])) {
-      // Checing all autoplayer-functions, except check/fold
-      // The latter ones get (usually) auto-generated and are compatible with OpenPPL.
-      write_log(preferences.debug_symbolengine_open_ppl(),
-        "[CSymbolEngineOpenPPL] Autoplayer function %s exists. Therefore OH-script, not OpenPPL.\n",
-        k_standard_function_names[i]);
-      return false;
-    }
-  }
-  // Also: at least f$preflop should exist in an OpenPPL-profile
-  if (!p_function_collection->Exists(k_OpenPPL_function_names[k_betround_preflop])) {
-    write_log(preferences.debug_symbolengine_open_ppl(),
-      "[CSymbolEngineOpenPPL] Missing function f$preflop. Therefore not OpenPPL.\n");
-    return false;
-  }
-  write_log(preferences.debug_symbolengine_open_ppl(),
-    "[CSymbolEngineOpenPPL] OpenPPL-profile detected\n");
-  return true;
-}
-
 double CSymbolEngineOpenPPL::EvaluateOpenPPLMainFunctionForCurrentBetround() {
   int betround = p_betround_calculator->betround();
   if ((betround < k_betround_preflop) || (betround < k_betround_river)) {

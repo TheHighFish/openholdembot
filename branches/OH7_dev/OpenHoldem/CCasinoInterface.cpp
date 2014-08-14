@@ -19,6 +19,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -340,10 +341,12 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Sleeping %dms.\n", preferences.swag_delay_2());
 	
 	// SWAG AMOUNT ENTRY
-	double swag_adjusted = AdjustedBetsize(p_autoplayer_functions->f$betsize());
+	double swag_adjusted = AdjustedBetsize(
+    p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
 	swag_amt = Number2CString(swag_adjusted);
 
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Swag amount (not adjusted): %.2f\n", p_autoplayer_functions->f$betsize());
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Swag amount (not adjusted): %.2f\n", 
+    p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, preferences.swag_use_comma(), NULL, point_null);

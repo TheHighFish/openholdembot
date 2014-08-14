@@ -25,12 +25,14 @@
 // * SymbolsProvided() for syntax-highlighting
 class CFunctionCollection: public CVirtualSymbolEngine {
   friend class CFormulaParser;
+  friend class CAutoplayerFunctions;
  public:
   CFunctionCollection();
   ~CFunctionCollection();
  public:
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
+  double EvaluateAutoplayerFunction(int function_code);
   bool EvaluatesToBinaryNumber(CString function_name);
  public: 
   CString SymbolsProvided();
@@ -82,12 +84,15 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   COHScriptObject *GetFirst();
   COHScriptObject *GetNext();
  public:
-  CString Title()				{ return _title; }
-  CString FormulaPath()			{ return _path; }
+  CString Title()           { return _title; }
+  CString FormulaPath()     { return _path; }
   CString DLLPath();
  protected:
   void SetTitle(CString title)	{ _title = title; }
-  void SetPath(CString path)	{ _path = path; }
+  void SetPath(CString path)	  { _path = path; }
+  // For OpenPPL, which evaluates f$preflop, ...
+  // instead of f$beep, f$alli, ...
+  void SetAutoplayerFunctionValue(int function_code, double value);
  private:
   void CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name);
   CString GetSimilarNameWithDifferentCases(CString function_name);

@@ -125,4 +125,9 @@ void CFunction::Dump() {
   write_log(preferences.debug_auto_trace(), (char*)(LPCTSTR)data);
 }
 
+void CFunction::SetValue(double value) {
+  _cached_result = value;
+  _is_result_cached = true;
+}
+
 

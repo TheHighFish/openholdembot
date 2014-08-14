@@ -16,6 +16,7 @@
 
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CFunctionCollection.h"
 #include "COHScriptObject.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -190,7 +191,7 @@ CString CAutoplayerTrace::BestAction() {
         // e.g. "f$betsize = 201.47"
         CString best_action;
         best_action.Format("%s = %.2f", k_standard_function_names[i],
-          p_autoplayer_functions->f$betsize());
+          p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
         return best_action;
       }
       else {
@@ -243,11 +244,11 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
   // fcra formula status
   fcra_formula_status.Format("%s%s%s%s%s",
-	p_autoplayer_functions->f$fold() ? "F" : ".",
-	p_autoplayer_functions->f$call() ? "C" : ".",
-	p_autoplayer_functions->f$call() ? "K" : ".",
-	p_autoplayer_functions->f$rais() ? "R" : ".",
-	p_autoplayer_functions->f$alli() ? "A" : ".");
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_fold)  ? "F" : ".",
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "C" : ".",
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "K" : ".",
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_raise) ? "R" : ".",
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
   fprintf(log_fp, get_time(nowtime));
@@ -265,7 +266,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
   fprintf(log_fp, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
   fprintf(log_fp, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
-  fprintf(log_fp, "  f$betsize:     %9.2f\n", p_autoplayer_functions->f$betsize());
+  fprintf(log_fp, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
   fprintf(log_fp, "  Formulas:      %s\n",    fcra_formula_status.GetString());
   fprintf(log_fp, "  Buttons:       %s\n",    fcra_seen.GetString());
   fprintf(log_fp, "  Best action:   %s\n",    BestAction().GetString());

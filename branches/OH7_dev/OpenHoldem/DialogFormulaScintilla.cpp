@@ -124,8 +124,14 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) 
 {
 	in_startup = true;
-
-	m_standard_headings.Add("Autoplayer Functions");
+  
+  if (!p_function_collection->IsOpenPPLProfile()) {
+    // Either use autoplayer-functions (default) or OpenPPL
+    // but not both, because they are incompatible
+	  m_standard_headings.Add("Autoplayer Functions");
+  } else {
+    m_standard_headings.Add("OpenPPL Functions");
+  }
 	m_standard_headings.Add("Standard Functions");
 	m_standard_headings.Add("Ini Functions");
 	m_standard_headings.Add("PrWin Functions");
@@ -133,10 +139,18 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
   m_standard_headings.Add("Debug Functions");
 
 	ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
-	// Autoplayer Functions
-	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
-		m_standard_functions[0].Add(k_standard_function_names[i]);
-	}
+  m_standard_functions[0].RemoveAll();
+  if (!p_function_collection->IsOpenPPLProfile()) {
+	  // Autoplayer Functions
+	  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
+		  m_standard_functions[0].Add(k_standard_function_names[i]);
+	  }
+  } else {
+    // OpenPPL
+    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+		  m_standard_functions[0].Add(k_OpenPPL_function_names[i]);
+    }
+  }
 	// Standard functions
 	// Notes and DLL are somewhat special
 	m_standard_functions[1].Add("notes");

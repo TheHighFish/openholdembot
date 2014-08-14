@@ -19,7 +19,8 @@
 
 class CFunction: public COHScriptObject{
   friend class CParseTreeRotator;
- public:
+  friend class CFunctionCollection;
+public:
   CFunction(
       CString *new_name, 
       CString *new_function_text,
@@ -34,6 +35,10 @@ class CFunction: public COHScriptObject{
   // For debugging output
   CString Serialize();
   void Dump();
+ protected:
+  // For OpenPPL, which evaluates f$preflop, ...
+  // instead of f$beep, f$alli, ...
+  void SetValue(double value);
  protected:
   // Used by the parse-tree-rotator
   TPParseTreeNode _parse_tree_node;

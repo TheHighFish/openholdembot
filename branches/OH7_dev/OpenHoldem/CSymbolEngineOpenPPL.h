@@ -32,7 +32,6 @@ class CSymbolEngineOpenPPL {
   double Decision();
  private:
   double EvaluateOpenPPLMainFunctionForCurrentBetround();
-  bool IsOpenPPLProfile();
  private:
   double _decision; 
 };

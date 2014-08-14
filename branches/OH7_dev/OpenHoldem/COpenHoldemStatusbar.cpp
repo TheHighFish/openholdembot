@@ -17,6 +17,7 @@
 #include "CAutoplayerFunctions.h"
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+#include "CFunctionCollection.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
@@ -184,8 +185,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 
 	// Always update prwin/nit
 	if (p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->User()->HasKnownCards())
-	{
+		  && p_table_state->User()->HasKnownCards()) {
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (p_iterator_thread->prwin()*1000), 
 			(int) (p_iterator_thread->prtie()*1000),
@@ -195,31 +195,25 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_nit.Format("%d/%s", 
 			p_iterator_thread->IteratorThreadProgress(),
 			Number2CString(iterations));
-	}
-	else
-	{
+	}	else {
 		_status_prwin = "0/0/0";
 		// No iteratrions without userchair or cards
 		_status_nit.Format("0");
 	}
-
 	// action
-	if (p_autoplayer_functions->f$prefold())
-	{
+  if (p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold)) {
 		_status_action = "Pre-fold";
 	}
 	else if (p_symbol_engine_userchair->userchair_confirmed() 
-    && p_iterator_thread->IteratorThreadComplete())
-	{
+      && p_iterator_thread->IteratorThreadComplete()) {
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
       _status_action = "N/A";
     } else {
       _status_action = p_autoplayer_trace->BestAction();
     }
-	}
-
-	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0)
+	} else if (p_symbol_engine_prwin->nopponents_for_prwin()==0) {
 		_status_action = "Idle (f$prwin_number_of_opponents==0)";
-	else
+  } else {
 		_status_action = "Thinking";
+  }
 }

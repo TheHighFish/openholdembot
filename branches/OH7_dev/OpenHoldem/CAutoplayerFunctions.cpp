@@ -30,29 +30,14 @@
 CAutoplayerFunctions *p_autoplayer_functions = NULL;
 
 
-CAutoplayerFunctions::CAutoplayerFunctions()
-{
-	Reset();
+CAutoplayerFunctions::CAutoplayerFunctions() {
 }
 
-void CAutoplayerFunctions::Reset() {
-	for (int i=0; i<k_number_of_standard_functions; i++) {
-		SetAutoplayerFunction(i, 0);
-	}
-}
-
-void CAutoplayerFunctions::SetAutoplayerFunction(const int function_to_bn_set, const double new_value)
+double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 {
-	assert(function_to_bn_set >= 0);
-	assert(function_to_bn_set < k_number_of_standard_functions);
-	_autoplayer_functionvalues[function_to_bn_set] = new_value;
-};
-
-double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_to_bn_queried)
-{
-	assert(function_to_bn_queried >= 0);
-	assert(function_to_bn_queried < k_number_of_standard_functions);
-	return _autoplayer_functionvalues[function_to_bn_queried];
+	assert(function_code >= 0);
+	assert(function_code < k_number_of_standard_functions);
+  return p_function_collection->Evaluate(k_standard_function_names[function_code]);
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {	
@@ -67,10 +52,9 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOHScript() {
   bool trace_needed = preferences.trace_enabled();
   write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++) {
-		SetAutoplayerFunction(i, // function to be set
-			p_function_collection->Evaluate(k_standard_function_names[i], trace_needed));
+		double result = p_function_collection->Evaluate(k_standard_function_names[i], trace_needed);
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
-			k_standard_function_names[i], GetAutoplayerFunctionValue(i));
+			k_standard_function_names[i], result);
 	}
 }
 
@@ -90,7 +74,6 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
 }
 
 void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double decision) {
-  Reset();
   // Positive values mean:  betsizes (in big-blinds)
   // Small negative values: percentaged potsized bets
   // Large negative values: action constants
@@ -98,10 +81,12 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     // OpenHoldem uses f$betsize in dollars
     assert(p_symbol_engine_tablelimits != NULL);
     double betsize = decision * p_symbol_engine_tablelimits->bblind();
-    SetAutoplayerFunction(k_autoplayer_function_betsize, betsize);
+    p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, 
+      betsize);
   } else if (IsPercentagePotsizeBet(decision)) {
     double betsize = BetSizeForPercentagedPotsizeBet(decision);
-    SetAutoplayerFunction(k_autoplayer_function_betsize, betsize);
+    p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, 
+      betsize);
   } else {
     // Large negative values: action constants
     assert(decision < -1000);
@@ -115,9 +100,9 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   // Always be prepared to check/fold, except the decision was Beep*/
 }
 
-/*void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
+void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
 
-}*/
+}
 
 bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {
   // Small negative values: percentaged potsized bets
@@ -146,10 +131,9 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 {
 	for (int i=k_standard_function_prefold; i<=k_standard_function_delay; i++)
 	{
-		SetAutoplayerFunction(i, // function to be set
-			p_function_collection->Evaluate(k_standard_function_names[i], true));
+		double result = p_function_collection->Evaluate(k_standard_function_names[i], true);
 		write_log(preferences.debug_symbolengine(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
-			k_standard_function_names[i], GetAutoplayerFunctionValue(i));
+			k_standard_function_names[i], result);
 	}
 }
 
