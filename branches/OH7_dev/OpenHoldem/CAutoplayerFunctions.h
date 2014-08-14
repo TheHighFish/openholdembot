@@ -27,6 +27,9 @@ class CAutoplayerFunctions {
   void TranslateOpenPPLDecisionToAutoplayerFunctions(double decision);
   bool IsPercentagePotsizeBet(double decision);
   double BetSizeForPercentagedPotsizeBet(double decision);
+ private:
+   void CalculateSingleOpenPPLBackupAction(
+    int potential_action, int potential_backup);
   void CalculateOpenPPLBackupActions();
  private:
 	CCritSec	m_critsec;

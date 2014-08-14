@@ -100,8 +100,44 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   // Always be prepared to check/fold, except the decision was Beep*/
 }
 
-void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
+void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
+   int potential_action, int potential_backup) {
+  if (p_function_collection->EvaluateAutoplayerFunction(
+      potential_action)) {
+    p_function_collection->SetAutoplayerFunctionValue(
+      potential_backup, true);
+  }
+}
 
+void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
+  // Beep is a stand-alone action
+  // No backup, can't be combined with pother actions
+  // (contrary to f$beep in OH-script).
+  if (p_function_collection->EvaluateAutoplayerFunction(
+      k_autoplayer_function_beep)) {
+    return;
+  }
+  // Allin -> BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_allin, k_autoplayer_function_betpot_1_1);
+  // BetPot -> 1/2 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_1, k_autoplayer_function_betpot_1_2);
+  // 1/2 BetPot -> Raise
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_2, k_autoplayer_function_raise);
+  // Also: f$betsize -> Raise
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betsize, k_autoplayer_function_raise);
+  // Raise -> Call
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_raise, k_autoplayer_function_call);
+  // Call -> Check
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_call, k_autoplayer_function_check);
+  // Call -> Check
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_check, k_autoplayer_function_fold);
 }
 
 bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {
