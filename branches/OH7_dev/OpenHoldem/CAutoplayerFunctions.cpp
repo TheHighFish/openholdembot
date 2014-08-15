@@ -43,9 +43,11 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 void CAutoplayerFunctions::CalcPrimaryFormulas() {	
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
-  } else {
-    CalcPrimaryFormulasOHScript();
+    CalculateOpenPPLBackupActions();
   }
+  // Does not hurt, if we calc CalcPrimaryFormulasOHScript() in both cases,
+  // because the function values have already been set and marked as "cached".
+  CalcPrimaryFormulasOHScript();
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulasOHScript() {
@@ -73,6 +75,48 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   TranslateOpenPPLDecisionToAutoplayerFunctions(decision);
 }
 
+void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, int action) {
+  CString action_name;
+  // Translate aqutoplayer-constant to OPPL-action-name
+  switch (action) {
+    case k_autoplayer_function_beep:
+      action_name = "";
+      break;
+    case k_autoplayer_function_allin:
+      action_name = "RaiseMax";
+      break;
+    case k_autoplayer_function_betpot_1_1:
+      action_name = "RaisePot";
+      break;
+    case k_autoplayer_function_betpot_1_2:
+      action_name = "RaiseHalfPot";
+      break;
+    case k_autoplayer_function_raise:
+      action_name = "Raise";
+      break;
+    case k_autoplayer_function_call:
+      action_name = "Call";
+      break;
+    case k_autoplayer_function_check:
+      action_name = "Check";
+      break;
+    case k_autoplayer_function_fold:
+      action_name = "Fold";
+      break;
+    default:
+      assert (k_this_must_not_happen);
+  }
+  double open_ppl_action_code = p_function_collection->Evaluate(action_name);
+  write_log(preferences.debug_symbolengine_open_ppl(),
+    "[CAutoplayerFunctions] Checking if decision %.3f matches action %s (%.3f)\n",
+    decision, action_name, open_ppl_action_code);
+  if (decision == open_ppl_action_code) {
+    write_log(preferences.debug_symbolengine_open_ppl(),
+    "[CAutoplayerFunctions] Decision matches action\n");
+    p_function_collection->SetAutoplayerFunctionValue(action, true);
+  }
+}
+
 void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double decision) {
   // Positive values mean:  betsizes (in big-blinds)
   // Small negative values: percentaged potsized bets
@@ -90,14 +134,15 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   } else {
     // Large negative values: action constants
     assert(decision < -1000);
-    //!!!!!
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_beep);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_allin);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_betpot_1_1);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_betpot_1_2);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_raise);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_call);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_check);
+    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
   }
-  
-  //!!!CalculateOpenPPLBackupActions();
-  /*// Also be prepared to raise/call if "swagging" is not possible
-    SetAutoplayerFunction(k_autoplayer_function_raise, true);
-    SetAutoplayerFunction(k_autoplayer_function_call,  true);
-  // Always be prepared to check/fold, except the decision was Beep*/
 }
 
 void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(

@@ -28,6 +28,7 @@ class CAutoplayerFunctions {
   bool IsPercentagePotsizeBet(double decision);
   double BetSizeForPercentagedPotsizeBet(double decision);
  private:
+   void CheckIfDecisionMatchesElementaryAction(int decision, int action);
    void CalculateSingleOpenPPLBackupAction(
     int potential_action, int potential_backup);
   void CalculateOpenPPLBackupActions();
