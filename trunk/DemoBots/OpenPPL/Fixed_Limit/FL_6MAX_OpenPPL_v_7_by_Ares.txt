@@ -73,14 +73,14 @@ AQo KQo AJo ATo
 
 
 ##list23##
-//5.43% CALL 2 Limpers 
+//5.43% Call 2 Limpers 
 77 66 55 44 
 A7s A6s K9s Q9s J9s T9s 
 QJo A9o 
 
 
 ##list24##
-//13.73% CALL 3 Limpers 
+//13.73% Call 3 Limpers 
 88 77 66 55 44 33 22 
 A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs K9s K8s K7s K6s QJs QTs Q9s Q8s Q7s JTs J9s T9s 98s 87s 76s 65s 54s 43s 32s 
 QJo A9o 
@@ -245,7 +245,7 @@ AKo AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o T9o A8o K8o Q8o J8o T8o 
 // 2. Viloes checaram sou o ultimo a agir
 // 3. Viloes checaram nao sou o ultimo a agir
 // 4. Vilao fez Raise
-// 5. Eu fiz raise e recebi ReRaise
+// 5. Eu fiz Raise e recebi ReRaise
 	WHEN (Round_First_Action = 1 AND betposition = 1) RETURN 1 FORCE
 	WHEN (Round_First_Action = 1 AND nbetstocall =0 AND (betposition = nplayersround)) RETURN 2 FORCE
 	WHEN (Round_First_Action = 1 AND nbetstocall =0 AND betposition!=1 AND (betposition != nplayersround)) RETURN 3 FORCE
@@ -258,73 +258,73 @@ AKo AQo KQo AJo KJo QJo ATo KTo QTo JTo A9o K9o Q9o J9o T9o A8o K8o Q8o J8o T8o 
 //=========================================================================================================
 
 ##f$preflop##
-WHEN ((list01) AND log$OpenR_list01) RAISE FORCE
-WHEN (list01) CALL FORCE
-WHEN ((didrais AND ncallbets <= 3) AND log$Call_RR) CALL FORCE// Eu fiz raise e recebi reraise
-WHEN ((Raises = 2 AND didrais AND ncallbets <= 4 AND BotsActionsOnThisRoundIncludingChecks = 1) AND log$Call_CAP) CALL FORCE // Call 4bet
-WHEN ((didcall AND ncallbets <= 2) AND log$I_Call_C_Raise) CALL FORCE
+WHEN ((list01)) Raise FORCE
+WHEN (list01) Call FORCE
+WHEN ((didrais AND ncallbets <= 3)) Call FORCE// Eu fiz Raise e recebi reraise
+WHEN ((Raises = 2 AND didrais AND ncallbets <= 4 AND BotsActionsOnThisRoundIncludingChecks = 1)) Call FORCE // Call 4bet
+WHEN ((didcall AND ncallbets <= 2)) Call FORCE
 
 // Chart Open Raise
 WHEN ((( Raises = 0 AND Calls = 0 AND ncallbets <= 1)))
-	WHEN ((InSmallBlind AND list14 ) AND log$OpenR_SB_list14)		 RAISE FORCE
-	WHEN ((InButton AND list13) AND log$OpenR_BTN_list13)			 RAISE FORCE
-	WHEN ((InCutOff AND list12) AND log$OpenR_CO_list12)			 RAISE FORCE
-	WHEN ((InMiddlePosition AND list11) AND log$OpenR_MP_list11)	 RAISE FORCE
-	WHEN ((InUTG AND list10) AND log$OpenR_UTG_list10) 			 RAISE FORCE
-	WHEN (f1 AND list100)  RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((InSmallBlind AND list14 ))		 Raise FORCE
+	WHEN ((InButton AND list13))			 Raise FORCE
+	WHEN ((InCutOff AND list12))			 Raise FORCE
+	WHEN ((InMiddlePosition AND list11))	 Raise FORCE
+	WHEN ((InUTG AND list10)0) 			 Raise FORCE
+	WHEN (f1 AND list100)  Raise FORCE
+	WHEN (Others) Fold FORCE
 	
 // Raise 1 Limp	
 WHEN ((( Raises = 0 AND Calls = 1)))
-	WHEN ((list20) AND log$Raise_1_LIMP) RAISE FORCE 
-	WHEN (Others) FOLD FORCE
+	WHEN ((list20)) Raise FORCE 
+	WHEN (Others) Fold FORCE
 
 // Raise/Call 2 Limp	
 WHEN ((( Raises = 0 AND Calls = 2)))
-	WHEN ((list21) AND log$Raise_2_LIMP) RAISE FORCE
-	WHEN ((list23) AND log$Call_2_LIMP) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((list21)) Raise FORCE
+	WHEN ((list23)) Call FORCE
+	WHEN (Others) Fold FORCE
 
 // Raise/Call 3 Limp	
 WHEN ((( Raises = 0 AND Calls = 3)))
-	WHEN ((list22) AND log$Raise_3_LIMP) RAISE FORCE 
-	WHEN ((list24) AND log$CALL_3_LIMP) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((list22)) Raise FORCE 
+	WHEN ((list24)) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN ((( Raises = 1 AND Calls <= 1 AND Round_First_Action = 1)))
-	WHEN ((FirstRaiserPosition = 5 AND list30) AND log$Raise_1_R_UTG) RAISE FORCE 
-	WHEN ((FirstRaiserPosition = 4 AND list32) AND log$Raise_1_R_MP ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 3 AND list34) AND log$Raise_1_R_CO ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 2 AND list36) AND log$Raise_1_R_BTN) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((FirstRaiserPosition = 5 AND list30)) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list32)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list34)) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list36)) Raise FORCE
+	WHEN (Others) Fold FORCE
 
 //3bet	
 WHEN ((( Raises = 1 AND Calls <= 1 AND InSmallBlind)))
-	WHEN ((FirstRaiserPosition = 5 AND list31) AND log$Raise_1_R_UTG_SB) RAISE FORCE 
-	WHEN ((FirstRaiserPosition = 4 AND list33) AND log$Raise_1_R_MP_SB ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 3 AND list35) AND log$Raise_1_R_CO_SB ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 2 AND list37) AND log$Raise_1_R_BTN_SB) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((FirstRaiserPosition = 5 AND list31) AND log$Raise_1_R_UTG_SB) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list33) AND log$Raise_1_R_MP_SB ) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list35) AND log$Raise_1_R_CO_SB ) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list37) AND log$Raise_1_R_BTN_SB) Raise FORCE
+	WHEN (Others) Fold FORCE
 	
 // Actions against 1 Raise and at least 1 Call
 WHEN ((( Raises = 1 AND Calls <= 1)))
-	WHEN ((FirstRaiserPosition >= 4 AND (list40 OR list41)) AND log$CALL_1_R_UTGMP) CALL FORCE 
-	WHEN ((FirstRaiserPosition  = 3 AND (list40 OR list42)) AND log$CALL_1_R_CO) CALL FORCE 
-	WHEN ((FirstRaiserPosition  = 2 AND list40) AND log$CALL_1_R_BTN) CALL FORCE 
-	WHEN (Others) FOLD FORCE
+	WHEN ((FirstRaiserPosition >= 4 AND (list40 OR list41)) AND log$CALL_1_R_UTGMP) Call FORCE 
+	WHEN ((FirstRaiserPosition  = 3 AND (list40 OR list42)) AND log$CALL_1_R_CO) Call FORCE 
+	WHEN ((FirstRaiserPosition  = 2 AND list40) AND log$CALL_1_R_BTN) Call FORCE 
+	WHEN (Others) Fold FORCE
 	
 WHEN ((( Raises = 1 AND Calls = 0 AND InBigBlind)))
-	WHEN ((FirstRaiserPosition = 5 AND list55) AND log$RAISE_1_R_UTG_BB) RAISE FORCE 
-	WHEN ((FirstRaiserPosition = 4 AND list56) AND log$RAISE_1_R_MP_BB ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 3 AND list57) AND log$RAISE_1_R_CO_BB ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 2 AND list58) AND log$RAISE_1_R_BTN_BB) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 1 AND list59) AND log$RAISE_1_R_SB_BB ) RAISE FORCE
-	WHEN ((FirstRaiserPosition = 1 AND list54) AND log$CALL_1_R_SB_BB ) CALL FORCE 
-	WHEN ((FirstRaiserPosition = 2 AND list53) AND log$CALL_1_R_BTN_BB) CALL FORCE 
-	WHEN ((FirstRaiserPosition = 3 AND list52) AND log$CALL_1_R_CO_BB ) CALL FORCE 
-	WHEN ((FirstRaiserPosition = 4 AND list51) AND log$CALL_1_R_MP_BB ) CALL FORCE 
-	WHEN ((FirstRaiserPosition = 5 AND list50) AND log$CALL_1_R_UTG_BB) CALL FORCE 
-	WHEN (Others) FOLD FORCE
+	WHEN ((FirstRaiserPosition = 5 AND list55) AND log$RAISE_1_R_UTG_BB) Raise FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list56) AND log$RAISE_1_R_MP_BB ) Raise FORCE
+	WHEN ((FirstRaiserPosition = 3 AND list57) AND log$RAISE_1_R_CO_BB ) Raise FORCE
+	WHEN ((FirstRaiserPosition = 2 AND list58) AND log$RAISE_1_R_BTN_BB) Raise FORCE
+	WHEN ((FirstRaiserPosition = 1 AND list59) AND log$RAISE_1_R_SB_BB ) Raise FORCE
+	WHEN ((FirstRaiserPosition = 1 AND list54) AND log$CALL_1_R_SB_BB ) Call FORCE 
+	WHEN ((FirstRaiserPosition = 2 AND list53) AND log$CALL_1_R_BTN_BB) Call FORCE 
+	WHEN ((FirstRaiserPosition = 3 AND list52) AND log$CALL_1_R_CO_BB ) Call FORCE 
+	WHEN ((FirstRaiserPosition = 4 AND list51) AND log$CALL_1_R_MP_BB ) Call FORCE 
+	WHEN ((FirstRaiserPosition = 5 AND list50) AND log$CALL_1_R_UTG_BB) Call FORCE 
+	WHEN (Others) Fold FORCE
 
 //=========================================================================================================
 //=========================================================================================================
@@ -333,93 +333,93 @@ WHEN ((( Raises = 1 AND Calls = 0 AND InBigBlind)))
 ##f$flop##
 WHEN (((PostFlop_Senario = 1) AND log$FLOP_Senario_1))
 //Eu sou o primeiro a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE 
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) RAISE FORCE
-	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) RAISE FORCE
-	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) RAISE FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) RAISE FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE 
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) Raise FORCE
+	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) Raise FORCE
+	WHEN (Others) Fold FORCE
 	
 	
 WHEN (((PostFlop_Senario = 2) AND log$FLOP_Senario_2))
 // 2. Viloes checaram sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) RAISE FORCE	
-	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) RAISE FORCE
-	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) RAISE FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_InStr8Draw) RAISE FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) Raise FORCE	
+	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_InStr8Draw) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) Raise FORCE
+	WHEN (Others) Fold FORCE
 	
 	
 WHEN (((PostFlop_Senario = 3) AND log$FLOP_Senario_3))
 // 3. Viloes checaram nao sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) RAISE FORCE	
-	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) RAISE FORCE
-	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) RAISE FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_InStr8Draw) RAISE FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) RAISE FORCE	
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$R_Pair) Raise FORCE	
+	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$R_2_Overcards) Raise FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$R_1_Overcards) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$R_Str8Draw) Raise FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$R_InStr8Draw) Raise FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$R_FlushDraw) Raise FORCE	
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 4) AND log$FLOP_Senario_4))
 // 4. Vilao fez Raise
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$C_Pair) CALL FORCE
-	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$C_2_Overcards) CALL FORCE
-	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$C_1_Overcards) CALL FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE	
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$C_Pair) Call FORCE
+	WHEN ((Overcards = 2 AND (1 - vs$80$prlos) >= .45) AND log$C_2_Overcards) Call FORCE
+	WHEN ((Overcards = 1 AND (1 - vs$80$prlos) >= .48) AND log$C_1_Overcards) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE	
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 5) AND log$FLOP_Senario_5))
-// 5. Eu fiz raise e recebi ReRaise
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$CALL_FullHouse) CALL FORCE // preciso melhorar aqui de 61 ate quanto e call
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$CALL_FullHouse) Call FORCE // preciso melhorar aqui de 61 ate quanto e Call
 	WHEN ((HaveSet AND (1 - vs$80$prlos >= .851)) AND log$R_Set) Raise FORCE
-	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) CALL FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) CALL FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) CALL FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) CALL FORCE
-	WHEN ((HaveTwoPair AND ((1 - vs$80$prlos >= .50) AND (1 - vs$80$prlos <= .75))) AND log$C_TwoPair) CALL FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .751)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$C_Pair) CALL FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) Call FORCE
+	WHEN ((HaveTwoPair AND ((1 - vs$80$prlos >= .50) AND (1 - vs$80$prlos <= .75))) AND log$C_TwoPair) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .751)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .50)) AND log$C_Pair) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 	
 WHEN (Others)
-    WHEN (Others) FOLD FORCE
+    WHEN (Others) Fold FORCE
 
 //=========================================================================================================
 //=========================================================================================================
@@ -428,81 +428,81 @@ WHEN (Others)
 ##f$turn##
 WHEN (((PostFlop_Senario = 1) AND log$TURN_Senario_1))
 //Eu sou o primeiro a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 2) AND log$TURN_Senario_2))
 // 2. Viloes checaram sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 3) AND log$TURN_Senario_3))
 // 3. Viloes checaram nao sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) RAISE FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$R_Pair) Raise FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 4) AND log$TURN_Senario_4))
 // 4. Vilao fez Raise
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$C_Pair) CALL FORCE
-	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) CALL FORCE
-	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$C_Pair) Call FORCE
+	WHEN ((HaveStraightDraw  AND (1 - vs$80$prlos) >= .50) AND log$C_Str8Draw) Call FORCE
+	WHEN ((HaveInsideStraightDraw AND (1 - vs$80$prlos) >= .50) AND log$C_InStr8Draw) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 5) AND log$TURN_Senario_5))
-// 5. Eu fiz raise e recebi ReRaise
-	WHEN ((1 - vs$80$prlos >= .94) AND log$Raise_NUTS) RAISE FORCE
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((1 - vs$80$prlos >= .94) AND log$Raise_NUTS) Raise FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
 	WHEN ((HaveSet AND (1 - vs$80$prlos >= .851)) AND log$R_Set) Raise FORCE
-	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) CALL FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) CALL FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) CALL FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) CALL FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$C_TwoPair) CALL FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$C_Pair) CALL FORCE
-	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$C_TwoPair) Call FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .60)) AND log$C_Pair) Call FORCE
+	WHEN ((HaveFlushDraw AND (1 - vs$80$prlos) >= .45) AND log$C_FlushDraw) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (Others)
-    WHEN (Others) FOLD FORCE
+    WHEN (Others) Fold FORCE
 
 //=========================================================================================================
 //=========================================================================================================
@@ -511,69 +511,69 @@ WHEN (Others)
 ##f$river##
 WHEN (((PostFlop_Senario = 1) AND log$RIVER_Senario_1))
 //Eu sou o primeiro a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) Raise FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 2) AND log$RIVER_Senario_2))
 // 2. Viloes checaram sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) Raise FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 3) AND log$RIVER_Senario_3))
 // 3. Viloes checaram nao sou o ultimo a agir
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) RAISE FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .70)) AND log$R_Pair) Raise FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 4) AND log$RIVER_Senario_4))
 // 4. Vilao fez Raise
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
-	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) RAISE FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) RAISE FORCE
-	WHEN ((HaveFlush AND ((1 - vs$80$prlos >= .76) AND (1 - vs$80$prlos <= .86))) AND log$C_Flush) CALL FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .861)) AND log$R_Flush) RAISE FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) RAISE FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) RAISE FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .75)) AND log$C_Pair) CALL FORCE
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
+	WHEN ((HaveSet AND (1 - vs$80$prlos >= .65)) AND log$R_Set) Raise FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$R_Trips) Raise FORCE
+	WHEN ((HaveFlush AND ((1 - vs$80$prlos >= .76) AND (1 - vs$80$prlos <= .86))) AND log$C_Flush) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .861)) AND log$R_Flush) Raise FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$R_Str8) Raise FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$R_TwoPair) Raise FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .75)) AND log$C_Pair) Call FORCE
+	WHEN (Others) Fold FORCE
 
 WHEN (((PostFlop_Senario = 5) AND log$RIVER_Senario_5))
-// 5. Eu fiz raise e recebi ReRaise
-	WHEN ((1 - vs$80$prlos >= .94 AND nhandshi < 4) AND log$Raise_NUTS) RAISE FORCE
-	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) RAISE FORCE
-	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) RAISE FORCE
+// 5. Eu fiz Raise e recebi ReRaise
+	WHEN ((1 - vs$80$prlos >= .94 AND nhandshi < 4) AND log$Raise_NUTS) Raise FORCE
+	WHEN ((HaveStraightFlush OR HaveQuads  ) AND log$R_STR8Flush_QUADS) Raise FORCE
+	WHEN ((HaveFullHouse AND (1 - vs$80$prlos >= .61)) AND log$Raise_FullHouse) Raise FORCE
 	WHEN ((HaveSet AND (1 - vs$80$prlos >= .851)) AND log$R_Set) Raise FORCE
-	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) CALL FORCE
-	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) CALL FORCE
-	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) CALL FORCE
-	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) CALL FORCE
-	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$C_TwoPair) CALL FORCE
-	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .80)) AND log$C_Pair) CALL FORCE	
-	WHEN (Others) FOLD FORCE
+	WHEN ((HaveSet AND ((1 - vs$80$prlos >= .65) AND (1 - vs$80$prlos <= .85))) AND log$C_Set) Call FORCE
+	WHEN ((HaveTrips AND (1 - vs$80$prlos >= .69)) AND log$C_Trips) Call FORCE
+	WHEN ((HaveFlush AND (1 - vs$80$prlos >= .86)) AND log$C_Flush) Call FORCE
+	WHEN ((HaveStraight AND (1 - vs$80$prlos >= .88)) AND log$C_Str8) Call FORCE
+	WHEN ((HaveTwoPair AND (1 - vs$80$prlos >= .50)) AND log$C_TwoPair) Call FORCE
+	WHEN ((HavePair AND NOT HaveTrips AND (1 - vs$80$prlos >= .80)) AND log$C_Pair) Call FORCE	
+	WHEN (Others) Fold FORCE
 
 WHEN (Others)
-    WHEN (Others) FOLD FORCE
+    WHEN (Others) Fold FORCE
 
 
 	
