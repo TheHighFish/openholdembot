@@ -51,9 +51,6 @@ void CReplayFrame::CreateReplayFrame(void)
 {
 	FILE			*fp = NULL;
 	int				i = 0;
-	time_t			ltime = 0;
-	tm				now_time = {0};
-	char			now_time_str[100] = {0};
 	ULARGE_INTEGER	free_bytes_for_user_on_disk = {0}, 
 					total_bytes_on_disk = {0}, 
 					free_bytes_total_on_disk = {0};
@@ -72,12 +69,6 @@ void CReplayFrame::CreateReplayFrame(void)
 
 		return;
 	}
-
-	// Get current time
-	time(&ltime);
-	localtime_s(&now_time, &ltime);
-	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", &now_time);
-
 	// Get exclusive access to CScraper and CSymbols variables
 	// (Wait for scrape/symbol cycle to finish before saving frame)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
@@ -92,6 +83,7 @@ void CReplayFrame::CreateReplayFrame(void)
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
 		fprintf(fp, "%s\n", p_scraper->title());
+    fprintf(fp, "<br>\n");
 		// HTML header
 		fprintf(fp, "<html>\n");
 		fprintf(fp, "  <head>\n");
@@ -107,15 +99,8 @@ void CReplayFrame::CreateReplayFrame(void)
 		fprintf(fp, "<img src=\"frame%06d.bmp\">\n", _next_replay_frame);
 		fprintf(fp, "<br>\n");
 
-		// Table title
-		fprintf(fp, "[%s]", p_scraper->title());
-		fprintf(fp, "<br>\n");
-
-		// Session, frame number and time
-		fprintf(fp, " [Session %lu]", p_sessioncounter->session_id());
-		fprintf(fp, " [Frame: %06d]", _next_replay_frame);
-		fprintf(fp, " [%s]<br>\n", now_time_str);
-		fprintf(fp, "<br>\n");
+    // Title, data, frame-number, OH-version
+    fprintf(fp, "%s", GeneralInfo());
 
 		// Links forwards and backwards to the next frames
 		fprintf(fp, "%s", LPCSTR(GetLinksToPrevAndNextFile()));
@@ -148,6 +133,46 @@ void CReplayFrame::CreateReplayFrame(void)
 	}	
 
 	LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+}
+
+CString CReplayFrame::GeneralInfo() {
+  // Get current time
+  time_t    ltime = 0;
+	tm        now_time = {0};
+	char			now_time_str[100] = {0};
+	time(&ltime);
+	localtime_s(&now_time, &ltime);
+	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", &now_time);
+
+  CString result;
+  result += "<table border=4 cellpadding=1 cellspacing=1>\n";
+  // Table title
+  result += "<tr><td>\n";
+	result += p_scraper->title();
+  result += "</td></tr>\n";
+	// Session, 
+  result += "<tr><td>\n";
+  result += "Session: ";
+	result += Number2CString(p_sessioncounter->session_id(), 0);
+  result += "</td></tr>\n";
+  // Frame number 
+  result += "<tr><td>\n";
+  CString next_frame;
+  next_frame.Format("Frame: %06d", _next_replay_frame);
+	result += next_frame;
+  result += "</td></tr>\n";
+  // Time
+  result += "<tr><td>\n";
+	result += now_time_str;
+  result += "</td></tr>\n";
+  // Version
+  result += "<tr><td>\n";
+	result += "OpenHoldem ";
+  result += VERSION_TEXT;
+  result += "</td></tr>\n";
+  // Finish table
+  result += "</table>\n";
+  return result;
 }
 
 CString CReplayFrame::GetCardHtml(unsigned int card)
