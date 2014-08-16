@@ -43,9 +43,7 @@ void CSymbolEnginePrwin::InitOnStartup()
 	ResetOnConnection();
 }
 
-void CSymbolEnginePrwin::ResetOnConnection()
-{
-	//!!!!!iter_vars.ResetVars();
+void CSymbolEnginePrwin::ResetOnConnection() {
 	ResetOnHandreset();
 }
 
