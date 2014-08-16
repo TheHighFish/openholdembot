@@ -553,13 +553,16 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 	if (token_ID == kTokenActionReturn) {
 		// RETURN <Expression> FORCE
 		action = ParseExpression();
+    ExpectKeywordForce(token_ID);
 	}
-	else if (token_ID == kTokenActionRaise) {
+	else if ((token_ID == kTokenActionRaiseTo) 
+      || (token_ID == kTokenActionRaiseBy)) {
 		// There are 3 possibilities
 		//   RAISE FORCE
 		//   RAISE <Amount> FORCE
 		//   RAISE <PercentagedPot>% FORCE
 		action = ParseOpenPPLRaiseExpression();
+    ExpectKeywordForce(token_ID);
 	}
 	else if (token_ID == kTokenIdentifier) {
 		// User-variable to be set
@@ -571,28 +574,26 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 		else {
 			action = new CParseTreeNode(_tokenizer.LineRelative());
 			action->MakeUserVariableDefinition(identifier);
+      // Not expecting any Force here
 		}
 	}
 	else {
 		// Predefined action, like Check or Fold
     action = new CParseTreeNode(_tokenizer.LineRelative());
 		action->MakeAction(token_ID);
+    ExpectKeywordForce(token_ID);
 	}
-	ExpectKeywordForce();
 	return action;
 }
 
-bool CFormulaParser::ExpectKeywordForce()
-{
+bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	int _token_ID = _tokenizer.GetToken();
-	if (_token_ID == kTokenKeywordForce)
-	{
+	if (_token_ID == kTokenKeywordForce) {
 		// Check for unsupported Shanky-style delay
 		// which can only happen after actions 
 		// WHEN ... RAISEMAX FORCE DELAY 42
 		_token_ID = _tokenizer.LookAhead();
-		if (_token_ID == kTokenUnsupportedDelay)
-		{
+		if (_token_ID == kTokenUnsupportedDelay) {
 			CParseErrors::Error("Unsupported Shanky-style delay.\n"
         "OpenHoldem provides a far more simple\n"
         "and far more powerful f$delay-function for that");
@@ -602,12 +603,18 @@ bool CFormulaParser::ExpectKeywordForce()
 		}
 		// Both cases, with and without delay, are considered "good".
 		return true;
-	}
-	else
-	{
-		CParseErrors::Error("Missing keyword FORCE");
-		return false;
-	}
+	} else if (last_important_roken_ID == kTokenActionRaise) {
+    // Last thing we saw was a Raise
+    // Probably Shanky-style betsizing
+    CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
+      "Did you attempt to specify a betsize the old Shanky way?\n"
+      "Then either use RaiseTo or RaiseBy.");
+    return false;
+
+  }
+  // General error message on missing keyword force
+	CParseErrors::Error("Missing keyword FORCE");
+	return false;
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression()

@@ -68,6 +68,8 @@ enum {
   kTokenActionCheck,
   kTokenActionCall,
   kTokenActionRaise,
+  kTokenActionRaiseTo,
+  kTokenActionRaiseBy,
   kTokenActionRaiseHalfPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
@@ -79,13 +81,14 @@ enum {
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,
+  kTokenActionRaiseToBigBlinds,
   kTokenActionRaiseByPercentagedPotsize,
   kTokenActionUserVariableToBeSet,
   // Always leave that at the very end
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 14;
+const int kNumberOfOpenPPLActions = 16;
 
 const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
@@ -99,6 +102,8 @@ const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "Play",
   "Beep",
   "Raise",
+  "RaiseTo",
+  "RaiseBy",
   "Check",
   "Allin",
   "BetHalfPot",
@@ -110,12 +115,16 @@ const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
 };
 
 const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
-  kTokenActionRaise,
+  // Duplicates are possible, because for example
+  // "Bet" and "Raise" are technically both kTokenActionRaise.
+  kTokenActionRaise, 
   kTokenActionCall,
   kTokenActionFold,
   kTokenActionCall,
   kTokenActionBeep,
   kTokenActionRaise,
+  kTokenActionRaiseBy,
+  kTokenActionRaiseTo,
   kTokenActionCheck,
   kTokenActionRaiseMax,
   kTokenActionRaiseHalfPot,

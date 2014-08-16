@@ -49,7 +49,7 @@ class CFormulaParser {
   bool VerifyFunctionHeader(CString function_header);
   void ExpectMatchingBracketClose(int opening_bracket);
   bool ExpectConditionalThen();
-  bool ExpectKeywordForce();
+  bool ExpectKeywordForce(int last_important_roken_ID);
   void CheckForExtraTokensAfterEndOfFunction();
  private:
   // OH-script and OpenPPL
