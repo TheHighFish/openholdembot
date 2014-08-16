@@ -693,7 +693,7 @@ void CScraper::ScrapeBalance(int chair)
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
   // balance can be "OUT"
   // but this is a bad place 
-  set_sitting_out(chair, false); //!!!
+  set_sitting_out(chair, false); // !!!
 
   // Scrape uXbalance and pXbalance
   double result = ScrapeUPBalance(chair, 'p');
@@ -963,7 +963,7 @@ void CScraper::ScrapeLimits()
 		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 		titletext = c_titletext;
 	 	
-    bool l_is_final_table = false; //!!dummy
+    bool l_is_final_table = false; // !!dummy
 		CScraperPreprocessor::PreprocessTitleString(&titletext);
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,

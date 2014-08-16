@@ -35,7 +35,7 @@ bool IsSuitString(CString suit);
 
 // Support for hand$xyz and board$xyz-symbols
 // Checking if a card is in the hand or on the board
-//!!!
+/
 bool IsCardInCollection(int card, int col_card_0, int col_card_1,
 						int opt_col_card_2 = CARD_UNDEFINED, 
 						int opt_col_card_3 = CARD_UNDEFINED, 

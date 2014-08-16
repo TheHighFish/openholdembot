@@ -143,7 +143,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-by-semantics) //!!!!!
+	// * positive values mean: raise size (by big-blinds, raise-by-semantics) // !!!!!
 	// * negative values mean: elementary actions
 	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
 		return EvaluateSibbling(_first_sibbling, log);

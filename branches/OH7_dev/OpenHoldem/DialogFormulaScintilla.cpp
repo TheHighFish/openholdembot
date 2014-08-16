@@ -1061,7 +1061,7 @@ void CDlgFormulaScintilla::OnDelete() {
   for (int i=0; i<m_ScinArray.GetSize(); ++i) {
     CString name = m_ScinArray.GetAt(i)._name;
     if (name == s) {
-      //!!!m_ScinArray.GetAt(i)._pWnd->CloseWindow
+      //??m_ScinArray.GetAt(i)._pWnd->CloseWindow
       delete m_ScinArray.GetAt(i)._pWnd;
       break;
     }

@@ -113,6 +113,10 @@ bool Card::IsNoCard() {
 }
    
 bool Card::IsAnyCard() {
+  // We do no longer check for cardbacks,
+	// but for cardbacks or cards.
+	// This way we can play all cards face-up at PokerAcademy.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
   return (IsKnownCard() || IsCardBack());
 }
 

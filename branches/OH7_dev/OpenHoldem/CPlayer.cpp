@@ -29,7 +29,23 @@ void CPlayer::Reset() {
 }
 
 bool CPlayer::HasAnyCards() {
+  // We do no longer check for cardbacks,
+	// but for cardbacks or cards.
+	// This way we can play all cards face-up at PokerAcademy.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
   return (_hole_cards[0].IsAnyCard() && _hole_cards[1].IsAnyCard());
+}
+
+CString CPlayer::Cards() {
+	// log new hand
+  if (HasKnownCards()) {
+    CString result = _hole_cards[0].ToString() + _hole_cards[1].ToString();
+    return result;
+  }
+  if (HasAnyCards()) {
+    return "BACKS";
+  }
+  return "NONE";
 }
 
 bool CPlayer::HasKnownCards() {
@@ -38,9 +54,12 @@ bool CPlayer::HasKnownCards() {
 
 void CPlayer::CheckPlayerCardsForConsistency() {
   if (HasKnownCards() && (_hole_cards[0].GetValue() == _hole_cards[1].GetValue())) {
+    // Identical cards, something clearly went wrong.
     // Something "known", not "nocard" and not "undefined",
     // but clearly wrong (duplicate card).
-    // Probably mis-scraped cardbacks
+    // We assume, that we see something that differs from the background,
+    // probably cardbacks, that sometimes get scraped as JJsuited or 88suited
+    // by bad tablemaps.
     _hole_cards[0].SetValue(CARD_BACK);
     _hole_cards[1].SetValue(CARD_BACK);
   }
