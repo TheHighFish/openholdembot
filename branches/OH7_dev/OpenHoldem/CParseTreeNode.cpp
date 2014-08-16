@@ -145,9 +145,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// therefore:
 	// * positive values mean: raise size (by big-blinds, raise-by-semantics) //!!!!!
 	// * negative values mean: elementary actions
-	else if (TokenIsElementaryAction(_node_type)) {
-		return (0 - _node_type);
-  }	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
+	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
 		return EvaluateSibbling(_first_sibbling, log);
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
 		return EvaluateSibbling(_first_sibbling, log);
@@ -157,6 +155,8 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 		double raise_by_amount = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
 		return raise_by_amount;
+  } else if (TokenIsElementaryAction(_node_type)) {
+		return (0 - _node_type);
 	}	else if (_node_type == kTokenActionUserVariableToBeSet) {
 		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
 		// Continue with next open-ended when-condition

@@ -96,7 +96,7 @@ private:
 	// private setters
 	void SetBalance(const int player, const double d);
 	void SetMaxBalanceConditionally(const double d);
-	void SetBalanceAtStartOfSessionConditionally(const double d);
+	void SetBalanceAtStartOfSessionConditionally();
 private:
 	void CalculateStacks();
 	void CalculateCurrentbets();

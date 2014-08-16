@@ -2315,7 +2315,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
   if (m_pActiveScinCtrl) {
-	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !!!!! Crashes on delete list
+	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !! Crashes on delete list
 	  m_pActiveScinCtrl->EnableWindow(false);
   }
   m_pActiveScinCtrl = new_pActiveScinCtrl;

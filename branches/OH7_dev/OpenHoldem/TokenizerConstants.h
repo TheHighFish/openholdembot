@@ -156,7 +156,9 @@ inline bool TokenIsElementaryAction(int token) {
 }
 
 inline bool TokenIsOpenPPLAction(int token) {
-  return TokenIsElementaryAction(token); //!!!!!!!
+  // !! Looks like a duplicate, 
+  // but there might be a difference
+  return TokenIsElementaryAction(token);
 }
 
 inline bool TokenIsBracketClose(int token) {

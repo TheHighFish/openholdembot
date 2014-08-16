@@ -622,8 +622,8 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	return false;
 }
 
-TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseToExpression() { //!!!!!
-	// RaiseTo N Force
+TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseToExpression() { 
+  // RaiseTo N Force
 	// Keyword RaiseTo got already consumed
 	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	TPParseTreeNode expression;

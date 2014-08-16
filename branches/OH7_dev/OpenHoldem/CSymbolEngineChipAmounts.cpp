@@ -62,6 +62,7 @@ void CSymbolEngineChipAmounts::ResetOnHandreset()
 	_potplayer = 0;
 	_potcommon = 0;
   _call = 0;
+  SetBalanceAtStartOfSessionConditionally();
 }
 
 void CSymbolEngineChipAmounts::ResetOnNewRound() {
@@ -78,9 +79,6 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateAmountsToCallToRaise();
 }
 
-
-//!!!!!SetBalanceAtStartOfSessionConditionally(d);
-
 void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d) 
 { 
 	if (d > _maxbalance) 
@@ -89,11 +87,10 @@ void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d)
 	}
 }
 
-void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally(const double d) 
-{ 
-	if (_balanceatstartofsession <= 0) 
-	{
-		_balanceatstartofsession = d;
+void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally() {
+  int user_balance = p_table_state->User()->_balance;
+	if ((_balanceatstartofsession <= 0) && (user_balance > 0)) {
+		_balanceatstartofsession = user_balance;
 	}
 }
 
@@ -278,7 +275,7 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 		{
 			*result = p_table_state->_players[name[7]-'0']._balance;
 		}
-		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==24)
+		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==23)
 		{
 			*result = balanceatstartofsession();
 		}
