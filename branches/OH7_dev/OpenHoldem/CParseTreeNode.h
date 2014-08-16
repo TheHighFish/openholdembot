@@ -34,6 +34,7 @@ class CParseTreeNode {
     TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling);
  public:
   void MakeAction(int action_constant);
+  void MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds);
   void MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds);
   // Values to be expected in the range (0..100] (or more), not (0..1]
   void MakeRaiseByPercentagedPotsizeAction(TPParseTreeNode raise_by_amount_percentage);

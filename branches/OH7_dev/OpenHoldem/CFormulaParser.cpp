@@ -555,13 +555,18 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 		action = ParseExpression();
     ExpectKeywordForce(token_ID);
 	}
-	else if ((token_ID == kTokenActionRaiseTo) 
-      || (token_ID == kTokenActionRaiseBy)) {
-		// There are 3 possibilities
-		//   RAISE FORCE
-		//   RAISE <Amount> FORCE
-		//   RAISE <PercentagedPot>% FORCE
-		action = ParseOpenPPLRaiseExpression();
+	else if (token_ID == kTokenActionRaiseTo) { 
+    // NL-betsizing
+    //   RaiseTo N Force
+		action = ParseOpenPPLRaiseToExpression();
+    ExpectKeywordForce(token_ID);
+	}
+  else if (token_ID == kTokenActionRaiseBy) {
+    // NL-betsizing
+		// There are 2 possibilities
+		//   RaiseBy N Force
+		//   RaiseBy X% Force
+		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
 	}
 	else if (token_ID == kTokenIdentifier) {
@@ -617,10 +622,27 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	return false;
 }
 
-TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression()
-{
+TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseToExpression() { //!!!!!
+	// RaiseTo N Force
+	// Keyword RaiseTo got already consumed
+	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
+	TPParseTreeNode expression;
+	int _token_ID = _tokenizer.LookAhead();
+	if ((_token_ID == kTokenNumber)
+		  || (_token_ID == kTokenIdentifier)
+		  || TokenIsBracketOpen(_token_ID)) {
+		expression = ParseExpression();
+	} else {
+    CParseErrors::Error("Missing expression after keyword RaiseTo.\n"
+      "Expecting the betsize in big blinds.");
+    return NULL;
+  }
+	action->MakeRaiseToAction(expression);
+	return action;
+}
+
+TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseByExpression() { 
 	// There are 3 possibilities
-	//   RAISE FORCE
 	//   RAISE <Amount> FORCE
 	//   RAISE <PercentagedPot>% FORCE
 	//
@@ -629,32 +651,25 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression()
 	TPParseTreeNode expression;
 	int _token_ID = _tokenizer.LookAhead();
 	if ((_token_ID == kTokenNumber)
-		|| (_token_ID == kTokenIdentifier)
-		|| TokenIsBracketOpen(_token_ID))
-	{
+		  || (_token_ID == kTokenIdentifier)
+		  || TokenIsBracketOpen(_token_ID)){
 		expression = ParseExpression();
-	}
-	else
-	{
-		// Simple RAISE
-		action->MakeAction(kTokenActionRaise);
-		return action;
-	}
+	} else {
+    CParseErrors::Error("Missing expression after keyword RaiseTo.\n"
+      "Expecting the betsize in big blinds.");
+    return NULL;
+  }
 	_token_ID = _tokenizer.LookAhead();
-	if (_token_ID == kTokenOperatorPercentage)
-	{
+	if (_token_ID == kTokenOperatorPercentage) {
 		// Percentaged Potsize
 		_tokenizer.GetToken();
 		action->MakeRaiseByPercentagedPotsizeAction(expression);
 		return action;
-	}
-	else
-	{
+	}	else {
 		// Raise by N big blinds
 		action->MakeRaiseByAction(expression);
 		return action;
 	}
-	return NULL;
 }
 
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(

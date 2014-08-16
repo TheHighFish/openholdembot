@@ -85,16 +85,19 @@ void CParseTreeNode::MakeAction(int action_constant)
   MakeIdentifier(name);
 }
 
-void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds)
-{
+void CParseTreeNode::MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
+	_node_type = kTokenActionRaiseToBigBlinds;
+	_first_sibbling = raise_by_amount_in_big_blinds;
+}
+
+void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
 	_node_type = kTokenActionRaiseByBigBlinds;
 	_first_sibbling = raise_by_amount_in_big_blinds;
 }
 
 // Values to be expected in the range (0..100] or more, not (0..1]
 void CParseTreeNode::MakeRaiseByPercentagedPotsizeAction(
-	TPParseTreeNode raise_by_amount_percentage)
-{
+  	TPParseTreeNode raise_by_amount_percentage) {
 	_node_type = kTokenActionRaiseByPercentagedPotsize;
 	_first_sibbling = raise_by_amount_percentage;
 }
@@ -140,10 +143,12 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-by-semantics)
+	// * positive values mean: raise size (by big-blinds, raise-by-semantics) //!!!!!
 	// * negative values mean: elementary actions
 	else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
+  }	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
+		return EvaluateSibbling(_first_sibbling, log);
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
 		return EvaluateSibbling(_first_sibbling, log);
 	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
