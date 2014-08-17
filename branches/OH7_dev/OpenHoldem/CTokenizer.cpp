@@ -49,6 +49,7 @@ void CTokenizer::InitVars()
 	_token_start_pointer = 0;
 	_token_end_pointer = 0;
 	_last_token_pushed_back = false;
+  _additional_percentage_operator_pushed_back = false;
 	_last_token = k_undefined;
 	_inside_OpenPPL_function = false;
 }
@@ -63,12 +64,19 @@ int CTokenizer::GetToken()
 {
 	// Like lookahead, but accepting the token
 	int next_token = LookAhead();
-	_last_token_pushed_back = false;
+  if (_additional_percentage_operator_pushed_back) {
+    _additional_percentage_operator_pushed_back = false;
+  } else {
+	  _last_token_pushed_back = false;
+  } 
 	return next_token;
 }
 
 int CTokenizer::LookAhead(bool expect_action /*= false */)
 {
+  if (_additional_percentage_operator_pushed_back) {
+    return kTokenOperatorPercentage;
+  }
 	if (!_last_token_pushed_back)
 	{
 		_last_token = ScanForNextToken();

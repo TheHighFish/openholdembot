@@ -545,9 +545,16 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     }
     switch(j) {
       case 0: 
-        // Autoplayer functions
-        AddStandardFunctionsToTree(parent, 
+        if (p_function_collection->IsOpenPPLProfile()) {
+          // OpenPPL-functions
+          for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+            AddFunctionToTree(parent, k_OpenPPL_function_names[i]);
+          }
+        } else {
+          // Autoplayer functions
+          AddStandardFunctionsToTree(parent, 
           k_autoplayer_function_beep, k_autoplayer_function_fold);
+        }
         break;
       case 1:
         // Standard functions, including "notes" and "DLL"

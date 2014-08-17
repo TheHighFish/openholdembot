@@ -20,7 +20,9 @@
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
@@ -143,18 +145,41 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-by-semantics) // !!!!!
+	// * positive values mean: raise size (by big-blinds, raise-to-semantics) // !!!!!
 	// * negative values mean: elementary actions
 	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
+    // RaiseTo N Force
 		return EvaluateSibbling(_first_sibbling, log);
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
-		return EvaluateSibbling(_first_sibbling, log);
+    // RaiseBy N Force
+    double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
+    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+      + raise_by_amount_in_bblinds;
+    write_log(preferences.debug_formula(), 
+      "[CParseTreeNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
+      raise_by_amount_in_bblinds,
+      p_symbol_engine_chip_amounts->ncallbets(),
+      final_betsize_in_bblinds);
+		return final_betsize_in_bblinds;
 	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
+    // RaiseBy X% Force
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
-		double pot_size_after_call_in_big_blinds = 0; // !!! PotSize() + AmountToCall();
-		double raise_by_amount = 0.01 * raise_by_percentage
+    assert(p_symbol_engine_tablelimits->bet() > 0);
+		double pot_size_after_call_in_big_blinds = 
+      (p_symbol_engine_chip_amounts->pot() / p_symbol_engine_tablelimits->bet()) 
+      + p_symbol_engine_chip_amounts->nbetstocall();
+    assert(pot_size_after_call_in_big_blinds >= 0);
+		double raise_by_amount_in_bblinds = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
-		return raise_by_amount;
+    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+      + raise_by_amount_in_bblinds;
+    write_log(preferences.debug_formula(), 
+      "[CParseTreeNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
+      raise_by_percentage,
+      pot_size_after_call_in_big_blinds,
+      raise_by_amount_in_bblinds,
+      final_betsize_in_bblinds);
+    return final_betsize_in_bblinds;
   } else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
 	}	else if (_node_type == kTokenActionUserVariableToBeSet) {

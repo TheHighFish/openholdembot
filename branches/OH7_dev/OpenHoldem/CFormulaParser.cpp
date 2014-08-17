@@ -361,26 +361,18 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   }
 }
 
-TPParseTreeNode CFormulaParser::ParseExpression()
-{
+TPParseTreeNode CFormulaParser::ParseExpression() {
 	int token_ID = _tokenizer.LookAhead();
 	TPParseTreeNode expression;
     // Handle brackets before unary, because brackets are also "unary"
-    if (TokenIsBracketOpen(token_ID))
-	{
+  if (TokenIsBracketOpen(token_ID))	{
 		expression = ParseBracketExpression();
-	}
-	else if (TokenIsUnary(token_ID))
-	{
+	}	else if (TokenIsUnary(token_ID))	{
 		expression = ParseUnaryExpression();
-	}
-	else if ((token_ID == kTokenIdentifier)
-		|| (token_ID == kTokenNumber))
-	{
+	}	else if ((token_ID == kTokenIdentifier)
+		  || (token_ID == kTokenNumber)) {
 		expression = ParseSimpleExpression();
-	}
-	else
-	{
+	}	else {
 		CParseErrors::Error("Unexpected token inside expression.\n" 
       "Expecting: opening bracket, unary operator, identifier or number.");
 		return NULL;
@@ -389,6 +381,19 @@ TPParseTreeNode CFormulaParser::ParseExpression()
 	if (TokenIsBinary(token_ID))
 	{
 		_tokenizer.GetToken();
+    // Special handling of percentaged potsized bets,
+    // that look like modulo or percentage operators,
+    // but lack a 2nd operand and have "Force" instead.
+    // When ... RaiseBy 60% Force
+    if (token_ID == kTokenOperatorPercentage) {
+      token_ID = _tokenizer.LookAhead();
+      if (token_ID == kTokenKeywordForce) {
+        // Now we should pushback the *2nd last* token  (percentage)
+        _tokenizer.PushBackAdditionalPercentageOperator();
+        // and return the expression we got so far
+        return expression;
+      }
+    }
 		TPParseTreeNode second_expression = ParseExpression();
 		TPParseTreeNode binary_node = new CParseTreeNode(_tokenizer.LineRelative());
 		binary_node->MakeBinaryOperator(token_ID, 

@@ -19,6 +19,7 @@
 #include "CFunction.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 
 CFunctionCollection *p_function_collection = NULL;
@@ -186,9 +187,13 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   // DLL to be loaded
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
   // Autoplayer, standard, ini and PrWin functions
-  for (int i=0; i<k_number_of_standard_functions; ++i)
-  {
+  for (int i=0; i<k_number_of_standard_functions; ++i) {
 	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+  }
+  // OpenPPL-functions
+  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+    CString function_name = k_OpenPPL_function_names[i];
+    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
   }
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
@@ -239,13 +244,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     // Add an empty function.
     // The function-text should contain at least one space.
     // The editor does somehow not work for completely empty formulas.
-    //
-    // Version 5.0.0+ had regular crashes of the formula-editor,
-    // somehow related to Scintillas so-called "position_cache",
-    // that could not get fixed.
-    // Problem seems disappear when we create "empty" functions with
-    // about a dozen spaces.
-    function_text = "            "; 
+    function_text = " "; 
   }
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
@@ -406,8 +405,13 @@ bool CFunctionCollection::ParseAll() {
 
 bool CFunctionCollection::IsOpenPPLProfile() {
   // A profile is OpenPPL if at least f$preflop exists
-  if (Exists(k_OpenPPL_function_names[k_betround_preflop])) return true;
-  return false;
+  // and f$preflop is not empty
+  if (!Exists(k_OpenPPL_function_names[k_betround_preflop])) return false;
+  COHScriptObject *p_preflop = LookUp(k_OpenPPL_function_names[k_betround_preflop]);
+  assert(p_preflop != NULL);
+  CString function_text = p_preflop->function_text();
+  // Counting nearly empty functions as empty (default: 1 space)
+  return (function_text.GetLength() > 1);
 }
 
 void CFunctionCollection::InitOnStartup() {
