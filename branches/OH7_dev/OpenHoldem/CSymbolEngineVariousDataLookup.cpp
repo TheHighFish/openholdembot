@@ -165,8 +165,8 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
     "betround fmax f flagbits "
     "nchairs session version "
     "floppct turnpct riverpct avgbetspf tablepfr handsplayed ";
-  list += RangeOfSymbols("lastraised%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("balance_rank%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("lastraised%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("balance_rank%i", k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
 }

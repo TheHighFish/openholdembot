@@ -70,6 +70,7 @@ class CFormulaParser {
   TPParseTreeNode ParseOpenPPLAction();
   TPParseTreeNode ParseOpenPPLRaiseToExpression();
   TPParseTreeNode ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLUserVar();
  private:
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);

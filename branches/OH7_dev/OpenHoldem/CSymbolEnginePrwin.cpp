@@ -237,7 +237,7 @@ bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool l
 }
 
 CString CSymbolEnginePrwin::SymbolsProvided() {
-  return "prwinnow prlosnow ";
+  return "prwinnow prlosnow "
     "prwin prlos prtie "
     "nhands nhandshi nhandslo nhandsti ";
 }

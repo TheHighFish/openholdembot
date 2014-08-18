@@ -539,6 +539,14 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       last_when_condition_was_open_ended = true;
       // LookAhead() already executed
       continue;
+    } else if (token_ID == kTokenIdentifier) {
+      // Should be a user-var (setting to true)
+      // Similar to normal when-condition
+      TPParseTreeNode action = ParseOpenPPLUserVar(); 
+      when_condition->_second_sibbling = action;
+      // For future backpatching
+      last_when_condition_was_open_ended = false;
+      token_ID = _tokenizer.LookAhead();
     } else if ((token_ID == kTokenEndOfFile) 
         || (token_ID == kTokenEndOfFunction)) {
       // Parsing successfully finished
@@ -549,6 +557,20 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
     }
   }
   return first_when_condition_of_sequence;
+}
+
+TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
+	// User-variable to be set
+	CString identifier = _tokenizer.GetTokenString();
+	if (identifier.Left(4).MakeLower() != "user") {
+		CParseErrors::Error("Unexpected identifier. Action expected");
+		return NULL;
+	}
+  int token_ID = _tokenizer.GetToken();
+	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
+	action->MakeUserVariableDefinition(identifier);
+  // Not expecting any Force here
+  return action;
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
@@ -573,19 +595,6 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 		//   RaiseBy X% Force
 		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
-	}
-	else if (token_ID == kTokenIdentifier) {
-		// User-variable to be set
-		CString identifier = _tokenizer.GetTokenString();
-		if (identifier.Left(4).MakeLower() != "user") {
-			CParseErrors::Error("Unexpected identifier. Action expected");
-			return NULL;
-		}
-		else {
-			action = new CParseTreeNode(_tokenizer.LineRelative());
-			action->MakeUserVariableDefinition(identifier);
-      // Not expecting any Force here
-		}
 	}
 	else {
 		// Predefined action, like Check or Fold
