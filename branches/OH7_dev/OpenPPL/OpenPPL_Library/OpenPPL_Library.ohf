@@ -475,47 +475,6 @@ raischair
 // and we can't check preflop without posting a blind out of order (first hand only).
 (didcallround1 + didraisround1 + didswaground1)
 
-##InitBotsLastAction##
-// Initialization on first action preflop
-// This has to be done *before* we call the Decision-function,
-// InitBotsLastAction has to be the last init-function to be called
-// (inside InitMemorySymbols)
-// because it will call the final f$Decision routine.
-//
-[(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? me_st_MemBotsLastAction_None :
-//
-// "Initialize" first action on other rounds to last value of last round,
-// i.e. do nothing and keep the old value.
-//
-[[(betround != ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? 0 : 0]
-//
-// Then we call Decision and store BotsLastAction for the next time...
-//
-// Freeplay (Check) in case we want to Check/Call/Fold
-|| [   (AmountToCall == 0) 
-    && [   (Decision == Call)  || (Decision == Play)
-	    || (Decision == Check) || (Decision == Fold)]] ? me_st_MemBotsLastAction_Check :
-// Call = Play
-[  (Decision == Call)
-|| (Decision == Play)] ? me_st_MemBotsLastAction_Call :
-// Fold
-(Decision == Fold) ? me_st_MemBotsLastAction_Fold :
-// Bet, Raise, BetHalfPot, BetPot, etc.
-// Also handling fixed betsizes and peercentaged potsized bets.
-[  (Decision == Raise)
-|| (Decision == RaiseMin)
-|| (Decision == RaiseHalfPot)
-|| (Decision == RaiseMax)
-|| (Decision == Bet)
-|| (Decision == BetMin)
-|| (Decision == BetHalfPot)
-|| (Decision == BetMax)
-|| (DecisionIsPercentagedPotsizedBet || DecisionIsFixedBetInBigBlinds)] ?
-[(ncallbets == 0) ? me_st_MemBotsLastAction_Bet : me_st_MemBotsLastAction_Raise] :
-// Other cases: this should not happen
-// Handling them as "None"
-me_st_MemBotsLastAction_None
-
 ##BotsLastAction##
 // Just to be extra safe...
 [(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
