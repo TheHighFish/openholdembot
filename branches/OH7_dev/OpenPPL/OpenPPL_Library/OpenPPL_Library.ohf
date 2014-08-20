@@ -3890,12 +3890,6 @@ HINT_No_Oppponent_Or_Not_Headsup
 || [InitMinOpponentStackSize * 0]
 || [InitStartingStackSize * 0]
 || [RememberCurrentGameState * 0]
-//
-// InitBotsLastAction has to be the last init-function to be called
-// because it will call the final f$Decision routine.
-//
-|| [InitBotsLastAction * 0]
-
 
 //*****************************************************************************
 //
