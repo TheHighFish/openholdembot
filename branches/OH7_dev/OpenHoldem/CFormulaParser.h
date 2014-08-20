@@ -39,12 +39,12 @@ class CFormulaParser {
  public:
   void ParseSingleFormula(CString name, CString function_text);
   void ParseSingleFormula(CString function_text);
+  void ParseOpenPPLLibraryIfNeeded();
  public:
   static CString CurrentFunctionName();
   bool IsParsing()	{ return _is_parsing; }
  private:
   void ParseFile(CArchive & formula_file);
-  void ParseOpenPPLLibraryIfNeeded();
  private:
   bool VerifyFunctionHeader(CString function_header);
   void ExpectMatchingBracketClose(int opening_bracket);

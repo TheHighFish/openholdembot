@@ -23,6 +23,7 @@
 #include "..\CTablemap\CTableMapAccess.h"
 #include "CAutoConnector.h"
 #include "CFilenames.h"
+#include "CFormulaParser.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "COpenHoldemHopperCommunication.h"
@@ -138,6 +139,7 @@ BOOL COpenHoldemApp::InitInstance() {
 	// the filename of the log (oh_0.log, etc).
 	start_log();
 	InstantiateAllSingletons();
+  p_formula_parser->ParseOpenPPLLibraryIfNeeded();
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
 	// mouse.dll - failure in load is fatal
