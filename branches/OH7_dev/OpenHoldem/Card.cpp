@@ -40,16 +40,6 @@ int Card::GetValue() {
   return _value;
 }
 
-int Card::GetValueEncodedForDLL() {
-  if (!IsKnownCard()) {
-    // Cardback, no-card or undefined
-    return _value;
-  }
-  // High nibble: OpenHoldem rank
-  // Low nibble: suit
-  return ((GetOpenHoldemRank() << 4) | GetSuit());
-}
-
 // StdDeck uses 0..12 for deuce..ace
 // OpenHoldem uses 2..14
 int Card::GetOpenHoldemRank() {

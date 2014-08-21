@@ -74,6 +74,7 @@ enum {
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
+  kTokenActionUserVariableToBeSet,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
@@ -83,12 +84,11 @@ enum {
   kTokenActionRaiseByBigBlinds,
   kTokenActionRaiseToBigBlinds,
   kTokenActionRaiseByPercentagedPotsize,
-  kTokenActionUserVariableToBeSet,
   // Always leave that at the very end
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 16;
+const int kNumberOfOpenPPLActions = 17;
 
 const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
@@ -112,6 +112,7 @@ const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "RaiseHalfPot",
   "RaiseMax",
   "RaisePot",
+  "Set",
 };
 
 const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
@@ -133,6 +134,7 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseHalfPot,
   kTokenActionRaiseMax,
   kTokenActionRaisePot,
+  kTokenActionUserVariableToBeSet,
 };
 
 inline bool TokenIsBracketOpen(int token) {
@@ -152,7 +154,7 @@ inline bool TokenIsTernary(int token) {
 
 inline bool TokenIsElementaryAction(int token) {
   return ((token >= kTokenActionBeep)
-    && (token <= kTokenActionReturn));
+    && (token <= kTokenActionUserVariableToBeSet));
 }
 
 inline bool TokenIsOpenPPLAction(int token) {

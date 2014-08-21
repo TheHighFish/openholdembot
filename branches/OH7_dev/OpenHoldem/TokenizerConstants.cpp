@@ -259,12 +259,12 @@ CString TokenString(int token) {
   case kTokenActionRaisePot: return "RaisePot";
   case kTokenActionRaiseMax: return "RaiseMax";
   case kTokenActionReturn: return "Return";
+  case kTokenActionUserVariableToBeSet: return "Set";
   case kTokenKeywordForce: return "Force";
   case kTokenUnsupportedDelay: return "Delay";
   case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
-  case kTokenActionUserVariableToBeSet: return "UserVar";
 	default:
 		assert(k_this_must_not_happen);
 		return "Error: invalid token ID";

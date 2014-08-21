@@ -163,6 +163,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 		if (_memicmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
 		if (_memicmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "XOR", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalXOr; return true; }
+    if (_memicmp(TOKEN_ADDRESS, "SET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionUserVariableToBeSet; return true; }
 		break;
 	case 4:
 		if (_memicmp(TOKEN_ADDRESS, "WHEN", 4) == 0) { 

@@ -526,7 +526,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
     // Next either:
     // * action
     // * another when-condition
-    // * user-variable to be set !!!
+    // * user-variable to be set
     token_ID = _tokenizer.LookAhead(true);
     if (TokenIsOpenPPLAction(token_ID))  { 
       TPParseTreeNode action = ParseOpenPPLAction(); 
@@ -539,14 +539,6 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       last_when_condition_was_open_ended = true;
       // LookAhead() already executed
       continue;
-    } else if (token_ID == kTokenIdentifier) {
-      // Should be a user-var (setting to true)
-      // Similar to normal when-condition
-      TPParseTreeNode action = ParseOpenPPLUserVar(); 
-      when_condition->_second_sibbling = action;
-      // For future backpatching
-      last_when_condition_was_open_ended = false;
-      token_ID = _tokenizer.LookAhead();
     } else if ((token_ID == kTokenEndOfFile) 
         || (token_ID == kTokenEndOfFunction)) {
       // Parsing successfully finished
@@ -561,12 +553,19 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
 	// User-variable to be set
+  int token_ID = _tokenizer.GetToken();
+  if (token_ID != kTokenIdentifier) {
+    CParseErrors::Error("Unexpected token.\n"
+      "User-variable or memory-store-command expected.");
+		return NULL;
+  }
 	CString identifier = _tokenizer.GetTokenString();
 	if (identifier.Left(4).MakeLower() != "user") {
-		CParseErrors::Error("Unexpected identifier. Action expected");
+		CParseErrors::Error("Unexpected identifier.\n"
+      "User-variable or memory-store-command expected.");
 		return NULL;
 	}
-  int token_ID = _tokenizer.GetToken();
+  token_ID = _tokenizer.GetToken();
 	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	action->MakeUserVariableDefinition(identifier);
   // Not expecting any Force here
@@ -596,7 +595,10 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
 	}
-	else {
+  else if (token_ID == kTokenActionUserVariableToBeSet) { 
+    action = ParseOpenPPLUserVar();
+    // Not expecting keyword Force here
+  } else {
 		// Predefined action, like Check or Fold
     action = new CParseTreeNode(_tokenizer.LineRelative());
 		action->MakeAction(token_ID);
