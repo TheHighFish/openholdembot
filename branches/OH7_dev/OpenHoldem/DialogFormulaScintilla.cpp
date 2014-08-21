@@ -21,6 +21,7 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
+#include "CAutoplayerTrace.h"
 #include "CDebugTab.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
@@ -93,6 +94,8 @@ BEGINROWS(WRCT_REST,0,0)
 BEGINCOLS(WRCT_TOFIT,0,0)
 RCREST(-1)
 RCTOFIT(IDC_SCINTILLA_CALC_RESULT)	// calc result
+RCSPACE(8)
+RCTOFIT(IDC_SCINTILLA_CALC_LINE)	// calc result
 RCSPACE(8)
 RCTOFIT(IDC_SCINTILLA_CALC)			// calc
 RCSPACE(8)
@@ -203,6 +206,7 @@ void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SCINTILLA_CALC, m_ButtonCalc);
 	DDX_Control(pDX, IDC_SCINTILLA_AUTO, m_ButtonAuto);
 	DDX_Control(pDX, IDC_SCINTILLA_CALC_RESULT, m_CalcResult);
+  DDX_Control(pDX, IDC_SCINTILLA_CALC_LINE, m_CalcRelativeLine);
 	DDX_Control(pDX, IDC_FORMULA_TAB, m_TabControl);
 	DDX_Control(pDX, IDC_FUNCTIONS_TAB, m_FunctionTab);
 	DDX_Control(pDX, IDC_SYMBOL_TREE, m_SymbolTree);
@@ -1268,6 +1272,11 @@ void CDlgFormulaScintilla::PostNcDestroy()
 	m_formulaScintillaDlg	=	NULL;
 }
 
+void CDlgFormulaScintilla::ClearCalcResult() {
+  m_CalcResult.SetWindowText("");
+  m_CalcRelativeLine.SetWindowText("");
+}
+
 BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	NMHDR *phDR;
@@ -1312,9 +1321,7 @@ BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResu
 			break;
 		case SCN_MODIFIED:
 			StopAutoButton();
-
-			m_CalcResult.SetWindowText("");
-
+      ClearCalcResult();
 			m_dirty = true;
 			HandleEnables(true);
 
@@ -1469,8 +1476,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   std::string			str = "";
   char					  format[50] = {0};
 
-  // Clear result box
-  m_CalcResult.SetWindowText("");
+  ClearCalcResult();
   OnBnClickedApply();
   
   if (!p_function_collection->BotLogicCorrectlyParsed()) {
@@ -1491,9 +1497,12 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
     // Execute the currently selected formula
     p_function_collection->Dump();
     ret = p_function_collection->Evaluate(m_current_edit);
+    int line = p_autoplayer_trace->GetLastEvaluatedRelativeLineNumber();
     sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
     Cstr.Format(format, ret);
     m_CalcResult.SetWindowText(Cstr);
+    Cstr.Format("Line: %d", line);
+    m_CalcRelativeLine.SetWindowText(Cstr);
     SetExtendedWindowTitle(m_current_edit.GetString());	
   }
 }
@@ -1501,7 +1510,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
 void CDlgFormulaScintilla::OnBnClickedAuto() {
   if (m_ButtonAuto.GetCheck() == 1) {
     ok_to_update_debug = false;
-    m_CalcResult.SetWindowText("");
+    ClearCalcResult();
     OnBnClickedApply();
 	  // Validate parse trees
 	  if (!p_function_collection->BotLogicCorrectlyParsed()) {
@@ -1568,6 +1577,7 @@ void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() {
+  ClearCalcResult();
   CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
   COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
   // If autoplayer is engaged, dis-engage it

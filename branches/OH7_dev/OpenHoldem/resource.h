@@ -117,6 +117,7 @@
 #define IDC_DEPOSITAMOUNT               1070
 #define IDC_SCINTILLA_FORMULA_TREE      1075
 #define IDC_SCINTILLA_CALC_RESULT       1076
+#define IDC_SCINTILLA_CALC_LINE         1077
 #define IDC_COMBO1                      1081
 #define IDC_DEBUGLEVEL                  1081
 #define IDC_REGIONLIST                  1083

@@ -14,6 +14,9 @@ NEW STUFF:
   Now you can adapt the payout-structure at run-time,
   depending on casino, game-type, number of players, ...
   [THF]
+- Displaying the last evaluated relative line besides the result
+  after "Calc" in the debug-tab. Thanks to Querty for the suggestion.
+  [THF]
 
 BUG FIXES:
 - OpenHoldem did no longer evaluate the titlebar,
