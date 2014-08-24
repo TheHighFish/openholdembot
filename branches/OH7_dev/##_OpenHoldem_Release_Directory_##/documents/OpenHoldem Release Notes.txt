@@ -39,6 +39,14 @@ BUG FIXES:
 - Some SymbolsProvided()-functions needed corrections.
   Thanks to PyBotter666 for reporting and suggesting the changes.
   [THF]
+- After an autoplayer-action we expect a change in table-state.
+  Therefore we reset the counter of stable frames to zero after actions
+  to avoid multiple clicks within a short frame of time
+  if the casino does not update its GUI fast enough.
+  We had this safety-measure in the past, but somehow it got lost
+  when we rewrote large parts of the autoplayer.
+  Thanks to PkrBot for finding this problem.
+  [THF]
 
 v5.0.9 2014-08-06
 ==================

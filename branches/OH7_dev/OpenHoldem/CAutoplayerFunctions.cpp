@@ -41,12 +41,14 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {	
+  p_function_collection->ClearCache();
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
     CalculateOpenPPLBackupActions();
+    return;
   }
-  // Does not hurt, if we calc CalcPrimaryFormulasOHScript() in both cases,
-  // because the function values have already been set and marked as "cached".
+  // Otherwiese: OH-script
+  assert(!p_function_collection->IsOpenPPLProfile());
   CalcPrimaryFormulasOHScript();
 }
 
@@ -146,9 +148,14 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
 }
 
 void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
-   int potential_action, int potential_backup) {
-  if (p_function_collection->EvaluateAutoplayerFunction(
-      potential_action)) {
+    int potential_action, int potential_backup) {
+  double action_value = p_function_collection->EvaluateAutoplayerFunction(
+    potential_action);
+  write_log(preferences.debug_symbolengine(), 
+    "[CAutoplayerFunctions] %s -> %.3f\n",
+    k_standard_function_names[potential_action], 
+    action_value);
+  if (action_value) {
     p_function_collection->SetAutoplayerFunctionValue(
       potential_backup, true);
   }

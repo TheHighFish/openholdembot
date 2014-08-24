@@ -56,9 +56,6 @@ class CParseTreeNode {
   // Might be called by CSymbolEngineMemorySymbols
   // to evaluate right-hand-side expressions
   static double EvaluateIdentifier(CString name, bool log);
-  /* !!!!!!!
-  // To get the line info for the formula-editor
-  static int GetLastEvaluatedRelativeLine() { return _last_evaluated_relative_line; } */
  private:
   double EvaluateUnaryExpression(bool log_symbol);
   double EvaluateBinaryExpression(bool log);
@@ -70,6 +67,8 @@ class CParseTreeNode {
   bool IsOpenEndedWhenCondition();
  private:
   bool IsBinaryIdentifier();
+ private:
+  bool SecondSibblingIsUserVariableToBeSet();
  protected:
   int _node_type;
   // In case of terminal node (identifier)
@@ -93,14 +92,6 @@ class CParseTreeNode {
   double _constant_value;
   // Line number relative to current function
   double _relative_line_number;
-  /* !!!!!!!
-  private:
-  // to generate line-info after "Calc" in the formula-editor
-  // Static var, as we can't return multiple values after evaluate
-  // and don't want to create multiple nearly identical functions
-  // with IO-parameters.
-  static int _last_evaluated_relative_line;
-  */
 };
 
 #endif INC_CPARSETREENODE_H

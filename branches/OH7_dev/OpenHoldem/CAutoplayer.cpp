@@ -30,6 +30,7 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
@@ -100,8 +101,9 @@ void CAutoplayer::PrepareActionSequence()
 void CAutoplayer::FinishActionSequenceIfNecessary()
 {
 	__TRACE
-	if (action_sequence_needs_to_be_finished)
-	{
+	if (action_sequence_needs_to_be_finished) {
+    // avoid multiple-clicks within a short frame of time
+    p_stableframescounter->ResetOnAutoplayerAction();
 		// Restoring the original state has to be done in reversed order
 		SetFocus(window_with_focus);
 		SetCursorPos(cursor_position.x, cursor_position.y);

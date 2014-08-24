@@ -565,7 +565,6 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
       "User-variable or memory-store-command expected.");
 		return NULL;
 	}
-  token_ID = _tokenizer.GetToken();
 	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	action->MakeUserVariableDefinition(identifier);
   // Not expecting any Force here

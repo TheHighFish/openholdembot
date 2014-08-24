@@ -117,7 +117,6 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 	assert(uservariable.Left(4) == "user");
 	_node_type = kTokenActionUserVariableToBeSet;
 	_terminal_name = uservariable;
-	// !!! also needs a continue on execution!
 }
 
 double CParseTreeNode::Evaluate(bool log /* = false */){
@@ -125,7 +124,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Most common types fiorst: numbers and identifiers
+	// Most common types first: numbers and identifiers
 	if (_node_type == kTokenNumber)	{
 		write_log(preferences.debug_formula(), 
       "[CParseTreeNode] Number evaluates to %6.3f\n",
@@ -145,7 +144,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-to-semantics) // !!!!!
+	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
 	// * negative values mean: elementary actions
 	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
     // RaiseTo N Force
@@ -180,13 +179,14 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
       raise_by_amount_in_bblinds,
       final_betsize_in_bblinds);
     return final_betsize_in_bblinds;
+  }	else if (_node_type == kTokenActionUserVariableToBeSet) {
+    // User-variables are a special case of elementary actions
+    // Therefore need to be handled first.
+		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
+		return k_undefined_zero;
   } else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
-	}	else if (_node_type == kTokenActionUserVariableToBeSet) {
-		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
-		// Continue with next open-ended when-condition
-		EvaluateSibbling(_second_sibbling, log);
-	}
+  }
 	// Finally operators
 	else if (TokenIsUnary(_node_type)) {
 		return EvaluateUnaryExpression(log);
@@ -324,26 +324,29 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 	return k_undefined;
 }
 
-double CParseTreeNode::EvaluateTernaryExpression(bool log)
-{
+double CParseTreeNode::EvaluateTernaryExpression(bool log) {
 	// This function covers both OH-style ternary expressions
 	// and OpenPPL-style (open-ended) when-conditions.
 	// In case of (OE)WCs the parse-tree-generation assures
 	// that _third_sibbling points to the next (OE)WC.
 	// Again we use short circuiting.
 	assert((_node_type == kTokenOperatorConditionalIf)
-		|| (_node_type == kTokenOperatorConditionalWhen));
-	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
-	if (value_of_first_sibbling)
-	{
-		double value_of_second_sibbling  = EvaluateSibbling(_second_sibbling, log);
-		return value_of_second_sibbling;
+		  || (_node_type == kTokenOperatorConditionalWhen));
+	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log);
+	if (value_of_first_sibbling) {
+		double value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
+    // Special behaviour for user-variables:
+    // we have to set them, but then continue with the next when-condition 
+    // (third sibbling)
+    if (!SecondSibblingIsUserVariableToBeSet()) {
+      // Normal behaviour: return the evaluated result
+      return value_of_second_sibbling;
+    }
+    // Uvervariables: will fall through to the evaluation 
+    // of the third sibbling...
 	}
-	else
-	{
-		double value_of_third_sibbling  = EvaluateSibbling(_third_sibbling, log);
-		return value_of_third_sibbling;
-	}
+	double value_of_third_sibbling = EvaluateSibbling(_third_sibbling, log);
+	return value_of_third_sibbling;
 }
 
 double CParseTreeNode::EvaluateSibbling(
@@ -482,6 +485,11 @@ bool CParseTreeNode::IsBinaryIdentifier() {
   }
   // Not a binary identifier
   return false;
+}
+
+bool CParseTreeNode::SecondSibblingIsUserVariableToBeSet() {
+  if (_second_sibbling == NULL) return false;
+  return (_second_sibbling->_node_type == kTokenActionUserVariableToBeSet);
 }
 
 bool CParseTreeNode::EvaluatesToBinaryNumber() {

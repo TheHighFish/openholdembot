@@ -691,10 +691,6 @@ void CScraper::ScrapeBalance(int chair)
 {
 	__TRACE
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
-  // balance can be "OUT"
-  // but this is a bad place 
-  set_sitting_out(chair, false); // !!!
-
   // Scrape uXbalance and pXbalance
   double result = ScrapeUPBalance(chair, 'p');
   if (result >= 0) {
