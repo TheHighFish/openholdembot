@@ -109,11 +109,6 @@ void CDllExtension::Load(const char * path){
 	// No longer passing any pointers to the DLL.
 	// We do no export functions an link them implicitly:
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
-
-	// To do !! Create a function if necessary
-	//pass "history" message (address of history structure)
-	//  2010-01-23 Demonthus
-	//(_process_message) ("history", p_handhistory->history());
 }
 
 void CDllExtension::Unload(void)

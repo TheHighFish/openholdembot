@@ -32,6 +32,7 @@ class CSymbolEngineOpenPPL {
   double Decision();
  private:
   double EvaluateOpenPPLMainFunctionForCurrentBetround();
+  void CalculateOpenPPLHistorySymbols();
  private:
   double _decision; 
 };

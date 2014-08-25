@@ -14,8 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CParseTreeNode.h"
-
-// !!?? autoplayer-trace??
+#include "CPreferences.h"
 
 CSymbolEngineMemorySymbols *p_symbol_engine_memory_symbols = NULL;
 
@@ -70,7 +69,8 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     right_hand_value.Replace('_', '.');
     return atof(right_hand_value);
   }
-  return CParseTreeNode::EvaluateIdentifier(right_hand_value, true);
+  return CParseTreeNode::EvaluateIdentifier(right_hand_value, 
+    preferences.trace_enabled());
 }
 
 void CSymbolEngineMemorySymbols::Increment(CString command) {

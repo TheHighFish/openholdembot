@@ -18,6 +18,7 @@
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "OH_MessageBox.h"
 
 CSymbolEngineOpenPPL *p_symbol_engine_openppl = NULL;
 
@@ -47,6 +48,7 @@ void CSymbolEngineOpenPPL::ResetOnNewRound() {
 }
 
 void CSymbolEngineOpenPPL::ResetOnMyTurn() {
+  CalculateOpenPPLHistorySymbols();
   _decision = EvaluateOpenPPLMainFunctionForCurrentBetround();
 }
 
@@ -61,8 +63,20 @@ double CSymbolEngineOpenPPL::EvaluateOpenPPLMainFunctionForCurrentBetround() {
     return k_undefined_zero; // will be treated as check/fold
   }
   double result = p_function_collection->Evaluate(
-     k_OpenPPL_function_names[betround], true);
+    k_OpenPPL_function_names[betround], preferences.trace_enabled());
   return result;
+}
+
+void CSymbolEngineOpenPPL::CalculateOpenPPLHistorySymbols() {
+  const CString kOpenPPLIniFunction = "InitMemorySymbols";
+  if (!p_function_collection->Exists(kOpenPPLIniFunction)) {
+    CString error_message;
+    error_message.Format("Can't find function %s", kOpenPPLIniFunction);
+    OH_MessageBox_Error_Warning(error_message);
+    return;
+  }
+  p_function_collection->Evaluate(kOpenPPLIniFunction,
+    preferences.trace_enabled());
 }
 
 double CSymbolEngineOpenPPL::Decision() {
@@ -77,6 +91,3 @@ CString CSymbolEngineOpenPPL::SymbolsProvided() {
   return "";
 }
 
-/*void CSymbolEngineOpenPPL::CalculateBackupAction() {
-
-}*/

@@ -186,14 +186,17 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
-  // Autoplayer, standard, ini and PrWin functions
-  for (int i=0; i<k_number_of_standard_functions; ++i) {
-	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
-  }
-  // OpenPPL-functions
-  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
-    CString function_name = k_OpenPPL_function_names[i];
-    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
+  if (IsOpenPPLProfile()) {
+    // OpenPPL-functions
+    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+      CString function_name = k_OpenPPL_function_names[i];
+      CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
+    }
+  } else {
+    // Autoplayer, standard, ini and PrWin functions
+    for (int i=0; i<k_number_of_standard_functions; ++i) {
+	    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+    }
   }
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
