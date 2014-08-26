@@ -513,7 +513,7 @@ enum ActionConstant
 	k_prevaction_raise = 2,		// min-raise
 	k_prevaction_betsize = 3,	// "stated wager", i.e. using f$betsize
 	k_prevaction_allin = 4,
-	k_prevaction_jam = 5        // not really an action, but required for correctly logging the slider.
+	k_prevaction_jam = 5      // not really an action, but required for correctly logging the slider.
 };
 
 // Function to access the name of the action constants.

@@ -407,46 +407,33 @@ void CScraper::ScrapeActive(int chair)
 	}
 }
 
-// !! Needs serious clean-up
-void CScraper::ScrapeSlider()
-{
+void CScraper::ScrapeSlider() {
 	__TRACE
 	__HDC_HEADER
 
 	RMapCI handleCI, slider;
 	RMapI handleI;
 	CString text;
-	int j, k;
 	POINT handle_xy;
 
 	// find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
-
-	if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")
-	{
-		j = slider->second.right - handleCI->second.left;
+  if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	{
+		int j = slider->second.right - handleCI->second.left;
 		text="";
-		
 		_handle_found_at_xy = false;
-		
-		for (k=0; k<=j; k++)
-		{
+		for (int k=0; k<=j; k++) {
 			handleI = p_tablemap->set_r$()->find("i3handle");
-			handleI->second.left += k;
+			handleI->second.left  += k;
 			handleI->second.right += k;
 
 			EvaluateRegion("i3handle", &text);
-
-			handleI->second.left -= k;
+      handleI->second.left  -= k;
 			handleI->second.right -= k;
-			
-			if (text == "handle" || text == "true") 
-				break;
+			if (text == "handle" || text == "true") break;
 		}
-
-		if (text!="" && k <= j)
-		{
+    if (text!="" && k <= j) {
 			handleCI = p_tablemap->r$()->find("i3handle");
 			handle_xy.x = handleCI->second.left + k;
 			handle_xy.y = handleCI->second.top;
@@ -454,11 +441,9 @@ void CScraper::ScrapeSlider()
 			set_handle_found_at_xy(true);
 			set_handle_xy(handle_xy);
 		}
-
-		write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+    write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
 	}
-
-	__HDC_FOOTER
+  __HDC_FOOTER
 }
 
 int CScraper::CardString2CardNumber(CString card)
@@ -554,8 +539,9 @@ int CScraper::ScrapeCard(CString name) {
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
   if (name[0] == 'p') {
-    // !! Currently we have a problem with cardbacks,
+    // Currently we have a problem with cardbacks,
     // but whatever we try to scrape is not NOCARD and not a card.
+    // So we assume card_backs.
 	  return CARD_BACK;
   } else {
     // Treat undefined community card as no card

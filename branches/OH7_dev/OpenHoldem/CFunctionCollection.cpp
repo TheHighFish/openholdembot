@@ -474,8 +474,6 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
 }
 
 CString CFunctionCollection::SymbolsProvided() {
-  // !! Does currently only care about symbols
-  // !! that already exist when the editor gets opened
   CString result;
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {

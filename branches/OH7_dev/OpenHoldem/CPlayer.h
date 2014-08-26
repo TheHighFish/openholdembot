@@ -21,7 +21,7 @@ class CPlayer {
   CPlayer();
   ~CPlayer();
  public:
-  void Reset(); // !! LazyScraper comflict?
+  void Reset(); 
  public:
   bool HasAnyCards();
   bool HasKnownCards();
