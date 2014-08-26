@@ -294,6 +294,9 @@ RaiseMax
 ##ERROR_You_Dont_Have_Any_Kicker##
 0
 
+##ERROR_IncorrectBotsLastAction##
+-1
+
 ##HINT_We_Dont_Have_A_FullHouse_At_All##
 // Docu says: this case is 0; and this special case needs extra care.
 // However returning a high number instead of 0 seems better to us,
@@ -475,13 +478,48 @@ raischair
 // and we can't check preflop without posting a blind out of order (first hand only).
 (didcallround1 + didraisround1 + didswaground1)
 
+##PrevActionWasAllin##
+   (prevaction == 4) // Allin
+|| (prevaction == 5) // Jamming the slider
+
 ##BotsLastAction##
 // Just to be extra safe...
 [(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
 // Caring about a possible check, when a fold could not have happened
 [me_re_MemBotsLastAction == Fold] ? Check :
-// The last action we executed (tried to execute, to be precise)
-me_re_MemBotsLastAction
+// Computing BotsLastAction from prevation
+// k_prevaction_undefined = -2
+// k_prevaction_fold = -1
+// k_prevaction_check = 0		// new in OpenHoldem
+// k_prevaction_call = 1
+// k_prevaction_raise = 2		// min-raise
+// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
+// k_prevaction_allin = 4
+// k_prevaction_jam = 5
+//
+// Successful allin
+(PrevActionWasAllin && (balance == 0)) ? RaiseMax :
+// Failed allin
+(PrevActionWasAllin && (balance >= 0)) ? Raise :
+// Raising (FL and NL)
+((prevaction == 2) || (prevaction == 3)) ? Raise :
+// calling
+(prevaction == 1) ? call :
+// Checking postflop
+((prevaction == 0) && (betround > 1) && (currentbet == 0)) ? Check :
+// Checking preflop
+((prevaction == 0) && (betround == 1) && (currentbet <= bblind)) ? Check :
+// "Checking" when it was a call
+// Actually OH does auto-adapt prevaction after such actions
+// but we try to be extra safe
+((prevaction == 0) && (betround == 1) && (currentbet > bblind)) ? Call :
+// Folding (might be used in sitour formulas)
+(prevaction == -1) ? Fold :
+// None
+(prevaction == -1) ? None :
+ERROR_IncorrectBotsLastAction
+
+
 
 ##InitBotsLastPreflopAction##
 // Don't use BotsLastAction on the first orbit,
