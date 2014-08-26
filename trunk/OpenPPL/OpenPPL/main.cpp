@@ -17,6 +17,7 @@
 // For details see http://www.boost.org/doc/libs/1_35_0/libs/spirit/doc/debugging.html
 
 #include <afx.h>
+#include "..\..\boost_1_44_0\boost\spirit\spirit.hpp"
 #include <boost/spirit.hpp> 
 #include <boost/spirit/iterator/position_iterator.hpp>
 
