@@ -61,10 +61,16 @@ void CSymbolEngineChipAmounts::ResetOnHandreset()
 	_pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
+  _call = 0;
+  _nbetstocall = 0.0;
+  _nbetstorais = 0.0;
+  _ncallbets = 0.0;
+  _nraisbets = 0.0;
+  SetBalanceAtStartOfSessionConditionally();
 }
 
-void CSymbolEngineChipAmounts::ResetOnNewRound()
-{}
+void CSymbolEngineChipAmounts::ResetOnNewRound() {
+}
 
 void CSymbolEngineChipAmounts::ResetOnMyTurn()
 {}
@@ -77,9 +83,6 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateAmountsToCallToRaise();
 }
 
-
-//!!!!!SetBalanceAtStartOfSessionConditionally(d);
-
 void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d) 
 { 
 	if (d > _maxbalance) 
@@ -88,11 +91,10 @@ void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d)
 	}
 }
 
-void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally(const double d) 
-{ 
-	if (_balanceatstartofsession <= 0) 
-	{
-		_balanceatstartofsession = d;
+void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally() {
+  int user_balance = p_table_state->User()->_balance;
+	if ((_balanceatstartofsession <= 0) && (user_balance > 0)) {
+		_balanceatstartofsession = user_balance;
 	}
 }
 
@@ -134,45 +136,39 @@ void CSymbolEngineChipAmounts::CalculateCurrentbets()
 {
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		_currentbet[i] = p_scraper->player_bet(i); 
+		_currentbet[i] = p_scraper->player_bet(i);
+    assert(_currentbet[i] >= 0.0);
 	}
 }
 
-void CSymbolEngineChipAmounts::CalculatePots()
-{
+void CSymbolEngineChipAmounts::CalculatePots() {
 	_pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		_potplayer += _currentbet[i];							
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
+    assert(_currentbet[i] >= 0.0);
+		_potplayer += _currentbet[i];	
 	}
-
+  assert(_potplayer >= 0.0);
 	// pot, potcommon, based on value of potmethod
-	if (p_tablemap->potmethod() == 2)															
-	{
+	if (p_tablemap->potmethod() == 2)	{
 		_pot = p_scraper->pot(0);
 		_potcommon = _pot - _potplayer;
 	}
-	else if(p_tablemap->potmethod() == 3) 
-	{
+	else if(p_tablemap->potmethod() == 3) {
 		_pot = p_scraper->pot(0);
-		for (int i=1; i<k_max_number_of_pots; i++)
-		{
+		for (int i=1; i<k_max_number_of_pots; i++) {
 			_pot = max(_pot, p_scraper->pot(i));
 		}
 		_potcommon = _pot - _potplayer;
-	}
-	
-	else  // potmethod() == 1
-	{
+	} else { // potmethod() == 1
 		_potcommon = 0;
-		for (int i=0; i<k_max_number_of_pots; i++)
-		{
+		for (int i=0; i<k_max_number_of_pots; i++) {
 			_potcommon += p_scraper->pot(i);
 		}
 		_pot = _potcommon + _potplayer;
 	}
+  assert(_potcommon >= 0.0);
 }
 
 void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() 
@@ -181,7 +177,6 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	double largest_bet = Largestbet();
 
 	if (p_symbol_engine_userchair->userchair_confirmed())
-		
 	{
 		_call = largest_bet - _currentbet[USER_CHAIR];
 	}
@@ -225,8 +220,11 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
     _nbetstocall = 0;
   }
   _nbetstorais = _nbetstocall + 1;
+  assert(Largestbet() >= 0.0);
+  assert(bet > 0.0);
 	_ncallbets = Largestbet() / bet;				
-	_nraisbets = _ncallbets + 1;	// fixed limit											
+	_nraisbets = _ncallbets + 1;	// fixed limit
+  assert(_ncallbets >= 0.0);
 }
 
 double CSymbolEngineChipAmounts::Largestbet()
@@ -278,7 +276,7 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 		{
 			*result = p_table_state->_players[name[7]-'0']._balance;
 		}
-		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==24)
+		else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==23)
 		{
 			*result = balanceatstartofsession();
 		}

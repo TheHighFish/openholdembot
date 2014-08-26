@@ -14,10 +14,11 @@
 #include "stdafx.h"
 #include "VerifyFunctionAndListNames.h"
 
+#include "COHScriptObject.h"
 #include "OH_MessageBox.h"
 
 bool VerifyFunctionName(CString name) {
-  if (memcmp(name, "f$", 2)!=0) {
+  if (!COHScriptObject::IsFunction(name)) {
 	OH_MessageBox_Interactive(
       "UDF's must begin with the name 'f$'\r\n"
       "e.g. 'f$myfunc'", 

@@ -35,6 +35,7 @@ private:
 	CString GetCommonCardsAsHTML();
 	CString GetPotsAsHTML();
 	CString GetLinksToPrevAndNextFile();
+  CString GeneralInfo();
 	void CreateBitMapFile();
 private:
 	int			_next_replay_frame;

@@ -291,11 +291,11 @@ bool CSymbolEngineHistory::DidAct(int betround)
 CString CSymbolEngineHistory::SymbolsProvided() {
   CString list = "didchec didcall didrais didswag "
     "nplayersround nbetsround prevaction ";
-  list += RangeOfSymbols("didchecround%i", k_betround_flop, k_betround_river);  
-  list += RangeOfSymbols("didcallround%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("didraisround%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("didswaground%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("nplayersround%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("nbetsround%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("didchecround%i",  k_betround_preflop, k_betround_river);  
+  list += RangeOfSymbols("didcallround%i",  k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("didraisround%i",  k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("didswaground%i",  k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("nplayersround%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("nbetsround%i",    k_betround_preflop, k_betround_river);
   return list;
 }

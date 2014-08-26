@@ -18,7 +18,7 @@
 
 // Errors and warnings.
 // Get displayed (or not) depending on settings
-void OH_MessageBox_Error_Warning(CString Message, CString Title);
+void OH_MessageBox_Error_Warning(CString Message, CString Title = "Error");
 
 // Interactive messages.
 // Get always displayed, even if they are not critical.

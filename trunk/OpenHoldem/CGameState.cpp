@@ -182,9 +182,10 @@ void CGameState::CaptureState()
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
-    Card common_card = p_table_state->_common_cards[i];
-    int card = common_card.GetValueEncodedForDLL();
-		_state[_state_index&0xff].m_cards[i] = card;
+    int common_card = p_table_state->_common_cards[i].GetValue();
+    write_log(preferences.debug_alltherest(), 
+      "[CGameState] Common card %i = %i\n", i, common_card);
+		_state[_state_index&0xff].m_cards[i] = common_card;
 	}
 
 	// playing, posting, dealerchair
@@ -209,7 +210,7 @@ void CGameState::CaptureState()
 		for (int j=0; j<k_number_of_cards_per_player; j++)
 		{
       Card player_card = p_table_state->_players[i]._hole_cards[j];
-      int card = player_card.GetValueEncodedForDLL();
+      int card = player_card.GetValue();
 			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 
@@ -464,7 +465,7 @@ const double CGameState::SortedBalance(const int rank)
 	for (int i=0; i<k_max_number_of_players; i++)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
-	// bubble sort stacks //!! duplicate code?
+	// bubble sort stacks // !! duplicate code?
 	for (int i=0; i<(k_max_number_of_players-1); i++)
 	{
 		for (int n=i+1; n<k_max_number_of_players; n++)

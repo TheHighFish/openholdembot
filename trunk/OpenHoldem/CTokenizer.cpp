@@ -49,6 +49,7 @@ void CTokenizer::InitVars()
 	_token_start_pointer = 0;
 	_token_end_pointer = 0;
 	_last_token_pushed_back = false;
+  _additional_percentage_operator_pushed_back = false;
 	_last_token = k_undefined;
 	_inside_OpenPPL_function = false;
 }
@@ -63,18 +64,29 @@ int CTokenizer::GetToken()
 {
 	// Like lookahead, but accepting the token
 	int next_token = LookAhead();
-	_last_token_pushed_back = false;
+  if (_additional_percentage_operator_pushed_back) {
+    _additional_percentage_operator_pushed_back = false;
+  } else {
+	  _last_token_pushed_back = false;
+  } 
 	return next_token;
 }
 
-int CTokenizer::LookAhead()
+int CTokenizer::LookAhead(bool expect_action /*= false */)
 {
+  if (_additional_percentage_operator_pushed_back) {
+    return kTokenOperatorPercentage;
+  }
 	if (!_last_token_pushed_back)
 	{
 		_last_token = ScanForNextToken();
 	}
 	// Not yet accepted: treat it like "pushed back"
 	_last_token_pushed_back = true;
+  // In case we expect an action watch out for action-like identifiers
+  if (expect_action) {
+    CheckTokenForOpenPPLAction(&_last_token);
+  }
 	return _last_token;
 }
 
@@ -127,73 +139,50 @@ bool CTokenizer::IsBinaryMinus()
 		|| (_last_token == kTokenBracketClose_3));
 }
 
-bool CTokenizer::IsTokenOpenPPLKeyword()
-{
-	// Fast exit: OpenPPL-keywords are all upper-cases
-	if (islower(*TOKEN_ADDRESS))
-	{
-		return false;
-	}
-	// OpenPPL-symbols are usually mixed
-	// so another fast exit if the 2nd character is lower-case
-	if (islower(*TOKEN_ADDRESS+1))
-	{
-		return false;
-	}
+bool CTokenizer::IsTokenOpenPPLKeyword() {
+  // No longer any fast exit on lower-case symbols, because
+  // * that's no big improvement
+  // * we need to create good error-messages, even on code like "when..."
+  //
 	// Now we compare...
+  // Case-insensitive, as we want to catch mis-spelled keywords like "When".
+  // They would otherwice get accepted as OpenPPL-functions 
+  // and cause an error: "function used but never defined".
+  //
+  // We do no longer treat actions as key-words,
+  // as actions can also appear as part of expressions like
+  //   WHEN BotsLastAction = Raise...
+  // and some others like Bet and Call are also OH-script symbols (bet, call)
 	switch (SIZE_OF_TOKEN)
 	{
 	case 2:
-		if (memcmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
 		break;
 	case 3:
-		if (memcmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
-		if (memcmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
-		if (memcmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
-		if (memcmp(TOKEN_ADDRESS, "XOR", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalXOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionRaise;        return true; }
+		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "MOD", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorModulo;     return true; }
+		if (_memicmp(TOKEN_ADDRESS, "AND", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalAnd; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "XOR", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalXOr; return true; }
+    if (_memicmp(TOKEN_ADDRESS, "SET", 3) == 0)    { _OpenPPL_token_ID = kTokenActionUserVariableToBeSet; return true; }
 		break;
 	case 4:
-		if (memcmp(TOKEN_ADDRESS, "WHEN", 4) == 0)   
-		{ 
+		if (_memicmp(TOKEN_ADDRESS, "WHEN", 4) == 0) { 
 			// Trigger handling of modulo / percentage operator
 			_inside_OpenPPL_function = true;
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
 			return true; 
 		}
-		if (memcmp(TOKEN_ADDRESS, "CALL", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "FOLD", 4) == 0)    { _OpenPPL_token_ID = kTokenActionFold;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "PLAY", 4) == 0)    { _OpenPPL_token_ID = kTokenActionCall;       return true; }
-		if (memcmp(TOKEN_ADDRESS, "BEEP", 4) == 0)    { _OpenPPL_token_ID = kTokenActionBeep;       return true; }
 		break;
 	case 5:
-		if (memcmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "RAISE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaise;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "CHECK", 5) == 0)   { _OpenPPL_token_ID = kTokenActionCheck;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
-		if (memcmp(TOKEN_ADDRESS, "LEAVE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionLeave;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "CLOSE", 5) == 0)   { _OpenPPL_token_ID = kTokenActionClose;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "ALLIN", 5) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseMax;   return true; }
-		if (memcmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
+    if (_memicmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
 		break;
 	case 6:
-		if (memcmp(TOKEN_ADDRESS, "BETPOT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaisePot;    return true; }
-		if (memcmp(TOKEN_ADDRESS, "BETMAX", 6) == 0)  { _OpenPPL_token_ID = kTokenActionRaiseMax;    return true; }
-		if (memcmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITAND", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryAnd; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
-		if (memcmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
-		if (memcmp(TOKEN_ADDRESS, "SITOUT", 6) == 0)  { _OpenPPL_token_ID = kTokenActionSitOut;      return true; }
-		break;
-	case 8:
-		if (memcmp(TOKEN_ADDRESS, "RAISEMAX", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaiseMax; return true; }
-		if (memcmp(TOKEN_ADDRESS, "RAISEPOT", 8) == 0)      { _OpenPPL_token_ID = kTokenActionRaisePot; return true; }
-		break;
-	case 10:
-		if (memcmp(TOKEN_ADDRESS, "BETHALFPOT", 10) == 0)   { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
-		break;
-	case 12:
-		if (memcmp(TOKEN_ADDRESS, "RAISEHALFPOT", 12) == 0) { _OpenPPL_token_ID = kTokenActionRaiseHalfPot; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITAND", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryAnd; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
+		if (_memicmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
 		break;
 	default: return false;
 	}
@@ -408,18 +397,19 @@ NegativeNumber:
 	}
 	// Do not advance the input pointer,
 	// as we don't accept anything
-	CParseErrors::Error("Unexpected character");
+	CParseErrors::Error("Unexpected character.\n"
+    "Maybe you are a little yellow chinese man,\n"
+    "maybe you wrote old greek or hebrew,\n"
+    "maybe you took MS-Word instead of a serious text-editor?");
   // Can't really continue parsing
   // Treat it as end of function
 	return kTokenEndOfFunction;
 }
 
-char* CTokenizer::GetTokenString()
-{
+char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
 	// >= because we need one additional char for \0.
-	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)
-	{
+	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
 		CParseErrors::Error("Identifier exceeds maximum of 256 chars");
 	}
 	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
@@ -470,4 +460,30 @@ int CTokenizer::LineAbsolute()
 int CTokenizer::LineRelative()
 {
 	return line_relative;
+}
+
+void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
+  // Actions now treated as identifiers
+  if (*token != kTokenIdentifier) return;
+  CString token_string = GetTokenString();
+  for (int i=0; i<kNumberOfOpenPPLActions; ++i) {
+    int length_to_compare = kOpenPPLActionStrings[i].GetLength() + kOneCharacterExtraForTerminatingNull;
+    if (_memicmp(token_string, kOpenPPLActionStrings[i], length_to_compare) == 0) {
+      // Action expected and something action-like found
+      // Now check for exact match, because especially
+      // "bet" and "call" mean something different for OH-script
+      if (token_string != kOpenPPLActionStrings[i]) {
+        CString error_message;
+        error_message.Format(
+          "Found identifier \"%s\"\n"
+          "Did you mean \"%s\"?",
+          token_string,
+          kOpenPPLActionStrings[i]);
+        CParseErrors::Error(error_message);
+      }
+      // Replace kTokenIdentifier by something more appropriate
+      *token = kOpenPPLActionConstants[i];
+      return;
+    }
+  }
 }

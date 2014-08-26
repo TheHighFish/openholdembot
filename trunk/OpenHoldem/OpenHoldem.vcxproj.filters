@@ -318,9 +318,6 @@
     <ClCompile Include="DialogSAPrefs6.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
-    <ClCompile Include="DialogSAPrefs7.cpp">
-      <Filter>Source Files\GUI\prefs_dlg</Filter>
-    </ClCompile>
     <ClCompile Include="DialogSAPrefs8.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
@@ -651,10 +648,16 @@
     <ClCompile Include="CPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DialogSAPrefs7.cpp">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClCompile>
     <ClCompile Include="CWhiteInfoBox.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="CSymbolEngineICM.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineOpenPPL.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1174,9 +1177,6 @@
     <ClInclude Include="DialogSAPrefs6.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
-    <ClInclude Include="DialogSAPrefs7.h">
-      <Filter>Header Files\GUI\prefs_dlg</Filter>
-    </ClInclude>
     <ClInclude Include="DialogSAPrefs8.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
@@ -1429,7 +1429,13 @@
     <ClInclude Include="CWhiteInfoBox.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="DialogSAPrefs7.h">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
+    </ClInclude>
     <ClInclude Include="CSymbolEngineICM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineOpenPPL.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>

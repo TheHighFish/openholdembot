@@ -31,18 +31,38 @@ class COHScriptObject {
   virtual double Evaluate(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
  public:
+  static bool IsFunction(CString name)      { return name.Left(2) ==  "f$"; }
+  static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
+  static bool IsOpenPPLSymbol(CString name) { return isupper(name[0]); }
+  // f$preflop, f$flop, f$turn, f$river
+  static bool IsMainOpenFunction(CString name);
+ public:
   bool IsList()                 { return _name.Left(4) == "list"; }
-  bool IsFunction()             { return _name.Left(2) == "f$"; }
+  bool IsFunction()             { return _name.Left(2) ==  "f$"; }
+  bool IsOpenPPLSymbol()        { return isupper(_name[0]); }
+  // f$preflop, f$flop, f$turn, f$river
+  bool IsMainOpenFunction();
   // Autoplayer, Secondary, Ini, PrWin
   bool IsStandardFunction();
-  // f$debug, f$test, notes, DLL
-  bool IsSpecialFunction();
+  bool IsAutoplayerFunction();
+  bool IsSecondaryFunction();
+  bool IsPrWinFunction();
+  bool IsIniFunction();
+  bool IsDebugFunction();
+  bool IsNotesOrDLL();
+  bool IsICMConfigurationFunction();
   bool IsUserDefinedFunction()  { return (IsFunction() 
                                     && !IsStandardFunction()
-                                    && !IsSpecialFunction()); }
+                                    && !IsDebugFunction())
+                                    && !IsNotesOrDLL()
+                                    && !IsMainOpenFunction(); }
+ public:
+  int EditorGroupingCategory();
  public:
   // For saving
-  CString Serialize();         
+  CString Serialize();   
+  // For debugging
+  virtual void Dump();
  public:
   void Parse();
  protected:

@@ -25,10 +25,19 @@ public:
 public:
 	void SetInput(const char* next_formula_to_be_parsed);
 	int GetToken();
-	int LookAhead();
+	int LookAhead(bool expect_action = false);
 	char* GetTokenString();
 public:
 	void PushBack()	{ _last_token_pushed_back = true; }
+  // Very, very ugly way to handle OpenPPL-potsized-actions.
+  // They look like modulo or percentage expressions,
+  // but lack a 2nd operand and have "Force" instead.
+  // When ... RaiseBy 60% Force
+  // These statements can't get handled with a one-token-lookahead
+  // (good parse-technology), but require 2 tokens lookahead
+  // and potentially 2 tokens push-back.
+  // Cross your fingers that it works. ;-)
+  void PushBackAdditionalPercentageOperator() { _additional_percentage_operator_pushed_back = true; }
 public:
 	static int LineAbsolute();
 	static int LineRelative();
@@ -41,11 +50,14 @@ private:
 	bool IsBinaryMinus();
 	bool IsTokenOpenPPLKeyword();
 private:
+  void CheckTokenForOpenPPLAction(int *token);
+private:
 	void InitVars();
 private:
 	int  _token_end_pointer;
 	bool _last_token_pushed_back;
 	int  _last_token;
+  bool _additional_percentage_operator_pushed_back;
 private:
 	// To distinguish modulo % and percentage % operators
 	bool _inside_OpenPPL_function;

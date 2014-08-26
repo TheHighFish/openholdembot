@@ -106,7 +106,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 		{
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
 			OH_MessageBox_Error_Warning("To many tablemaps.\n"
-				"The auto-connector can handle 25 at most.", "ERROR");
+				"The auto-connector can handle 25 at most.");
 			return;
 		}
 		bFound = hFile.FindNextFile();

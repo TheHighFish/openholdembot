@@ -68,13 +68,13 @@ enum {
   kTokenActionCheck,
   kTokenActionCall,
   kTokenActionRaise,
+  kTokenActionRaiseTo,
+  kTokenActionRaiseBy,
   kTokenActionRaiseHalfPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
-  kTokenActionSitOut,
-  kTokenActionLeave,
-  kTokenActionClose,
+  kTokenActionUserVariableToBeSet,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
@@ -82,10 +82,59 @@ enum {
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,
+  kTokenActionRaiseToBigBlinds,
   kTokenActionRaiseByPercentagedPotsize,
-  kTokenActionUserVariableToBeSet,
   // Always leave that at the very end
   kNumberOfTokens,
+};
+
+const int kNumberOfOpenPPLActions = 17;
+
+const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
+  // No longer considering
+  // * SitOut
+  // * Leave
+  // * Close
+  // Because they will be handled by secondary OH-functions
+  "Bet",
+  "Call",
+  "Fold",
+  "Play",
+  "Beep",
+  "Raise",
+  "RaiseTo",
+  "RaiseBy",
+  "Check",
+  "Allin",
+  "BetHalfPot",
+  "BetMax",
+  "BetPot",
+  "RaiseHalfPot",
+  "RaiseMax",
+  "RaisePot",
+  "Set",
+};
+
+const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
+  // Duplicates are possible, because for example
+  // "Bet" and "Raise" are technically both kTokenActionRaise.
+  kTokenActionRaise, 
+  kTokenActionCall,
+  kTokenActionFold,
+  kTokenActionCall,
+  kTokenActionBeep,
+  kTokenActionRaise,
+  kTokenActionRaiseTo,
+  kTokenActionRaiseBy,
+  kTokenActionCheck,
+  kTokenActionRaiseMax,
+  kTokenActionRaiseHalfPot,
+  kTokenActionRaiseMax,
+  kTokenActionRaisePot,
+  kTokenActionRaiseHalfPot,
+  kTokenActionRaiseMax,
+  kTokenActionRaisePot,
+  kTokenActionUserVariableToBeSet,
 };
 
 inline bool TokenIsBracketOpen(int token) {
@@ -105,18 +154,19 @@ inline bool TokenIsTernary(int token) {
 
 inline bool TokenIsElementaryAction(int token) {
   return ((token >= kTokenActionBeep)
-    && (token <= kTokenActionClose));
+    && (token <= kTokenActionUserVariableToBeSet));
+}
+
+inline bool TokenIsOpenPPLAction(int token) {
+  // !! Looks like a duplicate, 
+  // but there might be a difference
+  return TokenIsElementaryAction(token);
 }
 
 inline bool TokenIsBracketClose(int token) {
   return ((token == kTokenBracketClose_1)
     || (token == kTokenBracketClose_2)
 	|| (token == kTokenBracketClose_3));
-}
-
-inline bool TokenIsOpenPPLAction(int token) {
-  return ((token >= kTokenActionBeep)
-    && (token <= kTokenActionClose));
 }
 
 int GetOperatorPriority(int token);

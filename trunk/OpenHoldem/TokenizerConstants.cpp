@@ -199,6 +199,8 @@ bool TokenIsUnary(int token) {
 bool TokenIsBinary(int token) {
   assert(token >=0);
   assert(token < kNumberOfTokens);
+
+
   return kTokenIsBinary[token];
 }
 
@@ -231,7 +233,7 @@ CString TokenString(int token) {
 	case kTokenOperatorBinaryXOr: return "^";    
 	case kTokenOperatorBitShiftLeft: return "<<";      
 	case kTokenOperatorBitShiftRight: return ">>";
-    case kTokenOperatorBitCount: return "`";
+  case kTokenOperatorBitCount: return "`";
 	case kTokenOperatorPercentage: return "percentage"; // because % can also mean modulo      
 	case kTokenOperatorConditionalIf: return "?";     
 	case kTokenOperatorConditionalElse: return "";    
@@ -246,6 +248,23 @@ CString TokenString(int token) {
 	case kTokenNumber: return "number";
 	case kTokenCards: return "cards";
 	case kTokenDoubleShebang: return "##";
+  case kTokenActionBeep: return "Beep";
+  case kTokenActionFold: return "Fold";
+  case kTokenActionCheck: return "Check";
+  case kTokenActionCall: return "Call";
+  case kTokenActionRaise: return "Raise";
+  case kTokenActionRaiseTo: return "RaiseTo";
+  case kTokenActionRaiseBy: return "RaiseBy";
+  case kTokenActionRaiseHalfPot: return "RaiseHalfPot";
+  case kTokenActionRaisePot: return "RaisePot";
+  case kTokenActionRaiseMax: return "RaiseMax";
+  case kTokenActionReturn: return "Return";
+  case kTokenActionUserVariableToBeSet: return "Set";
+  case kTokenKeywordForce: return "Force";
+  case kTokenUnsupportedDelay: return "Delay";
+  case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
+  case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
+  case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
 	default:
 		assert(k_this_must_not_happen);
 		return "Error: invalid token ID";

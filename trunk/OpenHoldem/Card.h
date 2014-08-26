@@ -28,7 +28,6 @@ class Card {
   void ClearValue();
  public:
   int GetValue();
-  int GetValueEncodedForDLL(); // WinHoldem DLL-interface
   int GetOpenHoldemRank();
   int GetStdDeckRank();
   int GetSuit();

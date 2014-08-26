@@ -405,8 +405,8 @@ CString CSymbolEngineRaisersCallers::SymbolsProvided() {
   CString list = "nopponentschecking nopponentscalling "
     "nopponentstruelyraising nopponentsbetting nopponentsfolded "
     "nplayerscallshort raischair ";
-  list += RangeOfSymbols("raisbits%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("callbits%i", k_betround_flop, k_betround_river);
-  list += RangeOfSymbols("foldbits%i", k_betround_flop, k_betround_river);
+  list += RangeOfSymbols("raisbits%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("callbits%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("foldbits%i", k_betround_preflop, k_betround_river);
   return list;
 }

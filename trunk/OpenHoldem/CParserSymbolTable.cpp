@@ -36,7 +36,9 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   // No short names, and we have to compare the first N characters later
   if (name.GetLength() < 3) return;
   // f$functions and lists: insert into list (map) for later verification
-  if ((memcmp(name, "f$", 2) == 0) || (memcmp(name, "list", 4) == 0)) {
+  if (COHScriptObject::IsFunction(name) 
+      || COHScriptObject::IsList(name)
+      || COHScriptObject::IsOpenPPLSymbol(name)) {
     _used_functions[name] = true;
     return;
   }
@@ -71,11 +73,7 @@ void CParserSymbolTable::VeryfyAllUsedFunctionsAtEndOfParse() {
   while (enumerator_it != _used_functions.end())
   {
     function_name = enumerator_it->first;
-    if (!p_function_collection->Exists(function_name)) {
-      CString message;
-      message.Format("Function used but never defined\n%s", function_name);
-      OH_MessageBox_Interactive(message, "Error", 0);
-    }
+    p_function_collection->VerifyExistence(function_name);
     ++enumerator_it;
   }
 }

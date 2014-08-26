@@ -21,6 +21,7 @@
 
 #include <io.h>
 #include "CAutoplayer.h"
+#include "CAutoplayerTrace.h"
 #include "CDebugTab.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
@@ -37,7 +38,6 @@
 #include "DialogNew.h"
 #include "DialogRename.h"
 #include "MainFrm.h"
-#include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
@@ -57,7 +57,7 @@ CString keywords;
 CString OpenPPL_keywords = "Custom Preflop Flop Turn River "
 	"When Allin RaiseMax BetMax RaisePot BetPot RaiseHalfPot BetHalfPot "
 	"Raise Bet Call Play Check Fold Beep Force Delay "
-	"And Or Not XOr BitAnd BitOr BitNot BitXOr Mod ";
+	"And Or Not XOr BitAnd BitOr BitNot BitXOr Mod Set";
 				  
 #define ID_SCIN_SIZERBAR 5555
 
@@ -95,6 +95,8 @@ BEGINCOLS(WRCT_TOFIT,0,0)
 RCREST(-1)
 RCTOFIT(IDC_SCINTILLA_CALC_RESULT)	// calc result
 RCSPACE(8)
+RCTOFIT(IDC_SCINTILLA_CALC_LINE)	// calc result
+RCSPACE(8)
 RCTOFIT(IDC_SCINTILLA_CALC)			// calc
 RCSPACE(8)
 RCTOFIT(IDC_SCINTILLA_AUTO)			// auto
@@ -125,54 +127,63 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		CDialog(CDlgFormulaScintilla::IDD, pParent), m_winMgr(ScintillaFormulaMap) 
 {
 	in_startup = true;
-
-	m_standard_headings.Add("Autoplayer Functions");
+  
+  if (!p_function_collection->IsOpenPPLProfile()) {
+    // Either use autoplayer-functions (default) or OpenPPL
+    // but not both, because they are incompatible
+	  m_standard_headings.Add("Autoplayer Functions");
+  } else {
+    m_standard_headings.Add("OpenPPL Functions");
+  }
 	m_standard_headings.Add("Standard Functions");
 	m_standard_headings.Add("Ini Functions");
 	m_standard_headings.Add("PrWin Functions");
-	m_standard_headings.Add("Debug Functions");
+  m_standard_headings.Add("ICM Functions");
+  m_standard_headings.Add("Debug Functions");
 
 	ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
-
-	// Autoplayer Functions
-	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i)
-	{
-		m_standard_functions[0].Add(k_standard_function_names[i]);
-	}
+  m_standard_functions[0].RemoveAll();
+  if (!p_function_collection->IsOpenPPLProfile()) {
+	  // Autoplayer Functions
+	  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
+		  m_standard_functions[0].Add(k_standard_function_names[i]);
+	  }
+  } else {
+    // OpenPPL
+    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+		  m_standard_functions[0].Add(k_OpenPPL_function_names[i]);
+    }
+  }
 	// Standard functions
 	// Notes and DLL are somewhat special
 	m_standard_functions[1].Add("notes");
 	m_standard_functions[1].Add("dll");
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
-	{
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i) {
 		m_standard_functions[1].Add(k_standard_function_names[i]);
 	}
-	
 	// Ini Functions
-	for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i)
-	{
+	for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i) {
 		m_standard_functions[2].Add(k_standard_function_names[i]);
 	}
-
 	// PrWin functions
-	for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i)
-	{
+	for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i) {
 		m_standard_functions[3].Add(k_standard_function_names[i]);
 	}
-
+  // ICM functions
+  for (int i=k_icm_prize1; i<=k_icm_prize5; ++i) {
+    m_standard_functions[4].Add(k_standard_function_names[i]);
+  }
 	// Debug functions	
-	m_standard_functions[4].Add("f$test");
-	m_standard_functions[4].Add("f$debug");
+	m_standard_functions[5].Add("f$test");
+	m_standard_functions[5].Add("f$debug");
 
 	m_current_edit = "";
 	m_dirty = false;
-
-	ok_to_update_debug = false;
+  ok_to_update_debug = false;
 
 	m_pActiveScinCtrl = NULL;
 	m_pFRDlg = NULL;
-
-	hUDFItem = NULL;
+ 	hUDFItem = NULL;
 	_edit_font.CreatePointFont(100, "Courier");
 }
 
@@ -195,6 +206,7 @@ void CDlgFormulaScintilla::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SCINTILLA_CALC, m_ButtonCalc);
 	DDX_Control(pDX, IDC_SCINTILLA_AUTO, m_ButtonAuto);
 	DDX_Control(pDX, IDC_SCINTILLA_CALC_RESULT, m_CalcResult);
+  DDX_Control(pDX, IDC_SCINTILLA_CALC_LINE, m_CalcRelativeLine);
 	DDX_Control(pDX, IDC_FORMULA_TAB, m_TabControl);
 	DDX_Control(pDX, IDC_FUNCTIONS_TAB, m_FunctionTab);
 	DDX_Control(pDX, IDC_SYMBOL_TREE, m_SymbolTree);
@@ -537,9 +549,16 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     }
     switch(j) {
       case 0: 
-        // Autoplayer functions
-        AddStandardFunctionsToTree(parent, 
+        if (p_function_collection->IsOpenPPLProfile()) {
+          // OpenPPL-functions
+          for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+            AddFunctionToTree(parent, k_OpenPPL_function_names[i]);
+          }
+        } else {
+          // Autoplayer functions
+          AddStandardFunctionsToTree(parent, 
           k_autoplayer_function_beep, k_autoplayer_function_fold);
+        }
         break;
       case 1:
         // Standard functions, including "notes" and "DLL"
@@ -559,9 +578,15 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
           k_prwin_number_of_opponents, k_prwin_wontplay);
         break;
       case 4:
+        // ICM functions
+        AddStandardFunctionsToTree(parent,
+          k_icm_prize1, k_icm_prize5);
+        break;
+      case 5:
         // Debug functions
         AddFunctionToTree(parent, "f$debug");
         AddFunctionToTree(parent, "f$test");
+        break;
     }
   }
   _subtree_handlists = m_FormulaTree.InsertItem("Hand Lists");
@@ -804,10 +829,11 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
     FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
   } else {
     // A child item was selected
+    // (OpenPPL-functions don't get shown in the editor)
 	if ((s == "notes")
         || (s == "dll")
-        || (s.Left(2) == "f$")
-        || (s.Left(4) == "list")) {
+        || COHScriptObject::IsFunction(s)
+        || COHScriptObject::IsList(s)) {
       SetExtendedWindowTitle(s);
       COHScriptObject *p_function_or_list = p_function_collection->LookUp(s);
       if (p_function_or_list != NULL) {
@@ -1046,7 +1072,7 @@ void CDlgFormulaScintilla::OnDelete() {
   for (int i=0; i<m_ScinArray.GetSize(); ++i) {
     CString name = m_ScinArray.GetAt(i)._name;
     if (name == s) {
-      //!!!m_ScinArray.GetAt(i)._pWnd->CloseWindow
+      //??m_ScinArray.GetAt(i)._pWnd->CloseWindow
       delete m_ScinArray.GetAt(i)._pWnd;
       break;
     }
@@ -1246,6 +1272,11 @@ void CDlgFormulaScintilla::PostNcDestroy()
 	m_formulaScintillaDlg	=	NULL;
 }
 
+void CDlgFormulaScintilla::ClearCalcResult() {
+  m_CalcResult.SetWindowText("");
+  m_CalcRelativeLine.SetWindowText("");
+}
+
 BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	NMHDR *phDR;
@@ -1290,9 +1321,7 @@ BOOL CDlgFormulaScintilla::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResu
 			break;
 		case SCN_MODIFIED:
 			StopAutoButton();
-
-			m_CalcResult.SetWindowText("");
-
+      ClearCalcResult();
 			m_dirty = true;
 			HandleEnables(true);
 
@@ -1447,11 +1476,10 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   std::string			str = "";
   char					  format[50] = {0};
 
-  // Clear result box
-  m_CalcResult.SetWindowText("");
+  ClearCalcResult();
   OnBnClickedApply();
   
-  if (!p_function_collection->CorrectlyParsed()) {
+  if (!p_function_collection->BotLogicCorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");
     s.Append("preventing calculation.\n");
     s.Append("These errors need to be corrected before the 'Calc'\n");
@@ -1467,10 +1495,14 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   // Processing for any other formula
   else {
     // Execute the currently selected formula
+    p_function_collection->Dump();
     ret = p_function_collection->Evaluate(m_current_edit);
+    int line = p_autoplayer_trace->GetLastEvaluatedRelativeLineNumber();
     sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
     Cstr.Format(format, ret);
     m_CalcResult.SetWindowText(Cstr);
+    Cstr.Format("Line: %d", line);
+    m_CalcRelativeLine.SetWindowText(Cstr);
     SetExtendedWindowTitle(m_current_edit.GetString());	
   }
 }
@@ -1478,10 +1510,10 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
 void CDlgFormulaScintilla::OnBnClickedAuto() {
   if (m_ButtonAuto.GetCheck() == 1) {
     ok_to_update_debug = false;
-    m_CalcResult.SetWindowText("");
+    ClearCalcResult();
     OnBnClickedApply();
 	  // Validate parse trees
-	  if (!p_function_collection->CorrectlyParsed()) {
+	  if (!p_function_collection->BotLogicCorrectlyParsed()) {
         CString s;
 	    s.Format("There are syntax errors in one or more formulas that are\n");
 	    s.Append("preventing calculation of this formula.\n");
@@ -1489,7 +1521,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
 	    s.Append("button can be used.");
 	    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
 	    // All we need to do is remove the Auto Check since the button text hasn't been
-        // updated yet and ok_to_update_debug has already been set to false
+      // updated yet and ok_to_update_debug has already been set to false
 	    m_ButtonAuto.SetCheck(0);
 	    return;
 	  }
@@ -1545,6 +1577,7 @@ void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
 }
 
 void CDlgFormulaScintilla::OnBnClickedApply() {
+  ClearCalcResult();
   CMenu				*file_menu = this->GetMenu()->GetSubMenu(0);
   COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
   // If autoplayer is engaged, dis-engage it
@@ -1555,7 +1588,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   SaveSettingsToRegistry();
   CopyTabContentsToFormulaSet();
   p_function_collection->ParseAll();
-  if (!p_function_collection->CorrectlyParsed()) {
+  if (!p_function_collection->BotLogicCorrectlyParsed()) {
     if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
         "Would you still like to apply changes in the working set to the main set?\n\n"
         "Note that if you choose yes here, then the main formula set will \n"
@@ -2299,7 +2332,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 
 void CDlgFormulaScintilla::FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl) {
   if (m_pActiveScinCtrl) {
-	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !!!!! Crashes on delete list
+	  m_pActiveScinCtrl->ShowWindow(SW_HIDE); // !! Crashes on delete list
 	  m_pActiveScinCtrl->EnableWindow(false);
   }
   m_pActiveScinCtrl = new_pActiveScinCtrl;

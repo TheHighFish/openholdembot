@@ -30,6 +30,7 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
@@ -100,8 +101,9 @@ void CAutoplayer::PrepareActionSequence()
 void CAutoplayer::FinishActionSequenceIfNecessary()
 {
 	__TRACE
-	if (action_sequence_needs_to_be_finished)
-	{
+	if (action_sequence_needs_to_be_finished) {
+    // avoid multiple-clicks within a short frame of time
+    p_stableframescounter->ResetOnAutoplayerAction();
 		// Restoring the original state has to be done in reversed order
 		SetFocus(window_with_focus);
 		SetCursorPos(cursor_position.x, cursor_position.y);
@@ -241,7 +243,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 
 	PrepareActionSequence();
 
-	if (p_autoplayer_functions->f$alli())
+	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin))
 	{
 		if (DoAllin())
 		{
@@ -266,7 +268,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)
 	{
-		if (p_autoplayer_functions->autoplayer_function_values(i))
+		if (p_function_collection->Evaluate(k_standard_function_names[i]))
 		{
 			if (p_casino_interface->ClickButton(i))
 			{
@@ -283,7 +285,7 @@ bool CAutoplayer::ExecuteBeep()
 {
 	__TRACE
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
-	if (p_autoplayer_functions->autoplayer_function_values(k_autoplayer_function_beep))
+	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
 	{
 		// Pitch standard: 440 Hz, 1/2 second
 		// http://en.wikipedia.org/wiki/A440_%28pitch_standard%29
@@ -357,8 +359,10 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 	assert(p_flags_toolbar != NULL);
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 
-	if (to_be_enabled_or_not) {
-		if (!p_function_collection->CorrectlyParsed()) {
+	if (to_be_enabled_or_not) 
+	{
+		if (!p_function_collection->BotLogicCorrectlyParsed())
+		{
 			__TRACE
 			// Invalid formula
 			// Can't autoplay
@@ -388,7 +392,8 @@ bool CAutoplayer::DoChat(void)
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
-	if ((p_autoplayer_functions->f$chat() == 0) || (_the_chat_message == NULL))
+	if ((p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat == 0)) 
+    || (_the_chat_message == NULL))
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
 		return false;
@@ -396,7 +401,7 @@ bool CAutoplayer::DoChat(void)
 
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
-	RegisterChatMessage(p_autoplayer_functions->f$chat()); 
+	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat)); 
 	return p_casino_interface->EnterChatMessage(CString(_the_chat_message));
 }
 
@@ -508,8 +513,9 @@ void CAutoplayer::DoAutoplayer(void)
 
 bool CAutoplayer::DoSwag(void) {
 	__TRACE
-	if (p_autoplayer_functions->f$betsize() > 0) 	{
-		int success = p_casino_interface->EnterBetsize(p_autoplayer_functions->f$betsize());
+	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize) > 0) 	{
+		int success = p_casino_interface->EnterBetsize(
+      p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
 		if (success) {
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
@@ -524,7 +530,7 @@ bool CAutoplayer::DoSwag(void) {
 bool CAutoplayer::DoPrefold(void) 
 {
 	__TRACE
-	assert(p_autoplayer_functions->f$prefold() != 0);
+	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
 	if (!p_table_state->User()->HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
