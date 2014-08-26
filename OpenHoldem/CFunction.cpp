@@ -58,7 +58,7 @@ double CFunction::Evaluate(bool log /* = false */) {
       "Stopping autoplayer.\n"
       "\n"
       "Last function: ") + _name;
-	OH_MessageBox_Error_Warning(error_message, "ERROR");
+	OH_MessageBox_Error_Warning(error_message);
 	p_autoplayer->EngageAutoplayer(false);
 	++recursion_depth;
 	return k_undefined_zero;
@@ -66,6 +66,8 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Result already cached
   if (_is_result_cached) {
     if (log) {
+      write_log(preferences.debug_auto_trace(),
+        "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
       p_autoplayer_trace->Add(_name, _cached_result);  
     }
     // Keep cached result: do nothing
@@ -111,6 +113,21 @@ CString CFunction::Serialize() {
   }
   //MessageBox(0, result, _name, 0);
   return result;
+}
+
+void CFunction::Dump() {
+  CString data;
+  data.Format("%s %s %.3f %i\n",
+    _name,
+    (_is_result_cached ? "[cached]" : "[not chached]"),
+    _cached_result,
+    _parse_tree_node);
+  write_log(preferences.debug_auto_trace(), (char*)(LPCTSTR)data);
+}
+
+void CFunction::SetValue(double value) {
+  _cached_result = value;
+  _is_result_cached = true;
 }
 
 

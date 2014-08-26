@@ -15,9 +15,11 @@
 //
 
 #include "stdafx.h"
-#include "OpenHoldem.h"
 #include "DialogRename.h"
+
+#include "COHScriptObject.h"
 #include "OH_MessageBox.h"
+#include "OpenHoldem.h"
 #include "VerifyFunctionAndListNames.h"
 
 // CDlgRename dialog
@@ -63,7 +65,7 @@ void CDlgRename::OnBnClickedOk()
 	strcpy_s(oldstr, MAX_WINDOW_TITLE, CSoldname.GetString());
 	strcpy_s(newstr, MAX_WINDOW_TITLE, CSnewname.GetString());
 
-    if (memcmp(oldstr, "f$", 2)==0) {
+    if (COHScriptObject::IsFunction(oldstr)) {
       if (!VerifyFunctionName(newstr)) return;
     } else {
       if (!VerifyListName(newstr)) return;

@@ -324,7 +324,7 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	char		likename[2 * k_max_length_of_playername + 2];
   // Attention: likename is 2 times as large as a player-name,
   // plus 2 for % at the beginning and \0 at the end.
-  // !!! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
+  // !! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
 	memset(likename, 0, 2 * k_max_length_of_playername + 2);
 	
 	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);

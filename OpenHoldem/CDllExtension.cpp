@@ -109,11 +109,6 @@ void CDllExtension::Load(const char * path){
 	// No longer passing any pointers to the DLL.
 	// We do no export functions an link them implicitly:
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
-
-	// To do !! Create a function if necessary
-	//pass "history" message (address of history structure)
-	//  2010-01-23 Demonthus
-	//(_process_message) ("history", p_handhistory->history());
 }
 
 void CDllExtension::Unload(void)
@@ -154,7 +149,9 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		return 0;
 	}
   double result = k_undefined;
-	p_engine_container->EvaluateSymbol(name, &result, false); //!!!!!
+	p_engine_container->EvaluateSymbol(name, 
+    &result, 
+    preferences.dll_logging_enabled());
 	iserr = false;
 	return result;
 }
@@ -168,7 +165,7 @@ extern "C" __declspec(dllexport) void __stdcall SendChatMessageFomDll(const char
 
 extern "C" __declspec(dllexport) void* __stdcall GetPhl1kFromDll()
 {
-	//!!broken in OH 4.6.0 / 5.0.0 because hand list array removed
+	// !!broken in OH 4.6.0 / 5.0.0 because hand list array removed
 	return (void *)NULL; //(p_formula->formula()->inlist);
 }
 

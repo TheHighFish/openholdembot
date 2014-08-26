@@ -40,16 +40,6 @@ int Card::GetValue() {
   return _value;
 }
 
-int Card::GetValueEncodedForDLL() {
-  if (!IsKnownCard()) {
-    // Cardback, no-card or undefined
-    return _value;
-  }
-  // High nibble: OpenHoldem rank
-  // Low nibble: suit
-  return ((GetOpenHoldemRank() << 4) | GetSuit());
-}
-
 // StdDeck uses 0..12 for deuce..ace
 // OpenHoldem uses 2..14
 int Card::GetOpenHoldemRank() {
@@ -113,6 +103,10 @@ bool Card::IsNoCard() {
 }
    
 bool Card::IsAnyCard() {
+  // We do no longer check for cardbacks,
+	// but for cardbacks or cards.
+	// This way we can play all cards face-up at PokerAcademy.
+	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
   return (IsKnownCard() || IsCardBack());
 }
 

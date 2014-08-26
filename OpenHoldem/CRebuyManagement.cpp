@@ -16,6 +16,7 @@
 #include <time.h>
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
+#include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "COcclusionCheck.h"
 #include "CPreferences.h"
@@ -165,7 +166,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	double BigBet = p_symbol_engine_tablelimits->bigbet();
 	int UserChair = p_symbol_engine_userchair->userchair();
 	double Balance = p_table_state->User()->_balance;
-	double TargetAmount = p_autoplayer_functions->f$rebuy();
+	double TargetAmount = p_function_collection->EvaluateAutoplayerFunction(k_standard_function_rebuy);
 	CString RebuyScript = preferences.rebuy_script();
 	CString CommandLine;
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
@@ -196,7 +197,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	{
 		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
 		write_log(preferences.debug_rebuy(), ErrorMessage.GetBuffer());
-		OH_MessageBox_Error_Warning(ErrorMessage.GetBuffer(), "Error");
+		OH_MessageBox_Error_Warning(ErrorMessage.GetBuffer());
 	}
 }
 

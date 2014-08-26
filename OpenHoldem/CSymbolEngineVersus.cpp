@@ -492,7 +492,7 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     *result = k_undefined_zero;
     return true;
   }
-  GetCounts(); // !!! not here
+  GetCounts(); // !! not here
   double n_win = 0; 
   double n_tie = 0;
   double n_los = 0;

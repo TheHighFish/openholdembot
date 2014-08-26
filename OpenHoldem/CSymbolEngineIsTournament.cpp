@@ -45,7 +45,7 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"(ante ",		
 	"(ante:",
 	"buy-in:",		
-	"buyin:"
+	"buyin:",
 	"buy-in ",
 	"buyin ",
 	"double ",
@@ -56,7 +56,7 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"gratuit ",			// french for "free"
 	"guaranteed",
 	"miniroll",
-	"mise initiale"		// french for "ante"
+	"mise initiale",		// french for "ante"
 	" mtt",
 	"mtt ",
 	"(mtt",
@@ -125,8 +125,13 @@ void CSymbolEngineIsTournament::ResetOnMyTurn()
 	TryToDetectTournament();
 }
 
-void CSymbolEngineIsTournament::ResetOnHeartbeat()
-{}
+void CSymbolEngineIsTournament::ResetOnHeartbeat() {
+  if (_istournament == k_undefined) {
+    // Beginning pf session and not yet sure.
+    // Temporary maximum effort on every heartbeat
+    TryToDetectTournament();
+  }
+}
 
 bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike()
 {

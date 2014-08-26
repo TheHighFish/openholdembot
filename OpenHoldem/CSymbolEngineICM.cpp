@@ -29,6 +29,8 @@
 #include "stdafx.h"
 #include "CSymbolEngineICM.h"
 
+#include "CFunctionCollection.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -38,9 +40,9 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "CPreferences.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
+#include "OH_MessageBox.h"
 
 CSymbolEngineICM *p_symbol_engine_icm = NULL;
 
@@ -197,14 +199,13 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 
 double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
-	double ICM = 0.;
-	int i = 0;
+	double ICM = 0.0;
 
 	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
 
-	for (int i = 0; i < playerNB; i++)
-	{
-		//printf("player %d  stack = %1.2f \n", i, stacks[i]);
+	for (int i=0; i<playerNB; ++i) {
+    write_log(preferences.debug_icm(),
+      "[CSymbolEngineICM] player %d  stack = %1.2f \n", i, stacks[i]);
 	}
 
 	// Degenerate case when the player's stack is zero.  Place
@@ -228,12 +229,11 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 
 	}
 
-	i = 0;
-	while (i < playerNB && prizes[i] > 0.)
-	{
+	int i = 0;
+	while (i < playerNB && prizes[i] > 0.) {
 		double p = P(player, i + 1, stacks, playerNB);
-
-		//printf("=> prob place %d = %1.4f \n", i + 1, p);
+		write_log(preferences.debug_icm(),
+      "[CSymbolEngineICM] prob place %d = %1.4f \n", i + 1, p);
 		ICM += prizes[i] * p;
 		i++;
 	}
@@ -242,16 +242,35 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 }
 
 bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  // Fast exit on other symbols
+  int	sym_userchair = p_symbol_engine_userchair->userchair();
+  if (memcmp(name, "icm", 3) != 0) return false;
+	if (sym_userchair == k_undefined) {
+		*result = 0.0;
+    return true;
+	}
+
   double		prizes[k_max_number_of_players] = {0};
 	double		stacks[k_max_number_of_players] = {0};
-	int			i = 0, j = 0;
-	prizes[0] = preferences.icm_prize1();
-	prizes[1] = preferences.icm_prize2();
-	prizes[2] = preferences.icm_prize3();
-	prizes[3] = preferences.icm_prize4();
-	prizes[4] = preferences.icm_prize5();
 
-	int			sym_userchair = p_symbol_engine_userchair->userchair();
+  int number_of_icm_prizes = k_icm_prize5 - k_icm_prize1 + 1;
+  double sum_of_prizes = 0.0;
+  for (int i=0; i<number_of_icm_prizes; ++i) {
+    int function_name_index = k_icm_prize1 + i;
+    prizes[i] = p_function_collection->Evaluate(
+      k_standard_function_names[function_name_index]);
+    sum_of_prizes += prizes[i];
+  }
+  // Sanity check: sum of prizes should be ~1.00
+  if (!IsEqual(sum_of_prizes, 1.00)) {
+    CString error_message;
+    error_message.Format("The sum of all f$icm_prizeX-functions should be 1.00\n"
+      "Current value: %.3f", sum_of_prizes);
+    OH_MessageBox_Error_Warning(error_message);
+    *result = 0.0;
+    return true;
+  }
+
 	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
 	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
@@ -259,13 +278,6 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	double	sym_pot = p_symbol_engine_chip_amounts->pot();
 	double	sym_call = p_symbol_engine_chip_amounts->call();
 	double	sym_currentbet[k_max_number_of_players]={0};
-
-  if (memcmp(name, "icm", 3) != 0) return false;
-	if (sym_userchair == k_undefined)
-	{
-		*result = 0.0;
-    return true;
-	}
 
 	for (int i = 0; i < k_max_number_of_players; i++)
 	{

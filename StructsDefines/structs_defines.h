@@ -204,7 +204,7 @@ struct sprw1326
 };
 
 //player history structure		Demonthus 2010-02-05
-//!!undocumented
+// !!undocumented
 struct phistory_chair
 {
 	char card_player[(2 * k_number_of_cards_per_player) + 1]; // 2 characters per card + NULL char
@@ -227,7 +227,7 @@ struct phistory_chair
 	int calls;
 	int actionCount;
 	CardMask hand;
-    HandVal handval; 
+  HandVal handval; 
 };
 
 //player history structure		Demonthus 2010-02-05

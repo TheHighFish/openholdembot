@@ -15,6 +15,7 @@
 #include "COHScriptObject.h"
 
 #include "CFormulaParser.h"
+#include "CFunctionCollection.h"
 
 COHScriptObject::COHScriptObject()
 {
@@ -47,6 +48,19 @@ bool COHScriptObject::EvaluatesToBinaryNumber() {
   return false;
 }
 
+bool COHScriptObject::IsMainOpenFunction(CString name) {
+  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+    if (name == k_OpenPPL_function_names[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool COHScriptObject::IsMainOpenFunction() {
+  return IsMainOpenFunction(_name);
+}
+
 bool COHScriptObject::IsStandardFunction() {
   for (int i=0; i<k_number_of_standard_functions; ++i) {
     if (_name == k_standard_function_names[i]) return true;
@@ -54,12 +68,70 @@ bool COHScriptObject::IsStandardFunction() {
   return false;
 }
 
-bool COHScriptObject::IsSpecialFunction() {
+bool COHScriptObject::IsAutoplayerFunction() {
+  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
+bool COHScriptObject::IsSecondaryFunction() {
+  for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
+bool COHScriptObject::IsIniFunction() {
+  for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
+bool COHScriptObject::IsPrWinFunction() {
+  for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
+bool COHScriptObject::IsICMConfigurationFunction() {
+  for (int i=k_icm_prize1; i<=k_icm_prize5; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
+bool COHScriptObject::IsDebugFunction() {
   if (_name == "f$debug") return true;
   if (_name == "f$test")  return true;
-  if (_name == "notes")   return true;
-  if (_name == "DLL")     return true;
   return false;
+}
+
+bool COHScriptObject::IsNotesOrDLL() {
+  return ((_name == "DLL") || (_name == "notes"));
+}
+
+int COHScriptObject::EditorGroupingCategory() {
+  // Category 0: autoplayer / OpenPPL
+  if (p_function_collection->IsOpenPPLProfile()  && IsMainOpenFunction())   return 0;
+  if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction()) return 0;
+  // Category 1: Secondary (f$sitout, f$close,..) DLL, notes)
+  if (IsSecondaryFunction()) return 1;
+  if (IsNotesOrDLL()) return 1;
+  // Category 2: Ini-fucntions
+  if (IsIniFunction()) return 2;
+  // Category 3: PrWin functions
+  if (IsPrWinFunction()) return 3;
+  // Category 4: ICM-functions
+  if (IsICMConfigurationFunction()) return 4;
+  // Category 5: debug-functions
+  if (IsDebugFunction()) return 5;
+  // Category 6: hand-lists
+  if (IsList()) return 6;
+  // Category 7: other user defined functions
+  if (IsUserDefinedFunction()) return 7;
 }
 
 void COHScriptObject::Parse() {
@@ -75,4 +147,9 @@ CString COHScriptObject::Serialize() {
     result += "\r\n";
   }
   return result;
+}
+
+void COHScriptObject::Dump() {
+  // Default: don't do anything
+  // ATM we are only interested in formulas
 }

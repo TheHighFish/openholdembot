@@ -16,6 +16,7 @@
 
 #include "debug.h"
 #include "MagicNumbers.h"
+#include "OH_MessageBox.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
 CPreferences		preferences;
@@ -72,6 +73,7 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"debug_popup_blocker",
   "debug_formula",
   "debug_versus",
+  "debug_auto_trace",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
@@ -129,11 +131,9 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"scraper_zoom",
 	"popup_blocker",
 	// doubles
+  // Only on double left, just to check for outdated ICM-config
 	"icm_prize1",
-	"icm_prize2",
-	"icm_prize3",
-	"icm_prize4",
-	"icm_prize5",
+	//
 	// Finally an empty string
 	// This correspondents to k_prefs_last_numerical_value (unused)
 	// It will cause an assertion if used
@@ -170,6 +170,21 @@ void CPreferences::LoadPreferences()
 	_preferences_heading = "Preferences";
 	InitDefaults();
 	ReadPreferences();
+  CheckForOutdatedICMConfig();
+}
+
+
+void CPreferences::CheckForOutdatedICMConfig() {
+  if (prefs_numerical_values[k_prefs_icm_prize1] != k_undefined_zero) {
+    OH_MessageBox_Error_Warning(
+      "Outdated ICM-configuration\n"
+      "\n"
+      "OpenHoldem does no longer use the ini-file for that\n"
+      "but f$icm_prize1 .. f$icm_prize5 functions\n"
+      "\n"
+      "Now you can adapt the payout-structure at runtime\n"
+      "depending on casino, game-type, number of players...");
+  }
 }
 
 //
@@ -228,9 +243,7 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
 
 	// Doubles
-	prefs_numerical_values[k_prefs_icm_prize1] = 0.5;
-	prefs_numerical_values[k_prefs_icm_prize2] = 0.3;
-	prefs_numerical_values[k_prefs_icm_prize3] = 0.2;
+	prefs_numerical_values[k_prefs_icm_prize1] = k_undefined_zero;
 	
 	// CString
 	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";

@@ -19,6 +19,7 @@
 #include "CFunction.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 
 CFunctionCollection *p_function_collection = NULL;
@@ -26,6 +27,7 @@ CFunctionCollection *p_function_collection = NULL;
 CFunctionCollection::CFunctionCollection(){
   _title = "";
   _path = "";
+  _openPPL_library_correctly_loaded = false;
   DeleteAll();
 }
 
@@ -35,7 +37,26 @@ CFunctionCollection::~CFunctionCollection() {
 void CFunctionCollection::DeleteAll() {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
-  _function_map.clear();
+  if (_openPPL_library_correctly_loaded) {
+    // Delete only user-defined bot-logic
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Deleting user-defined functions functions, but not OpenPPL\n");
+    COHScriptObject *p_nextObject = GetFirst();
+    while (p_nextObject != NULL) {
+      if (!p_nextObject->IsOpenPPLSymbol()) {
+        write_log(preferences.debug_formula(), 
+          "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
+        Delete(p_nextObject->name());
+      }
+      p_nextObject = GetNext();
+    }
+  } else {
+    // Delete everything, including OpenPPL
+    // to prepare reloading
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Deleting all functions, including OpenPPL\n");
+    _function_map.clear();
+  }
 }
 
 void CFunctionCollection::Add(COHScriptObject *new_function) {
@@ -63,6 +84,43 @@ bool CFunctionCollection::Exists(CString name) {
   return (it != _function_map.end());
 }
 
+// Generates smart error-messages on failure
+// To be used by the parser
+void CFunctionCollection::VerifyExistence(CString name) {
+  if (Exists(name)) return;
+  // Error: function does not exist
+  CString similar_name = GetSimilarNameWithDifferentCases(name);
+  if (similar_name != "") {
+    CString message;
+    message.Format("%s%s%s%s%s",
+      "Function used but never defined: ",
+      name, 
+      "\nDid you mean ",
+      similar_name,
+      " instead?");
+    OH_MessageBox_Interactive(message, "Error", 0);
+    return;
+  } 
+  // Else: general error-message
+  CString message;
+  message.Format("Function used but never defined\n%s", name);
+  OH_MessageBox_Interactive(message, "Error", 0);
+}
+
+CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_name) {
+  function_name.MakeLower();
+  COHScriptObject *p_nextObject = GetFirst();
+  while (p_nextObject != NULL) {
+    if (function_name == p_nextObject->name().MakeLower()) {
+      // Found similar name, just different cases
+      return p_nextObject->name();
+    }
+    p_nextObject = GetNext();
+  }
+  // Nothing found
+  return NULL;
+}
+
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
   CSLock lock(m_critsec);
   write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
@@ -81,6 +139,12 @@ double CFunctionCollection::Evaluate(CString function_name, bool log /* = false 
   double result = k_undefined;
   EvaluateSymbol(function_name, &result, log);
   return result;
+}
+
+double CFunctionCollection::EvaluateAutoplayerFunction(int function_code) {
+  CString function_name = k_standard_function_names[function_code];
+  assert(function_name != "");
+  return Evaluate(function_name, true);
 }
 
 bool CFunctionCollection::EvaluatesToBinaryNumber(CString function_name) {
@@ -122,10 +186,17 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
-  // Autoplayer, standard, ini and PrWin functions
-  for (int i=0; i<k_number_of_standard_functions; ++i)
-  {
-	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+  if (IsOpenPPLProfile()) {
+    // OpenPPL-functions
+    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+      CString function_name = k_OpenPPL_function_names[i];
+      CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
+    }
+  } else {
+    // Autoplayer, standard, ini and PrWin functions
+    for (int i=0; i<k_number_of_standard_functions; ++i) {
+	    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
+    }
   }
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
@@ -133,6 +204,14 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   // PrWin-functions, used by the GUI
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(
     CString(k_standard_function_names[k_prwin_number_of_iterations]));
+}
+
+void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double value) {
+  CString function_name = k_standard_function_names[function_code];
+  assert(function_name != "");
+  CFunction *p_function = (CFunction *)LookUp(function_name);
+  if (p_function == NULL) return;
+  p_function->SetValue(value);
 }
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name)
@@ -197,7 +276,7 @@ void CFunctionCollection::ClearCache() {
   CSLock lock(m_critsec);
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    if (p_oh_script_object->IsFunction()) {
+    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsOpenPPLSymbol()) {
       ((CFunction*)p_oh_script_object)->ClearCache();
     }
     p_oh_script_object = GetNext();
@@ -253,7 +332,18 @@ void CFunctionCollection::SaveObject(
     COHScriptObject *function_or_list) {
   CSLock lock(m_critsec);
   if (function_or_list == NULL) return;
+  // Don't save OpenPPL-symbols from the OpenPPL-library
+  // to user-defined bot-logic files
+  if (function_or_list->IsOpenPPLSymbol()) return;
   ar.WriteString(function_or_list->Serialize());
+}
+
+void CFunctionCollection::Dump() {
+  COHScriptObject *p_oh_script_object = GetFirst();
+  while (p_oh_script_object != NULL) {
+    p_oh_script_object->Dump();
+    p_oh_script_object = GetNext();  
+  }
 }
 
 bool CFunctionCollection::Rename(CString from_name, CString to_name) {
@@ -297,7 +387,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
   }
 }
 
-bool CFunctionCollection::CorrectlyParsed() {
+bool CFunctionCollection::BotLogicCorrectlyParsed() {
   return (!CParseErrors::AnyError());
 }
 
@@ -314,6 +404,17 @@ bool CFunctionCollection::ParseAll() {
   }
   p_formula_parser->FinishParse();
   return true;
+}
+
+bool CFunctionCollection::IsOpenPPLProfile() {
+  // A profile is OpenPPL if at least f$preflop exists
+  // and f$preflop is not empty
+  if (!Exists(k_OpenPPL_function_names[k_betround_preflop])) return false;
+  COHScriptObject *p_preflop = LookUp(k_OpenPPL_function_names[k_betround_preflop]);
+  assert(p_preflop != NULL);
+  CString function_text = p_preflop->function_text();
+  // Counting nearly empty functions as empty (default: 1 space)
+  return (function_text.GetLength() > 1);
 }
 
 void CFunctionCollection::InitOnStartup() {
@@ -338,13 +439,23 @@ void CFunctionCollection::ResetOnHeartbeat() {
 
 bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   CSLock lock(m_critsec);
-  if ((memcmp(name, "f$", 2) == 0) 
-      || (memcmp(name, "list", 4) == 0)) { 
+  if (COHScriptObject::IsFunction(name)
+      || COHScriptObject::IsList(name)
+      || COHScriptObject::IsOpenPPLSymbol(name)) {
+#ifdef _DEBUG
+    if (COHScriptObject::IsOpenPPLSymbol(name)) {
+      // Just to be able to set a break-point,
+      // that doesn't get triggered every heartbeat by an ini-function
+      int i = 0;
+    }
+#endif
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
       // Function does not exist
       *result = k_undefined_zero;
       if (log) {
+        write_log(preferences.debug_auto_trace(),
+          "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }
       // This symbol is something that HAS TO be evaluated here,
@@ -357,14 +468,12 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
     // Function/list found
     *result = p_function->Evaluate(log);
     return true;
-  }
+}
   // Not a function and not a list
   return false;
 }
 
 CString CFunctionCollection::SymbolsProvided() {
-  // !!! Does currently only care about symbols
-  // !!! that already exist when the editor gets opened
   CString result;
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {

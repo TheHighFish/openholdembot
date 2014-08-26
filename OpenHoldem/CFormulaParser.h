@@ -32,17 +32,24 @@ class CFormulaParser {
   void InitNewParse();
   void FinishParse();
  public:
-  void ParseFile(CArchive & formula_file);
+  // This function will
+  // * load the OpenPPL-library, if needed and posisble
+  // * then load the formula file with user-defined bot-logic
+  void ParseFormulaFileWithUserDefinedBotLogic(CArchive & formula_file);
+ public:
   void ParseSingleFormula(CString name, CString function_text);
   void ParseSingleFormula(CString function_text);
+  void ParseOpenPPLLibraryIfNeeded();
  public:
   static CString CurrentFunctionName();
   bool IsParsing()	{ return _is_parsing; }
  private:
+  void ParseFile(CArchive & formula_file);
+ private:
   bool VerifyFunctionHeader(CString function_header);
   void ExpectMatchingBracketClose(int opening_bracket);
   bool ExpectConditionalThen();
-  bool ExpectKeywordForce();
+  bool ExpectKeywordForce(int last_important_roken_ID);
   void CheckForExtraTokensAfterEndOfFunction();
  private:
   // OH-script and OpenPPL
@@ -61,7 +68,9 @@ class CFormulaParser {
   // OpenPPL
   TPParseTreeNode ParseOpenEndedWhenConditionSequence();
   TPParseTreeNode ParseOpenPPLAction();
-  TPParseTreeNode ParseOpenPPLRaiseExpression();
+  TPParseTreeNode ParseOpenPPLRaiseToExpression();
+  TPParseTreeNode ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLUserVar();
  private:
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);

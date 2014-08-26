@@ -191,6 +191,7 @@
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
+    <ClCompile Include="CSymbolEngineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
@@ -227,7 +228,9 @@
     <ClCompile Include="DialogSAPrefs15.cpp" />
     <ClCompile Include="DialogSAPrefs16.cpp" />
     <ClCompile Include="DialogSAPrefs17.cpp" />
-    <ClCompile Include="DialogSAPrefs18.cpp" />
+    <ClCompile Include="DialogSAPrefs18.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="DialogSAPrefs19.cpp" />
     <ClCompile Include="DialogSAPrefs2.cpp" />
     <ClCompile Include="DialogSAPrefs20.cpp" />
@@ -236,7 +239,9 @@
     <ClCompile Include="DialogSAPrefs3.cpp" />
     <ClCompile Include="DialogSAPrefs4.cpp" />
     <ClCompile Include="DialogSAPrefs6.cpp" />
-    <ClCompile Include="DialogSAPrefs7.cpp" />
+    <ClCompile Include="DialogSAPrefs7.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="DialogSAPrefs8.cpp" />
     <ClCompile Include="DialogSAPrefs9.cpp" />
     <ClCompile Include="SAPrefsDialog.cpp" />
@@ -435,6 +440,7 @@
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
+    <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
@@ -537,7 +543,9 @@
     <ClInclude Include="DialogSAPrefs15.h" />
     <ClInclude Include="DialogSAPrefs16.h" />
     <ClInclude Include="DialogSAPrefs17.h" />
-    <ClInclude Include="DialogSAPrefs18.h" />
+    <ClInclude Include="DialogSAPrefs18.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="DialogSAPrefs19.h" />
     <ClInclude Include="DialogSAPrefs2.h" />
     <ClInclude Include="DialogSAPrefs20.h" />
@@ -546,7 +554,9 @@
     <ClInclude Include="DialogSAPrefs3.h" />
     <ClInclude Include="DialogSAPrefs4.h" />
     <ClInclude Include="DialogSAPrefs6.h" />
-    <ClInclude Include="DialogSAPrefs7.h" />
+    <ClInclude Include="DialogSAPrefs7.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="DialogSAPrefs8.h" />
     <ClInclude Include="DialogSAPrefs9.h" />
     <ClInclude Include="SAPrefsDialog.h" />

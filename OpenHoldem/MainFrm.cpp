@@ -44,7 +44,6 @@
 #include "DialogSAPrefs3.h"
 #include "DialogSAPrefs4.h"
 #include "DialogSAPrefs6.h"
-#include "DialogSAPrefs7.h"
 #include "DialogSAPrefs8.h"
 #include "DialogSAPrefs9.h"
 #include "DialogSAPrefs10.h"
@@ -55,7 +54,6 @@
 #include "DialogSAPrefs15.h"
 #include "DialogSAPrefs16.h"
 #include "DialogSAPrefs17.h"
-#include "DialogSAPrefs18.h"
 #include "DialogSAPrefs19.h"
 #include "DialogSAPrefs20.h"
 #include "DialogSAPrefs21.h"
@@ -355,7 +353,6 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs3 page3;
 	CDlgSAPrefs4 page4;
 	CDlgSAPrefs6 page6;
-	CDlgSAPrefs7 page7;
 	CDlgSAPrefs8 page8;
 	CDlgSAPrefs9 page9;
 	CDlgSAPrefs10 page10;
@@ -380,7 +377,6 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
-	dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker v3");

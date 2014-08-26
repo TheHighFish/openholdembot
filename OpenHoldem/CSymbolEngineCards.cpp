@@ -566,7 +566,7 @@ void CSymbolEngineCards::CalculateHandTests()
 		Card card = p_table_state->_common_cards[i];
 		if (card.IsKnownCard())
 		{
-      _$$cc[i] = card.GetValueEncodedForDLL();
+      _$$cc[i] = card.GetValue();
       _$$cr[i] = card.GetOpenHoldemRank();
       _$$cs[i] = card.GetSuit();
 		}

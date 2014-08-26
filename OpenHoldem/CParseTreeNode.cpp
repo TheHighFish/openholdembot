@@ -20,7 +20,9 @@
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
+#include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
@@ -79,19 +81,25 @@ void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_si
 
 void CParseTreeNode::MakeAction(int action_constant)
 {
-	_node_type = action_constant;
+	assert(TokenIsOpenPPLAction(action_constant));
+  CString name = TokenString(action_constant);
+  assert(name != "");
+  MakeIdentifier(name);
 }
 
-void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds)
-{
+void CParseTreeNode::MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
+	_node_type = kTokenActionRaiseToBigBlinds;
+	_first_sibbling = raise_by_amount_in_big_blinds;
+}
+
+void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
 	_node_type = kTokenActionRaiseByBigBlinds;
 	_first_sibbling = raise_by_amount_in_big_blinds;
 }
 
 // Values to be expected in the range (0..100] or more, not (0..1]
 void CParseTreeNode::MakeRaiseByPercentagedPotsizeAction(
-	TPParseTreeNode raise_by_amount_percentage)
-{
+  	TPParseTreeNode raise_by_amount_percentage) {
 	_node_type = kTokenActionRaiseByPercentagedPotsize;
 	_first_sibbling = raise_by_amount_percentage;
 }
@@ -109,7 +117,6 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 	assert(uservariable.Left(4) == "user");
 	_node_type = kTokenActionUserVariableToBeSet;
 	_terminal_name = uservariable;
-	// !!! also needs a continue on execution!
 }
 
 double CParseTreeNode::Evaluate(bool log /* = false */){
@@ -117,7 +124,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Most common types fiorst: numbers and identifiers
+	// Most common types first: numbers and identifiers
 	if (_node_type == kTokenNumber)	{
 		write_log(preferences.debug_formula(), 
       "[CParseTreeNode] Number evaluates to %6.3f\n",
@@ -137,23 +144,49 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	// Actions second, which are also "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-by-semantics)
+	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
 	// * negative values mean: elementary actions
-	else if (TokenIsElementaryAction(_node_type)) {
-		return (0 - _node_type);
-	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
+	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
+    // RaiseTo N Force
 		return EvaluateSibbling(_first_sibbling, log);
+	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
+    // RaiseBy N Force
+    double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
+    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+      + raise_by_amount_in_bblinds;
+    write_log(preferences.debug_formula(), 
+      "[CParseTreeNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
+      raise_by_amount_in_bblinds,
+      p_symbol_engine_chip_amounts->ncallbets(),
+      final_betsize_in_bblinds);
+		return final_betsize_in_bblinds;
 	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
+    // RaiseBy X% Force
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
-		double pot_size_after_call_in_big_blinds = 0; // !!! PotSize() + AmountToCall();
-		double raise_by_amount = 0.01 * raise_by_percentage
+    assert(p_symbol_engine_tablelimits->bet() > 0);
+		double pot_size_after_call_in_big_blinds = 
+      (p_symbol_engine_chip_amounts->pot() / p_symbol_engine_tablelimits->bet()) 
+      + p_symbol_engine_chip_amounts->nbetstocall();
+    assert(pot_size_after_call_in_big_blinds >= 0);
+		double raise_by_amount_in_bblinds = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
-		return raise_by_amount;
-	}	else if (_node_type == kTokenActionUserVariableToBeSet) {
+    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+      + raise_by_amount_in_bblinds;
+    write_log(preferences.debug_formula(), 
+      "[CParseTreeNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
+      raise_by_percentage,
+      pot_size_after_call_in_big_blinds,
+      raise_by_amount_in_bblinds,
+      final_betsize_in_bblinds);
+    return final_betsize_in_bblinds;
+  }	else if (_node_type == kTokenActionUserVariableToBeSet) {
+    // User-variables are a special case of elementary actions
+    // Therefore need to be handled first.
 		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
-		// Continue with next open-ended when-condition
-		EvaluateSibbling(_second_sibbling, log);
-	}
+		return k_undefined_zero;
+  } else if (TokenIsElementaryAction(_node_type)) {
+		return (0 - _node_type);
+  }
 	// Finally operators
 	else if (TokenIsUnary(_node_type)) {
 		return EvaluateUnaryExpression(log);
@@ -239,14 +272,14 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 		  return value_of_first_sibbling * value_of_second_sibbling;
 	  case kTokenOperatorDivision: 
 		  if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  OH_MessageBox_Error_Warning("Division by zero.");
 			  return k_undefined;
 		  } else {
 			  return value_of_first_sibbling / value_of_second_sibbling;
 		  }
 	  case kTokenOperatorModulo: 
       if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.", "Error");
+			  OH_MessageBox_Error_Warning("Division by zero.");
 			  return k_undefined;
 		  } else {
 			  return (unsigned long)value_of_first_sibbling 
@@ -291,26 +324,29 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 	return k_undefined;
 }
 
-double CParseTreeNode::EvaluateTernaryExpression(bool log)
-{
+double CParseTreeNode::EvaluateTernaryExpression(bool log) {
 	// This function covers both OH-style ternary expressions
 	// and OpenPPL-style (open-ended) when-conditions.
 	// In case of (OE)WCs the parse-tree-generation assures
 	// that _third_sibbling points to the next (OE)WC.
 	// Again we use short circuiting.
 	assert((_node_type == kTokenOperatorConditionalIf)
-		|| (_node_type == kTokenOperatorConditionalWhen));
-	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
-	if (value_of_first_sibbling)
-	{
-		double value_of_second_sibbling  = EvaluateSibbling(_second_sibbling, log);
-		return value_of_second_sibbling;
+		  || (_node_type == kTokenOperatorConditionalWhen));
+	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log);
+	if (value_of_first_sibbling) {
+		double value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
+    // Special behaviour for user-variables:
+    // we have to set them, but then continue with the next when-condition 
+    // (third sibbling)
+    if (!SecondSibblingIsUserVariableToBeSet()) {
+      // Normal behaviour: return the evaluated result
+      return value_of_second_sibbling;
+    }
+    // Uvervariables: will fall through to the evaluation 
+    // of the third sibbling...
 	}
-	else
-	{
-		double value_of_third_sibbling  = EvaluateSibbling(_third_sibbling, log);
-		return value_of_third_sibbling;
-	}
+	double value_of_third_sibbling = EvaluateSibbling(_third_sibbling, log);
+	return value_of_third_sibbling;
 }
 
 double CParseTreeNode::EvaluateSibbling(
@@ -449,6 +485,11 @@ bool CParseTreeNode::IsBinaryIdentifier() {
   }
   // Not a binary identifier
   return false;
+}
+
+bool CParseTreeNode::SecondSibblingIsUserVariableToBeSet() {
+  if (_second_sibbling == NULL) return false;
+  return (_second_sibbling->_node_type == kTokenActionUserVariableToBeSet);
 }
 
 bool CParseTreeNode::EvaluatesToBinaryNumber() {

@@ -34,6 +34,7 @@ class CFilenames {
 	CString ExecutableFilename();
 	CString PureExecutableFilename();
   CString VersusPath();
+  CString OpenPPLLibraryPath();
  public:
 	void SwitchToOpenHoldemDirectory();
  private:

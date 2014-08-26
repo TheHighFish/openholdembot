@@ -341,7 +341,7 @@ void CAutoConnector::LoadScraperDLL()
 		CString	error_message = "";
 		error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
 			"Error-code: %d", filename, GetLastError());
-		OH_MessageBox_Error_Warning(error_message, "Error");
+		OH_MessageBox_Error_Warning(error_message);
 		return;
 	}
 
@@ -350,7 +350,7 @@ void CAutoConnector::LoadScraperDLL()
 
 	if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)
 	{
-		OH_MessageBox_Error_Warning("Unable to find all symbols in scraper.dll", "Error");
+		OH_MessageBox_Error_Warning("Unable to find all symbols in scraper.dll");
 		theApp.UnloadScraperDLL();
 	}
 	else

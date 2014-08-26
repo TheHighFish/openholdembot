@@ -53,7 +53,7 @@ const int k_betround_showdown = k_betround_river + 1;
 // OK
 CHandHistory::CHandHistory()
 {
-	return; //!! disabled
+	return; // !! disabled
 
 	CreateHandHistoryFile();
 	// Attempt to create a random starting game number
@@ -89,11 +89,11 @@ void CHandHistory::MakeHistory()
 		"Hand-history generator", 0);
 	return;
 	write_log(preferences.debug_handhistory(), "[CHandHistory] MakeHistory()\n");
-	CreateHandHistoryFile();//!! Bad
+	CreateHandHistoryFile();// !! Bad
 	UpdateSymbols();
 	WriteHistory();
 	SetPreviousActions();
-	outfile.close(); //!! Bad
+	outfile.close(); // !! Bad
 }
 
 // Checked

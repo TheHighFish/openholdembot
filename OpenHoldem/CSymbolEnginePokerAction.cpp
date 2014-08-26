@@ -363,8 +363,8 @@ bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, 
 CString CSymbolEnginePokerAction::SymbolsProvided() {
   CString list_of_symbols = "ac_agchair_after "
     "ac_prefloprais_pos ac_postflop_pos ac_first_into_pot ";
-  list_of_symbols += RangeOfSymbols("ac_betpos", k_first_chair, k_last_chair);
-  list_of_symbols += RangeOfSymbols("ac_dealpos", k_first_chair, k_last_chair);
+  list_of_symbols += RangeOfSymbols("ac_betpos%i", k_first_chair, k_last_chair);
+  list_of_symbols += RangeOfSymbols("ac_dealpos%i", k_first_chair, k_last_chair);
   return list_of_symbols;
 }
 

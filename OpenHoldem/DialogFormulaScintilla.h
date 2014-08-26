@@ -164,6 +164,7 @@ class CDlgFormulaScintilla : public CDialog {
   void AddStandardFunctionsToTree(HTREEITEM hParent, int first, int last);
   void DeleteFormerParentItemIfEmpty(HTREEITEM sibbling);
   void CopyTabContentsToFormulaSet();
+  void ClearCalcResult();
  protected:
   HTREEITEM FindUDFGroupItem(const char *groupName);
   HTREEITEM FindUDFStartingItem(const char *groupName);
@@ -198,6 +199,7 @@ class CDlgFormulaScintilla : public CDialog {
   CTreeCtrl		m_SymbolTree;
   CButton			m_ButtonCalc, m_FormulaCancel, m_FormulaApply;
   CEdit			  m_CalcResult;
+  CEdit			  m_CalcRelativeLine;
   CEdit			  m_SearchEdit;
   CWinMgr			m_winMgr;				// window manager
   CSizerBar		m_winMgrSizerBar;		// sizer bar
@@ -217,8 +219,9 @@ class CDlgFormulaScintilla : public CDialog {
   //   * Secondary autoplayer functions
   //   * Ini functions
   //   * PrWin functions
+  //   * ICM Functions
   //   * Debug functions
-  static const int	k_number_of_standard_headings = 5;
+  static const int k_number_of_standard_headings = 6;
   CStringArray		m_standard_functions[k_number_of_standard_headings];
   DECLARE_MESSAGE_MAP()
 

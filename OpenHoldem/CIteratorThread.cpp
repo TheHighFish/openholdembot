@@ -582,9 +582,9 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 	write_log(preferences.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 	// random replacement algorithm
 	// opponent cards
-	if (nopponents < 1) //!!!!!
-	{
-		write_log(preferences.debug_prwin(), "[PrWinThread] No opponents.\n");
+	if (nopponents < 1) {
+		write_log(preferences.debug_prwin(), "[PrWinThread] No opponents. Auto-adapting to 1.\n");
+    nopponents = 1;
 	}
 	for (int i=0; 
 		i<nopponents*k_number_of_cards_per_player; 
