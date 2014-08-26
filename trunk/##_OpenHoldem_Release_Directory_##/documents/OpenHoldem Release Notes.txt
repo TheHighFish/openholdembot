@@ -1,5 +1,5 @@
-v5.1.0 2014-08-xx
-==================
+v7.1.0 2014-08-yy
+=================
 BUG FIXES:
 - OpenHoldem did no longer evaluate the titlebar,
   because ParseStringBSL() reacted in a too conservative way
@@ -13,6 +13,38 @@ BUG FIXES:
 - The tablemap option "balancenumbersonly" could lead to a crash,
   because we used an invalid method to access the data to be modified.
   Thanks to Maniace for finding the bug and explaining the proper way.
+  [THF]
+- Detecting tournaments required a known userchair without necessity
+  and failed if we were not yet seated. 
+  Thanks to SuperBlak for reporting.
+  [THF]
+- Some SymbolsProvided()-functions needed corrections.
+  Thanks to PyBotter666 for reporting and suggesting the changes.
+  [THF]
+- After an autoplayer-action we expect a change in table-state.
+  Therefore we reset the counter of stable frames to zero after actions
+  to avoid multiple clicks within a short frame of time
+  if the casino does not update its GUI fast enough.
+  We had this safety-measure in the past, but somehow it got lost
+  when we rewrote large parts of the autoplayer.
+  Thanks to PkrBot for finding this problem.
+  [THF]
+
+MAINTENANCE:
+- OpenHoldem used 3 differents sets of rank and suit constants,
+  (WinHoldem-compatibility, DLL-interface, PrWin-simulations and StdDeck-class)
+  with countless conversions everywhere.
+  We had to unify that a bit, so symbol values of $$prX and $$ccX changed a bit  
+  Former suit constants:
+    1 -> c
+    2 -> d
+    3 -> h
+    4 -> s
+  New suit constants
+    1 -> c
+    2 -> d
+    3 -> h
+    4 -> s
   [THF]
 
 v5.0.9 2014-08-06
