@@ -546,7 +546,6 @@
 #define ID_FILE_LOAD_OPENPPL            32994
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
-#define ID_INDICATOR_STATUS_READY       61190
 #define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
