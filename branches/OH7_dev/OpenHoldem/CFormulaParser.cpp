@@ -47,6 +47,7 @@ CFormulaParser::~CFormulaParser() {
 void CFormulaParser::InitNewParse() {
   _is_parsing = true;
   CParseErrors::ClearErrorStatus();
+  _tokenizer.InitNewParse();
   _formula_file_splitter.InitNewParse();
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
@@ -494,6 +495,24 @@ CString CFormulaParser::CurrentFunctionName() {
 	return _function_name;
 }
 
+void CFormulaParser::ErrorMissingAction(int token_ID) {
+  CString error_message = "Missing action after when-condition";
+  if (token_ID == kTokenNumber) {
+    error_message += "\nFound a number. Probably missing operator";
+  } else if (token_ID == TokenIsBracketOpen(token_ID)) {
+    error_message += "\nFound a bracket. Probably missing operator";
+  } else if (token_ID == kTokenIdentifier) {
+    CString name = _tokenizer.GetTokenString();
+    if (name.Left(4) == "user") {
+      error_message += "\nFound a user-variable.\n";
+      error_message += "Correct syntax: When <condition> Set user_xyz";
+    } else {
+      error_message += "\nFound an identifier. Probably missing operator";
+    }
+  }
+  CParseErrors::Error(error_message);
+}
+
 TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   TPParseTreeNode last_when_condition = NULL;
   bool last_when_condition_was_open_ended = false;
@@ -544,7 +563,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       // Parsing successfully finished
       break;
     } else {
-      CParseErrors::Error("Missing action after when-condition");
+      ErrorMissingAction(token_ID);
       break;
     }
   }

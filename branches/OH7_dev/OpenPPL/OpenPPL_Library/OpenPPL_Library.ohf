@@ -3192,7 +3192,8 @@ isfinaltable
 // We do a bitwise XOR with 0, which doesn't change anything,
 // but to evaluate the expression OpenHoldem internally truncates the number 
 // to integer (bit-vector).
-(FloatingPointRandom_0_100 ^ 0)
+// Finally we add 0 to avoid displaying the result as binary in the debug-tab.
+((FloatingPointRandom_0_100 ^ 0) + 0)
 
 ##Random##
 IntegerRandom_0_100

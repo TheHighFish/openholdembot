@@ -431,15 +431,14 @@ void CScraper::ScrapeSlider() {
 			EvaluateRegion("i3handle", &text);
       handleI->second.left  -= k;
 			handleI->second.right -= k;
-			if (text == "handle" || text == "true") break;
-		}
-    if (text!="" && k <= j) {
-			handleCI = p_tablemap->r$()->find("i3handle");
-			handle_xy.x = handleCI->second.left + k;
-			handle_xy.y = handleCI->second.top;
-
-			set_handle_found_at_xy(true);
-			set_handle_xy(handle_xy);
+			if (text == "handle" || text == "true") {
+        handleCI = p_tablemap->r$()->find("i3handle");
+		    handle_xy.x = handleCI->second.left + k;
+		    handle_xy.y = handleCI->second.top;
+		    set_handle_found_at_xy(true);
+		    set_handle_xy(handle_xy);
+        break;
+      }
 		}
     write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
 	}

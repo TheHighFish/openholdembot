@@ -34,17 +34,21 @@ int  _token_start_pointer;
 #define TOKEN_ADDRESS         &input_buffer[_token_start_pointer]
 #define SKIP_NEXT_CHARACTER   _token_end_pointer++;
 
-CTokenizer::CTokenizer()
-{
-	line_absolute = 1;
+CTokenizer::CTokenizer() {
+  InitNewParse();
+}
+
+CTokenizer::~CTokenizer() {
+}
+
+void CTokenizer::InitNewParse() {
+  line_absolute = 1;
 	InitVars();
 }
 
-CTokenizer::~CTokenizer()
-{}
-
-void CTokenizer::InitVars()
-{
+void CTokenizer::InitVars() {
+  // Gets called once for every function
+  // Therefore we don't reset line_absolute here
 	line_relative = 1;
 	_token_start_pointer = 0;
 	_token_end_pointer = 0;
@@ -430,6 +434,8 @@ void CTokenizer::SkipToEndOfLine()
 	}
 	// And skip the end of line too
 	SKIP_NEXT_CHARACTER
+  line_absolute++;
+  line_relative++;
 }
 
 void CTokenizer::SkipToEndOfMultiLineComment()
@@ -437,6 +443,10 @@ void CTokenizer::SkipToEndOfMultiLineComment()
 	while (((CURRENT_CHARACTER != '*') || (NEXT_CHARACTER != '/'))
 		&& (CURRENT_CHARACTER != '\0'))
 	{
+    if (CURRENT_CHARACTER == '\n') {
+      line_absolute++;
+      line_relative++;
+    }
 		SKIP_NEXT_CHARACTER
 	}
 	if (CURRENT_CHARACTER == '\0')
