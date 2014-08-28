@@ -497,10 +497,17 @@ void CManualModeDlg::OnPaint()
 
 			// Draw title text
 			CString t;
-			t.Format("OpenHoldem Poker - %s%s - blinds %s/%s - ante %s",
-				(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
-				(istournament ? " tourney" : ""), 
-				sblind, bblind, ante);
+			if (istournament || atof(ante) > 0.001) {
+				t.Format("OpenHoldem Poker - %s%s - blinds %s/%s - ante %s",
+					(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
+					(istournament ? " tourney" : ""), 
+					sblind, bblind, ante);
+			}
+			else {
+				t.Format("OpenHoldem Poker - %s - blinds %s/%s",
+					(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
+					sblind, bblind);
+			}
 			SetWindowText(t);
 		}
 	}

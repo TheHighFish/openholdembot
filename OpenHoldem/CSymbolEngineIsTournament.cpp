@@ -39,8 +39,8 @@ const int k_number_of_tournament_identifiers = 45;
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=16104
-const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
-{	" ante ",		
+const CString k_tournament_identifiers[k_number_of_tournament_identifiers] = {	
+  " ante ",		
 	" ante:",
 	"(ante ",		
 	"(ante:",
@@ -64,7 +64,7 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"multi-table",
 	" nothing",
 	"-nothing",
-	"qualif ",			// french abbreviation
+	"qualif ",			  // french abbreviation
 	"qualificatif",		// french for "qualifier"
 	"qualification",
 	"qualifier",
@@ -84,11 +84,10 @@ const CString k_tournament_identifiers[k_number_of_tournament_identifiers] =
 	"super-turbo",
 	"ticket ",
 	"tour ",
-	"tournament ",		
+	"tournament "	
 };
 
-CSymbolEngineIsTournament::CSymbolEngineIsTournament()
-{
+CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -99,28 +98,25 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament()
 	assert(p_symbol_engine_time != NULL);
 }
 
-CSymbolEngineIsTournament::~CSymbolEngineIsTournament()
-{}
+CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {
+}
 
-void CSymbolEngineIsTournament::InitOnStartup()
-{
+void CSymbolEngineIsTournament::InitOnStartup() {
 	ResetOnConnection();
 }
 
-void CSymbolEngineIsTournament::ResetOnConnection()
-{
+void CSymbolEngineIsTournament::ResetOnConnection() {
 	_istournament    = k_undefined;
 	_decision_locked = false;
 }
 
-void CSymbolEngineIsTournament::ResetOnHandreset()
-{}
+void CSymbolEngineIsTournament::ResetOnHandreset() {
+}
 
-void CSymbolEngineIsTournament::ResetOnNewRound()
-{}
+void CSymbolEngineIsTournament::ResetOnNewRound() {
+}
 
-void CSymbolEngineIsTournament::ResetOnMyTurn()
-{
+void CSymbolEngineIsTournament::ResetOnMyTurn() {
 	__TRACE
 	TryToDetectTournament();
 }
@@ -133,31 +129,26 @@ void CSymbolEngineIsTournament::ResetOnHeartbeat() {
   }
 }
 
-bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike()
-{
+bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
 	// "Beautiful" numbers => tournament
 	// This condition does unfortunatelly only work for the first and final table in an MTT,
 	// not necessarily for other late tables (fractional bets, uneven sums).
 	double sum_of_all_cips = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		sum_of_all_cips += p_table_state->_players[i]._balance;
 		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
 	}
-	if (sum_of_all_cips != int(sum_of_all_cips))
-	{
+	if (sum_of_all_cips != int(sum_of_all_cips)) {
 		// Franctional number.
 		// Looks like a cash-game.
 		return false;
 	}
-	if ((int(sum_of_all_cips) % 100) != 0)
-	{
+	if ((int(sum_of_all_cips) % 100) != 0) {
 		// Not a multiplicity of 100.
 		// Probably not a tournament.
 		return false;
 	}
-	if ((int(sum_of_all_cips) % p_tablemap->nchairs()) != 0)
-	{
+	if ((int(sum_of_all_cips) % p_tablemap->nchairs()) != 0) 	{
 		// Not a multiplicity of the players originally seated (nchairs).
 		// Probably not a tournament.
 		return false;
@@ -165,53 +156,46 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike()
 	return true;
 }
 
-bool CSymbolEngineIsTournament::AntesPresent()
-{
+bool CSymbolEngineIsTournament::AntesPresent() {
 	// Antes are present, if all players are betting 
 	// and at least 3 have a bet smaller than SB 
 	// (remember: this is for the first few hands only).
 	if ((p_symbol_engine_raisers_callers->nopponentsbetting() + 1)
-		< p_symbol_engine_active_dealt_playing->nplayersseated())
-	{
+		  < p_symbol_engine_active_dealt_playing->nplayersseated()) {
 		return false;
 	}
 	int players_with_antes = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
-		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind()))
-		{
+		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
 		}
 	}
 	return (players_with_antes >= 3);
 }
 
-bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament()
-{
+bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament() {
 	CString title = p_scraper->title();
 	title = title.MakeLower();
-	for (int i=0; i<k_number_of_tournament_identifiers; i++)
-	{
-		if (title.Find(k_tournament_identifiers[i]))
-		{
+	for (int i=0; i<k_number_of_tournament_identifiers; i++) {
+    assert(k_tournament_identifiers[i] != "");
+		if (title.Find(k_tournament_identifiers[i]) != -1) 	{
 			return true;
 		}
 	}
 	return false;
 }
 
-void CSymbolEngineIsTournament::TryToDetectTournament()
-{
+void CSymbolEngineIsTournament::TryToDetectTournament() {
 	__TRACE
-	if (_istournament != k_undefined)
+	if (_istournament != k_undefined) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
-	else
+  } else {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = unknown\n");
+  }
 	// Don't do anything if we are already sure.
 	// Don't mix things up.
-	if (_decision_locked)
-	{
+	if (_decision_locked) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
@@ -220,41 +204,36 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// Also checking for (elapsedauto < elapsed). i.e. at least one action
 	// since connection, as handsplayed does not reset if we play multiple games.
 	if ((_istournament != k_undefined)
-		&& (p_game_state->hands_played() > 2)
-		&& (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed()))
-	{
+		  && (p_game_state->hands_played() > 2)
+		  && (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed())) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
 		_decision_locked = true;
 		return;
 	}
 	// If the blinds are "too low" then we play a cash-game.
 	double bigblind = p_symbol_engine_tablelimits->bblind();
-	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament))
-	{
+	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
 		_istournament    = false;
 		_decision_locked = true;
 		return;
 	}
 	// If the title-string looks like a tournament then it is a tournament.
-	if (TitleStringLooksLikeTournament())
-	{
+	if (TitleStringLooksLikeTournament())	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
 	// If there are antes then it is a tournament.
-	if (AntesPresent())
-	{
+	if (AntesPresent())	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
 	// If bets and balances are "tournament-like", then it is a tournament
-	if (BetsAndBalancesAreTournamentLike())
-	{
+	if (BetsAndBalancesAreTournamentLike())	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Bets and balances look like tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
@@ -269,8 +248,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// This leaves us with only 2 cases
 	// * medium and high-stakes cash-games ($5/$10 and above)
 	// * some (very few) later tables of MTTs
-	if (bigblind > k_large_bigblind_probably_later_table_in_tournament)
-	{
+	if (bigblind > k_large_bigblind_probably_later_table_in_tournament) {
 		// Probably tournament, but not really sure yet,
 		// so don't lock the decision.
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] bigblind very large; probably tournament\n");
@@ -289,11 +267,9 @@ void CSymbolEngineIsTournament::TryToDetectTournament()
 	// but only for the current hand. Does this hurt much?
 }
 
-bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
-{ 
+bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */) { 
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12)
-	{
+	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12) {
 		*result = istournament();
 		// Valid symbol
 		return true;
