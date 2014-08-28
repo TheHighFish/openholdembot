@@ -11,9 +11,6 @@
 #include "xmlrpc.h"
 #include <windows.h>
 
-// Cards
-#define CARD_BACK		0xff
-#define CARD_NOCARD		0xfe
 
 // Limits
 #define LIMIT_NL		0

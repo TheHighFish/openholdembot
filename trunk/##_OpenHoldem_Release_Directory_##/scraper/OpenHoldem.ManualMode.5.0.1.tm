@@ -24,8 +24,10 @@ s$swagdeletionmethod        Nothing
 s$swagtextmethod            2
 s$t0type                    fuzzy
 s$titletext                 Poker
-s$ttlimits                  ^*- ^L - blinds ^s/^b - ante ^a
-s$ttlimits0                 ^*- ^L tourney - blinds ^s/^b - ante ^a
+s$ttlimits                  ^*- ^L - blinds ^s/^b
+s$ttlimits0                 ^*- ^L - blinds ^s/^b - ante ^a
+s$ttlimits1                 ^*- ^L tourney - blinds ^s/^b - ante ^a
+
 
 //
 // regions
