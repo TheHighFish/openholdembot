@@ -63,7 +63,6 @@ protected: // create from serialization only
 	afx_msg void OnPerlCheckSyntax();
 	afx_msg void OnPerlReloadFormula();
 	afx_msg void OnHelpProblemSolver();
-
 public:
 	afx_msg void OnHelp();
 	afx_msg void OnHelpOpenPPL();
@@ -88,7 +87,6 @@ public:
 	void StartTimer();
 	void ResetDisplay();
 	void KillTimer();
-
 public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators

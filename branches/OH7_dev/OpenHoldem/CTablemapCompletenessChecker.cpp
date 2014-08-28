@@ -162,7 +162,16 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CheckItem("swagtextmethod");
     CheckItem("swagconfirmationmethod");
     CheckItem("i3edit");
-    // Not checked: existence of slider, depending on allin-method
+    // i3edit ("swagging") needs a swagconfirmation-button,
+    // which might be something different than min-raise-button.
+    CheckItem("i3button");
+    CheckItem("i3state");
+    CheckItem("i3label");
+    // Slider, depending on allin-method
+    if (p_tablemap->allinmethod == 3) {
+      CheckItem("i3slider");
+      CheckItem("i3handle");
+    }
   }
   // Font-types
   for (int i=0; i<k_max_number_of_font_groups_in_tablemap; ++i) {

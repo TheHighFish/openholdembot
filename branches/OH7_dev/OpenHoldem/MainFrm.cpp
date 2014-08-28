@@ -619,10 +619,17 @@ void CMainFrame::OnMinMax(void)
 	else 
 	{
 		MoveWindow(_table_view_size.left, _table_view_size.top,
-				   _table_view_size.right - _table_view_size.left,
-				   _table_view_size.bottom - _table_view_size.top, true);
+		  _table_view_size.right - _table_view_size.left,
+			_table_view_size.bottom - _table_view_size.top, true);
 	}
 }
+/*!!!!!
+void CMainFrame::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI) {
+  // set the minimum tracking width
+  // and the minimum tracking height of the window
+  lpMMI->ptMinTrackSize.x = 300;
+  lpMMI->ptMinTrackSize.y = 350;
+}*/
 
 void CMainFrame::OnAttachTop(void) 
 {
