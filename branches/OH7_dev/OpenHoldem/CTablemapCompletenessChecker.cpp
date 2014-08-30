@@ -168,7 +168,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CheckItem("i3state");
     CheckItem("i3label");
     // Slider, depending on allin-method
-    if (p_tablemap->allinmethod == 3) {
+    if (p_tablemap->allinmethod() == 3) {
       CheckItem("i3slider");
       CheckItem("i3handle");
     }
