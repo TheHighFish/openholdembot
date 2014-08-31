@@ -26,14 +26,18 @@ CTablemapCompletenessChecker::~CTablemapCompletenessChecker() {
 
 void CTablemapCompletenessChecker::ErrorMissingItem(CString item) {
   CString message;
-  message.Format("Missing item in tablemap: %s\n%s", 
+  message.Format("Missing item in tablemap: %s.\n
+    "This item is absolutely necessary for correct execution.\n"
+    "%s", 
     item, p_tablemap->filepath());
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
   CString message;
-  message.Format("Deprecated item in tablemap: %s\n%s", 
+  message.Format("Deprecated item in tablemap: %s.\n"
+    "You can safely delete this item from the tablemap.\n"
+    "%s", 
     item, p_tablemap->filepath());
   OH_MessageBox_Interactive(message, "Error", 0);
 }
@@ -112,7 +116,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
   int nchairs = p_tablemap->nchairs();
   if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
     CString message;
-    message.Format("Tablemap item nchairs out of range\n%s",
+    message.Format("Tablemap item nchairs out of range\n"
+      "Correct values: 2..10\n"
+      "%s",
       p_tablemap->filepath());
     OH_MessageBox_Interactive(message, "Error", 0);
   }
@@ -151,7 +157,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CString message;
     message.Format(
       "A tablemap needs at least 3 buttons:\n" 
-      "Fold, Check/Call, Bet/Raise\n%s",
+      "  Fold, Check/Call, Bet/Raise\n"
+      "At least one of them is missing.\n"
+      "%s",
       p_tablemap->filepath());
     OH_MessageBox_Interactive(message, "Error", 0);
   }
