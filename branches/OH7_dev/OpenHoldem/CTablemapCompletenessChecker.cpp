@@ -26,7 +26,7 @@ CTablemapCompletenessChecker::~CTablemapCompletenessChecker() {
 
 void CTablemapCompletenessChecker::ErrorMissingItem(CString item) {
   CString message;
-  message.Format("Missing item in tablemap: %s.\n
+  message.Format("Missing item in tablemap: %s.\n"
     "This item is absolutely necessary for correct execution.\n"
     "%s", 
     item, p_tablemap->filepath());
@@ -50,7 +50,7 @@ void CTablemapCompletenessChecker::CheckItem(CString item) {
 
 void CTablemapCompletenessChecker::CheckItem(CString prefix, int infix, CString postfix) {
   CString name;
-  naöme.Format("%s%d%s", prefix, infix, postfix);
+  name.Format("%s%d%s", prefix, infix, postfix);
   CheckItem(name);
 }
 
@@ -112,6 +112,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckItem("sitename"); 
   CheckItem("titletext");
   CheckItem("ttlimits");
+  // Not "necessary" because of defaults,
+  // but making the user aware avoids many PEBKACs
+  CheckItem("handresetmethod");
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
