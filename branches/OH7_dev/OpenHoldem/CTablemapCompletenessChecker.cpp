@@ -50,7 +50,7 @@ void CTablemapCompletenessChecker::CheckItem(CString item) {
 
 void CTablemapCompletenessChecker::CheckItem(CString prefix, int infix, CString postfix) {
   CString name;
-  name.Format("%s%d%s", prefix, infix, postfix);
+  naöme.Format("%s%d%s", prefix, infix, postfix);
   CheckItem(name);
 }
 

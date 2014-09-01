@@ -130,19 +130,22 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   CString function_name_lower_case = function_header;
   function_name_lower_case.MakeLower();
   if (function_name_lower_case.Left(6) == "custom") {
-    CParseErrors::Error("Superfluous keyword custom");
+    CParseErrors::Error("Superfluous keyword custom.\n"
+      "OpenPPL 7.0 is somewhat different than old-style OpenPPL and Shanky-PPL.\n"
+      "Please have a look at the manual for all the differences.\n"
+      "It really matters!\n");
     return false;
   } else if ((function_name_lower_case.Left(7) == "preflop")
 	    || (function_name_lower_case.Left(4) == "flop")
 	    || (function_name_lower_case.Left(4) == "turn")
 	    || (function_name_lower_case.Left(5) == "river")) {
     CParseErrors::Error("Shanky-style betrounds.\n"
-      "OpenHoldem-style function expected\n"
-      "Example: ##f$preflop##");
+      "OpenHoldem-style function expected.\n"
+      "Example: ##f$preflop##\n");
     return false;
   } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function.\n"
-      "OpenHoldem-style ##f$function## expected");
+      "OpenHoldem-style ##f$function## expected.\n");
     return false;
   } else if ((function_name_lower_case.Left(2) == "//")
       || (function_name_lower_case.Left(2) == "/*")) {
@@ -150,17 +153,19 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
       "Technically a formula-file is a set of functions\n"
       "and every comment belongs to such a function.\n"
       "A top-level comment outside of a function would get lost.\n"
-      "Please put it for example into \"##notes##\".");
+      "Please put it for example into \"##notes##\".\n");
     return false;
   } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
-      "Expecting a ##f$function## or ##listXYZ##");
+      "Options are not supported, because OpenPPL does not provide a default bot.\n"
+      "They need to be removed.\n"
+      "Expecting a ##f$function## or ##listXYZ## instead.\n");
     return false;
   }
   // Leading ## found
   _function_name = function_header.TrimRight();
   if (_function_name.Right(2) != "##") {
-    CParseErrors::Error("Malformed function-header. Trailing ## expected");
+    CParseErrors::Error("Malformed function-header. Trailing ## expected.\n");
     return false;
   }
   // Get rid pf ## at both ends
@@ -169,7 +174,8 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
   _function_name = _function_name.Left(length - 2);
   _function_name = _function_name.Right(length - 4);
   if (_function_name.GetLength() <= 0) {
-    CParseErrors::Error("Empty function or list name");
+    CParseErrors::Error("Empty function or list name.\n"
+      "Expecting a ##f$function## here.\n");
     return false;
   }
   return true;
@@ -180,7 +186,7 @@ bool CFormulaParser::ExpectConditionalThen() {
 	if (token_ID != kTokenOperatorConditionalElse)
 	{
 		CParseErrors::Error("Malformed conditional expression. \":\" expected,\n"
-      "but this could also be a missing operator or wrong bracket.");
+      "but this could also be a missing operator or wrong bracket.\n");
 		return false;
 	}
 	return true;
@@ -192,7 +198,7 @@ void CFormulaParser::CheckForExtraTokensAfterEndOfFunction()
 	if ((token_ID != kTokenEndOfFile)
 		&& (token_ID != kTokenEndOfFunction))
 	{
-		CParseErrors::Error("Unexpected token(s) after end of function");
+		CParseErrors::Error("Unexpected token(s) after end of function.\n");
 	}
 	// Nothing more to do here, not even returning a result.
 	// We are finished and just warn about the extra input.
@@ -211,8 +217,8 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
 	case kTokenBracketOpen_3:
 		if (expected_bracket_close == kTokenBracketClose_3) return;
 	}
-	CParseErrors::Error("Expecting closing bracket\n" 
-    "(or bracket of another type)."); 
+	CParseErrors::Error("Expecting a closing bracket\n" 
+    "(or bracket of another type).\n"); 
 }
 
 void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
@@ -251,7 +257,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
       "[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
     return;
   } else if (!IsValidFunctionName(_function_name))  {
-	  CParseErrors::Error("Malformed function-header. Name expected");
+	  CParseErrors::Error("Malformed function-header.\n"
+      "Expecting a ##f$function## here.\n");
 	  return;
   }
   if (_function_name == "f$debug") {
@@ -294,7 +301,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     // This is just a special type of global comment.
   }
   else {
-    CParseErrors::Error("Found unknown function type. Did you forget \"f$\"?\n");
+    CParseErrors::Error("Found unknown function type.\n"
+      "Did you forget \"f$\"?\n");
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
@@ -327,7 +335,12 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
 		}
 		else
 		{
-			CParseErrors::Error("Unexpected token inside list");
+			CParseErrors::Error("Unexpected token inside list.\n"
+        "This does not look like valid hole-cards.\n"
+        "Allowed are\n:
+        "  AA KK... pairs\n"
+        "  AKs AQo... suited hands\n" 
+        "  AKo AQo... offsuited hands\n");
 			return;
 		}
 		token_ID = _tokenizer.GetToken();
@@ -375,7 +388,7 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 		expression = ParseSimpleExpression();
 	}	else {
 		CParseErrors::Error("Unexpected token inside expression.\n" 
-      "Expecting: opening bracket, unary operator, identifier or number.");
+      "Expecting: opening bracket, unary operator, identifier or number.\n");
 		return NULL;
 	}
 	token_ID = _tokenizer.LookAhead();
@@ -496,18 +509,18 @@ CString CFormulaParser::CurrentFunctionName() {
 }
 
 void CFormulaParser::ErrorMissingAction(int token_ID) {
-  CString error_message = "Missing action after when-condition";
+  CString error_message = "Missing action after when-condition\n";
   if (token_ID == kTokenNumber) {
-    error_message += "\nFound a number. Probably missing operator";
+    error_message += "Found a number. Probably missing operator\n";
   } else if (token_ID == TokenIsBracketOpen(token_ID)) {
-    error_message += "\nFound a bracket. Probably missing operator";
+    error_message += "Found a bracket. Probably missing operator\n";
   } else if (token_ID == kTokenIdentifier) {
     CString name = _tokenizer.GetTokenString();
     if (name.Left(4) == "user") {
-      error_message += "\nFound a user-variable.\n";
-      error_message += "Correct syntax: When <condition> Set user_xyz";
+      error_message += "Found a user-variable.\n";
+      error_message += "Correct syntax: When <condition> Set user_xyz\n";
     } else {
-      error_message += "\nFound an identifier. Probably missing operator";
+      error_message += "\nFound an identifier. Probably missing operator\n";
     }
   }
   CParseErrors::Error(error_message);
@@ -575,13 +588,13 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
   int token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
     CParseErrors::Error("Unexpected token.\n"
-      "User-variable or memory-store-command expected.");
+      "User-variable or memory-store-command expected.\n");
 		return NULL;
   }
 	CString identifier = _tokenizer.GetTokenString();
-	if (identifier.Left(4).MakeLower() != "user") {
+	if (identifier.Left(4).MakeLower() != "user") { 
 		CParseErrors::Error("Unexpected identifier.\n"
-      "User-variable or memory-store-command expected.");
+      "User-variable or memory-store-command expected.\n");
 		return NULL;
 	}
 	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
@@ -635,7 +648,7 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 		if (_token_ID == kTokenUnsupportedDelay) {
 			CParseErrors::Error("Unsupported Shanky-style delay.\n"
         "OpenHoldem provides a far more simple\n"
-        "and far more powerful f$delay-function for that");
+        "and far more powerful f$delay-function for that.\n");
 			// And consume 2 tokens to avoid further messages;
 			_token_ID = _tokenizer.GetToken();
 			_token_ID = _tokenizer.GetToken();
@@ -647,12 +660,12 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
     // Probably Shanky-style betsizing
     CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
       "Did you attempt to specify a betsize the old Shanky way?\n"
-      "Then either use RaiseTo or RaiseBy.");
+      "Then either use RaiseTo or RaiseBy.\n");
     return false;
 
   }
   // General error message on missing keyword force
-	CParseErrors::Error("Missing keyword FORCE");
+	CParseErrors::Error("Missing keyword FORCE after action.\n");
 	return false;
 }
 
@@ -668,7 +681,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseToExpression() {
 		expression = ParseExpression();
 	} else {
     CParseErrors::Error("Missing expression after keyword RaiseTo.\n"
-      "Expecting the betsize in big blinds.");
+      "Expecting the betsize in big blinds.\n");
     return NULL;
   }
 	action->MakeRaiseToAction(expression);
@@ -689,8 +702,9 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseByExpression() {
 		  || TokenIsBracketOpen(_token_ID)){
 		expression = ParseExpression();
 	} else {
-    CParseErrors::Error("Missing expression after keyword RaiseTo.\n"
-      "Expecting the betsize in big blinds.");
+    CParseErrors::Error("Missing expression after keyword RaiseBy.\n"
+      "Expecting the betsize in big blinds or a potsize-expression.\n"
+      "Example: WHEN ... RAISEBY 60% FORCE\n");
     return NULL;
   }
 	_token_ID = _tokenizer.LookAhead();

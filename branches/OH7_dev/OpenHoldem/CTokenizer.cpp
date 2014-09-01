@@ -404,7 +404,7 @@ NegativeNumber:
 	CParseErrors::Error("Unexpected character.\n"
     "Maybe you are a little yellow chinese man,\n"
     "maybe you wrote old greek or hebrew,\n"
-    "maybe you took MS-Word instead of a serious text-editor?");
+    "maybe you took MS-Word instead of a serious text-editor?\n");
   // Can't really continue parsing
   // Treat it as end of function
 	return kTokenEndOfFunction;
@@ -414,7 +414,8 @@ char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
 	// >= because we need one additional char for \0.
 	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
-		CParseErrors::Error("Identifier exceeds maximum of 256 chars");
+		CParseErrors::Error("Identifier exceeds technical maximum of 256 characters.\n"
+      "WeHaveAVerbosityFetishTooButWhatYouDidIsProbablyABitTooMuch.\n");
 	}
 	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
 	last_token_string[SIZE_OF_TOKEN] = '\0';
@@ -451,7 +452,11 @@ void CTokenizer::SkipToEndOfMultiLineComment()
 	}
 	if (CURRENT_CHARACTER == '\0')
 	{
-		CParseErrors::Error("End of function reached while looking for end of comment.");
+		CParseErrors::Error("End of function reached while looking for end of comment.\n"
+      "/*\n
+      "  Every multi-line comment needs to be terminated\n"
+      "  by a star and a slash.\n"
+      "*/\n");
 		SKIP_NEXT_CHARACTER
 	}
 	else
@@ -486,7 +491,7 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
         CString error_message;
         error_message.Format(
           "Found identifier \"%s\"\n"
-          "Did you mean \"%s\"?",
+          "Did you mean \"%s\"?\n",
           token_string,
           kOpenPPLActionStrings[i]);
         CParseErrors::Error(error_message);
