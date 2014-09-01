@@ -14,19 +14,19 @@
 #ifndef INC_CFILESYSTEM_MONITOR_H
 #define INC_CFILESYSTEM_MONITOR_H
 
-class CFileSystemMonitor
-{
-public:
+class CFileSystemMonitor {
+ public:
 	CFileSystemMonitor();
 	~CFileSystemMonitor();
-public:
+ public:
 	bool AnyChanges();
-private:
+ private:
 	void InitMonitor();
-private:
+ private:
 	CString absolute_path_to_scraper_directory;
-	DWORD dwWaitStatus; 
+	DWORD  dwWaitStatus; 
 	HANDLE dwChangeHandle;
+  bool _scraper_directory_on_a_network_drive;
 };
 
 extern CFileSystemMonitor * p_filesystem_monitor;

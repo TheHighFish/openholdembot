@@ -51,6 +51,13 @@ BUG FIXES:
   when we rewrote large parts of the autoplayer.
   Thanks to PkrBot for finding this problem.
   [THF]
+- The file-system-monitor that checks for changed tablemaps
+  and automatically reloads them does not work with network mapped drives.
+  Having OpenHoldem and its scraper-directory at such pseudo-drives
+  could lead to crashes. We do now use PathIsNetworkPath() to check that
+  and turn the fiel-system-monitor off.
+  Thanks to PyBotter666 for reporting that problem.
+  [THF]
 
 MAINTENANCE:
 - OpenHoldem used 3 differents sets of rank and suit constants,
