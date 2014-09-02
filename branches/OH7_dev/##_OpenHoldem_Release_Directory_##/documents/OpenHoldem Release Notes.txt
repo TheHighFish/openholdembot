@@ -61,6 +61,10 @@ BUG FIXES:
 - An option in the preferences deialog for replay-frames was broken.
   Thanks to Ryuk33 for reporting.
   [THF]
+- OpenHoldem did not close all helper threads when it automatically shut down
+  when using the option "close when table disappears". 
+  Thanks to Pippo21 for reporting the assertion.
+  [THF]
 
 MAINTENANCE:
 - OpenHoldem used 3 differents sets of rank and suit constants,
