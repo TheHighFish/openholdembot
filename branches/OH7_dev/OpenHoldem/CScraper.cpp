@@ -1,4 +1,4 @@
-//*****************************************************************************
+ScrapeCard(//*****************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
@@ -506,8 +506,12 @@ int CScraper::ScrapeNoCard(CString base_name){
   CString no_card_result;
   if (EvaluateRegion(card_no_card, &no_card_result) 
 		  && (no_card_result == "true"))	{
+    write_log(preferences.debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> true\n",
+      card_no_card);
     return CARD_NOCARD;
   }
+  write_log(preferences.debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> false\n",
+      card_no_card);
   return CARD_UNDEFINED;
 }
 
@@ -537,6 +541,12 @@ int CScraper::ScrapeCard(CString name) {
   result = ScrapeCardback(uname);
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
+  write_log(k_always_log_errors, 
+    "[CScraper] WARNING ScrapeCard(%s) found nothing\n");
+  write_log(k_always_log_errors, 
+    "[CScraper] Not nocard, no cards and no cardbacks.\n");
+  write_log(k_always_log_errors,
+    "[CScraper] Defaulting to cardbacks (players) / nocard (board)\n");
   if (name[0] == 'p') {
     // Currently we have a problem with cardbacks,
     // but whatever we try to scrape is not NOCARD and not a card.

@@ -78,7 +78,6 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"swag_use_comma",
 	"replay_record",
 	"log_basic_info",
-	"log_errors_and_warnings",
 	"trace_enabled",
 	"basic_logging_enabled",
 	"error_logging_enabled",
