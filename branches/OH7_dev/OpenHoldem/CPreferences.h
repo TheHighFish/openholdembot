@@ -87,8 +87,6 @@ enum
 	k_prefs_engage_autoplayer,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
-	k_prefs_replay_record_every_change_playing,
-	k_prefs_replay_record_every_change,
 	k_prefs_log_basic_info,
 	k_prefs_log_errors_and_warnings,
 	k_prefs_trace_enabled,
@@ -198,10 +196,8 @@ public:
 	// Scraper
 	const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
 	// Replay Frames
-	const bool replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
-	const bool replay_record_every_change() { return prefs_numerical_values[k_prefs_replay_record_every_change]; }
+	const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
 	const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
-	const bool replay_record_every_change_playing() { return prefs_numerical_values[k_prefs_replay_record_every_change_playing]; }
 	// Poker Tracker
 	const CString pt_ip_addr() { return prefs_CString_values[k_prefs_pt_ip_addr]; }
 	const CString pt_port() { return prefs_CString_values[k_prefs_pt_port]; }

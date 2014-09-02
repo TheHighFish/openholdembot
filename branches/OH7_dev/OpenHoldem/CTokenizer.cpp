@@ -453,7 +453,7 @@ void CTokenizer::SkipToEndOfMultiLineComment()
 	if (CURRENT_CHARACTER == '\0')
 	{
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
-      "/*\n
+      "/*\n"
       "  Every multi-line comment needs to be terminated\n"
       "  by a star and a slash.\n"
       "*/\n");

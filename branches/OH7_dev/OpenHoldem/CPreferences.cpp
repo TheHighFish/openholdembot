@@ -77,8 +77,6 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
-	"replay_record_every_change_playing",
-	"replay_record_every_change",
 	"log_basic_info",
 	"log_errors_and_warnings",
 	"trace_enabled",

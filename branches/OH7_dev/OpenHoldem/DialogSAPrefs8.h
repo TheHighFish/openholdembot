@@ -34,17 +34,13 @@ protected:
 	virtual void OnOK();
 
 	enum { IDD = IDD_SAPREFS8 };
-
-	DECLARE_MESSAGE_MAP()
-
 public:
-	CButton m_RecordFrames;
+	CButton m_RecordNever;
 	CButton m_RecordMyTurn;
+  CButton m_RecordEveryChangePlaying;
 	CButton m_RecordEveryChange;
 	CEdit m_MaxFrames;
-	CButton m_RecordEveryChangePlaying;
 	CSpinButtonCtrl m_MaxFramesSpin;
-	afx_msg void OnBnClickedRecordFrames();
 };
 
 

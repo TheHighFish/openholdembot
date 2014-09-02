@@ -136,23 +136,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
   write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
   new_scrape = !NOTHING_CHANGED;
   p_lazyscraper->DoScrape();
-
-  // Necessary to pre-compute some info
-  // which is needed by the symbol-engines. ??
-  p_scraper_access->GetNeccessaryTablemapObjects();
-
-		if (new_scrape!=NOTHING_CHANGED) {
-			p_engine_container->EvaluateAll();
-			// Shoot replay-frame if desired
-			// a) on every change
-			if (preferences.replay_record_every_change() 
-				  // b) on every change when in hand
-				  || (preferences.replay_record_every_change_playing()
-					  && p_table_state->User()->HasKnownCards())) {
-				p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
-			}
-		}
-
+  
 	// Necessary to pre-compute some info 
 	// which is needed by the symbol-engines.
 	p_scraper_access->GetNeccessaryTablemapObjects();
@@ -162,9 +146,9 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 		p_engine_container->EvaluateAll();
 		// Shoot replay-frame if desired
 		// a) on every change
-		if (preferences.replay_record_every_change() 
+		if (preferences.replay_record() == 5
 			// b) on every change when in hand
-			|| (preferences.replay_record_every_change_playing()
+			|| (preferences.replay_record() == 4
 				&& p_table_state->User()->HasKnownCards())) {
 			p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 		}

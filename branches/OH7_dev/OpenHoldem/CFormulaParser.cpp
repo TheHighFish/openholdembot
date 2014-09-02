@@ -337,8 +337,8 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
 		{
 			CParseErrors::Error("Unexpected token inside list.\n"
         "This does not look like valid hole-cards.\n"
-        "Allowed are\n:
-        "  AA KK... pairs\n"
+        "Allowed are\n:"
+        "  AA  KK...  pairs\n"
         "  AKs AQo... suited hands\n" 
         "  AKo AQo... offsuited hands\n");
 			return;

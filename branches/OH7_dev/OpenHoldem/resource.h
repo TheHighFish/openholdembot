@@ -318,12 +318,11 @@
 #define IDC_CHECK168                    1281
 #define IDC_CHECK169                    1282
 #define IDC_HANDLIST_NAME               1283
-#define IDC_RECORD_FRAMES               1284
+#define IDC_RECORD_NEVER                1284
 #define IDC_RECORD_EVERY_CHANGE         1285
 #define IDC_MAXFRAMES                   1286
 #define IDC_MAXFRAMES_SPIN              1287
 #define IDC_FORMULA_TAB                 1288
-#define IDC_RECORD_FRAMES3              1288
 #define IDC_MAXFRAMES2                  1288
 #define IDC_RANDOM_DELAY                1288
 #define IDC_MAXFRAMES_SPIN2             1289

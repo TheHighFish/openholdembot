@@ -58,6 +58,9 @@ BUG FIXES:
   and turn the fiel-system-monitor off.
   Thanks to PyBotter666 for reporting that problem.
   [THF]
+- An option in the preferences deialog for replay-frames was broken.
+  Thanks to Ryuk33 for reporting.
+  [THF]
 
 MAINTENANCE:
 - OpenHoldem used 3 differents sets of rank and suit constants,
