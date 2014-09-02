@@ -63,7 +63,7 @@ BUG FIXES:
   [THF]
 - OpenHoldem did not close all helper threads when it automatically shut down
   when using the option "close when table disappears". 
-  Thanks to Pippo21 for reporting the assertion.
+  Thanks to Ryuk33 for reporting the assertion.
   [THF]
 
 MAINTENANCE:
