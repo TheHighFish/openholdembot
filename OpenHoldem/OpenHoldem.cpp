@@ -285,6 +285,7 @@ void COpenHoldemApp::FinishInitialization()
 int COpenHoldemApp::ExitInstance()
 {
 	__TRACE
+  StopThreads();
 	DeleteAllSingletons();
 	stop_log();
 	Scintilla_ReleaseResources();
