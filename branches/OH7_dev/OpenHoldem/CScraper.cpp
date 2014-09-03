@@ -542,7 +542,7 @@ int CScraper::ScrapeCard(CString name) {
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
   write_log(k_always_log_errors, 
-    "[CScraper] WARNING ScrapeCard(%s) found nothing\n");
+    "[CScraper] WARNING ScrapeCard(%s) found nothing\n", name);
   write_log(k_always_log_errors, 
     "[CScraper] Not nocard, no cards and no cardbacks.\n");
   write_log(k_always_log_errors,

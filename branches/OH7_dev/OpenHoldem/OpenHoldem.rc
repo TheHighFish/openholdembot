@@ -300,7 +300,7 @@ BEGIN
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,66,208,8
     LTEXT           "https://sites.google.com/site/openholdempokerbot/downloads",IDC_STATIC,32,78,208,8
-    LTEXT           "Disclaimer: tbis is an open-source project.",IDC_STATIC,32,98,208,8,SS_NOPREFIX
+    LTEXT           "Disclaimer: this is an open-source project.",IDC_STATIC,32,98,208,8,SS_NOPREFIX
     LTEXT           "We are not related to any shops, stores and/or scam-artists.",IDC_STATIC,32,110,208,8,SS_NOPREFIX
     DEFPUSHBUTTON   "OK",IDOK,108,134,50,16,WS_GROUP
 END
@@ -379,25 +379,25 @@ IDD_SAPREFS2 DIALOGEX 0, 0, 219, 189
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "Frame delay (0-9 Frames)",IDC_STATIC,8,4,82,8
-    EDITTEXT        IDC_FRAMEDELAY,113,2,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_FRAMEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,2,11,14
     GROUPBOX        "Autoplayer delays",IDC_STATIC,8,19,177,87
+    LTEXT           "Stable frames required (0-9)",IDC_STATIC,8,4,82,8
+    EDITTEXT        IDC_FRAMEDELAY,139,2,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_FRAMEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,2,11,14
     LTEXT           "Button click delay (0-5000 ms)",IDC_STATIC,15,36,111,8
-    EDITTEXT        IDC_CLICKDELAY,139,31,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_CLICKDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,29,11,14
+    EDITTEXT        IDC_CLICKDELAY,139,34,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_CLICKDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,34,11,14
     LTEXT           "Select to delete (0-5000 ms)",IDC_STATIC,15,53,92,8
-    EDITTEXT        IDC_SWAGDELAY1,139,48,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SWAGDELAY1_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,48,11,14
+    EDITTEXT        IDC_SWAGDELAY1,139,51,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SWAGDELAY1_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,51,11,14
     LTEXT           "Delete to entry (0-5000 ms)",IDC_STATIC,15,71,90,8
-    EDITTEXT        IDC_SWAGDELAY2,139,66,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SWAGDELAY2_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,68,11,14
-    LTEXT           "Entry to confirm (0-5000 ms)",IDC_STATIC,15,88,93,8
-    EDITTEXT        IDC_SWAGDELAY3,139,83,28,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,83,11,14
+    EDITTEXT        IDC_SWAGDELAY2,139,69,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SWAGDELAY2_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,69,11,14
+    LTEXT           "Entry to confirm (0-5000 ms)",IDC_STATIC,15,86,93,8
+    EDITTEXT        IDC_SWAGDELAY3,139,84,28,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,84,11,14
     CONTROL         "Engage autoplayer automatically upon connection",IDC_AUTOPLAYER_UPON_CONNECTION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,113,199,10
-    CONTROL         "Use 'comma' instead of 'dot' for fractional SWAGs",IDC_SWAGUSECOMMA,
+    CONTROL         "Use 'comma' instead of 'dot' for fractional betsizes",IDC_SWAGUSECOMMA,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,173,10
 END
 
@@ -413,9 +413,9 @@ IDD_SAPREFS4 DIALOGEX 0, 0, 261, 159
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_SCRAPEDELAY,120,8,69,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_SCRAPEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,189,9,11,11
     LTEXT           "Scrape delay (100-5000 ms)",IDC_STATIC,4,12,90,8
+    EDITTEXT        IDC_SCRAPEDELAY,120,10,69,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SCRAPEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,189,10,11,12
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155
@@ -668,17 +668,18 @@ IDD_SAPREFS8 DIALOGEX 0, 0, 222, 238
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
+    GROUPBOX        "Shoot replay-frames",IDC_STATIC,4,8,175,74
     CONTROL         "Never",IDC_RECORD_NEVER,"Button",BS_AUTORADIOBUTTON,7,20,147,8
     CONTROL         "When it's my turn",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,7,36,138,10
     CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
                     "Button",BS_AUTORADIOBUTTON,7,52,147,8
     CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,
                     "Button",BS_AUTORADIOBUTTON,7,68,143,10
-    EDITTEXT        IDC_MAXFRAMES,100,99,50,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,99,11,12
     LTEXT           "Maximum frames to store ",IDC_STATIC,4,103,96,8
-    GROUPBOX        "Record",IDC_STATIC,4,8,175,74
-    LTEXT           "Hint: if you want to shoot replay-frames for a completely new casino you will need at least a very minimalistic tablemap with correct sizes and title-string.",IDC_STATIC,4,161,186,37
+    EDITTEXT        IDC_MAXFRAMES,100,101,50,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXFRAMES_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,150,101,11,12
+    LTEXT           "If you want to shoot replay-frames for a completely new casino you will need at least a very minimalistic tablemap with correct sizes and title-string.",IDC_STATIC,4,130,186,37
+    LTEXT           "Replay-frames are a combination of images (bitmaps) and HTML-files with additional info. If you get asked for replay-frames for trouble-shooting please include both.",IDC_STATIC,4,170,186,37
 END
 
 IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
@@ -695,35 +696,35 @@ IDD_SAPREFS10 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_MINIMUM_DELAY,80,20,78,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MINIMUM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,18,11,14
+    GROUPBOX        "Safety measures",IDC_STATIC,4,5,194,56
     LTEXT           "Minimum delay ",IDC_STATIC,16,24,54,8
-    EDITTEXT        IDC_RANDOM_DELAY,80,36,78,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_RANDOM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,34,11,14
+    EDITTEXT        IDC_MINIMUM_DELAY,80,22,78,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MINIMUM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,22,11,14
     LTEXT           "Random delay ",IDC_STATIC,16,39,51,9
+    EDITTEXT        IDC_RANDOM_DELAY,80,37,78,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_RANDOM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,37,11,14
     LTEXT           " (sec)",IDC_STATIC,169,24,40,8
     LTEXT           " (sec)",IDC_STATIC,169,40,30,8
-    GROUPBOX        "Safety measures",IDC_STATIC,4,5,194,56
 END
 
 IDD_SAPREFS11 DIALOGEX 0, 0, 219, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,90,11,7
-    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,89,145,8
-    EDITTEXT        IDC_MAXIMUM_LOG,163,90,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,104,116,8
-    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,98,31,14,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,98,11,14
     GROUPBOX        "Basic Logging",IDC_STATIC,0,0,205,80
-    CONTROL         "Basic Info",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,16,88,9
+    CONTROL         "Basic Info",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,16,88,9
     CONTROL         "Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,32,139,8
-    CONTROL         "Errors and Warnings",IDC_ENABLE_ERROR_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,48,105,8
+    CONTROL         "Errors and Warnings",IDC_ENABLE_ERROR_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,48,105,8
     CONTROL         "DLL Messages",IDC_ENABLE_DLL_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,64,105,8
+    LTEXT           "Maximum symbols to log ",IDC_STATIC,6,90,145,8
+    EDITTEXT        IDC_MAXIMUM_LOG,163,88,31,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOG_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,88,11,14
+    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,108,116,8
+    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,106,31,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,106,11,14
 END
 
-IDD_SAPREFS12 DIALOGEX 0, 0, 219, 154
+IDD_SAPREFS12 DIALOGEX 0, 0, 221, 242
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -734,21 +735,27 @@ BEGIN
     CONTROL         "Use heuristic rules",IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,82,179,8
     CONTROL         "Stop autoplayer on error",IDC_CHECK_VALIDATOR_STOP_ON_ERROR,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,8,98,166,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,98,166,8
     CONTROL         "Shoot replay-frames on error",IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,114,189,8
+    
+    LTEXT           "The validator is a tool that tests the combination of",IDC_STATIC,6,140,216,8
+    LTEXT           "  * scraper",IDC_STATIC,6,152,216,8
+    LTEXT           "  * symbol engine",IDC_STATIC,6,162,216,8
+    LTEXT           "  * tablemap",IDC_STATIC,6,172,216,8
+    LTEXT           "to detect incosistencies, usually caused by bad tablemaps.",IDC_STATIC,6,184,215,8
 END
 
 IDD_SAPREFS13 DIALOGEX 0, 0, 270, 188
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_OMF_CLASS_NAME,100,40,100,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_OMF_MUTEX_NAME,100,24,100,12,ES_AUTOHSCROLL
-    LTEXT           "Window Class Name:",-1,4,44,68,8
-    LTEXT           "Mutex (Synchronization)",-1,4,28,96,8
     CONTROL         "Simple Main Window Title (Name of Executable)",IDC_SIMPLE_TITLE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,12,196,8
+    EDITTEXT        IDC_OMF_CLASS_NAME,100,40,100,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_OMF_MUTEX_NAME,100,24,100,12,ES_AUTOHSCROLL
+    LTEXT           "Window Class Name:",0,4,44,68,8
+    LTEXT           "Mutex (Synchronization)",0,4,28,96,8
 END
 
 IDD_SAPREFS14 DIALOGEX 0, 0, 253, 182
@@ -760,8 +767,8 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,22,187,9
     CONTROL         "Once on start",IDC_RADIO_AUTOCONNECTOR_4,"Button",BS_AUTORADIOBUTTON,12,39,177,9
     CONTROL         "Permanent",IDC_RADIO_AUTOCONNECTOR_5,"Button",BS_AUTORADIOBUTTON,12,56,146,9
-    CONTROL         "Close OH when table disappears",IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,84,119,8
+    CONTROL         "Close OpenHoldem when table disappears",IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,84,180,8
 END
 
 IDD_SAPREFS15 DIALOGEX 0, 0, 219, 155
@@ -777,16 +784,17 @@ IDD_SAPREFS16 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
+    GROUPBOX        "Safety measures",IDC_STATIC,1,1,210,80
     CONTROL         "Change in handnumber",IDC_REBUY_CHANGE_IN_HANDNUMBER,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,90,8
-    CONTROL         "No cards",IDC_REBUY_NO_CARDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,24,45,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,20,90,8
+    CONTROL         "No cards",IDC_REBUY_NO_CARDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,36,45,8
     CONTROL         "Heuristic occlusion-check",IDC_REBUY_HEURISTIC_OCCLUSION_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,40,173,8
-    LTEXT           "Minimum time to next rebuy",IDC_STATIC_REBUY_MINIMUM_DELAY,4,56,96,8
-    EDITTEXT        IDC_REBUY_EDIT_MINIMUM_DELAY,100,52,89,12,ES_AUTOHSCROLL
-    LTEXT           "Rebuy-script",IDC_STATIC_REBUY_SCRIPT,4,72,63,8
-    EDITTEXT        IDC_REBUY_EDIT_SCRIPT,100,68,100,12,ES_AUTOHSCROLL
-    CONTROL         "",IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,189,50,11,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,52,173,8
+    LTEXT           "Minimum time to next rebuy (sec)",IDC_STATIC_REBUY_MINIMUM_DELAY,4,68,96,8
+    EDITTEXT        IDC_REBUY_EDIT_MINIMUM_DELAY,160,64,29,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,189,62,11,14
+    LTEXT           "Rebuy-script",IDC_STATIC_REBUY_SCRIPT,4,100,63,8
+    EDITTEXT        IDC_REBUY_EDIT_SCRIPT,100,100,100,12,ES_AUTOHSCROLL
 END
 
 IDD_SAPREFS17 DIALOGEX 0, 0, 219, 154
@@ -799,6 +807,12 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
     CONTROL         "Check Font Smoothing Settings",IDC_CONFIGURATION_FONT_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,38,176,10
+    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC_REBUY_MINIMUM_DELAY,4,60,200,8
+    LTEXT           "  * for the scraper",IDC_STATIC_REBUY_MINIMUM_DELAY,4,72,96,8
+    LTEXT           "  * for the autoplayer",IDC_STATIC_REBUY_MINIMUM_DELAY,4,82,96,8
+    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC_REBUY_MINIMUM_DELAY,4,92,200,8
+    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC_REBUY_MINIMUM_DELAY,4,104,200,8
+    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC_REBUY_MINIMUM_DELAY,4,114,200,8
 END
 
 IDD_SAPREFS18 DIALOGEX 0, 0, 219, 154
@@ -873,10 +887,10 @@ IDD_SAPREFS21 DIALOGEX 0, 0, 219, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Never",IDC_RADIO_POSITION_NEVER,"Button",BS_AUTORADIOBUTTON,8,52,76,8
+    GROUPBOX        "Table Positioner",IDC_STATIC,4,5,166,63
     CONTROL         "Tiled",IDC_RADIO_POSITION_TILED,"Button",BS_AUTORADIOBUTTON,8,20,67,8
     CONTROL         "Cascading",IDC_RADIO_POSITION_CASCADED,"Button",BS_AUTORADIOBUTTON,8,36,65,8
-    GROUPBOX        "Table Positioner",IDC_STATIC,4,5,166,63
+    CONTROL         "Never",IDC_RADIO_POSITION_NEVER,"Button",BS_AUTORADIOBUTTON,8,52,76,8
     CONTROL         "Always keep position",IDC_ALWAYS_KEEP_POSITION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,79,120,8
 END
 
@@ -884,13 +898,13 @@ IDD_SAPREFS22 DIALOGEX 0, 0, 237, 213
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Disabled",IDC_RADIO_POPUP_DISABLED,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,22,187,9
-    CONTROL         "Minimize Popups ",IDC_RADIO_POPUP_MINIMIZE,"Button",BS_AUTORADIOBUTTON,12,39,177,9
-    CONTROL         "Kill Popups",IDC_RADIO_POPUP_KILL,"Button",BS_AUTORADIOBUTTON,12,56,146,9
-    LTEXT           "OpenHoldem windows will be ignored. See Preferences -> GUI.",IDC_STATIC,11,175,217,15
-    LTEXT           "Existing windows will be minimized on startup, not killed.",IDC_STATIC,11,158,212,8
-    LTEXT           "You need one minimalistic ""tablemap"" and one instance of OpenHoldem for every window that shall stay alive (lobby, login-window, ...).",IDC_STATIC,11,102,206,28
-    LTEXT           "You need one more unoccupied instance of OpenHoldem to handle popups.",IDC_STATIC,11,135,213,17
+    CONTROL         "Disabled",IDC_RADIO_POPUP_DISABLED,"Button",BS_AUTORADIOBUTTON | WS_GROUP,4,4,187,9
+    CONTROL         "Minimize Popups ",IDC_RADIO_POPUP_MINIMIZE,"Button",BS_AUTORADIOBUTTON,4,20,177,9
+    CONTROL         "Kill Popups",IDC_RADIO_POPUP_KILL,"Button",BS_AUTORADIOBUTTON,4,36,146,9    
+    LTEXT           "You need one minimalistic ""tablemap"" and one instance of OpenHoldem for every window that shall stay alive (lobby, login-window, ...).",IDC_STATIC,4,72,206,28
+    LTEXT           "You need one more unoccupied instance of OpenHoldem to handle popups.",IDC_STATIC,4,105,213,17
+    LTEXT           "Existing windows will be minimized on startup, not killed.",IDC_STATIC,4,128,212,8
+    LTEXT           "OpenHoldem windows will be ignored. See Preferences -> GUI.",IDC_STATIC,4,145,217,15
 END
 
 
@@ -1091,9 +1105,10 @@ BEGIN
 
     IDD_SAPREFS12, DIALOG
     BEGIN
+        RIGHTMARGIN, 219
         VERTGUIDE, 4
         VERTGUIDE, 8
-        BOTTOMMARGIN, 145
+        BOTTOMMARGIN, 233
         HORZGUIDE, 28
         HORZGUIDE, 44
         HORZGUIDE, 60
@@ -1194,6 +1209,10 @@ BEGIN
         HORZGUIDE, 52
         HORZGUIDE, 68
         HORZGUIDE, 83
+    END
+
+    IDD_SAPREFS21, DIALOG
+    BEGIN
     END
 
     IDD_SAPREFS22, DIALOG
