@@ -53,7 +53,6 @@ extern bool Scintilla_ReleaseResources();
 
 BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &COpenHoldemApp::OnAppAbout)
-	ON_COMMAND(ID_HELP_FORCECRASH, &COpenHoldemApp::OnForceCrash)	
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
@@ -341,17 +340,6 @@ void COpenHoldemApp::OnAppAbout()
 	__TRACE
 	CDlgAbout aboutDlg;
 	aboutDlg.DoModal();
-}
-
-void COpenHoldemApp::OnForceCrash()  {
-	__TRACE
-	int choice = OH_MessageBox_Interactive("Do you REALLY want to CRASH?", 
-		"CONFIRMATION", MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION | MB_TOPMOST);
-	if (choice == IDYES) 	{
-		// FORCE A CRASH
-		int *invalid_memory_access = NULL;
-		*invalid_memory_access = 0;
-	}
 }
 
 void COpenHoldemApp::LoadLastRecentlyUsedFileList()
