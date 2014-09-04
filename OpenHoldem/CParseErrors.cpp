@@ -24,7 +24,7 @@ void CParseErrors::Error(CString short_message)
 {
 	CString message;
 	message.Format("%s%s%s%s%s%i%s%s%i%s%s%s%s%s",
-		"Error: ", short_message, "\n"
+		"Error: ", short_message, 
 		"============================================================\n"
 		"Function: ", CFormulaParser::CurrentFunctionName(), "\n"
 		"Line absolute: ", CTokenizer::LineAbsolute(), "\n",

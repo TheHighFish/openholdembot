@@ -29,12 +29,10 @@
 
 CAutoplayerFunctions *p_autoplayer_functions = NULL;
 
-
 CAutoplayerFunctions::CAutoplayerFunctions() {
 }
 
-double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
-{
+double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code) {
 	assert(function_code >= 0);
 	assert(function_code < k_number_of_standard_functions);
   return p_function_collection->Evaluate(k_standard_function_names[function_code]);
@@ -78,7 +76,8 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
       "[CAutoplayerFunctions] Betround out of range. Can't calculate OpenPPL-decision\n");
     return;
   }
-  double decision = p_function_collection->Evaluate(k_OpenPPL_function_names[betround], trace_needed);
+  double decision = p_function_collection->Evaluate(k_OpenPPL_function_names[betround], 
+    trace_needed);
   write_log(preferences.debug_formula(), 
     "[CAutoplayerFunctions] Decision (non-translated) = %.2f\n", decision);
   TranslateOpenPPLDecisionToAutoplayerFunctions(decision);

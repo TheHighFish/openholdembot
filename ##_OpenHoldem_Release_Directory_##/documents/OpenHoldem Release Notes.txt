@@ -1,5 +1,30 @@
-v7.1.0 2014-08-yy
-=================
+v7.0.0 2014-09-01
+==================
+NEW STUFF:
+- Build-in OpenPPL
+  OpenPPL can now read and execute plain-text OpenPPL-profiles
+  without the need for any translation-steps.
+  The Open
+  Naming conventions:
+    * f$symbols:   user-defined functions
+    * lower-cases: built-in OpenHoldem symbols
+    * upper-cases: OpenPPL-symbols of the OpenPPL-library
+- PokerTracker_Query_Definitions.DLL: new symbols for: raise flop cbet, turn cbet, 
+  preflop 4bet, 3b vs. Steal, big blind 3bet vs. Steal, small blind 3bet vs. Steal, 
+  turn check-raise, turn check-call.
+  [Lavezzi]
+- Improved logging: dll$-symbols can now be logged and optionally 
+  all following evaluations from the DLL.
+  [THF]
+- Introducing functions for ICM-configuration: f$icm_prize1..f$icm_prize5
+  and removing the old options from the preferences dialog.
+  Now you can adapt the payout-structure at run-time,
+  depending on casino, game-type, number of players, ...
+  [THF]
+- Displaying the last evaluated relative line besides the result
+  after "Calc" in the debug-tab. Thanks to Querty for the suggestion.
+  [THF]
+
 BUG FIXES:
 - OpenHoldem did no longer evaluate the titlebar,
   because ParseStringBSL() reacted in a too conservative way
@@ -7,9 +32,6 @@ BUG FIXES:
   Thanks to SuperBlak and Saireks for reporting, to OpenGeek for some replay-frames
   and especially to Maniaco for having a good idea that put us in the right direction.
   [THF]
-- PokerTracker_Query_Definitions.DLL: new symbols for: raise flop cbet, turn cbet, preflop 4bet,
-  3b vs. Steal, big blind 3bet vs. Steal, small blind 3bet vs. Steal, turn check-raise, turn check-call.
-  [Lavezzi]
 - The tablemap option "balancenumbersonly" could lead to a crash,
   because we used an invalid method to access the data to be modified.
   Thanks to Maniace for finding the bug and explaining the proper way.
@@ -28,6 +50,20 @@ BUG FIXES:
   We had this safety-measure in the past, but somehow it got lost
   when we rewrote large parts of the autoplayer.
   Thanks to PkrBot for finding this problem.
+  [THF]
+- The file-system-monitor that checks for changed tablemaps
+  and automatically reloads them does not work with network mapped drives.
+  Having OpenHoldem and its scraper-directory at such pseudo-drives
+  could lead to crashes. We do now use PathIsNetworkPath() to check that
+  and turn the fiel-system-monitor off.
+  Thanks to PyBotter666 for reporting that problem.
+  [THF]
+- An option in the preferences deialog for replay-frames was broken.
+  Thanks to Ryuk33 for reporting.
+  [THF]
+- OpenHoldem did not close all helper threads when it automatically shut down
+  when using the option "close when table disappears". 
+  Thanks to Ryuk33 for reporting the assertion.
   [THF]
 
 MAINTENANCE:

@@ -153,7 +153,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	ON_WM_TIMER()
 
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_READY,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_PLCARDS,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_COMCARDS,OnUpdateStatus)
 	ON_UPDATE_COMMAND_UI(ID_INDICATOR_STATUS_POKERHAND,OnUpdateStatus)
@@ -620,10 +619,17 @@ void CMainFrame::OnMinMax(void)
 	else 
 	{
 		MoveWindow(_table_view_size.left, _table_view_size.top,
-				   _table_view_size.right - _table_view_size.left,
-				   _table_view_size.bottom - _table_view_size.top, true);
+		  _table_view_size.right - _table_view_size.left,
+			_table_view_size.bottom - _table_view_size.top, true);
 	}
 }
+/*!!!!!
+void CMainFrame::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI) {
+  // set the minimum tracking width
+  // and the minimum tracking height of the window
+  lpMMI->ptMinTrackSize.x = 300;
+  lpMMI->ptMinTrackSize.y = 350;
+}*/
 
 void CMainFrame::OnAttachTop(void) 
 {

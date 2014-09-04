@@ -55,15 +55,14 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	_status_bar.Create(_main_window);
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
-	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_READY, NULL, 100);
+	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_ACTION, NULL, 100);
 	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
 	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
 	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);	
 	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
 	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
-	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, NULL, 90);
-	_status_bar.SetPaneInfo(8, ID_INDICATOR_STATUS_ACTION, SBPS_STRETCH, 70);
+	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 90);
 
 	is_basic_statusbar = false;
 }
@@ -98,8 +97,8 @@ void COpenHoldemStatusbar::OnUpdateStatusbar()
 		return;
 	}
 	// Update this info only for advanced statusbar
-	ComputeCurrentStatus();
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_READY), "Ready"); 
+	ComputeCurrentStatus(); 
+  _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
@@ -107,7 +106,6 @@ void COpenHoldemStatusbar::OnUpdateStatusbar()
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NOPP), _status_nopp);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NIT), _status_nit);
-	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
 }
 
 

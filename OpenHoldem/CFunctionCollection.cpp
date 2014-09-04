@@ -193,10 +193,14 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
       CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
     }
   } else {
-    // Autoplayer, standard, ini and PrWin functions
-    for (int i=0; i<k_number_of_standard_functions; ++i) {
+    // Autoplayer-functions
+    for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
 	    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
     }
+  }
+  // standard, ini and PrWin functions
+  for (int i=k_standard_function_prefold; i<=k_icm_prize5; ++i) {
+	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
   }
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));

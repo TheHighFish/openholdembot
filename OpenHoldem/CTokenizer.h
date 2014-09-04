@@ -16,18 +16,17 @@
 
 #include "atlstr.h"
 
-class CTokenizer 
-{	
-friend class CFormulaParser;
-public:
+class CTokenizer {	
+  friend class CFormulaParser;
+ public:
 	CTokenizer();
 	~CTokenizer();
-public:
+ public:
 	void SetInput(const char* next_formula_to_be_parsed);
 	int GetToken();
 	int LookAhead(bool expect_action = false);
 	char* GetTokenString();
-public:
+ public:
 	void PushBack()	{ _last_token_pushed_back = true; }
   // Very, very ugly way to handle OpenPPL-potsized-actions.
   // They look like modulo or percentage expressions,
@@ -38,27 +37,29 @@ public:
   // and potentially 2 tokens push-back.
   // Cross your fingers that it works. ;-)
   void PushBackAdditionalPercentageOperator() { _additional_percentage_operator_pushed_back = true; }
-public:
+ public:
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
-private:
+ public:
+  void InitNewParse();
+ private:
 	int  ScanForNextToken();
 	void SkipToEndOfLine();
 	void SkipToEndOfMultiLineComment();
-private:
+ private:
 	bool IsBinaryMinus();
 	bool IsTokenOpenPPLKeyword();
-private:
+ private:
   void CheckTokenForOpenPPLAction(int *token);
 private:
 	void InitVars();
-private:
+ private:
 	int  _token_end_pointer;
 	bool _last_token_pushed_back;
 	int  _last_token;
   bool _additional_percentage_operator_pushed_back;
-private:
+ private:
 	// To distinguish modulo % and percentage % operators
 	bool _inside_OpenPPL_function;
 	// Gets set as side-effect by IsTokenOpenPPLKeyword()
