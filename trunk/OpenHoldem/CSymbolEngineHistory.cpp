@@ -49,6 +49,7 @@ void CSymbolEngineHistory::ResetOnConnection()
 
 void CSymbolEngineHistory::ResetOnHandreset()
 {
+  _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
 	for (int i=0; i<(k_number_of_betrounds+1); i++)
 	{

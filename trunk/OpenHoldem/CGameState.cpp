@@ -661,8 +661,13 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			//write_log(">>> Betting round: %d\n", (int) betround);
 		}
 
+    // If I am not even seated then iterate from potential SB to dealer
+    if (sym_userchair < 0) {
+      from_chair = pstate->m_dealer_chair+1;
+      to_chair = pstate->m_dealer_chair;
+    }
 		// it's my turn, so I need to figure out what everyone did before me
-		if (_process_game_state)
+		else if (_process_game_state)
 		{
 			_process_game_state = false;
 
@@ -713,6 +718,8 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			for (int i = from_chair; i <= to_chair; i++)
 			{
 				int index_normalized = i%k_max_number_of_players;
+        assert(index_normalized >= 0);
+        assert(index_normalized < k_max_number_of_players);
 				// if the currentbet for the chair is the sb and the last bet was zero and br==1
 				// and the player has cards, then we know the chair ***POSTED THE SMALL BLIND***
 				if (_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet == sym_sblind 
@@ -758,15 +765,15 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 						_chair_actions[index_normalized][betround-1][w_raised] = true;
 						_pot_raised = true;
 						write_log(k_always_log_basic_information, ">>> Chair %d (%s) raised to $%.2f\n", index_normalized,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
+							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
+							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 					}
 					else
 					{
 						_chair_actions[index_normalized][betround-1][w_reraised] = true;
 						write_log(k_always_log_basic_information, ">>> Chair %d (%s) re-raised to $%.2f\n", index_normalized,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
-								  _m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
+							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_name,
+							_m_game_state[(_m_game_ndx)&0xff].m_player[index_normalized].m_currentbet);
 					}
 				}
 

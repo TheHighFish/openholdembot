@@ -177,6 +177,5 @@ double AdjustedBetsize(double amount_to_raise_to)
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
 	AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));
-	AssertRange(amount_to_raise_to, 0, original_amount_to_raise_to);
 	return amount_to_raise_to; 
 }

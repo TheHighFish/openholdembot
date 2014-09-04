@@ -34,17 +34,21 @@ int  _token_start_pointer;
 #define TOKEN_ADDRESS         &input_buffer[_token_start_pointer]
 #define SKIP_NEXT_CHARACTER   _token_end_pointer++;
 
-CTokenizer::CTokenizer()
-{
-	line_absolute = 1;
+CTokenizer::CTokenizer() {
+  InitNewParse();
+}
+
+CTokenizer::~CTokenizer() {
+}
+
+void CTokenizer::InitNewParse() {
+  line_absolute = 1;
 	InitVars();
 }
 
-CTokenizer::~CTokenizer()
-{}
-
-void CTokenizer::InitVars()
-{
+void CTokenizer::InitVars() {
+  // Gets called once for every function
+  // Therefore we don't reset line_absolute here
 	line_relative = 1;
 	_token_start_pointer = 0;
 	_token_end_pointer = 0;
@@ -400,7 +404,7 @@ NegativeNumber:
 	CParseErrors::Error("Unexpected character.\n"
     "Maybe you are a little yellow chinese man,\n"
     "maybe you wrote old greek or hebrew,\n"
-    "maybe you took MS-Word instead of a serious text-editor?");
+    "maybe you took MS-Word instead of a serious text-editor?\n");
   // Can't really continue parsing
   // Treat it as end of function
 	return kTokenEndOfFunction;
@@ -410,7 +414,8 @@ char* CTokenizer::GetTokenString() {
 	assert(SIZE_OF_TOKEN >= 0);
 	// >= because we need one additional char for \0.
 	if (SIZE_OF_TOKEN >= kMaxSizeOfToken)	{
-		CParseErrors::Error("Identifier exceeds maximum of 256 chars");
+		CParseErrors::Error("Identifier exceeds technical maximum of 256 characters.\n"
+      "WeHaveAVerbosityFetishTooButWhatYouDidIsProbablyABitTooMuch.\n");
 	}
 	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
 	last_token_string[SIZE_OF_TOKEN] = '\0';
@@ -430,6 +435,8 @@ void CTokenizer::SkipToEndOfLine()
 	}
 	// And skip the end of line too
 	SKIP_NEXT_CHARACTER
+  line_absolute++;
+  line_relative++;
 }
 
 void CTokenizer::SkipToEndOfMultiLineComment()
@@ -437,11 +444,19 @@ void CTokenizer::SkipToEndOfMultiLineComment()
 	while (((CURRENT_CHARACTER != '*') || (NEXT_CHARACTER != '/'))
 		&& (CURRENT_CHARACTER != '\0'))
 	{
+    if (CURRENT_CHARACTER == '\n') {
+      line_absolute++;
+      line_relative++;
+    }
 		SKIP_NEXT_CHARACTER
 	}
 	if (CURRENT_CHARACTER == '\0')
 	{
-		CParseErrors::Error("End of function reached while looking for end of comment.");
+		CParseErrors::Error("End of function reached while looking for end of comment.\n"
+      "/*\n"
+      "  Every multi-line comment needs to be terminated\n"
+      "  by a star and a slash.\n"
+      "*/\n");
 		SKIP_NEXT_CHARACTER
 	}
 	else
@@ -476,7 +491,7 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
         CString error_message;
         error_message.Format(
           "Found identifier \"%s\"\n"
-          "Did you mean \"%s\"?",
+          "Did you mean \"%s\"?\n",
           token_string,
           kOpenPPLActionStrings[i]);
         CParseErrors::Error(error_message);

@@ -76,6 +76,7 @@ class CFormulaParser {
     TPParseTreeNode first_when_condition_of_a_function);
  private:
   bool IsValidFunctionName(CString name);
+  void ErrorMissingAction(int token_ID);
  private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
