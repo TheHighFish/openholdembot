@@ -1,4 +1,4 @@
-v7.0.0 2014-09-01
+v7.0.0 2014-09-05
 ==================
 NEW STUFF:
 - Build-in OpenPPL
@@ -41,7 +41,7 @@ BUG FIXES:
   [THF]
 - The tablemap option "balancenumbersonly" could lead to a crash,
   because we used an invalid method to access the data to be modified.
-  Thanks to Maniace for finding the bug and explaining the proper way.
+  Thanks to Maniaco for finding the bug and explaining the proper way.
   [THF]
 - Detecting tournaments required a known userchair without necessity
   and failed if we were not yet seated. 
