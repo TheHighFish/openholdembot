@@ -4,15 +4,19 @@ NEW STUFF:
 - Build-in OpenPPL
   OpenPPL can now read and execute plain-text OpenPPL-profiles
   without the need for any translation-steps.
-  The Open
+  The OpenPPL-library will be loaded in the background 
+  and all symbols are automatically available both for OpenPPL and OH-script-users.
   Naming conventions:
     * f$symbols:   user-defined functions
     * lower-cases: built-in OpenHoldem symbols
     * upper-cases: OpenPPL-symbols of the OpenPPL-library
-- PokerTracker_Query_Definitions.DLL: new symbols for: raise flop cbet, turn cbet, 
-  preflop 4bet, 3b vs. Steal, big blind 3bet vs. Steal, small blind 3bet vs. Steal, 
-  turn check-raise, turn check-call.
-  [Lavezzi]
+  Integrated OpenPPL 7.0 is slightly different than old-style PPL and than Shanky PPL.
+  For details please have a look at the OpenPPL-manual.
+  [THF]
+- Lots of new PT-stats.
+  Please see symbols_pokertracker.pdf for a complete list.
+  Thanks to PkrBot and Triple for providing some new stats.
+  [Lavezzi and Nahman]
 - Improved logging: dll$-symbols can now be logged and optionally 
   all following evaluations from the DLL.
   [THF]
@@ -24,6 +28,9 @@ NEW STUFF:
 - Displaying the last evaluated relative line besides the result
   after "Calc" in the debug-tab. Thanks to Querty for the suggestion.
   [THF]
+- New symbol opponent_chair_headsup that helps the user 
+  to build advanced symbols/stats for headsup situations.
+  [Nahman]
 
 BUG FIXES:
 - OpenHoldem did no longer evaluate the titlebar,
