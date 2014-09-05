@@ -262,9 +262,10 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
     sum_of_prizes += prizes[i];
   }
   // Sanity check: sum of prizes should be ~1.00
-  if (!IsEqual(sum_of_prizes, 1.00)) {
+  if ((sum_of_prizes <= 0) || (sum_of_prizes > 1)) {
     CString error_message;
-    error_message.Format("The sum of all f$icm_prizeX-functions should be 1.00\n"
+    error_message.Format("Incorrect f$icm_prizeX-functions.\n"
+      "The sum of all values should be in the ranhe (0..1].\n"
       "Current value: %.3f", sum_of_prizes);
     OH_MessageBox_Error_Warning(error_message);
     *result = 0.0;

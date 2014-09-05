@@ -186,17 +186,19 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
   // DLL to be loaded
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
+  // OpenPPL-functions
   if (IsOpenPPLProfile()) {
-    // OpenPPL-functions
     for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
       CString function_name = k_OpenPPL_function_names[i];
       CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
     }
-  } else {
-    // Autoplayer-functions
-    for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
-	    CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
-    }
+  } 
+  // Autoplayer-functions
+  // We need these functions always,
+  // for OH-script naturally and for OpenPPL technically,
+  // when we translate the decision to actions
+  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
+	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
   }
   // standard, ini and PrWin functions
   for (int i=k_standard_function_prefold; i<=k_icm_prize5; ++i) {
