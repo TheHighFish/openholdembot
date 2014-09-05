@@ -39,7 +39,6 @@ public:
 	void MyLoadStdProfileSettings(UINT nMaxMRU);
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
-	afx_msg void OnForceCrash();
 	DECLARE_MESSAGE_MAP()
 	virtual int ExitInstance();
 

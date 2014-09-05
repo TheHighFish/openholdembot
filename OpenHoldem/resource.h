@@ -520,7 +520,6 @@
 #define ID_PERL_COMPILEFORMULA          32951
 #define ID_Menu                         32952
 #define ID_PERL_CHECKSYNTAX             32953
-#define ID_HELP_FORCECRASH              32970
 #define ID_FINISH_INITIALIZATION        32971
 #define ID_NUMBER11                     32972
 #define ID_NUMBER12                     32973

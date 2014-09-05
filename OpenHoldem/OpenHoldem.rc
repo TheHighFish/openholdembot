@@ -156,8 +156,6 @@ BEGIN
         MENUITEM "&Formula\tCtrl+F",            ID_EDIT_FORMULA
         MENUITEM "&Preferences\tCtrl+P",        ID_EDIT_PREFERENCES
         MENUITEM SEPARATOR
-        MENUITEM "Force &Crash",                ID_HELP_FORCECRASH
-        MENUITEM SEPARATOR
         MENUITEM "&Tag Log-File\tF5",           ID_EDIT_TAGLOG
         MENUITEM "&View Log-file\tF6",          ID_EDIT_VIEWLOG
         MENUITEM SEPARATOR
@@ -1414,11 +1412,6 @@ BEGIN
     ID_PERL_EDITMAINFORMULA "Invoke the favorite Perl editor to edit the main formula file"
     ID_PERL_RELOADFORMULA   "Reloads the most recent Perl formula"
     ID_PERL_CHECKSYNTAX     "Check the most recent formula for errors"
-END
-
-STRINGTABLE
-BEGIN
-    ID_HELP_FORCECRASH      "Force a crash for testing purposes"
 END
 
 #endif    // English (United States) resources
