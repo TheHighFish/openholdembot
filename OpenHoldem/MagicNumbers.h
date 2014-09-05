@@ -507,7 +507,7 @@ const int HANDRESET_ALL     = HANDRESET_DEALER
 enum ActionConstant 
 {
 	k_prevaction_undefined = -2,
-	k_prevaction_fold b    = -1,
+	k_prevaction_fold      = -1,
 	k_prevaction_check     = 0,	// new in OpenHoldem
 	k_prevaction_call      = 1,
 	k_prevaction_raise     = 2, // min-raise
