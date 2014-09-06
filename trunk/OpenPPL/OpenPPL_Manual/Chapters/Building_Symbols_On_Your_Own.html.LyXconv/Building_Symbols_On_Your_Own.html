@@ -1,132 +1,114 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="Building_Symbols_On_Your_Own.tex"> 
-<meta name="date" content="2014-01-14 03:43:00"> 
-<link rel="stylesheet" type="text/css" href="Building_Symbols_On_Your_Own.css"> 
-</head><body 
->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-09-06"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>Building Symbols On Your Own
+</h1>
+<div class="Unindented">
+The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by any poker-playing person, no matter how much (or less) programming experience he has. Examples are e.g. MaxOpponentStackSize, StartingStackSize
+</div>
+<div class="Indented">
+However this approach has some drawbacks: it shifts all work to the developers and limits the users, who might need additional symbols for their bot-logic. Staying with the example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStacksize, ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize, FlopCheckRaiserStacksize, TurnDonkerStacksize, etc. No matter how busy the development team is, they will never be able to satisfy all needs. Therefore OpenHoldems (and partially OpenPPLs) philosophy is slightly different: provide technical symbols like balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest. This way the end-user is far more flexible; however at the cost of a bit more work.
+</div>
+<div class="Indented">
+As an example we develop a symbol BigBlindStackSize. As a first step we need to know the chair of the big blind. Then as a second step we will be able to return the stacksize for this chair. To solve the first problem we use the OpenHoldem symbol ac_dealposX which returns the deal-position of chair X. The big blind is (with the very rare exception of a missing small blind) always the second player to be dealt, so we search for a the chair, that got dealt as second player.<div class="listing">
+<pre class="listing">##f$BigBlindChair##
+    WHEN ac_dealpos0 = 2 RETURN 0 FORCE
+    WHEN ac_dealpos1 = 2 RETURN 1 FORCE
+    WHEN ac_dealpos2 = 2 RETURN 2 FORCE
+    WHEN ac_dealpos3 = 2 RETURN 3 FORCE
+    WHEN ac_dealpos4 = 2 RETURN 4 FORCE
+    WHEN ac_dealpos5 = 2 RETURN 5 FORCE
+    WHEN ac_dealpos6 = 2 RETURN 6 FORCE
+    WHEN ac_dealpos7 = 2 RETURN 7 FORCE
+    WHEN ac_dealpos8 = 2 RETURN 8 FORCE
+    WHEN ac_dealpos9 = 2 RETURN 9 FORCE
+    // Other cases should not happen
+    WHEN Others RETURN -1 FORCE
+</pre>
+</div>
 
+</div>
+<div class="Indented">
+Having this information we can continue with the second step (the dull part). We return the stacksize for the chair of the big blind, making use of Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention it.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##f$BigBlindStacksize##
+    WHEN (BigBlindChair = 0) RETURN balance0 FORCE
+    WHEN (BigBlindChair = 1) RETURN balance1 FORCE
+    WHEN (BigBlindChair = 2) RETURN balance2 FORCE
+    WHEN (BigBlindChair = 3) RETURN balance3 FORCE
+    WHEN (BigBlindChair = 4) RETURN balance4 FORCE
+    WHEN (BigBlindChair = 5) RETURN balance5 FORCE
+    WHEN (BigBlindChair = 6) RETURN balance6 FORCE
+    WHEN (BigBlindChair = 7) RETURN balance7 FORCE
+    WHEN (BigBlindChair = 8) RETURN balance8 FORCE
+    WHEN (BigBlindChair = 9) RETURN balance9 FORCE
+    // Other cases should not happen.
+    // But if you forget about "WHEN Others"
+    // there always is an implicit "RETURN 0 FORCE".
+    WHEN Others RETURN 0 FORCE
+</pre>
+</div>
 
-   <h2 class="likechapterHead"><a 
- id="x1-1000"></a>Building Symbols On Your Own</h2>
-<!--l. 27--><p class="noindent" >The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by
-any poker-playing person, no matter how much (or less) programming experience he has.
-Examples are e.g. MaxOpponentStackSize, StartingStackSize
-<!--l. 32--><p class="indent" >   However this approach has some drawbacks: it shifts all work to the developers and
-limits the users, who might need additional symbols for their bot-logic. Staying with the
-example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStacksize,
-..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize,
-FlopCheckRaiserStacksize, TurnDonkerStacksize, etc. No matter how busy the
-development team is, they will never be able to satisfy all needs. Therefore OpenHoldems
-(and partially OpenPPLs) philosophy is slightly different: provide technical symbols like
-balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest.
-This way the end-user is far more flexible; however at the cost of a bit more
-work.
-<!--l. 44--><p class="indent" >   As an example we develop a symbol BigBlindStackSize. As a first step we need to
-know the chair of the big blind. Then as a second step we will be able to return the
-stacksize for this chair. To solve the first problem we use the OpenHoldem
-symbol ac_dealposX which returns the deal-position of chair X. The big blind
-is (with the very rare exception of a missing small blind) always the second
-player to be dealt, so we search for a the chair, that got dealt as second player.
-<!--l. 51-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-1001r1"></a></span>NEW&#x00A0;SYMBOL&#x00A0;BigBlindChair&#x00A0;<br /><span class="label"><a 
- id="x1-1002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos0&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos1&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos2&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos3&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos4&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos5&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos6&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos7&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos8&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(ac_dealpos9&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen&#x00A0;<br /><span class="label"><a 
- id="x1-1013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1014r14"></a></span>End&#x00A0;Symbol
-   </div>
-<!--l. 69--><p class="indent" >   Having this information we can continue with the second step (the dull
-part). We return the stacksize for the chair of the big blind, making use of
-Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use
-OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention
-it.
-   <!--l. 75-->
-   <div class="lstlisting" id="listing-2"><span class="label"><a 
- id="x1-1015r1"></a></span>New&#x00A0;Symbol&#x00A0;BigBlindStacksize&#x00A0;<br /><span class="label"><a 
- id="x1-1016r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;0)&#x00A0;RETURN&#x00A0;balance0&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1017r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;1)&#x00A0;RETURN&#x00A0;balance1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1018r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;2)&#x00A0;RETURN&#x00A0;balance2&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1019r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;3)&#x00A0;RETURN&#x00A0;balance3&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1020r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;4)&#x00A0;RETURN&#x00A0;balance4&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1021r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;5)&#x00A0;RETURN&#x00A0;balance5&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1022r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;6)&#x00A0;RETURN&#x00A0;balance6&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1023r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;7)&#x00A0;RETURN&#x00A0;balance7&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1024r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;8)&#x00A0;RETURN&#x00A0;balance8&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1025r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;(BigBlindChair&#x00A0;=&#x00A0;9)&#x00A0;RETURN&#x00A0;balance9&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1026r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Other&#x00A0;cases&#x00A0;should&#x00A0;not&#x00A0;happen.&#x00A0;<br /><span class="label"><a 
- id="x1-1027r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;But&#x00A0;if&#x00A0;you&#x00A0;forget&#x00A0;about&#x00A0;"WHEN&#x00A0;Others"&#x00A0;<br /><span class="label"><a 
- id="x1-1028r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;there&#x00A0;always&#x00A0;is&#x00A0;an&#x00A0;implicit&#x00A0;"RETURN&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;FORCE".&#x00A0;<br /><span class="label"><a 
- id="x1-1029r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;OpenPPL&#x00A0;adds&#x00A0;it&#x00A0;automatically.&#x00A0;<br /><span class="label"><a 
- id="x1-1030r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;RETURN&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1031r17"></a></span>End&#x00A0;Symbol
-   </div>
-<!--l. 96--><p class="indent" >   You see: it is not that difficult to extend OpenPPL on your own. The possibilites are
-nearly endless. For the moment we skipped some details, but creating new symbols is
-self-explaining: each new symbol start with &#8220;NEW SYMBOL &#x003C;Name&#x003E;&#8221; and ends with
-&#8220;END SYMBOL&#8221;. Inbetween is an (optionally open-ended) when-condition-sequence with
-return-statements instead of actions. These symbol-definitions go to an extra-part of your
-code:
-   <!--l. 104-->
+</div>
+<div class="Indented">
+You see: it is not that difficult to extend OpenPPL on your own. The possibilites are nearly endless. For the moment we skipped some details, but creating new symbols is self-explaining: each new symbol start with &ldquo;NEW SYMBOL &lt;Name&gt;&rdquo; and ends with &ldquo;END SYMBOL&rdquo;. Inbetween is an (optionally open-ended) when-condition-sequence with return-statements instead of actions. 
+</div>
+<div class="Indented">
+<i>That’s all. OpenPPL is easy.</i>
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>Advantages of Symbols
+</h2>
+<div class="Unindented">
+In our early versions of the manual we didn’t talk about the advantages of structured code (especially functions AKA symbols), because they were too obvious for us. This caused some confusions for newbies. Symbols are great:
+</div>
+<ul>
+<li>
+to get understandable and self-documenting code (good naming; <a class="FlexURL" href="http://en.wikipedia.org/wiki/Information_hiding">http://en.wikipedia.org/wiki/Information_hiding</a>) 
+</li>
+<li>
+to get reusabel code (named code-snippets) 
+</li>
+<li>
+to get small code (no code clones) 
+</li>
+<li>
+to get maintainable code (change and fix one location only) 
+</li>
+<li>
+to get fast code (because of OpenHoldems symbol-caching: evaluatee only once, use the value often) 
+</li>
+<li>
+to get readable log-files (because you see all the symbol-names and their values)
+</li>
+<li>
+...
+</li>
 
-   <div class="lstlisting" id="listing-3"><span class="label"><a 
- id="x1-1032r1"></a></span>Custom&#x00A0;<br /><span class="label"><a 
- id="x1-1033r2"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1034r3"></a></span>Lists&#x00A0;<br /><span class="label"><a 
- id="x1-1035r4"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1036r5"></a></span>Symbols&#x00A0;<br /><span class="label"><a 
- id="x1-1037r6"></a></span>//&#x00A0;All&#x00A0;your&#x00A0;symbol&#x00A0;definitions&#x00A0;belong&#x00A0;here&#x00A0;<br /><span class="label"><a 
- id="x1-1038r7"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1039r8"></a></span>Preflop&#x00A0;<br /><span class="label"><a 
- id="x1-1040r9"></a></span>...
-   </div>
-<!--l. 117--><p class="indent" >   <span 
-class="ecti-1000">That&#8217;s all. OpenPPL is easy.</span>
-   <h3 class="sectionHead"><a 
- id="x1-2000"></a>Advantages of Symbols</h3>
-<!--l. 122--><p class="noindent" >In our early versions of the manual we didn&#8217;t talk about the advantages of structured
-code (especially functions AKA symbols), because they were too obvious for us. This
-caused some confusions for newbies. Symbols are great:
-           <ul class="itemize1">
-        <li class="itemize">to   get   understandable   and   self-documenting   code   (good   naming;
-        <a 
-href="http://en.wikipedia.org/wiki/Information_hiding" class="url" ><span 
-class="ectt-1000">http://en.wikipedia.org/wiki/Information_hiding</span></a>)
-           </li>
-        <li class="itemize">to get reusabel code (named code-snippets)
-           </li>
-        <li class="itemize">to get small code (no code clones)
-           </li>
-        <li class="itemize">to get maintainable code (change and fix one location only)
-           </li>
-        <li class="itemize">to get fast code (because of OpenHoldems symbol-caching)
-           </li>
-        <li class="itemize">to get readable log-files (because you see all the symbol-names and their
-        values)
-           </li>
-        <li class="itemize">...</li></ul>
-<!--l. 136--><p class="noindent" >So how often should you make use of symbols?
-<!--l. 138--><p class="indent" >   <span 
-class="ecti-1000">All day. Everywhere. As much as possible. Enjoy them! </span> 
-</body></html> 
+</ul>
+<div class="Unindented">
+So how often should you make use of symbols?
+</div>
+<div class="Indented">
+<i>All day. Everywhere. As much as possible. Enjoy them!</i>
+</div>
 
-
-
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-06T01:40:00.156000</span>
+</div>
+</div>
+</body>
+</html>

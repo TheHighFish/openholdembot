@@ -80,13 +80,7 @@ Handlists
 
 \begin_layout Standard
 OpenHoldem supports preflop handlists to simplify preflop coding.
- And the OpenPPL-converter supports them of course too, but with a slightly
- more verbose syntax.
- All you need is another custom section in your code:
-\end_layout
-
-\begin_layout Standard
-and then you can define your lists, for example like that.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -130,7 +124,7 @@ status open
 
 \begin_layout Plain Layout
 
-72o 32o
+    72o 32o
 \end_layout
 
 \end_inset
@@ -149,7 +143,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (Opponents = 1 AND f$ManiacFourBetsMe AND list007) RAISEMAX FORCE
+WHEN (pponents = 1 AND f$ManiacFourBetsMe AND list007 RAISEMAX FORCE
 \end_layout
 
 \end_inset

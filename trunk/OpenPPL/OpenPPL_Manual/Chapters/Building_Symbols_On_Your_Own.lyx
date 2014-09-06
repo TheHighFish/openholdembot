@@ -123,52 +123,52 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos0 = 2) RETURN 0 FORCE
+    WHEN ac_dealpos0 = 2 RETURN 0 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos1 = 2) RETURN 1 FORCE
+    WHEN ac_dealpos1 = 2 RETURN 1 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos2 = 2) RETURN 2 FORCE
+    WHEN ac_dealpos2 = 2 RETURN 2 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos3 = 2) RETURN 3 FORCE
+    WHEN ac_dealpos3 = 2 RETURN 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos4 = 2) RETURN 4 FORCE
+    WHEN ac_dealpos4 = 2 RETURN 4 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos5 = 2) RETURN 5 FORCE
+    WHEN ac_dealpos5 = 2 RETURN 5 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos6 = 2) RETURN 6 FORCE
+    WHEN ac_dealpos6 = 2 RETURN 6 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos7 = 2) RETURN 7 FORCE
+    WHEN ac_dealpos7 = 2 RETURN 7 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos8 = 2) RETURN 8 FORCE
+    WHEN ac_dealpos8 = 2 RETURN 8 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (ac_dealpos9 = 2) RETURN 9 FORCE
+    WHEN ac_dealpos9 = 2 RETURN 9 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -267,17 +267,12 @@ status open
 
 \begin_layout Plain Layout
 
-    // there always is an implicit "RETURN -1 FORCE".
+    // there always is an implicit "RETURN 0 FORCE".
 \end_layout
 
 \begin_layout Plain Layout
 
-    // OpenPPL adds it automatically.
-\end_layout
-
-\begin_layout Plain Layout
-
-    WHEN Others RETURN -1 FORCE
+    WHEN Others RETURN 0 FORCE
 \end_layout
 
 \end_inset
@@ -308,11 +303,7 @@ END SYMBOL
 .
  Inbetween is an (optionally open-ended) when-condition-sequence with return-sta
 tements instead of actions.
- These symbol-definitions go to an extra-part of your code:
-\end_layout
-
-\begin_layout Standard
-
+ 
 \end_layout
 
 \begin_layout Standard
@@ -362,7 +353,8 @@ to get maintainable code (change and fix one location only)
 \end_layout
 
 \begin_layout Itemize
-to get fast code (because of OpenHoldems symbol-caching) 
+to get fast code (because of OpenHoldems symbol-caching: evaluatee only
+ once, use the value often) 
 \end_layout
 
 \begin_layout Itemize
