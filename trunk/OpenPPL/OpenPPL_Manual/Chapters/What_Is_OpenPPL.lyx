@@ -100,7 +100,7 @@ target "www.bonusbots.com"
 \end_layout
 
 \begin_layout Standard
-Things changed a bit, when an unnamed hero decided to give away his 
+One day an unnamed hero decided to give away his 
 \begin_inset Quotes eld
 \end_inset
 
@@ -109,8 +109,13 @@ Things changed a bit, when an unnamed hero decided to give away his
 \end_inset
 
  to the OpenHoldem community.
- So OpenPPL was born, a language that hopefully combine the best of both
- worlds: easiness of programming and mighty potential at the tables.
+ So OpenPPL was born and after a long development OpenPPL finally got completely
+ integrated into OpenHoldem.
+ Whereas the first version of OpenPPL needed to be translated to OH-script
+ OpenHoldem does now natively support plain-text OpenPPL without any translation
+ steps.
+ So OpenPPL now combines the best of both worlds even better: easiness of
+ programming and mighty potential at the tables.
 \end_layout
 
 \begin_layout Section*
