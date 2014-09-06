@@ -98,7 +98,7 @@ status open
 
 \begin_layout Plain Layout
 
-NEW LIST 000
+##list_of_biggest_trash##
 \end_layout
 
 \begin_layout Plain Layout
@@ -125,16 +125,11 @@ NEW LIST 000
 
 \begin_layout Plain Layout
 
-END LIST
 \end_layout
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-PREFLOP
+##f$preflop##
 \end_layout
 
 \begin_layout Plain Layout
@@ -144,7 +139,7 @@ PREFLOP
 
 \begin_layout Plain Layout
 
-    WHEN (NOT In BigBlind AND islist000) FOLD FORCE
+    WHEN NOT In BigBlind AND list_of_biggest_trash FOLD FORCE
 \end_layout
 
 \end_inset
@@ -163,12 +158,13 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (StillToAct = 2 AND Calls = 0 AND Raises = 0)
+WHEN StillToAct = 2 AND Calls = 0 AND Raises = 0
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN ((Hand = AA) OR (Hand = KK) OR ...) RAISE 3 FORCE
+    WHEN hand$AA OR Hand$KK OR ...
+ RaiseTo 3 FORCE
 \end_layout
 
 \end_inset
@@ -192,12 +188,13 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3)
+WHEN calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (AmountToCall <= 3 AND islist...) RAISE 9 FORCE
+    WHEN AmountToCall <= 3 AND islist...
+ RaiseTo 9 FORCE
 \end_layout
 
 \end_inset
@@ -216,22 +213,22 @@ status open
 
 \begin_layout Plain Layout
 
-FLOP
+##f$flop##
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (Bets = 0 AND BotIsLastRaiser)
+    WHEN Bets = 0 AND BotIsLastRaiser
 \end_layout
 
 \begin_layout Plain Layout
 
-        WHEN (Opponents = 1 AND Random < 80) BETHALFPOT FORCE
+        WHEN Opponents = 1 AND Random < 80 BETHALFPOT FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-        WHEN (Opponents = 2 AND Position = Last) BET 66% FORCE
+        WHEN Opponents = 2 AND Position = Last RaiseBy 66% FORCE
 \end_layout
 
 \end_inset
@@ -250,7 +247,7 @@ status open
 
 \begin_layout Plain Layout
 
-NEW SYMBOL EffectiveStacksize
+##f$EffectiveStacksize##
 \end_layout
 
 \begin_layout Plain Layout
@@ -260,18 +257,13 @@ NEW SYMBOL EffectiveStacksize
 
 \begin_layout Plain Layout
 
-    WHEN (StackSize > MaxStillToActStackSize) RETURN MaxStillToActStackSize
+    WHEN StackSize > MaxStillToActStackSize RETURN MaxStillToActStackSize
  FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
     WHEN Others RETURN StackSize FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-END SYMBOL
 \end_layout
 
 \end_inset
@@ -311,12 +303,13 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN ((EffectiveStacksize > 0) AND (EffectiveStacksize <= 13)
+WHEN EffectiveStacksize > 0 AND EffectiveStacksize <= 13
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (Calls = 0 AND Raises = 0 AND (Hand= ...)) RAISEMAX FORCE
+    WHEN Calls = 0 AND Raises = 0 AND (Hand= ...
+ RAISEMAX FORCE
 \end_layout
 
 \end_inset
@@ -340,7 +333,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (BotsActionsOnThisRound = 0 AND Calls >= 1 AND Raises = 0)  
+WHEN BotsActionsOnThisRound = 0 AND Calls >= 1 AND Raises = 0  
 \end_layout
 
 \begin_layout Plain Layout
@@ -384,7 +377,7 @@ WHEN (BotsActionsOnThisRound = 0 AND Calls >= 1 AND Raises = 0)
 
 \begin_layout Plain Layout
 
-WHEN (LastRaiserPosition = me_re_MemFirstCallerPosition) ...
+WHEN LastRaiserPosition = me_re_MemFirstCallerPosition ...
 \end_layout
 
 \end_inset
@@ -403,7 +396,7 @@ status open
 
 \begin_layout Plain Layout
 
-NEW SYMBOL MySimpleOutsCounter
+##f$MySimpleOutsCounter##
 \end_layout
 
 \begin_layout Plain Layout
@@ -472,11 +465,6 @@ NEW SYMBOL MySimpleOutsCounter
     ...
 \end_layout
 
-\begin_layout Plain Layout
-
-END SYMBOL
-\end_layout
-
 \end_inset
 
 
@@ -493,17 +481,17 @@ status open
 
 \begin_layout Plain Layout
 
-NEW SYMBOL CardsLeft
+##f$CardsLeft##
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (betround = 2) RETURN 47 FORCE
+    WHEN betround = 2 RETURN 47 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (betround = 3) RETURN 46 FORCE
+    WHEN betround = 3 RETURN 46 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -518,16 +506,11 @@ NEW SYMBOL CardsLeft
 
 \begin_layout Plain Layout
 
-END SYMBOL
 \end_layout
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-WHEN (AmountToCall / (AmountToCall + PotSize) > Outs / CardsLeft) CALL FORCE
+WHEN AmountToCall / AmountToCall + PotSize > f$Outs / f$CardsLeft CALL FORCE
 \end_layout
 
 \end_inset
@@ -546,27 +529,17 @@ status open
 
 \begin_layout Plain Layout
 
-NEW SYMBOL HaveStrongDraw
+##f$HaveStrongDraw##
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (HaveStraightDraw OR HaveFlushDraw) RETURN True FORCE
+    WHEN HaveStraightDraw OR HaveFlushDraw RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (HaveInsideStraightDraw AND Overcards = 2) RETURN True FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-    WHEN Others RETURN False FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-END SYMBOL
+    WHEN HaveInsideStraightDraw AND Overcards = 2 RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -575,32 +548,22 @@ END SYMBOL
 
 \begin_layout Plain Layout
 
-NEW SYMBOL HaveTopPairOrBetter
+##f$HaveTopPairOrBetter##
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (HaveTopPair) RETURN True FORCE
+    WHEN HaveTopPair RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (HaveOverPair) RETURN True FORCE
+    WHEN HaveOverPair RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (HaveBestOverpairOrBetter) RETURN True FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-    WHEN Others RETURN False FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-END SYMBOL
+    WHEN HaveBestOverpairOrBetter RETURN True FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -609,22 +572,17 @@ END SYMBOL
 
 \begin_layout Plain Layout
 
-FLOP
+##f$flop##
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN (Opponents >= 3 AND NOT (HaveTopPairOrBetter OR HaveStrongDraw)
+WHEN Opponents >= 3 AND NOT f$HaveTopPairOrBetter OR f$HaveStrongDraw
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (AmountToCall = 0) CHECK FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-    WHEN Others FOLD FORCE
+    WHEN AmountToCall = 0 CHECK FORCE
 \end_layout
 
 \end_inset

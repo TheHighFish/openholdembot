@@ -1,58 +1,50 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="Handlists.tex"> 
-<meta name="date" content="2011-12-13 20:37:00"> 
-<link rel="stylesheet" type="text/css" href="Handlists.css"> 
-</head><body 
->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-09-06"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>Handlists
+</h1>
+<div class="Unindented">
+OpenHoldem supports preflop handlists to simplify preflop coding. 
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##list007##
+    // Allin-range against crazy maniacs
+    AA KK QQ JJ TT 99       // Pairs
+    AKs AQs AJs ATs KQs     // Suited hands
+    AKo AQo AJo             // Offsuited hands 
+​
+##list0fTr4sh1w4ntT0C4ll##
+    72o 32o
+</pre>
+</div>
 
+</div>
+<div class="Indented">
+After that you can use OpenHoldems islist-symbol like that
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN (pponents = 1 AND f$ManiacFourBetsMe AND list007 RAISEMAX FORCE
+</pre>
+</div>
 
-   <h2 class="likechapterHead"><a 
- id="x1-1000"></a>Handlists</h2>
-<!--l. 27--><p class="noindent" >OpenHoldem supports preflop handlists to simplify preflop coding. And the
-OpenPPL-converter supports them of course too, but with a slightly more verbose
-syntax. All you need is another custom section in your code:
-   <!--l. 33-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-1001r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
- id="x1-1002r2"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1003r3"></a></span>LISTS&#x00A0;<br /><span class="label"><a 
- id="x1-1004r4"></a></span>//&#x00A0;Your&#x00A0;list&#x00A0;definitions&#x00A0;belong&#x00A0;here&#x00A0;<br /><span class="label"><a 
- id="x1-1005r5"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1006r6"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
- id="x1-1007r7"></a></span>...
-   </div>
-<!--l. 44--><p class="indent" >   and then you can define your lists, for example like that.
-   <!--l. 47-->
-   <div class="lstlisting" id="listing-2"><span class="label"><a 
- id="x1-1008r1"></a></span>NEW&#x00A0;LIST&#x00A0;007&#x00A0;<br /><span class="label"><a 
- id="x1-1009r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Allin<span 
-class="cmsy-10">-</span>range&#x00A0;against&#x00A0;crazy&#x00A0;maniacs&#x00A0;<br /><span class="label"><a 
- id="x1-1010r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;AA&#x00A0;KK&#x00A0;QQ&#x00A0;JJ&#x00A0;TT&#x00A0;99&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Pairs&#x00A0;<br /><span class="label"><a 
- id="x1-1011r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;AKs&#x00A0;AQs&#x00A0;AJs&#x00A0;ATs&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Suited&#x00A0;hands&#x00A0;<br /><span class="label"><a 
- id="x1-1012r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;AKo&#x00A0;AQo&#x00A0;AJo&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;Offsuited&#x00A0;hands&#x00A0;<br /><span class="label"><a 
- id="x1-1013r6"></a></span>END&#x00A0;LIST
-   </div>
-<!--l. 57--><p class="indent" >   Nothing to care about, except 2 points:
-           <ul class="itemize1">
-        <li class="itemize">the list number has to be in the range 0..999.
-           </li>
-        <li class="itemize">007 and 7 are technically identical, however we recommend to always use
-        3 digits for readability and consistency.</li></ul>
-<!--l. 63--><p class="noindent" >After that you can use OpenHoldems islist-symbol like that
-   <!--l. 66-->
-   <div class="lstlisting" id="listing-3"><span class="label"><a 
- id="x1-1014r1"></a></span>WHEN&#x00A0;(Opponents&#x00A0;=&#x00A0;1&#x00A0;AND&#x00A0;ManiacFourBetsMe&#x00A0;AND&#x00A0;islist007)&#x00A0;RAISEMAX&#x00A0;FORCE
-   </div>
-<!--l. 71--><p class="indent" >   You might consider to comment your lists, because numbered lists have one small
-disadvantage: they are not very verbose.  
-</body></html> 
+</div>
 
-
-
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-06T01:27:56.046000</span>
+</div>
+</div>
+</body>
+</html>

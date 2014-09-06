@@ -1,106 +1,106 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="User_Defined_Variables.tex"> 
-<meta name="date" content="2011-12-31 14:18:00"> 
-<link rel="stylesheet" type="text/css" href="User_Defined_Variables.css"> 
-</head><body 
->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-09-06"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>User-Defined Variables
+</h1>
+<div class="Unindented">
+Most probably you need some game-history to take your decision; then you will find symbols like NoBettingOnFlop and OpenHoldems history symbols and they will be useful for a good portion os use-cases, but identifying very special situations afterwards only with the built-in symbols might be hard or even impossible. So wouldn’t it be helpful if you could remember what happened in the game? Of course you can - with user-defined variables. Let’s take a small example.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN FirstCallerPosition = 9 user_UTG_Was_Limping
+</pre>
+</div>
 
+</div>
+<ul>
+<li>
+As you see, there is a user-defined variable instead of an action after a condition, but no keyword force.
+</li>
+<li>
+Whenever OpenPPL / OpenHoldem sees such a construct it evaluates the when-condition. If the condition is true, OpenHoldem sets the user-variable to true and continues with the evaluation, until it finds a true condition with an action.
+</li>
+<li>
+All user-defined variables start with false (0). Once you set them they become true (or 1, which is technically the same). 
+</li>
+<li>
+User-defined variables keep their value for the current hand and can’t be reset back by the user. But when the hand is over they get reset automatically.
+</li>
+<li>
+Naming: every user-defined variable start with the prefix &ldquo;User&rdquo;, followed by a sequence of characters [a-zA-Z], digits [0-9] and underscores [_].
+</li>
+<li>
+Querying the value of a variable is simple: you can use it just like any other symbol as part of an expression:<div class="listing">
+<pre class="listing">##f$preflop##
+    WHEN Hand = AA RAISEMAX FORCE 
+    WHEN Hand = KK userDoesNotKnowWhatToDo 
+    WHEN Hand = QQ userStartsToCry 
+    WHEN userDoesNotKnowWhatToDo CALL FORCE 
+    WHEN userStartsToCry SITOUT FORCE 
+    WHEN Others FOLD FORCE
+</pre>
+</div>
 
-   <h2 class="likechapterHead"><a 
- id="x1-1000"></a>User-Defined Variables</h2>
-<!--l. 27--><p class="noindent" >Most probably you need some game-history to take your decision; then you will
-find symbols like NoBettingOnFlop and OpenHoldems history symbols and
-they will be useful for a good portion os use-cases, but identifying very special
-situations afterwards only with the built-in symbols might be hard or even
-impossible. So wouldn&#8217;t it be helpful if you could remember what happened in
-the game? Of course you can - with user-defined variables. Let&#8217;s take a small
-example.
-   <!--l. 36-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-1001r1"></a></span>WHEN&#x00A0;(FirstCallerPosition&#x00A0;=&#x00A0;9)&#x00A0;User_UTG_Was_Limping
-   </div>
-           <ul class="itemize1">
-        <li class="itemize">As you see, there is a user-defined variable instead of an action after a
-        condition, but no keyword force.
-           </li>
-        <li class="itemize">Whenever OpenPPL / OpenHoldem sees such a construct it evaluates
-        the  when-condition.  If  the  condition  is  true,  OpenHoldem  sets  the
-        user-variable to true and continues with the evaluation, until it finds a
-        true condition with an action.
-           </li>
-        <li class="itemize">All user-defined variables start with false (0). Once you set them they
-        become true (or 1, which is technically the same).
-           </li>
-        <li class="itemize">User-defined variables keep their value for the current hand and can&#8217;t
-        be  reset  back  by  the  user.  But  when  the  hand  is  over  they  get  reset
-        automatically.
-           </li>
-        <li class="itemize">Naming: every user-defined variable start with the prefix &#8220;User&#8221;, followed
-        by a sequence of characters [a-zA-Z], digits [0-9] and underscores [_].
-           </li>
-        <li class="itemize">Querying the value of a variable is simple: you can use it just like any other
-        symbol as part of an expression: <!--l. 57-->
-           <div class="lstlisting" id="listing-2"><span class="label"><a 
- id="x1-1002r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
- id="x1-1003r2"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1004r3"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
- id="x1-1005r4"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-1006r5"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;AA)&#x00A0;RAISEMAX&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1007r6"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;KK)&#x00A0;UserDoesNotKnowWhatToDo&#x00A0;<br /><span class="label"><a 
- id="x1-1008r7"></a></span>WHEN&#x00A0;(Hand&#x00A0;=&#x00A0;QQ)&#x00A0;UserStartsToCry&#x00A0;<br /><span class="label"><a 
- id="x1-1009r8"></a></span>WHEN&#x00A0;(UserDoesNotKnowWhatToDo)&#x00A0;CALL&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1010r9"></a></span>WHEN&#x00A0;(UserStartsToCry)&#x00A0;SITOUT&#x00A0;FORCE&#x00A0;<br /><span class="label"><a 
- id="x1-1011r10"></a></span>WHEN&#x00A0;Others&#x00A0;FOLD&#x00A0;FORCE
-           </div>
-           </li></ul>
-   <h3 class="sectionHead"><a 
- id="x1-2000"></a>Expert Tricks</h3>
-<!--l. 74--><p class="noindent" >Do you need variables that can be set to any arbitrary value? Do you need variables that
-can be reset back? Do you need variables that don&#8217;t reset automatically, but keep their
+</li>
 
-values till the next hand or even for the complete session? There is a solution for it (of
-course). Instead of PPL-like user-variables it is also possible to use OpenHoldems
-memory-store-command:
-   <!--l. 82-->
-   <div class="lstlisting" id="listing-3"><span class="label"><a 
- id="x1-2001r1"></a></span>WHEN&#x00A0;(...)&#x00A0;me_st_MySecretVariable_3_141592653
-   </div>
-<!--l. 85--><p class="indent" >   and then use it later with OpenHoldems memory-recall-command: <!--l. 86-->
-   <div class="lstlisting" id="listing-4"><span class="label"><a 
- id="x1-2002r1"></a></span>WHEN&#x00A0;(...&#x00A0;me_re_MySecretVariable&#x00A0;...)&#x00A0;...
-   </div>
-<!--l. 91--><p class="indent" >   This construct is a little bit more mighty, but also contains some possible pitfalls and
-requires extra care by the user.
-           <ul class="itemize1">
-        <li class="itemize">OpenHoldems  user-defined  variables  are  case  sensitive.  me_st_x_1  is
-        something different than me_st_X_1.
-           </li>
-        <li class="itemize">No underscores allowed in the name of the variable. Underscores are used
-        to separate name and value. (If you wonder, why underscores are allowed
-        in simple user-variables: because the translator removes them).
-           </li>
-        <li class="itemize">No automatic reset. If you need such a reset, you could do it e.g. before your
-        first action preflop: <!--l. 101-->
-           <div class="lstlisting" id="listing-5"><span class="label"><a 
- id="x1-2003r1"></a></span>CUSTOM&#x00A0;<br /><span class="label"><a 
- id="x1-2004r2"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-2005r3"></a></span>PREFLOP&#x00A0;<br /><span class="label"><a 
- id="x1-2006r4"></a></span>&#x00A0;<br /><span class="label"><a 
- id="x1-2007r5"></a></span>WHEN&#x00A0;(BotsActionsOnThisRound&#x00A0;=&#x00A0;0)&#x00A0;<br /><span class="label"><a 
- id="x1-2008r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHEN&#x00A0;Others&#x00A0;me_st_MySecretVariable_0&#x00A0;<br /><span class="label"><a 
- id="x1-2009r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;...
-           </div>
-           </li></ul>
-<!--l. 112--><p class="noindent" ><span 
-class="ecti-1000">May the force be with you! </span> 
-</body></html> 
+</ul>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>Expert Tricks
+</h2>
+<div class="Unindented">
+Do you need variables that can be set to any arbitrary value? Do you need variables that can be reset back? Do you need variables that don’t reset automatically, but keep their values till the next hand or even for the complete session? There is a solution for it (of course). Instead of PPL-like user-variables it is also possible to use OpenHoldems memory-store-command:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN (...) me_st_MySecretVariable_3_141592653
+</pre>
+</div>
+ and then use it later with OpenHoldems memory-recall-command:<div class="listing">
+<pre class="listing">WHEN (... me_re_MySecretVariable ...) ...
+</pre>
+</div>
 
+</div>
+<div class="Indented">
+This construct is a little bit more mighty, but also contains some possible pitfalls and requires extra care by the user.
+</div>
+<ul>
+<li>
+OpenHoldems user-defined variables are case sensitive. me_st_x_1 is something different than me_st_X_1.
+</li>
+<li>
+No underscores allowed in the name of the variable. Underscores are used to separate name and value. (If you wonder, why underscores are allowed in simple user-variables: because the translator removes them).
+</li>
+<li>
+No automatic reset. If you need such a reset, you could do it e.g. before your first action preflop:<div class="listing">
+<pre class="listing">##f$preflop##
+WHEN (BotsActionsOnThisRound = 0)
+    WHEN Others me_st_MySecretVariable_0
+    ...
+</pre>
+</div>
 
+</li>
 
+</ul>
+<div class="Unindented">
+<i>May the force be with you!</i>
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-06T01:34:27.046000</span>
+</div>
+</div>
+</body>
+</html>
