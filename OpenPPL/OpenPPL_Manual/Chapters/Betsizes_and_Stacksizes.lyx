@@ -232,7 +232,8 @@ MaxStacksizeOfActiveOpponents
 \begin_inset Text
 
 \begin_layout Plain Layout
-The biggest stack size of all opponents currently playing the hand.
+The biggest stack size (expressed in bblind and not dollars) of all opponents
+ currently playing the hand.
 \end_layout
 
 \end_inset
@@ -263,8 +264,8 @@ EffectiveMaxStacksizeOfActiveOpponents
 \begin_inset Text
 
 \begin_layout Plain Layout
-The biggest effective stack size of all opponents currently playing the
- hand.
+The biggest effective stack size (expressed in bblind and not dollars) of
+ all opponents currently playing the hand.
 \end_layout
 
 \end_inset
