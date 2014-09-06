@@ -3743,18 +3743,6 @@ Middle
 //
 //*****************************************************************************
 
-##PT_LastRaiser_Hands##
-(raischair != -1) ? pt_r_hands : HINT_No_Last_Raiser
-
-##PT_LastRaiser_PFR##
-RaiserExists && (PT_LastRaiser_Hands >= ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_r_pfr : HINT_No_Last_Raiser_Or_Not_Enough_Hands
-
-##PT_LastRaiser_VPIP##
-RaiserExists && (PT_LastRaiser_Hands >= ConstMinHandsFor_PT_VPIP_AND_PFR) ? pt_r_vpip : HINT_No_Last_Raiser_Or_Not_Enough_Hands
-
-##PT_LastRaiser_AttemptToStealBlinds##
-RaiserExists && (PT_LastRaiser_Hands >= ConstMinHandsFor_PT_AttemptToStealBlinds) ? pt_r_pfats : HINT_No_Last_Raiser_Or_Not_Enough_Hands
-
 ##PT_BigBlind_FoldBBToSteal##
 BigBlindChair == 0 ? pt_fbbts0 :
 BigBlindChair == 1 ? pt_fbbts1 :
@@ -3858,19 +3846,6 @@ PT_LastCaller_Chair==7 && pt_hands7>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr7 
 PT_LastCaller_Chair==8 && pt_hands8>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr8 :
 PT_LastCaller_Chair==9 && pt_hands9>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr9 :
 HINT_No_LastCaller
-
-##PT_OpponentVPIPHeadsUp##
-[(playersplayingbits & 0b0000000001) && (nopponentsplaying==1) && userchair!=0] ? pt_vpip0:
-[(playersplayingbits & 0b0000000010) && (nopponentsplaying==1) && userchair!=1] ? pt_vpip1:
-[(playersplayingbits & 0b0000000100) && (nopponentsplaying==1) && userchair!=2] ? pt_vpip2:
-[(playersplayingbits & 0b0000001000) && (nopponentsplaying==1) && userchair!=3] ? pt_vpip3:
-[(playersplayingbits & 0b0000010000) && (nopponentsplaying==1) && userchair!=4] ? pt_vpip4:
-[(playersplayingbits & 0b0000100000) && (nopponentsplaying==1) && userchair!=5] ? pt_vpip5:
-[(playersplayingbits & 0b0001000000) && (nopponentsplaying==1) && userchair!=6] ? pt_vpip6:
-[(playersplayingbits & 0b0010000000) && (nopponentsplaying==1) && userchair!=7] ? pt_vpip7:
-[(playersplayingbits & 0b0100000000) && (nopponentsplaying==1) && userchair!=8] ? pt_vpip8:
-[(playersplayingbits & 0b1000000000) && (nopponentsplaying==1) && userchair!=9] ? pt_vpip9:
-HINT_No_Oppponent_Or_Not_Headsup
 
 //*****************************************************************************
 //
