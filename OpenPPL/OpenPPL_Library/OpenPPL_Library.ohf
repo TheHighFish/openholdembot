@@ -1279,7 +1279,7 @@ bet1
 me_re_MaxOpponentStackSize
 
 ##MaxStacksizeOfActiveOpponents##
-stack0 == balance ? stack1 : stack0/bblind
+stack0 == balance ? stack1/bblind : stack0/bblind
 
 ##EffectiveMaxStacksizeOfActiveOpponents##
 balance<=f$OpenPPL_MaxStacksizeOfActiveOpponents? balance/bblind: MaxStacksizeOfActiveOpponents
