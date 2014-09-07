@@ -199,12 +199,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PFR
-	/* PT3 query to get pre flop raise % */
+	/* PT3 query to get pre flop raise */
 	{
 		// name
 		"pfr",			
 		// description_for_editor
-		"Poker Tracker pre-flop raise percentage",
+		"Poker Tracker pre-flop raise ",
 		// query
 		"SELECT (case when (count(*) = 0) \
 		        then -1 \
@@ -219,12 +219,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RFI
-	/* PT3 query to get pre-flop raise first in pct */
+	/* PT3 query to get pre-flop raise first*/
 	{
 		// name
-		"pf_rfi",		
+		"preflop_raise_first",		
 		// description_for_editor
-		"Poker Tracker pre-flop raise first in percentage",
+		"Poker Tracker pre-flop raise first",
 		// query
 		"SELECT (case when count(*) = 0 then -1 else \
 		        cast(sum(case when flg_p_first_raise then 1 else 0 end) as real) / count(*) end) as result \
@@ -239,12 +239,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 	
 #if PT3_QUERY_SUPPORT__WTSD
-	/* PT3 query to get Went to SD % */
+	/* PT3 query to get Went to SD */
 	{
 		// name
 		"wsdp",			
 		// description_for_editor
-		"Poker Tracker went to showdown percentage",
+		"Poker Tracker went to showdown",
 		// query
 		"SELECT (case when sum(case when flg_f_saw then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when flg_showdown then 1 else 0 end) as real) \
@@ -258,12 +258,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__WSSD
-	/* PT3 query to get Won $ At SD % */
+	/* PT3 query to get Won $ At SD */
 	{
 		// name
 		"wssd",			
 		// description_for_editor
-		"Poker Tracker won $ at showdown percentae",
+		"Poker Tracker won $ at showdown",
 		// query
 		"SELECT (case when count(*) = 0 then -1 else \
 		        cast(sum(case when flg_won_hand then 1 else 0 end) as real) \
@@ -281,7 +281,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get pre-flop aggression factor */
 	{
 		// name
-		"aggp",
+		"preflop_aggr_factor",
 		// description_for_editor
 		"Poker Tracker preflop aggression",
 		// query
@@ -301,7 +301,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get flop aggression factor */
 	{
 		// name
-		"aggf",
+		"flop_aggr_factor",
 		// description_for_editor
 		"Poker Tracker flop aggression",
 		// query
@@ -322,7 +322,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get turn aggression factor */
 	{
 		// name
-		"aggt",
+		"turn_aggr_factor",
 		// description_for_editor
 		"Poker Tracker turn aggression",
 		// query
@@ -343,7 +343,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get river aggression factor */
 	{
 		// name
-		"aggr",			
+		"river_aggr_factor",			
 		// description_for_editor
 		"Poker Tracker river aggression",
 		// query
@@ -364,7 +364,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get total aggression factor */
 	{
 		// name
-		"aggtot", 
+		"aggr_factor", 
 		// description_for_editor
 		"Poker Tracker total aggression",
 		// query
@@ -395,7 +395,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get total aggression factor without preflop */
 	{
 		// name
-		"aggtotnopf",	
+		"aggr_factor_without_preflop",	
 		// description_for_editor
 		"Poker Tracker total aggression excluding preflop",
 		// query
@@ -421,12 +421,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_FLOP_PCT
-	/* PT3 query to get percentage of flops seen */
+	/* PT3 query to get flops seen */
 	{
 		// name
-		"floppct",		
+		"flop_seen",		
 		// description_for_editor
-		"Poker Tracker saw flop percentage",
+		"Poker Tracker saw flop",
 		// query
 		"SELECT (case when (count(*) = 0) \
 		         then -1 \
@@ -441,12 +441,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_TURN_PCT
-	/* PT3 query to get percentage of turns seen */
+	/* PT3 query to get turns seen */
 	{
 		// name
-		"turnpct",		
+		"turn_seen",		
 		// description_for_editor
-		"Poker Tracker saw turn percentage",
+		"Poker Tracker saw turn",
 		// query
 		"SELECT (case when (count(*) = 0) \
 		         then -1 \
@@ -461,12 +461,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__SEEN_RIVER_PCT
-	/* PT3 query to get percentage of rivers seen */
+	/* PT3 query to get rivers seen */
 	{
 		// name
-		"riverpct", 
+		"river_seen", 
 		// description_for_editor
-		"Poker Tracker saw river percentage",
+		"Poker Tracker saw river",
 		// query
 		"SELECT (case when (count(*) = 0) \
 		         then -1 \
@@ -481,12 +481,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__OVERALL_FOLD_TO_3B
-	/* PT3  query to get TOTAL fold to 3 bet percentage */
+	/* PT3  query to get TOTAL fold to 3 bet */
 	{
 		// name
-		"f3bettot",		
+		"fold_to_3bet",		
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet total percentage",
+		"Poker Tracker folded while facing 3bet total",
 		// query
 		"SELECT (case when sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when not enum_p_3bet_action = 'F' or enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
@@ -500,12 +500,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__OVERALL_4B
-	/* PT3 query to get Overall 4B percentage */
+	/* PT3 query to get Overall 4B */
 	{
 		// name
-		"tot4b",
+		"4bet",
 		// description_for_editor
-		"Poker Tracker Overall 4B percentage",
+		"Poker Tracker Overall 4B",
 		// query
 		"SELECT (case when count(*) = 0 then -1 else \
 			cast(sum(case when (flg_p_4bet) then 1 else 0 end) as real) / count(*) end) as result \
@@ -518,12 +518,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_3B
-	/* PT3  query to get PREFLOP 3 bet percentage */
+	/* PT3  query to get PREFLOP 3 bet */
 	{
 		// name
-		"3betpflop",	
+		"preflop_3bet",	
 		// description_for_editor
-		"Poker Tracker 3bet preflop percentage",
+		"Poker Tracker 3bet preflop",
 		// query
 		"SELECT (case when sum(case when flg_p_3bet_opp then 1 else 0 end) = 0 then -1 else \
 				cast(sum(case when flg_p_3bet then 1 else 0 end) as real) \
@@ -537,12 +537,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B
-	/* PT3  query to get PREFLOP fold to 3 bet percentage */
+	/* PT3  query to get PREFLOP fold to 3 bet */
 	{
 		// name
-		"f3betpflop",	
+		"preflop_fold_to_3bet",	
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet preflop percentage",
+		"Poker Tracker folded while facing 3bet preflop",
 		// query
 		"SELECT (case when sum(case when flg_p_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_p_3bet_action = 'F' then 1 else 0 end) as real) \
@@ -556,12 +556,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_CALLED_RAISE
-	/* PT3 query to get pre-flop called raise pct */
+	/* PT3 query to get pre-flop called raise */
 	{
 		// name
-		"pf_cr",		
+		"preflop_called_raise",		
 		// description_for_editor
-		"Poker Tracker pre-flop called raise percentage",
+		"Poker Tracker pre-flop called raise",
 		// query
 		"SELECT (case when count(*) = 0 then -1 else \
 		        cast(sum(case when not flg_p_fold AND cnt_p_raise = 0 then 1 else 0 end) as real) / count(*) end) as result \
@@ -575,10 +575,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__STEAL_ATTEMPT
-	/* PT3 query to get attempted steal percentage */
+	/* PT3 query to get attempted steal */
 	{
 		// name
-		"pfats",	
+		"preflop_attempt_steal",	
 		// description_for_editor
 		"Poker Tracker attempt to steal blinds",
 		// query
@@ -597,7 +597,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get Folded Big Blind to steal */
 	{
 		// name
-		"fbbts",		
+		"big_blind_fold_to_steal",		
 		// description_for_editor
 		"Poker Tracker folded big blind to steal",
 		// query
@@ -616,7 +616,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get Folded Small Blind to steal */
 	{
 		// name
-		"fsbts",
+		"small_blind_fold_to_steal",
 		// description_for_editor
 		"Poker Tracker folded small blind to steal",
 		// query
@@ -635,7 +635,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get 3B vs. steal */
 	{
 		// name
-		"pf3bsteal",
+		"preflop_3bet_vs_steal",
 		// description_for_editor
 		"Poker Tracker 3bet vs. steal",
 		// query
@@ -653,7 +653,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get BB 3B vs. steal */
 	{
 		// name
-		"pfbb3bsteal",
+		"big_blind_3bet_vs_steal",
 		// description_for_editor
 		"Poker Tracker BB 3bet vs. steal",
 		// query
@@ -671,7 +671,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3 query to get SB 3B vs. steal */
 	{
 		// name
-		"pfsb3bsteal",
+		"small_blind_3bet_vs_steal",
 		// description_for_editor
 		"Poker Tracker SB 3bet vs. steal",
 		// query
@@ -686,12 +686,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_4B
-	/* PT3 query to get Preflop 4B percentage */
+	/* PT3 query to get Preflop 4B */
 	{
 		// name
-		"pf4b",
+		"preflop_4bet",
 		// description_for_editor
-		"Poker Tracker Preflop 4B percentage",
+		"Poker Tracker Preflop 4B",
 		// query
 		"SELECT (cast (sum(case when (flg_p_4bet=TRUE) then 1 else 0 end) as real)/ \
 			cast (sum(case when (flg_p_4bet_opp=TRUE) then 1 else 0 end) as real)) as result \
@@ -704,12 +704,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B
-	/* PT3 query to get Preflop fold to 4B percentage */
+	/* PT3 query to get Preflop fold to 4B */
 	{
 		// name
-		"pff4b",
+		"preflop_fold_to_4bet",
 		// description_for_editor
-		"Poker Tracker Preflop fold to 4B percentage",
+		"Poker Tracker Preflop fold to 4B",
 		// query
 		"SELECT (cast (sum(case when (enum_p_4bet_action='F') then 1 else 0 end) as real)/ \
 			cast (sum(case when (flg_p_4bet_def_opp=TRUE) then 1 else 0 end) as real)) as result \
@@ -725,9 +725,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3  query to get cbet on FLOP */
 	{
 		// name
-		"cbetflop",		
+		"flop_cbet",		
 		// description_for_editor
-		"Poker Tracker cbet percentage",
+		"Poker Tracker cbet",
 		// query
 		"SELECT (case when sum(case when flg_f_cbet_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when flg_f_cbet then 1 else 0 end) as real) \
@@ -741,12 +741,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_CBET
-	/* PT3  query to get FLOP fold to cbet percentage */
+	/* PT3  query to get FLOP fold to cbet */
 	{
 		// name
-		"fcbetflop",	
+		"flop_fold_to_cbet",	
 		// description_for_editor
-		"Poker Tracker folded while facing cbet flop percentage",
+		"Poker Tracker folded while facing cbet flop",
 		// query
 		"SELECT (case when sum(case when flg_f_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_f_cbet_action = 'F' then 1 else 0 end) as real) \
@@ -763,9 +763,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3  query to get raise cbet on FLOP */
 	{
 		// name
-		"rflopcbet",		
+		"flop_raise_cbet",		
 		// description_for_editor
-		"Poker Tracker raise flop cbet percentage",
+		"Poker Tracker raise flop cbet",
 		// query
 		"select (case when (count(*)!=0) then \
 		cast(sum(case when S.enum_f_cbet_action = 'R' then 1 else 0 end) as real) / \
@@ -779,12 +779,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_FOLD_TO_3B
-	/* PT3  query to get FLOP fold to 3 bet percentage */
+	/* PT3  query to get FLOP fold to 3 bet */
 	{
 		// name
-		"f3betflop",
+		"flop_fold_to_3bet",
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet flop percentage",
+		"Poker Tracker folded while facing 3bet flop",
 		// query
 		"SELECT (case when sum(case when flg_f_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_f_3bet_action = 'F' then 1 else 0 end) as real) \
@@ -798,12 +798,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_CHECK_RAISE
-	/* PT3  query to get flop check-raise percentage */
+	/* PT3  query to get flop check-raise */
 	{
 		// name
-		"rflopcbet",		
+		"flop_checkraise",		
 		// description_for_editor
-		"Poker Tracker flop check-raise percentage",
+		"Poker Tracker flop check-raise",
 		// query
 		"SELECT (cast (sum(case when (flg_f_check_raise=TRUE) then 1 else 0 end) as real)/ \
 			cast (sum (case when ((flg_f_check=TRUE) AND ((cnt_f_raise>0) OR (cnt_f_call>0) OR (flg_f_fold=TRUE))) then 1 else 0 end) as real)) as result \
@@ -815,12 +815,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__FLOP_DONK
-	/* PT3  query to get FLOP donk percentage */
+	/* PT3  query to get FLOP donk */
 	{
 		// name
-		"f3betflop",
+		"flop_donkbet",
 		// description_for_editor
-		"Poker Tracker donk flop percentage",
+		"Poker Tracker donk flop",
 		// query
 		"select (case when  (count(*)!=0)  then \
 			(cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND \
@@ -843,9 +843,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT3  query to get cbet on TURN */
 	{
 		// name
-		"turncbet",		
+		"turn_cbet",		
 		// description_for_editor
-		"Poker Tracker turn cbet percentage",
+		"Poker Tracker turn cbet",
 		// query
 		"select (case when   (sum(case when flg_t_cbet_opp then 1 else 0 end) != 0)  then \
          cast(sum(case when S.flg_t_cbet = 't' then 1 else 0 end) as real) / \
@@ -859,12 +859,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_FOLD_TO_CBET
-	/* PT3  query to get TURN fold to cbet percentage */
+	/* PT3  query to get TURN fold to cbet */
 	{
 		// name
-		"fcbetturn",
+		"turn_fold_to_cbet",
 		// description_for_editor
-		"Poker Tracker folded while facing cbet turn percentage",
+		"Poker Tracker folded while facing cbet turn",
 		// query
 		"SELECT (case when sum(case when flg_t_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_t_cbet_action = 'F' then 1 else 0 end) as real) \
@@ -878,12 +878,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_FOLD_TO_3B
-	/* PT3  query to get TURN fold to 3 bet percentage */
+	/* PT3  query to get TURN fold to 3 bet */
 	{
 		// name
-		"f3betturn",	
+		"turn_fold_to_3bet",	
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet turn percentage",
+		"Poker Tracker folded while facing 3bet turn",
 		// query
 		"SELECT (case when sum(case when flg_t_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_t_3bet_action = 'F' then 1 else 0 end) as real) \
@@ -897,12 +897,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_CHECK_RAISE
-	/* PT3  query to get TURN Check-Raise percentage */
+	/* PT3  query to get TURN Check-Raise */
 	{
 		// name
-		"turncheckraise",	
+		"turn_checkraise",	
 		// description_for_editor
-		"Poker Tracker turn Check-Raise percentage",
+		"Poker Tracker turn Check-Raise",
 		// query
 		"select (case when  (count(*)!=0)  then \
 			 cast(sum(case when S.flg_t_check_raise = 't' then 1 else 0 end) as real) / \
@@ -917,12 +917,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__TURN_CHECK_CALL
-	/* PT3  query to get TURN Check-Call percentage */
+	/* PT3  query to get TURN Check-Call */
 	{
 		// name
-		"turncheckraise",	
+		"turn_checkcall",	
 		// description_for_editor
-		"Poker Tracker turn Check-Call percentage",
+		"Poker Tracker turn Check-Call",
 		// query
 		"select (case when  (count(*)!=0)  then \
 			cast(sum(case when (S.flg_t_check AND S.cnt_t_call>0) then 1 else 0 end) as real) / \
@@ -937,12 +937,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_3B
-	/* PT3  query to get RIVER fold to 3 bet percentage */
+	/* PT3  query to get RIVER fold to 3 bet */
 	{
 		// name
-		"f3betriver",	
+		"river_fold_to_3bet",	
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet river percentage",
+		"Poker Tracker folded while facing 3bet river",
 		// query
 		"SELECT (case when sum(case when flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
@@ -956,12 +956,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_FOLD_TO_CBET
-	/* PT3  query to get RIVER fold to cbet percentage */
+	/* PT3  query to get RIVER fold to cbet */
 	{
 		// name
-		"fcbetriver",
+		"river_fold_to_cbet",
 		// description_for_editor
-		"Poker Tracker folded while facing cbet river percentage",
+		"Poker Tracker folded while facing cbet river",
 		// query
 		"SELECT (case when sum(case when flg_r_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_r_cbet_action = 'F' then 1 else 0 end) as real) \
@@ -975,12 +975,12 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT3_QUERY_SUPPORT__RIVER_BET
-	/* PT3  query to get River bet percentage */
+	/* PT3  query to get River bet */
 	{
 		// name
-		"rbet",
+		"river_bet",
 		// description_for_editor
-		"Poker Tracker river bet percentage",
+		"Poker Tracker river bet",
 		// query
 		"SELECT (case when sum(case when flg_r_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_r_cbet_action = 'F' then 1 else 0 end) as real) \

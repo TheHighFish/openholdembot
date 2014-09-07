@@ -285,7 +285,7 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("0121")
     HEURISTIC_RULE (false)
-    REASONING ("Range check for symbol ")
+    REASONING ("Range check for symbol opponentsblindbits")
     PRECONDITION (true)
     POSTCONDITION ((gws("opponentsblindbits") >= 0) && (gws("opponentsblindbits") <= 1023))
     SYMBOLS_POSSIBLY_AFFECTED ("opponentsblindbits")
@@ -299,4 +299,13 @@ BEGIN_TESTCASE
     PRECONDITION (true)
     POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") <= 10))
     SYMBOLS_POSSIBLY_AFFECTED ("nopponentstruelyraising")
+END_TESTCASE
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0123")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol opponent_chair_headsup")
+    PRECONDITION (gws("nopponentsplaying") == 1)
+    POSTCONDITION ((gws("opponent_chair_headsup") >= 0) && (gws("opponent_chair_headsup") <= 10))
+    SYMBOLS_POSSIBLY_AFFECTED ("opponent_chair_headsup")
 END_TESTCASE

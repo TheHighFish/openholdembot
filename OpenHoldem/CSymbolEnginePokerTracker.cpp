@@ -13,6 +13,7 @@
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 
 #include "CFormulaParser.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
@@ -35,6 +36,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_userchair != NULL);
+	assert(p_symbol_engine_active_dealt_playing != NULL);
 }
 
 CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker()
@@ -73,8 +75,7 @@ void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
 
 bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s) {
 	return ((s.Left(2) == "pt") 
-		&& (s.Left(3) != "pt_")
-		&& (s.Left(5) != "pt_r_"));
+		&& ((s.Left(3) != "pt_") || (s.Left(5) == "pt_r_")));
 }
 
 void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup() {
@@ -134,7 +135,8 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 		error_message.Format(
 			"Old style PokerTracker symbol detected: %s.\n"
 			"\n"
-			"PokerTracker symbol either start with \"pt_\" or \"pt_r_\".\n", s);
+			"PokerTracker symbol start with \"pt_\".\n"
+			"use chair number or \"_raischair\" at the very end.\n", s);
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
@@ -168,13 +170,19 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	}
 
 	CString standard_symbol_name;
-	// PokerTracker ymbols for the raise-chair
-	if (StringAIsPrefixOfStringB("pt_r_", s)) {
+	assert(StringAIsPrefixOfStringB("pt_", s));
+	// PokerTracker symbols for the raise-chair
+	if (s.Right(10) == "_raischair")
+	{
 		chair = p_symbol_engine_raisers_callers->raischair();
+	}
+	// PokerTracker symbols for the opponent headsup chair
+	else if (s.Right(8) == "_headsup")
+	{
+		chair = p_symbol_engine_active_dealt_playing->opponentheadsupchairbit();
 	}
 	// PokerTracker symbols for chair X
 	else {
-		assert(StringAIsPrefixOfStringB("pt_", s));
 		CString symbol = s;
 		CString last_character = symbol.Right(1);
     if (!isdigit(last_character[0])) {
@@ -202,8 +210,13 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
   for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i) {
     CString basic_symbol_name = PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i);
     // Add symbol for raise-chair
-    CString new_symbol = "pt_r_" + basic_symbol_name;
+    CString new_symbol = "pt_" + basic_symbol_name + "_raischair";
     list.AppendFormat(" %s", new_symbol);
+
+	// Add symbol for headsup-chair
+    new_symbol = "pt_" + basic_symbol_name + "_headsup";
+	list.AppendFormat(" %s", new_symbol);
+
     // Add symbols for all chairs, indexed by trailing numbers
     for (int j=0; j<k_max_number_of_players; j++) {
 	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
