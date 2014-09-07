@@ -297,6 +297,11 @@ RaiseMax
 ##ERROR_IncorrectBotsLastAction##
 -1
 
+##ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC##
+// Now use a very special constant so that even the most inexperienced newbie
+// notices that something is wrong
+-1234567
+
 ##HINT_We_Dont_Have_A_FullHouse_At_All##
 // Docu says: this case is 0; and this special case needs extra care.
 // However returning a high number instead of 0 seems better to us,
@@ -562,7 +567,8 @@ Calls + nopponentscalling
   me_st_MemCalls_AddNopponentscalling
 
 ##Calls##
-me_re_MemCalls
+ismyturn ? me_re_MemCalls :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##PT_LastCaller_Chair##
 // Can't be big blind (0), as it is for the first orbit preflop only
@@ -603,14 +609,17 @@ HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 + (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
 
 ##CallsSinceLastRaise##
-(PlayersRaisingOrColdCallingTheLastRaise - 1)
+ismyturn ? (PlayersRaisingOrColdCallingTheLastRaise - 1) :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##Folds##
-(betround == ConstBetRoundPreflop) ? (nplayersdealt  - nopponentsplaying - 1) :
-(betround == ConstBetRoundFlop)    ? (nplayersround2 - nopponentsplaying - 1) :
-(betround == ConstBetRoundTurn)    ? (nplayersround3 - nopponentsplaying - 1) :
-(betround == ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
-ERROR_Betround_Out_Of_Range
+ismyturn ? 
+[(betround == ConstBetRoundPreflop) ? (nplayersdealt  - nopponentsplaying - 1) :
+ (betround == ConstBetRoundFlop)    ? (nplayersround2 - nopponentsplaying - 1) :
+ (betround == ConstBetRoundTurn)    ? (nplayersround3 - nopponentsplaying - 1) :
+ (betround == ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
+ ERROR_Betround_Out_Of_Range] :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##ChecksAfterHero##
 // Valid second orbit only
@@ -641,7 +650,8 @@ HINT_Nothing_To_Do_But_All_OK
 HINT_Nothing_To_Do_But_All_OK
 
 ##Checks##
-me_re_MemChecks
+ismyturn ? me_re_MemChecks :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##DealPosition1Chair##
 ac_dealpos0 == 1 ? 0 :
@@ -797,6 +807,7 @@ HINT_Nothing_To_Do_But_All_OK
 me_st_MemRaises_Calculate_Raises
 
 ##Raises##
+(!ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 // Raises might have been -1 if there were additional blind-posters,
 // because nopponentsraising was wrong in that case for old versions
 // But this gets now handled perfectly by nopponentstruelyraising.
@@ -874,6 +885,7 @@ nopponentstruelyraising
 nopponentstruelyraising
 
 ##RaisesSinceLastPlay##
+(!ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 (BotsActionsOnThisRoundIncludingChecks == 0) ? RaisesBeforeOurFirstAction :
 (BotsActionsOnThisRoundIncludingChecks == 1) ? RaisesSinceLastPlayOnOurSecondAction :
 (BotsActionsOnThisRoundIncludingChecks >= 2) ? RaisesSinceLastPlayAfterOurSecondAction :
@@ -1279,10 +1291,14 @@ bet1
 me_re_MaxOpponentStackSize
 
 ##MaxStacksizeOfActiveOpponents##
-stack0 == balance ? stack1/bblind : stack0/bblind
+(bblind > 0) ? 
+(stack0 == balance ? stack1/bblind : stack0/bblind) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##EffectiveMaxStacksizeOfActiveOpponents##
-balance<=f$OpenPPL_MaxStacksizeOfActiveOpponents? balance/bblind: MaxStacksizeOfActiveOpponents
+(bblind > 0) ? 
+(balance<=MaxStacksizeOfActiveOpponents? balance/bblind: MaxStacksizeOfActiveOpponents) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##MaxStillToActStackSize##
 userchair == BigBlindChair        ? 0 :
