@@ -516,6 +516,7 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
     error_message += "Found a bracket. Probably missing operator\n";
   } else if (token_ID == kTokenIdentifier) {
     CString name = _tokenizer.GetTokenString();
+    name.MakeLower();
     if (name.Left(4) == "user") {
       error_message += "Found a user-variable.\n";
       error_message += "Correct syntax: When <condition> Set user_xyz\n";

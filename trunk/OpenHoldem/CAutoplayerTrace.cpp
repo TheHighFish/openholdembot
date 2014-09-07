@@ -56,7 +56,7 @@ bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
   if (memcmp(name, "me_", 3) == 0) return true;
   // OpenPPL-user-variables might also change (once)
   // We don't care about multiple loggings of userchair here
-  if (memcmp(name, "user", 4) == 0) return true;
+  if (memicmp(name, "user", 4) == 0) return true;
   // True random numbers that don't get cached,
   // i.e. OH-script "random" and OpenPPL "Random"
   if (memcmp(name, "random", 6) == 0) return true;

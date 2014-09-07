@@ -114,7 +114,7 @@ void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
 
 void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 {
-	assert(uservariable.Left(4) == "user");
+  assert(uservariable.Left(4).MakeLower() == "user");
 	_node_type = kTokenActionUserVariableToBeSet;
 	_terminal_name = uservariable;
 }
