@@ -114,13 +114,8 @@ POKERTRACKER_DLL_API bool PT_DLL_IsAdvancedStat(int stats_index)
 // Not exported
 CString PureSymbolName(CString symbol_name)
 {
-	// Cut off "pt_r_" prefix for the raisers chair
-	if (symbol_name.Left(5) == "pt_r_")
-	{
-		symbol_name = symbol_name.Right(symbol_name.GetLength() - 5);
-	}
 	// Cut off "pt_" prefix for other chairs
-	else if (symbol_name.Left(3) == "pt_")
+	if (symbol_name.Left(3) == "pt_")
 	{
 		symbol_name = symbol_name.Right(symbol_name.GetLength() - 3);
 		// Cut off chair number at the right end
@@ -128,6 +123,14 @@ CString PureSymbolName(CString symbol_name)
 		if (isdigit(last_character))
 		{
 			symbol_name = symbol_name.Left(symbol_name.GetLength() - 1);
+		}
+		else if(symbol_name.Right(10) == "_raischair")
+		{
+			symbol_name = symbol_name.Left(symbol_name.GetLength() - 10);
+		}
+		else if(symbol_name.Right(8) == "_headsup")
+		{
+			symbol_name = symbol_name.Left(symbol_name.GetLength() - 8);
 		}
 	}
 	return symbol_name;

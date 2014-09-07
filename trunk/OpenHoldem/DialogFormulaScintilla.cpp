@@ -728,10 +728,10 @@ void CDlgFormulaScintilla::OnSymbolTreeTipInfo(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (lpGetInfoTip && lpGetInfoTip->hItem)
 	{
-		const char *description = (const char *)m_SymbolTree.GetItemData(lpGetInfoTip->hItem);
+		toolTipData* toolTip = (toolTipData*)m_SymbolTree.GetItemData(lpGetInfoTip->hItem);
 
-		if (description)
-			strcpy_s(lpGetInfoTip->pszText, lpGetInfoTip->cchTextMax, description);
+		if (toolTip && toolTip->description)
+			strcpy_s(lpGetInfoTip->pszText, lpGetInfoTip->cchTextMax, *toolTip->description);
 	}
 
 	*pResult = 0;
@@ -1915,18 +1915,23 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 
 HTREEITEM CDlgFormulaScintilla::AddSymbolSubTitle(HTREEITEM parentItem, const char *title, const char *description)
 {
+	toolTipData* toolTip = new toolTipData();
+	toolTip->description = new CString(description);
 	HTREEITEM ret = m_SymbolTree.InsertItem(title, parentItem);
 
-	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
+	m_SymbolTree.SetItemData(ret, (DWORD_PTR)toolTip);
 
 	return ret;
 }
 
 HTREEITEM CDlgFormulaScintilla::AddSymbolTitle(const char *title, const char *description, HTREEITEM parentItem)
 {
+	toolTipData* toolTip = new toolTipData();
+	toolTip->description = new CString(description);
+
 	HTREEITEM ret = m_SymbolTree.InsertItem(title, parentItem);
 
-	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
+	m_SymbolTree.SetItemData(ret, (DWORD_PTR)toolTip);
 	m_SymbolTree.SetItemState(ret, TVIS_BOLD, TVIS_BOLD);
 
 	return ret;
@@ -1934,11 +1939,14 @@ HTREEITEM CDlgFormulaScintilla::AddSymbolTitle(const char *title, const char *de
 
 HTREEITEM CDlgFormulaScintilla::AddSymbol(HTREEITEM parentItem, const char *symbol, const char *description)
 {
+	toolTipData* toolTip = new toolTipData();
+	toolTip->description = new CString(description);
+
 	HTREEITEM ret  = m_SymbolTree.InsertItem(symbol, hRawItem);
-	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
+	m_SymbolTree.SetItemData(ret, (DWORD_PTR)toolTip);
 
 	ret = m_SymbolTree.InsertItem(symbol, parentItem);
-	m_SymbolTree.SetItemData(ret, (DWORD_PTR)description);
+	m_SymbolTree.SetItemData(ret, (DWORD_PTR)toolTip);
 
 	return ret;
 }
@@ -1960,8 +1968,17 @@ void CDlgFormulaScintilla::PopulatePokerTrackerSymbols()
 	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
 	{
 		CString description, symbol;
-		symbol.Format("pt_r_%s ", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		symbol.Format("pt_%s_raischair", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
 		description.Format("%s for the last raiser", PT_DLL_GetDescription(i));
+		AddSymbol(parent, symbol, description);
+	}
+
+	parent = AddSymbolSubTitle(mainParent, "Symbols for headsup opponent chair");
+	for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
+	{
+		CString description, symbol;
+		symbol.Format("pt_%s_headsup", PT_DLL_GetBasicSymbolNameWithoutPTPrefix(i));
+		description.Format("%s for headsup opponent chair", PT_DLL_GetDescription(i));
 		AddSymbol(parent, symbol, description);
 	}
 }
@@ -2131,6 +2148,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "opponentsdealtbits", "bits 9-0: 1=dealt 0=notdealt");
 	AddSymbol(parent, "opponentsplayingbits", "bits 9-0: 1=playing 0=notplaying");
 	AddSymbol(parent, "opponentsblindbits", "bits 9-0: 1=blind 0=notblind");
+	AddSymbol(parent, "opponent_chair_headsup",  "headsup opponent chair number (0-9)");
 
 	mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
 	AddSymbol(parent, "fmax", "highest numbered flag button pressed");
