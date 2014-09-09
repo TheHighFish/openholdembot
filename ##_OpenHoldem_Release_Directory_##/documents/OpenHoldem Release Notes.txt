@@ -92,6 +92,10 @@ MAINTENANCE:
 - Removed Menu -> Edit -> Force Crash,
   because the need for it was based on a misunderstanding.
   [THF]
+- Table-positioner now get the work area of the screen.
+  This take into account the windows task bar. If the task bar is set to "hide", 
+  you still get the full size of the screen.
+  [Nahman]
 
 v5.0.9 2014-08-06
 ==================
