@@ -101,8 +101,8 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	_table_size_y = current_position.bottom - current_position.top;
 	// Get the desktop-size
 	// http://stackoverflow.com/questions/8690619/how-to-get-screen-resolution-in-c
-	HWND hDesktop = GetDesktopWindow();
-	GetWindowRect(hDesktop, &_desktop_rectangle);
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms724947(v=vs.85).aspx
+	SystemParametersInfo(SPI_GETWORKAREA,NULL,&_desktop_rectangle,NULL);
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Connected to window %i\n", p_autoconnector->attached_hwnd());
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Table size: %ix%i\n", _table_size_x, _table_size_y);
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Desktop size: %ix%i\n", _desktop_rectangle.right, _desktop_rectangle.bottom); 
