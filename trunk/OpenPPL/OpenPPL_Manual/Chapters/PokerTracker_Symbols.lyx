@@ -314,5 +314,12 @@ Percentage of voluntary played hands by the small blind
 
 \end_layout
 
+\begin_layout Standard
+The PokerTracker symbols get currently reworked.
+ Most of them already became native OpenHoldem symbols, the other probably
+ will become.
+ Please have a look at OpenHoldems PokerTracker documentation for more details
+\end_layout
+
 \end_body
 \end_document
