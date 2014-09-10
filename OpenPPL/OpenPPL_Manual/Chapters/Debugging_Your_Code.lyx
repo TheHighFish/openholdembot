@@ -147,9 +147,9 @@ Auto
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/debug_tab.JPG
-	width 577pt
-	height 635pt
+	filename images/debug_tab_pokerstars.JPG
+	width 524pt
+	height 366pt
 	noUnzip
 
 \end_inset
@@ -158,15 +158,20 @@ Auto
 \end_layout
 
 \begin_layout Standard
-Only one point might look strange on first sight: OpenHoldem reports a potsize
- of 65 whereas the correspondenting OpenPPL-symbols reports a value of 32.50.
- But there is an explanation for it: OpenHoldem calculates in dollars, OpenPPL
- in bets or big-blinds.
- So everything is correct with this screenshot.
+\begin_inset Graphics
+	filename images/Pokerstars_NL_25.jpg
+	width 527pt
+	height 380pt
+	noUnzip
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-But if something is wrong, there might be several reasons:
+Everything is correct with this screenshot.
+ But if something is wrong, there might be several reasons:
 \end_layout
 
 \begin_layout Itemize
@@ -233,77 +238,102 @@ status open
 
 \begin_layout Plain Layout
 
-f$rais=0.00 [Line: 2, Col: 18]
+f$flop = -1000001.000 [Line 3/3]   
 \end_layout
 
 \begin_layout Plain Layout
 
-      f$OpenPPL_Raise=-7.00 [Line: 1, Col: 2]
+   HaveStraightDraw = 0.000 [Line 2/2740]     
 \end_layout
 
 \begin_layout Plain Layout
 
-      f$OpenPPL_Decision=-1.00 [Line: 1, Col: 19]
+      HaveOpenEndedStraightDraw = 0.000 [Line 10/2685]       
 \end_layout
 
 \begin_layout Plain Layout
 
-            betround=1.00
+         HaveStraight = 0.000 [Line 1/2735]         
 \end_layout
 
 \begin_layout Plain Layout
 
-            f$preflop=-1.00 [Line: 10, Col: 62] 
+            nstraightfill = 3.000       
 \end_layout
 
 \begin_layout Plain Layout
 
-                 f$OpenPPL_Raises=0.00 [Line: 1, Col: 1]
+         rankbits = 24770.000     
 \end_layout
 
 \begin_layout Plain Layout
 
-                        me_re_MemRaises=0.00
+      HaveDoubleGutshotDraw = 0.000 [Line 15/2286]   
 \end_layout
 
 \begin_layout Plain Layout
 
-                  f$OpenPPL_Calls=0.00 [Line: 1, Col: 1]
+   HaveQuads = 0.000 [Line 1/2679]   
 \end_layout
 
 \begin_layout Plain Layout
 
-                        me_re_MemCalls=0.00
+      isfourofakind = 0.000   
 \end_layout
 
 \begin_layout Plain Layout
 
-                  f$OpenPPL_StillToAct=8.00 [Line: 1, Col: 42]
+   BotsLastAction = -1000008.000 [Line 20/549]   
 \end_layout
 
 \begin_layout Plain Layout
 
-                        dealposition=4.00
+      betround = 2.000     
 \end_layout
 
 \begin_layout Plain Layout
 
-                        nchairsdealtleft=6.00 
+      ConstBetRoundPreflop = 1.000 [Line 1/194] 
 \end_layout
 
 \begin_layout Plain Layout
 
-                 islist008=0.00
+      me_re_MemBotsLastAction = 0.000   
 \end_layout
 
 \begin_layout Plain Layout
 
-                 f$OpenPPL_Others=1.00 [Cached] 
+      Fold = -1000001.000 [Line 1/77] 
 \end_layout
 
 \begin_layout Plain Layout
 
-                 f$OpenPPL_Fold=-1.00 [Line: 1, Col: 2]
+      PrevActionWasAllin = 0.000 [Line 2/492] 
+\end_layout
+
+\begin_layout Plain Layout
+
+         prevaction = 3.000 
+\end_layout
+
+\begin_layout Plain Layout
+
+    PrevActionWasAllin = 0.000 [cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+   Raise = -1000008.000 [Line 1/134]  
+\end_layout
+
+\begin_layout Plain Layout
+
+   Raise = -1000008.000 [cached]  
+\end_layout
+
+\begin_layout Plain Layout
+
+   Fold = -1000001.000 [cached]
 \end_layout
 
 \end_inset
@@ -312,87 +342,54 @@ f$rais=0.00 [Line: 2, Col: 18]
 \end_layout
 
 \begin_layout Standard
-The main logic of your translated OpenPPL-code gets evaluated by the socalled
- 
-\begin_inset Quotes eld
-\end_inset
+Long story short:
+\end_layout
 
-f$OpenPPL_Decision
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Itemize
+At the very top you see an OpenPPL main-function, here f$flop
+\end_layout
 
- function.
- It first looks up 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Itemize
+Below you see functions that get called by f$flop either directly or indirectly
+\end_layout
 
-betround
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Itemize
+Function that got indented once got directly called by f$flop.
+ E.g HaveStraightDraw, HaveQuads, BotsLastAction
+\end_layout
 
- (which is 1.00) and therefore decides to evaluate 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Itemize
+Functions that got indented one level deeper got called by the function
+ above them that got indented one level less, E.g.
+ HaveStraightDraw calls HaveOpenEndedStraightDraw and HaveDoubleGutshotDraw.
+\end_layout
 
-f$preflop
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Itemize
+After the = you see the result of the function evaluation
+\end_layout
 
-.
- The 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Itemize
+[Line 10/2685] means: the function returned the result at its tenth line,
+ which is line 2685 in the file.
+\end_layout
 
-f$preflop
-\begin_inset Quotes erd
-\end_inset
+\begin_layout Itemize
+[cached] means that the result already got calculated and the cached value
+ gets reused.
+\end_layout
 
--function looks at 
-\begin_inset Quotes eld
-\end_inset
+\begin_layout Itemize
+symbols without line information are built-in OpenHoldem symbols.
+\end_layout
 
-Raises
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-Calls
-\begin_inset Quotes erd
-\end_inset
-
-.
- Both get their values from pre-computed memory-symbols (as they depend
- on game-history).
- After that it evaluates StilltoAct (which further calculates its value
- depending on dealposition and nchairsdealtleft) and result to 8 (early
- position 2).
- As our hand is not in list008 (false = 0.00) OpenHoldem doesn't continue
- here and finally reaches 
-\begin_inset Quotes eld
-\end_inset
-
-When Others Fold Force
-\begin_inset Quotes erd
-\end_inset
-
-.
- Others is always true (coded as 1.00; and [Cached] simply means, that this
- symbol got evaluated in the past and its value got remembered).
- So Fold (coded as -1.00) is the action to be taken.
- Once this point gets reached, OpenHoldem evaluates f$preflop to -1.00 (Fold)
- and then f$Decision to -1.00.
- As Fold is something different than Raise (coded as -7.00) OpenHoldems autoplaye
-r-function f$rais evaluates to false (0.00) and therefore OpenHoldem does
- not raise.
- It will then continue with f$call as described in OpenHoldems manual.
- Debugging causes brain-cancer, but for botters that's a progress.
+\begin_layout Standard
+That's it, basically.
+ We were a bit in hurry when we wrote this paragraph.
+ Any better explanation is very welcome.
 \end_layout
 
 \begin_layout Section*
-Things to watch out for
+Things To Watch Out For
 \end_layout
 
 \begin_layout Itemize

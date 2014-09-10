@@ -827,7 +827,7 @@ f$sitout Function
 For similar reasons OpenPPL does no longer support a SitOut-command.
  We prefer to separate the playing logic from hopper-logic.
  Therefore OpenHoldem has a f$sitout-function.
- Furthermore OpenHoldem supports f$sitin, f$autopost, f$leave, f$closeand
+ Furthermore OpenHoldem supports f$sitin, f$autopost, f$leave, f$close and
  some more.
  
 \begin_inset listings
