@@ -720,8 +720,8 @@ Set
 \end_layout
 
 \begin_layout Standard
-Long story short: Shanky-PPL is an easy, english-like language that it is
- intuitive to use, but it contains some technical flaws.
+Long story short: Shanky-PPL is an easy, english-like language that is intuitive
+ to use, but it contains some technical flaws.
  For example it can't be parsed with a one-token-look-ahead like all other
  modern programming languages.
  This complicates the parser and especially the generation of good, helpful
@@ -827,7 +827,7 @@ f$sitout Function
 For similar reasons OpenPPL does no longer support a SitOut-command.
  We prefer to separate the playing logic from hopper-logic.
  Therefore OpenHoldem has a f$sitout-function.
- Furthermore OpenHoldem supports f$sitout, f$autopost, f$leave, f$closeand
+ Furthermore OpenHoldem supports f$sitin, f$autopost, f$leave, f$closeand
  some more.
  
 \begin_inset listings
