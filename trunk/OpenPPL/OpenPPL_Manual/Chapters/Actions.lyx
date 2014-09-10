@@ -111,7 +111,7 @@ WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 
 \begin_layout Plain Layout
 
-    WHEN ((Hand = AA) or (Hand = KK)...) RAISETO 3 FORCE
+    WHEN ((Hand = AA) or (Hand = KK)...) RaiseTo 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -121,7 +121,7 @@ WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 
 \begin_layout Plain Layout
 
-    WHEN (StackSize < 20 and ((Hand = ...) OR ...)) RAISEMAX FORCE
+    WHEN (StackSize < 20 and ((Hand = ...) OR ...)) RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -148,74 +148,74 @@ status open
 
 \begin_layout Plain Layout
 
-BETMAX FORCE
+BetMax FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-RAISEMAX FORCE
+RaiseMax FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-ALLIN FORCE        // synonym for BetMax and RaiseMax, but no standard PPL
+Allin FORCE        // synonym for BetMax and RaiseMax, but no standard PPL
 \end_layout
 
 \begin_layout Plain Layout
 
-BETPOT FORCE
+BetPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-RAISEPOT FORCE
+RaisePot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-BETHALFPOT FORCE
+BetHalfPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-RAISEHALFPOT FORCE
+RaiseHalfPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-BET FORCE          // min-bet (fixed limit)
+Bet FORCE          // min-bet (fixed limit)
 \end_layout
 
 \begin_layout Plain Layout
 
-RAISE FORCE        // min-raise (fixed limit)
+Raise FORCE        // min-raise (fixed limit)
 \end_layout
 
 \begin_layout Plain Layout
 
-CALL FORCE
+Call FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-CHECK FORCE
+Check FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-FOLD FORCE
+Folf FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-BEEP FORCE         // beep, but don#t act
+Beep FORCE         // beep, but don#t act
 \end_layout
 
 \end_inset
 
 Contrary to standard PPL OpenPPL does not distinguish bets and raises.
- The generated OH-script-code looks exactly the same and OpenHoldem makes
- no difference anyway.
+ OpenHoldem treats them exactly the same way.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -223,6 +223,12 @@ Please note: SitOut is no longer a supported action.
  In our opinion it is beneficial to separate playing logic and hopper logic.
  Therefore OpenHoldem provides some hopper-functionality, especially the
  functions f$sitin, f$sitout, f$leave and f$close.
+ 
+\end_layout
+
+\begin_layout Standard
+Please also note: fixed actions are functions from a technical point of
+ view, therefore they are case-sensitive.
 \end_layout
 
 \begin_layout Section
@@ -421,7 +427,7 @@ status open
 
 \begin_layout Plain Layout
 
-	WHEN AmountToCall > 0 AND (Hand = 32 OR Hand = 42 OR ...) FOLD FORCE
+	WHEN AmountToCall > 0 AND (Hand = 32 OR Hand = 42 OR ...) Return True FORCE
 \end_layout
 
 \end_inset
