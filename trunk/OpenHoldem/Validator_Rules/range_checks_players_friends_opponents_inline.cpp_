@@ -306,6 +306,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol opponent_chair_headsup")
     PRECONDITION (gws("nopponentsplaying") == 1)
-    POSTCONDITION ((gws("opponent_chair_headsup") >= 0) && (gws("opponent_chair_headsup") <= 10))
+    POSTCONDITION ((gws("opponent_chair_headsup") >= 0) && (gws("opponent_chair_headsup") <= 9))
     SYMBOLS_POSSIBLY_AFFECTED ("opponent_chair_headsup")
 END_TESTCASE
