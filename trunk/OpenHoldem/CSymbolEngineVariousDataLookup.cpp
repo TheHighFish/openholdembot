@@ -1,16 +1,16 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose: Symbol lookup for various symbols 
 //   that are not part of a regular symbol-engine
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineVariousDataLookup.h"
@@ -39,7 +39,6 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
-#include "CValidator.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
@@ -77,7 +76,7 @@ void CSymbolEngineVariousDataLookup::ResetOnMyTurn()
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   // DLL
-  if (memcmp(name, "dll$", 4) == 0) {                                                                                                                                                                                                                    if (memcmp(name, "dll$dpl", 7) == 0) vali_err = true;if (memcmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (memcmp(name, "dll$oewc", 8) == 0) vali_err = true;if (memcmp(name, "dll$unknown_player", 18) == 0) vali_err = true;                                                                                                                                                                                                 
+  if (memcmp(name, "dll$", 4) == 0) {
     assert(p_dll_extension != NULL);
     if (p_dll_extension->IsLoaded()) {
 	    *result = (p_dll_extension->process_message()) ("query", name);

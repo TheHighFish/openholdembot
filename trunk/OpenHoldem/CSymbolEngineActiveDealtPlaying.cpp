@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -178,18 +178,12 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
     _playersdealtbits, _playersdealtbits);
 }
 
-int CSymbolEngineActiveDealtPlaying::opponentheadsupchairbit()
-{
-	if(nopponentsplaying() > 1)
-		return -1;
-
-	for (int i = 0; i < k_max_number_of_players; i++)
-	{
-		if (IsBitSet(opponentsplayingbits(), i))
-			return i;
+int CSymbolEngineActiveDealtPlaying::opponentheadsupchair(){
+	if(nopponentsplaying() > 1) return k_undefined;
+	for (int i = 0; i < k_max_number_of_players; i++)	{
+		if (IsBitSet(opponentsplayingbits(), i)) return i;
 	}
-
-	return -1;
+	return k_undefined;
 }
 
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
@@ -301,7 +295,7 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 	}
 	else if (memcmp(name, "opponent_chair_headsup", 22)==0)
 	{
-		*result = opponentheadsupchairbit();
+		*result = opponentheadsupchair();
 		return true;
 	}
 	// Symbol of a different symbol-engine

@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -56,7 +56,7 @@ void CSymbolEngineOpenPPLUserVariables::Set(CString symbol) {
 
 bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-  if (memicmp(name, "user", 4) != 0) {
+  if (_memicmp(name, "user", 4) != 0) {
     // Not a user-variable
     return false;
   }

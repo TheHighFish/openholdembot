@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerTracker.h"
@@ -136,7 +136,10 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 			"Old style PokerTracker symbol detected: %s.\n"
 			"\n"
 			"PokerTracker symbol start with \"pt_\".\n"
-			"use chair number or \"_raischair\" at the very end.\n", s);
+      "Possible postfixes:\n"
+      "  * chair number (0..9)\n"
+      "  * _raischair\n"
+      "  * _headsup\n", s);
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
@@ -179,7 +182,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup")
 	{
-		chair = p_symbol_engine_active_dealt_playing->opponentheadsupchairbit();
+		chair = p_symbol_engine_active_dealt_playing->opponentheadsupchair();
 	}
 	// PokerTracker symbols for chair X
 	else {

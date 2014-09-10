@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
 #define INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H
@@ -57,7 +57,7 @@ public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
 	int userchairbit()				{ return 1 << USER_CHAIR; }
-	int opponentheadsupchairbit();
+	int opponentheadsupchair();
 
 public:
   CString SymbolsProvided();
