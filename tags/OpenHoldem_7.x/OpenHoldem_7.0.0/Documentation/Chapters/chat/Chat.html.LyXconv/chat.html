@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="chat.tex"> 
+<meta name="date" content="2010-04-12 11:41:00"> 
+<link rel="stylesheet" type="text/css" href="chat.css"> 
+</head><body bgcolor="#CCCCFF" 
+>
+
+
+   <h2 class="chapterHead"><span class="titlemark"></span><br /><a 
+ id="x1-10001"></a>Chat</h2>
+<!--l. 27--><p class="noindent" >OpenHoldem&#8217;s chat feature is provided for two reasons: deception and fun. The key to
+chat is to use it wisely and to not overdo it.
+   <h3 class="sectionHead"><a 
+ id="x1-20001"></a>OH-Script </h3>
+<!--l. 34--><p class="noindent" >Create a new formula f$chat with OpenHoldem, which returns 0, if you wish no chat and
+one of the constants described below to send a simple chat message. These constants are
+not available as OpenHoldem symbols, you have to use the numerical values (gg=1,
+nh=2, ...).
+   <h3 class="sectionHead"><a 
+ id="x1-30001"></a>Available chat messages</h3>
+<!--l. 42--><p class="noindent" >A complete list of available symbols for formula
+   <!--l. 45-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-3001r1"></a></span>enum&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>{&#x00A0;<br /><span class="label"><a 
+ id="x1-3003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;no_simple_Chat&#x00A0;=&#x00A0;0,&#x00A0;<br /><span class="label"><a 
+ id="x1-3004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_gg,&#x00A0;<br /><span class="label"><a 
+ id="x1-3005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_nh,&#x00A0;<br /><span class="label"><a 
+ id="x1-3006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_vnh,&#x00A0;<br /><span class="label"><a 
+ id="x1-3007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_n1,&#x00A0;<br /><span class="label"><a 
+ id="x1-3008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_wow,&#x00A0;<br /><span class="label"><a 
+ id="x1-3009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_lol,&#x00A0;<br /><span class="label"><a 
+ id="x1-3010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_rofl,&#x00A0;<br /><span class="label"><a 
+ id="x1-3011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_haha,&#x00A0;<br /><span class="label"><a 
+ id="x1-3012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_tu,&#x00A0;<br /><span class="label"><a 
+ id="x1-3013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_thx,&#x00A0;<br /><span class="label"><a 
+ id="x1-3014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_omg,&#x00A0;<br /><span class="label"><a 
+ id="x1-3015r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_sick,&#x00A0;<br /><span class="label"><a 
+ id="x1-3016r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_fu,&#x00A0;<br /><span class="label"><a 
+ id="x1-3017r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_fish,&#x00A0;<br /><span class="label"><a 
+ id="x1-3018r18"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_hi,&#x00A0;<br /><span class="label"><a 
+ id="x1-3019r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_hello,&#x00A0;<br /><span class="label"><a 
+ id="x1-3020r20"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;simple_Chat_bye,&#x00A0;<br /><span class="label"><a 
+ id="x1-3021r21"></a></span>};
+   </div>
+   <h3 class="sectionHead"><a 
+ id="x1-40001"></a>OH-Script with DLL </h3>
+<!--l. 73--><p class="noindent" >Simply define f$chat as dll$chat and handle this symbol. Return the same constants as
+used above to specify the message to send, especially &#8220;no_simple_Chat&#8221; to send no
+message.
+   <h3 class="sectionHead"><a 
+ id="x1-50001"></a>DLL only </h3>
+<!--l. 81--><p class="noindent" >Using Chat in your DLL gives you two additional opportunities: Any chat message you
+want At any time
+<!--l. 84--><p class="indent" >   At startup your DLL will receive an additional message "p_send_chat_message",
+providing a pointer to access the chat function. The function has the following
+prototype:
+   <!--l. 89-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-5001r1"></a></span>void&#x00A0;SendChatMessage(char<span 
+class="cmsy-10">*</span>&#x00A0;new_message);
+   </div>
+<!--l. 94--><p class="indent" >   Safety measure: To prevent a crazy bot flooding the chat, there are two settings in
+{Preferences}:
+           <ul class="itemize1">
+        <li class="itemize">Minimum delay (seconds)
+           </li>
+        <li class="itemize">Additional random delay (seconds)</li></ul>
+<!--l. 100--><p class="noindent" >Adjust these to any value you are comfortable with, if you trust your bot.
+
+   <h3 class="sectionHead"><a 
+ id="x1-60001"></a>Chat and Table Maps </h3>
+<!--l. 106--><p class="noindent" >In order to use the chat function, OpenHoldem has to know where the chat box of your
+casino software is. Therefore the corresponding TableMap has to specify a region that
+defines the location of the chat box. transform.
+<!--l. 111--><p class="indent" >   Without the chat box region, all attempts to chat will be ignored without any
+warnings, avoiding anything that could disturb the screen scraping process.
+   <h3 class="sectionHead"><a 
+ id="x1-70001"></a>Limitations</h3>
+           <ul class="itemize1">
+        <li class="itemize">One message at a time. There is no waiting list, or queue, to handle
+        multiple messages (as we are lazy and assume, there&#8217;s no need for too
+        much chat at a poker table).
+           </li>
+        <li class="itemize">There is no way to specify any concrete delay. The messages will be sent
+        only when {The Autoplayer} is active and there will be an additional
+        delay per character, the intent being to simulate human-like input.
+           </li>
+        <li class="itemize">Only predefined chat messages if you are not using a DLL.
+           </li>
+        <li class="itemize">No support for non-alpha-numeric-characters, due to technical reasons.
+           </li>
+        <li class="itemize">On some sites that temporarily block the chat (e.g. Cakepoker), multiple
+        chat messages can queue up in the poker client. The obvious counter
+        measure would be to always delete the chat box, but that could raise a
+        red flag on other sites.</li></ul>
+    
+</body></html> 
+
+
+
