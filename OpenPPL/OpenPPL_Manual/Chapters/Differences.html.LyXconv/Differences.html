@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-09-10"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>Differences To Shanky And Old-Style-PPL
+</h1>
+<div class="Unindented">
+If you are a botter who used Shanky-PPL in the past there are some differences you should know about:
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>No Default Bot
+</h2>
+<div class="Unindented">
+OpenPPL does not provide a default &ldquo;winning-bot&rdquo;, especially no built-in <span class="versalitas">doodle</span>-profile like BonusBots. <span class="versalitas">Doodle</span> simply is a copyrighted business-secret of Shanky and giving away the miracle million-dollar-maker to every single one of your opponents would be no joy, wouldn’t it?
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--2"></a>Plain Text Only
+</h2>
+<div class="Unindented">
+For the same reason there is no support for encrypted PPL-profiles. Our aim is to build an open-source botting-tool and not a marketing-platform for shady salesmen. Therefore OpenPPL is plain text only — for profiles you own legally, or even better: for profiles you build on your own.
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--3"></a>No Option Settings
+</h2>
+<div class="Unindented">
+Standard Shanky-PPL supports option settings to configure their build-in-default bot; at least that was the old way to do so, but nowadays most of these settings get overwritten by the profile and have no effect at all. As OpenPPL does not support a default bot anyaway these option settings have no effect and get ignored.<div class="listing">
+<pre class="listing">MakePotSizedPreFlopRaisesWhen = 6
+FoldToPre-FlopRaisesForAQAJsKQ = OFF
+FoldPost-FlopBelowTopPairToAnyBetOrRaise = OFF
+FoldToPost-FlopRaisesWithUnpairedBoardsFor = 2 
+...
+​
+f$preflop
+...
+</pre>
+</div>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>No Keyword Custom
+</h2>
+<div class="Unindented">
+As no built-in default bot exists the whole bot-logic is &ldquo;custom&rdquo;. Sure, we could ignore that superfluous keyword, however it is an indication of old-style or Shanky-style (Open)PPL. There will be more things &ldquo;wrong&rdquo; for sure, so we prefer to show you a warning as early as possible.
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--4"></a>Preflop, Flop, Turn and River Sections
+</h2>
+<div class="Unindented">
+The four main code-sections are functions (technically speaking), therefore they have OH-script-style function-header-syntax:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##f$preflop##
+    WHEN ... RAISEMAX FORCE
+    ...
+​
+##f$flop##
+​
+##f$turn##
+​
+##f$river##
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+At least the f$preflop-section must be present for OpenHoldem to switch to OpenPPL-mode.
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--5"></a>Floating Point Numbers
+</h2>
+<div class="Unindented">
+There are some differences between Standard PPL and OpenPPL that cause troubles for the converter — luckily only very few:
+</div>
+<ul>
+<li>
+Standard PPL uses integers everywhere, whereas OpenPPL uses floating point numbers. An example: in Standard PPL you could write code like:<div class="listing">
+<pre class="listing">WHEN Stacksize = 1 AND ... RAISE FORCE
+WHEN Stacksize = 2 AND
+</pre>
+</div>
+or even<div class="listing">
+<pre class="listing">WHEN AmountToCall = 70% Stacksize
+</pre>
+</div>
+which will cause troubles with OpenHoldem, because OpenHolden uses real numbers like 31.41. Therefore it is recommended to use inequality-operators, for example like below: <div class="listing">
+<pre class="listing">WHEN Stacksize &lt; 1.5 AND ... RAISE FORCE
+WHEN Stacksize &lt; 2.5 AND
+</pre>
+</div>
+Or you could even use ther new approximatelly-equal-operator:<div class="listing">
+<pre class="listing">WHEN Stacksize ~~ 3 RAISEMAX FORCE
+</pre>
+</div>
+
+</li>
+<li>
+Standard PPLs symbol ButFullHouseOrFourOfAKind use lower numbers for better full houses or quads, but 0 for no full house at all. This is somewhat inconsistent and OpenPPL uses a high number (999) for that case.
+</li>
+
+</ul>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--6"></a>Hand And Board Expressions
+</h2>
+<div class="Unindented">
+OpenHoldems formula engine uses floating-point-numbers internally and there is no easy way to represent a board of cards as a single floating-point-number. There could be even various different board-expressions at the right side of an equality comparator that are all true.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN Board = AT ...
+WHEN Board = AT Suited...
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+Therefore we don’t support native Shanky-syntax here but use parameterized symbols
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN board$AT ...
+WHEN board$ATSuited ...
+</pre>
+</div>
+
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--7"></a>Cases matter (partially)
+</h2>
+<div class="Unindented">
+OpenHoldem is case-sensitive - contrary to standard PPL. So upper- and lower-cases matter - at least for the translated code. The rules for your OpenPPL-code are more user-friendly and less rigid. There are basically 3 cases:
+</div>
+<ul>
+<li>
+Keywords like &ldquo;WHEN&rdquo;, &ldquo;AND&rdquo;, &ldquo;RAISEMAX&rdquo;, etc. For keywords 3 different spellings are allowed: all upper-cases, all lower-cases and reasonable mixes.<div class="listing">
+<pre class="listing">WHEN (Hand = AA) RAISEMAX FORCE
+When (Hand = AA) RaiseMax Force
+when (Hand = AA) raisemax force
+</pre>
+</div>
+For better readability we recommend to use only upper-cases for keywords.
+</li>
+<li>
+OpenHoldem symbols. Native OpenHoldem symbols are case-sensitive and always lower-cases.<div class="listing">
+<pre class="listing">WHEN (pt_vpip0 &lt; 10) FOLD FORCE
+WHEN (balance0 &lt; 50) RAISEMAX FORCE
+</pre>
+</div>
+However: you will probably use these symbols very rarely in your code. Probably only to create poker-logical symbols like PT_OpenRaiser_VPIP and BigBlindStackSize.
+</li>
+<li>
+OpenPPL-symbols that are part of the library. They are case-sensitive OH-script-functions with mixed letters.<div class="listing">
+<pre class="listing">WHEN (StillToAct &lt; 2) RAISETO 3 FORCE
+</pre>
+</div>
+The naming is pretty intuitive, but the function that generates error-messages is smart enough to look for similar named symbols and will show you a helpful warning if something is wrong.
+</li>
+
+</ul>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--8"></a>Keyword &ldquo;Set&rdquo; for User-Defined Variables
+</h2>
+<div class="Unindented">
+Long story short: Shanky-PPL is an easy, english-like language that it is intuitive to use, but it contains some technical flaws. For example it can’t be parsed with a one-token-look-ahead like all other modern programming languages. This complicates the parser and especially the generation of good, helpful error-messages. Therefore we had to deviate at some points a liitle bit. The most conspicuous point is the new keyword &ldquo;Set&rdquo; before a user-variable:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">WHEN ... Set user_utg_limp_raised_preflop
+</pre>
+</div>
+
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--9"></a>No Shanky-Style Delay
+</h2>
+<div class="Unindented">
+<div class="listing">
+<pre class="listing">PREFLOP
+    WHEN ... RAISE 3 DELAY 5 FORCE
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+A user-defined delay after an action does simply not fit to the concept of functions; that traditionally return only a single value. Besides of that: we believe that is very clumsy to have thousands of lines with a fixed delay. OpenHoldem natively supports a solution that is way better suited for this use-case: a f$delay-functions.
+</div>
+<div class="Indented">
+It requires only some (or some dozen) lines of code for perfect randomized delays, depending e.g. on board-textture, betting-actions, etc.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##f$delay##
+   WHEN UncoordinatedFlop AND Random &lt; 10 RETURN 2500 FORCE
+   WHEN ...
+</pre>
+</div>
+
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--10"></a>f$sitout Function
+</h2>
+<div class="Unindented">
+For similar reasons OpenPPL does no longer support a SitOut-command. We prefer to separate the playing logic from hopper-logic. Therefore OpenHoldem has a f$sitout-function. Furthermore OpenHoldem supports f$sitout, f$autopost, f$leave, f$closeand some more. <div class="listing">
+<pre class="listing">##f$InUTG##
+    WHEN (dealposition = 3) RETURN True FORCE
+​
+##f$sitout##
+   // SitOut FORCE will first fold and then sitout.
+   // handsplayed and floppct are OpenHoldem symbols 
+   // that can be used like any other OpenPPL symbol.
+   // We wait until the orbit is finished and sitout
+   // before we have to post the big blind again.
+   WHEN (handsplayed &gt; 15 
+        AND floppct &lt; 0.20 
+        AND f$HaveNoCards 
+        AND f$InUTG) 
+     RETURN True Force  
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+.
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-10T12:58:11.783000</span>
+</div>
+</div>
+</body>
+</html>
