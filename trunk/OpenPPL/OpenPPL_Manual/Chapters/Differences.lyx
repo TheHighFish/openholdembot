@@ -908,8 +908,90 @@ status open
 
 \end_layout
 
+\begin_layout Section*
+.RaiseBy And RaiseTo Actions
+\end_layout
+
 \begin_layout Standard
-.
+Let's assume the following situation: you sit in the big blind and had to
+ pay $10.
+ Everybody folds to the button who raises to $30.
+ Now it is your turn again and you decide to enter 
+\begin_inset Quotes eld
+\end_inset
+
+90
+\begin_inset Quotes erd
+\end_inset
+
+ into the raise-box.
+ What does this mean?
+\end_layout
+
+\begin_layout Standard
+Well, it depends on the casino.
+\end_layout
+
+\begin_layout Itemize
+at some casinos $90 will be your final betsize (RaiseTo, swagtextmethod
+ = 3)
+\end_layout
+
+\begin_layout Itemize
+other casinos will add $90 to the $10 you already posted, so the final betsize
+ will be $100.(swagtextmethod = 2)
+\end_layout
+
+\begin_layout Itemize
+and finally some other casinos will add these $90 to the $30 of the last
+ raiser, so the final betsize will be $120 (RaiseBy, swagtextmethod = 1)
+\end_layout
+
+\begin_layout Standard
+How does Shanky handle this Babylonian confusion?
+\end_layout
+
+\begin_layout Quote
+In one case the small blind is counted as part of the pot and in the other
+ it is not.
+ This can vary between poker rooms as well.
+ You just have to experiment to get it where you like and save each profile
+ the way you want it.
+\end_layout
+
+\begin_layout Quote
+(
+\noun on
+Egor
+\noun default
+ at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://bonusbots.com/support/index.php/topic,7934.msg79372.html#msg79372
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+However we don't like undefined behaviour and we don't want to keep multiple
+ versions of our bots for different casinos either.
+ Therefore we introduced 2 new commands: RaiseTo and RaiseBy.
+ This way you can clearly specify what behaviour you want.
+ You only have to specify the correct swagtextmethod in your tablemap to
+ telll OpenHoldem how your casino behaves and OpenHoldem will care about
+ all the rest.automatically.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+That's how it should be.
 \end_layout
 
 \end_body
