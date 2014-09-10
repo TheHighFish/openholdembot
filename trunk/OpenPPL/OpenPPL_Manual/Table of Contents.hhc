@@ -110,8 +110,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Differences To Shanky-PPL">
-			<param name="Local" value="Chapters\Things_To_Know.html.LyXconv\Things_To_Know.html">
-			<param name="URL" value="Chapters\Things_To_Know.html.LyXconv\Things_To_Know.html">
+			<param name="Local" value="Chapters\Differences.html.LyXconv\Differences.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Debugging Your Code">

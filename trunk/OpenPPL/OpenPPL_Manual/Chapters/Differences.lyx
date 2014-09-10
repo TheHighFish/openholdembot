@@ -353,7 +353,7 @@ WHEN Stacksize ~~ 3 RAISEMAX FORCE
 \end_layout
 
 \begin_layout Itemize
-Standard PPLs symbol ButFullHouseOrFourOfAKind use lower numbers for better
+Standard PPLs symbol NutFullHouseOrFourOfAKind use lower numbers for better
  full houses or quads, but 0 for no full house at all.
  This is somewhat inconsistent and OpenPPL uses a high number (999) for
  that case.
@@ -377,12 +377,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Board = AT ...
+WHEN Board$AT ...
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN Board = AT Suited...
+WHEN Board$ATSuited...
 \end_layout
 
 \end_inset
@@ -416,7 +416,7 @@ WHEN board$ATSuited ...
 \end_layout
 
 \begin_layout Section*
-Cases matter (partially)
+Cases Matter (Partially)
 \end_layout
 
 \begin_layout Standard
@@ -460,17 +460,17 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (Hand = AA) RAISEMAX FORCE
+WHEN (Hand$AA) RAISEMAX FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-When (Hand = AA) RaiseMax Force
+When (Hand$AA) RaiseMax Force
 \end_layout
 
 \begin_layout Plain Layout
 
-when (Hand = AA) raisemax force
+when (Hand$AA) raisemax force
 \end_layout
 
 \end_inset
@@ -716,7 +716,7 @@ Set
 \begin_inset Quotes erd
 \end_inset
 
- for User-Defined Variables
+ For User-Defined Variables
 \end_layout
 
 \begin_layout Standard
@@ -909,7 +909,7 @@ status open
 \end_layout
 
 \begin_layout Section*
-.RaiseBy And RaiseTo Actions
+RaiseBy And RaiseTo Actions
 \end_layout
 
 \begin_layout Standard
