@@ -111,7 +111,7 @@ WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 
 \begin_layout Plain Layout
 
-    WHEN ((Hand = AA) or (Hand = KK)...) RAISE 3 FORCE
+    WHEN ((Hand = AA) or (Hand = KK)...) RAISETO 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
