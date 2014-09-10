@@ -139,7 +139,7 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN NOT In BigBlind AND list_of_biggest_trash FOLD FORCE
+    WHEN NOT In BigBlind AND list_of_biggest_trash Fold FORCE
 \end_layout
 
 \end_inset
@@ -223,7 +223,7 @@ status open
 
 \begin_layout Plain Layout
 
-        WHEN Opponents = 1 AND Random < 80 BETHALFPOT FORCE
+        WHEN Opponents = 1 AND Random < 80 BetHalfPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -309,7 +309,7 @@ WHEN EffectiveStacksize > 0 AND EffectiveStacksize <= 13
 \begin_layout Plain Layout
 
     WHEN Calls = 0 AND Raises = 0 AND (Hand= ...
- RAISEMAX FORCE
+ RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -510,7 +510,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN AmountToCall / AmountToCall + PotSize > f$Outs / f$CardsLeft CALL FORCE
+WHEN AmountToCall / AmountToCall + PotSize > f$Outs / f$CardsLeft Call FORCE
 \end_layout
 
 \end_inset
@@ -582,7 +582,7 @@ WHEN Opponents >= 3 AND NOT f$HaveTopPairOrBetter OR f$HaveStrongDraw
 
 \begin_layout Plain Layout
 
-    WHEN AmountToCall = 0 CHECK FORCE
+    WHEN AmountToCall = 0 Check FORCE
 \end_layout
 
 \end_inset
@@ -621,7 +621,7 @@ WHEN issittingout
 
 \begin_layout Plain Layout
 
-  RETURN TRUE FORCE  
+  RETURN True FORCE  
 \end_layout
 
 \end_inset
