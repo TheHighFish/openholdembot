@@ -75,7 +75,7 @@ figs-within-sections
 \begin_body
 
 \begin_layout Chapter*
-Things To Know
+Differences To Shanky And Old-Style-PPL
 \end_layout
 
 \begin_layout Standard
@@ -84,7 +84,7 @@ If you are a botter who used Shanky-PPL in the past there are some differences
 \end_layout
 
 \begin_layout Section*
-No default bot
+No Default Bot
 \end_layout
 
 \begin_layout Standard
@@ -111,7 +111,7 @@ Doodle
 \end_layout
 
 \begin_layout Section*
-Plain text only
+Plain Text Only
 \end_layout
 
 \begin_layout Standard
@@ -123,15 +123,15 @@ For the same reason there is no support for encrypted PPL-profiles.
 \end_layout
 
 \begin_layout Section*
-No option settings
+No Option Settings
 \end_layout
 
 \begin_layout Standard
 Standard Shanky-PPL supports option settings to configure their build-in-default
  bot; at least that was the old way to do so, but nowadays most of these
  settings get overwritten by the profile and have no effect at all.
- As OpenPPL does not support a default bot these option settings have no
- effect and get ignored.
+ As OpenPPL does not support a default bot anyaway these option settings
+ have no effect and get ignored.
 \begin_inset listings
 inline false
 status open
@@ -167,16 +167,7 @@ FoldToPost-FlopRaisesWithUnpairedBoardsFor = 2
 
 \begin_layout Plain Layout
 
-Custom
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-Preflop
+f$preflop
 \end_layout
 
 \begin_layout Plain Layout
@@ -237,13 +228,13 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN ...
+    WHEN ...
  RAISEMAX FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-...
+    ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -279,8 +270,8 @@ WHEN ...
 \end_layout
 
 \begin_layout Standard
-All four code-sections must be present for OpenHoldem to switch into OpenPPL-mod
-e.
+At least the f$preflop-section must be present for OpenHoldem to switch
+ to OpenPPL-mode.
 \end_layout
 
 \begin_layout Section*
@@ -346,6 +337,18 @@ WHEN Stacksize < 2.5 AND
 
 \end_inset
 
+Or you could even use ther new approximatelly-equal-operator:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN Stacksize ~~ 3 RAISEMAX FORCE
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -357,7 +360,59 @@ Standard PPLs symbol ButFullHouseOrFourOfAKind use lower numbers for better
 \end_layout
 
 \begin_layout Section*
-Hand and board expressions
+Hand And Board Expressions
+\end_layout
+
+\begin_layout Standard
+OpenHoldems formula engine uses floating-point-numbers internally and there
+ is no easy way to represent a board of cards as a single floating-point-number.
+ There could be even various different board-expressions at the right side
+ of an equality comparator that are all true.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN Board = AT ...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN Board = AT Suited...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore we don't support native Shanky-syntax here but use parameterized
+ symbols
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN board$AT ...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN board$ATSuited ...
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
@@ -424,36 +479,6 @@ For better readability we recommend to use only upper-cases for keywords.
 \end_layout
 
 \begin_layout Itemize
-OpenPPL-symbols that are part of the library.
- They are case-insensitive and you can write them any way you want.
- The translator knows their correct spelling and is able to generate correct
- code automatically.
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-WHEN (StillToAct < 2) RAISE 3 FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-WHEN (stilltoact < 2) RAISE 3 FORCE
-\end_layout
-
-\begin_layout Plain Layout
-
-WHEN (sTiLlToAcT < 2) RAISE 3 FORCE
-\end_layout
-
-\end_inset
-
-For better readability we recommend mixed cases like in the library and
- in this manual.
-\end_layout
-
-\begin_layout Itemize
 OpenHoldem symbols.
  Native OpenHoldem symbols are case-sensitive and always lower-cases.
 \begin_inset listings
@@ -477,8 +502,110 @@ However: you will probably use these symbols very rarely in your code.
  BigBlindStackSize.
 \end_layout
 
+\begin_layout Itemize
+OpenPPL-symbols that are part of the library.
+ They are case-sensitive OH-script-functions with mixed letters.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN (StillToAct < 2) RAISETO 3 FORCE
+\end_layout
+
+\end_inset
+
+The naming is pretty intuitive, but the function that generates error-messages
+ is smart enough to look for similar named symbols and will show you a helpful
+ warning if something is wrong.
+\end_layout
+
+\begin_layout Section*
+Keyword 
+\begin_inset Quotes eld
+\end_inset
+
+Set
+\begin_inset Quotes erd
+\end_inset
+
+ for User-Defined Variables
+\end_layout
+
+\begin_layout Standard
+Long story short: Shanky-PPL is an easy, english-like language that it is
+ intuitive to use, but it contains some technical flaws.
+ For example it can't be parsed with a one-token-look-ahead like all other
+ modern programming languages.
+ This complicates the parser and especially the generation of good, helpful
+ error-messages.
+ Therefore we had to deviate at some points a liitle bit.
+ The most conspicuous point is the new keyword 
+\begin_inset Quotes eld
+\end_inset
+
+Set
+\begin_inset Quotes erd
+\end_inset
+
+ before a user-variable:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN ...
+ Set user_utg_limp_raised_preflop
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section*
 No Shanky-Style Delay
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+PREFLOP
+\end_layout
+
+\begin_layout Plain Layout
+
+    WHEN ...
+ RAISE 3 DELAY 5 FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A user-defined delay after an action does simply not fit to the concept
+ of functions; that traditionally return only a single value.
+ Besides of that: we believe that is very clumsy to have thousands of lines
+ with a fixed delay.
+ OpenHoldem natively supports a solution that is way better suited for this
+ use-case: a f$delay-functions.
+\end_layout
+
+\begin_layout Standard
+It requires only some (or some dozen) lines of code for perfect randomized
+ delays, depending e.g.
+ on board-textture, betting-actions, etc.
 \end_layout
 
 \begin_layout Standard
@@ -507,14 +634,15 @@ status open
 \end_layout
 
 \begin_layout Section*
-f$sitout function
+f$sitout Function
 \end_layout
 
 \begin_layout Standard
 For similar reasons OpenPPL does no longer support a SitOut-command.
  We prefer to separate the playing logic from hopper-logic.
  Therefore OpenHoldem has a f$sitout-function.
- Furthermore OpenHoldem supports f$sitout, f$autopost, f$leave and f$close.
+ Furthermore OpenHoldem supports f$sitout, f$autopost, f$leave, f$closeand
+ some more.
  
 \begin_inset listings
 inline false
@@ -592,6 +720,10 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+.
 \end_layout
 
 \end_body
