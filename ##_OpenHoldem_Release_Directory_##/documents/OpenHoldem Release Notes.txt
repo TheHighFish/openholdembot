@@ -1,4 +1,4 @@
-v7.0.0 2014-09-05
+v7.0.0 2014-09-10
 ==================
 NEW STUFF:
 - Build-in OpenPPL
@@ -29,7 +29,8 @@ NEW STUFF:
   after "Calc" in the debug-tab. Thanks to Querty for the suggestion.
   [THF]
 - New symbol opponent_chair_headsup that helps the user 
-  to build advanced symbols/stats for headsup situations.
+  to build advanced symbols/stats for headsup situations
+  and also gets used for headsup-PokerTracker-symbols.
   [Nahman]
 
 BUG FIXES:
