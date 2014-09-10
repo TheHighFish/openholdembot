@@ -1,17 +1,17 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
 // Required OpenHoldem version: 4.2.4
 //
-//*****************************************************************************
+//******************************************************************************
 
 // Needs to be defined here, before #include "user.h"
 // to generate export-definitions and not inport-definitions

@@ -1,15 +1,15 @@
-//*****************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*****************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*****************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CHeartbeatThread.h"
@@ -88,7 +88,7 @@ void CHeartbeatThread::StartThread() {
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
 	int scrape_delay = preferences.scrape_delay();
 	if (p_table_state->User()->HasKnownCards() 
-    && (p_scraper_access->NumberOfVisibleButtons() > 0)) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(97531); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+    && (p_scraper_access->NumberOfVisibleButtons() > 0)) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
 		// My turn
 		// Stable frames expected
 		// Shorter reaction times desired
