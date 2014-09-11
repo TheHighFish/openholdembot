@@ -1,3 +1,12 @@
+v7.0.1 2014-09-xx
+==================
+BUG FIXES:
+- The formula editor could crash in the past,
+  because Scintillas lexer incorrectly computed negative hash-values
+  that got used as array-indices, leading to bogus data.
+  This was our main problem left and has now been fixed.
+  [Lavezzi, Nahman, THF]
+
 v7.0.0 2014-09-10
 ==================
 NEW STUFF:
