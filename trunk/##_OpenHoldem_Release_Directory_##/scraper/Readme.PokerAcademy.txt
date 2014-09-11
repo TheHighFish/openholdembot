@@ -6,5 +6,5 @@ This tablemap is designed for
   * classic window theme
   * full-size PokerAcademy window
   * game-type no-limit 
-and works flawlessly for Ares and THF.
+This TM is based on an old map by Ares and works flawlessly for THF.
 However it might need some tweaks, depending on your settings.
