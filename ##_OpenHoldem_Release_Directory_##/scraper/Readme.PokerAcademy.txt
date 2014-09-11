@@ -7,4 +7,4 @@ This tablemap is designed for
   * full-size PokerAcademy window
   * game-type no-limit 
 This TM is based on an old map by Ares and works flawlessly for THF.
-However it might need some tweaks, depending on your settings.
+However it might need some tweaks, depending on your system settings.
