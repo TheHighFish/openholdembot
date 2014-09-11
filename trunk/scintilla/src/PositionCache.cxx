@@ -6,6 +6,7 @@
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
+#include <assert.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -551,6 +552,29 @@ void PositionCache::SetSize(size_t size_) {
 	pces = new PositionCacheEntry[size];
 }
 
+// In the past the lexer could crash due to non-normalized modul,
+// leading to negative array-indices and bogus data used later.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=17582
+int NormailzedModulo(int divident,int divisor) {
+  if (divisor == 0) return 0;
+  if (divisor < 0) divisor = 0 - divisor;
+  assert(divisor > 0);
+  if (divident >= 0) {
+    return (divident % divisor);
+  } 
+  assert(divident < 0);
+  int new_divident = 0 - divident;
+  assert(new_divident > 0);
+  int temp_result_for_new_divident = new_divident % divisor;
+  if (temp_result_for_new_divident == 0) return 0;
+  assert(temp_result_for_new_divident > 0);
+  assert(temp_result_for_new_divident < divisor);
+  int result = divisor - temp_result_for_new_divident;
+  assert(result > 0);
+  assert(result < divisor);
+  return result;
+}
+
 void PositionCache::MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned int styleNumber,
 	const char *s, unsigned int len, int *positions) {
 	allClear = false;
@@ -561,11 +585,11 @@ void PositionCache::MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned 
 
 		// Two way associative: try two probe positions.
 		int hashValue = PositionCacheEntry::Hash(styleNumber, s, len);
-		probe = hashValue % (int)size;
+		probe = NormailzedModulo(hashValue, size);
 		if (pces[probe].Retrieve(styleNumber, s, len, positions)) {
 			return;
 		}
-		int probe2 = (int)((hashValue * 37) % size);
+		int probe2 = NormailzedModulo((hashValue * 37), size);
 		if (pces[probe2].Retrieve(styleNumber, s, len, positions)) {
 			return;
 		}
