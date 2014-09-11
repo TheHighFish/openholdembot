@@ -1,0 +1,10 @@
+PokerAcademy displays slightly different for every system. 
+This tablemap is designed for 
+  * Windows XP 
+  * 32 bit colour-depth 
+  * 1024x768 screen resolution
+  * classic window theme
+  * full-size PokerAcademy window
+  * game-type no-limit 
+and works flawlessly for Ares and THF.
+However it might need some tweaks, depending on your settings.
