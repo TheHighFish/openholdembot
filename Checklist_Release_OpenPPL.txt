@@ -18,9 +18,6 @@
   Use tags/OpenPPL_1.x.y as directory.
 * Create a new temporary directory "OpenPPL_4.x.y" (on your desktop, not in the sources).
 * Add the executable OpenPPL.exe to the new directory (check time of creation)
-* Add "Bracketify.pl"
-* Add Relhbys OHF-optimizer
-* Add "OpenPPL Release Notes.txt"
 * Add "OpenPPL_Library.ohf"
 * Add "OpenPPL_Manual.chm"
 * Create a rar-file with unique name ("OpenPPL_1.x.y.rar")

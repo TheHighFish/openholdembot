@@ -69,7 +69,8 @@ void CSymbolEnginePokerTracker::ResetOnHeartbeat()
 }
 
 void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
-	CString error_message = "Error: Invalid PT-symbol: " + s;
+	CString error_message;
+  error_message.Format("Invalid PT-symbol: %s\n", s);
 	OH_MessageBox_Formula_Error(error_message, "Error");
 }
 

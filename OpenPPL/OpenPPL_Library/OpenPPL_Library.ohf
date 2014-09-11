@@ -3759,29 +3759,29 @@ Middle
 //*****************************************************************************
 
 ##PT_BigBlind_FoldBBToSteal##
-BigBlindChair == 0 ? pt_fbbts0 :
-BigBlindChair == 1 ? pt_fbbts1 :
-BigBlindChair == 2 ? pt_fbbts2 :
-BigBlindChair == 3 ? pt_fbbts3 :
-BigBlindChair == 4 ? pt_fbbts4 :
-BigBlindChair == 5 ? pt_fbbts5 :
-BigBlindChair == 6 ? pt_fbbts6 :
-BigBlindChair == 7 ? pt_fbbts7 :
-BigBlindChair == 8 ? pt_fbbts8 :
-BigBlindChair == 9 ? pt_fbbts9 :
+BigBlindChair == 0 ? pt_big_blind_fold_to_steal0 :
+BigBlindChair == 1 ? pt_big_blind_fold_to_steal1 :
+BigBlindChair == 2 ? pt_big_blind_fold_to_steal2 :
+BigBlindChair == 3 ? pt_big_blind_fold_to_steal3 :
+BigBlindChair == 4 ? pt_big_blind_fold_to_steal4 :
+BigBlindChair == 5 ? pt_big_blind_fold_to_steal5 :
+BigBlindChair == 6 ? pt_big_blind_fold_to_steal6 :
+BigBlindChair == 7 ? pt_big_blind_fold_to_steal7 :
+BigBlindChair == 8 ? pt_big_blind_fold_to_steal8 :
+BigBlindChair == 9 ? pt_big_blind_fold_to_steal9 :
 ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##PT_SmallBlind_FoldSBToSteal##
-SmallBlindChair == 0 ? pt_fsbts0 :
-SmallBlindChair == 1 ? pt_fsbts1 :
-SmallBlindChair == 2 ? pt_fsbts2 :
-SmallBlindChair == 3 ? pt_fsbts3 :
-SmallBlindChair == 4 ? pt_fsbts4 :
-SmallBlindChair == 5 ? pt_fsbts5 :
-SmallBlindChair == 6 ? pt_fsbts6 :
-SmallBlindChair == 7 ? pt_fsbts7 :
-SmallBlindChair == 8 ? pt_fsbts8 :
-SmallBlindChair == 9 ? pt_fsbts9 :
+SmallBlindChair == 0 ? pt_small_blind_fold_to_steal0 :
+SmallBlindChair == 1 ? pt_small_blind_fold_to_steal1 :
+SmallBlindChair == 2 ? pt_small_blind_fold_to_steal2 :
+SmallBlindChair == 3 ? pt_small_blind_fold_to_steal3 :
+SmallBlindChair == 4 ? pt_small_blind_fold_to_steal4 :
+SmallBlindChair == 5 ? pt_small_blind_fold_to_steal5 :
+SmallBlindChair == 6 ? pt_small_blind_fold_to_steal6 :
+SmallBlindChair == 7 ? pt_small_blind_fold_to_steal7 :
+SmallBlindChair == 8 ? pt_small_blind_fold_to_steal8 :
+SmallBlindChair == 9 ? pt_small_blind_fold_to_steal9 :
 ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##PT_ButtonVPIP##
