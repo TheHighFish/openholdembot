@@ -6,6 +6,10 @@ BUG FIXES:
   that got used as array-indices, leading to bogus data.
   This was our main problem left and has now been fixed.
   [Lavezzi, Nahman, THF]
+- OH scraper could lead to an error-message when scraping the slider.
+  Improved logging : add a log warning when the slider's handle couldn't be found.
+  Thanks to opengeek for reporting.
+  [Nahman]
 
 v7.0.0 2014-09-10
 ==================
@@ -137,7 +141,7 @@ BUG FIXES:
   [THF]
 - Fixed 2 buffer-overflows in the PokerTracker-code.
   Also showing a warning on incomplete PT-config when clicking the "Test"-button.
-  [Nahman78]
+  [Nahman]
 
 NEW STUFF:
 - Improved detection and display of binary values in the debug-tab.
@@ -158,7 +162,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Some code improvements for compatibility with UNICODE-filenames on Win7/8.
-  Special thanks to Nahman78 for providing the patch.
+  Special thanks to Nahman for providing the patch.
   [THF]
 - Improved lookup for PT-symbols (pt_r_ without raiser).
   Thanks to PkrBot for reporting an assertion.
