@@ -547,7 +547,7 @@ int CScraper::ScrapeCard(CString name) {
   result = ScrapeCardface(uname);
   if (result != CARD_UNDEFINED) return result;
 	// Finally: in case of player cards try to scrape card-backs
-  result = ScrapeCardback(uname);
+  result = ScrapeCardback(name);
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
   write_log(k_always_log_errors, 
@@ -667,6 +667,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   CString	name;
   CString text;
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
+  set_sitting_out(chair, false);
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) {
