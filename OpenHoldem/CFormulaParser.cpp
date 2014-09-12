@@ -266,6 +266,14 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     p_function_collection->Add((COHScriptObject*)p_debug_tab);
     return;
   }
+  if (_function_name.Left(9) == "f$OpenPPL") {
+    CParseErrors::Error("This is old-style translated OpenPPL.\n"
+      "OpenHoldem supports now plain-text OpenPPL.\n"
+      "The old technology is no longer compatible.\n"
+      "Please have a look at the latest OpenPPL-manual.\n"
+      "Things became far more easy.\n");
+	  return;
+  }
   TPParseTreeNode function_body = NULL;
   if (COHScriptObject::IsFunction(_function_name) 
     || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            

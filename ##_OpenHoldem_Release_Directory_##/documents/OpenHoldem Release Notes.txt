@@ -1,4 +1,4 @@
-v7.0.1 2014-09-xx
+v7.0.1 2014-09-12
 ==================
 BUG FIXES:
 - The formula editor could crash in the past,
@@ -10,6 +10,9 @@ BUG FIXES:
   Improved logging : add a log warning when the slider's handle couldn't be found.
   Thanks to opengeek for reporting.
   [Nahman]
+- Scraping cardbacks accepted only the result "cardback", but not "true".
+  This has now been fixed.
+  [ZomBee]
 
 v7.0.0 2014-09-10
 ==================
