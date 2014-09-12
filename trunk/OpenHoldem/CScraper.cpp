@@ -498,12 +498,14 @@ int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
 
 int CScraper::ScrapeCardback(CString base_name) {
   if (base_name[0] == 'p')	{
-	  CString cardback = base_name.Left(2) + "cardback";
-	  CString cardback_result;
-	  if (EvaluateRegion(cardback, &cardback_result) 
-		    && (cardback_result == "cardback"))	{
-		  return CARD_BACK;
+	CString cardback = base_name.Left(2) + "cardback";
+	CString cardback_result;
+	if (EvaluateRegion(cardback, &cardback_result)) {
+	  if ((cardback_result == "cardback")
+	      || (cardback_result == "true")) {
+		return CARD_BACK;
 	  }
+	}
   }
   return CARD_UNDEFINED;
 }

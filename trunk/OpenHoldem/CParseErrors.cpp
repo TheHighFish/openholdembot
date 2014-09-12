@@ -20,8 +20,10 @@
 
 bool CParseErrors::_is_error = false;
 
-void CParseErrors::Error(CString short_message)
-{
+void CParseErrors::Error(CString short_message) {
+  if (short_message.Right(1) != "\n") {
+    short_message += "\n";
+  }
 	CString message;
 	message.Format("%s%s%s%s%s%i%s%s%i%s%s%s%s%s",
 		"Error: ", short_message, 
