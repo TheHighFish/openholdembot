@@ -419,28 +419,35 @@ void CScraper::ScrapeSlider() {
 	// find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
-  if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	{
+    if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	
+	{
 		int j = slider->second.right - handleCI->second.left;
 		text="";
-		_handle_found_at_xy = false;
-		for (int k=0; k<=j; k++) {
+		set_handle_found_at_xy(false);
+		for (int k=0; k<=j; k++) 
+		{
 			handleI = p_tablemap->set_r$()->find("i3handle");
 			handleI->second.left  += k;
 			handleI->second.right += k;
 
 			EvaluateRegion("i3handle", &text);
-      handleI->second.left  -= k;
+			handleI->second.left  -= k;
 			handleI->second.right -= k;
-			if (text == "handle" || text == "true") {
-        handleCI = p_tablemap->r$()->find("i3handle");
-		    handle_xy.x = handleCI->second.left + k;
-		    handle_xy.y = handleCI->second.top;
-		    set_handle_found_at_xy(true);
-		    set_handle_xy(handle_xy);
-        break;
-      }
+			if (text == "handle" || text == "true") 
+			{
+				handleCI = p_tablemap->r$()->find("i3handle");
+				handle_xy.x = handleCI->second.left + k;
+				handle_xy.y = handleCI->second.top;
+				set_handle_found_at_xy(true);
+				set_handle_xy(handle_xy);
+				write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+				break;
+			}
 		}
-    write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+		if (!handle_found_at_xy())
+		{
+			write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
+		}
 	}
   __HDC_FOOTER
 }
