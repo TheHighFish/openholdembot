@@ -1,0 +1,6 @@
+LIBRARY	keyboard.dll
+EXPORTS
+   ProcessMessage    @1
+   SendString        @2
+   SendKey           @3
+   
