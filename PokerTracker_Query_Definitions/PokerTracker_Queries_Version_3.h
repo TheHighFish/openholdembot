@@ -828,7 +828,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 			 cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND (D.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND \
 			((HSum.cnt_players > 2 and D.val_p_raise_aggressor_pos < S.position) or (HSum.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as real)) \
 			 else (0) end) as result \
-			FROM  player as P, holdem_hand_player_statistics as S, holdem_hand_summary as HSum, holdem_hand_player_detail as D \
+			FROM  player as P, %GAMETYPE%player_statistics as S, %GAMETYPE%summary as HSum, %GAMETYPE%player_detail as D \
 		WHERE S.id_player = P.id_player AND \
 			S.id_hand = D.id_hand AND S.id_player = D.id_player AND \
 			HSum.id_hand = D.id_hand AND \
