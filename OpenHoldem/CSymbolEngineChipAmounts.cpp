@@ -168,7 +168,11 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 		}
 		_pot = _potcommon + _potplayer;
 	}
-  assert(_potcommon >= 0.0);
+  if (_potcommon < 0) {
+	// This can happen for potmethod = 2 and incorrectly scraped (occluded) main-pot
+	write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR: negative potcommon. Probably miss-scraped main-pot. Adapting to 0.0\n"
+	_potcommon = 0;
+  }
 }
 
 void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() 
