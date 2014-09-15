@@ -61,6 +61,13 @@ bool WinIsOutOfScreen(HWND window)
 
 bool WinIsTaskbar(HWND window)
 {
+	// Good way to Find and Detect the taskbar.
+	// This should work with Windows XP and Windows 7
+	HWND hShellWnd = ::FindWindow(_T("Shell_TrayWnd"), NULL);
+	if (window == hShellWnd)
+		return true;
+
+	// Need testing for Windows XP, if this work, The code below should be remove.
 	RECT rect;
 	if (!GetWindowRect(window, &rect))
 	{
