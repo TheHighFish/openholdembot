@@ -16,6 +16,7 @@ z$clientsize       574  335
 //
 
 s$allinmethod               2
+s$handresetmethod           7 
 s$nchairs                   10
 s$network                   pokerstars
 s$sitename                  openholdem
@@ -24,10 +25,8 @@ s$swagdeletionmethod        Nothing
 s$swagtextmethod            2
 s$t0type                    fuzzy
 s$titletext                 Poker
-s$ttlimits                  ^*- ^L - blinds ^s/^b
-s$ttlimits0                 ^*- ^L - blinds ^s/^b - ante ^a
-s$ttlimits1                 ^*- ^L tourney - blinds ^s/^b - ante ^a
-
+s$ttlimits                  ^*- ^L - blinds ^s/^b - ante ^a
+s$ttlimits0                 ^*- ^L tourney - blinds ^s/^b - ante ^a
 
 //
 // regions

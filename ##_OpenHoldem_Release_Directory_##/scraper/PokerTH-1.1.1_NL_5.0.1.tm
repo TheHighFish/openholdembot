@@ -16,6 +16,7 @@ z$clientsize       1024  600
 //
 
 s$allinmethod               2
+s$handresetmethod           7 
 s$c0limits                  ^L
 s$nchairs                   10
 s$network                   pokerth
