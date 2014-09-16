@@ -42,6 +42,11 @@ bool WinIsOpenHoldem(HWND window)
 	return (p_sharedmem->IsAnyOpenHoldemProcess(PID));
 }
 
+bool WinIsBring(HWND window)
+{
+	return WinIsFromThisProgram(window, "bring.exe");
+}
+
 bool WinIsOutOfScreen(HWND window)
 {
 	if (!desktop_dimensions_calculated)
@@ -64,23 +69,40 @@ bool WinIsTaskbar(HWND window)
 	// Good way to Find and Detect the taskbar.
 	// This should work with Windows XP and Windows 7
 	HWND hShellWnd = ::FindWindow(_T("Shell_TrayWnd"), NULL);
-	if (window == hShellWnd)
-		return true;
+	return window == hShellWnd;
+}
 
-	// Need testing for Windows XP, if this work, The code below should be remove.
-	RECT rect;
-	if (!GetWindowRect(window, &rect))
+bool WinIsProgramManager(HWND window)
+{
+	return WinIsFromThisProgram(window, "progman.exe");
+}
+
+bool WinIsTaskManager(HWND window)
+{
+	return WinIsFromThisProgram(window, "taskmgr.exe");
+}
+
+bool WinIsFromThisProgram(HWND window, const char* programName)
+{
+	if (window)
 	{
-		return false;
+		DWORD dwProcessId = 0;
+		DWORD dwThreadId = GetWindowThreadProcessId(window, &dwProcessId);
+
+		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION |
+									  PROCESS_VM_READ, FALSE, dwProcessId);
+
+		if (hProcess)
+		{
+			 bool match = false;
+			 char nameProc[MAX_PATH];
+			 if (GetProcessImageFileName(hProcess, nameProc, MAX_PATH))
+			 {
+				 match = strstr(nameProc, programName) != NULL ;
+			 }
+			 CloseHandle(hProcess);
+			 return match;
+		}
 	}
-	// We don't know a perfect way to detect the taskbar.
-	// Therefore we use some heuristics and assume it is a horizontal taskbar.
-	// For me the size is (1028x30) and the x-position starts at -2.
-	// We assume: height <= 32 and length >= 20 * height.
-	const int kMaxTaskbarHeight = 32;
-	int height = rect.bottom - rect.top;
-	if (height > kMaxTaskbarHeight) return false;
-	int length = rect.right - rect.left;
-	if (length < 20 * height) return false;
-	return true;
+	return false;
 }

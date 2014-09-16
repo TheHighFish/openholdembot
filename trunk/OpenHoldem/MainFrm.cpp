@@ -332,7 +332,7 @@ void CMainFrame::OnScraperOutput()
 	  "\n"
 	  "For example:\n"
 	  "If a players first card is \"cardback\" we don't even have to scrape the second one.\n"
-	  "This is a feature, not a bug.\n"
+	  "This is a feature, not a bug.\n",
 	  "Info", 0);
 
 	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");

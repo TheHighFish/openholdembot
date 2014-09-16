@@ -145,6 +145,12 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to OpenHoldem\n");
 		return;
 	}
+	
+	if (WinIsBring(potential_popup))			
+	{
+		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to Bring\n");
+		return;
+	}
 
 	GetWindowText(potential_popup, title, MAX_WINDOW_TITLE);
 	// Minimize or kill the remaining ones

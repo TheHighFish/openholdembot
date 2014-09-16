@@ -38,19 +38,17 @@ inline bool WinIsMinimized(HWND window)
 
 bool WinIsOpenHoldem(HWND window);
 
+bool WinIsBring(HWND window);
+
 bool WinIsOutOfScreen(HWND window);
 
 bool WinIsTaskbar(HWND window);
 
-inline bool WinIsProgramManager(HWND window)
-{
-	return (FindWindow("Progman", "Program Manager") == window);
-}
+bool WinIsProgramManager(HWND window);
 
-inline bool WinIsTaskManager(HWND window)
-{
-	return (FindWindow(NULL, "Windows Task-Manager") == window);
-}
+bool WinIsTaskManager(HWND window);
+
+bool WinIsFromThisProgram(HWND window, const char* programName);
 
 inline bool WinIsZeroSized(HWND window)
 {
