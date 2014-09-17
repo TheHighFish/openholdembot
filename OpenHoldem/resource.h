@@ -436,6 +436,8 @@
 #define IDC_DEBUG_FORMULA               1395
 #define IDC_DEBUG_VERSUS                1396
 #define IDC_DEBUG_AUTO_TRACE            1397
+#define IDC_DEBUG_AST_PRIORITY_ORDERING 1398
+#define IDC_DEBUG_FILENAMES             1399	
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -552,7 +554,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1398
+#define _APS_NEXT_CONTROL_VALUE         1400
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

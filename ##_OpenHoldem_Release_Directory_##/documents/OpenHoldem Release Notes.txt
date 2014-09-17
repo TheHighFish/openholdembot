@@ -4,7 +4,7 @@ BUG FIXES:
 - OpenPPL-functions didn't get saved.
   Thanks to Pippo21 for reporting.
   [THF]
-- OpneHoldem didn't find the OpenPPL-librarz if started from a different directorz with a link,
+- OpneHoldem didn't find the OpenPPL-library if started from a different directory with a link,
   i.e. if the working-director was not the OpenHoldem folder.
   This has now been fixed.
   [THF]  
@@ -15,7 +15,7 @@ MAINTENANCE :
     * Should now work with most non-english windows version
     * Add Bring.exe as an exception, it won't consider it as a popup
   [Nahman]
-- Replaced some assertions bz error/messages,
+- Replaced some assertions by error/messages,
   because our users proved that even the most impossible things can happen.
   [THF]
   

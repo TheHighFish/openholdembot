@@ -24,7 +24,6 @@ class CFilenames {
 	CString TableMapWildcard();
 	CString LogsDirectory();
 	CString LogFilename();
-	CString DebugTabLogFilename();
 	CString MiniDumpFilename();
 	CString ScraperDirectory();
 	CString ReplaySessionDirectory();
@@ -39,6 +38,7 @@ class CFilenames {
 	void SwitchToOpenHoldemDirectory();
  private:
 	CString IniFilename();
+  void Log(CString name, CString value);
  private:
 	char _startup_path[MAX_PATH];
 };
