@@ -322,6 +322,11 @@ void CFunctionCollection::Save(CArchive &ar)
     }
     next_object = GetNext();
   }
+  // OpenPPL-functions
+  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+    assert(k_OpenPPL_function_names[i] != "");
+    SaveObject(ar, LookUp(k_OpenPPL_function_names[i]));
+  }
   // User defined functions
   // We already saved the standard-functions
   next_object = GetFirst();

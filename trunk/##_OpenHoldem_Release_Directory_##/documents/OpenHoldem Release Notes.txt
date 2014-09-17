@@ -1,10 +1,15 @@
 v7.0.2 2014-09-XX
 ==================
+BUG FIXES:
+- OpenPPL-functions didn't get saved.
+  Thanls to Pippo21 for reporting.
+  [THF]
+
 MAINTENANCE :
 - Popup-blocker : 
-	* Improve windows recognition (Taskbar, desktop)
+    * Improve windows recognition (Taskbar, desktop)
     * Should now work with most non-english windows version
-	* Add Bring.exe as an exception, it won't consider it as a popup
+    * Add Bring.exe as an exception, it won't consider it as a popup
   [Nahman]
   
 v7.0.1 2014-09-12
