@@ -64,6 +64,8 @@ char CTokenizer::CURRENT_CHARACTER() {
       "Maybe you are a little yellow chinese man,\n"
       "maybe you wrote old greek or hebrew,\n"
       "maybe you took MS-Word instead of a serious text-editor?\n");
+	// Advance _token_end_pointer to avoid multiple errors for the same char.
+	++_token_end_pointer;
     // Can't really continue parsing
     // Treat it as end of function
     return kTokenEndOfFunction;
@@ -161,7 +163,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
   // * that's no big improvement
   // * we need to create good error-messages, even on code like "when..."
   //
-	// Now we compare...
+  // Now we compare...
   // Case-insensitive, as we want to catch mis-spelled keywords like "When".
   // They would otherwice get accepted as OpenPPL-functions 
   // and cause an error: "function used but never defined".
