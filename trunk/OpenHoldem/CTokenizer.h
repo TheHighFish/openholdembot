@@ -54,6 +54,7 @@ class CTokenizer {
   void CheckTokenForOpenPPLAction(int *token);
 private:
 	void InitVars();
+	char CURRENT_CHARACTER();
  private:
 	int  _token_end_pointer;
 	bool _last_token_pushed_back;

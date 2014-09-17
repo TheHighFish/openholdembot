@@ -2,7 +2,7 @@ v7.0.2 2014-09-XX
 ==================
 BUG FIXES:
 - OpenPPL-functions didn't get saved.
-  Thanls to Pippo21 for reporting.
+  Thanks to Pippo21 for reporting.
   [THF]
 
 MAINTENANCE :
@@ -11,6 +11,9 @@ MAINTENANCE :
     * Should now work with most non-english windows version
     * Add Bring.exe as an exception, it won't consider it as a popup
   [Nahman]
+- Replaced some assertions bz error/messages,
+  because our users proved that even the most impossible things can happen.
+  [THF]
   
 v7.0.1 2014-09-12
 ==================

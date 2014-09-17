@@ -27,7 +27,6 @@ char last_token_string[kMaxSizeOfToken];
 char* input_buffer;
 int  _token_start_pointer;
 
-#define CURRENT_CHARACTER     input_buffer[_token_end_pointer]
 #define NEXT_CHARACTER        input_buffer[_token_end_pointer+1]
 #define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
 #define SIZE_OF_TOKEN         (_token_end_pointer - _token_start_pointer)
@@ -49,13 +48,27 @@ void CTokenizer::InitNewParse() {
 void CTokenizer::InitVars() {
   // Gets called once for every function
   // Therefore we don't reset line_absolute here
-	line_relative = 1;
-	_token_start_pointer = 0;
-	_token_end_pointer = 0;
-	_last_token_pushed_back = false;
+  line_relative = 1;
+  _token_start_pointer = 0;
+  _token_end_pointer = 0;
+  _last_token_pushed_back = false;
   _additional_percentage_operator_pushed_back = false;
-	_last_token = k_undefined;
-	_inside_OpenPPL_function = false;
+  _last_token = k_undefined;
+  _inside_OpenPPL_function = false;
+}
+
+char CTokenizer::CURRENT_CHARACTER() {     
+  char next_char = input_buffer[_token_end_pointer];
+  if ((next_char < 0) || (next_char > 0xFF)) {
+    CParseErrors::Error("Unexpected character.\n"
+      "Maybe you are a little yellow chinese man,\n"
+      "maybe you wrote old greek or hebrew,\n"
+      "maybe you took MS-Word instead of a serious text-editor?\n");
+    // Can't really continue parsing
+    // Treat it as end of function
+    return kTokenEndOfFunction;
+  }
+  return next_char;
 }
 
 void CTokenizer::SetInput(const char* next_formula_to_be_parsed)
@@ -230,10 +243,10 @@ StartOfScanForNextToken:
   // http://www.cplusplus.com/reference/cctype/isblank
   //
   // White-space: skip
-  while (isspace(CURRENT_CHARACTER)) {
+  while (isspace(CURRENT_CHARACTER())) {
     // [\r][\n]Line break
-    if ((CURRENT_CHARACTER == '\n')
-	    || (CURRENT_CHARACTER == '\r'))
+    if ((CURRENT_CHARACTER() == '\n')
+	    || (CURRENT_CHARACTER() == '\r'))
     {
       line_absolute++;
       line_relative++;
@@ -245,10 +258,10 @@ StartOfScanForNextToken:
   // [a..zA..Z\$] Identifiers, 
   // including OpenPPL-style operators and keywords
   // including OpenHoldem-style $AA-symbols, etc.
-  if (isalpha(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '$')) {
-    while(isalnum(CURRENT_CHARACTER)
-        || (CURRENT_CHARACTER == '$')
-	    || (CURRENT_CHARACTER == '_')) {
+  if (isalpha(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '$')) {
+    while(isalnum(CURRENT_CHARACTER())
+        || (CURRENT_CHARACTER() == '$')
+	    || (CURRENT_CHARACTER() == '_')) {
 	  _token_end_pointer++;
 	}
 	if (IsTokenOpenPPLKeyword()) {
@@ -261,7 +274,7 @@ StartOfScanForNextToken:
   // * 12345
   // * .85
   // * 0xCE
-  else if (isdigit(CURRENT_CHARACTER) || (CURRENT_CHARACTER == '.'))
+  else if (isdigit(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '.'))
   {
     // Special case suited and offsuited hands like 72o or 54s
     if (IsCardRankCharacter(NEXT_CHARACTER)) {
@@ -274,29 +287,29 @@ StartOfScanForNextToken:
     }
 	// Entry-point for negative numbers after unary minus
 NegativeNumber:
-    while(isxdigit(CURRENT_CHARACTER)
-	    || (CURRENT_CHARACTER == '.')
-	    || (CURRENT_CHARACTER == 'x')) {
+    while(isxdigit(CURRENT_CHARACTER())
+	    || (CURRENT_CHARACTER() == '.')
+	    || (CURRENT_CHARACTER() == 'x')) {
 	  _token_end_pointer++;
 	}
 	return kTokenNumber;
   }
   // [/] Single-line-comments
-  else if ((CURRENT_CHARACTER == '/')
+  else if ((CURRENT_CHARACTER() == '/')
       && (NEXT_CHARACTER == '/')) {
 	SkipToEndOfLine();
 	goto StartOfScanForNextToken;
   }
   // [/] Multi-line comments
-  else if ((CURRENT_CHARACTER == '/')
+  else if ((CURRENT_CHARACTER() == '/')
       && (NEXT_CHARACTER == '*')) {
     SkipToEndOfMultiLineComment();
 	goto StartOfScanForNextToken;	
   }
   // [+-*/<>=!?:%&|~^] OpenHoldem-style-Operators
-	else if (IsOperatorCharacter(CURRENT_CHARACTER)) 
+	else if (IsOperatorCharacter(CURRENT_CHARACTER())) 
 	{
-		switch (CURRENT_CHARACTER)
+		switch (CURRENT_CHARACTER())
 		{
 		case '+': 
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPlus)
@@ -309,7 +322,7 @@ NegativeNumber:
 			{
 				// Unary minus
 				_token_end_pointer++;
-        if (isdigit(CURRENT_CHARACTER)) {
+        if (isdigit(CURRENT_CHARACTER())) {
           // Start of negative number
 				  goto NegativeNumber;
         }
@@ -366,9 +379,9 @@ NegativeNumber:
 		}
 	}
 	// [(){}[]] Brackets
-	else if (IsBracket(CURRENT_CHARACTER))
+	else if (IsBracket(CURRENT_CHARACTER()))
 	{
-		switch (CURRENT_CHARACTER)
+		switch (CURRENT_CHARACTER())
 		{
 		case '(': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenBracketOpen_1)
 		case '[': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenBracketOpen_2)
@@ -382,7 +395,7 @@ NegativeNumber:
 
 	}
 	// [#] List and function headers
-	else if ((CURRENT_CHARACTER == '#')
+	else if ((CURRENT_CHARACTER() == '#')
 		&& (NEXT_CHARACTER == '#')) 
 	{
 		// Double shebang as start/end of list and function headers
@@ -394,20 +407,17 @@ NegativeNumber:
 		return kTokenDoubleShebang;
 	}
 	// [\0] End of string = end of function
-	else if (CURRENT_CHARACTER == '\0')
+	else if (CURRENT_CHARACTER() == '\0')
 	{
 		line_absolute++; 
 		return kTokenEndOfFunction;
 	}
-	// Do not advance the input pointer,
-	// as we don't accept anything
-	CParseErrors::Error("Unexpected character.\n"
-    "Maybe you are a little yellow chinese man,\n"
-    "maybe you wrote old greek or hebrew,\n"
-    "maybe you took MS-Word instead of a serious text-editor?\n");
+  // Do not advance the input pointer,
+  // as we don't accept anything
+  CParseErrors::Error("Unexpected character.\n");
   // Can't really continue parsing
   // Treat it as end of function
-	return kTokenEndOfFunction;
+  return kTokenEndOfFunction;
 }
 
 char* CTokenizer::GetTokenString() {
@@ -429,7 +439,7 @@ char* CTokenizer::RemainingInput()
 
 void CTokenizer::SkipToEndOfLine()
 {
-	while (CURRENT_CHARACTER != '\n')
+	while (CURRENT_CHARACTER() != '\n')
 	{
 		SKIP_NEXT_CHARACTER
 	}
@@ -441,16 +451,16 @@ void CTokenizer::SkipToEndOfLine()
 
 void CTokenizer::SkipToEndOfMultiLineComment()
 {
-	while (((CURRENT_CHARACTER != '*') || (NEXT_CHARACTER != '/'))
-		&& (CURRENT_CHARACTER != '\0'))
+	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
+		&& (CURRENT_CHARACTER() != '\0'))
 	{
-    if (CURRENT_CHARACTER == '\n') {
+    if (CURRENT_CHARACTER() == '\n') {
       line_absolute++;
       line_relative++;
     }
 		SKIP_NEXT_CHARACTER
 	}
-	if (CURRENT_CHARACTER == '\0')
+	if (CURRENT_CHARACTER() == '\0')
 	{
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
       "/*\n"
