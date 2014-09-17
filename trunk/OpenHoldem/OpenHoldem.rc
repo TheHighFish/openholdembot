@@ -891,7 +891,7 @@ BEGIN
     CONTROL         "Cascading",IDC_RADIO_POSITION_CASCADED,"Button",BS_AUTORADIOBUTTON,8,36,65,8
     CONTROL         "Never",IDC_RADIO_POSITION_NEVER,"Button",BS_AUTORADIOBUTTON,8,52,76,8
     CONTROL         "Always keep position",IDC_ALWAYS_KEEP_POSITION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,79,120,8
-    LTEXT           "Some tabkes might be moved to the very bottom of the screen, therefore it is recommended to minimize the Windows taskbar.",IDC_STATIC,4,120,217,15
+    LTEXT           "Some tables might be moved to the very bottom of the screen, therefore it is recommended to minimize the Windows taskbar.",IDC_STATIC,4,120,217,15
 END
 
 IDD_SAPREFS22 DIALOGEX 0, 0, 237, 213
