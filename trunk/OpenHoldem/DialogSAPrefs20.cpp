@@ -82,13 +82,15 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_SCRAPER_PREPROCESSOR, preferences.debug_scraper_preprocessor() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_HOPPER_MESSAGES, preferences.debug_hopper_messages() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_OPENHOLDEM, preferences.debug_openholdem() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_DEBUG_POPUP_BLOCKER, preferences.debug_popup_blocker() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_POPUP_BLOCKER, preferences.debug_popup_blocker() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_FORMULA, preferences.debug_formula() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_DEBUG_ALLTHEREST, preferences.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_ALLTHEREST, preferences.debug_alltherest() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_VERSUS, preferences.debug_versus() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_AUTO_TRACE, preferences.debug_auto_trace() ? MF_CHECKED : MF_UNCHECKED);
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+  CheckDlgButton(IDC_DEBUG_FILENAMES, preferences.debug_filenames() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_AST_PRIORITY_ORDERING, preferences.debug_ast_priority_ordering() ? MF_CHECKED : MF_UNCHECKED);
+  return TRUE;  // return TRUE unless you set the focus to a control
+  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDlgSAPrefs20::OnOK()
@@ -131,6 +133,8 @@ void CDlgSAPrefs20::OnOK()
 	preferences.SetValue(k_prefs_debug_alltherest, IsDlgButtonChecked(IDC_DEBUG_ALLTHEREST));
   preferences.SetValue(k_prefs_debug_versus, IsDlgButtonChecked(IDC_DEBUG_VERSUS));
   preferences.SetValue(k_prefs_debug_auto_trace, IsDlgButtonChecked(IDC_DEBUG_AUTO_TRACE));
+  preferences.SetValue(k_prefs_debug_filenames, IsDlgButtonChecked(IDC_DEBUG_FILENAMES));
+  preferences.SetValue(k_prefs_debug_ast_priority_ordering, IsDlgButtonChecked(IDC_DEBUG_AST_PRIORITY_ORDERING));
 	CSAPrefsSubDlg::OnOK();
 }
 

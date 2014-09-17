@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CFilenames.h"
 
+#include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "OH_MessageBox.h"
 
@@ -45,8 +46,15 @@ CFilenames::CFilenames() {
 CFilenames::~CFilenames() {
 }
 
+void CFilenames::Log(CString name, CString value) {
+  CString message;
+  message.Format("[CFilenames] %s = %s\n", name, value);
+  write_log(preferences.debug_filenames(), (char*)message.GetString());
+}
+
 CString CFilenames::OpenHoldemDirectory() {
 	assert(_startup_path != "");
+  Log("OpenHoldemDirectory", _startup_path);
 	return _startup_path;
 }
 
@@ -71,6 +79,7 @@ CString CFilenames::IniFilename() {
 		// No ini-file found.
 		// Use default one (for saving).
 		FindClose(h_find);
+    Log("IniFilename", k_default_ini_filename.GetString());
 		return k_default_ini_filename;
 	}
 	ini_filename = find_file_data.cFileName;
@@ -91,10 +100,12 @@ CString CFilenames::IniFilename() {
 		// Therefore we take the last filename now in order to 
 		// not create yet another one with a funny name. ;-)
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16229
+    Log("IniFilename", ini_filename.GetString());
 		return ini_filename;
 	}
 	FindClose(h_find);
 	// Exactly one ini-file found
+  Log("IniFilename", ini_filename.GetString());
 	return ini_filename;
 }
 
@@ -106,54 +117,54 @@ void CFilenames::SwitchToOpenHoldemDirectory() {
 CString CFilenames::TableMapWildcard() {
 	assert(_startup_path != "");
 	CString wildcard;
-	wildcard.Format("%s\\scraper\\*.tm", _startup_path);
+	wildcard.Format("%sscraper\\*.tm", _startup_path);
+  Log("TableMapWildcard", wildcard.GetString());
 	return wildcard;
-}
-
-CString CFilenames::DebugTabLogFilename() {
-	assert(_startup_path != "");
-	CString filename;
-	filename.Format("%s\\f$debug_%lu.log", LogsDirectory(), p_sessioncounter->session_id());
-	return filename;
 }
 
 CString CFilenames::ScraperDirectory() {
 	assert(_startup_path != "");
-	return CString(_startup_path) + "\\scraper\\";
+  CString scraper_dir = CString(_startup_path) + "scraper\\";
+  Log("ScraperDirectory", (char*)scraper_dir.GetString());
+	return scraper_dir;
 }
 
 CString CFilenames::ReplaySessionDirectory() {
 	assert(_startup_path != "");
 	CString path;
-	path.Format("%s\\replay\\session_%lu\\", _startup_path, p_sessioncounter->session_id());
+	path.Format("%sreplay\\session_%lu\\", _startup_path, p_sessioncounter->session_id());
 	return path;
 }
 
 CString CFilenames::ReplayBitmapFilename(int frame_number) {
 	CString path;
 	if (frame_number == k_undefined)
-		path.Format("%s\\*.bmp", ReplaySessionDirectory());
+		path.Format("%s*.bmp", ReplaySessionDirectory());
 	else
-		path.Format("%s\\frame%06d.bmp", ReplaySessionDirectory(), frame_number);
+		path.Format("%sframe%06d.bmp", ReplaySessionDirectory(), frame_number);
+  Log("ReplayBitmapFilename", path.GetString());
 	return path;
 }
 
 CString CFilenames::ReplayHTMLFilename(int frame_number) {
 	CString path;
-	path.Format("%s\\frame%06d.htm", ReplaySessionDirectory(), frame_number);
+	path.Format("%sframe%06d.htm", ReplaySessionDirectory(), frame_number);
+  Log("ReplayHTMLFilename", path.GetString());
 	return path;
 }
 
 CString CFilenames::LogsDirectory() {
 	assert(_startup_path != "");
 	CString path;
-	path.Format("%s\\logs\\", _startup_path);
+	path.Format("%slogs\\", _startup_path);
+  Log("LogsDirectory", path.GetString());
 	return path;
 };
 
 CString CFilenames::LogFilename() {
 	CString path;
-	path.Format("%s\\oh_%lu.log", LogsDirectory(), p_sessioncounter->session_id());
+	path.Format("%soh_%lu.log", LogsDirectory(), p_sessioncounter->session_id());
+  Log("LogFilename", path.GetString());
 	return path;
 }
 
@@ -167,7 +178,8 @@ CString CFilenames::MiniDumpFilename() {
 		_startup_path, "OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, 
 		stLocalTime.wDay, stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, 
 		GetCurrentProcessId(), GetCurrentThreadId());
-	return szFileName;
+  Log("MiniDumpFilename", szFileName);
+  return szFileName;
 }
 
 CString CFilenames::PathOfExecutable() {
@@ -175,6 +187,7 @@ CString CFilenames::PathOfExecutable() {
 	// http://stackoverflow.com/questions/124886/how-to-get-the-application-executable-name-in-windows-c-win32-or-c-cli
 	TCHAR exe_path[MAX_PATH+1];
 	GetModuleFileName(0, exe_path, MAX_PATH+1);
+  Log("PathOfExecutable", exe_path);
 	return exe_path;
 }
 
@@ -185,22 +198,31 @@ CString CFilenames::ExecutableFilename() {
 		assert(pos < complete_path.GetLength() - 1);
 		return complete_path.Mid(pos + 1);
 	}
+  Log("ExecutableFilename", complete_path.GetString());
 	return complete_path;
 }
 
 CString CFilenames::PureExecutableFilename() {
 	CString filename = ExecutableFilename();
 	int pos = filename.ReverseFind('.');
+  CString result;
 	if (pos > 0) {
-		return filename.Left(pos);
-	}
-	return filename;
+		result = filename.Left(pos);
+	} else {
+    result = filename;
+  }
+  Log("PureExecutableFilename", result.GetString());
+	return result;
 }
 
 CString CFilenames::VersusPath() {
-  return (OpenHoldemDirectory() + "\\versus.bin");
+  CString result = OpenHoldemDirectory() + "versus.bin";
+  Log("VersusPath", result.GetString());
+	return result;
 }
 
 CString CFilenames::OpenPPLLibraryPath() {
-  return (OpenHoldemDirectory() + "\\OpenPPL_Library.ohf");
+  CString result = OpenHoldemDirectory() + "\\OpenPPL_Library.ohf";
+  Log("OpenPPLLibraryPath", result.GetString());
+	return result;
 }
