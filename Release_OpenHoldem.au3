@@ -5,7 +5,7 @@ Local $debug_directory = "debug\"
 
 Func Message($message)
 	Local $complete_message = $message & @CRLF & @CRLF & "Then continue."
-	MsgBox(0, "Next Step...", $complete_message)
+	MsgBox(0, "Next Step...", $complete_message) 
 EndFunc
 
 Func	PrepareReleaseDirectory()
