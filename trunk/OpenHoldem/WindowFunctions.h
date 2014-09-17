@@ -23,7 +23,7 @@ inline void MinimizeWindow(HWND window)
 inline bool WinIsDesktop(HWND window)
 {
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms633504%28v=vs.85%29.aspx
-	return (GetDesktopWindow() == window);
+	return (GetDesktopWindow() == window || GetShellWindow() == window);
 }
 
 inline bool WinIsMaximized(HWND window)
