@@ -1,3 +1,12 @@
+v7.0.2 2014-09-XX
+==================
+MAINTENANCE :
+- Popup-blocker : 
+	* Improve windows recognition (Taskbar, desktop)
+    * Should now work with most non-english windows version
+	* Add Bring.exe as an exception, it won't consider it as a popup
+  [Nahman]
+  
 v7.0.1 2014-09-12
 ==================
 BUG FIXES:
