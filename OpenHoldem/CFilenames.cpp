@@ -22,10 +22,24 @@ CFilenames *p_filenames = NULL;
 const CString k_default_ini_filename = "OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI";
 
 CFilenames::CFilenames() {
-	// Save startup directory
-	::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
-	// Create logs-directoy if necessary
-	CreateDirectory(LogsDirectory(), NULL);
+  // Save directory that contains openHoldem for future use.
+  // This is NOT GetCurrentDirectory(), which returns the working-directorz,
+  // i.e. the working directorz of the process that started OpenHoldem.
+  //  
+  // If we don't get this path right and the user stars OpenHoldem
+  // from a different directorz with a script we won't find our files.
+  // http://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
+  // http://stackoverflow.com/questions/4517425/how-to-get-program-path
+  ::GetModuleFileName(NULL, _startup_path, _MAX_PATH);
+  // Remove executable filename from path
+  // http://pic.dhe.ibm.com/infocenter/zvm/v6r2/index.jsp?topic=%2Fcom.ibm.zvm.v620.edclv%2Fstrrchr.htm
+  char *last_backslash_in_path = strrchr(_startup_path, '\\');
+  if (last_backslash_in_path != NULL) {
+    ++last_backslash_in_path;
+    *last_backslash_in_path = '\0';
+  }
+  // Create logs-directoy if necessary
+  CreateDirectory(LogsDirectory(), NULL);
 }
 
 CFilenames::~CFilenames() {
