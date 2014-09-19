@@ -36,6 +36,7 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
   _third_sibbling  = NULL;
   _terminal_name   = "";
   _constant_value  = 0.0;
+  _priority_ordering_done = false;
 }
 
 CParseTreeNode::~CParseTreeNode()
