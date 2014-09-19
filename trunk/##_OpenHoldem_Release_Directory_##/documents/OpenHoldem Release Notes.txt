@@ -4,18 +4,14 @@ BUG FIXES:
 - OpenPPL-functions didn't get saved.
   Thanks to Pippo21 for reporting.
   [THF]
-- OpneHoldem didn't find the OpenPPL-library if started from a different directory with a link,
+- OpenHoldem didn't find the OpenPPL-library if started from a different directory with a link,
   i.e. if the working-director was not the OpenHoldem folder.
   This has now been fixed.
   [THF]  
-- When we reordered the annotated parse-tree to care about priority precedence
-  we checked one node one time to often (being conservative)
-  and also (undesired) all sub-trees recursively again (and again and again).
-  This led to cubic ... instead of linear ... (touching every node only once).
-  I.e. if the formula grew by a factor 100 the ... grew by a factor 1.000.000.
-  This became noticeable for monkey-style-coded functions of about 500 lines (and more).
-  Thanks to R2D2 for reporting.
-  Now we are back to super-fast again.
+- When we cleaned up the OpenPPL-code before the release of OpenHoldem 7.0.
+  the call to OpenPPLs initialiyation function got lost
+  and therefore history-symbols like "Raises" and "Calls" did not work.
+  Thanks to Fasenderos for reporting.
   [THF]
 
 MAINTENANCE :
@@ -24,8 +20,9 @@ MAINTENANCE :
     * Should now work with most non-english windows version
     * Add Bring.exe as an exception, it won't consider it as a popup
   [Nahman]
-- Replaced some assertions by error/messages,
+- Replaced some assertions by error-messages,
   because our users proved that even the most impossible things can happen.
+  Thanks to BruceLee, Fasenderos, Lavezzi and OpenGeek for reporting.
   [THF]
   
 v7.0.1 2014-09-12
