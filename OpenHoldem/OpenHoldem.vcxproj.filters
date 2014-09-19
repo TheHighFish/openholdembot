@@ -657,6 +657,9 @@
     <ClCompile Include="CSymbolEngineICM.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolengineOpenPPL.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">

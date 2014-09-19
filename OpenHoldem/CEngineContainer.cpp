@@ -37,6 +37,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
+#include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEnginePokerAction.h"
@@ -184,6 +185,10 @@ void CEngineContainer::CreateSymbolEngines() {
   // OpenPPL-symbol-engines
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
   AddSymbolEngine(p_symbol_engine_openppl_user_variables);
+  // CSymbolEngineOpenPPL triigers calculation of history-symbols
+  // and therefore has to be the very last openPPL-symbol-engine
+  p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
+  AddSymbolEngine(p_symbol_engine_open_ppl);
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 

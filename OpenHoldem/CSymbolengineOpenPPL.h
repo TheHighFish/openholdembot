@@ -7,7 +7,9 @@
 //
 //***************************************************************************** 
 //
-// Purpose:
+// Purpose: This symbol-engine does not provide any symbols,
+//   but triggers only the calculation of history/symbols, etc.
+//   All OpenPPL-symbols are functions that get handled by the function-collection.
 //
 //***************************************************************************** 
 
@@ -16,12 +18,12 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineOpenPPLOpenPPLHandStrength: public CVirtualSymbolEngine
+class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
 {
-public:
-	CSymbolEngineOpenPPLOpenPPLHandStrength();
-	~CSymbolEngineOpenPPLOpenPPLHandStrength();
-public:
+ public:
+	CSymbolEngineOpenPPL();
+	~CSymbolEngineOpenPPL();
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -29,14 +31,12 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
 	CString IdentifiersProvided();;
-public:
-private:
 };
 
-extern CSymbolEngineOpenPPLOpenPPLHandStrength *p_symbol_engine_open_ppl_handstrength;
+extern CSymbolEngineOpenPPL *p_symbol_engine_open_ppl;
 
 #endif INC_CSYMBOLENGINE_OPENPPL_HANDSTRENGTH_H
