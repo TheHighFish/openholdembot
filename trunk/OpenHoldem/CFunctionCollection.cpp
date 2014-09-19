@@ -479,7 +479,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
     // Function/list found
     *result = p_function->Evaluate(log);
     return true;
-}
+  }
   // Not a function and not a list
   return false;
 }

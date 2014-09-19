@@ -659,8 +659,7 @@ double CSymbolEngineTableLimits::ante()
 	return _ante; 
 }
 
-double CSymbolEngineTableLimits::bet(int betround)
-{
+double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
 	return (_betsizes_for_all_bettingrounds[betround]);

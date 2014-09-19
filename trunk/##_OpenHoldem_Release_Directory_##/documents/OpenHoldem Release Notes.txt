@@ -8,6 +8,15 @@ BUG FIXES:
   i.e. if the working-director was not the OpenHoldem folder.
   This has now been fixed.
   [THF]  
+- When we reordered the annotated parse-tree to care about priority precedence
+  we checked one node one time to often (being conservative)
+  and also (undesired) all sub-trees recursively again (and again and again).
+  This led to cubic ... instead of linear ... (touching every node only once).
+  I.e. if the formula grew by a factor 100 the ... grew by a factor 1.000.000.
+  This became noticeable for monkey-style-coded functions of about 500 lines (and more).
+  Thanks to R2D2 for reporting.
+  Now we are back to super-fast again.
+  [THF]
 
 MAINTENANCE :
 - Popup-blocker : 
@@ -3974,3 +3983,4 @@ code package for 1.0.0.
 v1.0.0 2007-10-13 
 -----------------
 Initial public release
+
