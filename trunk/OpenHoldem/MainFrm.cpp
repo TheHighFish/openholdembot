@@ -456,7 +456,8 @@ void CMainFrame::OnFileOpen()
 	CFileDialog			cfd(true);
 
 	cfd.m_ofn.lpstrInitialDir = preferences.path_ohf();
-	cfd.m_ofn.lpstrFilter = "OpenHoldem Files (.ohf)\0*.ohf\0All files (*.*)\0*.*\0\0";
+  // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
+	cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (ohf, oppl)\0*.ohf;*.oppl\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK)
 	{				
