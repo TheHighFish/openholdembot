@@ -726,18 +726,18 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 		if (memcmp(name, "bet", 3)==0 && strlen(name)==3)
 		{
 			*result = bet();
+      return true;
 		}
 		else if (memcmp(name, "bet", 3)==0 && strlen(name)==4)	
 		{
-			*result = bet(name[3]-'0');
+      char betround = name[3];
+      if ((betround >= '1') && (betround <= '4')) {
+			  *result = bet(name[3]-'0');
+        return true;
+      }
 		}
-		else
-		{
-			// Invalid symbol
-			return false;
-		}
-		// Valid symbol
-		return true;
+    // Invalid symbol
+		return false;
 	}
 	if (memcmp(name, "bblind", 6)==0 && strlen(name)==6)		
 	{
