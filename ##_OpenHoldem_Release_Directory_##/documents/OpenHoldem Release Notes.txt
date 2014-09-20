@@ -14,6 +14,9 @@ BUG FIXES:
   Thanks to Fasenderos for reporting.
   [THF]
 
+NEW STUFF:
+- OpenPPL: New Symbol LastAggressorActsAfterUs
+
 MAINTENANCE :
 - Popup-blocker : 
     * Improve windows recognition (Taskbar, desktop)
