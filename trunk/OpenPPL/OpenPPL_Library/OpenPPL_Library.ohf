@@ -454,6 +454,9 @@ didcallround1
 (((prevaction ==  2) || (prevaction == 3)) && (AmountToCall == 0)) ? userchair :
 raischair
 
+##LastAggressorActsAfterUs##
+ac_agchair_after
+
 ##BotIsLastRaiser##
 (AggressorChair==userchair)
 
