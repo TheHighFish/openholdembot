@@ -3875,31 +3875,9 @@ HINT_No_LastCaller
 ##TimeToInitMemorySymbols##
 // Some advanced symbols depend on memory symbols.
 // They are designed to update once per orbit on our turn.
-// However: depending on user-settings OpenHoldem might evaluate
-// the necessary function even when it is not our turn.
-// And incorrect delay-settings might also lead to multiple actions
-// on identical frames (OH acts faster as casino/bring can update)
-// So we check for isfinalanswer and a changed gamestate.
-[isfinalanswer && GameStateChanged]
-
-##GameStateChanged##
-// Change in dealerchair => new hand
-   (dealerchair != me_re_MemOldGameStateDealerChair)
-// Change in currentbet => we did act 
-// and the autoplayer executed sucessfully   
-|| (currentbet  != me_re_MemOldGameStateCurrentBet)
-// Change in potsize: somebody else behind us acted, 
-// so we checked or folded sucessfully
-|| (pot			!= me_re_MemOldGameStatePotSize)
-// Change in betround, if everybody checked 
-// and potsize is the same
-|| (betround    != me_re_MemOldGameStateBetround)
-
-##RememberCurrentGameState##
-   (me_st_MemOldGameStateDealerChair_dealerchair * 0)
-|| (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
-|| (me_st_MemOldGameStatePotSize_pot             * 0)
-|| (me_st_MemOldGameStateBetround_betround       * 0)
+// This calculation gets now triggered by OpenHoldem
+// exactly once per my turn. Therefore always 
+True
 
 ##InitMemorySymbols##
 (TimeToInitMemorySymbols == False) ? 0 :
@@ -3918,7 +3896,6 @@ HINT_No_LastCaller
 || [InitMaxOpponentStackSize * 0]
 || [InitMinOpponentStackSize * 0]
 || [InitStartingStackSize * 0]
-|| [RememberCurrentGameState * 0]
 
 //*****************************************************************************
 //
