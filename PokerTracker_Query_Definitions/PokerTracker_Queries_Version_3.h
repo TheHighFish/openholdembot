@@ -119,19 +119,6 @@ enum PT_Groups
 	pt_group_positional = 3
 };
 
-enum PT_UpdateTypes
-{
-	pt_updateType_noUpdate = 0,
-	pt_updateType_updateBasic = 1,
-	pt_updateType_updateAll = 2
-};
-
-enum PT_StatTypes
-{
-	pt_statType_Ring = 0,
-	pt_statType_Tourney = 1
-};
-
 typedef struct t_QueryDefinition
 {
 	CString name;
