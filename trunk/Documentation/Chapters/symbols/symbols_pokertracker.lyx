@@ -122,11 +122,11 @@ by chair number, e.g pt_icon0..pt_icon9: this is more complex and less convenien
  villain.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection
 Summary :
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 You need to use the prefix 
 \begin_inset Quotes eld
 \end_inset
@@ -139,14 +139,15 @@ pt_
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 Then add the symbol name.
 \end_layout
 
-\begin_layout Standard
-Finally add one of those postfix : 
+\begin_layout Itemize
+Finally add one of those postfix: 
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 _raischair
 \end_layout
@@ -159,6 +160,7 @@ _headsup
 the chair number between 0 and 9
 \end_layout
 
+\end_deeper
 \begin_layout Description
 General
 \begin_inset space ~
