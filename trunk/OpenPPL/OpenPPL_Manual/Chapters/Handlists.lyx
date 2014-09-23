@@ -79,7 +79,12 @@ Handlists
 \end_layout
 
 \begin_layout Standard
-OpenHoldem supports preflop handlists to simplify preflop coding.
+OpenHoldem supports preflop handlists to simplify preflop coding as long
+ as their name start with the word 
+\series bold
+list
+\series default
+.
  
 \end_layout
 
@@ -133,7 +138,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-After that you can use OpenHoldems islist-symbol like that
+After that you can use your custom handlist symbol like that
 \end_layout
 
 \begin_layout Standard
