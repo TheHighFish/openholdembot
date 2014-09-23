@@ -111,7 +111,7 @@ WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 
 \begin_layout Plain Layout
 
-    WHEN ((Hand = AA) or (Hand = KK)...) RaiseTo 3 FORCE
+    WHEN ((Hand$AA) or (Hand$KK)...) RaiseTo 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -121,7 +121,7 @@ WHEN (Raises = 0 and Calls = 0 and StillToAct = 2)
 
 \begin_layout Plain Layout
 
-    WHEN (StackSize < 20 and ((Hand = ...) OR ...)) RaiseMax FORCE
+    WHEN (StackSize < 20 and ((Hand$ ...) OR ...)) RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -476,7 +476,7 @@ status open
 
 \begin_layout Plain Layout
 
-PREFOLD
+##f$prefold##
 \end_layout
 
 \begin_layout Plain Layout
