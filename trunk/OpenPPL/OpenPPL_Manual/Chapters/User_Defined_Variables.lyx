@@ -96,7 +96,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN FirstCallerPosition = 9 user_UTG_Was_Limping
+WHEN FirstCallerPosition = 9 Set user_UTG_Was_Limping
 \end_layout
 
 \end_inset
@@ -105,8 +105,12 @@ WHEN FirstCallerPosition = 9 user_UTG_Was_Limping
 \end_layout
 
 \begin_layout Itemize
-As you see, there is a user-defined variable instead of an action after
- a condition, but no keyword force.
+As you see, there's the 
+\series bold
+Set
+\series default
+ prefix and after it there is a user-defined variable instead of an action
+ after a condition, but no keyword force.
 \end_layout
 
 \begin_layout Itemize
@@ -156,32 +160,32 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN Hand = AA RAISEMAX FORCE 
+    WHEN Hand$AA RaiseMax FORCE 
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN Hand = KK userDoesNotKnowWhatToDo 
+    WHEN Hand$KK Set userDoesNotKnowWhatToDo 
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN Hand = QQ userStartsToCry 
+    WHEN Hand$QQ Set userStartsToCry 
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN userDoesNotKnowWhatToDo CALL FORCE 
+    WHEN userDoesNotKnowWhatToDo Call FORCE 
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN userStartsToCry SITOUT FORCE 
+    WHEN userStartsToCry SitOut FORCE 
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN Others FOLD FORCE
+    WHEN Others Fold FORCE
 \end_layout
 
 \end_inset
