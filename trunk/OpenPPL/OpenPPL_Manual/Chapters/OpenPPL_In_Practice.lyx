@@ -308,7 +308,7 @@ WHEN EffectiveStacksize > 0 AND EffectiveStacksize <= 13
 
 \begin_layout Plain Layout
 
-    WHEN Calls = 0 AND Raises = 0 AND (Hand= ...
+    WHEN Calls = 0 AND Raises = 0 AND (Hand$...
  RaiseMax FORCE
 \end_layout
 
@@ -436,17 +436,17 @@ status open
 
 \begin_layout Plain Layout
 
-        WHEN (OverCards = 2) RETURN 18 FORCE
+        WHEN (Overcards = 2) RETURN 18 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-        WHEN (OverCards = 1) RETURN 16.5 FORCE
+        WHEN (Overcards = 1) RETURN 16.5 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-        WHEN (OverCards = 0) RETURN 15 FORCE
+        WHEN (Overcards = 0) RETURN 15 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -456,7 +456,7 @@ status open
 
 \begin_layout Plain Layout
 
-        WHEN (HaveInsideStraightDraw AND OverCards = 2)...
+        WHEN (HaveInsideStraightDraw AND Overcards = 2)...
  
 \end_layout
 
@@ -577,7 +577,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Opponents >= 3 AND NOT f$HaveTopPairOrBetter OR f$HaveStrongDraw
+WHEN Opponents >= 3 AND NOT (f$HaveTopPairOrBetter OR f$HaveStrongDraw)
 \end_layout
 
 \begin_layout Plain Layout
