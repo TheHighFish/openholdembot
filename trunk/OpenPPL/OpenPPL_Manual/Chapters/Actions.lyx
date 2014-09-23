@@ -427,7 +427,7 @@ status open
 
 \begin_layout Plain Layout
 
-	WHEN AmountToCall > 0 AND (Hand = 32 OR Hand = 42 OR ...) Return True FORCE
+	WHEN AmountToCall > 0 AND (hand$32 OR hand$43 OR ...) Return True FORCE
 \end_layout
 
 \end_inset

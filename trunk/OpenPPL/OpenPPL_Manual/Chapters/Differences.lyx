@@ -229,7 +229,7 @@ status open
 \begin_layout Plain Layout
 
     WHEN ...
- RAISEMAX FORCE
+ RaiseMax FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -294,7 +294,7 @@ status open
 \begin_layout Plain Layout
 
 WHEN Stacksize = 1 AND ...
- RAISE FORCE
+ RaiseBy 1 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -327,7 +327,7 @@ status open
 \begin_layout Plain Layout
 
 WHEN Stacksize < 1.5 AND ...
- RAISE FORCE
+ RaiseBy 1 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -344,7 +344,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Stacksize ~~ 3 RAISEMAX FORCE
+WHEN Stacksize ~~ 3 RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -487,12 +487,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (pt_vpip0 < 10) FOLD FORCE
+WHEN (pt_vpip0 < 10) Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN (balance0 < 50) RAISEMAX FORCE
+WHEN (balance0 < 50) RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -511,7 +511,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (StillToAct < 2) RAISETO 3 FORCE
+WHEN (StillToAct < 2) RaiseTo 3 FORCE
 \end_layout
 
 \end_inset
@@ -765,13 +765,13 @@ status open
 
 \begin_layout Plain Layout
 
-PREFLOP
+##f$preflop##
 \end_layout
 
 \begin_layout Plain Layout
 
     WHEN ...
- RAISE 3 DELAY 5 FORCE
+ RaiseBy 3 Delay 5 FORCE
 \end_layout
 
 \end_inset
@@ -890,12 +890,12 @@ status open
 
 \begin_layout Plain Layout
 
-        AND f$HaveNoCards 
+        AND HaveNoCards 
 \end_layout
 
 \begin_layout Plain Layout
 
-        AND f$InUTG) 
+        AND InUTG) 
 \end_layout
 
 \begin_layout Plain Layout
