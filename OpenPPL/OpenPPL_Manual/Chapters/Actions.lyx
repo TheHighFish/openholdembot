@@ -468,7 +468,6 @@ status open
 
 \begin_layout Plain Layout
 
-CUSTOM
 \end_layout
 
 \begin_layout Plain Layout
@@ -482,7 +481,7 @@ PREFOLD
 
 \begin_layout Plain Layout
 
-    WHEN (NOT ((Hand = AA) OR (Hand = KK))) FOLD FORCE
+    WHEN (NOT ((Hand$AA) OR (Hand$KK))) Fold FORCE
 \end_layout
 
 \end_inset

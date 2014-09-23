@@ -95,18 +95,18 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN hand$AA RAISEMAX FORCE
+WHEN hand$AA RaiseMax FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN hand$AQSuited OR hand$AJSuited RAISETO 3 FORCE
+WHEN hand$AQSuited OR hand$AJSuited RaiseTo 3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
 WHEN hand$22 OR hand$33 OR hand$44...
- CALL FORCE
+ Call FORCE
 \end_layout
 
 \end_inset
@@ -152,12 +152,12 @@ WHEN hand$AcQd Or hand$JhTs ...
 
 \begin_layout Plain Layout
 
-WHEN hand$AdT RAISE FORCE
+WHEN hand$AdT RaiseTo 10 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN hand$AT CALL FORCE
+WHEN hand$AT Call FORCE
 \end_layout
 
 \end_inset
@@ -203,7 +203,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN board$A CALL FORCE
+WHEN board$A Call FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -214,7 +214,7 @@ WHEN board$A CALL FORCE
 \begin_layout Plain Layout
 
 WHEN board$22 OR board$33 OR board$44...
- RAISE FORCE
+ RaiseTo 10 FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -224,7 +224,7 @@ WHEN board$22 OR board$33 OR board$44...
 
 \begin_layout Plain Layout
 
-WHEN board$AT SUITED RAISEPOT FORCE
+WHEN board$AT SUITED RaisePot FORCE
 \end_layout
 
 \end_inset

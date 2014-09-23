@@ -108,7 +108,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN HaveFlushDraw AND AmountToCall < 1/3 PotSize CALL FORCE
+WHEN HaveFlushDraw AND AmountToCall < 1/3 PotSize Call FORCE
 \end_layout
 
 \end_inset
@@ -124,8 +124,8 @@ always evaluated top-down
 .
  Once the first condition is true, the appropriate action will be taken.
  Always - so the order of programming matters.
- Lets assume, that you want to call your flushdraws, but raise nut-flushdraws
- (expert-strategy 2012).
+ Lets assume, that you want to call your flushdraws, but raise to 10bb your
+ nut-flushdraws (expert-strategy 2012).
  Then you will have to write your commands in the following order:
 \end_layout
 
@@ -136,12 +136,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN HaveNutFlushDraw RAISE FORCE
+WHEN HaveNutFlushDraw RaiseTo 10 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN HaveFlushDraw CALL FORCE
+WHEN HaveFlushDraw Call FORCE
 \end_layout
 
 \end_inset
@@ -220,13 +220,13 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN hand$AT AND StillToAct = 2 AND Raises = 1 AND AmountToCall <= 4 RAISEPOT
+WHEN hand$AT AND StillToAct = 2 AND Raises = 1 AND AmountToCall <= 4 RaisePot
  FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN hand$AT AND StillToAct = 2 AND Raises = 1 AND AmountToCall > 4  FOLD
+WHEN hand$AT AND StillToAct = 2 AND Raises = 1 AND AmountToCall > 4  Fold
  FORCE
 \end_layout
 
@@ -309,12 +309,12 @@ WHEN hand$AT AND StillToAct = 2
 
 \begin_layout Plain Layout
 
-    WHEN Raises = 1 AND AmountToCall <= 4 RAISEPOT FORCE
+    WHEN Raises = 1 AND AmountToCall <= 4 RaisePot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN Raises = 1 AND AmountToCall > 4 FOLD FORCE
+    WHEN Raises = 1 AND AmountToCall > 4 Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -416,12 +416,12 @@ WHEN hand$AT
 
 \begin_layout Plain Layout
 
-            WHEN (AmountToCall <= 4) RAISEPOT FORCE
+            WHEN (AmountToCall <= 4) RaisePot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-            WHEN (AmountToCall > 4) FOLD FORCE
+            WHEN (AmountToCall > 4) Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -501,7 +501,7 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN hand$AA RAISEMAX FORCE	
+    WHEN hand$AA RaiseMax FORCE	
 \end_layout
 
 \begin_layout Plain Layout
@@ -516,7 +516,7 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN Others FOLD FORCE
+    WHEN Others Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -566,7 +566,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Others FOLD FORCE
+WHEN Others Fold FORCE
 \end_layout
 
 \end_inset
