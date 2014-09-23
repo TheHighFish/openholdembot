@@ -95,7 +95,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN AmountToCall / (AmountToCall + PotSize) > Outs / CardsLeft CALL FORCE
+WHEN AmountToCall / (AmountToCall + PotSize) > Outs / CardsLeft Call FORCE
 \end_layout
 
 \end_inset
@@ -472,7 +472,7 @@ Not
 \begin_inset Text
 
 \begin_layout Plain Layout
-WHEN (HaveNothing AND OpponentsLeft >= 2 AND NOT BotIsLastRaiser) CHECK
+WHEN (HaveNothing AND OpponentsLeft >= 2 AND NOT BotIsLastRaiser) Check
  FORCE
 \end_layout
 
@@ -494,7 +494,7 @@ And
 
 \begin_layout Plain Layout
 WHEN (BotIsLastRaiser AND OpponentsLeft = 1 AND Bets = 0 And ...
- BETHALFPOT FORCE) 
+ BetHalfPot FORCE) 
 \end_layout
 
 \end_inset
@@ -535,7 +535,7 @@ Or
 \begin_inset Text
 
 \begin_layout Plain Layout
-WHEN (Hand = AA OR Hand = KK) RAISEMAX FORCE
+WHEN (hand$AA OR hand$KK) RaiseMax FORCE
 \end_layout
 
 \end_inset
@@ -561,7 +561,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN AmountToCall <= 4 AND (Hand = 22 OR HAND = 33...))
+WHEN AmountToCall <= 4 AND (hand$22 OR hand$33...))
 \end_layout
 
 \end_inset
@@ -767,7 +767,7 @@ Percentage-operator
 \begin_inset Text
 
 \begin_layout Plain Layout
-WHEN (AmountToCall <= 50% PotSize) CALL FORCE
+WHEN (AmountToCall <= 50% PotSize) Call FORCE
 \end_layout
 
 \end_inset

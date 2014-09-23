@@ -79,11 +79,23 @@ Handlists
 \end_layout
 
 \begin_layout Standard
-OpenHoldem supports preflop handlists to simplify preflop coding as long
- as their name start with the word 
+OpenHoldem supports preflop handlists to simplify preflop coding.
+\end_layout
+
+\begin_layout Standard
+You can name handlists as you like buy handlist name needs to start with
+ the word 
+\begin_inset Quotes eld
+\end_inset
+
+
 \series bold
 list
 \series default
+
+\begin_inset Quotes erd
+\end_inset
+
 .
  
 \end_layout
@@ -148,7 +160,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (pponents = 1 AND f$ManiacFourBetsMe AND list007 RAISEMAX FORCE
+WHEN (Opponents = 1 AND userManiacFourBetsMe AND list007 RaiseMax FORCE
 \end_layout
 
 \end_inset
