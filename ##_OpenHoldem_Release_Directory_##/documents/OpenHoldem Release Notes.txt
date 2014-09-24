@@ -13,7 +13,10 @@ BUG FIXES:
   and therefore history-symbols like "Raises" and "Calls" did not work.
   Thanks to Fasenderos for reporting.
   [THF]
-
+- The default allinmethod (ie. swagging the balance) was broken.
+  Thanks for Ryuk33 for reporting.
+  [Nahman]
+  
 NEW STUFF:
 - OpenPPL: New Symbol LastAggressorActsAfterUs
 
