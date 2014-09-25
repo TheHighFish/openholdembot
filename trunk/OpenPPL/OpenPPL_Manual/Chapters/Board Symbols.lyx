@@ -647,7 +647,7 @@ A queen is present on the flop
 \begin_inset Text
 
 \begin_layout Plain Layout
-RiverCardisOvercardToBoard
+RiverCardIsOvercardToBoard
 \end_layout
 
 \end_inset
@@ -1055,7 +1055,7 @@ At least three cards of the same rank is present on the turn
 \begin_inset Text
 
 \begin_layout Plain Layout
-TurnCardisOvercardToBoard
+TurnCardIsOvercardToBoard
 \end_layout
 
 \end_inset
