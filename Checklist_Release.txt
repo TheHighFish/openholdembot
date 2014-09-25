@@ -23,6 +23,7 @@
 * Remove the *.exp and unnecessary *.pdb files.
 * Add dbdhelp.dll
 * Add the OpenPPL-library
+* Add OpenPPL_Manual.chm and symbol_pokertracker.pdf
 * Remove replay-direcoty (if existent), logs and other private data
 * Create a rar-archive
 * Upload the rar-file to https://sites.google.com/site/openholdempokerbot/downloads
