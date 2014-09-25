@@ -886,7 +886,7 @@ We have the Fifth pair
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveBackdoor2ndNutFlushDraw
+HaveBackdoorSecondNutFlushDraw
 \end_layout
 
 \end_inset
@@ -936,7 +936,7 @@ HaveBackdoorFlushDraw
 
 \begin_layout Plain Layout
 We have a flush, flushdraw or a backdoor flushdraw.
- Have Backdoorflushdraw is only true, if
+ Have BackdoorFlushdraw is only true, if
 \end_layout
 
 \begin_layout Itemize

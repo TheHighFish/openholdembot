@@ -1550,7 +1550,7 @@ OneCardStraightPossible && !MoreThanOneOneCardStraightPossible
 [(TopFlopCard - SecondTopFlopCard <= 3) && (TopFlopCard - SecondTopFlopCard > 0) && (TopFlopCard != ConstCardAce)]
 || [(SecondTopFlopCard - LowestFlopCard <= 3) && (SecondTopFlopCard - LowestFlopCard >0) && (LowestFlopCard >= ConstCardTwo)]
 
-##IndividualOverCardsOnBoard##
+##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
 `[rankbitscommon >> (rankhiplayer + 1)]
 
@@ -1600,7 +1600,7 @@ StraightPossible
 // Bits 8..ace(low), last bit is unused
 (rankbitscommon & 0b111111110)
 
-##RiverCardisOvercardToBoard##
+##RiverCardIsOvercardToBoard##
 [  RiverCard > FirstFlopCard
 && RiverCard > SecondFlopCard
 && RiverCard > ThirdFlopCard
@@ -1756,7 +1756,7 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 || (FirstFlopCard == ThirdFlopCard && ThirdFlopCard == TurnCard)
 || (SecondFlopCard == ThirdFlopCard && ThirdFlopCard == TurnCard)
 
-##TurnCardisOvercardToBoard##
+##TurnCardIsOvercardToBoard##
 [  TurnCard > FirstFlopCard
 && TurnCard > SecondFlopCard
 && TurnCard > ThirdFlopCard ]
@@ -2173,13 +2173,13 @@ ispair && (RankOfFirstHoleCard < FourthBestBoardCard) && (RankOfFirstHoleCard > 
 && (nsuited > nsuitedcommon) 
 && (NumberOfUnknownSuitedOvercards == 0)
 
-##HaveBackDoorSecondNutFlushDraw##
+##HaveBackdoorSecondNutFlushDraw##
    (betround == ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
 && (NumberOfUnknownSuitedOvercards == 1)
 
-##HaveBackDoorThirdNutFlushDraw##
+##HaveBackdoorThirdNutFlushDraw##
    (betround == ConstBetRoundFlop)
 && (nsuited >= 3)
 && (nsuited > nsuitedcommon) 
@@ -2188,7 +2188,7 @@ ispair && (RankOfFirstHoleCard < FourthBestBoardCard) && (RankOfFirstHoleCard > 
 ##HaveBackdoorFlushDraw##
    HaveBackdoorFlushDrawContributingTwoCards
 || HaveBackdoorNutFlushDraw
-|| HaveBackDoorSecondNutFlushDraw
+|| HaveBackdoorSecondNutFlushDraw
 
 ##HaveBestKicker##
 (NumberOfBetterKickers == 0)
