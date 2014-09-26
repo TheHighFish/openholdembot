@@ -1,4 +1,4 @@
-v7.0.2 2014-09-XX
+v7.0.2 2014-09-26
 ==================
 BUG FIXES:
 - OpenPPL-functions didn't get saved.
@@ -16,13 +16,14 @@ BUG FIXES:
 - The default allinmethod (ie. swagging the balance) was broken.
   Thanks to Ryuk33 for reporting.
   [Nahman]
- - NumberOfOppoentsAllin was returning a bit value and not the correct sum.
+- NumberOfOpponentsAllin was returning a bit value and not the correct sum.
   Thanks to goodmood for reporting.
  [Lavezzi]
  
 NEW STUFF:
 - OpenPPL: New Symbol LastAggressorActsAfterUs
   [Lavezzi]
+
 MAINTENANCE :
 - Popup-blocker : 
     * Improve windows recognition (Taskbar, desktop)
