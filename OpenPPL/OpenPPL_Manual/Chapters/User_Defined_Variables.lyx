@@ -208,7 +208,13 @@ status open
 \end_layout
 
 \begin_layout Section*
-Expert Tricks
+Expert Tricks (MEMORY SYMBOLS)
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Please note that Memory Symbol are broked in version 7.0.1.
 \end_layout
 
 \begin_layout Standard

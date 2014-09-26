@@ -14,12 +14,15 @@ BUG FIXES:
   Thanks to Fasenderos for reporting.
   [THF]
 - The default allinmethod (ie. swagging the balance) was broken.
-  Thanks for Ryuk33 for reporting.
+  Thanks to Ryuk33 for reporting.
   [Nahman]
-  
+ - NumberOfOppoentsAllin was returning a bit value and not the correct sum.
+  Thanks to goodmood for reporting.
+ [Lavezzi]
+ 
 NEW STUFF:
 - OpenPPL: New Symbol LastAggressorActsAfterUs
-
+  [Lavezzi]
 MAINTENANCE :
 - Popup-blocker : 
     * Improve windows recognition (Taskbar, desktop)
