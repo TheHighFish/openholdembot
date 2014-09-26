@@ -3771,29 +3771,29 @@ Middle
 //*****************************************************************************
 
 ##PT_BigBlind_FoldBBToSteal##
-BigBlindChair == 0 ? pt_big_blind_fold_to_steal0 :
-BigBlindChair == 1 ? pt_big_blind_fold_to_steal1 :
-BigBlindChair == 2 ? pt_big_blind_fold_to_steal2 :
-BigBlindChair == 3 ? pt_big_blind_fold_to_steal3 :
-BigBlindChair == 4 ? pt_big_blind_fold_to_steal4 :
-BigBlindChair == 5 ? pt_big_blind_fold_to_steal5 :
-BigBlindChair == 6 ? pt_big_blind_fold_to_steal6 :
-BigBlindChair == 7 ? pt_big_blind_fold_to_steal7 :
-BigBlindChair == 8 ? pt_big_blind_fold_to_steal8 :
-BigBlindChair == 9 ? pt_big_blind_fold_to_steal9 :
+BigBlindChair == 0 ? pt_bigblind_fold_to_steal0 :
+BigBlindChair == 1 ? pt_bigblind_fold_to_steal1 :
+BigBlindChair == 2 ? pt_bigblind_fold_to_steal2 :
+BigBlindChair == 3 ? pt_bigblind_fold_to_steal3 :
+BigBlindChair == 4 ? pt_bigblind_fold_to_steal4 :
+BigBlindChair == 5 ? pt_bigblind_fold_to_steal5 :
+BigBlindChair == 6 ? pt_bigblind_fold_to_steal6 :
+BigBlindChair == 7 ? pt_bigblind_fold_to_steal7 :
+BigBlindChair == 8 ? pt_bigblind_fold_to_steal8 :
+BigBlindChair == 9 ? pt_bigblind_fold_to_steal9 :
 ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##PT_SmallBlind_FoldSBToSteal##
-SmallBlindChair == 0 ? pt_small_blind_fold_to_steal0 :
-SmallBlindChair == 1 ? pt_small_blind_fold_to_steal1 :
-SmallBlindChair == 2 ? pt_small_blind_fold_to_steal2 :
-SmallBlindChair == 3 ? pt_small_blind_fold_to_steal3 :
-SmallBlindChair == 4 ? pt_small_blind_fold_to_steal4 :
-SmallBlindChair == 5 ? pt_small_blind_fold_to_steal5 :
-SmallBlindChair == 6 ? pt_small_blind_fold_to_steal6 :
-SmallBlindChair == 7 ? pt_small_blind_fold_to_steal7 :
-SmallBlindChair == 8 ? pt_small_blind_fold_to_steal8 :
-SmallBlindChair == 9 ? pt_small_blind_fold_to_steal9 :
+SmallBlindChair == 0 ? pt_smallblind_fold_to_steal0 :
+SmallBlindChair == 1 ? pt_smallblind_fold_to_steal1 :
+SmallBlindChair == 2 ? pt_smallblind_fold_to_steal2 :
+SmallBlindChair == 3 ? pt_smallblind_fold_to_steal3 :
+SmallBlindChair == 4 ? pt_smallblind_fold_to_steal4 :
+SmallBlindChair == 5 ? pt_smallblind_fold_to_steal5 :
+SmallBlindChair == 6 ? pt_smallblind_fold_to_steal6 :
+SmallBlindChair == 7 ? pt_smallblind_fold_to_steal7 :
+SmallBlindChair == 8 ? pt_smallblind_fold_to_steal8 :
+SmallBlindChair == 9 ? pt_smallblind_fold_to_steal9 :
 ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##PT_ButtonVPIP##
