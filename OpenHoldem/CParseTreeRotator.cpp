@@ -69,23 +69,34 @@ void CParseTreeRotator::Rotate(CFunction *function)
 }
 
 void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
-                               TPParseTreeNode *pointer_to_parent_pointer_for_back_patching)
-{
+                               TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
   write_log(preferences.debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;
   }
+#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "Before rotation", 0);
+#endif
   // We must rotate the sibblings first, bottom-up
   Rotate(parse_tree_node->_first_sibbling,  &parse_tree_node->_first_sibbling);
   Rotate(parse_tree_node->_second_sibbling, &parse_tree_node->_second_sibbling);
   Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);
+#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After rotation of sibblings", 0);
+#endif
   // Then we can rotate our node
   if (NeedsLeftRotation(parse_tree_node)) {
     RotateLeft(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
+#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After left rotation", 0);
+#endif
   }
   if (NeedsRightRotation(parse_tree_node)) {
     RotateRight(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
+#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After right rotation", 0);
+#endif
   }
 }
 
