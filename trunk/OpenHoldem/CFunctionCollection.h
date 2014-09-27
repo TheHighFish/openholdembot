@@ -96,6 +96,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  private:
   void CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name);
   CString GetSimilarNameWithDifferentCases(CString function_name);
+  bool IsOutdatedFunction(CString name);
  private:
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;
