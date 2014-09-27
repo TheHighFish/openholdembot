@@ -322,8 +322,8 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
                                       bool log /* = false */) {
   write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
   if (IsOutdatedSymbol(name)) {
-	*result = k_undefined;
-	return false;
+    *result = k_undefined;
+    return false;
   }
   for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
     if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {

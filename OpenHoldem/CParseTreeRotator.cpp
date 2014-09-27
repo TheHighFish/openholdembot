@@ -40,7 +40,12 @@
 
 #include "CFunction.h"
 #include "CParseTreeNode.h"
+#include "CPreferences.h"
+#include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
+
+// undef for no extra debug output
+#define DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
 
 CParseTreeRotator::CParseTreeRotator()
 {}
@@ -50,15 +55,24 @@ CParseTreeRotator::~CParseTreeRotator()
 
 void CParseTreeRotator::Rotate(CFunction *function)
 {
+  write_log(preferences.debug_ast_priority_ordering(),
+    "[CParseTreeRotator] starting rotation\n");
   if (function == NULL) {
     return;
   }
+  write_log(preferences.debug_ast_priority_ordering(),
+    "[CParseTreeRotator] finished rotation\n");
   Rotate(function->_parse_tree_node, &function->_parse_tree_node);
+#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+  OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
+#endif
 }
 
 void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
                                TPParseTreeNode *pointer_to_parent_pointer_for_back_patching)
 {
+  write_log(preferences.debug_ast_priority_ordering(),
+    "[CParseTreeRotator] rotating node %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;
   }

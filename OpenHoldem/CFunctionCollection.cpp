@@ -59,6 +59,29 @@ void CFunctionCollection::DeleteAll() {
   }
 }
 
+bool CFunctionCollection::IsOutdatedFunction(CString name) {
+  if (name  == "f$play") {
+    OH_MessageBox_Interactive("f$play got replaced\n"
+      "by f$sitin, f$sitout, f$leave.\n",
+      "Error", 0);
+    return true;
+  }
+  if (name  == "f$P") {
+    OH_MessageBox_Interactive("f$P got replaced\n"
+      "by f$prwin_number_of_opponents.\n",
+      "Error", 0);
+    return true;
+  }
+  if (name  == "f$swag") {
+    OH_MessageBox_Interactive("f$swag and its supporting functions got replaced\n"
+      "by a single function f$betsize (raise-to-semantics)\n"
+      "and OpenHoldem automaticallz cares about casino-specific adjustments\n"
+      "if you provide the casinos swagtextmethod in the tablemap.\n",
+      "Error", 0);
+    return true;
+  } 
+}
+
 void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
   CString name = new_function->name();
@@ -71,6 +94,11 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
     write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
+  }
+  if (IsOutdatedFunction(name)) {
+    // Ignore it
+    // Warning already generated
+    return;
   }
   write_log(preferences.debug_formula(), 
 	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
