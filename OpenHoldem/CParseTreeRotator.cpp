@@ -45,7 +45,9 @@
 #include "TokenizerConstants.h"
 
 // undef for no extra debug output
-#define DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+#undef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
+#undef DEBUG_SHOW_SUBTREES_BEFORE_ROTATION
+#undef DEBUG_SHOW_SUBTREES_AFTER_ROTATION
 
 CParseTreeRotator::CParseTreeRotator()
 {}
@@ -63,6 +65,7 @@ void CParseTreeRotator::Rotate(CFunction *function)
   write_log(preferences.debug_ast_priority_ordering(),
     "[CParseTreeRotator] finished rotation\n");
   Rotate(function->_parse_tree_node, &function->_parse_tree_node);
+  VerifyCorrectRotation(function->_parse_tree_node);
 #ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
   OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
 #endif
@@ -75,28 +78,16 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
   if (parse_tree_node == NULL) {
     return;
   }
-#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
-  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "Before rotation", 0);
-#endif
   // We must rotate the sibblings first, bottom-up
   Rotate(parse_tree_node->_first_sibbling,  &parse_tree_node->_first_sibbling);
   Rotate(parse_tree_node->_second_sibbling, &parse_tree_node->_second_sibbling);
   Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);
-#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
-  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After rotation of sibblings", 0);
-#endif
   // Then we can rotate our node
   if (NeedsLeftRotation(parse_tree_node)) {
     RotateLeft(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
-#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
-  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After left rotation", 0);
-#endif
   }
   if (NeedsRightRotation(parse_tree_node)) {
     RotateRight(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
-#ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION
-  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "After right rotation", 0);
-#endif
   }
 }
 
@@ -145,6 +136,11 @@ bool CParseTreeRotator::NeedsLeftRotation(TPParseTreeNode parse_tree_node) {
 
 void CParseTreeRotator::RotateLeft(TPParseTreeNode parse_tree_node,
                                    TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
+#ifdef DEBUG_SHOW_SUBTREES_BEFORE_ROTATION
+  OH_MessageBox_Interactive(parse_tree_node->Serialize(), "Node before rotation", 0);
+  OH_MessageBox_Interactive(parse_tree_node->_first_sibbling->Serialize(),  "First sibbling before rotation",  0);
+  OH_MessageBox_Interactive(parse_tree_node->_second_sibbling->Serialize(), "Second sibbling before rotation", 0);
+#endif
   assert(parse_tree_node != NULL);
   TPParseTreeNode right_sibbling = parse_tree_node->GetRightMostSibbling();
   assert(right_sibbling != NULL);
@@ -155,7 +151,12 @@ void CParseTreeRotator::RotateLeft(TPParseTreeNode parse_tree_node,
   // Make parent pointer point to right_sibbling
   // instead of parse_tree_node
   *pointer_to_parent_pointer_for_back_patching = right_sibbling;
-  Rotate(right_sibbling, pointer_to_parent_pointer_for_back_patching);
+#ifdef DEBUG_SHOW_SUBTREES_AFTER_ROTATION
+  OH_MessageBox_Interactive(right_sibbling->Serialize(), "Node after rotation", 0);
+  OH_MessageBox_Interactive(right_sibbling->_first_sibbling->Serialize(),  "First sibbling after rotation",  0);
+  OH_MessageBox_Interactive(right_sibbling->_second_sibbling->Serialize(), "Second sibbling after rotation", 0);
+#endif
+  //!!!Rotate(right_sibbling, pointer_to_parent_pointer_for_back_patching);
 }
 
 bool CParseTreeRotator::NeedsRightRotation(TPParseTreeNode parse_tree_node) {
@@ -164,5 +165,21 @@ bool CParseTreeRotator::NeedsRightRotation(TPParseTreeNode parse_tree_node) {
 
 void CParseTreeRotator::RotateRight(TPParseTreeNode parse_tree_node,
                                     TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
+}
+
+void CParseTreeRotator::VerifyCorrectRotation(TPParseTreeNode parse_tree_node) {
+#ifndef _DEBUG
+  // Nothing to do in release-mode
+  return;
+#endif
+  // Nothing to do for empty trees
+  if (parse_tree_node == NULL) return;
+  // Sibblings first
+  VerifyCorrectRotation(parse_tree_node->_first_sibbling);
+  VerifyCorrectRotation(parse_tree_node->_second_sibbling);
+  VerifyCorrectRotation(parse_tree_node->_third_sibbling);
+  // Finally this node
+  assert(!NeedsLeftRotation(parse_tree_node));
+  assert(!NeedsRightRotation(parse_tree_node));
 }
 
