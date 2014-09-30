@@ -59,6 +59,7 @@ class CParseTreeRotator {
     TPParseTreeNode *pointer_to_parent_pointer_for_back_patching);
   void RotateRight(TPParseTreeNode parse_tree_node,
     TPParseTreeNode *pointer_to_parent_pointer_for_back_patching);
+  void VerifyCorrectRotation(TPParseTreeNode parse_tree_node);
 };
 
 
