@@ -71,9 +71,14 @@ void CParseTreeRotator::Rotate(CFunction *function)
   OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
 #endif
   if (preferences.debug_ast_priority_ordering()) {
-    write_log(preferences.debug_ast_priority_ordering(),
-      "[CParseTreeRotator] function [%s] after rotation: %s\n",
-      function->name(), function->Serialize());
+    CString serialized_function = function->Serialize();
+    if (serialized_function.GetLength() < 2000) {
+      // Extremely large functions overflow the print-buffer.
+      // Therefore we skip everything that looks "large".
+      write_log(preferences.debug_ast_priority_ordering(),
+        "[CParseTreeRotator] function [%s] after rotation: %s\n",
+        function->name(), serialized_function);
+    }
   }
 }
 
@@ -94,6 +99,19 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
   }
   if (NeedsRightRotation(parse_tree_node)) {
     RotateRight(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
+  }
+}
+
+void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_node,
+    TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
+  write_log(preferences.debug_ast_priority_ordering(),
+    "[CParseTreeRotator] rotating node to left as long as necessary %x\n", parse_tree_node);
+  if (parse_tree_node == NULL) {
+    return;
+  }
+  // All sibblings already rotated, bottom-up
+  if (NeedsLeftRotation(parse_tree_node)) {
+    RotateLeft(parse_tree_node, pointer_to_parent_pointer_for_back_patching);
   }
 }
 
@@ -160,14 +178,15 @@ void CParseTreeRotator::RotateLeft(TPParseTreeNode parse_tree_node,
   OH_MessageBox_Interactive(right_sibbling->_first_sibbling->Serialize(),  "First sibbling after rotation",  0);
   OH_MessageBox_Interactive(right_sibbling->_second_sibbling->Serialize(), "Second sibbling after rotation", 0);
 #endif
-  TPParseTreeNode new_left_sibbling = parse_tree_node;
   TPParseTreeNode new_parent_node = right_sibbling;
+  *pointer_to_parent_pointer_for_back_patching = right_sibbling;
+  TPParseTreeNode new_left_sibbling = parse_tree_node;
 #ifdef DEBUG_SHOW_CRITICAL_NEW_NODES_AFTER_LEFT_ROTATION
   OH_MessageBox_Interactive(new_left_sibbling->Serialize(), "New left sibbling", 0);
   OH_MessageBox_Interactive(new_parent_node->Serialize(), "New parent node", 0);
 #endif
-  TPParseTreeNode *new_pointer_to_parent_pointer_for_back_patching = &new_parent_node->_first_sibbling;
-  //Rotate(right_sibbling, new_pointer_to_parent_pointer_for_back_patching);
+  TPParseTreeNode *new_pointer_to_parent_pointer_for_back_patching = &new_parent_node->_first_sibbling; //&right_sibbling;
+  RotateLeftAsLongAsNecessary(new_left_sibbling/*right_sibbling*/, new_pointer_to_parent_pointer_for_back_patching);
 }
 
 bool CParseTreeRotator::NeedsRightRotation(TPParseTreeNode parse_tree_node) {

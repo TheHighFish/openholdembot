@@ -61,25 +61,31 @@ void CFunctionCollection::DeleteAll() {
 
 bool CFunctionCollection::IsOutdatedFunction(CString name) {
   if (name  == "f$play") {
-    OH_MessageBox_Interactive("f$play got replaced\n"
-      "by f$sitin, f$sitout, f$leave.\n",
-      "Error", 0);
+    CParseErrors::Error("f$play got replaced\n"
+      "by f$sitin, f$sitout, f$leave.\n");
     return true;
   }
   if (name  == "f$P") {
-    OH_MessageBox_Interactive("f$P got replaced\n"
-      "by f$prwin_number_of_opponents.\n",
-      "Error", 0);
+    CParseErrors::Error("f$P got replaced\n"
+      "by f$prwin_number_of_opponents.\n");
     return true;
   }
   if (name  == "f$swag") {
-    OH_MessageBox_Interactive("f$swag and its supporting functions got replaced\n"
+    CParseErrors::Error("f$swag and its supporting functions got replaced\n"
       "by a single function f$betsize (raise-to-semantics)\n"
       "and OpenHoldem automaticallz cares about casino-specific adjustments\n"
-      "if you provide the casinos swagtextmethod in the tablemap.\n",
-      "Error", 0);
+      "if you provide the casinos swagtextmethod in the tablemap.\n");
     return true;
   } 
+  if (name.Left(9) == "f$OpenPPL") {
+    CParseErrors::Error("This is old-style translated OpenPPL.\n"
+      "OpenHoldem supports now plain-text OpenPPL.\n"
+      "The old technology is no longer compatible.\n"
+      "Please have a look at the latest OpenPPL-manual.\n"
+      "Things became far more easy.\n");
+	  return true;
+  }
+  return false;
 }
 
 void CFunctionCollection::Add(COHScriptObject *new_function) {
