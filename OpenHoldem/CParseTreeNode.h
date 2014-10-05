@@ -86,8 +86,6 @@ class CParseTreeNode {
   // Holds the "else"-part of ternary-expressions
   // Holds the next when-condition in when-condition-sequences
   TPParseTreeNode _third_sibbling;	
-  // For prioritz-ordering in the parsde-tree
-  bool _priority_ordering_done;
  private:
   CString _terminal_name;
   // In case of terminal node (number)
