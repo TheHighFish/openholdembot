@@ -1,14 +1,22 @@
-v7.0.3 2014-xx-xx
+v7.0.3 2014-10-06
 ==================
 BUG FIXES:
 - oPPL LastAggressorActsAfterUs was accidentaly removed; back again.
- [Lavezzi]
+  [Lavezzi]
+- Priority-odering of the parse-tree had 2 extreme inefficencies:
+  * Ordering of operator-nodes hat to touch some sub-trees again,
+    but we conservatively touched one too much and then by recursion got cubic effort
+    instead of linear effort.
+  * for sequences of open-ended when-conditions the next OEWC-node
+    was reachable on two paths, and we cared about "all" of them,
+    therefore doubling the effort for every additional OEWC (exponential effort).
+  This has now been fixed.
+  Thanks to R2D2 and Lavezzi for providing large formulas to reproduce this problem.
+  {THF}
 
 
 v7.0.2 2014-09-26
 ==================
-
-
 BUG FIXES:
 - OpenPPL-functions didn't get saved.
   Thanks to Pippo21 for reporting.
@@ -27,7 +35,7 @@ BUG FIXES:
   [Nahman]
 - NumberOfOpponentsAllin was returning a bit value and not the correct sum.
   Thanks to goodmood for reporting.
- [Lavezzi]
+  [Lavezzi]
  
 NEW STUFF:
 - OpenPPL: New Symbol LastAggressorActsAfterUs
