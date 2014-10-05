@@ -1,4 +1,4 @@
-//******************************************************************************
+//***************************;***************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
@@ -50,11 +50,11 @@
 #undef DEBUG_SHOW_SUBTREES_AFTER_ROTATION
 #undef DEBUG_SHOW_CRITICAL_NEW_NODES_AFTER_LEFT_ROTATION
 
-CParseTreeRotator::CParseTreeRotator()
-{}
+CParseTreeRotator::CParseTreeRotator() {
+}
 
-CParseTreeRotator::~CParseTreeRotator()
-{}
+CParseTreeRotator::~CParseTreeRotator() {
+}
 
 void CParseTreeRotator::Rotate(CFunction *function)
 {
@@ -92,7 +92,17 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
   // We must rotate the sibblings first, bottom-up
   Rotate(parse_tree_node->_first_sibbling,  &parse_tree_node->_first_sibbling);
   Rotate(parse_tree_node->_second_sibbling, &parse_tree_node->_second_sibbling);
-  Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);
+  if (!parse_tree_node->IsOpenEndedWhenCondition()) {
+    // Actually the parse-tree is a directed acyclic graph.
+    // as the next open-ended when-condition in a sequence
+    // can be reached in 2 ways:
+    //   * by the previous sequence of when-conditions (implicit continue)
+    //   * by the false-edge of the previous open-ended when-condition
+    // If we naivelz roate every sibbling of a sequence of open-ended
+    // when conditions, then every addition of an OEWC doubles the effort.
+    // Therefore we have to skip the edge to the next OEWC.
+    Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);
+  }
   // Then we can rotate our node
   if (NeedsLeftRotation(parse_tree_node)) {
     RotateLeft(parse_tree_node, pointer_to_parent_pointer_for_back_patching);

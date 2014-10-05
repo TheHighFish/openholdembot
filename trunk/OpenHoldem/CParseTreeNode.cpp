@@ -36,7 +36,6 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
   _third_sibbling  = NULL;
   _terminal_name   = "";
   _constant_value  = 0.0;
-  _priority_ordering_done = false;
 }
 
 CParseTreeNode::~CParseTreeNode()
@@ -434,8 +433,9 @@ CString CParseTreeNode::Serialize()
       // Third sibbling: either next when-condition or next open-ended when-condition
       + (_third_sibbling? _third_sibbling->Serialize(): "");
   } else {
-    assert(false);
-    return "ERROR";
+    // Unhandled note-type, probably new and therefore not yet handled
+    write_log(k_always_log_errors, "[CParseTreeNode] ERROR: Unhandled node-tzpe %i in serialiyation of parse-tree\n",
+      _node_type);
   }
 }
 
@@ -449,7 +449,7 @@ bool CParseTreeNode::IsWhenConditionWithAction() {
 
 bool CParseTreeNode::IsOpenEndedWhenCondition() {
   if (!IsAnyKindOfWhenCondition()) return false;
-  if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true;
+  if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true; // ?????
   if ((_second_sibbling != NULL) 
       && (_second_sibbling->_node_type == kTokenOperatorConditionalWhen)) {
     return true;
