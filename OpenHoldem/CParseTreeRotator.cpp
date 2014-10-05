@@ -69,7 +69,6 @@ void CParseTreeRotator::Rotate(CFunction *function)
   VerifyCorrectRotation(function->_parse_tree_node);
 #ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION_COMPLETELY_FINISHED
   OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
-#endif
   if (preferences.debug_ast_priority_ordering()) {
     CString serialized_function = function->Serialize();
     if (serialized_function.GetLength() < 2000) {
@@ -80,6 +79,7 @@ void CParseTreeRotator::Rotate(CFunction *function)
         function->name(), serialized_function);
     }
   }
+#endif
 }
 
 void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
@@ -114,6 +114,30 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
 
 void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_node,
     TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
+  // Initial naive parse-tree
+  //
+  //     **
+  //    / \
+  //   2   *
+  //      / \
+  //     3   +
+  //        / \
+  //       4   5
+  //
+  // After first rotation  
+  //         *
+  //       /   \
+  //     **     +
+  //    / \    / \
+  //   2   3  4   5
+  //
+  // Now we need one more rotation of the (*) node.
+  // Previouslt we did a naive Rotate(), 
+  // but this causes cubic effort, as all sub-trees
+  // get rotated recursively again.
+  // As all subtrees are already correctly ordered
+  // we onlz need one (or more) left-rotations
+  // of this node again.
   write_log(preferences.debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node to left as long as necessary %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {

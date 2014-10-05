@@ -38,8 +38,8 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
   _constant_value  = 0.0;
 }
 
-CParseTreeNode::~CParseTreeNode()
-{}
+CParseTreeNode::~CParseTreeNode() {
+}
 
 void CParseTreeNode::MakeConstant(double value)
 {
