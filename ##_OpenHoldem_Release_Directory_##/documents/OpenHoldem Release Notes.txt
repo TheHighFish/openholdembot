@@ -1,4 +1,4 @@
-v7.0.3 2014-10-06
+v7.0.3 2014-10-08
 ==================
 BUG FIXES:
 - oPPL LastAggressorActsAfterUs was accidentaly removed; back again.
