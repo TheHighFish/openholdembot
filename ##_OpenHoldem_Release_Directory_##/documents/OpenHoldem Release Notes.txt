@@ -12,7 +12,7 @@ BUG FIXES:
     therefore doubling the effort for every additional OEWC (exponential effort).
   This has now been fixed.
   Thanks to R2D2 and Lavezzi for providing large formulas to reproduce this problem.
-  {THF}
+  [THF]
 
 
 v7.0.2 2014-09-26
@@ -72,7 +72,7 @@ v7.0.0 2014-09-10
 ==================
 NEW STUFF:
 - Build-in OpenPPL
-  OpenPPL can now read and execute plain-text OpenPPL-profiles
+  OpenHoldem can now read and execute plain-text OpenPPL-profiles
   without the need for any translation-steps.
   The OpenPPL-library will be loaded in the background 
   and all symbols are automatically available both for OpenPPL and OH-script-users.
