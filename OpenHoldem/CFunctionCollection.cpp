@@ -96,6 +96,10 @@ bool CFunctionCollection::CheckForMisspelledOpenPPLMainFunction(CString name) {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17891
   CString name_lowercases = name;
   name_lowercases.MakeLower();
+  if (name == name_lowercases) {
+    // Can't be misspelled
+    return false;
+  }
   for (int i=k_betround_preflop; i<k_betround_river; ++i) {
     if (name_lowercases == k_OpenPPL_function_names[i]) {
       CParseErrors::Error("Misspelled OpenPPL main-function?\n"
