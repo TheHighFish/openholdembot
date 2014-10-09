@@ -25,7 +25,7 @@ CSymbolEngineOpenPPLHandAndBoardExpression *p_symbol_engine_open_ppl_hand_and_bo
 const int prime_coded_card_ranks[k_rank_ace+1] =
 {
 	1,	// rank = 0, unused, exists due to C++-definition
-	1,	// rank = 1 = Ace-low, unused
+	1,	// rank = 1 = Ace-low, unused (here)
 	2,  // rank = 2
 	3,  // rank = 3
 	5,  // rank = 4

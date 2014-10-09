@@ -86,6 +86,7 @@ enum
   k_prefs_debug_auto_trace,
   k_prefs_debug_ast_priority_ordering,
   k_prefs_debug_filenames,
+  k_prefs_debug_hand_and_baord_expressions,
 	k_prefs_engage_autoplayer,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
@@ -264,6 +265,7 @@ public:
   const bool  debug_auto_trace() { return prefs_numerical_values[k_prefs_debug_auto_trace]; }
   const bool  debug_ast_priority_ordering() { return prefs_numerical_values[k_prefs_debug_ast_priority_ordering]; }
   const bool  debug_filenames() { return prefs_numerical_values[k_prefs_debug_filenames]; }
+  const bool  debug_hand_and_baord_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_baord_expressions]; }
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
