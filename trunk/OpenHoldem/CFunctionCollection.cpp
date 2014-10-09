@@ -59,7 +59,7 @@ void CFunctionCollection::DeleteAll() {
   }
 }
 
-bool CFunctionCollection::IsOutdatedFunction(CString name) {
+bool CFunctionCollection::CheckForOutdatedFunction(CString name) {
   if (name  == "f$play") {
     CParseErrors::Error("f$play got replaced\n"
       "by f$sitin, f$sitout, f$leave.\n");
@@ -73,7 +73,7 @@ bool CFunctionCollection::IsOutdatedFunction(CString name) {
   if (name  == "f$swag") {
     CParseErrors::Error("f$swag and its supporting functions got replaced\n"
       "by a single function f$betsize (raise-to-semantics)\n"
-      "and OpenHoldem automaticallz cares about casino-specific adjustments\n"
+      "and OpenHoldem automatically cares about casino-specific adjustments\n"
       "if you provide the casinos swagtextmethod in the tablemap.\n");
     return true;
   } 
@@ -84,6 +84,24 @@ bool CFunctionCollection::IsOutdatedFunction(CString name) {
       "Please have a look at the latest OpenPPL-manual.\n"
       "Things became far more easy.\n");
 	  return true;
+  }
+  return false;
+}
+
+bool CFunctionCollection::CheckForMisspelledOpenPPLMainFunction(CString name) {
+  // OpenPPL main-functions are the only ones 
+  // that have to be created by the user and get only called by OH
+  // and nowhere got checked.
+  // Looks like potential for PEBKAC, therefore we check that here.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17891
+  CString name_lowercases = name;
+  name_lowercases.MakeLower();
+  for (int i=k_betround_preflop; i<k_betround_river; ++i) {
+    if (name_lowercases == k_OpenPPL_function_names[i]) {
+      CParseErrors::Error("Misspelled OpenPPL main-function?\n"
+        "f$preflop, f$flop, f$turn and f$river are expected to be all lower-cases.\n");
+      return true;
+    }
   }
   return false;
 }
@@ -101,11 +119,12 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
 	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
   }
-  if (IsOutdatedFunction(name)) {
+  if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
     // Warning already generated
     return;
   }
+
   write_log(preferences.debug_formula(), 
 	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
