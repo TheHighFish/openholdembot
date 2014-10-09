@@ -849,7 +849,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
           pCurScin->SendMessage(SCI_EMPTYUNDOBUFFER, 0, 0);
         }
         ASSERT(pCurScin != NULL);
-                FormerShowEnableHideCodeClone(pCurScin);
+        FormerShowEnableHideCodeClone(pCurScin);
         SelectFunctionTab(pCurScin);
         m_current_edit = p_function_or_list->name();
 	  } 
