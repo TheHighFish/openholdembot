@@ -34,9 +34,10 @@ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
 private:
-	int PrimeCodedRanks(int card_0,	int card_1, 
-		int opt_card_2 = CARD_UNDEFINED, int opt_card_3 = CARD_UNDEFINED, 
-		int opt_card_4 = CARD_UNDEFINED);
+  // defaulting to k_undefined_zero, because this value gets used as an index
+	int PrimeCodedRanks(int rank_0,	int rank_1, 
+		int opt_rank_2 = k_undefined_zero, int opt_rank_3 = k_undefined_zero, 
+		int opt_rank_4 = k_undefined_zero);
 	int PrimeCodedRanks(CString card_expression);
 private:
 	int _prime_coded_hole_cards;

@@ -1,3 +1,12 @@
+v7.0.4 2014-10-10
+==================
+BUG FIXES:
+- Some cases of board$XYZ-symbols got broken by a refactoring
+  (Unifying card-representations).
+  This has now been fixed.
+  Thanks to Up_Urself for reporting.
+  [THF]  
+
 v7.0.3 2014-10-08
 ==================
 BUG FIXES:
