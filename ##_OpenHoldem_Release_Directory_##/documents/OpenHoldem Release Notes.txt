@@ -1,22 +1,26 @@
 v7.0.5 2014-10-XX
 ==================
 BUG FIXES:
-- "Beep Force" didn~t work in OpenPPL.
+- "Beep Force" did not work in OpenPPL.
   Thanks to SamFisher for reporing.
   [THF]
 - The point of initialization of OpenPPL-history-symbols
   had to be changed for integrated OpenPPL and did no longer
   work as good as before (for some users/casinos).
-  This affectedd especially the symbols Raises and Calls.
+  This affected especially the symbols Raises and Calls.
   We found now a way of initialization that guarantess
     * execution exactly once per turn
     * when we have stable frames and isfinalanswer is true
     * very shortly before we act (same frame)
-  Thanks to OpaDorens for reporting.
+  Thanks to OpaDorens and Invader11 for reporting.
   [THF]
 - Logical or-operations considered only the constant "true" (1) as true,
   but not any other non-zero value (results of former binary-operations).
   Thanks to Moby for reporting this bug.
+  [THF]
+- nopponentscalling was unexpectedly back to an old calculation-method 
+  and could produce wrong results.
+  Thanks to Fasenderos for reporting.
   [THF]
 
 v7.0.4 2014-10-10

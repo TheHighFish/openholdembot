@@ -142,7 +142,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
 
 		// Raisers are people
-		// * with name higher bet than players before them
+		// * with a higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
     if (p_table_state->_players[chair].HasAnyCards()
         && (current_players_bet > highest_bet)) {
@@ -176,52 +176,31 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
 }
 
-void CSymbolEngineRaisersCallers::CalculateCallers()
-{
+void CSymbolEngineRaisersCallers::CalculateCallers() {
 	// nopponentscalling
 	//
-	// Take the first player with the smallest non-zero balance 
-	// after the aggressor as the first bettor.
-	// Then start name circular search for callers.
-
-	_nopponentscalling = 0;
-
-	int FirstBettor = _raischair;
-	double SmallestBet = p_scraper->player_bet(FirstBettor);
-	for (int i=_raischair+1; 
-		i<=_raischair+p_tablemap->nchairs()-1; 
-		i++)
-	{
+	// nopponentscalling is "difficult" to calculate 
+  // and has to work only when it is our turn.
+  // Then we can simply start searching after the userchair
+	// and do a circular search for callers.
+  assert(p_symbol_engine_autoplayer->ismyturn());
+  _nopponentscalling = 0;
+  int first_bettor = p_symbol_engine_userchair->userchair();
+	double current_bet = p_scraper->player_bet(first_bettor);
+	for (int i=first_bettor+1; 
+		  i<=first_bettor+p_tablemap->nchairs()-1; 
+		  ++i) {
 		int chair = i%p_tablemap->nchairs();
-		double CurrentBet = p_scraper->player_bet(chair);
-
-		if ((CurrentBet < SmallestBet) && (CurrentBet > 0))
-		{
-			FirstBettor = chair;
-			SmallestBet = CurrentBet;
-		}
-	}
-
-	double CurrentBet = p_scraper->player_bet(FirstBettor);
-	for (int i=FirstBettor+1; 
-		i<=FirstBettor+p_tablemap->nchairs()-1; 
-		i++)
-	{
-		int chair = i%p_tablemap->nchairs();
-
-		// Exact match required. Players being allin don't count as callers.
-		if ((p_scraper->player_bet(chair) == CurrentBet) && (CurrentBet > 0))
-		{
+    	// Exact match required. Players being allin don't count as callers.
+		if ((p_scraper->player_bet(chair) == current_bet) && (current_bet > 0)) {
 			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
 			_nopponentscalling++;
 		}
-		else if (p_scraper->player_bet(chair) > CurrentBet)
-		{
-			CurrentBet = p_scraper->player_bet(chair);
+		else if (p_scraper->player_bet(chair) > current_bet) {
+			current_bet = p_scraper->player_bet(chair);
 		}
 	}
-
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
 	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
 }
