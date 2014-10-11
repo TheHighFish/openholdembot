@@ -254,7 +254,12 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);
 		return (value_of_second_sibbling ? true : false);
 	}	else if (_node_type == kTokenOperatorLogicalOr)	{
-		if (value_of_first_sibbling == true) {
+    // Attention!
+    // We can not look here for "value_of_first_sibbling == true"
+    // because this way we would only accept true (==1)
+    // but we want to accept any non-zero value.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17899
+		if (value_of_first_sibbling) {
 			return true;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);

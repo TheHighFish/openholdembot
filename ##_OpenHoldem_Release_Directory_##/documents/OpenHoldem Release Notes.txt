@@ -14,6 +14,10 @@ BUG FIXES:
     * very shortly before we act (same frame)
   Thanks to OpaDorens for reporting.
   [THF]
+- Logical or-operations considered only the constant "true" (1) as true,
+  but not any other non-zero value (results of former binary-operations).
+  Thanks to Moby for reporting this bug.
+  [THF]
 
 v7.0.4 2014-10-10
 ==================
