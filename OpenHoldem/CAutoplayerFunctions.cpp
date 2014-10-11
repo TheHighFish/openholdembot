@@ -17,7 +17,9 @@
 #include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
@@ -70,6 +72,15 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
   bool trace_needed = preferences.trace_enabled();
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
+  // First do the calculation of memory/history-szmbols,
+  //   * exactlz once per my turn
+  //   * when we have stable frames (isfinal-answer == true)
+  //   * shortly before the main OpenPPL-evaluations
+  // Unfortunatellz doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
+  // did not work as expected.
+  assert(p_symbol_engine_autoplayer->isfinalanswer());
+  p_symbol_engine_open_ppl->InitMemorySymbols();
+  // Now do the main evaluation
   int betround = p_betround_calculator->betround();
 	if (betround < k_betround_preflop || betround > k_betround_river) {
     write_log(preferences.debug_formula(), 
@@ -88,7 +99,7 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
   // Translate aqutoplayer-constant to OPPL-action-name
   switch (action) {
     case k_autoplayer_function_beep:
-      action_name = "";
+      action_name = "Beep";
       break;
     case k_autoplayer_function_allin:
       action_name = "RaiseMax";
@@ -176,6 +187,11 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // (contrary to f$beep in OH-script).
   if (p_function_collection->EvaluateAutoplayerFunction(
       k_autoplayer_function_beep)) {
+    // Turn check/fold off
+    p_function_collection->SetAutoplayerFunctionValue(
+      k_autoplayer_function_check, false);
+    p_function_collection->SetAutoplayerFunctionValue(
+      k_autoplayer_function_fold, false);
     return;
   }
   // Allin -> BetPot
@@ -196,7 +212,7 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Call -> Check
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_call, k_autoplayer_function_check);
-  // Call -> Check
+  // Call -> Fold
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_check, k_autoplayer_function_fold);
 }

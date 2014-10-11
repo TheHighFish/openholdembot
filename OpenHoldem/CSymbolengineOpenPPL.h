@@ -35,6 +35,8 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result);
 	CString IdentifiersProvided();;
+ public:
+  void InitMemorySymbols();
 };
 
 extern CSymbolEngineOpenPPL *p_symbol_engine_open_ppl;

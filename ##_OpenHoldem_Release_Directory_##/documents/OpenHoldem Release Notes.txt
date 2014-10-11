@@ -1,3 +1,20 @@
+v7.0.5 2014-10-XX
+==================
+BUG FIXES:
+- "Beep Force" didn~t work in OpenPPL.
+  Thanks to for reporing.
+  [THF]
+- The point of initialization of OpenPPL-history-symbols
+  had to be changed for integrated OpenPPL and did no longer
+  work as good as before (for some users/casinos).
+  This affectedd especially the symbols Raises and Calls.
+  We found now a waz of initialization that guarantess
+    * execution exactly once per turn
+    * when we have stable frames and isfinalanswer is true
+    * very shortly before we act (same frame)
+  Thanks to for reporting.
+  [THF]
+
 v7.0.4 2014-10-10
 ==================
 BUG FIXES:
@@ -22,7 +39,6 @@ BUG FIXES:
   This has now been fixed.
   Thanks to R2D2 and Lavezzi for providing large formulas to reproduce this problem.
   [THF]
-
 
 v7.0.2 2014-09-26
 ==================
@@ -60,7 +76,7 @@ MAINTENANCE :
   because our users proved that even the most impossible things can happen.
   Thanks to BruceLee, Fasenderos, Lavezzi and OpenGeek for reporting.
   [THF]
-  
+
 v7.0.1 2014-09-12
 ==================
 BUG FIXES:
@@ -76,6 +92,7 @@ BUG FIXES:
 - Scraping cardbacks accepted only the result "cardback", but not "true".
   This has now been fixed.
   [ZomBee]
+
 
 v7.0.0 2014-09-10
 ==================
