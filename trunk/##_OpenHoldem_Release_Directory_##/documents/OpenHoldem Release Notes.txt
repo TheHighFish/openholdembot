@@ -8,7 +8,7 @@ BUG FIXES:
   had to be changed for integrated OpenPPL and did no longer
   work as good as before (for some users/casinos).
   This affectedd especially the symbols Raises and Calls.
-  We found now a waz of initialization that guarantess
+  We found now a way of initialization that guarantess
     * execution exactly once per turn
     * when we have stable frames and isfinalanswer is true
     * very shortly before we act (same frame)
