@@ -36,7 +36,7 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	//
 	// This engine does not use any other engines, 
   // but it triggers calculations in the OpenPPL-library
-  // that use nearly all other symbl-engines.
+  // that use nearly all other symbol-engines.
   /*!!!!!!!assert(p_symbol_engine_dealerchair != NULL);
   assert(p_symbol_engine_positions != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
@@ -60,6 +60,13 @@ void CSymbolEngineOpenPPL::ResetOnNewRound() {
 }
 
 void CSymbolEngineOpenPPL::ResetOnMyTurn() {
+  // Iniytialization of memory-symbols temporary disbled, here
+  // as it did not work perfectly and we currently do it in
+  // CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL()
+  //InitMemorySymbols();
+}
+
+void CSymbolEngineOpenPPL::InitMemorySymbols() {
   // Nothing to be done if no OpenPPL-library loaded.
   if (!p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
     return;
