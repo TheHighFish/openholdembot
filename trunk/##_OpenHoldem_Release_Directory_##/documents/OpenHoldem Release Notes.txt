@@ -2,7 +2,7 @@ v7.0.5 2014-10-XX
 ==================
 BUG FIXES:
 - "Beep Force" didn~t work in OpenPPL.
-  Thanks to for reporing.
+  Thanks to SamFisher for reporing.
   [THF]
 - The point of initialization of OpenPPL-history-symbols
   had to be changed for integrated OpenPPL and did no longer
@@ -12,7 +12,7 @@ BUG FIXES:
     * execution exactly once per turn
     * when we have stable frames and isfinalanswer is true
     * very shortly before we act (same frame)
-  Thanks to for reporting.
+  Thanks to OpaDorens for reporting.
   [THF]
 
 v7.0.4 2014-10-10
