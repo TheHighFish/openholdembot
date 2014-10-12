@@ -190,6 +190,7 @@
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
+    <ClCompile Include="CSymbolEngineChairs.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
@@ -439,6 +440,7 @@
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
+    <ClInclude Include="CSymbolengineChairs.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />

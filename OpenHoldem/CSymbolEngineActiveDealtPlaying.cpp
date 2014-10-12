@@ -178,14 +178,6 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
     _playersdealtbits, _playersdealtbits);
 }
 
-int CSymbolEngineActiveDealtPlaying::opponentheadsupchair(){
-	if(nopponentsplaying() > 1) return k_undefined;
-	for (int i = 0; i < k_max_number_of_players; i++)	{
-		if (IsBitSet(opponentsplayingbits(), i)) return i;
-	}
-	return k_undefined;
-}
-
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
@@ -293,11 +285,6 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 		// Valid symbol
 		return true;
 	}
-	else if (memcmp(name, "opponent_chair_headsup", 22)==0)
-	{
-		*result = opponentheadsupchair();
-		return true;
-	}
 	// Symbol of a different symbol-engine
 	return false;
 }
@@ -306,6 +293,5 @@ CString CSymbolEngineActiveDealtPlaying::SymbolsProvided() {
   return "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying "
     "nplayersseated nplayersactive nplayersdealt nplayersplaying "
     "playersseatedbits playersactivebits playersdealtbits playersplayingbits "
-    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits "
-	"opponent_chair_headsup";
+    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits ";
 }
