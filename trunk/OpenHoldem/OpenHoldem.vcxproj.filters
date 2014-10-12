@@ -660,6 +660,9 @@
     <ClCompile Include="CSymbolengineOpenPPL.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineChairs.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1436,6 +1439,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolEngineOpenPPL.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineChairs.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>

@@ -57,8 +57,6 @@ public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
 	int userchairbit()				{ return 1 << USER_CHAIR; }
-	int opponentheadsupchair();
-
 public:
   CString SymbolsProvided();
 private:
