@@ -89,8 +89,8 @@ Poker Tracker symbols (Version 3)
 
 \begin_layout Standard
 Assuming all the prerequisites as described in the configuration manual
- are met, the following symbols will be available to your bot for use in
- its logic processing.
+ are met, the following native OpenHoldem symbols will be available to your
+ bot for use in its logic processing.
  The appropriate use of these symbols in opponent modeling is beyond the
  scope of this document, but plenty of references can be found on the Internet
  with a Google search.
@@ -106,20 +106,53 @@ All the symbols below are available both for cash games and for tournaments
 
 \begin_layout Itemize
 for the chair of the aggressor, e.g.
- pt_icon_raischair.
+ pt_icon_
+\emph on
+raischair
+\emph default
+.
  This situation is one of the most common needs for PokerTracker stats.
 \end_layout
 
 \begin_layout Itemize
-for a single opponent headsup, e.g.
+for a single opponent 
+\emph on
+headsup
+\emph default
+, e.g.
  pt_icon_headsup
 \end_layout
 
 \begin_layout Itemize
-by chair number, e.g pt_icon0..pt_icon9: this is more complex and less convenient
- than both methods above, but you get the ability to build any advanced
- stat on your own as long as you are able to identify the chair of your
- villain.
+to identify certain players by their preflop-position use the postfixes
+ 
+\emph on
+smallblind, bigblind, dealer, cutoff
+\emph default
+,
+\end_layout
+
+\begin_layout Itemize
+besides of that you can use 
+\emph on
+firstcaller, lastcaller 
+\emph default
+and
+\emph on
+ firstraiser
+\emph default
+.
+ They work for the current orbit only.
+\end_layout
+
+\begin_layout Itemize
+by 
+\emph on
+chair number
+\emph default
+, e.g pt_icon0..pt_icon9: this is more complex and less convenient than both
+ methods above, but you get the ability to build any advanced stat on your
+ own as long as you are able to identify the chair of your villain.
 \end_layout
 
 \begin_layout Subsection
@@ -154,6 +187,34 @@ _raischair
 
 \begin_layout Itemize
 _headsup
+\end_layout
+
+\begin_layout Itemize
+_smallblind
+\end_layout
+
+\begin_layout Itemize
+_bigblind
+\end_layout
+
+\begin_layout Itemize
+_dealer
+\end_layout
+
+\begin_layout Itemize
+_cutoff
+\end_layout
+
+\begin_layout Itemize
+_firstcaller
+\end_layout
+
+\begin_layout Itemize
+_lastcaller
+\end_layout
+
+\begin_layout Itemize
+_firstraiser
 \end_layout
 
 \begin_layout Itemize

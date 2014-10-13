@@ -93,7 +93,7 @@
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="PokerTracker Symbols">
-			<param name="Local" value="Chapters\PokerTracker_Symbols.html.LyXconv\PokerTracker_Symbols.html">
+			<param name="Local" value="..\..\Documentation\Chapters\symbols\symbols_pokertracker.html.LyXconv\symbols_pokertracker.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Position Symbols">
