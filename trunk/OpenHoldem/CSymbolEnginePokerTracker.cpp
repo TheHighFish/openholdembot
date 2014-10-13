@@ -247,10 +247,26 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
     // Add symbol for raise-chair
     CString new_symbol = "pt_" + basic_symbol_name + "_raischair";
     list.AppendFormat(" %s", new_symbol);
-
-	// Add symbol for headsup-chair
+    // Add symbol for headsup-chair...
     new_symbol = "pt_" + basic_symbol_name + "_headsup";
-	list.AppendFormat(" %s", new_symbol);
+	  list.AppendFormat(" %s", new_symbol);
+    // ... and all similar symbols
+    new_symbol = "pt_" + basic_symbol_name + "_smallblind";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_bigblind";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_cutoff";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_firstcaller";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_lastcaller";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_firstraiser";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_dealer";
+	  list.AppendFormat(" %s", new_symbol);
+    new_symbol = "pt_" + basic_symbol_name + "_user";
+	  list.AppendFormat(" %s", new_symbol);
 
     // Add symbols for all chairs, indexed by trailing numbers
     for (int j=0; j<k_max_number_of_players; j++) {
