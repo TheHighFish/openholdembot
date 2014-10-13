@@ -183,7 +183,6 @@ void CSymbolEngineRaisersCallers::CalculateCallers() {
   // and has to work only when it is our turn.
   // Then we can simply start searching after the userchair
 	// and do a circular search for callers.
-  assert(p_symbol_engine_autoplayer->ismyturn());
   _nopponentscalling = 0;
   int first_bettor = p_symbol_engine_userchair->userchair();
 	double current_bet = p_scraper->player_bet(first_bettor);

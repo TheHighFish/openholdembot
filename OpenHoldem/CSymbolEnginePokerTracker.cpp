@@ -19,12 +19,12 @@
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
+#include "CSymbolEngineChairs.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
-
 
 CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
 
@@ -183,7 +183,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup")
 	{
-		chair = p_symbol_engine_active_dealt_playing->opponentheadsupchair();
+    chair = p_symbol_engine_chairs->opponent_headsup_chair();
 	}
 	// PokerTracker symbols for chair X
 	else {
