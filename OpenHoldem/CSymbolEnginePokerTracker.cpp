@@ -20,6 +20,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChairs.h"
+#include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
@@ -176,16 +177,46 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	CString standard_symbol_name;
 	assert(StringAIsPrefixOfStringB("pt_", s));
 	// PokerTracker symbols for the raise-chair
-	if (s.Right(10) == "_raischair")
-	{
+	if (s.Right(10) == "_raischair") {
 		chair = p_symbol_engine_raisers_callers->raischair();
 	}
 	// PokerTracker symbols for the opponent headsup chair
-	else if (s.Right(8) == "_headsup")
-	{
+	else if (s.Right(8) == "_headsup") {
     chair = p_symbol_engine_chairs->opponent_headsup_chair();
 	}
-	// PokerTracker symbols for chair X
+  // PokerTracker symbols for the smallblind chair
+	else if (s.Right(11) == "_smallblind") {
+    chair = p_symbol_engine_chairs->smallblind_chair();
+	}
+  // PokerTracker symbols for the bigblind chair
+	else if (s.Right(9) == "_bigblind") {
+    chair = p_symbol_engine_chairs->bigblind_chair();
+	}
+  // PokerTracker symbols for the cutoff chair
+	else if (s.Right(7) == "_cutoff ") {
+    chair = p_symbol_engine_chairs->cutoff_chair();
+	}
+  // PokerTracker symbols for the firstcaller chair
+	else if (s.Right(12) == "_firstcaller") {
+    chair = p_symbol_engine_chairs->firstcaller_chair();
+	}
+  // PokerTracker symbols for the lastcaller chair
+	else if (s.Right(11) == "_lastcaller") {
+    chair = p_symbol_engine_chairs->lastcaller_chair();
+	}
+  // PokerTracker symbols for the firstraiser chair
+	else if (s.Right(12) == "_firstraiser") {
+    chair = p_symbol_engine_chairs->firstraiser_chair();
+	}
+  // PokerTracker symbols for the dealerchair chair
+	else if (s.Right(7) == "_dealer") {
+    chair = p_symbol_engine_dealerchair->dealerchair();
+	}
+  // PokerTracker symbols for the  chair
+	else if (s.Right(5) == "_user") {
+    chair = p_symbol_engine_userchair->userchair();
+	}
+  // PokerTracker symbols for chair X
 	else {
 		CString symbol = s;
 		CString last_character = symbol.Right(1);
