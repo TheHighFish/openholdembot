@@ -27,6 +27,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineCards.h"
+#include "CSymbolEngineChairs.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineEventLogging.h"
@@ -145,6 +146,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
+  // CSymbolEngineChairs
+  p_symbol_engine_chairs = new CSymbolEngineChairs();
+  AddSymbolEngine(p_symbol_engine_chairs);
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);

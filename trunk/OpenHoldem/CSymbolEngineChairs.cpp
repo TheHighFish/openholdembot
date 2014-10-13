@@ -15,8 +15,12 @@
 #include "stdafx.h"
 #include "CSymbolEngineChairs.h"
 
+#include "CBetroundCalculator.h"
+#include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePokerAction.h"
+#include "CSymbolEngineTableLimits.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 
 CSymbolEngineChairs *p_symbol_engine_chairs = NULL;
@@ -27,6 +31,8 @@ CSymbolEngineChairs::CSymbolEngineChairs() {
 	// we assure correct ordering by checking if they are initialized.
   assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_poker_action != NULL);
+  assert(p_symbol_engine_userchair != NULL);
+  assert(p_symbol_engine_tablelimits != NULL);
 }
 
 CSymbolEngineChairs::~CSymbolEngineChairs() {
@@ -37,6 +43,7 @@ void CSymbolEngineChairs::InitOnStartup() {
 }
 
 void CSymbolEngineChairs::ResetOnConnection() {
+  _nchairs = p_tablemap->nchairs();
   ResetOnHandreset();
 }
 
@@ -55,6 +62,14 @@ void CSymbolEngineChairs::ResetOnNewRound() {
 }
 
 void CSymbolEngineChairs::ResetOnMyTurn() {
+  // Only well-defined at my turn and requires userchair for calculation
+  assert(p_symbol_engine_userchair->userchair_confirmed());
+  CalculateOpponentHeadsupChair();
+  CalculateSmallBlindChair();
+  CalculateBigBlindChair();
+  CalculateCutOffChair();
+  CalculateCallerChairs();
+  CalculateFirstRaiserChair();
 }
 
 void CSymbolEngineChairs::ResetOnHeartbeat() {
@@ -80,21 +95,51 @@ void CSymbolEngineChairs::CalculateBigBlindChair() {
 }
 
 void CSymbolEngineChairs::CalculateCutOffChair() {
-  int cutoff_dealposition = p_symbol_engine_active_dealt_playing->nopponentsdealt() - 1;
+  int cutoff_dealposition = p_symbol_engine_active_dealt_playing->nplayersdealt() - 1;
   _cutoff_chair = GetChairByDealposition(cutoff_dealposition);
 }
 
-void CSymbolEngineChairs::CalculateFirstCallerChair() {
-}
-
-void CSymbolEngineChairs::CalculateLastCallerChair() {
+void CSymbolEngineChairs::CalculateCallerChairs() {
+  _firstcaller_chair = k_undefined;
+  _lastcaller_chair = k_undefined;
+  double last_raisers_bet = p_scraper->player_bet(USER_CHAIR);
+  if ((p_betround_calculator->betround() == k_betround_preflop) 
+      && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
+    // Avoid problems with so-called "blind-raisers"
+    last_raisers_bet = p_symbol_engine_tablelimits->bblind();
+  }
+  for (int i=1; i<_nchairs; ++i) {
+    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
+    double next_bet = p_scraper->player_bet(next_chair);
+    if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
+      // We have a caller, at least the temporary last one
+      _lastcaller_chair = next_chair;
+      if (_firstcaller_chair == k_undefined) {
+        // We found the first caller
+        _firstcaller_chair = next_chair;
+      } 
+    } else if (next_bet > last_raisers_bet) {
+      // New raiser found (necessary for potential new last_caller)
+      last_raisers_bet = next_bet; 
+    }
+  }
 }
 
 void CSymbolEngineChairs::CalculateFirstRaiserChair() {
+  _firstraiser_chair = k_undefined;
+  double users_bet = p_scraper->player_bet(USER_CHAIR);
+  for (int i=1; i<_nchairs; ++i) {
+    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
+    double next_bet = p_scraper->player_bet(next_chair);
+    if ((next_bet > users_bet) && (next_bet > p_symbol_engine_tablelimits->bblind())) {
+      _firstraiser_chair = next_chair; 
+      return;
+    }
+  }
 }
 
 int CSymbolEngineChairs::GetChairByDealposition(int dealposition) {
-  for (int i=0; i<p_tablemap->nchairs(); ++i) {
+  for (int i=0; i<_nchairs; ++i) {
     if (p_symbol_engine_poker_action->DealPosition(i) == dealposition) {
       return i;
     }

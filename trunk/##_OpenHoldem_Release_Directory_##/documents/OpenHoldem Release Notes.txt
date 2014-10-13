@@ -1,5 +1,18 @@
 v7.0.5 2014-10-XX
 ==================
+NEW STUFF:
+- New OH-script-symbols smallblind_chair, bigblind_chair, cutoff_chair, 
+  firstcaller_chair, lastcaller_chair, firstraiser_chair.
+  These symbols are especially meant for opponent-modelling with PokerTracker, etc.
+  [THF]
+- New PokerTracker-postfixes based on the sybols above:
+  smallblind, bigblind, cutoff, firstcaller, lastcaller, firstraiser.
+  Example: pt_vpip_smallblind
+  As a result of easy access and verbose naming-conventions 
+  the last OpenPPL PokerTracker-symbols became depricated and will be removed.
+  Please see symbols_pokertracker.pdf for a complete list of symbols.
+  [THF]
+
 BUG FIXES:
 - "Beep Force" did not work in OpenPPL.
   Thanks to SamFisher for reporing.
