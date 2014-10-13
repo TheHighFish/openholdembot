@@ -7,6 +7,7 @@ NEW STUFF:
   [THF]
 - New PokerTracker-postfixes based on the sybols above:
   smallblind, bigblind, cutoff, firstcaller, lastcaller, firstraiser.
+  Also dealer and user (and we alreadz had raischair, headsup and chair-numbers 0..9)
   Example: pt_vpip_smallblind
   As a result of easy access and verbose naming-conventions 
   the last OpenPPL PokerTracker-symbols became depricated and will be removed.
