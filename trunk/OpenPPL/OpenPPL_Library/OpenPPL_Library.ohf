@@ -573,19 +573,6 @@ Calls + nopponentscalling
 ismyturn ? me_re_MemCalls :
 ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
-##PT_LastCaller_Chair##
-// Can't be big blind (0), as it is for the first orbit preflop only
-LastCallerPosition == 1 ? SmallBlindChair :
-LastCallerPosition == 2 ? ButtonChair :
-LastCallerPosition == 3 ? CutOffChair :
-LastCallerPosition == 4 ? MiddlePosition3Chair :
-LastCallerPosition == 5 ? MiddlePosition2Chair :
-LastCallerPosition == 6 ? MiddlePosition1Chair :
-LastCallerPosition == 7 ? EarlyPosition3Chair :
-LastCallerPosition == 8 ? EarlyPosition2Chair :
-LastCallerPosition == 9 ? EarlyPosition1Chair :
-HINT_No_LastCaller
-
 ##LastRaiserCurrentBet##
 raischair == 0 ? currentbet0 :
 raischair == 1 ? currentbet1 :
@@ -3745,137 +3732,17 @@ SmallBlindRaising ? 1 :
 (betposition == nplayersplaying) ? Last :
 Middle
 
-
-//*******************************************
-//  OpenPPL - Poker Tracker Symbols COSTANTS
-//*******************************************
-##ConstMinHandsFor_PT_VPIP_AND_PFR##
-80
-
-##ConstMinHandsFor_PT_AttemptToStealBlinds##
-80
-
-##ConstMinHandsFor_PT_BigBlind_FoldBBToSteal##
-80
-
-##ConstMinHandsFor_PT_SmallBlind_FoldSBToSteal##
-80
-
-//*******************************************
-// OpenPPL - Poker Tracker Technical Symbols
-//*******************************************
-##RaiserExists##
-(raischair != -1)
-
 //*****************************************************************************
 //
 // OpenPPL - Poker Tracker Symbols
 //
+// Please note: The OpenPPL-library does no longer provide 
+// any PokerTracker-symbols, because similar symbols
+// are now provided directly by OpenHoldem.
+// Please see symbols_pokertracker.pdf for details.
+//
 //*****************************************************************************
 
-##PT_BigBlind_FoldBBToSteal##
-BigBlindChair == 0 ? pt_bigblind_fold_to_steal0 :
-BigBlindChair == 1 ? pt_bigblind_fold_to_steal1 :
-BigBlindChair == 2 ? pt_bigblind_fold_to_steal2 :
-BigBlindChair == 3 ? pt_bigblind_fold_to_steal3 :
-BigBlindChair == 4 ? pt_bigblind_fold_to_steal4 :
-BigBlindChair == 5 ? pt_bigblind_fold_to_steal5 :
-BigBlindChair == 6 ? pt_bigblind_fold_to_steal6 :
-BigBlindChair == 7 ? pt_bigblind_fold_to_steal7 :
-BigBlindChair == 8 ? pt_bigblind_fold_to_steal8 :
-BigBlindChair == 9 ? pt_bigblind_fold_to_steal9 :
-ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
-
-##PT_SmallBlind_FoldSBToSteal##
-SmallBlindChair == 0 ? pt_smallblind_fold_to_steal0 :
-SmallBlindChair == 1 ? pt_smallblind_fold_to_steal1 :
-SmallBlindChair == 2 ? pt_smallblind_fold_to_steal2 :
-SmallBlindChair == 3 ? pt_smallblind_fold_to_steal3 :
-SmallBlindChair == 4 ? pt_smallblind_fold_to_steal4 :
-SmallBlindChair == 5 ? pt_smallblind_fold_to_steal5 :
-SmallBlindChair == 6 ? pt_smallblind_fold_to_steal6 :
-SmallBlindChair == 7 ? pt_smallblind_fold_to_steal7 :
-SmallBlindChair == 8 ? pt_smallblind_fold_to_steal8 :
-SmallBlindChair == 9 ? pt_smallblind_fold_to_steal9 :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
-
-##PT_ButtonVPIP##
-ButtonChair==0 ? pt_vpip0:
-ButtonChair==1 ? pt_vpip1:
-ButtonChair==2 ? pt_vpip2:
-ButtonChair==3 ? pt_vpip3:
-ButtonChair==4 ? pt_vpip4:
-ButtonChair==5 ? pt_vpip5:
-ButtonChair==6 ? pt_vpip6:
-ButtonChair==7 ? pt_vpip7:
-ButtonChair==8 ? pt_vpip8:
-ButtonChair==9 ? pt_vpip9:
-ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
-
-##PT_BigBlind_Hands##
-[ (BigBlindChair == 0) ] ? pt_hands0 :
-[ (BigBlindChair == 1) ] ? pt_hands1 :
-[ (BigBlindChair == 2) ] ? pt_hands2 :
-[ (BigBlindChair == 3) ] ? pt_hands3 :
-[ (BigBlindChair == 4) ] ? pt_hands4 :
-[ (BigBlindChair == 5) ] ? pt_hands5 :
-[ (BigBlindChair == 6) ] ? pt_hands6 :
-[ (BigBlindChair == 7) ] ? pt_hands7 :
-[ (BigBlindChair == 8) ] ? pt_hands8 :
-[ (BigBlindChair == 9) ] ? pt_hands9 :
-ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
-
-##PT_SmallBlind_VPIP##
-SmallBlindChair == 0 ? pt_vpip0 :
-SmallBlindChair == 1 ? pt_vpip1 :
-SmallBlindChair == 2 ? pt_vpip2 :
-SmallBlindChair == 3 ? pt_vpip3 :
-SmallBlindChair == 4 ? pt_vpip4 :
-SmallBlindChair == 5 ? pt_vpip5 :
-SmallBlindChair == 6 ? pt_vpip6 :
-SmallBlindChair == 7 ? pt_vpip7 :
-SmallBlindChair == 8 ? pt_vpip8 :
-SmallBlindChair == 9 ? pt_vpip9 :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
-
-##PT_SmallBlind_Hands##
-[ (SmallBlindChair == 0) ] ? pt_hands0 :
-[ (SmallBlindChair == 1) ] ? pt_hands1 :
-[ (SmallBlindChair == 2) ] ? pt_hands2 :
-[ (SmallBlindChair == 3) ] ? pt_hands3 :
-[ (SmallBlindChair == 4) ] ? pt_hands4 :
-[ (SmallBlindChair == 5) ] ? pt_hands5 :
-[ (SmallBlindChair == 6) ] ? pt_hands6 :
-[ (SmallBlindChair == 7) ] ? pt_hands7 :
-[ (SmallBlindChair == 8) ] ? pt_hands8 :
-[ (SmallBlindChair == 9) ] ? pt_hands9 :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
-
-##PT_LastCaller_VPIP##
-PT_LastCaller_Chair==0 && pt_hands0>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip0 :
-PT_LastCaller_Chair==1 && pt_hands1>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip1 :
-PT_LastCaller_Chair==2 && pt_hands2>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip2 :
-PT_LastCaller_Chair==3 && pt_hands3>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip3 :
-PT_LastCaller_Chair==4 && pt_hands4>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip4 :
-PT_LastCaller_Chair==5 && pt_hands5>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip5 :
-PT_LastCaller_Chair==6 && pt_hands6>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip6 :
-PT_LastCaller_Chair==7 && pt_hands7>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip7 :
-PT_LastCaller_Chair==8 && pt_hands8>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip8 :
-PT_LastCaller_Chair==9 && pt_hands9>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_vpip9 :
-HINT_No_LastCaller
-
-##PT_LastCaller_PFR##
-PT_LastCaller_Chair==0 && pt_hands0>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr0 :
-PT_LastCaller_Chair==1 && pt_hands1>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr1 :
-PT_LastCaller_Chair==2 && pt_hands2>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr2 :
-PT_LastCaller_Chair==3 && pt_hands3>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr3 :
-PT_LastCaller_Chair==4 && pt_hands4>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr4 :
-PT_LastCaller_Chair==5 && pt_hands5>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr5 :
-PT_LastCaller_Chair==6 && pt_hands6>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr6 :
-PT_LastCaller_Chair==7 && pt_hands7>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr7 :
-PT_LastCaller_Chair==8 && pt_hands8>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr8 :
-PT_LastCaller_Chair==9 && pt_hands9>=ConstMinHandsFor_PT_VPIP_AND_PFR ? pt_pfr9 :
-HINT_No_LastCaller
 
 //*****************************************************************************
 //
