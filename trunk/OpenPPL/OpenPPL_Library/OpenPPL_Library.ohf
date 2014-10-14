@@ -1434,35 +1434,41 @@ rankhicommon
 StraightPossibleOnFlop && !ExactlyOneStraightPossibleOnFlop
 
 ##MoreThanOneStraightPossibleOnRiver##
-(betround == ConstBetRoundRiver && (NumberOfStraightsPossibleOnRiver == 1))
+(betround == ConstBetRoundRiver && (NumberOfStraightsPossibleOnRiver > 1))
 
 ##RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
 rankbitscommon
 
 ##NumberOfStraightsPossibleOnTurn##
-  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 ? 1 : 0)
+// First part checks if there is a straight possible (max 2 cards missing)
+// Second part checks that there is no higher "6-card" straight possible
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
+  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 && (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
 
 ##NumberOfStraightsPossibleOnRiver##
-  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 ? 1 : 0)
+// First part checks if there is a straight possible (max 2 cards missing)
+// Second part checks that there is no higher "6-card" straight possible
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
+  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 && (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
 
 ##MoreThanOneOneCardStraightPossible##
 DoubleGutShotOnBoard || OpenEndedStraightDrawOnBoard
