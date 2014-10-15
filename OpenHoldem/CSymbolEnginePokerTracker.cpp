@@ -29,7 +29,6 @@
 
 CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
 
-
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 {
 	// The values of some symbol-engines depend on other engines.
@@ -40,23 +39,21 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 }
 
-CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker()
-{}
+CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker() {
+}
 
-void CSymbolEnginePokerTracker::InitOnStartup()
-{
+void CSymbolEnginePokerTracker::InitOnStartup() {
 	check_for_identity_of_players_executed_this_heartbeat = false;
 	ClearAllStats();
 }
 
-void CSymbolEnginePokerTracker::ResetOnConnection()
-{
+void CSymbolEnginePokerTracker::ResetOnConnection() {
 	ClearAllStats();
 	p_pokertracker_thread->StartThread();
 }
 
-void CSymbolEnginePokerTracker::ResetOnHandreset()
-{}
+void CSymbolEnginePokerTracker::ResetOnHandreset() {
+}
 
 void CSymbolEnginePokerTracker::ResetOnNewRound()
 {}
@@ -141,7 +138,15 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
       "Possible postfixes:\n"
       "  * chair number (0..9)\n"
       "  * _raischair\n"
-      "  * _headsup\n", s);
+      "  * _headsup\n"
+      "  * _smallblind\n"
+      "  * _bigblind\n"
+      "  * _dealer\n"
+      "  * _cutoff\n"
+      "  * _user\n"
+      "  * _firstraiser\n"
+      "  * _firstcaller\n"
+      "  * _lastcaller\n", s);
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
