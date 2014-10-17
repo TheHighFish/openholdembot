@@ -163,11 +163,16 @@ FoldToPost-FlopRaisesWithUnpairedBoardsFor = 2
 
 \begin_layout Plain Layout
 
+custom
 \end_layout
 
 \begin_layout Plain Layout
 
-f$preflop
+\end_layout
+
+\begin_layout Plain Layout
+
+preflop
 \end_layout
 
 \begin_layout Plain Layout
@@ -279,8 +284,8 @@ Floating Point Numbers
 \end_layout
 
 \begin_layout Standard
-There are some differences between Standard PPL and OpenPPL that cause troubles
- for the converter -- luckily only very few:
+There are some differences between Standard PPL and OpenPPL you should care
+ about -- luckily only very few:
 \end_layout
 
 \begin_layout Itemize
@@ -337,7 +342,7 @@ WHEN Stacksize < 2.5 AND
 
 \end_inset
 
-Or you could even use ther new approximatelly-equal-operator:
+Or you could even use the new approximatelly-equal-operator:
 \begin_inset listings
 inline false
 status open
@@ -377,12 +382,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Board$AT ...
+WHEN Board = AT ...
 \end_layout
 
 \begin_layout Plain Layout
 
-WHEN Board$ATSuited...
+WHEN Board = ATSuited...
 \end_layout
 
 \end_inset
@@ -421,7 +426,7 @@ Cases Matter (Partially)
 
 \begin_layout Standard
 OpenHoldem is case-sensitive - contrary to standard PPL.
- So upper- and lower-cases matter - at least for the translated code.
+ So upper- and lower-cases matter.
  The rules for your OpenPPL-code are more user-friendly and less rigid.
  There are basically 3 cases:
 \end_layout
@@ -435,23 +440,7 @@ WHEN
 \begin_inset Quotes erd
 \end_inset
 
-, 
-\begin_inset Quotes eld
-\end_inset
-
-AND
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-RAISEMAX
-\begin_inset Quotes erd
-\end_inset
-
-, etc.
+, FORCE and operators like OR etc.
  For keywords 3 different spellings are allowed: all upper-cases, all lower-case
 s and reasonable mixes.
 \begin_inset listings
@@ -460,7 +449,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (Hand$AA) RAISEMAX FORCE
+WHEN (Hand$AA) RaiseMax FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -470,7 +459,7 @@ When (Hand$AA) RaiseMax Force
 
 \begin_layout Plain Layout
 
-when (Hand$AA) raisemax force
+when (Hand$AA) RaiseMax force
 \end_layout
 
 \end_inset
@@ -511,7 +500,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (StillToAct < 2) RaiseTo 3 FORCE
+WHEN (StillToAct < 2) RAISETO 3 FORCE
 \end_layout
 
 \end_inset
@@ -765,7 +754,7 @@ status open
 
 \begin_layout Plain Layout
 
-##f$preflop##
+preflop
 \end_layout
 
 \begin_layout Plain Layout
@@ -782,8 +771,8 @@ status open
 \begin_layout Standard
 A user-defined delay after an action does simply not fit to the concept
  of functions; that traditionally return only a single value.
- Besides of that: we believe that is very clumsy to have thousands of lines
- with a fixed delay.
+ Besides of that: we believe that it is very clumsy to have thousands of
+ lines with a fixed delay.
  OpenHoldem natively supports a solution that is way better suited for this
  use-case: a f$delay-functions.
 \end_layout
@@ -855,12 +844,7 @@ status open
 
 \begin_layout Plain Layout
 
-   // SitOut FORCE will first fold and then sitout.
-\end_layout
-
-\begin_layout Plain Layout
-
-   // handsplayed and floppct are OpenHoldem symbols 
+   // issittingin, handsplayed and floppct are OpenHoldem symbols 
 \end_layout
 
 \begin_layout Plain Layout
@@ -880,7 +864,12 @@ status open
 
 \begin_layout Plain Layout
 
-   WHEN (handsplayed > 15 
+   WHEN (issittingin
+\end_layout
+
+\begin_layout Plain Layout
+
+        AND handsplayed > 15 
 \end_layout
 
 \begin_layout Plain Layout
