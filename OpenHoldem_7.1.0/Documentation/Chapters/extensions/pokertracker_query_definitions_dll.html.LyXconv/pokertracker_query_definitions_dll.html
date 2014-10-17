@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="pokertracker_query_definitions_dll.tex"> 
+<meta name="date" content="2013-12-26 00:46:00"> 
+<link rel="stylesheet" type="text/css" href="pokertracker_query_definitions_dll.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>PokerTracker Query Definitions DLL<a 
+ id="x1-1000doc"></a> </h3>
+<!--l. 17--><p class="noindent" >As you might have noticed a new DLL is part of OpenHoldem
+since version 4.2.0: PokerTracker_Query_Definitions.DLL.
+<a 
+href="http://code.google.com/p/openholdembot/source/browse/trunk/PokerTracker_Query_Definitions/" class="url" ><span 
+class="ectt-1000">http://code.google.com/p/openholdembot/source/browse/trunk/PokerTracker_Query_Definitions/</span></a>
+This DLL provides the ability to extend the set of PokerTracker-stats easily. The
+interesting part of the DLL is the file PokerTracker_Queries_Version_3.which h
+contains the definition of a struct:
+   <!--l. 23-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>typedef&#x00A0;struct&#x00A0;t_QueryDefinition&#x00A0;<br /><span class="label"><a 
+ id="x1-1002r2"></a></span>{&#x00A0;<br /><span class="label"><a 
+ id="x1-1003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;CString&#x00A0;name;&#x00A0;<br /><span class="label"><a 
+ id="x1-1004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;CString&#x00A0;description_for_editor;&#x00A0;<br /><span class="label"><a 
+ id="x1-1005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;CString&#x00A0;first_part_of_query;&#x00A0;<br /><span class="label"><a 
+ id="x1-1006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;The&#x00A0;queries&#x00A0;will&#x00A0;be&#x00A0;created&#x00A0;on&#x00A0;the&#x00A0;fly,&#x00A0;<br /><span class="label"><a 
+ id="x1-1007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;for&#x00A0;both&#x00A0;ring<span 
+class="cmsy-10">-</span>games&#x00A0;and&#x00A0;tournaments.&#x00A0;<br /><span class="label"><a 
+ id="x1-1008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;There&#x00A0;will&#x00A0;be&#x00A0;an&#x00A0;"infix"&#x00A0;added,&#x00A0;depending&#x00A0;on&#x00A0;game<span 
+class="cmsy-10">-</span>type&#x00A0;<br /><span class="label"><a 
+ id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;CString&#x00A0;last_part_of_query;&#x00A0;<br /><span class="label"><a 
+ id="x1-1010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;stat_group;&#x00A0;<br /><span class="label"><a 
+ id="x1-1011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;bool&#x00A0;needs_infix_and_second_part;&#x00A0;<br /><span class="label"><a 
+ id="x1-1012r12"></a></span>};
+   </div>
+     <ul class="itemize1">
+     <li class="itemize">"name" should be self-explanatory. It is something like "icon" or "vpip".
+     </li>
+     <li class="itemize">"description_for_editor"  is  the  explanation  that  will  be  shown  in
+     OpenHoldems formula-editor.
+     </li>
+     <li class="itemize">query  is  is  the  database-query,  usually  containing  one  or  more  3
+     place-holders  %GAMETYPE%  ,  %SITEID%  and  %SCREENNAME%.
+     OpenHoldem will build the complete query on the fly and automatically
+     replace these place-holders by the correct values. A nice side-effect of this
+     new concept: all stats will automatically work for both ring-games and
+     tournaments; therefore OpenHoldem does no longer distinguish between
+     "pt_" and "ptt_" stats, simply &#8220;pt_&#8221; will always work.
+     </li>
+     <li class="itemize">"stat_group": this is one of pt_group_basic / pt_group_advanced /
+     pt_group_positional. Diffferent groups of stats need different sample-sizes
+     to become meaningful or change significantly. Therefore OpenHoldem will
+     evaluate  these  symbols  with  different  update  delays  depending  on  the
+     number of hands a user has played to achieve a good compromise between
+     meaningful stats and a low database-usage.</li></ul>
+<!--l. 58--><p class="noindent" >And all the rest happens automagically. To add a new stat you only have to change the
+constant
+   <!--l. 61-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-1013r1"></a></span>const&#x00A0;int&#x00A0;k_number_of_pokertracker_stats&#x00A0;=&#x00A0;29;
+
+   </div>
+<!--l. 66--><p class="indent" >   and append your stat to the array
+   <!--l. 68-->
+   <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-1014r1"></a></span>t_QueryDefinition&#x00A0;query_definitions[k_number_of_pokertracker_stats]&#x00A0;=&#x00A0;<br /><span class="label"><a 
+ id="x1-1015r2"></a></span>{&#x00A0;<br /><span class="label"><a 
+ id="x1-1016r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
+class="cmsy-10">*</span>&#x00A0;PT3&#x00A0;query&#x00A0;to&#x00A0;get&#x00A0;icon&#x00A0;<span 
+class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
+ id="x1-1017r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1018r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;name&#x00A0;<br /><span class="label"><a 
+ id="x1-1019r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"icon",&#x00A0;<br /><span class="label"><a 
+ id="x1-1020r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;description_for_editor&#x00A0;<br /><span class="label"><a 
+ id="x1-1021r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"Poker&#x00A0;Tracker&#x00A0;auto<span 
+class="cmsy-10">-</span>rate&#x00A0;icon&#x00A0;code",&#x00A0;<br /><span class="label"><a 
+ id="x1-1022r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;query&#x00A0;<br /><span class="label"><a 
+ id="x1-1023r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"SELECT&#x00A0;val_icon&#x00A0;as&#x00A0;result&#x00A0;\&#x00A0;<br /><span class="label"><a 
+ id="x1-1024r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;FROM&#x00A0;&#x00A0;&#x00A0;player&#x00A0;\&#x00A0;<br /><span class="label"><a 
+ id="x1-1025r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;WHERE&#x00A0;&#x00A0;id_site&#x00A0;=&#x00A0;%SITEID%&#x00A0;AND&#x00A0;\&#x00A0;<br /><span class="label"><a 
+ id="x1-1026r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;player_name&#x00A0;LIKE&#x00A0;&#8217;%SCREENNAME%&#8217;",&#x00A0;<br /><span class="label"><a 
+ id="x1-1027r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;stat_group&#x00A0;<br /><span class="label"><a 
+ id="x1-1028r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pt_group_basic&#x00A0;<br /><span class="label"><a 
+ id="x1-1029r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;},&#x00A0;<br /><span class="label"><a 
+ id="x1-1030r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
+class="cmsy-10">*</span>&#x00A0;PT3&#x00A0;query&#x00A0;to&#x00A0;get&#x00A0;number&#x00A0;of&#x00A0;hands&#x00A0;in&#x00A0;the&#x00A0;database&#x00A0;<span 
+class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
+ id="x1-1031r18"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-1032r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;name&#x00A0;<br /><span class="label"><a 
+ id="x1-1033r20"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"hands",&#x00A0;<br /><span class="label"><a 
+ id="x1-1034r21"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;...
+   </div>
+<!--l. 93--><p class="indent" >   After the coding work has been done you need to compile the DLL and put
+it together with the linker-file (*.lib) into the OpenHoldem directory and
+everything will work automatically: querying the database, accessing the values
+in your bot-logic, correct update delays, even the symbol-descriptions in
+the formula-editor. Despite of its simplicity this approach has some more
+benefits:
+     <ul class="itemize1">
+     <li class="itemize">it is update-safe. If a new version of OpenHoldem gets released your DLL
+     will work as before without you having to compile a modified version of
+     OpenHoldem or missing important bug-fixes.
+     </li>
+     <li class="itemize">you can add stats without having to wait for new releases.
+     </li>
+     <li class="itemize">you can easily contribute to make OpenHoldem better for everyone.</li></ul>
+<!--l. 106--><p class="noindent" >If you need more info about PokerTracker stats or some help you will find it in our
+PokerTracker sub-forum: <a 
+href="http://www.maxinmontreal.com/forums/viewtopic.php?f=273" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/forums/viewtopic.php?f=273</span></a>
+.  
+</body></html> 
+
+
+

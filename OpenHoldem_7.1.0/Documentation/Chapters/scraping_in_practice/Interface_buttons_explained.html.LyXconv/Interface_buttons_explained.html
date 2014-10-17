@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Interface_buttons_explained.tex"> 
+<meta name="date" content="2013-12-26 05:15:00"> 
+<link rel="stylesheet" type="text/css" href="Interface_buttons_explained.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>How the Interface-Buttons work</h3>
+<!--l. 26--><p class="noindent" >The holdem scraper has the concept of interface region(s) - such regions begin with the
+characters
+   <!--l. 29-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-1001r1"></a></span>ix
+   </div>
+<!--l. 34--><p class="indent" >   where X is a digit 0-9. the purpose of an iX region is to tell the autoplayer
+           <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">if:</span> </dt><dd 
+class="description">buttons are present (visible or not &#8212; i0state..i9state)
+           </dd><dt class="description">
+     <span 
+class="ecbx-1000">what:</span> </dt><dd 
+class="description">buttons are present (i.e. fold call rais &#8212; i0label..i9label)
+           </dd><dt class="description">
+     <span 
+class="ecbx-1000">where:</span> </dt><dd 
+class="description">buttons are present (to click &#8212; i0button..i9button, just the regions
+        matter &#8212; no transform required)</dd></dl>
+<!--l. 42--><p class="noindent" >The purpose of the button region is simply to tell the autoplayer where it needs to click the
+mouse. You can set the transform to "none". the purpose of the state region is to
+determine whether or not the button is visible or not. It&#8217;s generally a small color region
+which has to return true when the button is visible. But you can use Hash as well. If
+you use hash, a true value will be identified as follows (so rename your images
+accordingly):
+           <ul class="itemize1">
+        <li class="itemize">on
+           </li>
+        <li class="itemize">yes
+           </li>
+        <li class="itemize">checked
+           </li>
+        <li class="itemize">true
+           </li>
+        <li class="itemize">lit</li></ul>
+<!--l. 56--><p class="noindent" >OpenHoldem will search for any of these substrings, so &#8220;checked7&#8221; would work too, but any
+other string will be seen as false. Each interface should also have a label region or regions
+that will further define the purpose of the button. So the engine recognizes the following
+key words within labels:
+           <ul class="itemize1">
+        <li class="itemize">fold
+           </li>
+        <li class="itemize">check
+           </li>
+        <li class="itemize">call
+           </li>
+        <li class="itemize">bet
+           </li>
+        <li class="itemize">raise
+
+           </li>
+        <li class="itemize">swag
+           </li>
+        <li class="itemize">allin
+           </li>
+        <li class="itemize">all-in
+           </li>
+        <li class="itemize">prefold
+           </li>
+        <li class="itemize">autopost
+           </li>
+        <li class="itemize">auto-post
+           </li>
+        <li class="itemize">autoblind
+           </li>
+        <li class="itemize">auto-blind
+           </li>
+        <li class="itemize">postblind
+           </li>
+        <li class="itemize">post-blind
+           </li>
+        <li class="itemize">sitin
+           </li>
+        <li class="itemize">sit-in
+           </li>
+        <li class="itemize">sitout
+           </li>
+        <li class="itemize">sit-out
+           </li>
+        <li class="itemize">leave
+           </li>
+        <li class="itemize">exit</li></ul>
+<!--l. 84--><p class="noindent" >...and various forms of nearly fitting scrapes (e.g. &#8220;aut0post&#8221;, &#8220;a111n&#8221; and other kind of
+leetspeak-lookalike). Any iXlabel region that produces one of these keywords will be seen
+by the engine as clickable for that specific action. Also all the strings starting
+with these keywords will work: examples: "callllll", "check01", "Raiseto:$10"
+etc.
+   <h3 class="sectionHead"><a 
+ id="x1-2000"></a>Sitin/Sitout particular behaviour </h3>
+<!--l. 95--><p class="noindent" >These are somewhat inverted and can cause confusion, better to explain with an
+example: If you scrape the sitout button and name label as "sitout" and state as "true"
+when sitout button is visible, you will obtain the opposite behaviour. This is a
+Winholdem legacy, and derives from the first sites supported, like Full Tilt. As you know,
+Full Tilt has not exactly a sitout button, but more a check box. this means that: -
+label sitout + state unchecked (false), means you&#8217;re sitting in, and you need to
+click if you want to sitout - label sitout + state checked (true), means you&#8217;re
+sitting out and you need to click if you want to sit in again. I remember this
+
+causing me many headaches when I started, (and it still confuses beginners).
+However, this behaviour is inherited by all the other sites, even those with standard
+sitin/sitout buttons. Ongame is the classic example, with standard sitout button
+when you&#8217;re sitting in, and sitin button when you&#8217;re sitting out. So you think,
+ok, let&#8217;s create a button with label sitout, state is true when sitting in, then a
+sitin button, state is true when sitting out... WRONG! You always need to
+have:
+           <ul class="itemize1">
+        <li class="itemize">(label&#8211;&#x003E;sitout and state&#8211;&#x003E;false) or (label&#8211;&#x003E;sitin and state&#8211;&#x003E;true) when
+        sitting in
+           </li>
+        <li class="itemize">(label&#8211;&#x003E;sitin and state&#8211;&#x003E;false) or (label&#8211;&#x003E;sitout and state&#8211;&#x003E;true) when
+        sitting out</li></ul>
+<!--l. 119--><p class="noindent" >This is the only way to make it work.
+   <h3 class="sectionHead"><a 
+ id="x1-3000"></a>The spam buttons </h3>
+<!--l. 124--><p class="noindent" >i86-i860-i861-.....-i869 regions are reserved for anti-spam buttons. For spam we intend all
+the popups that can occlude your table. Some sites advertise tournaments about to
+start, other ask for confirmation when you leave the table, etc. OH can manage
+these popups and close them as long as they appear inside the poker table in
+a consistent position. There&#8217;s no label region to scrape here, just state and
+button.
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-3002x1">Shoot a frame of the table with the popup showing, and create i86state
+        as a color or hash region which returns true like you would for any other
+        button.
+           </li>
+        <li 
+  class="enumerate" id="x1-3004x2">Paint a button region where you want OH to click to kill the popup. Done.</li></ol>
+<!--l. 137--><p class="noindent" >Notice that this is evaluated every heartbeat, so OH is very fast at closing these popups. If
+popups show in inconsistent locations or out of poker table, you need an external script,
+or external software like PTFB to manage them.
+   <h3 class="sectionHead"><a 
+ id="x1-4000"></a>The swag interface </h3>
+<!--l. 145--><p class="noindent" >This is a particular interface button, where OH won&#8217;t just click a button, but highlight
+some text&#8211;&#x003E;delete it&#8211;&#x003E;type a new text&#8211;&#x003E;click the button (or send enter). So, you need
+to do some work on this. First thing first, try manually on the poker site which sequence
+of actions allow a successfull swag. Remember that in OH you can adjust swag settings
+for:
+           <ol  class="enumerate1" >
+        <li 
+  class="enumerate" id="x1-4002x1">highlighting the text (double click or click/drag)
+           </li>
+        <li 
+  class="enumerate" id="x1-4004x2">deleting (backspace/delete)
+           </li>
+        <li 
+  class="enumerate" id="x1-4006x3">acting (clicking raise button or sending enter)</li></ol>
+
+<!--l. 156--><p class="noindent" >As soon as you identify which sequence works, you need to specify the usual iXstate,
+iXbutton, iXlabel (optional if you use i3 region, like I always do, but if you want it, it has
+to return swag or allin). You also need to add an iXedit region, placed where you have to
+click to perform action #1 above (highlighting).  
+</body></html> 
+
+
+
