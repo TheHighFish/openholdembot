@@ -127,9 +127,7 @@ headsup
 to identify certain players by their preflop-position use the postfixes
  
 \emph on
-smallblind, bigblind, dealer, cutoff
-\emph default
-,
+smallblind, bigblind, dealer, cutoff, user.
 \end_layout
 
 \begin_layout Itemize
@@ -218,6 +216,14 @@ _firstraiser
 \end_layout
 
 \begin_layout Itemize
+_dealer
+\end_layout
+
+\begin_layout Itemize
+_user
+\end_layout
+
+\begin_layout Itemize
 the chair number between 0 and 9
 \end_layout
 
@@ -237,7 +243,7 @@ stats
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -257,7 +263,7 @@ Meaning
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -277,7 +283,7 @@ Poker Tracker auto-rate icon code
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -297,7 +303,7 @@ Poker Tracker number of hands that are in the database
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -317,7 +323,7 @@ Poker Tracker VP$IP
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -337,7 +343,7 @@ Poker Tracker pre-flop raise
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -357,7 +363,7 @@ Poker Tracker went to showdown
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -377,7 +383,7 @@ Poker Tracker won $ at showdown
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -397,7 +403,7 @@ Poker Tracker total aggression
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -417,7 +423,7 @@ Poker Tracker total aggression excluding preflop
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -437,7 +443,7 @@ Poker Tracker folded while facing 3bet total
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout

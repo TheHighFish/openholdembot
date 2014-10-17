@@ -1,4 +1,4 @@
-v7.0.5 2014-10-XX
+v7.0.5 2014-10-17
 ==================
 NEW STUFF:
 - New OH-script-symbols smallblind_chair, bigblind_chair, cutoff_chair, 
