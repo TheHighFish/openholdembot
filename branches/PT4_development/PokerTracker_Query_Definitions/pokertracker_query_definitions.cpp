@@ -77,7 +77,7 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	query.Replace("%SITEID%", site_id_as_string);
 	query.Replace("%SCREENNAME%", player_name);
 	query.Replace("%GAMETYPE%", ""+ (isomaha ? k_omaha_id : k_holdem_id) );
-	query.Replace("%TYPE%", (istournament ? k_tournament_infix + "_" : k_cashgame_infix + "_"));
+	query.Replace("%TYPE%", (istournament ? k_tournament_infix : k_cashgame_infix));
 	
 	return query;
 }
