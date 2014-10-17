@@ -46,7 +46,7 @@
 #include <atlstr.h>
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
-#include "PokerTracker_Queries_Version_3.h"
+#include "PokerTracker_Queries_Version_4.h"
 
 
 POKERTRACKER_DLL_API int PT_DLL_GetNumberOfStats()
@@ -56,9 +56,10 @@ POKERTRACKER_DLL_API int PT_DLL_GetNumberOfStats()
 
 // We create queries on the fly, 
 // so that they are usable for both ring-games and tournaments 
-const CString k_holdem_infix  = "holdem";
-const CString k_omaha_infix   = "omaha";
+const int k_holdem_id  = 1;
+const int k_omaha_id  = 2;
 const CString k_tournament_infix = "tourney";
+const CString k_cashgame_infix = "cash";
 
 // Values of all stats for all players
 double stats[k_number_of_pokertracker_stats][k_max_number_of_players];
@@ -75,9 +76,9 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 
 	query.Replace("%SITEID%", site_id_as_string);
 	query.Replace("%SCREENNAME%", player_name);
-	query.Replace("%GAMETYPE%", (istournament ? k_tournament_infix + "_" : "") + 
-		(isomaha ? k_omaha_infix : k_holdem_infix) + "_hand_");
-
+	query.Replace("%GAMETYPE%", ""+ (isomaha ? k_omaha_id : k_holdem_id) );
+	query.Replace("%TYPE%", (istournament ? k_tournament_infix + "_" : k_cashgame_infix + "_"));
+	
 	return query;
 }
 

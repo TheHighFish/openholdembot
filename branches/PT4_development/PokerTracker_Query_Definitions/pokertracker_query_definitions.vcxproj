@@ -91,7 +91,7 @@
     <None Include="pokertracker_query_definitions.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PokerTracker_Queries_Version_3.h" />
+    <ClInclude Include="PokerTracker_Queries_Version_4.h" />
     <ClInclude Include="pokertracker_query_definitions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
