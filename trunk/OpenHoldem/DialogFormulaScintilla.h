@@ -173,6 +173,7 @@ class CDlgFormulaScintilla : public CDialog {
   void DeleteFormerParentItemIfEmpty(HTREEITEM sibbling);
   void CopyTabContentsToFormulaSet();
   void ClearCalcResult();
+  void CloseTabOnDelete(CString name);
  protected:
   HTREEITEM FindUDFGroupItem(const char *groupName);
   HTREEITEM FindUDFStartingItem(const char *groupName);
