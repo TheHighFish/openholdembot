@@ -1,3 +1,11 @@
+v7.1.1 2014-10-xx
+==================
+BUG FIXES:
+- The editor crashed when deleting a function or list.
+  Thanks to Ferfran for remindinbg us that this part 
+  of the heavily rewritten editor still did not work.
+  [THF]
+
 v7.1.0 2014-10-17
 ==================
 NEW STUFF:
@@ -36,7 +44,7 @@ BUG FIXES:
   and could produce wrong results.
   Thanks to Fasenderos for reporting.
   [THF]
-- Fixed for the OpenPPL-symbols NumberOfStraightsPossibleOnTurn, 
+- Fixes for the OpenPPL-symbols NumberOfStraightsPossibleOnTurn, 
   NumberOfStraightsPossibleOnRiver and MoreThanOneStraightPossibleOnRiver.
   [Moby]
 
