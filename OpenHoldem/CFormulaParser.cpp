@@ -593,6 +593,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
 		return NULL;
   }
 	CString identifier = _tokenizer.GetTokenString();
+  // !!!!!!!
 	if (identifier.Left(4).MakeLower() != "user") { 
 		CParseErrors::Error("Unexpected identifier.\n"
       "User-variable or memory-store-command expected.\n");

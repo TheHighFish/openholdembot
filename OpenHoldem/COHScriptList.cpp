@@ -218,4 +218,4 @@ CString COHScriptList::function_text() {
     result += "\n";
   }
   return result;
-}
+} 

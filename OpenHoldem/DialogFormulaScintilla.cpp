@@ -1050,6 +1050,16 @@ void CDlgFormulaScintilla::DeleteFormerParentItemIfEmpty(HTREEITEM sibbling) {
   }
 }
 
+void CDlgFormulaScintilla::CloseTabOnDelete(CString name) {
+  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
+    if (name == m_ScinArray.GetAt(i)._name) {
+      //???m_ScinArray.GetAt(i)._pWnd->CloseWindow
+      delete m_ScinArray.GetAt(i)._pWnd;
+      break;
+    }
+  }
+}
+
 void CDlgFormulaScintilla::OnDelete() {
   if (IDYES != OH_MessageBox_Interactive(
       "REALLY delete \"" 
@@ -1059,32 +1069,30 @@ void CDlgFormulaScintilla::OnDelete() {
     HandleEnables(true);
     return;
   }
-  HTREEITEM hItem = m_FormulaTree.GetSelectedItem();
-  CString s = m_FormulaTree.GetItemText(hItem);
-  CMenu *file_menu = this->GetMenu()->GetSubMenu(0);
-  StopAutoButton();
   // Delete a UDF or list
-  p_function_collection->Delete(s);
+  HTREEITEM h_item = m_FormulaTree.GetSelectedItem();
+  CString name = m_FormulaTree.GetItemText(h_item);
+  p_function_collection->Delete(name);
   m_dirty = true;
   // Clear the tab
-  m_pActiveScinCtrl->SetText("");
-  // Close the tab
-  for (int i=0; i<m_ScinArray.GetSize(); ++i) {
-    CString name = m_ScinArray.GetAt(i)._name;
-    if (name == s) {
-      //??m_ScinArray.GetAt(i)._pWnd->CloseWindow
-      delete m_ScinArray.GetAt(i)._pWnd;
-      break;
-    }
-  }
-  // Update the dialog
+  // The rest of the code is a partial clone 
+  // to FormerShowEnableHideCodeClone().
+  // However refactoring did not work and we got crashes.
+  // So we are back to the working version (1.7.0).
   m_FormulaTree.SetFocus();
-  SetWindowText("Formula - ");
-  DeleteFormerParentItemIfEmpty(hItem);
-  FormerShowEnableHideCodeClone(&m_EmptyScinCtrl);
-  UpdateAllScintillaKeywords();
-  m_FormulaTree.DeleteItem(hItem);
+	SetWindowText("Formula - ");
+	if (m_pActiveScinCtrl) {
+		m_pActiveScinCtrl->ShowWindow(SW_HIDE);
+		m_pActiveScinCtrl->EnableWindow(false);
+	}
+	m_pActiveScinCtrl = &m_EmptyScinCtrl;
+	m_pActiveScinCtrl->ShowWindow(SW_SHOW);
+	m_pActiveScinCtrl->EnableWindow(false);
+	// Update the tree
+	m_FormulaTree.DeleteItem(h_item );
+	m_dirty = true;
   HandleEnables(true);
+  UpdateAllScintillaKeywords();
 }
 
 void CDlgFormulaScintilla::OnToggleBookmark()
