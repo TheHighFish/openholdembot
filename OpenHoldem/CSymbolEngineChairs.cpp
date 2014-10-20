@@ -62,8 +62,10 @@ void CSymbolEngineChairs::ResetOnNewRound() {
 }
 
 void CSymbolEngineChairs::ResetOnMyTurn() {
-  // Only well-defined at my turn and requires userchair for calculation
-  assert(p_symbol_engine_userchair->userchair_confirmed());
+  // Only well-defined at my turn and requires userchair for calculation.
+  // But it seems some "casinos" like test-suite can break that condition.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
+  //assert(p_symbol_engine_userchair->userchair_confirmed());
   CalculateOpponentHeadsupChair();
   CalculateSmallBlindChair();
   CalculateBigBlindChair();

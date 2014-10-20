@@ -56,7 +56,10 @@ double MaximumPossibleBetsizeBecauseOfBalance()
 	AssertRange(userchair, k_first_chair, k_last_chair);
 	double maximum_betsize = p_symbol_engine_chip_amounts->currentbet(userchair)
 		+ p_table_state->User()->_balance;
-	assert (maximum_betsize > 0);
+	if (maximum_betsize <= 0) {
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
+    write_log(k_always_log_errors, "[SwagAdjustment] Invalid balance and bet. Sum <= 0.\n");
+  }
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %f\n",
 		maximum_betsize);
 	return maximum_betsize;
