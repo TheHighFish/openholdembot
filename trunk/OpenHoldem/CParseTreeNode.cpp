@@ -21,6 +21,7 @@
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
@@ -114,7 +115,8 @@ void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
 
 void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 {
-  assert(uservariable.Left(4).MakeLower() == "user");
+  assert((uservariable.Left(4).MakeLower() == "user")
+    || (uservariable.Left(3) == "me_"));
 	_node_type = kTokenActionUserVariableToBeSet;
 	_terminal_name = uservariable;
 }
@@ -182,7 +184,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
   }	else if (_node_type == kTokenActionUserVariableToBeSet) {
     // User-variables are a special case of elementary actions
     // Therefore need to be handled first.
-		p_symbol_engine_openppl_user_variables->Set(_terminal_name);
+    SetUserVariable(_terminal_name);
 		return k_undefined_zero;
   } else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
@@ -496,6 +498,19 @@ bool CParseTreeNode::IsBinaryIdentifier() {
 bool CParseTreeNode::SecondSibblingIsUserVariableToBeSet() {
   if (_second_sibbling == NULL) return false;
   return (_second_sibbling->_node_type == kTokenActionUserVariableToBeSet);
+}
+
+void CParseTreeNode::SetUserVariable(CString name) {
+  if (name.Left(4).MakeLower() == "user") {   
+    p_symbol_engine_openppl_user_variables->Set(name);
+  } else if (name.Left(3) == "me_") {
+    double temp_result;
+    p_symbol_engine_memory_symbols->EvaluateSymbol(name, 
+      &temp_result, true);
+  }
+  else {
+    assert(k_this_must_not_happen);
+  }
 }
 
 bool CParseTreeNode::EvaluatesToBinaryNumber() {

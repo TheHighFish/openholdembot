@@ -69,6 +69,7 @@ class CParseTreeNode {
   bool IsBinaryIdentifier();
  private:
   bool SecondSibblingIsUserVariableToBeSet();
+  void SetUserVariable(CString name);
  protected:
   int _node_type;
   // In case of terminal node (identifier)
