@@ -593,10 +593,13 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
 		return NULL;
   }
 	CString identifier = _tokenizer.GetTokenString();
-  // !!!!!!!
-	if (identifier.Left(4).MakeLower() != "user") { 
+	if ((identifier.Left(4).MakeLower() != "user") 
+      && (identifier.Left(3) != "me_")) { 
 		CParseErrors::Error("Unexpected identifier.\n"
-      "User-variable or memory-store-command expected.\n");
+      "Valid options:\n"
+      "   * user-variable (user_utg_limp_raised)\n"
+      "   * memory-store-command (me_st_pi_3_141592653)\n"
+      "   * memory-increment-command (me_inc_flopsseen)\n");
 		return NULL;
 	}
 	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
