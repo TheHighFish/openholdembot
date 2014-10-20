@@ -5,6 +5,10 @@ BUG FIXES:
   Thanks to Ferfran for remindinbg us that this part 
   of the heavily rewritten editor still did not work.
   [THF]
+- Memory-symbols at the place of user-variables 
+  were not yet supported in OpenPPL, contrary to the explanation in the docu. 
+  Thanks to Invader11 and BillyJohn for reminding us.
+  [THF]
 
 v7.1.0 2014-10-17
 ==================
