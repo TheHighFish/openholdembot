@@ -228,15 +228,24 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// Set class name
 	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd)))
 	{
-		wnd.style			= CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
+		wnd.style			    = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc		= ::DefWindowProc;
 		wnd.cbClsExtra		= wnd.cbWndExtra = 0;
-		wnd.hInstance		= hInst;
-		wnd.hIcon			= AfxGetApp()->LoadIcon(IDI_ICON1);
-		wnd.hCursor			= AfxGetApp()->LoadStandardCursor(IDC_ARROW);
+		wnd.hInstance		  = hInst;
+		wnd.hIcon			    = AfxGetApp()->LoadIcon(IDI_ICON1);
+		wnd.hCursor			  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
 		wnd.lpszMenuName	= NULL;
 		wnd.lpszClassName	= preferences.window_class_name();
+    // Fixed size window, not resizable 
+    // Because bad-sized windows are annoying
+    // and because of potential support for a 4th user-card ;-)
+    // http://arstechnica.com/civis/viewtopic.php?f=20&t=848676
+    // http://msdn.microsoft.com/en-us/library/aa925944.aspx
+    cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+	  cs.style &= (0xFFFFFFFF ^ WS_SIZEBOX);
+	  cs.style |= WS_BORDER;
+	  cs.style &= (0xFFFFFFFF ^ WS_MAXIMIZEBOX);
 
 		AfxRegisterClass( &wnd );
 	}
@@ -247,8 +256,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	cs.x = min(preferences.main_x(), max_x);
 	cs.y = min(preferences.main_y(), max_y);
-	cs.cx = preferences.main_dx();
-	cs.cy = preferences.main_dy();
+	cs.cx = kMainSizeX;
+	cs.cy = kMainSizeY;
 
 	return true;
 }
@@ -429,18 +438,13 @@ BOOL CMainFrame::DestroyWindow()
 	if (!p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
 	{
 		GetWindowPlacement(&wp);
-		
 		preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left);
 		preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
-		preferences.SetValue(k_prefs_main_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-		preferences.SetValue(k_prefs_main_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 	}
 	else 
 	{
 		preferences.SetValue(k_prefs_main_x, _table_view_size.left);
 		preferences.SetValue(k_prefs_main_y, _table_view_size.top);
-		preferences.SetValue(k_prefs_main_dx, _table_view_size.right - _table_view_size.left);
-		preferences.SetValue(k_prefs_main_dy, _table_view_size.bottom - _table_view_size.top);
 	}
 
 	return CFrameWnd::DestroyWindow();

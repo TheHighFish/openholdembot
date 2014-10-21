@@ -121,8 +121,6 @@ const CString k_registry_keys_for_numerical_values[k_prefs_last_numerical_value 
 	"scraper_dy",
 	"main_x",
 	"main_y",
-	"main_dx",
-	"main_dy",
 	"validator_enabled", 
 	"autoconnector_when_to_connect",
 	"rebuy_minimum_time_to_next_try",
@@ -219,8 +217,6 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
 
 	// Ints
-	prefs_numerical_values[k_prefs_main_dx] = 640;
-	prefs_numerical_values[k_prefs_main_dy] = 400;
 	prefs_numerical_values[k_prefs_formula_dx] = 640;
 	prefs_numerical_values[k_prefs_formula_dy] = 400;
 	prefs_numerical_values[k_prefs_scraper_dx] = 340;

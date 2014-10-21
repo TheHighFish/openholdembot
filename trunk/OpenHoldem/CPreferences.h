@@ -131,8 +131,6 @@ enum
 	k_prefs_scraper_dy,
 	k_prefs_main_x,
 	k_prefs_main_y,
-	k_prefs_main_dx,
-	k_prefs_main_dy,
 	k_prefs_validator_enabled, 
 	k_prefs_autoconnector_when_to_connect,
 	k_prefs_rebuy_minimum_time_to_next_try,
@@ -270,8 +268,6 @@ public:
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
 	const int main_y() { return prefs_numerical_values[k_prefs_main_y]; }
-	const int main_dx() { return prefs_numerical_values[k_prefs_main_dx]; }
-	const int main_dy() { return prefs_numerical_values[k_prefs_main_dy]; }
 	// Scraper window locations
 	const int scraper_x() { return prefs_numerical_values[k_prefs_scraper_x]; }
 	const int scraper_y() { return prefs_numerical_values[k_prefs_scraper_y]; }
