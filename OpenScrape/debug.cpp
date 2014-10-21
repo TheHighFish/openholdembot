@@ -11,9 +11,10 @@
 //
 //******************************************************************************
 
-// !!! Bad code
-// !!! * Clone of OpenHoldem\debug.cpp 
-// !!! * Outdated
+// !! Bad code
+// !! * Clone of OpenHoldem\debug.cpp 
+// !! * Outdated
+// !! But it works and there is nothing to touch ATM
 
 #include "stdafx.h"
 

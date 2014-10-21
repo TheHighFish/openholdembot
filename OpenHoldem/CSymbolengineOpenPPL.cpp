@@ -37,7 +37,7 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	// This engine does not use any other engines, 
   // but it triggers calculations in the OpenPPL-library
   // that use nearly all other symbol-engines.
-  /*!!!!!!!assert(p_symbol_engine_dealerchair != NULL);
+  /*!!!assert(p_symbol_engine_dealerchair != NULL);
   assert(p_symbol_engine_positions != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);*/

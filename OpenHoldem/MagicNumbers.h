@@ -135,6 +135,10 @@ const int k_max_number_of_titletexts = 10;
 // Auto-connector
 const int k_max_nmber_of_tablemaps = 25;
 
+// GUI
+const int kMainSizeX = 640;
+const int kMainSizeY = 400;
+
 // File menu
 const int k_number_of_last_recently_used_files_in_file_menu = 4;
 
