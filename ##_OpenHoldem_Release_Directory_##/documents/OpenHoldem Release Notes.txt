@@ -2,13 +2,18 @@ v7.1.1 2014-10-xx
 ==================
 BUG FIXES:
 - The editor crashed when deleting a function or list.
-  Thanks to Ferfran for remindinbg us that this part 
+  Thanks to Ferfran for reminding us that this part 
   of the heavily rewritten editor still did not work.
   [THF]
 - Memory-symbols at the place of user-variables 
   were not yet supported in OpenPPL, contrary to the explanation in the docu. 
   Thanks to Invader11 and BillyJohn for reminding us.
   [THF]
+
+MAINTENANCE:
+- The symbols call, nbetstocall and ncallbets have been changed 
+  and consider now the effective amount to call in case somebody puts us allin.
+  [THF] 
 
 v7.1.0 2014-10-17
 ==================
