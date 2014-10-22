@@ -1320,6 +1320,7 @@ userchair == EarlyPosition1Chair  ? MinStillToActStackSizeAfterEarlyPosition1  :
 HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 
 ##PotSize##
+// Considering effective potside
 (bblind > 0) ? (pot / bblind) - SidePot: ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StackSize##
@@ -2314,7 +2315,9 @@ ERROR_You_Dont_Have_Any_Kicker
 // Cards better than my kicker...
 [(ConstCardAce - MyKicker)
 // ...minus the cards in my 5-card-hand which are better than my kicker
-- (`(rankbitspoker >> MyKicker))]
+// (We have to shift the kicker out of rankbitspoker, therefore +1)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
+- (`(rankbitspoker >> (MyKicker + 1)))]
 
 ##RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010
