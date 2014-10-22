@@ -9,7 +9,9 @@ BUG FIXES:
   were not yet supported in OpenPPL, contrary to the explanation in the docu. 
   Thanks to Invader11 and BillyJohn for reminding us.
   [THF]
-
+- Fix for NumberOfBetterKickers.
+  [123Bot and FqFq]
+  
 MAINTENANCE:
 - The symbols call, nbetstocall and ncallbets have been changed 
   and consider now the effective amount to call in case somebody puts us allin.
