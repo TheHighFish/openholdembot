@@ -180,15 +180,16 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	int	next_largest_bet = 0;
 	double largest_bet = Largestbet();
 
-	if (p_symbol_engine_userchair->userchair_confirmed())
-	{
+	if (p_symbol_engine_userchair->userchair_confirmed()) {
 		_call = largest_bet - _currentbet[USER_CHAIR];
-	}
-	else
-	{
+	} else {
 		_call = 0;
 	}
-
+  // In case we are covered consider only the effective amount to call
+  if (_call > p_table_state->User()->_balance) {
+    assert(p_table_state->User()->_balance > 0);
+    _call = p_table_state->User()->_balance;
+  }
 	next_largest_bet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
@@ -199,16 +200,6 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 		}
 	}
 	_sraiprev = largest_bet - next_largest_bet;			
-
-	if (p_symbol_engine_userchair->userchair_confirmed())
-	{
-		_sraimin = largest_bet + _call;
-		_sraimax = p_table_state->User()->_balance - _call;
-		if (_sraimax < 0)
-		{
-			_sraimax = 0;
-		}
-	}
 }
 
 void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
@@ -218,15 +209,18 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
     // and completely bogus input
     bet = 1.00;
 	}
+  double users_currentbet = 0;
 	if (p_symbol_engine_userchair->userchair_confirmed())	{
 		_nbetstocall = _call / bet;	
+    users_currentbet = _currentbet[USER_CHAIR];
 	} else {
     _nbetstocall = 0;
   }
   _nbetstorais = _nbetstocall + 1;
-  assert(Largestbet() >= 0.0);
   assert(bet > 0.0);
-	_ncallbets = Largestbet() / bet;				
+  assert(users_currentbet >= 0);
+  assert(_call >= 0);
+	_ncallbets = (users_currentbet + _call) / bet;				
 	_nraisbets = _ncallbets + 1;	// fixed limit
   assert(_ncallbets >= 0.0);
 }

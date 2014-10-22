@@ -806,12 +806,12 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
     CONTROL         "Check Font Smoothing Settings",IDC_CONFIGURATION_FONT_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,38,176,10
-    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC_REBUY_MINIMUM_DELAY,4,60,200,8
-    LTEXT           "  * for the scraper",IDC_STATIC_REBUY_MINIMUM_DELAY,4,72,96,8
-    LTEXT           "  * for the autoplayer",IDC_STATIC_REBUY_MINIMUM_DELAY,4,82,96,8
-    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC_REBUY_MINIMUM_DELAY,4,92,200,8
-    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC_REBUY_MINIMUM_DELAY,4,104,200,8
-    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC_REBUY_MINIMUM_DELAY,4,114,200,8
+    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC,4,60,200,8
+    LTEXT           "  * for the scraper",IDC_STATIC,4,72,96,8
+    LTEXT           "  * for the autoplayer",IDC_STATIC,4,82,96,8
+    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC,4,92,200,8
+    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC,4,104,200,8
+    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC,4,114,200,8
 END
 
 IDD_SAPREFS18 DIALOGEX 0, 0, 219, 154

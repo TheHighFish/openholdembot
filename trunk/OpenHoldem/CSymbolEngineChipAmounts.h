@@ -84,8 +84,6 @@ public:
 	double potplayer()		{ return _potplayer; }
 public:
 	double sraiprev()		{ return _sraiprev; }
-	double sraimin()		{ return _sraimin; }
-	double sraimax()		{ return _sraimax; }
 public:
 	double call()			{ return _call;			}
 	double nbetstocall()	{ return _nbetstocall;	}
