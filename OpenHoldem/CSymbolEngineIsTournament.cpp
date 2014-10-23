@@ -39,7 +39,7 @@ const int k_number_of_tournament_identifiers = 45;
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=16104
-const CString k_tournament_identifiers[k_number_of_tournament_identifiers] = {	
+const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {	
   " ante ",		
 	" ante:",
 	"(ante ",		

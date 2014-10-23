@@ -52,7 +52,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   // Deletes all user-defined functions
   // Keeps OpenPPL-library if correctly parsed.
-  void DeleteAll();
+  void DeleteAll(bool open_ppl, bool user_defined);
   void SetEmptyDefaultBot();
  public:
   void Add(COHScriptObject *new_function);

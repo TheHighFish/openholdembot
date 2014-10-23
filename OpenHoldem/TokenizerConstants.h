@@ -90,7 +90,7 @@ enum {
 
 const int kNumberOfOpenPPLActions = 17;
 
-const CString kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
+const char* kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
   // * SitOut
   // * Leave

@@ -20,7 +20,7 @@
 
 CFilenames *p_filenames = NULL;
 
-const CString k_default_ini_filename = "OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI";
+const char* k_default_ini_filename = "OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI";
 
 CFilenames::CFilenames() {
   // Save directory that contains openHoldem for future use.
