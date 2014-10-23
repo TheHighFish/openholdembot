@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() 
 {
-	p_function_collection->DeleteAll();
+	p_function_collection->DeleteAll(true, true);
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() 

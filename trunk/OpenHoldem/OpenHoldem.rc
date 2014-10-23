@@ -753,8 +753,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,12,196,8
     EDITTEXT        IDC_OMF_CLASS_NAME,100,40,100,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_OMF_MUTEX_NAME,100,24,100,12,ES_AUTOHSCROLL
-    LTEXT           "Window Class Name:",0,4,44,68,8
-    LTEXT           "Mutex (Synchronization)",0,4,28,96,8
+    LTEXT           "Window Class Name:",IDC_STATIC,4,44,68,8
+    LTEXT           "Mutex (Synchronization)",IDC_STATIC,4,28,96,8
 END
 
 IDD_SAPREFS14 DIALOGEX 0, 0, 253, 182

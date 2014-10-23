@@ -95,7 +95,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
   InitNewParse();
-  p_function_collection->DeleteAll();
+  p_function_collection->DeleteAll(false, true);
   p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {

@@ -36,8 +36,11 @@ CFunction::CFunction(
   _parse_tree_node = NULL;
 }
 
-CFunction::~CFunction()
-{}
+CFunction::~CFunction() {
+  if (_parse_tree_node != NULL) {
+    delete _parse_tree_node;
+  }
+}
 
 void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 {

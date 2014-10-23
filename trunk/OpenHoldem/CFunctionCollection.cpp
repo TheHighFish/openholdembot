@@ -28,34 +28,34 @@ CFunctionCollection::CFunctionCollection(){
   _title = "";
   _path = "";
   _openPPL_library_correctly_loaded = false;
-  DeleteAll();
+  DeleteAll(true, true);
 }
 
 CFunctionCollection::~CFunctionCollection() {
+  DeleteAll(true, true);
+  assert(_function_map.size() == 0);
 }
 
-void CFunctionCollection::DeleteAll() {
+void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
-  if (_openPPL_library_correctly_loaded) {
-    // Delete only user-defined bot-logic
-    write_log(preferences.debug_formula(), 
-      "[CFunctionCollection] Deleting user-defined functions functions, but not OpenPPL\n");
-    COHScriptObject *p_nextObject = GetFirst();
-    while (p_nextObject != NULL) {
-      if (!p_nextObject->IsOpenPPLSymbol()) {
-        write_log(preferences.debug_formula(), 
-          "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
-        Delete(p_nextObject->name());
-      }
-      p_nextObject = GetNext();
+  if (!_openPPL_library_correctly_loaded) {
+    open_ppl = true;
+  }
+  COHScriptObject *p_nextObject = GetFirst();
+  while (p_nextObject != NULL) {
+    bool needs_deletion = false;
+    if (open_ppl && p_nextObject->IsOpenPPLSymbol()) {
+      needs_deletion = true;
+    } else if (user_defined) {
+      needs_deletion = true;
     }
-  } else {
-    // Delete everything, including OpenPPL
-    // to prepare reloading
-    write_log(preferences.debug_formula(), 
-      "[CFunctionCollection] Deleting all functions, including OpenPPL\n");
-    _function_map.clear();
+    if (needs_deletion) {
+      write_log(preferences.debug_formula(), 
+        "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
+      Delete(p_nextObject->name());
+    }
+    p_nextObject = GetNext();
   }
 }
 
@@ -228,7 +228,7 @@ CString CFunctionCollection::DLLPath() {
 
 void CFunctionCollection::SetEmptyDefaultBot() {
   CSLock lock(m_critsec);
-  DeleteAll();
+  DeleteAll(false, true);
   _title = "NoName";
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
@@ -433,10 +433,13 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
 
 void CFunctionCollection::Delete(CString name) {
   CSLock lock(m_critsec);
-  std::map<CString, COHScriptObject*>::iterator it; 
-  it = _function_map.find(name);
-  if (it != _function_map.end()) {
-    _function_map.erase(it);
+  COHScriptObject *object_to_delete = LookUp(name);
+  if (object_to_delete != NULL) {
+    std::map<CString, COHScriptObject*>::iterator it; 
+    it = _function_map.find(name);
+    if (it != _function_map.end()) {
+      _function_map.erase(it);
+    }
   }
 }
 

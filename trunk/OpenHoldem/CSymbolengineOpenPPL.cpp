@@ -26,7 +26,7 @@
 
 CSymbolEngineOpenPPL *p_symbol_engine_open_ppl = NULL;
 
-const CString kOpenPPLIniFunctionsForHistorySymbols =
+const char* kOpenPPLIniFunctionsForHistorySymbols =
   "InitMemorySymbols";
 
 CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {

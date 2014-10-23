@@ -40,6 +40,18 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
 }
 
 CParseTreeNode::~CParseTreeNode() {
+  delete _first_sibbling;
+  _first_sibbling = NULL;
+  delete _second_sibbling;
+  _second_sibbling = NULL;
+  if (!IsOpenEndedWhenCondition()) {
+    // Be carefull with open-ended when-conditions.
+    // They create graphs, no longer pure trees/
+    // The 3rd node is reachable on two paths.
+    delete _third_sibbling;
+    _third_sibbling = NULL;
+  }
+
 }
 
 void CParseTreeNode::MakeConstant(double value)
@@ -466,7 +478,7 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
 
 bool CParseTreeNode::IsBinaryIdentifier() {
   const int kNumberOfElementaryBinaryIdentifiers = 21;
-  static const CString kElementaryBinaryIdentifiers[kNumberOfElementaryBinaryIdentifiers] = {
+  static const char* kElementaryBinaryIdentifiers[kNumberOfElementaryBinaryIdentifiers] = {
     "pcbits",              "playersactivebits",  "playersdealtbits",
     "playersplayingbits",  "playersblindbits",   "opponentsseatedbits",
     "opponentsactivebits", "opponentsdealtbits", "opponentsplayingbits",
@@ -475,7 +487,7 @@ bool CParseTreeNode::IsBinaryIdentifier() {
     "srankbits",           "srankbitscommon",    "srankbitsplayer",
     "srankbitspoker",      "myturnbits",         "pcbits"};
   const int kNumberOfParameterizedBinaryIdentifiers = 4;
-  static const CString kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
+  static const char* kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
     "chairbit$", "raisbits", "callbits", "foldbits"};
 
   if (_node_type != kTokenIdentifier) return false;
