@@ -76,7 +76,7 @@ bool CHandresetDetector::IsHandresetByDealerChair()
 
 bool CHandresetDetector::IsHandresetByCards()
 {
-	if (p_tablemap->HandResetMethodCards())
+	if (!p_tablemap->HandResetMethodCards())
 	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset by cards, because that method is not active\n");
 		// We don't want to use this method
