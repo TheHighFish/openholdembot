@@ -1,4 +1,4 @@
-v7.1.1 2014-10-xx
+v7.1.1 2014-10-27
 ==================
 BUG FIXES:
 - The editor crashed when deleting a function or list.
@@ -11,6 +11,9 @@ BUG FIXES:
   [THF]
 - Fix for NumberOfBetterKickers.
   [123Bot and FqFq]
+- Handresetmethod Cards (bit 0b100) did not work, due to a missing not operator.
+  Thanks to AndreGoose for reporting.
+  [THF]
   
 MAINTENANCE:
 - The symbols call, nbetstocall and ncallbets have been changed 
