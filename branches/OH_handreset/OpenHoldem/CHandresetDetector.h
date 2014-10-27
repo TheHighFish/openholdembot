@@ -30,7 +30,7 @@ public:
 	// Only for output in the log
 	CString GetHandNumber();
 private: 
-	bool CalculateIsHandreset();
+	void CalculateIsHandreset();
 	bool IsHandresetByDealerChair();
 	bool IsHandresetByUserCards();
 	bool IsHandresetByHandNumber();
@@ -49,6 +49,8 @@ private:
 	int last_dealerchair;
 	int playercards[k_number_of_cards_per_player];
 	int last_playercards[k_number_of_cards_per_player];
+  double _potsize;
+  double _last_potsize;
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
