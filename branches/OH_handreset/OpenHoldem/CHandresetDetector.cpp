@@ -18,6 +18,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineTableLimits.h"
@@ -58,7 +59,7 @@ void CHandresetDetector::CalculateIsHandreset() {
   int handresetemethods_that_fired_the_last_three_heartbeats =
     handresetemethods_that_fired_this_heartbeat; // TODO!!!
 	_is_handreset_on_this_heartbeat = 
-    (handresetemethods_that_fired_the_last_three_heartbeats >= 3);
+    (handresetemethods_that_fired_the_last_three_heartbeats >= 2);
 }
 
 bool CHandresetDetector::IsHandresetByDealerChair() {
@@ -122,7 +123,10 @@ bool CHandresetDetector::IsHandresetByPotsize() {
 }
 
 bool CHandresetDetector::IsHandresetByNopponentsplaying() {
-  return false;
+  bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByIncreasingBalance() {
@@ -145,6 +149,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 	int userchair = p_symbol_engine_userchair->userchair();
   _potsize = p_symbol_engine_chip_amounts->pot();
   _community_cards = p_scraper_access->NumberOfCommonCards();
+  _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
@@ -160,6 +165,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 	last_handnumber = handnumber;
   _last_potsize = _potsize;
   _last_community_cards = _community_cards;
+  _last_nopponentsplaying = _nopponentsplaying;
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		last_playercards[i] = playercards[i];
 	}
