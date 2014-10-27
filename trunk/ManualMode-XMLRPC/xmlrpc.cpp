@@ -396,6 +396,23 @@ class Refresh: public MMDlgMethod
 		}
 };
 
+
+/**
+ * Note: the caller will never get a result but probably an exception
+ */
+class Quit: public MMDlgMethod
+{
+	public:
+		Quit(CManualModeDlg* pdlg): MMDlgMethod(pdlg){}
+
+		void execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+		{
+			*retvalP = xmlrpc_c::value_boolean(true);
+			//AfxGetMainWnd()->SendMessage(WM_CLOSE);
+			::ExitProcess(0);
+		}
+};
+
 class ProvideEventsHandling: public MMDlgMethod
 {
 	public:
@@ -573,6 +590,9 @@ void xServerThread(void* dlg)
 
 	xmlrpc_c::methodPtr const RefreshP(new Refresh((CManualModeDlg*) dlg));
 	myRegistry->addMethod("Refresh", RefreshP);
+
+	xmlrpc_c::methodPtr const QuitP(new Quit((CManualModeDlg*) dlg));
+	myRegistry->addMethod("Quit", QuitP);
 
 	xmlrpc_c::methodPtr const ProvideEventsHandlingP(new ProvideEventsHandling((CManualModeDlg*) dlg));
 	myRegistry->addMethod("ProvideEventsHandling", ProvideEventsHandlingP);
