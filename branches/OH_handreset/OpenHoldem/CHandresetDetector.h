@@ -55,6 +55,8 @@ class CHandresetDetector {
   int _last_community_cards;
   int _nopponentsplaying;
   int _last_nopponentsplaying;
+  double _balance[k_max_number_of_players];
+  double _last_balance[k_max_number_of_players];
  private:
 	// Handnumber should be a string, as
 	//   * it may contain characters

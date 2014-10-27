@@ -130,7 +130,17 @@ bool CHandresetDetector::IsHandresetByNopponentsplaying() {
 }
 
 bool CHandresetDetector::IsHandresetByIncreasingBalance() {
-  return false;
+  bool ishandreset = false;
+  for (int i=0; i<k_max_number_of_players; ++i) {
+    if ((_balance[i] > _last_balance[i])
+        && (_last_balance[i] > 0)) {
+      ishandreset = true;
+      break;
+    }
+  }
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by increasing balance: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
 }
 
 void CHandresetDetector::GetNewSymbolValues() {
@@ -157,6 +167,9 @@ void CHandresetDetector::GetNewSymbolValues() {
 			playercards[i] = CARD_UNDEFINED;
 		}
 	}
+  for (int i=0; i<k_max_number_of_players; ++i) {
+    _balance[i] = p_table_state->_players[i]._balance;
+  }
 }
 
 void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
