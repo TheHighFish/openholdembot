@@ -16,20 +16,19 @@
 
 #include "MagicNumbers.h"
 
-class CHandresetDetector
-{
-public:
+class CHandresetDetector {
+ public:
 	CHandresetDetector();
 	~CHandresetDetector();
-public:
+ public:
 	// OnNewHeartbeat(): to be called on every new heartbeat
 	// BEFORE IsHandreset() gets called.
 	void OnNewHeartbeat();
 	bool IsHandreset()		{ return _is_handreset_on_this_heartbeat; }
-public:
+ public:
 	// Only for output in the log
 	CString GetHandNumber();
-private: 
+ private: 
 	void CalculateIsHandreset();
 	bool IsHandresetByDealerChair();
 	bool IsHandresetByUserCards();
@@ -38,25 +37,28 @@ private:
 	bool IsHandresetByPotsize();
 	bool IsHandresetByNopponentsplaying();
 	bool IsHandresetByIncreasingBalance();
-private:
+ private:
 	bool IsValidHandNumber(CString handnumber);
 	bool IsValidDealerChair(int dealerchair);
-private:
+ private:
 	void GetNewSymbolValues();
 	void StoreOldValuesForComparisonOnNextHeartbeat();
-private:
+ private:
 	int dealerchair;
 	int last_dealerchair;
 	int playercards[k_number_of_cards_per_player];
 	int last_playercards[k_number_of_cards_per_player];
   double _potsize;
   double _last_potsize;
+  int _community_cards;
+  int _last_community_cards;
+ private:
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
 	CString handnumber;
 	CString last_handnumber;
-private:
+ private:
 	bool _is_handreset_on_this_heartbeat;
 };
 

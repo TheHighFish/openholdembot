@@ -35,6 +35,7 @@ public:
 	bool	IsPlayerActive(int player);
 	bool	IsPlayerSeated(int player);
 	bool	IsGoodPlayername(int chair);
+  int   NumberOfCommonCards();
 public:
 	bool	IsMyTurn()	{ return (NumberOfVisibleButtons() >= k_min_buttons_needed_for_my_turn); }
 

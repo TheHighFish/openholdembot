@@ -30,6 +30,7 @@
 CHandresetDetector *p_handreset_detector = NULL;
 
 CHandresetDetector::CHandresetDetector() {
+  //!!!!
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
 	playercards[0] = CARD_UNDEFINED;
 	playercards[1] = CARD_UNDEFINED;
@@ -103,7 +104,11 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair) {
 }
 
 bool CHandresetDetector::IsHandresetByCommunityCards() {
-  return false;
+  bool ishandreset = ((_community_cards < _last_community_cards)
+    && (_community_cards == 0));
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by community cards: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByPotsize() {
@@ -139,6 +144,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 	assert(p_symbol_engine_userchair != NULL);
 	int userchair = p_symbol_engine_userchair->userchair();
   _potsize = p_symbol_engine_chip_amounts->pot();
+  _community_cards = p_scraper_access->NumberOfCommonCards();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
@@ -153,6 +159,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting last dealerchair to [%i]\n", dealerchair);
 	last_handnumber = handnumber;
   _last_potsize = _potsize;
+  _last_community_cards = _community_cards;
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		last_playercards[i] = playercards[i];
 	}
