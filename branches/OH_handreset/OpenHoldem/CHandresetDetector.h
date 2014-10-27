@@ -32,8 +32,12 @@ public:
 private: 
 	bool CalculateIsHandreset();
 	bool IsHandresetByDealerChair();
-	bool IsHandresetByCards();
+	bool IsHandresetByUserCards();
 	bool IsHandresetByHandNumber();
+	bool IsHandresetByCommunityCards();
+	bool IsHandresetByPotsize();
+	bool IsHandresetByNopponentsplaying();
+	bool IsHandresetByIncreasingBalance();
 private:
 	bool IsValidHandNumber(CString handnumber);
 	bool IsValidDealerChair(int dealerchair);
