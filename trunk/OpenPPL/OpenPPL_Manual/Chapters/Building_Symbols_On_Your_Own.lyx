@@ -284,26 +284,13 @@ status open
 You see: it is not that difficult to extend OpenPPL on your own.
  The possibilites are nearly endless.
  For the moment we skipped some details, but creating new symbols is self-explai
-ning: each new symbol start with 
-\begin_inset Quotes eld
-\end_inset
-
-NEW SYMBOL <Name>
-\begin_inset Quotes erd
-\end_inset
-
- and ends with 
-\begin_inset Quotes eld
-\end_inset
-
-END SYMBOL
-\begin_inset Quotes erd
-\end_inset
-
-.
- Inbetween is an (optionally open-ended) when-condition-sequence with return-sta
-tements instead of actions.
- 
+ning: each new symbol s with a function header, that defines its name.
+ The name of user-defined symbols traditionally begines with f$.
+ For example ##f$BigBlindStacksize##.
+ Thereafter follows the functions code, which usually is an a sequence of
+ (optionally open-ended) when-conditions.
+ These when-conditions usually define actions (in the case of f$preflop...
+ f$river) or they contain return-statements like in the example above.
 \end_layout
 
 \begin_layout Standard
