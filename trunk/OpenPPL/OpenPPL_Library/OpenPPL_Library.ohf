@@ -2,10 +2,15 @@
 //*****************************************************************************
 //
 // OpenPPL Library
-//   Supporting functions for the OpenPPL converter
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
 //
 // OpenPPL is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
