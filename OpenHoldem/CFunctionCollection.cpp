@@ -47,7 +47,7 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
     bool needs_deletion = false;
     if (open_ppl && p_nextObject->IsOpenPPLSymbol()) {
       needs_deletion = true;
-    } else if (user_defined) {
+    } else if (user_defined && !p_nextObject->IsOpenPPLSymbol()) {
       needs_deletion = true;
     }
     if (needs_deletion) {
