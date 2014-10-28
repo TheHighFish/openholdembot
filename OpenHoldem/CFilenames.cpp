@@ -79,7 +79,7 @@ CString CFilenames::IniFilename() {
 		// No ini-file found.
 		// Use default one (for saving).
 		FindClose(h_find);
-    Log("IniFilename", k_default_ini_filename.GetString());
+    Log("IniFilename", k_default_ini_filename);
 		return k_default_ini_filename;
 	}
 	ini_filename = find_file_data.cFileName;
