@@ -494,7 +494,7 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
   if (*token != kTokenIdentifier) return;
   CString token_string = GetTokenString();
   for (int i=0; i<kNumberOfOpenPPLActions; ++i) {
-    int length_to_compare = kOpenPPLActionStrings[i].GetLength() + kOneCharacterExtraForTerminatingNull;
+    int length_to_compare = strlen(kOpenPPLActionStrings[i]) + kOneCharacterExtraForTerminatingNull;
     if (_memicmp(token_string, kOpenPPLActionStrings[i], length_to_compare) == 0) {
       // Action expected and something action-like found
       // Now check for exact match, because especially
