@@ -36,13 +36,11 @@ BEGIN_MESSAGE_MAP(COpenHoldemDoc, CDocument)
 END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
-COpenHoldemDoc::COpenHoldemDoc() 
-{
-	p_function_collection->DeleteAll(true, true);
+COpenHoldemDoc::COpenHoldemDoc() {
+	p_function_collection->DeleteAll(false, true);
 }
 
-COpenHoldemDoc::~COpenHoldemDoc() 
-{
+COpenHoldemDoc::~COpenHoldemDoc() {
 }
 
 BOOL COpenHoldemDoc::SaveModified()

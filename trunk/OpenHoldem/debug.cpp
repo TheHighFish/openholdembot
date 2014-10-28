@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 
 // visual leak detector
-#include <vld.h>			
+//#include <vld.h>			
 
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
