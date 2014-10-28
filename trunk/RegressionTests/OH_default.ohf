@@ -6,16 +6,12 @@
 
 ##f$betsize##
  dll$betsize
- 
-##f$swag##
- dll$swag
- 
 
 ##f$rais##
  dll$rais
 
 ##f$call##
-dll$call
+ dll$call
 
 ##f$prefold##
  0

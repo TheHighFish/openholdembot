@@ -312,7 +312,12 @@ def handleSymbolsAndStates(settings, testName, newLineEntries, expLineEntries, e
   #  return
   
   if len(newAllInCaseSymPairList) != len(expAllInCaseSymPairList):
-    createErrorEntry(testName, errors.fatal, msg='Number of all-in messages in this test case do not match', nLiNo=newLineEntries[0].liNo, eLiNo=expLineEntries[0].liNo)
+    if len(newLineEntries) > 0 and  len(expLineEntries) > 0:
+        createErrorEntry(testName, errors.fatal, msg='Number of all-in messages in this test case do not match', nLiNo=newLineEntries[0].liNo, eLiNo=expLineEntries[0].liNo)
+    elif len(newLineEntries) > 0:
+        createErrorEntry(testName, errors.fatal, msg='Number of all-in messages in this test case do not match', nLiNo=newLineEntries[0].liNo)
+    else:
+        createErrorEntry(testName, errors.fatal, msg='Number of all-in messages in this test case do not match')
   
   for i in range(0, min(len(newAllInCaseSymPairList), len(expAllInCaseSymPairList))):
     newSymbols = newAllInCaseSymPairList[i][0]

@@ -39,7 +39,7 @@ const char* cfgInFileName = "DumperDll.cfg";
 #define MAX_CFG_VALUE_LEN 512
 std::string dumpOutFileName("DumperDll.log");
 //fixme: change
-std::string testfilesDir("/win_part1/vm_share/poker/openholdem/TestSuit2/HandHistoryParser/src/parsed");
+std::string testfilesDir("TestFileDirNotConfigured");
 
 std::ofstream dumpOutFile;
 unsigned int count;
@@ -139,7 +139,7 @@ void convertCardToString(int c, char* res) {
 	//sprintf(res, "%i", c);
 
 	//from OH 5.0.1 on: We use now only CARD_NOCARD (0xfe = 254).
-	if (c == 0 || c == 254) {
+	if (c == 0 || c == 254 || c == 253) {
 	    strcpy(res, "NONE");
 	    return;
 	}
@@ -365,6 +365,11 @@ double process_query( const char* pquery )
 	
 	if (pquery==NULL)
 		return 0;
+
+	//DEBUG only
+	if (dumpOutFile.is_open()) {
+	  debugDumper(std::string("call to process_query: ") + pquery);
+	}
 	
 	//dump stuff on alli call, or is this a bad idea if we can only call? don't think so
 	if (strncmp(pquery,"dll$alli",8)==0) {
@@ -437,18 +442,12 @@ double process_query( const char* pquery )
 	  if (curTestSuiteAction.raiseTo) {
 	    
 	    //DEBUG only
-	    char handStr[10];
-	    sprintf(handStr, "%f", curTestSuiteAction.raiseToVal);
-	    debugDumper(std::string("process_query: ") + pquery + "=" + handStr);
+	    char valueStr[10];
+	    sprintf(valueStr, "%f", curTestSuiteAction.raiseToVal);
+	    debugDumper(std::string("process_query: ") + pquery + "=" + valueStr);
 	    
 	    return curTestSuiteAction.raiseToVal;
 	  }
-	}
-	
-	
-	//DEBUG only
-	if (dumpOutFile.is_open()) {
-	  debugDumper(std::string("process_query: ") + pquery);
 	}
 
 	return 0;
