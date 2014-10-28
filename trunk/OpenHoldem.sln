@@ -71,6 +71,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PokerTracker_Query_Definiti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManualMode-XMLRPC", "ManualMode-XMLRPC\ManualMode-XMLRPC.vcxproj", "{FD9CF05C-AE4E-4B59-9A6C-EAC0B0504EDE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SymbolDumperUserDll", "SymbolDumperUserDll\SymbolDumperUserDll.vcxproj", "{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -156,6 +158,12 @@ Global
 		{FD9CF05C-AE4E-4B59-9A6C-EAC0B0504EDE}.Release - Optimized|Win32.Build.0 = Release|Win32
 		{FD9CF05C-AE4E-4B59-9A6C-EAC0B0504EDE}.Release|Win32.ActiveCfg = Release|Win32
 		{FD9CF05C-AE4E-4B59-9A6C-EAC0B0504EDE}.Release|Win32.Build.0 = Release|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Debug|Win32.Build.0 = Debug|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Release - Optimized|Win32.ActiveCfg = Release|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Release - Optimized|Win32.Build.0 = Release|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Release|Win32.ActiveCfg = Release|Win32
+		{DA1E0B9A-3A18-4423-B554-C3AEB9F02A14}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
