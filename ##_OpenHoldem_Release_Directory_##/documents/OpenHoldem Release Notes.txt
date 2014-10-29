@@ -5,6 +5,11 @@ BUG FIXES:
   This is a debugging-feature for developers only.
   [THF]
 
+MAINTENANCE:
+- Linking the MSVCRT runtime library dynamically again.
+  Now the file-size is back to 2.x instead of 8.x MBs.
+  [PyBotter666]
+
 v7.1.1 2014-10-27
 ==================
 BUG FIXES:
