@@ -1,0 +1,10 @@
+[table]
+sblind = 1
+bblind = 2
+gtype = NL
+tournament = true
+balances = Bot 200,P0 200,P2 200, P3 200, P4 200,P5 200,P6 200,P7 200, P8 200
+
+[preflop]
+Hand = Ah, Kh
+Actions = Bot S,P0 B,P2 F,P3 C,P4 F,P5 R 8,P6 F,P7 F,P8 F, Bot can FCRA do C, P0 R 20, P3 R 50,P5 F,Bot can FCRA do R 100,P0 R 150
