@@ -17,7 +17,7 @@ DumperDllExpectedLogFilename = DumperDllLogFilename
 #how long to wait after starting ManualMode-XMLRPC and OH before starting tests,
 #raise if your ManualMode-XMLRPC opens outside the screen such that you have time to move it,
 #don't set to 0 to be sure stuff is started
-WaitSecondsBeforeStartingTests = 5
+WaitSecondsBeforeStartingTests = 3
 
 #must be in dir of this file, no wildcards, pure filename, no dirs
 #first file ending in '.ini' is assumed to be OH ini file
@@ -33,6 +33,7 @@ ManualModeXMLRPCTableMap = '..\\##_OpenHoldem_Release_Directory_##\\scraper\\Ope
 
 #dir of OpenHoldem.exe, so OpenHoldem Release dir
 OpenHoldemExeDir = '..\\release'
+#OpenHoldemExeDir = '..\\Debug'
 
 #OH files to copy
 #allows * as only wildcard (but only first match is copied) and relative and absolute paths,
@@ -45,7 +46,7 @@ OHFilesToCopy = [ 'OpenHoldem.exe', 'mouse.dll', 'keyboard.dll',
 TempRunDir = 'temp_run_dir'
 
 #location of TestSuite2 source files
-TestSuite2Dir = 'TestSuit2ForRegressionTests\\TestSuite\\src'
+TestSuite2Dir = 'Tools\\TestSuite2'
 
 #ManualMode-XMLRPC exe file
 ManualModeXMLRPCexe = '..\\release\\ManualMode-XMLRPC.exe'

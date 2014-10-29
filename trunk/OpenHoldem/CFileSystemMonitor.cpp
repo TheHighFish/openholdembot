@@ -45,7 +45,9 @@ CFileSystemMonitor::CFileSystemMonitor() {
 }
 
 CFileSystemMonitor::~CFileSystemMonitor() {
-	CloseHandle(dwChangeHandle);
+	if (!_scraper_directory_on_a_network_drive) {
+		CloseHandle(dwChangeHandle);
+	}
 }
 
 void CFileSystemMonitor::InitMonitor() {
