@@ -90,6 +90,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
   CheckDlgButton(IDC_DEBUG_FILENAMES, preferences.debug_filenames() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_AST_PRIORITY_ORDERING, preferences.debug_ast_priority_ordering() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_BOARD_EXPRESSIONS, preferences.debug_hand_and_baord_expressions() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_TOKENIZER, preferences.debug_tokenizer() ? MF_CHECKED : MF_UNCHECKED);
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -137,6 +138,7 @@ void CDlgSAPrefs20::OnOK()
   preferences.SetValue(k_prefs_debug_filenames, IsDlgButtonChecked(IDC_DEBUG_FILENAMES));
   preferences.SetValue(k_prefs_debug_ast_priority_ordering, IsDlgButtonChecked(IDC_DEBUG_AST_PRIORITY_ORDERING));
   preferences.SetValue(k_prefs_debug_hand_and_baord_expressions, IsDlgButtonChecked(IDC_DEBUG_BOARD_EXPRESSIONS));
+  preferences.SetValue(k_prefs_debug_tokenizer, IsDlgButtonChecked(IDC_DEBUG_TOKENIZER));
 	CSAPrefsSubDlg::OnOK();
 }
 

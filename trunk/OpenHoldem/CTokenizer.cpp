@@ -17,6 +17,7 @@
 #include "assert.h"
 #include "CardFunctions.h"
 #include "CParseErrors.h"
+#include "CPreferences.h"
 #include "TokenizerConstants.h"
 
 // Global vars to be used by static accessors
@@ -106,6 +107,8 @@ int CTokenizer::LookAhead(bool expect_action /*= false */)
   if (expect_action) {
     CheckTokenForOpenPPLAction(&_last_token);
   }
+  write_log(preferences.debug_tokenizer(), "[CTokenizer] \"%s\" -> %i\n",
+    GetTokenString(), _last_token);
 	return _last_token;
 }
 
