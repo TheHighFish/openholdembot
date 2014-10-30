@@ -1,3 +1,21 @@
+v7.1.3 2014-10-30
+==================
+BUG FIXES:
+- Percentage operators caused problems with the parse-tree,
+  because % is both a binary infix-operator (OH-script and OpenPPL)
+  and can also be an unary postfix-operator (Bet X% FORCE).
+  Thanks to BillyJohn12 for reporting 
+  and to Beutel for helping us to reproduce this bug.
+  [THF]
+
+MAINTENANCE:
+- Switching to release-mode to get rid of the dependency for debug-DLLs.
+  Please note: as we link the MSVCRT 2010 libraries dynamically
+  you need to install the libraries from
+  http://www.microsoft.com/en-us/download/details.aspx?id=8328
+  [THF]
+
+
 v7.1.2 2014-10-28
 ==================
 BUG FIXES:
