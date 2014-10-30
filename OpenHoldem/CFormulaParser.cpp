@@ -410,7 +410,7 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
     }
 		TPParseTreeNode second_expression = ParseExpression();
 		TPParseTreeNode binary_node = new CParseTreeNode(_tokenizer.LineRelative());
-		binary_node->MakeBinaryOperator(token_ID, 
+		binary_node->MakeBinaryOperator(kTokenOperatorPercentage, 
 			expression, second_expression);
 		write_log(preferences.debug_parser(), 
 			"[FormulaParser] Binary node %i\n", binary_node);

@@ -24,17 +24,14 @@ CPreferences		preferences;
 //
 // Constructor and destructor
 //
-CPreferences::CPreferences()
-{
+CPreferences::CPreferences() {
 }
 
-CPreferences::~CPreferences()	
-{
+CPreferences::~CPreferences() {
 }
 
 // registry keys 
-const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 1] =
-{
+const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 1] = {
 	// bools
 	"debug_preferences",	
 	"debug_autoconnector",
@@ -77,6 +74,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_ast_priority_ordering",
   "debug_filenames",
   "debug_hand_and_baord_expressions",
+  "debug_tokenizer",
 	"engage_autoplayer",
 	"swag_use_comma",
 	"replay_record",
