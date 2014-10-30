@@ -248,8 +248,7 @@ StartOfScanForNextToken:
   while (isspace(CURRENT_CHARACTER())) {
     // [\r][\n]Line break
     if ((CURRENT_CHARACTER() == '\n')
-	    || (CURRENT_CHARACTER() == '\r'))
-    {
+	      || (CURRENT_CHARACTER() == '\r')) {
       line_absolute++;
       line_relative++;
     }
@@ -263,25 +262,24 @@ StartOfScanForNextToken:
   if (isalpha(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '$')) {
     while(isalnum(CURRENT_CHARACTER())
         || (CURRENT_CHARACTER() == '$')
-	    || (CURRENT_CHARACTER() == '_')) {
-	  _token_end_pointer++;
-	}
-	if (IsTokenOpenPPLKeyword()) {
-	  return _OpenPPL_token_ID;
-	}
-	return kTokenIdentifier;
+	      || (CURRENT_CHARACTER() == '_')) {
+	    _token_end_pointer++;
+	  }
+	  if (IsTokenOpenPPLKeyword()) {
+	    return _OpenPPL_token_ID;
+	  }
+	  return kTokenIdentifier;
   }
   // [0..9\.] Numbers
   // This includes 
   // * 12345
   // * .85
   // * 0xCE
-  else if (isdigit(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '.'))
-  {
+  else if (isdigit(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '.')) {
     // Special case suited and offsuited hands like 72o or 54s
     if (IsCardRankCharacter(NEXT_CHARACTER)) {
       char third_character_lowercase = tolower(SECOND_NEXT_CHARACTER);
-	  if ((third_character_lowercase == 's')
+	    if ((third_character_lowercase == 's')
           || (third_character_lowercase == 'o')) {
         _token_end_pointer += 3;
         return kTokenCards;
@@ -290,38 +288,33 @@ StartOfScanForNextToken:
 	// Entry-point for negative numbers after unary minus
 NegativeNumber:
     while(isxdigit(CURRENT_CHARACTER())
-	    || (CURRENT_CHARACTER() == '.')
-	    || (CURRENT_CHARACTER() == 'x')) {
-	  _token_end_pointer++;
-	}
-	return kTokenNumber;
+	      || (CURRENT_CHARACTER() == '.')
+	      || (CURRENT_CHARACTER() == 'x')) {
+	    _token_end_pointer++;
+	  }
+	  return kTokenNumber;
   }
   // [/] Single-line-comments
   else if ((CURRENT_CHARACTER() == '/')
       && (NEXT_CHARACTER == '/')) {
-	SkipToEndOfLine();
-	goto StartOfScanForNextToken;
+	  SkipToEndOfLine();
+	  goto StartOfScanForNextToken;
   }
   // [/] Multi-line comments
   else if ((CURRENT_CHARACTER() == '/')
       && (NEXT_CHARACTER == '*')) {
     SkipToEndOfMultiLineComment();
-	goto StartOfScanForNextToken;	
+	  goto StartOfScanForNextToken;	
   }
   // [+-*/<>=!?:%&|~^] OpenHoldem-style-Operators
-	else if (IsOperatorCharacter(CURRENT_CHARACTER())) 
-	{
-		switch (CURRENT_CHARACTER())
-		{
+	else if (IsOperatorCharacter(CURRENT_CHARACTER())) {
+		switch (CURRENT_CHARACTER()) {
 		case '+': 
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPlus)
 		case '-': 
-			if (IsBinaryMinus())
-			{
+			if (IsBinaryMinus()) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorMinus)
-			}
-			else
-			{
+			}	else {
 				// Unary minus
 				_token_end_pointer++;
         if (isdigit(CURRENT_CHARACTER())) {
@@ -355,8 +348,7 @@ NegativeNumber:
 		case '?': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorConditionalIf)
 		case ':': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorConditionalElse)
 		case '%': // Might be modulo (OpenHoldem) or percentage (OpenPPL)
-			if (_inside_OpenPPL_function)
-			{
+			if (_inside_OpenPPL_function) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);
 			}
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorModulo);
@@ -381,8 +373,7 @@ NegativeNumber:
 		}
 	}
 	// [(){}[]] Brackets
-	else if (IsBracket(CURRENT_CHARACTER()))
-	{
+	else if (IsBracket(CURRENT_CHARACTER())) {
 		switch (CURRENT_CHARACTER())
 		{
 		case '(': RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenBracketOpen_1)
@@ -398,8 +389,7 @@ NegativeNumber:
 	}
 	// [#] List and function headers
 	else if ((CURRENT_CHARACTER() == '#')
-		&& (NEXT_CHARACTER == '#')) 
-	{
+		  && (NEXT_CHARACTER == '#')) {
 		// Double shebang as start/end of list and function headers
 		_token_end_pointer++;
 		_token_end_pointer++;
@@ -409,8 +399,7 @@ NegativeNumber:
 		return kTokenDoubleShebang;
 	}
 	// [\0] End of string = end of function
-	else if (CURRENT_CHARACTER() == '\0')
-	{
+	else if (CURRENT_CHARACTER() == '\0') {
 		line_absolute++; 
 		return kTokenEndOfFunction;
 	}

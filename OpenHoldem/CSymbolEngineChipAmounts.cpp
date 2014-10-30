@@ -185,10 +185,11 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	} else {
 		_call = 0;
 	}
-  // In case we are covered consider only the effective amount to call
-  if (_call > p_table_state->User()->_balance) {
-    assert(p_table_state->User()->_balance > 0);
-    _call = p_table_state->User()->_balance;
+  // In case we are covered consider only the effective amount to call,
+  // but onlz if our balance is reasonable.
+  double balance = p_table_state->User()->_balance;
+  if ((_call > balance) && (balance > 0)) {
+    _call = balance;
   }
 	next_largest_bet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)

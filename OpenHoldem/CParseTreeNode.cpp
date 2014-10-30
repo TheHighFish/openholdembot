@@ -146,6 +146,9 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 			_constant_value);
 		return _constant_value;
 	}	else if (_node_type == kTokenIdentifier) {
+    assert(_first_sibbling  == NULL);
+    assert(_second_sibbling == NULL);
+    assert(_third_sibbling  == NULL);
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
@@ -228,9 +231,7 @@ CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
   return result;
 }
 
-double CParseTreeNode::EvaluateIdentifier(CString name, bool log)
-{
-	assert(name != "");
+double CParseTreeNode::EvaluateIdentifier(CString name, bool log) {
 	// EvaluateSymbol cares about ALL symbols, 
 	// including DLL, PokerTracker and Perl
 	double result;
@@ -241,6 +242,10 @@ double CParseTreeNode::EvaluateIdentifier(CString name, bool log)
 double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
   // Paramater named "log_symbol" instead of "log"
   // due to naming conflict with mathematical function
+  assert(_first_sibbling  != NULL);
+  assert(_second_sibbling == NULL);
+  assert(_third_sibbling  == NULL);
+  assert(_terminal_name == "");
   double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log_symbol);
     switch (_node_type) {
     case kTokenOperatorUnaryMinus:     return (0 - value_of_first_sibbling);
@@ -258,6 +263,10 @@ double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
 }
 
 double CParseTreeNode::EvaluateBinaryExpression(bool log) {
+  assert(_first_sibbling  != NULL);
+  assert(_second_sibbling != NULL);
+  assert(_third_sibbling  == NULL);
+  assert(_terminal_name == "");
 	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
 	double value_of_second_sibbling = 0.0;
 	// Short circuiting
@@ -350,6 +359,10 @@ double CParseTreeNode::EvaluateTernaryExpression(bool log) {
 	// In case of (OE)WCs the parse-tree-generation assures
 	// that _third_sibbling points to the next (OE)WC.
 	// Again we use short circuiting.
+  assert(_first_sibbling  != NULL);
+  assert(_second_sibbling != NULL);
+  assert(_third_sibbling  != NULL);
+  assert(_terminal_name == "");
 	assert((_node_type == kTokenOperatorConditionalIf)
 		  || (_node_type == kTokenOperatorConditionalWhen));
 	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log);
