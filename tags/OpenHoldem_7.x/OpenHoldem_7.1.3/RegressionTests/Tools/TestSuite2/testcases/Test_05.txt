@@ -1,0 +1,9 @@
+# My first test case
+[table]
+sblind = 1
+bblind = 2
+#gtype = NL
+balances=bot 2000
+[preflop]
+Hand = 9c, 6h
+Actions = bot S, P1 B, P2 R 4, P3 F,  bot can FRCA do R
