@@ -364,9 +364,17 @@ bool IsOutdatedSymbol(CString symbol) {
 }
 
 void WarnAboutUnknownSymbol(CString symbol) {
+  // Empty symbol 
+  // Can happen by DLL or Perl or by incorrect parse/tree.
+  if (symbol == "") {
+    CString error_message = CString("Empty symbol in CGrammar::EvaluateSymbol()\n")
+      + CString("This is most probably an incorrect lookup from a DLL or Perl.\n");
+    OH_MessageBox_Formula_Error(error_message, title_unknown_symbol);
+    return;
+  }
   // Unknown symbol -- general warning
   CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
-  + symbol + CString("\"\nThis is most probably a typo in the symbols name.\n")
+    + symbol + CString("\"\nThis is most probably a typo in the symbols name.\n")
   + CString("Please check your formula and your DLL or Perl-script.");
   OH_MessageBox_Formula_Error(error_message, title_unknown_symbol);
 }
