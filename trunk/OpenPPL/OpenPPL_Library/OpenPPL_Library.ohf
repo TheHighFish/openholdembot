@@ -749,6 +749,9 @@ me_re_MemMissingSmallBlind
 [bblind==0] ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
 [nopponentsplaying == NumberOfOpponentsAllin] ? HINT_All_Opponents_Allin :
 [nopponentsplaying-NumberOfOpponentsAllin > 1] ? ERROR_Game_Is_Not_HeadsUp :
+// Even "no opponents" can happen: 
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915&start=30&p=124798&view=show#p124798
+[nopponentsplaying < 1] ? ERROR_Game_Is_Not_HeadsUp :
 [(playersplayingbits & 0b0000000001) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
   && userchair!=0 && balance0>0] ? balance0/bblind:
 [(playersplayingbits & 0b0000000010) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
