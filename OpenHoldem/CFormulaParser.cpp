@@ -376,9 +376,9 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
 }
 
 TPParseTreeNode CFormulaParser::ParseExpression() {
-	int token_ID = _tokenizer.LookAhead();
-	TPParseTreeNode expression;
-    // Handle brackets before unary, because brackets are also "unary"
+  int token_ID = _tokenizer.LookAhead();
+  TPParseTreeNode expression;
+  // Handle brackets before unary, because brackets are also "unary"
   if (TokenIsBracketOpen(token_ID))	{
 		expression = ParseBracketExpression();
 	}	else if (TokenIsUnary(token_ID))	{
@@ -392,16 +392,15 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 		return NULL;
 	}
 	token_ID = _tokenizer.LookAhead();
-	if (TokenIsBinary(token_ID))
-	{
+	if (TokenIsBinary(token_ID)) {
 		_tokenizer.GetToken();
     // Special handling of percentaged potsized bets,
     // that look like modulo or percentage operators,
     // but lack a 2nd operand and have "Force" instead.
     // When ... RaiseBy 60% Force
     if (token_ID == kTokenOperatorPercentage) {
-      token_ID = _tokenizer.LookAhead();
-      if (token_ID == kTokenKeywordForce) {
+      int next_token_ID = _tokenizer.LookAhead();
+      if (next_token_ID == kTokenKeywordForce) {
         // Now we should pushback the *2nd last* token  (percentage)
         _tokenizer.PushBackAdditionalPercentageOperator();
         // and return the expression we got so far
@@ -410,14 +409,12 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
     }
 		TPParseTreeNode second_expression = ParseExpression();
 		TPParseTreeNode binary_node = new CParseTreeNode(_tokenizer.LineRelative());
-		binary_node->MakeBinaryOperator(kTokenOperatorPercentage, 
+		binary_node->MakeBinaryOperator(token_ID, 
 			expression, second_expression);
 		write_log(preferences.debug_parser(), 
 			"[FormulaParser] Binary node %i\n", binary_node);
 		return binary_node;
-	}
-	else if (token_ID == kTokenOperatorConditionalIf)
-	{
+	} else if (token_ID == kTokenOperatorConditionalIf) {
 		// Ternary condition
 		TPParseTreeNode then_expression;
 		TPParseTreeNode else_expression;
@@ -429,9 +426,7 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 		write_log(preferences.debug_parser(), 
 			"[FormulaParser] Ternary node %i\n", ternary_node);
 		return ternary_node;
-	}
-	else
-	{
+	}	else {
 		// We got the complete expression
 		// No complex binary or ternary condition
 		write_log(preferences.debug_parser(), 
