@@ -30,6 +30,8 @@
 
 CHandresetDetector *p_handreset_detector = NULL;
 
+const int kNumberOfHandresetMethods = 9;
+
 CHandresetDetector::CHandresetDetector() {
   //!!!!
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
@@ -48,18 +50,63 @@ CString CHandresetDetector::GetHandNumber() {
 }
 
 void CHandresetDetector::CalculateIsHandreset() {
-	int handresetemethods_that_fired_this_heartbeat =
-      (IsHandresetByDealerChair() ? 1 : 0)
-    + (IsHandresetByUserCards() ? 1 : 0)
-    + (IsHandresetByHandNumber() ? 1 : 0)
-    + (IsHandresetByCommunityCards() ? 1 : 0)
-    + (IsHandresetByPotsize() ? 1 : 0)
-    + (IsHandresetByNopponentsplaying() ? 1 : 0)
-    + (IsHandresetByIncreasingBalance() ? 1 : 0);
-  int handresetemethods_that_fired_the_last_three_heartbeats =
-    handresetemethods_that_fired_this_heartbeat; // TODO!!!
-	_is_handreset_on_this_heartbeat = 
-    (handresetemethods_that_fired_the_last_three_heartbeats >= 2);
+  // We work with bit-vectors here and not simple counters,
+  // because we want to make sure that at least N *different*
+  // fired during the last 3 heartbeats.
+	
+  // Last 2 heartbeats
+  _methods_firing_the_last_three_heartbeats[2] = _methods_firing_the_last_three_heartbeats[1];
+  _methods_firing_the_last_three_heartbeats[1] = _methods_firing_the_last_three_heartbeats[0];
+  // This heartbeat
+  _methods_firing_the_last_three_heartbeats[0] = BitVectorFiringHandresetMethods();
+  // Composed result
+  int total_methods_firing = _methods_firing_the_last_three_heartbeats[2]
+    | _methods_firing_the_last_three_heartbeats[1]
+    | _methods_firing_the_last_three_heartbeats[0];
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing last 3 heartbeat: %s\n",
+    IntToBinaryString(total_methods_firing));
+  int number_of_methods_firing = bitcount(total_methods_firing);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat: %i\n",
+    number_of_methods_firing);
+  if (number_of_methods_firing > 2) {
+    write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
+    _is_handreset_on_this_heartbeat = true;
+    // Clear data to avoid multiple fast handreset with already used methods, 
+    // if casino needs several heartbeats to update table view
+    _methods_firing_the_last_three_heartbeats[0] = 0;
+    _methods_firing_the_last_three_heartbeats[1] = 0;
+    _methods_firing_the_last_three_heartbeats[2] = 0;
+  } else {
+    write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset\n");
+    _is_handreset_on_this_heartbeat = false;
+  }
+}
+
+int CHandresetDetector::BitVectorFiringHandresetMethods() {
+  int handresetmethods_fired = 0;
+  // Build a bit-vector of handresetmethods that fire
+  // Highest (9th) bit is for first method
+  handresetmethods_fired |= (IsHandresetByDealerChair() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByUserCards() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByHandNumber() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByCommunityCards() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByPotsize() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByNopponentsplaying() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByIncreasingBalance() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByChangingBlindLevel() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByNewSmallBlind() ? 1 : 0 );
+  // No shift-left after the last bit
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
+    IntToBinaryString(handresetmethods_fired, kNumberOfHandresetMethods));
+  return handresetmethods_fired;
 }
 
 bool CHandresetDetector::IsHandresetByDealerChair() {
@@ -143,6 +190,31 @@ bool CHandresetDetector::IsHandresetByIncreasingBalance() {
   return ishandreset;
 }
 
+bool CHandresetDetector::IsHandresetByNewSmallBlind() {
+  bool ishandreset = SmallBlindExists() && !_small_blind_existed_last_hand;
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by new small blind: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
+}
+
+bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
+  bool ishandreset = (_bblind != _last_bblind);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by changing blind level: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
+}
+
+bool CHandresetDetector::SmallBlindExists() {
+  for (int i=0; i<p_tablemap->nchairs(); ++i) {
+    double players_bet = p_scraper->player_bet(i);
+    if ((players_bet > 0) && (players_bet < _bblind)) {
+      // Either SB or ante, first orbit preflop, hand/reset
+      return true;
+    }
+  }
+  return false;
+}
+
 void CHandresetDetector::GetNewSymbolValues() {
 	assert(p_symbol_engine_dealerchair != NULL);
 	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))	{
@@ -160,6 +232,7 @@ void CHandresetDetector::GetNewSymbolValues() {
   _potsize = p_symbol_engine_chip_amounts->pot();
   _community_cards = p_scraper_access->NumberOfCommonCards();
   _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+  _bblind = p_symbol_engine_tablelimits->bblind();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
@@ -179,6 +252,8 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_potsize = _potsize;
   _last_community_cards = _community_cards;
   _last_nopponentsplaying = _nopponentsplaying;
+  _last_bblind = _bblind;
+  _small_blind_existed_last_hand = SmallBlindExists();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		last_playercards[i] = playercards[i];
 	}

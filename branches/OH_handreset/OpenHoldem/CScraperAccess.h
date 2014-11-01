@@ -28,7 +28,6 @@ public:
 	// public functions
 	void	GetNeccessaryTablemapObjects();
 	void	InitOnConnect();
-	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
 	int		NumberOfVisibleButtons();
 	bool	IsKnownCard(int card);
