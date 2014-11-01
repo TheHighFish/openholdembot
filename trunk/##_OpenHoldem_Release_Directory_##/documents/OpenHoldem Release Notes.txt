@@ -1,3 +1,10 @@
+v7.1.4 2014-11-01
+==================
+BUG FIXES:
+- The fix for the percentage operator broke some other binar5y operators.
+  Thanks to Pawko for reporting.
+  [THF]
+
 v7.1.3 2014-10-30
 ==================
 BUG FIXES:
