@@ -315,7 +315,6 @@ void start_log(void)
 		if (fopen_s(&log_fp, fn.GetString(), "a")==0)
 		{
 			write_log("! log file open\n");
-			fprintf(log_fp, "yyyy.mm.dd hh:mm:ss -  # hand commoncard rank poker  win  los  tie  P      nit bestaction - play*      call       bet       pot   balance - FCRA FCRA swag\n");
 			fprintf(log_fp, "----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 			fflush(log_fp);
 		}

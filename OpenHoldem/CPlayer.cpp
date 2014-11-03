@@ -62,5 +62,10 @@ void CPlayer::CheckPlayerCardsForConsistency() {
     // by bad tablemaps.
     _hole_cards[0].SetValue(CARD_BACK);
     _hole_cards[1].SetValue(CARD_BACK);
-  }
+  } /*!!!!!!!else if ((_hole_cards[0].GetValue() == CARD_UNDEFINED)
+     || (_hole_cards[1].GetValue() == CARD_UNDEFINED)) {
+    // Setting undefined user-cards to
+    _hole_cards[0].SetValue(CARD_BACK);
+    _hole_cards[1].SetValue(CARD_BACK);
+  }*/
 }

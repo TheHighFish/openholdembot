@@ -183,7 +183,7 @@ void CGameState::CaptureState()
 	for (int i=0; i<k_number_of_community_cards; i++)
 	{
     int common_card = p_table_state->_common_cards[i].GetValue();
-    write_log(preferences.debug_alltherest(), 
+    write_log(preferences.debug_dll_extension(), 
       "[CGameState] Common card %i = %i\n", i, common_card);
 		_state[_state_index&0xff].m_cards[i] = common_card;
 	}
@@ -211,6 +211,8 @@ void CGameState::CaptureState()
 		{
       Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValue();
+      write_log(preferences.debug_dll_extension(),
+        "[CGameState] Plazer card [%i][%i] = %i\n", i, j, card);
 			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 
