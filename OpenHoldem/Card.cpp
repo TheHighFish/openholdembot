@@ -29,7 +29,8 @@ void Card::SetValue(int value){
   _value = value;
 }
 
-void Card::SetValue(int openholdem_rank, int openholdem_suit){
+void Card::SetValue(int openholdem_rank, int openholdem_suit) {
+  assert(false);
 }
 
 void Card::ClearValue(){
@@ -37,6 +38,12 @@ void Card::ClearValue(){
 }
 
 int Card::GetValue() {
+  if (_value == CARD_UNDEFINED) {
+    // This value should be used only internally by the scraper, etc.,
+    // but must not be returned for the GUI and escpecially for the DLL-interface
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=17677&start=30
+    return CARD_NOCARD;
+  }
   return _value;
 }
 
