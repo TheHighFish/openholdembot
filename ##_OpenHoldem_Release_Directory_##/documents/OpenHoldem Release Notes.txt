@@ -1,7 +1,26 @@
+v7.2.0 2014-11-01
+==================
+NEW STUFF:
+- Support for PokerTracker 4.
+  OpenHoldem, PokerTracker_Query_Definitions.DLL and all symbols
+  will now work with PT4 out of the box.
+  In case you are an user of Pt3: the old-DLL is still compatible
+  and can be found at https://sites.google.com/site/openholdempokerbot/downloads/.
+  Future development wil concentrate on PT4, as PT3 is outdated
+  and now longer officially supported.
+  [Nahman]
+
+BUG FIXES:
+
+MAINTENANCE:
+- Added a selftest-module for parser and evaluator
+  that helps us to detect bugs that get indtroduced by changes/bug-fixes.
+  [THF]
+
 v7.1.4 2014-11-01
 ==================
 BUG FIXES:
-- The fix for the percentage operator broke some other binar5y operators.
+- The fix for the percentage operator broke some other binary operators.
   Thanks to Pawko for reporting.
   [THF]
 
