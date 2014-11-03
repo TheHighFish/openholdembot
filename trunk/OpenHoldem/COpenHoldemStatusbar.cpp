@@ -207,7 +207,11 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
       _status_action = "N/A";
     } else {
-      _status_action = p_autoplayer_trace->BestAction();
+      // Best action does no longer get calculated here, //!!!!!
+      // but gets set by the autoplazer,
+      // because an advisor does not make sense
+      // and multiple evaluations of the autoplayer-functions
+      // cause lots of problems (DLL, memory-symbols)
     }
 	} else if (p_symbol_engine_prwin->nopponents_for_prwin()==0) {
 		_status_action = "Idle (f$prwin_number_of_opponents==0)";
