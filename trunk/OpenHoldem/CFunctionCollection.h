@@ -99,6 +99,8 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   bool CheckForOutdatedFunction(CString name);
   bool CheckForMisspelledOpenPPLMainFunction(CString name);
  private:
+  void ExecuteSelftest();  
+ private:
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;
   CString _path;

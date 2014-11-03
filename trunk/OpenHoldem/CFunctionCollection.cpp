@@ -19,6 +19,7 @@
 #include "CFunction.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "CSelftestParserEvaluator.h"
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 
@@ -235,6 +236,21 @@ void CFunctionCollection::SetEmptyDefaultBot() {
   CheckForDefaultFormulaEntries();
   // After setting the bot we should parse it so that OH can evaluate and act
   ParseAll();
+  // Parser, function-collection and library initialized 
+  // and a ParseAll to come:
+  // this is the perfect place to execute the selftest. 
+  ExecuteSelftest();
+}
+
+void CFunctionCollection::ExecuteSelftest() {
+  CString name = kSelftestName;
+  CString function_text = kSelftestFunction;
+  CFunction *p_function = new CFunction(&name, 
+    &function_text, kNoAbsoluteLineNumberExists); 
+  Add((COHScriptObject *)p_function);
+  p_function->Parse();
+  CSelftestParserEvaluator selftest;
+  selftest.Test();
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
