@@ -22,7 +22,7 @@ s$network                   pokerstars
 s$sitename                  openholdem
 s$swagconfirmationmethod    Click Bet
 s$swagdeletionmethod        Nothing
-s$swagtextmethod            2
+s$swagtextmethod            3
 s$t0type                    fuzzy
 s$titletext                 Poker
 s$ttlimits                  ^*- ^L - blinds ^s/^b
