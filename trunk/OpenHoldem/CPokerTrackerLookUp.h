@@ -26,7 +26,7 @@ public:
 
 private:
 	// private functions and variables - not available via accessors or mutators
-	std::map<CString, int>	_pt3_siteid;
+	std::map<CString, int>	_pt4_siteid;
 };
 
 extern CPokerTrackerLookup pt_lookup;
