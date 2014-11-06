@@ -21,10 +21,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PokerTracker_Queries_Version_3.h">
+    <ClInclude Include="pokertracker_query_definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pokertracker_query_definitions.h">
+    <ClInclude Include="PokerTracker_Queries_Version_4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
