@@ -396,7 +396,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page19, "Handhistory Generator");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page9,  "Perl");
-	dlg.AddPage(page6,  "Poker Tracker v3");
+	dlg.AddPage(page6,  "Poker Tracker v4");
 	dlg.AddPage(page22, "Popup Blocker");
 	dlg.AddPage(page16, "Rebuy");
 	dlg.AddPage(page8,  "Replay Frames");
