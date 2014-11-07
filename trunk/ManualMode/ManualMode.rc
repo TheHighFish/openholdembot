@@ -77,7 +77,7 @@ CAPTION "About this program"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "Version 4.4.2.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Version 7.2.0.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
@@ -147,8 +147,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,1,0
- PRODUCTVERSION 4,1,1,0
+ FILEVERSION 7,2,0,0
+ PRODUCTVERSION 7,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -163,9 +163,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "4.4.1.0"
+            VALUE "FileVersion", "7.2.0.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "4.4.1.0"
+            VALUE "ProductVersion", "7.2.0.0"
         END
     END
     BLOCK "VarFileInfo"

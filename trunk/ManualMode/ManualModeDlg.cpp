@@ -2542,27 +2542,22 @@ int CManualModeDlg::Userchair()
 
 bool CManualModeDlg::UserMaybeBigBlind()
 {
-	if (playerbet[Userchair()] == bblind)
-	{
-		return true;
-	}
+	return (playerbet[Userchair()] == bblind);
 }
 
-bool CManualModeDlg::PreflopUnraised()
-{
-	for (int i=0; i<k_number_of_community_cards; i++) 
-	{ 
-		if (card[CC0+i] != CARD_NOCARD)
-		{
+bool CManualModeDlg::IsPreflop() {
+  for (int i=0; i<k_number_of_community_cards; i++) { 
+		if (card[CC0+i] != CARD_NOCARD)	{
 			return false;
 		}
 	}
-	for (int i=k_first_chair; i<=k_last_chair; i++)
-	{
-		if (atof(playerbet[i]) > atof(bblind))
-		{
-			return false;
-		}
+  return true;
+}
+
+bool CManualModeDlg::PreflopUnraised() {
+  if (!IsPreflop()) return false;
+	for (int i=k_first_chair; i<=k_last_chair; i++)	{
+		if (atof(playerbet[i]) > atof(bblind)) return false;
 	}
 	return true;
 }
@@ -2646,7 +2641,7 @@ void CManualModeDlg::SetAllPossibleButtons()
 	// Fold always possible
 	buttonstate[0] = true;
 	// Check
-	if ((get_current_bet() <= 0)
+	if ((!IsPreflop() && (get_current_bet() <= 0))
 		|| (PreflopUnraised() && UserMaybeBigBlind()))
 	{
 		buttonstate[2] = true;
