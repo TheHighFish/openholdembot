@@ -204,6 +204,7 @@ public:
 private:
 	int Userchair();
 	bool PreflopUnraised();
+  bool IsPreflop();
 	bool UserMaybeBigBlind();
 	bool MyTurnPossible();
 	double MyBalance();
