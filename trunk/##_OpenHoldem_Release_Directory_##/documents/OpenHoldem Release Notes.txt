@@ -1,4 +1,4 @@
-v7.2.0 2014-11-01
+v7.2.0 2014-11-08
 ==================
 NEW STUFF:
 - Support for PokerTracker 4.
@@ -11,10 +11,16 @@ NEW STUFF:
   [Nahman]
 
 BUG FIXES:
+- The DLL-interface could incorrectly use CARD_UNDEFINED (253)
+  instead of CARD_NOCARD (254) in its gamestate-structure.
+  This has now been fixed.
+  Thanks to PyBotter666 for reporting.
+  [THF]
 
 MAINTENANCE:
 - Added a selftest-module for parser and evaluator
-  that helps us to detect bugs that get indtroduced by changes/bug-fixes.
+  that helps us to detect bugs that get indtroduced by changes/bug-fixes
+  as early as possible.
   [THF]
 
 v7.1.4 2014-11-01
