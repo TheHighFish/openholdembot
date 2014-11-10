@@ -1008,10 +1008,15 @@ void CScraper::ScrapeLimits()
 		if (EvaluateRegion(s, &text))
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
+      write_log(preferences.debug_scraper(), "[CScraper] r$c0limit evalutes to %s\n",
+        text);
 			if (text!="")
 			{
+        CString how_to_interpret_c0limit = s_iter->second.text;
+        write_log(preferences.debug_scraper(), "[CScraper] s$c0limit is %s\n",
+          how_to_interpret_c0limit);
 				trans.ParseStringBSL(
-					text, s_iter->second.text, NULL,
+					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
 					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
 					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
