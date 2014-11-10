@@ -79,7 +79,6 @@ public:
 	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
 	void DeleteBitmaps(void);
-	void SetLimitInfo(const SLimitInfo LI);
 	bool GetButtonState(const int button_index);
 	bool GetButtonState(CString button_state_as_string);
 	bool IsCommonAnimation();
