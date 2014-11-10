@@ -265,7 +265,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
   if ((sum_of_prizes <= 0) || (sum_of_prizes > 1)) {
     CString error_message;
     error_message.Format("Incorrect f$icm_prizeX-functions.\n"
-      "The sum of all values should be in the ranhe (0..1].\n"
+      "The sum of all values should be in the range (0..1].\n"
       "Current value: %.3f", sum_of_prizes);
     OH_MessageBox_Error_Warning(error_message);
     *result = 0.0;

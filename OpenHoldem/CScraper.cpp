@@ -999,7 +999,10 @@ void CScraper::ScrapeLimits()
 			}
 		}
 
-		// r$c0limits, s$c0limits
+		// c0limits needs both
+    // * a region r$c0limits to define where to scrape the limis 
+    // * a symbol s$c0limits to define how to interpret the scrape text,
+    //   similar to s$ttlimits
 		s.Format("c0limits");
 		s_iter = p_tablemap->s$()->find(s.GetString());
 		if (EvaluateRegion(s, &text))

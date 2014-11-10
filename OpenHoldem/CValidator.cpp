@@ -20,6 +20,7 @@
 #include "CSharedMem.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandRank.h"
+#include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
@@ -34,31 +35,23 @@ bool vali_ok1 = false;
 bool vali_ok2 = false;
 bool vali_err = false;
 
-
-CValidator::CValidator()
-{
+CValidator::CValidator() {
 	_enabled_manually = false;
 }
 
-CValidator::~CValidator()
-{
+CValidator::~CValidator() {
 }
 
-
-void CValidator::SetEnabledManually(bool Enabled)
-{
+void CValidator::SetEnabledManually(bool Enabled) {
 	_enabled_manually = Enabled;
 }
 
-
 // Create a stringified list of (symbol: value)-pairs
 // for output in the error-message.
-CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected)
-{
+CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected) {
 	CString Result = "";
 	int Token_Pos = 0;
-	while (Token_Pos < symbols_possibly_affected.GetLength())
-	{
+	while (Token_Pos < symbols_possibly_affected.GetLength()) {
 		// Tokenize the string, using space or commas as delimiters.
 		CString Symbol = symbols_possibly_affected.Tokenize(" ,", Token_Pos);
 		double Symbol_Value = gws(Symbol);
@@ -74,39 +67,30 @@ CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected)
 	return Result;
 }
 
-
-void CValidator::ValidateSingleRule()
-{
+void CValidator::ValidateSingleRule() {
 	// Heuristic rules and not to be tested?
-	if (_heuristic && !preferences.validator_use_heuristic_rules())
-	{
+	if (_heuristic && !preferences.validator_use_heuristic_rules()) {
 		return;
 	}
 	// Test to be executed?
-	if (_precondition) 
-  { 
+	if (_precondition) { 
 		// Test failed?
-	  if (!_postcondition ) 
-      { 
-			if (_no_errors_this_heartbeat)
-			{
+	  if (!_postcondition ) { 
+			if (_no_errors_this_heartbeat) {
 				// First error: shoot replayframe, if needed
-				if (preferences.validator_shoot_replayframe_on_error())
-				{
+				if (preferences.validator_shoot_replayframe_on_error()) {
 					p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}
-			if (preferences.validator_stop_on_error()) 
-			{ 
+			if (preferences.validator_stop_on_error()) { 
 				p_autoplayer->EngageAutoplayer(false); 
 			}
 			// Create error message
 			CString the_ErrorMessage = "TESTCASE ID: " 
 				+ CString(_testcase_id) 
 				+ "\n\n";
-			if (_heuristic)
-			{
+			if (_heuristic)	{
 				the_ErrorMessage += "HEURISTIC RULE: yes\n\n";
 			}
 			the_ErrorMessage += "REASONING: "
@@ -126,11 +110,9 @@ void CValidator::ValidateSingleRule()
   } 
 }
 
-
 // gws function to access the symbols by name
 //
-double CValidator::gws(const char *the_Symbol)
-{
+double CValidator::gws(const char *the_Symbol) {
   double result = k_undefined;
   p_engine_container->EvaluateSymbol(the_Symbol, &result);
   return result;
@@ -146,13 +128,11 @@ double CValidator::gws(const char *the_Symbol)
 // turning rules in "pseudo-code"
 // into executable C-code.
 
-
 // BEGIN_TESTCASE
 //   
 // Action: Ignore this by turning it into an empty string.
 //
 #define BEGIN_TESTCASE
-
 
 // REASONING
 //
@@ -160,13 +140,11 @@ double CValidator::gws(const char *the_Symbol)
 //
 #define REASONING(R) { _reasoning = (R); }
 
-
 // TESTCASE_ID
 //
 // Action: Assign the testcase-ID to a private variable.
 //
 #define TESTCASE_ID(N) { _testcase_id = (N); }
-
 
 // HEURISTIC
 //
@@ -175,13 +153,11 @@ double CValidator::gws(const char *the_Symbol)
 //
 #define HEURISTIC_RULE(H) { _heuristic = (H); }
 
-
 // PRECONDITION
 //
 // Action: Assign the precondition to a private variable.
 //
 #define PRECONDITION(C) { _precondition = (C); }
-
 
 // POSTCONDITION
 //
@@ -189,14 +165,12 @@ double CValidator::gws(const char *the_Symbol)
 //
 #define POSTCONDITION(C) { _postcondition = (C); }
 
-
 // SYMBOLS_POSSIBLY_AFFECTED
 //
 // Action: Defines a message about the symbols, that
 //   could be affected by this rule. 
 //
 #define SYMBOLS_POSSIBLY_AFFECTED(S) { _symbols_possibly_affected = (S); }
-
 
 // END_TESTCASE
 //
@@ -213,37 +187,33 @@ double CValidator::gws(const char *the_Symbol)
 //
 /////////////////////////////////////////////////////////////////////////////
 
-void CValidator::ValidateIt()
-{
+void CValidator::ValidateIt() {
   // Some silent extra-validation,  to detect problems early in debug-mode
-	if ((vali_ok1 && !vali_ok2) || vali_err) 
-  {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (12345 - 67*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
+	if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (12345 - 67*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
 		// Full validation needed
 		ValidateGameState();
 	}
 }
 
-void CValidator::ValidateGameState()
-{
+void CValidator::ValidateGameState() {
 	if (// Always enabled?
-		(preferences.validator_enabled() == 2)
-		// Enabled, when it's my turn?
-		|| ((preferences.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
-		// Manually enabled via toolbar?
-		|| (_enabled_manually))
-	{
-	// Validate.
-	//
-	//
-	// Validator-rules are defined in "pseudo-code",
-	// that is easily understandable for non-programmers,
-	// but can be turned into C-code using macro-techniques.
-	//
-	// Due to the large number of rules, 
-	// we just put them in external files
-	// and include them here as is.
-	//
-	_no_errors_this_heartbeat = true;
+		  (preferences.validator_enabled() == 2)
+		  // Enabled, when it's my turn?
+		  || ((preferences.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
+		  // Manually enabled via toolbar?
+		  || (_enabled_manually)) {
+	  // Validate.
+	  //
+	  //
+	  // Validator-rules are defined in "pseudo-code",
+	  // that is easily understandable for non-programmers,
+	  // but can be turned into C-code using macro-techniques.
+	  //
+	  // Due to the large number of rules, 
+	  // we just put them in external files
+	  // and include them here as is.
+	  //
+	  _no_errors_this_heartbeat = true;
 #include "Validator_Rules\range_checks_general_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_tablemap_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_formula_file_inline.cpp_"
@@ -269,7 +239,6 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\range_checks_autoplayer_inline.cpp_"
 #include "Validator_Rules\range_checks_action_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_table_stats_inline.cpp_"
-#include "Validator_Rules\range_checks_icm_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_card_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_NOT_TO_DO_inline.cpp_"
 #include "Validator_Rules\consistency_checks_cards_inline.cpp_"
@@ -287,14 +256,19 @@ void CValidator::ValidateGameState()
 #include "Validator_Rules\consistency_checks_limits_inline.cpp_"
 #include "Validator_Rules\consistency_checks_number_of_bets_inline.cpp_"
 #include "Validator_Rules\consistency_checks_action_symbols_inline.cpp_"
-	ValidateVersusDBOnlyIfInstalled();
+	  ValidateVersusDBOnlyIfInstalled();
+    ValidateICMOnlyIfTournament();
 	}
 }
 
-void CValidator::ValidateVersusDBOnlyIfInstalled()
-{
-	if(p_symbol_engine_versus->VersusBinLoaded())
-	{
+void CValidator::ValidateVersusDBOnlyIfInstalled() {
+	if(p_symbol_engine_versus->VersusBinLoaded())	{
 #include "Validator_Rules\range_checks_versus_inline.cpp_"
 	}
+}
+
+void CValidator::ValidateICMOnlyIfTournament() {
+  if (p_symbol_engine_istournament->istournament()) {
+#include "Validator_Rules\range_checks_icm_symbols_inline.cpp_"
+  }
 }
