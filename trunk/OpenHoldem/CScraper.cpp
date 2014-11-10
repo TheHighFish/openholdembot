@@ -1167,22 +1167,6 @@ void CScraper::DeleteBitmaps(void)
 	}
 }
 
-void CScraper::SetLimitInfo(const SLimitInfo LI)
-{
-	__TRACE
-	set_handnumber(LI.handnumber);
-	set_sblind(LI.sblind);
-	set_bblind(LI.bblind);
-	set_bbet(LI.bbet);
-	set_ante(LI.ante);
-	set_limit(LI.limit);
-	set_found_sblind(LI.found_sblind);
-	set_found_bblind(LI.found_bblind);
-	set_found_bbet(LI.found_bbet);
-	set_found_ante(LI.found_ante);
-	set_found_limit(LI.found_limit);
-}
-
 // This is the chip scrape routine
 const double CScraper::DoChipScrape(RMapCI r_iter)
 {
