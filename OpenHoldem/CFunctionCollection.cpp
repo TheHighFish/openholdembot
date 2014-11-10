@@ -293,36 +293,42 @@ void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double v
   p_function->SetValue(value);
 }
 
-void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name)
-{
+void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name) {
   if (Exists(function_name)) {
 	 return;
   }
   // Formula not found.
   // Add the standard one.
   CString function_text;
-  if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
-	  || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical))
-  {
+  if (function_name.Compare(k_standard_function_names[k_autoplayer_function_betsize]) == k_CString_identical) {
+    function_text = 
+      "// Betsize in dollars, raise-to semantics.\n"
+      "// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.\n"
+      "// Please define your tablemaps \"swagtextmethod\" to configure this feature.\n";
+  } else if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
+	    || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical)) {
     function_text = 
       "// f$check and f$fold should evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 "; 
-  }
-  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
     function_text = 
       "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
       "// Works even with \"no opponents\".\n"
       "nopponentsplaying + 1 ";
-  }
-  else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
     function_text = 
       "// \"Reasonable\" default to get PrWin running for beginners.\n"
       "// Large enough to get usable results,\n"
       "// small enough to save CPU-time.\n"
       "1000 ";
-  }
-  else {
+  } else if (function_name.Compare(k_standard_function_names[k_icm_prize1]) == k_CString_identical) {
+    function_text = 
+      "// f$icm_prizeX functions are used to configure the payout-structure in tournaments.\n"
+      "// The sum of all f$icm_prizeX functions should be 1.00 (= 100%).\n"
+      "// Default to get things going: the winner takes it all.\n"
+      "1.00\n";
+  } else {
     // Add an empty function.
     // The function-text should contain at least one space.
     // The editor does somehow not work for completely empty formulas.
