@@ -1,3 +1,14 @@
+v7.2.1 2014-11-xx
+==================
+BUG FIXES:
+- ICM symbols caused validator-errors in cash-games.
+  This has now be changed.
+  Thanks to Winlo for reporting.
+  [THF]
+- SecondLowestBoardCard didn not work due to messed up bitwise logic.
+  Thanks to AndreGoose for reporting.
+  [THF]
+
 v7.2.0 2014-11-08
 ==================
 NEW STUFF:
@@ -7,7 +18,7 @@ NEW STUFF:
   In case you are an user of Pt3: the old-DLL is still compatible
   and can be found at https://sites.google.com/site/openholdempokerbot/downloads/.
   Future development wil concentrate on PT4, as PT3 is outdated
-  and now longer officially supported.
+  and no longer officially supported.
   [Nahman]
 
 BUG FIXES:
