@@ -6,10 +6,8 @@
 
 CPokerTrackerLookup pt_lookup;
 
-CPokerTrackerLookup::CPokerTrackerLookup()
-{
+CPokerTrackerLookup::CPokerTrackerLookup() {
 	_pt4_siteid.clear();
-	
 	// Documentation about PT3 sited_IDs:
 	// http://www.pokertracker.com/forums/viewtopic.php?f=18&t=20169&p=95629
 	// All sitenames and networknames have to be in LOWER-CASES!
@@ -41,8 +39,8 @@ CPokerTrackerLookup::CPokerTrackerLookup()
 	_pt4_siteid.insert(std::pair<CString, int> ("barriere", 2600));
 }
 
-CPokerTrackerLookup::~CPokerTrackerLookup()
-{
+CPokerTrackerLookup::~CPokerTrackerLookup() {
+  _pt4_siteid.clear();
 }
 
 const int CPokerTrackerLookup::GetSiteId()
@@ -52,8 +50,8 @@ const int CPokerTrackerLookup::GetSiteId()
 	// PT version 4 only
 	//
 	// No longer requiring an exact match for manualmode,
-    // but treating it like a normal casino.
-    // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
+  // but treating it like a normal casino.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=12158&p=108712#p108712
 
 	std::map<CString, int>::const_iterator lookup, end;
 	lookup = _pt4_siteid.begin();

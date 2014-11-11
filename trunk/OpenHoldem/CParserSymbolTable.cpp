@@ -25,6 +25,7 @@ CParserSymbolTable::CParserSymbolTable() {
 }
 
 CParserSymbolTable::~CParserSymbolTable() {
+  Clear();
 }
 
 void CParserSymbolTable::Clear() {

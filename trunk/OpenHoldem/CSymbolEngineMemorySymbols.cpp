@@ -22,6 +22,7 @@ CSymbolEngineMemorySymbols::CSymbolEngineMemorySymbols() {
 }
 
 CSymbolEngineMemorySymbols::~CSymbolEngineMemorySymbols() {
+  _memory_symbols.clear();
 }
 
 void CSymbolEngineMemorySymbols::InitOnStartup() {

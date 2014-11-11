@@ -31,12 +31,11 @@ public:
 	void ReloadAllTablemapsIfChanged();
 	CString GetTablemapPathToLoad(int tablemap_index);
 private:
-	void CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap);
 	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
 	bool tablemap_connection_dataAlreadyStored(CString TablemapFilePath);
 	void CheckForDuplicatedTablemaps();
-	void ExtractConnectionDataFromCurrentTablemap(SWholeMap *map);
+	void ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap);
 private:
 	bool	tablemaps_in_scraper_folder_already_parsed;
 	int		_number_of_tablemaps_loaded;

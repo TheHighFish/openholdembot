@@ -666,6 +666,9 @@
     <ClCompile Include="CSelftestParserEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CLimitScraper.cpp">
+      <Filter>Source Files\Scraper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1449,6 +1452,9 @@
     </ClInclude>
     <ClInclude Include="CSelftestParserEvaluator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CLimitScraper.h">
+      <Filter>Header Files\Scraper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

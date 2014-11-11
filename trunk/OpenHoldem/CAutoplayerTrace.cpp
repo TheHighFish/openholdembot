@@ -37,8 +37,9 @@ CAutoplayerTrace::CAutoplayerTrace() {
   Clear();
 }
 
-CAutoplayerTrace::~CAutoplayerTrace()
-{}
+CAutoplayerTrace::~CAutoplayerTrace() {
+  Clear();
+}
 
 void CAutoplayerTrace::Clear() {
   ENT 

@@ -23,6 +23,7 @@ CSymbolEngineOpenPPLUserVariables::CSymbolEngineOpenPPLUserVariables() {
 }
 
 CSymbolEngineOpenPPLUserVariables::~CSymbolEngineOpenPPLUserVariables() {
+  _user_variables.clear();
 }
 
 void CSymbolEngineOpenPPLUserVariables::InitOnStartup() {

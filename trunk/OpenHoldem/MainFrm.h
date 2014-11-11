@@ -111,7 +111,6 @@ private:
 extern CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);
-bool check_window_match(SWholeMap *map, HWND h, RECT r, CString title);
 
 // Accessor function because p_mainframe never gets initialized.
 CMainFrame* PMainframe();

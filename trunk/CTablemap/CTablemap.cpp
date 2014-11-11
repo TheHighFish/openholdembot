@@ -31,13 +31,11 @@
 
 CTablemap			*p_tablemap = NULL;
 
-CTablemap::CTablemap(void)
-{
-    ClearTablemap();
+CTablemap::CTablemap(void) {
+  ClearTablemap();
 }
 
-CTablemap::~CTablemap(void)
-{
+CTablemap::~CTablemap(void) {
 	ClearTablemap();
 }
 
@@ -136,32 +134,28 @@ void CTablemap::ClearIMap()
 #endif
 }
 
-void CTablemap::ClearTablemap()
-{
+void CTablemap::ClearTablemap() {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] ClearTablemap\n");
 #endif
 
 	CSLock lock(m_critsec);
-
 	_valid = false;
 	_filepath = "";
 	_filename = "";
-
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
-
-	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++) {
 		_t$[i].clear();
-
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+  }
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++) {
 		_p$[i].clear();
-
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+  }
+  for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++) {
 		_h$[i].clear();
-
-	// Clear _i$-map and its contents
+  }
+  // Clear _i$-map and its contents
 	ClearIMap();
 }
 
