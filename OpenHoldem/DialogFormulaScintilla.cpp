@@ -53,11 +53,6 @@ CDlgFormulaScintilla	*m_formulaScintillaDlg = NULL;
 // Keywords got changed from "char* to "CString"
 // as we want to create this list dynamically
 CString keywords;
-
-CString OpenPPL_keywords = "Custom Preflop Flop Turn River "
-	"When Allin RaiseMax BetMax RaisePot BetPot RaiseHalfPot BetHalfPot "
-	"Raise Bet Call Play Check Fold Beep Force Delay "
-	"And Or Not XOr BitAnd BitOr BitNot BitXOr Mod Set";
 				  
 #define ID_SCIN_SIZERBAR 5555
 

@@ -216,31 +216,27 @@ void CAutoConnector::GoIntoPopupBlockingMode()
 	}
 }
 
-bool CAutoConnector::Connect(HWND targetHWnd)
-{
+bool CAutoConnector::Connect(HWND targetHWnd) {
 	int					N = 0, line = 0, ret = 0;
 	char				title[MAX_WINDOW_TITLE] = {0};
 	int					SelectedItem = -1;
-	SWholeMap			smap;
-	CString				current_path = "";
+	CString			current_path = "";
 	BOOL				bFound = false;
-	CFileFind			hFile;
+	CFileFind   hFile;
 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
 
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
-	if (!_autoconnector_mutex->Lock(500))
-	{
+	if (!_autoconnector_mutex->Lock(500))	{
 		write_log(preferences.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
 		return false; 
 	}
-
-	// Clear global list for holding table candidates
+  // Clear global list for holding table candidates
 	g_tlist.RemoveAll();
-	
-	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++)
-	{
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded> %i\n",
+    p_tablemap_loader->NumberOfTableMapsLoaded());
+	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++) {
 		write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
 			tablemap_index, p_tablemap_loader->NumberOfTableMapsLoaded());
 		Check_TM_Against_All_Windows_Or_TargetHWND(tablemap_index, targetHWnd);
@@ -248,20 +244,14 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	
 	// Put global candidate table list in table select dialog variables
 	N = (int) g_tlist.GetSize();
-	if (N == 0) 
-	{
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates> %i\n", N);
+	if (N == 0) {
 		FailedToConnectBecauseNoWindowInList();
-	}
-	else 
-	{
+	}	else 	{
 		SelectedItem = SelectTableMapAndWindow(N);
-
-		if (SelectedItem == k_undefined)
-		{
+		if (SelectedItem == k_undefined) {
 			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
-		}
-		else		
-		{
+		}	else {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
 			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window marked at shared memory\n");
@@ -289,8 +279,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
 
 			// Reset "ScraperOutput" dialog, if it is live
-			if (m_ScraperOutputDlg) 
-			{
+			if (m_ScraperOutputDlg) {
 				m_ScraperOutputDlg->Reset();
 			}
 
@@ -298,8 +287,9 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 			p_flags_toolbar->ResetButtonsOnConnect();
 
 			// Send "connect" and HWND to scraper DLL, if loaded
-			if (theApp._dll_scraper_process_message)
+			if (theApp._dll_scraper_process_message) {
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
+      }
 
 			p_scraper_access->InitOnConnect();
 			// Start timer that checks for continued existence of attached HWND
@@ -310,8 +300,7 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 
 			// log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
-
-			WriteLogTableReset();
+      WriteLogTableReset();
 
 			p_table_positioner->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
@@ -321,7 +310,6 @@ bool CAutoConnector::Connect(HWND targetHWnd)
 	_autoconnector_mutex->Unlock();
 	return (SelectedItem != -1);
 }
-
 
 void CAutoConnector::LoadScraperDLL()
 {

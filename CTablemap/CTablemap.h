@@ -109,20 +109,6 @@ typedef std::map<uint32_t, STablemapImage> IMap;
 typedef IMap::iterator IMapI;
 typedef IMap::const_iterator IMapCI;
 
-struct SWholeMap
-{
-	const ZMap	*z$;
-	const SMap	*s$;
-	const RMap	*r$;
-	const TMap	*t$[k_max_number_of_font_groups_in_tablemap];
-	const PMap	*p$[k_max_number_of_hash_groups_in_tablemap];
-	const HMap	*h$[k_max_number_of_hash_groups_in_tablemap];
-	const IMap	*i$;
-	CString filepath;
-	CString sitename;
-	CString titletext;
-};
-
 class CTablemap 
 {
 	friend class CTablemapAccess;

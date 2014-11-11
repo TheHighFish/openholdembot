@@ -61,40 +61,11 @@ CTableMapLoader::~CTableMapLoader()
 	__TRACE
 }
 
-
-void CTableMapLoader::CTableMapToSWholeMap(CTablemap *cmap, SWholeMap *smap)
-{
-	__TRACE
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CTableMapToSWholeMap: %s\n", p_tablemap->filepath());
-	smap->z$ = p_tablemap->z$();
-	smap->s$ = p_tablemap->s$();
-	smap->r$ = p_tablemap->r$();
-	smap->titletext = p_tablemap->titletext();
-
-	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
-	{
-		smap->t$[i] = p_tablemap->t$(i);
-	}
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-	{
-		smap->p$[i] = p_tablemap->p$(i);
-	}
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
-	{
-		smap->h$[i] = p_tablemap->h$(i);
-	}
-	smap->i$ = p_tablemap->i$();
-	smap->filepath = p_tablemap->filepath();
-	smap->sitename = p_tablemap->sitename();
-}
-
-
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard)
 {
 	__TRACE
 	CFileFind	hFile;
-	SWholeMap	smap;
-	int			line = 0;
+	CTablemap	cmap;
 
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
 	_number_of_tablemaps_loaded = 0;
@@ -115,8 +86,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 			int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
 			if (ret == SUCCESS)
 			{
-				CTableMapToSWholeMap(p_tablemap, &smap);
-				ExtractConnectionDataFromCurrentTablemap(&smap);
+				ExtractConnectionDataFromCurrentTablemap(&cmap);
                 CTablemapCompletenessChecker tablemap_completeness_checker;
                 tablemap_completeness_checker.VerifyMap();
 				write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
@@ -180,31 +150,30 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 	}
 }
 
-
-void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(SWholeMap *map)
+void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap)
 {
 	__TRACE
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", map->filepath);
+	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", cmap->filepath());
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
-	if (tablemap_connection_dataAlreadyStored(map->filepath))
+	if (tablemap_connection_dataAlreadyStored(cmap->filepath()))
 	{
 		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
 		return;
 	}
 
-	tablemap_connection_data[_number_of_tablemaps_loaded].FilePath = map->filepath;
-	tablemap_connection_data[_number_of_tablemaps_loaded].SiteName = map->sitename;
-	tablemap_connection_data[_number_of_tablemaps_loaded].TitleText = map->titletext;
+	tablemap_connection_data[_number_of_tablemaps_loaded].FilePath = cmap->filepath();
+	tablemap_connection_data[_number_of_tablemaps_loaded].SiteName = cmap->sitename();
+	tablemap_connection_data[_number_of_tablemaps_loaded].TitleText = cmap->titletext();
 
-	if (map->sitename == "")
+	if (cmap->sitename() == "")
 	{
 		CString error_message;
 		error_message.Format("Tablemap contains no sitename.\n"
 			"Sitenames are necessary to recognize duplicate TMs\n"
 			"(and for other features like PokerTracker).\n\n",
-			"%s", map->filepath);
+			"%s", cmap->filepath());
 		OH_MessageBox_Error_Warning(error_message, "Warning");
 	}
 	

@@ -25,8 +25,10 @@
 #include "OpenHoldem.h"
 #include <sys/stat.h>
 
+#ifdef _DEBUG
 // visual leak detector
-//#include <vld.h>			
+#include <vld.h>			
+#endif _DEBUG
 
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
