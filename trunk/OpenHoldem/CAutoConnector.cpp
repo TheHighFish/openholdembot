@@ -234,7 +234,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	}
   // Clear global list for holding table candidates
 	g_tlist.RemoveAll();
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded> %i\n",
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded: %i\n",
     p_tablemap_loader->NumberOfTableMapsLoaded());
 	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++) {
 		write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
