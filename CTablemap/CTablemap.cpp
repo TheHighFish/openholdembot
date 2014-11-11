@@ -192,33 +192,33 @@ bool CTablemap::FontGroupInUse(int font_index) {
   return (!font_group.empty());
 }
 
-int CTablemap::LoadTablemap(const CString _fname) 
-{
+int CTablemap::LoadTablemap(const CString _fname) {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
 
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	CString		MaxFontGroup = "", MaxHashGroup = "";
-	int			pos = 0, x = 0, y = 0;
+	int			  pos = 0, x = 0, y = 0;
 
 	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
 	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
 
 	// temp
-	STablemapSize			hold_size;
-	STablemapSymbol			hold_symbol;
-	STablemapRegion			hold_region;
-	STablemapFont			hold_font;
-	STablemapHashPoint		hold_hash_point;
-	STablemapHashValue		hold_hash_value;
-	STablemapImage			hold_image;
+	STablemapSize      hold_size;
+	STablemapSymbol    hold_symbol;
+	STablemapRegion	   hold_region;
+	STablemapFont			 hold_font;
+	STablemapHashPoint hold_hash_point;
+	STablemapHashValue hold_hash_value;
+	STablemapImage		 hold_image;
 
 	// Clean up the global.profile structure
 	ClearTablemap();
 
 	CSLock lock(m_critsec);
 	
+  assert(_fname != "");
 	_filename = _fname;
 	_filepath = _fname;
 	// Open the selected file

@@ -61,34 +61,28 @@ CTableMapLoader::~CTableMapLoader()
 	__TRACE
 }
 
-void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard)
-{
+void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard) {
 	__TRACE
 	CFileFind	hFile;
-	CTablemap	cmap;
-
+	
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
 	_number_of_tablemaps_loaded = 0;
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
-	while (bFound)
-	{
-		if (_number_of_tablemaps_loaded >= k_max_nmber_of_tablemaps)
-		{
+	while (bFound) {
+		if (_number_of_tablemaps_loaded >= k_max_nmber_of_tablemaps) {
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
 			OH_MessageBox_Error_Warning("To many tablemaps.\n"
 				"The auto-connector can handle 25 at most.");
 			return;
 		}
 		bFound = hFile.FindNextFile();
-		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path)
-		{
+		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path) {
 			int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
-			if (ret == SUCCESS)
-			{
-				ExtractConnectionDataFromCurrentTablemap(&cmap);
-                CTablemapCompletenessChecker tablemap_completeness_checker;
-                tablemap_completeness_checker.VerifyMap();
+			if (ret == SUCCESS)	{
+				ExtractConnectionDataFromCurrentTablemap(p_tablemap);
+        CTablemapCompletenessChecker tablemap_completeness_checker;
+        tablemap_completeness_checker.VerifyMap();
 				write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 			}
 		}
@@ -108,13 +102,12 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 }
 
 
-bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFilePath)
-{
+bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFilePath) {
 	__TRACE
-	for (int i=0; i<=_number_of_tablemaps_loaded; i++)
-	{
-		if (tablemap_connection_data[i].FilePath == TablemapFilePath)
-		{
+  assert(TablemapFilePath != "");
+	for (int i=0; i<_number_of_tablemaps_loaded; i++)	{
+    assert(tablemap_connection_data[i].FilePath != "");
+		if (tablemap_connection_data[i].FilePath == TablemapFilePath)	{
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [true]\n", TablemapFilePath);
 			return true;
 		}
