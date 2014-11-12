@@ -313,6 +313,9 @@ RaiseMax
 // as it indicates the weakness and avoids any pitfalls.
 999
 
+##HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function##
+-1
+
 ##HINT_There_Are_No_True_Raisers##
 -1
 
@@ -2664,8 +2667,23 @@ HaveAnyKindOfInsideStraightDraw
 ##HaveNuts##
 (nhandshi == 0)
 
+##HigherStraightFlushPossible##
+// Main idea:
+// I already use 3 (out of up to 5) SF-cards at the board.
+// The guy with the higher flush also has to use at least 3.
+// Therefore we have to share at least 1 card.
+// (at my higher end and at his bottom end.
+// Therefore a SF must be possible with the 5 cards above my flush-card
+// and at least 3 of these 5 cards must be at the board.
+isroyalflush ? False :
+!isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
+(`((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
+
 ##HaveNutStraightFlush##
-isstraightflush && (nhandshi == 0)
+// nhandshi seems to be wrong for bottom straightflushes without an easy fix:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17571
+// Therefore we do no longer use it here.
+isstraightflush && !HigherStraightFlushPossible
 
 ##HaveOpenEndedStraightDraw##
 HaveStraight
