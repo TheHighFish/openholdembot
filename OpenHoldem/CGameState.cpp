@@ -712,7 +712,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			// if it is not my first action this round, then iterate from mychair+1 to mychair-1+10
 			else
 			{
-				from_chair = sym_userchair+1;
+				from_chair = sym_userchair;
 				to_chair = sym_userchair-1+k_max_number_of_players;
 			}
 

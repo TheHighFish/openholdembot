@@ -50,7 +50,7 @@
 #define ERR_BAD_PARSE				17
 #define ERR_INCOMPLETEMASTER		18
 
-const CString k_tablemap_errors_and_parse_errors_explained[19] =	
+const char* const k_tablemap_errors_and_parse_errors_explained[19] =	
 	{"success", "unexpected end of file", "invalid syntax", "incorrect version",
 	"not a master file", "hash collision", "invalid region size", "unknown line type",
 	"invalid hash type", "missing equal sign", "invalid symbol", "invalid function symbol",

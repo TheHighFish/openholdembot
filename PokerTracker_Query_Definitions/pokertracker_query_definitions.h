@@ -23,7 +23,7 @@
 #include "atlstr.h"
 
 const int kNumberOfPokerTrackerPostfixes = 10;
-const CString kPokerTrackerPostfixes[kNumberOfPokerTrackerPostfixes] = {
+const char* const kPokerTrackerPostfixes[kNumberOfPokerTrackerPostfixes] = {
   "_raischair",
   "_headsup",
   "_smallblind",
