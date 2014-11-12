@@ -8,6 +8,14 @@ BUG FIXES:
 - SecondLowestBoardCard didn not work due to messed up bitwise logic.
   Thanks to AndreGoose for reporting.
   [THF]
+- HaveNutStraightFlush was incorrectly true for bottom-straightflusshes.
+  Thanks To AndreGoose for reporting.
+  [THF]
+- Some smaller fixes to the CGamestate-class which affected especially 
+  the summary in the logs.
+  [TT_83]
+- Fixing hlaf a dozen small memory leaks in the rewritten scraper and parser.
+  [THF]
 
 v7.2.0 2014-11-08
 ==================
