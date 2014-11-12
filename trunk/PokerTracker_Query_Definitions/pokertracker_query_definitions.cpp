@@ -55,8 +55,8 @@ POKERTRACKER_DLL_API int PT_DLL_GetNumberOfStats() {
 // so that they are usable for both ring-games and tournaments 
 const int k_holdem_id  = 1;
 const int k_omaha_id  = 2;
-const CString k_tournament_infix = "tourney";
-const CString k_cashgame_infix = "cash";
+const char* const k_tournament_infix = "tourney";
+const char* const k_cashgame_infix = "cash";
 
 // Values of all stats for all players
 double stats[k_number_of_pokertracker_stats][k_max_number_of_players];
@@ -117,7 +117,7 @@ CString PureSymbolName(CString symbol_name) {
 			symbol_name = symbol_name.Left(symbol_name.GetLength() - 1);
 		}	else {
       for (int i=0; i<kNumberOfPokerTrackerPostfixes; ++i) {
-        int length = kPokerTrackerPostfixes[i].GetLength();
+        int length = strlen(kPokerTrackerPostfixes[i]);
         if(symbol_name.Right(length) == kPokerTrackerPostfixes[i]) {
 			    symbol_name = symbol_name.Left(symbol_name.GetLength() - length);
           break;
