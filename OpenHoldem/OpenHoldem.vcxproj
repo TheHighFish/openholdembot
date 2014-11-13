@@ -200,6 +200,7 @@
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
+    <ClCompile Include="CSymbolengineTableStats.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CValidator.cpp" />
@@ -452,6 +453,7 @@
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
+    <ClInclude Include="CSymbolengineTableStats.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CValidator.h" />
