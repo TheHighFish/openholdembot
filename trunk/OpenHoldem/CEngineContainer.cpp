@@ -49,6 +49,7 @@
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
+#include "CSymbolEngineTableStats.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineVariousDataLookup.h"
@@ -95,6 +96,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
+  // CSymbolEngineTableStats
+  p_symbol_engine_table_stats = new CSymbolEngineTableStats();
+  AddSymbolEngine(p_symbol_engine_table_stats);
   // CSymbolEngineUserchair
   p_symbol_engine_userchair = new CSymbolEngineUserchair();
   AddSymbolEngine(p_symbol_engine_userchair);

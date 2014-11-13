@@ -163,7 +163,7 @@ struct ftr_info
 	unsigned int	n_pl_saw_flop;          //number of players that saw the flop this hand
 	unsigned int	n_pl_saw_turn;          //number of players that saw the turn this hand
 	unsigned int	n_pl_saw_river;         //number of players that saw the river this hand
-	double			n_bets_preflop;         //number of bets preflop (1-4)
+	double		  	n_bets_preflop;         //number of bets preflop
 };
 
 

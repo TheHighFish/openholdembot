@@ -669,6 +669,9 @@
     <ClCompile Include="CLimitScraper.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolengineTableStats.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1455,6 +1458,9 @@
     </ClInclude>
     <ClInclude Include="CLimitScraper.h">
       <Filter>Header Files\Scraper</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineTableStats.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
