@@ -1,3 +1,27 @@
+v7.x.x 2014-11/xx
+==================
+NEW STUFF:
+- Handresets work now automagically.
+  In the past we had 3 different ways to detect handreset
+  combined with a tablemap-symbol "handresetmethod".
+  As soon as one of the chosen handresetmethods fired a handreset got detected.
+  This lead to lots of incorrect handresets bz occluded tables (especially for beginners)
+  and a a consequence to a reset of game-hostory.
+  Now we introduced 5 more ways to detect handresets:
+    * disappearing community-cards
+    * decreasing potsize preflop
+    * increasing number of playing opponents
+    * increasing stacksize of a playing opponent
+    * reappearence of a small blind
+  in addition to the 3 old ones:
+    * changing dealer-chair
+    * changing user=cards
+    * changing hand-number
+  OpenHoldem will now automatically detect a handreset
+  if at least 2 independent methods fire within 3 heartbeats.
+  The old tablemap-symbol "handresetmethod" is now depricated.
+  [THF]
+
 v7.1.1 2014-10-27
 ==================
 BUG FIXES:
