@@ -508,7 +508,7 @@ bool CParseTreeNode::IsBinaryIdentifier() {
   assert(_terminal_name != "");
   // Check elementary binary identifiers first
   for (int i=0; i<kNumberOfElementaryBinaryIdentifiers; ++i) {
-    if (_terminal_name == kParameterizedBinaryIdentifiers[i]) return true;
+    if (_terminal_name == kElementaryBinaryIdentifiers[i]) return true;
   }
   // Then check parameterized binary symbols
   for (int i=0; i<kNumberOfParameterizedBinaryIdentifiers; ++i) {
