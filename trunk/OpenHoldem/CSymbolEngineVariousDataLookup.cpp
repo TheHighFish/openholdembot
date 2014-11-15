@@ -89,15 +89,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     assert(p_perl != NULL);
     *result = p_perl->GetPerlSymbol(name);
   }
-  // History symbols
-  else if (memcmp(name, "hi_", 3)==0) {
-    char	sym[50] = {0};
-    int		round = 0;
-    strcpy_s(sym, 50, &name[3]);
-    round = sym[strlen(sym)-1]-'0';
-    sym[strlen(sym)-1] = '\0';
-    *result = p_game_state->OHSymHist(sym, round);
-  }
   // CHAIRS 1(2)
   else if (memcmp(name, "chair", 5)==0) {
     if (memcmp(name, "chair$", 6)==0)							*result = Chair$(&name[6]);
@@ -154,7 +145,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_chair$, ....
-  CString list = "dll$ pl_vs$ hi_ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
+  CString list = "dll$ pl_ vs$ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
     "prwin prlos prtie "
     "betround fmax f flagbits "
     "nchairs session version "

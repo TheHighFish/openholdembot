@@ -15,6 +15,7 @@
 #include "CSymbolEngineHistory.h"
 
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -24,6 +25,39 @@
 
 CSymbolEngineHistory *p_symbol_engine_history  = NULL;
 
+const char* const k_hist_sym_strings[k_hist_sym_count] = {
+	//PROBABILITIES (3)
+	"prwin", "prlos", "prtie", 
+	//CHIP AMOUNTS (21)
+	"balance", "balance0", "balance1", "balance2", "balance3", "balance4", "balance5", 
+	"balance6", "balance7", "balance8", "balance9", "stack0", "stack1", "stack2", "stack3", 
+	"stack4", "stack5", "stack6", "stack7", "stack8", "stack9", 
+	//POKER VALUES (5)
+	"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
+	//HAND TESTS (12)
+	"ishandup", "ishandupcommon", "ishicard", "isonepair", "istwopair", "isthreeofakind", 
+	"isstraight", "isflush", "isfullhouse", "isfourofakind", "isstraightflush", "isroyalflush", 
+	//POCKET/COMMON TESTS (5)
+	"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
+	//(UN)KNOWN CARDS (1)
+	"ncardsbetter", 
+	//NHANDS (6)
+	"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 
+	//FLUSHES SETS STRAIGHTS (16)
+	"nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", "nrankedcommon", "trank", 
+	"trankcommon", "nstraight", "nstraightcommon", "nstraightfill", "nstraightfillcommon", 
+	"nstraightflush", "nstraightflushcommon", "nstraightflushfill", "nstraightflushfillcommon", 
+	//RANK BITS (8)
+	"rankbits", "rankbitscommon", "rankbitsplayer", "rankbitspoker", "srankbits", 
+	"srankbitscommon", "srankbitsplayer", "srankbitspoker", 
+	//RANK HI (8)
+	"rankhi", "rankhicommon", "rankhiplayer", "rankhipoker", "srankhi", "srankhicommon", 
+	"srankhiplayer", "srankhipoker", 
+	//RANK LO (8)
+	"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
+	"srankloplayer", "sranklopoker", 
+};
+
 CSymbolEngineHistory::CSymbolEngineHistory()
 {
 	// The values of some symbol-engines depend on other engines.
@@ -32,6 +66,11 @@ CSymbolEngineHistory::CSymbolEngineHistory()
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_userchair != NULL);
+  // Making sure that _hist_sym_count is correct,
+	// to avoid array overflows later if we remove symbols
+	// without adapting the counter.
+	// Last index is (_hist_sym_count - 1).
+	assert(_hist_sym_strings[_hist_sym_count - 1] != NULL);
 }
 
 CSymbolEngineHistory::~CSymbolEngineHistory()
@@ -47,27 +86,35 @@ void CSymbolEngineHistory::ResetOnConnection()
 	ResetOnHandreset();
 }
 
-void CSymbolEngineHistory::ResetOnHandreset()
-{
+void CSymbolEngineHistory::ResetOnHandreset() {
   _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
-	for (int i=0; i<(k_number_of_betrounds+1); i++)
-	{
+	for (int i=0; i<(k_number_of_betrounds+1); ++i) {
 		_nplayersround[i] = 0;
 		_nbetsround[i] = 0;
-		for (int j=0; j<=k_autoplayer_function_fold; j++)
-		{
+		for (int j=0; j<=k_autoplayer_function_fold; ++j)	{
 			_autoplayer_actions[i][j] = 0;
 		}
+    // History-smbols
+    for (int j=0; j<k_hist_sym_count; ++j) {
+      _hist_sym[j][i] = 0.0;
+    }
 	}
 }
 
 void CSymbolEngineHistory::ResetOnNewRound()
 {}
 
-void CSymbolEngineHistory::ResetOnMyTurn()
-{
+void CSymbolEngineHistory::ResetOnMyTurn() {
 	__TRACE
+  // Collect symbol if ismyturn.
+  // Per definition we need to get the value at last myturn in betround N.
+  int	betround = p_betround_calculator->betround();
+	for (int i=0; i<k_hist_sym_count; ++i)	{
+		double result;
+		p_engine_container->EvaluateSymbol(k_hist_sym_strings[i], &result);
+		_hist_sym[i][betround] = result;
+	}
 }
 
 void CSymbolEngineHistory::ResetOnHeartbeat()
@@ -188,84 +235,66 @@ void CSymbolEngineHistory::CalculateHistory()
 	}
 }
 
-bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
-{
+double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
+	for (int i=0; i<k_hist_sym_count; i++)	{
+		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
+			return _hist_sym[i][round-1];
+		}
+	}
+	return k_undefined_zero;
+}
+
+bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "did", 3) == 0)
-	{
-		if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	
-		{
+	if (memcmp(name, "did", 3) == 0)	{
+		if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	{
 			*result = didchec(p_betround_calculator->betround());
-		}
-		else if (memcmp(name, "didcall", 7)==0 && strlen(name)==7)	
-		{
+		}	else if (memcmp(name, "didcall", 7)==0 && strlen(name)==7) {
 			*result = didcall(p_betround_calculator->betround());
-		}
-		else if (memcmp(name, "didrais", 7)==0 && strlen(name)==7)	
-		{
+		}	else if (memcmp(name, "didrais", 7)==0 && strlen(name)==7) {
 			*result = didrais(p_betround_calculator->betround());
-		}
-		else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7)	
-		{
+		}	else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7) {
 			*result = didswag(p_betround_calculator->betround());
-		}
-		else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	
-		{
+		}	else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	{
 			*result = didchec(name[12]-'0');
-		}
-		else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	
-		{
+		}	else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	{
 			*result = didcall(name[12]-'0');
-		}
-		else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	
-		{
+		}	else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	{
 			*result = didrais(name[12]-'0');
-		}
-		else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)
-		{
+		}	else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)	{
 			*result = didswag(name[12]-'0');
-		}
-		else
-		{
+		}	else {
 			// Invalid symbol
 			return false;
 		}
 		// Valid symbol
 		return true;
-	}
-	else if (memcmp(name, "nplayersround", 13)==0)
-	{
-		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13) 	
-		{
+	}	else if (memcmp(name, "nplayersround", 13)==0) {
+		if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==13) {
       // For current betting round
 			*result = nplayersround(p_betround_calculator->betround());
-		}
-		else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14)	
-		{
+		}	else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14) {
 			*result = nplayersround(name[13]-'0');
-		}
-		else
-		{
+		}	else {
 			// Invalid symbol
 			return false;
 		}
 		// Valid symbol
 		return true;
-	}
-	else if (memcmp(name, "prevaction", 10)==0 && strlen(name)==10)	
-	{
+	}	else if (memcmp(name, "prevaction", 10)==0 && strlen(name)==10)	{
 		*result = prevaction();
-	}
-	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==10)
-	{
+	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==10)	{
 		*result = nbetsround(p_betround_calculator->betround());
-	}
-	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)
-	{
+	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)	{
 		*result = nbetsround(name[10]-'0');
-	}
-	else
-	{
+	}  else if (memcmp(name, "hi_", 3)==0) {
+    // History symbols
+    int	round = name[strlen(name)-1]-'0';
+    char *pure_name = (char*)name + 3;
+    //!!!!!betround needs to be removed!
+    *result = HistorySymbol(pure_name, round);
+    return true;
+  }	else {
 		// Symbol of a different symbol-engine
 		return false;
 	}
@@ -289,6 +318,8 @@ bool CSymbolEngineHistory::DidAct(int betround)
 		|| didswag(betround) || didrais(betround));
 }
 
+
+
 CString CSymbolEngineHistory::SymbolsProvided() {
   CString list = "didchec didcall didrais didswag "
     "nplayersround nbetsround prevaction ";
@@ -298,5 +329,13 @@ CString CSymbolEngineHistory::SymbolsProvided() {
   list += RangeOfSymbols("didswaground%i",  k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("nplayersround%i", k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("nbetsround%i",    k_betround_preflop, k_betround_river);
+  for (int i=0; i<k_hist_sym_count; ++i) {
+    CString new_history_symbol;
+    new_history_symbol.Format("hi_%s%%i", k_hist_sym_strings[i]);
+    list += RangeOfSymbols(new_history_symbol, k_betround_preflop, k_betround_river);
+  }
   return list;
 }
+
+
+	

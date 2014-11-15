@@ -75,6 +75,6 @@ private:
 
 extern CPerl *p_perl;
 
-#endif /* INC_CPEARL_H */
+#endif INC_CPEARL_H
 
 

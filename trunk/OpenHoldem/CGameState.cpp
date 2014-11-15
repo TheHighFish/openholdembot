@@ -40,12 +40,6 @@ CGameState			*p_game_state = NULL;
 
 CGameState::CGameState()
 {
-	// Making sure that _hist_sym_count is correct,
-	// to avoid array overflows later if we remove symbols
-	// without adapting the counter.
-	// Last index is (_hist_sym_count - 1).
-	assert(_hist_sym_strings[_hist_sym_count - 1] != NULL);
-
 	_m_ndx = 0;
 	_hands_played = 0;
 	_m_game_ndx = 0;
@@ -119,38 +113,13 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	// only process wh state if something interesting within the structure changes
 	if (pstate!=NULL && (pstate_changed || sym_ismyturn))
 		ProcessStateEngine(pstate, pstate_changed);
-
-	// reset wh symbol GameState if button moves
-	if (_new_hand)
-	{
-		for (int i=0; i<_hist_sym_count; i++)
-		{
-			for (int j=0; j<k_number_of_betrounds; j++)
-			{
-				_hist_sym[i][j] = 0.0;
-			}
-		}
-	}
-
-	set_new_hand(false);
-
-	// collect symbol if it ismyturn, or if ismanual
-	if (sym_ismyturn || sym_ismanual)
-	{
-		for (int i=0; i<_hist_sym_count; i++)
-		{
-			double result;
-			p_engine_container->EvaluateSymbol(_hist_sym_strings[i], &result);
-			_hist_sym[i][betround-k_betround_preflop] = result;
-		}
-	}
+  set_new_hand(false);
 }
 
 void CGameState::ProcessFtr(const SHoldemState *pstate)
 {
 	ProcessFtrEngine(pstate);
 }
-
 
 void CGameState::CaptureState()
 {
@@ -255,19 +224,6 @@ const int CGameState::LastRaised(const int round)
 	}
 
 	return last_raised;
-}
-
-const double CGameState::OHSymHist(const char * sym, const int round)
-{
-	for (int i=0; i<_hist_sym_count; i++)
-	{
-		if (memcmp(sym, _hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(_hist_sym_strings[i]))
-		{
-			return _hist_sym[i][round-1];
-		}
-	}
-
-	return 0.0;
 }
 
 const double CGameState::SortedBalance(const int rank)
@@ -724,50 +680,6 @@ void CGameState::DumpState(void)
 		write_log(preferences.debug_alltherest(), "[CGameState] _balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
 }
-
-const char *CGameState::_hist_sym_strings[_hist_sym_count] = 
-{
-	//PROBABILITIES (3)
-	"prwin", "prlos", "prtie", 
-	
-	//CHIP AMOUNTS (21)
-	"balance", "balance0", "balance1", "balance2", "balance3", "balance4", "balance5", 
-	"balance6", "balance7", "balance8", "balance9", "stack0", "stack1", "stack2", "stack3", 
-	"stack4", "stack5", "stack6", "stack7", "stack8", "stack9", 
-
-	//POKER VALUES (5)
-	"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
-
-	//HAND TESTS (12)
-	"ishandup", "ishandupcommon", "ishicard", "isonepair", "istwopair", "isthreeofakind", 
-	"isstraight", "isflush", "isfullhouse", "isfourofakind", "isstraightflush", "isroyalflush", 
-	
-	//POCKET/COMMON TESTS (5)
-	"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
-
-	//(UN)KNOWN CARDS (1)
-	"ncardsbetter", 
-
-	//NHANDS (6)
-	"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 
-
-	//FLUSHES SETS STRAIGHTS (16)
-	"nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", "nrankedcommon", "trank", 
-	"trankcommon", "nstraight", "nstraightcommon", "nstraightfill", "nstraightfillcommon", 
-	"nstraightflush", "nstraightflushcommon", "nstraightflushfill", "nstraightflushfillcommon", 
-
-	//RANK BITS (8)
-	"rankbits", "rankbitscommon", "rankbitsplayer", "rankbitspoker", "srankbits", 
-	"srankbitscommon", "srankbitsplayer", "srankbitspoker", 
-
-	//RANK HI (8)
-	"rankhi", "rankhicommon", "rankhiplayer", "rankhipoker", "srankhi", "srankhicommon", 
-	"srankhiplayer", "srankhipoker", 
-
-	//RANK LO (8)
-	"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
-	"srankloplayer", "sranklopoker", 
-};
 
 const int CGameState::hands_played() { 
   return _hands_played; 

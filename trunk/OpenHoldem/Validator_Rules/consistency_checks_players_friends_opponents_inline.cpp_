@@ -65,10 +65,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The sets of players playing, folded and sitting out are disjoint.")
     PRECONDITION (true)
-    /*
-    POSTCONDITION (((int(gws("opponentssplayingbits")) & int(gws("opponentsfoldedbits"))) == 0) && ((int(gws("playersplayingbits")) & !int(gws("playersactivebits"))) == 0) && ((int(gws("opponentsfoldedbits")) & !int(gws("playersactivebits"))) == 0))
-    SYMBOLS_POSSIBLY_AFFECTED ("playersplayingbits, opponentsfoldedbits, playersactivebits")
-    */
-    POSTCONDITION ((int(gws("playersplayingbits")) & !int(gws("playersactivebits"))) == 0)
+    POSTCONDITION ((int(gws("playersplayingbits")) & ~int(gws("playersactivebits"))) == 0)
     SYMBOLS_POSSIBLY_AFFECTED ("playersplayingbits, playersactivebits")
 END_TESTCASE

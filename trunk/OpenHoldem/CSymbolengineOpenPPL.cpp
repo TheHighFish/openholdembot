@@ -21,6 +21,8 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
+#include "CSymbolEngineOpenPPLUserVariables.h"
+#include "CSymbolEngineVariousDataLookup.h"
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 
@@ -37,10 +39,10 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	// This engine does not use any other engines, 
   // but it triggers calculations in the OpenPPL-library
   // that use nearly all other symbol-engines.
-  /*!!!assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_positions != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);*/
+  // For convenience we assure only 
+  // that the last other engines got initialiyed
+	assert(p_symbol_engine_various_data_lookup != NULL);
+  assert(p_symbol_engine_openppl_user_variables != NULL);
 }
 
 CSymbolEngineOpenPPL::~CSymbolEngineOpenPPL() {

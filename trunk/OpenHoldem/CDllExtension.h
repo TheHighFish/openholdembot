@@ -69,4 +69,4 @@ extern "C" __declspec(dllexport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
 extern "C" __declspec(dllexport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 
-#endif /* INC_CDLLEXTENSION_H */
+#endif INC_CDLLEXTENSION_H 

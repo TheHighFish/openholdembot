@@ -45,6 +45,7 @@
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
+#include "MemoryLogging.h"
 #include "NumericalFunctions.h"
 #include "OpenHoldem.h"
 #include "CHandHistory.h"
@@ -112,6 +113,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
+    LogMemoryUsage("Begin of heartbeat thread cycle");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
 		if (!p_autoconnector->IsConnected()) {
 			AutoConnect();			
