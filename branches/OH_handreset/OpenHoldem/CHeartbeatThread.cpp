@@ -208,15 +208,9 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Hand history generator
-
 	if (preferences.handhistory_generator_enable()) {
 		p_handhistory->MakeHistory();
 	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// Switching from basic to advanced statusbar
-	// with detailed info instead of hint for beginners
-	p_openholdem_statusbar->SwitchToAdvancedStatusbarAfterFirstHand();
 }
 
 void CHeartbeatThread::AutoConnect() {

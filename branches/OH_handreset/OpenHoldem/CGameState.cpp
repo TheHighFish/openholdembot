@@ -47,7 +47,6 @@ CGameState::CGameState()
 	assert(_hist_sym_strings[_hist_sym_count - 1] != NULL);
 
 	_m_ndx = 0;
-	_hands_played = 0;
 	_m_game_ndx = 0;
 	_m_ftr_ndx = 0;
 	_new_hand = true;
@@ -608,10 +607,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 						_chair_actions[i][j][k] = w_noaction;
 				}
 			}
-
-			// Track some stats
-			_hands_played++;
-            WriteSummaryHeading();
+      WriteSummaryHeading();
 			write_log(k_always_log_basic_information, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
@@ -956,10 +952,6 @@ const char *CGameState::_hist_sym_strings[_hist_sym_count] =
 	"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
 	"srankloplayer", "sranklopoker", 
 };
-
-const int CGameState::hands_played() { 
-  return _hands_played; 
-}
 
 void CGameState::WriteSummaryHeading() {
   write_log_nostamp(1, "***** History (might be not accurate) ***********************\n"); 

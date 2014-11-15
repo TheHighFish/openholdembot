@@ -39,7 +39,6 @@ public:
 
 public:
 	// public accessors
-	const int hands_played();
 	const SHoldemState * state(const int i) { if (i>=0 && i<=255) return &_state[i]; else return NULL; }
 	const int state_index() { return _state_index; }
 
@@ -51,7 +50,6 @@ private:
     void WriteSummaryHeading();
 private:
 	// private variables - use public accessors and public mutators to address these
-	int					_hands_played;
 	bool				_new_hand;
 	SHoldemState		_state[k_number_of_holdem_states_for_DLL];
 	unsigned char		_state_index;

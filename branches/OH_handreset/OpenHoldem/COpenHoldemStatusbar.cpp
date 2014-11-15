@@ -30,28 +30,17 @@
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
-
 COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
 
-COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window)
-{
+COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window){
 	_main_window = main_window;
-	InitBasicStatusbar();
+  InitAdvancedStatusbar();
 }
 
-COpenHoldemStatusbar::~COpenHoldemStatusbar()
-{}
-
-void COpenHoldemStatusbar::InitBasicStatusbar()
-{
-	//is_basic_statusbar = true;
-	//_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_GENERAL_HINT), "Do you need Help -> Problem Solver?");
-	
-	InitAdvancedStatusbar();
+COpenHoldemStatusbar::~COpenHoldemStatusbar() {
 }
 
-void COpenHoldemStatusbar::InitAdvancedStatusbar()
-{
+void COpenHoldemStatusbar::InitAdvancedStatusbar() {
 	_status_bar.Create(_main_window);
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
@@ -63,24 +52,6 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar()
 	_status_bar.SetPaneInfo(5, ID_INDICATOR_STATUS_PRWIN, NULL, 62);
 	_status_bar.SetPaneInfo(6, ID_INDICATOR_STATUS_NOPP, NULL, 15);
 	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 90);
-
-	is_basic_statusbar = false;
-}
-
-void COpenHoldemStatusbar::SwitchToAdvancedStatusbarAfterFirstHand()
-{
-	if (!is_basic_statusbar)
-	{
-		// Already advanced statusbar
-		return;
-	}
-	// Still basic statusbar for beginners
-	if ((p_game_state != NULL) && (p_game_state->hands_played() >= 1))
-	{
-		// Bot seems to play -> no beginners advice needed
-		// -> switch to normal "advanced" status-bar.
-		InitAdvancedStatusbar();
-	}
 }
 
 void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
@@ -88,15 +59,7 @@ void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
 	_status_bar.GetWindowRect(statusbar_position);
 }
 
-void COpenHoldemStatusbar::OnUpdateStatusbar()
-{
-	if (is_basic_statusbar)
-	{
-		// Basic statusbar for beginners with basic hints
-		// We can't display detailed info.
-		return;
-	}
-	// Update this info only for advanced statusbar
+void COpenHoldemStatusbar::OnUpdateStatusbar() {
 	ComputeCurrentStatus(); 
   _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);

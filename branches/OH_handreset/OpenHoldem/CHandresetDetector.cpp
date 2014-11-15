@@ -40,6 +40,7 @@ CHandresetDetector::CHandresetDetector() {
 	dealerchair = k_undefined;
 	handnumber = "";
 	_is_handreset_on_this_heartbeat = false;
+  _hands_played = 0; //!!! Should get reinitialiyed on connection
 }
 
 CHandresetDetector::~CHandresetDetector() {
@@ -63,16 +64,17 @@ void CHandresetDetector::CalculateIsHandreset() {
   int total_methods_firing = _methods_firing_the_last_three_heartbeats[2]
     | _methods_firing_the_last_three_heartbeats[1]
     | _methods_firing_the_last_three_heartbeats[0];
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing last 3 heartbeat: %s\n",
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing last 3 heartbeat2: %s\n",
     IntToBinaryString(total_methods_firing));
   int number_of_methods_firing = bitcount(total_methods_firing);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat: %i\n",
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat2: %i\n",
     number_of_methods_firing);
-  if (number_of_methods_firing > 2) {
+  if (number_of_methods_firing >= 2) {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
+    ++_hands_played;
     // Clear data to avoid multiple fast handreset with already used methods, 
-    // if casino needs several heartbeats to update table view
+    // if casino needs several heartbeats to update table view.
     _methods_firing_the_last_three_heartbeats[0] = 0;
     _methods_firing_the_last_three_heartbeats[1] = 0;
     _methods_firing_the_last_three_heartbeats[2] = 0;
@@ -110,7 +112,9 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
 }
 
 bool CHandresetDetector::IsHandresetByDealerChair() {
-	bool ishandreset = (IsValidDealerChair(dealerchair) && (dealerchair != last_dealerchair));
+	bool ishandreset = (dealerchair != last_dealerchair)
+    && IsValidDealerChair(dealerchair)
+    && IsValidDealerChair(last_dealerchair);
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by dealerchair: %s\n",
 		Bool2CString(ishandreset));
 	return ishandreset;
@@ -126,7 +130,9 @@ bool CHandresetDetector::IsHandresetByUserCards() {
 }
 
 bool CHandresetDetector::IsHandresetByHandNumber() {
-	bool ishandreset = (IsValidHandNumber(handnumber) && (handnumber != last_handnumber));
+	bool ishandreset = (handnumber != last_handnumber)
+    && IsValidHandNumber(handnumber)
+    && IsValidHandNumber(last_handnumber);
 	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by handnumber: %s\n",
 		Bool2CString(ishandreset));
 	return ishandreset;
@@ -160,17 +166,19 @@ bool CHandresetDetector::IsHandresetByCommunityCards() {
 }
 
 bool CHandresetDetector::IsHandresetByPotsize() {
-  // Decreasing potsize and potsize is preflop-like
-  bool ishandreset = ((_potsize < _last_potsize)
+  // Decreasing potsize and potsize is preflop-like and it is preflop
+  bool ishandreset = (_potsize < _last_potsize)
     && (_potsize >= 1 * BIG_BLIND)
-    && (_potsize <  6 * BIG_BLIND));
+    && (_potsize <  6 * BIG_BLIND)
+    && (_community_cards == 0);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by potsize: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByNopponentsplaying() {
-  bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying);
+  bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying)
+    && (_community_cards == 0);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
@@ -191,14 +199,18 @@ bool CHandresetDetector::IsHandresetByIncreasingBalance() {
 }
 
 bool CHandresetDetector::IsHandresetByNewSmallBlind() {
-  bool ishandreset = SmallBlindExists() && !_small_blind_existed_last_hand;
+  bool ishandreset = SmallBlindExists() 
+    && !_small_blind_existed_last_hand
+    && (_community_cards == 0);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by new small blind: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
-  bool ishandreset = (_bblind != _last_bblind);
+  bool ishandreset = (_bblind != _last_bblind)
+    && (_bblind != 0)
+    && (_last_bblind != 0);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by changing blind level: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
@@ -208,7 +220,7 @@ bool CHandresetDetector::SmallBlindExists() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
     double players_bet = p_scraper->player_bet(i);
     if ((players_bet > 0) && (players_bet < _bblind)) {
-      // Either SB or ante, first orbit preflop, hand/reset
+      // Either SB or ante, first orbit preflop, hand-reset
       return true;
     }
   }

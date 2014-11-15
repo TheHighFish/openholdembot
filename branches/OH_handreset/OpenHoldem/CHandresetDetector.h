@@ -39,6 +39,8 @@ class CHandresetDetector {
 	bool IsHandresetByIncreasingBalance();
   bool IsHandresetByNewSmallBlind();
   bool IsHandresetByChangingBlindLevel();
+public:
+  int hands_played() { return _hands_played; }
  private:
 	bool IsValidHandNumber(CString handnumber);
 	bool IsValidDealerChair(int dealerchair);
@@ -74,6 +76,7 @@ class CHandresetDetector {
    int _methods_firing_the_last_three_heartbeats[3];
  private:
 	bool _is_handreset_on_this_heartbeat;
+  int _hands_played;
 };
 
 extern CHandresetDetector *p_handreset_detector;
