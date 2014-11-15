@@ -63,7 +63,8 @@ BOOL CDlgSAPrefs20::OnInitDialog()
 	CheckDlgButton(IDC_DEBUG_STABLEFRAMESCOUNTER, preferences.debug_stableframescounter() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_SYMBOLENGINE, preferences.debug_symbolengine() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_SYMBOLENGINE_OPENPPL, preferences.debug_symbolengine_open_ppl() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_DEBUG_PARSER, preferences.debug_parser() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_MEMORY_USAGE, preferences.debug_memory_usage() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_PARSER, preferences.debug_parser() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_BLINDLOCKING, preferences.debug_blindlocking() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_MEMORY_SYMBOLS, preferences.debug_memorysymbols() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_TABLEMAP_LOADER, preferences.debug_tablemap_loader() ? MF_CHECKED : MF_UNCHECKED);
@@ -111,7 +112,8 @@ void CDlgSAPrefs20::OnOK()
 	preferences.SetValue(k_prefs_debug_stableframescounter, IsDlgButtonChecked(IDC_DEBUG_STABLEFRAMESCOUNTER));
 	preferences.SetValue(k_prefs_debug_symbolengine, IsDlgButtonChecked(IDC_DEBUG_SYMBOLENGINE));
 	preferences.SetValue(k_prefs_debug_symbolengine_open_ppl, IsDlgButtonChecked(IDC_DEBUG_SYMBOLENGINE_OPENPPL));
-	preferences.SetValue(k_prefs_debug_parser, IsDlgButtonChecked(IDC_DEBUG_PARSER));
+  preferences.SetValue(k_prefs_debug_memory_usage, IsDlgButtonChecked(IDC_DEBUG_MEMORY_USAGE));
+  preferences.SetValue(k_prefs_debug_parser, IsDlgButtonChecked(IDC_DEBUG_PARSER));
 	preferences.SetValue(k_prefs_debug_blindlocking, IsDlgButtonChecked(IDC_DEBUG_BLINDLOCKING));
 	preferences.SetValue(k_prefs_debug_memorysymbols, IsDlgButtonChecked(IDC_DEBUG_MEMORY_SYMBOLS));
 	preferences.SetValue(k_prefs_debug_tablemap_loader, IsDlgButtonChecked(IDC_DEBUG_TABLEMAP_LOADER));

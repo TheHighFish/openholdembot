@@ -61,6 +61,7 @@ enum
 	k_prefs_debug_stableframescounter,
 	k_prefs_debug_symbolengine,
 	k_prefs_debug_symbolengine_open_ppl,
+  k_prefs_debug_memory_usage,
 	k_prefs_debug_parser,
 	k_prefs_debug_blindlocking,
 	k_prefs_debug_memorysymbols,
@@ -238,7 +239,8 @@ public:
 	const bool	debug_stableframescounter() { return prefs_numerical_values[k_prefs_debug_stableframescounter]; }
 	const bool	debug_symbolengine() { return prefs_numerical_values[k_prefs_debug_symbolengine]; }
 	const bool	debug_symbolengine_open_ppl() { return prefs_numerical_values[k_prefs_debug_symbolengine_open_ppl]; }
-	const bool	debug_parser() { return prefs_numerical_values[k_prefs_debug_parser]; }
+	const bool	debug_memory_usage() { return prefs_numerical_values[k_prefs_debug_memory_usage]; }
+  const bool	debug_parser() { return prefs_numerical_values[k_prefs_debug_parser]; }
 	const bool	debug_blindlocking() { return prefs_numerical_values[k_prefs_debug_blindlocking]; }
 	const bool	debug_memorysymbols() { return prefs_numerical_values[k_prefs_debug_memorysymbols]; }
 	const bool	debug_tablemap_loader() { return prefs_numerical_values[k_prefs_debug_tablemap_loader]; }

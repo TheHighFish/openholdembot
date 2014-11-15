@@ -207,7 +207,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
       _status_action = "N/A";
     } else {
-      // Best action does no longer get calculated here, //!!!!!
+      // Best action does no longer get calculated here, //!!!
       // but gets set by the autoplazer,
       // because an advisor does not make sense
       // and multiple evaluations of the autoplayer-functions

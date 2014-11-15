@@ -18,6 +18,8 @@
 #include "CBetroundCalculator.h"
 #include "CSymbolEngineUserChair.h"
 
+const int k_hist_sym_count = 93;
+
 class CSymbolEngineHistory: public CVirtualSymbolEngine
 {
 public:
@@ -63,6 +65,7 @@ public:
 private:
 	void SetPrevaction(int autoplayer_action_code);
 	void CalculateHistory();
+  double HistorySymbol(const char *sym, const int round);
 private:
 	int _prevaction;
 private:
@@ -77,6 +80,9 @@ private:
 	//   but it does not hurt to have a simple and extensible interface.
 	//   "betpot" gets treated as swag, etc.
 	int _autoplayer_actions[k_number_of_betrounds + 1][k_autoplayer_function_fold];
+ private:
+  // Remebering symbol values of former streets
+	double _hist_sym[k_hist_sym_count][k_number_of_betrounds+1];
 };
 
 extern CSymbolEngineHistory *p_symbol_engine_history;

@@ -30,7 +30,6 @@ class CGameState {
 	bool ProcessThisFrame();
 	const int LastRaised(const int round);
 	const double SortedBalance(const int rank);
-	const double OHSymHist(const char * sym, const int round);
  public:
 	// public accessors
 	const int hands_played();
@@ -80,9 +79,6 @@ class CGameState {
 	int					_ftr_dealer_chair_last;
 	int					_ftr_ncommoncardsknown_last;
 	int					_ftr_nplayersdealt_last;
-	static const int	_hist_sym_count = 93;
-	double			 _hist_sym[_hist_sym_count][k_number_of_betrounds];
-	static const char	*_hist_sym_strings[_hist_sym_count];
 	CCritSec			m_critsec;
 };
 

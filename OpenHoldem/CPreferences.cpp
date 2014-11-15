@@ -48,6 +48,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"debug_stableframescounter",
 	"debug_symbolengine",
 	"debug_symbolengine_open_ppl",
+  "debug_memory_usage",
 	"debug_parser",
 	"debug_blindlocking",
 	"debug_memorysymbols",

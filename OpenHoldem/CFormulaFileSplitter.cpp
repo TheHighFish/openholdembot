@@ -51,12 +51,6 @@ void CFormulaFileSplitter::InitNewParse() {
 // Returns the next function (including header),
 // i.e. everything up to the second-next-function or end of file.
 void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
-#ifdef DEBUG_FORMULA_FILESPLITTER
-  /*printf("[CFormulaFileSplitter] %s\n", 
-    formula_file.IsLoading() ? "Loading\n" :
-    formula_file.IsStoring() ? "Storing\n" :
-    "Error");*/
-#endif
   // Function-header is the first line, 
   // (usually the last line of last scan)
   // rest is content

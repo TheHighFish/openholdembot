@@ -209,6 +209,7 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MD5_Checksum.cpp" />
     <ClCompile Include="Median.cpp" />
+    <ClCompile Include="MemoryLogging.cpp" />
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
     <ClCompile Include="Singletons.cpp" />
@@ -461,6 +462,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="MD5_Checksum.h" />
     <ClInclude Include="Median.h" />
+    <ClInclude Include="MemoryLogging.h" />
     <ClInclude Include="MyCToolBar.h" />
     <ClInclude Include="OH_MessageBox.h" />
     <ClInclude Include="OpenHoldem.h" />
