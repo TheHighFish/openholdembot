@@ -70,7 +70,7 @@ CSymbolEngineHistory::CSymbolEngineHistory()
 	// to avoid array overflows later if we remove symbols
 	// without adapting the counter.
 	// Last index is (_hist_sym_count - 1).
-	assert(_hist_sym_strings[_hist_sym_count - 1] != NULL);
+	assert(k_hist_sym_strings[k_hist_sym_count - 1] != NULL);
 }
 
 CSymbolEngineHistory::~CSymbolEngineHistory()
