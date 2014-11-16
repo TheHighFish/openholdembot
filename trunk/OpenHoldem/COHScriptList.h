@@ -60,6 +60,9 @@ class COHScriptList: public COHScriptObject {
  public:
   int NHandsOnList();
   bool IsEmpty()  { return (NHandsOnList() <= 0); }
+ public:
+  // To be called by OnOK() in the hand-list-editor
+  void GenerateFunctionTextFromHandlistMatrix();
  private:
   void ErrorInvalidMember(CString list_member); 
   void ErrorOldStyleFormat(CString list_member);

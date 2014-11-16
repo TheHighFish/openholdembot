@@ -264,7 +264,6 @@ void CDlgHandList::OnCheckClick(UINT controlID)
 void CDlgHandList::OnBnClickedOk()
 {
 	OnCheckClick(0);
-
   for (int i=2; i<=k_rank_ace; i++) {
 		for (int j=2; j<=k_rank_ace; j++) {
       if (m_Check[i][j].GetCheck() & BST_CHECKED) {
@@ -274,7 +273,7 @@ void CDlgHandList::OnBnClickedOk()
       }
     }
   }
-
+  p_list->GenerateFunctionTextFromHandlistMatrix();
 	OnOK();
 }
 

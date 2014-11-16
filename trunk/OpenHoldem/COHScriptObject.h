@@ -35,13 +35,13 @@ class COHScriptObject {
   static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
   static bool IsOpenPPLSymbol(CString name) { return isupper(name[0]); }
   // f$preflop, f$flop, f$turn, f$river
-  static bool IsMainOpenFunction(CString name);
+  static bool IsMainOpenPPLFunction(CString name);
  public:
   bool IsList()                 { return _name.Left(4) == "list"; }
   bool IsFunction()             { return _name.Left(2) ==  "f$"; }
   bool IsOpenPPLSymbol()        { return isupper(_name[0]); }
   // f$preflop, f$flop, f$turn, f$river
-  bool IsMainOpenFunction();
+  bool IsMainOpenPPLFunction();
   // Autoplayer, Secondary, Ini, PrWin
   bool IsStandardFunction();
   bool IsAutoplayerFunction();
@@ -55,7 +55,7 @@ class COHScriptObject {
                                     && !IsStandardFunction()
                                     && !IsDebugFunction())
                                     && !IsNotesOrDLL()
-                                    && !IsMainOpenFunction(); }
+                                    && !IsMainOpenPPLFunction(); }
  public:
   int EditorGroupingCategory();
  public:

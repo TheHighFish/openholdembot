@@ -173,6 +173,10 @@ double COHScriptList::Evaluate(bool log /* = false */) {
 }
 
 CString COHScriptList::function_text() {
+  return _function_text;
+}
+
+void COHScriptList::GenerateFunctionTextFromHandlistMatrix() {
   CString result;
   // Pairs
   bool any_hand_added = false;
@@ -217,5 +221,5 @@ CString COHScriptList::function_text() {
   if (any_hand_added) {
     result += "\n";
   }
-  return result;
+  _function_text = result;
 } 

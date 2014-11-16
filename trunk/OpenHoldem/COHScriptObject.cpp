@@ -48,7 +48,7 @@ bool COHScriptObject::EvaluatesToBinaryNumber() {
   return false;
 }
 
-bool COHScriptObject::IsMainOpenFunction(CString name) {
+bool COHScriptObject::IsMainOpenPPLFunction(CString name) {
   for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
     if (name == k_OpenPPL_function_names[i]) {
       return true;
@@ -57,8 +57,8 @@ bool COHScriptObject::IsMainOpenFunction(CString name) {
   return false;
 }
 
-bool COHScriptObject::IsMainOpenFunction() {
-  return IsMainOpenFunction(_name);
+bool COHScriptObject::IsMainOpenPPLFunction() {
+  return IsMainOpenPPLFunction(_name);
 }
 
 bool COHScriptObject::IsStandardFunction() {
@@ -115,8 +115,8 @@ bool COHScriptObject::IsNotesOrDLL() {
 
 int COHScriptObject::EditorGroupingCategory() {
   // Category 0: autoplayer / OpenPPL
-  if (p_function_collection->IsOpenPPLProfile()  && IsMainOpenFunction())   return 0;
-  if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction()) return 0;
+  if (p_function_collection->IsOpenPPLProfile()  && IsMainOpenPPLFunction()) return 0;
+  if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction())  return 0;
   // Category 1: Secondary (f$sitout, f$close,..) DLL, notes)
   if (IsSecondaryFunction()) return 1;
   if (IsNotesOrDLL()) return 1;
