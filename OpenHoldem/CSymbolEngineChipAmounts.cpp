@@ -48,17 +48,14 @@ void CSymbolEngineChipAmounts::ResetOnConnection()
 	_balanceatstartofsession = k_undefined_zero;
 }
 
-void CSymbolEngineChipAmounts::ResetOnHandreset()
-{
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
+void CSymbolEngineChipAmounts::ResetOnHandreset() {
+	for (int i=0; i<k_max_number_of_players; i++)	{
 		_stack[i]      = 0;
 		_currentbet[i] = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = p_table_state->_players[i]._balance + p_scraper->player_bet(i);
-	}
-	_pot = 0;
+	}	_pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
   _call = 0;
@@ -66,14 +63,15 @@ void CSymbolEngineChipAmounts::ResetOnHandreset()
   _nbetstorais = 0.0;
   _ncallbets = 0.0;
   _nraisbets = 0.0;
-  SetBalanceAtStartOfSessionConditionally();
 }
 
 void CSymbolEngineChipAmounts::ResetOnNewRound() {
 }
 
-void CSymbolEngineChipAmounts::ResetOnMyTurn()
-{}
+void CSymbolEngineChipAmounts::ResetOnMyTurn() {
+  SetBalanceAtStartOfSessionConditionally();
+  SetMaxBalanceConditionally();
+}
 
 void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateStacks();
@@ -83,16 +81,15 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateAmountsToCallToRaise();
 }
 
-void CSymbolEngineChipAmounts::SetMaxBalanceConditionally(const double d) 
-{ 
-	if (d > _maxbalance) 
-	{
-		_maxbalance = d;
+void CSymbolEngineChipAmounts::SetMaxBalanceConditionally() { 
+  double user_balance = p_table_state->User()->_balance;
+	if (user_balance > _maxbalance) {
+		_maxbalance = user_balance;
 	}
 }
 
 void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally() {
-  int user_balance = p_table_state->User()->_balance;
+  double user_balance = p_table_state->User()->_balance;
 	if ((_balanceatstartofsession <= 0) && (user_balance > 0)) {
 		_balanceatstartofsession = user_balance;
 	}
