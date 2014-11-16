@@ -1,3 +1,26 @@
+v7.2.2 2014-11-16
+==================
+BUG FIXES:
+- maxbalance did not work, because the code for its calculation
+  mysteriously disappeared.
+  Thanks to OpenGeek for reporting.
+  [THF]
+- raisbitsX gets now calculated exactly the same way like nopponentstruelyraising,
+  no longer considering the infamous blind-raisers.
+  [THF]
+- Handlists could only be edited with the handlist-editor,
+  but not with the built-in text-editor. This has now been fixed,
+  Thanks to Ferfran for reminding us.
+  [THF]
+
+MAINTENANCE:
+- New option Preferences -> Debugging -> Memory Usage
+  for the people who believe they suffer from memory leaking
+  (though it might be some 64-bit incompatibility
+  as only people with 64-bit Windows have problems).
+  Now we / you / they can supervise the memory usage.
+  [THF]
+
 v7.2.1 2014-11-12
 ==================
 BUG FIXES:
@@ -15,6 +38,8 @@ BUG FIXES:
   the summary in the logs.
   [TT_83]
 - Fixing half a dozen small memory leaks in the rewritten scraper and parser.
+  Thanks to Qwerty for providing several log-files
+  and to Invader11 for helpful replay-frames.
   [THF]
 
 v7.2.0 2014-11-08
