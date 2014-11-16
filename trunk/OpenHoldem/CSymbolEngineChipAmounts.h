@@ -79,13 +79,13 @@ public:
 		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
 	}
 public:
-	double pot()			{ return _pot; }
+	double pot()		    	{ return _pot; }
 	double potcommon()		{ return _potcommon; }
 	double potplayer()		{ return _potplayer; }
 public:
-	double sraiprev()		{ return _sraiprev; }
+	double sraiprev()	  	{ return _sraiprev; }
 public:
-	double call()			{ return _call;			}
+	double call()		    	{ return _call;			}
 	double nbetstocall()	{ return _nbetstocall;	}
 	double nbetstorais()	{ return _nbetstorais; 	}
 	double ncallbets()		{ return _ncallbets;	}
@@ -93,7 +93,7 @@ public:
 private:
 	// private setters
 	void SetBalance(const int player, const double d);
-	void SetMaxBalanceConditionally(const double d);
+	void SetMaxBalanceConditionally();
 	void SetBalanceAtStartOfSessionConditionally();
 private:
 	void CalculateStacks();

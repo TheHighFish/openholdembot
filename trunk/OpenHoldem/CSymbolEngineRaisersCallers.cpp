@@ -144,32 +144,21 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 		// Raisers are people
 		// * with a higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
+    // * either betting/raising postflop or truely raising preflop
+    //   (not counting the infamous "blind raisers")
     if (p_table_state->_players[chair].HasAnyCards()
-        && (current_players_bet > highest_bet)) {
+        && (current_players_bet > highest_bet)
+        && ((p_betround_calculator->betround() > k_betround_preflop)
+					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))) {
 			highest_bet = current_players_bet;
 			_raischair = chair;
 			int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
 			_raisbits[BETROUND] = new_raisbits;
-			if (chair != USER_CHAIR)
-			{
-				write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
-					chair, Number2CString(highest_bet));
-				if ((p_betround_calculator->betround() > k_betround_preflop)
-					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))
-				{
-					// Counts true raisers and also first bettors postflop
-					// Does not count blind posters and people posting antes
-					write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i also truely raising (voluntarily).\n", 
-						chair);
-					_nopponentstruelyraising++;
-				}
-			}
-		}
-		else
-		{
-			write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] User raising to %s\n",
-				Number2CString(highest_bet));
-		}
+			assert(chair != USER_CHAIR);
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
+				chair, Number2CString(highest_bet));
+			_nopponentstruelyraising++;
+		}	
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
