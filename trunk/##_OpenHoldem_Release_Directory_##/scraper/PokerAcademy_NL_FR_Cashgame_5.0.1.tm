@@ -16,7 +16,6 @@ z$clientsize       1018  693
 //
 
 s$allinmethod               2
-s$handresetmethod           7 
 s$nchairs                   10
 s$network                   pokerstars
 s$potmethod                 2

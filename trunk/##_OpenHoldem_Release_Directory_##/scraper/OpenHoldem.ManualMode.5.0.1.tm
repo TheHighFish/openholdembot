@@ -16,7 +16,6 @@ z$clientsize       574  335
 //
 
 s$allinmethod               2
-s$handresetmethod           7 
 s$nchairs                   10
 s$network                   pokerstars
 s$sitename                  openholdem
