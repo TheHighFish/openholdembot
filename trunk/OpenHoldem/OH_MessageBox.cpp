@@ -45,7 +45,7 @@ int OH_MessageBox_Interactive(CString Message, CString Title, int Flags) {
 int OH_MessageBox_OH_Script_Messages(CString message) {
 	// Preprocess message
   const char* msgbox_prefix = "msgbox$";
-	assert(message.Left(CString(msgbox_prefix).GetLength()) == msgbox_prefix);
+	assert(message.Left(strlen(msgbox_prefix)) == msgbox_prefix);
 	int length_of_parameter = message.GetLength() - strlen(msgbox_prefix);
 	message = message.Right(length_of_parameter);
 	message.Replace("_B", " ");

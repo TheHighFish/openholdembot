@@ -28,6 +28,7 @@
 #include "inlines/eval.h"
 #include "CGameState.h"
 #include "Chair$Symbols.h"
+#include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
@@ -113,9 +114,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "sitename$", 9)==0)									    *result = p_tablemap->sitename().Find(&name[9])!=-1;
   else if (memcmp(name, "network$", 8)==0)									    *result = p_tablemap->network().Find(&name[8])!=-1;
   // GameState symbols
-  else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11)  				*result = p_game_state->LastRaised(name[10]-'0');
-  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11)  			*result = p_game_state->hands_played();
-  else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13)  			*result = p_game_state->SortedBalance(name[12]-'0');
+  else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11)  			*result = p_game_state->LastRaised(name[10]-'0');
+  else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13)  		*result = p_game_state->SortedBalance(name[12]-'0');
+  // Handreset
+  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11)  		*result = p_handreset_detector->hands_played();
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode

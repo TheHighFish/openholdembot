@@ -56,8 +56,9 @@ CString Number2CString(double number, int default_precision)
 	return result;
 }
 
-CString IntToBinaryString(int number) {
+CString IntToBinaryString(int number, int min_digits /* = 1 */) {
   CString result;
+  AssertRange(min_digits, 1, 32);
   if (number < 0) {
     result = "-";
     number = 0 - number;
@@ -71,7 +72,8 @@ CString IntToBinaryString(int number) {
       digits = "1" + digits;
     }
     number /= 2;
-  } while (number > 0);
+	--min_digits;
+  } while ((number > 0) || (min_digits > 0));
   result += digits;
   return result;
 };

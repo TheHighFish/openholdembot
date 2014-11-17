@@ -28,13 +28,13 @@ public:
 	// public functions
 	void	GetNeccessaryTablemapObjects();
 	void	InitOnConnect();
-	int		GetCommonCard(int index_zero_to_four);
 	bool	IsValidCard(int Card);
 	int		NumberOfVisibleButtons();
 	bool	IsKnownCard(int card);
 	bool	IsPlayerActive(int player);
 	bool	IsPlayerSeated(int player);
 	bool	IsGoodPlayername(int chair);
+  int   NumberOfCommonCards();
 public:
 	bool	IsMyTurn()	{ return (NumberOfVisibleButtons() >= k_min_buttons_needed_for_my_turn); }
 

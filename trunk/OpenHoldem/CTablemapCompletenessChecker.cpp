@@ -112,9 +112,6 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckItem("sitename"); 
   CheckItem("titletext");
   CheckItem("ttlimits");
-  // Not "necessary" because of defaults,
-  // but making the user aware avoids many PEBKACs
-  CheckItem("handresetmethod");
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
@@ -193,6 +190,10 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // r$c0istournament no longer supported, works automatically
   if (p_tablemap->ItemExists("c0istournament")) {
     ErrorDeprecatedItem("c0istournament");
+  }
+  // handresetmethod no longer supported, works automatically
+  if (p_tablemap->ItemExists("handresetmethod")) {
+    ErrorDeprecatedItem("handresetmethod");
   }
   // Not checked, despite nice to have
   //   * betpot-buttons

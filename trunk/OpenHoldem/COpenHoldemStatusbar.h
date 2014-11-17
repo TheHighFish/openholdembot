@@ -14,28 +14,23 @@
 #ifndef INC_OPENHOLDEM_STATUSBAR_H
 #define INC_OPENHOLDEM_STATUSBAR_H
 
-class COpenHoldemStatusbar
-{
-public:
+class COpenHoldemStatusbar {
+ public:
 	COpenHoldemStatusbar(CWnd *main_window);
 	~COpenHoldemStatusbar();
-public:
+ public:
 	//void Update();
 	void OnUpdateStatusbar();
 	void GetWindowRect(RECT *statusbar_position);
-	void SwitchToAdvancedStatusbarAfterFirstHand();
-  void SetBestAction(CString action) { _status_action = action; }
-private:
-	void InitBasicStatusbar();
+ private:
 	void InitAdvancedStatusbar();
 	void ComputeCurrentStatus();
-private:
+ private:
 	CStatusBar _status_bar;
-	CWnd		   *_main_window;
-	CString	_status_plcards,	_status_comcards,	_status_pokerhand;
-	CString	_status_prwin,		_status_nopp,		_status_nit; 
-	CString	_status_action,		_status_handrank;
-	bool is_basic_statusbar;
+	CWnd    *_main_window;
+	CString	_status_plcards,  _status_comcards, _status_pokerhand;
+	CString	_status_prwin,    _status_nopp,     _status_nit; 
+	CString	_status_action,   _status_handrank;
 };
 
 extern COpenHoldemStatusbar *p_openholdem_statusbar;

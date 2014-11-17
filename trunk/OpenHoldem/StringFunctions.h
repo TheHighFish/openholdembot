@@ -23,7 +23,7 @@ CString Bool2CString(bool b);
 // * with N digits precision for reals
 CString Number2CString(double number, int default_precision=2);
 
-CString IntToBinaryString(int number);
+CString IntToBinaryString(int number, int min_digits = 1);
 
 CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);
 CString CStringRemoveRight(CString string, int number_of_characters_to_remove);

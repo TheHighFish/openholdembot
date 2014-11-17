@@ -27,7 +27,7 @@
 
 #ifdef _DEBUG
 // visual leak detector
-#include <vld.h>			
+//#include <vld.h>			
 #endif _DEBUG
 
 FILE *log_fp = NULL;

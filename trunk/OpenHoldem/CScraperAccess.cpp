@@ -365,3 +365,13 @@ bool CScraperAccess::IsKnownCard(int card)
 	return true;
 }
 
+int CScraperAccess::NumberOfCommonCards() {
+  int number_of_common_cards = 0;
+  for (int i=0; i<k_number_of_community_cards; ++i) {
+    if (IsKnownCard(p_table_state->_common_cards[i].GetValue())) {
+      ++number_of_common_cards;
+    }
+  }
+  return number_of_common_cards;
+}
+

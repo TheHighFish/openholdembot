@@ -142,19 +142,17 @@ void CLazyScraper::DoScrape()
 
 bool CLazyScraper::NeedDealerChair()
 {
-	//if (p_tablemap->HandResetMethodDealer())
 	return true;
 }
 
 bool CLazyScraper::NeedHandNumber()
 {
-	//if (p_tablemap->HandResetMethodHandNumber())
 	return true;
 }
 
 bool CLazyScraper::NeedUsersCards()
 {
-	return (p_tablemap->HandResetMethodCards() && p_symbol_engine_userchair->userchair_confirmed());
+	return (p_symbol_engine_userchair->userchair_confirmed());
 }
 
 bool CLazyScraper::NeedAllPlayersCards()

@@ -41,7 +41,6 @@ CGameState			*p_game_state = NULL;
 CGameState::CGameState()
 {
 	_m_ndx = 0;
-	_hands_played = 0;
 	_m_game_ndx = 0;
 	_m_ftr_ndx = 0;
 	_new_hand = true;
@@ -376,10 +375,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 						_chair_actions[i][j][k] = w_noaction;
 				}
 			}
-
-			// Track some stats
-			_hands_played++;
-            WriteSummaryHeading();
+      WriteSummaryHeading();
 			write_log(k_always_log_basic_information, ">>> New hand %.0s\n", sym_handnumber);
 		}
 
@@ -679,10 +675,6 @@ void CGameState::DumpState(void)
 		write_log(preferences.debug_alltherest(), "[CGameState] _name_known:%d  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name_known);
 		write_log(preferences.debug_alltherest(), "[CGameState] _balance_known:%d\n", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known);
 	}
-}
-
-const int CGameState::hands_played() { 
-  return _hands_played; 
 }
 
 void CGameState::WriteSummaryHeading() {
