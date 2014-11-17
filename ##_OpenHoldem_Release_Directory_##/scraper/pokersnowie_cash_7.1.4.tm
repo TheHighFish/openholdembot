@@ -17,7 +17,6 @@ z$clientsize       800  600
 
 s$allinmethod               1
 s$buttonclickmethod         Single
-s$handresetmethod           1
 s$nchairs                   6
 s$network                   party
 s$potmethod                 3
