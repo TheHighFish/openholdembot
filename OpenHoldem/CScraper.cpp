@@ -550,12 +550,14 @@ int CScraper::ScrapeCard(CString name) {
   result = ScrapeCardback(name);
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
+  /*
   write_log(k_always_log_errors, 
     "[CScraper] WARNING ScrapeCard(%s) found nothing\n", name);
   write_log(k_always_log_errors, 
     "[CScraper] Not nocard, no cards and no cardbacks.\n");
   write_log(k_always_log_errors,
     "[CScraper] Defaulting to cardbacks (players) / nocard (board)\n");
+  */
   if (name[0] == 'p') {
     // Currently we have a problem with cardbacks,
     // but whatever we try to scrape is not NOCARD and not a card.
