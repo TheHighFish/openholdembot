@@ -72,8 +72,8 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
   bool trace_needed = preferences.trace_enabled();
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
-  // First do the calculation of memory/history-szmbols,
-  //   * exactlz once per my turn
+  // First do the calculation of memory/history-symbols,
+  //   * exactly once per my turn
   //   * when we have stable frames (isfinal-answer == true)
   //   * shortly before the main OpenPPL-evaluations
   // Unfortunatellz doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
@@ -151,9 +151,8 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     double betsize = BetSizeForPercentagedPotsizeBet(decision);
     p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, 
       betsize);
-  } else {
+  } else if (decision < -1000) {
     // Large negative values: action constants
-    assert(decision < -1000);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_beep);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_allin);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_betpot_1_1);
@@ -162,6 +161,13 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_call);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_check);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
+  } else {
+    // This can onlz be undefined == 0.0
+    assert(decision == k_undefined_zero);
+    write_log(preferences.debug_symbolengine_open_ppl(),
+      "[CAutoplayerFunctions] OpenPPL-decision undefined. Defaulting to check/fold.\n");
+    p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_check, true);
+    p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_fold, true);
   }
 }
 
@@ -220,7 +226,7 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
 bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {
   // Small negative values: percentaged potsized bets
   // According to the old library...
-  return ((decision <= 0) && (decision >= -1000));
+  return ((decision < 0) && (decision >= -1000));
 }
 
 double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
