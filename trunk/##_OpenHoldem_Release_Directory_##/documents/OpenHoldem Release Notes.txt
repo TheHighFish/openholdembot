@@ -1,3 +1,12 @@
+v7.3.1 2014-11-xx
+==================
+BUG FIXES:
+- An empty line at the beginning of a manually created formula-file
+  could throw the parser off, which expected a function-header
+  or the usual time-stamp. This has now been fixed.
+  Thanks to OpenGeek for reporting.
+  [THF]
+
 v7.3.0 2014-11-20
 ==================
 NEW STUFF:

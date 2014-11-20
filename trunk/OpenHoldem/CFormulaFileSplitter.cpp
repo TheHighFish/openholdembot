@@ -79,7 +79,12 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       break;
 	}
     _first_function_processed = true;
-    if (_function_header.IsEmpty()) {
+    if (_function_header.IsEmpty()
+        // Escpecially meant to catch OpenGeeks newlines 
+        // (which are not empty) at the beginning of the file.
+        // Other cases can't happen, as we search for ## 
+        // when looking for the next function-header.
+        || (_function_header.Find('#') < 0)) {
       _function_header = _next_line;
     } else {
       // Add non-function-header (content) to the functions body
