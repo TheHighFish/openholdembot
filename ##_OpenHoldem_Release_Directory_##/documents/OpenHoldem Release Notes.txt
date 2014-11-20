@@ -5,8 +5,8 @@ NEW STUFF:
   In the past we had 3 different ways to detect handreset
   combined with a tablemap-symbol "handresetmethod".
   As soon as one of the chosen handresetmethods fired a handreset got detected.
-  This lead to lots of incorrect handresets bz occluded tables (especially for beginners)
-  and a a consequence to a reset of game-hostory.
+  This lead to lots of incorrect handresets by occluded tables (especially for beginners)
+  and as a consequence to a reset of game-hostory.
   Now we introduced 5 more ways to detect handresets:
     * disappearing community-cards
     * decreasing potsize preflop
