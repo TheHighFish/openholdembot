@@ -800,14 +800,6 @@ void CScraper::ClearScrapeAreas(void) {
 	set_sb_bb(0);
 	set_bb_BB(0);
 	set_limit(-1);
-	set_found_handnumber(false);
-	set_found_sblind(false);
-	set_found_bblind(false);
-	set_found_bbet(false);
-	set_found_ante(false);
-	set_found_limit(false);
-	set_found_sb_bb(false);
-	set_found_bb_BB(false);
 	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
 }
 
@@ -903,15 +895,6 @@ void CScraper::ScrapeLimits()
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 	SMapCI				s_iter = p_tablemap->s$()->end();
-
-	set_found_sblind(false);
-	set_found_bblind(false);
-	set_found_bbet(false);
-	set_found_ante(false);
-	set_found_limit(false);
-	set_found_sb_bb(false);
-	set_found_bb_BB(false);
-
 	// These persist after scraping the handnumber region
 	// to seed l_handnumber when we scrape info from
 	// the titlebar.  That way if we do not find handnumber
@@ -946,18 +929,21 @@ void CScraper::ScrapeLimits()
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
-	double l_sblind=0., l_bblind=0., l_bbet=0., l_ante=0., l_sb_bb=0., l_bb_BB=0.;
-	int l_limit=0;
-	bool l_found_handnumber=false, l_found_sblind=false, l_found_bblind=false;
-	bool l_found_bbet=false, l_found_ante=false, l_found_limit=false, l_found_sb_bb=false;
-	bool l_found_bb_BB=false;
-
+	double l_sblind = k_undefined;
+  double l_bblind = k_undefined; 
+  double l_bbet   = k_undefined; 
+  double l_ante   = k_undefined;
+  double l_sb_bb  = k_undefined;
+  double l_bb_BB  = k_undefined;
+	int l_limit     = k_undefined;
+  bool l_is_final_table = false;
+	
 	// These are scraped from specific regions earlier in this
 	// function.  Use the values we scraped (if any) to seed
 	// the l_ locals so that we don't blindly overwrite the
 	// information we scraped from those specific regions with
 	// default values if we can't find them in the titlebar.
-	CString l_handnumber = handnumber;
+	CString l_handnumber = handnumber; 
 
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
 	s_iter = p_tablemap->s$()->find("ttlimits");
@@ -966,13 +952,11 @@ void CScraper::ScrapeLimits()
 		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
 		titletext = c_titletext;
 	 	
-    bool l_is_final_table = false; // !!dummy
 		CScraperPreprocessor::PreprocessTitleString(&titletext);
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
-			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
-			&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
-			&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+      &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
 
 		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %s\n", 
 			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -991,9 +975,8 @@ void CScraper::ScrapeLimits()
 				CScraperPreprocessor::PreprocessTitleString(&titletext);
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
-					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
-					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
 
 				write_log(preferences.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1019,9 +1002,8 @@ void CScraper::ScrapeLimits()
           how_to_interpret_c0limit);
 				trans.ParseStringBSL(
 					text, how_to_interpret_c0limit, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
-					&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
-					&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1041,9 +1023,8 @@ void CScraper::ScrapeLimits()
 				if (text!="")
 				{
 					trans.ParseStringBSL(text, s_iter->second.text, NULL,
-						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table, 
-						&l_found_handnumber, &l_found_sblind, &l_found_bblind, &l_found_bbet, 
-						&l_found_ante, &l_found_limit, &l_found_sb_bb, &l_found_bb_BB);
+						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
 				}
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
@@ -1052,36 +1033,39 @@ void CScraper::ScrapeLimits()
 			}
 
 			// save what we just scanned through
-			set_handnumber(l_handnumber);
-			set_sblind(l_sblind);
-			set_bblind(l_bblind);
-			set_bbet(l_bbet);
-			set_ante(l_ante);
-			set_limit(l_limit);
-			set_sb_bb(l_sb_bb);
-			set_bb_BB(l_bb_BB);
-			set_found_handnumber(l_found_handnumber);
-			set_found_sblind(l_found_sblind);
-			set_found_bblind(l_found_bblind);
-			set_found_bbet(l_found_bbet);
-			set_found_ante(l_found_ante);
-			set_found_limit(l_found_limit);
-			set_found_sb_bb(l_found_sb_bb);
-			set_found_bb_BB(l_found_bb_BB);
+      if (handnumber != "") {
+			  set_handnumber(l_handnumber);
+      }
+      if (l_sblind != k_undefined) {
+			  set_sblind(l_sblind);
+      }
+      if (l_bblind != k_undefined) {
+			  set_bblind(l_bblind);
+      }
+      if (l_bbet != k_undefined) {
+			  set_bbet(l_bbet);
+      }
+      if (l_ante != k_undefined) {
+			  set_ante(l_ante);
+      }
+      if (l_limit != k_undefined) {
+			  set_limit(l_limit);
+      }
+      if (l_sb_bb != k_undefined) {
+			  set_sb_bb(l_sb_bb);
+      }
+      if (l_bb_BB != k_undefined) {
+			  set_bb_BB(l_bb_BB);
+      }
 		}
-
-
-		// r$c0smallblind
+    // r$c0smallblind
 		s.Format("c0smallblind");
 		if (EvaluateRegion(s, &text))
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")
-			{
+			if (text!="")	{
 				set_sblind(trans.StringToMoney(text));
-				set_found_sblind(true);
 			}
-
 			write_log(preferences.debug_scraper(), "[CScraper] c0smallblind, result %s\n", text.GetString());
 		}
 
@@ -1090,10 +1074,8 @@ void CScraper::ScrapeLimits()
 		if (EvaluateRegion(s, &text))
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")
-			{
+			if (text!="")	{
 				set_bblind(trans.StringToMoney(text));
-				set_found_bblind(true);
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0bigblind, result %s", text.GetString());
@@ -1104,10 +1086,8 @@ void CScraper::ScrapeLimits()
 		if (EvaluateRegion(s, &text))
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")
-			{
-				set_bbet(trans.StringToMoney(text));
-				set_found_bbet(true);
+			if (text!="") {
+        set_bbet(trans.StringToMoney(text));
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0bigbet, result %s\n", text.GetString());
@@ -1118,10 +1098,8 @@ void CScraper::ScrapeLimits()
 		if (EvaluateRegion(s, &text))
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")
-			{
+			if (text!="") {
 				set_ante(trans.StringToMoney(text));
-				set_found_ante(true);
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0ante, result %s\n", text.GetString());
@@ -1414,19 +1392,10 @@ bool CScraper::IsIdenticalScrape()
 	}
 
 	// Copy into "last" title
-	if (strcmp(_title, _title_last)!=0)
-	{
+	if (strcmp(_title, _title_last)!=0) {
 		// !! Should not be here
 		strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
-
-		set_found_handnumber(false);
-		set_found_sblind(false);
-		set_found_bblind(false);
-		set_found_bbet(false);
-		set_found_ante(false);
-		set_found_sb_bb(false);
-		set_found_bb_BB(false);
-		set_found_limit(false);
+    //!!!!!set limits to undefined
 	}
 
 	// Copy into "last" bitmap

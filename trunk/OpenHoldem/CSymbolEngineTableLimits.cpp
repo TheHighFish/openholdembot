@@ -267,23 +267,23 @@ void CSymbolEngineTableLimits::CalcTableLimits_NL_PL()
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits_NL_PL()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
-		if (p_scraper->s_limit_info()->found_sb_bb)
+		if (p_scraper->s_limit_info()->sb_bb > 0)
 			SetSmallBlind(p_scraper->s_limit_info()->sb_bb);
 	}
 	if (tablelimit_unreliable_input.bblind==0)
 	{
-		if (p_scraper->s_limit_info()->found_bb_BB)
+		if (p_scraper->s_limit_info()->bb_BB > 0)
 			SetBigBlind(p_scraper->s_limit_info()->bb_BB);
 	}
 	if (tablelimit_unreliable_input.bbet==0)
 	{
-		if (p_scraper->s_limit_info()->found_bb_BB)
+		if (p_scraper->s_limit_info()->bb_BB > 0)
 			SetBigBet(p_scraper->s_limit_info()->bb_BB);
-		else if (p_scraper->s_limit_info()->found_sb_bb)
+		else if (p_scraper->s_limit_info()->sb_bb > 0)
 			SetBigBet(p_scraper->s_limit_info()->sb_bb*2);
-		else if (tablelimit_unreliable_input.bblind!=0)
+		else if (tablelimit_unreliable_input.bblind > 0)
 			SetBigBet(tablelimit_unreliable_input.bblind);
-		else if (tablelimit_unreliable_input.sblind!=0)
+		else if (tablelimit_unreliable_input.sblind > 0)
 			SetBigBet(tablelimit_unreliable_input.sblind*2);
 	}
 }
@@ -310,23 +310,23 @@ void CSymbolEngineTableLimits::CalcTableLimits_FL_AndUnknownGametype()
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits_FL_AndUnknownGametype()\n");
 	if (tablelimit_unreliable_input.sblind==0)
 	{
-		if (p_scraper->s_limit_info()->found_sb_bb)
+		if (p_scraper->s_limit_info()->sb_bb > 0)
 			SetSmallBlind(p_scraper->s_limit_info()->sb_bb);
 	}
 	if (tablelimit_unreliable_input.bblind==0)
 	{
-		if (p_scraper->s_limit_info()->found_bb_BB)
+		if (p_scraper->s_limit_info()->bb_BB > 0)
 			SetBigBlind(p_scraper->s_limit_info()->bb_BB);
 	}
 	if (tablelimit_unreliable_input.bbet==0)
 	{
-		if (p_scraper->s_limit_info()->found_bb_BB)
+		if (p_scraper->s_limit_info()->bb_BB > 0)
 			SetBigBet(p_scraper->s_limit_info()->bb_BB*2);
-		else if (p_scraper->s_limit_info()->found_sb_bb)
+		else if (p_scraper->s_limit_info()->sb_bb > 0)
 			SetBigBet(p_scraper->s_limit_info()->sb_bb*4);
-		else if (tablelimit_unreliable_input.bblind!=0)
+		else if (tablelimit_unreliable_input.bblind >0)
 			SetBigBet(tablelimit_unreliable_input.bblind*2);
-		else if (tablelimit_unreliable_input.sblind!=0)
+		else if (tablelimit_unreliable_input.sblind > 0)
 			SetBigBet(tablelimit_unreliable_input.sblind*4);
 	}
 }
@@ -549,15 +549,15 @@ void CSymbolEngineTableLimits::CalcTableLimits()
 	SetAnte(0);
 
 	// Save the parts we scraped successfully
-	if (p_scraper->s_limit_info()->found_sblind)
+	if (p_scraper->s_limit_info()->sblind > 0)
 		SetSmallBlind(p_scraper->s_limit_info()->sblind);								// sblind
-	if (p_scraper->s_limit_info()->found_bblind)
+	if (p_scraper->s_limit_info()->bblind > 0)
 		SetBigBlind(p_scraper->s_limit_info()->bblind);									// bblind
-	if (p_scraper->s_limit_info()->found_ante)
+	if (p_scraper->s_limit_info()->ante > 0)
 		SetAnte(p_scraper->s_limit_info()->ante);										// ante
-	if (p_scraper->s_limit_info()->found_limit)
+	if (p_scraper->s_limit_info()->limit > 0)
 		SetGametype(p_scraper->s_limit_info()->limit);									// lim
-	if (p_scraper->s_limit_info()->found_bbet)
+	if (p_scraper->s_limit_info()->bbet > 0)
 		SetBigBet(p_scraper->s_limit_info()->bbet);
 
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);

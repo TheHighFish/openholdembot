@@ -36,15 +36,6 @@ struct SLimitInfo
 	CString	handnumber;
 	double	sb_bb;
 	double	bb_BB;
-
-	bool	found_sblind;
-	bool	found_bblind;
-	bool	found_bbet;
-	bool	found_ante;
-	bool	found_limit;
-	bool	found_handnumber;
-	bool	found_sb_bb;
-	bool	found_bb_BB;
 };
 
 class CScraper 
@@ -147,14 +138,6 @@ private:
 	void	set_handnumber(const CString s) { ENT _s_limit_info.handnumber = s;}
 	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
 	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}
-	void	set_found_sblind(const bool b) { ENT _s_limit_info.found_sblind = b;}
-	void	set_found_bblind(const bool b) { ENT _s_limit_info.found_bblind = b;}
-	void	set_found_bbet(const bool b) { ENT _s_limit_info.found_bbet = b;}
-	void	set_found_ante(const bool b) { ENT _s_limit_info.found_ante = b;}
-	void	set_found_limit(const bool b) { ENT _s_limit_info.found_limit = b;}
-	void	set_found_handnumber(const bool b) { ENT _s_limit_info.found_handnumber = b;}
-	void	set_found_sb_bb(const bool b) { ENT _s_limit_info.found_sb_bb = b;}
-	void	set_found_bb_BB(const bool b) { ENT _s_limit_info.found_bb_BB = b;}
 	void	set_handle_found_at_xy(const bool b) { ENT _handle_found_at_xy = b;}
 	void	set_handle_xy(const POINT p) { ENT _handle_xy.x = p.x; _handle_xy.y = p.y;}
 	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}

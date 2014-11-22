@@ -26,9 +26,9 @@
 ///////////////////////////////
 struct STablemapSize 
 {
-	CString			name;
-	unsigned int	width;
-	unsigned int	height;
+	CString	name;
+	int	    width;
+	int	    height;
 };
 typedef std::pair<CString, STablemapSize> ZPair;
 typedef std::map<CString, STablemapSize> ZMap;
@@ -162,10 +162,6 @@ public:
 	const CString chipscrapemethod()   { return GetTMSymbol("chipscrapemethod"); }
 	const CString scraperdll()		     { return GetTMSymbol("scraperdll"); }
 public:
-	bool HandResetMethodDealer()	     { return (handresetmethod() &  HANDRESET_DEALER); }
-	bool HandResetMethodCards()		     { return (handresetmethod() &  HANDRESET_CARDS); }
-	bool HandResetMethodHandNumber()   { return (handresetmethod() &  HANDRESET_HANDNUM); }
-public:
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }
 	const bool valid() { return _valid; }
@@ -206,8 +202,6 @@ private:
 	void WarnAboutGeneralTableMapError(int error_code, int line);
 	int GetTMSymbol(CString name, int default);
 	CString GetTMSymbol(CString name);
-	const int handresetmethod()		{ return GetTMSymbol("handresetmethod", HANDRESET_ALL); }
-
 private:
 	// private variables - use public accessors and public mutators to address these
 	bool		_valid;
