@@ -328,6 +328,11 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "// The sum of all f$icm_prizeX functions should be 1.00 (= 100%).\n"
       "// Default to get things going: the winner takes it all.\n"
       "1.00\n";
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_rebuy]) == k_CString_identical) {
+    function_text = 
+      "// f$rebuy should evaluate to the target-amount in dollars.\n"
+      "// This value will be passed to the rebuy-script as a parameter.\n"
+      "0\n";
   } else {
     // Add an empty function.
     // The function-text should contain at least one space.
