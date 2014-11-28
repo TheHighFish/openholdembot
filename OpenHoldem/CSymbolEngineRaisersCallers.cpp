@@ -118,11 +118,9 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 	return 0.0;
 }
 
-void CSymbolEngineRaisersCallers::CalculateRaisers()
-{
+void CSymbolEngineRaisersCallers::CalculateRaisers() {
 	_nopponentstruelyraising = 0;
-	if (p_symbol_engine_chip_amounts->call() <= 0.0)
-	{
+	if (p_symbol_engine_chip_amounts->call() <= 0.0) 	{
 		// There are no bets and raises.
 		// Skip the calculations to keep the raischair of the previous round.
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
@@ -133,32 +131,41 @@ void CSymbolEngineRaisersCallers::CalculateRaisers()
 	int first_possible_raiser = FirstPossibleRaiser();
 	int last_possible_raiser  = LastPossibleRaiser();
 	double highest_bet = LastOrbitsLastRaisersBet();
-
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Searching for raisers from chair %i to %i with a bet higher than %s\n",
+  write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Searching for raisers from chair %i to %i with a bet higher than %s\n",
 		first_possible_raiser, last_possible_raiser, Number2CString(highest_bet)); 
-	for (int i=first_possible_raiser; i<=last_possible_raiser; i++)
-	{
+	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
-
+    write_log(preferences.debug_symbolengine(), 
+      "[CSymbolEngineRaisersCallers] chair %d bet %.2f\n",
+      chair, current_players_bet);
 		// Raisers are people
 		// * with a higher bet than players before them
 		// * who are still playing, not counting people who bet/fold in later orbits
     // * either betting/raising postflop or truely raising preflop
     //   (not counting the infamous "blind raisers")
-    if (p_table_state->_players[chair].HasAnyCards()
-        && (current_players_bet > highest_bet)
-        && ((p_betround_calculator->betround() > k_betround_preflop)
-					|| (highest_bet > p_symbol_engine_tablelimits->bblind()))) {
-			highest_bet = current_players_bet;
-			_raischair = chair;
-			int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
-			_raisbits[BETROUND] = new_raisbits;
-			assert(chair != USER_CHAIR);
-			write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
-				chair, Number2CString(highest_bet));
-			_nopponentstruelyraising++;
-		}	
+    if (!p_table_state->_players[chair].HasAnyCards()) {
+      write_log(preferences.debug_symbolengine(), 
+        "[CSymbolEngineRaisersCallers] chair %d has no cards.\n", chair);
+      continue;
+    } else if (current_players_bet <= highest_bet) {
+      write_log(preferences.debug_symbolengine(), 
+        "[CSymbolEngineRaisersCallers] chair %d is not raising\n", chair);
+      continue;
+    } else if ((p_betround_calculator->betround() == k_betround_preflop)
+				&& (highest_bet <= p_symbol_engine_tablelimits->bblind())) {
+      write_log(preferences.debug_symbolengine(), 
+        "[CSymbolEngineRaisersCallers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
+      continue;
+    }
+		highest_bet = current_players_bet;
+    write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
+			chair, Number2CString(highest_bet));
+		_raischair = chair;
+		int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
+		_raisbits[BETROUND] = new_raisbits;
+		assert(chair != USER_CHAIR);
+		++_nopponentstruelyraising;
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);

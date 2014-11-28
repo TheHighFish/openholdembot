@@ -21,7 +21,6 @@
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 
-
 CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
 
 CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
