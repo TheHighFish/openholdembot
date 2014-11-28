@@ -17,4 +17,8 @@ class CBlindLevels {
   ~CBlindLevels();
  public:
   bool BestMatchingBlindLeve(double *sblind, double *bblind, double *bbet);
+  bool BlindsMatchBlindLevel(const int level,
+                             const double sblind, 
+                             const double bblind, 
+                             const double bbet);
 };
