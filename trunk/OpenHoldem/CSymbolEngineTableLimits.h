@@ -20,8 +20,7 @@
 #define BIG_BLIND p_symbol_engine_tablelimits->bblind()
 #define SMALL_BLIND p_symbol_engine_tablelimits->sblind()
 
-struct STableLimit
-{
+struct STableLimit {
 	double sblind;
 	double bblind;
 	double bbet;
@@ -29,13 +28,12 @@ struct STableLimit
 	// They get stored separately and not auto-locked.
 };
 
-class CSymbolEngineTableLimits: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineTableLimits();
 	~CSymbolEngineTableLimits();
 	// public mutators
-public:
+ public:
 	void InitOnStartup();
 	void ResetOnConnection();
 	void ResetOnHandreset();
@@ -43,10 +41,10 @@ public:
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
 	void CalcTableLimits();
-public:
+ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
-public:
+ public:
   // public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
@@ -54,14 +52,16 @@ public:
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round
-public:
-	int gametype()		{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim
+ public:
+	int gametype()	{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim
 	bool isnl()			{ return (gametype() == k_gametype_NL); }
 	bool ispl()			{ return (gametype() == k_gametype_PL); }
 	bool isfl()			{ return (gametype() == k_gametype_FL); }
-public:
+ public:
 	CString GetGametypeAsString();
-private:
+ private:
+  bool TableLimitsNeedToBeGuessed();
+ private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
 	void SetBigBet(double big_bet);
@@ -69,9 +69,9 @@ private:
 	void SetBet(int betround, double bet);
 	void SetGametype(int gametype); 
 	// public accessors
-public:
+ public:
 	// private functions
-private:
+ private:
 	void AutoLockBlinds();
 	void AutoLockBlindsForCurrentHand();
 	void AutoLockBlindsForCashgamesAfterNHands();
@@ -88,30 +88,28 @@ private:
 	double GuessBigBlindFromSmallBlind();
 	double GuessBigBetFromBigBlind();
 	void AdjustForReasonableness();
-	void ResetBets();
+  STableLimit BestTableLimitsToBeUsed();
 	// private data members
-private:
+ private:
 	bool blinds_locked_for_current_hand; 
 	bool blinds_locked_for_complete_session;
-private:
-	STableLimit tablelimit_unreliable_input;
-	STableLimit tablelimit_last_known_good_value;
+ private:
+	STableLimit tablelimit_best_guess;
 	STableLimit tablelimit_locked_for_current_hand;
 	STableLimit tablelimit_locked_for_complete_session;
-private:
+ private:
 	static const int k_number_of_hands_to_autolock_blinds_for_cashgames = 5;
 	int number_of_saved_tablelimits;
-private:
+ private:
 	// We store the table-limits for the first N hands in separate arrays
 	// instead of TableLimit structures, as we need to operate on arrays later (median function).
 	double tablelimits_first_N_hands_sblind[k_number_of_hands_to_autolock_blinds_for_cashgames];
 	double tablelimits_first_N_hands_bblind[k_number_of_hands_to_autolock_blinds_for_cashgames];
 	double tablelimits_first_N_hands_bbet[k_number_of_hands_to_autolock_blinds_for_cashgames];
-private:
-	int		_gametype;
-	double	_ante;
-	// Index 1..4 is for current bettinground, 0 is unused
-	double _betsizes_for_all_bettingrounds[k_number_of_betrounds+1]; 
+ private:
+	int		 _gametype;
+	double _ante;
+  double _buyin; //!!!!!
 };
 
 extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;

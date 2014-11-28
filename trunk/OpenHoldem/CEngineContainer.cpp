@@ -376,6 +376,7 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Building list of symbols\n");
   _list_of_symbols = "";
   for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
+    write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
     _list_of_symbols.Append(_symbol_engines[i]->SymbolsProvided());
     // Extra blank to avoid unexpected concatenation of symbols
     _list_of_symbols.Append(" ");
