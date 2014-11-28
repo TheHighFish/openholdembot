@@ -11,34 +11,34 @@
 //
 //******************************************************************************
 
-#include "srdafx.h"
+#include "stdafx.h"
 #include "CBlindLevels.h"
 
 // Small-blind, big-blind, big-bet
-const int kNumberOfValuesPerLevel = 3; 
-const int kNumberOfBlindLevels    = 8;
+const int kNumberOfValuesPerLevel =   3; 
+const int kNumberOfBlindLevels    = 187;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
 const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
-  {{        0.01,         0.02,        0.04},
-   {        0.01,         0.02,        0.05},
-   {        0.02,         0.04,        0.08},
-   {        0.02,         0.05,        0.10},
-   {        0.03,         0.06,        0,12},
-   {        0.04,         0.06,        0.16},
-   {        0.05,         0.10,        0.20},
-   {        0.05,         0.10,        0.25},
-   {        0.06,         0.12,        0.24},
-   {        0.06,         0.12,        0.25},
-   {        0.07,         0.14,        0.28},
-   {        0.08,         0.16,        0.32},
-   {        0.10,         0.20,        0.40},
-   {        0.10,         0.25,        0.50},
-   {        0.15,         0.30,        0.60},
-   {        0.25,         0.50,        1.00},
-   {        0.50,         1.00,        2.00},
-   {        1.00,         2.00,        4.00},
-   {        2.00,         4.00,        8.00},
+  {{        0.01,         0.02,         0.04},
+   {        0.01,         0.02,         0.05},
+   {        0.02,         0.04,         0.08},
+   {        0.02,         0.05,         0.10},
+   {        0.03,         0.06,         0.12},
+   {        0.04,         0.06,         0.16},
+   {        0.05,         0.10,         0.20},
+   {        0.05,         0.10,         0.25},
+   {        0.06,         0.12,         0.24},
+   {        0.06,         0.12,         0.25},
+   {        0.07,         0.14,         0.28},
+   {        0.08,         0.16,         0.32},
+   {        0.10,         0.20,         0.40},
+   {        0.10,         0.25,         0.50},
+   {        0.15,         0.30,         0.60},
+   {        0.25,         0.50,         1.00},
+   {        0.50,         1.00,         2.00},
+   {        1.00,         2.00,         4.00},
+   {        2.00,         4.00,         8.00},
    {        2.50,         5.00,        10.00},
    {        3.00,         6.00,        12.00},
    {        4.00,         8.00,        16.00},
@@ -77,39 +77,39 @@ const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {      175.00,       350.00},
    {      180.00,       360.00},
    {      190.00,       380.00},
-   {      200.00,       400.00        800.00},
+   {      200.00,       400.00,       800.00},
    {      225.00,       450.00},
    {      250.00,       500.00},
    {      300.00,       600.00,      1200.00},
    {      350.00,       700.00},
-   {      400.00,       800.00       1600.00},
+   {      400.00,       800.00,      1600.00},
    {      450.00,       900.00},
    {      500.00,      1000.00},
-   {      550.00,      1100.00       2000.00},
+   {      550.00,      1100.00,      2000.00},
    {      600.00,      1200.00},
    {      625.00,      1250.00},
    {      650.00,      1300.00},
    {      700.00,      1400.00},
-   {      750.00,      1500.00       3000.00},
+   {      750.00,      1500.00,      3000.00},
    {      800.00,      1600.00},
    {      850.00,      1700.00},
    {      900.00,      1800.00},
    {      950.00,      1900.00},
-   {     1000.00,      2000.00       4000.00},      
+   {     1000.00,      2000.00,      4000.00},      
    {     1100.00,      2200.00},      
    {     1200.00,      2400.00},      
-   {     1250.00,      2500.00       5000.00},      
+   {     1250.00,      2500.00,      5000.00},      
    {     1300.00,      2600.00},      
    {     1350.00,      2700.00},      
    {     1400.00,      2800.00},      
    {     1450.00,      2900.00},      
-   {     1500.00,      3000.00       6000.00},      
+   {     1500.00,      3000.00,      6000.00},      
    {     1600.00,      3200.00},      
    {     1700.00,      3400.00},      
    {     1750.00,      3500.00},      
    {     1800.00,      3600.00},      
    {     1900.00,      3800.00},      
-   {     2000.00,      4000.00       8000.00},      
+   {     2000.00,      4000.00,      8000.00},      
    {     2100.00,      2200.00},      
    {     2200.00,      2400.00},      
    {     2300.00,      2600.00},      
@@ -217,10 +217,10 @@ CBlindLevels::CBlindLevels () {
 CBlindLevels::~CBlindLevels () {
 }
 
-bool CBlindLevels::BlinsMatchBlindLevel(const int level,
-                                        const double sblind, 
-                                        const double bblind, 
-                                        const double bbet) {
+bool CBlindLevels::BlindsMatchBlindLevel(const int level,
+                                         const double sblind, 
+                                         const double bblind, 
+                                         const double bbet) {
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
@@ -235,13 +235,14 @@ bool CBlindLevels::BestMatchingBlindLeve(double *sblind, double *bblind, double 
   if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0)) return false;
   // Guessing...
   for (int i=0; i<kNumberOfBlindLevels; ++i) {
-    if BlinsMatchBlindLevel(i, sblind, double *bblind, double *bbet) {
-      sblind = kBlindLevels[i][0];
-      bblind = kBlindLevels[i][1];
-      bbet   = kBlindLevels[i][2];
+    if (BlindsMatchBlindLevel(i, *sblind, *bblind, *bbet)) {
+      *sblind = kBlindLevels[i][0];
+      *bblind = kBlindLevels[i][1];
+      *bbet   = kBlindLevels[i][2];
       return true; 
     }
   }
+  // !!!!! Partial match
   // Nothing found
   return false;
 }
