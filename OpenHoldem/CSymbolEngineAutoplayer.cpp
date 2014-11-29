@@ -138,20 +138,16 @@ void CSymbolEngineAutoplayer::CalculateSitInState() {
   }
 }
 
-void CSymbolEngineAutoplayer::DetectSpecialConnectionLikeBringAndManualMode()
-{
+void CSymbolEngineAutoplayer::DetectSpecialConnectionLikeBringAndManualMode() {
 	_isbring  = false;
 	_ismanual = false;
 	const int k_max_length_of_classname = 50;
 	char classname[k_max_length_of_classname] = "";
 
 	GetClassName(p_autoconnector->attached_hwnd(), classname, k_max_length_of_classname);
-	if (strcmp(classname, "BRING")==0)
-	{
+	if (strcmp(classname, "BRING")==0) {
 		_isbring = true;																
-	}
-	else if (strcmp(classname, "OpenHoldemManualMode")==0)
-	{
+	}	else if (strcmp(classname, "OpenHoldemManualMode")==0) {
 		_ismanual = true;
 	}
 }
