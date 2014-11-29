@@ -377,10 +377,21 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
   _list_of_symbols = "";
   for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
     write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
-    _list_of_symbols.Append(_symbol_engines[i]->SymbolsProvided());
+    CString new_symbols = _symbol_engines[i]->SymbolsProvided();
+    _list_of_symbols.Append(new_symbols);
+    const int kPrintfBufferSize = 4096;
+    if (new_symbols.GetLength() < kPrintfBufferSize) {
+      // Logging new symbols per symbol engine
+      // and no longer all at once at the end of this function
+      // as the very long list caused a buffer overflow if enabled.
+      // As it turned out the function-collection alone
+      // still could exceed that limit, so we check the siye.
+      write_log(preferences.debug_engine_container(), "[EngineContainer] New symbols %s\n", 
+        new_symbols);
+    } else {
+      write_log(preferences.debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
+    }
     // Extra blank to avoid unexpected concatenation of symbols
     _list_of_symbols.Append(" ");
   }
-  write_log(preferences.debug_engine_container(), "[EngineContainer] List of symbols \"%s\"\n",
-    _list_of_symbols);
 }
