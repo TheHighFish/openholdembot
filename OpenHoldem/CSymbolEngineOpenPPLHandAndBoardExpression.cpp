@@ -183,7 +183,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 
 	// Third case: cards with individual suits
 	int length = hand_or_board_expression.GetLength();
-	for (int i=0; i<(length-1); i++)
+	for (int i=0; i<(length-1); ++i)
 	{
 		if (IsCardRankCharacter(hand_or_board_expression[i])
 			&& IsCardSuitCharacter(hand_or_board_expression[i+1]))
@@ -243,7 +243,7 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	ranks[3] = opt_rank_3;
 	ranks[4] = opt_rank_4;
 
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<k_number_of_community_cards; ++i) {
 		assert(ranks[i] >= 0);
 		assert(ranks[i] <= k_rank_ace);
     write_log(preferences.debug_hand_and_baord_expressions(),
@@ -262,7 +262,7 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(CString card_exp
 	int result = 1;
 	int length = card_expression.GetLength();
 
-	for (int i=0; i<length; i++)
+	for (int i=0; i<length; ++i)
 	{
 		char next_character = card_expression[i];
 		if (!IsCardRankCharacter(next_character))

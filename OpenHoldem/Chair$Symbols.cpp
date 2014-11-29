@@ -21,7 +21,7 @@
 
 double Chair$(const char *name)
 {
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); ++i)
 	{
 		if (p_table_state->_players[i]._name.Find(&name[0]) != k_not_found)
 			return i;

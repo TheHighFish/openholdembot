@@ -178,7 +178,7 @@ void CAutoplayerTrace::LogLogSymbols() {
   }
   write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", 
     _logsymbols_collection.GetCount(), max_log);
-  for (int i=0; i<max_log; i++) {
+  for (int i=0; i<max_log; ++i) {
     write_log(k_always_log_basic_information, "***     %s\n", 
       _logsymbols_collection.GetAt(i));
   }
@@ -213,7 +213,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
 
   // player cards
   if (p_symbol_engine_userchair->userchair_confirmed()) {
-    for (int i=0; i<=1; i++) {
+    for (int i=0; i<=1; ++i) {
       Card card = p_table_state->User()->_hole_cards[i];
       pcards.Append(card.ToString());
     }
@@ -223,7 +223,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // common cards
   comcards = "";
   if (betround >= k_betround_flop) {
-    for (int i=0; i<k_number_of_flop_cards; i++) {
+    for (int i=0; i<k_number_of_flop_cards; ++i) {
       if (p_table_state->_common_cards[i].IsKnownCard()) {
         comcards.Append(p_table_state->_common_cards[i].ToString());
       }
@@ -281,7 +281,7 @@ void CAutoplayerTrace::LogAutoPlayerTrace()
     return;
   }
   write_log_nostamp(true, "***** Autoplayer Trace **************************************\n");
-  for (int i=0; i<_symboltrace_collection.GetSize(); i++)
+  for (int i=0; i<_symboltrace_collection.GetSize(); ++i)
   {
 	  write_log_nostamp(true, "%s\n", _symboltrace_collection.GetAt(i));
   }
@@ -289,7 +289,7 @@ void CAutoplayerTrace::LogAutoPlayerTrace()
 
 CString CAutoplayerTrace::LogSymbolsForGUI() {
   CString temp, result;
-  for (int i=0; i<min(5, _logsymbols_collection.GetCount()); i++) {
+  for (int i=0; i<min(5, _logsymbols_collection.GetCount()); ++i) {
 	  temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
 	  result.Append(temp);
   }

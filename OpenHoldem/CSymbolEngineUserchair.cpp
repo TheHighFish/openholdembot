@@ -78,7 +78,7 @@ void CSymbolEngineUserchair::CalculateUserChair() {
 	}	else {
 		// Either not confirmed or no known cards when it is my turn
 		// Looking for known cards and new chair
-		for (int i=0; i<p_tablemap->nchairs(); i++)
+		for (int i=0; i<p_tablemap->nchairs(); ++i)
 		{
 			if (p_table_state->_players[i].HasKnownCards() && IsNotShowdown()) {
 				_userchair = i;

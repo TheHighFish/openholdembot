@@ -81,7 +81,7 @@ CSharedMem::~CSharedMem()
 bool CSharedMem::PokerWindowAttached(HWND Window)
 {
 	ENT;
-	for (int i=0; i<MAX_SESSION_IDS; i++)
+	for (int i=0; i<MAX_SESSION_IDS; ++i)
 	{
 		if (attached_poker_windows[i] == Window)
 		{
@@ -95,7 +95,7 @@ bool CSharedMem::PokerWindowAttached(HWND Window)
 
 bool CSharedMem::AnyWindowAttached()
 {
-	for (int i=0; i<MAX_SESSION_IDS; i++)
+	for (int i=0; i<MAX_SESSION_IDS; ++i)
 	{
 		if (attached_poker_windows[i] != NULL)
 		{
@@ -162,7 +162,7 @@ void CSharedMem::CreateDenseListOfConnectedPokerWindows()
 {
 	write_log(preferences.debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
 	int size_of_list = 0;
-	for (int i=0; i<MAX_SESSION_IDS; i++)
+	for (int i=0; i<MAX_SESSION_IDS; ++i)
 	{
 		if (attached_poker_windows[i] != NULL)
 		{
@@ -227,7 +227,7 @@ void CSharedMem::VerifyMainMutexName()
 
 bool CSharedMem::IsAnyOpenHoldemProcess(int PID)
 {
-	for (int i=0; i<MAX_SESSION_IDS; i++)
+	for (int i=0; i<MAX_SESSION_IDS; ++i)
 	{
 		if (openholdem_PIDs[i] == PID)
 		{

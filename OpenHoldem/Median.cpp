@@ -39,11 +39,11 @@ double kth_smallest(double a[], int n, int k)
         i=l ;
         j=m ;
         do {
-            while (a[i]<x) i++ ;
+            while (a[i]<x) ++i ;
             while (x<a[j]) j-- ;
             if (i<=j) {
                 ELEM_SWAP(a[i],a[j]) ;
-                i++ ; j-- ;
+                ++i ; j-- ;
             }
         } while (i<=j) ;
         if (j<k) l=i ;

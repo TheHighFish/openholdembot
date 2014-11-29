@@ -111,7 +111,7 @@ void XYZToLAB(float x, float y, float z, float &L, float &A, float &B)
 	r[0] = x / xw;
 	r[1] = y / yw;
 	r[2] = z / zw;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; ++i) {
 		if (r[i] > epsilon) {
 			f[i] = powf(r[i], 1.0f / 3.0f);
 		} else {
@@ -135,7 +135,7 @@ bool Yee_Compare(CompareArgs &args)
 	unsigned int i, dim;
 	dim = args.ImgA->Get_Width() * args.ImgA->Get_Height();
 	bool identical = true;
-	for (int i = 0; i < dim; i++) {
+	for (int i = 0; i < dim; ++i) {
 		if (args.ImgA->Get(i) != args.ImgB->Get(i)) {
 		  identical = false;
 		  break;
@@ -198,7 +198,7 @@ bool Yee_Compare(CompareArgs &args)
 	
 	float num_pixels = 1;
 	unsigned int adaptation_level = 0;
-	for (int i = 0; i < MAX_PYR_LEVELS; i++) {
+	for (int i = 0; i < MAX_PYR_LEVELS; ++i) {
 		adaptation_level = i;
 		if (num_pixels > num_one_degree_pixels) break;
 		num_pixels *= 2;
@@ -206,11 +206,11 @@ bool Yee_Compare(CompareArgs &args)
 	
 	float cpd[MAX_PYR_LEVELS];
 	cpd[0] = 0.5f * pixels_per_degree;
-	for (int i = 1; i < MAX_PYR_LEVELS; i++) cpd[i] = 0.5f * cpd[i - 1];
+	for (int i = 1; i < MAX_PYR_LEVELS; ++i) cpd[i] = 0.5f * cpd[i - 1];
 	float csf_max = csf(3.248f, 100.0f);
 	
 	float F_freq[MAX_PYR_LEVELS - 2];
-	for (int i = 0; i < MAX_PYR_LEVELS - 2; i++) F_freq[i] = csf_max / csf( cpd[i], 100.0f);
+	for (int i = 0; i < MAX_PYR_LEVELS - 2; ++i) F_freq[i] = csf_max / csf( cpd[i], 100.0f);
 	
 	unsigned int pixels_failed = 0;
 	for (y = 0; y < h; y++) {
@@ -218,7 +218,7 @@ bool Yee_Compare(CompareArgs &args)
 		int index = x + y * w;
 		float contrast[MAX_PYR_LEVELS - 2];
 		float sum_contrast = 0;
-		for (int i = 0; i < MAX_PYR_LEVELS - 2; i++) {
+		for (int i = 0; i < MAX_PYR_LEVELS - 2; ++i) {
 			float n1 = fabsf(la->Get_Value(x,y,i) - la->Get_Value(x,y,i + 1));
 			float n2 = fabsf(lb->Get_Value(x,y,i) - lb->Get_Value(x,y,i + 1));
 			float numerator = (n1 > n2) ? n1 : n2;
@@ -234,11 +234,11 @@ bool Yee_Compare(CompareArgs &args)
 		float adapt = la->Get_Value(x,y,adaptation_level) + lb->Get_Value(x,y,adaptation_level);
 		adapt *= 0.5f;
 		if (adapt < 1e-5) adapt = 1e-5f;
-		for (int i = 0; i < MAX_PYR_LEVELS - 2; i++) {
+		for (int i = 0; i < MAX_PYR_LEVELS - 2; ++i) {
 			F_mask[i] = mask(contrast[i] * csf(cpd[i], adapt)); 
 		}
 		float factor = 0;
-		for (int i = 0; i < MAX_PYR_LEVELS - 2; i++) {
+		for (int i = 0; i < MAX_PYR_LEVELS - 2; ++i) {
 			factor += contrast[i] * F_freq[i] * F_mask[i] / sum_contrast;
 		}
 		if (factor < 1) factor = 1;

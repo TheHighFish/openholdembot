@@ -118,7 +118,7 @@ void CSymbolEngineTableLimits::SearchTableForSbAndBbValue()
 	bool	found_inferred_sb = false, found_inferred_bb = false;
 
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] SearchTableForSbAndBbValue()\n");
-	for (int i=1; i<=p_tablemap->nchairs(); i++)
+	for (int i=1; i<=p_tablemap->nchairs(); ++i)
 	{
 		int next_chair = (p_symbol_engine_dealerchair->dealerchair() + i) % p_tablemap->nchairs();
 		// We do no longer require cards for the players,

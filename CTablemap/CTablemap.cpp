@@ -146,13 +146,13 @@ void CTablemap::ClearTablemap() {
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
-	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++) {
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; ++i) {
 		_t$[i].clear();
   }
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++) {
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i) {
 		_p$[i].clear();
   }
-  for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++) {
+  for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i) {
 		_h$[i].clear();
   }
   // Clear _i$-map and its contents
@@ -508,7 +508,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			hold_font.hexmash = "";
 			while ((token = strLine.Tokenize(" \t", pos))!="" && i<=30 && pos!=-1) 
 			{
-				hold_font.x[i++] = strtoul(token, 0, 16);
+				hold_font.x[++i] = strtoul(token, 0, 16);
 				hold_font.hexmash.Append(token);
 			}
 			hold_font.x_count = i;
@@ -801,12 +801,12 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 	// fonts
 	WriteSectionHeader(ar, "fonts");
-	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_font_groups_in_tablemap; ++i)
 	{
 		for (TMapCI t_iter =_t$[i].begin(); t_iter != _t$[i].end(); t_iter++)
 		{
 			s.Format("t%d$%c", i, t_iter->second.ch);
-			for (int j=0; j<t_iter->second.x_count; j++) 
+			for (int j=0; j<t_iter->second.x_count; ++j) 
 			{ 
 				t.Format(" %x", t_iter->second.x[j]);
 				s.Append(t);
@@ -819,7 +819,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 	// points
 	WriteSectionHeader(ar, "points");
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 	{
 		for (PMapCI p_iter=_p$[i].begin(); p_iter!=_p$[i].end(); p_iter++)
 		{
@@ -831,7 +831,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 
 	// hash
 	WriteSectionHeader(ar, "hash");
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -896,11 +896,11 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Loop through all the hash (h$) records, and check for a corresponding image (i$) record
 	// Log missing records and display message if we can't find them all
 	all_i$_found = true;
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 	{
 		unmatched_h$_records[i].RemoveAll();
 	}
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 	{
 		for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++)
 		{
@@ -930,9 +930,9 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 
-			for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+			for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 			{
-				for (int j=0; j<unmatched_h$_records[i].GetCount(); j++) 
+				for (int j=0; j<unmatched_h$_records[i].GetCount(); ++j) 
 				{
 					fprintf(fp, "\t%3d. h$%s\n", j+1, unmatched_h$_records[i].GetAt(j).name.GetString());
 				}
@@ -948,14 +948,14 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	}
 
 	// Init new hash array
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 		new_hashes[i].RemoveAll();
 
 	// Loop through each of the image records and create hashes
 	for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++) 
 	{
 		// Loop through the h$ records to find all the hashes that we have to create for this image record
-		for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+		for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 		{
 			for (HMapCI h_iter=_h$[i].begin(); h_iter!=_h$[i].end(); h_iter++) 
 			{
@@ -968,7 +968,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					if (i == 0) 
 					{
 						// only create hash based on rgb values - ignore alpha
-						for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
+						for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); ++j)
 							filtered_pix[j] = i_iter->second.pixel[j] & RGB_MASK;
 
 						hold_hash_value.hash = hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
@@ -999,7 +999,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					}
 
 					// Check for hash collision
-					for (int j=0; j<(int) new_hashes[i].GetSize(); j++) 
+					for (int j=0; j<(int) new_hashes[i].GetSize(); ++j) 
 					{
 						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
 						{
@@ -1015,17 +1015,17 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					new_hashes[i].Add(hold_hash_value);
 				}
 			}  // for (HMapCI h_iter=_h$.begin(); h_iter!=_h$.end(); h_iter++)
-		} // for (int i=0; i<=3; i++)
+		} // for (int i=0; i<=3; ++i)
 	} // for (IMapCI i_iter=_i$.begin(); i_iter!=_i$.end(); i_iter++)
 
 
 	// Copy the temporary new hash CArray to the internal std::map
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 		h$_clear(i);
 
-	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; i++)
+	for (int i = 0; i < k_max_number_of_hash_groups_in_tablemap; ++i)
 	{
-		for (int j=0; j<(int) new_hashes[i].GetSize(); j++)
+		for (int j=0; j<(int) new_hashes[i].GetSize(); ++j)
 		{
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
@@ -1057,7 +1057,7 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 	if (type == 0) 
 	{
 		// only create hash based on rgb values - ignore alpha
-		for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); j++)
+		for (int j=0; j < (int) (i_iter->second.width * i_iter->second.height); ++j)
 			filtered_pix[j] = i_iter->second.pixel[j] & RGB_MASK;
 
 		return hashword(&filtered_pix[0], i_iter->second.width * i_iter->second.height, HASH_SEED_0);
@@ -1114,14 +1114,14 @@ uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Putting the name into the buffer\n");
 #endif
 	// Put the ascii value of each letter into a uint32_t
-	for (int i=0; i<name.GetLength(); i++)
+	for (int i=0; i<name.GetLength(); ++i)
 		uints[c++] = name[i];
 
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Putting the pixels into the buffer\n");
 #endif
 	// Now the pixels
-	for (int i=0; i<(int) (height * width); i++)
+	for (int i=0; i<(int) (height * width); ++i)
 		uints[c++] = pixels[i];
 
 #ifdef OPENHOLDEM_PROGRAM

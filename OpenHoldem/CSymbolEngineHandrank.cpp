@@ -94,7 +94,7 @@ void CSymbolEngineHandrank::ResetOnMyTurn()
 	// if nopponents<1 or >9 then default to name sane value
 	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 		
-	for (int i=0; i<k_number_of_starting_hands; i++)
+	for (int i=0; i<k_number_of_starting_hands; ++i)
 	{
 		if (strcmp(cardstr, handrank_table_169[_nopponents-1][i])==0)
 		{

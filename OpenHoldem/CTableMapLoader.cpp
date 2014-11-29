@@ -105,7 +105,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData()
 bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFilePath) {
 	__TRACE
   assert(TablemapFilePath != "");
-	for (int i=0; i<_number_of_tablemaps_loaded; i++)	{
+	for (int i=0; i<_number_of_tablemaps_loaded; ++i)	{
     assert(tablemap_connection_data[i].FilePath != "");
 		if (tablemap_connection_data[i].FilePath == TablemapFilePath)	{
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [true]\n", TablemapFilePath);
@@ -121,9 +121,9 @@ void CTableMapLoader::CheckForDuplicatedTablemaps()
 {
 	__TRACE
 	CString error_message = "";
-	for (int i=0; i<_number_of_tablemaps_loaded; i++)
+	for (int i=0; i<_number_of_tablemaps_loaded; ++i)
 	{
-		for (int j=i+1; j<_number_of_tablemaps_loaded; j++)
+		for (int j=i+1; j<_number_of_tablemaps_loaded; ++j)
 		{
 			if	((tablemap_connection_data[i].SiteName == tablemap_connection_data[j].SiteName)
 				&& (tablemap_connection_data[i].TitleText == tablemap_connection_data[j].TitleText))
@@ -181,7 +181,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap)
 	p_tablemap_access->SetTitleText("!titletext", tablemap_connection_data[_number_of_tablemaps_loaded].NegativeTitleText);
 		
 	CString s = "";
-	for (int i=0; i<k_max_number_of_titletexts; i++)
+	for (int i=0; i<k_max_number_of_titletexts; ++i)
 	{
 		s.Format("titletext%d", i);
 		p_tablemap_access->SetTitleText(s, tablemap_connection_data[_number_of_tablemaps_loaded].TitleText_0_9[i]);
@@ -247,7 +247,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	{
 		// titletext din't match
 		// Check for titletext0..titletext9
-		for (int i=0; i<k_max_number_of_titletexts; i++)
+		for (int i=0; i<k_max_number_of_titletexts; ++i)
 		{
 			if ((tablemap_connection_data[MapIndex].TitleText_0_9[i] != "")
 				&& (title.Find(tablemap_connection_data[MapIndex].TitleText_0_9[i])!=-1))
@@ -272,7 +272,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	}
 	else
 	{
-		for (int i=0; i<k_max_number_of_titletexts; i++)
+		for (int i=0; i<k_max_number_of_titletexts; ++i)
 		{
 			if ((tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i] != "")
 				&&title.Find(tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i])!=-1)

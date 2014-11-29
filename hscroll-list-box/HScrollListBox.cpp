@@ -100,7 +100,7 @@ void CHScrollListBox::ResetHExtent()
 
 	CWaitCursor cwc;
 	int iMaxHExtent = 0;
-	for (int i = 0; i < GetCount(); i++)
+	for (int i = 0; i < GetCount(); ++i)
 	{
 		CString csText;
 		GetText(i, csText);

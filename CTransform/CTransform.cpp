@@ -43,7 +43,7 @@ const int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, C
 	bool				background[MAX_CHAR_WIDTH] = {false};
 
 	// Initialize arrays
-	for (int i=0; i<MAX_CHAR_WIDTH; i++)
+	for (int i=0; i<MAX_CHAR_WIDTH; ++i)
 		background[i] = true;
 
 
@@ -640,10 +640,10 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 			y_begin = y_end - MAX_SINGLE_CHAR_HEIGHT;
 
 		// Get array of hexvals
-		for (int i=0; i<MAX_SINGLE_CHAR_WIDTH; i++)
+		for (int i=0; i<MAX_SINGLE_CHAR_WIDTH; ++i)
 			hexval_array[i] = 0;
 
-		for (int i=x_begin; i<=x_end; i++)
+		for (int i=x_begin; i<=x_end; ++i)
 		{
 			for (int y=y_end; y>=y_begin; y--)
 				if (ch[i][y])
@@ -662,7 +662,7 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 			if (t_iter->second.x_count<=x+1)
 			{
 				// Get the hamming distance and lit pix counts "by column" left to right
-				for (int j=0; j<t_iter->second.x_count && j<x+1; j++)
+				for (int j=0; j<t_iter->second.x_count && j<x+1; ++j)
 				{
 					tot_hd += CalcHammingDistance(t_iter->second.x[j], hexval_array[j]);
 					lit_pixels += bitcount(t_iter->second.x[j]);

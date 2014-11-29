@@ -132,15 +132,15 @@ COpenHoldemView::COpenHoldemView()
 	_sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
 	_iterator_thread_progress_last = 0;
 	
-	for (int i = 0; i<k_number_of_community_cards; i++)
+	for (int i = 0; i<k_number_of_community_cards; ++i)
 		_card_common_last[i] = CARD_UNDEFINED;
 
-	for (int i = 0; i<k_max_number_of_players ; i++)
+	for (int i = 0; i<k_max_number_of_players ; ++i)
 	{
 		_seated_last[i] = _active_last[i] = _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
-		for (int j=0; j<k_number_of_cards_per_player; j++)
+		for (int j=0; j<k_number_of_cards_per_player; ++j)
 		{
 			_card_player_last[i][j] = CARD_NOCARD;
 		}
@@ -274,7 +274,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	DrawButtonIndicators();
 
 	// Draw common cards
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<k_number_of_community_cards; ++i) 
 	{
     Card *p_card = &p_table_state->_common_cards[i];
     int card_value = p_table_state->_common_cards[i].GetValue();
@@ -291,7 +291,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	}
 
 	// Draw collection of player info
-	for (int i=0; i<p_tablemap->nchairs(); i++) 
+	for (int i=0; i<p_tablemap->nchairs(); ++i) 
 	{
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
@@ -371,7 +371,7 @@ void COpenHoldemView::DrawButtonIndicators(void)
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<k_max_number_of_players; ++i) 
 	{
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
