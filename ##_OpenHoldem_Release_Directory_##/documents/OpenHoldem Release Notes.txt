@@ -6,6 +6,12 @@ BUG FIXES:
   or the usual time-stamp. This has now been fixed.
   Thanks to OpenGeek for reporting.
   [THF]
+= The scraper could leak some GDI-objects, as early exits
+  on some execution-paths bypassed the cleanup-macro.
+  This was probably the memory-leaking and slowness some users experienced.
+  Also added a counter for GDI-objects to detect
+  problems like that automatically in the future.
+  [Moby]
 
 v7.3.0 2014-11-20
 ==================
