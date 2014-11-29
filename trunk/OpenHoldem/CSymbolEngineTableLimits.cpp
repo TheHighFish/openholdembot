@@ -55,7 +55,7 @@ void CSymbolEngineTableLimits::InitOnStartup() {
 void CSymbolEngineTableLimits::ResetOnConnection() {
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ResetOnConnection()\n");
 	number_of_saved_tablelimits = 0;
-	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)	{
+	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; ++i)	{
 		tablelimits_first_N_hands_sblind[i] = 0;
 		tablelimits_first_N_hands_bblind[i] = 0;
 		tablelimits_first_N_hands_bbet[i]   = 0;

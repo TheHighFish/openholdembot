@@ -30,7 +30,7 @@ unsigned int crc32(unsigned char const *p)
 	unsigned int len = strlen((char const *) p); 
 	while (len--) {
 		crc ^= *p++;
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; ++i)
 			crc = (crc >> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
 	}
 	return crc;

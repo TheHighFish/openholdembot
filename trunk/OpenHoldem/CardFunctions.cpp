@@ -92,7 +92,7 @@ int CardStringToRankbits(char* one_or_more_cards_cases_and_suits_dont_matter)
 {
 	int rankbits = 0;
 	int length = strlen(one_or_more_cards_cases_and_suits_dont_matter);
-	for (int i = 0; i<length; i++)
+	for (int i = 0; i<length; ++i)
 	{
 		char next_character = one_or_more_cards_cases_and_suits_dont_matter[i];
 		int rank = RankCharacterToRankNumber(next_character);

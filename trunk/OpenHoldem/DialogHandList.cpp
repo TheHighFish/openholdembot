@@ -230,8 +230,8 @@ BOOL CDlgHandList::OnInitDialog()
 
 	// Set checked/unchecked status of each box
   assert(p_list != NULL);
-	for (int i=2; i<=k_rank_ace; i++) {
-		for (int j=2; j<=k_rank_ace; j++) {
+	for (int i=2; i<=k_rank_ace; ++i) {
+		for (int j=2; j<=k_rank_ace; ++j) {
 			m_Check[i][j].SetCheck(p_list->IsOnList(i, j) ? BST_CHECKED : BST_UNCHECKED);
     }
 	}
@@ -244,8 +244,8 @@ BOOL CDlgHandList::OnInitDialog()
 void CDlgHandList::OnCheckClick(UINT controlID)
 {
 	nhands = 0;
-	for (int i=2; i<=k_rank_ace; i++) {
-		for (int j=2; j<=k_rank_ace; j++) {
+	for (int i=2; i<=k_rank_ace; ++i) {
+		for (int j=2; j<=k_rank_ace; ++j) {
       if (m_Check[i][j].GetCheck() & BST_CHECKED) {
 				// pairs	
 				if (i==j) nhands += 6;
@@ -264,8 +264,8 @@ void CDlgHandList::OnCheckClick(UINT controlID)
 void CDlgHandList::OnBnClickedOk()
 {
 	OnCheckClick(0);
-  for (int i=2; i<=k_rank_ace; i++) {
-		for (int j=2; j<=k_rank_ace; j++) {
+  for (int i=2; i<=k_rank_ace; ++i) {
+		for (int j=2; j<=k_rank_ace; ++j) {
       if (m_Check[i][j].GetCheck() & BST_CHECKED) {
         p_list->Set(i, j);
       } else {
@@ -280,7 +280,7 @@ void CDlgHandList::OnBnClickedOk()
 void CDlgHandList::OnBnClickedPP()
 {
 	// Set checked status for all PP
-	for (int i=2; i<=k_rank_ace; i++) {
+	for (int i=2; i<=k_rank_ace; ++i) {
 		m_Check[i][i].SetCheck(BST_CHECKED);
 	}
 	OnCheckClick(0);
@@ -289,8 +289,8 @@ void CDlgHandList::OnBnClickedPP()
 void CDlgHandList::OnBnClickedBroadways()
 {
 	// Set checked status for broadways
-	for (int i=10; i<=k_rank_ace; i++) {
-		for (int j=10; j<=k_rank_ace; j++) {
+	for (int i=10; i<=k_rank_ace; ++i) {
+		for (int j=10; j<=k_rank_ace; ++j) {
 			m_Check[i][j].SetCheck(BST_CHECKED);
 		}
 	}
@@ -300,8 +300,8 @@ void CDlgHandList::OnBnClickedBroadways()
 void CDlgHandList::OnBnClickedSuited()
 {
 	// Set checked status for suited cards
-	for (int i=2; i<=k_rank_ace; i++) {
-		for (int j=2; j<i; j++) {
+	for (int i=2; i<=k_rank_ace; ++i) {
+		for (int j=2; j<i; ++j) {
 			m_Check[i][j].SetCheck(BST_CHECKED);
 		}
 	}
@@ -311,8 +311,8 @@ void CDlgHandList::OnBnClickedSuited()
 void CDlgHandList::OnBnClickedClear()
 {
 	// Set unchecked status for each box
-	for (int i=2; i<=k_rank_ace; i++) {
-		for (int j=2; j<=k_rank_ace; j++) {
+	for (int i=2; i<=k_rank_ace; ++i) {
+		for (int j=2; j<=k_rank_ace; ++j) {
 			p_list->Remove(i, j);
 			m_Check[i][j].SetCheck(BST_UNCHECKED);
 		}

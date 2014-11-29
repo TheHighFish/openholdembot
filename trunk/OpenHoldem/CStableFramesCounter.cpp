@@ -52,11 +52,11 @@ void CStableFramesCounter::SaveCurrentState() {
 	*/
   _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
 
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<k_number_of_community_cards; ++i) {
     _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
   }
 
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<k_max_number_of_players; ++i) {
     _card_player_last[i][0]	= p_table_state->_players[i]._hole_cards[0].GetValue();
 		_card_player_last[i][1]	= p_table_state->_players[i]._hole_cards[1].GetValue();
 		_dealer_last[i]         = p_scraper->dealer(i);
@@ -95,7 +95,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
 		same_scrape = false;
   }
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<k_number_of_community_cards; ++i) {
 		if(!same_scrape) break;
 
     if (p_table_state->_common_cards[i].GetValue() != _card_common_last[i]) {
@@ -104,7 +104,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 		}
 	}
 
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<k_max_number_of_players; ++i) {
 		if(!same_scrape) break;
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);

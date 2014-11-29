@@ -101,7 +101,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; ++i)
 	{
 		if (p_pokertracker_thread->CheckIfNameHasChanged(i))
 		{
@@ -112,7 +112,7 @@ void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 
 void CSymbolEnginePokerTracker::ClearAllStats()
 {
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<k_max_number_of_players; ++i)
 	{
 		ClearSeatStats(i, true);
 	}
@@ -274,7 +274,7 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
 	  list.AppendFormat(" %s", new_symbol);
 
     // Add symbols for all chairs, indexed by trailing numbers
-    for (int j=0; j<k_max_number_of_players; j++) {
+    for (int j=0; j<k_max_number_of_players; ++j) {
 	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
 	    list.AppendFormat(" %s", new_symbol);
     }

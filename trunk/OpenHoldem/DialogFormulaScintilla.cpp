@@ -184,7 +184,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 
 CDlgFormulaScintilla::~CDlgFormulaScintilla() 
 {
-	for (int i=0; i<m_ScinArray.GetSize(); i++)
+	for (int i=0; i<m_ScinArray.GetSize(); ++i)
 	{
 		if (&m_EmptyScinCtrl != m_ScinArray.GetAt(i)._pWnd)
 			delete m_ScinArray.GetAt(i)._pWnd;
@@ -335,7 +335,7 @@ void CDlgFormulaScintilla::UpdateAllScintillaKeywords() {
 
 void CDlgFormulaScintilla::DeleteScintilla(CScintillaWnd *pWnd) 
 {
-	for (int i=0; i<m_ScinArray.GetSize(); i++)
+	for (int i=0; i<m_ScinArray.GetSize(); ++i)
 	{
 		if (m_ScinArray[i]._pWnd == pWnd) 
 		{
@@ -535,7 +535,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   HTREEITEM	parent = NULL, hItem;
   COHScriptObject *p_OH_script_object = NULL;
 
-  for (int j=0; j<m_standard_headings.GetSize(); j++) {
+  for (int j=0; j<m_standard_headings.GetSize(); ++j) {
     if (m_standard_headings[j].IsEmpty()) {
 	    parent = NULL;
     } else {
@@ -669,7 +669,7 @@ void CDlgFormulaScintilla::OnTvnSelchangingFormulaTree(NMHDR *pNMHDR, LRESULT *p
 
 CScintillaWnd *CDlgFormulaScintilla::FindScintillaWindow(const char *name)
 {
-	for (int i=0; i<m_ScinArray.GetSize(); i++)
+	for (int i=0; i<m_ScinArray.GetSize(); ++i)
 	{
 		if (!m_ScinArray.GetAt(i)._name.Compare(name))
 			return m_ScinArray.GetAt(i)._pWnd;
@@ -1199,7 +1199,7 @@ CString CDlgFormulaScintilla::ExtractCommentFromHandList(CString HandListAsStrin
 	bool	inside_comment = false;
 	CString	comment = "";
 
-	for (int i=0; i<length; i++)
+	for (int i=0; i<length; ++i)
 	{
 		char current_char = HandListAsString.GetAt(i);
 		// We check only for a single slash as beginning of a comment,
@@ -1443,7 +1443,7 @@ void CDlgFormulaScintilla::ResizeScintillaWindows()
 
 		HDWP hdwp = ::BeginDeferWindowPos(m_ScinArray.GetSize()-1);
 
-		for (int i=1; i<m_ScinArray.GetSize(); i++)
+		for (int i=1; i<m_ScinArray.GetSize(); ++i)
 		{
 			::DeferWindowPos(hdwp, m_ScinArray[i]._pWnd->GetSafeHwnd(), NULL, rc.left,rc.top,rc.Width(),rc.Height(), SWP_NOZORDER);
 		}
@@ -1708,7 +1708,7 @@ void CDlgFormulaScintilla::SetEquiDistantFont(CScintillaWnd *pWnd) {
   LOGFONT logfont; 
   //_edit_font.DeleteObject();
   _edit_font.GetLogFont(&logfont);
-	for (int i=0; i<=MAX_STYLE_NUM; i++) {
+	for (int i=0; i<=MAX_STYLE_NUM; ++i) {
 		pWnd->SetFontname(i, logfont.lfFaceName);
 		pWnd->SetFontheight(i, -logfont.lfHeight);
 		pWnd->SetBold(i, (logfont.lfWeight==FW_BOLD ? true : false));

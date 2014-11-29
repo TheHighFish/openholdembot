@@ -106,7 +106,7 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 	{
 		// Check if there is a match for any of the corresponding button indexes
 		// and save it as the button number
-		for (int j = 0; j < k_max_number_of_buttons; j++)
+		for (int j = 0; j < k_max_number_of_buttons; ++j)
 		{
 			if ((p_string_match->*StringMatch)(p_scraper->button_label(j)))
 			{
@@ -243,7 +243,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	_i3_handle_name  = "i3handle";
 	_i86_button_name = "i86button";
 	CString button_name = "";
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	for (int i = 0; i < k_max_number_of_i86X_buttons; ++i)
 	{
 		button_name.Format("i86%dbutton", i);
 		_i86X_button_name[i] = button_name;
@@ -270,14 +270,14 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
 	i86_button_visible = GetButtonVisible(k_button_i86);
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	for (int i = 0; i < k_max_number_of_i86X_buttons; ++i)
 	{
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 	}
 
 
 	// DEFINED + AVAILABLE
-	for (int i=0; i<k_number_of_standard_functions; i++)
+	for (int i=0; i<k_number_of_standard_functions; ++i)
 	{
 		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &p_casino_interface->action_buttons[i]);
 		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
@@ -292,7 +292,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	i86_button_available	= i86_button_defined && i86_button_visible;
 	// i86Xbutton
 	CString i86X_button_name = "";
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
+	for (int i = 0; i < k_max_number_of_i86X_buttons; ++i)
 	{
 		i86X_button_name.Format("i86%dbutton", i);
 		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &p_casino_interface->i86X_button[i]);
@@ -345,7 +345,7 @@ bool CScraperAccess::IsGoodPlayername(int chair)
 	int length = playername.GetLength();
 	if (length == 0) 
 		return false;
-	for (int i=0; i<length; i++)
+	for (int i=0; i<length; ++i)
 	{
 		if (isalnum(playername[i])) 
 			return true;

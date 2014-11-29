@@ -65,7 +65,7 @@ void CSymbolEngineRaisersCallers::ResetOnConnection()
 void CSymbolEngineRaisersCallers::ResetOnHandreset()
 {
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++)
+	for (int i=k_betround_preflop; i<=k_betround_river; ++i)
 	{
 		_callbits[i] = 0;
 		_raisbits[i] = 0;
@@ -225,7 +225,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	_nopponentschecking = 0;
 
   assert(p_tablemap->nchairs() <= k_max_number_of_players);
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); ++i)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet < RaisersBet()
@@ -266,7 +266,7 @@ double CSymbolEngineRaisersCallers::RaisersBet()
 	// The raisers bet is simply the largest bet at the table.
 	// So we don't have to know the raisers chair for that.
 	double result = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); ++i)
 	{
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if (current_players_bet > result
@@ -282,7 +282,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 {
 	// foldbits (very late, as they depend on the dealt symbols)
 	int new_foldbits = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); ++i)
 	{
 		if (!p_table_state->_players[i].HasAnyCards()) {
 			new_foldbits |= k_exponents[i];

@@ -233,7 +233,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 		  // - for win/tie, we need to wait until we scan them all
 		  opp_pokvalmax = 0;
 		  hand_lost = false;
-		  for (int i=0; i<_nopponents; i++) {
+		  for (int i=0; i<_nopponents; ++i) {
 			  CardMask_RESET(opp_evalCards);
 			  CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
 			  CardMask_SET(opp_evalCards, ocard[i*2]);
@@ -304,10 +304,10 @@ void CIteratorThread::ResetGlobalVariables() {
 	CardMask_RESET(addlcomCards);
 	CardMask_RESET(evalCards);
 	CardMask_RESET(opp_evalCards);
-	for (int i=0; i<k_number_of_cards_per_deck; i++) {
+	for (int i=0; i<k_number_of_cards_per_deck; ++i) {
 		deck[i] = 0;
 	}
-	for (int i=0; i<MAX_OPPONENTS; i++) {
+	for (int i=0; i<MAX_OPPONENTS; ++i) {
 		ocard[2*i] = 0;
 		ocard[2*i + 1] = 0;
 	}
@@ -336,14 +336,14 @@ void CIteratorThread::InitIteratorLoop() {
 
 	// setup masks
   AssertRange(userchair, 0, k_max_chair_number);
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<k_number_of_cards_per_player; ++i) {
     Card card = p_table_state->User()->_hole_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(_plCards, card.GetValue());
 			_nplCards++;
 		}
 	}
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<k_number_of_community_cards; ++i) {
     Card card = p_table_state->_common_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(_comCards, card.GetValue());
@@ -372,7 +372,7 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
-	for (int i=0; i<169; i++)
+	for (int i=0; i<169; ++i)
 	{
 		//normal weighted prwin table
 		ptr = prwin_handrank_table_169[i];
@@ -463,15 +463,15 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 
 	// now assign a weight table. Assume upper third fully probable, next third reducing
 	// probability, lowest third not played.
-	for(int i=0; i<k_first_third_1326_range; i++)
+	for(int i=0; i<k_first_third_1326_range; ++i)
 	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level;
 	}
-	for(int i=k_first_third_1326_range; i<k_second_third_1326_range; i++)
+	for(int i=k_first_third_1326_range; i<k_second_third_1326_range; ++i)
 	{
 		_prw1326.vanilla_chair.weight[i]=_prw1326.vanilla_chair.level*(884-i)/442;
 	}
-	for(int i=k_second_third_1326_range; i<k_third_third_1326_range; i++)
+	for(int i=k_second_third_1326_range; i<k_third_third_1326_range; ++i)
 	{
 		_prw1326.vanilla_chair.weight[i]=0;
 	}
@@ -483,7 +483,7 @@ void CIteratorThread::CloneVanillaChairToAllOtherChairs()
 {
 	// finally copy the vanilla to all user chairs so that someone who just turns on prw1326
 	// experimentally does not cause a crash
-	for(int i=0; i<k_max_number_of_players; i++)
+	for(int i=0; i<k_max_number_of_players; ++i)
 	{
 		_prw1326.chair[i]=_prw1326.vanilla_chair;
 	}
@@ -513,7 +513,7 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 	// swap alogorithm
 	// weighted prwin not implemented for this case
 	int numberOfCards = k_number_of_cards_per_deck;
-	for (int i=0; i<numberOfCards; i++)
+	for (int i=0; i<numberOfCards; ++i)
 	{
 		deck[i] = i;
 	}
@@ -532,7 +532,7 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 	int x = 0;
 	for (int i=0; 
 		i<nopponents*k_number_of_cards_per_player; 
-		i++)
+		++i)
 	{
 		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
 			&& (x < k_number_of_cards_per_deck)) 
@@ -544,7 +544,7 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); ++i)
 	{
 		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
 			&& (x < k_number_of_cards_per_deck)) 
@@ -595,7 +595,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 		{
 			usedCards = temp_usedCards; //reset the card mask to clear settings from failed card assignments
 
-			for (int j=0; j<k_number_of_cards_per_player; j++)
+			for (int j=0; j<k_number_of_cards_per_player; ++j)
 			{
 				card = GetRandomCard();
 				CardMask_SET(usedCards, card);
@@ -630,7 +630,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 	}
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); ++i)
 	{
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);
@@ -657,7 +657,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 	int bblindbits = p_symbol_engine_blinds->bblindbits();
 
 	// loop through active opponents
-	for(int i=0; i<k_max_number_of_players; i++) 
+	for(int i=0; i<k_max_number_of_players; ++i) 
 	{
 		if (i == userchair)
 			continue; //skip our own chair!
@@ -729,7 +729,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(k_number_of_community_cards - _ncomCards); ++i)
 	{
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);

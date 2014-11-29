@@ -77,7 +77,7 @@ extern POKEREVAL_EXPORT int LowHandVal_print(LowHandVal handval);
 
 #define Lowball_JOKERFY_RANKS(ranks)		\
 do { int j;					\
-  for (int j=0; j < StdDeck_Rank_COUNT; j++)	\
+  for (int j=0; j < StdDeck_Rank_COUNT; ++j)	\
     if (!(ranks) & (1 << j))			\
       (ranks) |= (1 << j);			\
 } while (0)

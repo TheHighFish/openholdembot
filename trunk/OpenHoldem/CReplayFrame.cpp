@@ -245,7 +245,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 	// Table body
 	player_info += "  <tbody>\n";
 	// One table row per player...
-	for (int i=0; i<p_tablemap->nchairs(); i++)
+	for (int i=0; i<p_tablemap->nchairs(); ++i)
 	{
 		player_info += "    <tr>\n";
 		// Chair number
@@ -354,7 +354,7 @@ CString CReplayFrame::GetPotsAsHTML()
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
-	for (int i=1; i<k_max_number_of_pots; i++)
+	for (int i=1; i<k_max_number_of_pots; ++i)
 	{
 		if (p_scraper->pot(i))
 		{

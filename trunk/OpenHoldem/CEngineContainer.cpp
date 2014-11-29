@@ -203,7 +203,7 @@ void CEngineContainer::CreateSymbolEngines() {
 void CEngineContainer::DestroyAllSymbolEngines()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
 	{
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
 		delete _symbol_engines[i];
@@ -271,7 +271,7 @@ void CEngineContainer::ResetOnConnection()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	p_autoplayer_trace->Clear();
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
 	{
 		_symbol_engines[i]->ResetOnConnection();
 	}
@@ -290,7 +290,7 @@ void CEngineContainer::ResetOnDisconnection()
 void CEngineContainer::ResetOnHandreset()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
 	{
 		_symbol_engines[i]->ResetOnHandreset();
 	}
@@ -299,7 +299,7 @@ void CEngineContainer::ResetOnHandreset()
 void CEngineContainer::ResetOnNewRound()
 {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
 	{
 		_symbol_engines[i]->ResetOnNewRound();
 	}
@@ -309,7 +309,7 @@ void CEngineContainer::ResetOnMyTurn()
 {
 	__TRACE
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+	for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
 	{
 		__TRACE
 		_symbol_engines[i]->ResetOnMyTurn();
@@ -319,7 +319,7 @@ void CEngineContainer::ResetOnMyTurn()
 void CEngineContainer::ResetOnHeartbeat() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
   p_autoplayer_trace->Clear();
-  for (int i=0; i<_number_of_symbol_engines_loaded; i++)
+  for (int i=0; i<_number_of_symbol_engines_loaded; ++i)
   {
 	  _symbol_engines[i]->ResetOnHeartbeat();
   }
@@ -333,7 +333,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
     *result = k_undefined;
     return false;
   }
-  for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
+  for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
     if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
       // Symbol successfully evaluated
       // Result already returned via result-pointer
