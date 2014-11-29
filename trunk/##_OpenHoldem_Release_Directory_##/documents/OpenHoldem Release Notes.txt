@@ -12,6 +12,16 @@ BUG FIXES:
   Also added a counter for GDI-objects to detect
   problems like that automatically in the future.
   [Moby]
+- The engine container could crash when building the list of provided symbols
+  if debugging was enabled, as the list became too long to be printed.
+  This buffer-overflow has now be fixed.
+  [THF]
+
+MAINTENANCE:
+- Improved tournament detection.
+  In case of ManualMode now by title-string only
+  and no longer by high blinds.
+  [THF]
 
 v7.3.0 2014-11-20
 ==================
