@@ -29,7 +29,7 @@ void LogMemoryUsage(char *message) {
   PROCESS_MEMORY_COUNTERS pmc;
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
                                 FALSE, process_ID);
-  assert(NULL == hProcess);
+  assert(NULL != hProcess);
   if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
     write_log(true, "[MemoryLogging] WorkingSetSize:     %09d\n", 
       pmc.WorkingSetSize);
