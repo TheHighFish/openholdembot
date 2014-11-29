@@ -20,6 +20,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
@@ -34,7 +35,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 45;
+const int k_number_of_tournament_identifiers = 46;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -84,7 +85,8 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"super-turbo",
 	"ticket ",
 	"tour ",
-	"tournament "	
+  "tourney",
+	"tournament"	
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
@@ -92,6 +94,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
@@ -225,6 +228,13 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
 	}
+  // If it is ManualMode, then we detect it by title-string "tourney".
+  // High blinds (default) don~t make it a tournament.
+  // Therefore don't continue.
+  if (p_symbol_engine_autoplayer->ismanual()) {
+		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] ManualMode, but no tournament identifier\n");
+    return;
+  }
 	// If there are antes then it is a tournament.
 	if (AntesPresent())	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
