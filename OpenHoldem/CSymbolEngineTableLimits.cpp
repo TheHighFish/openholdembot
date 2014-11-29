@@ -61,7 +61,6 @@ void CSymbolEngineTableLimits::ResetOnConnection() {
 		tablelimits_first_N_hands_bbet[i]   = 0;
 	}
 	_ante = 0;
-  _buyin = 0;
 	_gametype = k_gametype_unknown;
   tablelimit_best_guess.bbet = 0;
   tablelimit_best_guess.bblind  = 0;
@@ -284,19 +283,26 @@ STableLimit CSymbolEngineTableLimits::BestTableLimitsToBeUsed() {
 }
 
 double CSymbolEngineTableLimits::sblind() {
-	return 3;//BestTableLimitsToBeUsed().sblind;
+	return 7;//BestTableLimitsToBeUsed().sblind;
 }
 
 double CSymbolEngineTableLimits::bblind(){
-	return 6;//!!!!!BestTableLimitsToBeUsed().bblind;
+	return 14;//!!!!!BestTableLimitsToBeUsed().bblind;
 }
 
 double CSymbolEngineTableLimits::bigbet(){
-	return 12;///BestTableLimitsToBeUsed().bbet;
+	return 28;///BestTableLimitsToBeUsed().bbet;
 }
 
 double CSymbolEngineTableLimits::ante() {
 	return _ante; 
+}
+
+double CSymbolEngineTableLimits::buyin() {
+  if (p_scraper->s_limit_info()->buyin > 0) {
+    return p_scraper->s_limit_info()->buyin;
+  }
+  return k_undefined_zero;
 }
 
 double CSymbolEngineTableLimits::bet(int betround) {
@@ -367,7 +373,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 	}	else if (memcmp(name, "lim", 3)==0 && strlen(name)==3) {
 		*result = gametype();
 	}	else if (memcmp(name, "buyin", 5)==0 && strlen(name)==5) {
-		*result = _buyin;
+		*result = buyin();
   }	else {
 		// Symbol of a different symbol-engine
 		return false;

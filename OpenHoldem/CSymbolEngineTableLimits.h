@@ -52,6 +52,7 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round
+  double buyin();
  public:
 	int gametype()	{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim
 	bool isnl()			{ return (gametype() == k_gametype_NL); }
@@ -109,7 +110,6 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
  private:
 	int		 _gametype;
 	double _ante;
-  double _buyin; //!!!!!
 };
 
 extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;

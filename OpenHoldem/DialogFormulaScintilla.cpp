@@ -2010,12 +2010,15 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	mainParent = parent = AddSymbolTitle("Limits", NULL, hCatItem);
 	AddSymbol(parent, "bblind", "the big blind amount");
 	AddSymbol(parent, "sblind", "the small blind amount");
+  AddSymbol(parent, "bbet", "the big bet amount (fixed limit)");
 	AddSymbol(parent, "ante", "the current pre-deal ante requirement");
+  AddSymbol(parent, "buyin", "the tournament buyin in dollars");
 	AddSymbol(parent, "lim", "the current table limit 0=NL 1=PL 2=FL");
 	AddSymbol(parent, "isnl", "(lim==0)");
 	AddSymbol(parent, "ispl", "(lim==1)");
 	AddSymbol(parent, "isfl", "(lim==2)");
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
+  AddSymbol(parent, "isfinaltable", "true if you are playing the finaltable of an MTT and the tables can be visually distinguished.");
 
 	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);
 	AddSymbol(parent, "handrank169", "your pocket holdem hand rank 1-169 (see table)");

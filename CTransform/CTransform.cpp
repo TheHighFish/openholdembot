@@ -37,7 +37,7 @@ CTransform::~CTransform(void)
 {
 }
 
-const int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
+int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
 {
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
 	bool				background[MAX_CHAR_WIDTH] = {false};
@@ -74,7 +74,7 @@ const int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, C
 	return ERR_INVALID_TRANSFORM_TYPE;
 }
 
-const int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg) 
+int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg) 
 {
 	int					x = 0, y = 0;
 	int					width = 0, height = 0;
@@ -150,7 +150,7 @@ const int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text
 	return ERR_GOOD_SCRAPE_GENERAL;
 }
 
-const int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text) 
+int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text) 
 {
 	int					width = 0, height = 0, x = 0, y = 0, i = 0, result = 0;
 	IMapCI				best_match = p_tablemap->i$()->end();
@@ -262,7 +262,7 @@ const int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text
 	return retval;
 }
 
-const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text) 
+int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text) 
 {
 	int					x = 0, y = 0, j = 0;
 	int					width = 0, height = 0;
@@ -366,7 +366,7 @@ const int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text
 }
 
 
-const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, 
+int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, 
 									 bool background[], bool (*character)[MAX_CHAR_HEIGHT])
 {
 	int					x = 0, y = 0;
@@ -475,7 +475,7 @@ const int CTransform::TTypeTransform(RMapCI region, const HDC hdc, CString *text
 								  text);
 }
 
-const int CTransform::DoPlainFontScan(RMapCI region, const int width, const int height, 
+int CTransform::DoPlainFontScan(RMapCI region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], CString *text)
 {
 	int					y = 0, retval=ERR_TEXT_SCRAPE_NOMATCH;
@@ -567,7 +567,7 @@ const int CTransform::DoPlainFontScan(RMapCI region, const int width, const int 
 	return retval;
 }
 
-const int CTransform::DoFuzzyFontScan(RMapCI region, const int width, const int height, 
+int CTransform::DoFuzzyFontScan(RMapCI region, const int width, const int height, 
 									  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], const double tolerance, 
 									  CString *text)
 {
@@ -684,7 +684,7 @@ TMapCI CTransform::GetBestHammingDistance(RMapCI region, const int width, const 
 	return best_hd_t_iter;
 }
 
-const int CTransform::CalcHammingDistance(const unsigned int x, const unsigned int y)
+int CTransform::CalcHammingDistance(const unsigned int x, const unsigned int y)
 {
 	int dist = 0, val = x ^ y;
 
@@ -698,7 +698,7 @@ const int CTransform::CalcHammingDistance(const unsigned int x, const unsigned i
 }
 
 
-const void CTransform::GetShiftLeftDownIndexes(const int x_start, const int width, const int height, 
+void CTransform::GetShiftLeftDownIndexes(const int x_start, const int width, const int height, 
 											   const bool background[], const bool character[][MAX_CHAR_HEIGHT], 
 											   int *x_begin, int *x_end, int *y_begin, int *y_end)
 {
@@ -755,7 +755,7 @@ const void CTransform::GetShiftLeftDownIndexes(const int x_start, const int widt
 	}
 }
 
-const bool CTransform::IsInARGBColorCube(const int center_a, const int center_r, const int center_g, const int center_b, 
+bool CTransform::IsInARGBColorCube(const int center_a, const int center_r, const int center_g, const int center_b, 
 									     const int radius, const int pix_a, const int pix_r, const int pix_g, 
 										 const int pix_b) 
 {
@@ -795,7 +795,7 @@ const bool CTransform::IsInARGBColorCube(const int center_a, const int center_r,
 	return false;
 }
 
-const bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, const int center_b, 
+bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, const int center_b, 
 										const int radius, const int pix_r, const int pix_g, const int pix_b)
 {
 	int		r_diff = 0, g_diff = 0, b_diff = 0, tot_diff = 0;
@@ -833,7 +833,7 @@ const bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, 
 	return false;
 }
 
-const void CTransform::CalcHexmash(const int left, const int right, const int top, const int bottom, 
+void CTransform::CalcHexmash(const int left, const int right, const int top, const int bottom, 
 								   const bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, const bool withspace)
 {
 	int				x = 0, y = 0, last_fg_row = 0;
@@ -890,7 +890,7 @@ void CTransform::ParseStringBSL(const CString text,
                   int *limit, 
                   double *sb_bb, 
                   double *bb_BB, 
-                  bool *isfinaltable) { //!!!!! buyin
+                  double *buyin) {
 	int			place_in_format = 0, place_in_text = 0;
 	CString	token = "", skip_str = "", number_type = "";
 	double	number = 0.;
@@ -948,6 +948,7 @@ void CTransform::ParseStringBSL(const CString text,
 				 format.Mid(place_in_format,2) == "^b" ||
 				 format.Mid(place_in_format,2) == "^B" ||
 				 format.Mid(place_in_format,2) == "^a" ||
+         format.Mid(place_in_format,2) == "^y" ||
 				 format.Mid(place_in_format,2) == "^v" ||
 				 format.Mid(place_in_format,2) == "^V") {
 			number_type = format.Mid(place_in_format,2);
@@ -995,7 +996,14 @@ void CTransform::ParseStringBSL(const CString text,
         if (bb_BB!=NULL && *bb_BB==k_undefined) {
 					*bb_BB = number; 
 				}
-			}
+      }
+			else if (number_type == "^y") {
+				assert (results_for_openscrape != NULL);	
+				results_for_openscrape->Append("^y (buyin)\t= " + temp + "\r\n");
+        if (buyin!=NULL && *buyin==k_undefined) {
+					*buyin = number; 
+				}
+      }
 		}
 		// Skip all chars up to string following the ^*
 		else if (format.Mid(place_in_format,2) == "^*") {
@@ -1155,12 +1163,12 @@ void CTransform::ParseStringBSL(const CString text,
       "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
       *bbet, *ante,  *limit, *sb_bb, *bb_BB);
     write_log(preferences.debug_scraper(), 
-      "[CTransform] isfinaltable = %d\n",
-      *isfinaltable);
+      "[CTransform] buyin = %d\n",
+      *buyin);
 #endif
 }
 
-const double CTransform::StringToMoney(const CString inStr)
+double CTransform::StringToMoney(const CString inStr)
 {
 	const char			*str = inStr.GetString();
 	CStringArray		possibleValues;

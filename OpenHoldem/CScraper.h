@@ -29,13 +29,15 @@ struct SLimitInfo
 	double	bblind;
 	double	bbet;
 	double	ante;
-	int		limit;
+	int		  limit;
 	// Handnumber should be a string, as
 	//   * it may contain characters
 	//   * its lengths my exceed the precision of double
 	CString	handnumber;
 	double	sb_bb;
 	double	bb_BB;
+  double  buyin;
+  bool    is_final_table;
 };
 
 class CScraper 
@@ -115,6 +117,7 @@ private:
 	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
 private:
 	void SetButtonState(CString *button_state, CString text);
+  void ResetLimitInfo();
 private: 
 #define ENT CSLock lock(m_critsec);
 	// public mutators 
@@ -130,14 +133,7 @@ private:
 	void	set_i86X_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _i86X_button_state[n] = s;}
 	void	set_i86_button_state(const CString s) { ENT _i86_button_state = s;}
 	void	set_button_label(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_label[n] = s;}
-	void	set_sblind(const double d) { ENT _s_limit_info.sblind = d;}
-	void	set_bblind(const double d) { ENT _s_limit_info.bblind = d;}
-	void	set_bbet(const double d) { ENT _s_limit_info.bbet = d;}
-	void	set_ante(const double d) { ENT _s_limit_info.ante = d;}
-	void	set_limit(const int i) { ENT _s_limit_info.limit = i;}
 	void	set_handnumber(const CString s) { ENT _s_limit_info.handnumber = s;}
-	void	set_sb_bb(const double d) { ENT _s_limit_info.sb_bb = d;}
-	void	set_bb_BB(const double d) { ENT _s_limit_info.bb_BB = d;}
 	void	set_handle_found_at_xy(const bool b) { ENT _handle_found_at_xy = b;}
 	void	set_handle_xy(const POINT p) { ENT _handle_xy.x = p.x; _handle_xy.y = p.y;}
 	void	set_entire_window_cur(const HBITMAP h) { ENT _entire_window_cur = h;}

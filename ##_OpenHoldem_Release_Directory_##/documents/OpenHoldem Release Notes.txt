@@ -1,5 +1,13 @@
 v7.3.1 2014-11-xx
 ==================
+NEW STUFF:
+- New symbol "buyin",
+  which can be either read from the titlestring (s$ttlimits)
+  or from the table (r$c0limits and s$c0limits).
+  All you need is "^y" at the appropriate placee
+  either in s$ttlimits or s$c0limits.
+  [THF]
+
 BUG FIXES:
 - An empty line at the beginning of a manually created formula-file
   could throw the parser off, which expected a function-header
@@ -14,7 +22,11 @@ BUG FIXES:
   [Moby]
 - The engine container could crash when building the list of provided symbols
   if debugging was enabled, as the list became too long to be printed.
-  This buffer-overflow has now be fixed.
+  This buffer-overflow has now been fixed.
+  [THF]
+- Improved blind recognition and blind locking.
+  Special thanks to Want2Learn for his blind-guessing logic
+  and to OpenGeek for a complete list of PokerStars blind-levels.
   [THF]
 
 MAINTENANCE:

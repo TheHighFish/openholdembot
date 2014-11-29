@@ -32,48 +32,45 @@
 
 CSymbolEngineAutoplayer *p_symbol_engine_autoplayer = NULL;
 
-CSymbolEngineAutoplayer::CSymbolEngineAutoplayer()
-{
+CSymbolEngineAutoplayer::CSymbolEngineAutoplayer() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_tablelimits != NULL);
 }
 
-CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer()
-{}
-
-void CSymbolEngineAutoplayer::InitOnStartup()
-{
-	_myturnbits      = 0;
-	_issittingin     = false;
-	_isautopost      = false;
-	_isfinalanswer   = false;
+CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer() {
 }
 
-void CSymbolEngineAutoplayer::ResetOnConnection()
-{
+void CSymbolEngineAutoplayer::InitOnStartup() {
+	_myturnbits    = 0;
+	_issittingin   = false;
+	_isautopost    = false;
+	_isfinalanswer = false;
+  _isfinaltable  = false;
+}
+
+void CSymbolEngineAutoplayer::ResetOnConnection() {
 	_myturnbits      = 0;
 	_issittingin     = false;
 	_isautopost      = false;
 	_isfinalanswer   = false;
+  _isfinaltable    = false;
 	_last_myturnbits = 0;
 	DetectSpecialConnectionLikeBringAndManualMode();
 }
 
-void CSymbolEngineAutoplayer::ResetOnHandreset()
-{
+void CSymbolEngineAutoplayer::ResetOnHandreset() {
 	_isfinaltable  = false;
 }
 
-void CSymbolEngineAutoplayer::ResetOnNewRound()
-{}
+void CSymbolEngineAutoplayer::ResetOnNewRound() {
+}
 
-void CSymbolEngineAutoplayer::ResetOnMyTurn()
-{}
+void CSymbolEngineAutoplayer::ResetOnMyTurn() {
+}
 
-void CSymbolEngineAutoplayer::ResetOnHeartbeat()
-{
+void CSymbolEngineAutoplayer::ResetOnHeartbeat() {
 	_last_myturnbits = _myturnbits;
 	_myturnbits      = 0;
 	_issittingin     = false;
@@ -84,37 +81,22 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat()
 	CalculateFinalAnswer();
 }
 
-void CSymbolEngineAutoplayer::CalculateMyTurnBits()
-{
+void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
-	for (int i=0; i<k_max_number_of_buttons; ++i)
-	{
-		if (p_scraper->GetButtonState(i))
-		{
+	for (int i=0; i<k_max_number_of_buttons; ++i) {
+		if (p_scraper->GetButtonState(i))	{
 			CString button_label = p_scraper->button_label(i);
-
-			if (p_string_match->IsStringFold(button_label))
-			{
+      if (p_string_match->IsStringFold(button_label))	{
 				_myturnbits |= (1<<0);
-			}
-			else if (p_string_match->IsStringCall(button_label))
-			{
+			}	else if (p_string_match->IsStringCall(button_label)) 	{
 				_myturnbits |= (1<<1);
-			}
-			else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")
-			{
+			}	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
 				_myturnbits |= (1<<2);
-			}
-			else if (p_string_match->IsStringCheck(button_label))
-			{
+			}	else if (p_string_match->IsStringCheck(button_label))	{
 				_myturnbits |= (1<<4);
-			}
-			else if (p_string_match->IsStringAllin(button_label))
-			{
+			}	else if (p_string_match->IsStringAllin(button_label)) {
 				_myturnbits |= (1<<3);
-			}
-			else if (p_string_match->IsStringAutopost(button_label))
-			{
+			}	else if (p_string_match->IsStringAutopost(button_label)) 	{
 				_isautopost = true;
 			}
 		}
