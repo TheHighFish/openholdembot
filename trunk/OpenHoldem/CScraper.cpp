@@ -1,4 +1,4 @@
-ScrapeCard(//******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
@@ -39,40 +39,41 @@ ScrapeCard(//*******************************************************************
 
 CScraper *p_scraper = NULL;
 
-
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
 	HDC				hdc = GetDC(p_autoconnector->attached_hwnd()); \
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); \
-	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen);
+	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen); \
+  ++_leaking_GDI_objects;
 
-#define __HDC_FOOTER	DeleteDC(hdcCompatible); \
+#define __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK \
+  DeleteDC(hdcCompatible); \
 	DeleteDC(hdcScreen); \
-	ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
+	ReleaseDC(p_autoconnector->attached_hwnd(), hdc); \
+  --_leaking_GDI_objects;
 
-
-CScraper::CScraper(void)
-{
+CScraper::CScraper(void) {
 	__TRACE
 	ClearScrapeAreas();
+  _leaking_GDI_objects = 0;
 }
 
-CScraper::~CScraper(void)
-{
+CScraper::~CScraper(void) {
 	__TRACE
 	ClearScrapeAreas();
+  if (_leaking_GDI_objects != 0 ) {
+    write_log(k_always_log_errors, "[CScraper] ERROR: leaking GDI objects: %i\n",
+      _leaking_GDI_objects);
+    write_log(k_always_log_errors, "[CScraper] Please get in contact with the development team\n");
+  }
+  assert(_leaking_GDI_objects == 0);
 }
 
-const CString CScraper::extractHandnumFromString(CString t)
-{
+const CString CScraper::extractHandnumFromString(CString t) {
 	__TRACE
 	CString resulting_handumber_digits_only;
-
-	// Check for bad parameters
-	if (!t || t == "")
-		return "";
-
-	for (int i=0; i<t.GetLength(); i++) 
-	{
+  // Check for bad parameters
+	if (!t || t == "") return "";
+  for (int i=0; i<t.GetLength(); i++) {
 		if (isdigit(t[i]))
 		{
 			resulting_handumber_digits_only += t[i];
@@ -146,11 +147,11 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
 		SelectObject(hdcCompatible, old_bitmap);  
 
-		__HDC_FOOTER
+		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
 
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	return false;
 }
 
@@ -166,13 +167,13 @@ bool CScraper::EvaluateRegion(CString name, CString *result)
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
-		__HDC_FOOTER
+		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		write_log(preferences.debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
 			name, *result);
 		return true;
 	}
 	// Region does not exist
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	return false;
 }
 
@@ -449,7 +450,7 @@ void CScraper::ScrapeSlider() {
 			write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
 		}
 	}
-  __HDC_FOOTER
+  __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 int CScraper::CardString2CardNumber(CString card)
@@ -731,6 +732,7 @@ void CScraper::ScrapeBet(int chair)
 			CTransform trans;
 			set_player_bet(chair, trans.StringToMoney(text));
 			write_log(preferences.debug_scraper(), "[CScraper] p%dbet, result %s\n", chair, text.GetString());
+			__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 			return;
 		}
 	}
@@ -744,6 +746,7 @@ void CScraper::ScrapeBet(int chair)
 			CTransform trans;
 			set_player_bet(chair, trans.StringToMoney(text));
 			write_log(preferences.debug_scraper(), "[CScraper] u%dbet, result %s\n", chair, text.GetString());
+			__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 			return;
 		}
 	}		
@@ -763,7 +766,7 @@ void CScraper::ScrapeBet(int chair)
 
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);
 	}
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 //
@@ -879,7 +882,7 @@ void CScraper::ScrapePots()
 		}
 	}
 
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 void CScraper::ScrapeLimits()
@@ -1106,7 +1109,7 @@ void CScraper::ScrapeLimits()
 		}
 	}
 
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 void CScraper::CreateBitmaps(void)
@@ -1403,10 +1406,10 @@ bool CScraper::IsIdenticalScrape()
 	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
 	SelectObject(hdc, old_bitmap);
 
-	__HDC_FOOTER
+	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	write_log(preferences.debug_scraper(), "[CScraper] IsIdenticalScrape() false\n");
 	return false;
 }
 
 #undef __HDC_HEADER 
-#undef __HDC_FOOTER
+#undef __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK

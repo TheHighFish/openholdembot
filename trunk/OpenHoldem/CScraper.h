@@ -174,12 +174,15 @@ private:
 	// misc
 	HBITMAP				_entire_window_cur;
 	
-private:
+ private:
 	// Old values of last heartbeat
-	char			_title_last[MAX_WINDOW_TITLE];
+	char			  _title_last[MAX_WINDOW_TITLE];
 	HBITMAP			_entire_window_last;
-private:
+ private:
 	CCritSec		m_critsec;
+  // Counter of GDI objects (potential memorz leak)
+  // Should be 0 at end of program -- will be checked.
+  int         _leaking_GDI_objects;
 };
 
 extern CScraper *p_scraper;
