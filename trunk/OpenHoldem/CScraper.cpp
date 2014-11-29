@@ -423,7 +423,7 @@ void CScraper::ScrapeSlider() {
     if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	
 	{
 		int j = slider->second.right - handleCI->second.left;
-		text="";
+		text = "";
 		set_handle_found_at_xy(false);
 		for (int k=0; k<=j; k++) 
 		{
