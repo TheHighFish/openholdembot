@@ -769,6 +769,19 @@ void CScraper::ScrapeBet(int chair)
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
+void CScraper::ResetLimitInfo() {
+  _s_limit_info.handnumber = "";
+	_s_limit_info.sblind = k_undefined;
+	_s_limit_info.bblind = k_undefined;
+	_s_limit_info.bbet   = k_undefined;
+	_s_limit_info.ante   = k_undefined;
+	_s_limit_info.sb_bb  = k_undefined;
+	_s_limit_info.bb_BB  = k_undefined;
+	_s_limit_info.limit  = k_undefined_zero;
+  _s_limit_info.buyin  = k_undefined;
+  _s_limit_info.is_final_table = false;
+}
+
 //
 // !! All code below not yet refactored
 //
@@ -789,20 +802,12 @@ void CScraper::ClearScrapeAreas(void) {
 		set_pot(i, 0.);
 	}
 	set_i86_button_state("false");
-
-	set_button_label(0, "fold");
+  set_button_label(0, "fold");
 	set_button_label(1, "call");
 	set_button_label(2, "raise");
 	set_button_label(3, "allin");
 
-	set_handnumber(0);
-	set_sblind(0);
-	set_bblind(0);
-	set_bbet(0);
-	set_ante(0);
-	set_sb_bb(0);
-	set_bb_BB(0);
-	set_limit(-1);
+	ResetLimitInfo();
 	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
 }
 
@@ -938,8 +943,9 @@ void CScraper::ScrapeLimits()
   double l_ante   = k_undefined;
   double l_sb_bb  = k_undefined;
   double l_bb_BB  = k_undefined;
-	int l_limit     = k_undefined;
-  bool l_is_final_table = false;
+  double l_buyin  = k_undefined;
+	int    l_limit  = k_undefined;
+  //!!!!!bool l_is_final_table = false;
 	
 	// These are scraped from specific regions earlier in this
 	// function.  Use the values we scraped (if any) to seed
@@ -959,7 +965,7 @@ void CScraper::ScrapeLimits()
 		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
 			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-      &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
+      &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 
 		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %s\n", 
 			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -979,7 +985,7 @@ void CScraper::ScrapeLimits()
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 
 				write_log(preferences.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1006,7 +1012,7 @@ void CScraper::ScrapeLimits()
 				trans.ParseStringBSL(
 					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1027,7 +1033,7 @@ void CScraper::ScrapeLimits()
 				{
 					trans.ParseStringBSL(text, s_iter->second.text, NULL,
 						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-            &l_limit, &l_sb_bb, &l_bb_BB, &l_is_final_table);
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 				}
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
@@ -1040,25 +1046,28 @@ void CScraper::ScrapeLimits()
 			  set_handnumber(l_handnumber);
       }
       if (l_sblind != k_undefined) {
-			  set_sblind(l_sblind);
+			  _s_limit_info.sblind = l_sblind;
       }
       if (l_bblind != k_undefined) {
-			  set_bblind(l_bblind);
+			  _s_limit_info.bblind = l_bblind;
       }
       if (l_bbet != k_undefined) {
-			  set_bbet(l_bbet);
+			  _s_limit_info.bbet = l_bbet;
       }
       if (l_ante != k_undefined) {
-			  set_ante(l_ante);
+			  _s_limit_info.ante = l_ante;
       }
       if (l_limit != k_undefined) {
-			  set_limit(l_limit);
+			  _s_limit_info.limit = l_limit;
       }
       if (l_sb_bb != k_undefined) {
-			  set_sb_bb(l_sb_bb);
+			  _s_limit_info.sb_bb = l_sb_bb;
       }
       if (l_bb_BB != k_undefined) {
-			  set_bb_BB(l_bb_BB);
+			  _s_limit_info.bb_BB = l_bb_BB;
+      }
+      if (l_buyin != k_undefined) {
+			  _s_limit_info.buyin = l_buyin;
       }
 		}
     // r$c0smallblind
@@ -1067,7 +1076,7 @@ void CScraper::ScrapeLimits()
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")	{
-				set_sblind(trans.StringToMoney(text));
+				_s_limit_info.sblind = trans.StringToMoney(text);
 			}
 			write_log(preferences.debug_scraper(), "[CScraper] c0smallblind, result %s\n", text.GetString());
 		}
@@ -1078,7 +1087,7 @@ void CScraper::ScrapeLimits()
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="")	{
-				set_bblind(trans.StringToMoney(text));
+				_s_limit_info.bblind = trans.StringToMoney(text);
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0bigblind, result %s", text.GetString());
@@ -1090,7 +1099,7 @@ void CScraper::ScrapeLimits()
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="") {
-        set_bbet(trans.StringToMoney(text));
+        _s_limit_info.bbet = trans.StringToMoney(text);
 			}
 
 			write_log(preferences.debug_scraper(), "[CScraper] c0bigbet, result %s\n", text.GetString());
@@ -1102,10 +1111,16 @@ void CScraper::ScrapeLimits()
 		{
 			CScraperPreprocessor::PreprocessMonetaryString(&text);
 			if (text!="") {
-				set_ante(trans.StringToMoney(text));
+				_s_limit_info.ante = trans.StringToMoney(text);
 			}
-
 			write_log(preferences.debug_scraper(), "[CScraper] c0ante, result %s\n", text.GetString());
+		}
+    // r$c0isfinaltable
+		s.Format("c0isfinaltable");
+		if (EvaluateRegion(s, &text))
+		{
+      _s_limit_info.is_final_table = (text == "true");
+			write_log(preferences.debug_scraper(), "[CScraper] c0isfinaltable, result %s\n", text.GetString());
 		}
 	}
 
