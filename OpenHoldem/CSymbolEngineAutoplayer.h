@@ -39,13 +39,13 @@ public:
 public:
 	int  myturnbits()		{ return _myturnbits; }
 	bool ismyturn()			{ return ((_myturnbits & k_my_turn_bits_fold_call_raise) != 0); }
-	bool issittingin()		{ return _issittingin; }
-	bool issittingout()		{ return !issittingin(); }
+	bool issittingin()	{ return _issittingin; }
+	bool issittingout()	{ return !issittingin(); }
 	bool isautopost()		{ return _isautopost; }
-	bool isfinalanswer()	{ return _isfinalanswer; }
-	bool isfinaltable()		{ return _isfinaltable; }
+	bool isfinalanswer(){ return _isfinalanswer; }
 	bool isbring()			{ return _isbring; }
 	bool ismanual()			{ return _ismanual; }
+  bool isfinaltable();
 public:
 	// Especially needed to start the PrWin-calculations
 	bool IsFirstHeartbeatOfMyTurn();
@@ -61,7 +61,6 @@ private:
 	bool _issittingin;
 	bool _isautopost;
 	bool _isfinalanswer; 
-	bool _isfinaltable;  
 	bool _isbring;
 	bool _ismanual;
 private:

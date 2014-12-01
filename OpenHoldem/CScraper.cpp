@@ -155,8 +155,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter)
 	return false;
 }
 
-bool CScraper::EvaluateRegion(CString name, CString *result)
-{
+bool CScraper::EvaluateRegion(CString name, CString *result) {
 	__TRACE
 	__HDC_HEADER
 	CTransform	trans;
@@ -175,6 +174,38 @@ bool CScraper::EvaluateRegion(CString name, CString *result)
 	// Region does not exist
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	return false;
+}
+
+// Result will be changed to true, if "true" or something similar is found
+// Result will be changed to falsee, if "false" or something similar is found
+// Otherwise unchanged (keep default / allow multiple evaluations)
+void CScraper::EvaluateTrueFalseRegion(bool *result, const CString name) {
+  CString text_result;
+	if (EvaluateRegion(name, &text_result))	{
+    write_log(preferences.debug_scraper(), "[CScraper] %s result %s\n", 
+      name, text_result.GetString());
+    if (text_result == "true") {
+      *result = true;
+    } else if (text_result == "false") {
+      *result = false;
+    }
+	}
+}
+
+bool CScraper::EvaluateNumericalRegion(double *result, const CString name) {
+  CString text_result;
+  if (EvaluateRegion(name, &text_result)) {
+		CScraperPreprocessor::PreprocessMonetaryString(&text_result);
+    write_log(preferences.debug_scraper(), "[CScraper] %s result %s\n", 
+      name, text_result.GetString());
+		if (text_result != "") {
+      CScraperPreprocessor::PreprocessMonetaryString(&text_result);
+      CTransform trans;
+			*result = trans.StringToMoney(text_result);
+      return true;
+		}
+	}
+  return false;
 }
 
 void CScraper::SetButtonState(CString *button_state, CString text)
@@ -724,31 +755,21 @@ void CScraper::ScrapeBet(int chair)
 	set_player_bet(chair, 0);
 
 	// Player bet pXbet
-	s.Format("p%dbet", chair);
-	if (EvaluateRegion(s, &text))
-	{
-		if (text!="")
-		{
-			CTransform trans;
-			set_player_bet(chair, trans.StringToMoney(text));
-			write_log(preferences.debug_scraper(), "[CScraper] p%dbet, result %s\n", chair, text.GetString());
-			__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
-			return;
-		}
+  s.Format("p%dbet", chair);
+  double result = 0;
+	if (EvaluateNumericalRegion(&result, s)) {
+	  set_player_bet(chair, result);
+		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
+		return;
 	}
 
 	// uXbet
 	s.Format("u%dbet", chair);
-	if (EvaluateRegion(s, &text))
-	{
-		if (text!="")
-		{
-			CTransform trans;
-			set_player_bet(chair, trans.StringToMoney(text));
-			write_log(preferences.debug_scraper(), "[CScraper] u%dbet, result %s\n", chair, text.GetString());
-			__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
-			return;
-		}
+  result = 0;
+	if (EvaluateNumericalRegion(&result, s)) {
+		set_player_bet(chair,result);
+		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
+		return;
 	}		
 		
 	// pXchip00
@@ -842,17 +863,11 @@ void CScraper::ScrapePots()
 	{
 		// r$c0potX
 		s.Format("c0pot%d", j);
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")
-			{
-				set_pot(j, trans.StringToMoney(text));
-				write_log(preferences.debug_scraper(), "[CScraper] c0pot%d, result %s\n", j, text.GetString());
-				continue;
-			}
+    double result = 0;
+		if (EvaluateNumericalRegion(&result, s)) {
+			set_pot(j, result);
+			continue;
 		}
-
 		// r$c0potXchip00_index
 		s.Format("c0pot%dchip00", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
@@ -1071,60 +1086,17 @@ void CScraper::ScrapeLimits()
       }
 		}
     // r$c0smallblind
-		s.Format("c0smallblind");
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")	{
-				_s_limit_info.sblind = trans.StringToMoney(text);
-			}
-			write_log(preferences.debug_scraper(), "[CScraper] c0smallblind, result %s\n", text.GetString());
-		}
-
+    EvaluateNumericalRegion(&_s_limit_info.sblind, "c0smallblind");
 		// r$c0bigblind
-		s.Format("c0bigblind");
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="")	{
-				_s_limit_info.bblind = trans.StringToMoney(text);
-			}
-
-			write_log(preferences.debug_scraper(), "[CScraper] c0bigblind, result %s", text.GetString());
-		}
-
+    EvaluateNumericalRegion(&_s_limit_info.bblind, "c0bigblind");
 		// r$c0bigbet
-		s.Format("c0bigbet");
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="") {
-        _s_limit_info.bbet = trans.StringToMoney(text);
-			}
-
-			write_log(preferences.debug_scraper(), "[CScraper] c0bigbet, result %s\n", text.GetString());
-		}
-
+    EvaluateNumericalRegion(&_s_limit_info.bbet, "c0bigbet");
 		// r$c0ante
-		s.Format("c0ante");
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-			if (text!="") {
-				_s_limit_info.ante = trans.StringToMoney(text);
-			}
-			write_log(preferences.debug_scraper(), "[CScraper] c0ante, result %s\n", text.GetString());
-		}
-    // r$c0isfinaltable
-		s.Format("c0isfinaltable");
-		if (EvaluateRegion(s, &text))
-		{
-      _s_limit_info.is_final_table = (text == "true");
-			write_log(preferences.debug_scraper(), "[CScraper] c0isfinaltable, result %s\n", text.GetString());
-		}
+    EvaluateNumericalRegion(&_s_limit_info.ante, "c0ante");
+		// r$c0isfinaltable
+    EvaluateTrueFalseRegion(&_s_limit_info.is_final_table, "c0isfinaltable");
 	}
-
-	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
+  __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 void CScraper::CreateBitmaps(void)
