@@ -7,6 +7,10 @@ NEW STUFF:
   All you need is "^y" at the appropriate placee
   either in s$ttlimits or s$c0limits.
   [THF]
+- The implementation of "isfinaltable" got completed.
+  The symbol will return true/false depending
+  on the state of a tablemap-region r$c0isfinaltable.
+  [THF]
 
 BUG FIXES:
 - An empty line at the beginning of a manually created formula-file
@@ -1911,10 +1915,10 @@ MAINTENANCE:
   This way is more robust for OpenPPL-users, especially
   for OpenPPL-symbols in memory-expressions. [THF] 
   
- NEW STUFF:
- - Partial implememtation of new symbol "isfinaltable",
-   which is required for OpenPPL. Full implementation
-   (OpenScrape + TM) in OH 2.2.0; ATM we always return false. [THF]
+NEW STUFF:
+- Partial implememtation of new symbol "isfinaltable",
+  which is required for OpenPPL. Full implementation
+  (OpenScrape + TM) in OH 2.2.0; ATM we always return false. [THF]
 
 
 v2.1.9.2 2011-12-24

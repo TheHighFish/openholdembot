@@ -113,6 +113,8 @@ private:
 private:
 	bool ProcessRegion(RMapCI r_iter);
 	bool EvaluateRegion(CString name, CString *result);
+  void EvaluateTrueFalseRegion(bool *result, const CString name);
+  bool EvaluateNumericalRegion(double *result, const CString name);
 	bool IsExtendedNumberic(CString text);
 	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
 private:

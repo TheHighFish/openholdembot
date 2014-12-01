@@ -30,7 +30,6 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
-
 //  Sanity check: enough disk-space for a replay frame?
 //	We assume, 10 MB are enough
 //	  - a large table of 1000x1000 pixels a 4 byte
@@ -38,46 +37,43 @@
 //	  - some space for other processes	
 const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;  
 
-CReplayFrame::CReplayFrame(void)
-{
-	_next_replay_frame = p_replayframes_counter->GetNumberOfNextReplayFrame();
+// We alwazs start with 0 amd overwrite existing frames.
+// That's more simple and we usually are not interested
+// in old frames of bygone sessions.
+int CReplayFrame::_next_replay_frame = 0;
+
+CReplayFrame::CReplayFrame(void) {
 }
 
-CReplayFrame::~CReplayFrame(void)
-{
+CReplayFrame::~CReplayFrame(void) {
+  // As we create a new CReplayFrame for each frame
+  // we simplz have to increment the global counter one we are finished.
+	++_next_replay_frame;
 }
 
-void CReplayFrame::CreateReplayFrame(void)
-{
-	FILE			*fp = NULL;
-	int				i = 0;
+void CReplayFrame::CreateReplayFrame(void){
+	FILE	*fp = NULL;
 	ULARGE_INTEGER	free_bytes_for_user_on_disk = {0}, 
-					total_bytes_on_disk = {0}, 
-					free_bytes_total_on_disk = {0};
-	int				e = SUCCESS;
-
+	total_bytes_on_disk = {0}, 
+	free_bytes_total_on_disk = {0};
 	//  Sanity check: Enough disk-space for replay frame?	
 	GetDiskFreeSpaceEx(
 		p_filenames->OpenHoldemDirectory(),  //  Directory on disk of interest
 		&free_bytes_for_user_on_disk,  
 		&total_bytes_on_disk,	
 		&free_bytes_total_on_disk);
-	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) 
-	{
+	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) {
 		write_log(preferences.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		OH_MessageBox_Error_Warning("Not enough disk space to create replay-frame.");
-
-		return;
+    return;
 	}
 	// Get exclusive access to CScraper and CSymbols variables
 	// (Wait for scrape/symbol cycle to finish before saving frame)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 	CreateBitMapFile();
-
-	// Create HTML file
+  // Create HTML file
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
-	if (fopen_s(&fp, path.GetString(), "w")==0)
-	{
+	if (fopen_s(&fp, path.GetString(), "w")==0) {
 		write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
@@ -94,25 +90,20 @@ void CReplayFrame::CreateReplayFrame(void)
 		fprintf(fp, "</style>\n");
 		fprintf(fp, "<body>\n");
 		fprintf(fp, "<font face=courier>\n");
-
-		// Bitmap image
+    // Bitmap image
 		fprintf(fp, "<img src=\"frame%06d.bmp\">\n", _next_replay_frame);
 		fprintf(fp, "<br>\n");
-
     // Title, data, frame-number, OH-version
     fprintf(fp, "%s", GeneralInfo());
-
-		// Links forwards and backwards to the next frames
+    // Links forwards and backwards to the next frames
 		fprintf(fp, "%s", LPCSTR(GetLinksToPrevAndNextFile()));
 		fprintf(fp, "<br>\n");
 		fprintf(fp, "<br>\n");
-
-		// Header of main table for smaller data tables
+    // Header of main table for smaller data tables
 		fprintf(fp, "<table>\n");
 		fprintf(fp, "<tr>\n");
 		fprintf(fp, "<td>\n");
-
-		// Data tables
+    // Data tables
 		fprintf(fp, "%s", LPCSTR(GetPlayerInfoAsHTML()));
 		fprintf(fp, "/<td>\n");
 		fprintf(fp, "<td>\n");
@@ -121,18 +112,14 @@ void CReplayFrame::CreateReplayFrame(void)
 		fprintf(fp, "%s", LPCSTR(GetCommonCardsAsHTML()));
 		fprintf(fp, "%s", LPCSTR(GetPotsAsHTML()));
 		fprintf(fp, "</td>\n");
-
-		// Footer of main table
+    // Footer of main table
 		fprintf(fp, "</tr>\n");
 		fprintf(fp, "</table>\n");
-
-		// End of HTML
+    // End of HTML
 		fprintf(fp, "</body></html>\n");
-
-		fclose(fp);
+    fclose(fp);
 	}	
-
-	LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+  LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 }
 
 CString CReplayFrame::GeneralInfo() {
@@ -175,53 +162,44 @@ CString CReplayFrame::GeneralInfo() {
   return result;
 }
 
-CString CReplayFrame::GetCardHtml(unsigned int card)
-{
+CString CReplayFrame::GetCardHtml(unsigned int card) {
 	CString suit, color, rank, final;
-
-	suit =	card == CARD_BACK ? "*" :
-		   card == CARD_NOCARD ? "&nbsp" :
-		   StdDeck_SUIT(card) == Suit_CLUBS ? "&clubs;" :
-		   StdDeck_SUIT(card) == Suit_DIAMONDS ? "&diams;" :
-		   StdDeck_SUIT(card) == Suit_HEARTS ? "&hearts;" :
-		   StdDeck_SUIT(card) == Suit_SPADES ? "&spades;" :
-		   "&nbsp";
-
-	color = card == CARD_BACK ? "black" :
-			card == CARD_NOCARD ? "black" :
-			StdDeck_SUIT(card) == Suit_CLUBS ? "green" :
-			StdDeck_SUIT(card) == Suit_DIAMONDS ? "blue" :
-			StdDeck_SUIT(card) == Suit_HEARTS ? "red" :
-			StdDeck_SUIT(card) == Suit_SPADES ? "black" :
-			"black";
-
-	rank =	card == CARD_BACK ? "*" :
-		   card == CARD_NOCARD ? " " :
-		   StdDeck_RANK(card) == Rank_ACE ? "A" :
-		   StdDeck_RANK(card) == Rank_KING ? "K" :
-		   StdDeck_RANK(card) == Rank_QUEEN ? "Q" :
-		   StdDeck_RANK(card) == Rank_JACK ? "J" :
-		   StdDeck_RANK(card) == Rank_TEN ? "T" :
-		   StdDeck_RANK(card) == Rank_9 ? "9" :
-		   StdDeck_RANK(card) == Rank_8 ? "8" :
-		   StdDeck_RANK(card) == Rank_7 ? "7" :
-		   StdDeck_RANK(card) == Rank_6 ? "6" :
-		   StdDeck_RANK(card) == Rank_5 ? "5" :
-		   StdDeck_RANK(card) == Rank_4 ? "4" :
-		   StdDeck_RANK(card) == Rank_3 ? "3" :
-		   StdDeck_RANK(card) == Rank_2 ? "2" :
-		   "&nbsp";
-
+  suit =	card == CARD_BACK ? "*" :
+	  card == CARD_NOCARD ? "&nbsp" :
+	  StdDeck_SUIT(card) == Suit_CLUBS ? "&clubs;" :
+	  StdDeck_SUIT(card) == Suit_DIAMONDS ? "&diams;" :
+	  StdDeck_SUIT(card) == Suit_HEARTS ? "&hearts;" :
+	  StdDeck_SUIT(card) == Suit_SPADES ? "&spades;" :
+	  "&nbsp";
+  color = card == CARD_BACK ? "black" :
+		card == CARD_NOCARD ? "black" :
+		StdDeck_SUIT(card) == Suit_CLUBS ? "green" :
+		StdDeck_SUIT(card) == Suit_DIAMONDS ? "blue" :
+		StdDeck_SUIT(card) == Suit_HEARTS ? "red" :
+		StdDeck_SUIT(card) == Suit_SPADES ? "black" :
+		"black";
+  rank =	card == CARD_BACK ? "*" :
+	  card == CARD_NOCARD ? " " :
+	  StdDeck_RANK(card) == Rank_ACE ? "A" :
+	  StdDeck_RANK(card) == Rank_KING ? "K" :
+	  StdDeck_RANK(card) == Rank_QUEEN ? "Q" :
+	  StdDeck_RANK(card) == Rank_JACK ? "J" :
+	  StdDeck_RANK(card) == Rank_TEN ? "T" :
+	  StdDeck_RANK(card) == Rank_9 ? "9" :
+	  StdDeck_RANK(card) == Rank_8 ? "8" :
+	  StdDeck_RANK(card) == Rank_7 ? "7" :
+		StdDeck_RANK(card) == Rank_6 ? "6" :
+		StdDeck_RANK(card) == Rank_5 ? "5" :
+		StdDeck_RANK(card) == Rank_4 ? "4" :
+		StdDeck_RANK(card) == Rank_3 ? "3" :
+		StdDeck_RANK(card) == Rank_2 ? "2" :
+		"&nbsp";
 	final.Format("<font color=%s>%s%s</font>", color, rank, suit);
-
 	return final;
 }
 
-
-CString CReplayFrame::GetPlayerInfoAsHTML()
-{
+CString CReplayFrame::GetPlayerInfoAsHTML() {
 	CString player_info, text;
-	
 	// Table header for: SFABD (seated, active, button, dealt, playing),
 	// hand, bet, balance, name
 	player_info += "<table border=4 cellpadding=1 cellspacing=1>\n";
@@ -241,12 +219,10 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 	player_info += "      <td colspan=5>SABDP = seated / active / button / dealt / playing</td>\n";
 	player_info += "    </tr>\n";
 	player_info += "  </tfoot>\n";
-	
 	// Table body
 	player_info += "  <tbody>\n";
 	// One table row per player...
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); ++i)	{
 		player_info += "    <tr>\n";
 		// Chair number
 		text.Format("      <td>%d</td>\n", i);   
@@ -283,11 +259,9 @@ CString CReplayFrame::GetPlayerInfoAsHTML()
 	return player_info;
 }
 
-CString CReplayFrame::GetButtonStatesAsHTML()
-{
+CString CReplayFrame::GetButtonStatesAsHTML() {
 	CString button_states;
-
-	// Table header for: FCKRA
+  // Table header for: FCKRA
 	button_states += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	button_states += "  <tr><th>FCKRA</th></tr>\n";
 	button_states += "  <tr>\n";
@@ -302,8 +276,7 @@ CString CReplayFrame::GetButtonStatesAsHTML()
 	return button_states;
 }
 
-CString CReplayFrame::GetBlindInfoAsHTML()
-{
+CString CReplayFrame::GetBlindInfoAsHTML() {
 	CString blind_info, text;
 	// Table for: sb, bb, BB
 	blind_info += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
@@ -318,11 +291,9 @@ CString CReplayFrame::GetBlindInfoAsHTML()
 	return blind_info;
 }
 
-CString CReplayFrame::GetCommonCardsAsHTML()
-{
+CString CReplayFrame::GetCommonCardsAsHTML() {
 	CString common_cards, text;
-
-	// Table header for: common cards
+  // Table header for: common cards
 	common_cards += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	common_cards += "<tr><th>commoncard</th></tr>\n";
 	common_cards += "<tr>\n";
@@ -337,15 +308,12 @@ CString CReplayFrame::GetCommonCardsAsHTML()
 	// Table footer
 	common_cards += "</tr>\n";
 	common_cards += "</table>\n";
-
-	return common_cards;
+  return common_cards;
 }
 
-CString CReplayFrame::GetPotsAsHTML()
-{
+CString CReplayFrame::GetPotsAsHTML() {
 	CString pots, text;
-
-	// Table header for: pots
+  // Table header for: pots
 	pots += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	pots += "  <tr><th>#</th><th>pot</th></tr>\n";
 	pots += "  <tr>\n";
@@ -354,17 +322,13 @@ CString CReplayFrame::GetPotsAsHTML()
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
-	for (int i=1; i<k_max_number_of_pots; ++i)
-	{
-		if (p_scraper->pot(i))
-		{
+	for (int i=1; i<k_max_number_of_pots; ++i) {
+		if (p_scraper->pot(i)) 	{
 			pots += "  <tr>\n";
 			text.Format("    <td>%d</td><td>%11.2f</td>\n", i, p_scraper->pot(i));
 			pots += text;
 			pots += "  </tr>\n";
-		}
-		else
-		{
+		}	else {
 			break;
 		}
 	}
@@ -372,27 +336,22 @@ CString CReplayFrame::GetPotsAsHTML()
 	return pots;
 }
 
-void CReplayFrame::CreateReplaySessionDirectoryIfNecessary()
-{
+void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
 	CString path = p_filenames->ReplaySessionDirectory();
 	write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
-	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)
-	{
+	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 	}
 }
 
-void CReplayFrame::CreateBitMapFile()
-{
+void CReplayFrame::CreateBitMapFile() {
 	CString path;
-
-	CreateReplaySessionDirectoryIfNecessary();
+  CreateReplaySessionDirectoryIfNecessary();
 	CreateBMPFile(p_filenames->ReplayBitmapFilename(_next_replay_frame), 
 		p_scraper->entire_window_cur());
 }
 
-CString CReplayFrame::GetLinksToPrevAndNextFile()
-{
+CString CReplayFrame::GetLinksToPrevAndNextFile() {
 	CString links, text;
 	text.Format("<a href=\"frame%06d.htm\">PREV</a>\n",
 		_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : preferences.replay_max_frames());

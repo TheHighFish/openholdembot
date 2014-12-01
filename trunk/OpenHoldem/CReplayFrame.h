@@ -14,17 +14,16 @@
 #ifndef INC_CREPLAYFRAME_H
 #define INC_CREPLAYFRAME_H
 
-class CReplayFrame 
-{
+class CReplayFrame {
 	// CSymbolEngineReplayFrameController (and nobody else!) 
 	// should get access to CreateReplayFrame();
 	// to avoid multiple calls during the same heartbeat.
 	friend class CSymbolEngineReplayFrameController;
-public:
+ public:
 	// public functions
 	CReplayFrame();
 	~CReplayFrame();
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators
 	void CreateReplayFrame();
 	void CreateReplaySessionDirectoryIfNecessary();
@@ -37,8 +36,8 @@ private:
 	CString GetLinksToPrevAndNextFile();
   CString GeneralInfo();
 	void CreateBitMapFile();
-private:
-	int			_next_replay_frame;
+ private:
+	static int	_next_replay_frame;
 };
 
 #endif /* INC_CREPLAYFRAME_H */

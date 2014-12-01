@@ -47,7 +47,6 @@ void CSymbolEngineAutoplayer::InitOnStartup() {
 	_issittingin   = false;
 	_isautopost    = false;
 	_isfinalanswer = false;
-  _isfinaltable  = false;
 }
 
 void CSymbolEngineAutoplayer::ResetOnConnection() {
@@ -55,13 +54,11 @@ void CSymbolEngineAutoplayer::ResetOnConnection() {
 	_issittingin     = false;
 	_isautopost      = false;
 	_isfinalanswer   = false;
-  _isfinaltable    = false;
 	_last_myturnbits = 0;
 	DetectSpecialConnectionLikeBringAndManualMode();
 }
 
 void CSymbolEngineAutoplayer::ResetOnHandreset() {
-	_isfinaltable  = false;
 }
 
 void CSymbolEngineAutoplayer::ResetOnNewRound() {
@@ -132,6 +129,10 @@ void CSymbolEngineAutoplayer::DetectSpecialConnectionLikeBringAndManualMode() {
 	}	else if (strcmp(classname, "OpenHoldemManualMode")==0) {
 		_ismanual = true;
 	}
+}
+
+bool CSymbolEngineAutoplayer::isfinaltable() {
+  return p_scraper->s_limit_info()->is_final_table;
 }
 
 void CSymbolEngineAutoplayer::CalculateFinalAnswer()
