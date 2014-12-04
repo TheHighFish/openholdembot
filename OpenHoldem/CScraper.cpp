@@ -73,7 +73,7 @@ const CString CScraper::extractHandnumFromString(CString t) {
 	CString resulting_handumber_digits_only;
   // Check for bad parameters
 	if (!t || t == "") return "";
-  for (int i=0; i<t.GetLength(); ++i) {
+  for (int i=0; i<t.GetLength(); i++) {
 		if (isdigit(t[i]))
 		{
 			resulting_handumber_digits_only += t[i];
@@ -232,7 +232,7 @@ void CScraper::ScrapeInterfaceButtons()
 	}
 	// i86X-buttons
 	CString button_name;
-	for (int i=0; i<k_max_number_of_i86X_buttons; ++i)
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 	{
 		button_name.Format("i86%dstate", i);
 		if (EvaluateRegion(button_name, &result))
@@ -247,7 +247,7 @@ void CScraper::ScrapeActionButtons()
 	__TRACE
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_number_of_buttons; ++i)
+	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		button_name.Format("i%dstate", i);
 		if (EvaluateRegion(button_name, &result))
@@ -274,7 +274,7 @@ void CScraper::ScrapeActionButtonLabels()
 
 	CString label;
 	CString result;
-	for (int i=4; i<k_max_number_of_buttons; ++i)
+	for (int i=4; i<k_max_number_of_buttons; i++)
 	{
 		set_button_label(i, "");
 		label.Format("i%dlabel", i);
@@ -290,7 +290,7 @@ void CScraper::ScrapeBetpotButtons()
 	__TRACE
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_betpot_buttons; ++i)
+	for (int i=0; i<k_max_betpot_buttons; i++)
 	{
 		if (EvaluateRegion(button_name, &result))
 		{
@@ -302,12 +302,12 @@ void CScraper::ScrapeBetpotButtons()
 void CScraper::ScrapeSeatedActive()
 {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		set_seated(i, "false");
 		set_active(i, "false");
 	}
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		ScrapeSeated(i);
 		if (p_scraper_access->IsPlayerSeated(i))
@@ -319,11 +319,11 @@ void CScraper::ScrapeSeatedActive()
 
 void CScraper::ScrapeBetsBalances() {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; ++i) {
+	for (int i=0; i<k_max_number_of_players; i++) {
 		set_player_bet(i, 0.0);
     p_table_state->_players[i]._balance = 0.0;
 	}
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		// We have to scrape "every" player,
     //   * as people might bet-fold-standup.
@@ -381,12 +381,12 @@ void CScraper::ScrapeDealer()
 	CString dealer;
 	CString result;
 
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		set_dealer(i, false);
 	}
 
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		dealer.Format("p%ddealer", i);
 		if (EvaluateRegion(dealer, &result))
@@ -606,7 +606,7 @@ void CScraper::ScrapePlayerCards(int chair) {
 	__TRACE
 	CString card_name;
 	int card = CARD_UNDEFINED;
-	for (int i=0; i<k_number_of_cards_per_player; ++i) {
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		card_name.Format("p%dcardface%d", chair, i);
 		if ((i > 0) 
       && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
@@ -623,7 +623,7 @@ void CScraper::ScrapeCommonCards()
 {
 	__TRACE
 	CString card_name;
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		card_name.Format("c0cardface%d", i);
 		int card = ScrapeCard(card_name);
@@ -637,7 +637,7 @@ bool CScraper::IsCommonAnimation(void) {
 	int	flop_card_count = 0;
 
 	// Count all the flop cards
-	for (int i=0; i<k_number_of_flop_cards; ++i) {
+	for (int i=0; i<k_number_of_flop_cards; i++) {
     if (p_table_state->_common_cards[i].IsKnownCard()) {
 			flop_card_count++;
 		}
@@ -667,7 +667,7 @@ bool CScraper::IsCommonAnimation(void) {
 void CScraper::ClearAllPlayerNames()
 {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; ++i) {
+	for (int i=0; i<k_max_number_of_players; i++) {
     p_table_state->_players[i]._name = "";
 	}
 }
@@ -808,10 +808,10 @@ void CScraper::ResetLimitInfo() {
 //
 void CScraper::ClearScrapeAreas(void) {
 	__TRACE
-	for (int i=0; i<k_number_of_community_cards; ++i) {
+	for (int i=0; i<k_number_of_community_cards; i++) {
     p_table_state->_common_cards[i].ClearValue();
   }
-	for (int i=0; i<k_max_number_of_players; ++i) {
+	for (int i=0; i<k_max_number_of_players; i++) {
     p_table_state->_players[i].Reset();
 		set_seated(i, "false");
 		set_active(i, "false");
@@ -834,13 +834,13 @@ void CScraper::ClearScrapeAreas(void) {
 
 void CScraper::ScrapeAllPlayerCards() {
 	__TRACE
-	for (int i=0; i<k_max_number_of_players; ++i){
-		for (int j=0; j<k_number_of_cards_per_player; ++j) {
+	for (int i=0; i<k_max_number_of_players; i++){
+		for (int j=0; j<k_number_of_cards_per_player; j++) {
 			p_table_state->_players[i]._hole_cards[j].ClearValue();
 		}
 	}
 	write_log(preferences.debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");
-	for (int i=0; i<p_tablemap->nchairs(); ++i) {
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}
@@ -856,10 +856,10 @@ void CScraper::ScrapePots()
 	CString				s = "", t="";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 
-	for (int j=0; j<k_max_number_of_pots; ++j)
+	for (int j=0; j<k_max_number_of_pots; j++)
 		set_pot(j, 0);
 
-	for (int j=0; j<k_max_number_of_pots; ++j)
+	for (int j=0; j<k_max_number_of_pots; j++)
 	{
 		// r$c0potX
 		s.Format("c0pot%d", j);
@@ -937,7 +937,7 @@ void CScraper::ScrapeLimits()
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
 
-	for (int j=0; j<=9; ++j)
+	for (int j=0; j<=9; j++)
 	{
 		// r$c0handnumberX
 		s.Format("c0handnumber%d", j);
@@ -987,7 +987,7 @@ void CScraper::ScrapeLimits()
 			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->GetGametypeAsString());
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
-		for (int j=0; j<=9; ++j)
+		for (int j=0; j<=9; j++)
 		{
 			s.Format("ttlimits%d", j);
 			s_iter = p_tablemap->s$()->find(s.GetString());
@@ -1035,7 +1035,7 @@ void CScraper::ScrapeLimits()
 			}
 		}
 
-		for (int j=0; j<=9; ++j)
+		for (int j=0; j<=9; j++)
 		{
 			// r$c0limitsX, s$c0limitsX
 			s.Format("c0limits%d", j);
@@ -1159,7 +1159,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 	CString			s = "";
 
 	// Initialize arrays
-	for (int j=0; j<10; ++j)
+	for (int j=0; j<10; j++)
 	{
 		r_vert[j] = p_tablemap->r$()->end();
 		r_horiz[j] = p_tablemap->r$()->end();
@@ -1194,7 +1194,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter)
 		return 0.;
 	}
 
-	for (int j = 1; j<=9; ++j)
+	for (int j = 1; j<=9; j++)
 	{
 		s.Format("%s0%d", type.GetString(), j);
 		r_vert[j] = p_tablemap->r$()->find(s.GetString());

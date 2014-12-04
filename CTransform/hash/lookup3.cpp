@@ -779,8 +779,8 @@ void driver1()
   time_t a,z;
 
   time(&a);
-  for (int i=0; i<256; ++i) buf[i] = 'x';
-  for (int i=0; i<1; ++i) 
+  for (int i=0; i<256; i++) buf[i] = 'x';
+  for (int i=0; i<1; i++) 
   {
     h = hashlittle(&buf[0],1,h);
   }
@@ -805,9 +805,9 @@ void driver2()
   for (hlen=0; hlen < MAXLEN; ++hlen)
   {
     z=0;
-    for (int i=0; i<hlen; ++i)  /*----------------------- for each input byte, */
+    for (int i=0; i<hlen; i++)  /*----------------------- for each input byte, */
     {
-      for (int j=0; j<8; ++j)   /*------------------------ for each input bit, */
+      for (int j=0; j<8; j++)   /*------------------------ for each input bit, */
       {
 	for (m=1; m<8; ++m) /*------------ for serveral possible initvals, */
 	{
@@ -933,10 +933,10 @@ void driver3()
   /* check hashlittle doesn't read before or after the ends of the string */
   for (h=0, b=buf+1; h<8; ++h, ++b)
   {
-    for (int i=0; i<MAXLEN; ++i)
+    for (int i=0; i<MAXLEN; i++)
     {
       len = i;
-      for (int j=0; j<i; ++j) *(b+j)=0;
+      for (int j=0; j<i; j++) *(b+j)=0;
 
       /* these should all be equal */
       ref = hashlittle(b, len, (uint32_t)1);
@@ -961,9 +961,9 @@ void driver3()
 
 
   buf[0] = ~0;
-  for (int i=0; i<HASHSTATE; ++i) state[i] = 1;
+  for (int i=0; i<HASHSTATE; i++) state[i] = 1;
   printf("These should all be different\n");
-  for (int i=0, h=0; i<8; ++i)
+  for (int i=0, h=0; i<8; i++)
   {
     h = hashlittle(buf, 0, h);
     printf("%2ld  0-byte strings, hash is  %.8x\n", i, h);

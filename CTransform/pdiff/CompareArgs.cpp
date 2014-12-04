@@ -68,7 +68,7 @@ bool CompareArgs::Parse_Args(int argc, char **argv)
 		ErrorStr += usage;
 		return false;
 	}
-	for (int i = 0; i < argc; ++i) {
+	for (int i = 0; i < argc; i++) {
 		if (i == 1) {
 			ImgA = RGBAImage::ReadTiff(argv[1]);
 			if (!ImgA) {

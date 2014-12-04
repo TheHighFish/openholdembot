@@ -28,7 +28,7 @@ LPyramid::LPyramid(float *image, int width, int height) :
 {
 	// Make the Laplacian pyramid by successively
 	// copying the earlier levels and blurring them
-	for (int i=0; i<MAX_PYR_LEVELS; ++i) {
+	for (int i=0; i<MAX_PYR_LEVELS; i++) {
 		if (i == 0) {
 			Levels[i] = Copy(image);
 		} else {
@@ -40,7 +40,7 @@ LPyramid::LPyramid(float *image, int width, int height) :
 
 LPyramid::~LPyramid()
 {
-	for (int i=0; i<MAX_PYR_LEVELS; ++i) {
+	for (int i=0; i<MAX_PYR_LEVELS; i++) {
 		if (Levels[i]) delete Levels[i];
 	}
 }
@@ -49,7 +49,7 @@ float *LPyramid::Copy(float *img)
 {
 	int max = Width * Height;
 	float *out = new float[max];
-	for (int i = 0; i < max; ++i) out[i] = img[i];
+	for (int i = 0; i < max; i++) out[i] = img[i];
 	
 	return out;
 }
@@ -64,8 +64,8 @@ void LPyramid::Convolve(float *a, float *b)
 		for (x=0; x<Width; x++) {
 			int index = y * Width + x;
 			a[index] = 0.0f;
-			for (int i=-2; i<=2; ++i) {
-				for (int j=-2; j<=2; ++j) {
+			for (int i=-2; i<=2; i++) {
+				for (int j=-2; j<=2; j++) {
 					nx=x+i;
 					ny=y+j;
 					if (nx<0) nx=-nx;
