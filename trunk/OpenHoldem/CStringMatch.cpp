@@ -201,33 +201,20 @@ const bool CStringMatch::IsStringSeated(CString s)
 const bool CStringMatch::IsStringActive(CString s)
 {
 	// Check for bad parameters
-	if (!s || s == "")
-		return p_tablemap->activemethod() == 2 ? true : false;
-
+	if (!s || s == "") return false;
 	CString s_lower_case = s.MakeLower();
 	s = s_lower_case;
-	// new method: active unless pXactive returns false/inactive/out/away
-	if (p_tablemap->activemethod() == 2)
-	{
-		return (!(s.Left(5) == "false" 
+  if (s.Left(5) == "false" 
 			|| s.Left(8) == "inactive"
 			|| s.Left(3) == "out" 
-			|| s.Left(4) == "away"));
-	}
+			|| s.Left(4) == "away")) {
+    return false;
+  }
 	// old method: inactive unless pXactive returns true/active
-	else
-	{
-		if (s == "")
-			return false;
-
-		if (s.Left(8) == "inactive")
-		{
-			return false;
-		}
-
-		return (s.Left(4) == "true" 
-			|| s.Left(6) == "active");
-	}
+  if (s.Left(4) == "true" || s.Left(6) == "active") {
+    return true;
+  }
+  assert(k_this_should_not_happen);
 }
 
 const bool CStringMatch::IsStringCardback(CString s)

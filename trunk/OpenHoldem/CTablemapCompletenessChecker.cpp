@@ -195,6 +195,12 @@ void CTablemapCompletenessChecker::VerifyMap() {
   if (p_tablemap->ItemExists("handresetmethod")) {
     ErrorDeprecatedItem("handresetmethod");
   }
+  // activemethod no longer upported since OpenHoldem 7.3.1
+  // since it was based on backward-compatibilitz for a bug
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17818&start=30#p125307
+  if (p_tablemap->ItemExists("activemethod")) {
+    ErrorDeprecatedItem("activemethod");
+  }
   // Not checked, despite nice to have
   //   * betpot-buttons
   //   * i86-buttons
@@ -202,7 +208,6 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // Not necessary, as optional
   //   * r$c0isfinaltable
   //   * potmethod
-  //   * activemethod
   //   * buttonclickmethod
   //   * betpotmethod
   // and some others  

@@ -415,27 +415,18 @@ void CScraper::ScrapeActive(int chair)
 	__TRACE
 	CString active;
 	CString result;
-	
 	set_active(chair, "false");
-
-	// try p region first pXactive
+  // try p region first pXactive
 	active.Format("p%dactive", chair);
-	if (EvaluateRegion(active, &result))
-	{
+	if (EvaluateRegion(active, &result)) {
 		set_active(chair, result);
 	}
-	if (p_scraper_access->IsPlayerActive(chair))
-	{
+	if (p_scraper_access->IsPlayerActive(chair)) {
 		return;
 	}
-	if (((!p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() != 2) 
-		||(p_string_match->IsStringActive(_active[chair]) && p_tablemap->activemethod() == 2) ) )
-	{
-		active.Format("u%dactive", chair);
-		if (EvaluateRegion(active, &result))
-		{
-			set_active(chair, result);
-		}
+	active.Format("u%dactive", chair);
+	if (EvaluateRegion(active, &result)) {
+		set_active(chair, result);
 	}
 }
 
