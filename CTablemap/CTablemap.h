@@ -146,7 +146,6 @@ public:
 	inline int LastChair()			       { return (nchairs() - 1); }
 	const int swagtextmethod()		     { return GetTMSymbol("swagtextmethod", 0); }
 	const int potmethod()			         { return GetTMSymbol("potmethod", 0); }
-	const int activemethod()		       { return GetTMSymbol("activemethod", 0); }
 	const int allinmethod()			       { return GetTMSymbol("allinmethod", 0); }
 	const int swagselectionmethod()    { return GetTMSymbol("swagselectionmethod", TEXTSEL_DOUBLECLICK); }
 	const int swagdeletionmethod()	   { return GetTMSymbol("swagdeletionmethod", TEXTDEL_DELETE); }
