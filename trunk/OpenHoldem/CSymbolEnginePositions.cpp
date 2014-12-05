@@ -83,7 +83,7 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight()
 	bool found_userchair = false;
 	for (int i=DEALER_CHAIR+1; 
 		i<=DEALER_CHAIR+p_tablemap->nchairs();
-		++i)
+		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
 		double p_bet = p_scraper->player_bet(next_chair);
@@ -115,7 +115,7 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser()
 
 	for (int i=DEALER_CHAIR+1; 
 		i<=(DEALER_CHAIR+p_tablemap->nchairs());
-		++i)
+		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)
@@ -141,7 +141,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 
 	for (int i=DEALER_CHAIR+1; 
 		i<=DEALER_CHAIR+p_tablemap->nchairs();
-		++i)
+		i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair))
@@ -160,7 +160,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair()
 	}
 
 	int raischair = p_symbol_engine_raisers_callers->raischair();
-	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); ++i)
+	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); i++)
 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair))

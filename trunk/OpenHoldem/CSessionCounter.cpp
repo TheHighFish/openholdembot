@@ -24,7 +24,7 @@ CSessionCounter::CSessionCounter()
 	_session_id = -1;
 
 	// Try to get a _session_id that is not in use.
-	for (int i=0; i<MAX_SESSION_IDS; ++i)
+	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		// Name the mutexes A..Y
 		CString mutex_name = preferences.mutex_name() + "_" + CString(char('A' + i));

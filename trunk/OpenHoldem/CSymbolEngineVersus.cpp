@@ -104,8 +104,8 @@ bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
 }
 
 void CSymbolEngineVersus::ClearWinTieLosData() {
-  for (int i=0; i<(k_number_of_cards_per_deck - 1); ++i) 	{
-	  for (int j=i+1; j<k_number_of_cards_per_deck; ++j) {
+  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
+	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
       _n_win_against_hand[i][j] = 0;
       _n_tie_against_hand[i][j] = 0;
       _n_los_against_hand[i][j] = 0;
@@ -128,10 +128,10 @@ bool CSymbolEngineVersus::GetCounts() {
 	int betround = p_betround_calculator->betround();
 	int sym_userchair = p_symbol_engine_userchair->userchair();
 
-	for (int i=0; i<k_number_of_cards_per_player; ++i) {
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
     card_player[i] = p_table_state->_players[sym_userchair]._hole_cards[i].GetValue();
   }
-	for (int i=0; i<k_number_of_community_cards; ++i) {
+	for (int i=0; i<k_number_of_community_cards; i++) {
     card_common[i] = p_table_state->_common_cards[i].GetValue();
   }
   // Get the lock
@@ -160,7 +160,7 @@ bool CSymbolEngineVersus::GetCounts() {
     }
 	  // figure out offset into file
 	  unsigned int offset = 0;
-	  //for (int i=1; i<card_player[0]; ++i)  offset += (52-i)*1225;
+	  //for (int i=1; i<card_player[0]; i++)  offset += (52-i)*1225;
 	  offset += card0_offset[card_player[0]];
 	  offset += (card_player[1]-card_player[0]-1)*1225;
 	  offset *= sizeof(byte);
@@ -171,8 +171,8 @@ bool CSymbolEngineVersus::GetCounts() {
 	  }
 
 	  wintemp = lostemp = 0;
-	  for (int i=0; i<(k_number_of_cards_per_deck - 1); ++i) 	{
-		  for (int j=i+1; j<k_number_of_cards_per_deck; ++j) {
+	  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
+		  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
 			  if (i!=card_player[0] && i!=card_player[1] && j!=card_player[0] && j!=card_player[1]) {
 				  _read(_versus_fh, &byte, sizeof(byte));
 				  memcpy(&wintemp, &byte[0], sizeof(unsigned int));
@@ -244,9 +244,9 @@ bool CSymbolEngineVersus::GetCounts() {
 		player_hv_now = Hand_EVAL_N(playerEvalCardsNow, betround+3);
 	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
-		for (int i=0; i<(k_number_of_cards_per_deck-1); ++i)
+		for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
 		{
-			for (int j=i+1; j<k_number_of_cards_per_deck; ++j)
+			for (int j=i+1; j<k_number_of_cards_per_deck; j++)
 			{
 				if (!CardMask_CARD_IS_SET(usedCards, i) && !CardMask_CARD_IS_SET(usedCards, j))
 				{
@@ -500,8 +500,8 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     "[CVersus] EvaluateVersusHandListSymbol enumeration...\n");
   if (p_table_state->User()->HasKnownCards()) {
     // Versus makes only sense if we have known cards
-    for (int i=0; i<(k_number_of_cards_per_deck - 1); ++i) {
-      for (int j=i+1; j<k_number_of_cards_per_deck; ++j) {
+    for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) {
+      for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
         // StdDeck-ranks 0..12
         int c0rank = StdDeck_RANK(i);
 		    int c1rank = StdDeck_RANK(j);

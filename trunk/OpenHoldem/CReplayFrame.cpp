@@ -222,7 +222,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 	// Table body
 	player_info += "  <tbody>\n";
 	// One table row per player...
-	for (int i=0; i<p_tablemap->nchairs(); ++i)	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		player_info += "    <tr>\n";
 		// Chair number
 		text.Format("      <td>%d</td>\n", i);   
@@ -322,8 +322,8 @@ CString CReplayFrame::GetPotsAsHTML() {
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
-	for (int i=1; i<k_max_number_of_pots; ++i) {
-		if (p_scraper->pot(i)) 	{
+	for (int i=1; i<k_max_number_of_pots; i++) {
+		if (p_scraper->pot(i)) {
 			pots += "  <tr>\n";
 			text.Format("    <td>%d</td><td>%11.2f</td>\n", i, p_scraper->pot(i));
 			pots += text;

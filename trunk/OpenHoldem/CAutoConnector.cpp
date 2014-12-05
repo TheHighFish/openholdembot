@@ -429,7 +429,7 @@ int CAutoConnector::SelectTableMapAndWindow(int Choices)
 int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices)
 {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowAutomatically(..)\n");
-	for (int i=0; i<Choices; ++i) 
+	for (int i=0; i<Choices; i++) 
 	{
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))
 		{

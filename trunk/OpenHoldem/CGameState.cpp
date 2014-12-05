@@ -85,7 +85,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 	if (pstate->m_dealer_chair != _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair)
 		pstate_changed = true;
 
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (pstate->m_player[i].m_balance != _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance)
 			pstate_changed = true;
@@ -103,7 +103,7 @@ void CGameState::ProcessGameState(const SHoldemState *pstate)
 				pstate->m_player[i].m_cards[0] != 0 && pstate->m_player[i].m_cards[1] != 0)
 			pstate_changed = true;
 	}
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		if (pstate->m_cards[i] != _m_holdem_state[(_m_ndx)&0xff].m_cards[i])
 			pstate_changed = true;
@@ -144,11 +144,11 @@ void CGameState::CaptureState()
 	_state[_state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 		_state[_state_index&0xff].m_pot[i] = p_scraper->pot(i);
 
 	// Common cards
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
     int common_card = p_table_state->_common_cards[i].GetValue();
     write_log(preferences.debug_dll_extension(), 
@@ -166,7 +166,7 @@ void CGameState::CaptureState()
 	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
 
 	// loop through all 10 player chairs
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 
 		// player name, balance, currentbet
@@ -175,7 +175,7 @@ void CGameState::CaptureState()
 		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbol_engine_chip_amounts->currentbet(i);
 
 		// player cards
-		for (int j=0; j<k_number_of_cards_per_player; ++j)
+		for (int j=0; j<k_number_of_cards_per_player; j++)
 		{
       Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValue();
@@ -201,7 +201,7 @@ const int CGameState::LastRaised(const int round)
 	if (round<1 || round>4)
 		return last_raised;
 
-	for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; ++i)
+	for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 	{
 		int index_normalized = i%k_max_number_of_players;
 		if (_chair_actions[index_normalized][round-1][w_reraised])
@@ -212,7 +212,7 @@ const int CGameState::LastRaised(const int round)
 
 	if (last_raised==-1)
 	{
-		for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; ++i)
+		for (int i=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+1; i<=_m_game_state[(_m_game_ndx)&0xff].m_dealer_chair+k_max_number_of_players; i++)
 		{
 			int index_normalized = i%k_max_number_of_players;
 			if (_chair_actions[index_normalized][round-1][w_raised])
@@ -229,11 +229,11 @@ const double CGameState::SortedBalance(const int rank)
 {
 	double	stacks[k_max_number_of_players] = {0.};
 
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 		stacks[i] = _m_holdem_state[_m_ndx].m_player[i].m_balance + _m_holdem_state[_m_ndx].m_player[i].m_currentbet;
 
 	// bubble sort stacks // !! duplicate code?
-	for (int i=0; i<(k_max_number_of_players-1); ++i)
+	for (int i=0; i<(k_max_number_of_players-1); i++)
 	{
 		for (int n=i+1; n<k_max_number_of_players; n++)
 		{
@@ -257,7 +257,7 @@ bool CGameState::ProcessThisFrame (void)
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	bool balance_stability = true;
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
 			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
@@ -324,7 +324,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 	{
 
 		// Check for end of hand situation
-		for (int i=0; i<k_max_number_of_players; ++i)
+		for (int i=0; i<k_max_number_of_players; i++)
 		{
 			int index_normalized = i%k_max_number_of_players;
 			// if new card fronts have appeared, then players are showing down, and its the end of the hand
@@ -367,9 +367,9 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			_big_blind_posted = false;
 			_bets_last = 0.0;
 			_end_of_hand = false;
-			for (int i=0; i<k_max_number_of_players; ++i)
+			for (int i=0; i<k_max_number_of_players; i++)
 			{
-				for (int j=0; j<k_number_of_betrounds; ++j)
+				for (int j=0; j<k_number_of_betrounds; j++)
 				{
 					for (int k=0; k<w_num_action_types; k++)
 						_chair_actions[i][j][k] = w_noaction;
@@ -479,7 +479,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 			}
 
 			// now iterate through the chairs and see what everybody did
-			for (int i = from_chair; i <= to_chair; ++i)
+			for (int i = from_chair; i <= to_chair; i++)
 			{
 				int index_normalized = i%k_max_number_of_players;
 				assert(index_normalized >= 0);
@@ -592,7 +592,7 @@ void CGameState::ProcessStateEngine(const SHoldemState *pstate, const bool pstat
 
 					write_log(k_always_log_basic_information, ">>> Chair %d (%s) checked\n", index_normalized, _m_holdem_state[(_m_ndx)&0xff].m_player[index_normalized].m_name);
 				}
-			}  // end of "for (int i = from_chair; i <= to_chair; ++i)"
+			}  // end of "for (int i = from_chair; i <= to_chair; i++)"
 		} // end of "if (br != 0 &&..."
 	} // end of "if (_process_game_state)"
 }
@@ -666,7 +666,7 @@ void CGameState::DumpState(void)
 	write_log(preferences.debug_alltherest(), "[CGameState] _is_playing: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_playing);
 	write_log(preferences.debug_alltherest(), "[CGameState] _is_posting: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_is_posting);
 	write_log(preferences.debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _m_holdem_state[(_m_ndx)&0xff].m_dealer_chair);
-	for (int i=0; i<k_max_number_of_players; ++i) {
+	for (int i=0; i<k_max_number_of_players; i++) {
 		write_log(preferences.debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_name);
 		write_log(preferences.debug_alltherest(), "[CGameState] _balance:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance);
 		write_log(preferences.debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _m_holdem_state[(_m_ndx)&0xff].m_player[i].m_currentbet);

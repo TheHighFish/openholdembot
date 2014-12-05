@@ -469,6 +469,7 @@ CString CParseTreeNode::Serialize()
     // Unhandled note-type, probably new and therefore not yet handled
     write_log(k_always_log_errors, "[CParseTreeNode] ERROR: Unhandled node-tzpe %i in serialiyation of parse-tree\n",
       _node_type);
+    return "";
   }
 }
 

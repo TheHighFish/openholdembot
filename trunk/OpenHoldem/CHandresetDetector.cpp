@@ -245,7 +245,7 @@ void CHandresetDetector::GetNewSymbolValues() {
   _community_cards = p_scraper_access->NumberOfCommonCards();
   _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
   _bblind = p_symbol_engine_tablelimits->bblind();
-	for (int i=0; i<k_number_of_cards_per_player; ++i) {
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
 		} else {
@@ -266,7 +266,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_nopponentsplaying = _nopponentsplaying;
   _last_bblind = _bblind;
   _small_blind_existed_last_hand = SmallBlindExists();
-	for (int i=0; i<k_number_of_cards_per_player; ++i) {
+	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		last_playercards[i] = playercards[i];
 	}
 }

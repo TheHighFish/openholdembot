@@ -63,7 +63,7 @@ CHandHistory::CHandHistory()
 
 
 	newRoundFlag = false;
-	for (int i = 0; i<k_max_number_of_players; ++i)
+	for (int i = 0; i<k_max_number_of_players; i++)
 	{
 		_history.chair[i].currentBalance = 0;
 	}
@@ -143,7 +143,7 @@ void CHandHistory::UpdateSymbols()
 	dealerchair = p_symbol_engine_dealerchair->dealerchair();
 
 	//Set individual player variables
-	for (int i=0; i<nchairs; ++i)	{
+	for (int i=0; i<nchairs; i++)	{
     if ((p_table_state->_players[i]._hole_cards[0].IsKnownCard())
 			  || ((i != userchair) && (userchair != 0))) {
 			GetPCstring(_history.chair[i].card_player, 
@@ -183,7 +183,7 @@ void CHandHistory::roundStart()
 	//Assign put value of bblind in total pot
 	_history.chair[_history.bblindpos].totalIn[0] = bblind;
 
-	for (int i = 0; i<nchairs; ++i)
+	for (int i = 0; i<nchairs; i++)
 	{
 		if (isPlaying(i))
 		{
@@ -195,7 +195,7 @@ void CHandHistory::roundStart()
 		}
 	}
 
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		if (_history.chair[i].currentBet == bblind
 			&& i != (_history.bblindpos+1)%nchairs //??
@@ -213,14 +213,14 @@ void CHandHistory::checkBetround()
 {
 	char			card_common[k_number_of_community_cards][5]; // WTF is 5?
 
-	for (int i = 0;i<k_number_of_community_cards;++i)	//Set board card letters
+	for (int i = 0;i<k_number_of_community_cards;i++)	//Set board card letters
     GetBCstring(card_common[i], p_table_state->_common_cards[i].GetValue());
 
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		if (card_common[i][1]!= NULL)
 		{
-			for (int j = 0;j<5;++j)
+			for (int j = 0;j<5;j++)
 			{
 				card_global[i][j] = card_common[i][j];
 			}
@@ -280,7 +280,7 @@ void CHandHistory::ResetPostflopHistory()
 	_history.last_player_to_act = WTF_means_minus_five; 
 	passChecks = false;
 	maxBet = 0;
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		_history.chair[i].actionCount = 0;
 		middleBet[i] = 0;
@@ -298,7 +298,7 @@ void CHandHistory::scanPlayerChanges()
 	int				raischair = p_symbol_engine_raisers_callers->raischair();
 
 	//Iterates through all chairs
-	for (int i=0; i<nchairs; ++i) 
+	for (int i=0; i<nchairs; i++) 
 	{
 		//Precondition: It is the player's turn, and they are not past the
 		//last to act
@@ -445,7 +445,7 @@ void CHandHistory::scanPlayerChanges()
 				_history.chair[i].seatIsPlaying = false;
 				_history.whosturn = (_history.whosturn+1)%nchairs;	//Increment _history.whosturn
 				nplayersin = 0;
-				for (int i = 0; i<nchairs; ++i)
+				for (int i = 0; i<nchairs; i++)
 				{
 					if (_history.chair[i].seatIsPlaying) 
 					{
@@ -455,7 +455,7 @@ void CHandHistory::scanPlayerChanges()
 				//If there is only one player left, run outputUncontested function
 				if (nplayersin == 1)
 				{
-					for (int j=0; j<nchairs; ++j)
+					for (int j=0; j<nchairs; j++)
 					{
 						if (_history.chair[j].seatIsPlaying)
 						{
@@ -484,7 +484,7 @@ void CHandHistory::SetPreviousActions()
 		prevround = k_betround_showdown;
 	}
 
-	for (int i=0; i<nchairs; ++i) 
+	for (int i=0; i<nchairs; i++) 
 	{
 		if (_history.chair[i].currentBalance != 0)
 		{
@@ -518,7 +518,7 @@ const string CHandHistory::setDate()
 const bool CHandHistory::isShowdown()
 {
 	//If a player other than the user has cards showing, it is showdown
-	for (int i = 0;i<nchairs;++i)
+	for (int i = 0;i<nchairs;i++)
 	{
 		if (_history.chair[i].card_player[1] !=  NULL
 			&& (i != userchair || userchair == 0)
@@ -576,7 +576,7 @@ void CHandHistory::processShowdown()
 	int	nchairs         = p_tablemap->nchairs();
 	int	nplayersplaying	= p_symbol_engine_active_dealt_playing->nplayersplaying();
 
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		//Precondition: Player is playing, their cards haven't been processed yet
 		//and the cards are visible
@@ -597,7 +597,7 @@ void CHandHistory::processShowdown()
 				CardMask_SET(_history.chair[i].hand,
           p_table_state->_players[i]._hole_cards[j].GetValue());
       }
-			for (int j=0;j<k_number_of_community_cards; ++j) {
+			for (int j=0;j<k_number_of_community_cards; j++) {
 				CardMask_SET(_history.chair[i].hand,
           p_table_state->_common_cards[j].GetValue());
       }
@@ -718,12 +718,12 @@ void CHandHistory::resetVars()
 	passChecks = false;
 	_history.last_player_to_act = WTF_means_minus_five; 
 
-	for (int i=k_betround_preflop; i<k_betround_river; ++i)
+	for (int i=k_betround_preflop; i<k_betround_river; i++)
 	{
 		allChecks[i] = true;
 		bet[i] = p_symbol_engine_tablelimits->bet(i); 
 	}
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		_history.chair[i].ac_dealpos = p_symbol_engine_poker_action->DealPosition(i);
 		if (_history.chair[i].ac_dealpos == 1)
@@ -752,7 +752,7 @@ void CHandHistory::resetVars()
 		_history.chair[i].calls = 0;
 		_history.chair[i].actionCount = 0;
 		middleBet[i] = 0;
-		for (int j=0; j<4 ;++j) // !! Betrounds are 1..4 
+		for (int j=0; j<4 ;j++) // !! Betrounds are 1..4 
 		{
 			_history.chair[i].totalIn[j] = 0;
 			for (int k=0; k<k_assumed_max_number_of_actions_per_player_and_round; k++) // !! WTF is 8?
@@ -823,7 +823,7 @@ void CHandHistory::ReconstructHand(bool constested)
 	potbetinto = true;
 	next_chair_to_look_for_actions = _history.utg;
 	calculatedPot = 0;
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		hasFolded[i] = false;
 		_history.chair[i].actionCount = 0;
@@ -882,7 +882,7 @@ void CHandHistory::HandleNextAction()
 			{
 				betround++;
 				next_chair_to_look_for_actions = postflopstart;
-				for (int i = 0;i<nchairs;++i) _history.chair[i].actionCount = 0;
+				for (int i = 0;i<nchairs;i++) _history.chair[i].actionCount = 0;
 			}
 		}
 	}
@@ -915,7 +915,7 @@ void CHandHistory::HandleNewBetround()
 // Done
 void CHandHistory::HandleUncontestedPot()
 {
-	for (int i = 0; i<nchairs ;++i)
+	for (int i = 0; i<nchairs ;i++)
 	{
 		if (_history.chair[i].seatIsPlaying)
 		{
@@ -927,7 +927,7 @@ void CHandHistory::HandleUncontestedPot()
 // Done
 void CHandHistory::HandleContestedPot()
 {
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		if (handText[i]!= "")
 		{
@@ -936,7 +936,7 @@ void CHandHistory::HandleContestedPot()
 	}
 	HandVal handhigh = {0};
 	int highest = 0;
-	for (int i = 0;i<nchairs;++i)
+	for (int i = 0;i<nchairs;i++)
 	{
 		if (_history.chair[i].handval>handhigh)		//Find hand w/ highest value
 		{
@@ -999,9 +999,9 @@ void CHandHistory::HandleShowdown(bool constested)
 void CHandHistory::CalculateTotalPot()
 {
 	calculatedPot = 0;
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
-		for (int j = 0;j<4; ++j)  // betrounds 1..4
+		for (int j = 0;j<4; j++)  // betrounds 1..4
 		{
 			calculatedPot += _history.chair[i].totalIn[j];
 		}
@@ -1018,7 +1018,7 @@ void CHandHistory::HandleDealingPhase()
 		<< " $" << bblind << "/$" << (bblind*2) << 	" " 
 		<< setDate() << endl;
 	outfile << "Table " << p_scraper->title() << endl;
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		if (_history.chair[i].dealt)
 		{
@@ -1043,7 +1043,7 @@ void CHandHistory::HandleDealingPhase()
 			 << endl;
 	}
 	outfile << playerName[_history.bblindpos] << ": Post BB $" << bblind << endl;
-	for (int i=0; i<nchairs; ++i)
+	for (int i=0; i<nchairs; i++)
 	{
 		if (_history.chair[i].postBlind
 			&& i != _history.sblindpos

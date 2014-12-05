@@ -109,7 +109,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 			_playersblindbits = k_exponents[USER_CHAIR];
 		}
 
-		for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); ++i)
+		for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 		{
 			int chair = i%p_tablemap->nchairs();
 			double p_bet = p_scraper->player_bet(chair);
@@ -135,7 +135,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		// Restrictions : 3 or less players were dealt or last bb is active
 		if (sbchair == k_undefined && (p_symbol_engine_active_dealt_playing->playersdealtbits() < 3 || (bbchair == USER_CHAIR && p_symbol_engine_positions->nchairsdealtright() == 1)))
 		{
-			for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); ++i)
+			for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 			{
 				int chair = i%p_tablemap->nchairs();
 				double p_bet = p_scraper->player_bet(chair);

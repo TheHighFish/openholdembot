@@ -126,7 +126,7 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	{
 		return;
 	}
-	for (int i=0; i<_number_of_tables; ++i)
+	for (int i=0; i<_number_of_tables; i++)
 	{
 		HWND HWND_of_potential_neighbour_table = list_of_tables[i];
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Trying neighbour-table %i\n", HWND_of_potential_neighbour_table);
@@ -180,7 +180,7 @@ bool CTablePositioner::TryPosition(int left_x, int top_y)
 {
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Trying position %i, %i\n",
 		left_x, top_y);
-	for (int i=0; i<_number_of_tables; ++i)
+	for (int i=0; i<_number_of_tables; i++)
 	{
 		HWND potential_neighbour_window = HWNDs_of_child_windows[i];
 		if (potential_neighbour_window == p_autoconnector->attached_hwnd())

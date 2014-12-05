@@ -56,9 +56,9 @@ CString CParseErrors::ErroneousCodeSnippet()
   if (remaining_input == NULL) return "";
 
 	CString erroneous_code_snippet;
-	for (int i=0; i<kLinesOfCodeToShow; ++i)
+	for (int i=0; i<kLinesOfCodeToShow; i++)
 	{ 
-		for (int j=0; j<kMaxCharactersPerLineToShow; ++j)
+		for (int j=0; j<kMaxCharactersPerLineToShow; j++)
 		{
 			char next_character = remaining_input[j];
 			erroneous_code_snippet += next_character;

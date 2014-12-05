@@ -189,7 +189,7 @@ bool CPokerTrackerThread::IsConnected()
 bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
 {
 	int len = (int) strlen(oh_scraped_name);
-	for (int i=0; i<len; ++i)
+	for (int i=0; i<len; i++)
 	{
 		if (oh_scraped_name[i]    != 'l'
 			&& oh_scraped_name[i] != '1'
@@ -523,7 +523,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	else if ((PQntuples(res) > 1))
 	{
 		bestLD = 999;
-		for (int i=0; i<PQntuples(res); ++i)
+		for (int i=0; i<PQntuples(res); i++)
 		{
 			lev_dist = myLD.LD(scraped_name, PQgetvalue(res, i, 0));
 
@@ -643,7 +643,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 	{
 		if (p_autoconnector->IsConnected())
 		{
-			for (int i=0; i<PT_DLL_GetNumberOfStats(); ++i)
+			for (int i=0; i<PT_DLL_GetNumberOfStats(); i++)
 			{
 				/* CheckName is necessary before each update.
 				   There's a short interval between any two updates, and it's possible that the player
@@ -773,7 +773,7 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 	{
 		int iterations = 20;
 		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
-		for (int i = 0; i < iterations; ++i)
+		for (int i = 0; i < iterations; i++)
 		{
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
