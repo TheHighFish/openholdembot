@@ -40,7 +40,7 @@ MAINTENANCE:
   [THF]
 - TM-symbol "activemethod" is no longer supported,
   as it was meant to provide backward-compatibility to a bug in OpenHoldem 1.0.
-  Now a player will be considered active if either pXactive or uXactive is true.
+  Now a player will be considered active if pXactive or uXactive (or both) are true.
   Thanks to Ares for the suggestion and the explanations.
   [THF]
 

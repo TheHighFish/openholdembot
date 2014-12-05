@@ -968,10 +968,10 @@ void CScraper::ScrapeLimits()
 		titletext = c_titletext;
 	 	
 		CScraperPreprocessor::PreprocessTitleString(&titletext);
-		trans.ParseStringBSL(
+    /*!!!!!		trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
 			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-      &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+      &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);*/
 
 		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %s\n", 
 			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -988,10 +988,10 @@ void CScraper::ScrapeLimits()
 				titletext = c_titletext;
 	
 				CScraperPreprocessor::PreprocessTitleString(&titletext);
-				trans.ParseStringBSL(
+				/*!!!!!trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);*/
 
 				write_log(preferences.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1015,10 +1015,10 @@ void CScraper::ScrapeLimits()
         CString how_to_interpret_c0limit = s_iter->second.text;
         write_log(preferences.debug_scraper(), "[CScraper] s$c0limit is %s\n",
           how_to_interpret_c0limit);
-				trans.ParseStringBSL(
+				/*!!!!!trans.ParseStringBSL(
 					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);*/
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
@@ -1037,9 +1037,9 @@ void CScraper::ScrapeLimits()
 				CScraperPreprocessor::PreprocessMonetaryString(&text);
 				if (text!="")
 				{
-					trans.ParseStringBSL(text, s_iter->second.text, NULL,
+					/*!!!!!trans.ParseStringBSL(text, s_iter->second.text, NULL,
 						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);*/
 				}
 
 				write_log(preferences.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
