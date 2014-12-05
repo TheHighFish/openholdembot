@@ -62,7 +62,7 @@ void CSymbolEngineCards::ResetOnConnection()
 void CSymbolEngineCards::ResetOnHandreset()
 {
 	// hand tests
-	for (int i=0; i<k_number_of_cards_per_player; ++i)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
 		_$$pc[i] = CARD_UNDEFINED;
@@ -70,7 +70,7 @@ void CSymbolEngineCards::ResetOnHandreset()
 		_$$ps[i] = 0;
 	}
 
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		_$$cc[i] = CARD_UNDEFINED;
 		_$$cs[i] = 0;
@@ -162,7 +162,7 @@ void CSymbolEngineCards::CardMaskCreateCMAllCardsOfOfSuit(
 	CardMask *card_mask_of_suit, int suit)
 {
 	CardMask_RESET(*card_mask_of_suit);
-	for (int i=Rank_2; i<=Rank_ACE; ++i)
+	for (int i=Rank_2; i<=Rank_ACE; i++)
 	{
 		CardMask_SET(*card_mask_of_suit, StdDeck_MAKE_CARD(i, suit));
 	}
@@ -235,7 +235,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	
 	// player cards
 	CardMask_RESET(plCards);
-	for (int i=0; i<k_number_of_cards_per_player; ++i)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
     Card card = p_table_state->User()->_hole_cards[i];
 		if (card.IsKnownCard())
@@ -248,7 +248,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// common cards
 	CardMask_RESET(comCards);
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		Card card = p_table_state->_common_cards[i];
 		if (card.IsKnownCard())
@@ -299,7 +299,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// nstraight, nstraightfill
 	strbits = 0;
-	for (int i=0; i<Rank_COUNT; ++i)
+	for (int i=0; i<Rank_COUNT; i++)
 	{
 		if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*0)+i) ||
 			CardMask_CARD_IS_SET(plCards, (Rank_COUNT*1)+i) ||
@@ -362,7 +362,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		else
 		{
 			strbits = 0;
-			for (int i=0; i<Rank_COUNT; ++i)
+			for (int i=0; i<Rank_COUNT; i++)
 			{
 				if (CardMask_CARD_IS_SET(comCards, (Rank_COUNT*0)+i) ||
 					CardMask_CARD_IS_SET(comCards, (Rank_COUNT*1)+i) ||
@@ -419,10 +419,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		}
 
 		// nstraightflush, nstraightflushfill
-		for (int j=0; j<k_number_of_suits_per_deck; ++j)
+		for (int j=0; j<k_number_of_suits_per_deck; j++)
 		{
 			strbits = 0;
-			for (int i=0; i<Rank_COUNT; ++i)
+			for (int i=0; i<Rank_COUNT; i++)
 			{
 				if (CardMask_CARD_IS_SET(plCards, (Rank_COUNT*j)+i))
 				{
@@ -478,10 +478,10 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		}
 		else
 		{
-			for (int j=0; j<=3; ++j)
+			for (int j=0; j<=3; j++)
 			{
 				strbits = 0;
-				for (int i=0; i<Rank_COUNT; ++i)
+				for (int i=0; i<Rank_COUNT; i++)
 				{
 					if (CardMask_CARD_IS_SET(comCards, (Rank_COUNT*j)+i))
 					{
@@ -537,7 +537,7 @@ int GetSuitFromCard(int scraper_card);
 void CSymbolEngineCards::CalculateHandTests()
 {
 	// Player cards
-	for (int i=0; i<k_number_of_cards_per_player; ++i)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
     Card card = p_table_state->User()->_hole_cards[i];
 		if (card.IsKnownCard())
@@ -561,7 +561,7 @@ void CSymbolEngineCards::CalculateHandTests()
 		}
 	}
 	// Common cards
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		Card card = p_table_state->_common_cards[i];
 		if (card.IsKnownCard())
@@ -575,7 +575,7 @@ void CSymbolEngineCards::CalculateHandTests()
 
 void CSymbolEngineCards::CalculateCommonCards() {
 	_ncommoncardsknown = 0;
-	for (int i=0; i<k_number_of_community_cards; ++i)	{
+	for (int i=0; i<k_number_of_community_cards; i++)	{
     if (p_table_state->_common_cards[i].IsKnownCard())		{
 			_ncommoncardsknown++;							
 		}
@@ -594,7 +594,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
-	for (int i=0; i<k_number_of_cards_per_player; ++i)
+	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
 		// player cards
     Card card = p_table_state->User()->_hole_cards[i];
@@ -604,7 +604,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			nstdCards++;
 		}
 	}
-	for (int i=0; i<k_number_of_community_cards; ++i)
+	for (int i=0; i<k_number_of_community_cards; i++)
 	{
 		// common cards
 		Card card = p_table_state->_common_cards[i];
@@ -627,7 +627,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
-		for (int i=0; i<k_number_of_cards_per_deck; ++i)
+		for (int i=0; i<k_number_of_cards_per_deck; i++)
 		{
       if (i!=p_table_state->User()->_hole_cards[0].GetValue()  
 				  && i!=p_table_state->User()->_hole_cards[1].GetValue() 
@@ -682,7 +682,7 @@ bool CSymbolEngineCards::IsHand(const char *name, int *e)
 	assert(name[0] == '$');
 
 	// passed in symbol query
-	for (int i=1; i<(int) strlen(name); ++i)
+	for (int i=1; i<(int) strlen(name); i++)
 	{
 		if (name[i]>='2' && name[i]<='9')
 			cardrank[cardcnt++] =  name[i] - '0';

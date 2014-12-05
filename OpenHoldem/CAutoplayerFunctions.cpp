@@ -61,7 +61,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOHScript() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOHScript()\n");
   bool trace_needed = preferences.trace_enabled();
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
-	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
+	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++) {
 		double result = p_function_collection->Evaluate(k_standard_function_names[i], trace_needed);
 		write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], result);
@@ -248,7 +248,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 {
-	for (int i=k_standard_function_prefold; i<=k_standard_function_delay; ++i)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_delay; i++)
 	{
 		double result = p_function_collection->Evaluate(k_standard_function_names[i], true);
 		write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 

@@ -220,7 +220,7 @@ bool CLazyScraper::NeedCommunityCards()
 
 void CLazyScraper::ScrapeUnknownPlayerNames()
 {
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		if (p_scraper_access->IsPlayerSeated(i) 
 			&& (p_table_state->_players[i]._name == ""))

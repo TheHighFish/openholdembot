@@ -79,7 +79,7 @@ void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat()
 void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 {
 	_playersactivebits  = 0;
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (p_scraper_access->IsPlayerActive(i))
 		{
@@ -100,7 +100,7 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits()
 {
 	_playersseatedbits = 0;
-	for (int i=0; i<k_max_number_of_players; ++i)
+	for (int i=0; i<k_max_number_of_players; i++)
 	{
 		if (p_string_match->IsStringSeated(p_scraper->seated(i)))
 		{
@@ -115,7 +115,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 	bool big_blind_found = false;
 	bool first_non_blind_with_cards_found = false;
 
-	for (int i=0; i<p_tablemap->nchairs(); ++i) {
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
 		// First we search the blinds only, 

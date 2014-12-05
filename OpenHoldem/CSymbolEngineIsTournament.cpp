@@ -137,7 +137,7 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
 	// This condition does unfortunatelly only work for the first and final table in an MTT,
 	// not necessarily for other late tables (fractional bets, uneven sums).
 	double sum_of_all_cips = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); ++i) {
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		sum_of_all_cips += p_table_state->_players[i]._balance;
 		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
 	}
@@ -168,7 +168,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 		return false;
 	}
 	int players_with_antes = 0;
-	for (int i=0; i<p_tablemap->nchairs(); ++i) {
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
@@ -180,7 +180,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament() {
 	CString title = p_scraper->title();
 	title = title.MakeLower();
-	for (int i=0; i<k_number_of_tournament_identifiers; ++i) {
+	for (int i=0; i<k_number_of_tournament_identifiers; i++) {
     assert(k_tournament_identifiers[i] != "");
 		if (title.Find(k_tournament_identifiers[i]) != -1) 	{
 			return true;

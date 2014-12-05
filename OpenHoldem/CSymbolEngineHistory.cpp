@@ -209,7 +209,7 @@ void CSymbolEngineHistory::CalculateHistory()
 	}
 
 	double maxbet = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); ++i)
+	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		// Be careful: in some cases it might be that name user folds,
 		// but "Fold" gets displayed where formerly his bet got displayed.
@@ -236,7 +236,7 @@ void CSymbolEngineHistory::CalculateHistory()
 }
 
 double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
-	for (int i=0; i<k_hist_sym_count; ++i)	{
+	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
 			return _hist_sym[i][round-1];
 		}

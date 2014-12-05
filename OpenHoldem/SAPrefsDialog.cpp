@@ -65,7 +65,7 @@ CSAPrefsDialog::CSAPrefsDialog(CWnd* pParent /*=NULL*/)
 CSAPrefsDialog::~CSAPrefsDialog()
 {
 	// clean up
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		if (pPS)
@@ -178,7 +178,7 @@ BOOL CSAPrefsDialog::OnInitDialog()
 	m_captionBar.SetConstantText(m_csConstantText);
 
 	// fill the tree. we'll create the pages as we need them
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);
@@ -218,7 +218,7 @@ BOOL CSAPrefsDialog::OnInitDialog()
 	else
 	{
 		// find start page
-		for (int i=0;i<m_pages.GetSize();++i)
+		for (int i=0;i<m_pages.GetSize();i++)
 		{
 			pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 			ASSERT(pPS);
@@ -305,7 +305,7 @@ BOOL CSAPrefsDialog::PreCreateWindow(CREATESTRUCT& cs)
 bool CSAPrefsDialog::ShowPage(CSAPrefsSubDlg * pPage)
 {
 	// find that page
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);
@@ -419,7 +419,7 @@ bool CSAPrefsDialog::EndOK()
 	CSAPrefsSubDlg * pPage = NULL;
 
 	// first, UpdateData...
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);
@@ -449,7 +449,7 @@ bool CSAPrefsDialog::EndOK()
 	}
 
 	// tell all of the sub-dialogs "OK"
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);
@@ -474,7 +474,7 @@ bool CSAPrefsDialog::EndOK()
 void CSAPrefsDialog::OnCancel()
 {
 	// tell all of the sub-dialogs "Cancel"
-	for (int i=0;i<m_pages.GetSize();++i)
+	for (int i=0;i<m_pages.GetSize();i++)
 	{
 		pageStruct *pPS = (pageStruct *)m_pages.GetAt(i);
 		ASSERT(pPS);
@@ -577,7 +577,7 @@ void CSAPrefsDialog::OnSelchangedPageTree(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 		// find out which page was selected
 		int iIdx = -1;
-		for (int i=0;i<m_pages.GetSize();++i)
+		for (int i=0;i<m_pages.GetSize();i++)
 		{
 			if (m_pages.GetAt(i)==(pageStruct *)pNMTreeView->itemNew.lParam)
 			{

@@ -108,7 +108,7 @@ CString CalculateMD5(const CString FileName)
     fclose(fInput);
     //printf("\nChecksum of '%s' is: ", argv[1]);
     char *Value = new char[1024];int k = 0;
-    for(i = 0; i < 16; ++i)
+    for(i = 0; i < 16; i++)
 	{
         b = md5Hash.digest[i];
         for(j = 4; j >= 0; j -= 4)

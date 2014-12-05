@@ -36,7 +36,7 @@ _bottomNCards(uint32 cards, int howMany) {
   uint32 retval, t;
 
   retval = 0;
-  for (i=0; i<howMany; ++i) {
+  for (i=0; i<howMany; i++) {
     t = bottomCardTable[cards];
     retval += t << (i*LowHandVal_CARD_WIDTH);
     cards ^= (1 << t);

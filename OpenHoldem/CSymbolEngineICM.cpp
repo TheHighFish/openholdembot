@@ -93,7 +93,7 @@ double P(int i, int n, double *s, int N)
 	}
 	else
 	{
-		for (int j=0; j < N; ++j)
+		for (int j=0; j < N; j++)
 		{
 			if (j != i)
 			{
@@ -128,7 +128,7 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 
 	else if (sym_nplayersblind < 2)
 	{
-		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); ++i)
+		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
 		{
 			int next_chair = i%p_tablemap->nchairs();
 			double p_bet = p_scraper->player_bet(next_chair);
@@ -217,7 +217,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	{
 		int place = 0;
 
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsseatedbits, i))
 			{
@@ -235,7 +235,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 		write_log(preferences.debug_icm(),
       "[CSymbolEngineICM] prob place %d = %1.4f \n", i + 1, p);
 		ICM += prizes[i] * p;
-		++i;
+		i++;
 	}
 
 	return ICM;
@@ -280,7 +280,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	double	sym_call = p_symbol_engine_chip_amounts->call();
 	double	sym_currentbet[k_max_number_of_players]={0};
 
-	for (int i = 0; i < k_max_number_of_players; ++i)
+	for (int i = 0; i < k_max_number_of_players; i++)
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
@@ -293,7 +293,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	{
 		double to_split = p_symbol_engine_chip_amounts->potcommon();
 
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += sym_currentbet[i];
@@ -303,7 +303,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 		double win = to_split / sym_nopponentsplaying;
 
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += win;
@@ -318,7 +318,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < k_max_number_of_players; ++i)
+			for (int i = 0; i < k_max_number_of_players; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) && 
 					myTotalBet < sym_currentbet[i])
@@ -340,7 +340,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 		stacks[sym_userchair] -= mycall;
 
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -357,7 +357,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < k_max_number_of_players; ++i)
+			for (int i = 0; i < k_max_number_of_players; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) 
 					&& myTotalBet < sym_currentbet[i])
@@ -372,7 +372,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		sym_pot += min(sym_call, stacks[sym_userchair]);
 		win = sym_pot / (sym_nopponentsplaying +1);
 		stacks[sym_userchair] += win;
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -390,12 +390,12 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 			int ncallers = min(name[11]-'0', sym_nopponentsplaying);
 
 
-			for (int i = 0; i < ncallers; ++i)
+			for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
 				double smalleststack = DBL_MAX;
 
-				for (int j = 0; j < k_max_number_of_players; ++j)
+				for (int j = 0; j < k_max_number_of_players; j++)
 				{
 					if (IsBitSet(sym_opponentsplayingbits, j))
 					{
@@ -454,12 +454,12 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 				memset(sidepots,0, ncallers * sizeof(double));
 
-				for (int i = 0; i < ncallers; ++i)
+				for (int i = 0; i < ncallers; i++)
 				{
 					int jbiggest = -1;
 					double biggeststack = 0.;
 
-					for (int j = 0; j < k_max_number_of_players; ++j)
+					for (int j = 0; j < k_max_number_of_players; j++)
 					{
 						if (IsBitSet(sym_opponentsplayingbits, j))
 						{
@@ -488,11 +488,11 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 				}
 				stacks[sym_userchair] -= mybet;
 				sidepots[ncallers - 1] += sym_pot;
-				for (int i = 0; i<ncallers; ++i)
+				for (int i = 0; i<ncallers; i++)
 				{
 					double win = sidepots[i] / (i + 1);
 
-					for (int j = 0; j<=i; ++j)
+					for (int j = 0; j<=i; j++)
 					{
 						ASSERT(biggest[j] >= 0);
 						stacks[biggest[j]] += win;
@@ -539,7 +539,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 	else if(strcmp(name,"icm")==0)
 	{
-		for (int i = 0; i < k_max_number_of_players; ++i)
+		for (int i = 0; i < k_max_number_of_players; i++)
 		{
 			if (IsBitSet(sym_playersseatedbits, i))
 			{

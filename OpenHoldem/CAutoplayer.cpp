@@ -141,7 +141,7 @@ bool CAutoplayer::DoBetPot(void)
 	__TRACE
 	bool success = false;
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
-	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i)
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
 	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
 		{
@@ -266,7 +266,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 {
 	__TRACE
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
-	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; ++i)
+	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)
 	{
 		if (p_function_collection->Evaluate(k_standard_function_names[i]))
 		{
@@ -308,7 +308,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; i++)
 	{
 
 		// Prefold, close, rebuy and chat work require different treatment,
@@ -549,7 +549,7 @@ bool CAutoplayer::DoPrefold(void)
 
 bool CAutoplayer::HandleInterfacebuttonsI86(void) 
 {
-	for (int i=0; i<k_max_number_of_i86X_buttons; ++i)
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
 	{
 		if (p_casino_interface->ClickI86ButtonIfAvailable(i))
 		{

@@ -78,7 +78,7 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 	char previous_character = ' ';
 	char next_character     = ' '; 
 
-	for (int i=second_position; i<=last_position; ++i)
+	for (int i=second_position; i<=last_position; i++)
 	{
 		ith_character  = monetary_string->GetAt(i);
 		next_character = monetary_string->GetAt(i+1);
@@ -150,7 +150,7 @@ void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
 void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text)
 {
 	if (p_tablemap->balancenumbersonly()) {
-		for (int i=0; i<balance_and_or_potential_text->GetLength(); ++i)		{
+		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
       char next_character = balance_and_or_potential_text->GetAt(i);
 			if (SaveIsDigit(next_character)) {
 				continue;

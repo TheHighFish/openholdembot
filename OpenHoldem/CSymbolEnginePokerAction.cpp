@@ -277,7 +277,7 @@ const int CSymbolEnginePokerAction::BetPosition(const int chairnum) {
 	if (!(IsBitSet(sym_playersplayingbits, chairnum)))
 		return betpos;
 
-	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; ++i)
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
 		if (IsBitSet(sym_playersplayingbits, (i%10)))
 			betpos++;
@@ -296,7 +296,7 @@ const int CSymbolEnginePokerAction::DealPosition(const int chairnum) {
 	if (chairnum<0 || chairnum>9)
 		return dealposchair;
 
-	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; ++i)
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
 	{
 		if (IsBitSet(sym_playersdealtbits, (i%10)))
 			dealposchair++;

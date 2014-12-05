@@ -191,11 +191,11 @@ void CPreferences::InitDefaults(void)
 {
 	// General initialization
 	// that fits most values and purposes
-	for (int i=0; i<k_prefs_last_numerical_value; ++i)
+	for (int i=0; i<k_prefs_last_numerical_value; i++)
 	{
 		prefs_numerical_values[i] = 0.0;	// 0 for ints and false for bools
 	}
-	for (int i=0; i<k_prefs_last_CString_value; ++i)
+	for (int i=0; i<k_prefs_last_CString_value; i++)
 	{
 		prefs_CString_values[i] = "";
 	}
@@ -268,12 +268,12 @@ void CPreferences::InitDefaults(void)
 void CPreferences::ReadPreferences()
 {
 	// Then read the registry values and overwrite the defaults if defined
-	for (int i=0; i<k_prefs_last_numerical_value; ++i)
+	for (int i=0; i<k_prefs_last_numerical_value; i++)
 	{
 		assert(k_registry_keys_for_numerical_values[i] != "");
 		ReadReg(k_registry_keys_for_numerical_values[i], &prefs_numerical_values[i]); 
 	}
-	for (int i=0; i<k_prefs_last_CString_value; ++i)
+	for (int i=0; i<k_prefs_last_CString_value; i++)
 	{
 		assert(k_registry_keys_for_CStrings[i] != "");
 		ReadReg(k_registry_keys_for_CStrings[i], &prefs_CString_values[i]);
