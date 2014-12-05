@@ -25,45 +25,42 @@
 
 CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller = NULL;
 
-CSymbolEngineReplayFrameController::CSymbolEngineReplayFrameController()
-{
+CSymbolEngineReplayFrameController::CSymbolEngineReplayFrameController() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 }
 
-CSymbolEngineReplayFrameController::~CSymbolEngineReplayFrameController()
-{}
+CSymbolEngineReplayFrameController::~CSymbolEngineReplayFrameController() {
+}
 
-void CSymbolEngineReplayFrameController::InitOnStartup()
-{
+void CSymbolEngineReplayFrameController::InitOnStartup() {
 	ResetOnConnection();
 }
 
-void CSymbolEngineReplayFrameController::ResetOnConnection()
-{
+void CSymbolEngineReplayFrameController::ResetOnConnection() {
 	_replay_recored_this_turn = false;
 }
 
-void CSymbolEngineReplayFrameController::ResetOnHandreset()
-{}
+void CSymbolEngineReplayFrameController::ResetOnHandreset() {
+}
 
-void CSymbolEngineReplayFrameController::ResetOnNewRound()
-{}
+void CSymbolEngineReplayFrameController::ResetOnNewRound() {
+}
 
-void CSymbolEngineReplayFrameController::ResetOnMyTurn()
-{
+void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
 	// If it's my turn, and we have enough stable frames
 	if (preferences.replay_record() 			
-		&& p_symbol_engine_autoplayer->ismyturn() 
-		&& p_stableframescounter->NumberOfStableFrames() >= preferences.frame_delay())
-	{
+		  && p_symbol_engine_autoplayer->ismyturn() 
+		  && p_stableframescounter->NumberOfStableFrames() >= preferences.frame_delay()) {
 		ShootReplayFrameIfNotYetDone();
 	}
 }
 
-void CSymbolEngineReplayFrameController::ResetOnHeartbeat()
-{
+void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
+  // ResetOnHeartbeat() is the last function tobe called,
+  // whereas the first one depends on circumstances.
+  // therefore we reset _replay_recored_this_turn here at the very end. 
 	_replay_recored_this_turn = false;
 }
 

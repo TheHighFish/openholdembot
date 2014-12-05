@@ -18,12 +18,11 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineReplayFrameController();
 	~CSymbolEngineReplayFrameController();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -31,10 +30,10 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	void ShootReplayFrameIfNotYetDone();
-private:
+ private:
 	bool _replay_recored_this_turn;
 };
 

@@ -207,14 +207,14 @@ const bool CStringMatch::IsStringActive(CString s)
   if (s.Left(5) == "false" 
 			|| s.Left(8) == "inactive"
 			|| s.Left(3) == "out" 
-			|| s.Left(4) == "away")) {
+			|| s.Left(4) == "away") {
     return false;
   }
 	// old method: inactive unless pXactive returns true/active
   if (s.Left(4) == "true" || s.Left(6) == "active") {
     return true;
   }
-  assert(k_this_should_not_happen);
+  assert(k_this_must_not_happen);
 }
 
 const bool CStringMatch::IsStringCardback(CString s)
