@@ -62,6 +62,7 @@
 #define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET			(TRUE)
 #define PT4_QUERY_SUPPORT__RIVER_BET     				(TRUE)
 
+//!!!!!! Needs to be reorganized *bad sorting)
 const int k_number_of_pokertracker_stats =  //PREFLOP GENERAL STATS
 											(PT4_QUERY_SUPPORT__ICON ? 1 : 0) +
 											(PT4_QUERY_SUPPORT__NB_HANDS ? 1 : 0) + 

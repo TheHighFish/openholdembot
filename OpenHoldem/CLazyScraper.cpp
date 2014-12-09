@@ -27,12 +27,11 @@
 
 CLazyScraper *p_lazyscraper = NULL;
 
-CLazyScraper::CLazyScraper()
-{
+CLazyScraper::CLazyScraper() {
+  _is_identical_scrape = false;
 }
 
-CLazyScraper::~CLazyScraper()
-{
+CLazyScraper::~CLazyScraper() {
 }
 
 // Some ideas:
@@ -74,68 +73,56 @@ CLazyScraper::~CLazyScraper()
 // DLLs and/or HH-gen might need all data all the time.
 // If in doubt be conservative.
 
-void CLazyScraper::DoScrape()
-{
-	if (p_scraper->IsIdenticalScrape())
-	{
-		return;
+void CLazyScraper::DoScrape() {
+	if (p_scraper->IsIdenticalScrape())	{
+		_is_identical_scrape = true;
+    return;
 	}
+  _is_identical_scrape = false;
 	p_scraper->ScrapeLimits();
-	if (NeedDealerChair())
-	{
+	if (NeedDealerChair()) {
 		p_scraper->ScrapeDealer();
 	}
-	if (NeedUsersCards())
-	{
+	if (NeedUsersCards())	{
 		assert(p_symbol_engine_userchair->userchair_confirmed());
 		p_scraper->ScrapePlayerCards(p_symbol_engine_userchair->userchair());
 	}
 	p_scraper->ScrapeSeatedActive();
-	if (NeedAllPlayersCards())
-	{
+	if (NeedAllPlayersCards()) {
 		p_scraper->ScrapeAllPlayerCards(); 
 	}
-	if (NeedCommunityCards())
-	{
+	if (NeedCommunityCards())	{
 		p_scraper->ScrapeCommonCards();
 	}
-	if (NeedFoldButton())
-	{
+	if (NeedFoldButton())	{
 		// For fast detection of my turn
 		// Currently included in NeedActionbuttons()
     // No extra-scrape of fold-button for improved reaction time
 	}
-	if (NeedActionbuttons())
-	{
+	if (NeedActionbuttons()) {
 		p_scraper->ScrapeActionButtons();
 		p_scraper->ScrapeActionButtonLabels();
 	}
-	if (NeedInterfaceButtons())
-	{
+	if (NeedInterfaceButtons())	{
 		p_scraper->ScrapeInterfaceButtons();
 	}
-	if (NeedBetpotButtons())
-	{
+	if (NeedBetpotButtons()) {
 		p_scraper->ScrapeBetpotButtons();
 	}
-	if (NeedSlider())
-	{
+	if (NeedSlider())	{
 		p_scraper->ScrapeSlider();
 	}
 	// Swagbox AKA i3edit does not need to be scraped
 	// The CasinoInterface checks the existence and uses this region automatically
-	if (NeedBetsAndBalances())
-	{
+	if (NeedBetsAndBalances()) {
 		p_scraper->ScrapeBetsBalances();
 		p_scraper->ScrapePots();
 	}
-	if (NeedAllPlayerNames())
-	{
+	if (NeedAllPlayerNames())	{
 		p_scraper->ClearAllPlayerNames();
 		ScrapeUnknownPlayerNames();
 	}
-	if (NeedUnknownPlayerNames())
-	{
+	if (NeedUnknownPlayerNames())	{
 		ScrapeUnknownPlayerNames();
 	}
 }

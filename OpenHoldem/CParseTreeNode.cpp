@@ -360,8 +360,9 @@ double CParseTreeNode::EvaluateTernaryExpression(bool log) {
 	// that _third_sibbling points to the next (OE)WC.
 	// Again we use short circuiting.
   assert(_first_sibbling  != NULL);
-  assert(_second_sibbling != NULL);
-  assert(_third_sibbling  != NULL);
+  // Both second and thirs sibbling can be zero in case of an OEWC.
+  // So no assertion here.
+  // We handle this case gracefully in EvaluateSibbling().
   assert(_terminal_name == "");
 	assert((_node_type == kTokenOperatorConditionalIf)
 		  || (_node_type == kTokenOperatorConditionalWhen));

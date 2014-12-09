@@ -17,7 +17,6 @@
 #include "CFilenames.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
-#include "CReplayFramesCounter.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -47,8 +46,13 @@ CReplayFrame::CReplayFrame(void) {
 
 CReplayFrame::~CReplayFrame(void) {
   // As we create a new CReplayFrame for each frame
-  // we simplz have to increment the global counter one we are finished.
+  // we simply have to increment the global counter once we are finished.
 	++_next_replay_frame;
+  if (_next_replay_frame >= preferences.replay_max_frames()) {
+    // Once we reach the maximum overwrite old frames
+    // in cyclic order, starting again from 0.
+    _next_replay_frame = 0;
+  }
 }
 
 void CReplayFrame::CreateReplayFrame(void){

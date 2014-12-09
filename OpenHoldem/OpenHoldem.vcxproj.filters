@@ -531,9 +531,6 @@
     <ClCompile Include="CReplayFrame.cpp">
       <Filter>Source Files\ReplayFrames</Filter>
     </ClCompile>
-    <ClCompile Include="CReplayFramesCounter.cpp">
-      <Filter>Source Files\ReplayFrames</Filter>
-    </ClCompile>
     <ClCompile Include="Bitmaps.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
@@ -1295,9 +1292,6 @@
       <Filter>Header Files\PrWin</Filter>
     </ClInclude>
     <ClInclude Include="CReplayFrame.h">
-      <Filter>Header Files\ReplayFrames</Filter>
-    </ClInclude>
-    <ClInclude Include="CReplayFramesCounter.h">
       <Filter>Header Files\ReplayFrames</Filter>
     </ClInclude>
     <ClInclude Include="Bitmaps.h">

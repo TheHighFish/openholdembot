@@ -137,16 +137,15 @@ CString CFilenames::ReplaySessionDirectory() {
 }
 
 CString CFilenames::ReplayBitmapFilename(int frame_number) {
+  AssertRange(frame_number, 0, preferences.replay_max_frames());
 	CString path;
-	if (frame_number == k_undefined)
-		path.Format("%s*.bmp", ReplaySessionDirectory());
-	else
-		path.Format("%sframe%06d.bmp", ReplaySessionDirectory(), frame_number);
+	path.Format("%sframe%06d.bmp", ReplaySessionDirectory(), frame_number);
   Log("ReplayBitmapFilename", path.GetString());
 	return path;
 }
 
 CString CFilenames::ReplayHTMLFilename(int frame_number) {
+  AssertRange(frame_number, 0, preferences.replay_max_frames());
 	CString path;
 	path.Format("%sframe%06d.htm", ReplaySessionDirectory(), frame_number);
   Log("ReplayHTMLFilename", path.GetString());

@@ -126,8 +126,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 }
 
 void CHeartbeatThread::ScrapeEvaluateAct() {
-	unsigned int		new_scrape = NOTHING_CHANGED; /// not necessary?
-	bool				iswait = false;
+	bool iswait = false;
 
 	p_table_positioner->AlwaysKeepPositionIfEnabled();
 	// This critical section lets other threads know that the internal state is being updated
@@ -136,41 +135,31 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
   write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-  new_scrape = !NOTHING_CHANGED;
   p_lazyscraper->DoScrape();
-  
-	// Necessary to pre-compute some info 
+  // We must not check if the scrape of the table changed, because:
+  //   * some symbol-engines must be evaluated no matter what
+  //   * we might need to act (sitout, ...) on empty/non-changing tables
+  //   * auto-player needs stable frames too
+  //
+  // Necessary to pre-compute some info 
 	// which is needed by the symbol-engines.
+  // ismyturn, myturnbits (visible buttons), ...
 	p_scraper_access->GetNeccessaryTablemapObjects();
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// Caclulate symbols
-	if (new_scrape!=NOTHING_CHANGED) {
-		p_engine_container->EvaluateAll();
-		// Shoot replay-frame if desired
-		// a) on every change
-		if (preferences.replay_record() == 5
-			// b) on every change when in hand
-			|| (preferences.replay_record() == 4
-				&& p_table_state->User()->HasKnownCards())) {
-			p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
-		}
-	}
-
-	LeaveCriticalSection(&pParent->cs_update_in_progress);
+	p_engine_container->EvaluateAll();
+	// Reply-frames no longer here in the heartbeat.
+  // we have a "ReplayFrameController for that.
+  LeaveCriticalSection(&pParent->cs_update_in_progress);
 	p_openholdem_title->UpdateTitle();
-	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Update scraper output dialog if it is present
 	if (m_ScraperOutputDlg) {
 		m_ScraperOutputDlg->UpdateDisplay();
 	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
 	// Save state
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
 	p_game_state->CaptureState();
-
-	////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
 	// Game state engine
 	// TODO: create a symbol-engine
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
