@@ -40,7 +40,6 @@
 #include "CPopupHandler.h"
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
-#include "CReplayFramesCounter.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
@@ -100,9 +99,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablemapAccess\n");
   assert(!p_tablemap_access);
   p_tablemap_access = new CTablemapAccess;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CReplayFramesCounter\n");
-  assert(!p_replayframes_counter);
-  p_replayframes_counter = new CReplayFramesCounter;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDebugTab\n");
   assert(p_debug_tab == NULL);
   p_debug_tab = new CDebugTab;
@@ -247,7 +243,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_formula_parser)
   DELETE_AND_CLEAR(p_parser_symbol_table)
   DELETE_AND_CLEAR(p_debug_tab)
-  DELETE_AND_CLEAR(p_replayframes_counter)
   DELETE_AND_CLEAR(p_tablemap_access)
   DELETE_AND_CLEAR(p_tablemap)
   DELETE_AND_CLEAR(p_lazyscraper)

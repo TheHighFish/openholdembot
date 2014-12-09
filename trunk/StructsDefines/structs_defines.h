@@ -112,20 +112,21 @@ const char* const k_tablemap_errors_and_parse_errors_explained[19] =
 #define BITMAP_HEIGHT		164
 
 // For scraper engine
-#define NOTHING_CHANGED		0
-#define	COM_CARD_CHANGED	(1<<1)
-#define PL_CARD_CHANGED		(1<<2)
-#define	SEATED_CHANGED		(1<<3)
-#define	ACTIVE_CHANGED		(1<<4)
-#define	DEALER_CHANGED		(1<<5)
-#define	NAME_CHANGED		(1<<6)
-#define	BALANCE_CHANGED		(1<<7)
-#define	PLAYERBET_CHANGED	(1<<8)
+#define NOTHING_CHANGED		  0
+#define	COM_CARD_CHANGED	  (1<<1)
+#define PL_CARD_CHANGED		  (1<<2)
+#define	SEATED_CHANGED		  (1<<3)
+#define	ACTIVE_CHANGED		  (1<<4)
+#define	DEALER_CHANGED		  (1<<5)
+#define	NAME_CHANGED		    (1<<6)
+#define	BALANCE_CHANGED		  (1<<7)
+#define	PLAYERBET_CHANGED	  (1<<8)
 #define	BUTTONSTATE_CHANGED	(1<<9)
 #define BUTTONLABEL_CHANGED	(1<<10)
-#define	POT_CHANGED			(1<<11)
-#define	LIMITS_CHANGED		(1<<12)
+#define	POT_CHANGED			    (1<<11)
+#define	LIMITS_CHANGED		  (1<<12)
 #define	HANDNUMBER_CHANGED  (1<<13)
+#define	SOMETHING_CHANGED   0x1FFF  
 
 // Tablemap/scraper limits
 #define MAX_CHAR_WIDTH		200

@@ -215,6 +215,7 @@ const bool CStringMatch::IsStringActive(CString s)
     return true;
   }
   assert(k_this_must_not_happen);
+  return false;
 }
 
 const bool CStringMatch::IsStringCardback(CString s)

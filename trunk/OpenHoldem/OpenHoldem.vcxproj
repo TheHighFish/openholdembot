@@ -326,7 +326,6 @@
     <ClCompile Include="CIteratorThread.cpp" />
     <ClCompile Include="PrWinHandranges.cpp" />
     <ClCompile Include="CReplayFrame.cpp" />
-    <ClCompile Include="CReplayFramesCounter.cpp" />
     <ClCompile Include="Bitmaps.cpp" />
     <ClCompile Include="CLazyScraper.cpp" />
     <ClCompile Include="CScraper.cpp" />
@@ -608,7 +607,6 @@
     <ClInclude Include="CIteratorThread.h" />
     <ClInclude Include="PrWinHandranges.h" />
     <ClInclude Include="CReplayFrame.h" />
-    <ClInclude Include="CReplayFramesCounter.h" />
     <ClInclude Include="Bitmaps.h" />
     <ClInclude Include="CScraper.h" />
     <ClInclude Include="CScraperAccess.h" />

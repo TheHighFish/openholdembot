@@ -60,6 +60,8 @@
 // http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
 #pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
 #pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
+#pragma warning(error:4715)   // warning Ce715: not all control paths return a value	c:\documents and settings\administrator\desktop\trunk2\openholdem\cstringmatch.cpp	218
+
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS

@@ -202,8 +202,7 @@ void CScraperAccess::InitOnConnect()
 	GetNeccessaryTablemapObjects();
 }
 
-void CScraperAccess::GetNeccessaryTablemapObjects()
-{
+void CScraperAccess::GetNeccessaryTablemapObjects() {
 	// NUMBERS (from labels)
 	_allin_button_number	= SearchForButtonNumber(k_button_allin);
 	_raise_button_number	= SearchForButtonNumber(k_button_raise);
@@ -215,9 +214,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	_sitout_button_number	= SearchForButtonNumber(k_button_sitout);
 	_leave_button_number	= SearchForButtonNumber(k_button_leave);
 	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
-
-
-	// NAMES
+  // NAMES
 	button_names[k_autoplayer_function_allin]		= GetButtonName(_allin_button_number);
 	button_names[k_autoplayer_function_raise]		= GetButtonName(_raise_button_number);
 	button_names[k_autoplayer_function_call]		= GetButtonName(_call_button_number);
@@ -229,8 +226,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	button_names[k_standard_function_leave]		= GetButtonName(_leave_button_number);
 	button_names[k_standard_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
-	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i)
-	{
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
 		int button_index = i - k_autoplayer_function_betpot_2_1;
 		button_names[i].Format("%s_%s", 
 			k_betpot_button_name[button_index], 
@@ -243,14 +239,11 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	_i3_handle_name  = "i3handle";
 	_i86_button_name = "i86button";
 	CString button_name = "";
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-	{
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dbutton", i);
 		_i86X_button_name[i] = button_name;
 	}
-
-
-	// VISIBLE
+  // VISIBLE
 	visible_buttons[k_autoplayer_function_allin]	= GetButtonVisible(_allin_button_number);
 	visible_buttons[k_autoplayer_function_raise]	= GetButtonVisible(_raise_button_number);
 	visible_buttons[k_autoplayer_function_call]		= GetButtonVisible(_call_button_number);
@@ -262,23 +255,18 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	visible_buttons[k_standard_function_leave]		= GetButtonVisible(_leave_button_number);
 	visible_buttons[k_standard_function_autopost]	= GetButtonVisible(_autopost_button_number);
 	// visible betpot buttons
-	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i)
-	{
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
 		int button_index = i - k_autoplayer_function_betpot_2_1;
 		visible_buttons[i] = GetBetpotButtonVisible(button_index);
 	}
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
 	i86_button_visible = GetButtonVisible(k_button_i86);
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-	{
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 	}
-
-
-	// DEFINED + AVAILABLE
-	for (int i=0; i<k_number_of_standard_functions; i++)
-	{
+  // DEFINED + AVAILABLE
+	for (int i=0; i<k_number_of_standard_functions; i++) {
 		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &p_casino_interface->action_buttons[i]);
 		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
 	}
@@ -292,23 +280,25 @@ void CScraperAccess::GetNeccessaryTablemapObjects()
 	i86_button_available	= i86_button_defined && i86_button_visible;
 	// i86Xbutton
 	CString i86X_button_name = "";
-	for (int i = 0; i < k_max_number_of_i86X_buttons; i++)
-	{
+	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
 		i86X_button_name.Format("i86%dbutton", i);
 		i86X_button_defined[i]     = p_tablemap_access->GetButtonRect(i86X_button_name, &p_casino_interface->i86X_button[i]);
 		i86X_button_available[i]   = i86X_button_defined[i] && i86X_button_visible[i];
 	}
-
-	// ALLIN POSSIBLE
+  // ALLIN POSSIBLE
 	allin_option_available = false;
-	if (i3_button_available)
+	if (i3_button_available) {
 		allin_option_available = true;
-	if (i3_button_visible && available_buttons[k_autoplayer_function_allin])
+  }
+	if (i3_button_visible && available_buttons[k_autoplayer_function_allin]) {
 		allin_option_available = true;
-	if (i3_button_visible && i3_edit_defined)
+  }
+	if (i3_button_visible && i3_edit_defined) {
 		allin_option_available = true;
-	if (i3_button_visible && i3_slider_defined && i3_handle_defined)
+  }
+	if (i3_button_visible && i3_slider_defined && i3_handle_defined) {
 		allin_option_available = true;
+  }
 }
 
 int CScraperAccess::NumberOfVisibleButtons()

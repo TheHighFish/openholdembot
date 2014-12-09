@@ -46,23 +46,23 @@ void CDlgSAPrefs8::DoDataExchange(CDataExchange* pDX)
 }
 
 // CDlgSAPrefs8 message handlers
-BOOL CDlgSAPrefs8::OnInitDialog()
-{
+BOOL CDlgSAPrefs8::OnInitDialog() {
 	CString text = "";
   CSAPrefsSubDlg::OnInitDialog();
-  // Strating with 3 to avoid confusion with old values (on off)
+  // Starting with 3 to avoid confusion with old values (on off)
   // and defaulting to off
 	switch (preferences.replay_record()) {
-    case 3:
+    case kShootReplyFramesOnMyTurn:
       m_RecordMyTurn.SetCheck(BST_CHECKED);
       break;
-     case 4:
+     case kShootReplyFramesOnEveryChangeWhilePlaying:
       m_RecordEveryChangePlaying.SetCheck(BST_CHECKED);
       break;
-    case 5:
+    case kShootReplyFramesOnEveryChange:
       m_RecordEveryChange.SetCheck(BST_CHECKED);
       break;
     default:
+      // kShootReplyFramesNever
       m_RecordNever.SetCheck(BST_CHECKED);
       break;
   }
@@ -71,34 +71,27 @@ BOOL CDlgSAPrefs8::OnInitDialog()
 	m_MaxFramesSpin.SetRange(1, 1000);
 	m_MaxFramesSpin.SetPos(preferences.replay_max_frames());
 	m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
-
-	return TRUE;  // return TRUE unless you set the focus to a control
+  return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDlgSAPrefs8::OnOK()
-{
+void CDlgSAPrefs8::OnOK() {
 	CString			text = "";
-
-	if (m_RecordMyTurn.GetCheck() == BST_CHECKED){
-    // 3 = my turn
-		preferences.SetValue(k_prefs_replay_record, 3);
+  if (m_RecordMyTurn.GetCheck() == BST_CHECKED){
+		preferences.SetValue(k_prefs_replay_record, 
+      kShootReplyFramesOnMyTurn);
 	} else if (m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED){
-    // 4 = every change while playing
-		preferences.SetValue(k_prefs_replay_record, 4);
+		preferences.SetValue(k_prefs_replay_record, 
+      kShootReplyFramesOnEveryChangeWhilePlaying);
 	} else if (m_RecordEveryChange.GetCheck() == BST_CHECKED){
-    // 5 = every change 
-		preferences.SetValue(k_prefs_replay_record, 5);
+		preferences.SetValue(k_prefs_replay_record, 
+      kShootReplyFramesOnEveryChange);
 	} else {
-    // 0 = default off
-    preferences.SetValue(k_prefs_replay_record, 0);
+    // default off
+    preferences.SetValue(k_prefs_replay_record, 
+      kShootReplyFramesNever);
   }
-
-	m_MaxFrames.GetWindowText(text);
+  m_MaxFrames.GetWindowText(text);
 	preferences.SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
-
-	CSAPrefsSubDlg::OnOK();
+  CSAPrefsSubDlg::OnOK();
 }
-
-
-

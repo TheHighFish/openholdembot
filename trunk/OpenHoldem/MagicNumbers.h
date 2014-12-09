@@ -136,7 +136,9 @@ const int k_max_number_of_titletexts = 10;
 const int k_max_nmber_of_tablemaps = 25;
 
 // GUI
-const int kMainSizeX = 640;
+// Width just like ManualMode
+// to avoid resizing on attach top / attach bottom. ;-)
+const int kMainSizeX = 580;
 const int kMainSizeY = 400;
 
 // File menu
@@ -326,11 +328,21 @@ const char k_OpenPPL_function_names[k_number_of_betrounds + 1][k_max_length_of_O
   "f$turn",
   "f$river"
 };
-enum table_positioner_options
-{
+
+enum table_positioner_options {
 	k_position_tables_never,
 	k_position_tables_tiled,
 	k_position_tables_cascaded
+};
+
+enum shoot_replay_frames_options {
+  // Default: never shoot replay-frames
+  // Keeping the old (formerly hard-coded) numerical values 
+  // to stay compatile to old config-files.
+  kShootReplyFramesNever = 0,
+  kShootReplyFramesOnMyTurn = 3,
+  kShootReplyFramesOnEveryChangeWhilePlaying = 4,
+  kShootReplyFramesOnEveryChange = 5,
 };
 
 // poker tracker

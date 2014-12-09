@@ -14,14 +14,17 @@
 #ifndef INC_CLAZYSCRAPER_H
 #define INC_CLAZYSCRAPER_H
 
-class CLazyScraper
-{
-public:
+class CLazyScraper {
+ public:
 	CLazyScraper();
 	~CLazyScraper();
-public:
+ public:
 	void DoScrape();
-private:
+  // This function should be preferred
+  // and not cScraper::IsIdenticalScrape()
+  // because this one just caches the function result.
+  bool IsIdenticalScrape()  { return _is_identical_scrape; }
+ private:
 	bool NeedDealerChair();
 	bool NeedHandNumber();
 	bool NeedUsersCards();
@@ -35,12 +38,13 @@ private:
 	bool NeedAllPlayerNames();
 	bool NeedUnknownPlayerNames();
 	bool NeedCommunityCards();
-private:
+ private:
 	void ScrapeUnknownPlayerNames();
-
-private:
+ private:
 	bool CardScrapeNeeded();
 	bool CompleteScrapeNeeded();
+ private:
+  bool _is_identical_scrape;
 };
 
 extern CLazyScraper *p_lazyscraper;
