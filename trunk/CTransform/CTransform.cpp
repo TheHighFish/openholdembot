@@ -29,16 +29,17 @@
 #include "../OpenScrape/debug.h"
 #endif
 
-CTransform::CTransform(void)
-{
+CTransform::CTransform() {
 }
 
-CTransform::~CTransform(void)
-{
+CTransform::~CTransform() {
 }
 
-int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, CString *separation, COLORREF *cr_avg) 
-{
+int CTransform::DoTransform(RMapCI region,
+                  const HDC hdc, 
+                  CString *text,
+                  CString *separation,
+                  COLORREF *cr_avg) {
 	bool				character[MAX_CHAR_WIDTH][MAX_CHAR_HEIGHT] = {false};	
 	bool				background[MAX_CHAR_WIDTH] = {false};
 
@@ -74,8 +75,7 @@ int CTransform::DoTransform(RMapCI region, const HDC hdc, CString *text, CString
 	return ERR_INVALID_TRANSFORM_TYPE;
 }
 
-int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg) 
-{
+int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg) {
 	int					x = 0, y = 0;
 	int					width = 0, height = 0;
 	int					rr_sum = 0, gg_sum = 0, bb_sum = 0, pix_cnt = 0;
@@ -879,290 +879,289 @@ void CTransform::CalcHexmash(const int left, const int right, const int top, con
 // to get a cleanner interface and cleaner code.
 // The other in-out-parameters must be initialized with k_undefined now
 // (or with the empty string). This value represents the same information.
-void CTransform::ParseStringBSL(const CString text, 
-                  const CString format, 
-	                CString *results_for_openscrape, 
-                  CString *handnumber, 
-                  double *sblind, 
-                  double *bblind, 
-                  double *bbet, 
-		              double *ante, 
-                  int *limit, 
-                  double *sb_bb, 
-                  double *bb_BB, 
-                  double *buyin) {
-	int			place_in_format = 0, place_in_text = 0;
-	CString	token = "", skip_str = "", number_type = "";
-	double	number = 0.;
-	CString	temp = "";
+void CTransform::ParseStringBSL(const CString text,
+                                const CString format,
+                                CString *results_for_openscrape,
+                                CString *handnumber,
+                                double *sblind,
+                                double *bblind,
+                                double *bbet,
+                                double *ante,
+                                int    *limit,
+                                double *sb_bb,
+                                double *bb_BB,
+                                double *buyin) {
+	int     place_in_format = 0, place_in_text = 0;
+  CString token = "", skip_str = "", number_type = "";
+  double  number = 0.;
+  CString temp = "";
   CString throw_away_result_for_OH;
-
   // Skip on bogus out-pointer
-	if (results_for_openscrape == NULL) {
+  if (results_for_openscrape == NULL) {
     results_for_openscrape = &throw_away_result_for_OH;
   }
   *results_for_openscrape = "";
   while (place_in_format < format.GetLength() && place_in_text < text.GetLength()) {
-		// handnumber
-		if (format.Mid(place_in_format,2) == "^h") {
-			place_in_format+=2;
-			token = "";
-			while (place_in_text < text.GetLength()
-				  && (isdigit(text[place_in_text]) || (text[place_in_text] == '-'))) {
-				if (text[place_in_text] != '-') {
+                // handnumber
+                if (format.Mid(place_in_format,2) == "^h") {
+                        place_in_format+=2;
+                        token = "";
+                        while (place_in_text < text.GetLength()
+                                  && (isdigit(text[place_in_text]) || (text[place_in_text] == '-'))) {
+                                if (text[place_in_text] != '-') {
           token += text[place_in_text];
         }
-				place_in_text+=1;
-			}
-			assert (results_for_openscrape != NULL);
-			results_for_openscrape->Append("^h (handnumber)\t= " + token + "\r\n");
-      if (handnumber!=NULL && *handnumber!="")	{
-			  *handnumber = token.GetString(); 
-			}
-		}
-		// dummy int
-		else if (format.Mid(place_in_format,2) == "^d") {
-			place_in_format+=2;
-			token = "";
+                                place_in_text+=1;
+                        }
+                        assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("^h (handnumber)\t= " + token + "\r\n");
+      if (handnumber!=NULL && *handnumber!="")  {
+                          *handnumber = token.GetString();
+                        }
+                }
+                // dummy int
+                else if (format.Mid(place_in_format,2) == "^d") {
+                        place_in_format+=2;
+                        token = "";
       while (place_in_text<text.GetLength()
-			  	&& (CString(text[place_in_text]).FindOneOf("$0123456789,¢km")))	{
-				token += (text[place_in_text]);
-				place_in_text++;
-			}
-			assert (results_for_openscrape != NULL);
-			results_for_openscrape->Append("^d (dummy int)\t= " + token + "\r\n");
-		}
+                                && (CString(text[place_in_text]).FindOneOf("$0123456789,¢km"))) {
+                                token += (text[place_in_text]);
+                                place_in_text++;
+                        }
+                        assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("^d (dummy int)\t= " + token + "\r\n");
+                }
     // dummy float
-		else if (format.Mid(place_in_format,2) == "^f") {
-			place_in_format+=2;
-			token = "";
-      while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())	{
-				token += text[place_in_text];
-				place_in_text++;
-			}
+                else if (format.Mid(place_in_format,2) == "^f") {
+                        place_in_format+=2;
+                        token = "";
+      while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength()) {
+                                token += text[place_in_text];
+                                place_in_text++;
+                        }
       assert (results_for_openscrape != NULL);
-			results_for_openscrape->Append("^f (dummy float)\t= " + token + "\r\n");
-		}
+                        results_for_openscrape->Append("^f (dummy float)\t= " + token + "\r\n");
+                }
     // numbers
-		else if (format.Mid(place_in_format,2) == "^s" ||
-				 format.Mid(place_in_format,2) == "^b" ||
-				 format.Mid(place_in_format,2) == "^B" ||
-				 format.Mid(place_in_format,2) == "^a" ||
-         format.Mid(place_in_format,2) == "^y" ||
-				 format.Mid(place_in_format,2) == "^v" ||
-				 format.Mid(place_in_format,2) == "^V") {
-			number_type = format.Mid(place_in_format,2);
-			place_in_format+=2;
-			token = "";
-      while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength())	{
-				token += text[place_in_text];
-				place_in_text++;
-			}
+                else if (format.Mid(place_in_format,2) == "^s" ||
+                                 format.Mid(place_in_format,2) == "^b" ||
+                                 format.Mid(place_in_format,2) == "^B" ||
+                                 format.Mid(place_in_format,2) == "^a" ||
+                                 format.Mid(place_in_format,2) == "^y" ||
+                                 format.Mid(place_in_format,2) == "^v" ||
+                                 format.Mid(place_in_format,2) == "^V") {
+                        number_type = format.Mid(place_in_format,2);
+                        place_in_format+=2;
+                        token = "";
+      while (CString(text[place_in_text]).FindOneOf("$0123456789,.¢ckm")!=-1 && place_in_text<text.GetLength()) {
+                                token += text[place_in_text];
+                                place_in_text++;
+                        }
       number = StringToMoney(token);
-			temp = Number2CString(number);
+                        temp = Number2CString(number);
       if (number_type == "^s") {
-				assert (results_for_openscrape != NULL);
-				results_for_openscrape->Append("^s (sblind)\t= " + temp + "\r\n");
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^s (sblind)\t= " + temp + "\r\n");
         if (sblind!=NULL && *sblind==k_undefined) {
-					*sblind = number; 
-				}
-			}	else if (number_type == "^b") {
-				assert (results_for_openscrape != NULL);	
-				results_for_openscrape->Append("^b (bblind)\t= " + temp + "\r\n");
+                                        *sblind = number;
+                                }
+                        }       else if (number_type == "^b") {
+                                assert (results_for_openscrape != NULL);        
+                                results_for_openscrape->Append("^b (bblind)\t= " + temp + "\r\n");
         if (bblind!=NULL && *bblind==k_undefined) {
-					*bblind = number; 
-				}
-			}	else if (number_type == "^B")	{
-				assert (results_for_openscrape != NULL);  
-				results_for_openscrape->Append("^B (bbet)\t= " + temp + "\r\n");
+                                        *bblind = number;
+                                }
+                        }       else if (number_type == "^B")   {
+                                assert (results_for_openscrape != NULL);  
+                                results_for_openscrape->Append("^B (bbet)\t= " + temp + "\r\n");
         if (bbet!=NULL && *bbet==k_undefined) {
-					*bbet = number; 
-				}
-			}	else if (number_type == "^a")	{
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^a (ante)\t= " + temp + "\r\n");
+                                        *bbet = number;
+                                }
+                        }       else if (number_type == "^a")   {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^a (ante)\t= " + temp + "\r\n");
         if (ante!=NULL && *ante==k_undefined) {
-					*ante = number; 
-				}
-			}	else if (number_type == "^v")	{
-				assert (results_for_openscrape != NULL);
-				results_for_openscrape->Append("^v (sb_bb)\t= " + temp + "\r\n");
-				if (sb_bb!=NULL && *sb_bb==k_undefined) {
-					*sb_bb = number; 
-				}
-			}	else if (number_type == "^V")	{
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^V (bb_BB)\t= " + temp + "\r\n");
+                                        *ante = number;
+                                }
+                        }       else if (number_type == "^v")   {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^v (sb_bb)\t= " + temp + "\r\n");
+                                if (sb_bb!=NULL && *sb_bb==k_undefined) {
+                                        *sb_bb = number;
+                                }
+                        }       else if (number_type == "^V")   {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^V (bb_BB)\t= " + temp + "\r\n");
         if (bb_BB!=NULL && *bb_BB==k_undefined) {
-					*bb_BB = number; 
-				}
+                                        *bb_BB = number;
+                                }
       }
-			else if (number_type == "^y") {
-				assert (results_for_openscrape != NULL);	
-				results_for_openscrape->Append("^y (buyin)\t= " + temp + "\r\n");
+                        else if (number_type == "^y") {
+                                assert (results_for_openscrape != NULL);        
+                                results_for_openscrape->Append("^y (buyin)\t= " + temp + "\r\n");
         if (buyin!=NULL && *buyin==k_undefined) {
-					*buyin = number; 
-				}
+                                        *buyin = number;
+                                }
       }
-		}
-		// Skip all chars up to string following the ^*
-		else if (format.Mid(place_in_format,2) == "^*") {
-			place_in_format+=2;
-			skip_str = "";
-			token = "";
-			// Get the string that we want to match up to
-			while (format[place_in_format] != '^' && place_in_format < format.GetLength()) {
-				skip_str += format[place_in_format];
-				place_in_format+=1;
-			}
-			while (text.Mid(place_in_text, skip_str.GetLength()) != skip_str &&
-				   place_in_text < text.GetLength()) {
-   			token += text[place_in_text];
-				place_in_text+=1;
-			}
-			if (text.Mid(place_in_text, skip_str.GetLength()) == skip_str) {
-   			token.Append(text.Mid(place_in_text, skip_str.GetLength()));
-				place_in_text += skip_str.GetLength();
-			}
-			assert (results_for_openscrape != NULL);
-			results_for_openscrape->Append("^* (skip string)\t= '" + token + "'\r\n");
-		}
-		// Roman numerals
-		else if (format.Mid(place_in_format,2) == "^R") {
-			place_in_format+=2;
-			token = "";
-			// Get roman numeral
-			while ((tolower(text[place_in_text]) == 'i' 
-				  || tolower(text[place_in_text]) == 'v' 
-				  || tolower(text[place_in_text]) == 'x' 
-				  || tolower(text[place_in_text]) == 'l' 
-				  || tolower(text[place_in_text]) == 'c') 
-				  && place_in_text < text.GetLength()) {
-				token += (unsigned char)tolower(text[place_in_text]);
-				place_in_text+=1;
-			}
-      // This is commented out for now, because, strangely, WH does not provide a 
-			// place to report this value to the user
-			// convert roman numeral to number
-			//if (token == "i") { 
-			//	level = 1;
-			//}
-			//if (token == "ii") { 
-			//	level = 2;
-			//}
-			assert (results_for_openscrape != NULL);
-			results_for_openscrape->Append("^R (roman numeral)\t= " + token + "\r\n");
-		}
-		// Limit, no-limit, pot limit identifier
-		else if (format.Mid(place_in_format,2) == "^L") {
-			place_in_format+=2;
-			if (text.Mid(place_in_text,8).MakeLower() == "no limit" 
+                }
+                // Skip all chars up to string following the ^*
+                else if (format.Mid(place_in_format,2) == "^*") {
+                        place_in_format+=2;
+                        skip_str = "";
+                        token = "";
+                        // Get the string that we want to match up to
+                        while (format[place_in_format] != '^' && place_in_format < format.GetLength()) {
+                                skip_str += format[place_in_format];
+                                place_in_format+=1;
+                        }
+                        while (text.Mid(place_in_text, skip_str.GetLength()) != skip_str &&
+                                   place_in_text < text.GetLength()) {
+                        token += text[place_in_text];
+                                place_in_text+=1;
+                        }
+                        if (text.Mid(place_in_text, skip_str.GetLength()) == skip_str) {
+                        token.Append(text.Mid(place_in_text, skip_str.GetLength()));
+                                place_in_text += skip_str.GetLength();
+                        }
+                        assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("^* (skip string)\t= '" + token + "'\r\n");
+                }
+                // Roman numerals
+                else if (format.Mid(place_in_format,2) == "^R") {
+                        place_in_format+=2;
+                        token = "";
+                        // Get roman numeral
+                        while ((tolower(text[place_in_text]) == 'i'
+                                  || tolower(text[place_in_text]) == 'v'
+                                  || tolower(text[place_in_text]) == 'x'
+                                  || tolower(text[place_in_text]) == 'l'
+                                  || tolower(text[place_in_text]) == 'c')
+                                  && place_in_text < text.GetLength()) {
+                                token += (unsigned char)tolower(text[place_in_text]);
+                                place_in_text+=1;
+                        }
+      // This is commented out for now, because, strangely, WH does not provide a
+                        // place to report this value to the user
+                        // convert roman numeral to number
+                        //if (token == "i") {
+                        //      level = 1;
+                        //}
+                        //if (token == "ii") {
+                        //      level = 2;
+                        //}
+                        assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("^R (roman numeral)\t= " + token + "\r\n");
+                }
+                // Limit, no-limit, pot limit identifier
+                else if (format.Mid(place_in_format,2) == "^L") {
+                        place_in_format+=2;
+                        if (text.Mid(place_in_text,8).MakeLower() == "no limit"
           || text.Mid(place_in_text,8).MakeLower() == "no-limit") {
-				assert (results_for_openscrape != NULL);
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_NL; 
-				}
+                                        *limit = k_gametype_NL;
+                                }
         place_in_text += 8;
-			}	else if (text.Mid(place_in_text,7).MakeLower() == "nolimit") {
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,7) + "\r\n");
+                        }       else if (text.Mid(place_in_text,7).MakeLower() == "nolimit") {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,7) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_NL; 
-				}
+                                        *limit = k_gametype_NL;
+                                }
         place_in_text += 7;
-			}	else if (text.Mid(place_in_text,2).MakeLower() == "nl") {
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+                        }       else if (text.Mid(place_in_text,2).MakeLower() == "nl") {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_NL; 
-				}
+                                        *limit = k_gametype_NL;
+                                }
         place_in_text += 2;
-			}	else if (text.Mid(place_in_text,9).MakeLower() == "pot limit" 
+                        }       else if (text.Mid(place_in_text,9).MakeLower() == "pot limit"
           || text.Mid(place_in_text,9).MakeLower() == "pot-limit") {
-				assert (results_for_openscrape != NULL);  
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,9) + "\r\n");
+                                assert (results_for_openscrape != NULL);  
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,9) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_PL; 
-				}
+                                        *limit = k_gametype_PL;
+                                }
         place_in_text += 9;
-			}	else if (text.Mid(place_in_text,8).MakeLower() == "potlimit") {
-				assert (results_for_openscrape != NULL);  
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
+                        }       else if (text.Mid(place_in_text,8).MakeLower() == "potlimit") {
+                                assert (results_for_openscrape != NULL);  
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_PL; 
-				}
+                                        *limit = k_gametype_PL;
+                                }
         place_in_text += 8;
-			}	else if (text.Mid(place_in_text,2).MakeLower() == "pl") {
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+                        }       else if (text.Mid(place_in_text,2).MakeLower() == "pl") {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_PL; 
-				}
-				place_in_text += 2;
-			}	else if (text.Mid(place_in_text,11).MakeLower() == "fixed limit" 
+                                        *limit = k_gametype_PL;
+                                }
+                                place_in_text += 2;
+                        }       else if (text.Mid(place_in_text,11).MakeLower() == "fixed limit"
           || text.Mid(place_in_text,11).MakeLower() == "fixed-limit") {
-				assert (results_for_openscrape != NULL);  
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,11) + "\r\n");
+                                assert (results_for_openscrape != NULL);  
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,11) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_FL; 
-				}
+                                        *limit = k_gametype_FL;
+                                }
         place_in_text += 11;
-			}	else if (text.Mid(place_in_text,10).MakeLower() == "fixedlimit") {
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,10) + "\r\n");
+                        }       else if (text.Mid(place_in_text,10).MakeLower() == "fixedlimit") {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,10) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_FL; 
-				}
-				place_in_text += 10;
-			}	else if (text.Mid(place_in_text,2).MakeLower() == "fl") {
-				assert (results_for_openscrape != NULL);  
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
+                                        *limit = k_gametype_FL;
+                                }
+                                place_in_text += 10;
+                        }       else if (text.Mid(place_in_text,2).MakeLower() == "fl") {
+                                assert (results_for_openscrape != NULL);  
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_FL; 
-				}
+                                        *limit = k_gametype_FL;
+                                }
         place_in_text += 2;
-			}	else if (text.Mid(place_in_text,5).MakeLower() == "limit") {
-				assert (results_for_openscrape != NULL); 
-				results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,5) + "\r\n");
+                        }       else if (text.Mid(place_in_text,5).MakeLower() == "limit") {
+                                assert (results_for_openscrape != NULL);
+                                results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,5) + "\r\n");
         if (limit!=NULL && *limit==k_undefined) {
-					*limit = k_gametype_FL; 
-				}
+                                        *limit = k_gametype_FL;
+                                }
         place_in_text += 5;
-			}
-		}
-		// All other exact matches
-		else if (text[place_in_text] == format[place_in_format]) {
-			assert (results_for_openscrape != NULL); 
-			results_for_openscrape->Append("exact match\t= '");
+                        }
+                }
+                // All other exact matches
+                else if (text[place_in_text] == format[place_in_format]) {
+                        assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("exact match\t= '");
       while (text[place_in_text] == format[place_in_format] && place_in_text<text.GetLength() && place_in_format<format.GetLength()) {
-				assert (results_for_openscrape != NULL);
-				*results_for_openscrape += (text[place_in_text]);
+                                assert (results_for_openscrape != NULL);
+                                *results_for_openscrape += (text[place_in_text]);
         place_in_text+=1;
-				place_in_format+=1;
-			}
-      assert (results_for_openscrape != NULL); 
-			results_for_openscrape->Append("'\r\n");
-		}
+                                place_in_format+=1;
+                        }
+      assert (results_for_openscrape != NULL);
+                        results_for_openscrape->Append("'\r\n");
+                }
     // Match failed, exit loop
-		else {
-			place_in_format = format.GetLength()+1;
-			place_in_text = text.GetLength()+1;
-		}
-	}
+                else {
+                        place_in_format = format.GetLength()+1;
+                        place_in_text = text.GetLength()+1;
+                }
+        }
 #ifdef OPENHOLDEM_PROGRAM
-    write_log(preferences.debug_scraper(), 
+    write_log(preferences.debug_scraper(),
       "[CTransform] parsed title string\n");
-    write_log(preferences.debug_scraper(), 
-      "[CTransform] text = %s, format = %s\n", 
+    write_log(preferences.debug_scraper(),
+      "[CTransform] text = %s, format = %s\n",
       text, format);
-    write_log(preferences.debug_scraper(), 
+    write_log(preferences.debug_scraper(),
       "[CTransform] handnumber = %s, sblind = %f, bblind = %f\n",
       *handnumber,  *sblind, *bblind);
-    write_log(preferences.debug_scraper(), 
+    write_log(preferences.debug_scraper(),
       "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
       *bbet, *ante,  *limit, *sb_bb, *bb_BB);
-    write_log(preferences.debug_scraper(), 
+    write_log(preferences.debug_scraper(),
       "[CTransform] buyin = %d\n",
       *buyin);
 #endif

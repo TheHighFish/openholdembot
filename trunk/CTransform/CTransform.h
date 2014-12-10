@@ -36,41 +36,42 @@
 ///////////////////////////////
 // classes
 ///////////////////////////////
-class CTransform {
+class CTransform
+{
  public:
-	// public functions
-	CTransform();
-	~CTransform();
+  CTransform();
+  ~CTransform();
  public:
-	int DoTransform(RMapCI region, 
-                  const HDC hdc, CString *text, 
-						      CString *separation=NULL, 
+  int DoTransform(RMapCI region,
+                  const HDC hdc, 
+                  CString *text,
+                  CString *separation=NULL,
                   COLORREF *cr_avg=0);
-	int TTypeTransform(RMapCI region, 
-                     const HDC hdc, 
-                     CString *text, 
-							       CString *separation, 
-                     bool background[], 
-                     bool (*character)[MAX_CHAR_HEIGHT]);
+  int TTypeTransform(RMapCI region,
+              const HDC hdc,
+              CString *text,
+              CString *separation,
+              bool background[],
+              bool (*character)[MAX_CHAR_HEIGHT]);
   // For OpenHoldem 7.3.1 we removed the superfluous parameters
-  // bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL, 
-  // bool *found_bbet=NULL, bool *found_ante=NULL, bool *found_limit=NULL, 
+  // bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL,
+  // bool *found_bbet=NULL, bool *found_ante=NULL, bool *found_limit=NULL,
   // bool *found_sb_bb=NULL, bool *found_bb_BB=NULL
   // to get a cleanner interface and cleaner code.
   // The other in-out-parameters must be initialized with k_undefined now
   // (or with the empty string). This value represents the same information.
-	void CTransform::ParseStringBSL(const CString text, 
-                  const CString format, 
-	                CString *results_for_openscrape = NULL, 
-                  CString *handnumber = NULL, 
-                  double *sblind = NULL, 
-                  double *bblind = NULL, 
-                  double *bbet   = NULL, 
-		              double *ante   = NULL, 
-                  int    *limit  = NULL, 
-                  double *sb_bb  = NULL, 
-                  double *bb_BB  = NULL, 
-                  double *buyin  = NULL);
+  void CTransform::ParseStringBSL(const CString text,
+                                  const CString format,
+                                  CString *results_for_openscrape = NULL,
+                                  CString *handnumber = NULL,
+                                  double *sblind = NULL,
+                                  double *bblind = NULL,
+                                  double *bbet   = NULL,
+                                  double *ante   = NULL,
+                                  int    *limit  = NULL,
+                                  double *sb_bb  = NULL,
+                                  double *bb_BB  = NULL,
+                                  double *buyin  = NULL);
  public:
   bool IsInARGBColorCube(const int center_a, const int center_r, const int center_g, const int center_b, 
 								 const int radius, const int pix_a, const int pix_r, const int pix_g, const int pix_b);
