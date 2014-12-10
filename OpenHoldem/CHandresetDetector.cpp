@@ -33,14 +33,13 @@ CHandresetDetector *p_handreset_detector = NULL;
 const int kNumberOfHandresetMethods = 9;
 
 CHandresetDetector::CHandresetDetector() {
-  //!!!!
-	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
 	playercards[0] = CARD_UNDEFINED;
 	playercards[1] = CARD_UNDEFINED;
 	dealerchair = k_undefined;
 	handnumber = "";
 	_is_handreset_on_this_heartbeat = false;
-  _hands_played = 0; //!!! Should get reinitialiyed on connection
+  _hands_played = 0; //!! Should get reinitialiyed on connection
 }
 
 CHandresetDetector::~CHandresetDetector() {

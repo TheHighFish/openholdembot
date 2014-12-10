@@ -17,6 +17,7 @@
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
 const int kNumberOfBlindLevels    = 187;
+const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
 const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
@@ -217,32 +218,71 @@ CBlindLevels::CBlindLevels () {
 CBlindLevels::~CBlindLevels () {
 }
 
-bool CBlindLevels::BlindsMatchBlindLevel(const int level,
-                                         const double sblind, 
-                                         const double bblind, 
-                                         const double bbet) {
+bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
+    const int level,
+    const double sblind, 
+    const double bblind, 
+    const double bbet) {
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
   return true;
 }
 
+bool CBlindLevels::BlindsMatchBlindLevelPartially(
+    const int level,
+    const double sblind, 
+    const double bblind, 
+    const double bbet) {
+  if ((sblind > 0) && (sblind == kBlindLevels[level][0])) return true;                                      
+  if ((bblind > 0) && (bblind == kBlindLevels[level][1])) return true;  
+  if ((bbet   > 0) && (bbet   == kBlindLevels[level][2])) return true;  
+  return false;
+}
+
 // Input:  either known level or kUndefined (-1) or kUndefinedZero
 // Output: guessed levels
 // Return: true if success, otherwise false
-bool CBlindLevels::BestMatchingBlindLeve(double *sblind, double *bblind, double *bbet) {
+bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double *bbet) {
   // Complete fail first: nothing to guess
   if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0)) return false;
   // Guessing...
   for (int i=0; i<kNumberOfBlindLevels; ++i) {
-    if (BlindsMatchBlindLevel(i, *sblind, *bblind, *bbet)) {
+    if (BlindsMatchBlindLevelPerfectly(i, *sblind, *bblind, *bbet)) {
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
       return true; 
     }
   }
-  // !!!!! Partial match
+  for (int i=0; i<kNumberOfBlindLevels; ++i) {
+    if (BlindsMatchBlindLevelPartially(i, *sblind, *bblind, *bbet)) {
+      *sblind = kBlindLevels[i][0];
+      *bblind = kBlindLevels[i][1];
+      *bbet   = kBlindLevels[i][2];
+      return true; 
+    }
+  }
   // Nothing found
+  // Keep everything as is.
+  // Then another module can take these values and guess
   return false;
+}
+
+// Especially used for guessing the small-blind,
+// which usually is 50% or sometimes 40% of the big-blind
+double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
+  // Highest bblind first
+  if ((guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
+      && (guessed_blind <= kBlindLevels[kLastBlindLevel][1])) {
+    return kBlindLevels[kLastBlindLevel][1];
+  }
+  // Then all small blinds downwards
+  for (int i=kLastBlindLevel; i>=0; ++i) {
+    if (guessed_blind <= kBlindLevels[i][0]) {
+      return kBlindLevels[i][0];
+    }
+  }
+  // Failure (bad input): return smallest blinds
+  return kBlindLevels[0][0];
 }
