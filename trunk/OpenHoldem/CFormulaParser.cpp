@@ -100,7 +100,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {
     _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
-    CString function_header = _formula_file_splitter.GetFunctionHeader(); //ML_!!!!!
+    CString function_header = _formula_file_splitter.GetFunctionHeader(); 
     if (function_header.GetLength() < 2) {
 	  write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Empty function received. Parse finished.\n");
@@ -305,8 +305,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
       "Did you forget \"f$\"?\n");
     return;
   }
-  CFunction *p_new_function = new CFunction(&_function_name, //ML_!!!!!
-	&function_text, _formula_file_splitter.starting_line_of_current_function());
+  CFunction *p_new_function = new CFunction(&_function_name, 
+	  &function_text, _formula_file_splitter.starting_line_of_current_function());
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence

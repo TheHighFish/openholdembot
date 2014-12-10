@@ -191,74 +191,24 @@ void CSymbolEngineTableLimits::AutoLockBlinds()
 {
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] AutoLockBlinds()\n");
 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] blinds_locked_for_current_hand: %d\n", blinds_locked_for_current_hand);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
-	if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
+	//!!!write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ReasonableBlindsForCurrentHand(): %d\n", ReasonableBlindsForCurrentHand());
+	//!!!!!if (!blinds_locked_for_current_hand && ReasonableBlindsForCurrentHand())
 	{
 		AutoLockBlindsForCurrentHand();
 		AutoLockBlindsForCashgamesAfterNHands();
 	}
 }
 
-void CSymbolEngineTableLimits::CalcTableLimits()
-{ return; } /*!!!!
-	// This is basically the old function CSymbols::CalcStakes()
-	// with some extension at the end to auto-lock the blinds,
-	// if the values are reasonable.
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits()\n");
-	if (!IsCalculationNeccessary())
-	{
-		return;
-	}
-	SetSmallBlind(0);
-	SetBigBlind(0);
-	SetBigBet(0);
-	SetAnte(0);
-
-	// Save the parts we scraped successfully
-	if (p_scraper->s_limit_info()->sblind > 0)
-		SetSmallBlind(p_scraper->s_limit_info()->sblind);								// sblind
-	if (p_scraper->s_limit_info()->bblind > 0)
-		SetBigBlind(p_scraper->s_limit_info()->bblind);									// bblind
-	if (p_scraper->s_limit_info()->ante > 0)
-		SetAnte(p_scraper->s_limit_info()->ante);										// ante
-	if (p_scraper->s_limit_info()->limit > 0)
-		SetGametype(p_scraper->s_limit_info()->limit);									// lim
-	if (p_scraper->s_limit_info()->bbet > 0)
-		SetBigBet(p_scraper->s_limit_info()->bbet);
-
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] input from scraper: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] input from scraper: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] input from scraper: big bet:     %f\n", tablelimit_unreliable_input.bbet);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] input from scraper: gametype:    %d\n", _gametype);             
-	// Figure out bb/sb based on game type
-	if (gametype() == k_gametype_NL || gametype() == k_gametype_PL)
-	{
-		CalcTableLimits_NL_PL();
-	}
-	else if (gametype() == k_gametype_FL || gametype() == k_gametype_unknown)
-	{
-		CalcTableLimits_FL_AndUnknownGametype();
-	}
-
+void CSymbolEngineTableLimits::CalcTableLimits() { 
+ 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits()\n");
+	//!!!!!if (!IsCalculationNeccessary())	return;
 	// if we still do not have blinds, then infer them from the posted bets
-	if (p_betround_calculator->betround() == k_betround_preflop && (tablelimit_unreliable_input.sblind==0 || tablelimit_unreliable_input.bblind==0))
-	{
-		SearchTableForSbAndBbValue();			
-	}
 
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] calculated result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] calculated result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] calculated result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
-	AdjustForReasonableness();
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] adjusted result: small blind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] adjusted result: big blind:   %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] adjusted result: big bet:     %f\n", tablelimit_unreliable_input.bbet);
-
-	AcceptNewValuesIfGood();
+	//!!!AcceptNewValuesIfGood();
 	AutoLockBlinds();
 	// Calc miminum betsizes for every streeet (after! we have potentially locked the blinds)
-	CalcBetsizesForEveryStreet();
-}*/
+	//!!!!!CalcBetsizesForEveryStreet();
+}
 /*
 void CSymbolEngineTableLimits::AcceptNewValuesIfGood()
 {
@@ -283,15 +233,15 @@ STableLimit CSymbolEngineTableLimits::BestTableLimitsToBeUsed() {
 }
 
 double CSymbolEngineTableLimits::sblind() {
-	return 7;//BestTableLimitsToBeUsed().sblind;
+	return BestTableLimitsToBeUsed().sblind;
 }
 
 double CSymbolEngineTableLimits::bblind(){
-	return 14;//!!!!!BestTableLimitsToBeUsed().bblind;
+	return BestTableLimitsToBeUsed().bblind;
 }
 
 double CSymbolEngineTableLimits::bigbet(){
-	return 28;///BestTableLimitsToBeUsed().bbet;
+	return BestTableLimitsToBeUsed().bbet;
 }
 
 double CSymbolEngineTableLimits::ante() {
@@ -390,34 +340,3 @@ CString CSymbolEngineTableLimits::SymbolsProvided() {
 
 
 
-//!!!!!
-bool CSymbolEngineTableLimits::ReasonableBlindsForCurrentHand()
-{ return true; }//!!! 
-/*
-	// The blinds are "reasonable" after the calculation (with non-zero-input),
-	// so we check only for non-zero blinds.
-	// We do also wait until it is our turn, as here the frames are more stable
-	// and our turn is the decisive point of time.
-	// (We don't wait for isfinalanswer, as that seems to be calculated afterwards;
-	// at least it takes dll$iswait into consideration, which is calculated afterwards.)
-	// (ismyturn doesn't work either)
-	// Pros/cons: more reliability, but no auto-locking before it is our turn.
-	// Affects maybe DLL- and Perl-people negative at the beginning of the first hands.
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ismyturn: %d\n", p_scraper_access->IsMyTurn());
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] sblind: %f\n", tablelimit_unreliable_input.sblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] bblind: %f\n", tablelimit_unreliable_input.bblind);
-	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] bbet: %f\n", tablelimit_unreliable_input.bbet); 
-	if (/*p_symbol_engine_autoplayer->ismyturn() && * / (tablelimit_unreliable_input.sblind >= 0.01) 
-		&& (tablelimit_unreliable_input.bblind >= tablelimit_unreliable_input.sblind) 
-		&& (tablelimit_unreliable_input.bbet   >= tablelimit_unreliable_input.bblind))
-	{
-		write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ReasonableBlindsForCurrentHand(): true\n");
-		return true;
-	}
-	else
-	{
-		write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] ReasonableBlindsForCurrentHand(): false\n");
-		return false;
-	}
-}
-*/ 

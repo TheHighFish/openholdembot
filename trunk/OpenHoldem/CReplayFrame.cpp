@@ -36,7 +36,7 @@
 //	  - some space for other processes	
 const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;  
 
-// We alwazs start with 0 amd overwrite existing frames.
+// We always start with 0 amd overwrite existing frames.
 // That's more simple and we usually are not interested
 // in old frames of bygone sessions.
 int CReplayFrame::_next_replay_frame = 0;

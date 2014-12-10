@@ -175,6 +175,12 @@
     <Filter Include="Header Files\GUI\Other Dialogs">
       <UniqueIdentifier>{b630c49d-cbec-4435-a417-723d6cffc4d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Symbols\Symbol_Engines\Blinds">
+      <UniqueIdentifier>{7d17f6d3-a645-48a1-9c8a-5a4ecaf23be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Symbols\Symbol_Engines\Blinds">
+      <UniqueIdentifier>{31fd34f7-e0a3-4d19-a8fd-8895f1bda00e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -450,9 +456,6 @@
     <ClCompile Include="CSymbolEngineReplayFrameController.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
-    <ClCompile Include="CSymbolEngineTableLimits.cpp">
-      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolEngineTime.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
@@ -672,11 +675,14 @@
     <ClCompile Include="MemoryLogging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CBlindGuesser.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CSymbolEngineTableLimits.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClCompile>
     <ClCompile Include="CBlindLevels.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Symbols\Symbol_Engines\Blinds</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlindGuesser.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1132,9 +1138,6 @@
     <ClInclude Include="CSymbolEngineReplayFrameController.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
-    <ClInclude Include="CSymbolEngineTableLimits.h">
-      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
-    </ClInclude>
     <ClInclude Include="CSymbolEngineTime.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
@@ -1468,11 +1471,14 @@
     <ClInclude Include="MemoryLogging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CBlindGuesser.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CSymbolEngineTableLimits.h">
+      <Filter>Header Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClInclude>
     <ClInclude Include="CBlindLevels.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Symbols\Symbol_Engines\Blinds</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlindGuesser.h">
+      <Filter>Header Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
