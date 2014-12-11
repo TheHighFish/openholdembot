@@ -1,0 +1,229 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+OpenHoldem Preferences - 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Poker Tracker
+\end_layout
+
+\end_inset
+
+Poker Tracker
+\end_layout
+
+\begin_layout Standard
+Poker Tracker preferences control how OpenHoldem interacts with a Poker
+ Tracker database.
+ See the {PokerTracker} section for more information on using Poker Tracker
+ with OpenHoldem.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Disable all Poker Tracker access
+\emph default
+: Checking this preference will completely disable all Poker Tracker functionali
+ty in OpenHoldem.
+ If you make no use of any Poker Tracker symbols, then it is safe to check
+ this box.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Poker Tracker version
+\emph default
+: OpenHoldem supports interacting with both 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PT2
+\end_layout
+
+\end_inset
+
+Poker Tracker v2 and 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PT3
+\end_layout
+
+\end_inset
+
+Poker Tracker v3 databases.
+ This setting will instruct OpenHoldem as to which flavor of Poker Tracker
+ you are using.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Host Name / IP Address, Port, Username, Password, DB Name
+\emph default
+: These are the parameters that you entered when you setup your Poker Tracker
+ 
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+PostgreSQL
+\end_layout
+
+\end_inset
+
+PostgreSQL database.
+ Enter them here so OpenHoldem knows how to connect to your database.
+ If you do not understand what these settings mean, please refer to the
+ Poker Tracker homepage (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.pokertracker.com
+\end_layout
+
+\end_inset
+
+) for more information.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Update delay
+\emph default
+: OpenHoldem maintains an internal cache of Poker Tracker statistics that
+ it periodically queries from the Poker Tracker database.
+ This setting determines the frequency that OpenHoldem will use (in seconds)
+ to consider re-querying those statistics.
+ This setting is akin to the “Scrape Delay” setting in the Scraper preferences
+ for the screen scraper engine.
+ This parameter does not need to be a particularly small value, as the informati
+on in Poker Tracker does not change that often itself.
+ Note: Just because this delay has expired, and the Poker Tracker query
+ engine “wakes up”, does not guarantee that every statistic will be updated.
+ Rather, this works in conjunction with the “Cache refresh” parameter below
+ to decide if a statistic needs updating or not.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Cache refresh
+\emph default
+: After the Poker Tracker query engine has been “woken up”, because the
+ delay specified in the “Update delay” parameter has expired, the engine
+ will scan through each of its statistics for every chair and determine
+ if that statistic needs updating or not.
+ If the duration between now and the last time that a given statistic was
+ retrieved from Poker Tracker is greater than this parameter (in seconds),
+ then the engine considers the statistic to be stale and will query Poker
+ Tracker for a new value.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Test
+\emph default
+: This button will test the connection to the Poker Tracker database as
+ specified by the above parameters and will report success or failure codes.
+ Help with connecting to PostgreSQL databases can be found here: http://www.poker
+tracker.com, or here: http://www.postgresql.org 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/PokerTracker.PNG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Preferences: PokerTracker
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

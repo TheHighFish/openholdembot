@@ -1,0 +1,29 @@
+# comment
+# bam 
+# bu
+
+[table]
+sblind = 0.05
+bblind = 0.10
+bbet = 2
+ante = 0
+gtype = FL
+network = Everest
+tournament = True
+balances = Ginger 1500, Bot 500
+
+[preflop]
+Hand = 5h, Tc
+Actions = Saxum S, Erasmus B, Anders F, Ginger R, Bot can FCR do C, Crusoe F, OgoPogo F, Hari F, Sanja F, Hooke F, Saxum F, Erasmus F
+
+[flop]
+Cards = 4d, 5s, 6c
+Actions = Ginger K, Bot can FKR do R, Ginger R, Bot can FCR do R, Ginger C
+
+[turn]
+Card = 4s
+Actions = Ginger K, Bot can FKR do R, Ginger R, Bot can FCR do C
+
+[river]
+Card = 8s
+Actions = Ginger R, Bot can FCR do C
