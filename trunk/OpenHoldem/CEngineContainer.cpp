@@ -111,15 +111,15 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineTableLimits
   p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
   AddSymbolEngine(p_symbol_engine_tablelimits);
-  // CSymbolEngineReplayFrameController
-  p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
-  AddSymbolEngine(p_symbol_engine_replayframe_controller);
   // CSymbolEngineTime
   p_symbol_engine_time = new CSymbolEngineTime();
   AddSymbolEngine(p_symbol_engine_time);
   // CSymbolEngineAutoplayer
   p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
   AddSymbolEngine(p_symbol_engine_autoplayer);
+  // CSymbolEngineReplayFrameController
+  p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
+  AddSymbolEngine(p_symbol_engine_replayframe_controller);
   // CSymbolEngineRandom
   p_symbol_engine_random = new CSymbolEngineRandom();
   AddSymbolEngine(p_symbol_engine_random);

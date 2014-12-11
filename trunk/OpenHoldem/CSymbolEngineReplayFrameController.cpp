@@ -17,6 +17,7 @@
 #include "CSymbolEngineReplayFrameController.h"
 
 #include <assert.h>
+#include "CAutoPlayer.h"
 #include "CLazyScraper.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
@@ -31,6 +32,7 @@ CSymbolEngineReplayFrameController::CSymbolEngineReplayFrameController() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+  assert(p_symbol_engine_autoplayer != NULL);
 }
 
 CSymbolEngineReplayFrameController::~CSymbolEngineReplayFrameController() {
@@ -52,10 +54,13 @@ void CSymbolEngineReplayFrameController::ResetOnNewRound() {
 
 void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
 	// If it's my turn and we have enough stable frames
-  // then we will act and shoot a replay-frame on tyhis heartbeat.
+  // then we will usually act and shoot a replay-frame on this heartbeat.
+  // Shooting exactly once in case of no action is ensured by
+  // "p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()"
 	if ((preferences.replay_record() == kShootReplyFramesOnMyTurn)			
 		  && p_symbol_engine_autoplayer->ismyturn() 
-		  && p_stableframescounter->NumberOfStableFrames() >= preferences.frame_delay()) {
+      && p_autoplayer->autoplayer_engaged()
+		  && p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()) {
     write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on my turn and time to act)\n");
 		ShootReplayFrameIfNotYetDone();
 	}
