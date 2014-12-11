@@ -1,0 +1,6 @@
+; Perl_Callback.def : Declares the module parameters for the DLL.
+
+LIBRARY      "Perl_Callback"
+
+EXPORTS
+    ; Explicit exports can go here
