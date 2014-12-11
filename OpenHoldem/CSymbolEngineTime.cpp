@@ -24,7 +24,8 @@ CSymbolEngineTime::CSymbolEngineTime() {
   // we assure correct ordering by checking if they are initialized.
   //
   // This engine does not use any other engines.
-  }
+  InitOnStartup();
+}
 
 CSymbolEngineTime::~CSymbolEngineTime() {
 }
