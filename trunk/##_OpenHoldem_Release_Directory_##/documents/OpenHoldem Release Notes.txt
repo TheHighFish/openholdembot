@@ -1,3 +1,9 @@
+v7.3.1 2014-12-xx
+==================
+MAINTENANCE:
+- More improvements for the replay-frame-controller (on my turn)
+  [Moby]
+
 v7.3.1 2014-12-11
 ==================
 NEW STUFF:
