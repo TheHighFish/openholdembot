@@ -107,7 +107,7 @@ Doodle
 \noun default
  simply is a copyrighted business-secret of Shanky and giving away the miracle
  million-dollar-maker to every single one of your opponents would be no
- joy, wouldn't it?
+ joy, would it?
 \end_layout
 
 \begin_layout Section*
@@ -127,7 +127,7 @@ No Option Settings
 \end_layout
 
 \begin_layout Standard
-Standard Shanky-PPL supports option settings to configure their build-in-default
+Standard Shanky-PPL supports option settings to configure their built-in-default
  bot; at least that was the old way to do so, but nowadays most of these
  settings get overwritten by the profile and have no effect at all.
  As OpenPPL does not support a default bot anyaway these option settings
@@ -342,7 +342,7 @@ WHEN Stacksize < 2.5 AND
 
 \end_inset
 
-Or you could even use the new approximatelly-equal-operator:
+Or you could even use the new approximately-equal-operator:
 \begin_inset listings
 inline false
 status open
@@ -358,7 +358,7 @@ WHEN Stacksize ~~ 3 RaiseMax FORCE
 \end_layout
 
 \begin_layout Itemize
-Standard PPLs symbol NutFullHouseOrFourOfAKind use lower numbers for better
+Standard PPL's symbol NutFullHouseOrFourOfAKind uses lower numbers for better
  full houses or quads, but 0 for no full house at all.
  This is somewhat inconsistent and OpenPPL uses a high number (999) for
  that case.
@@ -369,9 +369,9 @@ Hand And Board Expressions
 \end_layout
 
 \begin_layout Standard
-OpenHoldems formula engine uses floating-point-numbers internally and there
+OpenHoldem's formula engine uses floating-point-numbers internally and there
  is no easy way to represent a board of cards as a single floating-point-number.
- There could be even various different board-expressions at the right side
+ There could even be various different board-expressions at the right side
  of an equality comparator that are all true.
 \end_layout
 
@@ -426,9 +426,9 @@ Cases Matter (Partially)
 
 \begin_layout Standard
 OpenHoldem is case-sensitive - contrary to standard PPL.
- So upper- and lower-cases matter.
- The rules for your OpenPPL-code are more user-friendly and less rigid.
- There are basically 3 cases:
+ Therefore the case used (upper and/or lower) matters.
+ The rules for your OpenPPL code are more user-friendly and less rigid.
+ Three areas where case matters:
 \end_layout
 
 \begin_layout Itemize
@@ -441,8 +441,8 @@ WHEN
 \end_inset
 
 , FORCE and operators like OR etc.
- For keywords 3 different spellings are allowed: all upper-cases, all lower-case
-s and reasonable mixes.
+ For keywords, 3 different format are allowed: all upper-case, all lower-case,
+ or a reasonable mix.
 \begin_inset listings
 inline false
 status open
@@ -464,12 +464,12 @@ when (Hand$AA) RaiseMax force
 
 \end_inset
 
-For better readability we recommend to use only upper-cases for keywords.
+For better readability we recommend to use only upper-case for keywords.
 \end_layout
 
 \begin_layout Itemize
 OpenHoldem symbols.
- Native OpenHoldem symbols are case-sensitive and always lower-cases.
+ Native OpenHoldem symbols are case-sensitive and always lower-case.
 \begin_inset listings
 inline false
 status open
@@ -493,7 +493,8 @@ However: you will probably use these symbols very rarely in your code.
 
 \begin_layout Itemize
 OpenPPL-symbols that are part of the library.
- They are case-sensitive OH-script-functions with mixed letters.
+ They are case-sensitive OH-script-functions with mixed upper and lower
+ case letters.
 \begin_inset listings
 inline false
 status open
@@ -691,8 +692,8 @@ Generates integer numbers in the range [0..99]
 \begin_layout Standard
 You probably won't need the OH-script symbols, but at least the library
  of OpenPPL-functions uses them internally, so they have to be there.
- For the first two cases OpenHoldems parser can detect if you took an identifier
- instead of an action and will warn you about that.
+ For the first two cases OpenHoldem's parser can detect if you took an identifie
+r instead of an action and will warn you about that.
  But at the moment you need to take care about the latter case.
 \end_layout
 
@@ -709,9 +710,9 @@ Set
 \end_layout
 
 \begin_layout Standard
-Long story short: Shanky-PPL is an easy, english-like language that is intuitive
+Long story short: Shanky-PPL is an easy, English-like language that is intuitive
  to use, but it contains some technical flaws.
- For example it can't be parsed with a one-token-look-ahead like all other
+ For example, it can't be parsed with a one-token-look-ahead like all other
  modern programming languages.
  This complicates the parser and especially the generation of good, helpful
  error-messages.
@@ -769,10 +770,10 @@ preflop
 \end_layout
 
 \begin_layout Standard
-A user-defined delay after an action does simply not fit to the concept
- of functions; that traditionally return only a single value.
- Besides of that: we believe that it is very clumsy to have thousands of
- lines with a fixed delay.
+A user-defined delay after an action simply does not fit the concept of
+ functions, that traditionally return only a single value.
+ Besides that: we believe that it is very clumsy to have thousands of lines
+ with a fixed delay.
  OpenHoldem natively supports a solution that is way better suited for this
  use-case: a f$delay-functions.
 \end_layout
@@ -780,7 +781,7 @@ A user-defined delay after an action does simply not fit to the concept
 \begin_layout Standard
 It requires only some (or some dozen) lines of code for perfect randomized
  delays, depending e.g.
- on board-textture, betting-actions, etc.
+ on board-texture, betting-actions, etc.
 \end_layout
 
 \begin_layout Standard

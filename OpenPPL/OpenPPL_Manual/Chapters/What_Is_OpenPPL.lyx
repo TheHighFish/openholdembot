@@ -88,7 +88,7 @@ PPL is an acronym for
  Poker Programming Language
 \emph default
 , a language to program poker bots.
- It got invented by
+ It was invented by 
 \begin_inset CommandInset href
 LatexCommand href
 name "Shanky BonusBots"
@@ -109,9 +109,9 @@ One day an unnamed hero decided to give away his
 \end_inset
 
  to the OpenHoldem community.
- So OpenPPL was born and after a long development OpenPPL finally got completely
- integrated into OpenHoldem.
- Whereas the first version of OpenPPL needed to be translated to OH-script
+ So OpenPPL was born and after a long period of development OpenPPL finally
+ got completely integrated into OpenHoldem.
+ Whereas the first version of OpenPPL needed to be translated to OH-script,
  OpenHoldem does now natively support plain-text OpenPPL without any translation
  steps.
  So OpenPPL now combines the best of both worlds even better: easiness of
@@ -127,7 +127,7 @@ Of course OpenPPL supports the main features of PPL, especially:
 \end_layout
 
 \begin_layout Itemize
-an easy english-like programming language, that can be learned in no time.
+an easy English-like programming language, that can be learned in no time.
 \end_layout
 
 \begin_layout Itemize
@@ -135,7 +135,7 @@ a library of several hundred ready-to-use functions for an easy start.
 \end_layout
 
 \begin_layout Standard
-Besides of that OpenHoldem & OpenPPL provide some additional cool functionality
+Besides that OpenHoldem & OpenPPL provide some additional cool functionality
  that you might have missed if you have used other bots in the past:
 \end_layout
 
@@ -176,8 +176,8 @@ building symbols on your own.
 \end_layout
 
 \begin_layout Itemize
-accessing Openholdems native symbols and doing hand-range calculations on
- the fly.
+accessing Openholdem's native symbols and doing hand-range calculations
+ on the fly.
 \end_layout
 
 \begin_layout Standard

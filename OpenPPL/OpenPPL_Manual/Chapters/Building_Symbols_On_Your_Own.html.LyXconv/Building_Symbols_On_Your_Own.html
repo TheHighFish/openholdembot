@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-10-26"/>
+<meta name="create-date" content="2014-12-11"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,10 +14,10 @@
 <a class="toc" name="toc-Chapter--1"></a>Building Symbols On Your Own
 </h1>
 <div class="Unindented">
-The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by any poker-playing person, no matter how much (or less) programming experience he has. Examples are e.g. MaxOpponentStackSize, StartingStackSize
+The philosophy of (standard) PPL is: provide poker-logical symbols, that can be used by any poker-playing person, no matter how much (or less) programming experience they have. Examples are e.g. MaxOpponentStackSize, StartingStackSize
 </div>
 <div class="Indented">
-However this approach has some drawbacks: it shifts all work to the developers and limits the users, who might need additional symbols for their bot-logic. Staying with the example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStacksize, ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize, FlopCheckRaiserStacksize, TurnDonkerStacksize, etc. No matter how busy the development team is, they will never be able to satisfy all needs. Therefore OpenHoldems (and partially OpenPPLs) philosophy is slightly different: provide technical symbols like balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest. This way the end-user is far more flexible; however at the cost of a bit more work.
+However this approach has some drawbacks: it shifts all work to the developers and limits the users, who might need additional symbols for their bot-logic. Staying with the example above, they might need: SmallBlindStacksize, BigBlindStacksize, UTGStacksize, ..., ButtonStacksize, OpenRaiserStacksize, LimpRaiserStacksize, ThreeBetterStacksize, FlopCheckRaiserStacksize, TurnDonkerStacksize, etc. No matter how busy the development team is, they will never be able to satisfy all needs. Therefore OpenHoldem’s (and partially OpenPPLs) philosophy is slightly different: provide technical symbols like balance0..balance9 (the stacksizes for chair0..chair9) and let the user figure out the rest. This way the end-user is far more flexible; however at the cost of a bit more work.
 </div>
 <div class="Indented">
 As an example we develop a symbol BigBlindStackSize. As a first step we need to know the chair of the big blind. Then as a second step we will be able to return the stacksize for this chair. To solve the first problem we use the OpenHoldem symbol ac_dealposX which returns the deal-position of chair X. The big blind is (with the very rare exception of a missing small blind) always the second player to be dealt, so we search for a the chair, that got dealt as second player.<div class="listing">
@@ -39,7 +39,7 @@ As an example we develop a symbol BigBlindStackSize. As a first step we need to 
 
 </div>
 <div class="Indented">
-Having this information we can continue with the second step (the dull part). We return the stacksize for the chair of the big blind, making use of Openholdems stacksize symbols balance0..balance9. As you can see it is possible to use OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention it.
+Having this information we can continue with the second step (the dull part). We return the stacksize for the chair of the big blind, making use of OpenHoldem’s stacksize symbols balance0..balance9. As you can see it is possible to use OpenHoldem Symbols in your OpenPPL code. Of course - we nearly forgot to mention it.
 </div>
 <div class="Indented">
 <div class="listing">
@@ -63,7 +63,7 @@ Having this information we can continue with the second step (the dull part). We
 
 </div>
 <div class="Indented">
-You see: it is not that difficult to extend OpenPPL on your own. The possibilites are nearly endless. For the moment we skipped some details, but creating new symbols is self-explaining: each new symbol s with a function header, that defines its name. The name of user-defined symbols traditionally begines with f$. For example ##f$BigBlindStacksize##. Thereafter follows the functions code, which usually is an a sequence of (optionally open-ended) when-conditions. These when-conditions usually define actions (in the case of f$preflop... f$river) or they contain return-statements like in the example above.
+You see: it is not that difficult to extend OpenPPL on your own. The possibilites are nearly endless. For the moment we skipped some details, but creating new symbols is self-explaining: each new symbol starts with a function header, that defines its name. The name of user-defined symbols traditionally begines with f$. For example ##f$BigBlindStacksize##. Thereafter follows the function’s code, which usually is in a sequence of (optionally open-ended) when-conditions. These when-conditions usually define actions (in the case of f$preflop... f$river) or they contain return-statements like in the example above.
 </div>
 <div class="Indented">
 <i>That’s all. OpenPPL is easy.</i>
@@ -88,7 +88,7 @@ to get small code (no code clones)
 to get maintainable code (change and fix one location only) 
 </li>
 <li>
-to get fast code (because of OpenHoldems symbol-caching: evaluatee only once, use the value often) 
+to get fast code (because of OpenHoldem’s symbol-caching: evaluates only once, use the value often) 
 </li>
 <li>
 to get readable log-files (because you see all the symbol-names and their values)
@@ -107,7 +107,7 @@ So how often should you make use of symbols?
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-10-26T22:45:53.171000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-11T20:50:37.738000</span>
 </div>
 </div>
 </body>

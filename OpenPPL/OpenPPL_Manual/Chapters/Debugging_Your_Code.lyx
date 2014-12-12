@@ -122,7 +122,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-Here userchair in a native OpenHoldem symbol and HaveTopPair is an OpenPPL-symbo
+Here userchair is a native OpenHoldem symbol and HaveTopPair is an OpenPPL-symbo
 l.
  So once you have entered the symbols in question click 
 \begin_inset Quotes eld
@@ -180,7 +180,7 @@ Everything is correct with this screenshot.
 incorrect input.
  
 \emph default
-Have a look at OpenHoldems table display: everything ok?
+Have a look at OpenHoldem's table display: everything ok?
 \end_layout
 
 \begin_layout Itemize
@@ -191,7 +191,7 @@ a problem with your code (or with the symbol library):
  a symbol like for example StillToAct depends on other symbols like dealposition
  and nchairsdealtleft.
  So if StillToAct was wrong you might put these symbols into the debug-tab
- tooand evaluate further until you find the problem.
+ to evaluate further until you find the problem.
 \end_layout
 
 \begin_layout Section*
@@ -202,15 +202,15 @@ Simulating positions
 The debug-tab is a wonderful tool --- but: the problem happened at a live-table
  --- what can you do? There are two things you could try: Openholdem provides
  a tool called ManualMode.
- Here you can setup some situations to simulate your bot-logic.
+ Here you can set up some situations to simulate your bot-logic.
  The other possibility: you could shoot so-called replay-frames, i.e.
  screenshots of the casino-table that get saved to the replay-directory
  in your bot-folder.
  Once the session is over you can load these frames with OHReplay.exe and
- connect OpenHoldem to OHReplay like to a normal casino-table.
- And then you can work with the debug-tab like described above.
- Please refer to OpenHoldems manual for a more detailed description of these
- tools.
+ connect OpenHoldem to OHReplay like a normal casino-table.
+ And then you can work with the debug-tab as described above.
+ Please refer to OpenHoldem's manual for a more detailed description of
+ these tools.
 \end_layout
 
 \begin_layout Section*
@@ -223,10 +223,10 @@ Not satisfied with the play? You might also look at the autoplayer-log.
  oh_0.log.
  OpenHoldem uses this file to not only store the action it took, but also
  the complete evaluation process.
- First watch out for your hand (you can identify it e.g.
+ First locate your hand (you can identify it e.g.
  by the time, your cards, the hand-number, etc.).
  At first the log might look like a complete mess, but actually it is well
- structured: function-names on the very left are higher-level functions;
+ structured: function names on the very left are higher-level functions;
  symbols that are more indented got called by these higher-level functions.
  So what you see below is actually an evaluation-tree:
 \end_layout
@@ -354,13 +354,13 @@ Below you see functions that get called by f$flop either directly or indirectly
 \end_layout
 
 \begin_layout Itemize
-Function that got indented once got directly called by f$flop.
+Functions that are indented once are directly called by f$flop.
  E.g HaveStraightDraw, HaveQuads, BotsLastAction
 \end_layout
 
 \begin_layout Itemize
-Functions that got indented one level deeper got called by the function
- above them that got indented one level less, E.g.
+Functions that are indented one level deeper are called by the function
+ above them that was indented one level less, E.g.
  HaveStraightDraw calls HaveOpenEndedStraightDraw and HaveDoubleGutshotDraw.
 \end_layout
 
@@ -384,7 +384,7 @@ symbols without line information are built-in OpenHoldem symbols.
 
 \begin_layout Standard
 That's it, basically.
- We were a bit in hurry when we wrote this paragraph.
+ We were a bit in a hurry when we wrote this paragraph.
  Any better explanation is very welcome.
 \end_layout
 
@@ -405,7 +405,7 @@ Most symbols depend only on the state of the table (cards, players, etc.)
  These hand-resets can be triggered by certain events, like a changing dealer-ch
 air or disappearing community cards, depending on your hand-reset-method
  defined in the tablemap.
- Depending on your settings it be might that an occlusion of the table will
+ Depending on your settings it might be that an occlusion of the table will
  cause a hand-reset for OpenHoldem.
  So watch out for messages like below in your log-file.
 \begin_inset listings
@@ -474,14 +474,14 @@ garbage in - garbage out
  Let us emphasize: Win2000 classic theme and all animations turned off are
  recommended, but not necessary.
  In pronciple you can scrape whatever configuration you like.
- However: if you use somebody elses tablemap, then you 
+ However: if you use somebody else's tablemap, then you 
 \emph on
 have to
 \emph default
  use exactly the same settings as the profile creator.
  So before you go crazy investigating log-files: have a look at basic OpenHoldem
  symbols: are they reasonable or plain wrong? And before you sit at a real-money
--table observe your bot and OpenHoldems table-display for some time: does
+-table observe your bot and OpenHoldem's table-display for some time: does
  OpenHoldem recognize every game-state correctly? Don't get frightened:
  
 \emph on
@@ -517,8 +517,9 @@ WHEN betround=2 AND (BotRaisedBeforeFlop OR f0) Raise 50% FORCE
 \end_layout
 
 \begin_layout Standard
-The above line is true if bot raised before flop or flag 0 button has been
- pressed; This way you could simulate in Manual Mode custom conditions.
+The above line is true if the bot raised before the Flop or the flag 0 button
+ has been pressed.
+ This way you could simulate costom conditions in Manual Mode.
 \end_layout
 
 \end_body

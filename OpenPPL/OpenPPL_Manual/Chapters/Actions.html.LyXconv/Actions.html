@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-09-23"/>
+<meta name="create-date" content="2014-12-11"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -106,7 +106,7 @@ Here the betsize gets measured as a certain percentage of the pot (pot = common 
 <a class="toc" name="toc-Section--1"></a>Using Expressions For The Bet-Amount
 </h2>
 <div class="Unindented">
-Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for each caller. With standard PPL this would result in clumsy code. But with OpenPPL you can simply write:
+Let’s assume you want to raise to 3 bb in an unraised pot, plus 1 bb for each caller. With standard PPL this would result in clumsy code. But with OpenPPL you can simply write:
 </div>
 <div class="Indented">
 <div class="listing">
@@ -147,7 +147,7 @@ OpenPPL does not provide a default bot.
 <a class="toc" name="toc-Section--2"></a>Quickfolding bad hands
 </h2>
 <div class="Unindented">
-Most poker-sites provide pre-action-buttons to act before it is your turn. Especially useful is the prefold-button that makes it possible to click bad hands away and forget about them. Being able to click this button with your bot has at least two positive effect: more human-like behaviour and playing more hands per hour due to faster actions . Nothing could be more easy:
+Most poker-sites provide pre-action-buttons to act before it is your turn. Especially useful is the prefold-button that makes it possible to click bad hands away and forget about them. Being able to click this button with your bot has at least two positive effects: more human-like behaviour and playing more hands per hour due to faster actions . Nothing could be more easy:
 </div>
 <div class="Indented">
 <div class="listing">
@@ -165,7 +165,7 @@ Please note:
 </div>
 <ul>
 <li>
-prefold gets evaluated when it is <i>not your turn</i>. Therefore it might happen that OpenHoldem takes a screenshot, evaluates and acts while the casino updates its table-display and the game-state is unstable. &ldquo;Garbage in — garbage out&rdquo; will happen. Now lets assume you have some super-nitty bot:<div class="listing">
+prefold gets evaluated when it is <i>not your turn</i>. Therefore it might happen that OpenHoldem takes a screenshot, evaluates and acts while the casino updates its table-display and the game-state is unstable. &ldquo;Garbage in — garbage out&rdquo; will happen. Now let’s assume you have some super-nitty bot:<div class="listing">
 <pre class="listing">​
 ​
 ##f$prefold##
@@ -177,7 +177,7 @@ prefold gets evaluated when it is <i>not your turn</i>. Therefore it might happe
 &rdquo;Fold when I don’t have a good hand&rdquo;. But here your good hand can not get recognized because your aces get only displayed partially. Your bot would fold pocket aces! To avoid problems like that it is recommend to code more fail-safe like in the first example: &ldquo;Fold when I have a bad hand&rdquo;. It won’t hurt that much if that command failed and worked only on the next heart-beat-cycle.
 </li>
 <li>
-There are even more consequences of potentially unstable frames: OpenPPL does its main calculations when it is your turn. Especially some more complex symbols which depend on the history of the game get updated only when we have stable frames to guarantee their correctness — RaisesSinceLastPlay or LastCallerPosition are examples. As a consequence these symbols will simply be undefined before your first action preflop. Therefore it is recommended to be extra careful about the GIGO-principle and stick to the most basic symbols only. But this is not too hard for prefold, isn’t it?
+There are even more consequences of potentially unstable frames: OpenPPL does its main calculations when it is your turn. Especially some more complex symbols which depend on the history of the game get updated only when we have stable frames to guarantee their correctness — RaisesSinceLastPlay or LastCallerPosition are examples. As a consequence these symbols will simply be undefined before your first action preflop. Therefore it is recommended to be extra careful about the GIGO-principle and stick to the most basic symbols only. But this is not too hard for prefold, is it?
 </li>
 
 </ul>
@@ -189,7 +189,7 @@ It may happen, that a certain action is not available, e.g. you might want to ra
 </div>
 <ul>
 <li>
-betsize invalid (to less or too much (PotLimit or more than your balance)): betsize gets automatically adapted. This happens also to actions like RaisePot and RaiseHalfPot, that get executed with the f$betsize-function (formerly known as &ldquo;f$swag&rdquo;).
+betsize invalid (too less or too much (PotLimit or more than your balance)): betsize gets automatically adapted. This happens also to actions like RaisePot and RaiseHalfPot, that get executed with the f$betsize-function (formerly known as &ldquo;f$swag&rdquo;).
 </li>
 <li>
 action can’t be executed, because it is not possible, e.g. there might be no raise-button, because you can only call (allin) or fold. Here OpenPPL behaves in the following way:<ul>
@@ -229,7 +229,7 @@ we believe, it is better to behave in a more conservative way if an error occurs
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-23T22:30:54.571000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-11T19:12:22.433000</span>
 </div>
 </div>
 </body>

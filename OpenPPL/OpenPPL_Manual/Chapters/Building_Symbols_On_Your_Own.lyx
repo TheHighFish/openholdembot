@@ -81,7 +81,7 @@ Building Symbols On Your Own
 \begin_layout Standard
 The philosophy of (standard) PPL is: provide poker-logical symbols, that
  can be used by any poker-playing person, no matter how much (or less) programmi
-ng experience he has.
+ng experience they have.
  Examples are e.g.
  MaxOpponentStackSize, StartingStackSize
 \end_layout
@@ -95,9 +95,9 @@ ize, ThreeBetterStacksize, FlopCheckRaiserStacksize, TurnDonkerStacksize,
  etc.
  No matter how busy the development team is, they will never be able to
  satisfy all needs.
- Therefore OpenHoldems (and partially OpenPPLs) philosophy is slightly different
-: provide technical symbols like balance0..balance9 (the stacksizes for chair0..chai
-r9) and let the user figure out the rest.
+ Therefore OpenHoldem's (and partially OpenPPLs) philosophy is slightly
+ different: provide technical symbols like balance0..balance9 (the stacksizes
+ for chair0..chair9) and let the user figure out the rest.
  This way the end-user is far more flexible; however at the cost of a bit
  more work.
 \end_layout
@@ -188,8 +188,8 @@ status open
 
 \begin_layout Standard
 Having this information we can continue with the second step (the dull part).
- We return the stacksize for the chair of the big blind, making use of Openholde
-ms stacksize symbols balance0..balance9.
+ We return the stacksize for the chair of the big blind, making use of OpenHolde
+m's stacksize symbols balance0..balance9.
  As you can see it is possible to use OpenHoldem Symbols in your OpenPPL
  code.
  Of course - we nearly forgot to mention it.
@@ -284,11 +284,11 @@ status open
 You see: it is not that difficult to extend OpenPPL on your own.
  The possibilites are nearly endless.
  For the moment we skipped some details, but creating new symbols is self-explai
-ning: each new symbol s with a function header, that defines its name.
+ning: each new symbol starts with a function header, that defines its name.
  The name of user-defined symbols traditionally begines with f$.
  For example ##f$BigBlindStacksize##.
- Thereafter follows the functions code, which usually is an a sequence of
- (optionally open-ended) when-conditions.
+ Thereafter follows the function's code, which usually is in a sequence
+ of (optionally open-ended) when-conditions.
  These when-conditions usually define actions (in the case of f$preflop...
  f$river) or they contain return-statements like in the example above.
 \end_layout
@@ -340,7 +340,7 @@ to get maintainable code (change and fix one location only)
 \end_layout
 
 \begin_layout Itemize
-to get fast code (because of OpenHoldems symbol-caching: evaluatee only
+to get fast code (because of OpenHoldem's symbol-caching: evaluates only
  once, use the value often) 
 \end_layout
 

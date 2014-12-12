@@ -214,7 +214,7 @@ HadSetOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We had Set on flop
+We had a Set on flop
 \end_layout
 
 \end_inset
@@ -234,7 +234,7 @@ HadSetOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-We had Set on turn
+We had a Set on turn
 \end_layout
 
 \end_inset
@@ -775,7 +775,7 @@ HaveFourthTopPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Fourth pair
+We have the Fourth highest pair
 \end_layout
 
 \end_inset
@@ -940,7 +940,7 @@ We have a flush, flushdraw or a backdoor flushdraw.
 \end_layout
 
 \begin_layout Itemize
-we contribute at 2 cards
+we contribute 2 cards
 \end_layout
 
 \begin_layout Itemize
@@ -1068,7 +1068,7 @@ HaveBottomPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have a hole card that is paired with the lowest card o board
+We have a hole card that is paired with the lowest card on board
 \end_layout
 
 \end_inset
@@ -1392,7 +1392,7 @@ HaveNutStraightDraw
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if we have a draw to the best straight; thisd means: if we hit no
+True, if we have a draw to the best straight; this means: if we hit, no
  better straight is possible.
  E.g.87 at a board of 643.
 \end_layout
@@ -1474,7 +1474,7 @@ HavePair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have a pair, a paired board doesent count
+We have a pair, a paired board doesen't count
 \end_layout
 
 \end_inset
@@ -1534,7 +1534,7 @@ HaveRunnerRunnerFlushAtRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have Flush and we made it with turn and river card
+We have Flush and we made it with Turn and River card
 \end_layout
 
 \end_inset
@@ -1716,7 +1716,7 @@ HaveTopTrips
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ture if we have the best possible trips 
+True if we have the best possible trips 
 \end_layout
 
 \end_inset
@@ -1837,9 +1837,9 @@ NutFullHouseOrFourOfAKind
 \begin_inset Text
 
 \begin_layout Plain Layout
-This symbol evaluates the strenght of quads and full houses.
- Top quads get always rated as 1, bottom quads or best-full house as 2,
- next best hands as 3 and so on.
+This symbol evaluates the strength of quads and full houses.
+ Top quads are always rated as 1, bottom quads or best-full house as 2,
+ next best hand as 3 and so on.
  This symbol does not take straight flushes into account.
  So it could return 1 even if our hand can be beaten by a straight flush.
 \end_layout

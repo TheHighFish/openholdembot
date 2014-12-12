@@ -131,7 +131,7 @@ smallblind, bigblind, dealer, cutoff, user.
 \end_layout
 
 \begin_layout Itemize
-besides of that you can use 
+besides that you can use 
 \emph on
 firstcaller, lastcaller 
 \emph default

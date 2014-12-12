@@ -84,7 +84,7 @@ Hand expressions
 
 \begin_layout Standard
 One of the most important decisions of the game happens preflop: shall I
- play this hand and how? This decision can be coded with the self-explaining
+ play this hand and how? This decision can be coded with the self-explanatory
  hand-expression, like in the example below:
 \end_layout
 
@@ -118,7 +118,7 @@ WHEN hand$22 OR hand$33 OR hand$44...
 AK does include both AKs and AKo.
  So if you want to play suited hands differently you should code them first,
  as OpenPPL gets evaluated top down.
- It will stop at the first condition that matches.
+ It will stop at the first condition that matches (evaluates to true).
  So always remember: 
 \emph on
 strong hands first, exceptions first, bad hands later.
@@ -131,8 +131,8 @@ Coding For Specific Suits
 \begin_layout Standard
 If you want you can also code for specific suits, like an ace of diamonds
  in your hand.
- This is rarely necessary, but got used in the past (before real randomization
- go introduced to Standard PPL) to randomize actions.
+ This is rarely necessary, but was used in the past (before real randomization
+ was introduced to Standard PPL) to randomize actions.
 \end_layout
 
 \begin_layout Standard
@@ -187,8 +187,8 @@ FlushPossibleOnTurn
 \begin_inset Quotes eld
 \end_inset
 
-, but for some cases they might be not concrete enough.
- Therefore it is possible to specify board-states similar as above:
+, but for some cases might not be concrete enough.
+ Therefore it is possible to specify board-states similar to the above:
 \end_layout
 
 \begin_layout Standard
@@ -233,11 +233,10 @@ WHEN board$AT SUITED RaisePot FORCE
 \end_layout
 
 \begin_layout Standard
-You see, this is pretty straight-forward, but sometimes lots of code to
- write.
+You see, this is pretty straightforward, but sometimes lots of code to write.
  If you want to create code that is easy to understand, easy to reuse and
  easy to maintain, then you should encapsulate expressions like the second
- one in functions:
+ one in functions (place it within its own function):
 \end_layout
 
 \begin_layout Standard
