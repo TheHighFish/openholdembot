@@ -309,7 +309,7 @@ Using Expressions For The Bet-Amount
 \end_layout
 
 \begin_layout Standard
-Lets assume you want to raise to 3 bb in an unraised pot, plus 1 bb for
+Let's assume you want to raise to 3 bb in an unraised pot, plus 1 bb for
  each caller.
  With standard PPL this would result in clumsy code.
  But with OpenPPL you can simply write:
@@ -410,8 +410,8 @@ Most poker-sites provide pre-action-buttons to act before it is your turn.
  Especially useful is the prefold-button that makes it possible to click
  bad hands away and forget about them.
  Being able to click this button with your bot has at least two positive
- effect: more human-like behaviour and playing more hands per hour due to
- faster actions .
+ effects: more human-like behaviour and playing more hands per hour due
+ to faster actions .
  Nothing could be more easy:
 \end_layout
 
@@ -461,7 +461,7 @@ Garbage in -- garbage out
 \end_inset
 
  will happen.
- Now lets assume you have some super-nitty bot:
+ Now let's assume you have some super-nitty bot:
 \begin_inset listings
 inline false
 status open
@@ -533,7 +533,7 @@ There are even more consequences of potentially unstable frames: OpenPPL
  action preflop.
  Therefore it is recommended to be extra careful about the GIGO-principle
  and stick to the most basic symbols only.
- But this is not too hard for prefold, isn't it?
+ But this is not too hard for prefold, is it?
 \end_layout
 
 \begin_layout Section
@@ -550,7 +550,7 @@ It may happen, that a certain action is not available, e.g.
 \end_layout
 
 \begin_layout Itemize
-betsize invalid (to less or too much (PotLimit or more than your balance)):
+betsize invalid (too less or too much (PotLimit or more than your balance)):
  betsize gets automatically adapted.
  This happens also to actions like RaisePot and RaiseHalfPot, that get executed
  with the f$betsize-function (formerly known as 

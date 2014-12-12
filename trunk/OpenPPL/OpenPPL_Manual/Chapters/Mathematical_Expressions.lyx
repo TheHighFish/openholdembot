@@ -80,7 +80,7 @@ Mathematical Expressions
 
 \begin_layout Standard
 Of course OpenPPL supports arbitary complex mathematical expressions.
- As as example let us consider odds and outs.
+ As an example let us consider odds and outs.
 \end_layout
 
 \begin_layout Standard
@@ -348,7 +348,7 @@ AmountToCall <= 5
 \begin_inset Text
 
 \begin_layout Plain Layout
-true, if there are less or equal than 5 big blinds to call
+true, if there are less than or equal to 5 big blinds to call
 \end_layout
 
 \end_inset
@@ -428,7 +428,7 @@ not
 \begin_inset Quotes erd
 \end_inset
 
- should be pretty self-explaining.
+ should be pretty self-explanatory.
  
 \end_layout
 
@@ -568,7 +568,7 @@ WHEN AmountToCall <= 4 AND (hand$22 OR hand$33...))
 
  you have to throw in some extra brackets, otherwise the bot will call with
  33 any bet and that is probably not what you want.
- More complicated expressions sometimes lead to confusions.
+ More complicated expressions sometimes lead to confusion.
  If you have a problem with that you might want to revisit the basics of
  mathematical logic and the 
 \begin_inset Quotes eld
@@ -586,7 +586,7 @@ Arithmetical Operators
 \end_layout
 
 \begin_layout Standard
-OpenPPL also supports basic arithmetics.
+OpenPPL also supports basic arithmetic.
  The usual rules apply of course.
  The percentage-operator has the same priority like multiplication and division,
  which is higher than addition, subtraction.
@@ -787,7 +787,7 @@ Mod
 \begin_inset Text
 
 \begin_layout Plain Layout
-Modula-operator
+Modulus-operator
 \end_layout
 
 \end_inset
@@ -817,10 +817,10 @@ Bitwise Operators (for Experts)
 Furthermore OpenPPL supports bitwise operations that work on all single
  bits of bit-vectors or binary numbers simultaneously.
  They are useful for very low-level-stuff like detecting which chairs are
- seated with OpenHoldems bitwise symbols (playersseatedbits, playersdealtbits,
+ seated with OpenHoldem's bitwise symbols (playersseatedbits, playersdealtbits,
  etc.).
- Most players won't ever need these symbols, so we we will only give you
- a link to a good explanation here: 
+ Most players won't ever need these symbols, so we will only give you a
+ link to a good explanation here: 
 \begin_inset Flex URL
 status open
 

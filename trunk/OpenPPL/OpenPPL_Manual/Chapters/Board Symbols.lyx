@@ -172,7 +172,7 @@ AcePresentOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An ace is present on flop
+An ace is present on Flop
 \end_layout
 
 \end_inset
@@ -232,7 +232,7 @@ FlushPossibleOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The entire flop is one suit
+The entire Flop is one suit
 \end_layout
 
 \end_inset
@@ -252,7 +252,7 @@ FlushPossibleOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-A flush is possible on the turn
+A flush is possible on the Turn
 \end_layout
 
 \end_inset
@@ -293,7 +293,7 @@ FourOf1SuiteOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if only 1 suite is/was present on the board on the turn
+True if only 1 suite is/was present on the board on the Turn
 \end_layout
 
 \end_inset
@@ -333,7 +333,7 @@ KingPresentOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if at least one of the flop-cards is a king
+True, if at least one of the Flop-cards is a king
 \end_layout
 
 \end_inset
@@ -353,8 +353,8 @@ LowCardsOnBoard
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of cards with the rank of 8 or lower (ace is counted as low)
- duplicates of one rank are not counted
+The number of cards with the rank of 8 or lower (ace is counted as low).
+ Duplicates of one rank are not counted
 \end_layout
 
 \end_inset
@@ -374,7 +374,7 @@ MoreThanOneStraightPossibleOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-More than one straight is possible on the flop
+More than one straight is possible on the Flop
 \end_layout
 
 \end_inset
@@ -394,7 +394,7 @@ MoreThanOneStraightPossibleOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-There is/was more than one way to make a straight on the turn
+There is/was more than one way to make a straight on the Turn
 \end_layout
 
 \end_inset
@@ -474,7 +474,7 @@ OneCardStraightPossibleOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-A one card straight is/was possible on the turn
+A one card straight is/was possible on the Turn
 \end_layout
 
 \end_inset
@@ -576,7 +576,7 @@ PairOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-A pair is present on the flop
+A pair is present on the Flop
 \end_layout
 
 \end_inset
@@ -596,7 +596,7 @@ PairOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-The board has a pair on the turn 8or on the flop)
+The board has a pair on the Turn or on the Flop)
 \end_layout
 
 \end_inset
@@ -636,7 +636,7 @@ QueenPresentOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-A queen is present on the flop
+A queen is present on the Flop
 \end_layout
 
 \end_inset
@@ -656,7 +656,7 @@ RiverCardIsOvercardToBoard
 \begin_inset Text
 
 \begin_layout Plain Layout
-The river card is the highest ranked common card
+The River card is the highest ranked common card
 \end_layout
 
 \end_inset
@@ -676,7 +676,7 @@ RunnerRunnerFlushPossibleAtRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if a Runner Runner Flush is possible at River
+True if a Runner Runner Flush is possible at the River
 \end_layout
 
 \end_inset
@@ -687,7 +687,7 @@ True if a Runner Runner Flush is possible at River
 \begin_inset Text
 
 \begin_layout Plain Layout
-SecondTopflopCardPairedOnRiver
+SecondTopFlopCardPairedOnRiver
 \end_layout
 
 \end_inset
@@ -696,9 +696,9 @@ SecondTopflopCardPairedOnRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if the 2nd highest flop card paired on the river.
- If the flop is paired it will be the lowest card.
- If all ranks are equal quads at the river will make this function true.
+True, if the 2nd highest Flop card paired on the River.
+ If the Flop is paired it will be the lowest card.
+ If all ranks are equal quads at the River will make this function true.
 \end_layout
 
 \end_inset
@@ -709,7 +709,7 @@ True, if the 2nd highest flop card paired on the river.
 \begin_inset Text
 
 \begin_layout Plain Layout
-SecondTopflopCardPairedOnTurn
+SecondTopFlopCardPairedOnTurn
 \end_layout
 
 \end_inset
@@ -718,9 +718,9 @@ SecondTopflopCardPairedOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if the 2nd highest flop card paired on the turn.
- If the flop is paired it will be the lowest card.
- If all ranks are equal quads at the turn will make this function true.
+True, if the 2nd highest Flop card paired on the Turn.
+ If the Flop is paired it will be the lowest card.
+ If all ranks are equal quads at the Turn will make this function true.
 \end_layout
 
 \end_inset
@@ -840,7 +840,7 @@ StraightPossibleOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-A stright is possible on the flop
+A stright is possible on the Flop
 \end_layout
 
 \end_inset
@@ -860,7 +860,7 @@ StraightPossibleOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-A stright is possible on the turn
+A stright is possible on the Turn
 \end_layout
 
 \end_inset
@@ -881,7 +881,7 @@ SuitsOnBoard
 
 \begin_layout Plain Layout
 The number of different suits on board.
- Always 0 preflop.
+ Always 0 Preflop.
 \end_layout
 
 \end_inset
@@ -901,8 +901,8 @@ SuitsOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of different suits on the flop.
- Always 0 preflop.
+The number of different suits on the Flop.
+ Always 0 Preflop.
 \end_layout
 
 \end_inset
@@ -922,8 +922,8 @@ SuitsOnRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of different suits on the river.
- Always 0 preflop, at the flop and turn.
+The number of different suits on the River.
+ Always 0 Preflop, at the Flop and the Turn.
 \end_layout
 
 \end_inset
@@ -943,8 +943,8 @@ SuitsOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of different suits on the turn.
- Always 0 preflop and at the flop.
+The number of different suits on the Turn.
+ Always 0 Preflop and at the Flop.
 \end_layout
 
 \end_inset
@@ -984,7 +984,7 @@ TopFlopCardPairedonRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-The card with the highest rank on the flop paired on the river
+The card with the highest rank on the Flop paired on the River
 \end_layout
 
 \end_inset
@@ -1004,7 +1004,7 @@ TopFlopCardPairedonTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-The card with the highest rank on the flop paired on the turn
+The card with the highest rank on the Flop paired on the Turn
 \end_layout
 
 \end_inset
@@ -1044,7 +1044,7 @@ TripsOnBoardOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-At least three cards of the same rank is present on the turn
+At least three cards of the same rank is present on the Turn
 \end_layout
 
 \end_inset
@@ -1064,7 +1064,7 @@ TurnCardIsOvercardToBoard
 \begin_inset Text
 
 \begin_layout Plain Layout
-The turn card is the highest ranked common card
+The Turn card is the highest ranked common card
 \end_layout
 
 \end_inset
@@ -1084,7 +1084,7 @@ TurnCardPaired
 \begin_inset Text
 
 \begin_layout Plain Layout
-The card that was dealt on the turn paired on the river
+The card that was dealt on the Turn paired on the River
 \end_layout
 
 \end_inset
@@ -1104,7 +1104,7 @@ TwoOfOneSuitPresentOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if the flop has / had at least 2 cards of the same suit.
+True, if the Flop has / had at least 2 cards of the same suit.
 \end_layout
 
 \end_inset
@@ -1164,9 +1164,9 @@ UncoordinatedFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if the flop contains/contained no pair on board, no possible flush,
+True, if the Flop contains/contained no pair on board, no possible flush,
  three different suits, no possible straight and no opponent could have
- 7 or more outs to a straigh
+ 7 or more outs to a straight
 \end_layout
 
 \end_inset

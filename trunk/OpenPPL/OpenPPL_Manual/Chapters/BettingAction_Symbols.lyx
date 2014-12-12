@@ -196,7 +196,7 @@ BotCalledBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called preflop, can also be used on the flop and will be true if we called
+We called Preflop, can also be used on the Flop and will be true if we called
 \end_layout
 
 \end_inset
@@ -254,7 +254,7 @@ BotRaisedBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We raised preflop, can also be used on the preflop and will be true if we
+We raised Preflop, can also be used on the Preflop and will be true if we
  bet or raised
 \end_layout
 
@@ -284,7 +284,7 @@ BotRaisedOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We bet or raised on the flop, can also be used on the flop and will be true
+We bet or raised on the Flop, can also be used on the Flop and will be true
  if we bet or raised
 \end_layout
 
@@ -314,7 +314,7 @@ BotRaisedOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-We bet or raised on the turn, can also be used on the turn and will be true
+We bet or raised on the Turn, can also be used on the turn and will be true
  if we bet or raised
 \end_layout
 
@@ -324,7 +324,7 @@ We bet or raised on the turn, can also be used on the turn and will be true
 \begin_inset Text
 
 \begin_layout Plain Layout
-Turn and river only
+Turn and River only
 \end_layout
 
 \end_inset
@@ -344,7 +344,7 @@ BotsActionsOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-Number of actions where we put money in the pot on the flop
+Number of actions where we put money in the pot on the Flop
 \end_layout
 
 \end_inset
@@ -443,7 +443,7 @@ BotsActionsPreflop
 \begin_inset Text
 
 \begin_layout Plain Layout
-Number of actions where we put money in the pot preflop, all-ins are not
+Number of actions where we put money in the pot Preflop, all-ins are not
  counted
 \end_layout
 
@@ -473,7 +473,7 @@ BotCheckedPreflop
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if bot checked preflop
+True if bot checked Preflop
 \end_layout
 
 \end_inset
@@ -502,7 +502,7 @@ BotCheckedOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if bot cheked on Flop
+True if bot checked on Flop
 \end_layout
 
 \end_inset
@@ -531,7 +531,7 @@ BotCheckedOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if bot cheked on Turn
+True if bot checked on Turn
 \end_layout
 
 \end_inset
@@ -560,7 +560,7 @@ BotCheckedOnRiver
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if bot cheked on River
+True if bot checked on River
 \end_layout
 
 \end_inset
@@ -589,8 +589,8 @@ BotsLastAction
 \begin_inset Text
 
 \begin_layout Plain Layout
-Bots last action, can be one of the following: none, beep, raise, bet, call,
- or check
+Bot's last action, can be one of the following: none, beep, raise, bet,
+ call, or check
 \end_layout
 
 \end_inset
@@ -619,7 +619,7 @@ BotsLastPreflopAction
 \begin_inset Text
 
 \begin_layout Plain Layout
-Bots last action preflop, can be one of the following: none, beep, raise,
+Bot's last action Preflop, can be one of the following: none, beep, raise,
  bet, call, or check
 \end_layout
 
@@ -649,7 +649,7 @@ CalledOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called on the flop, may also be used on the flop and will be true if
+We called on the Flop, may also be used on the Flop and will be true if
  we called
 \end_layout
 
@@ -679,7 +679,7 @@ CalledOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called on the turn, may also be used on the turn and will be true if
+We called on the Turn, may also be used on the Turn and will be true if
  we called
 \end_layout
 
@@ -689,7 +689,7 @@ We called on the turn, may also be used on the turn and will be true if
 \begin_inset Text
 
 \begin_layout Plain Layout
-Turn and river only
+Turn and River only
 \end_layout
 
 \end_inset
@@ -835,7 +835,7 @@ MissingSmallBlind
 
 \begin_layout Plain Layout
 True, if there is no small blind in this hand, e.g.
- the player who whould have been SB did bust in the previous hand.
+ the player who would have been SB did bust in the previous hand.
 \end_layout
 
 \end_inset
@@ -864,7 +864,7 @@ NoBettingOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-No bets/raises were made on the flop, may also be used on the flop and will
+No bets/raises were made on the Flop, may also be used on the Flop and will
  be true if there were no bets/raises
 \end_layout
 
@@ -894,7 +894,7 @@ NoBettingOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-No bets/raises were made on the turn, may also be used on the turn and will
+No bets/raises were made on the Turn, may also be used on the Turn and will
  be true if there were no bets/raises
 \end_layout
 
@@ -1013,7 +1013,7 @@ NumberOfRaisesBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises before the flop made by opponents
+The number of raises before the Flop made by opponents
 \end_layout
 
 \end_inset
@@ -1042,7 +1042,7 @@ NumberOfRaisesOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises on the flop made by opponents
+The number of raises on the Flop made by opponents
 \end_layout
 
 \end_inset
@@ -1071,7 +1071,7 @@ NumberOfRaisesOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises on the turn made by opponents
+The number of raises on the Turn made by opponents
 \end_layout
 
 \end_inset
@@ -1100,7 +1100,7 @@ OpponentCalledOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent called on flop, and did not raise or bet
+An opponent called on Flop, and did not raise or bet
 \end_layout
 
 \end_inset
@@ -1129,7 +1129,7 @@ OpponentCalledOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent called on turn, and did not raise or bet
+An opponent called on Turn, and did not raise or bet
 \end_layout
 
 \end_inset
@@ -1221,7 +1221,7 @@ RaisesBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised before flop
+An opponent raised before Flop
 \end_layout
 
 \end_inset
@@ -1254,7 +1254,7 @@ RaisesOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised on flop
+An opponent raised on Flop
 \end_layout
 
 \end_inset
@@ -1287,7 +1287,7 @@ RaisesOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised on turn
+An opponent raised on Turn
 \end_layout
 
 \end_inset
@@ -1296,7 +1296,7 @@ An opponent raised on turn
 \begin_inset Text
 
 \begin_layout Plain Layout
-Turn and river only
+Turn and River only
 \end_layout
 
 \begin_layout Remark*

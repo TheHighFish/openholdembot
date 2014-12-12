@@ -83,7 +83,7 @@ OpenHoldem supports preflop handlists to simplify preflop coding.
 \end_layout
 
 \begin_layout Standard
-You can name handlists as you like buy handlist name needs to start with
+You can name handlists what you like, but handlist names need to start with
  the word 
 \begin_inset Quotes eld
 \end_inset
@@ -150,7 +150,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-After that you can use your custom handlist symbol like that
+After that you can use your custom handlist symbol like this:
 \end_layout
 
 \begin_layout Standard
@@ -171,7 +171,7 @@ WHEN (Opponents = 1 AND userManiacFourBetsMe AND list007 RaiseMax FORCE
 \begin_layout Standard
 There is no limit to the number of lists you can define and you can use
  any name you want.
- Indeed it is recommended that you choose verbosy names that speek for themselve
+ Indeed it is recommended that you choose verbose names that speek for themselve
 s.
 \end_layout
 

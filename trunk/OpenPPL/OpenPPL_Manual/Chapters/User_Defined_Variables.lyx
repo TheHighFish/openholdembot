@@ -80,7 +80,7 @@ User-Defined Variables
 
 \begin_layout Standard
 Most probably you need some game-history to take your decision; then you
- will find symbols like NoBettingOnFlop and OpenHoldems history symbols
+ will find symbols like NoBettingOnFlop and OpenHoldem's history symbols
  and they will be useful for a good portion os use-cases, but identifying
  very special situations afterwards only with the built-in symbols might
  be hard or even impossible.
@@ -123,7 +123,7 @@ As you see, there's the
 \series bold
 Set
 \series default
- prefix and after it there is a user-defined variable instead of an action
+ command and after it there is a user-defined variable instead of an action
  after a condition, but no keyword force.
 \end_layout
 
@@ -148,11 +148,11 @@ User-defined variables keep their value for the current hand and can't be
 \end_layout
 
 \begin_layout Itemize
-Naming: every user-defined variable start with the prefix 
+Naming: every user-defined variable starts with the prefix 
 \begin_inset Quotes eld
 \end_inset
 
-User
+user
 \begin_inset Quotes erd
 \end_inset
 
@@ -214,7 +214,7 @@ Expert Tricks (MEMORY SYMBOLS)
 \begin_layout Standard
 
 \series bold
-Please note that Memory Symbol are actually not working.
+Please note that Memory Symbols are actually not working.
 \end_layout
 
 \begin_layout Standard
@@ -222,7 +222,7 @@ Do you need variables that can be set to any arbitrary value? Do you need
  variables that can be reset back? Do you need variables that don't reset
  automatically, but keep their values till the next hand or even for the
  complete session? There is a solution for it (of course).
- Instead of PPL-like user-variables it is also possible to use OpenHoldems
+ Instead of PPL-like user-variables it is also possible to use OpenHoldem's
  memory-store-command:
 \end_layout
 
@@ -238,7 +238,7 @@ WHEN (...) me_st_MySecretVariable_3_141592653
 
 \end_inset
 
- and then use it later with OpenHoldems memory-recall-command:
+ and then use it later with OpenHoldem's memory-recall-command:
 \begin_inset listings
 inline false
 status open
@@ -260,7 +260,7 @@ This construct is a little bit more mighty, but also contains some possible
 \end_layout
 
 \begin_layout Itemize
-OpenHoldems user-defined variables are case sensitive.
+OpenHoldem's user-defined variables are case sensitive.
  me_st_x_1 is something different than me_st_X_1.
 \end_layout
 

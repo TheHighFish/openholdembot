@@ -117,15 +117,15 @@ WHEN HaveFlushDraw AND AmountToCall < 1/3 PotSize Call FORCE
 \end_layout
 
 \begin_layout Standard
-These conditions get 
+These conditions are 
 \emph on
 always evaluated top-down
 \emph default
 .
  Once the first condition is true, the appropriate action will be taken.
- Always - so the order of programming matters.
- Lets assume, that you want to call your flushdraws, but raise to 10bb your
- nut-flushdraws (expert-strategy 2012).
+ Always! - so the order of programming matters.
+ Let's assume, that you want to call your flushdraws, but raise to 10bb
+ your nut-flushdraws (expert-strategy 2012).
  Then you will have to write your commands in the following order:
 \end_layout
 
@@ -153,7 +153,7 @@ WHEN HaveFlushDraw Call FORCE
 Do it the other way and your nut-flush-draw would trigger the rule for normal
  flush-draws.
  A call would be the result.
- As a consequence of this top-down-evaluation there follow some recommendations:
+ As a consequence of this top-down-evaluation we recommend you deal with:
 \end_layout
 
 \begin_layout Itemize
@@ -193,15 +193,15 @@ If you wonder about the keyword
 \noun on
 force
 \noun default
-: it got inherited from Shanky-PPL and means, that it overwrites the default
+: it was inherited from Shanky-PPL and means, that it overwrites the default
  bot (without 
 \noun on
 Force).
  
 \noun default
 Though we don't provide a default bot and don't think, that user-defined
- actions should be ignored if they lack the FORCE we kept this keyword to
- stay compatible and because it is nice to read (syntactical suggar).
+ actions should be ignored if they lack the FORCE, we kept this keyword
+ to stay compatible and because it is nice to read (syntactical sugar).
 \end_layout
 
 \begin_layout Section
@@ -284,7 +284,7 @@ when conditions with actions
 \end_layout
 
 \begin_layout Standard
-Once the first open-ended-when-condition gets found all following 
+Once the first open-ended-when-condition is located all following 
 \begin_inset Quotes eld
 \end_inset
 
@@ -443,8 +443,8 @@ WHEN hand$AT
 In principle this is a good idea, but it does not work.
  Simply because there is no way to tell, where one open-ended when-condition
  ends and where the next one starts.
- So the semantic would be completely undefined (it is in fact not, but it
- is for sure not what you want).
+ So the semantics would be completely undefined (it is in fact not, but
+ it is for sure not what you want).
  Sure you could argue about indentation, but spaces have no meaning in most
  programming languages (except good old Fortran 77) and everybody does it
  differently.
@@ -471,9 +471,9 @@ Structure Of A PPL-File
 \end_layout
 
 \begin_layout Standard
-Once you understand how when-conditions work programming your first bot
- becomes easy and straight-forward: you just have to provide a sequence
- of when-conditions for preflop, flop, turn and river.
+Once you understand how when-conditions work, programming your first bot
+ becomes easy and straightforward: you just have to provide a sequence of
+ when-conditions for Preflop, Flop, Turn and River.
  These 4 main code-sections are named f$preflop..f$river, because that's how
  user-defined OpenHoldem symbols get named and from a technical point of
  view these code-sections are functions.
@@ -578,8 +578,8 @@ WHEN Others Fold FORCE
 to the end of every code-section.
  But it does not hurt if you forget to do so.
  If no condition matches the situation OpenHoldem will automatically evaluate
- this function to zero, which is also is the encoding for false, and also
- for check/fold.
+ this function to zero, which is also the encoding for false, and also for
+ check/fold.
 \end_layout
 
 \begin_layout Section*
@@ -614,7 +614,7 @@ advanced
 \begin_inset Quotes erd
 \end_inset
 
- and no standard Shanly-PPL.
+ and not standard Shanky-PPL.
  So we discuss them in later chapters of this manual.
 \end_layout
 

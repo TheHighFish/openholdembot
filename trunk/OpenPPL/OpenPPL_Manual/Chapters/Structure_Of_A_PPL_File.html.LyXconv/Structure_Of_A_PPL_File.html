@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-09-23"/>
+<meta name="create-date" content="2014-12-12"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -30,7 +30,7 @@ The most simple way to code a bot consists of a series of conditions followed by
 
 </div>
 <div class="Indented">
-These conditions get <i>always evaluated top-down</i>. Once the first condition is true, the appropriate action will be taken. Always - so the order of programming matters. Lets assume, that you want to call your flushdraws, but raise to 10bb your nut-flushdraws (expert-strategy 2012). Then you will have to write your commands in the following order:
+These conditions are <i>always evaluated top-down</i>. Once the first condition is true, the appropriate action will be taken. Always! - so the order of programming matters. Let’s assume, that you want to call your flushdraws, but raise to 10bb your nut-flushdraws (expert-strategy 2012). Then you will have to write your commands in the following order:
 </div>
 <div class="Indented">
 <div class="listing">
@@ -41,7 +41,7 @@ WHEN HaveFlushDraw Call FORCE
 
 </div>
 <div class="Indented">
-Do it the other way and your nut-flush-draw would trigger the rule for normal flush-draws. A call would be the result. As a consequence of this top-down-evaluation there follow some recommendations:
+Do it the other way and your nut-flush-draw would trigger the rule for normal flush-draws. A call would be the result. As a consequence of this top-down-evaluation we recommend you deal with:
 </div>
 <ul>
 <li>
@@ -56,7 +56,7 @@ Do it the other way and your nut-flush-draw would trigger the rule for normal fl
 The bot simply does not know if one rule is &ldquo;more special&rdquo; or &ldquo;more important&rdquo; — you have to tell it by your coding order.
 </div>
 <div class="Remark*">
-If you wonder about the keyword <span class="versalitas">force</span>: it got inherited from Shanky-PPL and means, that it overwrites the default bot (without <span class="versalitas">Force). </span>Though we don’t provide a default bot and don’t think, that user-defined actions should be ignored if they lack the FORCE we kept this keyword to stay compatible and because it is nice to read (syntactical suggar).
+If you wonder about the keyword <span class="versalitas">force</span>: it was inherited from Shanky-PPL and means, that it overwrites the default bot (without <span class="versalitas">Force). </span>Though we don’t provide a default bot and don’t think, that user-defined actions should be ignored if they lack the FORCE, we kept this keyword to stay compatible and because it is nice to read (syntactical sugar).
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-2"></a>Open-Ended When Conditions
@@ -87,7 +87,7 @@ Here one part of the condition gets repeated:
 For more sophisticated profiles this would be lots of code to write, lots of code to evaluate and a true nightmare to change once you want to improve it. So OpenPPL provides two kinds of conditions: top-level conditions without actions (called &ldquo;open-ended when-conditions&rdquo;) and simple &ldquo;when conditions with actions&rdquo; like explained above.
 </div>
 <div class="Indented">
-Once the first open-ended-when-condition gets found all following &ldquo;normal&rdquo; when-conditions are bound to that condition and only evaluated when the open-ended when-condition is true. So you could rewrite the example above like that:
+Once the first open-ended-when-condition is located all following &ldquo;normal&rdquo; when-conditions are bound to that condition and only evaluated when the open-ended when-condition is true. So you could rewrite the example above like that:
 </div>
 <div class="Indented">
 <div class="listing">
@@ -140,13 +140,13 @@ Coding this way makes your code smaller, more easy to read and more easy to chan
 
 </div>
 <div class="Indented">
-In principle this is a good idea, but it does not work. Simply because there is no way to tell, where one open-ended when-condition ends and where the next one starts. So the semantic would be completely undefined (it is in fact not, but it is for sure not what you want). Sure you could argue about indentation, but spaces have no meaning in most programming languages (except good old Fortran 77) and everybody does it differently. So let’s restate: There is <i>at most one level of open-ended when-conditions</i> (without action), each one bound to a sequence of when-conditions with actions. If you want to structure your code even more (a very good idea!) then we recommend to look at the chapter &ldquo;Building Symbols On Your Own&rdquo;.
+In principle this is a good idea, but it does not work. Simply because there is no way to tell, where one open-ended when-condition ends and where the next one starts. So the semantics would be completely undefined (it is in fact not, but it is for sure not what you want). Sure you could argue about indentation, but spaces have no meaning in most programming languages (except good old Fortran 77) and everybody does it differently. So let’s restate: There is <i>at most one level of open-ended when-conditions</i> (without action), each one bound to a sequence of when-conditions with actions. If you want to structure your code even more (a very good idea!) then we recommend to look at the chapter &ldquo;Building Symbols On Your Own&rdquo;.
 </div>
 <h2 class="Section-">
 <a class="toc" name="toc-Section--1"></a>Structure Of A PPL-File
 </h2>
 <div class="Unindented">
-Once you understand how when-conditions work programming your first bot becomes easy and straight-forward: you just have to provide a sequence of when-conditions for preflop, flop, turn and river. These 4 main code-sections are named f$preflop..f$river, because that’s how user-defined OpenHoldem symbols get named and from a technical point of view these code-sections are functions.
+Once you understand how when-conditions work, programming your first bot becomes easy and straightforward: you just have to provide a sequence of when-conditions for Preflop, Flop, Turn and River. These 4 main code-sections are named f$preflop..f$river, because that’s how user-defined OpenHoldem symbols get named and from a technical point of view these code-sections are functions.
 </div>
 <div class="Indented">
 <div class="listing">
@@ -181,7 +181,7 @@ It is common practice to add
 
 </div>
 <div class="Indented">
-to the end of every code-section. But it does not hurt if you forget to do so. If no condition matches the situation OpenHoldem will automatically evaluate this function to zero, which is also is the encoding for false, and also for check/fold.
+to the end of every code-section. But it does not hurt if you forget to do so. If no condition matches the situation OpenHoldem will automatically evaluate this function to zero, which is also the encoding for false, and also for check/fold.
 </div>
 <h2 class="Section-">
 <a class="toc" name="toc-Section--3"></a>More Advanced Coding
@@ -199,12 +199,12 @@ user-defined symbols, i.e. named functions, that get defined once and can be use
 
 </ul>
 <div class="Unindented">
-Both of them are very useful, but a little bit &ldquo;advanced&rdquo; and no standard Shanly-PPL. So we discuss them in later chapters of this manual.
+Both of them are very useful, but a little bit &ldquo;advanced&rdquo; and not standard Shanky-PPL. So we discuss them in later chapters of this manual.
 </div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-09-23T13:54:10.133000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-12T11:30:46.302000</span>
 </div>
 </div>
 </body>
