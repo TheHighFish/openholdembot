@@ -627,7 +627,7 @@ betround==2 ? (
 
 //discount draw to 2P that might fill a st8 draw  cider
 (rankloplayer>8 && nrankedcommon==1 && f$rankmidflop>8 && pokerval&onepair
- && nopponents>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
+ && nopponentsplaying>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
 
 (rankloplayer>rankhicommon && rankloplayer>=12 &&
  ( (nsuitedcommon==nsuited)||(nstraightcommon==nstraight) )                   ?
@@ -725,7 +725,7 @@ betround==3 ? ( //************TURN BELOW********************
 
 //discount draw to 2P that might fill a st8 draw  cider
 (rankloplayer>8 && nrankedcommon==1 && f$rankmidflop>8 && pokerval&onepair
- && nopponents>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
+ && nopponentsplaying>1   && !(nsuited>nsuitedcommon)                              ? -1 :0) +
 
 (rankloplayer>rankhicommon && rankloplayer>=12 &&
  ( (nsuitedcommon==nsuited)||(nstraightcommon==nstraight) )                   ?
