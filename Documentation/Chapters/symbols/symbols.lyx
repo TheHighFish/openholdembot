@@ -329,7 +329,7 @@ Limits
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="2">
+<lyxtabular version="3" rows="11" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -418,6 +418,26 @@ the current pre-deal ante requirement
 \begin_inset Text
 
 \begin_layout Plain Layout
+buyin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the tournament buyin in dollars
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 lim
 \end_layout
 
@@ -494,7 +514,7 @@ isfl
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -503,13 +523,34 @@ istournament
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 true if a tournament table is detected.
  This feature works automatically, based on title-strings of the poker-table,
  blind-levels, sum of chips at the table, etc.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isfinaltable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if you play the final table of a MTT, depending on the tablemap region
+ r$c0isfinaltable
 \end_layout
 
 \end_inset
@@ -528,7 +569,7 @@ Hand Rank
 
 \begin_layout Standard
 Handrank rates your hand-value, assuming you go preflop allin against N
- opponents, who hold random cards (N = nopponents).
+ opponents, who hold random cards (N = f$prwin_number_of_opponents).
  A low handrank means.
  your hand is good, a high handrank means, that many holdings are a favourit
  against you.
@@ -655,7 +696,7 @@ handrankp
 \begin_inset Text
 
 \begin_layout Plain Layout
-2652 / (1+nopponents)
+2652 / (1+f$prwin_number_of_opponents)
 \end_layout
 
 \end_inset
@@ -673,15 +714,15 @@ Chairs
 \end_layout
 
 \begin_layout Standard
-Please note that OpenHoldem needs to see a combination of player-cards and
- buttons at the same time to recognize the userchair and start playing.
- Once the position at the table is known OpenHoldem will lock the userchair
- for stability reasons until the session ends.
+Please note OpenHoldem needs to see player-cards in a non-showdown-situation
+ to recognize the userchair and then will lock the chair for stability reasons
+ until the session of the hand (tournaments, where the seat can change)
+ or until the end of the session (cash-game).
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="7" columns="2">
+<lyxtabular version="3" rows="13" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -710,27 +751,6 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-chair
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-your chair number 0-9 ...
- 0 is usually top right
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 userchair
 \end_layout
 
@@ -740,7 +760,7 @@ userchair
 \begin_inset Text
 
 \begin_layout Plain Layout
-user chair number (0-9)
+user chair number (0-9), 0 is usually top right
 \end_layout
 
 \end_inset
@@ -781,6 +801,146 @@ raischair
 
 \begin_layout Plain Layout
 raising chair number (0-9)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+smallblind_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the small-blind (0-9)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+bigblind_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the big-blind (0-9)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cutoff_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the cut-off (0-9)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+firstcaller_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the first caller (0-9), current orbit only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lastcaller_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the last caller (0-9), current orbit only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+firstraiser_chair
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of the first raiser (0-9), current orbit only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+opponent_chair_headsup
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the chair of your single opponent (0-9) if the game is or became headsup
 \end_layout
 
 \end_inset
@@ -1410,7 +1570,7 @@ your balance
 \begin_inset Text
 
 \begin_layout Plain Layout
-originalbalance
+balanceatstartofsession
 \end_layout
 
 \end_inset
@@ -1419,7 +1579,7 @@ originalbalance
 \begin_inset Text
 
 \begin_layout Plain Layout
-your balance at the start of the hand
+your first known balance after OpenHoldem connects to a table
 \end_layout
 
 \end_inset
@@ -2828,7 +2988,7 @@ blind-raisers
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="33" columns="2">
+<lyxtabular version="3" rows="31" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -2847,46 +3007,6 @@ Symbol
 
 \begin_layout Plain Layout
 Meaning
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nopponents
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-f$P function value for the Iterator
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nopponentsmax
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-maximum allowable value for nopponents (1-22 default=9) 
 \end_layout
 
 \end_inset
@@ -3199,7 +3319,7 @@ number of opponents playing with a non-zero current bet equal to the previous
 \begin_inset Text
 
 \begin_layout Plain Layout
-nopponentsraising
+nopponentstruelyraising
 \end_layout
 
 \end_inset
@@ -3209,7 +3329,19 @@ nopponentsraising
 
 \begin_layout Plain Layout
 number of opponents playing with a current bet greater than the previous
- bettor (0-9)
+ bettor (0-9).
+ This symbol counts only people who are truely raising, e,g, more than a
+ big-blind preflop.
+ It does not count people posting antes or blinds like the former WinHoldem
+ symbol 
+\begin_inset Quotes eld
+\end_inset
+
+nopponentsraising
+\begin_inset Quotes erd
+\end_inset
+
+, Also counts the first better postflop.
 \end_layout
 
 \end_inset

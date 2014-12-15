@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-10-01"/>
+<meta name="create-date" content="2014-12-15"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -152,6 +152,15 @@ the current pre-deal ante requirement
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
+buyin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the tournament buyin in dollars
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
 lim
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -195,6 +204,15 @@ true if a tournament table is detected. This feature works automatically, based 
 </td>
 
 </tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfinaltable
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you play the final table of a MTT, depending on the tablemap region r$c0isfinaltable
+</td>
+
+</tr>
 
 </table>
 
@@ -203,7 +221,7 @@ true if a tournament table is detected. This feature works automatically, based 
 <a class="toc" name="toc-Section-4"></a>Hand Rank 
 </h2>
 <div class="Unindented">
-Handrank rates your hand-value, assuming you go preflop allin against N opponents, who hold random cards (N = nopponents). A low handrank means. your hand is good, a high handrank means, that many holdings are a favourit against you. For more info see the chapter about handrank.
+Handrank rates your hand-value, assuming you go preflop allin against N opponents, who hold random cards (N = f$prwin_number_of_opponents). A low handrank means. your hand is good, a high handrank means, that many holdings are a favourit against you. For more info see the chapter about handrank.
 </div>
 <div class="Indented">
 <table>
@@ -257,7 +275,7 @@ your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)
 handrankp
 </td>
 <td align="left" valign="top" style="width: 65%;">
-2652 / (1+nopponents)
+2652 / (1+f$prwin_number_of_opponents)
 </td>
 
 </tr>
@@ -269,7 +287,7 @@ handrankp
 <a class="toc" name="toc-Section-5"></a>Chairs 
 </h2>
 <div class="Unindented">
-Please note that OpenHoldem needs to see a combination of player-cards and buttons at the same time to recognize the userchair and start playing. Once the position at the table is known OpenHoldem will lock the userchair for stability reasons until the session ends.
+Please note OpenHoldem needs to see player-cards in a non-showdown-situation to recognize the userchair and then will lock the chair for stability reasons until the session of the hand (tournaments, where the seat can change) or until the end of the session (cash-game).
 </div>
 <div class="Indented">
 <table>
@@ -284,19 +302,10 @@ Meaning
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-chair
-</td>
-<td align="left" valign="top" style="width: 65%;">
-your chair number 0-9 ... 0 is usually top right
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 userchair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-user chair number (0-9)
+user chair number (0-9), 0 is usually top right
 </td>
 
 </tr>
@@ -315,6 +324,69 @@ raischair
 </td>
 <td align="left" valign="top" style="width: 65%;">
 raising chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+smallblind_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the small-blind (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+bigblind_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the big-blind (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+cutoff_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the cut-off (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+firstcaller_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the first caller (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+lastcaller_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the last caller (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+firstraiser_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the first raiser (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponent_chair_headsup
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of your single opponent (0-9) if the game is or became headsup
 </td>
 
 </tr>
@@ -1278,24 +1350,6 @@ Meaning
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-nopponents
-</td>
-<td align="left" valign="top" style="width: 65%;">
-f$P function value for the Iterator
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-nopponentsmax
-</td>
-<td align="left" valign="top" style="width: 65%;">
-maximum allowable value for nopponents (1-22 default=9) 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 nplayersseated
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -1431,10 +1485,10 @@ number of opponents playing with a non-zero current bet equal to the previous be
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-nopponentsraising
+nopponentstruelyraising
 </td>
 <td align="left" valign="top" style="width: 65%;">
-number of opponents playing with a current bet greater than the previous bettor (0-9)
+number of opponents playing with a current bet greater than the previous bettor (0-9). This symbol counts only people who are truely raising, e,g, more than a big-blind preflop. It does not count people posting antes or blinds like the former WinHoldem symbol &ldquo;nopponentsraising&rdquo;, Also counts the first better postflop.
 </td>
 
 </tr>
@@ -3946,7 +4000,7 @@ Club
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-10-01T19:28:00.767000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-15T07:55:28.706000</span>
 </div>
 </div>
 </body>
