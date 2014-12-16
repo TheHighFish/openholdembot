@@ -18,12 +18,11 @@
 #include "CBetroundCalculator.h"
 #include "NumericalFunctions.h"
 
-class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineRaisersCallers();
 	~CSymbolEngineRaisersCallers();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -31,69 +30,57 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();;
-public:
+ public:
 	int raischair()	{ return _raischair; }
-	int raisbits(int betround)
-	{
+	int raisbits(int betround) {
 		if ((betround >= k_betround_preflop)
-			&& (betround <= k_betround_river))
-		{
+			  && (betround <= k_betround_river)) {
 			return _raisbits[betround];
-		}
-		else
-		{
+		}	else {
 			return k_undefined;
 		}
 	}
-public:
-	int foldbits(int betround)
-	{
+ public:
+	int foldbits(int betround) {
 		if ((betround >= k_betround_preflop)
-			&& (betround <= k_betround_river))
-		{
+			  && (betround <= k_betround_river)) {
 			return _foldbits[betround];
-		}
-		else
-		{
+		}	else {
 			return k_undefined;
 		}
 	}
-public:
-	int callbits(int betround)
-	{
+ public:
+	int callbits(int betround) {
 		if ((betround >= k_betround_preflop)
-			&& (betround <= k_betround_river))
-		{
+			  && (betround <= k_betround_river)) {
 			return _callbits[betround];
-		}
-		else
-		{
+		}	else		{
 			return k_undefined;
 		}
 	}
-public:
+ public:
 	int nplayerscallshort()			{ return _nplayerscallshort; }
 	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
 	int nopponentsbetting()			{ return _nopponentsbetting; }
 	int nopponentsfolded()			{ return _nopponentsfolded; }
 	int nopponentscalling()			{ return _nopponentscalling; }
 	int nopponentschecking()		{ return _nopponentschecking; }
-private:
+ private:
 	void CalculateRaisers();
 	void CalculateCallers();
 	void CalculateFoldBits();
 	void CalculateNOpponentsCheckingBettingFolded();
-private:
+ private:
 	int FirstPossibleRaiser();
 	int LastPossibleRaiser();
-private:
+ private:
 	double RaisersBet();
 	double LastOrbitsLastRaisersBet();
-private:
+ private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
@@ -101,7 +88,7 @@ private:
 	int _nopponentsfolded;
 	int _nopponentscalling;
 	int _nopponentschecking;
-private:
+ private:
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
 	int _raisbits[k_number_of_betrounds + 1];

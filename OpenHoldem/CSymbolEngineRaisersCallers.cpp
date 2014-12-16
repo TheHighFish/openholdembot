@@ -35,8 +35,7 @@ CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 // Some symbols are only well-defined if it is my turn
 #define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = k_undefined; }
 
-CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
-{
+CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -51,22 +50,19 @@ CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers()
 	// there is no dependency on this cycle.
 }
 
-CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers()
-{}
+CSymbolEngineRaisersCallers::~CSymbolEngineRaisersCallers() {
+}
 
-void CSymbolEngineRaisersCallers::InitOnStartup()
-{}
+void CSymbolEngineRaisersCallers::InitOnStartup() {
+}
 
-void CSymbolEngineRaisersCallers::ResetOnConnection()
-{
+void CSymbolEngineRaisersCallers::ResetOnConnection() {
 	ResetOnHandreset();
 }
 
-void CSymbolEngineRaisersCallers::ResetOnHandreset()
-{
+void CSymbolEngineRaisersCallers::ResetOnHandreset() {
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++)
-	{
+	for (int i=k_betround_preflop; i<=k_betround_river; i++) {
 		_callbits[i] = 0;
 		_raisbits[i] = 0;
 		_foldbits[i] = 0;
@@ -80,25 +76,22 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset()
 	_nopponentschecking = 0;
 }
 
-void CSymbolEngineRaisersCallers::ResetOnNewRound()
-{}
+void CSymbolEngineRaisersCallers::ResetOnNewRound() {
+}
 
-void CSymbolEngineRaisersCallers::ResetOnMyTurn()
-{
+void CSymbolEngineRaisersCallers::ResetOnMyTurn() {
 	CalculateRaisers();
 	CalculateCallers();
 }
 
-void CSymbolEngineRaisersCallers::ResetOnHeartbeat()
-{
+void CSymbolEngineRaisersCallers::ResetOnHeartbeat() {
 	CalculateNOpponentsCheckingBettingFolded();
 	CalculateFoldBits();
 }
 
-double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
-{
+double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet() {
 	// Not yet acted: 0
-	if (p_symbol_engine_history->DidAct()) {
+	if (!p_symbol_engine_history->DidAct()) {
     if (p_betround_calculator->betround() == k_betround_preflop) {
       // Preflop:
       // Start with big blind and forget about former blind raisers
@@ -108,8 +101,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet()
 		  return 0.0;
     }
 	}
-	if (p_table_state->User()->HasKnownCards())
-	{
+	if (p_table_state->User()->HasKnownCards())	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)
 		return p_scraper->player_bet(USER_CHAIR);
@@ -124,15 +116,16 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		// There are no bets and raises.
 		// Skip the calculations to keep the raischair of the previous round.
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
+    write_log(preferences.debug_symbolengine(), 
+      "[CSymbolEngineRaisersCallers] No bet to call, therefore no raises\n");
 		return;
 	}
 	// Raischair, nopponentstruelyraising, raisbits
-	//
 	int first_possible_raiser = FirstPossibleRaiser();
 	int last_possible_raiser  = LastPossibleRaiser();
 	double highest_bet = LastOrbitsLastRaisersBet();
-  write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Searching for raisers from chair %i to %i with a bet higher than %s\n",
-		first_possible_raiser, last_possible_raiser, Number2CString(highest_bet)); 
+  write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
+		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
 		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
@@ -153,7 +146,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
         "[CSymbolEngineRaisersCallers] chair %d is not raising\n", chair);
       continue;
     } else if ((p_betround_calculator->betround() == k_betround_preflop)
-				&& (highest_bet <= p_symbol_engine_tablelimits->bblind())) {
+				&& (current_players_bet <= p_symbol_engine_tablelimits->bblind())) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisersCallers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
       continue;

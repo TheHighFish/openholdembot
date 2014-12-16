@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineChipAmounts.h"
 
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
@@ -184,6 +185,8 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	} else {
 		_call = 0;
 	}
+  write_log(preferences.debug_symbolengine(),
+    "[CSymbolEngineChipAmounts] call = %.2f\n", _call);
   // In case we are covered consider only the effective amount to call,
   // but onlz if our balance is reasonable.
   double balance = p_table_state->User()->_balance;

@@ -1,8 +1,20 @@
-v7.3.1 2014-12-xx
+v7.3.1 2014-12-15
 ==================
-MAINTENANCE:
-- More improvements for the replay-frame-controller (on my turn)
+BUG FIXES:
+- Fix for the replay-frame-controller (on my turn)
   [Moby]
+- There still was a problem with nopponentstruelyraising
+  that also affected Raises. This has now been fixed.
+  Thanks to Beutel for providing replay-frames and TM ro reproduce the problem.
+  [THF]
+
+MAINTENANCE:
+- Reversed order of scraping cardbacks (now first) and nocard (now 2nd)
+  for casinos that have cardbacks and cardfaces at different places.
+  Thanks to Pawko for his detailed explanations and replay-frames.
+  [THF]
+- Correcting the OpenPPL-manual.
+  [Chucksta]
 
 v7.3.1 2014-12-11
 ==================
@@ -133,7 +145,7 @@ NEW STUFF:
 - Support for PokerTracker 4.
   OpenHoldem, PokerTracker_Query_Definitions.DLL and all symbols
   will now work with PT4 out of the box.
-  In case you are an user of Pt3: the old-DLL is still compatible
+  In case you are an user of Pt3: the old DLL is still compatible
   and can be found at https://sites.google.com/site/openholdempokerbot/downloads/.
   Future development wil concentrate on PT4, as PT3 is outdated
   and no longer officially supported.
@@ -148,7 +160,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Added a selftest-module for parser and evaluator
-  that helps us to detect bugs that get indtroduced by changes/bug-fixes
+  that helps us to detect bugs that get introduced by changes/bug-fixes
   as early as possible.
   [THF]
 
