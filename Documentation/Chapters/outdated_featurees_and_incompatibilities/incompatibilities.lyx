@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -179,7 +188,7 @@ The function f$play has been a quite messy concept to handle sitting in,
  sitting out and leaving the table.
  Some extra coution was necessary to avoid multiple button-clicks within
  a short time-frame on identical or outdated game-states.
- With OpenHoldem 2.2.0 f$play got replaced by three indivudal functions: f$sitin,
+ With OpenHoldem 4.0.0 f$play got replaced by three indivudal functions: f$sitin,
  f$sitout and f$leave, which get executed exactly once every 4 seconds.
  Furthermore we added a f$close-function to click the [x] in the titlebar
  of a window if the user desires to leave a table.
@@ -206,7 +215,7 @@ stated wager
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="2">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="65text%">
 <column alignment="left" valignment="top" width="65text%">
 <row>
@@ -382,7 +391,7 @@ the difference between the two largest unique wagers
 
 \begin_layout Standard
 All these computations had to be done by the user at the formula level.
- With OpenHoldem 2.2.0 this mess got replaced by a single function f$betsize
+ With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize
  and OpenHoldem cares about all the rest automatically (depending on the
  swagtextmethod specified in your tablemap, but that is all work that's
  left).
@@ -453,15 +462,14 @@ Outdated Symbols
 \begin_layout Standard
 OpenHoldem is now half a dozen years old.
  During these long period of usage it became noticeable that some symbols
- and features of WinHoldem were hardly (if ever) had its flaws.
- Some were unnecessary (risk of ruin), some unusable, some undocumented
- (versus2), some even undesired.
+ and features of WinHoldem were unnecessary (risk of ruin), some others
+ unusable, some undocumented (versus2), and some even undesired.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="63" columns="3">
-<features tabularvalignment="middle">
+<lyxtabular version="3" rows="64" columns="3">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="30page%">
 <column alignment="center" valignment="top" width="30page%">
 <column alignment="left" valignment="top" width="30page%">
@@ -531,21 +539,14 @@ friend
 \end_inset
 
 .
- The other friend symbols (with the same restricted meaning) got from the
- code-base in OpenHoldem
+ The last friend symbols (with the same restricted meaning) got removed
+ from the code-base in OpenHoldem
 \begin_inset space ~
 \end_inset
 
-2.2.0.
-\begin_inset VSpace defskip
-\end_inset
-
-Finally removed friend-symbols completely in OpenHoldem
-\begin_inset space ~
-\end_inset
-
-4.0.0, as OpenHoldem does not support any kind of collusion.
- We don't want that shit, not even for backward-compatibility to WinHoldem.
+4.0.0.
+ We simply don't want that sh**, not even for backward-compatibility to
+ WinHoldem.
 \end_layout
 
 \end_inset
@@ -777,7 +778,7 @@ Autoplayer delay in milliseconds between alli slider jam and button click
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -823,7 +824,7 @@ Default: 3
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -859,7 +860,7 @@ true if your hand is in list 0
 The list symbols below seem to be mis-conceptions by WinHoldems author and
  --- to our best knowledge --- have never been used in any serious poker
  bot.
- They finally got removed from the code base in version 2.2.0 of OpenHoldem.
+ They finally got removed from the code base in version 4.0.0 of OpenHoldem.
 \end_layout
 
 \end_inset
@@ -1092,9 +1093,21 @@ the site hand number if available
 
 \begin_layout Plain Layout
 Removing formula symbol "handnumber" for various reasons from the formula
- level: * there is no need for it at the formula level.
- * it may contain characters and therefore doesn't fit into a double.
- * its length may exceed the precision of double.
+ level: 
+\end_layout
+
+\begin_layout Itemize
+there is no need for it at the formula level.
+ 
+\end_layout
+
+\begin_layout Itemize
+it may contain characters and therefore doesn't fit into a double.
+ 
+\end_layout
+
+\begin_layout Itemize
+its length may exceed the precision of double.
  "Handnumber" gets now used only internally to trigger handresets.
 \end_layout
 
@@ -1362,7 +1375,7 @@ the user defined, real world bankroll
 \begin_inset Text
 
 \begin_layout Plain Layout
-Removed, as these symbols have rarely been used ans should better get handled
+Removed, as these symbols have rarely been used and should better get handled
  by a user-defined formula.
 \end_layout
 
@@ -1619,7 +1632,7 @@ number of CPU clocks since the last screen scrape
 \begin_inset Text
 
 \begin_layout Plain Layout
-!!!
+Useless information and always a fraction of a second
 \end_layout
 
 \end_inset
@@ -1663,12 +1676,53 @@ nclockspersecond
 \uwave off
 \noun off
 \color none
-number of CPU clocks per second ncps number of CPU clocks per second
+number of CPU clocks per second 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Simply never used
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ncps
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+synonym for 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+nclockspersecond
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1862,11 +1916,11 @@ isbring
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-!!! Removed, because there is no need for them at the formula-level
+Removed, because there is no need for that info at the formula-level
 \end_layout
 
 \end_inset
@@ -1915,7 +1969,7 @@ true if you're in manual mode, false otherwise
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="4" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2022,7 +2076,7 @@ randomround1 ...
 \uwave off
 \noun off
 \color none
-random number between (0.000-1.000) for round 1 - 4.
+random number between [0.000-1.000) for round 1 - 4.
  Value is calculated only once in that round.
  
 \end_layout
@@ -3102,8 +3156,8 @@ Tablepoints got removed, because nobody used them.
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="1" columns="2">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
 <column alignment="left" valignment="top" width="65text%">
 <row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
@@ -3192,9 +3246,9 @@ Some supporting functions and symbols for the PrWin-simulations got renamed
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="2">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0pt">
-<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text

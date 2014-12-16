@@ -1,52 +1,81 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Chapter
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -86,7 +115,7 @@ http://www.pokertracker.com
 Assuming you have a working Poker Tracker installation, let’s move on to
  getting OpenHoldem to work with your Poker Tracker database.
  OpenHoldem only works with 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -96,7 +125,7 @@ PostgreSQL
 \end_inset
 
 PostgreSQL databases, not with 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -129,7 +158,7 @@ After all of that is configured, you can use the settings in {Preferences}
 
 \begin_layout Standard
 When connected, OpenHoldem will query the database using the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -139,7 +168,7 @@ sitename
 \end_inset
 
 sitename and 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -149,7 +178,7 @@ playername
 \end_inset
 
 playername as key parameters for the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -162,7 +191,7 @@ query and return stats ...symbols ...reference!!!
 \end_layout
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -179,7 +208,7 @@ Everything in Poker Tracker is first organized by what it calls a “site
  id”.
  When querying the database, the first thing OpenHoldem will try to do is
  associate your sitename or 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -189,7 +218,7 @@ network-name
 \end_inset
 
 network, as specified in the Table Map, to a Poker Tracker “
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -220,22 +249,32 @@ As a note, the sitename string is searched first, and if a match cannot
  
 \end_layout
 
-\begin_layout Subsection
-Version 2 list
+\begin_layout Itemize
+Stars
 \end_layout
 
-\begin_layout Standard
-"Stars", "Party", "Ultimate", "Absolute", "Microgaming", "Ongame", "Cryptologic"
-, "Pacific", "FullTilt", "B2B", "Tribeca", "Worldpex", "iPoker", "Tain",
- "Bodog", "Everest", "Boss", "Betfair"
+\begin_layout Itemize
+Party
 \end_layout
 
-\begin_layout Subsection
-Version 3 list 
+\begin_layout Itemize
+FullTilt
 \end_layout
 
-\begin_layout Standard
-"Stars", “Party", “FullTilt”, “iPoker", "Everest”, "Ongame" !!!
+\begin_layout Itemize
+iPoker
+\end_layout
+
+\begin_layout Itemize
+Everest
+\end_layout
+
+\begin_layout Itemize
+Ongame
+\end_layout
+
+\begin_layout Itemize
+!!!!!
 \end_layout
 
 \begin_layout Section
