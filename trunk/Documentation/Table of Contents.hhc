@@ -245,10 +245,6 @@
 				<param name="Local" value="Chapters\preferences\Preferences.html.LyXconv\Preferences.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Analyzer">
-				<param name="Local" value="Chapters\preferences\Analyzer.html.LyXconv\Analyzer.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Autoconnector">
 				<param name="Local" value="Chapters\preferences\Autoconnector.html.LyXconv\Autoconnector.html">
 				</OBJECT>
@@ -273,23 +269,15 @@
 				<param name="Local" value="Chapters\preferences\GUI.html.LyXconv\GUI.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="ICM">
-				<param name="Local" value="Chapters\preferences\ICM.html.LyXconv\ICM.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Logging">
 				<param name="Local" value="Chapters\preferences\Logging.html.LyXconv\Logging.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Obscure Preferences">
-				<param name="Local" value="Chapters\preferences\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Perl">
 				<param name="Local" value="Chapters\preferences\Perl.html.LyXconv\Perl.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="PokerTracker">
+				<param name="Name" value="PokerTracker v4">
 				<param name="Local" value="Chapters\preferences\PokerTracker.html.LyXconv\PokerTracker.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
@@ -305,8 +293,8 @@
 				<param name="Local" value="Chapters\preferences\Scraper.html.LyXconv\Scraper.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Symbols">
-				<param name="Local" value="Chapters\preferences\Symbols.html.LyXconv\Symbols.html">
+				<param name="Name" value="Stealth">
+				<param name="Local" value="Chapters\preferences\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Validator">
@@ -348,7 +336,7 @@
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Chat">
+			<param name="Name" value="Various">
 			<param name="Local" value="Chapters\chat\chat_title.html.LyXconv\chat_title.html">
 			</OBJECT>
 		<UL>
@@ -356,12 +344,6 @@
 				<param name="Name" value="Chat">
 				<param name="Local" value="Chapters\chat\Chat.html.LyXconv\chat.html">
 				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Validator">
-			<param name="Local" value="Chapters\validator\validator_title.html.LyXconv\validator_title.html">
-			</OBJECT>
-		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Validator">
 				<param name="Local" value="Chapters\validator\Validator.html.LyXconv\Validator.html">
@@ -464,16 +446,6 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Perl">
-			<param name="Local" value="Chapters\perl\perl_title.html.LyXconv\perl_title.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Perl">
-				<param name="Local" value="Chapters\perl\Perl.html.LyXconv\Perl.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="User-DLL">
 			<param name="Local" value="Chapters\dll\dll_title.html.LyXconv\dll_title.html">
 			</OBJECT>
@@ -508,6 +480,10 @@
 				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
 				</OBJECT>
 		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Perl">
+			<param name="Local" value="Chapters\perl\Perl.html.LyXconv\Perl.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Advanced Topics">
@@ -632,11 +608,11 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Contributing to the Manual">
-			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.html.LyXconv\contributing_to_the_manual.html">
+			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.xhtml">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Outdated Features and known Incompatibilities">
-			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.html.LyXconv\incompatibilities.html">
+			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.xhtml">
 			</OBJECT>
 	</UL>
 </UL>

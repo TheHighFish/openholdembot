@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,40 +9,67 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -57,35 +84,33 @@ This chapter contains a detailed explanation of the MyHand-symbols, written
 \noun on
 SNGChamp
 \noun default
- for the Wiki (
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:
-Symbols:mh_str_explained
-\end_layout
-
-\end_inset
-
-).
-\end_layout
-
-\begin_layout Standard
-The MyHand-symbols originally have been developed by 
+ for the Wiki.
+ The MyHand-symbols originally have been developed by 
 \noun on
 Winngy
 \noun default
  for a fixed-limit-bot (playing $5/$10) and later contributed to OpenHoldem.
- Basically, the mh_str-symbols (e.g.
- mh_str_twopair) return a relative ranking of your hand (hole and common)
- from 1 to 5, but they can be discounted up to 3 points depending on the
- board-texture.
+ Basically, the f$mh_str-symbols (e.g.
+ f$mh_str_twopair) return a relative ranking of your hand (hole and common)
+ from 1 (weak) to 5 (strong), but they can be discounted up to 3 points
+ depending on the board-texture.
+ The handstrength symbols are a separate library in text-format and can
+ be downloaded from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+TODO!!!!!
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
-mh_str_onepair
+f$mh_str_onepair
 \end_layout
 
 \begin_layout Itemize
@@ -184,7 +209,7 @@ If the board shows 3 or 4 suited cards OR if the board shows 4 connecting
 \end_layout
 
 \begin_layout Subsection
-mh_str_twopair
+f$mh_str_twopair
 \end_layout
 
 \begin_layout Itemize
@@ -233,7 +258,7 @@ If the board shows 3 or 4 suited cards OR if the board shows 4 connecting
 \end_layout
 
 \begin_layout Subsection
-mh_str_trips
+f$mh_str_trips
 \end_layout
 
 \begin_layout Itemize
@@ -288,7 +313,7 @@ If the board shows 3 or 4 suited cards OR if the board shows 4 connecting
 \end_layout
 
 \begin_layout Subsection
-mh_str_straight
+f$mh_str_straight
 \end_layout
 
 \begin_layout Itemize
@@ -406,7 +431,7 @@ StraightDiscount is negated if there is a good draw (+1)
 \end_layout
 
 \begin_layout Subsection
-mh_str_flush
+f$mh_str_flush
 \end_layout
 
 \begin_layout Itemize
@@ -451,7 +476,7 @@ If the board shows two pair, the strength value is reduced by 2.
 \end_layout
 
 \begin_layout Subsection
-mh_str_fullhouse
+f$mh_str_fullhouse
 \end_layout
 
 \begin_layout Itemize
@@ -540,7 +565,7 @@ mh_str_fullhouse
 \end_layout
 
 \begin_layout Subsection
-mh_str_quads
+f$mh_str_quads
 \end_layout
 
 \begin_layout Itemize
@@ -568,7 +593,7 @@ mh_str_quads
 \end_layout
 
 \begin_layout Subsection
-mh_str_strflush
+f$mh_str_strflush
 \end_layout
 
 \begin_layout Itemize
