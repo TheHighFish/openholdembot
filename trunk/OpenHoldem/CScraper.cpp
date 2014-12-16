@@ -521,14 +521,14 @@ int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
 
 int CScraper::ScrapeCardback(CString base_name) {
   if (base_name[0] == 'p')	{
-	CString cardback = base_name.Left(2) + "cardback";
-	CString cardback_result;
-	if (EvaluateRegion(cardback, &cardback_result)) {
-	  if ((cardback_result == "cardback")
-	      || (cardback_result == "true")) {
-		return CARD_BACK;
+	  CString cardback = base_name.Left(2) + "cardback";
+	  CString cardback_result;
+	  if (EvaluateRegion(cardback, &cardback_result)) {
+	    if ((cardback_result == "cardback")
+	        || (cardback_result == "true")) {
+		    return CARD_BACK;
+	    }
 	  }
-	}
   }
   return CARD_UNDEFINED;
 }
@@ -553,9 +553,16 @@ int CScraper::ScrapeNoCard(CString base_name){
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
 	__TRACE
-  // First try to scrape "no card"
-  int result = ScrapeNoCard(name);
-  if (result != CARD_UNDEFINED) return result;
+  // First: in case of player cards try to scrape card-backs
+  // This hasd to be the very first one,
+  // because some casinos use different locations for cardbacks and cards
+  // which would cause problems for the nocard-regioms
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17960
+  int result = ScrapeCardback(name);
+  if (result == CARD_BACK) return CARD_BACK;
+  // Then try to scrape "no card"
+  result = ScrapeNoCard(name);
+  if (result == CARD_NOCARD) return CARD_NOCARD;
 	// Then scrape "normal" cards (cardfaces) according to the specification
 	result = ScrapeCardface(name);
   if (result != CARD_UNDEFINED) return result;
@@ -568,9 +575,6 @@ int CScraper::ScrapeCard(CString name) {
 		uname.SetAt(0, 'u');
 	}
   result = ScrapeCardface(uname);
-  if (result != CARD_UNDEFINED) return result;
-	// Finally: in case of player cards try to scrape card-backs
-  result = ScrapeCardback(name);
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
   /*

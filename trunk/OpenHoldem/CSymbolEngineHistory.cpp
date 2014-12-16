@@ -19,6 +19,8 @@
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineTableLimits.h"
+#include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
@@ -58,13 +60,13 @@ const char* const k_hist_sym_strings[k_hist_sym_count] = {
 	"srankloplayer", "sranklopoker", 
 };
 
-CSymbolEngineHistory::CSymbolEngineHistory()
-{
+CSymbolEngineHistory::CSymbolEngineHistory() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
+  assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
   // Making sure that _hist_sym_count is correct,
 	// to avoid array overflows later if we remove symbols
@@ -73,16 +75,13 @@ CSymbolEngineHistory::CSymbolEngineHistory()
 	assert(k_hist_sym_strings[k_hist_sym_count - 1] != NULL);
 }
 
-CSymbolEngineHistory::~CSymbolEngineHistory()
-{}
+CSymbolEngineHistory::~CSymbolEngineHistory() {}
 
-void CSymbolEngineHistory::InitOnStartup()
-{
+void CSymbolEngineHistory::InitOnStartup() {
 	ResetOnConnection();
 }
 
-void CSymbolEngineHistory::ResetOnConnection()
-{
+void CSymbolEngineHistory::ResetOnConnection() {
 	ResetOnHandreset();
 }
 
@@ -102,8 +101,8 @@ void CSymbolEngineHistory::ResetOnHandreset() {
 	}
 }
 
-void CSymbolEngineHistory::ResetOnNewRound()
-{}
+void CSymbolEngineHistory::ResetOnNewRound() {
+}
 
 void CSymbolEngineHistory::ResetOnMyTurn() {
 	__TRACE
@@ -117,18 +116,15 @@ void CSymbolEngineHistory::ResetOnMyTurn() {
 	}
 }
 
-void CSymbolEngineHistory::ResetOnHeartbeat()
-{
+void CSymbolEngineHistory::ResetOnHeartbeat() {
 	CalculateHistory();
 }
 
-void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
-{
+void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code) {
 	AssertRange(autoplayer_action_code, k_autoplayer_function_beep,
 		k_autoplayer_function_fold);
 	// Nothing to do of the "action" was "beep".
-	if (autoplayer_action_code == k_autoplayer_function_beep) 
-	{
+	if (autoplayer_action_code == k_autoplayer_function_beep) {
 		return;
 	}
 	// Special handling for check/call
@@ -139,23 +135,17 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 	// Therefore we set "_prevaction", "didchec", "didcall" here 
 	// depending on the amount to call.
 	if ((autoplayer_action_code == k_autoplayer_function_call)
-		|| (autoplayer_action_code == k_autoplayer_function_check))
-	{
-		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0))
-		{
+		  || (autoplayer_action_code == k_autoplayer_function_check)) {
+		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0)) {
 			// It was free to check
 			_autoplayer_actions[BETROUND][k_autoplayer_function_check]++;
 			SetPrevaction(k_autoplayer_function_check);
-		}
-		else
-		{
+		}	else {
 			// There was name positive amount to call
 			_autoplayer_actions[BETROUND][k_autoplayer_function_call]++;
 			SetPrevaction(k_autoplayer_function_call);	
 		}
-	}
-	else
-	{
+	}	else {
 		_autoplayer_actions[BETROUND][autoplayer_action_code]++;
 		SetPrevaction(autoplayer_action_code);
 	}
@@ -163,10 +153,8 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code)
 
 // Attention: SetPrevaction takes an OH-autoplayer-constant as input,
 // but needs to translate it to an old-style Winholdem-prevaction-constant
-void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code)
-{
-	switch (autoplayer_action_code)
-	{
+void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
+	switch (autoplayer_action_code)	{
 		case k_autoplayer_function_allin:
 			_prevaction = k_prevaction_allin;
 			break;
@@ -200,37 +188,28 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code)
 	};
 }
 
-void CSymbolEngineHistory::CalculateHistory()
-{
-	if (_nplayersround[BETROUND] == 0)
-	{
+void CSymbolEngineHistory::CalculateHistory() {
+	if (_nplayersround[BETROUND] == 0) {
 		_nplayersround[BETROUND] = 
 			p_symbol_engine_active_dealt_playing->nplayersplaying();
 	}
-
-	double maxbet = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+  double maxbet = 0.0;
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		// Be careful: in some cases it might be that name user folds,
 		// but "Fold" gets displayed where formerly his bet got displayed.
 		// This may lead to ugly mis-scrapes, that's why he have to check
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i))
-		{
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
 			double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
-
-	double bet = MAX(p_symbol_engine_tablelimits->bet(), p_symbol_engine_tablelimits->bblind());
-	if (bet > 0)
-	{
+  double bet = MAX(p_symbol_engine_tablelimits->bet(), p_symbol_engine_tablelimits->bblind());
+	if (bet > 0) {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
 }
@@ -302,23 +281,27 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	return true;
 }
 
-bool CSymbolEngineHistory::DidAct()
-{
+bool CSymbolEngineHistory::DidAct() {
+  // Extra pre-caution for preflop, in case of failed hand-reset,
+  // including another extra fail-safe for unknown big-blind
+  if ((BETROUND == k_betround_preflop)
+      && p_symbol_engine_userchair->userchair_confirmed()
+      && ((p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) < p_symbol_engine_tablelimits->bblind())
+        || (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) == 0))) {
+    return false;
+  }
+  // Otherwise: return "normal" value, depending on didswag, didrais, ...
 	return DidAct(BETROUND);
 }
 
-bool CSymbolEngineHistory::DidAct(int betround)
-{
-	if (!p_symbol_engine_userchair->userchair_confirmed())
-	{
+bool CSymbolEngineHistory::DidAct(int betround) {
+	if (!p_symbol_engine_userchair->userchair_confirmed()) {
 		return false;
 	}
 	// Not considering fold or allin, because the game would be over.
 	return (didchec(betround) || didcall(betround) 
 		|| didswag(betround) || didrais(betround));
 }
-
-
 
 CString CSymbolEngineHistory::SymbolsProvided() {
   CString list = "didchec didcall didrais didswag "
