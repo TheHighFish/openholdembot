@@ -14,6 +14,8 @@
 #include "stdafx.h"
 #include "CBlindLevels.h"
 
+#include "CPreferences.h"
+
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
 const int kNumberOfBlindLevels    = 187;
@@ -226,6 +228,8 @@ bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindLevels] Perfect match found\n");
   return true;
 }
 
@@ -234,9 +238,19 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
     const double sblind, 
     const double bblind, 
     const double bbet) {
-  if ((sblind > 0) && (sblind == kBlindLevels[level][0])) return true;                                      
-  if ((bblind > 0) && (bblind == kBlindLevels[level][1])) return true;  
-  if ((bbet   > 0) && (bbet   == kBlindLevels[level][2])) return true;  
+  bool success = false;
+  if ((sblind > 0) && (sblind == kBlindLevels[level][0])) {
+    success = true;
+  } else if ((bblind > 0) && (bblind == kBlindLevels[level][1])) {
+    success = true;
+  } else if ((bbet   > 0) && (bbet   == kBlindLevels[level][2]))  {
+    success = true;
+  } 
+  if (success) {
+    write_log(preferences.debug_table_limits(), 
+      "[CBlindLevels] Partial match found\n");
+    return true;
+  }
   return false;
 }
 
@@ -244,14 +258,24 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
 // Output: guessed levels
 // Return: true if success, otherwise false
 bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double *bbet) {
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindLevels] Trying to find best matching blind-level for %.2f / %.2f / %.2f\n",
+    *sblind, *bblind, *bbet);
   // Complete fail first: nothing to guess
-  if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0)) return false;
+  if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0)) {
+    write_log(preferences.debug_table_limits(), 
+      "[CBlindLevels] No match because of bad input\n");
+    return false;
+  }
   // Guessing...
   for (int i=0; i<kNumberOfBlindLevels; ++i) {
     if (BlindsMatchBlindLevelPerfectly(i, *sblind, *bblind, *bbet)) {
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
+      write_log(preferences.debug_table_limits(), 
+        "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
+        *sblind, *bblind, *bbet);
       return true; 
     }
   }
@@ -260,12 +284,17 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
+      write_log(preferences.debug_table_limits(), 
+        "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
+        *sblind, *bblind, *bbet);
       return true; 
     }
   }
   // Nothing found
   // Keep everything as is.
   // Then another module can take these values and guess
+  write_log(preferences.debug_table_limits(), 
+      "[CBlindLevels] No match. Another module shall guess,\n");
   return false;
 }
 
@@ -275,11 +304,17 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
   // Highest bblind first
   if ((guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
       && (guessed_blind <= kBlindLevels[kLastBlindLevel][1])) {
+    write_log(preferences.debug_table_limits(), 
+      "[CBlindLevels] Best match for %.2f -> %.2f\n",
+      guessed_blind, kBlindLevels[kLastBlindLevel][1]);
     return kBlindLevels[kLastBlindLevel][1];
   }
   // Then all small blinds downwards
   for (int i=kLastBlindLevel; i>=0; ++i) {
     if (guessed_blind <= kBlindLevels[i][0]) {
+      write_log(preferences.debug_table_limits(), 
+        "[CBlindLevels] Best match for %.2f -> %.2f\n",
+        guessed_blind, kBlindLevels[i][0]);
       return kBlindLevels[i][0];
     }
   }
