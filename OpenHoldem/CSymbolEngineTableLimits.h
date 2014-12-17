@@ -61,7 +61,7 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
  public:
 	CString GetGametypeAsString();
  private:
-  bool TableLimitsNeedToBeGuessed();
+  bool TableLimitsNeedToBeComputed();
  private:
 	void SetSmallBlind(double small_blind);
 	void SetBigBlind(double big_blind);
@@ -76,19 +76,8 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	void AutoLockBlinds();
 	void AutoLockBlindsForCurrentHand();
 	void AutoLockBlindsForCashgamesAfterNHands();
-	bool ReasonableBlindsForCurrentHand();
 	void RememberBlindsForCashgames();
 	bool IsCalculationNeccessary();
-	void CalcTableLimits_NL_PL();
-	void CalcTableLimits_FL_AndUnknownGametype();
-	void SwapBlindsIfSbGreaterThanBBAndNotZero();
-	void SearchTableForSbAndBbValue();
-	void CalcBetsizesForEveryStreet();
-	void AcceptNewValuesIfGood();
-	double GuessSmallBlindFromBigBlind();
-	double GuessBigBlindFromSmallBlind();
-	double GuessBigBetFromBigBlind();
-	void AdjustForReasonableness();
   STableLimit BestTableLimitsToBeUsed();
 	// private data members
  private:
