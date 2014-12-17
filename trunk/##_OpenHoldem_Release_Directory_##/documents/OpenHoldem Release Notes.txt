@@ -1,4 +1,4 @@
-v7.3.1 2014-12-15
+v7.3.2 2014-12-15
 ==================
 BUG FIXES:
 - Fix for the replay-frame-controller (on my turn)
