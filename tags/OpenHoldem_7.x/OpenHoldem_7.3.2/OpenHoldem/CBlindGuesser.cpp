@@ -1,0 +1,216 @@
+//****************************************************************************** 
+//
+// This file is part of the OpenHoldem project
+//   Download page:         http://code.google.com/p/openholdembot/
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+//****************************************************************************** 
+//
+// Purpose: first guess of blind values for CTableLimits,
+//   which might be overridden bz blind-locking.
+//
+//****************************************************************************** 
+
+#include "stdafx.h"
+#include "CBlindGuesser.h"
+
+#include "CBlindLevels.h"
+#include "CPreferences.h"
+#include "CScraper.h"
+#include "CSymbolEngineHistory.h"
+#include "CTableState.h"
+
+CBlindGuesser::CBlindGuesser() {
+}
+
+CBlindGuesser::~CBlindGuesser() {
+}
+
+// All parameters are out-parameters only
+void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet) {
+  // No debug-messages needed here. Subroutines log enough.
+  GetFirstBlindDataFromScraper(sblind, bblind, bbet);
+  // Take what we have and check the blinds on the list of known levels
+  // (either complete or partial match)
+  if (_blind_levels.BestMatchingBlindLevel(sblind, bblind, bbet)) {
+    return;
+  }
+  if (CompletePartiallyKnownBlinds(sblind, bblind, bbet)) {
+    return;
+  }
+  // Missing input.
+  // We have to guess everything from the table
+  // And then again try to verify/complete the data.
+  GetFirstBlindDataFromBetsAtTheTable(sblind, bblind, bbet);
+  if (_blind_levels.BestMatchingBlindLevel(sblind, bblind, bbet)) {
+    return;
+  }
+  if (CompletePartiallyKnownBlinds(sblind, bblind, bbet)) {
+    return;
+  }
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Complete failure\n");
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Assuming lowest level: 0.01 / 0.02 / 0.04\n");
+  *sblind = 0.01;
+  *bblind = 0.02;
+  *bbet   = 0.04;
+}
+
+bool CBlindGuesser::CompletePartiallyKnownBlinds(double *sblind, 
+                                                 double *bblind, 
+                                                 double *bbet) {
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] CompletePartiallyKnownBlinds %.2f / %.2f / %.2f\n",
+    *sblind, *bblind, *bbet);
+  // Not on the list, potentially still ok.
+  // But we have to do some guess-work
+  if (SBlindBBlindCombinationReasonable(*sblind, *bblind)
+      && SBlindBBetCombinationReasonable(*sblind, *bbet)
+      && BBlindBBetCombinationReasonable(*bblind, *bbet)) {
+    // This looks VERY reasonable
+    // keep everything as is.
+  } // else if...
+  // Otherwise: take just 2 values to guess the 3rd one,
+  // starting with sblind, bblind, which we mostly should know.
+  else if (SBlindBBlindCombinationReasonable(*sblind, *bblind)) {
+    *bbet =  2 * *bblind;
+  } else if (SBlindBBetCombinationReasonable(*sblind, *bbet)) {
+    *bblind =  ReasonableLookingHalfBlindValue(*bbet);
+  } else if (BBlindBBetCombinationReasonable(*bblind, *bbet)) {
+    *sblind = ReasonableLookingHalfBlindValue(*bblind);
+  } // else if...
+  // Finally: Take 1 value to guess all the rest,
+  // starting with bblind, which we usually know
+  else if (*bblind >= 0.02) {
+    *sblind = ReasonableLookingHalfBlindValue(*bblind);
+    *bbet   = 2 * *bblind;
+  } else if (*bbet >= 0.04) {
+    *bblind = ReasonableLookingHalfBlindValue(*bbet);
+    *sblind = ReasonableLookingHalfBlindValue(*bblind);
+  } else if (*sblind >= 0.01) {
+    *bblind = 2 * *sblind;
+    *bbet   = 2 * *bblind;
+  } else {
+    write_log(preferences.debug_table_limits(), 
+      "[CBlindGuesser] Can't complete blinds because of bad input\n");
+    return false;
+  }
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Blinds completed to %.2f / %.2f / %.2f\n",
+    *sblind, *bblind, *bbet);
+  return true;
+}
+
+bool CBlindGuesser::SBlindBBlindCombinationReasonable(double sblind, double bblind) {
+  if (sblind <= 0.00) return false;
+  if (bblind <= 0.00) return false;
+  if (sblind < 0.40 * bblind) return false;
+  if (sblind > 0.50 * bblind) return false;
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] SBlindBBlindCombinationReasonable(%.2f, %.2f)\n",
+    sblind, bblind);
+  return true;
+}
+
+bool CBlindGuesser::SBlindBBetCombinationReasonable(double sblind, double bbet) {
+  if (sblind <= 0.00) return false;
+  if (bbet   <= 0.00) return false;
+  if (sblind < 0.20 * bbet) return false;
+  if (sblind > 0.25 * bbet) return false;
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] SBlindBBetCombinationReasonable(%.2f, %.2f)\n",
+    sblind, bbet);
+  return true;
+}
+
+bool CBlindGuesser::BBlindBBetCombinationReasonable(double bblind, double bbet) {
+  if (bblind <= 0.00) return false;
+  if (bbet   <= 0.00) return false;
+  if (bblind < 0.40 * bbet) return false;
+  if (bblind > 0.50 * bbet) return false;
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] BBlindBBetCombinationReasonable(%.2f, %.2f)\n",
+    bblind, bbet);
+  return true;
+}
+
+// Some beautiful number, usually in the range of 40..50%
+double CBlindGuesser::ReasonableLookingHalfBlindValue(double known_value) {
+  assert(known_value >= 0.02);
+  // Int for implicit truncation, i.e. "rounding"
+  int half_amount_in_cents = 50 * known_value;
+  double rounded_amount_in_dollars = 0.01 * double(half_amount_in_cents);
+  // Turn it into something reasonable
+  // and use small=or equal, because sometimes "half" is just 40%
+  double result = _blind_levels.GetNextSmallerOrEqualBlindOnList(rounded_amount_in_dollars);
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] About half of %.2f is %.2f\n",
+    known_value, result);
+  return result;
+}
+
+// All parameters are out-parameters only
+// Guessing according to Want2Learns method
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60
+void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind, 
+                                                        double *bblind, 
+                                                        double *bbet) {
+  // Everything is unknown, init to zero
+  *sblind = k_undefined_zero;
+  *bblind = k_undefined_zero;
+  *bbet   = k_undefined_zero;
+  // Search first two bets...
+  double first_bet_after_dealer  = 0.0;
+  double second_bet_after_dealer = 0.0;
+  bool   first_chair_immediatelly_after_dealer_betting = false;
+  int    second_betting_chair_after_dealer = k_undefined;
+
+  if (first_chair_immediatelly_after_dealer_betting) {
+    // Can't be a missing small-blind.
+    // Therefore this is the small blind,
+    // except maybe for headsup
+    assert(first_bet_after_dealer > 0) ;
+    *sblind = first_bet_after_dealer;
+  } else if (second_bet_after_dealer == 0.0) {
+    // Only one blind, must be big-blind, small-blind missing
+    *bblind = first_bet_after_dealer;
+  } else if (second_bet_after_dealer > 2.5 * first_bet_after_dealer) {
+    // Missing small blind and UTG raising to more than 2 big blinds.
+    *bblind = first_bet_after_dealer;
+  } else if (second_bet_after_dealer == first_bet_after_dealer) {
+    // Either completing small-blind
+    // or missing small-blind and limping UTG
+    *bblind = first_bet_after_dealer;
+  } else if (second_bet_after_dealer == 2 * first_bet_after_dealer) {
+    // Could be either small-blind/bblind
+    // or missing small-blind and min-raising UTG
+    // We don't know exactly
+    *sblind = first_bet_after_dealer;
+  } else {
+    // Assume the first bet is "normal" and therefore small-blind
+    *sblind = first_bet_after_dealer;
+  }
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2f\n",
+    *sblind, *bblind, *bbet);
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Data needs to be completed\n");
+  // Still to do (by the caller):
+  // verify and complete these values
+}
+
+void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind, 
+                                                 double *bblind, 
+                                                 double *bbet) {
+  // Get values from the scraper (ttlimits / c0limits)
+  assert(p_scraper != NULL);
+  assert(p_scraper->s_limit_info() != NULL);
+  *sblind = p_scraper->s_limit_info()->sblind;
+  *bblind = p_scraper->s_limit_info()->bblind;
+  *bbet   = p_scraper->s_limit_info()->bbet;
+  write_log(preferences.debug_table_limits(), 
+    "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2f\n",
+    *sblind, *bblind, *bbet);
+}
