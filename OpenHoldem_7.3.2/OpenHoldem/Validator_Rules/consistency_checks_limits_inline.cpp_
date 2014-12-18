@@ -1,0 +1,39 @@
+BEGIN_TESTCASE
+    TESTCASE_ID ("1600")
+    HEURISTIC_RULE (false)
+    REASONING ("The small blind has to be smaller than the big blind.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("sblind") < gws("bblind"))
+    SYMBOLS_POSSIBLY_AFFECTED ("sblind, bblind")
+END_TESTCASE
+ 
+ 
+BEGIN_TESTCASE
+    TESTCASE_ID ("1601")
+    HEURISTIC_RULE (false)
+    REASONING ("The ante has to be smaller than the small blind.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("ante") < gws("sblind"))
+    SYMBOLS_POSSIBLY_AFFECTED ("ante, sblind")
+END_TESTCASE
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1602")
+    HEURISTIC_RULE (false)
+    REASONING ("The small blind has to be a positive value.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("sblind") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("sblind")
+END_TESTCASE
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("1603")
+    HEURISTIC_RULE (false)
+    REASONING ("The big blind has to be a positive value.")
+    PRECONDITION (true)
+    POSTCONDITION (gws("bblind") > 0)
+    SYMBOLS_POSSIBLY_AFFECTED ("bblind")
+END_TESTCASE
+
+
+
