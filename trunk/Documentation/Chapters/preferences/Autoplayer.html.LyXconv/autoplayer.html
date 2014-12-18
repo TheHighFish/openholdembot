@@ -1,109 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="autoplayer.tex"> 
-<meta name="date" content="2010-04-17 14:22:00"> 
-<link rel="stylesheet" type="text/css" href="autoplayer.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>OpenHoldem Preferences &#8211; Autoplayer</h3>
-<!--l. 27--><p class="noindent" >Autoplayer preferences control how the OpenHoldem Autoplayer functions. See the {The
-Autoplayer} section for more information.
-           <ul class="itemize1">
-        <li class="itemize"><span 
-class="ecti-1000">Frame delay</span>: This parameter specifies how many simultaneous identical
-        screen scrapes must occur prior to the Autoplayer taking action. Generally,
-        you want to have a stable poker screen before your take action, and this
-        setting will allow various animations and so forth to finish, ensuring that
-        your poker logic has correct game state information prior to making a
-        decision.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">SWAG Delay, select to delete</span>: For SWAG actions, this setting determines
-        how long (in milliseconds) that OpenHoldem will pause after performing
-        the  SWAG  Select  action  as  specified  in  the  Table  Map,  and  prior  to
-        performing the SWAG Delete action as specified in the Table Map. These
-        preferences  are  not  set  in  the  Table  Map  itself,  as  these  are  highly
-        dependent on your CPU and network capacity and utilization, and thus
-        are largely specific to your particular computing environment.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">SWAG Delay, delete to entry</span>: For SWAG actions, this setting determines
-        how long (in milliseconds) that OpenHoldem will pause after performing
-        the  SWAG  Delete  action  as  specified  in  the  Table  Map  and  prior  to
-        performing the SWAG Entry action. These preferences are not set in the
-        Table Map itself, as these are highly dependent on your CPU and network
-        capacity and utilization, and thus are largely specific to your particular
-        computing environment.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">SWAG Delay, entry to confirm</span>: For SWAG actions, this setting determines
-        how long (in milliseconds) that OpenHoldem will pause after performing
-        the SWAG Entry action, and prior to performing the SWAG Confirm
-        action as specified in the Table Map. These preferences are not set in the
-        Table Map itself, as these are highly dependent on your CPU and network
-        capacity and utilization, and thus are largely specific to your particular
-        computing environment.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Engage Autoplayer automatically</span>: This setting instructs OpenHoldem to
-        automatically start the Autoplayer when it has identified the user&#8217;s chair.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Detect loss of focus on SWAG</span>: The SWAG action is the longest running
-        of the poker actions, due to the need to select the text, delete it, enter the
-        bet and confirm it. Occasionally, focus will be lost from the table that the
-        SWAG action is being executed on, either due to multi-tabling (maybe the
-        casino is set up to pop the table that requires your attention to the front?),
-        or perhaps due to you or your Automation solution clicking elsewhere
-        when the Autoplayer was working. When this loss of focus occurs, and if
-        this setting is checked, then OpenHoldem will cancel the current SWAG
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-17"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>OpenHoldem Preferences – <a class="IndexReference" name="entry-Autoplayer-0" href="#index-Autoplayer">↓</a>Autoplayer
+</h2>
+<div class="Unindented">
+Autoplayer preferences control how the OpenHoldem Autoplayer functions. See the {The Autoplayer} section for more information.
+</div>
+<ul>
+<li>
+<i>Stable frames required</i>: This parameter specifies how many additional simultaneous identical screen scrapes must occur prior to the Autoplayer taking action. Generally, you want to have a stable poker screen before your take action, and this setting will allow various animations and so forth to finish, ensuring that your poker logic has correct game state information prior to making a decision. A frame-delay of 0 would mean that OpenHoldem acts immediatelly after a scrape contains your cards and action buttons. Each additional frame will require a &ldquo;full&rdquo; heartbeat, but as soon as it is your turn the heartbeat-pause will be reduced by 50% to achieve a better combination of stable frames and fast response time.
+</li>
+<li>
+<i>Autoplayer delays: </i>These delays control the little pauses inside a more complex autoplayer action, for example the time between entering a betsize and clicking the raise button.<ul>
+<li>
+<i>Button click delay: </i>This setting contriols the delay (in milliseconds) between multpile button clicks (double and triple clicks).
+</li>
+<li>
+<i>Select to delete</i>: For SWAG actions, this setting determines how long (in milliseconds) that OpenHoldem will pause after performing the SWAG Select action as specified in the Table Map, and prior to performing the SWAG Delete action as specified in the Table Map. These preferences are not set in the Table Map itself, as these are highly dependent on your CPU and network capacity and utilization, and thus are largely specific to your particular computing environment. 
+</li>
+<li>
+<i>Delete to entry</i>: For SWAG actions, this setting determines how long (in milliseconds) that OpenHoldem will pause after performing the SWAG Delete action as specified in the Table Map and prior to performing the SWAG Entry action. These preferences are not set in the Table Map itself, as these are highly dependent on your CPU and network capacity and utilization, and thus are largely specific to your particular computing environment. 
+</li>
+<li>
+<i>Entry to confirm</i>: For SWAG actions, this setting determines how long (in milliseconds) that OpenHoldem will pause after performing the SWAG Entry action, and prior to performing the SWAG Confirm action as specified in the Table Map. These preferences are not set in the Table Map itself, as these are highly dependent on your CPU and network capacity and utilization, and thus are largely specific to your particular computing environment. 
+</li>
 
-        attempt and retry on the next scrape cycle.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Use &#8216;comma&#8217; instead of &#8216;dot&#8217;</span>: Some casinos require the use of the &#8220;comma&#8221;
-        as a decimal separator rather than the &#8220;dot&#8221;. This setting will instruct
-        OpenHoldem to use a comma if needed. Eventually this setting should be
-        moved to the Table Map file itself, as it is casino-specific.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Only calculate standard function on my turn</span>: Normally, OpenHoldem will
-        calculate the primary functions on every scrape cycle. This setting will
-        instruct OpenHoldem to only calculate these primary functions when it
-        is  your  turn  (card  faces  and  action  buttons  are  present).  It  will  also
-        prevent the calculation of most of the CPU expensive symbols including
-        prwin/prlos/prtie, however the handrank symbols will be calculated as
-        these are commonly used in the f$prefold calculations. f$prefold and f$play
-        are still evaluated regardless if it is your turn or not.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Only act with balance stability</span>: In previous versions of OpenHoldem, the
-        Autoplayer would act even if you had critical misscrapes. Once of those
-        critical misscrapes is a missing player balance, due to the balance box
-        changing to &#8220;All-In&#8221; instead of zero, for example, when a player goes all
-        in. Enabling this option will prevent the Autoplayer from acting when a
-        balance misscrape is detected. If you do not require balance information
-        in your bot logic, you can safely leave this box unchecked.</li></ul>
+</ul>
 
-<!--l. 96--><p class="noindent" ><hr class="figure"><div class="figure" 
-><a 
- id="x1-10011"></a><img 
-src="autoplayer0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
-name="autoplayer0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___tion_Chapters_preferences_Images_Autoplayer.eps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;0.0.1: </span><span  
-class="content">Preferences: Autoplayer</span></div><!--tex4ht:label?: x1-10011 -->
-<!--l. 103--><p class="indent" >   </div><hr class="endfigure">
-    
-</body></html> 
+</li>
+<li>
+<i>Engage Autoplayer automatically</i> upon connection: This setting instructs OpenHoldem to automatically start the Autoplayer immediatelly after it connects to the table. It is especially no longer necessary to identify the userchair for that. This way it becomes possible to control the option to auto-post blinds and do other minor tasks.
+</li>
+<li>
+<i>Use ‘comma’ instead of ‘dot’</i>: Some casinos require the use of the “comma” as a decimal separator rather than the “dot”. This setting will instruct OpenHoldem to use a comma if needed. Eventually this setting should be moved to the Table Map file itself, as it is casino-specific. 
+</li>
 
+</ul>
+<div class="Unindented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/preferences_autoplayer.png" alt="figure Images/preferences_autoplayer.png" style="max-width: 638px; max-height: 336px;"/>
 
+</div>
 
+</div>
+
+</div>
+<div class="Indented">
+In the past OpenHoldem supported some more autoplayer options, namely acting only with known cards, acting only with known balance (potential occlusion of the table) and cancelling autoplayer-actions that got interrupted by other applications or other tables that pop up (so-called loss of input-focus). These options got removed because it makes sense to have these sanity-checks and stability-features always enabled.
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-17T21:57:53.125000</span>
+</div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,47 +9,74 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Section
 OpenHoldem Preferences – 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -69,40 +96,53 @@ Autoplayer preferences control how the OpenHoldem Autoplayer functions.
 \begin_layout Itemize
 
 \emph on
-Frame delay
+Stable frames required
 \emph default
-: This parameter specifies how many simultaneous identical screen scrapes
- must occur prior to the Autoplayer taking action.
+: This parameter specifies how many additional simultaneous identical screen
+ scrapes must occur prior to the Autoplayer taking action.
  Generally, you want to have a stable poker screen before your take action,
  and this setting will allow various animations and so forth to finish,
  ensuring that your poker logic has correct game state information prior
  to making a decision.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-What does 0 mean?
-\end_layout
-
+ A frame-delay of 0 would mean that OpenHoldem acts immediatelly after a
+ scrape contains your cards and action buttons.
+ Each additional frame will require a 
+\begin_inset Quotes eld
 \end_inset
 
+full
+\begin_inset Quotes erd
+\end_inset
 
+ heartbeat, but as soon as it is your turn the heartbeat-pause will be reduced
+ by 50% to achieve a better combination of stable frames and fast response
+ time.
 \end_layout
 
 \begin_layout Itemize
 
 \emph on
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-SWAG-delay
+Autoplayer delays: 
+\emph default
+These delays control the little pauses inside a more complex autoplayer
+ action, for example the time between entering a betsize and clicking the
+ raise button.
 \end_layout
 
-\end_inset
+\begin_deeper
+\begin_layout Itemize
 
-SWAG Delay, select to delete
+\emph on
+Button click delay: 
+\emph default
+This setting contriols the delay (in milliseconds) between multpile button
+ clicks (double and triple clicks).
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Select to delete
 \emph default
 : For SWAG actions, this setting determines how long (in milliseconds) that
  OpenHoldem will pause after performing the SWAG Select action as specified
@@ -117,7 +157,7 @@ SWAG Delay, select to delete
 \begin_layout Itemize
 
 \emph on
-SWAG Delay, delete to entry
+Delete to entry
 \emph default
 : For SWAG actions, this setting determines how long (in milliseconds) that
  OpenHoldem will pause after performing the SWAG Delete action as specified
@@ -131,7 +171,7 @@ SWAG Delay, delete to entry
 \begin_layout Itemize
 
 \emph on
-SWAG Delay, entry to confirm
+Entry to confirm
 \emph default
 : For SWAG actions, this setting determines how long (in milliseconds) that
  OpenHoldem will pause after performing the SWAG Entry action, and prior
@@ -142,45 +182,17 @@ SWAG Delay, entry to confirm
  
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 
 \emph on
 Engage Autoplayer automatically
 \emph default
-: This setting instructs OpenHoldem to automatically start the Autoplayer
- when it has identified the user’s chair.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Detect 
-\emph default
-
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-loss of Swag-focus
-\end_layout
-
-\end_inset
-
-
-\emph on
-loss of focus on SWAG
-\emph default
-: The SWAG action is the longest running of the poker actions, due to the
- need to select the text, delete it, enter the bet and confirm it.
- Occasionally, focus will be lost from the table that the SWAG action is
- being executed on, either due to multi-tabling (maybe the casino is set
- up to pop the table that requires your attention to the front?), or perhaps
- due to you or your Automation solution clicking elsewhere when the Autoplayer
- was working.
- When this loss of focus occurs, and if this setting is checked, then OpenHoldem
- will cancel the current SWAG attempt and retry on the next scrape cycle.
- 
+ upon connection: This setting instructs OpenHoldem to automatically start
+ the Autoplayer immediatelly after it connects to the table.
+ It is especially no longer necessary to identify the userchair for that.
+ This way it becomes possible to control the option to auto-post blinds
+ and do other minor tasks.
 \end_layout
 
 \begin_layout Itemize
@@ -196,68 +208,6 @@ Use ‘comma’ instead of ‘dot’
  
 \end_layout
 
-\begin_layout Itemize
-
-\emph on
-Only calculate standard function on my turn
-\emph default
-: Normally, OpenHoldem will calculate the primary functions on every scrape
- cycle.
- This setting will instruct OpenHoldem to only calculate these primary functions
- when it is your turn (card faces and action buttons are present).
- It will also prevent the calculation of most of the CPU expensive symbols
- including prwin/prlos/prtie, however the handrank symbols will be calculated
- as these are commonly used in the 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-f$prefold
-\end_layout
-
-\end_inset
-
-f$prefold calculations.
- f$prefold and 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-f$play
-\end_layout
-
-\end_inset
-
-f$play are still evaluated regardless if it is your turn or not.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Only act with 
-\begin_inset Index
-status open
-
-\begin_layout Plain Layout
-Balance stability
-\end_layout
-
-\end_inset
-
-balance stability
-\emph default
-: In previous versions of OpenHoldem, the Autoplayer would act even if you
- had critical misscrapes.
- Once of those critical misscrapes is a missing player balance, due to the
- balance box changing to “All-In” instead of zero, for example, when a player
- goes all in.
- Enabling this option will prevent the Autoplayer from acting when a balance
- misscrape is detected.
- If you do not require balance information in your bot logic, you can safely
- leave this box unchecked.
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float figure
 wide false
@@ -266,19 +216,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Images/Autoplayer.PNG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Preferences: Autoplayer
-\end_layout
+	filename Images/preferences_autoplayer.JPG
 
 \end_inset
 
@@ -292,6 +230,15 @@ Preferences: Autoplayer
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+In the past OpenHoldem supported some more autoplayer options, namely acting
+ only with known cards, acting only with known balance (potential occlusion
+ of the table) and cancelling autoplayer-actions that got interrupted by
+ other applications or other tables that pop up (so-called loss of input-focus).
+ These options got removed because it makes sense to have these sanity-checks
+ and stability-features always enabled.
 \end_layout
 
 \end_body
