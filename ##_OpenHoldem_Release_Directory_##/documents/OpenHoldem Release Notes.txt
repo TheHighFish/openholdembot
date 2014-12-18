@@ -1,11 +1,11 @@
-v7.3.2 2014-12-15
+v7.3.2 2014-12-18
 ==================
 BUG FIXES:
 - Fix for the replay-frame-controller (on my turn)
   [Moby]
 - There still was a problem with nopponentstruelyraising
   that also affected Raises. This has now been fixed.
-  Thanks to Beutel for providing replay-frames and TM ro reproduce the problem.
+  Thanks to Beutel for providing replay-frames, TM and log and helping to test.
   [THF]
 
 MAINTENANCE:
