@@ -225,6 +225,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
     const double sblind, 
     const double bblind, 
     const double bbet) {
+  if ((sblind <= 0) || (bblind <= 0) || (bbet <= 0))      return false;
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
@@ -262,7 +263,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
     "[CBlindLevels] Trying to find best matching blind-level for %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
   // Complete fail first: nothing to guess
-  if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0)) {
+  if ((*sblind <= 0) && (*bblind <= 0) && (*bbet <= 0)) {
     write_log(preferences.debug_table_limits(), 
       "[CBlindLevels] No match because of bad input\n");
     return false;
