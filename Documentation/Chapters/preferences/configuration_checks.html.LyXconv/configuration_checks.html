@@ -1,82 +1,81 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="configuration_checks.tex"> 
-<meta name="date" content="2010-04-17 23:00:00"> 
-<link rel="stylesheet" type="text/css" href="configuration_checks.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>Configuration Checks</h3>
-<!--l. 27--><p class="noindent" >OpenHoldem will check some parts of your system configuration automatically on
-start-up to avoid the most common and time-consuming mis-configurations. Some of
-them (like minimum colour-depth) will always be executed, other can be turned off, if
-you don&#8217;t use certain features.
-           <ul class="itemize1">
-        <li class="itemize"><span 
-class="ecti-1000">Check Keyboard Settings: </span>this option will, check for an english keyboard
-        layout. Keyboard settings affect especially the decimal point in numbers
-        and therefore the scraper-engine and the auto-player. If you continue with
-        incorrect settings, OpenHoldem may or may not work as expected. If
-        you are an experienced user with a working setup you may turn this
-        warning off, but if you encounter problems (especially with swagging) or
-        are a beginner, you should better get your keyboard layout configured the
-        correct way.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Check Window Theme Settings:  </span>this option will check, if the windows
-        theme  is  set  to  Windows  Classic  (Windows  2000),  as  that  is  the
-        recommended   theme   and   many   TableMaps   are   build   using   this
-        configuration. If you know exactly, what you do and are able to adapt
-        your TableMaps to other configurations, then you may turn this setting
-        off. However &#8212; be aware, that any fancy settings might possibly break
-        the scraper and will reduce your possibility to exchange maps with other
-        users.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Check Font Smoothing Settings: </span>This option will check, if Font Smoothing
-        is turned off, as recommended. Font Smoothing does display names and
-        numbers slightly more eye-freindly for a human user, but it will render
-        scraping more difficult. If you know exactly what you do you may again
-        turn this option off.</li></ul>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-17"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>Configuration Checks
+</h2>
+<div class="Unindented">
+OpenHoldem will check some parts of your system configuration automatically on start-up to avoid the most common and time-consuming mis-configurations. Some of them (like minimum colour-depth) will always be executed, other can be turned off, if you don’t use certain features.
+</div>
+<ul>
+<li>
+<i>Check Keyboard Settings: </i>this option will, check for an english keyboard layout. Keyboard settings affect especially the decimal point in numbers and therefore the scraper-engine and the auto-player. If you continue with incorrect settings, OpenHoldem may or may not work as expected. If you are an experienced user with a working setup you may turn this warning off, but if you encounter problems (especially with swagging) or are a beginner, you should better get your keyboard layout configured the correct way.
+</li>
+<li>
+<i>Check Window Theme Settings: </i>this option will check, if the windows theme is set to Windows Classic (Windows 2000 style), as that is the recommended theme and many TableMaps are build using this configuration. If you know exactly, what you do and are able to adapt your TableMaps to other configurations, then you may turn this setting off. However — be aware, that any fancy settings might possibly break the scraper and will reduce your possibility to exchange maps with other users.
+</li>
+<li>
+<i>Check Font Smoothing Settings: </i>This option will check, if Font Smoothing is turned off, as recommended. Font Smoothing does display names and numbers slightly more eye-freindly for a human user, but it will render scraping more difficult. If you know exactly what you do you may again turn this option off.
+</li>
 
-<!--l. 54--><p class="noindent" ><hr class="figure"><div class="figure" 
-><a 
- id="x1-10011"></a><img 
-src="configuration_checks0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
-name="configuration_checks0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___ers_preferences_Images_configuration_checks.eps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;0.0.1: </span><span  
-class="content">Preferences: Configuration Checks</span></div><!--tex4ht:label?: x1-10011 -->
-<!--l. 61--><p class="indent" >   </div><hr class="endfigure">
-   <h4 class="subsectionHead"><a 
- id="x1-2000"></a>Other Configuration Checks</h4>
-<!--l. 67--><p class="noindent" >OpenHoldem does execute various other configuration checks, but part of them can&#8217;t be
-turned off, as they are mandatory settings and the other ones will be triggered
-automatically.
-   <h5 class="subsubsectionHead"><a 
- id="x1-3000"></a>Mandatory checks</h5>
-           <ul class="itemize1">
-        <li class="itemize">Mimimum colour depth of 24 bits.</li></ul>
-   <h5 class="subsubsectionHead"><a 
- id="x1-4000"></a>Checks triggered automatically</h5>
-           <ul class="itemize1">
-        <li class="itemize">Correct installation of Microsoft Visual C++ 2005 redistributable runtime
-        library, which is required for Perl users
-           </li>
-        <li class="itemize">Correct  installation  of  ActivePerl,  if  the  user  wants  to  load  the  Perl
+</ul>
+<div class="Unindented">
+<div class="float">
+<a class="Label" name="Figure-None.1"> </a><div class="figure">
+<img class="embedded" src="Images/preferences_configuration_check.png" alt="figure Images/preferences_configuration_check.png" style="max-width: 638px; max-height: 338px;"/>
+<div class="caption">
+Figure None.1 Preferences: Configuration Checks
+</div>
 
-        interpreter.
-           </li>
-        <li class="itemize">Perl directory being part of the systems PATH-variable.</li></ul>
-    
-</body></html> 
+</div>
 
+</div>
 
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-1"></a>Other Configuration Checks
+</h3>
+<div class="Unindented">
+OpenHoldem does execute various other configuration checks, but part of them can’t be turned off, as they are mandatory settings and the other ones will be triggered automatically. 
+</div>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1"></a>Mandatory checks
+</h4>
+<ul>
+<li>
+Mimimum colour depth of 24 bits.
+</li>
 
+</ul>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2"></a>Checks triggered automatically
+</h4>
+<ul>
+<li>
+Correct installation of Microsoft Visual C++ 2005 redistributable runtime library, which is required for Perl users
+</li>
+<li>
+Correct installation of ActivePerl, if the user wants to load the Perl interpreter.
+</li>
+<li>
+Perl directory being part of the systems PATH-variable.
+</li>
+
+</ul>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-17T22:03:16.625000</span>
+</div>
+</div>
+</body>
+</html>

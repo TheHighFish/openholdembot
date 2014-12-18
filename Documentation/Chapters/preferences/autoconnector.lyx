@@ -1,53 +1,82 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Section
 OpenHoldem Preferences – 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -67,57 +96,6 @@ Autoconnector preferences control how the OpenHoldem Autoconnector functions.
 \begin_layout Itemize
 
 \emph on
-Window selection:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\emph on
-Manual choice: 
-\emph default
-The default classical method.
- If exactly one table and exactly one matching tablemap exist OpenHoldem
- will connect to that table directly, otherwise it will present a dialog
- with a list of choices for manual selection.
- This behaviour was quite inconvenient in production, but is still supported
- for backward compatibility.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Automatical choice: 
-\emph default
-This option will pick the first available table on every attempt to connect,
- that is not yet attached to another instance of OpenHoldem.
- If no such table is available, it will fall silently.
- If multiple tablemaps in the 
-\begin_inset Index
-status collapsed
-
-\begin_layout Plain Layout
-Scraper-folder
-\end_layout
-
-\end_inset
-
-scraper-folder fit to that table it will also pick the 
-\begin_inset Quotes eld
-\end_inset
-
-first
-\begin_inset Quotes erd
-\end_inset
-
- one, so be careful, if you want to keep different versions of the same
- map.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-
-\emph on
 Auto-Connect 
 \end_layout
 
@@ -127,12 +105,19 @@ Auto-Connect
 \emph on
 Never: 
 \emph default
-The default classical method.
- If exactly one table and exactly one matching tablemap exist OpenHoldem
- will connect to that table directly, otherwise it will present a dialog
- with a list of choices for manual selection.
- This behaviour was quite inconvenient in production, but is still supported
- for backward compatibility.
+The former default but now outdated classical method.
+ The clumsy and error-prone manual-connection is gone, but this option is
+ still supported for the rare case that anybody wants to control all connections
+ with his hopper.
+ Please refer to the chapter 
+\begin_inset Quotes eld
+\end_inset
+
+Automatization
+\begin_inset Quotes erd
+\end_inset
+
+ for more details.
 \end_layout
 
 \begin_layout Itemize
@@ -145,7 +130,7 @@ This option will cause OpenHoldem to auto-connect exactly once on start.
 ly choose a table.
  If no table exists, that fits to a tablemap --- or if all such tables are
  already getting served --- , it will fail silently and behave the default
- way, waiting for the green button or a connection-message.
+ way, waiting for a connection-message.
 \end_layout
 
 \begin_layout Itemize
@@ -156,25 +141,17 @@ Permanent
 \noun on
 : 
 \noun default
-This setting will cause OpenHoldem to try to auto-connect once every N seconds.
+This setting will cause OpenHoldem to try to auto-connect once every heartbeat.
  After some refactoring OpenHoldem does now cache the connection-data of
  all known table maps and all instances of OpenHoldem are now synchronized.
  If one instance fails to connect, the other ones will be blocked for the
  next N seconds.
  So the system-load is now astonishing low, even with dozens of instances
  waiting for tables.
+ Therefore this option became the new default.
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-
-\emph on
-Time between attempts to connect
-\emph default
-: This option is pretty self-explanatory.
- It specifies the time to wait (in seconds) until the next attempt to connect.
-\end_layout
-
 \begin_layout Itemize
 
 \emph on
@@ -197,19 +174,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Images/AutoConnector.PNG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Preferences:Autoconnector 
-\end_layout
+	filename Images/preferences_autoconnector.JPG
 
 \end_inset
 

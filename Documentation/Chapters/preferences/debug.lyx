@@ -75,43 +75,17 @@ figs-within-sections
 \begin_body
 
 \begin_layout Section
-OpenHoldem Preferences – 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-GUI
-\end_layout
-
-\end_inset
-
-GUI
+OpenHoldem Preferences - Debugging
 \end_layout
 
 \begin_layout Standard
-GUI preferences control how the OpenHoldem GUI operates on startup.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Start minimized: 
-\emph default
-This option will cause OpenHoldem to start in minimzed mode.
- It is especially useful, if you have to start new bots during a session
- and don't want to accept the risk of occluding tables and causing misscrapes.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Disable all runtime MessageBox popups: 
-\emph default
-if this option is checked OpenHoldem will not show any error-messages during
- execution.
- This is meant to avoid occlusion in a production environment, but it is
- recommended only for a very well tested setup.
- Interactive messages on user-interaction are not affected by this option.
+Debugging preferences control how much and what debug-messages OpenHoldem
+ writes to the log-file.
+ These options are especially meant for developers who sometimes need to
+ get very detailed information about how OpenHoldem internally works when
+ they try to fix a problem or test a new feature.
+ Therefore we won't get into detail here.
+ Just have a look and imagine what happens beyond the surface.
 \end_layout
 
 \begin_layout Standard
@@ -122,7 +96,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Images/preferences_GUI.JPG
+	filename Images/preferences_debug.JPG
 
 \end_inset
 

@@ -1,53 +1,82 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Section
 OpenHoldem Preferences – 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -63,11 +92,10 @@ Validator
 Validator preferences control various aspects of OpenHoldem’s Validator
  engine.
  See the {Validator} section for more information.
- This is a new feature in OpenHoldem version 2.0.
  The purpose of the Validator is to help people to develop more reliable
  bots and Table Maps.
  It will execute several hundred 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -77,7 +105,7 @@ Consistency-checks
 \end_inset
 
 consistency-checks at the symbol level to detect invalid game-states, 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -104,7 +132,7 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=189
 ).
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 
 \emph on
 Enable Validator
@@ -113,7 +141,7 @@ Enable Validator
  either never (completely off), when it is my turn, or always.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 
 \emph on
 Use Heuristic Rules
@@ -129,14 +157,14 @@ Use Heuristic Rules
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 
 \emph on
 Stop Autoplayer on error
 \emph default
 : If the Validator discovers an inconsistency, and this preference is checked,
  the 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -149,14 +177,14 @@ Autoplayer will be instructed to stop autoplaying.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Itemize
 
 \emph on
 Shoot replay-frame on error: 
 \emph default
 If the Validator discovers an inconsistency, and this preference is checked,
  OpenHoldem will shoot a 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -170,6 +198,14 @@ replay-frame and store it in the replay-folder.
 \end_layout
 
 \begin_layout Standard
+It is never a bad idea to use the validator some time for testing new tablemaps.
+ We recommend to enable it at your turn, because when it is your time to
+ act reliable input is most important, and at that point of time you can
+ also expect to get stable input from the casino.
+ Give it a try, but be prepared -- the validator is a little bitch!
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
@@ -177,19 +213,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Images/Validator.PNG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Preferences: Validator
-\end_layout
+	filename Images/preferences_validator.JPG
 
 \end_inset
 
