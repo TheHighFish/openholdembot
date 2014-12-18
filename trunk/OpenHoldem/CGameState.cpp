@@ -257,13 +257,10 @@ bool CGameState::ProcessThisFrame (void)
 
 	// check if all balances are known (indicates stability of info passed to DLL)
 	bool balance_stability = true;
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[0] != 0 && 
-			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_cards[1] != 0 &&
-			_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1 &&
-                       (activebits & (1 << i)) != 0)
-		{
+	for (int i=0; i<k_max_number_of_players; i++)	{
+		if (p_table_state->_players[i].HasAnyCards()
+        && (_m_holdem_state[(_m_ndx)&0xff].m_player[i].m_balance_known != 1)
+        && ((activebits & (1 << i)) != 0)) {
 			balance_stability = false;
 			break;
 		}
