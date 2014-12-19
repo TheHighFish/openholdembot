@@ -194,7 +194,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand() {
 	tablelimit_locked_for_current_hand.bblind = tablelimit_best_guess.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_best_guess.bbet;
 	write_log(preferences.debug_table_limits(), 
-    "[CSymbolEngineTableLimits] Locked blinds at %.2f / %.2f / %f.2\n", 
+    "[CSymbolEngineTableLimits] Locked blinds at %.2f / %.2f / %.2f\n", 
     tablelimit_locked_for_current_hand.sblind,
 		tablelimit_locked_for_current_hand.bblind, 
     tablelimit_locked_for_current_hand.bbet);

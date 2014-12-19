@@ -18,7 +18,9 @@
 #include "CBlindLevels.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHistory.h"
+#include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 
 CBlindGuesser::CBlindGuesser() {
@@ -165,8 +167,36 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   double first_bet_after_dealer  = 0.0;
   double second_bet_after_dealer = 0.0;
   bool   first_chair_immediatelly_after_dealer_betting = false;
-  int    second_betting_chair_after_dealer = k_undefined;
 
+  // Dealerchair gets only calculated after blind-guessing,
+  // therefore blind-duessing will only work after the first heartbeat,
+  // but this looks acceptable, because we have to guess only
+  // verz few times and don't have to act at the verz first heartbeat
+  // (because of stable frames).
+  int dealer = p_symbol_engine_dealerchair->dealerchair();  
+  // Exit on undefined or wrong dealer (last hand)
+  if ((dealer == k_undefined) || !p_scraper->dealer(dealer)) return;
+
+  int first_chair = dealer + 1;
+  int last_chair  = dealer + p_tablemap->nchairs();
+  for (int i=first_chair; i<=last_chair; ++i) {
+    int normalized_chair = i % p_tablemap->nchairs();
+    double players_bet = p_scraper->player_bet(normalized_chair);
+    if (players_bet <= 0) continue;
+    if (first_bet_after_dealer <= 0) {
+      // Probablz SB found
+      first_bet_after_dealer = players_bet;
+      // Also check if the verz first player after dealer is betting,
+      // which for sure excludes a missing small blind
+      if (normalized_chair == (first_chair % p_tablemap->nchairs())) {
+        first_chair_immediatelly_after_dealer_betting = true;
+      }
+    } else if (second_bet_after_dealer <= 0) {
+      second_bet_after_dealer = players_bet;
+      // 2nd blind found. No need to search anz further
+      break;
+    }
+  }
   if (first_chair_immediatelly_after_dealer_betting) {
     // Can't be a missing small-blind.
     // Therefore this is the small blind,
