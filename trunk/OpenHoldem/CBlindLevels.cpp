@@ -225,7 +225,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
     const double sblind, 
     const double bblind, 
     const double bbet) {
-  if ((sblind <= 0) || (bblind <= 0) || (bbet <= 0))      return false;
+  if ((sblind <= 0) && (bblind <= 0) && (bbet <= 0))      return false;
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  

@@ -141,12 +141,10 @@ bool CBlindGuesser::BBlindBBetCombinationReasonable(double bblind, double bbet) 
 // Some beautiful number, usually in the range of 40..50%
 double CBlindGuesser::ReasonableLookingHalfBlindValue(double known_value) {
   assert(known_value >= 0.02);
-  // Int for implicit truncation, i.e. "rounding"
-  int half_amount_in_cents = 50 * known_value;
-  double rounded_amount_in_dollars = 0.01 * double(half_amount_in_cents);
+  double half_amount = 0.50 * known_value;
   // Turn it into something reasonable
-  // and use small=or equal, because sometimes "half" is just 40%
-  double result = _blind_levels.GetNextSmallerOrEqualBlindOnList(rounded_amount_in_dollars);
+  // and use smaller or equal, because sometimes "half" is just 40%
+  double result = _blind_levels.GetNextSmallerOrEqualBlindOnList(half_amount);
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] About half of %.2f is %.2f\n",
     known_value, result);
