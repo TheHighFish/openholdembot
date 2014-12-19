@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="GENERATOR" content="LyX 2.1.0" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>LyX Document</title>
+<style type='text/css'>
+/* LyX Provided Styles */
+table { border: 1px solid black; display: inline-block; }
+td { border: 1px solid black; padding: 0.5ex; }
+
+/* Layout-provided Styles */
+h1.chapter {
+font-weight: bold;
+font-size: xx-large;
+margin-top: 4ex;
+margin-bottom: 0.8ex;
+text-align: left;
+
+}
+div.standard {
+text-align: left;
+
+}
+h2.section {
+font-weight: bold;
+font-size: large;
+margin-top: 1.3ex;
+margin-bottom: 0.7ex;
+text-align: center;
+
+}
+div.plain_layout {
+text-align: left;
+
+}
+ul.itemize {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+ol.enumerate {
+margin-top: 0.7ex;
+margin-bottom: 0.7ex;
+margin-left: 3ex;
+text-align: left;
+
+}
+span.flex_url {
+font-family: monospace;
+}
+
+
+</style>
+</head>
+<body>
+<h1 class="chapter"><a id='magicparlabel-1' /><div class="chapter_label"></div> Outdated Features and Incompatibilities between OpenHoldem and WinHoldem</h1>
+<div class="standard"><a id='magicparlabel-2' />The original main goal of the OpenHoldem development team was the attempt to create a WinHoldem-compatible botting-platform to support existing bots, DLLs and TableMaps. However there has been functionality such as &ldquo;Teaming&rdquo;, that always has been a tabu for the OpenHoldem development team. Other functionality did never get implemented due to lack of documentation and practical relevance. And now that OpenHoldem is far more advanced and WinHoldem is practically dead, backward-compatibility is no longer such an important issue. Recently the development team does revisit some features that look a bit mal-designed and tries to improve them carefully, trying to affect the end-user as little as possible. This chapter will tell you about such incompatibilities.</div>
+<h2 class="section"><a id='magicparlabel-3' /><span class="section_label"></span> No Collusion aka &ldquo;Teaming&rdquo;</h2>
+<div class="standard"><a id='magicparlabel-4' />OpenHoldem does not support any kind of collusion. There is no support for WinHoldems WinTellem-server and card-sharing either because such activities are simply illegal in every country of the world, and &mdash; even more important &mdash; because we consider them unfair too.</div>
+<h2 class="section"><a id='magicparlabel-5' /><span class="section_label"></span> TableMaps</h2>
+<div class="standard"><a id='magicparlabel-6' />Table Maps are in a different format due to hypothetical copyright-issues. For some time it was possible to convert a WinHoldem "profile" to an OpenHoldem "Table Map" with OpenScrape. But this is no longer of any practical relevance, as all WinHoldem-&rdquo;profiles&rdquo; are supposed to be outdated and there is no longer any maintenance going on. So finally we removed support for WinHoldem-tablemaps completely.</div>
+<h2 class="section"><a id='magicparlabel-7' /><span class="section_label"></span> Formula-File-Format</h2>
+<div class="standard"><a id='magicparlabel-8' />The formula is saved in a single file instead of two. It uses the extension *.ohf instead of *.whf and *.whx. Old WH-formulae could be converted for some time, but as there was no longer any demand for that feature we were happy to simplify OpenHoldems code. OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your favourite text-editor. or the built-in formula-editor.</div>
+<h2 class="section"><a id='magicparlabel-9' /><span class="section_label"></span> ManualMode</h2>
+<div class="standard"><a id='magicparlabel-10' />ManualMode is not directly integrated into OpenHoldem, but became a stand-alone application. This did simplify the GUI of OpenHoldem extremely and made it far more easy to use. </div>
+<h2 class="section"><a id='magicparlabel-11' /><span class="section_label"></span> f$evrais and f$evcall</h2>
+<div class="standard"><a id='magicparlabel-12' />Calculating expectation values is only one possible way (out of many) to implement a poker bot, but not necessary in general. Furthermore it proved to be cumbersome and unpopular. So the functions f$evrais and f$evcall from WinHoldems demo-bot have been degraded to user-defined-functions.</div>
+<h2 class="section"><a id='magicparlabel-13' /><span class="section_label"></span> f$play-Function</h2>
+<div class="standard"><a id='magicparlabel-14' />The function f$play has been a quite messy concept to handle sitting in, sitting out and leaving the table. Some extra coution was necessary to avoid multiple button-clicks within a short time-frame on identical or outdated game-states. With OpenHoldem 4.0.0 f$play got replaced by three indivudal functions: f$sitin, f$sitout and f$leave, which get executed exactly once every 4 seconds. Furthermore we added a f$close-function to click the [x] in the titlebar of a window if the user desires to leave a table.</div>
+<h2 class="section"><a id='magicparlabel-15' /><span class="section_label"></span> f$swag function</h2>
+<div class="standard"><a id='magicparlabel-16' />f$swag (short for &ldquo;stated wager&rdquo;) was WinHoldems way to define the betsize for No-Limit games. As online casinos interpret your input in at least three different ways some adjustment was necessary, including:</div>
+
+
+
+
+<div class="standard"><a id='magicparlabel-17' /><table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-40' />f$srai</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-43' />the desired amount to raise (the part which exceeds the bet of the aggressor)</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-46' />f$swag</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-49' />the final amount to be entered into the software</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-52' />f$swag_adjust</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-55' />the casino-specific adjustment between f$srai and f$swag</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-58' />swagtextmethod</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-61' />the casino-specific way to interpret swag, as defined in the tablemap</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-64' />sraimin</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-67' />the smallest possible raise</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-70' />sraimax</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-73' />the largest possible raise.</div>
+</td>
+</tr>
+<tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-76' />sraiprev	</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-79' />the difference between the two largest unique wagers</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+
+<div class="standard"><a id='magicparlabel-80' />All these computations had to be done by the user at the formula level. With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize and OpenHoldem cares about all the rest automatically (depending on the swagtextmethod specified in your tablemap, but that is all work that's left).</div>
+<h2 class="section"><a id='magicparlabel-81' /><span class="section_label"></span> Statistic-Symbols: &ldquo;risk of ruin&rdquo;</h2>
+<div class="standard"><a id='magicparlabel-82' />The symbols to calculate &ldquo;risk of ruin&rdquo; have never been implemented due to lack of documentation and lack of practical relevance. As of OpenHoldem 2.0.0 the risk-of-ruin-symbols are officially abolished and removed from the code-base. The original documentation for these symbols can be found here: </div>
+
+<ul class="itemize"><a id='magicparlabel-83' /><li class="itemize_item">WinHoldEm Help - Formula Editor (<span class="flex_url">http://www.winholdem.net/help/help-formula.html</span>)</li>
+<li class="itemize_item">WinHoldem-Forum: Risk Of Ruin (<span class="flex_url">http://forum.winholdem.net/wbb/viewtopic.php?t=2120</span>)</li>
+</ul>
+<h2 class="section"><a id='magicparlabel-93' /><span class="section_label"></span> Outdated Symbols</h2>
+<div class="standard"><a id='magicparlabel-94' />OpenHoldem is now half a dozen years old. During these long period of usage it became noticeable that some symbols and features of WinHoldem were unnecessary (risk of ruin), some others unusable, some undocumented (versus2), and some even undesired.</div>
+
+
+
+
+<div class="standard"><a id='magicparlabel-95' /><table><tbody><tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-297' />Symbol</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-300' />Explanation</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-303' />Reason for removal</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-306' />nfriendsdealt</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-309' />1 if you are dealt, 0 otherwise (0-1) </div>
+</td>
+
+<td align='left' valign='middle' rowspan='7'><div class="plain_layout"><a id='magicparlabel-312' />OpenHoldem does not support any kind of collusion, so the friend-symbols are completely meaningless. Only nfriendsseated, nfriendsactive and nfriendsplaying got kept for some time for backward-compatibility, as they were quite convenient to use in the f$sitin, f$sitout and f$leave-formulas. They did consider hero as the one and only &ldquo;friend&rdquo;. The last friend symbols (with the same restricted meaning) got removed from the code-base in OpenHoldem&nbsp;4.0.0. We simply don't want that sh**, not even for backward-compatibility to WinHoldem.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-315' />nfriendsblind </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-318' />1 if you are in a blind, 0 otherwise (0-1) </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-324' />friendsseatedbits</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-327' />bits 9-0: 1=seated 0=unseated, you only</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-333' />friendsactivebits</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-336' />bits 9-0: 1=active 0=inactive, you only</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-342' />friendsdealtbits</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-345' />bits 9-0: 1=dealt 0=notdealt, you only </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-351' />friendsplayingbits</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-354' />bits 9-0: 1=playing 0=notplaying, you only</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-360' />friendsblindbits</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-363' />bits 9-0: 1=blind 0=notblind, you only </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-369' />swagdelay</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-372' />Autoplayer delay in milliseconds between swag keystrokes and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level</div>
+</td>
+
+
+
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-378' />allidelay</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-381' />Autoplayer delay in milliseconds between alli slider jam and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-384' />Some tablemap symbols have been exposed to the scripting level without necessity. They got removed in OpenHoldem 2.2.0 and are now only accessible internally.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-387' />swagtextmethod</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-390' />the site interpretation for swag edit text (Table Map symbol) </div>
+
+<ol class="enumerate"><a id='magicparlabel-391' /><li class="enumerate_item">f$srai </li>
+<li class="enumerate_item">f$srai+call </li>
+<li class="enumerate_item">f$srai+call+currentbet; </li>
+</ol>
+<div class="plain_layout"><a id='magicparlabel-394' />Default: 3</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-400' />islistcall</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-403' />true if your hand is in list 0 </div>
+</td>
+
+<td align='left' valign='middle' rowspan='8'><div class="plain_layout"><a id='magicparlabel-406' />The list symbols below seem to be mis-conceptions by WinHoldems author and &mdash; to our best knowledge &mdash; have never been used in any serious poker bot. They finally got removed from the code base in version 4.0.0 of OpenHoldem.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-409' />islistrais</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-412' />true if your hand is in list 1</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-418' />islistalli</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-421' />true if your hand is in list 7 </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-427' />isemptylistcall</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-430' />true if the call list is empty </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-436' />isemptylistrais</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-439' />true if the rais list is empty </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-445' />isemptylistalli</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-448' />true if the alli list is empty </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-454' />nlistmax</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-457' />highest list number in which your hand is listed</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-463' />nlistmin</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-466' />lowest list number in which your hand is listed </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-472' />handnumber</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-475' />the site hand number if available </div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-478' />Removing formula symbol "handnumber" for various reasons from the formula level: </div>
+
+<ul class="itemize"><a id='magicparlabel-479' /><li class="itemize_item">there is no need for it at the formula level. </li>
+<li class="itemize_item">it may contain characters and therefore doesn't fit into a double. </li>
+<li class="itemize_item">its length may exceed the precision of double. "Handnumber" gets now used only internally to trigger handresets.</li>
+</ul>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-484' />isfiveofakind	 </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-487' />true when you have a five of a kind</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-490' />Removed, as never used in Texas Hold'em</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-493' />fiveofakind	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-496' />0xff000000 (pokerval constant)</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-502' />isppro 	 </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-505' />true if you're connected to a ppro server</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-508' />Removed together with the support for WinHoldem PokerPro-server, which did not get used and did no longer work due to undocumented changes in the network-protocal.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-511' />site 	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-514' />0=user/ppro 1=scraped </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-520' />bankroll	 </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-523' />the user defined, real world bankroll</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-526' />Removed, as these symbols have rarely been used and should better get handled by a user-defined formula.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-529' />rake	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-532' />percentage amount added/subtracted to/from the pot</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-538' />defcon</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-541' />	defense level is typically used in the f$P formula, which defines the adapted number of opponents to be used in standard prwin. defcon therefore controls the optimism of the prwin-simulation. </div>
+
+<div class="plain_layout"><a id='magicparlabel-542' />0.000=maxoffense 1.000=maxdefense</div>
+
+<div class="plain_layout"><a id='magicparlabel-543' />The Formula Editor parameters dialog uses values 0-10</div>
+</td>
+
+<td align='left' valign='middle' rowspan='3'><div class="plain_layout"><a id='magicparlabel-546' />Defcon looked like a WinHoldem-misconception which has been very rarely (if ever) used. People who need it can create a UDF for that, but it clearly is not necessary for the majority of users and does not deserve symbols and an extra settings dialog.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-549' />isdefmode</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-552' />true when defcon is at max</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-558' />isaggmode</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-561' />true when defcon is at min </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-567' />clocks	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-570' />number of CPU clocks since the last screen scrape</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-573' />Useless information and always a fraction of a second</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-576' />nclockspersecond	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-579' />number of CPU clocks per second </div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-582' />Simply never used</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-585' />ncps</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-588' />synonym for nclockspersecond</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-594' />nflopc	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-597' />short for ncommoncardsknow</div>
+</td>
+
+<td align='left' valign='middle' rowspan='4'><div class="plain_layout"><a id='magicparlabel-600' />Removed, because duplicate functionality and lack of verbosity are bad software-engineering</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-603' />br</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-606' />short for betround</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-612' />ncps</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-615' />short for nclockspersecond</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-621' />oppdealt</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-624' />short for nopponentsdealt</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-630' />isbring </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-633' />	true if OpenHoldem is attached to a Bring client window</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-636' />Removed, because there is no need for that info at the formula-level</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-639' />ismanual 	 </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-642' />true if you're in manual mode, false otherwise</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-648' />handrank	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-651' />one of the handrank-symbols based on the option specified in preferences</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-654' />Getting rid of the symbol handrank and the option symbols-&gt;Value of Handrank. We have handrank169, handrank1000, handrank1326, handrank2625 and handrankp at the formula level. So the user can clearly specify what he wants. But these symbols can hardly get used interchangeably, so this option was only confusing and superfluos.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-657' />randomround1 ... randomround4	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-660' />random number between [0.000-1.000) for round 1 - 4. Value is calculated only once in that round. </div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-663' />Removed the symbols randomround1..randomround4 from the codebase, because we have randomround for the current betting round and additionally randomhand, randomheartbeat and random, which gets calculated each time new. This simplified the code and looks more clean.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-666' />callshort	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-669' />total amount that will be added to the pot if all players call</div>
+</td>
+
+<td align='left' valign='middle' rowspan='2'><div class="plain_layout"><a id='magicparlabel-672' />The symbols "callshort" and "raisshort" got removed from the code-base because they got designed for Fixed-Limit no-foldem Hold'em only. Better use a function to estimate future pot-sizes.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-675' />raisshort	 </div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-678' />callshort + bet * nplayersplaying</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-684' />seatposition</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-687' />	your seat position relative to the dealer</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-690' />Removing the symbol seatposition which counted both active and inactive players and was of no real use for practical play.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-693' />elapsed1970</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-696' />time in seconds since 1970-01-01 00:00:00 GMT (Thursday)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-699' />Removing the symbol elapsed1970 because there was no real use for it.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-702' />ncommoncardspresent</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-705' />	number of common cards present (normal or highlighted)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-708' />Removing the symbol "ncommoncardspresent", because it was never implemented correctly, but always had the same value as "ncommoncardsknown". Furthermore its value would only differ at some casinos and at showdown (highlighted cards / bad scrapes), but this point of time is pretty meaningless for both OH-script and OpenPPL, which evaluate mainly on the users turn, whereas DLLers still have access to all info. </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-711' />ac_pf_bets</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-714' />	1 for no callers or blinds only 2 for Called Pot - 1 bet to call 3 for Raised Back - 1 more bet to call because someone behind you raised after you've already bet/called/raised 4 for Raised Pot - 2 bets to call 5 for Reraised Pot - 3+ bets to call NOTE: Only valid when betround==1 </div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-717' />Removed the symbols ac_pf_bets, because it was for fixed limit only, worked only on the first orbit preflop, because that task can be done with other symbols and finally we have the OpenPPL-library, so there is really no longer any need for that.</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-720' />ac_aggressor	</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-723' />which chair was aggressor (might be from previous round)</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-726' />Removed, as it was duplicate functionality to raischair</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-729' />ron$ / run$ symbols</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-732' />These symbols report the total number of possible river endings for the opponent (ron$) and the user (run$). A value of zero means that type of poker hand is not possible. Any non-zero value means that type of poker hand will be seen that many times</div>
+</td>
+
+<td align='left' valign='middle' rowspan='17'><div class="plain_layout"><a id='magicparlabel-735' />Removed the run$/ron$-symbols, because they looked like a mis-conception, nobody used them, some numbers were wrong and the code was unfixable (1000s of undocumented number)</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-738' />ron$royfl</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-741' />river opponent number : possible royal flush </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-747' />ron$strfl</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-750' />river opponent number : possible straight flush </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-756' />ron$4kind</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-759' />river opponent number : possible four of a kind </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-765' />ron$fullh</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-768' />river opponent number : possible full house</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-774' />ron$flush</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-777' />river opponent number : possible flush </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-783' />ron$strai</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-786' />river opponent number : possible straight </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-792' />ron$3kind</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-795' />river opponent number : possible three of a kind</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-801' />ron$2pair</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-804' />river opponent number : possible two pair</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-810' />ron$1pair</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-813' />river opponent number : possible one pair </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-819' />ron$hcard</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-822' />river opponent number : possible high card </div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-828' />ron$total</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-831' />river opponent number : sum of all possible river endings</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-837' />ron$pokervalmax</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-840' />the maximum possible pokerval for the opponent</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-846' />ron$prnuts</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-849' />opponent chances of hitting the nuts on or before the river</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-855' />ron$prbest</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-858' />opponent chances of hitting pokervalmax on or before the river</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-864' />ron$clocks</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-867' />total number of cpu clocks used to calculate the ron$ symbols</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-873' />run$...</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-876' />similar like the ron$symbols above, just for the user</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+<h2 class="section"><a id='magicparlabel-880' /><span class="section_label"></span> TablePoints</h2>
+<div class="standard"><a id='magicparlabel-881' />Tablepoints got removed, because nobody used them. They never got implemented correctly and nobody noticed it for 3 years.</div>
+
+
+
+
+<div class="standard"><a id='magicparlabel-882' /><table><tbody><tr><td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-893' />tablepointNNN</div>
+</td>
+
+<td align='left' valign='top'><div class="plain_layout"><a id='magicparlabel-896' />These regions are used when the "Green Circle Button" is clicked on the OpenHoldem toolbar to "automagically" find a table to connect to. These regions must be one pixel wide by one pixel tall and must use a color transform. All tablepoint records must match the pixel colors on the casino window for it to be recognized on a connect. See {How the “Green Circle Button” finds tables} for more details. </div>
+</td>
+</tr></tbody>
+</table>
+</div>
+
+<div class="standard"><a id='magicparlabel-897' />	</div>
+<h2 class="section"><a id='magicparlabel-898' /><span class="section_label"></span> PrWin-functions</h2>
+<div class="standard"><a id='magicparlabel-899' />Some supporting functions and symbols for the PrWin-simulations got renamed in OpenHoldem 4.0.0 to achieve more verbosity and better formula-grouping in the editor.</div>
+
+
+
+
+<div class="standard"><a id='magicparlabel-900' /><table><tbody><tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-923' />Former Name</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-926' />New Name</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-929' />f$P</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-932' />f$prwin_number_of_opponents</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-935' />NIT</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-938' />f$prwin_number_of_iterations</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-941' />f$topclip</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-944' />f$prwin_topclip</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-947' />f$mustplay</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-950' />f$prwin_mustplay</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-953' />f$willplay</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-956' />f$prwin_willplay</div>
+</td>
+</tr>
+<tr><td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-959' />f$wontplay</div>
+</td>
+
+<td align='center' valign='top'><div class="plain_layout"><a id='magicparlabel-962' />f$prwin_wontplay</div>
+</td>
+</tr></tbody>
+</table>
+</div>
+
+<div class="standard"><a id='magicparlabel-963' />!!!</div>
+</body>
+</html>
