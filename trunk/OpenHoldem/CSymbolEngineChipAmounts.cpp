@@ -168,7 +168,7 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 	}
   // Avoiding problems with floatingpoint-representations here
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17984#p125241
-  if (IsSmallerOrEqual(_potcommon, 0)) {
+  if (IsSmaller(_potcommon, 0)) {
 	  // This can happen for potmethod = 2 and incorrectly scraped (occluded) main-pot
 	  write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR: negative potcommon. Probably miss-scraped main-pot. Adapting to 0.0\n");
 	  _potcommon = 0;

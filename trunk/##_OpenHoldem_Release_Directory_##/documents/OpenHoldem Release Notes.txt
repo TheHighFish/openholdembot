@@ -1,3 +1,23 @@
+v7.3.2 2014-12-19
+==================
+BUG FIXES:
+- Scrapeing the blinds with c0limits did not work in all cases.
+  Special thanks to OpenGeek again for his replay-frames.
+  [THF]
+- Guessing the blinds from the bets at the table (if all else fails),
+  also had a flaw, because of a syntactically "correct" typo.
+  Thanks to Beutel for reporting.
+  [THF]
+
+MAINTENANCE:
+- Removing support for c0limits0..c0limits9,
+  because this is something that never worked in the past,
+  so it looks as if it is not needed at all.
+  We have ttlimits (for the title), c0limits (for a region at the table),
+  c0bigblind (etc.) and finally blind-guessing.
+  No 10 extra regions needed.
+  [THF]
+
 v7.3.2 2014-12-18
 ==================
 BUG FIXES:
