@@ -1007,79 +1007,54 @@ void CScraper::ScrapeLimits()
     // * a region r$c0limits to define where to scrape the limis 
     // * a symbol s$c0limits to define how to interpret the scrape text,
     //   similar to s$ttlimits
-		s.Format("c0limits");
-		s_iter = p_tablemap->s$()->find(s.GetString());
-		if (EvaluateRegion(s, &text))
-		{
-			CScraperPreprocessor::PreprocessMonetaryString(&text);
-      write_log(preferences.debug_scraper(), "[CScraper] r$c0limit evalutes to %s\n",
-        text);
-			if (text!="")
-			{
+    // Since OH 7.3.3 we do no longer support c0limitsX
+    // because it never got correctly implemented 
+    // and therefore seems to be not needed. 
+		if (EvaluateRegion("c0limits", &text))	{
+      write_log(preferences.debug_scraper(), 
+        "[CScraper] r$c0limit evalutes to %s\n", text);
+			if (text != "")	{
+			  s_iter = p_tablemap->s$()->find("c0limits");
         CString how_to_interpret_c0limit = s_iter->second.text;
-        write_log(preferences.debug_scraper(), "[CScraper] s$c0limit is %s\n",
-          how_to_interpret_c0limit);
+        write_log(preferences.debug_scraper(), 
+          "[CScraper] s$c0limit is %s\n", how_to_interpret_c0limit);
 				trans.ParseStringBSL(
 					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-
-				write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
+        write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
 					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
 					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
 			}
 		}
-
-		for (int j=0; j<=9; j++)
-		{
-			// r$c0limitsX, s$c0limitsX
-			s.Format("c0limits%d", j);
-			s_iter = p_tablemap->s$()->find(s.GetString());
-
-			if (EvaluateRegion(s, &text))
-			{
-				CScraperPreprocessor::PreprocessMonetaryString(&text);
-				if (text!="")
-				{
-					trans.ParseStringBSL(text, s_iter->second.text, NULL,
-						&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-				}
-
-				write_log(preferences.debug_scraper(), "[CScraper] c0limits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
-					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
-			}
-
-			// save what we just scanned through
-      if (handnumber != "") {
-			  set_handnumber(l_handnumber);
-      }
-      if (l_sblind != k_undefined) {
-			  _s_limit_info.sblind = l_sblind;
-      }
-      if (l_bblind != k_undefined) {
-			  _s_limit_info.bblind = l_bblind;
-      }
-      if (l_bbet != k_undefined) {
-			  _s_limit_info.bbet = l_bbet;
-      }
-      if (l_ante != k_undefined) {
-			  _s_limit_info.ante = l_ante;
-      }
-      if (l_limit != k_undefined) {
-			  _s_limit_info.limit = l_limit;
-      }
-      if (l_sb_bb != k_undefined) {
-			  _s_limit_info.sb_bb = l_sb_bb;
-      }
-      if (l_bb_BB != k_undefined) {
-			  _s_limit_info.bb_BB = l_bb_BB;
-      }
-      if (l_buyin != k_undefined) {
-			  _s_limit_info.buyin = l_buyin;
-      }
-		}
+    // save what we just scanned through
+    if (handnumber != "") {
+			set_handnumber(l_handnumber);
+    }
+    if (l_sblind != k_undefined) {
+			_s_limit_info.sblind = l_sblind;
+    }
+    if (l_bblind != k_undefined) {
+			_s_limit_info.bblind = l_bblind;
+    }
+    if (l_bbet != k_undefined) {
+			_s_limit_info.bbet = l_bbet;
+    }
+    if (l_ante != k_undefined) {
+			_s_limit_info.ante = l_ante;
+    }
+    if (l_limit != k_undefined) {
+			_s_limit_info.limit = l_limit;
+    }
+    if (l_sb_bb != k_undefined) {
+			_s_limit_info.sb_bb = l_sb_bb;
+    }
+    if (l_bb_BB != k_undefined) {
+			_s_limit_info.bb_BB = l_bb_BB;
+    }
+    if (l_buyin != k_undefined) {
+			_s_limit_info.buyin = l_buyin;
+    }
     // r$c0smallblind
     EvaluateNumericalRegion(&_s_limit_info.sblind, "c0smallblind");
 		// r$c0bigblind
