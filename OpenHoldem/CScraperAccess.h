@@ -17,14 +17,13 @@
 
 #include <windows.h>
 
-class CScraperAccess
-{
-friend class CCasinoInterface;
-public:
+class CScraperAccess {
+  friend class CCasinoInterface;
+  friend class CSymbolEngineGameType;
+ public:
 	CScraperAccess();
 	~CScraperAccess();
-
-public:
+ public:
 	// public functions
 	void	GetNeccessaryTablemapObjects();
 	void	InitOnConnect();
@@ -35,13 +34,11 @@ public:
 	bool	IsPlayerSeated(int player);
 	bool	IsGoodPlayername(int chair);
   int   NumberOfCommonCards();
-public:
+ public:
 	bool	IsMyTurn()	{ return (NumberOfVisibleButtons() >= k_min_buttons_needed_for_my_turn); }
-
-public:
+ public:
 	bool get_betpot_button_visible(int numerator, int denominator);
-
-protected:
+ protected:
 	// visible
 	bool visible_buttons[k_number_of_standard_functions];
 	bool i3_button_visible;
@@ -60,8 +57,7 @@ protected:
 	bool i3_button_available;	
 	bool i86_button_available;
 	bool i86X_button_available[k_max_number_of_i86X_buttons];
-
-private:
+ private:
 	// private functions
 	int		SearchForButtonNumber(int button_code);
 	bool	SearchForButtonVisible(int button_code);
@@ -69,9 +65,7 @@ private:
 	bool	GetButtonVisible(int button_number);
 	bool	GetBetpotButtonVisible(int button_number);
 	CString	GetButtonName(int button_number);
-
-
-private:
+ private:
 	// button numbers
 	int _allin_button_number;
 	int _raise_button_number;
@@ -83,22 +77,18 @@ private:
 	int _leave_button_number;
 	int _prefold_button_number;
 	int _autopost_button_number;
-
-private:
+ private:
 	// button names
 	CString button_names[k_number_of_standard_functions];
-
-	CString _i86_button_name;
+  CString _i86_button_name;
 	CString _i86X_button_name[k_max_number_of_i86X_buttons];
 	CString _i3_button_name;
 	// region names
 	CString _i3_edit_name;
 	CString _i3_slider_name;
 	CString _i3_handle_name;
-
-public:
+ public:
 	bool allin_option_available;
-
 };
 
 extern CScraperAccess *p_scraper_access;

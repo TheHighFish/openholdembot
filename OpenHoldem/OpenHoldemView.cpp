@@ -27,6 +27,7 @@
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
 #include "CSymbolengineChipAmounts.h"
+#include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -208,7 +209,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all)
 	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
 	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
 	double  sym_ante = p_symbol_engine_tablelimits->ante();
-	int     sym_lim = p_symbol_engine_tablelimits->gametype();
+	int     sym_lim = p_symbol_engine_gametype->gametype();
 	bool    sym_istournament = p_symbol_engine_istournament->istournament();
 	double  sym_pot = p_symbol_engine_chip_amounts->pot();
 

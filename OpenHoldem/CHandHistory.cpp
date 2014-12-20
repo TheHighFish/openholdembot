@@ -28,6 +28,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolEnginePokerAction.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTableLimits.h"
@@ -346,7 +347,7 @@ void CHandHistory::scanPlayerChanges()
 					double temp = maxBet;
 					maxBet = _history.chair[i].currentBet;
 
-					if (p_symbol_engine_tablelimits->gametype() != k_gametype_FL)
+					if (p_symbol_engine_gametype->gametype() != k_gametype_FL)
 					{
 						SearchForAllinPlayers(i);
 					}
@@ -385,7 +386,7 @@ void CHandHistory::scanPlayerChanges()
 					&&betround != 1 
 					&& maxBet != 0))
 				{
-					if (!p_symbol_engine_tablelimits->isfl())
+					if (!p_symbol_engine_gametype->isfl())
 					{
 						SearchForAllinPlayers(i);
 					}
@@ -1014,7 +1015,7 @@ void CHandHistory::HandleDealingPhase()
 	//------------------DEALER--------------------//
 	outfile << endl;
 	outfile << "GAME #" << gameNumber 
-		<< ": Texas Hold'em " << p_symbol_engine_tablelimits->GetGametypeAsString() 
+		<< ": Texas Hold'em " << p_symbol_engine_gametype->GetGameTypeAsString() 
 		<< " $" << bblind << "/$" << (bblind*2) << 	" " 
 		<< setDate() << endl;
 	outfile << "Table " << p_scraper->title() << endl;

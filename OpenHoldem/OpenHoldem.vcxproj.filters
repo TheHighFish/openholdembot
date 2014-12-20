@@ -684,6 +684,9 @@
     <ClCompile Include="CBlindGuesser.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineGameType.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1479,6 +1482,9 @@
     </ClInclude>
     <ClInclude Include="CBlindGuesser.h">
       <Filter>Header Files\Symbols\Symbol_Engines\Blinds</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineGameType.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
