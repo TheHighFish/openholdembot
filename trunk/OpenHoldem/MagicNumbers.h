@@ -94,7 +94,7 @@ const unsigned int k_pokerval_royalflush    = 0x800EDCBA;
 // Game type
 const int k_gametype_unknown = -1;
 const int k_gametype_NL      =  0;
-const int k_gametype_PL  	 =  1;
+const int k_gametype_PL    	 =  1;
 const int k_gametype_FL      =  2;
 
 // Session IDS (max number of tables)
@@ -108,7 +108,7 @@ const int k_min_buttons_needed_for_my_turn = 2;
 const int k_my_turn_bits_fold_call_raise = 0x07;
 
 // button codes
-const int k_button_i3		= 3;
+const int k_button_i3		  = 3;
 const int k_button_fold		= 10;
 const int k_button_allin	= 11;
 const int k_button_raise	= 12;

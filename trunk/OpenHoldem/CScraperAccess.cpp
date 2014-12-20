@@ -204,15 +204,15 @@ void CScraperAccess::InitOnConnect()
 
 void CScraperAccess::GetNeccessaryTablemapObjects() {
 	// NUMBERS (from labels)
-	_allin_button_number	= SearchForButtonNumber(k_button_allin);
-	_raise_button_number	= SearchForButtonNumber(k_button_raise);
-	_call_button_number		= SearchForButtonNumber(k_button_call);
-	_check_button_number	= SearchForButtonNumber(k_button_check);
-	_fold_button_number		= SearchForButtonNumber(k_button_fold);
-	_prefold_button_number	= SearchForButtonNumber(k_button_prefold);
-	_sitin_button_number	= SearchForButtonNumber(k_button_sitin);
-	_sitout_button_number	= SearchForButtonNumber(k_button_sitout);
-	_leave_button_number	= SearchForButtonNumber(k_button_leave);
+	_allin_button_number	  = SearchForButtonNumber(k_button_allin);
+	_raise_button_number	  = SearchForButtonNumber(k_button_raise);
+	_call_button_number		  = SearchForButtonNumber(k_button_call);
+	_check_button_number	  = SearchForButtonNumber(k_button_check);
+	_fold_button_number		  = SearchForButtonNumber(k_button_fold);
+	_prefold_button_number  = SearchForButtonNumber(k_button_prefold);
+	_sitin_button_number	  = SearchForButtonNumber(k_button_sitin);
+	_sitout_button_number   = SearchForButtonNumber(k_button_sitout);
+	_leave_button_number	  = SearchForButtonNumber(k_button_leave);
 	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
   // NAMES
 	button_names[k_autoplayer_function_allin]		= GetButtonName(_allin_button_number);
@@ -221,9 +221,9 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	button_names[k_autoplayer_function_check]		= GetButtonName(_check_button_number);
 	button_names[k_autoplayer_function_fold]		= GetButtonName(_fold_button_number);
 	button_names[k_standard_function_prefold]		= GetButtonName(_prefold_button_number);
-	button_names[k_standard_function_sitin]		= GetButtonName(_sitin_button_number);
+	button_names[k_standard_function_sitin]		  = GetButtonName(_sitin_button_number);
 	button_names[k_standard_function_sitout]		= GetButtonName(_sitout_button_number);
-	button_names[k_standard_function_leave]		= GetButtonName(_leave_button_number);
+	button_names[k_standard_function_leave]		  = GetButtonName(_leave_button_number);
 	button_names[k_standard_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {

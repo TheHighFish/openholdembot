@@ -977,9 +977,8 @@ void CScraper::ScrapeLimits()
 			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
       &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 
-		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %s\n", 
-			p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
-			p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->GetGametypeAsString());
+		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+      l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 		for (int j=0; j<=9; j++)
@@ -997,9 +996,8 @@ void CScraper::ScrapeLimits()
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
 
-				write_log(preferences.debug_scraper(), "[CScraper] ttlimits%d, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", j,
-					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
-					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype()); 
+				write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+          l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 			}
 		}
 
@@ -1022,9 +1020,8 @@ void CScraper::ScrapeLimits()
 					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-        write_log(preferences.debug_scraper(), "[CScraper] c0limits, result sblind/bblind/bbet/ante/gametype: %f/%f/%f/%f/%d\n", 
-					p_symbol_engine_tablelimits->sblind(), p_symbol_engine_tablelimits->bblind(), p_symbol_engine_tablelimits->bigbet(), 
-					p_symbol_engine_tablelimits->ante(), p_symbol_engine_tablelimits->gametype());
+        write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+      l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 			}
 		}
     // save what we just scanned through

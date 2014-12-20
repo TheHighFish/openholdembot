@@ -21,6 +21,7 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CTableState.h"
 #include "debug.h"
@@ -44,6 +45,8 @@ CSymbolEngineTableLimits::CSymbolEngineTableLimits() {
 	// as the value of istournament() should be constant for the
 	// entire session, so it does not matter, if we use old values
 	// from the last heartbeat.
+  //
+  // Same for CSymbolEngineGameType
 }
 
 CSymbolEngineTableLimits::~CSymbolEngineTableLimits() {
@@ -63,7 +66,6 @@ void CSymbolEngineTableLimits::ResetOnConnection() {
 		tablelimits_first_N_hands_bbet[i]   = 0;
 	}
 	_ante = 0;
-	_gametype = k_gametype_unknown;
   tablelimit_best_guess.bbet = 0;
   tablelimit_best_guess.bblind  = 0;
   tablelimit_best_guess.sblind = 0;
@@ -201,15 +203,6 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand() {
 	RememberBlindsForCashgames();
 }
 
-void CSymbolEngineTableLimits::SetGametype(int gametype) {
-	assert(gametype >= k_gametype_unknown);
-	assert(gametype <= k_gametype_FL);
-	_gametype = gametype;
-  write_log(preferences.debug_table_limits(), 
-    "[CSymbolEngineTableLimits] SetGametype() new gametype: %s\n", 
-    GetGametypeAsString());
-}
-
 void CSymbolEngineTableLimits::AutoLockBlinds() {
 	write_log(preferences.debug_table_limits(), 
     "[CSymbolEngineTableLimits] AutoLockBlinds()\n");
@@ -265,7 +258,8 @@ double CSymbolEngineTableLimits::buyin() {
 double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
-  if (isfl() && (betround >= k_betround_turn)) {
+  assert(p_symbol_engine_gametype != NULL);
+  if (p_symbol_engine_gametype->isfl() && (betround >= k_betround_turn)) {
     return bigbet();
   }
 	return bblind();
@@ -275,39 +269,9 @@ double CSymbolEngineTableLimits::bet() {
 	return (bet(p_betround_calculator->betround()));
 }
 
-CString CSymbolEngineTableLimits::GetGametypeAsString() {
-	CString result = "";
-	if (isnl())	{
-		result = "NL";
-	}	else if (ispl()) {
-		result = "PL";
-	}	else if (isfl()) {
-		result = "FL";
-	}	else {
-		result = "?L";
-	}
-	if (p_symbol_engine_istournament->istournament()) {
-		result += "T";
-	}
-	return result;
-}
-
 bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "is", 2)==0)	{
-		if (memcmp(name, "isnl", 4)==0 && strlen(name)==4) {
-			*result = isnl();
-		}	else if (memcmp(name, "ispl", 4)==0 && strlen(name)==4)	{
-			*result = ispl();
-		}	else if (memcmp(name, "isfl", 4)==0 && strlen(name)==4)	{
-			*result = isfl();
-		}	else {
-			// Invalid symbol
-			return false;
-		}
-		// Valid symbol
-		return true;
-	}	else if (memcmp(name, "bet", 3)==0)	{
+	if (memcmp(name, "bet", 3)==0)	{
 		if (memcmp(name, "bet", 3)==0 && strlen(name)==3) {
 			*result = bet();
       return true;
@@ -327,8 +291,6 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 		*result = sblind();
 	}	else if (memcmp(name, "ante", 4)==0 && strlen(name)==4)	{
 		*result = ante();
-	}	else if (memcmp(name, "lim", 3)==0 && strlen(name)==3) {
-		*result = gametype();
 	}	else if (memcmp(name, "buyin", 5)==0 && strlen(name)==5) {
 		*result = buyin();
   }	else {
@@ -340,7 +302,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 }
 
 CString CSymbolEngineTableLimits::SymbolsProvided() {
-  CString list = "isnl ispl isfl lim bet bblind sblind ante buyin ";
+  CString list = "bet bblind sblind ante buyin ";
   list += RangeOfSymbols("bet%i", k_betround_preflop, k_betround_river);
   return list;
 }

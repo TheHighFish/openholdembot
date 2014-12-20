@@ -20,7 +20,7 @@
 #include "CScraperAccess.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
-#include "CSymbolEngineTableLimits.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "debug.h"
@@ -170,7 +170,7 @@ bool CLazyScraper::NeedInterfaceButtons()
 bool CLazyScraper::NeedBetpotButtons()
 {
 	return (p_scraper_access->IsMyTurn()
-		&& (p_symbol_engine_tablelimits->isnl() || p_symbol_engine_tablelimits->ispl()));
+		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
 }
 
 bool CLazyScraper::NeedSlider()

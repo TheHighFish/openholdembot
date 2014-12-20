@@ -199,6 +199,7 @@
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
+    <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
@@ -454,6 +455,7 @@
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
+    <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />

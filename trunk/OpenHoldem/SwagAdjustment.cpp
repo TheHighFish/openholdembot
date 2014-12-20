@@ -17,6 +17,7 @@
 #include <assert.h>
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
@@ -144,23 +145,17 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 	}
 }
 
-double MaximumBetsizeForGameType()
-{
+double MaximumBetsizeForGameType() {
 	double maximum_betsize = 0;
-	if (p_symbol_engine_tablelimits->ispl())
-	{
+	if (p_symbol_engine_gametype->ispl())	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
 		maximum_betsize = MaximumBetsizeForPotLimit();
-	}
-	else if (p_symbol_engine_tablelimits->isfl())
-	{
+	}	else if (p_symbol_engine_gametype->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
 		maximum_betsize = 0;
-	}
-	else
-	{
+	}	else {
 		int userchair = p_symbol_engine_userchair->userchair();
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is No Limit. Betsize restricted only by users balance.\n");

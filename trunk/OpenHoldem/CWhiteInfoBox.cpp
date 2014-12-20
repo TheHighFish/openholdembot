@@ -18,6 +18,7 @@
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolengineTableLimits.h"
 #include "CSymbolengineUserchair.h"
 #include "CTableState.h"
@@ -93,7 +94,7 @@ CString CWhiteInfoBox::InfoText() {
   double sym_bblind		= p_symbol_engine_tablelimits->bblind();
 	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
 	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				  = p_symbol_engine_tablelimits->gametype();
+	int sym_lim				  = p_symbol_engine_gametype->gametype();
 	CString sym_handnumber = p_handreset_detector->GetHandNumber();
 	double sym_pot			= p_symbol_engine_chip_amounts->pot();
   CString result, s;
@@ -116,7 +117,7 @@ CString CWhiteInfoBox::InfoText() {
 		format_string = "  %s %.2f/%.2f/%.2f\n";
 	}
 	s.Format(format_string,
-		p_symbol_engine_tablelimits->GetGametypeAsString(),
+		p_symbol_engine_gametype->GetGameTypeAsString(),
 		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
 	result.Append(s);
 

@@ -31,6 +31,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineEventLogging.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineICM.h"
@@ -156,6 +157,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);
+  // CSymbolEngineGameType
+  p_symbol_engine_gametype = new CSymbolEngineGameType;
+  AddSymbolEngine(p_symbol_engine_gametype);
   // CSymbolEngineCards
   p_symbol_engine_cards = new CSymbolEngineCards();
   AddSymbolEngine(p_symbol_engine_cards);

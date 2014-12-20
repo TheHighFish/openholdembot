@@ -1,7 +1,15 @@
-v7.3.2 2014-12-19
+v7.3.4 2014-12-21
+==================
+MAINTENANCE:
+- Improved gametype detection: NL / PL / FL.
+  [THF]
+- Improved tablemap completeness checker.
+  [THF]
+
+v7.3.3 2014-12-19
 ==================
 BUG FIXES:
-- Scrapeing the blinds with c0limits did not work in all cases.
+- Scraping the blinds with c0limits did not work in all cases.
   Special thanks to OpenGeek again for his replay-frames.
   [THF]
 - Guessing the blinds from the bets at the table (if all else fails),
