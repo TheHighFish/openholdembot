@@ -48,6 +48,23 @@ void CTablemapCompletenessChecker::CheckItem(CString item) {
   }
 }
 
+void CTablemapCompletenessChecker::CheckSetOfItems(CString prefix, 
+                                                   int last_index, 
+                                                   CString postfix, 
+                                                   bool mandatory) {
+  // All other items are also mandatory
+  // if the first optional item exists                                                   
+  CString first_optional_item;
+  first_optional_item.Format("%s%i%s", prefix, 0, postfix);
+  if (p_tablemap->ItemExists(first_optional_item)) {
+    mandatory = true;
+  }
+  if (!mandatory) return;
+  for (int i=0; i<=last_index; ++i) {
+    CheckItem(prefix, i, postfix);
+  }
+}
+
 void CTablemapCompletenessChecker::CheckItem(CString prefix, int infix, CString postfix) {
   CString name;
   name.Format("%s%d%s", prefix, infix, postfix);
@@ -114,6 +131,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckItem("ttlimits");
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
+  int last_chair = nchairs - 1;
   if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
     CString message;
     message.Format("Tablemap item nchairs out of range\n"
@@ -123,24 +141,26 @@ void CTablemapCompletenessChecker::VerifyMap() {
     OH_MessageBox_Interactive(message, "Error", 0);
   }
   // Check mandatory items for every seat
+  CheckSetOfItems("p", last_chair, "active",   true);  
+  CheckSetOfItems("p", last_chair, "balance",  true);
+  CheckSetOfItems("p", last_chair, "dealer",   true);
+  CheckSetOfItems("p", last_chair, "name",     true);
+  CheckSetOfItems("p", last_chair, "seated",   true);
+  CheckSetOfItems("p", last_chair, "cardback", true);
+  CheckSetOfItems("p", last_chair, "cardface0nocard", true);
+  CheckSetOfItems("p", last_chair, "cardface1nocard", true);
+  // Check mandatory cards faces (or rank + suit) for every seat
   for (int i=0; i<nchairs; ++i) {
-    CheckItem("p", i, "active");  
-    CheckItem("p", i, "balance");
-    CheckItem("p", i, "dealer");
-    CheckItem("p", i, "name");
-    CheckItem("p", i, "seated");
-    CheckItem("p", i, "cardback");
     CheckCardFaces("p", i, "cardface0");
     CheckCardFaces("p", i, "cardface1");
-    CheckCardFaces("p", i, "cardface0nocard");
-    CheckCardFaces("p", i, "cardface1nocard");
   }
   CheckBetsOrStacks();
   // Community cards
   for (int i=0; i<k_number_of_community_cards; ++i) {
     CheckCardFaces("c0cardface", i, "");
-    CheckCardFaces("c0cardface", i, "nocard");
   }
+  int last_communitz_card = k_number_of_community_cards - 1;
+  CheckSetOfItems("c0cardface", last_communitz_card, "nocard", true);
   CheckMainPot();
   // Action buttons
   int number_of_buttons_seen = 0;
@@ -187,6 +207,24 @@ void CTablemapCompletenessChecker::VerifyMap() {
       CheckItem("t", i, "type");
     }
   }
+    // Optional uX-regions
+  CheckSetOfItems("u", last_chair, "name",    false);
+  CheckSetOfItems("u", last_chair, "seated",  false);
+  CheckSetOfItems("u", last_chair, "active",  false);
+  CheckSetOfItems("u", last_chair, "balance", false);
+  CheckSetOfItems("u", last_chair, "bet",     false);
+  CheckSetOfItems("u", last_chair, "dealer",  false);
+  // Not checked, despite nice to have
+  //   * betpot-buttons
+  //   * i86-buttons
+  //
+  // Not necessary, as optional
+  //   * r$c0isfinaltable
+  //   * potmethod
+  //   * buttonclickmethod
+  //   * betpotmethod
+  // and some others  
+  //
   // r$c0istournament no longer supported, works automatically
   if (p_tablemap->ItemExists("c0istournament")) {
     ErrorDeprecatedItem("c0istournament");
@@ -201,14 +239,4 @@ void CTablemapCompletenessChecker::VerifyMap() {
   if (p_tablemap->ItemExists("activemethod")) {
     ErrorDeprecatedItem("activemethod");
   }
-  // Not checked, despite nice to have
-  //   * betpot-buttons
-  //   * i86-buttons
-  //
-  // Not necessary, as optional
-  //   * r$c0isfinaltable
-  //   * potmethod
-  //   * buttonclickmethod
-  //   * betpotmethod
-  // and some others  
 }

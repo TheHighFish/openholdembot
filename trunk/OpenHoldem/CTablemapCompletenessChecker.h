@@ -23,12 +23,13 @@ class CTablemapCompletenessChecker {
  private:
   void CheckItem(CString item);
   void CheckItem(CString prefix, int infix, CString postfix);
+  void CheckSetOfItems(CString prefix, int last_index, CString postfix, bool mandatory);
   void CheckCardFaces(CString prefix, int infix, CString postfix);
   void CheckBetsOrStacks();
   void CheckMainPot();
  private:
-   void ErrorMissingItem(CString item);
-   void ErrorDeprecatedItem(CString item);
+  void ErrorMissingItem(CString item);
+  void ErrorDeprecatedItem(CString item);
   bool IsNoLimitMap();
  private:
   bool _error_flag;
