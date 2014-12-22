@@ -1,5 +1,14 @@
 v7.3.4 2014-12-21
 ==================
+BUG FIXES:
+- If an opponent put us allin and we only had the options to fold and to call (allin) 
+  but the buttons got scraped as "fold" and "allin" OpenHoldem
+  did not act because it expected to see either a call or a check button
+  and thought it was an unstable game-state,
+  This has now been changed. 
+  Thanks to OpenGeek for providing replay-frames.
+  [THF]
+
 MAINTENANCE:
 - Improved gametype detection: NL / PL / FL.
   [THF]

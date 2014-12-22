@@ -41,90 +41,84 @@ public:
 	double maxbalance()					{ return _maxbalance; }
 	double balanceatstartofsession()	{ return _balanceatstartofsession; }
 public:
-	double stack(int nth_best)
-	{
+	double stack(int nth_best) {
 		assert(nth_best >= 0);
 		assert(nth_best < k_max_number_of_players);
 		return _stack[nth_best];
 	}
 
-	double stacks_at_hand_start(const int chair) 
-	{ 
+	double stacks_at_hand_start(const int chair) { 
 		assert((chair >= 0) || (chair == k_undefined));
 		assert(chair < k_max_number_of_players);
-		if (chair == k_undefined)
-		{
+		if (chair == k_undefined)	{
 			return 0;
 		}
 		return _stacks_at_hand_start[chair]; 
 	}
 
-	double currentbet(int player)	
-	{
+	double currentbet(int player)	{
 		assert((player >= 0) || (player == k_undefined));
 		assert(player < k_max_number_of_players);
-		if (player == k_undefined)
-		{
+		if (player == k_undefined) {
 			return 0;
 		}
 		return _currentbet[player];
 	}
 
-	double ncurrentbets()
-	{
-		if (p_symbol_engine_tablelimits->bet() == 0)
-		{
+	double ncurrentbets()	{
+		if (p_symbol_engine_tablelimits->bet() == 0)		{
 			return 0;
 		}
 		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
 	}
-public:
+ public:
 	double pot()		    	{ return _pot; }
 	double potcommon()		{ return _potcommon; }
 	double potplayer()		{ return _potplayer; }
-public:
+ public:
 	double sraiprev()	  	{ return _sraiprev; }
-public:
+ public:
 	double call()		    	{ return _call;			}
 	double nbetstocall()	{ return _nbetstocall;	}
 	double nbetstorais()	{ return _nbetstorais; 	}
 	double ncallbets()		{ return _ncallbets;	}
 	double nraisbets()		{ return _nraisbets;	}
-private:
+ public:
+  double SortedBalance(const int rank);
+ private:
 	// private setters
 	void SetBalance(const int player, const double d);
 	void SetMaxBalanceConditionally();
 	void SetBalanceAtStartOfSessionConditionally();
-private:
+ private:
 	void CalculateStacks();
 	void CalculateCurrentbets();
 	void CalculatePots();
 	void CalculateAmountsToCallToRaise();
 	void CalculateBetsToCallToRaise();
-private:
+ private:
 	double Largestbet();
-private:			
+ private:			
 	double _maxbalance;
 	double _balanceatstartofsession;
 	double _stack[k_max_number_of_players];
 	double _currentbet[k_max_number_of_players];	
-private:
+ private:
 	// Used in ICM calculator - ICM needs stacks at beginning of hand
 	double _stacks_at_hand_start[k_max_number_of_players];	
 	double _pot;
 	double _potcommon;
 	double _potplayer;
-private:
+ private:
 	double _sraiprev;
 	double _sraimin;
 	double _sraimax;
-private:
+ private:
 	double _call;
 	double _nbetstocall;
 	double _nbetstorais;
 	double _ncallbets;
 	double _nraisbets;
-private:
 };
 
 extern CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts;

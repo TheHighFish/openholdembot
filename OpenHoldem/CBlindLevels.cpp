@@ -18,7 +18,7 @@
 
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
-const int kNumberOfBlindLevels    = 187;
+const int kNumberOfBlindLevels    = 188;
 const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
@@ -28,7 +28,7 @@ const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        0.02,         0.04,         0.08},
    {        0.02,         0.05,         0.10},
    {        0.03,         0.06,         0.12},
-   {        0.04,         0.06,         0.16},
+   {        0.04,         0.08,         0.16},
    {        0.05,         0.10,         0.20},
    {        0.05,         0.10,         0.25},
    {        0.06,         0.12,         0.24},
@@ -37,6 +37,7 @@ const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        0.08,         0.16,         0.32},
    {        0.10,         0.20,         0.40},
    {        0.10,         0.25,         0.50},
+   {        0.12,         0.25,         0.50},
    {        0.15,         0.30,         0.60},
    {        0.25,         0.50,         1.00},
    {        0.50,         1.00,         2.00},

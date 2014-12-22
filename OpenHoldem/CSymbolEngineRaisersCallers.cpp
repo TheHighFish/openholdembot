@@ -28,6 +28,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
 #include "CTableState.h"
+#include "NumericalFunctions.h"
 #include "StringFunctions.h"
 
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
@@ -66,6 +67,7 @@ void CSymbolEngineRaisersCallers::ResetOnHandreset() {
 		_callbits[i] = 0;
 		_raisbits[i] = 0;
 		_foldbits[i] = 0;
+    _lastraised[i] = k_undefined;
 	}
 	_raischair = k_undefined;
 	_nplayerscallshort  = 0;
@@ -161,6 +163,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		++_nopponentstruelyraising;
 	}
 	AssertRange(_raischair, k_undefined, k_last_chair);
+  _lastraised[BETROUND] = _raischair;
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
 }
@@ -300,67 +303,50 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	_foldbits[BETROUND] = new_foldbits;
 }
 
-bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
-{
+int CSymbolEngineRaisersCallers::LastRaised(const int round) {
+  AssertRange(round, k_betround_preflop, k_betround_river);
+  return _lastraised[round];
+}
+
+bool CSymbolEngineRaisersCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "nopponents", 10)==0)
-	{
-		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18)
-		{
+	if (memcmp(name, "nopponents", 10)==0) {
+		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18) {
 			*result = nopponentschecking();
-		}
-		else if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17)	
-		{
+		}	else if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17) {
       RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentscalling();
-		}
-		else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23)
-		{
+		}	else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {
       RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentstruelyraising();
-		}
-		else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17)
-		{
+		}	else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17) {
 			*result = nopponentsbetting();
-		}
-		else if (memcmp(name, "nopponentsfolded", 16)==0 && strlen(name)==16)	
-		{
+		}	else if (memcmp(name, "nopponentsfolded", 16)==0 && strlen(name)==16)	{
 			*result = nopponentsfolded();
-		}
-		else
-		{
+		}	else {
 			// Invalid symbol
 			return false;
 		}
 		// Valid symbol
 		return true;
 	}
-	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	
-	{
+	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	{
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nplayerscallshort();
-	}
-	else if (memcmp(name, "raischair", 9)==0 && strlen(name)==9)	
-	{
+	}	else if (memcmp(name, "raischair", 9)==0 && strlen(name)==9) {
 		*result = raischair();
-	}
-	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9)  
-	{
+	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = raisbits(name[8]-'0');
-	}
-	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9)  
-	{
+	}	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = callbits(name[8]-'0');
-	}
-	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9)  			
-	{
+	}	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = foldbits(name[8]-'0');
-	}
-	else
-	{
+	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
+    *result = LastRaised(name[10]-'0');
+  }	else {
 		// Symbol of a different symbol-engine
 		return false;
 	}
@@ -375,5 +361,6 @@ CString CSymbolEngineRaisersCallers::SymbolsProvided() {
   list += RangeOfSymbols("raisbits%i", k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("callbits%i", k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("foldbits%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("lastraised%i", k_betround_preflop, k_betround_river);
   return list;
 }

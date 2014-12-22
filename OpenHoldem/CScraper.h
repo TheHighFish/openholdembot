@@ -181,6 +181,9 @@ private:
   // Counter of GDI objects (potential memorz leak)
   // Should be 0 at end of program -- will be checked.
   int         _leaking_GDI_objects;
+  // Temporary!!!
+  int total_region_counter;
+  int identical_region_counter;
 };
 
 extern CScraper *p_scraper;

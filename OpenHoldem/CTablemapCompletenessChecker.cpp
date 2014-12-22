@@ -81,7 +81,7 @@ bool CTablemapCompletenessChecker::IsNoLimitMap() {
     || p_tablemap->ItemExists("swagconfirmationmethod"));
 }
 
-void CTablemapCompletenessChecker::CheckBetsOrStacks() {
+void CTablemapCompletenessChecker::CheckBetsOrChips() {
   bool tm_uses_stacks = p_tablemap->ItemExists("p0chip00");
   int nchairs = p_tablemap->nchairs();
   for (int i=0; i<nchairs; ++i) {
@@ -154,7 +154,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CheckCardFaces("p", i, "cardface0");
     CheckCardFaces("p", i, "cardface1");
   }
-  CheckBetsOrStacks();
+  CheckBetsOrChips();
   // Community cards
   for (int i=0; i<k_number_of_community_cards; ++i) {
     CheckCardFaces("c0cardface", i, "");
