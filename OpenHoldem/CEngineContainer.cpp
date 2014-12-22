@@ -97,9 +97,6 @@ void CEngineContainer::CreateSymbolEngines() {
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
-  // CSymbolEngineTableStats
-  p_symbol_engine_table_stats = new CSymbolEngineTableStats();
-  AddSymbolEngine(p_symbol_engine_table_stats);
   // CSymbolEngineUserchair
   p_symbol_engine_userchair = new CSymbolEngineUserchair();
   AddSymbolEngine(p_symbol_engine_userchair);
@@ -139,6 +136,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineChipAmounts
   p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();
   AddSymbolEngine(p_symbol_engine_chip_amounts);
+  // CSymbolEngineTableStats
+  p_symbol_engine_table_stats = new CSymbolEngineTableStats();
+  AddSymbolEngine(p_symbol_engine_table_stats);
   // CSymbolEngineICM
   p_symbol_engine_icm = new CSymbolEngineICM();
   AddSymbolEngine(p_symbol_engine_icm);

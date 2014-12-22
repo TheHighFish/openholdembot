@@ -14,7 +14,17 @@ MAINTENANCE:
   [THF]
 - Improved tablemap completeness checker.
   [THF]
-
+- CGameSates was an oversiyed module that had to do too many things:
+    * creating a series of 256 gamestates for the DLL
+  In the past it also was responsible for
+    * history and action symbols
+    * table statistics
+    * creating a summary for the log (hand-history)
+  This mess has now been cleaned up and the summary in the log
+  (that never was very precise) has been temporary disabled
+  until we have a good hand-history-generator.
+  [THF]
+  
 v7.3.3 2014-12-19
 ==================
 BUG FIXES:

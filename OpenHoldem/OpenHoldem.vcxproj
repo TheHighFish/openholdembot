@@ -586,7 +586,6 @@
     <ClInclude Include="CSharedMem.h" />
     <ClInclude Include="..\CCritSec\CCritSec.h" />
     <ClInclude Include="CDllExtension.h" />
-    <ClInclude Include="CFormula.h" />
     <ClInclude Include="CPerl.hpp" />
     <ClInclude Include="PerlEz.h" />
     <ClInclude Include="CPokerTrackerLookUp.h" />

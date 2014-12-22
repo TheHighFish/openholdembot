@@ -181,6 +181,12 @@
     <Filter Include="Header Files\Symbols\Symbol_Engines\Blinds">
       <UniqueIdentifier>{31fd34f7-e0a3-4d19-a8fd-8895f1bda00e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Programming the Bot\DLL">
+      <UniqueIdentifier>{c4dd8200-962c-43cb-b168-32ef5d3beba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Programming the Bot\DLL">
+      <UniqueIdentifier>{cb906b06-3206-4087-8396-032290c20b19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -387,9 +393,6 @@
     <ClCompile Include="UnknownSymbols.cpp">
       <Filter>Source Files\Symbols</Filter>
     </ClCompile>
-    <ClCompile Include="CGameState.cpp">
-      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
@@ -512,9 +515,6 @@
     </ClCompile>
     <ClCompile Include="CTablePositioner.cpp">
       <Filter>Source Files\AutoConnector</Filter>
-    </ClCompile>
-    <ClCompile Include="CDllExtension.cpp">
-      <Filter>Source Files\Programming the Bot</Filter>
     </ClCompile>
     <ClCompile Include="CPerl.cpp">
       <Filter>Source Files\Programming the Bot</Filter>
@@ -686,6 +686,12 @@
     </ClCompile>
     <ClCompile Include="CSymbolEngineGameType.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CDllExtension.cpp">
+      <Filter>Source Files\Programming the Bot\DLL</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameState.cpp">
+      <Filter>Source Files\Programming the Bot\DLL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1228,12 +1234,6 @@
     <ClInclude Include="..\CCritSec\CCritSec.h">
       <Filter>Header Files\Synchronization\CCritSec</Filter>
     </ClInclude>
-    <ClInclude Include="CDllExtension.h">
-      <Filter>Header Files\Programming the Bot</Filter>
-    </ClInclude>
-    <ClInclude Include="CFormula.h">
-      <Filter>Header Files\Programming the Bot</Filter>
-    </ClInclude>
     <ClInclude Include="CPerl.hpp">
       <Filter>Header Files\Programming the Bot</Filter>
     </ClInclude>
@@ -1399,9 +1399,6 @@
     <ClInclude Include="CBetroundCalculator.h">
       <Filter>Header Files\Symbols\ToDo</Filter>
     </ClInclude>
-    <ClInclude Include="CGameState.h">
-      <Filter>Header Files\Symbols\ToDo</Filter>
-    </ClInclude>
     <ClInclude Include="Chair$Symbols.h">
       <Filter>Header Files\Symbols\ToDo</Filter>
     </ClInclude>
@@ -1485,6 +1482,12 @@
     </ClInclude>
     <ClInclude Include="CSymbolEngineGameType.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CDllExtension.h">
+      <Filter>Header Files\Programming the Bot\DLL</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameState.h">
+      <Filter>Header Files\Programming the Bot\DLL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
