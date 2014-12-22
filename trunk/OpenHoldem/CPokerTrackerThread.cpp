@@ -220,6 +220,7 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() chair = %i\n", chair);
 	
+  //!!!!!
 	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
 	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() No name known for this chair\n");
@@ -709,7 +710,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int				iteration = 0;
-	clock_t			iterStart, iterEnd;
+	clock_t		iterStart, iterEnd;
 	int				iterDurationMS;
 
 	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)

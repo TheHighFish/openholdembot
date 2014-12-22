@@ -16,7 +16,6 @@
 #include "CSymbolEngineIsOmaha.h"
 
 #include <assert.h>
-#include "CGameState.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "..\CTablemap\CTablemap.h"

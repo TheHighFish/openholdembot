@@ -159,14 +159,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	// Save state
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
 	p_game_state->CaptureState();
-  ////////////////////////////////////////////////////////////////////////////////////////////
-	// Game state engine
-	// TODO: create a symbol-engine
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ProcessGameState.\n");
-	p_game_state->ProcessGameState(p_game_state->state((p_game_state->state_index()-1)&0xff));
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ProcessFtr.\n");
-	p_game_state->ProcessFtr(p_game_state->state((p_game_state->state_index()-1)&0xff));
-
+  
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");

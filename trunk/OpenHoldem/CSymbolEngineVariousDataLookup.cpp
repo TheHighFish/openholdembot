@@ -25,7 +25,6 @@
 #include "CDllExtension.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
-#include "CGameState.h"
 #include "inlines/eval.h"
 #include "Chair$Symbols.h"
 #include "CHandresetDetector.h"
@@ -60,8 +59,6 @@ void CSymbolEngineVariousDataLookup::ResetOnConnection() {
 }
 
 void CSymbolEngineVariousDataLookup::ResetOnHandreset() {
-  // Update game_state so it knows that name new hand has happened
-  p_game_state->set_new_hand(true);
   // Reset display
   InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 }

@@ -16,13 +16,11 @@
 #include "stdafx.h"
 #include "COcclusionCheck.h"
 
-#include "CGameState.h"
 #include "CPreferences.h"
 #include "CSCraper.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CTableState.h"
 #include "debug.h"
-
 
 COcclusionCheck *p_occlusioncheck = NULL;
 

@@ -18,7 +18,6 @@
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
 #include "CFunctionCollection.h"
-#include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"  
@@ -180,11 +179,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 		_isfinalanswer = false;
 	}
   // If the game state processor didn't process this frame, then we should not act.
-	if (!p_game_state->ProcessThisFrame ()) {
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Most common reason: missing balance-stability or card-stability.\n");
-		_isfinalanswer = false;
-	}
+	//!!!!!
 }
 
 CString CSymbolEngineAutoplayer::GetFCKRAString()

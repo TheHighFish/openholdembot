@@ -19,7 +19,6 @@
 #include <sstream>
 #include <iomanip>
 #include "CBetroundCalculator.h"
-#include "CGameState.h"
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
