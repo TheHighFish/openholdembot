@@ -1,4 +1,4 @@
-v7.3.4 2014-12-22
+v7.3.4 2014-12-23
 ==================
 BUG FIXES:
 - If an opponent put us allin and we only had the options to fold and to call (allin) 
