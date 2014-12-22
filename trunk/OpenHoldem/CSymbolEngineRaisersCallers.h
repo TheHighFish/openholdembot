@@ -81,6 +81,8 @@ class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine {
 	double RaisersBet();
 	double LastOrbitsLastRaisersBet();
  private:
+  int LastRaised(const int round);
+ private:
 	int _raischair;
 	int _nplayerscallshort;
 	int _nopponentsbetting;
@@ -94,6 +96,7 @@ class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine {
 	int _raisbits[k_number_of_betrounds + 1];
 	int _foldbits[k_number_of_betrounds + 1];
 	int _callbits[k_number_of_betrounds + 1]; 
+  int _lastraised[k_number_of_betrounds + 1]; 
 };
 
 extern CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers;

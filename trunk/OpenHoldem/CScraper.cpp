@@ -55,6 +55,8 @@ CScraper::CScraper(void) {
 	__TRACE
 	ClearScrapeAreas();
   _leaking_GDI_objects = 0;
+  total_region_counter = 0;
+  identical_region_counter = 0;
 }
 
 CScraper::~CScraper(void) {
@@ -66,6 +68,11 @@ CScraper::~CScraper(void) {
     write_log(k_always_log_errors, "[CScraper] Please get in contact with the development team\n");
   }
   assert(_leaking_GDI_objects == 0);
+  // Temporary !!!
+  write_log(k_always_log_errors, "[CScraper] Total regions scraped %i\n",
+    total_region_counter);
+  write_log(k_always_log_errors, "[CScraper] Identical regions scraped %i\n",
+    identical_region_counter);
 }
 
 const CString CScraper::extractHandnumFromString(CString t) {
@@ -162,7 +169,16 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
 	if (r_iter != p_tablemap->r$()->end()) 
 	{
-		ProcessRegion(r_iter);
+    // !!! Lots of potential for optimiyation here
+    ++total_region_counter;
+		if (ProcessRegion(r_iter)) {
+      ++identical_region_counter;
+      write_log(preferences.debug_alltherest(),
+        "[CScraper] Region %s identical\n", name);
+    } else {
+      write_log(preferences.debug_alltherest(),
+        "[CScraper] Region %s NOT identical\n", name);
+    }
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
@@ -955,8 +971,6 @@ void CScraper::ScrapeLimits()
   double l_bb_BB  = k_undefined;
   double l_buyin  = k_undefined;
 	int    l_limit  = k_undefined;
-  //!!!!!bool l_is_final_table = false;
-	
 	// These are scraped from specific regions earlier in this
 	// function.  Use the values we scraped (if any) to seed
 	// the l_ locals so that we don't blindly overwrite the
@@ -1349,11 +1363,7 @@ bool CScraper::IsIdenticalScrape()
 	}
 
 	// Copy into "last" title
-	if (strcmp(_title, _title_last)!=0) {
-		// !! Should not be here
-		strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
-    //!!!!!set limits to undefined
-	}
+	strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
 
 	// Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);

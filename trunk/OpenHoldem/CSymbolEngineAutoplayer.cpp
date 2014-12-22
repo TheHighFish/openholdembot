@@ -142,24 +142,19 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 
 	_isfinalanswer = true;
 	// check factors that affect isFinalAnswer status
-	if (p_iterator_thread->IteratorThreadWorking())
-	{
+	if (p_iterator_thread->IteratorThreadWorking())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
 		_isfinalanswer = false;
 	}
-
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-	if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)
-	{
+	else if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Either not your turn or problem with the tablemap\n");
 		_isfinalanswer = false;
 	}
-
-	// if we are not playing (occluded?) 2008-03-25 Matrix
-	if (!p_table_state->User()->HasKnownCards())
-	{
+  // if we are not playing (occluded?) 2008-03-25 Matrix
+	else if (!p_table_state->User()->HasKnownCards())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_symbol_engine_userchair->userchair());
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
@@ -167,12 +162,10 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	}
 
 	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
-	if (_isfinalanswer)
-	{
+	if (_isfinalanswer)	{
 		p_stableframescounter->UpdateNumberOfStableFrames();
 	}
-
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
+  write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
 	unsigned int additional_frames_to_wait = 0;
   double desired_delay_in_seconds = p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay);
@@ -181,16 +174,13 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
   }
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait)
-	{
+	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
       p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay));
 		_isfinalanswer = false;
 	}
-
-	// If the game state processor didn't process this frame, then we should not act.
-	if (!p_game_state->ProcessThisFrame ())
-	{
+  // If the game state processor didn't process this frame, then we should not act.
+	if (!p_game_state->ProcessThisFrame ()) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because game state processor didn't process this frame\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Most common reason: missing balance-stability or card-stability.\n");
 		_isfinalanswer = false;

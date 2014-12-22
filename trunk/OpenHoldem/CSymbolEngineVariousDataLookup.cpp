@@ -25,8 +25,8 @@
 #include "CDllExtension.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
-#include "inlines/eval.h"
 #include "CGameState.h"
+#include "inlines/eval.h"
 #include "Chair$Symbols.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
@@ -100,24 +100,21 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   // without any optimized lookup.
   //
   //ROUND&POSITIONS
-  else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)					*result = p_betround_calculator->betround();
+  else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   //FLAGS
-  else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)						*result = p_flags_toolbar->GetFlagMax();
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)							*result = p_flags_toolbar->GetFlag(name[1]-'0');
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)							*result = p_flags_toolbar->GetFlag(10 * (name[1]-'0') + name[2] - '0');
-  else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)					*result = p_flags_toolbar->GetFlagBits();
+  else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = p_flags_toolbar->GetFlagMax();
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = p_flags_toolbar->GetFlag(name[1]-'0');
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * (name[1]-'0') + name[2] - '0');
+  else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = p_flags_toolbar->GetFlagBits();
   // GENERAL
-  else if (memcmp(name, "nchairs", 7)==0 && strlen(name)==7)					*result = p_tablemap->nchairs();
-  else if (memcmp(name, "session", 7)==0 && strlen(name)==7)					*result = p_sessioncounter->session_id();
-  else if (memcmp(name, "version", 7)==0 && strlen(name)==7)					*result = VERSION_NUMBER;
+  else if (memcmp(name, "nchairs", 7)==0 && strlen(name)==7)	*result = p_tablemap->nchairs();
+  else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
+  else if (memcmp(name, "version", 7)==0 && strlen(name)==7)	*result = VERSION_NUMBER;
   //PROFILE
-  else if (memcmp(name, "sitename$", 9)==0)									    *result = p_tablemap->sitename().Find(&name[9])!=-1;
-  else if (memcmp(name, "network$", 8)==0)									    *result = p_tablemap->network().Find(&name[8])!=-1;
-  // GameState symbols
-  else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11)  			*result = p_game_state->LastRaised(name[10]-'0');
-  else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13)  		*result = p_game_state->SortedBalance(name[12]-'0');
+  else if (memcmp(name, "sitename$", 9)==0)									  *result = p_tablemap->sitename().Find(&name[9])!=-1;
+  else if (memcmp(name, "network$", 8)==0)									  *result = p_tablemap->network().Find(&name[8])!=-1;
   // Handreset
-  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11)  		*result = p_handreset_detector->hands_played();
+  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = p_handreset_detector->hands_played();
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
@@ -152,8 +149,6 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
     "betround fmax f flagbits "
     "nchairs session version "
     "handsplayed ";
-  list += RangeOfSymbols("lastraised%i", k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("balance_rank%i", k_betround_preflop, k_betround_river);
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
 }

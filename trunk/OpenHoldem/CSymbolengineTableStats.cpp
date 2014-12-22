@@ -31,7 +31,7 @@ CSymbolEngineTableStats::CSymbolEngineTableStats()
   //
   // This symbol-engine does not depend on other symbol-engines
   // but on CGameState.
-  // Be careful if you turn CGameState into a symbol-engine!!!
+  // Be careful if you turn CGameState into a symbol-engine!!
 }
 
 CSymbolEngineTableStats::~CSymbolEngineTableStats()

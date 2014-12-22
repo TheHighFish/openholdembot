@@ -289,14 +289,17 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	allin_option_available = false;
 	if (i3_button_available) {
 		allin_option_available = true;
-  }
-	if (i3_button_visible && available_buttons[k_autoplayer_function_allin]) {
+  } else if (i3_button_visible && available_buttons[k_autoplayer_function_allin]) {
 		allin_option_available = true;
-  }
-	if (i3_button_visible && i3_edit_defined) {
+  } else if (available_buttons[k_autoplayer_function_allin]) {
+    // Sometimes we just see an allin-button 
+    // without swag-confirmation-button (i3 like above)
+    // if an opponent puts us allin 
+    // and we only have the options "fold" and "allin" (not call)
+    allin_option_available = true;
+  } else	if (i3_button_visible && i3_edit_defined) {
 		allin_option_available = true;
-  }
-	if (i3_button_visible && i3_slider_defined && i3_handle_defined) {
+  } else if (i3_button_visible && i3_slider_defined && i3_handle_defined) {
 		allin_option_available = true;
   }
 }
@@ -306,7 +309,7 @@ int CScraperAccess::NumberOfVisibleButtons()
 	// Buttons for playing actions, e.g. fold or allin.
 	// There have to be at least 2 to make it our turn.
 	int number_of_visible_buttons = 0
-		+ (allin_option_available ? 1 : 0)
+		+ (available_buttons[k_autoplayer_function_allin] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_raise] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)

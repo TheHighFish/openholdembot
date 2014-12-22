@@ -402,8 +402,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	return (!lost_focus);
 }
 
-int CCasinoInterface::NumberOfVisibleAutoplayerButtons()
-{
+int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 	int number_of_available_buttons =
 		(p_scraper_access->available_buttons[k_autoplayer_function_allin] ? 1 : 0)
 	  + (p_scraper_access->available_buttons[k_autoplayer_function_raise] ? 1 : 0)
