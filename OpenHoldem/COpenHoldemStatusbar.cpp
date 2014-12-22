@@ -18,7 +18,6 @@
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
-#include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"

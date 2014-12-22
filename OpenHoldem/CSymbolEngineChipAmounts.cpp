@@ -223,7 +223,9 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
   assert(bet > 0.0);
   assert(users_currentbet >= 0);
   assert(_call >= 0);
-	_ncallbets = (users_currentbet + _call) / bet;				
+  // Computation below works even without playing user,
+  // which might be important for table-stats.
+	_ncallbets = Largestbet() / bet;				
 	_nraisbets = _ncallbets + 1;	// fixed limit
   assert(_ncallbets >= 0.0);
 }

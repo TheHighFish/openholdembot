@@ -22,7 +22,6 @@
 #include "CCasinoInterface.h"
 #include "CFlagsToolbar.h"
 #include "CFunctionCollection.h"
-#include "CGameState.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
