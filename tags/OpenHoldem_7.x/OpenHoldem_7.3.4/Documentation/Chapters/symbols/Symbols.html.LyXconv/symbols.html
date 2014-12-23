@@ -1,0 +1,4007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-15"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter">
+<a class="toc" name="toc-Chapter-1"></a>Built-in <a class="IndexReference" name="entry-Symbols-0" href="#index-Symbols">↓</a>Symbols
+</h1>
+<div class="Unindented">
+This section is largely based on the information originally written by Ray Bornert (<a class="FlexURL" href="http://www.winholdem.net/help/help-formula.html#symbols">http://www.winholdem.net/help/help-formula.html#symbols</a>) and extended to include OpenHoldem-specific symbols.  
+</div>
+<div class="Indented">
+These symbols take output from the scraper engine, from Table Map parameters, and from your formula functions to derive various bits of data that are useful when instructing the OpenHoldem Autoplayer how to act. The set of symbols got extended over time - not all of them are available for all versions of OpenHoldem. This list reflects the state of the latest version. Some old WinHoldem symbols got never implemented due to lack of documentation and practical relevance. Others got replaced or removed over time. Please refer to the chapter &ldquo;Outdated Features and Incompatibilities between OpenHoldem and WinHoldem&rdquo; for more information.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>General
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nchairs 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the integer value for the Table Map symbol s$nchairs 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+session
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the current logging instance (0-24) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+version
+</td>
+<td align="left" valign="top" style="width: 65%;">
+returns the version number of OpenHoldem that is currently running 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-2"></a>Table Map 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfinaltable
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true, if you are sitting at the final table of a multi-table tournament. Needs to be supported by the table-map.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+network$def
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if user defined string “def” appears within the Table Map symbol s$network; case-sensitive; lower-cases are expected
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+sitename$abc
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if user defined string “abc” appears within the Table Map symbol s$sitename; case-sensitive; lower-cases are expected
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-3"></a>Limits 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+bblind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the big blind amount
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+sblind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the small blind amount
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ante
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the current pre-deal ante requirement
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+buyin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the tournament buyin in dollars
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+lim
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the current table limit 0=NL 1=PL 2=FL
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isnl
+</td>
+<td align="left" valign="top" style="width: 65%;">
+(lim==0)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ispl
+</td>
+<td align="left" valign="top" style="width: 65%;">
+(lim==1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfl 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+(lim==2)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+istournament
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if a tournament table is detected. This feature works automatically, based on title-strings of the poker-table, blind-levels, sum of chips at the table, etc.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfinaltable
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you play the final table of a MTT, depending on the tablemap region r$c0isfinaltable
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-4"></a>Hand Rank 
+</h2>
+<div class="Unindented">
+Handrank rates your hand-value, assuming you go preflop allin against N opponents, who hold random cards (N = f$prwin_number_of_opponents). A low handrank means. your hand is good, a high handrank means, that many holdings are a favourit against you. For more info see the chapter about handrank.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handrank169
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your pocket holdem hand rank 1-169
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handrank2652
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your pocket holdem hand rank 12-2652
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handrank1326
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your pocket holdem hand rank 6-1326 (handrank2652/2)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handrank1000
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handrankp
+</td>
+<td align="left" valign="top" style="width: 65%;">
+2652 / (1+f$prwin_number_of_opponents)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-5"></a>Chairs 
+</h2>
+<div class="Unindented">
+Please note OpenHoldem needs to see player-cards in a non-showdown-situation to recognize the userchair and then will lock the chair for stability reasons until the session of the hand (tournaments, where the seat can change) or until the end of the session (cash-game).
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+userchair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+user chair number (0-9), 0 is usually top right
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+dealerchair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+dealer chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+raischair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+raising chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+smallblind_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the small-blind (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+bigblind_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the big-blind (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+cutoff_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the cut-off (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+firstcaller_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the first caller (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+lastcaller_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the last caller (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+firstraiser_chair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of the first raiser (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponent_chair_headsup
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the chair of your single opponent (0-9) if the game is or became headsup
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+chair$abc
+</td>
+<td align="left" valign="top" style="width: 65%;">
+player “abc” chair number (0-9); -1 if not found
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+chairbit$abc
+</td>
+<td align="left" valign="top" style="width: 65%;">
+player “abc” chairbit (1 &lt;&lt; chair$abc); 0 if not found 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-6"></a>Positions
+</h2>
+<div class="Unindented">
+To avoid problems with fast folds in early position the dealposition-symbols will consider the following players as dealt 
+</div>
+<ul>
+<li>
+any players who are betting, especially the blinds
+</li>
+<li>
+all active players between the blinds and the first user who holds cards, i.e. players who are seated and not sitting out. If one of these players does not hold cards, then OpenHoldem will assume that it is due to very fast folds in early positions.
+</li>
+<li>
+the user, if he is seated and holds cards
+</li>
+<li>
+any players with cardbacks, especially all players between the user and the dealer.
+</li>
+
+</ul>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+betround
+</td>
+<td align="left" valign="top" style="width: 65%;">
+betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+betposition
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition will change as players fold in front of you.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+dealposition
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your deal position (1=sblind,2=bblind ... nplayersdealt=dealer); dealposition will not change as players fold
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+originaldealposition
+</td>
+<td align="left" valign="top" style="width: 65%;">
+a memory of deal position which retains its value through the hand, even if the user folds
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+callposition
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your numbered offset from the raising player (who is 0)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+dealpositionrais
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the deal position of the raising player (1-10)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+betpositionrais
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the bet position of the raising player (1-10)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-7"></a>Probabilities 
+</h2>
+<div class="Unindented">
+There are several variations of PrWin (standard, weighted and enhanced), each with several pros and cons. For more info see the chapter about PrWin.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prwin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+the probability of winning this hand (0.000 - 1.000) .<br/>
+PrWin might assume:
+</div>
+<ul>
+<li>
+concrete ranges for your opponents with weightings for each possible holdings if you use enhanced PrWin at the DLL-level.
+</li>
+<li>
+simplified, but reasonable ranges if you use weighted PrWin at the formula-level, making use of f$prwin_mustplay, f$prwin_top_clip, f$prwin_willplay and f$prwin_wontplay
+</li>
+<li>
+random ranges of your opponents (default), where f$prwin_number_of_opponents specifies the number of opponents for the prwin-simulation to control the over-optimism of this very simple model.
+</li>
+
+</ul>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prlos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the probability of losing this hand (0.000 - 1.000) , assuming random ranges of your opponents
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prtie
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the probability of pushing this hand (0.000 - 1.000) , assuming random ranges of your opponents
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prwinnow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+probability that all opponents have a lower hand right now, assuming random ranges of your opponents
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prlosnow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+probability that any opponents have a higher hand right now random, assuming random ranges of your opponents
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+random
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number between (0.000-1.000). Value is recalculated each time symbol appears in formula.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+randomheartbeat
+</td>
+<td align="left" valign="top" style="width: 65%;">
+random number between (0.000-1.000) for the curren heartbeat. Value is calculated only once in current heartbeat. <div class="Remark">
+Introduced for OpenHoldem 2.1.9
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+randomround
+</td>
+<td align="left" valign="top" style="width: 65%;">
+random number between (0.000-1.000) for the current round. Value is calculated only once in current round. 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+randomhand
+</td>
+<td align="left" valign="top" style="width: 65%;">
+random number between (0.000-1.000) for the hand. Value is calculated only once per hand.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-8"></a>Formulas
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+<div class="Labeling">
+f$name
+</div>
+
+</td>
+<td align="left" valign="top" style="width: 65%;">
+reference the specified standard or user defined function
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-9"></a>Chip Amounts
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+balance
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your balance 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+originalbalance
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your balance at the start of the hand
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+balance0..balance9
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific player/chair balance
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+stack0..stack9
+</td>
+<td align="left" valign="top" style="width: 65%;">
+sorted playersplaying balances from 0=biggest to 9=smallest
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+balance_rankx (x=0-9)
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ranked list of player balances similar to stack0..stack9, but includes players not currently in hand and includes currentbet for each player as well. rank0 has highest balance, rank9 smallest
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+currentbet
+</td>
+<td align="left" valign="top" style="width: 65%;">
+your current amount of chips in play 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+currentbet0..currentbet9
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific player/chair currentbet call the amount you need to call
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+bet
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the amount of a single initial bet or raise for current round 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+bet1..bet4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the amount of a single initial bet or raise for round 1 - round 4
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+pot
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the total amount of chips in play including player bets
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+potcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the total amount of chips in the middle
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+potplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the total amount of chips in front of all players
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-10"></a>Number of Bets
+</h2>
+<div class="Unindented">
+Please note that in a fixed-limit game (default) the bets double up at the turn. This will affect the symbols below. If you play no-limit or pot-limit please make sure that your tablemap detects the game-type correctly.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nbetstocall
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of additional bets required to call.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nbetstorais
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of additional bets required to raise.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncurrentbets
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of bets currently in front of you.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncallbets
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of bets you would have on the table if you call 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nraisbets
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of bets you would have on the table if you raise 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-11"></a>List Tests 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+islist0...islist999
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if your hand is in the numbered (0-999) list 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-12"></a>Poker Values
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+pokerval
+</td>
+<td align="left" valign="top" style="width: 65%;">
+absolute poker value for your 5 card hand 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+pokervalplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+absolute poker value for your 2 card pocket hand only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+pokervalcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+absolute poker value for the common cards
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+pcbits 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of where your pocket cards are used in your 5 card hand.<div class="Remark">
+If a certain hand can be made with either one of your cards or with one of the board cards OpenHoldem will first take your card. This can happen only for straights and for kickers for quads. This behaviour may seem counter-intuitive to some people, but got inherited from WinHoldem and kept for backward-compatibility.
+</div>
+<ul>
+<li>
+Your hand: JTs
+</li>
+<li>
+Board: 789T
+</li>
+<li>
+Here you have a straight using &ldquo;both&rdquo; of your cards in the top two places. So pcbits will be 0b11000 = 24 here. 
+</li>
+
+</ul>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+npcbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+number (0-2) of your pocket cards used in your 5 card hand.
+</div>
+<div class="Remark">
+As npcbits symbol depends on pcbits, the same word of caution applies to this symbol, too.
+</div>
+<div class="PlainVisible">
+
+</div>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-13"></a>Poker Value Constants 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+hicard
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt; 0 (2 ** 0) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+onepair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;24 (2 ** 24) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+twopair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;25 (2 ** 25) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+threeofakind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;26 (2 ** 26)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+straight
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;27 (2 ** 27) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+flush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;28 (2 ** 28)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+fullhouse
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;29 (2 ** 29)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+fourofakind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;30 (2 ** 30)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+straightflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1&lt;&lt;31 (2 ** 31)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+royalflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+0x800edcba
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-14"></a>Hand Tests
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$CCc
+</td>
+<td align="left" valign="top" style="width: 65%;">
+references a hand symbol - see the {Hand Symbols} section below for details
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$$AB# 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+references a card symbol - see the {Card Symbols} section below for details
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishandup
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if your hand has gone up a level (i.e. from 1 pair to 2 pair) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishandupcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if common hand has gone up a level (i.e. from 1 pair to 2 pair)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishicard
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have hicard hand
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isonepair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have one pair
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+istwopair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have two pair
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isthreeofakind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have three of a kind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isstraight
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have a straight 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have a flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfullhouse
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have a full house
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfourofakind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have four of a kind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isstraightflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have a straight flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isroyalflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have a royal flush
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-15"></a>Pocket Tests 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ispair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when your two dealt pocket cards are rank equal (0-1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+issuited
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when your two dealt pocket cards are suit equal (0-1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isconnector
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when your two dealt pocket cards are rank adjacent (0-1)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-16"></a>Pocket / Common Tests 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishipair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have hi pair (0-1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+islopair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have lo pair (0-1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ismidpair
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have mid pair (0-1) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishistraight
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have the highest straight possible
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ishiflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you have the highest flush possible 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-17"></a>Players, Friends, Opponents
+</h2>
+<div class="Unindented">
+Note that &ldquo;raising players&rdquo; does also count forced &ldquo;blind-raisers&rdquo; per definition.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersseated
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players seated (including you) (0-10) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersactive
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players active (including you) (0-10)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersdealt
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players dealt (including you) (0-10)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersplaying
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players playing (including you) (0-10)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersblind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players blind (including you) (0-10)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nfriendsseated
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1 if you are seated, 0 otherwise (0-1) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nfriendsactive
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1 if you are active, 0 otherwise (0-1) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nfriendsplaying
+</td>
+<td align="left" valign="top" style="width: 65%;">
+1 if you are playing, 0 otherwise (0-1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsseated
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents seated (not including you) (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsactive
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents active (not including you) (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsdealt
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents dealt (not including you) (0-9) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsplaying
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents playing (not including you) (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsblind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents blind (not including you) (0-9) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentschecking
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents playing with a zero current bet equal to the previous bettor (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentscalling
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents playing with a non-zero current bet equal to the previous bettor (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentstruelyraising
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents playing with a current bet greater than the previous bettor (0-9). This symbol counts only people who are truely raising, e,g, more than a big-blind preflop. It does not count people posting antes or blinds like the former WinHoldem symbol &ldquo;nopponentsraising&rdquo;, Also counts the first better postflop.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsbetting
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents playing with a non zero current bet (0-9) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nopponentsfolded
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of opponents that have folded this hand (0-9) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayerscallshort
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players that must call to stay in the hand nchairsdealtright number of chairs dealt before your chair 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nchairsdealtleft
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of chairs dealt after your chair 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+playersseatedbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=seated 0=unseated 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+playersactivebits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=active 0=inactive
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+playersdealtbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=dealt 0=notdealt 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+playersplayingbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=playing 0=notplaying
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+playersblindbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=blind 0=notblind 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponentsseatedbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=seated 0=unseated 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponentsactivebits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=active 0=inactive 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponentsdealtbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=dealt 0=notdealt 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponentsplayingbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=playing 0=notplaying
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+opponentsblindbits 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bits 9-0: 1=blind 0=notblind 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-18"></a>Flags 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+fmax
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest numbered flag button pressed
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+f0..f19
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if flag 0 - flag 19 button is pressed, false otherwise
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+flagbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+flag button bits 19-0 - 1=pressed 0=notpressed 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-19"></a>Common Cards 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncommoncardsknown
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of common cards known (normal not highlighted)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-20"></a>(Un)known Cards
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncardsknown
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards you can see (yours and commons) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncardsunknown
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards you cannot see (deck and opponents)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ncardsbetter
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of single unknown cards that can beat you, e.g. if the board is four suited in hearts, and you have two spades, then ncardsbetter will be at least 9, because of the possible flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+\strikeout off\uuline off\uwave offnouts 	
+</td>
+<td align="left" valign="top" style="width: 65%;">
+\strikeout off\uuline off\uwave offthe total number of unseen single cards that if dealt to the board might put your hand in the lead. to be counted as an out, the card must be able to bump your level and your new level must be higher than the resulting common level.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Remark">
+Ray E. Bornerts definition of an out is way too optimistic and nearly unusable (a hand like 72o at a board of AKQ will give you 6 outs, as every 7 and every 2 will bump your handlevel to a pair, which beats high-card ace at the board). To calculate outs in a meaningful way, there is f$mh_nouts in Winngys and HTCs hand-strength-library and there are also some good outs-counters available in the forum. However we had to keep this symbol in the code-base, as some outs-counters are based on nouts and try to discount it in a meanigful way.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-21"></a>nhands 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nhands
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total possible number of two-card hands using the unseen cards (nhandshi+nhandslo+nhandsti)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nhandshi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of hands that can beat you in a showdown right now
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nhandslo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of hands that you can beat in a showdown right now
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nhandsti
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of hands that can tie you in a showdown right now 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-22"></a>Flushes / Straights / Sets 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nsuited
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of same suited cards you have (1-7)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nsuitedcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of same suited cards in the middle (1-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+tsuit
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific card suit for nsuited (1-4) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+tsuitcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific card suit for nsuitedcommon (1-4)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nranked
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of same ranked cards you have (1-4)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nrankedcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of same ranked cards in the middle (1-4)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+trank
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific card rank for nranked (2-14)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+trankcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+specific card rank for nrankedcommon (2-14) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraight
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of connected cards you have (1-7)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of connected common cards (1-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightfill
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards needed to fill a straight (0-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightfillcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards needed to fill a common straight (0-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightflush
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of suited connected cards you have (1-7)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightflushcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of suited connected common cards (1-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightflushfill
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards needed to fill a straightflush (0-5)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nstraightflushfillcommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of cards needed to fill a common straightflush (0-5)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-23"></a>Rank Bits 
+</h2>
+<div class="Unindented">
+Please note: aces are both hi and lo.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks (yours and commons)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankbitscommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks (commons) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankbitsplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks (yours) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankbitspoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks (pokerval) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankbits
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of suited card ranks (yours and commons tsuit)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankbitscommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of suited card ranks (commons tsuitcommon)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankbitsplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of suited card ranks (yours tsuit) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankbitspoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of suited card ranks (pokerval tsuit) 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-24"></a>Rank Hi
+</h2>
+<div class="Unindented">
+Aces are hi.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankhi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest card rank (14-2) (yours and commons)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankhicommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest card rank (14-2) (commons) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankhiplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest card rank (14-2) (yours) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankhipoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest card rank (14-2) (pokerval)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankhi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest suited card rank (14-2) (yours and commons tsuit)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankhicommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest suited card rank (14-2) (commons tsuitcommon) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankhiplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest suited card rank (14-2) (yours tsuit)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankhipoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+highest suited card rank (14-2) (pokerval tsuit) 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-25"></a>Rank Lo
+</h2>
+<div class="Unindented">
+Aces are hi.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ranklo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest card rank (14-2) (yours and commons) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ranklocommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest card rank (14-2) (commons)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+rankloplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest card rank (14-2) (yours) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ranklopoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest card rank (14-2) (pokerval)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+sranklo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest suited card rank (14-2) (yours and commons tsuit) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+sranklocommon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest suited card rank (14-2) (commons tsuitcommon) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+srankloplayer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest suited card rank (14-2) (yours tsuit)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+sranklopoker
+</td>
+<td align="left" valign="top" style="width: 65%;">
+lowest suited card rank (14-2) (pokerval tsuit) 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-26"></a>Time 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+elapsed
+</td>
+<td align="left" valign="top" style="width: 65%;">
+time in seconds since sitting down
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+elapsedhand
+</td>
+<td align="left" valign="top" style="width: 65%;">
+time in seconds since end of previous hand
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+elapsedauto
+</td>
+<td align="left" valign="top" style="width: 65%;">
+time in seconds since autoplayer took action 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+elapsedtoday
+</td>
+<td align="left" valign="top" style="width: 65%;">
+time in seconds since midnight GMT
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-27"></a>Autoplayer 
+</h2>
+<div class="Unindented">
+myturnbits bits 43210 correspond to buttons KARCF (check alli rais call fold). Bit 4 (check) was added in OpenHoldem 2.0.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ismyturn
+</td>
+<td align="left" valign="top" style="width: 65%;">
+(myturnbits &amp; 7) (rais or call/chec or fold) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+issittingin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you are not being dealt out 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+issittingout
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you are being dealt out
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isautopost
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when you are autoposting 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isfinalanswer
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true when autoplayer preparing to act; false any other time. 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-28"></a>History (I)
+</h2>
+<div class="Remark">
+The action-symbols (didrais, didcall, etc.) mean: what the autoplayer did, not what the user did or what happened in the hand. That does regulary confuse new users and causes problem when simulating hands at ManualMode or with Replay Frames.
+</div>
+<div class="Unindented">
+<div class="vspace" style="height: 1mm*;">
+
+</div>
+
+</div>
+<div class="Remark">
+Be aware, that all history-symbols will be reset to zero on handreset. Depending on your hand-reset-method incorrect hand-resets can be caused e.g. by temporary occlusion.
+</div>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersround1..nplayersround4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players that began betting round 1 - round 4 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nplayersround
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of players that began the current betting round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+prevaction
+</td>
+<td align="left" valign="top" style="width: 65%;">
+record of previously attempted autoplayer action. (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didchec
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the number of times the autoplayer has checked during the current round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didcall 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the number of times the autoplayer has called during the current round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didrais
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the number of times the autoplayer has raised during the current round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didswag
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the number of times the autoplayer has swag’d during the current round 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nbetsround1..nbetsround4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the largest number of bets in front of any player during round 1- round 4
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nbetsround
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the largest number of bets in front of any player right now 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didchecround1..didchecround4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if userchair checked during round 1 - round 4
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didcallround1..didcallround4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if userchair called during round 1 - round 4 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didraisround1..didraisround4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if userchair raised during round 1 - round 4
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+didswaground1..idswaground4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if userchair swag’d during round 1 - round 4
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-29"></a>Versus 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhands
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Total possible number of opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandshi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that have higher river chances
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandsti
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that have equal river chances 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandslo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that have lower river chances
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandshinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that beat heros hand currently
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandstinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that tia gainst hero currently
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$nhandslonow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Number of opponent hands that heros hand beats currently
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus all possible opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtie
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus all possible opponent hands 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prlos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus all possible opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwinhi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus higher opponent hands 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtiehi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus higher opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prloshi
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus higher opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwinti
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus equal opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtieti
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus equal opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prlosti
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus equal opponent hands 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwinlo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus lower opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtielo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus lower opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prloslo
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus lower opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$x$prwin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winnning versus hand list x 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$x$prlos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus hand list x 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$x$prtie
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of a tie versus hand list x 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwinhinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus currently better opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtiehinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus currently better opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prloshinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus currently better opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ vs$prwintinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus currently equal opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtietinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus currently equal opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prlostinow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus currently equal opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prwinlonow;
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winning versus currently lower opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$prtielonow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus currently lower opponent hands
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ vs$prloslonow
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus currently lower opponent hands
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-30"></a>History (II)
+</h2>
+<div class="Unindented">
+hi_&lt;sym&gt;x (x=1-4) the value of the symbol &lt;sym&gt; as of your last turn in betting round x. Example: hi_prwin1 would return prwin as of your last turn in br1. 
+</div>
+<div class="Remark">
+Be aware, that all history-symbols will be reset to zero on handreset. Depending on your hand-reset-method incorrect hand-resets can be caused e.g. by temporary occlusion.
+</div>
+<div class="Unindented">
+Valid values for &lt;sym&gt; are:
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+PROBABILITIES
+</td>
+<td align="left" valign="top" style="width: 65%;">
+prwin, prlos, prtie
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+CHIP AMOUNTS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+balance, balance0, balance1, balance2, balance3, balance4, balance5, balance6, balance7, balance8, balance9, stack0, stack1, stack2, stack3, stack4, stack5, stack6, stack7, stack8, stack9
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+POKER VALUES
+</td>
+<td align="left" valign="top" style="width: 65%;">
+pokerval, pokervalplayer, pokervalcommon, pcbits, npcbits 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+HAND TESTS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ishandup, ishandupcommon, ishicard, isonepair, istwopair, isthreeofakind, isstraight, isflush, isfullhouse, isfourofakind, isstraightflush, isroyalflush, isfiveofakind 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+POCKET/COMMON TESTS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ishipair, islopair, ismidpair, ishistraight, ishiflush 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+(UN)KNOWN CARDS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+nouts, ncardsbetter
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+NHANDS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+nhands, nhandshi, nhandslo, nhandsti, prwinnow, prlosnow
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+FLUSHES SETS STRAIGHTS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+nsuited, nsuitedcommon, tsuit, tsuitcommon, nranked, nrankedcommon, trank, trankcommon, nstraight, nstraightcommon, nstraightfill, nstraightfillcommon, nstraightflush, nstraightflushcommon, nstraightflushfill, nstraightflushfillcommon 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+RANK BITS
+</td>
+<td align="left" valign="top" style="width: 65%;">
+rankbits, rankbitscommon, rankbitsplayer, rankbitspoker, srankbits, srankbitscommon, srankbitsplayer, srankbitspoker
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+RANK HI
+</td>
+<td align="left" valign="top" style="width: 65%;">
+rankhi, rankhicommon, rankhiplayer, rankhipoker, srankhi, srankhicommon, srankhiplayer, srankhipoker 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+RANK LO
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ranklo, ranklocommon, rankloplayer, ranklopoker, sranklo, sranklocommon, srankloplayer, sranklopoker run$ ron$: ron$royfl, ron$strfl, ron$4kind, ron$fullh, ron$strai, ron$3kind, ron$2pair, ron$1pair, ron$hcard, ron$total, ron$pokervalmax, ron$prnuts, ron$prbest, run$royfl, run$strfl, run$4kind, run$fullh, run$strai, run$3kind, run$2pair, run$1pair, run$hcard, run$total, run$pokervalmax, run$prnuts, run$prbest 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-31"></a>Table statistics 
+</h2>
+<div class="Unindented">
+Table statistics for the last 15 minutes.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+floppct 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+percentage of players seeing the flop for the last y minutes
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+turnpct
+</td>
+<td align="left" valign="top" style="width: 65%;">
+percentage of players seeing the turn for the last y minutes
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+riverpct 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+percentage of players seeing the river for the last y minutes
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+avgbetspf
+</td>
+<td align="left" valign="top" style="width: 65%;">
+average number of bets preflop for the last y minutes
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+tablepfr
+</td>
+<td align="left" valign="top" style="width: 65%;">
+pfr percentage preflop for the last y minutes 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+maxbalance
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my highest balance during the session handsplayed number of hands played this session 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+balance_rankx (x=0-9)
+</td>
+<td align="left" valign="top" style="width: 65%;">
+ranked list of player balances (includes players not currently in hand, and includes currentbet for each player as well). rank0 has highest balance. 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-32"></a>Action 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+lastraisedx (x=1-4) 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+which chair was the last to raise in round x
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+raisbitsx (x=1-4) 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+which chairs raised in round x 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+callbitsx (x=1-4) 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+which chairs called in round x
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+foldbitsx (x=1-4)
+</td>
+<td align="left" valign="top" style="width: 65%;">
+which chairs folded in round x
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_agchair_after
+</td>
+<td align="left" valign="top" style="width: 65%;">
+does the aggressor chair act after me?
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_preflop_pos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+preflop position of the userchair (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_prefloprais_pos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+preflop position of the raiser (SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_postflop_pos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+postflop position of the userchair (first=1 early=2 middle=3 late=4 last=5) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_first_into_pot
+</td>
+<td align="left" valign="top" style="width: 65%;">
+returns true if you are first into the pot (first to act or checked to you) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_betposx (x=0-9) 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+returns bet position of specified chair 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ac_dealposx (x=0-9)
+</td>
+<td align="left" valign="top" style="width: 65%;">
+returns deal position of specified chair 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-33"></a>Logging 
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+log$YourTextGoesHere
+</td>
+<td align="left" valign="top" style="width: 65%;">
+log$YourTextGoesHere When executed, adds your specified text to the log.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Indented">
+For example if you have the following f$rais-formula,
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##f$rais##
+[ betround == 2 &amp;&amp; (nsuited == 3 || nstraight == 3) &amp;&amp; log$ItLives ]
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+and you flop a backdoor flush draw, then OpenHoldem will raise and also add the text "ItLives" to the log file, just before the RAIS line. Everytime a log$ symbol is accessed it will be flagged for logging. You can use this to track which part of your formula is to blame for the action taken by OpenHoldem. 
+</div>
+<div class="Remark">
+Note: You want to use the log$ symbol at the end of a logic block, to make sure it only gets flagged when all the previous statements are true. 
+</div>
+<div class="Unindented">
+<div class="vspace" style="height: 1mm*;">
+
+</div>
+
+</div>
+<div class="Remark">
+Note: You have to turn on Log Symbols in the preferences. You can also dictate the maximum number of log symbols that will be logged per action. When enabled, up to 4 log symbols will be displayed in OpenHoldem’s main window. 
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-34"></a>MessageBoxes with Info
+</h2>
+<div class="Unindented">
+In addition to logging it might be useful to notify the user at run-time and pause script-execution, mainly in a debugging session. For this usecase OpenHoldem provides a symbol msgbox$TEXT, that — surprise — will show a messagebox with text. As the character-set in symbols is slightly limited the following replacements will take place.
+</div>
+<ul>
+<li>
+_B will be replaced by a blank 
+</li>
+<li>
+_C will be replaced by a comma 
+</li>
+<li>
+_D will be replaced by a dot 
+</li>
+<li>
+_N will be replaced by a new-line 
+</li>
+<li>
+_U will be replaced by a underscore 
+</li>
+
+</ul>
+<div class="Unindented">
+The symbol msgbox$TEXT will evaluate to 0. An example: <div class="listing">
+<pre class="listing">##f$OpenPPL_PT_LastCaller_VPIP## 
+-1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+</pre>
+</div>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-35"></a>ICM calculator
+</h2>
+<div class="Unindented">
+An overview of basic ICM push/fold decisions and how they work with OpenHoldem can be found here: <a class="FlexURL" href="http://www.maxinmontreal.com/wiki/index.php5?title=ICM">http://www.maxinmontreal.com/wiki/index.php5?title=ICM</a>.
+</div>
+<div class="Remark">
+UTG in a symbols name does always mean the first player after BB at a full-ring table with 10 players. If less players do actually sit at the table, the first position (UTG) will be ignored and the first player will be named UTG+1 (or UTG+2, etc.).
+</div>
+<div class="Indented">
+<div class="vspace" style="height: smallskip*;">
+
+</div>
+
+</div>
+<div class="Remark">
+The ICM symbols will always assume, that you win against the player with the smallest stack or lose against the player with the biggest stack of the remaining non-folded players (or against N players with the N smallest stacks), so the ICM-symbols will be slightly too pessimistic in multiway-situations. For headsup (including blind-battle) and against concrete players (e.g. icm_alliwinUTG ) the symbols are accurate.
+</div>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Description
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity before any action is considered (just balances)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_fold
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I fold 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_callwin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I call and win
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_calllose
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I call and lose
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_calltie
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I call and tie
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwin0..icm_alliwin9
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against 0 - 9 callers 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allilose1..icm_allilose9
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against 0 - 9 callers
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinSB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against the small blind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinBB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against the big blind 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG1 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 1 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG2 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 2 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG3 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 3 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG4 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 4 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG5 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 5 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinUTG6
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against UTG + 6 (cut-off)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinCO
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against the cut-off
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliwinD 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against the dealer 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieSB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against the small blind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieBB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against the big blind 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG1 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 1 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG2 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 2 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG3 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 3 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG4 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 4 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG5 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 5 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieUTG6
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against UTG + 6 (cut-off)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieCO
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and tie against the cut-off
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_allitieD 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and win against the dealer 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseSB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against the small blind
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseBB
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against the big blind 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG1 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 1 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG2 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 2 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG3 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 3 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG4 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 4 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG5 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 5 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseUTG6
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against UTG + 6 (cut-off)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseCO
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against the cut-off
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+icm_alliloseD 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+my tournament equity if I push all-in and lose against the dealer 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-36"></a>Hand multiplexor
+</h2>
+<div class="Unindented">
+The purpose of the hand multiplexor is to transfer control to a specific named formula based on your actual 2 card hand. Note that the X’s and x’s are not case sensitive.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+f$$X
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Evaluate the UDF that corresponds to my first card
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+f$$XX
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Evaluate the UDF that corresponds to my first card and second card
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+f$$XXx
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Evaluate the UDF that corresponds to my first card, second card and suited/unsuited state
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Indented">
+The X’s in the three symbols will be substituted with your actual hand values at time of evaluation. The first "X" will contain the the rank of your highest hole card, the second "X" will contain the rank of your lowest hole card, and the third "x" will contain either a "s" or "o" depending if your hole cards have the same suit or not. The $$ will be replaced with a single dollar sign. For example, if my hole cards are AhKh, then "f$$X" will result in "f$A" upon evaluation. Similarly, "f$$XX" would result in "f$AK" and "f$$XXx" would result in "f$AKs".
+</div>
+<div class="Indented">
+OpenHoldem will then evaluate the corresponding user defined function and return that value for the hand multiplexor symbol. If there is not a corresponding UDF defined for a given set of hole cards, then the return result is zero, not an error. The values returned by the hand specific UDFs are entirely defined by you; one simple suggestion is to have them return 1 for call and 2 for raise; if you do this then your raise formula can do this: 
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">|| [ f$$XXx &gt;= 2 ] //hand specific formula calc
+</pre>
+</div>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-37"></a>Memory Symbols 
+</h2>
+<div class="Unindented">
+The purpose of these symbols is to provide storage for values in order to reuse them at some later time. In reality, this is a kludge to close a hole in the WinHoldem (and now OpenHoldem) script language. A much better choice for LHS (left hand side) expressions is Perl or via the user-DLL extension. Please see the {Memory Symbols} section for more information.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+me_st_
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Stores a value. Example: me_st_abc_123_45 - stores the value "123.45" in variable "abc". use "_" for the decimal in values a function name can also be passed in, instead of a number, for example: ’me_st_def_f$myfunc’ would store the results of function f$myfunc in variable def 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+me_re_ 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Retrieves a previously stored value. Example: me_re_abc - retrieves the value from variable "abc". 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-38"></a>Hand Symbols 
+</h2>
+<div class="Unindented">
+You can reference your dealt hand (hole cards) directly by using the $ symbols. The general form of the $ hand symbols are: $RRs. The $ character is required, followed by 1 or 2 standard card rank characters. The hand symbols are not case sensitive. A,K,Q,J,T,9-2 or by X or x which is a wild card that will match any rank. This is followed by an optional suit indicator: s - suited, o - offsuit. If the suit indicator is omitted then suit does not matter. 
+</div>
+<div class="Indented">
+Examples:
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$AA
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt aces
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$JT
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt jack ten
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$AKs
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt ace king suited
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$49o
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt four nine offsuit
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$QXs 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt queen any suited
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$J 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt any jack
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$XXs 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt any suited hand
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$XXo 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt any offsuited hand
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$q2
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if you were dealt queen two 
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-39"></a>Card Symbols 
+</h2>
+<div class="Unindented">
+The actual card value or rank/suit value for both your hand and the board can be referenced using card symbols. The general form of the $$ card symbols are: $$AB#. The card symbols are not case sensitive. $$ is required. A - is p for player, c for common B - is c for card, r for rank, s for suit # - is the card number (player 0-1, common 0-4) 
+</div>
+<div class="Indented">
+Examples 
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$$pc0
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the card value for player card zero (1st dealt card)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$$pr1
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the rank value of player card one (2nd dealt card)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$$cr0
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the rank value of common card zero (1st common card dealt)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+$$cs4
+</td>
+<td align="left" valign="top" style="width: 65%;">
+the suit value of common card four (5th common card dealt - river)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-40"></a>Card Values 
+</h2>
+<div class="Unindented">
+A single card value is stored in a single 8-bit byte. All bits (7-0) are used. The card rank is stored in the hi-order 4 bit nibble (bits 7-4). The card suit is stored in the lo-order 4 bit nibble (bits 3-0). The valid values for card rank are 1-14 as follows: 
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="center" valign="top">
+# 
+</td>
+<td align="center" valign="top">
+CardRank
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+14
+</td>
+<td align="center" valign="top">
+Ace
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+13
+</td>
+<td align="center" valign="top">
+King
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+12
+</td>
+<td align="center" valign="top">
+Queen
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+11
+</td>
+<td align="center" valign="top">
+Jack
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+10..2
+</td>
+<td align="center" valign="top">
+Ten..Two
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+1
+</td>
+<td align="center" valign="top">
+Ace low (used in rankbits of wheels and wheel-draws) 
+</td>
+
+</tr>
+
+</table>
+ 
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="center" valign="top">
+#
+</td>
+<td align="center" valign="top">
+Cardsuit
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+4
+</td>
+<td align="center" valign="top">
+Spade
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+3
+</td>
+<td align="center" valign="top">
+Heart
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+2
+</td>
+<td align="center" valign="top">
+Diamond
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top">
+1
+</td>
+<td align="center" valign="top">
+Club
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-15T07:55:28.706000</span>
+</div>
+</div>
+</body>
+</html>
