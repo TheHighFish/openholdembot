@@ -213,21 +213,35 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
 	}
-	// If the blinds are "too low" then we play a cash-game.
-	double bigblind = p_symbol_engine_tablelimits->bblind();
-	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
-		_istournament    = false;
-		_decision_locked = true;
-		return;
-	}
-	// If the title-string looks like a tournament then it is a tournament.
+  // If the title-string looks like a tournament then it is a tournament.
+  // This should be checked before the size of the blinds,
+  // because incorrectly detecting a cash-game as tournament
+  // does less harm than vice versa (blind-locking).
+  // And there was a problem if during the sit-down-phase 
+  // of a tournament there were no blinds to be detected:
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=294&t=17625&start=30#p125608
 	if (TitleStringLooksLikeTournament())	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
+	// If the blinds are "too low" then we play a cash-game.
+  // Only consider this option if a game is going on (playersplaying)
+  // to avoid problems with no blinds during the sit-down-phase 
+  // of a tournament.
+  if (p_symbol_engine_active_dealt_playing->nplayersplaying() < 2) {
+    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Can't consider the blinds -- too few people playing.\n");
+    return;
+  }
+  double bigblind = p_symbol_engine_tablelimits->bblind();
+	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
+	  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
+	  _istournament    = false;
+		_decision_locked = true;
+		return;
+  }
+	
   // If it is ManualMode, then we detect it by title-string "tourney".
   // High blinds (default) don~t make it a tournament.
   // Therefore don't continue.

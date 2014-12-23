@@ -8,13 +8,19 @@ BUG FIXES:
   This has now been changed. 
   Thanks to OpenGeek for providing replay-frames.
   [THF]
+- The improved blind-detection temporary returned 0.0.1/0.02/0.04 in case of lack of any useful input
+  (reasonable values for beginners). But during the sit-down-phase of a tournament,
+  this improved behaviour could break tournament-detection with the consequence 
+  of incorrect blind-locking later-on.
+  To fix this problem we do now wait for a game going on before considering the blinds.
+  [Nik0, THF]
 
 MAINTENANCE:
 - Improved gametype detection: NL / PL / FL.
   [THF]
 - Improved tablemap completeness checker.
   [THF]
-- CGameSates was an oversiyed module that had to do too many things:
+- CGameSates was an oversized module that had to do too many things:
     * creating a series of 256 gamestates for the DLL
   In the past it also was responsible for
     * history and action symbols
