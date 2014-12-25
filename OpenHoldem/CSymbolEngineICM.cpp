@@ -410,27 +410,27 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 				{
 					double oppCurrentBet = sym_currentbet[jsmallest];
 					double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
-					double extra = ((oppCurrentBet + stacks[jsmallest]) > myTotalBet) ? myTotalBet - oppCurrentBet :stacks[jsmallest];
+					double extra = ((oppCurrentBet + stacks[jsmallest]) > myTotalBet) ? myTotalBet - oppCurrentBet : stacks[jsmallest];
 					stacks[jsmallest] -= extra;
 					callers[jsmallest] = true;
-					sym_pot+=extra;
+					sym_pot += extra;
 				}
 			}
-			stacks[sym_userchair]+=sym_pot;
+			stacks[sym_userchair] += sym_pot;
 		}
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 8);
+			int oppChair = GetChairFromDealPos(name + 11);
 			if (oppChair == k_undefined || oppChair == sym_userchair) {
-        *result = k_undefined;
-        return true;
-      }
+				*result = k_undefined;
+				return true;
+			}
 			if (oppChair >= 0)
 			{
 				double oppCurrentBet = sym_currentbet[oppChair];
 				double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
-				double extra = ((oppCurrentBet + stacks[oppChair]) > myTotalBet) ? myTotalBet - oppCurrentBet :stacks[oppChair];
+				double extra = ((oppCurrentBet + stacks[oppChair]) > myTotalBet) ? myTotalBet - oppCurrentBet : stacks[oppChair];
 
 				stacks[oppChair] -= extra;
 				stacks[sym_userchair]+= (sym_pot + extra);
@@ -505,19 +505,19 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 9);
+			int oppChair = GetChairFromDealPos(name + 12);
 			if (oppChair == k_undefined || oppChair == sym_userchair) {
-        *result = k_undefined;
-        return true;
-      }
+				*result = k_undefined;
+				return true;
+			}
 			if (oppChair >= 0)
 			{
 				double oppTotalBet = sym_currentbet[oppChair] + stacks[oppChair];
 				double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 				double extra = (oppTotalBet > myTotalBet) ? stacks[sym_userchair] : oppTotalBet - sym_currentbet[sym_userchair];
 
-				stacks[oppChair]+= (sym_pot + extra);
-				stacks[sym_userchair]-= extra;
+				stacks[oppChair] += (sym_pot + extra);
+				stacks[sym_userchair] -= extra;
 			}
 		}
 	}
@@ -525,15 +525,15 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	else if (strncmp(name,"icm_allitie",11)==0)
 	{
 		//assume only one particular caller
-		int oppChair = GetChairFromDealPos(name + 8);
+		int oppChair = GetChairFromDealPos(name + 11);
 		if (oppChair == k_undefined || oppChair == sym_userchair) {
-      *result = k_undefined;
-      return true;
-    }
+			*result = k_undefined;
+			return true;
+		}
 		if (oppChair >= 0)
 		{
-			stacks[oppChair]+= sym_pot / 2;
-			stacks[sym_userchair]+= sym_pot / 2;
+			stacks[oppChair] += sym_pot / 2;
+			stacks[sym_userchair] += sym_pot / 2;
 		}
 	}
 
@@ -547,14 +547,15 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 			}
 	   }
 	}
-  else
-  {
-    // Not a valid symbol
-    return false;
-  } 
+
+	else
+	{
+		// Not a valid symbol
+		return false;
+	} 
 
 	*result = EquityICM(stacks, prizes, k_max_number_of_players, sym_userchair);
-  return true;
+	return true;
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
@@ -568,15 +569,15 @@ CString CSymbolEngineICM::SymbolsProvided() {
     "cm_allilose6 cm_allilose7 cm_allilose8 cm_allilose9 "
     // Wining allin against a particular opponent
     "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 "
-    "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwin4 icm_alliwin5 "
+    "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwinUTG4 icm_alliwinUTG5 "
     "icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
     // Tieing allin against a particular opponent
     "icm_allitieSB icm_allitieBB icm_allitieUTG icm_allitieUTG1 "
-    "icm_allitieUTG2 icm_allitieUTG3 icm_allitie4 icm_allitie5 "
+    "icm_allitieUTG2 icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 "
     "icm_allitieUTG6 icm_allitieCO icm_allitieD "
     // Losing allin against a particular opponent
     "icm_allilosSB icm_allilosBB icm_allilosUTG icm_allilosUTG1 "
-    "icm_allilosUTG2 icm_allilosUTG3 icm_allilos4 icm_allilos5 "
+    "icm_allilosUTG2 icm_allilosUTG3 icm_allilosUTG4 icm_allilosUTG5 "
     "icm_allilosUTG6 icm_allilosCO icm_allilosD ";
 }
 
