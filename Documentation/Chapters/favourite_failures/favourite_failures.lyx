@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -265,7 +274,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Unreliable input at FullTilt mini-tables
@@ -455,7 +464,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 Debug-tab
@@ -625,10 +634,7 @@ first
 \end_inset
 
  map that fits.
- Also be careful if you fix a map or put a new map into the scraper folder.
- To be able to auto-connect, OpenHoldem has to load all tablemaps once on
- startup and keep some parts in memory, so you should restart OpenHoldem
- when you change your maps.
+ 
 \end_layout
 
 \begin_layout Section
@@ -647,8 +653,8 @@ Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem
  It will only scrape names, bets and balances of a certain chair, if that
  chair is occupied.
  If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem
- does not do so, then you have most probably forgotten to define pxseated
- or uxseated.
+ does not do so, then you have most probably forgotten to define pXseated
+ or uXseated.
 \end_layout
 
 \begin_layout Section
@@ -666,7 +672,7 @@ Reason: Different system configurations on your casino-machine and your
 It is a quite common beginners mistake to setup the casino-machine in a
  different way than the bot-machine.
  The casino-client will be rendered in a different way, so OpenHoldem will
- no longer be able to scrape the screenshots displayed by bring.
+ no longer be able to scrape the screenshots displayed by Bring.
  If you don't want to install OH on the casino-machine to check the settings,
  the only way to fix that problem is a careful manual walk-through (experts
  could clone a VM or deploy some registry-settings).
@@ -778,7 +784,8 @@ Most DLLs use external functionalitzy and therefore depend on supporting
  libraries.
  Most often this is msvcrt (MicroSoft Visual Studio C++ RunTime Library).
  Also the correct version is important.
- OpenHoldem requires currently Visual Studio 2005 Professional (MSVCRT8.0).
+ OpenHoldem requires currently Visual Studio 2010 Professional, but Perl
+ needs 2005.
 \end_layout
 
 \begin_layout Section
@@ -874,9 +881,9 @@ Reason: Not correctly disconnected.
 If OpenHoldem connects to all tables but one (despite having enough instances
  of OH open) there is a simple reason: the auto-connector uses shared memory
  to synchronize all OpenHoldem processes.
- If one process does crash (for whatever reason), it will no longer be able
- to disconnect correctly and that table (or future tables with the same
- HWND) will be marked as occupied forever.
+ If one process does crash (because of a buggy user-DLL for example), it
+ will no longer be able to disconnect correctly and that table (or future
+ tables with the same HWND) will be marked as occupied forever.
  Close that table and open another one.
  To clear the shared memory: shutdown all bots and restart them again.
 \end_layout
@@ -976,8 +983,7 @@ Some symbols only require the current gamestate to be calculated (e.g.
  If they all are zero (or -1), you have probably caused an incorrect hand-reset,
  e.g.
  by temporary occlusion.
- You should avoid occlusion by any means and might consider changing the
- handresetmethod in your TM.
+ You should avoid occlusion by any means.
 \end_layout
 
 \begin_layout Section

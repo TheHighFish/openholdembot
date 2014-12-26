@@ -1,47 +1,75 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
 \use_default_options true
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Section
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -51,7 +79,7 @@ Scraper DLL
 \end_inset
 
 Scraper Override 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -108,6 +136,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 SCRAPERDLL_API void OverrideScraper(SScraperState *state);
 \end_layout
 
@@ -121,119 +150,138 @@ No casting required.
  The members of the SScraperState struct are as follows:
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
-struct SScraperState 
+
+struct SScraperState { 
 \end_layout
 
 \begin_layout Plain Layout
-{ 
-\end_layout
 
-\begin_layout Plain Layout
     char title[512];
 \end_layout
 
 \begin_layout Plain Layout
+
     unsigned int card_common[5]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     unsigned int card_player[10][2]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     unsigned int card_player_for_display[2]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     bool dealer[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     bool sitting_out[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString seated[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString active[10]; 
 \end_layout
 
 \begin_layout Plain Layout
 
-    
-\lang english
-CString name[10]; 
+    CString name[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double balance[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     bool name_good_scrape[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     bool balance_good_scrape[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double bet[10]; double pot[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString button_state[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString i86X_button_state[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString i86_button_state; 
 \end_layout
 
 \begin_layout Plain Layout
+
     CString button_label[10]; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double sblind; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double bblind; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double bbet; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double ante; 
 \end_layout
 
 \begin_layout Plain Layout
+
     LimitType limit; 
 \end_layout
 
 \begin_layout Plain Layout
+
     double handnumber; 
 \end_layout
 
 \begin_layout Plain Layout
+
     bool istournament; 
 \end_layout
 
 \begin_layout Plain Layout
+
 };
 \end_layout
 
@@ -247,19 +295,14 @@ Any of these can be changed like so (which will give you four-of-a-kind
  Aces)
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-SCRAPERDLL_API void OverrideScraper(SScraperState *state) 
-\end_layout
-
-\begin_layout Plain Layout
-
-{ 
+SCRAPERDLL_API void OverrideScraper(SScraperState *state) { 
 \end_layout
 
 \begin_layout Plain Layout
@@ -269,7 +312,7 @@ SCRAPERDLL_API void OverrideScraper(SScraperState *state)
 
 \begin_layout Plain Layout
 
-        StdDeck_Rank_ACE,     StdDeck_Suit_HEARTS); 
+        StdDeck_Rank_ACE, StdDeck_Suit_HEARTS); 
 \end_layout
 
 \begin_layout Plain Layout
