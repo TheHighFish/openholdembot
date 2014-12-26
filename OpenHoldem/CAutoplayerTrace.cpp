@@ -247,7 +247,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   fcra_formula_status.Format("%s%s%s%s%s",
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_fold)  ? "F" : ".",
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "C" : ".",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "K" : ".",
+	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_check) ? "K" : ".",
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_raise) ? "R" : ".",
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
   // More verbose summary in the log
