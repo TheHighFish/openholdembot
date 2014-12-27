@@ -924,7 +924,7 @@ void CTransform::ParseStringBSL(const CString text,
                         place_in_format+=2;
                         token = "";
       while (place_in_text<text.GetLength()
-                                && (CString(text[place_in_text]).FindOneOf("$0123456789,¢km"))) {
+                                && (CString(text[place_in_text]).FindOneOf("$0123456789,¢km") != -1)) {
                                 token += (text[place_in_text]);
                                 place_in_text++;
                         }
