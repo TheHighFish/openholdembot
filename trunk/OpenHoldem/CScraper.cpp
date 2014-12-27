@@ -283,14 +283,14 @@ void CScraper::ScrapeActionButtonLabels()
 {
 	__TRACE
 	// WinHoldem defaults
-	set_button_label(0, "fold");
-	set_button_label(1, "call");
-	set_button_label(2, "raise");
-	set_button_label(3, "allin");
+//	set_button_label(0, "fold");
+//	set_button_label(1, "call");
+//	set_button_label(2, "raise");
+//	set_button_label(3, "allin");
 
 	CString label;
 	CString result;
-	for (int i=4; i<k_max_number_of_buttons; i++)
+	for (int i=0; i<k_max_number_of_buttons; i++)
 	{
 		set_button_label(i, "");
 		label.Format("i%dlabel", i);
