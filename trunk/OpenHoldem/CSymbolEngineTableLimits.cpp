@@ -107,6 +107,7 @@ void CSymbolEngineTableLimits::ResetOnHeartbeat() {
     _blind_guesser.Guess(&tablelimit_best_guess.sblind,
       &tablelimit_best_guess.bblind,
       &tablelimit_best_guess.bbet);
+    _ante = p_scraper->s_limit_info()->ante;
     AutoLockBlinds();
   }
 }
