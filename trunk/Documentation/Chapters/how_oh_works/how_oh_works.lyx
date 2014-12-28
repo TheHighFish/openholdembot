@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -165,17 +174,12 @@ titletext records in the Table Map.
  
 \end_layout
 
-\begin_layout Standard
-In summary, OpenHoldem will connect to a window if it matches the client
- size and title text colors as specified in a Table Map.
- After OpenHoldem has connected to a table the table-positioner will move
- the table to a free slot where it does not occlude any other tables.
- Per default OpenHoldem will then start playing as soon as your user-chair
- got identified (it needs to see cards and buttons to do so).
-\end_layout
-
-\begin_layout Standard
-And then the fun begins...
+\begin_layout Enumerate
+If OpenHoldem finds a matching pair of tablemap and table it will look in
+ the shared memory data-structures if the table gets already served.
+ If this is not the case OpenHoldem will connect to that table.
+ The connected table will then be moced to a free slot if the table-positioner
+ is enabled and the autoplazer will start playing.
 \end_layout
 
 \begin_layout Section
@@ -200,8 +204,8 @@ Once OpenHoldem has been connected to a table, it will enter into a continuous
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="10" columns="2">
-<features tabularvalignment="middle">
+<lyxtabular version="3" rows="9" columns="2">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
 <row>
@@ -292,53 +296,6 @@ pot: (150 + 300)
 \begin_inset Text
 
 \begin_layout Plain Layout
-Scraper override
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-If a 
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Scraper DLL
-\end_layout
-
-\end_inset
-
-Scraper Override DLL
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Scraper-Override-DLL"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- is loaded, then pass the current screen scrape to that DLL for possible
- overrides {Scraper Override DLL}.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 Calculate symbols
 \end_layout
 
@@ -410,14 +367,7 @@ Validator
 
 \end_inset
 
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "cha:Validator"
-
-\end_inset
-
- is enabled in preferences {Preferences}, then validate the current game
+is enabled in preferences {Preferences}, then validate the current game
  state.
 \end_layout
 
@@ -540,7 +490,7 @@ name "sec:The-Autoplayer"
 
 \end_inset
 
- 
+ (OH-script)
 \end_layout
 
 \begin_layout Standard
@@ -657,7 +607,7 @@ To determine when and which action to take the Autoplayer performs the following
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="8" columns="2">
-<features tabularvalignment="middle">
+<features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
 <row>
@@ -907,7 +857,7 @@ r action.
 \end_layout
 
 \begin_layout Section
-The bot logic
+The Bot Logic (OH-script)
 \end_layout
 
 \begin_layout Subsection
@@ -1192,6 +1142,44 @@ probability of win
  develop their own bots anyway.
  Due to the existence of countless demo-bots and the rise of OpenPPL we
  decided that a default bot-logic is no longer necessary.
+\end_layout
+
+\begin_layout Section
+The Bot Logic (OpenPPL)
+\end_layout
+
+\begin_layout Standard
+Since version 7.0 OpenHoldem provides an alternative way to program the bot-logic
+: OpenPPL.
+ PPL = Poker Programming Language, an english-like programming languge once
+ designed by Shanky BonusBots.
+ OpenPPL is completely integrated and can be mixed with OH-script if desired.
+ Once a f$prteflop function is presdent OpenHoldem will switch to OpenPPLßmode
+ and evaluate f$preflop, f$flop, f$turn and f$river instead of the OH-script
+ autoplayer-functions.
+ For the details please refer to the separate OpenPPL-manual.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$preflop##
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$AA RaiseMax FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$KK and Raises = 0 and calls = 0 RaiseTo 3 FPRCE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

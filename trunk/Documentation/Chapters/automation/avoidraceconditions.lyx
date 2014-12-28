@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -80,12 +89,17 @@ race-conditions
 \end_layout
 
 \begin_layout Standard
-race-co.
- www!!!
+Race-conditions happen if two or more processes interrupt each other and
+ try to access the same resource at the same time.
+ For example it might be, that OpenHoldem tries to enter a betsize at its
+ poker table, but then your hopper grabs the mouse and interrupts the bot
+ in the middle of an action.
+ All kind of unexpected results can happen.
 \end_layout
 
 \begin_layout Standard
-OpenHoldem will take care of that problem automatically; it will synchronize
+The good news: there is a solution to this problem.
+ OpenHoldem will take care of race-conditions automatically; it will synchronize
  the autoplayer-actions of all instances, including actions taken by the
  rebuy-function and by the chat-function.
  It uses a system-wide 
@@ -99,7 +113,7 @@ mutex
 \end_inset
 
 mutex to ensure exclusive access to the keyboard and the mouse.
- Unfortunatelly OpenHoldem is not the only program, which uses that resources;
+ Unfortunatelly OpenHoldem is not the only program, which uses these resources;
  usually the hopper competes for them, too.
 \end_layout
 
@@ -119,7 +133,7 @@ OHAntiColl
 \end_layout
 
 \begin_layout Standard
-An example AutoIT-hopper-code has been provided by USBFreak (
+An example AutoIT-hopper-code has been provided by USBFreak  (
 \begin_inset Flex URL
 status open
 
@@ -134,11 +148,7 @@ ple_Code
 ):
 \end_layout
 
-\begin_layout Quotation
-========================================
-\end_layout
-
-\begin_layout Quotation
+\begin_layout Subsection*
 System Wide Mutex Handling - Sample Code
 \end_layout
 
@@ -165,7 +175,7 @@ To avoid such a possibility, you may want to implement mutex handling in
  your hopper using below code.
 \end_layout
 
-\begin_layout Quotation
+\begin_layout Subsection*
 The idea:
 \end_layout
 
@@ -197,7 +207,7 @@ At the end of your hopper, release/unlock mutex.
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection*
 Main hopper loop
 \end_layout
 
@@ -295,7 +305,7 @@ Close_Mutex_Handle($Global_Mutex_Handle)
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Subsection*
 Hopper functions
 \end_layout
 

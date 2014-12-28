@@ -5,7 +5,7 @@
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
 <OBJECT type="text/site properties">
-	<param name="Background" value="0xc0c0c0">
+	<param name="Foreground" value="0xc0c0c0">
 	<param name="Window Styles" value="0x800025">
 	<param name="ImageType" value="Folder">
 </OBJECT>
@@ -569,7 +569,7 @@
 				<param name="Local" value="Chapters\stealth\DualSystemConfiguration.html.LyXconv\DualSystemConfiguration.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Registry">
+				<param name="Name" value="Ini-Files and Registry">
 				<param name="Local" value="Chapters\stealth\Registry.html.LyXconv\Registry.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
@@ -608,11 +608,11 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Contributing to the Manual">
-			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.xhtml">
+			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.html.LyXconv\contributing_to_the_manual.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Outdated Features and known Incompatibilities">
-			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.xhtml">
+			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.html.LyXconv\incompatibilities.html">
 			</OBJECT>
 	</UL>
 </UL>
