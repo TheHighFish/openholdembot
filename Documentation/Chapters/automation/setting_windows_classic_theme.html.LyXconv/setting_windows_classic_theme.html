@@ -1,52 +1,54 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="setting_windows_classic_theme.tex"> 
-<meta name="date" content="2010-04-05 21:50:00"> 
-<link rel="stylesheet" type="text/css" href="setting_windows_classic_theme.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>Setting Windows Classic Display Theme</h3>
-<!--l. 28--><p class="noindent" >Below is some AutoIt code (reproduced from the Wiki:
-<a 
-href="http://www.maxinmontreal.com/wiki/index.php5?title=Setting_Windows_Classic_Display_Theme_-_Sample_Code" class="url" ><span 
-class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Setting_Windows_Classic_Display_Theme_-_Sample_Code</span></a>)
-to set your display / dekstop theme to Windows Classic. Typically used at the beggining
-of the hopper script to force Windows Classic theme, because XP can revert to XP style
-after reboot, which happens from time to time.
-   <!--l. 35-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-1001r1"></a></span>Local&#x00A0;$Theme_To_Use&#x00A0;=&#x00A0;&#8217;Windows&#x00A0;Classic&#8217;&#x00A0;<br /><span class="label"><a 
- id="x1-1002r2"></a></span>Local&#x00A0;$ScreenSaver_To_Use&#x00A0;=&#x00A0;&#8217;(None)&#8217;&#x00A0;<br /><span class="label"><a 
- id="x1-1003r3"></a></span>Run(&#8217;rundll32.exe&#x00A0;shell32.dll,Control_RunDLL&#x00A0;desk.cpl,,5&#8217;)&#x00A0;<br /><span class="label"><a 
- id="x1-1004r4"></a></span>WinWait(&#8217;Display&#x00A0;Properties&#8217;)&#x00A0;<br /><span class="label"><a 
- id="x1-1005r5"></a></span>ControlCommand(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;,&#x00A0;_&#x00A0;<br /><span class="label"><a 
- id="x1-1006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#8217;ComboBox1&#8217;,&#x00A0;&#8217;SelectString&#8217;,&#x00A0;$Theme_To_Use)&#x00A0;<br /><span class="label"><a 
- id="x1-1007r7"></a></span>;&#x00A0;SELECT&#x00A0;SCREEN&#x00A0;SAVER&#x00A0;TAB&#x00A0;<br /><span class="label"><a 
- id="x1-1008r8"></a></span>ControlCommand(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;"",&#x00A0;_&#x00A0;<br /><span class="label"><a 
- id="x1-1009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;12320,&#x00A0;"TabRight",&#x00A0;"")&#x00A0;<br /><span class="label"><a 
- id="x1-1010r10"></a></span>ControlCommand(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;"",&#x00A0;_&#x00A0;<br /><span class="label"><a 
- id="x1-1011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;12320,&#x00A0;"TabRight",&#x00A0;"")&#x00A0;<br /><span class="label"><a 
- id="x1-1012r12"></a></span>While&#x00A0;(ControlGetText(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;"",&#x00A0;1303))&#x00A0;=&#x00A0;""&#x00A0;<br /><span class="label"><a 
- id="x1-1013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;Sleep(100)&#x00A0;<br /><span class="label"><a 
- id="x1-1014r14"></a></span>WEnd&#x00A0;<br /><span class="label"><a 
- id="x1-1015r15"></a></span>ControlCommand(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;_&#x00A0;<br /><span class="label"><a 
- id="x1-1016r16"></a></span>&#x00A0;&#x00A0;&#x00A0;,&#x00A0;&#8217;ComboBox1&#8217;,&#x00A0;&#8217;SelectString&#8217;,&#x00A0;$ScreenSaver_To_Use)&#x00A0;<br /><span class="label"><a 
- id="x1-1017r17"></a></span>ControlClick(&#8217;Display&#x00A0;Properties&#8217;,&#x00A0;,&#x00A0;&#8217;Button7&#8217;)&#x00A0;<br /><span class="label"><a 
- id="x1-1018r18"></a></span>$OptWTMM&#x00A0;=&#x00A0;Opt(&#8217;WinTitleMatchMode&#8217;,&#x00A0;4)&#x00A0;<br /><span class="label"><a 
- id="x1-1019r19"></a></span>WinWait(&#8217;classname=CoverWindowClass&#8217;)&#x00A0;<br /><span class="label"><a 
- id="x1-1020r20"></a></span>WinWaitClose(&#8217;classnam=CoverWindowClass&#8217;)&#x00A0;<br /><span class="label"><a 
- id="x1-1021r21"></a></span>Opt(&#8217;WinTitleMatchMode&#8217;,&#x00A0;$OptWTMM)&#x00A0;<br /><span class="label"><a 
- id="x1-1022r22"></a></span>;&#x00A0;DONE
-   </div>
-    
-</body></html> 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-26"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>Setting Windows Classic Display Theme
+</h2>
+<div class="Unindented">
+Below is some AutoIt code (reproduced from the Wiki: <a class="FlexURL" href="http://www.maxinmontreal.com/wiki/index.php5?title=Setting_Windows_Classic_Display_Theme_-_Sample_Code">http://www.maxinmontreal.com/wiki/index.php5?title=Setting_Windows_Classic_Display_Theme_-_Sample_Code</a>) to set your display / dekstop theme to Windows Classic. Typically used at the beggining of the hopper script to force Windows Classic theme, because XP can revert to XP style after reboot, which happens from time to time.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">Local $Theme_To_Use = ’Windows Classic’
+Local $ScreenSaver_To_Use = ’(None)’
+Run(’rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,5’)
+WinWait(’Display Properties’)
+ControlCommand(’Display Properties’, , _
+	’ComboBox1’, ’SelectString’, $Theme_To_Use)
+; SELECT SCREEN SAVER TAB
+ControlCommand(’Display Properties’, "", _
+    12320, "TabRight", "")
+ControlCommand(’Display Properties’, "", _
+    12320, "TabRight", "")
+While (ControlGetText(’Display Properties’, "", 1303)) = ""
+   Sleep(100)
+WEnd
+ControlCommand(’Display Properties’, _
+   , ’ComboBox1’, ’SelectString’, $ScreenSaver_To_Use)
+ControlClick(’Display Properties’, , ’Button7’)
+$OptWTMM = Opt(’WinTitleMatchMode’, 4)
+WinWait(’classname=CoverWindowClass’)
+WinWaitClose(’classnam=CoverWindowClass’)
+Opt(’WinTitleMatchMode’, $OptWTMM)
+; DONE
+</pre>
+</div>
 
+</div>
 
-
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-26T22:09:50.625000</span>
+</div>
+</div>
+</body>
+</html>
