@@ -396,7 +396,7 @@ False
 //
 // OpenPPL - Verbosity
 //
-// Some OpenHoldem-symbols are awfully illnamed,
+// Some OpenHoldem-symbols are awfully ill-named,
 // thanks to Ray E. Bornert who invented WinHoldem.
 // rais, swag, $$pr0, etc.
 // We provide meaningful names here to make this library more readable.
@@ -433,7 +433,7 @@ $$cr4
 ##InitBets##
 // No bet in front of us to call
 ((currentbet == 0) && (AmountToCall == 0)) ? me_st_MemBets_0 :
-// A bet to call and we din't act before or we checked
+// A bet to call and we didn't act before or we checked
 ((currentbet == 0) && (AmountToCall > 0)) ? me_st_MemBets_1 :
 // Otherwise: we did already bet ourself or call a bet.
 // So don't change anything
@@ -534,8 +534,6 @@ ac_agchair_after
 // None
 (prevaction == -1) ? None :
 ERROR_IncorrectBotsLastAction
-
-
 
 ##InitBotsLastPreflopAction##
 // Don't use BotsLastAction on the first orbit,
@@ -678,9 +676,9 @@ ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
 ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
 
 ##PlayersBehindDealPosition2ChairDidAct##
-// Needed for dectection of missing small blind.
+// Needed for detection of missing small blind.
 // First checking for folded players,
-// because lots ofnewbies won't scrape-players correctly and mix everything up.
+// because lots of newbies won't scrape-players correctly and mix everything up.
 // This affects calculation of small blind, big blind,
 // all positions and finally lots of other things...
 (nopponentsfolded > 0) ? True :
@@ -848,9 +846,6 @@ me_re_MemRaises
 || [(currentbet7 > 0) && (currentbet7 < sblind) && (balance7 > 0)]
 || [(currentbet8 > 0) && (currentbet8 < sblind) && (balance8 > 0)]
 || [(currentbet9 > 0) && (currentbet9 < sblind) && (balance9 > 0)]
-
-##NumberOfBlindRaisersInThisGame##
-[AntesPresent ? 1 : 0] + [MissingSmallBlind ? 1 : 2]
 
 ##NumberOfOpponentsLimpingPreflop##
 // First orbit preflop only
@@ -2913,7 +2908,7 @@ HaveStraight
 ((pokerval >> 12) & 0b1111)
 
 ##NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
-// 1 for each overcard on baord to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
+// 1 for each overcard on board to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
   [[(rankbitscommon & 0x100000000000000) && (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
 + [[(rankbitscommon & 0x010000000000000) && (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
 + [[(rankbitscommon & 0x001000000000000) && (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
@@ -2961,15 +2956,15 @@ HaveStraight
 + (rankbitscommon & 0x000000000000100) && (RankOfSetOfFullHouse < ConstCardTwo  )
 
 ##NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
-// 3 is the lowest nut rank possible, becuase theres still a quad and a FH with the higher pair possible.
-// Theres always a higher pair on board, so if there are two higher ranked cards in common cards,
-// theres also a higher set possible with a pocket pair and the remaining single card on board.
+// 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
+// There's always a higher pair on board, so if there are two higher ranked cards in common cards,
+// there's also a higher set possible with a pocket pair and the remaining single card on board.
 3 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
 
 ##NFH4OAK_TwoPairsOnBoard_WeHitTopSet##
-// 2 is the lowest nut rank possible, becuase theres still a quad possible.
-// Theres might be a higher card on board, so if there is a higher ranked card in common cards then our set rank,
-// theres also a higher set possible with a pocket pair and the remaining single card on board.
+// 2 is the lowest nut rank possible, because there's still a quad possible.
+// There's might be a higher card on board, so if there is a higher ranked card in common cards then our set rank,
+// there's also a higher set possible with a pocket pair and the remaining single card on board.
 2 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
 
 ##NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads##
@@ -2979,7 +2974,7 @@ HaveStraight
 1
 
 ##NFH4OAK_TwoPairsOnBoard_WePairBothPairs##
-// Theres might be a higher card on board,
+// There's might be a higher card on board,
 // so if there is a higher ranked card in common cards then our pair ranks,
 // there are also a higher pair and a higher set possible.
 1
@@ -3033,8 +3028,8 @@ HINT_There_Is_No_Pair_On_The_Board
 ##NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard##
 // One quads possible, so the bestcase is second nuts
 2
-// Bbecause the set does have a higher rank then our pair,
-// with the rank of the set theres no OverPair possible,
+// Because the set does have a higher rank then our pair,
+// with the rank of the set there's no OverPair possible,
 // and therefore are only 11 OverPairs possible instead of 12 if we do have 22 pair,
 // 10 if we have 33 pair, etc.
 + (13 - RankOfBottomPairOnBoard)
@@ -3073,7 +3068,7 @@ HINT_There_Is_No_Pair_On_The_Board
    // case 1B: common kicker is lower than quads
    (ConstCardAce - rankhiplayer + 1)
 ] :
-// Otherwise: case 2: One of our cards is better then the nonpaired board card, e.g. 88885, we have J2
+// Otherwise: case 2: One of our cards is better then the non-paired board card, e.g. 88885, we have J2
 [
    // case 2A: Our kicker is better than quads, too (better than all board cards)
    (rankhiplayer > trankcommon) ? (ConstCardAce - rankhiplayer + 1) :
@@ -3265,7 +3260,7 @@ nopponentsdealt
   
 ##Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot##
 // Some casinos don't display the bets of players who are allin,
-// but move them immediatelly to the main-pot (and/or sitepots)
+// but move them immediately to the main-pot (and/or sitepots)
 // so we can no longer assume that they have a positive bet.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=15493
 sitename$ongame
@@ -3803,10 +3798,10 @@ Middle
 // Change in dealerchair => new hand
    (dealerchair != me_re_MemOldGameStateDealerChair)
 // Change in currentbet => we did act 
-// and the autoplayer executed sucessfully   
+// and the autoplayer executed successfully   
 || (currentbet  != me_re_MemOldGameStateCurrentBet)
 // Change in potsize: somebody else behind us acted, 
-// so we checked or folded sucessfully
+// so we checked or folded successfully
 || (pot			!= me_re_MemOldGameStatePotSize)
 // Change in betround, if everybody checked 
 // and potsize is the same
