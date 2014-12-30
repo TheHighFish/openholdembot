@@ -223,6 +223,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Main Menu">
+				<param name="Local" value="Chapters\gui\main_menu.html.LyXconv\main_menu.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Toolbars">
 				<param name="Local" value="Chapters\gui\toolbars.html.LyXconv\toolbars.html">
 				</OBJECT>
@@ -451,6 +455,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="User-DLL">
+				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="DLL-Tutorial">
 				</OBJECT>
 			<UL>
@@ -475,10 +483,6 @@
 					<param name="Local" value="Chapters\dll_tutorial\part_e_using_prw1326.html.LyXconv\part_e_using_prw1326.html">
 					</OBJECT>
 			</UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="User-DLL">
-				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
-				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Perl">
