@@ -27,7 +27,6 @@
 #include "CFileSystemMonitor.h"
 #include "CFormulaParser.h"
 #include "CGameState.h"
-#include "CHandHistory.h"
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -159,9 +158,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create COcclusionCheck\n");
   assert(!p_occlusioncheck);
   p_occlusioncheck = new COcclusionCheck;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create HandHistory\n");
-  assert(!p_handhistory);
-  p_handhistory = new CHandHistory;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
   assert(!p_casino_interface);
   p_casino_interface = new CCasinoInterface;
@@ -222,7 +218,6 @@ void DeleteAllSingletons() {
   // needs its session_id (CSessionCounter).
   //
   DELETE_AND_CLEAR(p_casino_interface)
-  DELETE_AND_CLEAR(p_handhistory)
   DELETE_AND_CLEAR(p_occlusioncheck)
   DELETE_AND_CLEAR(p_rebuymanagement)
   DELETE_AND_CLEAR(p_engine_container)
@@ -231,32 +226,59 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_popup_handler)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
   DELETE_AND_CLEAR(p_autoconnector)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting version_info\n");
   DELETE_AND_CLEAR(p_version_info)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting tablemap loader\n");
   DELETE_AND_CLEAR(p_tablemap_loader)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 01\n");
   DELETE_AND_CLEAR(p_filesystem_monitor)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 02\n");
   DELETE_AND_CLEAR(p_table_positioner)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 04\n");
   DELETE_AND_CLEAR(p_perl)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 05\n");
   DELETE_AND_CLEAR(p_game_state)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 06\n");
   DELETE_AND_CLEAR(p_dll_extension)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 07\n");
   DELETE_AND_CLEAR(p_autoplayer)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 08\n");
   DELETE_AND_CLEAR(p_formula_parser)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 09\n");
   DELETE_AND_CLEAR(p_parser_symbol_table)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 10\n");
   DELETE_AND_CLEAR(p_debug_tab)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 12\n");
   DELETE_AND_CLEAR(p_tablemap)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 13\n");
   DELETE_AND_CLEAR(p_lazyscraper)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 14\n");
   DELETE_AND_CLEAR(p_scraper_access)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 15\n");
   DELETE_AND_CLEAR(p_scraper)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 16\n");
   DELETE_AND_CLEAR(p_stableframescounter)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 17\n");
   DELETE_AND_CLEAR(p_sharedmem)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 18\n");
   DELETE_AND_CLEAR(p_sessioncounter)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 19\n");
   DELETE_AND_CLEAR(p_autoplayer_functions)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 20\n");
   DELETE_AND_CLEAR(p_configurationcheck)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 21\n");
   DELETE_AND_CLEAR(p_handreset_detector)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 22\n");
   DELETE_AND_CLEAR(p_autoplayer_trace)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 23\n");
   DELETE_AND_CLEAR(p_table_state)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 24\n");
   DELETE_AND_CLEAR(p_string_match)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 25\n");
   DELETE_AND_CLEAR(p_filenames)
 }
   

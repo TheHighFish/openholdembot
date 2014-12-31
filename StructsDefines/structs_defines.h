@@ -21,50 +21,13 @@
 #define THREAD_WAIT					3000
 
 // numeric constants
-#define M_E			2.7182818284590452354
-#define M_LOG2E		1.4426950408889634074
-#define M_LOG10E	0.43429448190325182765
-#define M_LN2		0.69314718055994530942
-#define M_LN10		2.30258509299404568402
-#define M_PI		3.14159265358979323846
-#define M_SQRT2		1.41421356237309504880
-
-// Error Codes
-#define SUCCESS						0
-#define ERR_EOF						1
-#define ERR_SYNTAX					2
-#define ERR_VERSION					3
-#define ERR_NOTMASTER				4
-#define ERR_HASH_COLL				5
-#define ERR_REGION_SIZE				6
-#define ERR_UNK_LN_TYPE				7
-#define ERR_INV_HASH_TYPE			8
-#define ERR_DEBUG_NOEQ				9
-#define ERR_INVALID_SYM				10
-#define ERR_INVALID_FUNC_SYM		11
-#define ERR_INVALID_DLL_SYM			12
-#define ERR_INVALID_EXPR			13
-// No error code 14
-#define ERR_DIV_ZERO				15
-#define ERR_INVALID_F$$_REF			16
-#define ERR_BAD_PARSE				17
-#define ERR_INCOMPLETEMASTER		18
-
-const char* const k_tablemap_errors_and_parse_errors_explained[19] =	
-	{"success", "unexpected end of file", "invalid syntax", "incorrect version",
-	"not a master file", "hash collision", "invalid region size", "unknown line type",
-	"invalid hash type", "missing equal sign", "invalid symbol", "invalid function symbol",
-	"invalid DLL symbol", "invalid expression", "this can't happen, as this error-code is unused", "division by zero", 
-	"invalid f$$-reference", "bad parse", "incomplete master file"};
-
-// Scraper error codes
-#define ERR_FIELD_TOO_LARGE			-1
-#define ERR_NOTHING_TO_SCRAPE		-2
-#define ERR_NO_HASH_MATCH			-3
-#define ERR_TEXT_SCRAPE_NOMATCH		-4
-#define ERR_INVALID_TRANSFORM_TYPE	-5
-#define ERR_NO_IMAGE_MATCH			-6
-#define	ERR_GOOD_SCRAPE_GENERAL		1
+#define M_E			 2.7182818284590452354
+#define M_LOG2E	 1.4426950408889634074
+#define M_LOG10E 0.43429448190325182765
+#define M_LN2		 0.69314718055994530942
+#define M_LN10	 2.30258509299404568402
+#define M_PI		 3.14159265358979323846
+#define M_SQRT2	 1.41421356237309504880
 
 // Preferences
 #define MAX_OPPONENTS		22	
@@ -84,23 +47,6 @@ const char* const k_tablemap_errors_and_parse_errors_explained[19] =
 // Button click options
 #define BETPOT_DEFAULT	0
 #define BETPOT_RAISE	1
-
-// Hand reset detection options
-#define HANDRESET_DEALER	0x01	// 0b0001
-#define HANDRESET_HANDNUM	0x02	// 0b0010
-#define HANDRESET_CARDS		0x04	// 0b0100
-
-// Game state engine
-#define w_noaction			0			//chair has not acted
-#define	w_folded			1			//fold action
-#define	w_checked			2			//chec action
-#define	w_called			3			//call action
-#define	w_raised			4			//rais action
-#define	w_posted_sb			5			//sb post action
-#define	w_posted_bb			6			//bb post action
-//#define w_called_bb			7			//the sb chair called the bb in an unraised pot
-#define	w_reraised			8			//re-rais action
-#define	w_num_action_types	9			//number of action types
 
 // For drawing
 // Card sizes
@@ -140,8 +86,6 @@ const char* const k_tablemap_errors_and_parse_errors_explained[19] =
 
 #define MAX_WINDOW_TITLE	512
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,17 +101,6 @@ struct STableList
 	RECT		crect;
 };
 
-struct ftr_info 
-{
-	unsigned int	elapsed_time;			//time this hand started
-	unsigned int	n_pl_dealt;             //number of players dealt this hand
-	unsigned int	n_pl_saw_flop;          //number of players that saw the flop this hand
-	unsigned int	n_pl_saw_turn;          //number of players that saw the turn this hand
-	unsigned int	n_pl_saw_river;         //number of players that saw the river this hand
-	double		  	n_bets_preflop;         //number of bets preflop
-};
-
-
 //prwin 1326 chair structure    Matrix 2008-04-29
 struct sprw1326_chair
 {
@@ -178,7 +111,6 @@ struct sprw1326_chair
 	int			ranklo[k_number_of_pocketcard_combinations_without_order];	// lo card number in pocket cards
 	int			weight[k_number_of_pocketcard_combinations_without_order];	// the significance value for this hand
 	double		scratch;		// for future reference
-
 };
 
 //prwin 1326 structure			Matrix 2008-04-29
@@ -192,45 +124,6 @@ struct sprw1326
 	int			bblimp;				// if non-zero no weighting will be applied if a chair has put nothing in the pot
 	sprw1326_chair	vanilla_chair;	// will be precalculated by OH at startup - convenience values
 	sprw1326_chair  chair[k_max_number_of_players];  // structures for each chair
-};
-
-//player history structure		Demonthus 2010-02-05
-// !!undocumented
-struct phistory_chair
-{
-	char card_player[(2 * k_number_of_cards_per_player) + 1]; // 2 characters per card + NULL char
-	bool dealt;
-	bool postBlind;
-	bool seatIsPlaying;
-	bool cardsSeen;
-	double startBalance;
-	double currentBalance;
-	double prevBalance;
-	double endBalance;
-	double currentBet; 
-	double prevBet;
-	double totalIn[k_number_of_betrounds];
-	double bet[k_number_of_betrounds][k_assumed_max_number_of_actions_per_player_and_round];
-	int action[k_number_of_betrounds][k_assumed_max_number_of_actions_per_player_and_round];
-	int ac_dealpos;
-	bool playersPlayingBits;
-	int bets;
-	int calls;
-	int actionCount;
-	CardMask hand;
-  HandVal handval; 
-};
-
-//player history structure		Demonthus 2010-02-05
-
-struct phistory
-{
-	int whosturn;
-	int sblindpos;
-	int bblindpos;
-	int utg;
-	int last_player_to_act;
-	phistory_chair chair[k_max_number_of_players];
 };
 
 #endif /* INC_STRUCTS_DEFINES_H */
