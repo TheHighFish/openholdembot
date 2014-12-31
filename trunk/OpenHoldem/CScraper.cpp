@@ -169,7 +169,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
 	if (r_iter != p_tablemap->r$()->end()) 
 	{
-    // !!! Lots of potential for optimiyation here
+    // !!! Lots of potential for optimization here
     ++total_region_counter;
 		if (ProcessRegion(r_iter)) {
       ++identical_region_counter;

@@ -357,34 +357,40 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define M_PI		3.14159265358979323846
 #define M_SQRT2		1.41421356237309504880
 
-// Error Codes
-#define SUCCESS						0
-#define ERR_EOF						1
-#define ERR_SYNTAX					2
-#define ERR_VERSION					3
-#define ERR_NOTMASTER				4
-#define ERR_HASH_COLL				5
+// Error Codes for taqblemaps
+// Former parser codes have been removed
+// as the parser got completely reimplemented
+#define SUCCESS						    0
+#define ERR_EOF						    1
+#define ERR_SYNTAX					  2
+#define ERR_VERSION					  3
+#define ERR_NOTMASTER				  4
+#define ERR_HASH_COLL				  5
 #define ERR_REGION_SIZE				6
 #define ERR_UNK_LN_TYPE				7
 #define ERR_INV_HASH_TYPE			8
-#define ERR_DEBUG_NOEQ				9
-#define ERR_INVALID_SYM				10
-#define ERR_INVALID_FUNC_SYM		11
-#define ERR_INVALID_DLL_SYM			12
-#define ERR_INVALID_EXPR			13
-#define ERR_DIV_ZERO				15
-#define ERR_INVALID_F$$_REF			16
-#define ERR_BAD_PARSE				17
-#define ERR_INCOMPLETEMASTER		18
+#define ERR_INCOMPLETEMASTER  9
+
+const char* const k_tablemap_errors_and_parse_errors_explained[10] = {
+  "success", 
+  "unexpected end of file", 
+  "invalid syntax", 
+  "incorrect version",
+	"not a master file", 
+  "hash collision", 
+  "invalid region size", 
+  "unknown line type",
+	"invalid hash type", 
+  "incomplete master file"};
 
 // Scraper error codes
-#define ERR_FIELD_TOO_LARGE			-1
-#define ERR_NOTHING_TO_SCRAPE		-2
-#define ERR_NO_HASH_MATCH			-3
-#define ERR_TEXT_SCRAPE_NOMATCH		-4
-#define ERR_INVALID_TRANSFORM_TYPE	-5
-#define ERR_NO_IMAGE_MATCH			-6
-#define	ERR_GOOD_SCRAPE_GENERAL		1
+#define ERR_FIELD_TOO_LARGE			   -1
+#define ERR_NOTHING_TO_SCRAPE		   -2
+#define ERR_NO_HASH_MATCH			     -3
+#define ERR_TEXT_SCRAPE_NOMATCH		 -4
+#define ERR_INVALID_TRANSFORM_TYPE -5
+#define ERR_NO_IMAGE_MATCH			   -6
+#define	ERR_GOOD_SCRAPE_GENERAL		  1
 
 // Profile version codes
 #define VER_WINSCRAPE			".wsdb1"
@@ -393,18 +399,15 @@ const double k_pokertracker_stat_undefined = -1.0;
 #define VER_OPENSCRAPE_1		".osdb1"
 #define VER_OPENSCRAPE_2		".osdb2"
 
-// Hand Lists
-#define MAX_HAND_LISTS	1000		// e.g. islist0 - islist999 Matrix 2008-05-14
-
 // Preferences
-#define MAX_OPPONENTS		22	
-#define MAX_FRAMEDELAY		9	
+#define MAX_OPPONENTS		    22	
+#define MAX_FRAMEDELAY		   9	
 #define MAX_SWAGDELAY1		5000	
 #define MAX_SWAGDELAY2		5000	
 #define MAX_SWAGDELAY3		5000	
 #define MAX_ALLINDELAY		5000	
 #define MAX_SCRAPEDELAY		5000
-#define MIN_SCRAPEDELAY		100
+#define MIN_SCRAPEDELAY		 100
 
 // WH SUIT Defs
 #define OH_SUIT_CLUBS		1
@@ -443,14 +446,6 @@ const int BETCONF_NOTHING	 = TEXTSEL_NOTHING;
 const int BUTTON_SINGLECLICK = TEXTSEL_SINGLECLICK;
 const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;
 
-// Hand reset detection options
-const int HANDRESET_DEALER	= 0x01;	// 0b0001
-const int HANDRESET_HANDNUM	= 0x02;	// 0b0010
-const int HANDRESET_CARDS	= 0x04;	// 0b0100
-const int HANDRESET_ALL     = HANDRESET_DEALER
-							| HANDRESET_HANDNUM
-							| HANDRESET_CARDS;
-
 // Autoplayer prevaction
 #define PREVACT_FOLD		-1
 #define PREVACT_CHEC		0
@@ -458,18 +453,6 @@ const int HANDRESET_ALL     = HANDRESET_DEALER
 #define PREVACT_RAIS		2
 #define PREVACT_SWAG		3
 #define PREVACT_ALLI		4
-
-// Game state engine
-#define w_noaction			0			//chair has not acted
-#define	w_folded			1			//fold action
-#define	w_checked			2			//chec action
-#define	w_called			3			//call action
-#define	w_raised			4			//rais action
-#define	w_posted_sb			5			//sb post action
-#define	w_posted_bb			6			//bb post action
-//#define w_called_bb			7			//the sb chair called the bb in an unraised pot
-#define	w_reraised			8			//re-rais action
-#define	w_num_action_types	9			//number of action types
 
 // For drawing
 // Card sizes

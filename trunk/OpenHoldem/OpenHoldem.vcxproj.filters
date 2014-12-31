@@ -187,15 +187,18 @@
     <Filter Include="Header Files\Programming the Bot\DLL">
       <UniqueIdentifier>{cb906b06-3206-4087-8396-032290c20b19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\HandhistoryGenerator">
+      <UniqueIdentifier>{21cae660-62c0-4f10-9e03-0740953dc89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HandhistoryGenerator">
+      <UniqueIdentifier>{3a6f2946-c39b-42b6-b351-1c126988f61a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CFlagsToolbar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHandHistory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CHandresetDetector.cpp">
@@ -693,6 +696,24 @@
     <ClCompile Include="CGameState.cpp">
       <Filter>Source Files\Programming the Bot\DLL</Filter>
     </ClCompile>
+    <ClCompile Include="CHandHistoryDealPhase.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryUncontested.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryWriter.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistory.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryShowdown.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryAction.cpp">
+      <Filter>Source Files\HandhistoryGenerator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -899,9 +920,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CGrammar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHandHistory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CHandresetDetector.h">
@@ -1488,6 +1506,21 @@
     </ClInclude>
     <ClInclude Include="CGameState.h">
       <Filter>Header Files\Programming the Bot\DLL</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryDealPhase.h">
+      <Filter>Header Files\HandhistoryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryUncontested.h">
+      <Filter>Header Files\HandhistoryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryWriter.h">
+      <Filter>Header Files\HandhistoryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryShowdown.h">
+      <Filter>Header Files\HandhistoryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="CHandHistoryAction.h">
+      <Filter>Header Files\HandhistoryGenerator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

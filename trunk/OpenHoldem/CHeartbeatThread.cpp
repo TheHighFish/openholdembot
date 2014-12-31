@@ -23,7 +23,6 @@
 #include "CSymbolEngineReplayFrameController.h"
 #include "CEngineContainer.h"
 #include "CGameState.h"
-#include "CHandhistory.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
@@ -48,7 +47,6 @@
 #include "MemoryLogging.h"
 #include "NumericalFunctions.h"
 #include "OpenHoldem.h"
-#include "CHandHistory.h"
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
@@ -188,12 +186,6 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	if (p_autoplayer->autoplayer_engaged() && !iswait) {
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 		p_autoplayer->DoAutoplayer();
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////////
-	// Hand history generator
-	if (preferences.handhistory_generator_enable()) {
-		p_handhistory->MakeHistory();
 	}
 }
 

@@ -666,75 +666,51 @@ void CSymbolEngineCards::CalcUnknownCards()
 	AssertRange(_ncardsbetter,  0, k_number_of_cards_per_deck);
 }
 
-bool CSymbolEngineCards::IsHand(const char *name, int *e)
-{
-	int				cardrank[2] = {0}, temp;
-	int				suited = 0;  //0=not specified, 1=suited, 2=offsuit
-	int				cardcnt = 0;
-	int				plcardrank[2] = {0}; 
+bool CSymbolEngineCards::IsHand(const char *name) {
+	int	cardrank[2] = {0}, temp;
+	int	suited = 0;  //0=not specified, 1=suited, 2=offsuit
+	int	cardcnt = 0;
+	int	plcardrank[2] = {0}; 
 
-	if (strlen(name)<=1)
-	{
-		if (e)
-			*e = ERR_INVALID_SYM;
-		return false;
-	}
-	assert(name[0] == '$');
+	if (strlen(name) <= 1) return false;
+  assert(name[0] == '$');
 
 	// passed in symbol query
-	for (int i=1; i<(int) strlen(name); i++)
-	{
-		if (name[i]>='2' && name[i]<='9')
+	for (int i=1; i<(int) strlen(name); ++i) {
+    if (name[i] >= '2' && name[i] <= '9') {
 			cardrank[cardcnt++] =  name[i] - '0';
-
-		else if (name[i]=='T' || name[i]=='t')
+    } else if (name[i]=='T' || name[i]=='t') {
 			cardrank[cardcnt++] = 10;
-
-		else if (name[i]=='J' || name[i]=='j')
+    } else if (name[i]=='J' || name[i]=='j') {
 			cardrank[cardcnt++] = 11;
-
-		else if (name[i]=='Q' || name[i]=='q')
+    } else if (name[i]=='Q' || name[i]=='q') {
 			cardrank[cardcnt++] = 12;
-
-		else if (name[i]=='K' || name[i]=='k')
+    } else if (name[i]=='K' || name[i]=='k') {
 			cardrank[cardcnt++] = 13;
-
-		else if (name[i]=='A' || name[i]=='name')
+    } else if (name[i]=='A' || name[i]=='a') {
 			cardrank[cardcnt++] = 14;
-
-		else if (name[i]=='X' || name[i]=='x')
+    } else if (name[i]=='X' || name[i]=='x') {
 			cardrank[cardcnt++] = -1;
-
-		else if (name[i]=='S' || name[i]=='s')
+    } else if (name[i]=='S' || name[i]=='s') {
 			suited=1;
-
-		else if (name[i]=='O' || name[i]=='o')
+    } else if (name[i]=='O' || name[i]=='o') {
 			suited=2;
-
-		else
-		{
-			if (e)
-				*e = ERR_INVALID_SYM;
+    } else {
 			return false;
 		}
 	}
-
-	if (!p_symbol_engine_userchair->userchair_confirmed())
+  if (!p_symbol_engine_userchair->userchair_confirmed())
 		return false;
-
-	// sort
-	if (cardrank[1] > cardrank[0])
-	{
+  // sort
+	if (cardrank[1] > cardrank[0]) {
 		temp = cardrank[0];
 		cardrank[0] = cardrank[1];
 		cardrank[1] = temp;
 	}
-
-	// playercards
+  // playercards
 	plcardrank[0] = p_table_state->User()->_hole_cards[0].GetOpenHoldemRank();
 	plcardrank[1] = p_table_state->User()->_hole_cards[1].GetOpenHoldemRank();
-	if (plcardrank[1] > plcardrank[0])
-	{
+	if (plcardrank[1] > plcardrank[0])	{
 		SwapInts(&plcardrank[0], &plcardrank[1]);
 	}
   bool plsuited = false;
@@ -743,38 +719,24 @@ bool CSymbolEngineCards::IsHand(const char *name, int *e)
 		plsuited = true;
 	}
 	// check for non suited/offsuit match
-	if (suited==1 && !plsuited)
-		return false;
-
-	if (suited==2 && plsuited)
-		return 0;
-
-	// check for non rank match
+	if (suited==1 && !plsuited)	return false;
+  if (suited==2 && plsuited)	return false;
+  // check for non rank match
 	// two wildcards
-	if (cardrank[0]==-1 && cardrank[1]==-1)
-		return true;
-
-	// one card passed in, or one with name wildcard
-	if (cardrank[1]==0 || cardrank[1]==-1)
-	{
-		if (cardrank[0] != plcardrank[0] &&
-				cardrank[0] != plcardrank[1])
-		{
+	if (cardrank[0]==-1 && cardrank[1]==-1) return true;
+  // one card passed in, or one with name wildcard
+	if (cardrank[1]==0 || cardrank[1]==-1) 	{
+		if (cardrank[0] != plcardrank[0] 
+        && cardrank[0] != plcardrank[1]) {
 			return false;
 		}
 	}
-
-	// two cards passed in
-	else
-	{
-		if (cardrank[0]!=-1 && cardrank[0]!=plcardrank[0])
-			return false;
-
-		if (cardrank[1]!=-1 && cardrank[1]!=plcardrank[1])
-			return false;
+  // two cards passed in
+	else {
+		if (cardrank[0]!=-1 && cardrank[0]!=plcardrank[0]) return false;
+    if (cardrank[1]!=-1 && cardrank[1]!=plcardrank[1]) return false;
 	}
-
-	return true;
+  return true;
 }
 
 int GetRankFromCard(int scraper_card)
@@ -830,8 +792,7 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 		}
 		else if (memcmp(name, "$", 1)==0)  	
 		{
-			int *e = SUCCESS;
-			*result = IsHand(name, e);
+			*result = IsHand(name);
 		}
 		else
 		{

@@ -186,7 +186,14 @@
     <ClCompile Include="CBlindLevels.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
-    <ClCompile Include="CHandHistory.cpp" />
+    <ClCompile Include="CHandHistory.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CHandHistoryAction.cpp" />
+    <ClCompile Include="CHandHistoryDealPhase.cpp" />
+    <ClCompile Include="CHandHistoryShowdown.cpp" />
+    <ClCompile Include="CHandHistoryUncontested.cpp" />
+    <ClCompile Include="CHandHistoryWriter.cpp" />
     <ClCompile Include="CHandresetDetector.cpp" />
     <ClCompile Include="CHeartbeatThread.cpp" />
     <ClCompile Include="CLevDistance.cpp" />
@@ -441,7 +448,11 @@
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
     <ClInclude Include="CGrammar.h" />
-    <ClInclude Include="CHandHistory.h" />
+    <ClInclude Include="CHandHistoryAction.h" />
+    <ClInclude Include="CHandHistoryDealPhase.h" />
+    <ClInclude Include="CHandHistoryShowdown.h" />
+    <ClInclude Include="CHandHistoryUncontested.h" />
+    <ClInclude Include="CHandHistoryWriter.h" />
     <ClInclude Include="CHandresetDetector.h" />
     <ClInclude Include="CHeartbeatThread.h" />
     <ClInclude Include="CLazyScraper.h" />

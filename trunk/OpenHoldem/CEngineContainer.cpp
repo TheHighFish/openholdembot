@@ -19,6 +19,11 @@
 #include "CBetroundCalculator.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
+#include "CHandHistoryAction.h"
+#include "CHandHistoryDealPhase.h"
+#include "CHandHistoryShowdown.h"
+#include "CHandHistoryUncontested.h"
+#include "CHandHistoryWriter.h"
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
@@ -201,6 +206,24 @@ void CEngineContainer::CreateSymbolEngines() {
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
+  // After all real symbol-engines have been handled
+  // we can add the hand-history-generator modules.
+  // Order of insertion has order of later usage.
+  // CHandHistoryDealPhase
+  p_handhistory_deal_phase = new CHandHistoryDealPhase;
+  AddSymbolEngine(p_handhistory_deal_phase);
+  // CHandHistoryAction
+  p_handhistory_action = new CHandHistoryAction;
+  AddSymbolEngine(p_handhistory_action);
+  // CHandHistoryUncontested
+  p_handhistory_uncontested = new CHandHistoryUncontested;
+  AddSymbolEngine(p_handhistory_uncontested);
+  // CHandHistoryShowdown
+  p_handhistory_showdown = new CHandHistoryShowdown;
+  AddSymbolEngine(p_handhistory_showdown);
+  // CHandHistoryWriter
+  p_handhistory_writer = new CHandHistoryWriter;
+  AddSymbolEngine(p_handhistory_writer);
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
@@ -218,7 +241,7 @@ void CEngineContainer::DestroyAllSymbolEngines()
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines()
-{
+{;
 	delete p_betround_calculator;
 }
 

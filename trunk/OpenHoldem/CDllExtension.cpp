@@ -18,7 +18,6 @@
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
-#include "CHandHistory.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"

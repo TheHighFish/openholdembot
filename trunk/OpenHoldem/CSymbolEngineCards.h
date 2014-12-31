@@ -38,7 +38,7 @@ public:
 	bool issuited()			{ return _issuited; }		
 	bool isconnector()		{ return _isconnector; }
 public:
-	bool IsHand(const char *a, int *e);
+	bool IsHand(const char *name);
 
 public:
 	//COMMON CARDS
