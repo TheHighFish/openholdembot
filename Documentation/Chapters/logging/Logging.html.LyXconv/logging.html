@@ -1,129 +1,168 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="Logging.tex"> 
-<meta name="date" content="2009-12-19 14:52:00"> 
-<link rel="stylesheet" type="text/css" href="Logging.css"> 
-</head><body bgcolor="#CCCCFF" 
->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-31"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter">
+<a class="toc" name="toc-Chapter-1"></a>Log Files 
+</h1>
+<div class="Unindented">
+Sometimes the bot will take an unexpected decision, more rarely for bots in production, but for sure regularly for bots in development. The reason can be mis-scrapes (Table Map or improper system settings); it can be bad bot-logic; it can even be a bug in OpenHoldem.
+</div>
+<div class="Indented">
+Many newbies will automatically assume the latter case. Whenever you encounter a strange behaviour it is a good decision to make use of OpenHoldems logging capabilities. OpenHoldem will generate a log file as it operates, less detailed logs for production, more detailed logs for debugging. The verbosity of the log can be set in with the Preferences tabs <i>Logging</i> and <i>Debugging</i>. The log file can be found at <i>OpenHoldem\logs\oh_NN.log</i> where NN is the session-ID.
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>Basic Info
+</h2>
+<div class="Unindented">
+OpenHolldem will on every autoplayer action create a section with some basic info about the table-state, the decision taken and the action executed. You might wonder about the latter one, but action executed can differ from decision taken for example if certain buttons and therefore actions aew not available..
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">2014-09-30 07:11:37**** Basic Info *********************************************      
+  Version:       7.3.4
+  Chairs:           10
+  Userchair:         3
+  Holecards:     5c5d
+  Community:     ..........
+  Handrank:      24
+  Hand:          1pair
+  My balance:      1000.00
+  My currentbet:      0.00
+  To call:           10.00
+  Pot:               15.00   
+  Big blind:         10.00   
+  Big bet (FL):      20.00
+  f$betsize:         30.00
+  Formulas:      FC.RA
+  Buttons:       FC.RA
+  Best action:   f$betsize = 30.00
+  Action taken:  f$betsize
+***** Autoplayer Trace **************************************
+</pre>
+</div>
 
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--2"></a>Autoplayer Trace 
+</h2>
+<div class="Unindented">
+This is an example of the log entries that are added to the standard log if the Autoplayer Trace option is enabled in {Preferences}.!!!!!
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">*************************************************************
+HAND RESET (num:0 dealer:2 cards:KsKc): Poker Academy Pro ************************************************************* ROUND 1 &gt;&gt;&gt; New hand 0 
+&gt;&gt;&gt; My turn, br=1 
+&gt;&gt;&gt; Chair 2 (6lleilli) posted the sb: $0.00 
+&gt;&gt;&gt; Chair 3 (GusXensen) posted the sb: $0.00 
+&gt;&gt;&gt; Chair 4 (JackPott) posted the sb: $0.00 
+&gt;&gt;&gt; Chair 5 (Kale) posted the sb: $0.00 
+&gt;&gt;&gt; Chair 1 (DanielXn) posted the sb: $0.00 log$ (Total: 19 | Showing: 19)     
+f$swag=40.00 [Line: 1, Col: 49]           
+f$srai=40.00 [Line: 4, Col: 9]                 f$preflop_srai=40.00 [Line: 12, Col: 87]                       f$preflop_position=4.00 [Line: 5, Col: 50]                        nplayersdealt=6.00                             	dealposition=6.00                       
+	ncallbets=1.00                       
+	nopponentsbetting=3.00                       
+	islist16=1.00                       
+	bblind=10.00                 
+	br=1.00           
+f$raise_min_amount=10.00 [Line: 1, Col: 12]                 	currentbet=0.00                 
+	call=10.00           
+f$swag_adjust=0.00 [Line: 3, Col: 1]                 	swagtextmethod=1.00     
+	f$call=1.00 [Line: 7, Col: 4]           
+f$srai=40.00 [Cached]           
+call=10.00 
+6 KsKc ..........    2 1pair  578  417    5  3     1000 $40.00     - SWAG      10.00     10.00     25.00      0.00 - FCRA .C.. 40.00
+</pre>
+</div>
 
-   <h2 class="chapterHead"><span class="titlemark"></span><br /><a 
- id="x1-10001"></a>Log Files </h2>
-<!--l. 23--><p class="noindent" >Sometimes the bot will take an unexpected decision, more rarely for bots in production,
-but for sure regulary for bots in development. The reason can be mis-scrapes (Table Map
-or improper system settings); it can be bad bot-logic; it can even be a bug in
-OpenHoldem.
-<!--l. 28--><p class="indent" >   Many newbies will automatically assume the latter case. Whenever you encounter a
-strange behaviour it is a good decision to make use of OpenHoldems logging capabilities.
-OpenHoldem will generate a number of log files as it operates, less detailed logs for
-production, more detailed logs for debugging. The verbosity of the standard log and the
-Poker Tracker log can be set in {Preferences}.
-   <h3 class="sectionHead"><span class="titlemark">1.1. </span> <a 
- id="x1-20001.1"></a>Standard Log </h3>
-<!--l. 38--><p class="noindent" >This contains key actions that OpenHoldem sees, such as connection to a new table,
-table reset, and hand resets, player actions, as well as detailed before and after
-Autoplayer action information. The before-after Autoplayer action information is saved
-as a single line with the following format:
-<!--l. 44--><p class="indent" >   # hand commoncard rank poker win los tie P nit bestaction - play* call bet pot
-balance - FCRA FCRA swag
-<!--l. 47--><p class="indent" >   From left to right, the fields in this line are:
-           <ul class="itemize1">
-        <li class="itemize"># - Number of chairs at the table (as defined in the Table Map)
-           </li>
-        <li class="itemize">hand - your hole cards
-           </li>
-        <li class="itemize">commoncard &#8211; the board cards rank - your hand
-           </li>
-        <li class="itemize">rank (as specified in {Preferences})
-           </li>
-        <li class="itemize">poker - your poker hand
-           </li>
-        <li class="itemize">win / los / tie - the prwin/prlos/prtie Iterator results
-           </li>
-        <li class="itemize">P - the results from your f$P formula
-           </li>
-        <li class="itemize">nit - your NIT setting from the Table Map
-           </li>
-        <li class="itemize">bestaction - the action that the Autoplayer should take, based on the
-        primary function results
-           </li>
-        <li class="itemize">play - the actual action taken by the Autoplayer (may not be the same as
-        best action, if the best action button is not present, for example)
-           </li>
-        <li class="itemize">call / bet / pot / balance - the value of call, bet, pot and balance symbols
-           </li>
-        <li class="itemize">first FCRA - the status of the fold, call, check, raise and allin buttons as
-        seen by the scraper engine
-           </li>
-        <li class="itemize">second FCRA - the status of the f$call, f$rais and f$alli functions
-           </li>
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--3"></a>How to read the AutoPlayer Trace 
+</h2>
+<div class="Unindented">
+f$swag returned 40 processing line 1, character 49. It called the following functions: f$srai, f$raise_min_amount, f$swag_adjust, and used no other symbols.
+</div>
+<div class="Indented">
+f$preflop_position (returning on line 5 processing character 50) was called from f$preflop_srai which was called from f$srai. It called no other functions and used 2 symbols; nplayersdealt, dealposition whose values were 6 and 6. !!!!!
+</div>
+<div class="Indented">
+ROUND 2 <div class="listing">
+<pre class="listing">log$ (Total: 34 | Showing: 34)     Monster_Hand     checkLast_Monster_Raise     f$swag=115.33 [Line: 1, Col: 49]           f$srai=115.33 [Line: 10, Col: 9]                 f$postflop_srai=115.33 [Line: 6, Col: 31]                       f$postflop_scenario=2.00 [Line: 7, Col: 77]                             f$round_first_action=1.00 [Line: 2, Col: 38]                                   didswag=0.00                                   didrais=0.00                                   didcall=0.00                                   didchec=0.00                             betposition=3.00                             ncallbets=0.00                             nplayersround=3.00                       f$flop_checklast_srai=115.33 [Line: 2, Col: 67]                             f$handstrength=1.00 [Line: 8, Col: 105]                                   f$c_hs_MONSTER=1.00 [Line: 1, Col: 1]                                   br=2.00                                   vs$80$prlos=0.06                                   log$Monster_Hand=1.00                             f$c_hs_MONSTER=1.00 [Cached]                             f$cbet_amount=115.33 [Line: 1, Col: 23]                                   random=0.60                                   pot=160.00                             log$checkLast_Monster_Raise=1.00                       br=2.00                 br=2.00           f$raise_min_amount=0.00 [Line: 1, Col: 12]                 currentbet=0.00                 call=0.00           f$swag_adjust=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00 [Line: 5, Col: 7]           call=0.00 6 KsKc JsKd4c....    2 3kind  915   85    0  2     1000 $115.33    - SWAG       0.00     10.00    160.00      0.00 - FCRA .C.. 115.33
+log$ (Total: 30 | Showing: 30)     Monster_Hand     reraise_Monster_BIGRaise     f$swag=2340.00 [Line: 1, Col: 49]           f$srai=2340.00 [Line: 10, Col: 9]                 f$postflop_srai=2340.00 [Line: 12, Col: 31]                       f$postflop_scenario=5.00 [Line: 9, Col: 30]                             f$round_first_action=0.00 [Line: 2, Col: 2]                                   didswag=1.00                             didswag=1.00                             nbetstocall=78.00                       f$flop_reraised_srai=2340.00 [Line: 2, Col: 68]                             f$handstrength=1.00 [Line: 8, Col: 105]                                   f$c_hs_MONSTER=1.00 [Line: 1, Col: 1]                                   br=2.00                                   vs$80$prlos=0.06                                   log$Monster_Hand=1.00                             f$c_hs_MONSTER=1.00 [Cached]                             f$raise_big_amount=2340.00 [Line: 1, Col: 5]                                   pot=1170.00                             log$reraise_Monster_BIGRaise=1.00                       br=2.00                 br=2.00           f$raise_min_amount=895.00 [Line: 1, Col: 12]                 currentbet=115.00                 call=780.00           f$swag_adjust=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00 [Line: 7, Col: 4]           f$srai=2340.00 [Cached]           call=780.00 6 KsKc JsKd4c....    2 3kind  969   31    0  1     1000 $2340.00   - SWAG     780.00     10.00   1170.00      0.00 - FCRA .C.. 2340.00
+</pre>
+</div>
 
-        <li class="itemize">swag - the value of the f$swag function</li></ul>
-   <h3 class="sectionHead"><span class="titlemark">1.2. </span> <a 
- id="x1-30001.2"></a>PokerTracker Log </h3>
-<!--l. 71--><p class="noindent" >The Poker Tracker log is created if you are connected to a Poker Tracker database, and
-depending on the level of verbosity, will provide exact query SQL that is sent to the
-database when statistics are needed.
-   <h3 class="sectionHead"><span class="titlemark">1.3. </span> <a 
- id="x1-40001.3"></a>f$debug log </h3>
-<!--l. 78--><p class="noindent" >This log is created when set from the menu options in the Formula Editor window.
-   <h3 class="sectionHead"><span class="titlemark">1.4. </span> <a 
- id="x1-50001.4"></a>Autoplayer Trace </h3>
-<!--l. 84--><p class="noindent" >This is an example of the log entries that are added to the standard log if the Autoplayer
-Trace option is enabled in {Preferences}.
-   <!--l. 88-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-5001r1"></a></span><span 
-class="cmsy-10">*************************************************************</span>&#x00A0;<br /><span class="label"><a 
- id="x1-5002r2"></a></span>HAND&#x00A0;RESET&#x00A0;(num:0&#x00A0;dealer:2&#x00A0;cards:KsKc):&#x00A0;Poker&#x00A0;Academy&#x00A0;Pro&#x00A0;<span 
-class="cmsy-10">*************************************************************</span>&#x00A0;ROUND&#x00A0;1&#x00A0;&#x003E;&#x003E;&#x003E;&#x00A0;New&#x00A0;hand&#x00A0;0&#x00A0;<br /><span class="label"><a 
- id="x1-5003r3"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;My&#x00A0;turn,&#x00A0;br=1&#x00A0;<br /><span class="label"><a 
- id="x1-5004r4"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;Chair&#x00A0;2&#x00A0;(6lleilli)&#x00A0;posted&#x00A0;the&#x00A0;sb:&#x00A0;$0.00&#x00A0;<br /><span class="label"><a 
- id="x1-5005r5"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;Chair&#x00A0;3&#x00A0;(GusXensen)&#x00A0;posted&#x00A0;the&#x00A0;sb:&#x00A0;$0.00&#x00A0;<br /><span class="label"><a 
- id="x1-5006r6"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;Chair&#x00A0;4&#x00A0;(JackPott)&#x00A0;posted&#x00A0;the&#x00A0;sb:&#x00A0;$0.00&#x00A0;<br /><span class="label"><a 
- id="x1-5007r7"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;Chair&#x00A0;5&#x00A0;(Kale)&#x00A0;posted&#x00A0;the&#x00A0;sb:&#x00A0;$0.00&#x00A0;<br /><span class="label"><a 
- id="x1-5008r8"></a></span>&#x003E;&#x003E;&#x003E;&#x00A0;Chair&#x00A0;1&#x00A0;(DanielXn)&#x00A0;posted&#x00A0;the&#x00A0;sb:&#x00A0;$0.00&#x00A0;log$&#x00A0;(Total:&#x00A0;19&#x00A0;|&#x00A0;Showing:&#x00A0;19)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5009r9"></a></span>f$swag=40.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;49]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5010r10"></a></span>f$srai=40.00&#x00A0;[Line:&#x00A0;4,&#x00A0;Col:&#x00A0;9]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$preflop_srai=40.00&#x00A0;[Line:&#x00A0;12,&#x00A0;Col:&#x00A0;87]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$preflop_position=4.00&#x00A0;[Line:&#x00A0;5,&#x00A0;Col:&#x00A0;50]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;nplayersdealt=6.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;dealposition=6.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ncallbets=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;nopponentsbetting=3.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;islist16=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;bblind=10.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5015r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5016r16"></a></span>f$raise_min_amount=10.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;12]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;currentbet=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5017r17"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call=10.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5018r18"></a></span>f$swag_adjust=0.00&#x00A0;[Line:&#x00A0;3,&#x00A0;Col:&#x00A0;1]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;swagtextmethod=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5019r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$call=1.00&#x00A0;[Line:&#x00A0;7,&#x00A0;Col:&#x00A0;4]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5020r20"></a></span>f$srai=40.00&#x00A0;[Cached]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<br /><span class="label"><a 
- id="x1-5021r21"></a></span>call=10.00&#x00A0;<br /><span class="label"><a 
- id="x1-5022r22"></a></span>6&#x00A0;KsKc&#x00A0;..........&#x00A0;&#x00A0;&#x00A0;&#x00A0;2&#x00A0;1pair&#x00A0;&#x00A0;578&#x00A0;&#x00A0;417&#x00A0;&#x00A0;&#x00A0;&#x00A0;5&#x00A0;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;1000&#x00A0;$40.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SWAG&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;10.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;10.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;25.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0.00&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;FCRA&#x00A0;.C..&#x00A0;40.00
-   </div>
-   <h3 class="sectionHead"><span class="titlemark">1.5. </span> <a 
- id="x1-60001.5"></a>How to read the log </h3>
-<!--l. 117--><p class="noindent" >f$swag returned 40 processing line 1, character 49. It called the following functions:
-f$srai, f$raise_min_amount, f$swag_adjust, and used no other symbols.
-<!--l. 121--><p class="indent" >   f$preflop_position (returning on line 5 processing character 50) was called from
-f$preflop_srai which was called from f$srai. It called no other functions and used 2
-symbols; nplayersdealt, dealposition whose values were 6 and 6.
-<!--l. 126--><p class="indent" >   ROUND 2 <!--l. 127-->
-   <div class="lstlisting" id="listing-2"><span class="label"><a 
- id="x1-6001r1"></a></span>log$&#x00A0;(Total:&#x00A0;34&#x00A0;|&#x00A0;Showing:&#x00A0;34)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Monster_Hand&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;checkLast_Monster_Raise&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$swag=115.33&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;49]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$srai=115.33&#x00A0;[Line:&#x00A0;10,&#x00A0;Col:&#x00A0;9]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$postflop_srai=115.33&#x00A0;[Line:&#x00A0;6,&#x00A0;Col:&#x00A0;31]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$postflop_scenario=2.00&#x00A0;[Line:&#x00A0;7,&#x00A0;Col:&#x00A0;77]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$round_first_action=1.00&#x00A0;[Line:&#x00A0;2,&#x00A0;Col:&#x00A0;38]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didswag=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didrais=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didcall=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didchec=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;betposition=3.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ncallbets=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;nplayersround=3.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$flop_checklast_srai=115.33&#x00A0;[Line:&#x00A0;2,&#x00A0;Col:&#x00A0;67]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$handstrength=1.00&#x00A0;[Line:&#x00A0;8,&#x00A0;Col:&#x00A0;105]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$c_hs_MONSTER=1.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;1]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;vs$80$prlos=0.06&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;log$Monster_Hand=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$c_hs_MONSTER=1.00&#x00A0;[Cached]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$cbet_amount=115.33&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;23]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;random=0.60&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pot=160.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;log$checkLast_Monster_Raise=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$raise_min_amount=0.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;12]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;currentbet=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call=0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$swag_adjust=0.00&#x00A0;[Line:&#x00A0;3,&#x00A0;Col:&#x00A0;1]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;swagtextmethod=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$call=1.00&#x00A0;[Line:&#x00A0;5,&#x00A0;Col:&#x00A0;7]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call=0.00&#x00A0;6&#x00A0;KsKc&#x00A0;JsKd4c....&#x00A0;&#x00A0;&#x00A0;&#x00A0;2&#x00A0;3kind&#x00A0;&#x00A0;915&#x00A0;&#x00A0;&#x00A0;85&#x00A0;&#x00A0;&#x00A0;&#x00A0;0&#x00A0;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;1000&#x00A0;$115.33&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SWAG&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;10.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;160.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0.00&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;FCRA&#x00A0;.C..&#x00A0;115.33&#x00A0;<br /><span class="label"><a 
- id="x1-6002r2"></a></span>log$&#x00A0;(Total:&#x00A0;30&#x00A0;|&#x00A0;Showing:&#x00A0;30)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Monster_Hand&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;reraise_Monster_BIGRaise&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$swag=2340.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;49]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$srai=2340.00&#x00A0;[Line:&#x00A0;10,&#x00A0;Col:&#x00A0;9]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$postflop_srai=2340.00&#x00A0;[Line:&#x00A0;12,&#x00A0;Col:&#x00A0;31]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$postflop_scenario=5.00&#x00A0;[Line:&#x00A0;9,&#x00A0;Col:&#x00A0;30]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$round_first_action=0.00&#x00A0;[Line:&#x00A0;2,&#x00A0;Col:&#x00A0;2]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didswag=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;didswag=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;nbetstocall=78.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$flop_reraised_srai=2340.00&#x00A0;[Line:&#x00A0;2,&#x00A0;Col:&#x00A0;68]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$handstrength=1.00&#x00A0;[Line:&#x00A0;8,&#x00A0;Col:&#x00A0;105]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$c_hs_MONSTER=1.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;1]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;vs$80$prlos=0.06&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;log$Monster_Hand=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$c_hs_MONSTER=1.00&#x00A0;[Cached]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$raise_big_amount=2340.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;5]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pot=1170.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;log$reraise_Monster_BIGRaise=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;br=2.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$raise_min_amount=895.00&#x00A0;[Line:&#x00A0;1,&#x00A0;Col:&#x00A0;12]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;currentbet=115.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call=780.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$swag_adjust=0.00&#x00A0;[Line:&#x00A0;3,&#x00A0;Col:&#x00A0;1]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;swagtextmethod=1.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$call=1.00&#x00A0;[Line:&#x00A0;7,&#x00A0;Col:&#x00A0;4]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;f$srai=2340.00&#x00A0;[Cached]&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call=780.00&#x00A0;6&#x00A0;KsKc&#x00A0;JsKd4c....&#x00A0;&#x00A0;&#x00A0;&#x00A0;2&#x00A0;3kind&#x00A0;&#x00A0;969&#x00A0;&#x00A0;&#x00A0;31&#x00A0;&#x00A0;&#x00A0;&#x00A0;0&#x00A0;&#x00A0;1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;1000&#x00A0;$2340.00&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SWAG&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;780.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;10.00&#x00A0;&#x00A0;&#x00A0;1170.00&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0.00&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;FCRA&#x00A0;.C..&#x00A0;2340.00
-   </div>
-<!--l. 133--><p class="indent" >   !!! logging for Perl and dll!!!  
-</body></html> 
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--4"></a>Errors and Warnings
+</h2>
+<div class="Unindented">
+Furtermore OpenHoldem logs all errors and warnings, i.e.:
+</div>
+<ul>
+<li>
+all shown error-messages
+</li>
+<li>
+all message-boxes that got suppressed by your option settings 
+</li>
+<li>
+some more errors and warnings where an error-dialog would not be appropriate.
+</li>
 
+</ul>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--5"></a>Debug Messages
+</h2>
+<div class="Unindented">
+Debug messages are mainly meant for developers and for experienced users who want to get more info about the way how OpenHoldem works internally. These messages can be turned on with the Debugging-tab of the Preferences dialog. They are very useful for finding and fixing bugs but usually not needed for most end-users. Below a short example about blind-detection and blind-locking (for stability):
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">2014-12-31 21:58:19 - [CSymbolEngineTableLimits] CalcTableLimits() 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed() true, because not locked
+2014-12-31 21:58:19 - [CBlindGuesser] Data from scraper (ttlimits, c0limits): 5.00 / 10.00 / -1.00
+2014-12-31 21:58:19 - [CBlindLevels] Trying to find best matching blind-level for 5.00 / 10.00 / -1.00 
+2014-12-31 21:58:19 - [CBlindLevels] Perfect match found
+2014-12-31 21:58:19 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand: false
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCurrentHand() 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Locked blinds at 5.00 / 10.00 / 20.00
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] RememberBlindsForCashgames() 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Saving blinds for hand 0
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCashgamesAfterNHands()
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_complete_session: false
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] istournament: false 
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Not yet enough hands to lock blinds permanent.
+</pre>
+</div>
 
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--6"></a>Logging for DLL and Perl
+</h2>
+<div class="Unindented">
+Usually OpenHoldem will stop going into more detail when it reaches a DLL or Perl symbol, because DLL-functions and C-functions are a black-box for OpenHoldem. However it is possible to enable DLL-logging (also for Perl), then OpenHoldem will continue like in the axample above if the DLL-function calls back to OH-script. Furthermore it is possible to log any user-defined messages from the DLL to the standard OpenHoldem-log with a function from the DLL-interface:
+</div>
+<div class="Indented">
+!!!!!
+</div>
 
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-31T22:49:54.453000</span>
+</div>
+</div>
+</body>
+</html>
