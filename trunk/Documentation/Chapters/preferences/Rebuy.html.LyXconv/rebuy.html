@@ -1,64 +1,54 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="rebuy.tex"> 
-<meta name="date" content="2010-04-17 14:32:00"> 
-<link rel="stylesheet" type="text/css" href="rebuy.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>OpenHoldem Preferences - Rebuy</h3>
-<!--l. 27--><p class="noindent" >Rebuy preferences control when and how OpenHoldem executes the external
-rebuy-script. See the {The Automation} section for more information.
-           <ul class="itemize1">
-        <li class="itemize"><span 
-class="ecti-1000">Change in handnumber: </span>This option will cause OpenHoldem to wait at
-        least for a new hand before doing a second rebuy. It is a simply sanity-check
-        to prevent too many rebuys, as most casinos will increase your balance
-        only after the end of the current hand.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">No cards: </span>This option will prevent rebuys as long as you are involved in
-        a hand.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Heuristic   occlusion   check:   </span>Rebuys   are   especially   volatile   against
-        misscrapes  of  the  balance,  which  could  be  caused  e.g.  by  temporary
-        occlusion (The truths is: OpenHoldem will keep the last known balance, if
-        it can&#8217;t scrape the balance correctly. But it&#8217;s always good to have another
-        safety-net, isn&#8217;t it?). The option to do heuristic occlusion checks will cause
-        OpenHoldem to look at other players names and balances to guess, if heros
-        balance is occluded. In case of a probable occlusion the rebuy-process
-        won&#8217;t be started. Heuristic occlusion checks will add some extra safety,
-        but they won&#8217;t catch every misscrape; e.g. the very unfortunate case of a
-        partial occluded, but non-zero balance will still get accepted.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Minimum time to next rebuy:  </span>This  option  is  another  sanity  check  to
-        prevent to much rebuys in a short period of time. The time difference gets
-        specified in seconds.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Rebuy-script: </span>This is the path to the external script that will be launched
-        when a rebuy is required.</li></ul>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-31"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>OpenHoldem Preferences - <a class="IndexReference" name="entry-Rebuy-0" href="#index-Rebuy">↓</a>Rebuy
+</h2>
+<div class="Unindented">
+Rebuy preferences control when and how OpenHoldem executes the external rebuy-script. See the section about Automation for more information.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/preferences_rebuy.jpg" alt="figure Images/preferences_rebuy.jpg" style="max-width: 639px; max-height: 318px;"/>
 
-<!--l. 54--><p class="noindent" ><hr class="figure"><div class="figure" 
-><a 
- id="x1-10011"></a><img 
-src="rebuy0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
-name="rebuy0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___mentation_Chapters_preferences_Images_Rebuy.eps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;0.0.1: </span><span  
-class="content">Preferences: Rebuy</span></div><!--tex4ht:label?: x1-10011 -->
-<!--l. 61--><p class="indent" >   </div><hr class="endfigure">
-    
-</body></html> 
+</div>
 
+</div>
 
+</div>
+<ul>
+<li>
+<i>Change in handnumber: </i>This option will cause OpenHoldem to wait at least for a new hand before doing a second rebuy. It is a simply sanity-check to prevent too many rebuys, as most casinos will increase your balance only after the end of the current hand.
+</li>
+<li>
+<i>No cards: </i>This option will prevent rebuys as long as you are involved in a hand.
+</li>
+<li>
+<i>Heuristic occlusion check: </i>Rebuys are especially volatile against misscrapes of the balance, which could be caused e.g. by temporary occlusion (The truths is: OpenHoldem will keep the last known balance, if it can’t scrape the balance correctly. But it’s always good to have another safety-net, isn’t it?). The option to do heuristic occlusion checks will cause OpenHoldem to look at other players names and balances to guess, if heros balance is occluded. In case of a probable occlusion the rebuy-process won’t be started. Heuristic occlusion checks will add some extra safety, but they won’t catch every misscrape; e.g. the very unfortunate case of a partial occluded, but non-zero balance will still get accepted.
+</li>
+<li>
+<i>Minimum time to next rebuy: </i>This option is another sanity check to prevent to much rebuys in a short period of time. The time difference gets specified in seconds.
+</li>
+<li>
+<i><a class="IndexReference" name="entry-Rebuy-script-0" href="#index-Rebuy-script">↓</a>Rebuy-script: </i>This is the path to the external script that will be launched when a rebuy is required.
+</li>
 
+</ul>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-31T07:37:28.312000</span>
+</div>
+</div>
+</body>
+</html>

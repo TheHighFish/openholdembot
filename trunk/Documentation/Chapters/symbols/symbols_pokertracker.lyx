@@ -84,7 +84,7 @@ Poker Tracker
 
 \end_inset
 
-Poker Tracker symbols (Version 3)
+Poker Tracker symbols (Version 4)
 \end_layout
 
 \begin_layout Standard
@@ -101,7 +101,7 @@ All the symbols below are available both for cash games and for tournaments
  (SNG, MTT).
  OpenHoldem will automatically adapt the database-queries for your game-type
  and provide the right stats.
- All stats can be accessed in 3 different ways:
+ All stats can be accessed in multiple ways:
 \end_layout
 
 \begin_layout Itemize
@@ -120,7 +120,9 @@ for a single opponent
 headsup
 \emph default
 , e.g.
- pt_icon_headsup
+ 
+\emph on
+pt_icon_headsup
 \end_layout
 
 \begin_layout Itemize
@@ -148,9 +150,17 @@ by
 \emph on
 chair number
 \emph default
-, e.g pt_icon0..pt_icon9: this is more complex and less convenient than both
- methods above, but you get the ability to build any advanced stat on your
- own as long as you are able to identify the chair of your villain.
+, e.g 
+\emph on
+pt_icon0
+\emph default
+..
+\emph on
+pt_icon9
+\emph default
+: this is more complex and less convenient than both methods above, but
+ you get the ability to build any advanced stat on your own as long as you
+ are able to identify the chair of your villain.
 \end_layout
 
 \begin_layout Subsection

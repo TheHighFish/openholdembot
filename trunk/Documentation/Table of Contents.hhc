@@ -158,10 +158,6 @@
 				<param name="Name" value="Image Records">
 				<param name="Local" value="Chapters\tablemaps\ImageRecords.html.LyXconv\ImageRecords.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Converting a Table Map">
-				<param name="Local" value="Chapters\tablemaps\ConvertingTablemaps.html.LyXconv\ConvertingTablemaps.html">
-				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Scraping in Practice">
@@ -245,10 +241,6 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Preferences">
-				<param name="Local" value="Chapters\preferences\Preferences.html.LyXconv\Preferences.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Autoconnector">
 				<param name="Local" value="Chapters\preferences\Autoconnector.html.LyXconv\Autoconnector.html">
 				</OBJECT>
@@ -273,6 +265,10 @@
 				<param name="Local" value="Chapters\preferences\GUI.html.LyXconv\GUI.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hand History Generator">
+				<param name="Local" value="Chapters\preferences\handhistory_generator.html.LyXconv\handhistory_generator.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Logging">
 				<param name="Local" value="Chapters\preferences\Logging.html.LyXconv\Logging.html">
 				</OBJECT>
@@ -283,6 +279,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="PokerTracker v4">
 				<param name="Local" value="Chapters\preferences\PokerTracker.html.LyXconv\PokerTracker.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Popup Blocker">
+				<param name="Local" value="Chapters\preferences\popup_blocker.html.LyXconv\popup_blocker.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Rebuy">
@@ -299,6 +299,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Stealth">
 				<param name="Local" value="Chapters\preferences\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Table Positioner">
+				<param name="Local" value="Chapters\preferences\table_positioner.html.LyXconv\table_positioner.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Validator">
@@ -374,17 +378,8 @@
 				<param name="Local" value="Chapters\symbols\Symbols.html.LyXconv\Symbols.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="MyHand explained">
-				<param name="Local" value="Chapters\symbols\myhand_explained.html.LyXconv\myhand_explained.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Symbols (Poker Tracker 2 &amp; 3)">
+				<param name="Name" value="Symbols (Poker Tracker 4">
 				<param name="Local" value="Chapters\symbols\Symbols_PokerTracker.html.LyXconv\Symbols_PokerTracker.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Symbols (Poker Tracker 3 only)">
-				<param name="Local" value="Chapters\symbols\symbols_pokertracker_3.html.LyXconv\symbols_pokertracker_3.html">
-				<param name="URL" value="Chapters\symbols\symbols_pokertracker_3.html.LyXconv\symbols_pokertracker_3.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Starting Hand Ranking">
@@ -438,9 +433,18 @@
 				<param name="Name" value="Pokerval explained">
 				<param name="Local" value="Chapters\oh_script_explained\pokerval_explained.html.LyXconv\pokerval_explained.html">
 				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Winngys Hand Strength Library">
+			</OBJECT>
+		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Handstrength Library">
+				<param name="Name" value="Handstrength Symbols">
 				<param name="Local" value="Chapters\oh_script_explained\handstrength_library.html.LyXconv\handstrength_library.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MyHand explained">
+				<param name="Local" value="Chapters\symbols\myhand_explained.html.LyXconv\myhand_explained.html">
 				</OBJECT>
 		</UL>
 	</UL>
@@ -495,7 +499,7 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Extensions">
+			<param name="Name" value="OpenHoldem Extensions">
 			<param name="Local" value="Chapters\extensions\extensions.html.LyXconv\extensions.html">
 			</OBJECT>
 		<UL>

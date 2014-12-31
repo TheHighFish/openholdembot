@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,40 +9,67 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -148,7 +175,7 @@ icm_alliwin1 - my TE if I go all in and win (against 1 person)
 \begin_layout Remark
 That's against 1 person.
  So like our example of fighting over the $1 prize pool.
- Or it could be when you're in the BB and calling a SM push or in the SB
+ Or it could be when you're in the BB and calling a SB push or in the SB
  and pushing against the BB.
  I haven't got to the multiple people stage yet.
  More on that later.
@@ -204,7 +231,8 @@ inline false
 status open
 
 \begin_layout Plain Layout
-vs$list#$prwin + (0.5 * vs$list#$prtie)
+
+vs$listX$prwin + (0.5 * vs$listX$prtie)
 \end_layout
 
 \end_inset
@@ -213,30 +241,34 @@ vs$list#$prwin + (0.5 * vs$list#$prtie)
 \end_layout
 
 \begin_layout Standard
-This is our probabilty of winning (and 1/2 our prop of tying) against list#.
- List# needs to be defined in your .ohf file.
+This is our probabilty of winning (and 1/2 our prop of tying) against listX.
+ LisX# needs to be defined in your .ohf file.
  For example, say you have put your opponent on the top 5% of hands.
  Put this in your .ohf
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 ##list105##
 \end_layout
 
 \begin_layout Plain Layout
+
 AA KK QQ JJ TT
 \end_layout
 
 \begin_layout Plain Layout
+
 AA AKs AQs AJs ATs A9s A8s
 \end_layout
 
 \begin_layout Plain Layout
+
 AK AQ
 \end_layout
 
@@ -252,7 +284,8 @@ inline false
 status open
 
 \begin_layout Plain Layout
-vs$105$prwin + (0.5 * vs$105$prtie)
+
+vs$list105$prwin + (0.5 * vs$list105$prtie)
 \end_layout
 
 \end_inset
@@ -266,6 +299,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 vs$prwin + (0.5 * vs$prtie)
 \end_layout
 
@@ -359,7 +393,7 @@ So our total equity for scenario (a) is 0.65.
 \begin_layout Itemize
 Scenario (b) Fold.
  Prob it happens is 1 if we know we're going to fold.
- Multiply this my our icm_fold.
+ Multiply this with our icm_fold.
  This gives 0.5.
 \end_layout
 
@@ -446,7 +480,7 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-All icm does is give you a picture of how much your chips are worth in certain
+All ICM does is give you a picture of how much your chips are worth in certain
  scenarios.
  The real skill is finding out the probability of those scenarios happening.
  For that, we need accurate prwin and accurate folding probabilities.

@@ -1,53 +1,82 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Section
 OpenHoldem Preferences - 
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -66,47 +95,24 @@ Poker Tracker preferences control how OpenHoldem interacts with a Poker
  with OpenHoldem.
 \end_layout
 
-\begin_layout Itemize
-
-\emph on
-Disable all Poker Tracker access
-\emph default
-: Checking this preference will completely disable all Poker Tracker functionali
-ty in OpenHoldem.
- If you make no use of any Poker Tracker symbols, then it is safe to check
- this box.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Poker Tracker version
-\emph default
-: OpenHoldem supports interacting with both 
-\begin_inset Index
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-PT2
+\begin_inset Graphics
+	filename Images/preferences_pokertracker.JPG
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
-Poker Tracker v2 and 
-\begin_inset Index
-status open
 
-\begin_layout Plain Layout
-PT3
-\end_layout
-
-\end_inset
-
-Poker Tracker v3 databases.
- This setting will instruct OpenHoldem as to which flavor of Poker Tracker
- you are using.
- 
 \end_layout
 
 \begin_layout Itemize
@@ -116,7 +122,7 @@ Host Name / IP Address, Port, Username, Password, DB Name
 \emph default
 : These are the parameters that you entered when you setup your Poker Tracker
  
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -145,84 +151,12 @@ http://www.pokertracker.com
 \begin_layout Itemize
 
 \emph on
-Update delay
-\emph default
-: OpenHoldem maintains an internal cache of Poker Tracker statistics that
- it periodically queries from the Poker Tracker database.
- This setting determines the frequency that OpenHoldem will use (in seconds)
- to consider re-querying those statistics.
- This setting is akin to the “Scrape Delay” setting in the Scraper preferences
- for the screen scraper engine.
- This parameter does not need to be a particularly small value, as the informati
-on in Poker Tracker does not change that often itself.
- Note: Just because this delay has expired, and the Poker Tracker query
- engine “wakes up”, does not guarantee that every statistic will be updated.
- Rather, this works in conjunction with the “Cache refresh” parameter below
- to decide if a statistic needs updating or not.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Cache refresh
-\emph default
-: After the Poker Tracker query engine has been “woken up”, because the
- delay specified in the “Update delay” parameter has expired, the engine
- will scan through each of its statistics for every chair and determine
- if that statistic needs updating or not.
- If the duration between now and the last time that a given statistic was
- retrieved from Poker Tracker is greater than this parameter (in seconds),
- then the engine considers the statistic to be stale and will query Poker
- Tracker for a new value.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
 Test
 \emph default
 : This button will test the connection to the Poker Tracker database as
  specified by the above parameters and will report success or failure codes.
  Help with connecting to PostgreSQL databases can be found here: http://www.poker
 tracker.com, or here: http://www.postgresql.org 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/PokerTracker.PNG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Preferences: PokerTracker
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

@@ -79,17 +79,12 @@ MyHand explained
 \end_layout
 
 \begin_layout Standard
-This chapter contains a detailed explanation of the MyHand-symbols, written
+This chapter contains a detailed explanation of Winngys f$mh_-symbols, written
  by 
 \noun on
 SNGChamp
 \noun default
  for the Wiki.
- The MyHand-symbols originally have been developed by 
-\noun on
-Winngy
-\noun default
- for a fixed-limit-bot (playing $5/$10) and later contributed to OpenHoldem.
  Basically, the f$mh_str-symbols (e.g.
  f$mh_str_twopair) return a relative ranking of your hand (hole and common)
  from 1 (weak) to 5 (strong), but they can be discounted up to 3 points
