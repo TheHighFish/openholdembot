@@ -1,59 +1,54 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="replayframes.tex"> 
-<meta name="date" content="2010-04-17 14:31:00"> 
-<link rel="stylesheet" type="text/css" href="replayframes.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>OpenHoldem Preferences - Replay Frames</h3>
-<!--l. 27--><p class="noindent" >Replay Frames preferences control how OpenHoldem collects Replay Frames for offline
-development and debugging use. See the {Replay Frames} section for more information
-on using Replay Frames.
-           <ul class="itemize1">
-        <li class="itemize"><span 
-class="ecti-1000">Automatically record replay frames</span>: If this setting is checked, OpenHoldem
-        will  automatically  record  Replay  Frames.  The  alternative  is  manual
-        Replay  Frame  collection  by  using  the  &#8220;camera&#8221;  button  on  the  main
-        toolbar.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">But do it on every change in table state</span>: If the &#8220;Automatically record
-        replay  frames&#8221;  preference  is  checked,  this  option  will  be  available  to
-        instruct OpenHoldem to collect Replay Frames on every change in table
-        state. Typically, OpenHoldem only collects Replay Frames when it is your
-        turn to act.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Record every change when in hand</span>: If the &#8220;Automatically record replay
-        frames&#8221;  preference is checked, this option will be available to instruct
-        OpenHoldem to collect Replay Frames on every screen scrape cycle when
-        you are in the hand. Typically, OpenHoldem only collects Replay Frames
-        when it is your turn to act.
-           </li>
-        <li class="itemize"><span 
-class="ecti-1000">Maximum frames to store</span>: OpenHoldem will collect a maximum number of
-        Replay Frames as specified by this parameter, then it will reuse filenames
-        starting at the beginning.</li></ul>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-31"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>OpenHoldem Preferences - <a class="IndexReference" name="entry-Replay-frames-0" href="#index-Replay-frames">↓</a>Replay Frames
+</h2>
+<div class="Unindented">
+Replay Frames preferences control how OpenHoldem collects Replay Frames for offline development and debugging use. See the {Replay Frames} section for more information on using Replay Frames.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/preferences_replay_frames.png" alt="figure Images/preferences_replay_frames.png" style="max-width: 640px; max-height: 440px;"/>
 
-<!--l. 50--><p class="noindent" ><hr class="figure"><div class="figure" 
-><a 
- id="x1-10011"></a><img 
-src="replayframes0x.png" alt="PIC" class="graphics"   ><!--tex4ht:graphics  
-name="replayframes0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___on_Chapters_preferences_Images_ReplayFrames.eps"  
--->
-<br /> <div class="caption" 
-><span class="id">Figure&#x00A0;0.0.1: </span><span  
-class="content">Preferences: Replay Frames</span></div><!--tex4ht:label?: x1-10011 -->
-<!--l. 57--><p class="indent" >   </div><hr class="endfigure">
-    
-</body></html> 
+</div>
 
+</div>
 
+</div>
+<ul>
+<li>
+<i>Never</i>: If this setting is checked, OpenHoldem will not record any Replay Frames. 
+</li>
+<li>
+<i>When it’s my turn</i>: If this setting is checked, OpenHoldem will collect exactly one replay-frame when it is your turn, exactly on the same heartbeat-cycle when the decision is taken. This is probably the most commonly used option, as it helps you to reproduce OpenHoldems decision making process.
+</li>
+<li>
+<i>On change in tablestate when in hand</i>: If this preference is checked, it instruct OpenHoldem to collect Replay Frames on every screen scrape cycle when you are in the hand. This option is usefuk to reproduce a complete game-history, but it avoids duplicate frames and thus saves space on your hard disk.. 
+</li>
+<li>
+<i>On change in tablestate when in hand</i>: Just lie the setting above this option will save every new replay-frame, but this time even if you are not in the hand. This might be usesful if you build your own stats-tracker, if you want to review your some of the secondary-formulas (f$sitin, f$close, ...) or if you want to build tablemaps that support these functions.
+</li>
+<li>
+<i>Maximum frames to store</i>: OpenHoldem will collect a maximum number of Replay Frames as specified by this parameter, then it will reuse filenames starting at the beginning.
+</li>
 
+</ul>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-31T07:51:24.375000</span>
+</div>
+</div>
+</body>
+</html>
