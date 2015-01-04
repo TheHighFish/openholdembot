@@ -165,6 +165,29 @@ WHEN hand$AT Call FORCE
 
 \end_layout
 
+\begin_layout Standard
+But be careful with the code below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN hand$AKs...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It means: any ace and king of spades, but not AK suited
+\end_layout
+
 \begin_layout Section*
 Board Expressions
 \end_layout
