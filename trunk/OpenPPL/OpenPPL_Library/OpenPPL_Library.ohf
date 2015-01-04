@@ -392,6 +392,9 @@ RaiseMax
 ##HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out##
 False
 
+##HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions##
+False
+
 //*****************************************************************************
 //
 // OpenPPL - Verbosity
@@ -469,30 +472,49 @@ ac_agchair_after
 (AggressorChair==userchair)
 
 ##BotRaisedBeforeFlop##
-(didraisround1 || didswaground1)
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didraisround1 
+|| didswaground1
 
 ##BotRaisedOnFlop##
-(didraisround2 || didswaground2)
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didraisround2 
+|| didswaground2
 
 ##BotRaisedOnTurn##
-(didraisround3 || didswaground3)
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didraisround3 
+|| didswaground3
 
 ##BotsActionsOnFlop##
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Checks are not counted
-(didcallround2 + didraisround2 + didswaground2)
++ didcallround2 
++ didraisround2 
++ didswaground2
 
 ##BotsActionsOnThisRound##
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Checks are not counted
-(didcall + didrais + didswag)
++ didcall 
++ didrais 
++ didswag
 
 ##BotsActionsOnThisRoundIncludingChecks##
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Folds and allins are not relevant, as then the hand is over for us.
-(didchec + didcall + didswag + didrais)
++ didchec 
++ didcall 
++ didswag 
++ didrais
 
 ##BotsActionsPreflop##
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Checks are not counted per definition
 // and we can't check preflop without posting a blind out of order (first hand only).
-(didcallround1 + didraisround1 + didswaground1)
++ didcallround1 
++ didraisround1 
++ didswaground1
 
 ##PrevActionWasAllin##
    (prevaction == 4) // Allin
@@ -531,6 +553,8 @@ ac_agchair_after
 ((prevaction == 0) && (betround == 1) && (currentbet > bblind)) ? Call :
 // Folding (might be used in sitour formulas)
 (prevaction == -1) ? Fold :
+// No autoplayer-actions, but human being at ManualMode
+sitename$openholdem ? (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) : 
 // None
 (prevaction == -1) ? None :
 ERROR_IncorrectBotsLastAction
@@ -550,22 +574,28 @@ ERROR_IncorrectBotsLastAction
 me_re_MemBotsLastPreflopAction
 
 ##CalledOnFlop##
-didcallround2
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didcallround2
 
 ##CalledOnTurn##
-didcallround3
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didcallround3
 
 ##BotCheckedPreflop##
-didchecround1
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didchecround1
 
 ##BotCheckedOnFlop##
-didchecround2
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didchecround2
 
 ##BotCheckedOnTurn##
-didchecround3
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didchecround3
 
 ##BotCheckedOnRiver##
-didchecround4
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didchecround4
 
 ##AddNopponentscalling##
 Calls + nopponentscalling
