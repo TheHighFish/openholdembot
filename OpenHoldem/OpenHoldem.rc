@@ -95,6 +95,7 @@ BEGIN
     SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_SCRAPER_OUTPUT
     BUTTON      ID_MAIN_TOOLBAR_SHOOTFRAME
+    BUTTON      ID_MAIN_TOOLBAR_MANUALMODE
     SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_HELP
 END
@@ -293,7 +294,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            128,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-    LTEXT           "Version 7.3.4",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 7.4.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "http://code.google.com/p/openholdembot/",IDC_STATIC,32,66,208,8
@@ -936,9 +937,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "7.3.4.0"
+            VALUE "FileVersion", "7.4.0.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "7.3.4.0"
+            VALUE "ProductVersion", "7.4.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1411,6 +1412,7 @@ BEGIN
     ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
     ID_VIEW_SHOOTREPLAYFRAME 
                             "Shoot an image of the current table-view for later inspection with OHReplay"
+    ID_MAIN_TOOLBAR_MANUALMODE "Start ManualMode"
 END
 
 STRINGTABLE

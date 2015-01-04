@@ -118,6 +118,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &CMainFrame::OnAttachBottom)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &CMainFrame::OnScraperOutput)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SHOOTFRAME, &CMainFrame::OnViewShootreplayframe)
+  ON_BN_CLICKED(ID_MAIN_TOOLBAR_MANUALMODE, &CMainFrame::OnManualMode)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_HELP, &CMainFrame::OnHelp)
 
 	// Hopper
@@ -302,11 +303,9 @@ void CMainFrame::OnEditViewLog()
 	ShellExecute(NULL, "open", p_filenames->LogFilename(), NULL, NULL, SW_SHOW);
 }
 
-void CMainFrame::OnEditTagLog()
-{
+void CMainFrame::OnEditTagLog() {
 	write_log(k_always_log_basic_information,
 		"[*** ATTENTION ***] User tagged this situation for review\n");
-  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_TAGLOGFILE, false);
 }
 
 // Menu -> Edit -> View Scraper Output
@@ -355,9 +354,21 @@ void CMainFrame::OnScraperOutput()
 	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
-void CMainFrame::OnViewShootreplayframe()
-{
+void CMainFrame::OnViewShootreplayframe() {
 	p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+}
+
+void CMainFrame::OnManualMode() {
+  // Manualmode usually is in the same directory.
+  // No error-checking here~> if it does not work, then we silently fail.
+  // http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153%28v=vs.85%29.aspx
+  ShellExecute(
+		NULL,               // Pointer to parent window; not needed
+		"open",             // "open" == "execute" for an executable
+		"ManualMode.exe",		// ManualMode to be executed
+		NULL, 		          // Parameters
+		p_filenames->OpenHoldemDirectory(), // Working directory
+		SW_SHOWNORMAL);		  // Active window, default size
 }
 
 void CMainFrame::OnEditPreferences() 
@@ -838,9 +849,7 @@ void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
 	}
 }
 
-void CMainFrame::OnHelp()
-{
-  p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_HELP, false);
+void CMainFrame::OnHelp() {
 	OpenHelpFile("OpenHoldem_Manual.chm");
 }
 

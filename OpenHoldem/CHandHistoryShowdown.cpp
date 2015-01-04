@@ -69,6 +69,7 @@ bool AllPlayersActed() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
 
   }
+  return false;
 }
 
 void CHandHistoryShowdown::ResetOnHeartbeat() {

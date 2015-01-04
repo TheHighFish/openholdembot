@@ -105,7 +105,7 @@ void CHandHistoryDealPhase::ResetOnHeartbeat() {
     // Might be also a bigblind with missing small blind
     assert(currentbet > 0);
     if (currentbet <= p_symbol_engine_tablelimits->sblind()) {
-      p_handhistory_writer->PostsSmallBlind(o);
+      p_handhistory_writer->PostsSmallBlind(0);
       smallblind_seen = true;
       continue;
     }

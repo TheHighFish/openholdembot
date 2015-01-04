@@ -186,9 +186,6 @@
     <ClCompile Include="CBlindLevels.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
-    <ClCompile Include="CHandHistory.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="CHandHistoryAction.cpp" />
     <ClCompile Include="CHandHistoryDealPhase.cpp" />
     <ClCompile Include="CHandHistoryShowdown.cpp" />

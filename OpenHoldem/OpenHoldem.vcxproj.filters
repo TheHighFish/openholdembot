@@ -705,9 +705,6 @@
     <ClCompile Include="CHandHistoryWriter.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
     </ClCompile>
-    <ClCompile Include="CHandHistory.cpp">
-      <Filter>Source Files\HandhistoryGenerator</Filter>
-    </ClCompile>
     <ClCompile Include="CHandHistoryShowdown.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
     </ClCompile>
