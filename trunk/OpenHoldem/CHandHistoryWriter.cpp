@@ -97,8 +97,8 @@ void CHandHistoryWriter::WinsUncontested(int chair) {
 }
 
 CString CHandHistoryWriter::PlayerName(int chair) {
-  assert(i >= 0);
-  assert(i <= k_last_chair);
+  assert(chair >= 0);
+  assert(chair <= k_last_chair);
   return p_table_state->_players[chair]._name;
 }
 

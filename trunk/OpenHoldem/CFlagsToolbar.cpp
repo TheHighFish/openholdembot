@@ -213,10 +213,7 @@ void CFlagsToolbar::CreateMainToolbar(void)
 	// Start shoot replay frame button disabled
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
 
-	// Make help button sticky
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_HELP, &tbi);
-
-	// Title of floating main toolbar
+  // Title of floating main toolbar
 	m_MainToolBar.SetWindowText("Main");
 }
 
