@@ -24,9 +24,5 @@ public:
 
 	// Last used macro
 	CString		macro;
-
-	// Popup menu location
-	bool		unobstructivePopup;
-
 };
 

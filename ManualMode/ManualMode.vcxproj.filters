@@ -33,9 +33,6 @@
     <ClCompile Include="ManualModeDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OptionsDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ManualModeDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="registry.h">

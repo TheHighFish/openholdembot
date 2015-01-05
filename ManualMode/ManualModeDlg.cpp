@@ -194,7 +194,6 @@ BOOL CManualModeDlg::DestroyWindow()
 	GetWindowPlacement(&wp);
 	reg.manual_x = wp.rcNormalPosition.left;
 	reg.manual_y = wp.rcNormalPosition.top;
-	reg.unobstructivePopup = dlgOptions.m_unobstructivePopup != 0;
 	reg.write_reg();
 
 	all_cards.DeleteObject();
@@ -341,17 +340,9 @@ BOOL CManualModeDlg::OnInitDialog()
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != NULL)
 	{
-		CString strOptions;
 		CString strAboutMenu;
-
-		strOptions.LoadString(IDS_OPTIONS);
 		strAboutMenu.LoadString(IDS_ABOUTBOX);
 
-		if (!strOptions.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_OPTIONS, strOptions);
-		}
 		if (!strAboutMenu.IsEmpty())
 		{
 			pSysMenu->AppendMenu(MF_SEPARATOR);
@@ -372,8 +363,6 @@ BOOL CManualModeDlg::OnInitDialog()
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	SetWindowPos(NULL, min(reg.manual_x, max_x), min(reg.manual_y, max_y), MM_WIDTH, MM_HEIGHT, SWP_NOCOPYBITS);
-
-	dlgOptions.m_unobstructivePopup = reg.unobstructivePopup;
 
 	// Get last used macro
 	macro_text = reg.macro;
@@ -397,10 +386,6 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
-	}
-	else if (nID  == IDM_OPTIONS)
-	{
-		dlgOptions.DoModal();
 	}
 	else 
 	{
@@ -1554,7 +1539,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		// Display the context menu
 		tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
-			point.x + dlgOptions.m_unobstructivePopup * (MM_WIDTH - point_adj.x), 
+			point.x, 
 			point.y, this);
 	}
 
@@ -1631,7 +1616,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		// Display the context menu
 		tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
-			point.x + dlgOptions.m_unobstructivePopup * (MM_WIDTH - point_adj.x), 
+			point.x, 
 			point.y, this);
 	}
 }
@@ -2120,137 +2105,73 @@ void CManualModeDlg::OnBnClickedPplus()
 
 void CManualModeDlg::OnBnClickedMacro() 
 {
-	int				chair=0, pl_card=0, com_card=0, dealer_pos;
-	unsigned int	c;
-	bool			found_sblind;
-	int				cards_seen = 0;
+	int	chair = -1;
+  int cards_seen = 0;
+  int com_card=0, dealer_pos;
+  unsigned int c;
 
-	for (int i=0; i<macro_text.GetLength(); i++) 
-	{
-		if (macro_text.Mid(i,1) == "R") 
-		{
+  CardMask_RESET(used_cards);
+	for (int i=0; i<macro_text.GetLength(); i++) {
+    if (chair > 9) break;
+    char next_char = macro_text.GetAt(i); 
+		if (next_char == 'R') {
 			clear_scrape_areas();
-		}
-
-		else if (macro_text.Mid(i,1) == "U") 
-		{
-		}
-
-		else if (macro_text.Mid(i,1) == "u") 
-		{
-		}
-
-		else if (macro_text.Mid(i,1) == "P") 
-		{
-			for (int j=chair; j<=chair+9; j++) 
-			{
-				if (seated[j%k_max_number_of_players] == false) 
-				{
-					seated[j%k_max_number_of_players] = true;
-					active[j%k_max_number_of_players] = true;
-					card[P0C0+((j%k_max_number_of_players)*2)] = CARD_BACK; 
-					card[P0C1+((j%k_max_number_of_players)*2)] = CARD_BACK; 
-					chair = j%k_max_number_of_players;
-					pl_card=0;
-					j = chair+10;
-				}
-			}
-		}
-
-		else if (macro_text.Mid(i,1) == "p") 
-		{
-			for (int j=(chair + k_max_number_of_players - 1); j>=chair; j--) 
-			{
-				if (seated[j%k_max_number_of_players] == true) 
-				{
-					seated[j%k_max_number_of_players] = false;
-					active[j%k_max_number_of_players] = false;
-					if (card[P0C0+((j%k_max_number_of_players)*2)]!=CARD_NOCARD && card[P0C0+((j%k_max_number_of_players)*2)]!=CARD_BACK) 
-					{
-						CardMask_UNSET(used_cards, card[P0C0+((j%k_max_number_of_players)*2)]);
-					}
-					if (card[P0C1+((j%k_max_number_of_players)*2)]!=CARD_NOCARD && card[P0C1+((j%k_max_number_of_players)*2)]!=CARD_BACK) 
-					{
-						CardMask_UNSET(used_cards, card[P0C1+((j%k_max_number_of_players)*2)]);
-					}
-					card[P0C0+((j%k_max_number_of_players)*2)] = CARD_NOCARD; 
-					card[P0C1+((j%k_max_number_of_players)*2)] = CARD_NOCARD; 
-					chair = j%k_max_number_of_players;
-					pl_card=0;
-					j = -1;
-				}
-			}
-		}
-
-		else if (macro_text.Mid(i,1) == "b") 
-		{
-			for (int j=0; j<k_max_number_of_players; j++) 
-			{
-				if (dealer[j]) 
-				{
-					dealer_pos = j;
-					break;
-				}
-			}
-
-			for (int j=dealer_pos+1; j<=(dealer_pos + k_max_number_of_players); j++) 
-			{
-				if (seated[j%k_max_number_of_players] == true && active[j%k_max_number_of_players] == true) 
-				{
-					playerbet[j%k_max_number_of_players]
-						= NumberToFormattedString(atof(sblind));
-
-					double new_balance = atof(playerbalance[j%k_max_number_of_players].GetString()) - atof(sblind);
-					playerbalance[j%k_max_number_of_players]
-						= NumberToFormattedString(new_balance);
-
-					j = dealer_pos+11;
-				}
-			}
-		}
-
-		else if (macro_text.Mid(i,1) == "B") 
-		{
-			for (int j=0; j<k_max_number_of_players; j++) 
-			{
-				if (dealer[j]) 
-				{
-					dealer_pos = j;
-					break;
-				}
-			}
-
-			found_sblind = false;
-			for (int j=dealer_pos+1; j<=(dealer_pos + k_max_number_of_players); j++) 
-			{
-				if (seated[j%k_max_number_of_players] == true && active[j%k_max_number_of_players] == true)
-				{
-					if (found_sblind==true) 
-					{
-						playerbet[j%k_max_number_of_players] = NumberToFormattedString(atof(bblind));
-						
-						double new_balance = atof(playerbalance[j%k_max_number_of_players].GetString()) - atof(bblind);
-						playerbalance[j%k_max_number_of_players] = NumberToFormattedString(new_balance);
-						
-						j = dealer_pos+11;
-					}
-					else 
-					{
-						found_sblind = true;
-					}
-				}
-			}
-		}
-
-		else if ((macro_text.Mid(i,1) >= "2" && macro_text.Mid(i,1) <= "9") ||
+      continue;
+    }
+		switch (next_char) {
+      case 'N': // Button
+        dealer_pos = chair;
+        // No break
+        // Continue with code below
+      case 'P': // Player
+      case 'b': // Small blind
+      case 'B': // Big blind 
+        ++chair;
+			  seated[chair] = true;
+			  active[chair] = true;
+			  card[P0C0 + 2*chair] = CARD_BACK; 
+			  card[P0C1 + 2*chair] = CARD_BACK; 
+			  break;
+      case 'p': // Not seated
+        ++chair;
+			  seated[chair] = true;
+			  active[chair] = false;
+			  card[P0C0 + 2*chair] = CARD_NOCARD; 
+			  card[P0C1 + 2*chair] = CARD_NOCARD; 
+        break;
+    }
+    // Setting bet and balance
+    double total_balance = atof(playerbalance[chair]) + atof(playerbet[chair]);
+    double sblind_value = atof(sblind);
+    double bblind_value = atof(bblind);
+    switch (next_char) {
+      case 'N':
+      case 'P':
+        playerbalance[chair] = NumberToFormattedString(total_balance);
+        playerbet[chair] = NumberToFormattedString(0);
+        break;
+      case 'p':
+        playerbalance[chair] = NumberToFormattedString(0);
+        playerbet[chair] = NumberToFormattedString(0);
+        break;
+      case 'B':
+        playerbalance[chair] = NumberToFormattedString(total_balance - bblind_value);
+        playerbet[chair] = NumberToFormattedString(bblind_value);
+        break;
+      case 'b':
+        playerbalance[chair] = NumberToFormattedString(total_balance - sblind_value);
+        playerbet[chair] = NumberToFormattedString(sblind_value);
+        break;
+    }
+    // Cards
+		if ((macro_text.Mid(i,1) >= "2" && macro_text.Mid(i,1) <= "9") ||
 				 macro_text.Mid(i,1).MakeLower() == "t" ||
 				 macro_text.Mid(i,1).MakeLower() == "j" ||
 				 macro_text.Mid(i,1).MakeLower() == "q" ||
 				 macro_text.Mid(i,1).MakeLower() == "k" ||
 				 macro_text.Mid(i,1).MakeLower() == "a") 
 		{
-
-			c = CARD_NOCARD;
+      c = CARD_NOCARD;
 			if (macro_text.Mid(i+1,1).MakeLower() == "c") 
 			{
 				c = StdDeck_MAKE_CARD(get_rank(macro_text.Mid(i,1).MakeLower().GetString()[0]), Suit_CLUBS);
@@ -2271,43 +2192,22 @@ void CManualModeDlg::OnBnClickedMacro()
 				c = StdDeck_MAKE_CARD(get_rank(macro_text.Mid(i,1).MakeLower().GetString()[0]), Suit_SPADES);
 				i++;
 			}
-
-			if (c != CARD_NOCARD) 
-			{
-				// First two cards seen get set to player
-				if (cards_seen<2)
-				{
-					if (card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]!=CARD_NOCARD && card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]!=CARD_BACK) 
-					{
-						CardMask_UNSET(used_cards, card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]);
-					}
-					card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)] = c; 
-					CardMask_SET(used_cards, c);
-					pl_card++;
-					cards_seen++;
-				}
+      if (c != CARD_NOCARD) {
+				// First 2 cards get assigned to current chair,
+				if (cards_seen == 0)	{
+					card[P0C0 + 2*chair] = c; 
+				} else if (cards_seen == 1)	{
+          card[P0C1 + 2*chair] = c; 
+        }
 				// Next 5 cards get set to common
-				else
-				{
-					if (card[CC0+(com_card%5)]!=CARD_NOCARD && card[CC0+(com_card%5)]!=CARD_BACK) 
-					{
-						CardMask_UNSET(used_cards, card[CC0+(com_card%5)]);
-					}
-					card[CC0+(com_card%5)] = c; 
-					CardMask_SET(used_cards, c);
+				else {
+					card[CC0+(com_card%5)] = c; 					
 					com_card++;
-					cards_seen++;
 				}
+        // Mark card as used
+        CardMask_SET(used_cards, c);
+        cards_seen++;
 			}
-		}
-
-		else if (macro_text.Mid(i,1).MakeLower() == "n") 
-		{
-			for (int j=0; j<k_max_number_of_players; j++) 
-			{
-				dealer[j] = false;
-			}
-			dealer[chair] = true;
 		}
 	}
 	InvalidateRect(NULL, true);
