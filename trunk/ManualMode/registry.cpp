@@ -35,8 +35,7 @@ void Registry::read_reg(void)
 
 	// Defaults
 	manual_x = manual_y = 0;
-	macro = "RPPPPPPPPPPbB";
-	unobstructivePopup = true;
+	macro = "RNbBPpPAdKsP";
 
 	// Manual Mode Settings
 	hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, MM_SUBKEY, 0, KEY_READ, &hKey);
@@ -57,12 +56,6 @@ void Registry::read_reg(void)
 		cbData = sizeof(str);
 		if ( (hkResult = RegQueryValueEx(hKey, "macro", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
 			macro = str;
-		}
-
-		// Popup location
-		cbData = sizeof(str);
-		if ( (hkResult = RegQueryValueEx(hKey, "unobstructivePopup", NULL, &dwType, (LPBYTE) str, &cbData)) == ERROR_SUCCESS) {
-			unobstructivePopup = atoi(str) != 0;
 		}
 	}
 
@@ -89,10 +82,6 @@ void Registry::write_reg(void)
 	// Macro
 	sprintf_s(str, 256, "%s", macro.GetString());
 	RegSetValueEx(hKey, "macro", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
-
-	// Popup location
-	sprintf_s(str, 256, "%d", unobstructivePopup);
-	RegSetValueEx(hKey, "unobstructivePopup", 0, REG_SZ, (LPBYTE) str, (DWORD) strlen(str)+1);
 
 	RegCloseKey(hKey);
 }

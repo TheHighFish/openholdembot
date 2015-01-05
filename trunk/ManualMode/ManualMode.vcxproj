@@ -126,7 +126,6 @@
     <ClCompile Include="GameInfoDlg.cpp" />
     <ClCompile Include="ManualMode.cpp" />
     <ClCompile Include="ManualModeDlg.cpp" />
-    <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="registry.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -139,7 +138,6 @@
     <ClInclude Include="GameInfoDlg.h" />
     <ClInclude Include="ManualMode.h" />
     <ClInclude Include="ManualModeDlg.h" />
-    <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

@@ -20,8 +20,6 @@
 #include "poker_defs.h"
 #include "EditDlg.h"
 #include "GameInfoDlg.h"
-#include "OptionsDlg.h"
-
 
 // Limits
 #define LIMIT_NL		0
@@ -95,9 +93,8 @@ protected:
 	int					ncommoncards_last;
 
 	CEditDlg			edit;
-	CGameInfoDlg		gameinfo;
-	OptionsDlg			dlgOptions;
-	CEdit				swag;
+	CGameInfoDlg	gameinfo;
+	CEdit				  swag;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

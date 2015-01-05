@@ -1,28 +1,11 @@
-//******************************************************************************
-//
-// This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
-//
-//******************************************************************************
-//
-// Purpose:
-//
-//******************************************************************************
-
-
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by ManualMode.rc
 //
-#define IDM_OPTIONS                     0x0009
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_MANUALMODE_DIALOG           102
-#define IDS_OPTIONS                     102
-#define IDD_OPTIONSDLG                  103
 #define IDR_MAINFRAME                   128
 #define IDR_MENU1                       129
 #define IDR_MENU_CARD_SELECTION         129
@@ -44,7 +27,6 @@
 #define IDC_COMBO1                      1006
 #define IDC_NETWORK                     1006
 #define IDC_DPLUS                       1007
-#define IDC_CHECK1                      1007
 #define IDC_SWAG                        1008
 #define IDC_SMALL_BLIND                 1077
 #define IDC_BIG_BLIND                   1078
