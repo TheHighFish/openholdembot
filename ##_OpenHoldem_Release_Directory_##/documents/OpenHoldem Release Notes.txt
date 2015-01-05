@@ -1,5 +1,9 @@
-v7.3.5 2015-01-04
+v7.3.5 2015-01-06
 ==================
+NEW stuff:
+- New button in the toolbar to start ManualMode.
+  [THF]
+ 
 BUG FIXES:
 
 v7.3.4 2014-12-23
