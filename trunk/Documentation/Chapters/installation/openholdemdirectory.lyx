@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -17,13 +17,13 @@ figs-within-sections
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -34,15 +34,24 @@ figs-within-sections
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -70,13 +79,92 @@ OpenHoldem Directory
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/Installation.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 In this directory are the following files: 
 \end_layout
 
 \begin_layout Itemize
-ManualMode.exe, OHReplay.exe, OpenHoldem.exe, OpenScrape.exe, Rebuy.exe --- these
- are the main files for each of the programs in the OpenHoldem project.
+OpenHoldem.exe, ManualMode.exe, OHReplay.exe, Rebuy.exe --- these are the main
+ files for each of the programs in the OpenHoldem project.
  Details on how to use each of these are throughout this manual.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+versus.bin
+\end_layout
+
+\end_inset
+
+versus.bin --- this file is a large lookup table that is mandatory for the
+ versus symbols.
+ As the versus database is quite large and does not change it is not included
+ in the archives with recent executables.
+ It is available as a separate archive at our download-page and should be
+ extracted to the OpenHoldem directory.
+\end_layout
+
+\begin_layout Itemize
+A file with .ini extensions --- this is the configuration file with your
+ preferred settings; OpenHoldem won't store any information in the registry
+ but use an ini-file instead; it can be named whatever you like, OpenHoldem
+ will use it automatically, as long as there is only one ini-file in the
+ directory.
+\end_layout
+
+\begin_layout Itemize
+OpenHoldem_Manual.chm --- this manual.
+\end_layout
+
+\begin_layout Itemize
+OpenPPL_Manual.chm --- the OpenPPL manual.
+\end_layout
+
+\begin_layout Itemize
+pokertracker_query_definitions.dll --- a small DLL that contains the queries
+ for all PokerTracker-symbols.
+ 
+\end_layout
+
+\begin_layout Itemize
+symbols_pokertracker.pdf --- a short PDF-guide to the PokerTracker-symbols.
+ This is a separate document, because the concept of query-definitions in
+ a PokerTracker-DLL allows regular updates and fast additions of new PokerTracke
+r-symbols.
+\end_layout
+
+\begin_layout Itemize
+OpenPPL_Library.ohf --- a plain-text library that contains the definition
+ of several 100 poker-logical symbols like StartingStacksize, NumberOfRaisesOnTu
+rn, HadTopPairOnFlop, Position, etc.
+ The OpenPPL-library will be loaded silently in the background and all symbols
+ are automatically available both for OpenPPL and OH-script-users.
 \end_layout
 
 \begin_layout Itemize
@@ -147,42 +235,13 @@ scraper.dll, user.dll --- these files are all extensions to OpenHoldem that
 \end_layout
 
 \begin_layout Itemize
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-versus.bin
-\end_layout
-
-\end_inset
-
-versus.bin --- this file is a large lookup table that is mandatory for the
- versus symbols.
- As the versus database is quite large and does not change it is not included
- in the archives with recent executables.
- It is available as a separate download at google-code and should be extracted
- to the OpenHoldem directory.
-\end_layout
-
-\begin_layout Itemize
 Files with .pdb extensions --- these files contain the debug symbols that
  are required if you want to diagnose crashes or simply trace execution
  in a debugger.
- If you need these, you know how to use these.
- If you don’t know what these are, you can safely ignore or delete them.
+ These files are usually not distributed with the executables as most end-users
+ don't need them and the people who want to debug OpenHoldem are usuakky
+ able to create debug-executables on their own.
  
-\end_layout
-
-\begin_layout Itemize
-A file with .ini extensions --- this is the configuration file with your
- preferred settings; OpenHoldem won't store any information in the registry
- but use a ini-file instead; it can be named whatever you like, OpenHoldem
- will use it automatically, as long as there is only one ini-file in the
- directory.
-\end_layout
-
-\begin_layout Itemize
-OpenHoldem_Manual.chm --- this manual.
 \end_layout
 
 \begin_layout Itemize
@@ -226,19 +285,15 @@ Menu -> Edit -> View Log File
 \end_layout
 
 \begin_layout Itemize
+Hand_Histories --- this directory contains auto-generated hand-histories
+ for poker-sites that don't store hand-histories at your hard-drive.
+\end_layout
+
+\begin_layout Itemize
 Scraper -- this directory contains the tablemaps for your favourite casinos.
  Just add your new tablemaps there once they have been tested; OpenHoldem
  will then load these tablemaps, so that its auto-connector will be able
  to connect out-of-the box to any open table and start playing.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename Images/Installation.JPG
-
-\end_inset
-
-
 \end_layout
 
 \end_body

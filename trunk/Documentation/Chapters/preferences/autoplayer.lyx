@@ -93,6 +93,26 @@ Autoplayer preferences control how the OpenHoldem Autoplayer functions.
  See the {The Autoplayer} section for more information.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_autoplayer.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -206,30 +226,6 @@ Use ‘comma’ instead of ‘dot’
  Eventually this setting should be moved to the Table Map file itself, as
  it is casino-specific.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_autoplayer.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

@@ -104,11 +104,35 @@ mpb” directory that you set up above.
  Arrange the casino table window and the OpenScrape windows on your screen
  in such a way that there is no overlap – OpenScrape needs a clear view
  of the poker table window to do its job.
-\end_layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/OS_ArrangedWindows.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 

@@ -85,6 +85,26 @@ OpenHoldem will check some parts of your system configuration automatically
  can be turned off, if you don't use certain features.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_configuration_check.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -126,30 +146,6 @@ This option will check, if Font Smoothing is turned off, as recommended.
  If you know exactly what you do you may again turn this option off.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_configuration_check.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Other Configuration Checks
 \end_layout
@@ -170,7 +166,7 @@ Mimimum colour depth of 24 bits.
 \end_layout
 
 \begin_layout Subsubsection
-Checks triggered automatically
+Checks triggered automatically (Perl usage)
 \end_layout
 
 \begin_layout Itemize

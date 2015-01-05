@@ -79,6 +79,33 @@ OpenHoldem Preferences - Popup Blocker
 \end_layout
 
 \begin_layout Standard
+Popup Blocker preferences control if and how OpenHoldem handles any kind
+ of popups.
+ A popup is any kind of.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+unexpected
+\begin_inset Quotes erd
+\end_inset
+
+ window, i.e anything that is not
+\end_layout
+
+\begin_layout Itemize
+the OpenHoldem GUI
+\end_layout
+
+\begin_layout Itemize
+a MessageBox created by OpenHoldem
+\end_layout
+
+\begin_layout Itemize
+a poker-table that fits to a tablemap in the scraper folder
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -100,6 +127,44 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The popup blocker has just three options:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Diabled: no popup
+\emph default
+ will be closed.
+ Choose this option if you want to handle popups with your hopper or if
+ you are not afraid of any popups
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Minimize popups
+\emph default
+: any unexpecxted window will be minimized, but noit killed, Choose this
+ option if popups are rare and you want to have a look at potential popups
+ later.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Kill popups
+\emph default
+: this will close any unexpected window immediatelly.
+\end_layout
+
+\begin_layout Standard
+The popup-blocker is integrated into the auto-connector-thread, so you need
+ one unoccupied instance of OpenHoldem that tries to connect to new windows
+ if possible or to close everything that doesn't fit to a tablemap.
 \end_layout
 
 \end_body

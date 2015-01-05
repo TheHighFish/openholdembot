@@ -257,6 +257,10 @@
 				<param name="Local" value="Chapters\preferences\configuration_checks.html.LyXconv\configuration_checks.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Debugging">
+				<param name="Local" value="Chapters\preferences\debug.html.LyXconv\debug.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="DLL Extension">
 				<param name="Local" value="Chapters\preferences\DLLExtension.html.LyXconv\DLLExtension.html">
 				</OBJECT>
@@ -310,6 +314,31 @@
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Formula Editor">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hand List Editor">
+				<param name="Local" value="Chapters\FormulaEditor\Hand_List_Editor.html.LyXconv\Hand_List_Editor.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Formula Editor">
+				<param name="Local" value="Chapters\FormulaEditor\FormulaEditor.html.LyXconv\FormulaEditor.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Debug-Tab">
+				<param name="Local" value="Chapters\FormulaEditor\Debug-Tab.html.LyXconv\Debug-Tab.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="f$test">
+				<param name="Local" value="Chapters\FormulaEditor\f_test.html.LyXconv\f_test.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="OpenPPL Mode">
+				<param name="Local" value="Chapters\FormulaEditor\OpenPPL_mode.html.LyXconv\OpenPPL_mode.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="ManualMode">
 			<param name="Local" value="Chapters\manualmode\manualmode_title.html.LyXconv\manualmode_title.html">
 			</OBJECT>
@@ -343,21 +372,6 @@
 				<param name="Local" value="Chapters\pokertracker\PokerTracker.html.LyXconv\PokerTracker.html">
 				</OBJECT>
 		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Various">
-			<param name="Local" value="Chapters\chat\chat_title.html.LyXconv\chat_title.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Chat">
-				<param name="Local" value="Chapters\chat\Chat.html.LyXconv\chat.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Validator">
-				<param name="Local" value="Chapters\validator\Validator.html.LyXconv\Validator.html">
-				<param name="URL" value="Chapters\validator\validator_title.html.LyXconv\validator_title.html">
-				</OBJECT>
-		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="The Bot-Logic">
@@ -369,10 +383,6 @@
 			<param name="Local" value="Chapters\symbols\builtin_symbols.html.LyXconv\builtin_symbols.html">
 			</OBJECT>
 		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Importand remarks and common pitfalls">
-				<param name="Local" value="Chapters\symbols\Important_Remarks.html.LyXconv\Important_Remarks.html">
-				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Symbols">
 				<param name="Local" value="Chapters\symbols\Symbols.html.LyXconv\Symbols.html">
@@ -518,6 +528,10 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="PokerTracker-Query-Definitions-DLL">
 				<param name="Local" value="Chapters\extensions\pokertracker_query_definitions_dll.html.LyXconv\pokertracker_query_definitions_dll.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Chat">
+				<param name="Local" value="Chapters\chat\Chat.html.LyXconv\chat.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">

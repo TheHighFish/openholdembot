@@ -93,15 +93,6 @@ DLL Extension preferences control how the OpenHoldem works with a User DLL.
  See the {User DLL} section for more information.
 \end_layout
 
-\begin_layout Itemize
-
-\emph on
-Name of DLL to load on startup
-\emph default
-: This specifies a DLL file to load on startup.
- The DLL will always be loaded whenever this option is non-empty.
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float figure
 wide false
@@ -117,13 +108,18 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Name of DLL to load on startup
+\emph default
+: This specifies a DLL file to load on startup.
+ The DLL will always be loaded whenever this option is non-empty.
 \end_layout
 
 \end_body

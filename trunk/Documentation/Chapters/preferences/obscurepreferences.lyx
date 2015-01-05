@@ -95,6 +95,26 @@ Stealth preferences control various detectable components of OpenHoldem,
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_stealth.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -166,30 +186,6 @@ Window Class Name
  associated with it.
  This is easily identifiable by the casinos’ poker software and it is suggested
  that this be changed to something else.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_stealth.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

@@ -95,6 +95,26 @@ Perl preferences control how OpenHoldem interacts with the installed Perl
  Perl.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_Perl.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -112,30 +132,6 @@ Perl editor:
 \emph default
 This is the path to the editor that will be launched when a Perl formula
  is selected for editing from the Perl menu on the main window.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_Perl.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body
