@@ -96,6 +96,26 @@ Chat preferences control how the OpenHoldem’s Chat feature in the Autoplayer
  non-zero and the safety-delays are passed.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_chat.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -119,30 +139,6 @@ Random delay
  parameter (in seconds) will be used to randomly delay the entry of a chat
  message into the chat box.
  The setting here is the maximum amount of random delay.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_chat.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

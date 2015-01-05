@@ -132,6 +132,26 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=189
 ).
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_validator.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -139,6 +159,7 @@ Enable Validator
 \emph default
 : This preference determines when the Validator is engaged to do its work,
  either never (completely off), when it is my turn, or always.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -199,34 +220,11 @@ replay-frame and store it in the replay-folder.
 
 \begin_layout Standard
 It is never a bad idea to use the validator some time for testing new tablemaps.
- We recommend to enable it at your turn, because when it is your time to
- act reliable input is most important, and at that point of time you can
- also expect to get stable input from the casino.
+ We recommend to enable it at your turn, because your turn is the most important
+ time in a game: here the decisions will be taken, here perfect input matters
+ most and here we usually have stable input, as the casino usually will
+ no longer update the regions that need to be scraped.
  Give it a try, but be prepared -- the validator is a little bitch!
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_validator.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

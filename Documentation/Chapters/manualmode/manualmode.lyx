@@ -336,7 +336,7 @@ A macro string is a series of characters executed one at a time, left to
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Plain Layout
+\begin_layout Standard 
 Character
 \end_layout
 
@@ -365,8 +365,28 @@ R (uppercase)
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Plain Layout
+\begin_layout Standard 
 Reset the game state
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N (Uppercase)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Set the dealer button to this chair
 \end_layout
 
 \end_inset
@@ -466,29 +486,15 @@ Set the big blind at this chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-Set the rank of the players cards at this chair, or common cards (player
- first, common next)
+Set the rank of the players cards at this chair, or common cards 
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
 \begin_layout Plain Layout
-cdhs
+User cards have to be immediatelly after the player in question, 
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
 \begin_layout Plain Layout
-See the suit of the players cards at this chair, or common cards (player
- first, common next)
+all additional cards will be considered common cards.
 \end_layout
 
 \end_inset
@@ -499,7 +505,7 @@ See the suit of the players cards at this chair, or common cards (player
 \begin_inset Text
 
 \begin_layout Plain Layout
-n
+cdhs
 \end_layout
 
 \end_inset
@@ -508,7 +514,8 @@ n
 \begin_inset Text
 
 \begin_layout Plain Layout
-Set the dealer button to this chair
+See the suit of the players cards at this chair, or common cards (player
+ first, common next)
 \end_layout
 
 \end_inset
@@ -522,14 +529,45 @@ Set the dealer button to this chair
 \end_layout
 
 \begin_layout Standard 
-The default macro provided (“RPPPPPPPPPPbB”) will reset the table, set 10
- players, and set chair 0 as the small blind and chair 1 as the big blind.
+The default macro provided (“RNbBPpPAdKsP”) used in the image above will
+ 
 \end_layout
 
-\begin_layout Standard
-A macro of “RPPnAhAsPbPBPPP” will reset the table, seat 7 players, assign
- the user to chair 1 with the button and deal Ah As as hole cards, assign
- chair 2 to the small blind and assign chair 3 to the big blind.
+\begin_layout Itemize
+reset (R) the table 
+\end_layout
+
+\begin_layout Itemize
+set the button (N) to chair 0
+\end_layout
+
+\begin_layout Itemize
+set the small blind (b) to chair 1 
+\end_layout
+
+\begin_layout Itemize
+set the bigl blind (B) to chair 2
+\end_layout
+
+\begin_layout Itemize
+set another player (P) to chair 3
+\end_layout
+
+\begin_layout Itemize
+set an empty chair (p) to chair 4
+\end_layout
+
+\begin_layout Itemize
+set another player (P) -- the user! -- to chair5 and deal him an ace of
+ diamonds and a king of spades (AdKs)
+\end_layout
+
+\begin_layout Itemize
+set another player (P) to chair 6
+\end_layout
+
+\begin_layout Itemize
+finally leave the last 3 chairs will stay empty
 \end_layout
 
 \end_body

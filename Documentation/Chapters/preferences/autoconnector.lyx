@@ -93,6 +93,26 @@ Autoconnector preferences control how the OpenHoldem Autoconnector functions.
  See the {The Automation} section for more information.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_autoconnector.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -164,30 +184,6 @@ This option will terminate OpenHoldem, when the poker table stops to exist,
  This method is for you, if your philosophy to do reconnects is to close
  OpenHoldem and to simply fire up another instance or if you want to easily
  shut your botting system down at the end of a session.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_autoconnector.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body

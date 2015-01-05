@@ -79,6 +79,11 @@ OpenHoldem Preferences - Table Positioner
 \end_layout
 
 \begin_layout Standard
+Table Positioner preferences control if and how OpenHoldem arranges poker-tables
+ at the screen
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -100,6 +105,62 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Tiled
+\emph default
+: this option will align all tables nicely without any overlap, so that
+ OpenHoldem can see and scrape all tables clearly.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Cascaded
+\emph default
+: this option will stack the tables with lots of overlap, but usually in
+ a way that a little piece of every table is visible.
+ A useful option for some crazy human multi-tablers, but not yet for OpenHoldem,
+ as scraping overlapping tables does at the moment only work on some operating-s
+ystems.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Never
+\emph default
+: this option will disable the table positioner and leave it to the casino
+ software or to your hopper to align the tables in a reasonable way
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Always keep position
+\emph default
+: this option will check once per heartbeat if the table is at its assigned
+ position and move it back if needed.
+\end_layout
+
+\begin_layout Standard
+The first table (or the lobby if you provide a 
+\begin_inset Quotes eld
+\end_inset
+
+tablemap
+\begin_inset Quotes erd
+\end_inset
+
+ for the lobby) will be moved to top-left of the screen, the second table
+ will be moved to botto-right, and all further tables to the neighbourhood
+ of the second one.
+ Once the screen is full any additional tables will be moved to the lobby
+ position, assuming that overlapping the lobby will do the least harm.
 \end_layout
 
 \end_body

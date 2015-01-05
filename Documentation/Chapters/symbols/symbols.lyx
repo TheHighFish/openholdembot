@@ -126,13 +126,17 @@ Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
  for more information.
 \end_layout
 
+\begin_layout Section*
+???
+\end_layout
+
 \begin_layout Section
 General
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="2">
+<lyxtabular version="3" rows="3" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -151,26 +155,6 @@ Symbol
 
 \begin_layout Plain Layout
 Meaning
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nchairs 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-the integer value for the Table Map symbol s$nchairs 
 \end_layout
 
 \end_inset
@@ -229,7 +213,7 @@ Table Map
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="2">
+<lyxtabular version="3" rows="5" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -269,6 +253,26 @@ isfinaltable
 \begin_layout Plain Layout
 true, if you are sitting at the final table of a multi-table tournament.
  Needs to be supported by the table-map.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nchairs 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the integer value for the Table Map symbol s$nchairs 
 \end_layout
 
 \end_inset
@@ -467,7 +471,7 @@ isnl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim==0)
+(lim == 0)
 \end_layout
 
 \end_inset
@@ -487,7 +491,7 @@ ispl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim==1)
+(lim == 1)
 \end_layout
 
 \end_inset
@@ -507,7 +511,7 @@ isfl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim==2)
+(lim == 2)
 \end_layout
 
 \end_inset
@@ -557,6 +561,30 @@ true if you play the final table of a MTT, depending on the tablemap region
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/debugtab_limits.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -696,7 +724,7 @@ handrankp
 \begin_inset Text
 
 \begin_layout Plain Layout
-2652 / (1+f$prwin_number_of_opponents)
+2652 / (1+f$prwin_number_of_opponents) ???
 \end_layout
 
 \end_inset
@@ -716,8 +744,9 @@ Chairs
 \begin_layout Standard
 Please note OpenHoldem needs to see player-cards in a non-showdown-situation
  to recognize the userchair and then will lock the chair for stability reasons
- until the session of the hand (tournaments, where the seat can change)
- or until the end of the session (cash-game).
+ until the session of the hand.
+ A change in userchair can happen on table-change in MTTs at some casinos
+ and will be handled automatically.
 \end_layout
 
 \begin_layout Standard
@@ -1193,6 +1222,30 @@ the bet position of the raising player (1-10)
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/debug_tab_positions.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -1866,7 +1919,7 @@ nbetstorais
 \begin_inset Text
 
 \begin_layout Plain Layout
-total number of additional bets required to raise.
+total number of additional bets required to min raise.(Fixed Limit)
 \end_layout
 
 \end_inset
@@ -1926,7 +1979,8 @@ nraisbets
 \begin_inset Text
 
 \begin_layout Plain Layout
-total number of bets you would have on the table if you raise 
+total number of bets you would have on the table if you min-raise (Fixed
+ Limit)
 \end_layout
 
 \end_inset
@@ -1974,7 +2028,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-islist0...islist999
+islistXYZ
 \end_layout
 
 \end_inset
@@ -1983,7 +2037,21 @@ islist0...islist999
 \begin_inset Text
 
 \begin_layout Plain Layout
-true if your hand is in the numbered (0-999) list 
+true if your hand is in named list XYZ
+\end_layout
+
+\begin_layout Plain Layout
+Please note that OpenHoldem 5.x+ supports arbitrary many lists with user-defined
+ names as long as the name starts with 
+\begin_inset Quotes eld
+\end_inset
+
+list
+\begin_inset Quotes erd
+\end_inset
+
+.
+ OpenHoldem is no longer restricted to list0..list999.
 \end_layout
 
 \end_inset
@@ -2156,10 +2224,6 @@ number (0-2) of your pocket cards used in your 5 card hand.
 \begin_layout Remark
 As npcbits symbol depends on pcbits, the same word of caution applies to
  this symbol, too.
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -2728,6 +2792,14 @@ true when you have a royal flush
 
 \end_layout
 
+\begin_layout Section*
+Hand and Board-Expressions
+\end_layout
+
+\begin_layout Standard
+!!!???
+\end_layout
+
 \begin_layout Section
 Pocket Tests 
 \end_layout
@@ -2963,7 +3035,7 @@ true when you have the highest flush possible
 \end_layout
 
 \begin_layout Section
-Players, Friends, Opponents
+Players, Opponents
 \end_layout
 
 \begin_layout Standard
@@ -2975,7 +3047,7 @@ raising players
 \begin_inset Quotes erd
 \end_inset
 
- does also count forced 
+ does no longer count the so-called 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2983,12 +3055,12 @@ blind-raisers
 \begin_inset Quotes erd
 \end_inset
 
- per definition.
+ (former WinHoldem definition).
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="31" columns="2">
+<lyxtabular version="3" rows="30" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -3127,46 +3199,6 @@ nfriendsseated
 
 \begin_layout Plain Layout
 1 if you are seated, 0 otherwise (0-1) 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nfriendsactive
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1 if you are active, 0 otherwise (0-1) 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nfriendsplaying
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-1 if you are playing, 0 otherwise (0-1)
 \end_layout
 
 \end_inset
@@ -3401,8 +3433,7 @@ nplayerscallshort
 \begin_inset Text
 
 \begin_layout Plain Layout
-number of players that must call to stay in the hand nchairsdealtright number
- of chairs dealt before your chair 
+number of players that must call to stay in the hand 
 \end_layout
 
 \end_inset
@@ -3422,7 +3453,28 @@ nchairsdealtleft
 \begin_inset Text
 
 \begin_layout Plain Layout
-number of chairs dealt after your chair 
+number of chairs dealt after your chair, up to and including the dealer,
+ but not the blinds.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+nchairsdealtright
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number of chairs dealt before your chair, including the blinds
 \end_layout
 
 \end_inset
@@ -3726,6 +3778,62 @@ flag button bits 19-0 - 1=pressed 0=notpressed
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename H:/Dokumente und Einstellungen/Development_2/Desktop/Documentation/Chapters/gui/images/flags_toolbar.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The flags toolbar is used to set internal OpenHoldem flag symbols f0..f19
+ to on or off.
+ These flags can be used in your formula set to quickly enanble or disable
+ certain functionality.
+ E.g.
+ you could use flag 0 to to tell your bot to use a different starting-hands-char
+t or to do more conti-betting.
+  
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$preflop##
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN f0 RETURN f$PokerTragedySHCAction FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN Others RETURN f$SklanskySHCAction FORCE
+\end_layout
 
 \end_inset
 
@@ -5148,14 +5256,8 @@ Autoplayer
 \end_layout
 
 \begin_layout Standard
-myturnbits bits 43210 correspond to buttons KARCF (check alli rais call
- fold).
- Bit 4 (check) was added in OpenHoldem 2.0.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="2">
+<lyxtabular version="3" rows="7" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -5194,6 +5296,39 @@ ismyturn
 
 \begin_layout Plain Layout
 (myturnbits & 7) (rais or call/chec or fold) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+myturnbits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a bit-vector that tells you what buttons are visible
+\end_layout
+
+\begin_layout Plain Layout
+bits 43210 correspond to buttons KARCF (check alli rais call fold).
+ Bit 4 (check) was added in OpenHoldem 2.0, that's why it is 
+\begin_inset Quotes eld
+\end_inset
+
+out of order
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -5294,32 +5429,8 @@ History (I)
 \begin_layout Remark
 The action-symbols (didrais, didcall, etc.) mean: what the autoplayer did,
  not what the user did or what happened in the hand.
- That does regulary confuse new users and causes problem when simulating
+ That does regularly confuse new users and causes problem when simulating
  hands at ManualMode or with Replay Frames.
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace 1mm*
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Spacing as a workaround to force two individual remarks.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Remark
-Be aware, that all history-symbols will be reset to zero on handreset.
- Depending on your hand-reset-method incorrect hand-resets can be caused
- e.g.
- by temporary occlusion.
 \end_layout
 
 \begin_layout Standard
@@ -6033,7 +6144,7 @@ Probability (0.000 - 1.000) of losing versus lower opponent hands
 \begin_inset Text
 
 \begin_layout Plain Layout
-vs$x$prwin
+vs$ListX$prwin
 \end_layout
 
 \end_inset
@@ -6042,7 +6153,7 @@ vs$x$prwin
 \begin_inset Text
 
 \begin_layout Plain Layout
-Probability (0.000 - 1.000) of winnning versus hand list x 
+Probability (0.000 - 1.000) of winnning versus hand list X
 \end_layout
 
 \end_inset
@@ -6053,7 +6164,7 @@ Probability (0.000 - 1.000) of winnning versus hand list x
 \begin_inset Text
 
 \begin_layout Plain Layout
-vs$x$prlos
+vs$listX$prlos
 \end_layout
 
 \end_inset
@@ -6062,7 +6173,7 @@ vs$x$prlos
 \begin_inset Text
 
 \begin_layout Plain Layout
-Probability (0.000 - 1.000) of losing versus hand list x 
+Probability (0.000 - 1.000) of losing versus hand list X
 \end_layout
 
 \end_inset
@@ -6073,7 +6184,7 @@ Probability (0.000 - 1.000) of losing versus hand list x
 \begin_inset Text
 
 \begin_layout Plain Layout
-vs$x$prtie
+vs$listX$prtie
 \end_layout
 
 \end_inset
@@ -6082,7 +6193,7 @@ vs$x$prtie
 \begin_inset Text
 
 \begin_layout Plain Layout
-Probability (0.000 - 1.000) of a tie versus hand list x 
+Probability (0.000 - 1.000) of a tie versus hand list X
 \end_layout
 
 \end_inset
@@ -6286,13 +6397,6 @@ hi_<sym>x (x=1-4) the value of the symbol <sym> as of your last turn in
  
 \end_layout
 
-\begin_layout Remark
-Be aware, that all history-symbols will be reset to zero on handreset.
- Depending on your hand-reset-method incorrect hand-resets can be caused
- e.g.
- by temporary occlusion.
-\end_layout
-
 \begin_layout Standard
 Valid values for <sym> are:
 \end_layout
@@ -6337,9 +6441,11 @@ CHIP AMOUNTS
 \begin_inset Text
 
 \begin_layout Plain Layout
-balance, balance0, balance1, balance2, balance3, balance4, balance5, balance6,
- balance7, balance8, balance9, stack0, stack1, stack2, stack3, stack4, stack5,
- stack6, stack7, stack8, stack9
+balance..balance9
+\end_layout
+
+\begin_layout Plain Layout
+stack0..stack9
 \end_layout
 
 \end_inset
@@ -6527,11 +6633,7 @@ RANK LO
 
 \begin_layout Plain Layout
 ranklo, ranklocommon, rankloplayer, ranklopoker, sranklo, sranklocommon,
- srankloplayer, sranklopoker run$ ron$: ron$royfl, ron$strfl, ron$4kind,
- ron$fullh, ron$strai, ron$3kind, ron$2pair, ron$1pair, ron$hcard, ron$total,
- ron$pokervalmax, ron$prnuts, ron$prbest, run$royfl, run$strfl, run$4kind,
- run$fullh, run$strai, run$3kind, run$2pair, run$1pair, run$hcard, run$total,
- run$pokervalmax, run$prnuts, run$prbest 
+ srankloplayer, sranklopoker 
 \end_layout
 
 \end_inset
@@ -6730,7 +6832,7 @@ ranked list of player balances (includes players not currently in hand,
 \end_layout
 
 \begin_layout Section
-Action 
+Betting Action 
 \end_layout
 
 \begin_layout Standard
@@ -7153,12 +7255,36 @@ status open
 
 \begin_layout Plain Layout
 
-##f$OpenPPL_PT_LastCaller_VPIP## 
+##f$preflop## 
 \end_layout
 
 \begin_layout Plain Layout
 
--1 + msgbox$Function_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+WHEN Others RETURN (Call + msgbox$WOOHOO_NPreflop_Bworks_D) FORCE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/msgbox.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -8216,16 +8342,16 @@ Memory Symbols
 \begin_layout Standard
 The purpose of these symbols is to provide storage for values in order to
  reuse them at some later time.
- In reality, this is a kludge to close a hole in the WinHoldem (and now
- OpenHoldem) script language.
- A much better choice for LHS (left hand side) expressions is Perl or via
- the user-DLL extension.
+ They once got invented as a substitute??? for left-hand-side-expressions
+ (assignments of variables), that did not exist in the WinHoldem-scripting-langu
+age, but in reality, this is a bit a kludge???.
+ A much better choice for LHS expressions is Perl or via the user-DLL extension.
  Please see the {Memory Symbols} section for more information.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="2">
+<lyxtabular version="3" rows="4" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -8264,10 +8390,55 @@ me_st_
 
 \begin_layout Plain Layout
 Stores a value.
- Example: me_st_abc_123_45 - stores the value "123.45" in variable "abc".
- use "_" for the decimal in values a function name can also be passed in,
- instead of a number, for example: 'me_st_def_f$myfunc' would store the
- results of function f$myfunc in variable def 
+ Example: me_st_abc_123_45 - stores the value "123.45" in variable "abc".Use
+ "_" for the decimal in values.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Allowed right hand side expressions are:
+\end_layout
+
+\begin_layout Itemize
+numbers, e.g.
+ me_st_Pi_3_141 
+\end_layout
+
+\begin_layout Itemize
+symbols, e.g.
+ me_st_MyChair_userchair 
+\end_layout
+
+\begin_layout Itemize
+functions, e.g.
+ me_st_CallFunction_f$call 
+\end_layout
+
+\begin_layout Itemize
+memory symbols, e.g.
+ me_st_OldValue_me_re_CurrentValue
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+me_re_ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Retrieves a previously stored value.
+ Example: me_re_abc - retrieves the value from variable "abc".
+ 
 \end_layout
 
 \end_inset
@@ -8278,7 +8449,7 @@ Stores a value.
 \begin_inset Text
 
 \begin_layout Plain Layout
-me_re_ 
+me_inc_
 \end_layout
 
 \end_inset
@@ -8287,9 +8458,7 @@ me_re_
 \begin_inset Text
 
 \begin_layout Plain Layout
-Retrieves a previously stored value.
- Example: me_re_abc - retrieves the value from variable "abc".
- 
+Increments a memory_symbol
 \end_layout
 
 \end_inset
@@ -8554,7 +8723,7 @@ Examples
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
+<lyxtabular version="3" rows="7" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -8623,7 +8792,7 @@ the rank value of player card one (2nd dealt card)
 \begin_inset Text
 
 \begin_layout Plain Layout
-$$cr0
+$$ps0
 \end_layout
 
 \end_inset
@@ -8632,7 +8801,47 @@ $$cr0
 \begin_inset Text
 
 \begin_layout Plain Layout
-the rank value of common card zero (1st common card dealt)
+the suit value for player card zero (1st dealt card)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$$cc0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the card value of common card zero (1st common card dealt)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+$$cr1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+the rank value of common card oneo (2nd common card dealt)
 \end_layout
 
 \end_inset

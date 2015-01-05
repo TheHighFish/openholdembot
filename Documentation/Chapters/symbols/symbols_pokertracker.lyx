@@ -74,7 +74,7 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Section
+\begin_layout Chapter*
 \begin_inset Index idx
 status open
 
@@ -163,8 +163,8 @@ pt_icon9
  are able to identify the chair of your villain.
 \end_layout
 
-\begin_layout Subsection
-Summary :
+\begin_layout Section*
+Summary 
 \end_layout
 
 \begin_layout Itemize
@@ -238,7 +238,7 @@ the chair number between 0 and 9
 \end_layout
 
 \end_deeper
-\begin_layout Description
+\begin_layout Section*
 General
 \begin_inset space ~
 \end_inset
@@ -479,7 +479,7 @@ Poker Tracker Overall 4B
 
 \end_layout
 
-\begin_layout Description
+\begin_layout Section*
 Preflop
 \begin_inset space ~
 \end_inset
@@ -984,7 +984,7 @@ Poker Tracker donk bet flop
 
 \end_layout
 
-\begin_layout Description
+\begin_layout Section*
 Turn
 \begin_inset space ~
 \end_inset
@@ -1165,7 +1165,7 @@ Poker Tracker turn Check-Call
 
 \end_layout
 
-\begin_layout Description
+\begin_layout Section*
 River
 \begin_inset space ~
 \end_inset

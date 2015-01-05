@@ -94,6 +94,26 @@ Scraper preferences control how the OpenHoldem Screen Scraper engine functions.
  See the {Creating a Table Map} section for more information.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/preferences_scraper.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 
 \emph on
@@ -116,30 +136,6 @@ Scrape Delay
  the end of scrape 1 and the beginning of scrape 2.
  The primary consideration for this parameter is that of CPU consumption,
  and the default of 750ms seems to work well for most people.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Images/preferences_scraper.JPG
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_body
