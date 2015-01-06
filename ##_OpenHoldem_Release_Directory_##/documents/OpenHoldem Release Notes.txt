@@ -13,6 +13,17 @@ BUG FIXES:
   by syntax error during a refactoring.
   Thanks to Winlo for reporting.
   [THF]
+- Fixing some ICM symbols not being computed
+  [nik0]
+- Fixing couple typos affecting logs and blind levels
+  [nik0]
+- Fixing bug on window title parsing for ^d symbol
+  [nik0]
+- Ante was always 0
+  [nik0]
+- Check/Call/Allin buttons had random troubles due to hardcoded values inherited from WinHoldem
+  [nik0]
+
 
 v7.3.4 2014-12-23
 ==================
