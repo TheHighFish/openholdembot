@@ -1,17 +1,3 @@
-//******************************************************************************
-//
-// This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
-//
-//******************************************************************************
-//
-// Purpose:
-//
-//******************************************************************************
-
-
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by OpenScrape.rc
@@ -120,7 +106,6 @@
 #define IDC_EDITXY                      1093
 #define ID_MAIN_TOOLBAR_GREENCIRCLE     32771
 #define ID_VIEW_CONNECTTOWINDOW         32772
-#define ID_MAIN_TOOLBAR_REDRECTANGLE    32773
 #define ID_VIEW_SHOWREGIONBOXES         32774
 #define ID_EDIT_UPDATEHASHES            32775
 #define ID_MAIN_TOOLBAR_REFRESH         32776

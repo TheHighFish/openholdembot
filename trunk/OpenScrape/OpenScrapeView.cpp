@@ -121,38 +121,34 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 	}
 
 	// Draw all region rectangles
-	if (pmyframe->show_regions)
+	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 	{
-		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+		if ( (r_iter->second.name==dragged_region && dragging) || 
+				(r_iter->second.name==drawrect_region && drawing_rect && drawing_started) )
 		{
-			if ( (r_iter->second.name==dragged_region && dragging) || 
-				 (r_iter->second.name==drawrect_region && drawing_rect && drawing_started) )
-			{
-				// Set pen and brush
-				pTempPen = (CPen*)pDC->SelectObject(black_dot_pen);
-				oldpen.FromHandle((HPEN)pTempPen);
-				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
-				oldbrush.FromHandle((HBRUSH)pTempBrush);
+			// Set pen and brush
+			pTempPen = (CPen*)pDC->SelectObject(black_dot_pen);
+			oldpen.FromHandle((HPEN)pTempPen);
+			pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
+			oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
+			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
 
-				pDC->SelectObject(oldpen);
-				pDC->SelectObject(oldbrush);
-			}
+			pDC->SelectObject(oldpen);
+			pDC->SelectObject(oldbrush);
+		}
+		else
+		{
+			// Set pen and brush
+			pTempPen = (CPen*)pDC->SelectObject(red_pen);
+			oldpen.FromHandle((HPEN)pTempPen);
+			pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
+			oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-			else
-			{
-				// Set pen and brush
-				pTempPen = (CPen*)pDC->SelectObject(red_pen);
-				oldpen.FromHandle((HPEN)pTempPen);
-				pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
-				oldbrush.FromHandle((HBRUSH)pTempBrush);
+			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
 
-				pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
-
-				pDC->SelectObject(oldpen);
-				pDC->SelectObject(oldbrush);
-			}
+			pDC->SelectObject(oldpen);
+			pDC->SelectObject(oldbrush);
 		}
 	}
 

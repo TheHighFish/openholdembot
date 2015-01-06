@@ -30,14 +30,12 @@ protected: // create from serialization only
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewNext();
 	afx_msg void OnToolsCloneRegions();
-	afx_msg void OnViewShowregionboxes();
 	afx_msg void OnEditUpdatehashes();
 	afx_msg void OnEditDuplicateregion();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnGroupregionsBytype();
 	afx_msg void OnGroupregionsByname();
 	afx_msg void OnViewUngroupregions();
-	afx_msg void OnUpdateViewShowregionboxes(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditDuplicateregion(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateGroupregionsBytype(CCmdUI *pCmdUI);
@@ -54,10 +52,7 @@ public:
 	afx_msg void OnViewConnecttowindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
-
-	// Flag indicating whether red regions are shown or not
-	bool show_regions;
-
+  
 private:
 	bool CreateToolbar();
 	bool CreateStatusBar();
