@@ -208,10 +208,11 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	  // as we check afterwards, if the loop terminated successfully.
     _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	  AdjustPrwinVariablesIfNecessary();
-	  for (_iterations_calculated=1; _iterations_calculated <= _iterations_required; ++_iterations_calculated) {
+	  for (_iterations_calculated=0; _iterations_calculated < _iterations_required; ++_iterations_calculated) {
 		  __TRACE
 		  // Check event for thread stop signal once every 1000 iterations
       if ((_iterations_calculated % 1000 == 0)
+          && (_iterations_calculated > 0)
           && (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)) {
 			  // Set event
 			  ::SetEvent(pParent->_m_wait_thread);
