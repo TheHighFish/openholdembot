@@ -9,6 +9,10 @@ BUG FIXES:
   This affected the results a bit (very very little) for small NITs.
   Thanks to FqFq for reporting.
   [THF]
+- Symbol lookup for table statistics got broken and now fixed 
+  by syntax error during a refactoring.
+  Thanks to Winlo for reporting.
+  [THF]
 
 v7.3.4 2014-12-23
 ==================
