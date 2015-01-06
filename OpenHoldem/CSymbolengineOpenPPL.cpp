@@ -99,7 +99,7 @@ void CSymbolEngineOpenPPL::InitMemorySymbols() {
 void CSymbolEngineOpenPPL::ResetOnHeartbeat() {
 }
 
-bool CSymbolEngineOpenPPL::EvaluateSymbol(const char *name, double *result) {
+bool CSymbolEngineOpenPPL::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
 	// This symbol-engine does not provide any symbols,
   // but triggers only the calculation of history/symbols, etc.
   // All OpenPPL-symbols are functions that get handled by the function-collection.

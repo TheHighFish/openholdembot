@@ -33,7 +33,7 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
 	void ResetOnHeartbeat();
  public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result);
+	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString IdentifiersProvided();;
  public:
   void InitMemorySymbols();
