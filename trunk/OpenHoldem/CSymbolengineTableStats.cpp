@@ -160,17 +160,29 @@ double CSymbolEngineTableStats::TablePfr() {
 	return SumUp(raised_preflop) / NumberOfHandsStored();
 }
 
-bool CSymbolEngineTableStats::EvaluateSymbol(const char *name, double *result) {
-  if (memcmp(name, "floppct", 7)==0 && strlen(name)==7)  				*result = FlopTurnRiverPct(k_betround_flop);
-  else if (memcmp(name, "turnpct", 7)==0 && strlen(name)==7)  	*result = FlopTurnRiverPct(k_betround_turn);
-  else if (memcmp(name, "riverpct", 8)==0 && strlen(name)==8)  	*result = FlopTurnRiverPct(k_betround_river);
-  else if (memcmp(name, "avgbetspf", 9)==0 && strlen(name)==9)  *result = AvgBetsPf();
-  else if (memcmp(name, "tablepfr", 8)==0 && strlen(name)==8)  	*result = TablePfr();	
-  else {
-	  // Symbol of a different symbol-engine
-	  return false;
+bool CSymbolEngineTableStats::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  if (memcmp(name, "floppct", 7)==0 && strlen(name)==7) {  				
+    *result = FlopTurnRiverPct(k_betround_flop);
+    return true;
   }
-  return true;
+  if (memcmp(name, "turnpct", 7)==0 && strlen(name)==7) {  	
+    *result = FlopTurnRiverPct(k_betround_turn);
+    return true;
+  }
+  if (memcmp(name, "riverpct", 8)==0 && strlen(name)==8) {  	
+    *result = FlopTurnRiverPct(k_betround_river);
+    return true;
+  }
+  if (memcmp(name, "avgbetspf", 9)==0 && strlen(name)==9) {  
+    *result = AvgBetsPf();
+    return true;
+  }
+  if (memcmp(name, "tablepfr", 8)==0 && strlen(name)==8) { 	
+    *result = TablePfr();	
+    return true;
+  }
+	// Symbol of a different symbol-engine
+	return false;
 }
 
 CString CSymbolEngineTableStats::SymbolsProvided() {
