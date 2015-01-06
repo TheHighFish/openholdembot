@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,40 +9,67 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -180,18 +207,32 @@ status open
 
 \begin_layout Plain Layout
 
-double process_query(const char* pquery){
+double process_query(const char* pquery) {
 \end_layout
 
 \begin_layout Plain Layout
 
-	if(pquery==NULL) 		return 0; 	//example 	if(strcmp(pquery,"dll$decision")==0)
- 		return decision;
+  if(pquery==NULL) 		return 0; 	
 \end_layout
 
 \begin_layout Plain Layout
 
-	return 0;
+  //example 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(strcmp(pquery,"dll$decision")==0) 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    return decision;
+\end_layout
+
+\begin_layout Plain Layout
+
+  return 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -201,35 +242,136 @@ double process_query(const char* pquery){
 
 \begin_layout Plain Layout
 
-double process_state(holdem_state* pstate){
 \end_layout
 
 \begin_layout Plain Layout
 
-	if(pstate!=NULL)       m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
+double process_state(holdem_state* pstate) {
 \end_layout
 
 \begin_layout Plain Layout
 
-	//resetting decision 	decision = 0;
+  if(pstate!=NULL)       m_holdem_state[ (++m_ndx)&0xff ] = *pstate;
 \end_layout
 
 \begin_layout Plain Layout
 
-	//updating vars 	int_oh_symbols();
+  //resetting decision 	
 \end_layout
 
 \begin_layout Plain Layout
 
-	//calculating decision if it's my turn 	if(ismyturn){ 		switch(betround){
- 			case 1: 				decision = preflop(); 				break; 			case 2: 				decision
- = flop(); 				break; 			case 3: 				decision = turn(); 				break; 			case
- 4: 				decision = river(); 				break; 			default: 				break; 		} 	}
+  decision = 0;
 \end_layout
 
 \begin_layout Plain Layout
 
-	return 0;
+  //updating vars 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  int_oh_symbols();
+\end_layout
+
+\begin_layout Plain Layout
+
+  //calculating decision if it's my turn 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(ismyturn){ 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    switch(betround){ 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 1: 				
+\end_layout
+
+\begin_layout Plain Layout
+
+     decision = preflop(); 				
+\end_layout
+
+\begin_layout Plain Layout
+
+     break; 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 2: 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      decision = flop(); 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      break; 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 3: 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      decision = turn(); 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      break; 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    case 4: 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      decision = river(); 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      break; 			
+\end_layout
+
+\begin_layout Plain Layout
+
+    default: 				
+\end_layout
+
+\begin_layout Plain Layout
+
+      break; 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    } 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -278,12 +420,17 @@ status open
 
 \begin_layout Plain Layout
 
-double preflop(){ 	/* 		preflop code 	*/
+double preflop() { 	
 \end_layout
 
 \begin_layout Plain Layout
 
-	return 0;
+  /* 		preflop code 	*/
+\end_layout
+
+\begin_layout Plain Layout
+
+  return 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -313,43 +460,115 @@ status open
 \begin_layout Plain Layout
 
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////// //OH DLL VARS ////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-/////////
+///////////////////////////////////// 
 \end_layout
 
 \begin_layout Plain Layout
 
-//CONSECUTIVE STATES holdem_state    m_holdem_state[256];  unsigned char
-   m_ndx;
-\end_layout
-
-\begin_layout Plain Layout
-
-//VERSUS LIST AND PRWIN phl1k_t m_phl1k; pp13 prw1326;
-\end_layout
-
-\begin_layout Plain Layout
-
-//SYMBOLS VAR pfgws_t m_pget_winholdem_symbol;
+//OH DLL VARS
 \end_layout
 
 \begin_layout Plain Layout
 
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////// //OWN VARS ///////////////////////////////
+/////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+//CONSECUTIVE STATES 
+\end_layout
+
+\begin_layout Plain Layout
+
+holdem_state    m_holdem_state[256];  
+\end_layout
+
+\begin_layout Plain Layout
+
+unsigned char   m_ndx;
+\end_layout
+
+\begin_layout Plain Layout
+
+//VERSUS LIST AND PRWIN 
+\end_layout
+
+\begin_layout Plain Layout
+
+phl1k_t m_phl1k; 
+\end_layout
+
+\begin_layout Plain Layout
+
+pp13 prw1326;
+\end_layout
+
+\begin_layout Plain Layout
+
+//SYMBOLS VAR 
+\end_layout
+
+\begin_layout Plain Layout
+
+pfgws_t m_pget_winholdem_symbol;
+\end_layout
+
+\begin_layout Plain Layout
+
 ////////////////////////////////////////////////////////////////////////////////
-//////
+///////////////////////////////////// 
 \end_layout
 
 \begin_layout Plain Layout
 
-//GENERAL VARS int ismyturn; int betround; double decision;
+//OWN VARS
 \end_layout
 
 \begin_layout Plain Layout
 
-//SUIT VARS int srankhiplayer; int srankbits; int flushrank;
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////
+\end_layout
+
+\begin_layout Plain Layout
+
+//GENERAL VARS 
+\end_layout
+
+\begin_layout Plain Layout
+
+int ismyturn; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int betround; 
+\end_layout
+
+\begin_layout Plain Layout
+
+double decision;
+\end_layout
+
+\begin_layout Plain Layout
+
+//SUIT VARS 
+\end_layout
+
+\begin_layout Plain Layout
+
+int srankhiplayer; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int srankbits; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int flushrank;
 \end_layout
 
 \end_inset
@@ -433,7 +652,7 @@ http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-C.rar
 
 \end_inset
 
-.
+.!!!
 \end_layout
 
 \end_body

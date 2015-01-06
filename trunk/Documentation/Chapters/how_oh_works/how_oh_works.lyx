@@ -1154,7 +1154,7 @@ Since version 7.0 OpenHoldem provides an alternative way to program the bot-logi
  PPL = Poker Programming Language, an english-like programming languge once
  designed by Shanky BonusBots.
  OpenPPL is completely integrated and can be mixed with OH-script if desired.
- Once a f$prteflop function is presdent OpenHoldem will switch to OpenPPLßmode
+ Once a f$preflop function is present OpenHoldem will switch to OpenPPL-mode
  and evaluate f$preflop, f$flop, f$turn and f$river instead of the OH-script
  autoplayer-functions.
  For the details please refer to the separate OpenPPL-manual.

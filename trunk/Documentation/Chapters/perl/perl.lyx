@@ -1,52 +1,81 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Chapter
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -154,10 +183,7 @@ status open
 
 \begin_layout Plain Layout
 
-\family typewriter
-ppm 
-\lang english
-install Win32::API
+ppm install Win32::API
 \end_layout
 
 \end_inset
@@ -174,9 +200,8 @@ inline false
 status open
 
 \begin_layout Plain Layout
- 
-\family typewriter
-set PATH = C:
+
+ set PATH = C:
 \backslash
 Programs
 \backslash
@@ -216,24 +241,9 @@ Perl for OpenHoldem has a built-in function "gws" (get_WinHoldem_Symbol),
  allowing you to request OpenHoldem symbols or DLL symbols in your Perl
  formulas.
  (Therefore you have full interoperability of OH script, DLL and Perl.
- You can further use all your existing code)
-\begin_inset Marginal
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename C:/Dokumente und Einstellungen/TheRoot/Desktop/OH_SVN/trunk/Documentation/Images/Hint.jpg
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-.
- This function "gws" resides in a package called "Perl_OH_Interaction.pm",
- which you have to include in your bot: use Perl_OH_Interaction; 
+ You can further use all your existing code) This function "gws" resides
+ in a package called "Perl_OH_Interaction.pm", which you have to include
+ in your bot: use Perl_OH_Interaction; 
 \end_layout
 
 \begin_layout Standard
@@ -365,18 +375,20 @@ To use it, you have to adapt the following lines according to your system
  settings: 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
+
 use lib "C:
 \backslash
 ..."
 \end_layout
 
 \begin_layout Plain Layout
+
 use constant the_DebugFile => "..."
 \end_layout
 
