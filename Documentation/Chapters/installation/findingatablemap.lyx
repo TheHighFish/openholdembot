@@ -124,13 +124,13 @@ cy, will be provided in more detail later in this document.
 \begin_layout Standard
 That said, there are a number of places you can find pre-created maps for
  use with OpenHoldem.
- There is a section on our forums !!!! (
+ There is a section on our forums (
 \begin_inset Flex URL
 status open
 
 \begin_layout Plain Layout
 
-http://www.maxinmontreal.com/wiki/index.php5?title=Table_Maps
+http://www.maxinmontreal.com/forums/viewforum.php?f=280
 \end_layout
 
 \end_inset
@@ -140,15 +140,24 @@ http://www.maxinmontreal.com/wiki/index.php5?title=Table_Maps
  some validation to ensure they are 100% correct.
  Consider these maps to be a starting point for learning how maps are constructe
 d and how they work.
- The forums have a lot of discussion on maps, and you can likely find maps
- attached to posts; same caveats apply as to the Wiki maps.
  
 \end_layout
 
 \begin_layout Standard
 Most probably you will experience some problems if you fix or create your
  first map.
- Feel welcome to ask for assistance in the forums.
+ Feel welcome to ask for assistance in the OpenHoldem Tablemap School (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewforum.php?f=117
+\end_layout
+
+\end_inset
+
+).
  There are always some friendly people who are willing to help.
  But please
 \end_layout

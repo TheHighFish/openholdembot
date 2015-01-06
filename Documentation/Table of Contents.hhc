@@ -109,106 +109,6 @@
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Table Maps">
-		<param name="Local" value="Chapters\titlepages_for_main_parts\tablemaps.html.LyXconv\tablemaps.html">
-		</OBJECT>
-	<UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Table Maps">
-			<param name="Local" value="Chapters\tablemaps\tablemap_title.html.LyXconv\tablemap_title.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Creating a Table Map">
-				<param name="Local" value="Chapters\tablemaps\Tablemap.html.LyXconv\Tablemap.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Connecting OpenScrape to the Table">
-				<param name="Local" value="Chapters\tablemaps\ConnectOpenScrapeToTheTable.html.LyXconv\ConnectOpenScrapeToTheTable.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Familiarizing yourself with OpenScrape">
-				<param name="Local" value="Chapters\tablemaps\FamiliarizingWithOpenScrape.html.LyXconv\FamiliarizingWithOpenScrape.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Size Records">
-				<param name="Local" value="Chapters\tablemaps\SizeRecords.html.LyXconv\SizeRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Region Records">
-				<param name="Local" value="Chapters\tablemaps\RegionRecords.html.LyXconv\RegionRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Symbol Records">
-				<param name="Local" value="Chapters\tablemaps\SymbolRecords.html.LyXconv\SymbolRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Font Records">
-				<param name="Local" value="Chapters\tablemaps\FontRecords.html.LyXconv\FontRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Hash Point Records">
-				<param name="Local" value="Chapters\tablemaps\HashPointRecords.html.LyXconv\HashPointRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Hash Records">
-				<param name="Local" value="Chapters\tablemaps\HashRecords.html.LyXconv\HashRecords.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Image Records">
-				<param name="Local" value="Chapters\tablemaps\ImageRecords.html.LyXconv\ImageRecords.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Scraping in Practice">
-			<param name="Local" value="Chapters\scraping_in_practice\scraping_in_practice.html.LyXconv\scraping_in_practice.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Getting started">
-				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Hashing Images">
-				<param name="Local" value="Chapters\scraping_in_practice\hashing_images.html.LyXconv\hashing_images.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Collecting Fonts">
-				<param name="Local" value="Chapters\scraping_in_practice\FontCollectingExample.html.LyXconv\FontCollectingExample.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="How to create a Table Map">
-				<param name="Local" value="Chapters\scraping_in_practice\HowToCreateATablemap.html.LyXconv\HowToCreateATablemap.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Interface-Buttons explained">
-				<param name="Local" value="Chapters\scraping_in_practice\Interface_buttons_explained.html.LyXconv\Interface_buttons_explained.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Expert Tricks">
-			<param name="Local" value="Chapters\Expert_Tricks\expert_tricks_title.html.LyXconv\expert_tricks_title.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Defining the Game-Type">
-				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Scraping &quot;10&quot; as T">
-				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Scraping Fonts which are glued together">
-				<param name="Local" value="Chapters\Expert_Tricks\scraping_fonts_which_are_glued_together.html.LyXconv\scraping_fonts_which_are_glued_together.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Scraping blinking Fonts and Nameplates">
-				<param name="Local" value="Chapters\Expert_Tricks\scraping_blinkiung_fonts_and_nameplates.html.LyXconv\scraping_blinkiung_fonts_and_nameplates.html">
-				</OBJECT>
-		</UL>
-	</UL>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="The Software">
 		<param name="Local" value="Chapters\titlepages_for_main_parts\software.html.LyXconv\software.html">
 		</OBJECT>
@@ -318,12 +218,12 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Hand List Editor">
-				<param name="Local" value="Chapters\FormulaEditor\Hand_List_Editor.html.LyXconv\Hand_List_Editor.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Formula Editor">
 				<param name="Local" value="Chapters\FormulaEditor\FormulaEditor.html.LyXconv\FormulaEditor.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hand List Editor">
+				<param name="Local" value="Chapters\FormulaEditor\Hand_List_Editor.html.LyXconv\Hand_List_Editor.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Debug-Tab">
@@ -370,6 +270,106 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Poker Tracker">
 				<param name="Local" value="Chapters\pokertracker\PokerTracker.html.LyXconv\PokerTracker.html">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Table Maps">
+		<param name="Local" value="Chapters\titlepages_for_main_parts\tablemaps.html.LyXconv\tablemaps.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Table Maps">
+			<param name="Local" value="Chapters\tablemaps\tablemap_title.html.LyXconv\tablemap_title.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Creating a Table Map">
+				<param name="Local" value="Chapters\tablemaps\Tablemap.html.LyXconv\Tablemap.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Connecting OpenScrape to the Table">
+				<param name="Local" value="Chapters\tablemaps\ConnectOpenScrapeToTheTable.html.LyXconv\ConnectOpenScrapeToTheTable.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Familiarizing yourself with OpenScrape">
+				<param name="Local" value="Chapters\tablemaps\FamiliarizingWithOpenScrape.html.LyXconv\FamiliarizingWithOpenScrape.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Size Records">
+				<param name="Local" value="Chapters\tablemaps\SizeRecords.html.LyXconv\SizeRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Region Records">
+				<param name="Local" value="Chapters\tablemaps\RegionRecords.html.LyXconv\RegionRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Symbol Records">
+				<param name="Local" value="Chapters\tablemaps\SymbolRecords.html.LyXconv\SymbolRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Font Records">
+				<param name="Local" value="Chapters\tablemaps\FontRecords.html.LyXconv\FontRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hash Point Records">
+				<param name="Local" value="Chapters\tablemaps\HashPointRecords.html.LyXconv\HashPointRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hash Records">
+				<param name="Local" value="Chapters\tablemaps\HashRecords.html.LyXconv\HashRecords.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Image Records">
+				<param name="Local" value="Chapters\tablemaps\ImageRecords.html.LyXconv\ImageRecords.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Scraping in Practice">
+			<param name="Local" value="Chapters\scraping_in_practice\scraping_in_practice.html.LyXconv\scraping_in_practice.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Getting started">
+				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hashing Images">
+				<param name="Local" value="Chapters\scraping_in_practice\hashing_images.html.LyXconv\hashing_images.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Collecting Fonts">
+				<param name="Local" value="Chapters\scraping_in_practice\FontCollectingExample.html.LyXconv\FontCollectingExample.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How to create a Table Map">
+				<param name="Local" value="Chapters\scraping_in_practice\HowToCreateATablemap.html.LyXconv\HowToCreateATablemap.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Interface-Buttons explained">
+				<param name="Local" value="Chapters\scraping_in_practice\Interface_buttons_explained.html.LyXconv\Interface_buttons_explained.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Expert Tricks">
+			<param name="Local" value="Chapters\Expert_Tricks\expert_tricks_title.html.LyXconv\expert_tricks_title.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Defining the Game-Type">
+				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping &quot;10&quot; as T">
+				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping Fonts which are glued together">
+				<param name="Local" value="Chapters\Expert_Tricks\scraping_fonts_which_are_glued_together.html.LyXconv\scraping_fonts_which_are_glued_together.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping blinking Fonts and Nameplates">
+				<param name="Local" value="Chapters\Expert_Tricks\scraping_blinkiung_fonts_and_nameplates.html.LyXconv\scraping_blinkiung_fonts_and_nameplates.html">
 				</OBJECT>
 		</UL>
 	</UL>
