@@ -43,8 +43,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CONNECTTOWINDOW, &CMainFrame::OnViewConnecttowindow)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_GREENCIRCLE, &CMainFrame::OnViewConnecttowindow)
-	ON_COMMAND(ID_VIEW_SHOWREGIONBOXES, &CMainFrame::OnViewShowregionboxes)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REDRECTANGLE, &CMainFrame::OnViewShowregionboxes)
 	ON_COMMAND(ID_VIEW_REFRESH, &CMainFrame::OnViewRefresh)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_REFRESH, &CMainFrame::OnViewRefresh)
 	ON_COMMAND(ID_VIEW_PREV, &CMainFrame::OnViewPrev)
@@ -55,7 +53,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 
 	ON_COMMAND(ID_EDIT_UPDATEHASHES, &CMainFrame::OnEditUpdatehashes)
 	ON_WM_TIMER()
-	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWREGIONBOXES, &CMainFrame::OnUpdateViewShowregionboxes)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CURRENTWINDOWSIZE, &CMainFrame::OnUpdateViewCurrentwindowsize)
 	ON_COMMAND(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnEditDuplicateregion)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
@@ -87,8 +84,6 @@ CMainFrame::CMainFrame()
 
 	// Save startup directory
     ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
-
-	show_regions = true;
 }
 
 CMainFrame::~CMainFrame()
@@ -133,11 +128,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-
-	// Make formula button sticky
-	m_wndToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_REDRECTANGLE, &tbi);
-	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
-
 	if (!CreateStatusBar())
 	{
 		TRACE0("Failed to create status bar\n");
@@ -286,16 +276,6 @@ void CMainFrame::OnViewConnecttowindow()
 			ResizeWindow(pDoc);	
 		}
 	}
-	ForceRedraw();
-}
-
-
-void CMainFrame::OnViewShowregionboxes()
-{
-	show_regions = !show_regions;
-
-	m_wndToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_REDRECTANGLE, show_regions);
-
 	ForceRedraw();
 }
 
@@ -746,11 +726,6 @@ void CMainFrame::OnUpdateEditDuplicateregion(CCmdUI *pCmdUI)
 		selected_parent_text = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(parent);
 
 	pCmdUI->Enable(selected_parent_text == "Regions");
-}
-
-void CMainFrame::OnUpdateViewShowregionboxes(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(show_regions);
 }
 
 void CMainFrame::OnUpdateGroupregionsBytype(CCmdUI *pCmdUI)
