@@ -1,4 +1,4 @@
-v7.4.0 2015-01-06
+v7.4.0 2015-01-07
 ==================
 NEW stuff:
 - New button in the toolbar to start ManualMode.
