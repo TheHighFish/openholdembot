@@ -393,7 +393,7 @@ void CFunctionCollection::Save(CArchive &ar)
   for (int i=k_autoplayer_function_allin; 
       i<k_number_of_standard_functions; 
       ++i) {
-	SaveObject(ar, LookUp(k_standard_function_names[i]));
+	  SaveObject(ar, LookUp(k_standard_function_names[i]));
   }
   // f$test and f$debug are again special
   SaveObject(ar, LookUp("f$test"));

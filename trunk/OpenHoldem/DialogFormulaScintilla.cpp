@@ -2272,6 +2272,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "vs$x$prwin", "Probability (0.000 - 1.000) of winnning versus hand list x");
 	AddSymbol(parent, "vs$x$prlos", "Probability (0.000 - 1.000) of losing versus hand list x");
 	AddSymbol(parent, "vs$x$prtie", "Probability (0.000 - 1.000) of a tie versus hand list x");
+  AddSymbol(parent, "vs$multiplex$FUNC$prwin", "Probability (0.000 - 1.000) of a win versus hand list specified by FUNC");
+  AddSymbol(parent, "vs$multiplex$FUNC$prtie", "Probability (0.000 - 1.000) of a tie versus hand list specified by FUNC");
+  AddSymbol(parent, "vs$multiplex$FUNC$prlos", "Probability (0.000 - 1.000) of a los versus hand list specified by FUNC");
 
 	mainParent = parent = AddSymbolTitle("History symbols", NULL, hCatItem);
 	AddSymbol(parent, "hi_<sym>x (x=1-4)", "the value of the symbol <sym> as of your last turn in betting round x.  Example: hi_prwin1 would return prwin as of your last turn in br1.");
