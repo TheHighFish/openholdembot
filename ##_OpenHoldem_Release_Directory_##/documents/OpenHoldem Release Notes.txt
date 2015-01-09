@@ -1,3 +1,17 @@
+v7.4.1 2015-01-07
+==================
+NEW stuff:
+- Multiplexor-functionality for the versus-database.
+  Assume you have handlists numbered from list0 to list100 (or anything else)
+  each one containing a N-percent-range.
+  Further assume you have a function f$raisersrange, 
+  returning a number 0..100.
+  Then you can now easily calculate your equity against his range
+  with vs$multiplex$f$raisersrange$prwin
+  without having to create a 101-line-function like before.
+  Same works for prtie and prlos of course too,
+  [THF]
+
 v7.4.0 2015-01-07
 ==================
 NEW stuff:

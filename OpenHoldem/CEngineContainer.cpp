@@ -412,7 +412,7 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
       // and no longer all at once at the end of this function
       // as the very long list caused a buffer overflow if enabled.
       // As it turned out the function-collection alone
-      // still could exceed that limit, so we check the siye.
+      // still could exceed that limit, so we check the size.
       write_log(preferences.debug_engine_container(), "[EngineContainer] New symbols %s\n", 
         new_symbols);
     } else {

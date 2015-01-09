@@ -39,6 +39,7 @@ class CSymbolEngineVersus: public CVirtualSymbolEngine {
   // Public accessors
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   bool EvaluateVersusHandListSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateVersusMultiplexSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
   bool VersusBinLoaded()  { return !_versus_bin_not_loaded; }
  public:

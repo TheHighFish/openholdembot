@@ -389,83 +389,6 @@ bool CSymbolEngineVersus::GetCounts() {
 	return true;
 }
 
-bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
-  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-  if (memcmp(name, "vs$", 3) != 0) {
-    // Not a versus symbol
-    return false;
-  }
-  if (!CheckForLoadedVersusBin()) {
-		*result = k_undefined_zero;
-    // We couldn't really evaluate this symbol,
-    // but we have to return true to stop further evaluation
-    // and to avoid further error-messages.
-    return true;
-  }
-  write_log(preferences.debug_versus(),
-    "[CVersus] EvaluateSymbol %s\n", name);
-  if (memcmp(name, "vs$nhands", 9) == 0) {
-    // vs$nhands...symbols
-    if (memcmp(name, "vs$nhands", 9)==0 && strlen(name)==9)	            *result = _nhands;
-    else if (memcmp(name, "vs$nhandshi", 11)==0 && strlen(name)==11)  	*result = _nhandshi;
-	  else if (memcmp(name, "vs$nhandsti", 11)==0 && strlen(name)==11)    *result = _nhandsti;
-	  else if (memcmp(name, "vs$nhandslo", 11)==0 && strlen(name)==11)	  *result = _nhandslo;
-    else if (memcmp(name, "vs$nhandshinow", 14)==0 && strlen(name)==14)	*result = _nhandshinow;
-	  else if (memcmp(name, "vs$nhandstinow", 14)==0 && strlen(name)==14)	*result = _nhandstinow;
-	  else if (memcmp(name, "vs$nhandslonow", 14)==0 && strlen(name)==14)	*result = _nhandslonow;
-    else {
-      // Not a valid symbol
-      return false;
-    }
-    return true;
-  } else if (memcmp(name, "vs$pr", 5) == 0) {
-    // vs$pr...symbols
-    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		          *result = _vsprwin;
-	  else if (memcmp(name, "vs$prtie", 8)==0 && strlen(name)==8)		      *result = _vsprtie;
-	  else if (memcmp(name, "vs$prlos", 8)==0 && strlen(name)==8)		      *result = _vsprlos;
-	  else if (memcmp(name, "vs$prwinhi", 10)==0 && strlen(name)==10)	    *result = _vsprwinhi;
-	  else if (memcmp(name, "vs$prtiehi", 10)==0 && strlen(name)==10)	    *result = _vsprtiehi;
-	  else if (memcmp(name, "vs$prloshi", 10)==0 && strlen(name)==10)	    *result = _vsprloshi;
-	  else if (memcmp(name, "vs$prwinti", 10)==0 && strlen(name)==10)	    *result = _vsprwinti;
-	  else if (memcmp(name, "vs$prtieti", 10)==0 && strlen(name)==10)	    *result = _vsprtieti;
-	  else if (memcmp(name, "vs$prlosti", 10)==0 && strlen(name)==10)	    *result = _vsprlosti;
-	  else if (memcmp(name, "vs$prwinlo", 10)==0 && strlen(name)==10)	    *result = _vsprwinlo;
-	  else if (memcmp(name, "vs$prtielo", 10)==0 && strlen(name)==10)	    *result = _vsprtielo;
-	  else if (memcmp(name, "vs$prloslo", 10)==0 && strlen(name)==10)	    *result = _vsprloslo;
-	  else if (memcmp(name, "vs$prwinhinow", 13)==0 && strlen(name)==13)	*result = _vsprwinhinow;
-	  else if (memcmp(name, "vs$prtiehinow", 13)==0 && strlen(name)==13)	*result = _vsprtiehinow;
-	  else if (memcmp(name, "vs$prloshinow", 13)==0 && strlen(name)==13)	*result = _vsprloshinow;
-	  else if (memcmp(name, "vs$prwintinow", 13)==0 && strlen(name)==13)	*result = _vsprwintinow;
-	  else if (memcmp(name, "vs$prtietinow", 13)==0 && strlen(name)==13)	*result = _vsprtietinow;
-	  else if (memcmp(name, "vs$prlostinow", 13)==0 && strlen(name)==13)	*result = _vsprlostinow;
-	  else if (memcmp(name, "vs$prwinlonow", 13)==0 && strlen(name)==13)	*result = _vsprwinlonow;
-	  else if (memcmp(name, "vs$prtielonow", 13)==0 && strlen(name)==13)	*result = _vsprtielonow;
-	  else if (memcmp(name, "vs$prloslonow", 13)==0 && strlen(name)==13)	*result = _vsprloslonow;
-    else {
-      // Not a valid symbol
-      return false;
-    }
-    return true;
-  } else if (memcmp(name, "vs$list", 7) == 0) {
-    // vs$list...$prwin/prtie/prlos-symbols
-    bool valid_symbol = EvaluateVersusHandListSymbol(name, result, log);
-    return valid_symbol;
-  } else if (isdigit(name[3])) {
-    OH_MessageBox_Formula_Error(
-      "Old style versus-list format, like vs$123$win.\n"
-      "No longer valid, as we do no longer have 1000 lists,\n"
-      "but arbitrary many named lists.\n"
-      "\n"
-      "Example: vs$listTop30$prwin",
-      "Error");
-    *result = k_undefined_zero;
-    return false;
-  }
-  ErrorInvalidSymbol(name);
-  *result = k_undefined_zero;
-  return false; 
-}
-
 void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
   CString message;
   message.Format("Not a valid versus-symbol: %s", name);
@@ -560,6 +483,114 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   }
 }
 
+bool CSymbolEngineVersus::EvaluateVersusMultiplexSymbol(const char *name, double *result, bool log /* = false */) {
+  CString csname = CString(name);
+  assert(csname.Left(13) == "vs$multiplex$");
+  CString postfix = csname.Right(6);
+  if ((postfix != "$prwin") 
+      && (postfix != "$prlos")
+      && (postfix != "$prtie")) {
+    *result = k_undefined;
+    return false;
+  }
+  int infix_length = csname.GetLength() - 13 - 6;
+  if (infix_length <= 0) {
+    *result = k_undefined;
+    return false;
+  }
+  CString infix = csname.Mid(13, infix_length);
+  // Now evaluate the infix to get the ID of a numbered list
+  double d_list_ID = p_function_collection->Evaluate(infix, log);
+  int list_ID = int(d_list_ID + 0.5);
+  CString list;
+  list.Format("list%d", list_ID);
+  // Build new szmbol name containing list name
+  CString vs_list;
+  vs_list.Format("vs$%s%s", list, postfix);
+  return EvaluateVersusHandListSymbol(vs_list, result, log);
+}
+
+bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
+  if (memcmp(name, "vs$", 3) != 0) {
+    // Not a versus symbol
+    return false;
+  }
+  if (!CheckForLoadedVersusBin()) {
+		*result = k_undefined_zero;
+    // We couldn't really evaluate this symbol,
+    // but we have to return true to stop further evaluation
+    // and to avoid further error-messages.
+    return true;
+  }
+  write_log(preferences.debug_versus(),
+    "[CVersus] EvaluateSymbol %s\n", name);
+  if (memcmp(name, "vs$nhands", 9) == 0) {
+    // vs$nhands...symbols
+    if (memcmp(name, "vs$nhands", 9)==0 && strlen(name)==9)	            *result = _nhands;
+    else if (memcmp(name, "vs$nhandshi", 11)==0 && strlen(name)==11)  	*result = _nhandshi;
+	  else if (memcmp(name, "vs$nhandsti", 11)==0 && strlen(name)==11)    *result = _nhandsti;
+	  else if (memcmp(name, "vs$nhandslo", 11)==0 && strlen(name)==11)	  *result = _nhandslo;
+    else if (memcmp(name, "vs$nhandshinow", 14)==0 && strlen(name)==14)	*result = _nhandshinow;
+	  else if (memcmp(name, "vs$nhandstinow", 14)==0 && strlen(name)==14)	*result = _nhandstinow;
+	  else if (memcmp(name, "vs$nhandslonow", 14)==0 && strlen(name)==14)	*result = _nhandslonow;
+    else {
+      // Not a valid symbol
+      return false;
+    }
+    return true;
+  } else if (memcmp(name, "vs$pr", 5) == 0) {
+    // vs$pr...symbols
+    if (memcmp(name, "vs$prwin", 8)==0 && strlen(name)==8)		          *result = _vsprwin;
+	  else if (memcmp(name, "vs$prtie", 8)==0 && strlen(name)==8)		      *result = _vsprtie;
+	  else if (memcmp(name, "vs$prlos", 8)==0 && strlen(name)==8)		      *result = _vsprlos;
+	  else if (memcmp(name, "vs$prwinhi", 10)==0 && strlen(name)==10)	    *result = _vsprwinhi;
+	  else if (memcmp(name, "vs$prtiehi", 10)==0 && strlen(name)==10)	    *result = _vsprtiehi;
+	  else if (memcmp(name, "vs$prloshi", 10)==0 && strlen(name)==10)	    *result = _vsprloshi;
+	  else if (memcmp(name, "vs$prwinti", 10)==0 && strlen(name)==10)	    *result = _vsprwinti;
+	  else if (memcmp(name, "vs$prtieti", 10)==0 && strlen(name)==10)	    *result = _vsprtieti;
+	  else if (memcmp(name, "vs$prlosti", 10)==0 && strlen(name)==10)	    *result = _vsprlosti;
+	  else if (memcmp(name, "vs$prwinlo", 10)==0 && strlen(name)==10)	    *result = _vsprwinlo;
+	  else if (memcmp(name, "vs$prtielo", 10)==0 && strlen(name)==10)	    *result = _vsprtielo;
+	  else if (memcmp(name, "vs$prloslo", 10)==0 && strlen(name)==10)	    *result = _vsprloslo;
+	  else if (memcmp(name, "vs$prwinhinow", 13)==0 && strlen(name)==13)	*result = _vsprwinhinow;
+	  else if (memcmp(name, "vs$prtiehinow", 13)==0 && strlen(name)==13)	*result = _vsprtiehinow;
+	  else if (memcmp(name, "vs$prloshinow", 13)==0 && strlen(name)==13)	*result = _vsprloshinow;
+	  else if (memcmp(name, "vs$prwintinow", 13)==0 && strlen(name)==13)	*result = _vsprwintinow;
+	  else if (memcmp(name, "vs$prtietinow", 13)==0 && strlen(name)==13)	*result = _vsprtietinow;
+	  else if (memcmp(name, "vs$prlostinow", 13)==0 && strlen(name)==13)	*result = _vsprlostinow;
+	  else if (memcmp(name, "vs$prwinlonow", 13)==0 && strlen(name)==13)	*result = _vsprwinlonow;
+	  else if (memcmp(name, "vs$prtielonow", 13)==0 && strlen(name)==13)	*result = _vsprtielonow;
+	  else if (memcmp(name, "vs$prloslonow", 13)==0 && strlen(name)==13)	*result = _vsprloslonow;
+    else {
+      // Not a valid symbol
+      return false;
+    }
+    return true;
+  } else if (memcmp(name, "vs$list", 7) == 0) {
+    // vs$list...$prwin/prtie/prlos-symbols
+    bool valid_symbol = EvaluateVersusHandListSymbol(name, result, log);
+    return valid_symbol;
+  } else if (memcmp(name, "vs$multiplex$", 13) == 0) {
+    // vs$multiplex$...$prwin/prtie/prlos-symbols
+    bool valid_symbol = EvaluateVersusMultiplexSymbol(name, result, log);
+    return valid_symbol;
+  } else if (isdigit(name[3])) {
+    OH_MessageBox_Formula_Error(
+      "Old style versus-list format, like vs$123$win.\n"
+      "No longer valid, as we do no longer have 1000 lists,\n"
+      "but arbitrary many named lists.\n"
+      "\n"
+      "Example: vs$listTop30$prwin",
+      "Error");
+    *result = k_undefined_zero;
+    return false;
+  }
+  ErrorInvalidSymbol(name);
+  *result = k_undefined_zero;
+  return false; 
+}
+
 CString CSymbolEngineVersus::SymbolsProvided() {
   return "vs$nhands vs$nhandshi vs$nhandsti vs$nhandslo "
     "vs$prwin vs$prtie vs$prlos vs$prwinhi vs$prtiehi vs$prloshi "
@@ -568,6 +599,8 @@ CString CSymbolEngineVersus::SymbolsProvided() {
     "vs$prtiehinow vs$prloshinow vs$prwintinow vs$prtietinow "
     "vs$prlostinow vs$prwinlonow vs$prtielonow vs$prloslonow "
     // vs$list-prefix
-    "vs$list ";
+    "vs$list "
+    // vs$multiplex prefix
+    "vs$multiplex$";
 }
 
