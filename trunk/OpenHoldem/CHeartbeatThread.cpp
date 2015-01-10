@@ -22,6 +22,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineReplayFrameController.h"
+#include "CSymbolEngineTime.h"
 #include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CHandresetDetector.h"
@@ -87,24 +88,23 @@ void CHeartbeatThread::StartThread() {
 
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
 	double scrape_delay = preferences.scrape_delay();
-  if (p_autoconnector->IsConnected()) {
+  if (!p_autoconnector->IsConnected()) {
     // Keep scrape_delay as is
-    // We want fast auto/connects 
+    // We want fast auto-connects 
     // and the auto-connector is extremely optimized.
-  }
-	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  }	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
     // Not yet seated
-    // Probably not much critical work to be done,
+    // Probably not much critical work to be done.
     scrape_delay *= 2; 
   } else if (!p_table_state->User()->HasKnownCards()) {
     // Folded
     if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
-      // Multiway
-      // Hand will continue for some time
+      // Multiway, not participating.
+      // Hand will continue for some time.
       scrape_delay *= 2;
     } else {
-      // Headsup
-      // Hand might be over soon
+      // Headsup, not participating.
+      // Hand might be over soon.
       scrape_delay *= 1.5;
     }
   } else if (p_scraper_access->NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
@@ -114,7 +114,13 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
     scrape_delay *= 0.5; 
 	} else {
     // Playing, but not my turn
-    // Keep default value
+    if (p_symbol_engine_time->elapsedauto() < p_symbol_engine_active_dealt_playing->nopponentsplaying()) {
+      // Short after autoplyer-action
+      // Will take some time until it is our turn again.
+      // Slow down a little bit.
+      scrape_delay *= 1.33;
+    }
+    // Else: keep default value
   }
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
   Sleep(scrape_delay);
