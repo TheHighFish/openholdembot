@@ -18,6 +18,12 @@ NEW stuff:
   Inspired by an old suggestion of Zippy.
   [THF]
 
+BUG FIXES:
+- Found and fixed another little memory-leak in the scraper
+  indicated by the new counter for GDI-objects.
+  [THF]
+
+
 v7.4.0 2015-01-07
 ==================
 NEW stuff:
