@@ -182,9 +182,9 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
-		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		write_log(preferences.debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
 			name, *result);
+    __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
 	// Region does not exist
@@ -453,7 +453,7 @@ void CScraper::ScrapeSlider() {
 	// find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
-    if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	
+  if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	
 	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
@@ -1354,6 +1354,7 @@ bool CScraper::IsIdenticalScrape()
 		DeleteDC(hdcScreen);
 		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
 		write_log(preferences.debug_scraper(), "[CScraper] IsIdenticalScrape() true\n");
+    __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
 
