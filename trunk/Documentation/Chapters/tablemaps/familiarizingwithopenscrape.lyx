@@ -398,6 +398,10 @@ Below the Zoom Level are various drop downs that are used to serve as checklists
  Capturing fonts and card images will be discussed later.
 \end_layout
 
+\begin_layout Subsection
+Creating and editing regions
+\end_layout
+
 \begin_layout Standard
 On the top right of this window are a large group of controls, there is
  a “Rectangle” group, a “Nudge” group, and “Transform”, “Radius”, “Color”,
@@ -409,6 +413,20 @@ On the top right of this window are a large group of controls, there is
  below.
  Some of these fields may display other relevant information, depending
  on the record type selected in the display tree.
+ In addition to the arrow buttons a selected region can be moved and resized
+ with hotkeys:
+\end_layout
+
+\begin_layout Itemize
+arrow keys - move it around 
+\end_layout
+
+\begin_layout Itemize
+arrow keys + shift - moves it faster 
+\end_layout
+
+\begin_layout Itemize
+arrow keys + control - makes it bigger/smaller (can also use shift for faster)
 \end_layout
 
 \begin_layout Standard
