@@ -148,7 +148,6 @@
     <None Include="res\ManualMode.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="OpenHoldem.ManualMode.tm" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ManualMode.rc">

@@ -170,7 +170,6 @@
     <None Include="res\bmp2h5.bmp" />
     <None Include="res\ManualMode.ico" />
     <None Include="res\ManualMode.rc2" />
-    <None Include="OpenHoldem.ManualMode.tm" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ManualMode.rc" />
