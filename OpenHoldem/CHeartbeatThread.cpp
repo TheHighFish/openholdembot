@@ -19,6 +19,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CEngineContainer.h"
@@ -85,14 +86,36 @@ void CHeartbeatThread::StartThread() {
 }
 
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
-	int scrape_delay = preferences.scrape_delay();
-	if (p_table_state->User()->HasKnownCards() 
-    && (p_scraper_access->NumberOfVisibleButtons() > 0)) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
-		// My turn
+	double scrape_delay = preferences.scrape_delay();
+  if (p_autoconnector->IsConnected()) {
+    // Keep scrape_delay as is
+    // We want fast auto/connects 
+    // and the auto-connector is extremely optimized.
+  }
+	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
+    // Not yet seated
+    // Probably not much critical work to be done,
+    scrape_delay *= 2; 
+  } else if (!p_table_state->User()->HasKnownCards()) {
+    // Folded
+    if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
+      // Multiway
+      // Hand will continue for some time
+      scrape_delay *= 2;
+    } else {
+      // Headsup
+      // Hand might be over soon
+      scrape_delay *= 1.5;
+    }
+  } else if (p_scraper_access->NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+		// Playing and my turn
 		// Stable frames expected
 		// Shorter reaction times desired
-		scrape_delay /= 2; 
-	}
+    scrape_delay *= 0.5; 
+	} else {
+    // Playing, but not my turn
+    // Keep default value
+  }
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
   Sleep(scrape_delay);
 }
