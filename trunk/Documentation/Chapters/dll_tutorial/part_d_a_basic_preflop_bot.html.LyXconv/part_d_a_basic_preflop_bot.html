@@ -1,474 +1,340 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="part_d_a_basic_preflop_bot.tex"> 
-<meta name="date" content="2010-05-07 02:11:00"> 
-<link rel="stylesheet" type="text/css" href="part_d_a_basic_preflop_bot.css"> 
-</head><body bgcolor="#CCCCFF" 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>A basic preflop for deep stack NL</h3>
-   <h4 class="subsectionHead"><a 
- id="x1-2000"></a>Factors affecting preflop decisions</h4>
-<!--l. 31--><p class="noindent" >The first things we need are the basic tools, so we need to think about the factors which
-affect the decision preflop.
-           <ul class="itemize1">
-        <li class="itemize">type of hand
-           </li>
-        <li class="itemize">position
-           </li>
-        <li class="itemize">current hand scenario (first in, limped pot, raised pot, 3bet pot etc.)</li></ul>
-<!--l. 39--><p class="noindent" >Obviously there is more, like which types of opponents are still playing in the hand, what is
-the table image, but we will neglect opponent moddeling for this article.
-   <h4 class="subsectionHead"><a 
- id="x1-3000"></a>Basic Functions</h4>
-   <h5 class="subsubsectionHead"><a 
- id="x1-4000"></a>Type of Hand</h5>
-<!--l. 49--><p class="noindent" >This is pretty easy, we only need rankhiplayer, rankloplayer, issuited to determine your
-hand. You can always simply get these values with the gws() function, but I will extract
-them from the "holdem_state" struct, it&#8217;s more examples for you and it&#8217;s better to avoid
-gws() calls as often as possible.
-<!--l. 55--><p class="indent" >   These are the vars we will define to determine the type of hand:
-   <!--l. 58-->
-   <div class="lstlisting" id="listing-1"><span class="label"><a 
- id="x1-4001r1"></a></span>bool&#x00A0;issuited;&#x00A0;<br /><span class="label"><a 
- id="x1-4002r2"></a></span>int&#x00A0;card[7][2];&#x00A0;<br /><span class="label"><a 
- id="x1-4003r3"></a></span>int&#x00A0;rankhiplayer;&#x00A0;<br /><span class="label"><a 
- id="x1-4004r4"></a></span>int&#x00A0;rankloplayer;&#x00A0;<br /><span class="label"><a 
- id="x1-4005r5"></a></span>int&#x00A0;gap;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;0&#x00A0;=&#x00A0;pair,&#x00A0;1&#x00A0;=&#x00A0;connected,&#x00A0;2&#x00A0;=&#x00A0;one<span 
-class="cmsy-10">-</span>gapper&#x00A0;etc...
-   </div>
-<!--l. 67--><p class="indent" >   First we need a function to set our card values:
-   <!--l. 70-->
-   <div class="lstlisting" id="listing-2"><span class="label"><a 
- id="x1-4006r1"></a></span>void&#x00A0;set_card_values(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sets&#x00A0;the&#x00A0;card&#x00A0;values&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
- id="x1-4007r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//pocket&#x00A0;cards&#x00A0;card[0][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[0][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[1][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[1][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);&#x00A0;<br /><span class="label"><a 
- id="x1-4008r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//board&#x00A0;cards&#x00A0;for(int&#x00A0;u=0;u&#x003C;5;u++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[u+2][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[u+2][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);&#x00A0;}&#x00A0;}
-   </div>
-<!--l. 77--><p class="indent" >   Note that we used the card macros RANK &amp; SUIT, which were provided with
-the basic dll. These macros convert the "unsigned char" values to "integer"
-values:
-<!--l. 82--><p class="indent" >   rank 2 ; ... ; 14=A suit 1=C ; 2=D ; 3=H ; 4=S
-<!--l. 84--><p class="indent" >   Now we can define the functions to set our variables:
-   <!--l. 87-->
-   <div class="lstlisting" id="listing-3"><span class="label"><a 
- id="x1-4009r1"></a></span>int&#x00A0;set_rankhiplayer(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;hi&#x00A0;player&#x00A0;rank&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][0]&#x00A0;&#x003E;&#x00A0;card[1][0]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[0][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[1][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;int&#x00A0;set_rankloplayer(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;lo&#x00A0;player&#x00A0;rank&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][0]&#x00A0;&#x003E;&#x00A0;card[1][0]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[1][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[0][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;bool&#x00A0;set_suited(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;suited&#x00A0;;&#x00A0;0&#x00A0;<span 
-class="cmsy-10">-</span>unsuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][1]&#x00A0;==&#x00A0;card[1][1]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;int&#x00A0;set_gap(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;pair&#x00A0;;&#x00A0;1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;connected&#x00A0;;&#x00A0;2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;one<span 
-class="cmsy-10">-</span>gapper&#x00A0;...&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;rankhiplayer<span 
-class="cmsy-10">-</span>rankloplayer;&#x00A0;}
-   </div>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-01-06"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>A basic preflop for deep stack NL
+</h2>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-1"></a>Factors affecting preflop decisions
+</h3>
+<div class="Unindented">
+The first things we need are the basic tools, so we need to think about the factors which affect the decision preflop.
+</div>
+<ul>
+<li>
+type of hand 
+</li>
+<li>
+position 
+</li>
+<li>
+current hand scenario (first in, limped pot, raised pot, 3bet pot etc.) 
+</li>
 
-   <h5 class="subsubsectionHead"><a 
- id="x1-5000"></a>Position</h5>
-<!--l. 95--><p class="noindent" >I will use the following convention here, since i&#8217;ve grown quite familiar to it and it makes
-a lot of sense.
-   <!--l. 99-->
-   <div class="lstlisting" id="listing-4"><span class="label"><a 
- id="x1-5001r1"></a></span>7&#x00A0;UTG&#x00A0;&#x00A0;6&#x00A0;UTG+1&#x00A0;&#x00A0;5&#x00A0;UTG+2&#x00A0;&#x00A0;4&#x00A0;MP1&#x00A0;&#x00A0;3&#x00A0;MP2&#x00A0;&#x00A0;2&#x00A0;MP3&#x00A0;&#x00A0;1&#x00A0;CO&#x00A0;&#x00A0;0&#x00A0;BU&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;SB&#x00A0;<span 
-class="cmsy-10">-</span>2&#x00A0;BB
-   </div>
-<!--l. 104--><p class="indent" >   The first problem you can encounter at some pokersites is that some actually allow
-hands without a small blind. We need to take care of that:
-   <!--l. 109-->
-   <div class="lstlisting" id="listing-5"><span class="label"><a 
- id="x1-5002r1"></a></span>bool&#x00A0;set_SB(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;checks&#x00A0;if&#x00A0;sblind&#x00A0;was&#x00A0;posted&#x00A0;at&#x00A0;the&#x00A0;table&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i=0;i&#x003C;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003C;&#x00A0;bblind<span 
-class="cmsy-10">-</span>0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-5003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-5004r3"></a></span>}
-   </div>
-<!--l. 116--><p class="indent" >   The function above determins if there is a small blind present at the table. The
-function below determins our position:
-   <!--l. 120-->
-   <div class="lstlisting" id="listing-6"><span class="label"><a 
- id="x1-5005r1"></a></span>int&#x00A0;pf_pos(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;current&#x00A0;position&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;dealposition&#x00A0;=&#x00A0;(int)gws("dealposition");&#x00A0;&#x00A0;&#x00A0;int&#x00A0;nopponentsdealt&#x00A0;=&#x00A0;(int)gws("nopponentsdealt");&#x00A0;<br /><span class="label"><a 
- id="x1-5006r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(SB){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[2]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{<span 
-class="cmsy-10">-</span>1}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[3]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;3){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[4]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;4){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[5]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;5){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[6]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;6){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[7]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;7){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[8]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;8){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[9]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;9){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[10]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{7},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[2]&#x00A0;=&#x00A0;{{0},{<span 
-class="cmsy-10">-</span>2}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[3]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;3){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[4]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;4){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[5]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;5){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[6]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;6){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[7]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;7){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[8]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;8){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[9]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{7},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-5007r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-5008r4"></a></span>}
-   </div>
-<!--l. 128--><p class="indent" >   As you can see we also need new variables "nplayersdealt", "dealposition" defined
-locally and SB should be defined in "OH-globalvars.h" as "bool SB".
-   <h5 class="subsubsectionHead"><a 
- id="x1-6000"></a>Money and Player Variables</h5>
-<!--l. 136--><p class="noindent" >We will need the following variables:
-   <!--l. 139-->
-   <div class="lstlisting" id="listing-7"><span class="label"><a 
- id="x1-6001r1"></a></span>bool&#x00A0;isminbet;&#x00A0;int&#x00A0;pf_entered;&#x00A0;//how&#x00A0;many&#x00A0;players&#x00A0;entered&#x00A0;the&#x00A0;pot,&#x00A0;including&#x00A0;dead&#x00A0;money&#x00A0;posters&#x00A0;int&#x00A0;nopponentscalling;&#x00A0;//how&#x00A0;many&#x00A0;opponents&#x00A0;called&#x00A0;a&#x00A0;raise&#x00A0;double&#x00A0;pot;&#x00A0;double&#x00A0;call;&#x00A0;double&#x00A0;currentbet;&#x00A0;double&#x00A0;ncurrentbet;&#x00A0;//maximum&#x00A0;currentbet&#x00A0;on&#x00A0;the&#x00A0;table&#x00A0;double&#x00A0;balance;&#x00A0;double&#x00A0;stack_depth;&#x00A0;//the&#x00A0;amount&#x00A0;of&#x00A0;money&#x00A0;which&#x00A0;is&#x00A0;the&#x00A0;max(userbalance,&#x00A0;highest&#x00A0;balance&#x00A0;of&#x00A0;opponent&#x00A0;still&#x00A0;playing)
-   </div>
-   <!--l. 145-->
-   <div class="lstlisting" id="listing-8"><span class="label"><a 
- id="x1-6002r1"></a></span>bool&#x00A0;is_playing(int&#x00A0;chair){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;if&#x00A0;player&#x00A0;is&#x00A0;playing&#x00A0;at&#x00A0;specified&#x00A0;chair&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;bitset&#x003C;16&#x003E;&#x00A0;lok_play((int)gws("playersplayingbits"));&#x00A0;<br /><span class="label"><a 
- id="x1-6003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_play.test(chair);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;double&#x00A0;set_ncurrentbet(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;maximum&#x00A0;currentbet&#x00A0;on&#x00A0;the&#x00A0;table&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dumpvar&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6004r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i&#x00A0;=&#x00A0;0;&#x00A0;i&#x00A0;&#x003C;&#x00A0;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(i)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003E;&#x00A0;dumpvar){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;dumpvar&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6005r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dumpvar;&#x00A0;}&#x00A0;int&#x00A0;set_nopponentsbetting(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;number&#x00A0;of&#x00A0;opponents&#x00A0;betting&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;lok_count&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6006r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;k=0;k&#x003C;10;k++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(k)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003E;&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;k&#x00A0;!=&#x00A0;userchair){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;lok_count++;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6007r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_count;&#x00A0;<br /><span class="label"><a 
- id="x1-6008r7"></a></span>}&#x00A0;int&#x00A0;set_nopponentscalling(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;number&#x00A0;of&#x00A0;opponents&#x00A0;betting&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;lok_count&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6009r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;k=0;k&#x003C;10;k++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(k)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003E;&#x00A0;ncurrentbet<span 
-class="cmsy-10">-</span>0.01&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;&amp;&#x00A0;k&#x00A0;!=&#x00A0;userchair&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003C;&#x00A0;ncurrentbet+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;lok_count++;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6010r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(lok_count<span 
-class="cmsy-10">-</span>1&#x00A0;&#x003E;&#x00A0;0){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_count<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6011r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6012r11"></a></span>}&#x00A0;int&#x00A0;set_pf_entered(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;amout&#x00A0;of&#x00A0;players&#x00A0;who&#x00A0;entered&#x00A0;the&#x00A0;pot&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(SB){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x00A0;==&#x00A0;<span 
-class="cmsy-10">-</span>2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos==&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>2;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos==&#x00A0;<span 
-class="cmsy-10">-</span>2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6013r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6014r13"></a></span>}&#x00A0;double&#x00A0;set_stack_depth(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;max(userbalance&#x00A0;,&#x00A0;oppbalance)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dumpvar&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-6015r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i&#x00A0;=&#x00A0;0;&#x00A0;i&#x00A0;&#x003C;&#x00A0;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(i)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet<span 
-class="cmsy-10">-</span>currentbet&#x00A0;&#x003E;&#x00A0;dumpvar&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;&amp;&#x00A0;i&#x00A0;!=&#x00A0;userchair){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;dumpvar&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet<span 
-class="cmsy-10">-</span>currentbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(balance&#x00A0;&#x003E;&#x00A0;dumpvar){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;balance;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-6016r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dumpvar;&#x00A0;<br /><span class="label"><a 
- id="x1-6017r16"></a></span>}
-   </div>
-<!--l. 165--><p class="indent" >   The functions above will set some of these values the rest we get with the gws() call.
-There were only changes made to "OH-general.h" and "OH-globalvars.h" so far, they
-look like this now:
-   <h5 class="subsubsectionHead"><a 
- id="x1-7000"></a>OH-globalvars.h</h5>
-   <!--l. 174-->
-   <div class="lstlisting" id="listing-9"><span class="label"><a 
- id="x1-7001r1"></a></span>/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;//OWN&#x00A0;VARS&#x00A0;/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;<br /><span class="label"><a 
- id="x1-7002r2"></a></span>//GENERAL&#x00A0;VARS&#x00A0;bool&#x00A0;SB;&#x00A0;int&#x00A0;userchair;&#x00A0;int&#x00A0;ismyturn;&#x00A0;int&#x00A0;betround;&#x00A0;double&#x00A0;bblind;&#x00A0;double&#x00A0;decision;&#x00A0;<br /><span class="label"><a 
- id="x1-7003r3"></a></span>//MONEY&#x00A0;VARS&#x00A0;double&#x00A0;pot;&#x00A0;double&#x00A0;call;&#x00A0;double&#x00A0;currentbet;&#x00A0;double&#x00A0;ncurrentbet;&#x00A0;//maximum&#x00A0;currentbet&#x00A0;on&#x00A0;the&#x00A0;table&#x00A0;double&#x00A0;balance;&#x00A0;double&#x00A0;stack_depth;&#x00A0;<br /><span class="label"><a 
- id="x1-7004r4"></a></span>//OPPONENT&#x00A0;VARS&#x00A0;int&#x00A0;nopponentsbetting;&#x00A0;int&#x00A0;nopponentscalling;&#x00A0;//how&#x00A0;many&#x00A0;opponents&#x00A0;called&#x00A0;a&#x00A0;raise&#x00A0;<br /><span class="label"><a 
- id="x1-7005r5"></a></span>//PREFLOP&#x00A0;int&#x00A0;pf_my_pos;&#x00A0;int&#x00A0;pf_entered;&#x00A0;<br /><span class="label"><a 
- id="x1-7006r6"></a></span>//SUIT&#x00A0;VARS&#x00A0;int&#x00A0;flushrank;&#x00A0;<br /><span class="label"><a 
- id="x1-7007r7"></a></span>//HAND&#x00A0;VARS&#x00A0;bool&#x00A0;issuited;&#x00A0;int&#x00A0;card[7][2];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//rank&#x00A0;2&#x00A0;;&#x00A0;...&#x00A0;;&#x00A0;14=A&#x00A0;suit&#x00A0;1=C&#x00A0;;&#x00A0;2=D&#x00A0;;&#x00A0;3=H&#x00A0;;&#x00A0;4=S&#x00A0;int&#x00A0;rankhiplayer;&#x00A0;int&#x00A0;rankloplayer;&#x00A0;int&#x00A0;gap;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//0&#x00A0;=&#x00A0;pair,&#x00A0;1&#x00A0;=&#x00A0;connected,&#x00A0;2&#x00A0;=&#x00A0;one<span 
-class="cmsy-10">-</span>gapper&#x00A0;etc...
-   </div>
+</ul>
+<div class="Unindented">
+Obviously there is more, like which types of opponents are still playing in the hand, what is the table image, but we will neglect opponent moddeling for this article. 
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-2"></a>Basic Functions
+</h3>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-1"></a>Type of Hand
+</h4>
+<div class="Unindented">
+This is pretty easy, we only need rankhiplayer, rankloplayer, issuited to determine your hand. You can always simply get these values with the gws() function, but I will extract them from the "holdem_state" struct, it’s more examples for you and it’s better to avoid gws() calls as often as possible.
+</div>
+<div class="Indented">
+These are the vars we will define to determine the type of hand: 
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">bool issuited; 
+int card[7][2]; 
+int rankhiplayer; 
+int rankloplayer; 
+int gap;            // 0 = pair, 1 = connected, 2 = one-gapper etc...
+</pre>
+</div>
 
-   <h5 class="subsubsectionHead"><a 
- id="x1-8000"></a>OH-general.h</h5>
-   <!--l. 189-->
-   <div class="lstlisting" id="listing-10"><span class="label"><a 
- id="x1-8001r1"></a></span>//////////////////////////////////////////////////////////////////////////&#x00A0;//OWN&#x00A0;FUNCS&#x00A0;//////////////////////////////////////////////////////////////////////////&#x00A0;int&#x00A0;set_flush_rank(){&#x00A0;<br /><span class="label"><a 
- id="x1-8002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;bitset&#x003C;16&#x003E;&#x00A0;srb(&#x00A0;(int)gws("srankbits")&#x00A0;);&#x00A0;<br /><span class="label"><a 
- id="x1-8003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;srb&#x00A0;=&#x00A0;(~srb&#x00A0;)&#x00A0;&#x003E;&#x003E;=&#x00A0;(int)gws("srankhiplayer");&#x00A0;<br /><span class="label"><a 
- id="x1-8004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;(int)srb.count();&#x00A0;&#x00A0;}&#x00A0;void&#x00A0;set_card_values(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;sets&#x00A0;the&#x00A0;card&#x00A0;values&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
- id="x1-8005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//pocket&#x00A0;cards&#x00A0;card[0][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[0][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[1][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[1][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);&#x00A0;<br /><span class="label"><a 
- id="x1-8006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//board&#x00A0;cards&#x00A0;for(int&#x00A0;u=0;u&#x003C;5;u++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[u+2][0]&#x00A0;=&#x00A0;RANK(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;card[u+2][1]&#x00A0;=&#x00A0;SUIT(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);&#x00A0;}&#x00A0;}&#x00A0;int&#x00A0;set_rankhiplayer(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;hi&#x00A0;player&#x00A0;rank&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][0]&#x00A0;&#x003E;&#x00A0;card[1][0]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[0][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[1][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;int&#x00A0;set_rankloplayer(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;lo&#x00A0;player&#x00A0;rank&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][0]&#x00A0;&#x003E;&#x00A0;card[1][0]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[1][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;card[0][0];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;bool&#x00A0;set_suited(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;suited&#x00A0;;&#x00A0;0&#x00A0;<span 
-class="cmsy-10">-</span>unsuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(card[0][1]&#x00A0;==&#x00A0;card[1][1]){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;}&#x00A0;int&#x00A0;set_gap(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;0&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;pair&#x00A0;;&#x00A0;1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;connected&#x00A0;;&#x00A0;2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;one<span 
-class="cmsy-10">-</span>gapper&#x00A0;...&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;rankhiplayer<span 
-class="cmsy-10">-</span>rankloplayer;&#x00A0;}&#x00A0;bool&#x00A0;set_SB(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;checks&#x00A0;if&#x00A0;sblind&#x00A0;was&#x00A0;posted&#x00A0;at&#x00A0;the&#x00A0;table&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i=0;i&#x003C;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003C;&#x00A0;bblind<span 
-class="cmsy-10">-</span>0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8008r8"></a></span>}&#x00A0;int&#x00A0;pf_pos(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;current&#x00A0;position&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;dealposition&#x00A0;=&#x00A0;(int)gws("dealposition");&#x00A0;&#x00A0;&#x00A0;int&#x00A0;nopponentsdealt&#x00A0;=&#x00A0;(int)gws("nopponentsdealt");&#x00A0;<br /><span class="label"><a 
- id="x1-8009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(SB){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[2]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{<span 
-class="cmsy-10">-</span>1}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[3]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;3){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[4]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;4){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[5]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;5){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[6]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;6){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[7]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;7){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[8]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;8){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[9]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;9){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[10]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>1},{<span 
-class="cmsy-10">-</span>2},{7},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[2]&#x00A0;=&#x00A0;{{0},{<span 
-class="cmsy-10">-</span>2}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[3]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;3){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[4]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;4){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[5]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;5){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[6]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;6){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[7]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;7){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[8]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(nopponentsdealt&#x00A0;==&#x00A0;8){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;pos[9]&#x00A0;=&#x00A0;{{<span 
-class="cmsy-10">-</span>2},{7},{6},{5},{4},{3},{2},{1},{0}};&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;pos[dealposition<span 
-class="cmsy-10">-</span>1];&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8011r11"></a></span>}&#x00A0;bool&#x00A0;is_playing(int&#x00A0;chair){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;if&#x00A0;player&#x00A0;is&#x00A0;playing&#x00A0;at&#x00A0;specified&#x00A0;chair&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;bitset&#x003C;16&#x003E;&#x00A0;lok_play((int)gws("playersplayingbits"));&#x00A0;<br /><span class="label"><a 
- id="x1-8012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_play.test(chair);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;double&#x00A0;set_ncurrentbet(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;maximum&#x00A0;currentbet&#x00A0;on&#x00A0;the&#x00A0;table&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dumpvar&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8013r13"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i&#x00A0;=&#x00A0;0;&#x00A0;i&#x00A0;&#x003C;&#x00A0;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(i)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003E;&#x00A0;dumpvar){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;dumpvar&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8014r14"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dumpvar;&#x00A0;}&#x00A0;int&#x00A0;set_nopponentsbetting(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;number&#x00A0;of&#x00A0;opponents&#x00A0;betting&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;lok_count&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8015r15"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;k=0;k&#x003C;10;k++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(k)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003E;&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;k&#x00A0;!=&#x00A0;userchair){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;lok_count++;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8016r16"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_count;&#x00A0;<br /><span class="label"><a 
- id="x1-8017r17"></a></span>}&#x00A0;int&#x00A0;set_nopponentscalling(){&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;number&#x00A0;of&#x00A0;opponents&#x00A0;betting&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;lok_count&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8018r18"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;k=0;k&#x003C;10;k++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(k)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003E;&#x00A0;ncurrentbet<span 
-class="cmsy-10">-</span>0.01&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;&amp;&#x00A0;k&#x00A0;!=&#x00A0;userchair&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet&#x00A0;&#x003C;&#x00A0;ncurrentbet+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;lok_count++;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8019r19"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(lok_count<span 
-class="cmsy-10">-</span>1&#x00A0;&#x003E;&#x00A0;0){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;lok_count<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8020r20"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8021r21"></a></span>}&#x00A0;int&#x00A0;set_pf_entered(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;amout&#x00A0;of&#x00A0;players&#x00A0;who&#x00A0;entered&#x00A0;the&#x00A0;pot&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(SB){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x00A0;==&#x00A0;<span 
-class="cmsy-10">-</span>2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos==&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>2;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;else{&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos==&#x00A0;<span 
-class="cmsy-10">-</span>2){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(pf_my_pos&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;nopponentsbetting<span 
-class="cmsy-10">-</span>1;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8022r22"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8023r23"></a></span>}&#x00A0;double&#x00A0;set_stack_depth(){&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;returns&#x00A0;the&#x00A0;max(userbalance&#x00A0;,&#x00A0;raiserbalance)&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dumpvar&#x00A0;=&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-8024r24"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;for(int&#x00A0;i&#x00A0;=&#x00A0;0;&#x00A0;i&#x00A0;&#x003C;&#x00A0;10;i++){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(is_playing(i)&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet<span 
-class="cmsy-10">-</span>currentbet&#x00A0;&#x003E;&#x00A0;dumpvar&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;&amp;&#x00A0;i&#x00A0;!=&#x00A0;userchair&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003E;&#x00A0;ncurrentbet<span 
-class="cmsy-10">-</span>0.01&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&amp;&amp;&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet&#x00A0;&#x003C;&#x00A0;ncurrentbet+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;dumpvar&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet<span 
-class="cmsy-10">-</span>currentbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(balance&#x00A0;&#x003E;&#x00A0;dumpvar){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;balance;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-8025r25"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dumpvar;&#x00A0;<br /><span class="label"><a 
- id="x1-8026r26"></a></span>}&#x00A0;void&#x00A0;int_oh_symbols(){&#x00A0;<br /><span class="label"><a 
- id="x1-8027r27"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//GENERAL&#x00A0;VARS&#x00A0;SB&#x00A0;=&#x00A0;set_SB();&#x00A0;ismyturn&#x00A0;=&#x00A0;(int)gws("ismyturn");&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;betround&#x00A0;=&#x00A0;(int)gws("betround");&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;userchair&#x00A0;=&#x00A0;(int)gws("userchair");&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;bblind&#x00A0;=&#x00A0;gws("bblind");&#x00A0;<br /><span class="label"><a 
- id="x1-8028r28"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//MONEY&#x00A0;VARS&#x00A0;&#x00A0;&#x00A0;pot&#x00A0;=&#x00A0;gws("pot");&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;currentbet&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[userchair].m_currentbet;&#x00A0;&#x00A0;&#x00A0;ncurrentbet&#x00A0;=&#x00A0;set_ncurrentbet();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;call&#x00A0;=&#x00A0;ncurrentbet<span 
-class="cmsy-10">-</span>currentbet;&#x00A0;balance&#x00A0;=&#x00A0;m_holdem_state[(m_ndx)&amp;0xff].m_player[userchair].m_balance;&#x00A0;stack_depth&#x00A0;=&#x00A0;set_stack_depth();&#x00A0;<br /><span class="label"><a 
- id="x1-8029r29"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//OPPONENT&#x00A0;VARS&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;nopponentsbetting&#x00A0;=&#x00A0;set_nopponentsbetting();&#x00A0;&#x00A0;&#x00A0;nopponentscalling&#x00A0;=&#x00A0;set_nopponentscalling();&#x00A0;<br /><span class="label"><a 
- id="x1-8030r30"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//preflop&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;pf_my_pos&#x00A0;=&#x00A0;pf_pos();&#x00A0;pf_entered&#x00A0;=&#x00A0;set_pf_entered();&#x00A0;<br /><span class="label"><a 
- id="x1-8031r31"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//updating&#x00A0;card&#x00A0;values&#x00A0;set_card_values();&#x00A0;<br /><span class="label"><a 
- id="x1-8032r32"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//updating&#x00A0;hand&#x00A0;values&#x00A0;issuited&#x00A0;=&#x00A0;set_suited();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;rankhiplayer&#x00A0;=&#x00A0;set_rankloplayer();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;rankloplayer&#x00A0;=&#x00A0;set_rankhiplayer();&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;gap&#x00A0;=&#x00A0;set_gap();&#x00A0;<br /><span class="label"><a 
- id="x1-8033r33"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//updating&#x00A0;flush&#x00A0;rank&#x00A0;flushrank&#x00A0;=&#x00A0;set_flush_rank();&#x00A0;<br /><span class="label"><a 
- id="x1-8034r34"></a></span>}
-   </div>
-   <h4 class="subsectionHead"><a 
- id="x1-9000"></a>Remarks on Preflop Code</h4>
-<!--l. 230--><p class="noindent" >I will distinguish between the following scenarios:
-           <ul class="itemize1">
-        <li class="itemize">first in
-           </li>
-        <li class="itemize">limpers/minraise
-           </li>
-        <li class="itemize">raised pot lower than 6bb
-           </li>
-        <li class="itemize">rest</li></ul>
-<!--l. 237--><p class="noindent" >I also define the following standart bet amounts:
-   <!--l. 240-->
-   <div class="lstlisting" id="listing-11"><span class="label"><a 
- id="x1-9001r1"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_raise&#x00A0;=&#x00A0;(pf_entered+4)<span 
-class="cmsy-10">*</span>bblind+0.01;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_minbet_raise&#x00A0;=&#x00A0;(2<span 
-class="cmsy-10">*</span>nopponentscalling+(pf_entered<span 
-class="cmsy-10">-</span>nopponentscalling)+6)<span 
-class="cmsy-10">*</span>bblind+0.01;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_Xbet&#x00A0;=&#x00A0;(3+nopponentscalling)<span 
-class="cmsy-10">*</span>(call+currentbet);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dothecall&#x00A0;=&#x00A0;0.01;&#x00A0;//will&#x00A0;call&#x00A0;if&#x00A0;amount&#x00A0;returned&#x00A0;by&#x00A0;dll&#x00A0;&#x003E;&#x00A0;0
-   </div>
-<!--l. 245--><p class="indent" >   e.g:
-           <ul class="itemize1">
-        <li class="itemize">2 limpers -&#x003E; raise = 6BB
-           </li>
-        <li class="itemize">1 minbettor -&#x003E; raise = 7BB
-           </li>
-        <li class="itemize">4BB raise -&#x003E; raise = 12BB</li></ul>
-   <h5 class="subsubsectionHead"><a 
- id="x1-10000"></a>Source Code</h5>
-   <!--l. 255-->
-   <div class="lstlisting" id="listing-12"><span class="label"><a 
- id="x1-10001r1"></a></span>double&#x00A0;preflop(){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;/<span 
-class="cmsy-10">*</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;preflop&#x00A0;code&#x00A0;&#x00A0;&#x00A0;<span 
-class="cmsy-10">*</span>/&#x00A0;<br /><span class="label"><a 
- id="x1-10002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_raise&#x00A0;=&#x00A0;(pf_entered+4)<span 
-class="cmsy-10">*</span>bblind+0.01;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_minbet_raise&#x00A0;=&#x00A0;(2<span 
-class="cmsy-10">*</span>nopponentscalling+(pf_entered<span 
-class="cmsy-10">-</span>nopponentscalling)+6)<span 
-class="cmsy-10">*</span>bblind+0.01;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;standart_Xbet&#x00A0;=&#x00A0;(3+nopponentscalling)<span 
-class="cmsy-10">*</span>(call+currentbet);&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;double&#x00A0;dothecall&#x00A0;=&#x00A0;0.01;&#x00A0;<br /><span class="label"><a 
- id="x1-10003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;//FIRST&#x00A0;IN&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;if(currentbet&#x00A0;&#x003C;&#x00A0;sblind+0.01&#x00A0;&amp;&amp;&#x00A0;pot&#x00A0;&#x003C;&#x00A0;bblind+sblind+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//BETTING&#x00A0;STANDARTS:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+7&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+6&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+1&#x00A0;&#x00A0;R&#x00A0;99+,&#x00A0;AQ+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+5&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+2&#x00A0;&#x00A0;R&#x00A0;88+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+4&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;66+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+3&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;22+,&#x00A0;AJ+,&#x00A0;KQ&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;22+,&#x00A0;AT+,&#x00A0;KJ+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;CO&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;22+,&#x00A0;A8+,&#x00A0;AXs,&#x00A0;XT+,&#x00A0;54s+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+0&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;BU&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;22+,&#x00A0;AX+,&#x00A0;KXs,&#x00A0;K7+,&#x00A0;Q5s+,&#x00A0;Q8+,&#x00A0;97s+,&#x00A0;X9+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//<span 
-class="cmsy-10">-</span>1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SB&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;22+,&#x00A0;A8+,&#x00A0;AXs,&#x00A0;JT+,&#x00A0;54s+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;8&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;7&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;7&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;6&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;5&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;5&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;4&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;11&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;6&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;4&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;7&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;6&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;4&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;6&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;7&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;4&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;11&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;8&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;&#x003E;&#x00A0;8&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;6&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;8&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;gap&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;standart_raise;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;//LIMPERS&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;if(ncurrentbet&#x00A0;&#x003C;&#x00A0;bblind+0.01&#x00A0;&amp;&amp;&#x00A0;pot&#x00A0;&#x003E;&#x00A0;bblind+sblind+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//BETTING&#x00A0;STANDARTS:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+6&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+1&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;ATs+,&#x00A0;KJs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+5&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+2&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;ATs+,&#x00A0;KJs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+4&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;ATs+,&#x00A0;KJs&#x00A0;C2&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+3&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;ATs+,&#x00A0;KJs&#x00A0;C2&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;ATs+,&#x00A0;KJs&#x00A0;C2&#x00A0;54s+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;CO&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;AXs,&#x00A0;JTs+,&#x00A0;54s+&#x00A0;R2&#x00A0;22+,&#x00A0;A8s+,&#x00A0;JT+,&#x00A0;54s+&#x00A0;C2&#x00A0;54o+,&#x00A0;53+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+0&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;BU&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;AXs,&#x00A0;JTs+,&#x00A0;54s+&#x00A0;R2&#x00A0;22+,&#x00A0;AXs,&#x00A0;J8s+,&#x00A0;JT+,&#x00A0;54s+&#x00A0;C2&#x00A0;54o+,&#x00A0;53+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//<span 
-class="cmsy-10">-</span>1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SB&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;C&#x00A0;22+,&#x00A0;AXs,&#x00A0;JTs+,&#x00A0;54s+&#x00A0;C2&#x00A0;XXs,&#x00A0;54o+,&#x00A0;53+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//<span 
-class="cmsy-10">-</span>2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;BB&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+,&#x00A0;AJs+,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;=&#x00A0;10&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;11&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;5&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;7&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;5&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;7&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;gap&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003C;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;standart_raise;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003E;&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;5&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;gap&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;gap&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003E;&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;gap&#x00A0;==&#x00A0;2&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003E;&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003E;&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dothecall;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;//MINRAISE&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;if(ncurrentbet&#x00A0;&#x003E;&#x00A0;bblind+0.01&#x00A0;&amp;&amp;&#x00A0;ncurrentbet&#x00A0;&#x003C;&#x00A0;2<span 
-class="cmsy-10">*</span>bblind+0.01&#x00A0;&amp;&amp;&#x00A0;pot&#x00A0;&#x003E;&#x00A0;bblind+sblind+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//BETTING&#x00A0;STANDARTS:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+6&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+1&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+5&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;UTG+2&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+4&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;C2&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+3&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;C2&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;MP3&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;C2&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;CO&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AXs,&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//+0&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;BU&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AXs,&#x00A0;JTs+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//<span 
-class="cmsy-10">-</span>1&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;SB&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//<span 
-class="cmsy-10">-</span>2&#x00A0;<span 
-class="cmsy-10">-</span>&#x00A0;BB&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AQ+&#x00A0;C&#x00A0;22+,&#x00A0;AJs,&#x00A0;KQs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;11&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;standart_minbet_raise;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;10&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;13&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;==&#x00A0;12&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_entered&#x00A0;&#x003E;&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;5&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003E;&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;&#x003C;&#x00A0;2&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dothecall;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;//RAISED&#x00A0;POT&#x00A0;6<span 
-class="cmsy-10">*</span>BB<span 
-class="cmsy-10">-</span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;if(currentbet&#x00A0;&#x003C;&#x00A0;0.01&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003E;&#x00A0;2<span 
-class="cmsy-10">*</span>bblind+0.01&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003C;&#x00A0;6<span 
-class="cmsy-10">*</span>bblind+0.01&#x00A0;&#x00A0;&#x00A0;||&#x00A0;currentbet&#x00A0;&#x003C;&#x00A0;sblind+0.01&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;<span 
-class="cmsy-10">-</span>1&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003E;&#x00A0;2<span 
-class="cmsy-10">*</span>bblind<span 
-class="cmsy-10">-</span>sblind+0.01&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003C;&#x00A0;6<span 
-class="cmsy-10">*</span>bblind<span 
-class="cmsy-10">-</span>sblind+0.01&#x00A0;&#x00A0;&#x00A0;||&#x00A0;currentbet&#x00A0;&#x003C;&#x00A0;bblind+0.01&#x00A0;&amp;&amp;&#x00A0;pf_my_pos&#x00A0;==&#x00A0;<span 
-class="cmsy-10">-</span>2&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003E;&#x00A0;bblind+0.01&#x00A0;&amp;&amp;&#x00A0;call&#x00A0;&#x003C;&#x00A0;5<span 
-class="cmsy-10">*</span>bblind+0.01){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//BETTING&#x00A0;STANDARTS:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;TT+,&#x00A0;AK&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;9&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;==&#x00A0;13&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;standart_Xbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;//REST&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//BETTING&#x00A0;STANDARTS:&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;R&#x00A0;KK+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;C&#x00A0;22+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;(at&#x00A0;least&#x00A0;1:20&#x00A0;(stack+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;ratio&#x00A0;of&#x00A0;the&#x00A0;raising&#x00A0;chair)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;C&#x00A0;54s+&#x00A0;and&#x00A0;JTs+&#x00A0;(at&#x00A0;least&#x00A0;1:20&#x00A0;(stack+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;ratio&#x00A0;of&#x00A0;the&#x00A0;raising&#x00A0;chair)&#x00A0;and&#x00A0;1&#x00A0;caller+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;//&#x00A0;&#x00A0;&#x00A0;&#x00A0;C&#x00A0;AXs&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;(at&#x00A0;least&#x00A0;1:20&#x00A0;(stack+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;ratio&#x00A0;of&#x00A0;the&#x00A0;raising&#x00A0;chair)&#x00A0;and&#x00A0;2&#x00A0;caller+&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;12){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;standart_Xbet;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;if(gap&#x00A0;==&#x00A0;0&#x00A0;&amp;&amp;&#x00A0;(stack_depth+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;&#x003E;&#x00A0;19&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;rankloplayer&#x00A0;&#x003E;&#x00A0;3&#x00A0;&amp;&amp;&#x00A0;gap&#x00A0;==&#x00A0;1&#x00A0;&amp;&amp;&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;(stack_depth+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;&#x003E;&#x00A0;19&#x00A0;&amp;&amp;&#x00A0;nopponentscalling&#x00A0;&#x003E;&#x00A0;0&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;||&#x00A0;issuited&#x00A0;&amp;&amp;&#x00A0;rankhiplayer&#x00A0;==&#x00A0;14&#x00A0;&amp;&amp;&#x00A0;(stack_depth+pot<span 
-class="cmsy-10">-</span>call)/call&#x00A0;&#x003E;&#x00A0;19&#x00A0;&amp;&amp;&#x00A0;nopponentscalling&#x00A0;&#x003E;&#x00A0;1&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;){&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;dothecall;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
- id="x1-10004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;0;&#x00A0;<br /><span class="label"><a 
- id="x1-10005r5"></a></span>}
-   </div>
-<!--l. 264--><p class="indent" >   I think it&#8217;s pretty much self explaining. If you have any questions please ask in the
-forum thread. The code itself is untested in this form, all I know is that it compiles, but
-there has not been any bug testing and I don&#8217;t know if all values are set as they are
-supposed to, if you find any bugs please report.
-   <h4 class="subsectionHead"><a 
- id="x1-11000"></a>Files</h4>
-<!--l. 273--><p class="noindent" >The files for this tutorial can be found here:
-<a 
-href="http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-D.rar" class="url" ><span 
-class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-D.rar</span></a>.
- 
-</body></html> 
+</div>
+<div class="Indented">
+First we need a function to set our card values:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">void set_card_values(){ 	/* 		sets the card values 	*/
+  //pocket cards 	card[0][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);
+  card[0][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);
+  card[1][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+  card[1][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+  //board cards 	
+  for(int u=0;u&lt;5;u++){ 		
+    card[u+2][0] = RANK(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);
+    card[u+2][1] = SUIT(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]);
+  } 
+}
+</pre>
+</div>
 
+</div>
+<div class="Indented">
+Note that we used the card macros RANK &amp; SUIT, which were provided with the basic dll. These macros convert the "unsigned char" values to "integer" values:
+</div>
+<div class="Indented">
+rank 2 ; ... ; 14=A suit 1=C ; 2=D ; 3=H ; 4=S
+</div>
+<div class="Indented">
+Now we can define the functions to set our variables: 
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">int set_rankhiplayer(){ 	
+  /* 		returns hi player rank 	*/ 	
+  if(card[0][0] &gt; card[1][0]){
+    return card[0][0]; 	
+  } else {
+    return card[1][0];
+  }
+} 
+​
+int set_rankloplayer(){
+  /* 		returns lo player rank 	*/
+  if(card[0][0] &gt; card[1][0]){
+    return card[1][0];
+  } else { 		
+    return card[0][0];
+  } 
+} 
+​
+bool set_suited() { 	
+  /* 		1 - suited ; 0 -unsuited 	*/ 	
+  if(card[0][1] == card[1][1]) {
+    return 1; 	
+  } else {
+    return 0;
+  } 
+} 
+​
+int set_gap() { 	
+  /* 		0 - pair ; 1 - connected ; 2 - one-gapper ... 	*/ 	
+  return rankhiplayer-rankloplayer; 
+}
+</pre>
+</div>
 
+</div>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-2"></a>Position
+</h4>
+<div class="Unindented">
+I will use the following convention here, since i’ve grown quite familiar to it and it makes a lot of sense.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">7 UTG  6 UTG+1  5 UTG+2  4 MP1  3 MP2  2 MP3  1 CO  0 BU -1 SB -2 BB
+</pre>
+</div>
 
+</div>
+<div class="Indented">
+The first problem you can encounter at some pokersites is that some actually allow hands without a small blind. We need to take care of that:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">bool set_SB(){ 	/* 		checks if sblind was posted at the table 	*/ 	for(int i=0;i&lt;10;i++){ 		if(m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &lt; bblind-0.01){ 			return 1; 		} 	}
+	return 0;
+}
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+The function above determins if there is a small blind present at the table. The function below determins our position:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">int pf_pos(){ 	/* 		returns the current position 	*/ 	int dealposition = (int)gws("dealposition"); 	int nopponentsdealt = (int)gws("nopponentsdealt");
+	if(SB){ 		if(nopponentsdealt == 1){ 			int pos[2] = {{-2},{-1}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 2){ 			int pos[3] = {{-1},{-2},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 3){ 			int pos[4] = {{-1},{-2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 4){ 			int pos[5] = {{-1},{-2},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 5){ 			int pos[6] = {{-1},{-2},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 6){ 			int pos[7] = {{-1},{-2},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 7){ 			int pos[8] = {{-1},{-2},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 8){ 			int pos[9] = {{-1},{-2},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 9){ 			int pos[10] = {{-1},{-2},{7},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 	} 	else{ 		if(nopponentsdealt == 1){ 			int pos[2] = {{0},{-2}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 2){ 			int pos[3] = {{-2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 3){ 			int pos[4] = {{-2},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 4){ 			int pos[5] = {{-2},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 5){ 			int pos[6] = {{-2},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 6){ 			int pos[7] = {{-2},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 7){ 			int pos[8] = {{-2},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 8){ 			int pos[9] = {{-2},{7},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 	}
+	return 0;
+}
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+As you can see we also need new variables "nplayersdealt", "dealposition" defined locally and SB should be defined in "OH-globalvars.h" as "bool SB".
+</div>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-3"></a>Money and Player Variables
+</h4>
+<div class="Unindented">
+We will need the following variables:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">bool isminbet; int pf_entered; //how many players entered the pot, including dead money posters int nopponentscalling; //how many opponents called a raise double pot; double call; double currentbet; double ncurrentbet; //maximum currentbet on the table double balance; double stack_depth; //the amount of money which is the max(userbalance, highest balance of opponent still playing)
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">bool is_playing(int chair){ 	/* 		returns if player is playing at specified chair 	*/ 	bitset&lt;16&gt; lok_play((int)gws("playersplayingbits"));
+	return lok_play.test(chair);		 } double set_ncurrentbet(){ 	/* 		returns the maximum currentbet on the table 	*/ 	double dumpvar = 0;
+	for(int i = 0; i &lt; 10;i++){ 		if(is_playing(i) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &gt; dumpvar){ 			dumpvar = m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet; 		} 	}
+	return dumpvar; } int set_nopponentsbetting(){ 	/* 		number of opponents betting 	*/ 	int lok_count = 0;
+	for(int k=0;k&lt;10;k++){ 		if(is_playing(k) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &gt; 0 &amp;&amp; k != userchair){ 			lok_count++; 		} 	}
+	return lok_count;
+} int set_nopponentscalling(){ 	/* 		number of opponents betting 	*/ 	int lok_count = 0;
+	for(int k=0;k&lt;10;k++){ 		if(is_playing(k) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &gt; ncurrentbet-0.01  		&amp;&amp; k != userchair &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &lt; ncurrentbet+0.01){ 			lok_count++; 		} 	}
+	if(lok_count-1 &gt; 0){ 		return lok_count-1; 	}
+	return 0;
+} int set_pf_entered(){ 	/* 		returns amout of players who entered the pot 	*/ 	if(SB){ 		if(pf_my_pos == -2){ 			return nopponentsbetting; 		} 		if(pf_my_pos== -1){ 			return nopponentsbetting-1; 		} 		if(pf_my_pos&gt; -1){ 			return nopponentsbetting-2; 		} 	} 	else{ 		if(pf_my_pos== -2){ 			return nopponentsbetting; 		} 		if(pf_my_pos&gt; -1){ 			return nopponentsbetting-1; 		} 	}
+	return 0;
+} double set_stack_depth(){ 	/* 		returns the max(userbalance , oppbalance) 	*/ 	double dumpvar = 0;
+	for(int i = 0; i &lt; 10;i++){ 		if(is_playing(i) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet-currentbet &gt; dumpvar                  &amp;&amp; i != userchair){ 			dumpvar = m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet-currentbet; 		} 	} 	if(balance &gt; dumpvar){ 		return balance; 	}
+	return dumpvar;
+}
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+The functions above will set some of these values the rest we get with the gws() call. There were only changes made to "OH-general.h" and "OH-globalvars.h" so far, they look like this now:
+</div>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4"></a>OH-globalvars.h
+</h4>
+<div class="Unindented">
+<div class="listing">
+<pre class="listing">///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// //OWN VARS /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//GENERAL VARS bool SB; int userchair; int ismyturn; int betround; double bblind; double decision;
+//MONEY VARS double pot; double call; double currentbet; double ncurrentbet; //maximum currentbet on the table double balance; double stack_depth;
+//OPPONENT VARS int nopponentsbetting; int nopponentscalling; //how many opponents called a raise
+//PREFLOP int pf_my_pos; int pf_entered;
+//SUIT VARS int flushrank;
+//HAND VARS bool issuited; int card[7][2];		//rank 2 ; ... ; 14=A suit 1=C ; 2=D ; 3=H ; 4=S int rankhiplayer; int rankloplayer; int gap;            //0 = pair, 1 = connected, 2 = one-gapper etc...
+</pre>
+</div>
+
+</div>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-5"></a>OH-general.h
+</h4>
+<div class="Unindented">
+<div class="listing">
+<pre class="listing">////////////////////////////////////////////////////////////////////////// //OWN FUNCS ////////////////////////////////////////////////////////////////////////// int set_flush_rank(){
+	bitset&lt;16&gt; srb( (int)gws("srankbits") ); 
+	srb = (~srb ) &gt;&gt;= (int)gws("srankhiplayer"); 
+	return (int)srb.count();  } void set_card_values(){ 	/* 		sets the card values 	*/
+	//pocket cards 	card[0][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]); 	card[0][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]); 	card[1][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]); 	card[1][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+	//board cards 	for(int u=0;u&lt;5;u++){ 		card[u+2][0] = RANK(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]); 		card[u+2][1] = SUIT(m_holdem_state[(m_ndx)&amp;0xff].m_cards[u]); 	} } int set_rankhiplayer(){ 	/* 		returns hi player rank 	*/ 	if(card[0][0] &gt; card[1][0]){ 		return card[0][0]; 	} 	else{ 		return card[1][0]; 	} } int set_rankloplayer(){ 	/* 		returns lo player rank 	*/ 	if(card[0][0] &gt; card[1][0]){ 		return card[1][0]; 	} 	else{ 		return card[0][0]; 	} } bool set_suited(){ 	/* 		1 - suited ; 0 -unsuited 	*/ 	if(card[0][1] == card[1][1]){ 		return 1; 	} 	else{ 		return 0; 	} } int set_gap(){ 	/* 		0 - pair ; 1 - connected ; 2 - one-gapper ... 	*/ 	return rankhiplayer-rankloplayer; } bool set_SB(){ 	/* 		checks if sblind was posted at the table 	*/ 	for(int i=0;i&lt;10;i++){ 		if(m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &lt; bblind-0.01){ 			return 1; 		} 	}
+	return 0;
+} int pf_pos(){ 	/* 		returns the current position 	*/ 	int dealposition = (int)gws("dealposition"); 	int nopponentsdealt = (int)gws("nopponentsdealt");
+	if(SB){ 		if(nopponentsdealt == 1){ 			int pos[2] = {{-2},{-1}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 2){ 			int pos[3] = {{-1},{-2},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 3){ 			int pos[4] = {{-1},{-2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 4){ 			int pos[5] = {{-1},{-2},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 5){ 			int pos[6] = {{-1},{-2},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 6){ 			int pos[7] = {{-1},{-2},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 7){ 			int pos[8] = {{-1},{-2},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 8){ 			int pos[9] = {{-1},{-2},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 9){ 			int pos[10] = {{-1},{-2},{7},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 	} 	else{ 		if(nopponentsdealt == 1){ 			int pos[2] = {{0},{-2}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 2){ 			int pos[3] = {{-2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 3){ 			int pos[4] = {{-2},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 4){ 			int pos[5] = {{-2},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 5){ 			int pos[6] = {{-2},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 6){ 			int pos[7] = {{-2},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 7){ 			int pos[8] = {{-2},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 		if(nopponentsdealt == 8){ 			int pos[9] = {{-2},{7},{6},{5},{4},{3},{2},{1},{0}}; 			return pos[dealposition-1]; 		} 	}
+	return 0;
+} bool is_playing(int chair){ 	/* 		returns if player is playing at specified chair 	*/ 	bitset&lt;16&gt; lok_play((int)gws("playersplayingbits"));
+	return lok_play.test(chair);		 } double set_ncurrentbet(){ 	/* 		returns the maximum currentbet on the table 	*/ 	double dumpvar = 0;
+	for(int i = 0; i &lt; 10;i++){ 		if(is_playing(i) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &gt; dumpvar){ 			dumpvar = m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet; 		} 	}
+	return dumpvar; } int set_nopponentsbetting(){ 	/* 		number of opponents betting 	*/ 	int lok_count = 0;
+	for(int k=0;k&lt;10;k++){ 		if(is_playing(k) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &gt; 0 &amp;&amp; k != userchair){ 			lok_count++; 		} 	}
+	return lok_count;
+} int set_nopponentscalling(){ 	/* 		number of opponents betting 	*/ 	int lok_count = 0;
+	for(int k=0;k&lt;10;k++){ 		if(is_playing(k) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &gt; ncurrentbet-0.01  		&amp;&amp; k != userchair &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[k].m_currentbet &lt; ncurrentbet+0.01){ 			lok_count++; 		} 	}
+	if(lok_count-1 &gt; 0){ 		return lok_count-1; 	}
+	return 0;
+} int set_pf_entered(){ 	/* 		returns amout of players who entered the pot 	*/ 	if(SB){ 		if(pf_my_pos == -2){ 			return nopponentsbetting; 		} 		if(pf_my_pos== -1){ 			return nopponentsbetting-1; 		} 		if(pf_my_pos&gt; -1){ 			return nopponentsbetting-2; 		} 	} 	else{ 		if(pf_my_pos== -2){ 			return nopponentsbetting; 		} 		if(pf_my_pos&gt; -1){ 			return nopponentsbetting-1; 		} 	}
+	return 0;
+} double set_stack_depth(){ 	/* 		returns the max(userbalance , raiserbalance) 	*/ 	double dumpvar = 0;
+	for(int i = 0; i &lt; 10;i++){ 		if(is_playing(i) &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet-currentbet &gt; dumpvar  		&amp;&amp; i != userchair &amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &gt; ncurrentbet-0.01 		&amp;&amp; m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet &lt; ncurrentbet+0.01){ 			dumpvar = m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_balance+m_holdem_state[(m_ndx)&amp;0xff].m_player[i].m_currentbet-currentbet; 		} 	} 	if(balance &gt; dumpvar){ 		return balance; 	}
+	return dumpvar;
+} void int_oh_symbols(){
+	//GENERAL VARS 	SB = set_SB(); 	ismyturn = (int)gws("ismyturn"); 	betround = (int)gws("betround"); 	userchair = (int)gws("userchair"); 	bblind = gws("bblind");
+	//MONEY VARS 	pot = gws("pot"); 	currentbet = m_holdem_state[(m_ndx)&amp;0xff].m_player[userchair].m_currentbet; 	ncurrentbet = set_ncurrentbet(); 	call = ncurrentbet-currentbet; 	balance = m_holdem_state[(m_ndx)&amp;0xff].m_player[userchair].m_balance; 	stack_depth = set_stack_depth();
+	//OPPONENT VARS 	nopponentsbetting = set_nopponentsbetting(); 	nopponentscalling = set_nopponentscalling();
+	//preflop 	pf_my_pos = pf_pos(); 	pf_entered = set_pf_entered();
+	//updating card values 	set_card_values();
+	//updating hand values 	issuited = set_suited(); 	rankhiplayer = set_rankloplayer(); 	rankloplayer = set_rankhiplayer(); 	gap = set_gap();
+	//updating flush rank 	flushrank = set_flush_rank();
+}
+</pre>
+</div>
+
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-3"></a>Remarks on Preflop Code
+</h3>
+<div class="Unindented">
+I will distinguish between the following scenarios:
+</div>
+<ul>
+<li>
+first in 
+</li>
+<li>
+limpers/minraise
+</li>
+<li>
+raised pot lower than 6bb 
+</li>
+<li>
+rest
+</li>
+
+</ul>
+<div class="Unindented">
+I also define the following standart bet amounts:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">	double standart_raise = (pf_entered+4)*bblind+0.01; 	double standart_minbet_raise = (2*nopponentscalling+(pf_entered-nopponentscalling)+6)*bblind+0.01; 	double standart_Xbet = (3+nopponentscalling)*(call+currentbet); 	double dothecall = 0.01; //will call if amount returned by dll &gt; 0
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+e.g:
+</div>
+<ul>
+<li>
+2 limpers -&gt; raise = 6BB
+</li>
+<li>
+1 minbettor -&gt; raise = 7BB
+</li>
+<li>
+4BB raise -&gt; raise = 12BB
+</li>
+
+</ul>
+<h4 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-6"></a>Source Code
+</h4>
+<div class="Unindented">
+<div class="listing">
+<pre class="listing">double preflop(){ 	/* 		preflop code 	*/
+	double standart_raise = (pf_entered+4)*bblind+0.01; 	double standart_minbet_raise = (2*nopponentscalling+(pf_entered-nopponentscalling)+6)*bblind+0.01; 	double standart_Xbet = (3+nopponentscalling)*(call+currentbet); 	double dothecall = 0.01;
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	//FIRST IN 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	if(currentbet &lt; sblind+0.01 &amp;&amp; pot &lt; bblind+sblind+0.01){ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		//BETTING STANDARTS: 		// 		//+7 - UTG		R TT+, AQ+ 		//+6 - UTG+1	R 99+, AQ+ 		//+5 - UTG+2	R 88+, AQ+, AJs+, KQs 		//+4 - MP1		R 66+, AQ+, AJs+, KQs 		//+3 - MP2		R 22+, AJ+, KQ 		//+2 - MP3		R 22+, AT+, KJ+ 		//+1 - CO		R 22+, A8+, AXs, XT+, 54s+ 		//+0 - BU		R 22+, AX+, KXs, K7+, Q5s+, Q8+, 97s+, X9+ 		//-1 - SB		R 22+, A8+, AXs, JT+, 54s+ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		if(gap == 0 &amp;&amp; rankloplayer &gt; 9 		|| gap == 0 &amp;&amp; rankloplayer &gt; 8 &amp;&amp; pf_my_pos &lt; 7 		|| gap == 0 &amp;&amp; rankloplayer &gt; 7 &amp;&amp; pf_my_pos &lt; 6 		|| gap == 0 &amp;&amp; rankloplayer &gt; 5 &amp;&amp; pf_my_pos &lt; 5 		|| gap == 0 &amp;&amp; pf_my_pos &lt; 4 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 11 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 6 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; pf_my_pos &lt; 4 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 9 &amp;&amp; pf_my_pos &lt; 3 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 7 &amp;&amp; pf_my_pos &lt; 2 		|| rankhiplayer == 14 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 2 		|| rankhiplayer == 14 &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 13 &amp;&amp; rankloplayer == 12 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 6 		|| rankhiplayer == 13 &amp;&amp; rankloplayer == 12 &amp;&amp; pf_my_pos &lt; 4 		|| rankhiplayer == 13 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; pf_my_pos &lt; 3 		|| rankhiplayer == 13 &amp;&amp; rankloplayer &gt; 6 &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 13 &amp;&amp; issuited &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 12 &amp;&amp; rankloplayer &gt; 7 &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 12 &amp;&amp; rankloplayer &gt; 4 &amp;&amp; issuited &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 11 &amp;&amp; rankloplayer &gt; 8 &amp;&amp; pf_my_pos == 0 		|| rankhiplayer &gt; 8 &amp;&amp; rankloplayer &gt; 6 &amp;&amp; issuited &amp;&amp; pf_my_pos == 0 		|| rankloplayer &gt; 9 &amp;&amp; pf_my_pos &lt; 2 		|| rankloplayer &gt; 8 &amp;&amp; pf_my_pos == 0 		|| rankloplayer &gt; 3 &amp;&amp; gap == 1 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 2 		){ 			return standart_raise; 		} 	} 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	//LIMPERS 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	if(ncurrentbet &lt; bblind+0.01 &amp;&amp; pot &gt; bblind+sblind+0.01){ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		//BETTING STANDARTS: 		// 		//+6 - UTG+1	R TT+, AQ+ C 22+, ATs+, KJs 		//+5 - UTG+2	R TT+, AQ+ C 22+, ATs+, KJs 		//+4 - MP1		R TT+, AQ+, AJs+, KQs C 22+, ATs+, KJs C2 JTs+ 		//+3 - MP2		R TT+, AQ+, AJs+, KQs C 22+, ATs+, KJs C2 JTs+ 		//+2 - MP3		R TT+, AQ+, AJs+, KQs C 22+, ATs+, KJs C2 54s+ 		//+1 - CO		R TT+, AQ+, AJs+, KQs C 22+, AXs, JTs+, 54s+ R2 22+, A8s+, JT+, 54s+ C2 54o+, 53+ 		//+0 - BU		R TT+, AQ+, AJs+, KQs C 22+, AXs, JTs+, 54s+ R2 22+, AXs, J8s+, JT+, 54s+ C2 54o+, 53+ 		//-1 - SB		R TT+, AQ+, AJs+, KQs C 22+, AXs, JTs+, 54s+ C2 XXs, 54o+, 53+ 		//-2 - BB		R TT+, AQ+, AJs+, KQs 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		if(gap == 0 &amp;&amp; rankloplayer &gt;= 10 		|| gap == 0 &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 11 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 5 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 9 &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 7 &amp;&amp; issuited &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		|| rankhiplayer == 14 &amp;&amp; issuited &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos == 0 		|| rankhiplayer == 13 &amp;&amp; rankloplayer == 12 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 5 		|| rankloplayer &gt; 9 &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		|| rankloplayer &gt; 7 &amp;&amp; issuited &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos == 0 		|| rankloplayer &gt; 3 &amp;&amp; gap == 1 &amp;&amp; issuited &amp;&amp; pf_entered &lt; 3 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 3 		){ 			return standart_raise; 		} 		if(gap == 0 			|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 9 &amp;&amp; issuited 			|| rankhiplayer == 14 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 2 			|| rankhiplayer == 13 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; issuited 			|| rankloplayer &gt; 9 &amp;&amp; issuited &amp;&amp; pf_entered &gt; 1 &amp;&amp; pf_my_pos &lt; 5 			|| rankloplayer &gt; 9 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 2 			|| rankloplayer &gt; 3 &amp;&amp; gap == 1 &amp;&amp; issuited &amp;&amp; pf_my_pos &lt; 2 			|| rankloplayer &gt; 3 &amp;&amp; gap == 1 &amp;&amp; pf_entered &gt; 1 &amp;&amp; pf_my_pos &lt; 3 			|| gap == 2 &amp;&amp; pf_entered &gt; 1 &amp;&amp; pf_my_pos &lt; 3 			|| issuited &amp;&amp; pf_entered &gt; 1 &amp;&amp; pf_my_pos == -1 			){ 				return dothecall; 		} 	} 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	//MINRAISE 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	if(ncurrentbet &gt; bblind+0.01 &amp;&amp; ncurrentbet &lt; 2*bblind+0.01 &amp;&amp; pot &gt; bblind+sblind+0.01){ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		//BETTING STANDARTS: 		// 		//+6 - UTG+1	R TT+, AQ+ C 22+, AJs, KQs 		//+5 - UTG+2	R TT+, AQ+ C 22+, AJs, KQs 		//+4 - MP1		R TT+, AQ+ C 22+, AJs, KQs C2 JTs+ 		//+3 - MP2		R TT+, AQ+ C 22+, AJs, KQs C2 JTs+ 		//+2 - MP3		R TT+, AQ+ C 22+, AJs, KQs C2 JTs+ 		//+1 - CO		R TT+, AQ+ C 22+, AXs, JTs+ 		//+0 - BU		R TT+, AQ+ C 22+, AXs, JTs+ 		//-1 - SB		R TT+, AQ+ C 22+, AJs, KQs 		//-2 - BB		R TT+, AQ+ C 22+, AJs, KQs 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////				 		if(gap == 0 &amp;&amp; rankloplayer &gt; 9 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 11 		){ 				return standart_minbet_raise; 		} 		if(gap == 0 		|| rankhiplayer == 14 &amp;&amp; rankloplayer &gt; 10 &amp;&amp; issuited 		|| rankhiplayer == 13 &amp;&amp; rankloplayer == 12 &amp;&amp; issuited 		|| rankloplayer &gt; 9 &amp;&amp; issuited &amp;&amp; pf_entered &gt; 1 &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 5 		|| rankhiplayer == 14 &amp;&amp; issuited &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		|| rankloplayer &gt; 9 &amp;&amp; issuited &amp;&amp; pf_my_pos &gt; -1 &amp;&amp; pf_my_pos &lt; 2 		){ 				return dothecall; 		} 	} 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	//RAISED POT 6*BB- 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	if(currentbet &lt; 0.01 &amp;&amp; call &gt; 2*bblind+0.01 &amp;&amp; call &lt; 6*bblind+0.01 	|| currentbet &lt; sblind+0.01 &amp;&amp; pf_my_pos == -1 &amp;&amp; call &gt; 2*bblind-sblind+0.01 &amp;&amp; call &lt; 6*bblind-sblind+0.01 	|| currentbet &lt; bblind+0.01 &amp;&amp; pf_my_pos == -2 &amp;&amp; call &gt; bblind+0.01 &amp;&amp; call &lt; 5*bblind+0.01){ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		//BETTING STANDARTS: 		// 		//	R TT+, AK  		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		if(gap == 0 &amp;&amp; rankloplayer &gt; 9 		|| rankhiplayer == 14 &amp;&amp; rankloplayer == 13 		){ 			return standart_Xbet; 		} 	} 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 	//REST 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		//BETTING STANDARTS: 		// 		//	R KK+ 		//	C 22+			(at least 1:20 (stack+pot-call)/call ratio of the raising chair) 		//  C 54s+ and JTs+ (at least 1:20 (stack+pot-call)/call ratio of the raising chair) and 1 caller+ 		//	C AXs			(at least 1:20 (stack+pot-call)/call ratio of the raising chair) and 2 caller+ 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 		if(gap == 0 &amp;&amp; rankloplayer &gt; 12){ 			return standart_Xbet; 		} 		if(gap == 0 &amp;&amp; (stack_depth+pot-call)/call &gt; 19 		|| rankloplayer &gt; 3 &amp;&amp; gap == 1 &amp;&amp; issuited &amp;&amp; (stack_depth+pot-call)/call &gt; 19 &amp;&amp; nopponentscalling &gt; 0 		|| issuited &amp;&amp; rankhiplayer == 14 &amp;&amp; (stack_depth+pot-call)/call &gt; 19 &amp;&amp; nopponentscalling &gt; 1 		){ 			return dothecall; 		}
+	return 0;
+}
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+I think it’s pretty much self explaining. If you have any questions please ask in the forum thread. The code itself is untested in this form, all I know is that it compiles, but there has not been any bug testing and I don’t know if all values are set as they are supposed to, if you find any bugs please report.
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-4"></a>Files
+</h3>
+<div class="Unindented">
+The files for this tutorial can be found here: <a class="FlexURL" href="http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-D.rar">http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-D.rar</a>. !!!
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-06T23:01:59.046000</span>
+</div>
+</div>
+</body>
+</html>

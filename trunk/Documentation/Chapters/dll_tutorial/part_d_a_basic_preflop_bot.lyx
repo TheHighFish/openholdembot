@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
@@ -9,40 +9,67 @@ theorems-ams
 eqs-within-sections
 figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -150,17 +177,53 @@ void set_card_values(){ 	/* 		sets the card values 	*/
 
 \begin_layout Plain Layout
 
-	//pocket cards 	card[0][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_car
-ds[0]); 	card[0][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);
- 	card[1][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
- 	card[1][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+  //pocket cards 	card[0][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_ca
+rds[0]);
 \end_layout
 
 \begin_layout Plain Layout
 
-	//board cards 	for(int u=0;u<5;u++){ 		card[u+2][0] = RANK(m_holdem_state[(m_nd
-x)&0xff].m_cards[u]); 		card[u+2][1] = SUIT(m_holdem_state[(m_ndx)&0xff].m_cards[u
-]); 	} }
+  card[0][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[0]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  card[1][0] = RANK(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  card[1][1] = SUIT(m_holdem_state[m_ndx].m_player[userchair].m_cards[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  //board cards 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(int u=0;u<5;u++){ 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    card[u+2][0] = RANK(m_holdem_state[(m_ndx)&0xff].m_cards[u]);
+\end_layout
+
+\begin_layout Plain Layout
+
+    card[u+2][1] = SUIT(m_holdem_state[(m_ndx)&0xff].m_cards[u]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -190,14 +253,155 @@ status open
 
 \begin_layout Plain Layout
 
-int set_rankhiplayer(){ 	/* 		returns hi player rank 	*/ 	if(card[0][0]
- > card[1][0]){ 		return card[0][0]; 	} 	else{ 		return card[1][0]; 	} }
- int set_rankloplayer(){ 	/* 		returns lo player rank 	*/ 	if(card[0][0]
- > card[1][0]){ 		return card[1][0]; 	} 	else{ 		return card[0][0]; 	} }
- bool set_suited(){ 	/* 		1 - suited ; 0 -unsuited 	*/ 	if(card[0][1] ==
- card[1][1]){ 		return 1; 	} 	else{ 		return 0; 	} } int set_gap(){ 	/*
- 		0 - pair ; 1 - connected ; 2 - one-gapper ...
- 	*/ 	return rankhiplayer-rankloplayer; }
+int set_rankhiplayer(){ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  /* 		returns hi player rank 	*/ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(card[0][0] > card[1][0]){
+\end_layout
+
+\begin_layout Plain Layout
+
+    return card[0][0]; 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return card[1][0];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+int set_rankloplayer(){
+\end_layout
+
+\begin_layout Plain Layout
+
+  /* 		returns lo player rank 	*/
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(card[0][0] > card[1][0]){
+\end_layout
+
+\begin_layout Plain Layout
+
+    return card[1][0];
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else { 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    return card[0][0];
+\end_layout
+
+\begin_layout Plain Layout
+
+  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+bool set_suited() { 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  /* 		1 - suited ; 0 -unsuited 	*/ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(card[0][1] == card[1][1]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 1; 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  } 
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+int set_gap() { 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  /* 		0 - pair ; 1 - connected ; 2 - one-gapper ...
+ 	*/ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+  return rankhiplayer-rankloplayer; 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -1020,12 +1224,14 @@ The files for this tutorial can be found here:
 status collapsed
 
 \begin_layout Plain Layout
+
 http://www.maxinmontreal.com/wiki/index.php5?title=Image:OH-DLL-D.rar
 \end_layout
 
 \end_inset
 
 .
+ !!!
 \end_layout
 
 \end_body
