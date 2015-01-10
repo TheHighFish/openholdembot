@@ -1,4 +1,4 @@
-v7.4.1 2015-01-07
+v7.4.1 2015-01-xx
 ==================
 NEW stuff:
 - Multiplexor-functionality for the versus-database.
@@ -10,6 +10,12 @@ NEW stuff:
   with vs$multiplex$f$raisersrange$prwin
   without having to create a 101-line-function like before.
   Same works for prtie and prlos of course too,
+  [THF]
+- More flexible heartbeat delay:
+  We already scrape faster if it is our turn to act for faster reaction times.
+  Now we also sleep longer when we have no cards (folded)
+  or if we are not seated at all to optimize CPU-usage.
+  Inspired by an old suggestion of Zippy.
   [THF]
 
 v7.4.0 2015-01-07

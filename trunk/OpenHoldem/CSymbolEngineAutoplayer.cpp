@@ -103,10 +103,10 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 void CSymbolEngineAutoplayer::CalculateSitInState() {
   for (int i=0; i<k_max_number_of_buttons; i++) {
     if (p_string_match->IsStringSitin(p_scraper->button_label(i))) {
-	  // Sitin-button found
+	    // Sitin-button found
       // We are sitting in if that button can NOT be clicked
-	  _issittingin = !p_scraper->GetButtonState(i);
-	  return;
+	    _issittingin = !p_scraper->GetButtonState(i);
+	    return;
     } else if (p_string_match->IsStringSitout(p_scraper->button_label(i))) {
 	  // Sitout-button found
       // We are sitting in if that button CAN be clicked
