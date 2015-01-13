@@ -158,13 +158,9 @@ void CAutoplayerTrace::Print(const char *action_taken) {
   if (!preferences.trace_enabled()) {
     return;
   }
-  if (!log_fp) {
-    return;
-  }
   CSLock lock(log_critsec);
   LogBasicInfo(action_taken);
   LogAutoPlayerTrace();
-  fflush(log_fp);
   Clear();
 }
 
@@ -252,39 +248,38 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
-  fprintf(log_fp, get_time(nowtime));
-  fprintf(log_fp, "**** Basic Info *********************************************\n");
-  fprintf(log_fp, "  Version:       %s\n",    VERSION_TEXT); 
-  fprintf(log_fp, "  Chairs:        %5d\n",   p_tablemap->nchairs());
-  fprintf(log_fp, "  Userchair:     %5d\n",   userchair);
-  fprintf(log_fp, "  Holecards:     %s\n",    pcards.GetString());
-  fprintf(log_fp, "  Community:     %s\n",    comcards.GetString());
-  fprintf(log_fp, "  Handrank:      %s\n",    rank.GetString());
-  fprintf(log_fp, "  Hand:          %s\n",    pokerhand.GetString());
-  fprintf(log_fp, "  My balance:    %9.2f\n", p_table_state->User()->_balance);
-  fprintf(log_fp, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
-  fprintf(log_fp, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
-  fprintf(log_fp, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
-  fprintf(log_fp, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
-  fprintf(log_fp, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
-  fprintf(log_fp, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
-  fprintf(log_fp, "  Formulas:      %s\n",    fcra_formula_status.GetString());
-  fprintf(log_fp, "  Buttons:       %s\n",    fcra_seen.GetString());
-  fprintf(log_fp, "  Best action:   %s\n",    BestAction().GetString());
-  fprintf(log_fp, "  Action taken:  %s\n",    action_taken);
+  write_log_separator(true, "Basic Info");
+  write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
+  write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
+  write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
+  write_log(k_always_log_basic_information, "  Holecards:     %s\n",    pcards.GetString());
+  write_log(k_always_log_basic_information, "  Community:     %s\n",    comcards.GetString());
+  write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
+  write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
+  write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->_balance);
+  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
+  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
+  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
+  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
+  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
+  write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+  write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
+  write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
+  write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
+  write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
+  write_log_separator(true, "");
 }
 
-void CAutoplayerTrace::LogAutoPlayerTrace()
-{
+void CAutoplayerTrace::LogAutoPlayerTrace() {
   if (!preferences.trace_enabled() 
       || (_symboltrace_collection.GetSize() <= 0)) {
     return;
   }
-  write_log_nostamp(true, "***** Autoplayer Trace **************************************\n");
-  for (int i=0; i<_symboltrace_collection.GetSize(); i++)
-  {
+  write_log_separator(true, "Autoplayer Trace");
+  for (int i=0; i<_symboltrace_collection.GetSize(); ++i) {
 	  write_log_nostamp(true, "%s\n", _symboltrace_collection.GetAt(i));
   }
+  write_log_separator(true, "");
 }
 
 CString CAutoplayerTrace::LogSymbolsForGUI() {

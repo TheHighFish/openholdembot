@@ -31,9 +31,9 @@ void stop_log();
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
 void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
+void write_log_separator(bool debug_settings_for_this_message, char* header_message);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);
 
-extern FILE *log_fp;
 extern CCritSec	log_critsec;  // Used to ensure only one thread at a time writes to log file
 
 

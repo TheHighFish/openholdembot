@@ -270,8 +270,12 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
     // History symbols
     int	round = name[strlen(name)-1]-'0';
     char *pure_name = (char*)name + 3;
-    //!!!!!betround needs to be removed!
-    *result = HistorySymbol(pure_name, round);
+    char pure_name_without_betround[256];
+    int length = strlen(pure_name);
+    assert(length < 256);
+    memcpy(pure_name_without_betround, pure_name, length); 
+    pure_name_without_betround[length - 1] = '\0';
+    *result = HistorySymbol(pure_name_without_betround, round);
     return true;
   }	else {
 		// Symbol of a different symbol-engine

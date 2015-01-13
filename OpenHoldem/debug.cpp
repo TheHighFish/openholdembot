@@ -32,9 +32,18 @@
 
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
+bool footer_needs_to_be_written = false;
+char *footer = "********************************************************************************\n";
 
-char * get_time(char * timebuf) 
-{
+void write_footer_if_necessary() {
+  if (footer_needs_to_be_written == false) return;
+  // First set footer_needs_to_be_written = false
+  // otherwise we get an endless recursion
+  footer_needs_to_be_written = false;
+  write_log_nostamp(true, footer);
+}
+
+char *get_time(char * timebuf) {
     // returns current system time in WH format
     time_t	ltime;
     char tmptime[30];
@@ -105,8 +114,7 @@ char * get_time(char * timebuf)
     return timebuf;
 }
 
-char * get_now_time(char * timebuf) 
-{
+char *get_now_time(char * timebuf) {
     // returns current system time as a UNIX style string
     time_t	ltime;
 
@@ -117,8 +125,7 @@ char * get_now_time(char * timebuf)
     return timebuf;
 }
 
-LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) 
-{
+LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers) {
 	// Create a minidump
 	GenerateDump(pExceptionPointers);
 
@@ -132,8 +139,7 @@ LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers)
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
-BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) 
-{
+BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
     // Saves the hBitmap as a bitmap.
     HDC					hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
     HDC					hdcCompatible = CreateCompatibleDC(hdcScreen);
@@ -152,25 +158,24 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP)
     memset(&bmp,0,sizeof(BITMAP));
     GetObject(hBMP,sizeof(BITMAP),&bmp);
     memset(&hdr,0,sizeof(hdr));
-    {
-        int cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
-        if (cClrBits>8) {
-            // No Palette (normally)
-            pbmi = (PBITMAPINFO) calloc(1, sizeof(BITMAPINFOHEADER));
-        }
-        else {
-            pbmi = (PBITMAPINFO) calloc(1, sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<<(min(8,cClrBits))));
-            pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
-        }
+    
+    int cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
+    if (cClrBits>8) {
+        // No Palette (normally)
+        pbmi = (PBITMAPINFO) calloc(1, sizeof(BITMAPINFOHEADER));
+    }
+    else {
+        pbmi = (PBITMAPINFO) calloc(1, sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<<(min(8,cClrBits))));
+        pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
+    }
 
-        // Initialize the fields in the BITMAPINFO structure.
-        pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    // Initialize the fields in the BITMAPINFO structure.
+    pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 
-        // Retrieve the color table (RGBQUAD array) and the bits
-        // (array of palette indices) from the DIB.
-        if (!GetDIBits(hdcCompatible, hBMP, 0, bmp.bmHeight, NULL, pbmi, DIB_RGB_COLORS)) {
-            goto to_return;
-        }
+    // Retrieve the color table (RGBQUAD array) and the bits
+    // (array of palette indices) from the DIB.
+    if (!GetDIBits(hdcCompatible, hBMP, 0, bmp.bmHeight, NULL, pbmi, DIB_RGB_COLORS)) {
+        goto to_return;
     }
     pbih = &(pbmi->bmiHeader);
     pbmi->bmiHeader.biCompression=BI_RGB;
@@ -233,8 +238,7 @@ to_return:
     return bret;
 }
 
-void start_log(void) 
-{
+void start_log(void) {
 	if (log_fp!=NULL)
 		return;
 
@@ -254,96 +258,98 @@ void start_log(void)
 	}
 
 	// Append (or create) log
-	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0)
-	{
-		write_log(k_always_log_basic_information, "\n%s%s%s%s%s%s",
-			"==============================================\n",
-			"OpenHoldem ", VERSION_TEXT, "\n",
-			"LOG FILE OPEN\n",
-			"==============================================\n");
+	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0) {
+		write_log_separator(k_always_log_basic_information, "LOG FILE OPEN");
 		fflush(log_fp);
 	}
 
 }
 
-void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) 
-{
-    char		buff[10000] ;
-    char		nowtime[26];
-
+void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) {
+  char		buff[10000] ;
+  char		nowtime[26];
+  
+  write_footer_if_necessary();
 	if (debug_settings_for_this_message == false)
 		return;
 
-    if (log_fp != NULL) 
-	{
+  if (log_fp != NULL) {
 		CSLock lock(log_critsec);
 
         vsprintf_s(buff, 10000, fmt, vl);
 		get_time(nowtime);
-        fprintf(log_fp, "%s > %s", nowtime, buff);
+    fprintf(log_fp, "%s > %s", nowtime, buff);
 
-        fflush(log_fp);
-    }
+    fflush(log_fp);
+  }
 }
 
-void write_log(bool debug_settings_for_this_message, char* fmt, ...) 
-{
-    char		buff[10000] ;
-    va_list		ap;
-    char		nowtime[26];
+void write_log(bool debug_settings_for_this_message, char* fmt, ...) {
+  char		buff[10000];
+  va_list		ap;
+  char		nowtime[26];
 
-	if (debug_settings_for_this_message == false)
-		return;
+	if (debug_settings_for_this_message == false)	return;
 
-    if (log_fp != NULL) 
-	{
-		CSLock lock(log_critsec);
-
-        va_start(ap, fmt);
-        vsprintf_s(buff, 10000, fmt, ap);
-		get_time(nowtime);
-        fprintf(log_fp, "%s - %s", nowtime, buff);
-
-        va_end(ap);
-
-        fflush(log_fp);
-    }
+  if (log_fp == NULL) return;
+	
+  write_footer_if_necessary();
+  CSLock lock(log_critsec);
+  va_start(ap, fmt);
+  vsprintf_s(buff, 10000, fmt, ap);
+	get_time(nowtime);
+  fprintf(log_fp, "%s - %s", nowtime, buff);
+  va_end(ap);
+  fflush(log_fp);
 }
 
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...) 
 {
 	char		buff[10000] ;
-    va_list		ap;
+  va_list		ap;
 
-	if (debug_settings_for_this_message == false)
-		return;
+  write_footer_if_necessary();
+	if (debug_settings_for_this_message == false) return;
 
-    if (log_fp != NULL) 
-	{
-		CSLock lock(log_critsec);
+  if (log_fp == NULL) return;
 
-        va_start(ap, fmt);
-        vsprintf_s(buff, 10000, fmt, ap);
-        fprintf(log_fp, "%s", buff);
+	CSLock lock(log_critsec);
+  va_start(ap, fmt);
+  vsprintf_s(buff, 10000, fmt, ap);
+  fprintf(log_fp, "%s", buff);
 
-        va_end(ap);
-
-        fflush(log_fp);
-    }
+  va_end(ap);
+  fflush(log_fp);
 }
 
-void stop_log(void) 
-{
-    if (log_fp != NULL) 
-	{
-        write_log(k_always_log_basic_information, "\n%s%s%s%s%s%s",
-			"==============================================\n",
-			"OpenHoldem ", VERSION_TEXT, "\n",
-			"LOG FILE CLOSED\n",
-			"==============================================\n");
-        fclose(log_fp);
-        log_fp = NULL;
-    }
+void stop_log(void) {
+  write_footer_if_necessary();
+  if (log_fp == NULL) return;
+
+  write_log_separator(k_always_log_basic_information, "LOG FILE CLOSED");
+  fclose(log_fp);
+  log_fp = NULL;
+}
+
+void write_log_separator(bool debug_settings_for_this_message, char* header_message) {
+  if ((header_message == NULL) || (header_message == "")) {
+    // Empty header, i.e. footer
+    // Don't write it immediatelly to avoid multiple consecutive headers
+    footer_needs_to_be_written = true;
+    return;
+  }
+  // Write separator with header, skip potential footers
+  footer_needs_to_be_written = false;
+  char header[90];
+  assert(strlen(footer) < 90);
+  assert(strlen(header_message) < 60);
+  // Copy the footer and \0 into the header
+  memcpy(header, footer, strlen(footer) + 1);
+  // Now copz the header-message into the header (without \0)
+  memcpy((header + 10), header_message, strlen(header_message));
+  header[9] = ' ';
+  header[11 + strlen(header_message)] = ' ';
+  write_log_nostamp(true, header);
 }
 
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)

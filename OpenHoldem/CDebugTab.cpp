@@ -87,7 +87,7 @@ CString CDebugTab::function_text() {
   // if changed in the editor, so we can't construct a new 
   // clean one from the old parsed data.
   return _function_text; 
-  /* !!!
+  /* !!
   // Clean function text,
   // nicely formatted without results
   CString function_text;
