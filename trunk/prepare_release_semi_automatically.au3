@@ -11,6 +11,7 @@
 Local $pre_created_release_dir = "##_OpenHoldem_Release_Directory_##"
 Local $new_openholdem_dir      = "OpenHoldem_7.x.y"
 Local $binary_dir              = "Release"
+Local $binary_optimized_dir    = "Release_Optimized"
 Local $openppl_dir             = "OpenPPL"
 Local $openppl_library_dir     = $openppl_dir & "\OpenPPL_Library"
 Local $openppl_manual_dir      = $openppl_dir & "\OpenPPL_Manual"
@@ -33,9 +34,9 @@ MsgBox(0, "Next Step", "Tag the release on googlecode: TurtoiseSVN -> Branch/Tag
 DirRemove($new_openholdem_dir, 1)
 DirCopy($pre_created_release_dir, $new_openholdem_dir)
 ; Copy all executables to the new directory plus their LIBs to support linking
+CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.exe")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "ManualMode.exe")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "OHReplay.exe")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "OpenHoldem.exe")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "OpenHoldem.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking

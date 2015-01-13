@@ -106,10 +106,11 @@ CString CHandHistoryWriter::PlayerName(int chair) {
 // * when a hand is over
 // * when it is my turn (summary in the log)
 void CHandHistoryWriter::WriteHistory() {
-  //!!!WriteLogSeparator("Summary");
+  write_log_separator(true, "Summary (might be not accurate)");
   for (int i=0; i<_lines_collected; ++i) {
-    write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); //!!!
+    write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); 
   }
+  write_log_separator(true, "");
   _lines_collected = 0;
 }
 

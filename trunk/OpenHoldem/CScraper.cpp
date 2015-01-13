@@ -68,10 +68,9 @@ CScraper::~CScraper(void) {
     write_log(k_always_log_errors, "[CScraper] Please get in contact with the development team\n");
   }
   assert(_leaking_GDI_objects == 0);
-  // Temporary !!!
-  write_log(k_always_log_errors, "[CScraper] Total regions scraped %i\n",
+  write_log(true, "[CScraper] Total regions scraped %i\n",
     total_region_counter);
-  write_log(k_always_log_errors, "[CScraper] Identical regions scraped %i\n",
+  write_log(true, "[CScraper] Identical regions scraped %i\n",
     identical_region_counter);
 }
 

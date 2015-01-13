@@ -178,8 +178,6 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
       p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay));
 		_isfinalanswer = false;
 	}
-  // If the game state processor didn't process this frame, then we should not act.
-	//!!!!!
 }
 
 CString CSymbolEngineAutoplayer::GetFCKRAString()

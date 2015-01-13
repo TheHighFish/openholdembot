@@ -69,7 +69,8 @@ const bool CStringMatch::IsStringAllin(CString s)
 		|| s == "a11in"
 		|| s == "allln"
 		|| s == "a111n"
-		|| s == "aiiin");
+		|| s == "aiiin"
+		|| s.Left(3) == "max");
 }
 
 const bool CStringMatch::IsStringRaise(CString s)
