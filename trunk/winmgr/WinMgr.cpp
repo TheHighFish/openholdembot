@@ -266,14 +266,14 @@ void CWinMgr::OnGetSizeInfo(SIZEINFO& szi, WINRECT* wrc, CWnd* pWnd) {
 				szi.szMin.cx = max(szi.szMin.cx, szi2.szMin.cx);
 				szi.szMin.cy += szi2.szMin.cy;
 				szi.szMax.cx = min(szi.szMax.cx, szi2.szMax.cx);
-				szi.szMax.cy = min(szi.szMax.cy + szi2.szMax.cy, INFINITY);
+				szi.szMax.cy = min(szi.szMax.cy + szi2.szMax.cy, _INFINITY);
 				szi.szDesired.cx = max(szi.szDesired.cx, szi2.szDesired.cx);
 				szi.szDesired.cy += szi2.szDesired.cy;
 
 			} else {
 				szi.szMin.cx += szi2.szMin.cx;
 				szi.szMin.cy = max(szi.szMin.cy, szi2.szMin.cy);
-				szi.szMax.cx = min(szi.szMax.cx + szi2.szMax.cx, INFINITY);
+				szi.szMax.cx = min(szi.szMax.cx + szi2.szMax.cx, _INFINITY);
 				szi.szMax.cy = min(szi.szMax.cy, szi2.szMax.cy);
 				szi.szDesired.cx += szi2.szDesired.cx;
 				szi.szDesired.cy = max(szi.szDesired.cy, szi2.szDesired.cy);

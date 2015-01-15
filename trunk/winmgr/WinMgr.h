@@ -12,11 +12,11 @@
 //
 
 // when using screen dimensions, this is infinite
-const LONG INFINITY=0x7fff; // max short
+const LONG _INFINITY=0x7fff; // max short
 
 // useful size constants
 #define SIZEZERO		CSize(0,0)
-#define SIZEMAX		CSize(INFINITY,INFINITY)
+#define SIZEMAX		CSize(_INFINITY,_INFINITY)
 
 // handy functions to take the min or max of a CSize
 inline CSize minsize(CSize a, CSize b) {
