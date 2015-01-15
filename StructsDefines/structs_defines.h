@@ -17,6 +17,9 @@
 #include "..\pokereval\include\poker_defs.h"
 #include "..\OpenHoldem\MagicNumbers.h"
 
+//Allow keywords as macros.  Needed for vs2013
+#define _ALLOW_KEYWORD_MACROS
+
 // thread timeout
 #define THREAD_WAIT					3000
 
