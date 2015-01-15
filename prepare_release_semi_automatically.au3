@@ -11,7 +11,7 @@
 Local $pre_created_release_dir = "##_OpenHoldem_Release_Directory_##"
 Local $new_openholdem_dir      = "OpenHoldem_7.x.y"
 Local $binary_dir              = "Release"
-Local $binary_optimized_dir    = "Release_Optimized"
+Local $binary_optimized_dir    = "Release - Optimized"
 Local $openppl_dir             = "OpenPPL"
 Local $openppl_library_dir     = $openppl_dir & "\OpenPPL_Library"
 Local $openppl_manual_dir      = $openppl_dir & "\OpenPPL_Manual"
