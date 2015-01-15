@@ -26,6 +26,8 @@ BUG FIXES:
 MAINTENANCE
 - Recognizing also the label "max" as allin.
   [Winlo]
+- Some code-changes for compatibility with VS 2013.
+  [Winlo]
 
 
 v7.4.0 2015-01-07
