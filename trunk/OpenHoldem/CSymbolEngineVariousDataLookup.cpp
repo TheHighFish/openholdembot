@@ -131,6 +131,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
       p_autoplayer_trace->Add(name, 0);
     }
     *result = 0;
+  } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
+    *result = p_autoconnector->attached_hwnd();
   } else {
     *result = k_undefined;
     return false;
