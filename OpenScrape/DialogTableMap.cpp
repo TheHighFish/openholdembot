@@ -1549,8 +1549,8 @@ void CDlgTableMap::OnBnClickedNew()
 		{
 			bool used_string = false;
 
-			for (s_iter=p_tablemap->s$()->begin(); s_iter!=p_tablemap->s$()->end(); s_iter++)
-				if (s_iter->second.name == s$strings[i])  
+			for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++)
+				if (s$strings[i] == NULL || s_iter->second.name == s$strings[i])
 					used_string=true;
 
 			if (!used_string)
