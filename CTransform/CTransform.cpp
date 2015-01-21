@@ -834,11 +834,15 @@ bool CTransform::IsInRGBColorCube(const int center_r, const int center_g, const 
 }
 
 void CTransform::CalcHexmash(const int left, const int right, const int top, const int bottom, 
-								   const bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, const bool withspace)
-{
+								   const bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, const bool withspace) {
 	int				x = 0, y = 0, last_fg_row = 0;
 	unsigned int	hexval = 0;
 	char			t[20] = {0};
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_alltherest(),
+    "[CTransform] CalcHexmash(%i, %i, %i, %i)\n",
+    left, right, top, bottom);
+#endif
 
 	// find last horizontal row with foreground pixels
 	last_fg_row = -1;
