@@ -1158,8 +1158,35 @@ dealposition
 \begin_inset Text
 
 \begin_layout Plain Layout
-your deal position (1=sblind,2=bblind ...
- nplayersdealt=dealer); dealposition will not change as players fold
+your deal position 
+\end_layout
+
+\begin_layout Itemize
+1 = left to the dealer, usually small blind
+\end_layout
+
+\begin_layout Itemize
+2 = 2 left to the dealer, usually big blind 
+\end_layout
+
+\begin_layout Itemize
+...
+ 
+\end_layout
+
+\begin_layout Itemize
+nplayersdealt = dealer 
+\end_layout
+
+\begin_layout Plain Layout
+dealposition will not change as players fold
+\end_layout
+
+\begin_layout Plain Layout
+In headsup situations the player to the dealers left is usually big-blind
+ and in other situations the small blind might be missing.
+ But it is your duty to consider these special case, dealposition does not
+ magically auto-adapt to comply with the usual values for full-ring.
 \end_layout
 
 \end_inset
