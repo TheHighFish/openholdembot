@@ -53,17 +53,6 @@ void CSymbolEngineReplayFrameController::ResetOnNewRound() {
 }
 
 void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
-	// If it's my turn and we have enough stable frames
-  // then we will usually act and shoot a replay-frame on this heartbeat.
-  // Shooting exactly once in case of no action is ensured by
-  // "p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()"
-	if ((preferences.replay_record() == kShootReplyFramesOnMyTurn)			
-		  && p_symbol_engine_autoplayer->ismyturn() 
-      && p_autoplayer->autoplayer_engaged()
-		  && p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()) {
-    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on my turn and time to act)\n");
-		ShootReplayFrameIfNotYetDone();
-	}
 }
 
 void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
@@ -76,10 +65,27 @@ void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
       && p_table_state->User()->HasKnownCards()) {
         write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on change while in hand)\n");
     ShootReplayFrameIfNotYetDone();
-  } else if (preferences.replay_record() == kShootReplyFramesOnEveryChange) {
+    return;
+  }
+  if (preferences.replay_record() == kShootReplyFramesOnEveryChange) {
     write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on every change in table-state)\n");
     ShootReplayFrameIfNotYetDone();
+    return;
   }
+	if ((preferences.replay_record() == kShootReplyFramesOnMyTurn)			
+		  && p_symbol_engine_autoplayer->ismyturn() 
+      && p_autoplayer->autoplayer_engaged()
+		  && p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()) {
+    // If it's my turn and we have enough stable frames
+    // then we will usually act and shoot a replay-frame on this heartbeat.
+    // Shooting exactly once in case of no action is ensured by
+    // "p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()".
+    // As NumberOfStableFrames() updates OnHeartbeat we have to put that code here
+    // and can~t make use of OnMyTurn();
+    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on my turn and time to act)\n");
+		ShootReplayFrameIfNotYetDone();
+    return;
+	}
   // ResetOnHeartbeat() is the last function to be called,
   // whereas the first one depends on circumstances.
   // therefore we reset _replay_recored_this_turn here at the very end. 
