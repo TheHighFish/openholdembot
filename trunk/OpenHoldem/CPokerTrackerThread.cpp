@@ -132,11 +132,9 @@ bool CPokerTrackerThread::AllConnectionDataSpecified()
 
 }
 
-void CPokerTrackerThread::Connect(void)
-{
+void CPokerTrackerThread::Connect(void) {
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Trying to open PostgreSQL DB...\n");
-	if (!AllConnectionDataSpecified())
-	{
+	if (!AllConnectionDataSpecified()) 	{
     write_log(preferences.debug_pokertracker(), "[PokerTracker] Can't connect to DB. Vital data missing\n");
 		return;
 	}
@@ -144,17 +142,14 @@ void CPokerTrackerThread::Connect(void)
 		preferences.pt_port(), preferences.pt_user(), preferences.pt_pass(), preferences.pt_dbname());
 	_pgconn = PQconnectdb(_conn_str.GetString());
 
-	if (PQstatus(_pgconn) == CONNECTION_OK)
-	{
+	if (PQstatus(_pgconn) == CONNECTION_OK)	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PostgreSQL DB opened successfully <%s/%s/%s>\n", 
 			preferences.pt_ip_addr(), 
 			preferences.pt_port(), 
 			preferences.pt_dbname());
 
 		_connected = true;
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
 		PQfinish(_pgconn);
 		_connected = false;
