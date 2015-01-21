@@ -53,8 +53,8 @@ POKERTRACKER_DLL_API int PT_DLL_GetNumberOfStats() {
 
 // We create queries on the fly, 
 // so that they are usable for both ring-games and tournaments 
-const int k_holdem_id  = 1;
-const int k_omaha_id  = 2;
+const char* const k_holdem_id  = "1";
+const char* const k_omaha_id  = "2";
 const char* const k_tournament_infix = "tourney";
 const char* const k_cashgame_infix = "cash";
 
@@ -75,7 +75,7 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 
 	query.Replace("%SITEID%", site_id_as_string);
 	query.Replace("%SCREENNAME%", player_name);
-	query.Replace("%GAMETYPE%", ""+ (isomaha ? k_omaha_id : k_holdem_id) );
+	query.Replace("%GAMETYPE%", (isomaha ? k_omaha_id : k_holdem_id) );
 	query.Replace("%TYPE%", (istournament ? k_tournament_infix : k_cashgame_infix));
 	
 	return query;
