@@ -208,12 +208,12 @@ returns the version number of OpenHoldem that is currently running
 \end_layout
 
 \begin_layout Section
-Table Map 
+Casino and Ppker Table 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
+<lyxtabular version="3" rows="6" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -242,7 +242,32 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-isfinaltable
+iattached_hwnd
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Window handle of the poker table
+\end_layout
+
+\begin_layout Plain Layout
+Provided for DLL- and Perl-devlopers who can now directly access the poker-table
+ if needed
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+sfinaltable
 \end_layout
 
 \end_inset
@@ -5348,7 +5373,12 @@ issittingin
 \begin_inset Text
 
 \begin_layout Plain Layout
-true when you are not being dealt out 
+True when you are not being dealt out 
+\end_layout
+
+\begin_layout Plain Layout
+This symbols is true, if a sit-out-button exists that can be clicked or
+ if a sit-in button exists that can not be clicked.
 \end_layout
 
 \end_inset
@@ -5514,7 +5544,35 @@ prevaction
 
 \begin_layout Plain Layout
 record of previously attempted autoplayer action.
- (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
+ 
+\end_layout
+
+\begin_layout Description
+-2 = prefold
+\end_layout
+
+\begin_layout Description
+-1 = fold 
+\end_layout
+
+\begin_layout Description
+0 = check 
+\end_layout
+
+\begin_layout Description
+1 = call 
+\end_layout
+
+\begin_layout Description
+2 = raise
+\end_layout
+
+\begin_layout Description
+3 = swag 
+\end_layout
+
+\begin_layout Description
+4 = allin
 \end_layout
 
 \end_inset
