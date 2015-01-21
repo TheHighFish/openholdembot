@@ -1,5 +1,11 @@
 v7.4.1 2015-01-xx
 ==================
+NEW stuff:
+- New symbol attached_hwnd meant for DLL- and Perl-devlopers
+  who can now directly access the poker-table if needed.
+  [THF]
+
+
 BUG FIXES:
 - The contruction of PT-queries used integers instead of
   NULL-terminated strings at some point for the game-type.
