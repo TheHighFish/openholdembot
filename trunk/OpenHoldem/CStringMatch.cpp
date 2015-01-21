@@ -55,12 +55,9 @@ const bool CStringMatch::IsNumeric(CString t)
 	return true;
 }
 
-const bool CStringMatch::IsStringAllin(CString s)
-{
+const bool CStringMatch::IsStringAllin(CString s) {
 	// Check for bad parameters
-	if (!s || s == "")
-		return false;
-
+	if (!s || s == "") return false;
 	s.Remove(' ');
 	s.Remove('-');
 	CString s_lower_case = s.MakeLower();
@@ -70,6 +67,7 @@ const bool CStringMatch::IsStringAllin(CString s)
 		|| s == "allln"
 		|| s == "a111n"
 		|| s == "aiiin"
+    || s == "buyin"
 		|| s.Left(3) == "max");
 }
 
