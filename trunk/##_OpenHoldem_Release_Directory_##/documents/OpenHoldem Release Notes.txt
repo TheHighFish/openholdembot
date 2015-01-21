@@ -3,6 +3,7 @@ v7.4.1 2015-01-xx
 NEW stuff:
 - New symbol attached_hwnd meant for DLL- and Perl-devlopers
   who can now directly access the poker-table if needed.
+  Thanks to N4rk0 for the suggestion nearly 6 zears ago.
   [THF]
 
 
