@@ -1,5 +1,13 @@
+v7.4.2 2015-01-xx
+==================
+BUG FIXES:
+- OpenScrape was no longer able to add symbol-records to a tablemap.
+  This has now been fixed, Thanks to Eagle_1 for reporting.
+  [WinLo]
+
 v5.0.3 2014-07-18
 ==================
+BUG FIXES:
 - OpenHoldem and OpenScrape could crash when evaluating ttlimits,
   as a very rarely executed branch of the code had a missing 
   pointer-dereference, but the code was compileable anyway.
