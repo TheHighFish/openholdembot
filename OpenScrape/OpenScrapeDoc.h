@@ -34,7 +34,7 @@ char * const s$strings[num_s$strings] =
 	  "sitename", "network", "nchairs", "chairconfig", "swagtextmethod", "potmethod",  
 	  "defaultlabels", "t0type", "t1type", "t2type", "t3type", 
 	  "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod", "buttonclickmethod", 
-	  "allinmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
+	  "allinconfirmationmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 	  "chipscrapemethod"};
 
 int	const num_r$strings = 383;
