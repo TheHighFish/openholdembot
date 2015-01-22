@@ -590,23 +590,55 @@ allinmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-Used by the Autoplayer to determine how to go allin
+Used by the Autoplayer what buttonßsequence to click to go allin
 \end_layout
 
-\begin_layout Itemize
-0: swag the balance (default) 
+\begin_layout Plain Layout
+0: click only 
+\begin_inset Quotes eld
+\end_inset
+
+max
+\begin_inset Quotes erd
+\end_inset
+
+ (or 
+\begin_inset Quotes eld
+\end_inset
+
+allin
+\begin_inset Quotes erd
+\end_inset
+
+)
 \end_layout
 
-\begin_layout Itemize
-1: click max (or allin), then click raise 
-\end_layout
+\begin_layout Plain Layout
+nonn-zero: first click 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Itemize
-2: click only max (or allin)
-\end_layout
+max
+\begin_inset Quotes erd
+\end_inset
 
-\begin_layout Itemize
-3: use the slider
+ (or 
+\begin_inset Quotes eld
+\end_inset
+
+allin
+\begin_inset Quotes erd
+\end_inset
+
+), then lick 
+\begin_inset Quotes eld
+\end_inset
+
+raise
+\begin_inset Quotes erd
+\end_inset
+
+ as confirmation
 \end_layout
 
 \end_inset
