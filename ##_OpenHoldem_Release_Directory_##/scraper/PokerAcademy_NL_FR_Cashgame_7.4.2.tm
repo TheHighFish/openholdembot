@@ -15,7 +15,6 @@ z$clientsize       1018  693
 // strings
 //
 
-s$allinmethod               2
 s$nchairs                   10
 s$network                   pokerstars
 s$potmethod                 2

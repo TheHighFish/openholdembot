@@ -15,7 +15,6 @@ z$clientsize       800  600
 // strings
 //
 
-s$allinmethod               1
 s$buttonclickmethod         Single
 s$nchairs                   6
 s$network                   party
