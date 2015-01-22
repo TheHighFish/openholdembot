@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-01-05"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter">
+<a class="toc" name="toc-Chapter-1"></a>How OpenHoldem Operates
+</h1>
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a><a class="IndexReference" name="entry-Connecting-0" href="#index-Connecting">↓</a>Connecting to a table
+</h2>
+<div class="Unindented">
+As soon as you start OpenHoldem it will read all tablemaps in your scraper-folder and parse them for the information that is necessary to connect to a table. The auto-connector will then have a look for new tables that are not yet served by other instances once per heartbeat and connect if it finds a new one. This all happens automagically, however an explanation of what happens behind the scenes is useful if you have problems connecting to your target poker window. The following steps are taken to identify which windows on your screen are valid poker tables.
+</div>
+<ol>
+<li>
+A list of all visible top level windows that have a non-blank caption is collected
+</li>
+<li>
+Each window in this list is compared against each Table Map that you have placed in your <a class="IndexReference" name="entry-Scraper-directory-0" href="#index-Scraper-directory">↓</a>“scraper” directory. For each step that follows, if a non-match is detected, OpenHoldem will then immediately move on to the next window/Table Map.
+</li>
+<li>
+The size of the client portion of the window is compared to the clientsize records in the Table Map. The window is considered a match if the <a class="IndexReference" name="entry-Table-Map-0" href="#index-Table-Map">↓</a>Table Map indicates the correct size as given by the record <a class="IndexReference" name="entry-Clientsize-0" href="#index-Clientsize">↓</a>clientsize, or if the size is within the size limits given by clientsizemin and clientsizemax.
+</li>
+<li>
+The window’s title text is compared to the keyword text filters provided by <a class="IndexReference" name="entry-Titletext-0" href="#index-Titletext">↓</a>titletext records in the Table Map. The window is considered a match if the free-form text in any of the titletext records is found in the window’s title. Additionally, if any !titletext records are present in the Table Map, then a window is considered a non-match if the free-form text in any of the !titletext records is found in the window’s title. 
+</li>
+<li>
+If OpenHoldem finds a matching pair of tablemap and table it will look in the shared memory data-structures if the table gets already served. If this is not the case OpenHoldem will connect to that table. The connected table will then be moced to a free slot if the table-positioner is enabled and the autoplazer will start playing.
+</li>
+
+</ol>
+<h2 class="Section">
+<a class="toc" name="toc-Section-2"></a>The <a class="IndexReference" name="entry-Heartbeat-cycle-0" href="#index-Heartbeat-cycle">↓</a>Heartbeat Cycle 
+</h2>
+<div class="Unindented">
+Once OpenHoldem has been connected to a table, it will enter into a continuous loop that performs a variety of actions. The cycle of these actions is described here in order of their execution.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Action
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Explanation
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Scrape window
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Ask the screen <a class="IndexReference" name="entry-Scraper-0" href="#index-Scraper">↓</a>scraper engine to scrape and interpret the current pixels on the poker window based on the parameters in the loaded Table Map {Creating a Table Map}.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Scraper preprocessor
+</td>
+<td align="left" valign="top" style="width: 75%;">
+OpenHoldems built-in scraper preprocessor will then preprocess some textual input from the scraper; especially title-string, bets and balances. For example it will remove spaces inside numbers, replace commas inside numbers by dots, replace outlandish currency-signs by dollars or remove other superflous texts, such as &ldquo;pot: (150 + 300)&rdquo;.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Calculate symbols
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Calculate all OpenHoldem symbols {Calculated Symbols}.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Create <a class="IndexReference" name="entry-Replay-frames-0" href="#index-Replay-frames">↓</a> replay frame
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If a replay frame {Replay Frames} is requested in preferences {Preferences}, OpenHoldem will store an image file and a HTML-file in the scraper-directory for a future settion-review with OHReplay
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Validate game state
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If the <a class="IndexReference" name="entry-Validator-0" href="#index-Validator">↓</a>is enabled in preferences {Preferences}, then validate the current game state.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Send state to user dll
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If a <a class="IndexReference" name="entry-User-DLL-0" href="#index-User-DLL">↓</a>User DLL {User DLL} is loaded, then send the current game state to it.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Autoplay
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If the <a class="IndexReference" name="entry-Autoplayer-0" href="#index-Autoplayer">↓</a> Autoplayer is engaged, then ask the Autoplayer to do its bit.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Wait
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Sleep for the <a class="IndexReference" name="entry-Scrape-delay-0" href="#index-Scrape-delay">↓</a>Scrape Delay period of time as specified in preferences {Preferences}, then start the next cycle.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-3"></a>The <a class="IndexReference" name="entry-Autoplayer-1" href="#index-Autoplayer">↓</a>Autoplayer<a class="Label" name="sec:The-Autoplayer"> </a> (OH-script)
+</h2>
+<div class="Unindented">
+OpenHoldem’s Autoplayer engine uses the following logic to decide what action to take on the poker window:
+</div>
+<ol>
+<li>
+If the <a class="IndexReference" name="entry-f$prefold-0" href="#index-f$prefold">↓</a>f$prefold function evaluates to non-zero, and a fold control is present, then fold.
+</li>
+<li>
+Else if the <a class="IndexReference" name="entry-f$alli-0" href="#index-f$alli">↓</a>f$alli function evaluates to non-zero, and an all-in control is present (slider/Swag box/allin-button), then move all-in .
+</li>
+<li>
+Else if one of the betpot-functions (f$betpot_2_1, f$betpot_1_1, .. f$betpot_1_4) is true then press the correspondenting betpot-button (and maybe the raise-button afterwards, depending on your casinos tablemap)
+</li>
+<li>
+Else if the <a class="IndexReference" name="entry-f$betsize-0" href="#index-f$betsize">↓</a> f$betsize function evaluates to non-zero, and an input box is present, then adapt the betsize according to a casino-specific input method, enter the result and confirm the bet.
+</li>
+<li>
+Else if the <a class="IndexReference" name="entry-f$rais-0" href="#index-f$rais">↓</a>f$rais function evaluates to non-zero, and the Raise button is present, then click the Raise button 
+</li>
+<li>
+Else if the <a class="IndexReference" name="entry-f$call-0" href="#index-f$call">↓</a>f$call function evaluates to non-zero, and the Call button is present, then click the Call button 
+</li>
+<li>
+Else if the f$check function is true and the <a class="IndexReference" name="entry-Check-0" href="#index-Check">↓</a>Check button is present, then click the Check button 
+</li>
+<li>
+Else if the f$fold function is true and the Fold button is present, then click the Check button 
+</li>
+
+</ol>
+<div class="Unindented">
+To determine when and which action to take the Autoplayer performs the following actions:
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Action
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Explanation
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Handle f$sitin, f$sitout and f$leave and f$close
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action depending on their return values.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Handle <a class="IndexReference" name="entry-spam-0" href="#index-spam">↓</a>spam
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Evaluate any i86 regions, and dismiss any <a class="IndexReference" name="entry-popup-0" href="#index-popup">↓</a>popups/spam .
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Handle <a class="IndexReference" name="entry-f$prefold-1" href="#index-f$prefold">↓</a>f$prefold
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If f$prefold evaluates to non-zero, then engage the prefold button as defined in the Table Map.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Handle <a class="IndexReference" name="entry-f$rebuy-0" href="#index-f$rebuy">↓</a> f$rebuy
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If f$rebuy evaluates to non-zero and the rebuy-conditions specified in the preferences are met, then execute an external rebuy-script.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Handle <a class="IndexReference" name="entry-f$chat-0" href="#index-f$chat">↓</a>f$chat
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If f$chat evaluates to non-zero and safety constraints have been met, then enter a chat message into the chat box as defined in the Table Map.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+<a class="IndexReference" name="entry-isfinalanswer-0" href="#index-isfinalanswer">↓</a>Isfinalanswer
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Determine the value of the isfinalanswer symbol — if the Iterator has finished, at least one action button is visible, we are “playing”, the number of sequential stable frames have been seen and the time value in <a class="IndexReference" name="entry-f$delay-0" href="#index-f$delay">↓</a>f$delay has passed, then isfinalanswer is true.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Evaluate primary functions
+</td>
+<td align="left" valign="top" style="width: 75%;">
+f$alli, f$betpot..., f$betsize, f$rais, f$call, f$check, f$fold are evaluated and action taken based on the above logic. Use the if-then-else logic as described above to take the appropriate Autoplayer action.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-4"></a>The Bot Logic (OH-script)
+</h2>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-1"></a><a class="IndexReference" name="entry-OH-0" href="#index-OH">↓</a>OH-Script
+</h3>
+<div class="Unindented">
+Every bot needs some poker-specific logic to decide how to act. OpenHoldem provides a basic scripting-langugae for that, which was inherited from WinHoldem. The logic is action-centered, i.e. everytime it is your turn the following basic questions have to be answered:
+</div>
+<ul>
+<li>
+&ldquo;shall I go allin?&rdquo; — f$alli (boolean, interpreting 0 as false and everything else as true)
+</li>
+<li>
+&ldquo;shall I raise, and how much?&rdquo; — f$betsize 
+</li>
+<li>
+&ldquo;shall I (min-)raise&rdquo; — f$rais (mainly for Fixed Limit; boolean)
+</li>
+<li>
+&ldquo;shall I call&rdquo; — f$call (boolean)
+</li>
+<li>
+&ldquo;shall I check&rdquo; — f$check (boolean)
+</li>
+<li>
+&ldquo;shall I fold&rdquo; — f$fold (boolean)
+</li>
+
+</ul>
+<div class="Unindented">
+Per default f$check and f$fold evaluate to true, so if all questions were answered with 0 or false, your hand-will be check-folded. 
+</div>
+<div class="Indented">
+Every bot needs such a formula file, even if it is programmed in <a class="IndexReference" name="entry-Perl-0" href="#index-Perl">↓</a>Perl or <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a><a class="IndexReference" name="entry-C++-0" href="#index-C++">↓</a>C++. There are no standalone Perl- or C++-bots; Perl and C++ are only programming extensions that make it possible to extend the functionality of OpenHoldem by providing additional symbols (constants and parameter-less functions). The very minimum is a small OH-script that redirects every primary function to a Perl- or C++-function.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##f$note##
+// Very small OH-formula, that redirects 
+// primary functions to Perl- or C++-functions.
+​
+##f$alli##
+dll$alli
+​
+##f$swag##
+dll$swag
+​
+##f$rais##
+pl_rais
+​
+##f$call##
+pl_call
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+In practice formulas can become arbitary complex, but those are the basic principles you will need to understand. We will deal with the details of bot-programming in the chapter about OH-script.
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-2"></a>Parse-Time and Run-Time Errors 
+</h3>
+<div class="Unindented">
+The OpenHoldem scripting language will detect various error conditions for you and warn you of these conditions. Each time a formula is loaded, it is “parsed” for correctness – if there are any syntactical errors upon this parse, then a message box will be displayed that alerts you to the location of this error.
+</div>
+<div class="Indented">
+Additionally, several classes of run-time errors will be detected, including divide-by-zero and infinite recursion. Note that the OH-Script language does not support recursion in any form, due to the absence of the assignment operator and function parameters to control the recursion depth.
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-3"></a><a class="IndexReference" name="entry-Default-bot-0" href="#index-Default-bot">↓</a>Default Bot
+</h3>
+<div class="Unindented">
+OpenHoldem does not contain a default bot. For some time we included <a class="IndexReference" name="entry-Playbot-0" href="#index-Playbot">↓</a>Playbot by Matrix just for demonstration purposes. It was a very early case-study about prwin-based bots, meant for Fixed Limit Texas Hold’em. Prwin-based bots (short for &ldquo;probability of win&rdquo;) try to code the decision with very few and small mathematical formulae, unlike scenario-based bots that code hundreds or thousands of different situations. However the golden times of fixed limit are over and most people want to develop their own bots anyway. Due to the existence of countless demo-bots and the rise of OpenPPL we decided that a default bot-logic is no longer necessary.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-5"></a>The Bot Logic (OpenPPL)
+</h2>
+<div class="Unindented">
+Since version 7.0 OpenHoldem provides an alternative way to program the bot-logic: OpenPPL. PPL = Poker Programming Language, an english-like programming languge once designed by Shanky BonusBots. OpenPPL is completely integrated and can be mixed with OH-script if desired. Once a f$preflop function is present OpenHoldem will switch to OpenPPL-mode and evaluate f$preflop, f$flop, f$turn and f$river instead of the OH-script autoplayer-functions. For the details please refer to the separate OpenPPL-manual.<div class="listing">
+<pre class="listing">##f$preflop##
+WHEN hand$AA RaiseMax FORCE
+WHEN hand$KK and Raises = 0 and calls = 0 RaiseTo 3 FPRCE
+</pre>
+</div>
+
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-05T20:29:46.328000</span>
+</div>
+</div>
+</body>
+</html>
