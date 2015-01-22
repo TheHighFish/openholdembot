@@ -89,9 +89,7 @@ int				_willplay, _wontplay, _mustplay, _topclip;
 int				_nplCards, _ncomCards;
 double			_win, _tie, _los;
 
-CIteratorThread::CIteratorThread()
-{
-	__TRACE
+CIteratorThread::CIteratorThread() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
 
 	// Create events
@@ -105,9 +103,7 @@ CIteratorThread::CIteratorThread()
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
 }
 
-CIteratorThread::~CIteratorThread()
-{
-	__TRACE
+CIteratorThread::~CIteratorThread() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
   assert(p_iterator_thread != NULL);
 	if (_m_stop_thread)
@@ -128,7 +124,6 @@ CIteratorThread::~CIteratorThread()
 }
 
 void CIteratorThread::RestartPrWinComputations() {
-	__TRACE
 	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
   InitIteratorLoop();
   ResetIteratorVars();
@@ -136,7 +131,6 @@ void CIteratorThread::RestartPrWinComputations() {
 }
 
 void CIteratorThread::StartPrWinComputationsIfNeeded() {		
-	__TRACE
 	p_validator->ValidateIt();
 	assert(p_iterator_thread != NULL);
 	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
@@ -148,9 +142,7 @@ void CIteratorThread::StartPrWinComputationsIfNeeded() {
 	// Otherwise: nothing to do, e.g. not my turn
 }
 
-void CIteratorThread::AdjustPrwinVariablesIfNecessary()
-{
-	__TRACE
+void CIteratorThread::AdjustPrwinVariablesIfNecessary() {
 	// Cut off from IteratorThreadFunction
 	// Also moved outside of the loop.
 	// Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
@@ -168,7 +160,6 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary()
 }
 
 UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
-	__TRACE
 	CIteratorThread *pParent = static_cast<CIteratorThread*>(pParam);
   // Loop-variables j, k get used inside and outside loops.
 	// It is a bit messy, nearly impossible to fix it.
@@ -209,7 +200,6 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
     _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	  AdjustPrwinVariablesIfNecessary();
 	  for (_iterations_calculated=0; _iterations_calculated < _iterations_required; ++_iterations_calculated) {
-		  __TRACE
 		  // Check event for thread stop signal once every 1000 iterations
       if ((_iterations_calculated % 1000 == 0)
           && (_iterations_calculated > 0)
@@ -277,9 +267,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	return 0;
 }
 
-void CIteratorThread::UpdateIteratorVarsForDisplay()
-{
-	__TRACE
+void CIteratorThread::UpdateIteratorVarsForDisplay() {
 	// Update display once every 1000 iterations
 	if (IteratorThreadComplete()
 		|| ((_iterations_calculated % 1000 == 0) && (_iterations_calculated >= 1000)))

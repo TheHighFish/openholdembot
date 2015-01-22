@@ -119,9 +119,7 @@ void CSymbolEngineCards::ResetOnHandreset()
 void CSymbolEngineCards::ResetOnNewRound()
 {}
 
-void CSymbolEngineCards::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEngineCards::ResetOnMyTurn() {
 }
 
 void CSymbolEngineCards::ResetOnHeartbeat()

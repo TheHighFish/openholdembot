@@ -65,9 +65,7 @@ void CSymbolEnginePokerval::ResetOnHandreset()
 void CSymbolEnginePokerval::ResetOnNewRound()
 {}
 
-void CSymbolEnginePokerval::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEnginePokerval::ResetOnMyTurn() {
 }
 
 void CSymbolEnginePokerval::ResetOnHeartbeat()

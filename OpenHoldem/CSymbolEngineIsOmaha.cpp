@@ -48,9 +48,7 @@ void CSymbolEngineIsOmaha::ResetOnHandreset()
 void CSymbolEngineIsOmaha::ResetOnNewRound()
 {}
 
-void CSymbolEngineIsOmaha::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEngineIsOmaha::ResetOnMyTurn() {
 }
 
 void CSymbolEngineIsOmaha::ResetOnHeartbeat()

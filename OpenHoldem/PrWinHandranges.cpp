@@ -39,8 +39,6 @@ bool IsHandInWeightedRange(const int card1, const int card2,
 	Original code by Matrix (slightly confusing):
 	http://code.google.com/p/openholdembot/source/browse/trunk/OpenHoldem/CIteratorThread.cpp?spec=svn666&r=666
 	*/
-
-	__TRACE
 	extern int pair2rank_offsuited[170], pair2rank_suited[170];
 	int suit_1 = card1 / 13;
 	int suit_2 = card2 / 13;

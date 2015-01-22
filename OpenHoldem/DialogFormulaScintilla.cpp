@@ -1681,9 +1681,7 @@ void CDlgFormulaScintilla::OnEditSelectAll()
 	m_pActiveScinCtrl->SelectAll();
 }
 
-void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) 
-{
-	__TRACE
+void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
 	CMenu *edit_menu = this->GetMenu()->GetSubMenu(1);
 
 	if (nIDEvent == MENU_UPDATE_TIMER) 
@@ -1697,7 +1695,6 @@ void CDlgFormulaScintilla::OnTimer(UINT nIDEvent)
 		if (m_ButtonAuto.GetCheck() == 1 && m_current_edit == "f$debug" && ok_to_update_debug)
 			UpdateDebugAuto();
 	}
-	__TRACE
 }
 
 void CDlgFormulaScintilla::SetEquiDistantFont(CScintillaWnd *pWnd) {

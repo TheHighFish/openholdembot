@@ -66,9 +66,7 @@ void CSymbolEngineVariousDataLookup::ResetOnHandreset() {
 void CSymbolEngineVariousDataLookup::ResetOnNewRound() {
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEngineVariousDataLookup::ResetOnMyTurn() {
 }
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

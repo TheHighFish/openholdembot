@@ -12,7 +12,7 @@ NEW stuff:
     2) try to use the slider if it exists in the tablemap.
     3) finally try to swag the balance.
   This new behaviour tries the most fail-safe and most human-like methods first
-  and in addition reacts flexibly on the options available.
+  and in addition reacts flexibly to the options available.
   Thanks to Fqfq for telling us about a casino where he usually had to "swag",
   but to use a button when the raiser had him covered.
   [THF]

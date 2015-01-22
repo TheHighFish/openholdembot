@@ -44,9 +44,7 @@
 CAutoplayer	*p_autoplayer = NULL;
 
 
-CAutoplayer::CAutoplayer(void) 
-{
-	__TRACE
+CAutoplayer::CAutoplayer(void) {
 	// Autoplayer is not enabled at startup.
 	// We can't call EngageAutoplayer() here,
 	// because the toolbar does not yet exist,
@@ -57,28 +55,20 @@ CAutoplayer::CAutoplayer(void)
 }
 
 
-CAutoplayer::~CAutoplayer(void) 
-{
-	__TRACE
+CAutoplayer::~CAutoplayer(void) {
 	FinishActionSequenceIfNecessary();
 }
 
-void CAutoplayer::EngageAutoPlayerUponConnectionIfNeeded()
-{
-	__TRACE
-	if (p_autoconnector->IsConnected() && preferences.engage_autoplayer())
-	{
-		__TRACE
+void CAutoplayer::EngageAutoPlayerUponConnectionIfNeeded() {
+	if (p_autoconnector->IsConnected() && preferences.engage_autoplayer()) {
 		EngageAutoplayer(true);
 	}
 }
 
-void CAutoplayer::PrepareActionSequence()
-{
-	__TRACE
+void CAutoplayer::PrepareActionSequence() {
 	// This function should be called at the beginning of 
 	// ExecutePrimaryFunctions and ExecuteSecondaryFunctions
-	// which bot will start exactly one action-sequence.
+	// which both will start exactly one action-sequence.
 	//
 	// At the end of an action sequence FinishAction() has to be called
 	// to restore the mouse-position.
@@ -97,9 +87,7 @@ void CAutoplayer::PrepareActionSequence()
 }
 
 
-void CAutoplayer::FinishActionSequenceIfNecessary()
-{
-	__TRACE
+void CAutoplayer::FinishActionSequenceIfNecessary() {
 	if (action_sequence_needs_to_be_finished) {
     // avoid multiple-clicks within a short frame of time
     p_stableframescounter->ResetOnAutoplayerAction();
@@ -111,9 +99,7 @@ void CAutoplayer::FinishActionSequenceIfNecessary()
 }
 
  
-bool CAutoplayer::TimeToHandleSecondaryFormulas()
-{
-	__TRACE
+bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
 	// to avoid multiple fast clicking on the sitin / sitout-button.
 	// Contrary to the old f$play-function we use a heartbeat-counter
@@ -135,9 +121,7 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas()
 }
 
 
-bool CAutoplayer::DoBetPot(void)
-{
-	__TRACE
+bool CAutoplayer::DoBetPot(void) {
 	bool success = false;
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
@@ -169,9 +153,7 @@ bool CAutoplayer::DoBetPot(void)
 	return false;
 }
 
-bool CAutoplayer::AnyPrimaryFormulaTrue()
-{ 
-	__TRACE
+bool CAutoplayer::AnyPrimaryFormulaTrue() { 
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i)
 	{
 		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
@@ -196,9 +178,7 @@ bool CAutoplayer::AnyPrimaryFormulaTrue()
 }
 
 
-bool CAutoplayer::AnySecondaryFormulaTrue()
-{
-	__TRACE
+bool CAutoplayer::AnySecondaryFormulaTrue() {
 	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
 	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
@@ -214,9 +194,7 @@ bool CAutoplayer::AnySecondaryFormulaTrue()
 	return false;
 }
 
-bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() 
-{
-	__TRACE
+bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
 	if (!AnyPrimaryFormulaTrue())
 	{
@@ -261,9 +239,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary()
 	return ExecuteRaiseCallCheckFold();
 }
 
-bool CAutoplayer::ExecuteRaiseCallCheckFold()
-{
-	__TRACE
+bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)
 	{
@@ -280,9 +256,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold()
 	return false;
 }
 
-bool CAutoplayer::ExecuteBeep()
-{
-	__TRACE
+bool CAutoplayer::ExecuteBeep() {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
 	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
 	{
@@ -293,58 +267,44 @@ bool CAutoplayer::ExecuteBeep()
 	return false;
 }
 
-bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
-{
-	__TRACE
-	if (!TimeToHandleSecondaryFormulas())
-	{
+bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
+  bool success = false;
+	if (!TimeToHandleSecondaryFormulas())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 		return false;
 	}
-	if (!AnySecondaryFormulaTrue())
-	{
+	if (!AnySecondaryFormulaTrue())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; i++)
-	{
-
-		// Prefold, close, rebuy and chat work require different treatment,
+  PrepareActionSequence();
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; i++)	{
+    // Prefold, close, rebuy and chat work require different treatment,
 		// more than just clicking a simple region...
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_prefold))
-		{
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_prefold)) {
 			// Prefold is technically more than a simple button-click,
 			// because we need to create an autoplayer-trace afterwards.
-			return DoPrefold();
-		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_close))
-		{
+			success = DoPrefold();
+		}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_close))	{
 			// CloseWindow is "final".
 			// We don't expect any further action after that
 			// and can return immediatelly.
-			return p_casino_interface->CloseWindow();
-		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_rebuy))
-		{
+			success = p_casino_interface->CloseWindow();
+		} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_rebuy))	{
 			// This requires an external script and some time.
 			// No further actions here eihter, but immediate return.
 			p_rebuymanagement->TryToRebuy();
-			return true;
-		}
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat))
-		{
-			return DoChat();
+			success = true;
+		} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
+			success = DoChat();
 		}
 		// Otherwise: it is a simple button-click
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
-		{
-			if (p_casino_interface->ClickButton(i))
-			{
-				return true;
-			}
+		else if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
+			success = p_casino_interface->ClickButton(i);
 		}
 	}
+  FinishActionSequenceIfNecessary();
 	return false;
 }
 
@@ -352,7 +312,6 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary()
 	
 void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) { 
 	ENT 
-	__TRACE
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
 	assert(p_flags_toolbar != NULL);
@@ -362,7 +321,6 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 	{
 		if (!p_function_collection->BotLogicCorrectlyParsed())
 		{
-			__TRACE
 			// Invalid formula
 			// Can't autoplay
 			to_be_enabled_or_not = false;
@@ -377,15 +335,12 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 	// and avoid problems with multiple threads
 	// despite we use synchronization ;-)
 	_autoplayer_engaged = to_be_enabled_or_not;
-	__TRACE
 }
 
 #undef ENT
 
 
-bool CAutoplayer::DoChat(void)
-{
-	__TRACE
+bool CAutoplayer::DoChat(void) {
 	if (!IsChatAllowed())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
@@ -405,7 +360,6 @@ bool CAutoplayer::DoChat(void)
 }
 
 bool CAutoplayer::DoAllin(void) {
-	__TRACE
 	bool success = false;
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
 
@@ -448,9 +402,7 @@ bool CAutoplayer::DoAllin(void) {
 }
 
 
-void CAutoplayer::DoAutoplayer(void) 
-{
-	__TRACE
+void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
 
 	CheckBringKeyboard();
@@ -499,7 +451,6 @@ void CAutoplayer::DoAutoplayer(void)
 
 
 bool CAutoplayer::DoSwag(void) {
-	__TRACE
 	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize) > 0) 	{
 		int success = p_casino_interface->EnterBetsize(
       p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
@@ -514,9 +465,7 @@ bool CAutoplayer::DoSwag(void) {
 }
 
 
-bool CAutoplayer::DoPrefold(void) 
-{
-	__TRACE
+bool CAutoplayer::DoPrefold(void) {
 	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
 	if (!p_table_state->User()->HasKnownCards())
 	{

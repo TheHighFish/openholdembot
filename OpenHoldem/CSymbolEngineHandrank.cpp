@@ -81,9 +81,7 @@ void CSymbolEngineHandrank::ResetOnHandreset()
 void CSymbolEngineHandrank::ResetOnNewRound()
 {}
 
-void CSymbolEngineHandrank::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEngineHandrank::ResetOnMyTurn() {
 	char		cardstr[10] = {0};
 
 	// Get name string containing the players' current cards
