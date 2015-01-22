@@ -404,52 +404,40 @@ bool CAutoplayer::DoChat(void)
 	return p_casino_interface->EnterChatMessage(CString(_the_chat_message));
 }
 
-bool CAutoplayer::DoAllin(void)
-{
+bool CAutoplayer::DoAllin(void) {
 	__TRACE
 	bool success = false;
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
 
 	int number_of_clicks = 1; // Default is: single click with the mouse
-	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-	{
+	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) 	{
 		number_of_clicks = 2;
 	}
-
-	// TM symbol allinmethod.
-	//	0: swag the balance (default)
-	//	1: click max (or allin), then raise
-	//	2: click only max (or allin) [Spew and THF]
-	//	3: use the slider
-	if (p_tablemap->allinmethod() == 1)
-	{
+  // Trying to go allin using these 3 methods in the following order:
+  //	1) click max (or allin), then optionally raise, depending on allinconfirmationmethod
+  //	2) use the slider if it exists in the TM
+	//	3) swag the balance 
+	if (p_tablemap->allinconfirmationmethod() != 0)	{
 		// Clicking max (or allin) and then raise
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
-	}
-	else  if (p_tablemap->allinmethod() == 2)
-	{
+	}	else {
+    // Clicking only max (or allin), but not raise
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
-
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
-	}
-	else if (p_tablemap->allinmethod() == 3)
-	{
+    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
+  }
+	if (!success) {
+    // Try the slider
 		success = p_casino_interface->UseSliderForAllin();
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
+  }
+  if (!success) {
+		// Last case: try to swagging the balance
+		success = p_casino_interface->EnterBetsizeForAllin();
 	}
-	else
-	{
-		// Fourth case (default = 0): swagging the balance
-    int userchair = p_symbol_engine_userchair->userchair();
-		double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
-			+ p_table_state->User()->_balance; 
-		success = p_casino_interface->EnterBetsize(betsize_for_allin);
-	}
-	if (success)
-	{
+	if (success) {
 		// Not really necessary to register the action,
 		// as the game is over and there is no doallin-symbol,
 		// but it does not hurt to register it anyway.
