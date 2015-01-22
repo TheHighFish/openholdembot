@@ -466,7 +466,8 @@ didcallround1
 raischair
 
 ##LastAggressorActsAfterUs##		
-ac_agchair_after
+   ac_agchair_after 
+&& !BotIsLastRaiser
 
 ##BotIsLastRaiser##
 (AggressorChair==userchair)
@@ -3690,7 +3691,7 @@ HINT_There_Are_No_True_Raisers
 (callbits1 >> SmallBlindChair) & 1 == 1
 
 ##BigBlindCalling##
-(callbits1 >> BigBlindChair) & 11 == 1
+(callbits1 >> BigBlindChair) & 1 == 1
 
 ##EarlyPosition1Raising##
 [(raisbits1 >> EarlyPosition1Chair) & 1 == 1]

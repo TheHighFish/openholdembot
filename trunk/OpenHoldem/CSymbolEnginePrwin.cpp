@@ -61,16 +61,11 @@ void CSymbolEnginePrwin::ResetOnNewRound()
 	_prlosnow = 0;
 }
 
-void CSymbolEnginePrwin::ResetOnMyTurn()
-{
-	__TRACE
+void CSymbolEnginePrwin::ResetOnMyTurn() {
 	CalculateNOpponents();
-	__TRACE
   assert(p_iterator_thread != NULL);
 	p_iterator_thread->StartPrWinComputationsIfNeeded();
-	__TRACE
 	CalculateNhands();
-	__TRACE
 }
 
 void CSymbolEnginePrwin::ResetOnHeartbeat()
@@ -169,8 +164,6 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 {
 	_nopponents_for_prwin = p_function_collection->Evaluate(
 		"f$prwin_number_of_opponents");
-
-	__TRACE
 	if (_nopponents_for_prwin > MAX_OPPONENTS)
 	{
 		_nopponents_for_prwin = MAX_OPPONENTS;
@@ -179,7 +172,6 @@ void CSymbolEnginePrwin::CalculateNOpponents()
 	{
 		_nopponents_for_prwin = 1;
 	}
-	__TRACE
 }
 
 bool CSymbolEnginePrwin::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

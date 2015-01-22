@@ -33,7 +33,6 @@ CWhiteInfoBox::~CWhiteInfoBox() {
 
 void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
                          CPen *black_pen, CBrush *white_brush) {
-  __TRACE
 	CPen		*pTempPen = NULL, oldpen;
 	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		rect = {0};

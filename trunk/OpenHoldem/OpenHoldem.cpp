@@ -60,17 +60,13 @@ BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 END_MESSAGE_MAP()
 
 // COpenHoldemApp construction
-COpenHoldemApp::COpenHoldemApp()
-{
-	__TRACE
+COpenHoldemApp::COpenHoldemApp() {
 	_dll_scraper_process_message = NULL;
 	_dll_scraper_override = NULL;
 }
 
 // COpenHoldemApp destruction
-COpenHoldemApp::~COpenHoldemApp()
-{
-	__TRACE
+COpenHoldemApp::~COpenHoldemApp() {
 }
 
 // The one and only COpenHoldemApp object
@@ -94,8 +90,6 @@ BOOL COpenHoldemApp::InitInstance() {
 	// in your application.
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls); 
-
-  __TRACE
 	// Since OH 4.0.0 we always use an ini-file,
 	// the one and only in our OH-directory,
 	// no matter how it is named.
@@ -231,9 +225,7 @@ BOOL COpenHoldemApp::InitInstance() {
 	return TRUE;
 }
 
-void COpenHoldemApp::FinishInitialization()
-{
-	__TRACE
+void COpenHoldemApp::FinishInitialization() {
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] FinishInitialization()\n");
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
@@ -281,9 +273,7 @@ void COpenHoldemApp::FinishInitialization()
 	}
 }
 
-int COpenHoldemApp::ExitInstance()
-{
-	__TRACE
+int COpenHoldemApp::ExitInstance() {
   StopThreads();
 	DeleteAllSingletons();
 	stop_log();
@@ -291,9 +281,7 @@ int COpenHoldemApp::ExitInstance()
 	return CWinApp::ExitInstance();
 }
 
-void COpenHoldemApp::UnloadScraperDLL()
-{
-	__TRACE
+void COpenHoldemApp::UnloadScraperDLL() {
 	if (_scraper_dll)
 		FreeLibrary(_scraper_dll);
 	_scraper_dll = NULL;
@@ -319,15 +307,11 @@ protected:
 };
 
 
-CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) 
-{
-	__TRACE
+CDlgAbout::CDlgAbout() : CDialog(CDlgAbout::IDD) {
 }
 
 
-void CDlgAbout::DoDataExchange(CDataExchange* pDX) 
-{
-	__TRACE
+void CDlgAbout::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 }
 
@@ -335,16 +319,12 @@ BEGIN_MESSAGE_MAP(CDlgAbout, CDialog)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
-void COpenHoldemApp::OnAppAbout() 
-{
-	__TRACE
+void COpenHoldemApp::OnAppAbout() {
 	CDlgAbout aboutDlg;
 	aboutDlg.DoModal();
 }
 
-void COpenHoldemApp::LoadLastRecentlyUsedFileList()
-{
-	__TRACE
+void COpenHoldemApp::LoadLastRecentlyUsedFileList() {
 	// Added due to inability to get standard LoadStdProfileSettings working properly
 	ASSERT_VALID(this);
 	ASSERT(m_pRecentFileList == NULL);
@@ -361,15 +341,11 @@ void COpenHoldemApp::LoadLastRecentlyUsedFileList()
 	m_nNumPreviewPages = GetProfileInt(_afxPreviewSection, _afxPreviewEntry, 0);
 }
 
-void COpenHoldemApp::StoreLastRecentlyUsedFileList()
-{
-	__TRACE
+void COpenHoldemApp::StoreLastRecentlyUsedFileList() {
 	m_pRecentFileList->WriteList();
 }
 
-void COpenHoldemApp::OpenLastRecentlyUsedFile()
-{
-	__TRACE
+void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);

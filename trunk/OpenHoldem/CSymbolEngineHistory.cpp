@@ -105,7 +105,6 @@ void CSymbolEngineHistory::ResetOnNewRound() {
 }
 
 void CSymbolEngineHistory::ResetOnMyTurn() {
-	__TRACE
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
   int	betround = p_betround_calculator->betround();
