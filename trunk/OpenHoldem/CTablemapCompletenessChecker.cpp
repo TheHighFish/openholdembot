@@ -37,6 +37,8 @@ void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
   CString message;
   message.Format("Deprecated item in tablemap: %s.\n"
     "You can safely delete this item from the tablemap.\n"
+    "Due to a simplification of OpenHoldem it is no longer required.\n"
+    "The reasons and potential consequences are documented in the release-notes.\n"
     "%s", 
     item, p_tablemap->filepath());
   OH_MessageBox_Interactive(message, "Error", 0);
@@ -74,7 +76,6 @@ void CTablemapCompletenessChecker::CheckItem(CString prefix, int infix, CString 
 bool CTablemapCompletenessChecker::IsNoLimitMap() {
   return (p_tablemap->ItemExists("i3edit")
     || p_tablemap->ItemExists("i3slider")
-    || p_tablemap->ItemExists("allinmethod")
     || p_tablemap->ItemExists("betpotmethod")
     || p_tablemap->ItemExists("swagdeletionmethod")
     || p_tablemap->ItemExists("swagtextmethod")
@@ -185,7 +186,6 @@ void CTablemapCompletenessChecker::VerifyMap() {
   }
   // No Limit only
   if (IsNoLimitMap()) {
-    CheckItem("allinmethod");
     CheckItem("swagdeletionmethod");
     CheckItem("swagtextmethod");
     CheckItem("swagconfirmationmethod");
@@ -195,11 +195,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
     CheckItem("i3button");
     CheckItem("i3state");
     CheckItem("i3label");
-    // Slider, depending on allin-method
-    if (p_tablemap->allinmethod() == 3) {
-      CheckItem("i3slider");
-      CheckItem("i3handle");
-    }
+    // Slider now optional, as allinmethod (= 3) is gone.
+    // CheckItem("i3slider");
+    // CheckItem("i3handle");
   }
   // Font-types
   for (int i=0; i<k_max_number_of_font_groups_in_tablemap; ++i) {
@@ -238,5 +236,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17818&start=30#p125307
   if (p_tablemap->ItemExists("activemethod")) {
     ErrorDeprecatedItem("activemethod");
+  }
+  // allinmethod no longer supported, works automatically
+  if (p_tablemap->ItemExists("allinmethod")) {
+    ErrorDeprecatedItem("allinmethod");
   }
 }

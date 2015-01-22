@@ -132,7 +132,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     }
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
-    *result = p_autoconnector->attached_hwnd();
+    *result = int(p_autoconnector->attached_hwnd());
   } else {
     *result = k_undefined;
     return false;
