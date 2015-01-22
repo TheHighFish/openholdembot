@@ -1,4 +1,4 @@
-v7.4.2 2015-01-xx
+v7.4.2 2015-01-22
 ==================
 BUG FIXES:
 - OpenScrape was no longer able to add symbol-records to a tablemap.

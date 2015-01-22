@@ -1,4 +1,4 @@
-v7.4.2 2015-01-xx
+v7.4.2 2015-01-22
 ==================
 NEW stuff:
 - New symbol attached_hwnd meant for DLL- and Perl-devlopers
@@ -22,6 +22,10 @@ BUG FIXES:
   NULL-terminated strings at some point for the game-type.
   This has now been fixed. Thanks to Plutus for reporting.
   [Moby]
+= Shooting replayframes on my turn did no longer work,
+  as the decision made use of some data that got calculated a bit later.
+  Thanks to Moby for finding and explaining the problem.
+  [THF]
 
 v7.4.1 2015-01-13
 ==================
