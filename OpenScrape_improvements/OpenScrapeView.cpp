@@ -75,39 +75,36 @@ BOOL COpenScrapeView::PreCreateWindow(CREATESTRUCT& cs)
 
 // COpenScrapeView drawing
 
-void COpenScrapeView::OnDraw(CDC* pDC)
-{
+void COpenScrapeView::OnDraw(CDC* pDC) {
 	COpenScrapeDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
+	if (!pDoc) return;
 
 	CPen		*pTempPen, oldpen;
-	CBrush		*pTempBrush, oldbrush;	
+	CBrush	*pTempBrush, oldbrush;	
 	HDC			hdc = *pDC;
 	HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); 
 	HDC			hdcCompatible = CreateCompatibleDC(hdcScreen);
-	HBITMAP		hbmp = CreateCompatibleBitmap(hdcScreen, 
-										      pDoc->attached_rect.right - pDoc->attached_rect.left, 
-										      pDoc->attached_rect.bottom - pDoc->attached_rect.top);
-	HBITMAP		old_bitmap1, old_bitmap2;
+	HBITMAP	hbmp = CreateCompatibleBitmap(hdcScreen, 
+		pDoc->attached_rect.right - pDoc->attached_rect.left, 
+		pDoc->attached_rect.bottom - pDoc->attached_rect.top);
+	HBITMAP	old_bitmap1, old_bitmap2;
 	CMainFrame	*pmyframe = (CMainFrame*)AfxGetMainWnd(); 
-	RECT		crect;
+	RECT	  crect;
 
 	// Draw attached window's bitmap as background
-	if (pDoc->attached_bitmap)
-	{
+	if (pDoc->attached_bitmap) 	{
 		old_bitmap1 = (HBITMAP) SelectObject(hdcCompatible, pDoc->attached_bitmap);
 		old_bitmap2 = (HBITMAP) SelectObject(hdc, hbmp);
-		BitBlt(hdc, 0, 0,
-			   pDoc->attached_rect.right - pDoc->attached_rect.left,
-			   pDoc->attached_rect.bottom - pDoc->attached_rect.top,
-			   hdcCompatible, 0, 0, SRCCOPY);
+		BitBlt(hdc, 
+      kSizeXForEditor, // x-position, offset because of now integrated editor
+      0,               // y-position 
+			pDoc->attached_rect.right - pDoc->attached_rect.left,
+			pDoc->attached_rect.bottom - pDoc->attached_rect.top,
+			hdcCompatible, 0, 0, SRCCOPY);
 		SelectObject(hdc, old_bitmap2);
 		SelectObject(hdcCompatible, old_bitmap1);
-	}
-	else
-	{
+	}	else	{
 		pTempPen = (CPen*)pDC->SelectObject(null_pen);
 		oldpen.FromHandle((HPEN)pTempPen);
 		pTempBrush = (CBrush*)pDC->SelectObject(white_brush);
@@ -115,49 +112,37 @@ void COpenScrapeView::OnDraw(CDC* pDC)
 
 		GetClientRect(&crect);
 		pDC->Rectangle(&crect);
-
-		pDC->SelectObject(oldpen);
+    pDC->SelectObject(oldpen);
 		pDC->SelectObject(oldbrush);
 	}
 
 	// Draw all region rectangles
-	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
-	{
-		if ( (r_iter->second.name==dragged_region && dragging) || 
-				(r_iter->second.name==drawrect_region && drawing_rect && drawing_started) )
-		{
+	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
+		if ( (r_iter->second.name==dragged_region && dragging) 
+        || (r_iter->second.name==drawrect_region && drawing_rect && drawing_started) ) 	{
 			// Set pen and brush
 			pTempPen = (CPen*)pDC->SelectObject(black_dot_pen);
-			oldpen.FromHandle((HPEN)pTempPen);
-			pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
-			oldbrush.FromHandle((HBRUSH)pTempBrush);
+    } else {
+      pTempPen = (CPen*)pDC->SelectObject(red_pen);
+    }
+		oldpen.FromHandle((HPEN)pTempPen);
+		pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
+		oldbrush.FromHandle((HBRUSH)pTempBrush);
 
-			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
-
-			pDC->SelectObject(oldpen);
-			pDC->SelectObject(oldbrush);
-		}
-		else
-		{
-			// Set pen and brush
-			pTempPen = (CPen*)pDC->SelectObject(red_pen);
-			oldpen.FromHandle((HPEN)pTempPen);
-			pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
-			oldbrush.FromHandle((HBRUSH)pTempBrush);
-
-			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
-
-			pDC->SelectObject(oldpen);
-			pDC->SelectObject(oldbrush);
-		}
+		pDC->Rectangle(
+      // x-position, offset kSizeXForEditor because of now integrated editor
+      r_iter->second.left + kSizeXForEditor - 1, 
+      r_iter->second.top-1, 
+      r_iter->second.right + kSizeXForEditor + 2, 
+      r_iter->second.bottom+2);
+		pDC->SelectObject(oldpen);
+		pDC->SelectObject(oldbrush);
 	}
-
-	// Clean Up
+  // Clean Up
 	DeleteObject(hbmp);
 	DeleteDC(hdcCompatible);
 	DeleteDC(hdcScreen);
 }
-
 
 // COpenScrapeView diagnostics
 

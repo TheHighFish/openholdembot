@@ -152,9 +152,8 @@ public:
 	// Window that we are attached to
 	HWND		attached_hwnd;
 	RECT		attached_rect;
-	HBITMAP		attached_bitmap;
+	HBITMAP	attached_bitmap;
 	BYTE		*attached_pBits;
-
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

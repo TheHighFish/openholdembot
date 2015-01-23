@@ -66,9 +66,13 @@
 #define VERSION_NUMBER				7.42
 #define VERSION_TEXT				"7.4.2"  // change version number in OpenScrape.rc also, when needed
 
-
 #include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
 
+// Window constants for the improved GUI
+const int kBordersize = 2;
+const int kSizeXForEditor = 400;
+const int kSizeYForEditor = 600;
+const int kSizeYForMenu   =  43;
 
 #endif //INC_STDAFX_H

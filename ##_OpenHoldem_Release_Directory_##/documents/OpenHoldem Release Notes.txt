@@ -18,7 +18,7 @@ NEW stuff:
   [THF]
 
 BUG FIXES:
-- The contruction of PT-queries used integers instead of
+- The construction of PT-queries used integers instead of
   NULL-terminated strings at some point for the game-type.
   This has now been fixed. Thanks to Plutus for reporting.
   [Moby]

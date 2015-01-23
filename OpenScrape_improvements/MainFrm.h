@@ -44,7 +44,7 @@ protected: // create from serialization only
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 
-	CStatusBar		m_wndStatusBar;
+	CStatusBar	m_wndStatusBar;
 	CToolBar		m_wndToolBar;
 
 public:
