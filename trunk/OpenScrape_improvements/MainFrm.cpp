@@ -77,19 +77,15 @@ static UINT openscrape_indicators[] =
 // CMainFrame construction/destruction
 //
 /////////////////////////////////////////////////////
-
-CMainFrame::CMainFrame()
-{
+ 
+CMainFrame::CMainFrame(){
 	__SEH_SET_EXCEPTION_HANDLER
-
 	// Save startup directory
     ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
 }
 
-CMainFrame::~CMainFrame()
-{
+CMainFrame::~CMainFrame() {
 }
-
 
 /////////////////////////////////////////////////////
 //
@@ -97,66 +93,53 @@ CMainFrame::~CMainFrame()
 //
 /////////////////////////////////////////////////////
 
-bool CMainFrame::CreateToolbar()
-{
+bool CMainFrame::CreateToolbar() {
 	return (m_wndToolBar.CreateEx(this, NULL, 
 		WS_CHILD | WS_VISIBLE | CBRS_TOP
 		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) 
 		&& m_wndToolBar.LoadToolBar(IDR_MAINFRAME));
 }
 
-bool CMainFrame::CreateStatusBar()
-{
+bool CMainFrame::CreateStatusBar() {
 	return (m_wndStatusBar.Create(this) 
 		&& m_wndStatusBar.SetIndicators(openscrape_indicators, 
 			sizeof(openscrape_indicators)/sizeof(UINT)));
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	TBBUTTONINFO	tbi;
 	tbi.cbSize = sizeof(TBBUTTONINFO);
 	tbi.dwMask = TBIF_STYLE;
 	tbi.fsStyle = TBSTYLE_CHECK;
 
-	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
-	{
+	if (CFrameWnd::OnCreate(lpCreateStruct) == -1) 	{
 		return -1;
 	}
-	if (!CreateToolbar())
-	{
+	if (!CreateToolbar())	{
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-	if (!CreateStatusBar())
-	{
+	if (!CreateStatusBar())	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
-	// Set toolbar button status
+  // Set toolbar button status
 	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-
-	// Start timer that blinks selected region
+  // Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
-
-	return 0;
+  return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
-	if( !CFrameWnd::PreCreateWindow(cs) )
-		return FALSE;
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
+	if( !CFrameWnd::PreCreateWindow(cs) )	return FALSE;
 
 	Registry	reg;
 	int			max_x, max_y;
-
-	WNDCLASS wnd;
+  WNDCLASS wnd;
 	HINSTANCE hInst = AfxGetInstanceHandle();
 
 	// Set class name
-	if (!(::GetClassInfo(hInst, "OpenScrape", &wnd)))
-	{
+	if (!(::GetClassInfo(hInst, "OpenScrape", &wnd))) {
 		wnd.style            = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc      = ::DefWindowProc;
 		wnd.cbClsExtra       = wnd.cbWndExtra = 0;
@@ -190,13 +173,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 /////////////////////////////////////////////////////
 
 #ifdef _DEBUG
-void CMainFrame::AssertValid() const
-{
+void CMainFrame::AssertValid() const {
 	CFrameWnd::AssertValid();
 }
 
-void CMainFrame::Dump(CDumpContext& dc) const
-{
+void CMainFrame::Dump(CDumpContext& dc) const {
 	CFrameWnd::Dump(dc);
 }
 
@@ -208,8 +189,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 //
 /////////////////////////////////////////////////////
 
-BOOL CMainFrame::DestroyWindow()
-{
+BOOL CMainFrame::DestroyWindow() {
 	Registry		reg;
 	WINDOWPLACEMENT wp;
 
@@ -230,41 +210,34 @@ BOOL CMainFrame::DestroyWindow()
 }
 
 // TODO: Callers might need to be refactored
-void CMainFrame::ForceRedraw()
-{
+void CMainFrame::ForceRedraw() {
 	Invalidate(true);
 	theApp.m_TableMapDlg->Invalidate(true);
 }
 
-void CMainFrame::OnViewConnecttowindow()
-{
+void CMainFrame::OnViewConnecttowindow() {
 	LPARAM				lparam;
 	CDlgSelectTable		cstd;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 
 	// Clear global list for holding table candidates
 	g_tlist.RemoveAll();
-
+   
 	// Populate global candidate table list
 	lparam = NULL;
 	EnumWindows(EnumProcTopLevelWindowList, lparam);
 
 	// Put global candidate table list in table select dialog variables
 	int number_of_tablemaps = (int) g_tlist.GetSize();
-	if (number_of_tablemaps==0) 
-	{
+	if (number_of_tablemaps==0) {
 		MessageBox("No valid windows found", "Cannot find window", MB_OK);
-	}
-	else 
-	{
-		for (int i=0; i<number_of_tablemaps; i++) 
-		{
+	}	else {
+		for (int i=0; i<number_of_tablemaps; i++)	{
 			cstd.tlist.Add(g_tlist[i]);
 		}
 
 		// Display table select dialog
-		if (cstd.DoModal() == IDOK) 
-		{
+		if (cstd.DoModal() == IDOK) {
 			// Save hwnd and rect of window we are attached to
 			pDoc->attached_hwnd = g_tlist[cstd.selected_item].hwnd;
 			pDoc->attached_rect.left = g_tlist[cstd.selected_item].crect.left;
@@ -273,14 +246,13 @@ void CMainFrame::OnViewConnecttowindow()
 			pDoc->attached_rect.bottom = g_tlist[cstd.selected_item].crect.bottom;
 
 			SaveBmpPbits();
-			ResizeWindow(pDoc);	
+      ResizeWindow(pDoc);	
 		}
 	}
 	ForceRedraw();
 }
 
-void CMainFrame::OnEditUpdatehashes()
-{
+void CMainFrame::OnEditUpdatehashes() {
 	int		ret;
 
 	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
@@ -414,21 +386,16 @@ void CMainFrame::OnEditDuplicateregion()
 			}
 		}
 	}
-
 }
 
-void CMainFrame::OnTimer(UINT_PTR nIDEvent)
-{
+void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
 
-	if (nIDEvent == BLINKER_TIMER) 
-	{
+	if (nIDEvent == BLINKER_TIMER) 	{
 		pDoc->blink_on = !pDoc->blink_on;
 		pView->blink_rect();
-
 	}
-
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
@@ -455,12 +422,28 @@ void CMainFrame::BringOpenScrapeBackToFront()
 	::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
 }
 
-void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc)
-{
+void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc) {
 	RECT newrect;
 	::GetClientRect(pDoc->attached_hwnd, &newrect);
 	AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+  // Calculate new window size
+  int size_x = newrect.right - newrect.left;
+  int size_y = newrect.bottom = newrect.top;
+  // Calculate height
+  if (kSizeYForEditor > size_y) {
+    // both have to fit
+    size_y = kSizeYForEditor;
+  }
+  size_y += kSizeYForMenu;
+  size_y += 2 * kBordersize;
+  // Calculate width
+  // Both editor and image have to be displayed side by side
+  size_x += kSizeXForEditor;
+  size_x += 2 * kBordersize;
+	SetWindowPos(NULL, // InsertAfter = z-position
+    0, 0,            // (x, z) position
+    size_x, size_y,  // Size
+    SWP_NOMOVE);
 }
 
 void CMainFrame::OnViewRefresh()
@@ -688,21 +671,18 @@ void CMainFrame::OnViewUngroupregions()
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 
-void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
-{
+// Displays size of current poker-table in the main menu
+void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI) {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	CString				text;
 
-	if (pDoc->attached_hwnd)
-	{
-		text.Format("Current size: %dx%d", pDoc->attached_rect.right - pDoc->attached_rect.left, 
-										   pDoc->attached_rect.bottom - pDoc->attached_rect.top);
+	if (pDoc->attached_hwnd) 	{
+		text.Format("Current size: %dx%d", 
+      pDoc->attached_rect.right - pDoc->attached_rect.left, 
+		  pDoc->attached_rect.bottom - pDoc->attached_rect.top);
 		pCmdUI->SetText(text.GetString());
 		pCmdUI->Enable(true);
-	}
-
-	else
-	{
+	}	else {
 		pCmdUI->SetText("Current size: 0x0");
 		pCmdUI->Enable(false);
 	}
