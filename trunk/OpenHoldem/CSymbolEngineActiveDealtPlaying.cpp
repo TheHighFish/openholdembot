@@ -68,8 +68,7 @@ void CSymbolEngineActiveDealtPlaying::ResetOnNewRound()
 void CSymbolEngineActiveDealtPlaying::ResetOnMyTurn()
 {}
 
-void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat()
-{
+void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat() {
 	CalculateActiveBits();
 	CalculatePlayingBits();
 	CalculateDealtBits();
@@ -153,8 +152,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
         chair_to_consider);
 			this_player_got_dealt = true;
       first_non_blind_with_cards_found = true;
-		}
-    else {
+		} else {
       // Player has no cards
       if (first_non_blind_with_cards_found == false) {
         // Not yet anybody with cards outside the blinds found

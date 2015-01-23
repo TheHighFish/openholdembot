@@ -110,6 +110,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "network$", 8)==0)									  *result = p_tablemap->network().Find(&name[8])!=-1;
   // Handreset
   else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = p_handreset_detector->hands_played();
+  else if (memcmp(name, "handsplayed_headsup", 19)==0 && strlen(name)==19)  *result = p_handreset_detector->hands_played_headsup();
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
@@ -145,7 +146,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
     "prwin prlos prtie "
     "betround fmax f flagbits "
     "nchairs session version "
-    "handsplayed ";
+    "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
 }
