@@ -39,7 +39,8 @@ CHandresetDetector::CHandresetDetector() {
 	dealerchair = k_undefined;
 	handnumber = "";
 	_is_handreset_on_this_heartbeat = false;
-  _hands_played = 0; //!! Should get reinitialiyed on connection
+  _hands_played = 0;
+  _hands_played_headsup = 0;
 }
 
 CHandresetDetector::~CHandresetDetector() {
@@ -72,6 +73,12 @@ void CHandresetDetector::CalculateIsHandreset() {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
     ++_hands_played;
+    if (p_symbol_engine_active_dealt_playing->nopponentsdealt() == 1) {
+      // Last hand (data not yet reset) was headsup
+      ++_hands_played_headsup;
+    } else {
+      _hands_played_headsup = 0;
+    }
     // Clear data to avoid multiple fast handreset with already used methods, 
     // if casino needs several heartbeats to update table view.
     _methods_firing_the_last_three_heartbeats[0] = 0;

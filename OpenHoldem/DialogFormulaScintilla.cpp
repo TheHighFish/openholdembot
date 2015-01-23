@@ -2311,7 +2311,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "avgbetspf", "average number of bets preflop for the last y minutes");
 	AddSymbol(parent, "tablepfr", "pfr percentage preflop for the last y minutes");
 	AddSymbol(parent, "maxbalance", "my highest balance during the session");
-	AddSymbol(parent, "handsplayed", "number of hands played this session");
+	AddSymbol(parent, "handsplayed", "number of hands played this session by this OpenHoldem instance");
+  AddSymbol(parent, "handsplayed_headsup", "number of consecutive hands played headsup");
 	AddSymbol(parent, "balance_rankx (x=0-9)", "ranked list of player balances (includes players not currently in hand, and includes currentbet for each player as well).  rank0 has highest balance.");
 
 	PopulatePokerTrackerSymbols();	

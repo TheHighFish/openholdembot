@@ -348,7 +348,7 @@ void write_log_separator(bool debug_settings_for_this_message, char* header_mess
   // Now copz the header-message into the header (without \0)
   memcpy((header + 10), header_message, strlen(header_message));
   header[9] = ' ';
-  header[11 + strlen(header_message)] = ' ';
+  header[10 + strlen(header_message)] = ' ';
   write_log_nostamp(true, header);
 }
 

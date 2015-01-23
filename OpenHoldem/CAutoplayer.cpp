@@ -98,7 +98,6 @@ void CAutoplayer::FinishActionSequenceIfNecessary() {
 	}
 }
 
- 
 bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
 	// to avoid multiple fast clicking on the sitin / sitout-button.
@@ -108,8 +107,7 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	// Scrape_delay() should always be > 0, there's a check in the GUI.
 	assert(preferences.scrape_delay() > 0);
 	int hearbeats_to_pause = 4 / preferences.scrape_delay();
-	if  (hearbeats_to_pause < 1)
-	{
+	if  (hearbeats_to_pause < 1) {
  		hearbeats_to_pause = 1;
  	}
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
@@ -119,7 +117,6 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 		Bool2CString(act_this_heartbeat));
 	return act_this_heartbeat;
 }
-
 
 bool CAutoplayer::DoBetPot(void) {
 	bool success = false;
@@ -179,13 +176,11 @@ bool CAutoplayer::AnyPrimaryFormulaTrue() {
 
 
 bool CAutoplayer::AnySecondaryFormulaTrue() {
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)
-	{
+	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_standard_function_names[i], Bool2CString(function_result));
-		if (function_result)
-		{
+		if (function_result) {
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
 			return true;
 		}
@@ -268,7 +263,7 @@ bool CAutoplayer::ExecuteBeep() {
 }
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
-  bool success = false;
+  int executed_secondary_function = k_undefined;
 	if (!TimeToHandleSecondaryFormulas())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 		return false;
@@ -285,27 +280,39 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_prefold)) {
 			// Prefold is technically more than a simple button-click,
 			// because we need to create an autoplayer-trace afterwards.
-			success = DoPrefold();
+			if (DoPrefold()) {
+        executed_secondary_function = k_standard_function_prefold;
+      }
 		}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_close))	{
 			// CloseWindow is "final".
 			// We don't expect any further action after that
 			// and can return immediatelly.
-			success = p_casino_interface->CloseWindow();
+			if (p_casino_interface->CloseWindow()) {
+        executed_secondary_function = k_standard_function_close;
+      }
 		} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_rebuy))	{
 			// This requires an external script and some time.
 			// No further actions here eihter, but immediate return.
 			p_rebuymanagement->TryToRebuy();
-			success = true;
+      // No waz to check for success here
+			executed_secondary_function = k_standard_function_rebuy;
 		} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
-			success = DoChat();
+			if (DoChat()) {
+        executed_secondary_function = k_standard_function_chat;
+      }
 		}
 		// Otherwise: it is a simple button-click
 		else if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
-			success = p_casino_interface->ClickButton(i);
+			if (p_casino_interface->ClickButton(i)) {
+        executed_secondary_function = i;
+      }
 		}
+    if (executed_secondary_function != k_undefined) {
+      FinishActionSequenceIfNecessary();
+      p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_fold));
+    }
 	}
-  FinishActionSequenceIfNecessary();
-	return false;
+  return false;
 }
 
 #define ENT CSLock lock(m_critsec);
