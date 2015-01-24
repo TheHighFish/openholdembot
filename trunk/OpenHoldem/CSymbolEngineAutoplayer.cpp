@@ -54,7 +54,6 @@ void CSymbolEngineAutoplayer::ResetOnConnection() {
 	_isautopost      = false;
 	_isfinalanswer   = false;
 	_last_myturnbits = 0;
-	DetectSpecialConnectionLikeBringAndManualMode();
 }
 
 void CSymbolEngineAutoplayer::ResetOnHandreset() {
@@ -108,26 +107,12 @@ void CSymbolEngineAutoplayer::CalculateSitInState() {
 	    _issittingin = !p_scraper->GetButtonState(i);
 	    return;
     } else if (p_string_match->IsStringSitout(p_scraper->button_label(i))) {
-	  // Sitout-button found
+	    // Sitout-button found
       // We are sitting in if that button CAN be clicked
-	  _issittingin = (p_scraper->GetButtonState(i));
-	  return;
+	    _issittingin = (p_scraper->GetButtonState(i));
+	    return;
     }
   }
-}
-
-void CSymbolEngineAutoplayer::DetectSpecialConnectionLikeBringAndManualMode() {
-	_isbring  = false;
-	_ismanual = false;
-	const int k_max_length_of_classname = 50;
-	char classname[k_max_length_of_classname] = "";
-
-	GetClassName(p_autoconnector->attached_hwnd(), classname, k_max_length_of_classname);
-	if (strcmp(classname, "BRING")==0) {
-		_isbring = true;																
-	}	else if (strcmp(classname, "OpenHoldemManualMode")==0) {
-		_ismanual = true;
-	}
 }
 
 bool CSymbolEngineAutoplayer::isfinaltable() {

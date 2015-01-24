@@ -24,8 +24,7 @@
 
 CSymbolEngineUserchair *p_symbol_engine_userchair = NULL;
 
-CSymbolEngineUserchair::CSymbolEngineUserchair()
-{
+CSymbolEngineUserchair::CSymbolEngineUserchair() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.

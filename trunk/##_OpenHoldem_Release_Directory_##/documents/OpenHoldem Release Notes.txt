@@ -4,6 +4,12 @@ NEW stuff:
 - New symbol handsplayed_headsup, counting the number of consecutive
   hands played headsup, meant for opponent modelling.
   [THF]
+- Improved mouse positioning.
+  Restoring the window focus and mouse position now only for offline simulations
+  like ManualMode, OHReplay, PokerAcademy, PokerTH and PokerSnowie
+  (convenient for the user), but no longer for real casinos,
+  as always jumping back to the same position was an easy and reliable bot-flag.
+  [THF]
 
 v7.4.2 2015-01-22
 ==================
