@@ -239,13 +239,16 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 }
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold() {
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
-	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)
-	{
-		if (p_function_collection->Evaluate(k_standard_function_names[i]))
-		{
-			if (p_casino_interface->ClickButton(i))
-			{
+	write_log(preferences.debug_autoplayer(), 
+    "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
+	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
+    if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
+      write_log(k_always_log_errors, 
+        "[AutoPlayer] ERROR: Can't execute f$check because there is a bet to call\n");
+      continue;
+    }
+		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
+			if (p_casino_interface->ClickButton(i)) 			{
 				p_autoplayer_trace->Print(ActionConstantNames(i));
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
