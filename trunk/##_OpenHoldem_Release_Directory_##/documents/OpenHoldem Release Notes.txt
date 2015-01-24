@@ -11,6 +11,12 @@ NEW stuff:
   as always jumping back to the same position was an easy and reliable bot-flag.
   [THF]
 
+MAINTENANCE
+- Extra precautions against invalid "checks".
+  OpenHoldem prevents now "checking" if the user mis-scrapes the call-button as "check"
+  and then decides to "check" if there is a positive amount to call.
+  [THF]
+
 v7.4.2 2015-01-22
 ==================
 NEW stuff:
