@@ -21,6 +21,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
@@ -95,6 +96,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_autoplayer != NULL);
+  assert(p_symbol_engine_casino != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
@@ -243,7 +245,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // If it is ManualMode, then we detect it by title-string "tourney".
   // High blinds (default) don~t make it a tournament.
   // Therefore don't continue.
-  if (p_symbol_engine_autoplayer->ismanual()) {
+  if (p_symbol_engine_casino->ConnectedToManualMode()) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] ManualMode, but no tournament identifier\n");
     return;
   }

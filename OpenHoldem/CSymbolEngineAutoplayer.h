@@ -43,8 +43,6 @@ public:
 	bool issittingout()	{ return !issittingin(); }
 	bool isautopost()		{ return _isautopost; }
 	bool isfinalanswer(){ return _isfinalanswer; }
-	bool isbring()			{ return _isbring; }
-	bool ismanual()			{ return _ismanual; }
   bool isfinaltable();
 public:
 	// Especially needed to start the PrWin-calculations
@@ -55,14 +53,11 @@ private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();
 	void CalculateFinalAnswer();
-	void DetectSpecialConnectionLikeBringAndManualMode();
 private:
 	int  _myturnbits;
 	bool _issittingin;
 	bool _isautopost;
 	bool _isfinalanswer; 
-	bool _isbring;
-	bool _ismanual;
 private:
 	bool _last_myturnbits;
 };

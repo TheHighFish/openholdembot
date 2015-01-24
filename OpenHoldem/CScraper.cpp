@@ -27,6 +27,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineCasino.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
@@ -96,27 +97,19 @@ bool CScraper::GetButtonState(CString button_state_as_string) {
 
 bool CScraper::GetButtonState(int button_index) {
 	CString l_button_state = "";
-	if (button_index<=9)
-	{
-		if (p_symbol_engine_autoplayer->ismanual() && button_index == 5)
-		{
+	if (button_index<=9) {
+		if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5)	{
 			// Don't MakeLower our mm_network symbol
 			l_button_state = _button_state[button_index];
-		}
-		else
-		{
+		}	else {
 			// Default
 			l_button_state = _button_state[button_index].MakeLower();
 		}
 		return GetButtonState(l_button_state);
-	}
-	else if (button_index==86)
-	{
+	}	else if (button_index==86) {
 		l_button_state = _i86_button_state.MakeLower();
 		return GetButtonState(l_button_state);
-	}
-	else if (button_index>=860)
-	{
+	}	else if (button_index>=860)	{
 		l_button_state = _i86X_button_state[button_index-860];
 		return GetButtonState(l_button_state);
 	}
@@ -256,7 +249,7 @@ void CScraper::ScrapeActionButtons() {
 	}
 	// Ugly WinHoldem convention
 	// When using ManualMode, grab i5state for PT network 
-	if (p_symbol_engine_autoplayer->ismanual())
+	if (p_symbol_engine_casino->ConnectedToManualMode())
 	{
 		p_tablemap->set_network(p_scraper->button_state(5));
 	}

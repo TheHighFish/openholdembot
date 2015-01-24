@@ -711,6 +711,9 @@
     <ClCompile Include="CHandHistoryAction.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineCasino.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1518,6 +1521,9 @@
     </ClInclude>
     <ClInclude Include="CHandHistoryAction.h">
       <Filter>Header Files\HandhistoryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineCasino.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

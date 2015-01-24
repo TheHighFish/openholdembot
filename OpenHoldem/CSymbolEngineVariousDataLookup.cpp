@@ -85,12 +85,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     assert(p_perl != NULL);
     *result = p_perl->GetPerlSymbol(name);
   }
-  // CHAIRS 1(2)
-  else if (memcmp(name, "chair", 5)==0) {
-    if (memcmp(name, "chair$", 6)==0)							*result = Chair$(&name[6]);
-    else if (memcmp(name, "chairbit$", 9)==0)					*result = Chairbit$(&name[9]);
-    else return false;
-  }
   // Various symbols below
   // without any optimized lookup.
   //
@@ -102,12 +96,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * (name[1]-'0') + name[2] - '0');
   else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = p_flags_toolbar->GetFlagBits();
   // GENERAL
-  else if (memcmp(name, "nchairs", 7)==0 && strlen(name)==7)	*result = p_tablemap->nchairs();
   else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
   else if (memcmp(name, "version", 7)==0 && strlen(name)==7)	*result = VERSION_NUMBER;
-  //PROFILE
-  else if (memcmp(name, "sitename$", 9)==0)									  *result = p_tablemap->sitename().Find(&name[9])!=-1;
-  else if (memcmp(name, "network$", 8)==0)									  *result = p_tablemap->network().Find(&name[8])!=-1;
   // Handreset
   else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = p_handreset_detector->hands_played();
   else if (memcmp(name, "handsplayed_headsup", 19)==0 && strlen(name)==19)  *result = p_handreset_detector->hands_played_headsup();
@@ -142,10 +132,9 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_chair$, ....
-  CString list = "dll$ pl_ vs$ chair$ chairbit$ sitename$ network$ msgbox$ log$ "
-    "prwin prlos prtie "
+  CString list = "dll$ pl_ vs$ msgbox$ log$ "
     "betround fmax f flagbits "
-    "nchairs session version "
+    "session version "
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
