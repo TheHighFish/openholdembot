@@ -351,7 +351,6 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 
 #undef ENT
 
-
 bool CAutoplayer::DoChat(void) {
 	if (!IsChatAllowed())
 	{
@@ -427,31 +426,23 @@ void CAutoplayer::DoAutoplayer(void) {
 		
 	// Care about I86 regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
-	if (!HandleInterfacebuttonsI86())
-	{
+	if (!HandleInterfacebuttonsI86())	{
 		// Care about sitin, sitout, leave, etc.
 		p_autoplayer_functions->CalcSecondaryFormulas();
-		if (!ExecuteSecondaryFormulasIfNecessary())	
-		{
+		if (!ExecuteSecondaryFormulasIfNecessary())	{
 			write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
 			// Since OH 4.0.5 we support autoplaying immediatelly after connection
 			// without the need to know the userchair to act on secondary formulas.
 			// However: for primary formulas (f$alli, f$rais, etc.)
 			// knowing the userchair (combination of cards and buttons) is a must.
-			if (!p_symbol_engine_userchair->userchair_confirmed())
-			{
+			if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
 				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
-			}
-			else
-			{
+			}	else {
 				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-				if(p_symbol_engine_autoplayer->isfinalanswer())
-				{
+				if(p_symbol_engine_autoplayer->isfinalanswer())	{
 					p_autoplayer_functions->CalcPrimaryFormulas();
 					ExecutePrimaryFormulasIfNecessary();
-				}
-				else
-				{
+				}	else {
 					write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
 				}
 			}

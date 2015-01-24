@@ -305,12 +305,15 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "// Betsize in dollars, raise-to semantics.\n"
       "// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.\n"
       "// Please define your tablemaps \"swagtextmethod\" to configure this feature.\n";
-  } else if ((function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical)
-	    || (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical)) {
+  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical) {    
     function_text = 
-      "// f$check and f$fold should evaluate to true per default\n"
+      "// Check whenever it is free to call\n"
+      "(call == 0) "; 
+  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical) {
+    function_text = 
+      "// f$fold should alwazs evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
-      "1 "; 
+      "1 ";
   } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
     function_text = 
       "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
