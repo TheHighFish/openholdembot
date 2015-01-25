@@ -16,24 +16,23 @@
 
 #include "CAutoConnector.h"
 #include "CPreferences.h"
+#include "CSymbolEngineCasino.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "CMyMutex.h"
 
-void CheckBringKeyboard(void) 
-{
+void CheckBringKeyboard(void) {
 	HMENU			bringsysmenu = NULL;
-	MENUITEMINFO	mii;
+	MENUITEMINFO mii;
 	int				input_count = 0, i = 0;
 	INPUT			input[100] = {0};
 	char			temp[256] = {0};
-	CString			c_text = "";
+	CString		c_text = "";
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 
-	if (!p_symbol_engine_autoplayer->isbring())
-	{
+	if (!p_symbol_engine_casino->ConnectedToBring()) 	{
 		write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
 		return;
 	}
@@ -52,8 +51,7 @@ void CheckBringKeyboard(void)
 	mii.fType = MFT_STRING;
 	mii.dwTypeData = temp;
 	keybd_item_pos = -1;
-	for (int i=GetMenuItemCount(bringsysmenu)-1; i>=0; i--) 
-	{
+	for (int i=GetMenuItemCount(bringsysmenu)-1; i>=0; --i)	{
 		mii.cch = 256;
 	
 		// Get the text of this menu item
@@ -61,27 +59,21 @@ void CheckBringKeyboard(void)
 		c_text = temp;
 
 		// See if this is the "keyboard" menu item
-		if (c_text.MakeLower().Find("keyboard") != -1) 
-		{
+		if (c_text.MakeLower().Find("keyboard") != -1) {
 			keybd_item_pos = i;
 			continue;
 		}
 	}
 
 	// Get state of keyboard menu item
-	if (keybd_item_pos == k_undefined) 
-	{
+	if (keybd_item_pos == k_undefined) {
 		return;
-	}
-	else 
-	{
-		mii.cbSize = sizeof(MENUITEMINFO);
-		mii.fMask = MIIM_STATE;
-		GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
-	}
-
-	if (!(mii.fState&MFS_CHECKED)) 
-	{
+  }
+	mii.cbSize = sizeof(MENUITEMINFO);
+	mii.fMask = MIIM_STATE;
+	GetMenuItemInfo(bringsysmenu, keybd_item_pos, true, &mii);
+	
+	if (!(mii.fState&MFS_CHECKED)) 	{
 		HWND			hwnd_focus;
 		POINT			cur_pos = {0};
 
@@ -113,9 +105,7 @@ void CheckBringKeyboard(void)
 		input_count++;
 
 		CMyMutex mutex;
-
-		if (!mutex.IsLocked())
-			return;
+    if (!mutex.IsLocked()) return;
 
 		hwnd_focus = GetFocus();
 		GetCursorPos(&cur_pos);
@@ -126,8 +116,7 @@ void CheckBringKeyboard(void)
 		SendInput(input_count, input, sizeof(INPUT));
 
 		Sleep(200);
-
-		input_count = 0;
+    input_count = 0;
 		// K down
 		ZeroMemory(&input[input_count],sizeof(INPUT));
 		input[input_count].type = INPUT_KEYBOARD;
@@ -152,5 +141,4 @@ void CheckBringKeyboard(void)
 
 		SetCursorPos(cur_pos.x, cur_pos.y);
 	}
-
 }

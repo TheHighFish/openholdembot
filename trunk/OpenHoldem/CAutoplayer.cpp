@@ -87,9 +87,13 @@ void CAutoplayer::PrepareActionSequence() {
 	action_sequence_needs_to_be_finished = true;
 }
 
-
 void CAutoplayer::FinishActionSequenceIfNecessary() {
 	if (action_sequence_needs_to_be_finished) {
+    if (p_symbol_engine_casino->ConnectedToOHReplay()) {
+      // Needs to be done very early
+      // before we restore the focus
+      p_casino_interface->PressTabToSwitchOHReplayToNextFrame();
+    }
     // avoid multiple-clicks within a short frame of time
     p_stableframescounter->ResetOnAutoplayerAction();
     if (p_symbol_engine_casino->ConnectedToOfflineSimulation()) {
@@ -111,7 +115,11 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	// still possible to act multiple times within the same second.
 	// Scrape_delay() should always be > 0, there's a check in the GUI.
 	assert(preferences.scrape_delay() > 0);
-	int hearbeats_to_pause = 4 / preferences.scrape_delay();
+  // We need milli-seconds here, just like in the preferences
+  // and also floating-point-division (4000.0) before we truncate to integer.
+  // Otherwise we get always 0 and a constant secondary formula
+  // would be executed every heartbeat and block all primary ones.
+	int hearbeats_to_pause = 4000.0 / preferences.scrape_delay();
 	if  (hearbeats_to_pause < 1) {
  		hearbeats_to_pause = 1;
  	}
@@ -360,19 +368,16 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 #undef ENT
 
 bool CAutoplayer::DoChat(void) {
-	if (!IsChatAllowed())
-	{
+	if (!IsChatAllowed())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
 	if ((p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat == 0)) 
-    || (_the_chat_message == NULL))
-	{
+      || (_the_chat_message == NULL))	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
 		return false;
 	}
-
-	// Converting the result of the $chat-function to a string.
+  // Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
 	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat)); 
 	return p_casino_interface->EnterChatMessage(CString(_the_chat_message));

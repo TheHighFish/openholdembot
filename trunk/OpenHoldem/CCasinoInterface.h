@@ -16,14 +16,11 @@
 
 #include "MagicNumbers.h"
 
-
-class CCasinoInterface
-{
-
-public:
+class CCasinoInterface {
+ public:
 	CCasinoInterface();
 	~CCasinoInterface();
-public:
+ public:
 	bool ClickButton(int autoplayer_function_code);
 	bool ButtonAvailable(int autoplayer_code);
 	bool ButtonClickable(int autoplayer_code);
@@ -35,8 +32,8 @@ public:
 	bool EnterChatMessage(CString &message);
 	bool ClickI86ButtonIfAvailable(int button_number);
 	int  NumberOfVisibleAutoplayerButtons();
-
-private:
+  void PressTabToSwitchOHReplayToNextFrame();
+ private:
 	bool TableLostFocus();
 	void ClickRect(RECT rect);
 	void SelectSwagText();
@@ -45,8 +42,7 @@ private:
 	POINT p_null;
 	RECT r_null; 
 	// ToDo: Sliderbar, Chatbox, etc.
-
-public:
+ public:
 	// regions 
 	RECT action_buttons[k_number_of_standard_functions];
 	RECT i3_button;
