@@ -154,12 +154,17 @@ CString CAutoplayerTrace::Indentation() {
   return indentation;
 }
 
-void CAutoplayerTrace::Print(const char *action_taken) {
+void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
   if (!preferences.trace_enabled()) {
     return;
   }
   CSLock lock(log_critsec);
-  LogBasicInfo(action_taken);
+  if (full_log_for_primary_formulas) {
+    // This information is only meaningful for playing decision f$all .. f$fold
+    LogBasicInfo(action_taken);
+  } else {
+    LogSecondaryAction(action_taken);
+  }
   LogAutoPlayerTrace();
   Clear();
 }
@@ -201,7 +206,6 @@ CString CAutoplayerTrace::BestAction() {
 }
 
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
-  char		nowtime[26];
   CString	pcards, comcards, temp, rank, pokerhand;
   CString	fcra_formula_status;
   int		userchair = p_symbol_engine_userchair->userchair();
@@ -267,6 +271,12 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
   write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
   write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
+  write_log_separator(true, "");
+}
+
+void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {
+  write_log_separator(true, "Secondary Action");
+  write_log(k_always_log_basic_information, "  Action taken:  %s\n", action_taken);
   write_log_separator(true, "");
 }
 

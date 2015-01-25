@@ -18,13 +18,12 @@
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 
 // as indices for an array.
-const char* ActionConstantNames(int autoplayer_function_code)
-{
+const char* ActionConstantNames(int autoplayer_function_code) {
 	// names of action-constants for use in the autoplayer-log.
 	// Formerly 4 digits (WinHoldem-style), now more sane.
+  // Also considering all secondary formulas.
 	if ((autoplayer_function_code >= k_autoplayer_function_beep)
-		&& (autoplayer_function_code <= k_autoplayer_function_fold))
-	{
+      && (autoplayer_function_code <= k_standard_function_chat)) {
 		return k_standard_function_names[autoplayer_function_code];
 	}
 	return "UNDEFINED";

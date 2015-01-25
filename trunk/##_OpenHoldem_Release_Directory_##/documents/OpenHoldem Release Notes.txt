@@ -7,6 +7,7 @@ NEW stuff:
 - If connected to OHReplay OpenHoldem will send an extra
   tabulator after every finished action-sequence
   to switch OHReplay to the next frame.
+  Thanks to BillW for the suggestion.
   [THF]
 
 BUG FIXES:
@@ -15,7 +16,7 @@ BUG FIXES:
   before the main autoplayer functions, because of i86 popup-handling,
   and therefore a secondary formula that was always true could block
   all other autoplayer actions. This has now been fixed.
-  Thanks to !!! for reporting.
+  Thanks to Johnny and FqFq for reporting.
   [THF]
 
 MAINTENANCE
@@ -29,6 +30,8 @@ MAINTENANCE
   (convenient for the user), but no longer for real casinos,
   as regularly jumping back to the same position was an easy and reliable bot-flag.
   [THF]
+- Improved autoplayer-trace for secondary formulas.
+  [THF]
 
 v7.4.2 2015-01-22
 ==================
@@ -38,7 +41,7 @@ NEW stuff:
   Thanks to N4rk0 for the suggestion nearly 6 zears ago.
   [THF]
 - Allinmethod is gone.
-  OpenHoldem will now automatically chose an appropriate method
+  OpenHoldem will now automatically choose an appropriate method
     1) try to click allin (or max), optionally followed by clicking raise
       (if allinconfirmationmethod is non-zero).
     2) try to use the slider if it exists in the tablemap.
