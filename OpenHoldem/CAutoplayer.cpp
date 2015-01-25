@@ -257,7 +257,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
     }
 		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
 			if (p_casino_interface->ClickButton(i)) 			{
-				p_autoplayer_trace->Print(ActionConstantNames(i));
+				p_autoplayer_trace->Print(ActionConstantNames(i), true);
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}
@@ -331,7 +331,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	}
   if (executed_secondary_function != k_undefined) {
     FinishActionSequenceIfNecessary();
-    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_fold));
+    p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
 	}
   return false;
 }
@@ -400,16 +400,16 @@ bool CAutoplayer::DoAllin(void) {
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
 	}	else {
     // Clicking only max (or allin), but not raise
 		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
-    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
+    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   }
 	if (!success) {
     // Try the slider
 		success = p_casino_interface->UseSliderForAllin();
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin));
+		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   }
   if (!success) {
 		// Last case: try to swagging the balance
@@ -424,7 +424,6 @@ bool CAutoplayer::DoAllin(void) {
 	}
 	return false;
 }
-
 
 void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
@@ -465,7 +464,6 @@ void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
-
 bool CAutoplayer::DoSwag(void) {
 	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize) > 0) 	{
 		int success = p_casino_interface->EnterBetsize(
@@ -480,7 +478,6 @@ bool CAutoplayer::DoSwag(void) {
 	return false;
 }
 
-
 bool CAutoplayer::DoPrefold(void) {
 	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
 	if (!p_table_state->User()->HasKnownCards())
@@ -491,13 +488,11 @@ bool CAutoplayer::DoPrefold(void) {
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_fold));
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}
 	return false;
 }
-
 
 bool CAutoplayer::HandleInterfacebuttonsI86(void) 
 {

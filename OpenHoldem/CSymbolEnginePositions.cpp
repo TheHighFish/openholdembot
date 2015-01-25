@@ -64,6 +64,7 @@ void CSymbolEnginePositions::ResetOnMyTurn() {
 
 void CSymbolEnginePositions::ResetOnHeartbeat() {
 	CalculateNChairsDealtLeftRight();
+  CalculatePositionsForTheUserchair();
 }
 
 void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {

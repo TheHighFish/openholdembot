@@ -52,7 +52,7 @@ void CHandHistoryWriter::ResetOnConnection() {
 }
 
 void CHandHistoryWriter::ResetOnHandreset() {
-  write_log(true, "######## Test ################\n");
+  //write_log(true, "######## Test ################\n");
   WriteHistory();
 }
 
@@ -67,6 +67,7 @@ void CHandHistoryWriter::ResetOnHeartbeat() {
 }
 
 void CHandHistoryWriter::AddMessage(CString message) {
+  return;
   assert(_lines_collected < kMaxLines);
   _handhistory_data[_lines_collected] = message;
   ++_lines_collected;
@@ -106,6 +107,7 @@ CString CHandHistoryWriter::PlayerName(int chair) {
 // * when a hand is over
 // * when it is my turn (summary in the log)
 void CHandHistoryWriter::WriteHistory() {
+  return;
   write_log_separator(true, "Summary (might be not accurate)");
   for (int i=0; i<_lines_collected; ++i) {
     write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); 
