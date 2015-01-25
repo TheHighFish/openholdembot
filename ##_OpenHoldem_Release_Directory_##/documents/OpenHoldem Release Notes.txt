@@ -4,17 +4,30 @@ NEW stuff:
 - New symbol handsplayed_headsup, counting the number of consecutive
   hands played headsup, meant for opponent modelling.
   [THF]
-- Improved mouse positioning.
-  Restoring the window focus and mouse position now only for offline simulations
-  like ManualMode, OHReplay, PokerAcademy, PokerTH and PokerSnowie
-  (convenient for the user), but no longer for real casinos,
-  as always jumping back to the same position was an easy and reliable bot-flag.
+- If connected to OHReplay OpenHoldem will send an extra
+  tabulator after every finished action-sequence
+  to switch OHReplay to the next frame.
+  [THF]
+
+BUG FIXES:
+- Secondary formulas got incorrectly handled on every heartbeat
+  instead of once every 4 seconds. Secondary formulas get handled 
+  before the main autoplayer functions, because of i86 popup-handling,
+  and therefore a secondary formula that was always true could block
+  all other autoplayer actions. This has now been fixed.
+  Thanks to !!! for reporting.
   [THF]
 
 MAINTENANCE
 - Extra precautions against invalid "checks".
   OpenHoldem prevents now "checking" if the user mis-scrapes the call-button as "check"
   and then decides to "check" if there is a positive amount to call.
+  [THF]
+- Improved mouse positioning.
+  Restoring the window focus and mouse position now only for offline simulations
+  like ManualMode, OHReplay, PokerAcademy, PokerTH and PokerSnowie
+  (convenient for the user), but no longer for real casinos,
+  as regularly jumping back to the same position was an easy and reliable bot-flag.
   [THF]
 
 v7.4.2 2015-01-22
