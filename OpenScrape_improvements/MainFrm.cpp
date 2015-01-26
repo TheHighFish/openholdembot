@@ -127,6 +127,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
   // Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
+
+  //!!!!!
+  CButton myButton1, myButton2, myButton3, myButton4;
+
+  // Create a push button.
+  myButton1.Create(_T("My button"), WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON, 
+    CRect(50,50,100,80), this, 1);
   return 0;
 }
 

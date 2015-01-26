@@ -154,8 +154,8 @@ BOOL COpenScrapeApp::InitInstance()
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=16464
 	m_TableMapDlg->Create(CDlgTableMap::IDD, CWnd::GetDesktopWindow());
 	m_TableMapDlg->ShowWindow(SW_SHOW);
-
-	return true;
+  ArrangeWindows();
+  return true;
 }
 
 // CAboutDlg dialog used for App About
@@ -195,6 +195,18 @@ void COpenScrapeApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
+void COpenScrapeApp::ArrangeWindows() {
+  // Large suye for main window
+  this->GetMainWnd()->SetWindowPos(NULL, 0, 0, 1024, 768, 0);
+  // Position tablemap window inside main window
+  int y_position = kBordersize + kSizeYForMenu + kSizeYForTitle;
+  m_TableMapDlg->SetWindowPos(NULL, 
+    kBordersize, // x-position
+    y_position,
+    300, 
+    400, 
+    0);
+}
 
 // COpenScrapeApp message handlers
 
