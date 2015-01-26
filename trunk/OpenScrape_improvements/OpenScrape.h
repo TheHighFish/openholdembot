@@ -11,7 +11,6 @@
 //
 //******************************************************************************
 
-
 // OpenScrape.h : main header file for the OpenScrape application
 //
 #pragma once
@@ -29,21 +28,19 @@
 
 extern	char	_startup_path[MAX_PATH];
 
-
-//!  The Main class of openscrape that creates the other dialogues 
-class COpenScrapeApp : public CWinApp
-{
-public:
+//  The Main class of openscrape that creates the other dialogues 
+class COpenScrapeApp : public CWinApp {
+ public:
 	COpenScrapeApp();
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
-
-public:
+ public:
 	int				sessionnum;
 	CDlgTableMap	*m_TableMapDlg;
-
-	virtual int ExitInstance();
+  int ExitInstance();
+ private: 
+  void ArrangeWindows();
 };
 
 extern COpenScrapeApp theApp;
