@@ -1,0 +1,88 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+\begin_inset Index
+status open
+
+\begin_layout Plain Layout
+Casino software
+\end_layout
+
+\end_inset
+
+Casino software
+\end_layout
+
+\begin_layout Standard
+If the casino software demands admin privs to install/update/run, and if
+ you've successfully accomplished all 12 of these steps, then their software
+ running as admin cannot automatically read your stealth drive(s) / folder(s)
+ - the contents are very much private.
+ However, if they are running as admin they could physically take ownership
+ of the folder in order to gain access.
+ 
+\end_layout
+
+\begin_layout Standard
+In this context, it must be said that such an event could be viewed as a
+ criminal act in that there is absolutely no need whatsoever for their software
+ to decide to "take" physical ownership of a folder just because it wants
+ to.
+ 
+\end_layout
+
+\begin_layout Standard
+An advanced step (not covered in this article) is to install/enable file/folder
+ monitoring/auditing that will allow you to track anything that happens
+ to your "safe" folder.
+ Note that doing this would not stop admin/casino software from taking ownership
+ but you'd have a record of the event which is better than nothing.
+\end_layout
+
+\end_body
+\end_document
