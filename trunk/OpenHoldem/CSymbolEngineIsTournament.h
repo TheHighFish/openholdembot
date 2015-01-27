@@ -17,12 +17,11 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineIsTournament: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineIsTournament();
 	~CSymbolEngineIsTournament();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -30,18 +29,23 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
-public:
+ public:
 	bool istournament()		{ return _istournament == true; }
-private:
+ private:
 	void TryToDetectTournament();
 	bool BetsAndBalancesAreTournamentLike();
 	bool AntesPresent();
-	bool TitleStringLooksLikeTournament();
-private:
+	bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
+    const char *identifiers[], int number_of_identifiers);
+ private:
+  bool IsMTT();
+  bool IsSNG();
+  bool IsDON();
+ private:
 	// Internally we have an extra state, k_undefined.  But that's
 	// not exposed in the API as it's used internally to avoid locking
 	// the istournament decision too quickly.

@@ -2015,6 +2015,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ispl", "(lim==1)");
 	AddSymbol(parent, "isfl", "(lim==2)");
 	AddSymbol(parent, "istournament", "true if a tournament table is detected");
+  ddSymbol(parent, "isdon", "true if a double-or-nothing tournament is detected");
+  ddSymbol(parent, "ismtt", "true if a multi-table tournament is detected");
+  ddSymbol(parent, "issng", "true if a single-table tournament is detected");
   AddSymbol(parent, "isfinaltable", "true if you are playing the finaltable of an MTT and the tables can be visually distinguished.");
 
 	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);

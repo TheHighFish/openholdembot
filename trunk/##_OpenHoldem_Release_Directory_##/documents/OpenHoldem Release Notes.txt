@@ -1,3 +1,10 @@
+v7.5.0 2015-02.xx
+==================
+NEW stuff:
+- New symbols issng, isdon and ismtt to distinguish 
+  certain tournament types to support multiple-purpose-profiles.
+  [THF]
+
 v7.4.3 2015-01-26
 ==================
 NEW stuff:

@@ -1,7 +1,7 @@
 INTRODUCTION
 ============
 This is a collection of poker bots, which have been published 
-on the OpenHoldem and WinHoldem-forums.
+on the OpenHoldem, WinHoldem and Shanky-Bonusbots-forums.
 Their purpose is to give you a starting-point
 to develop your own bots.
 They probably won't win (any longer) and maybe even don't work as expected.
@@ -24,8 +24,8 @@ Just register and say hello.
 LICENSE
 =======
 This is a collection of poker bots, which have been published 
-on the OpenHoldem and WinHoldem-forums
-(www.maxinmontreal.com and www.winholdem.net).
+on the OpenHoldem, WinHoldem and Shanky-Bonusbots-forums
+(www.maxinmontreal.com, winholdem.net and www.bonusbots.com).
 They have been released to the public without any explicit copyright;
 they were meant for public (but probably non-commercial) use.
 As most of their creators have left the botting-world, we assume, 
@@ -36,3 +36,6 @@ We have included a copy of the GPL v3 in this package;
 you can also find the text of the license here: 
 http://www.gnu.org/licenses/gpl.html
 
+If zou believe that anz material provided here is not suitable 
+to be released under GPL v3 then please get in contact with us
+and we will remove it from that collection.
