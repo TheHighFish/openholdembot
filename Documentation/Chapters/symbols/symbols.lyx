@@ -358,7 +358,7 @@ Limits
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="11" columns="2">
+<lyxtabular version="3" rows="14" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -559,6 +559,81 @@ istournament
 true if a tournament table is detected.
  This feature works automatically, based on title-strings of the poker-table,
  blind-levels, sum of chips at the table, etc.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isdon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if you play a double-or-nothing tournament.
+\end_layout
+
+\begin_layout Plain Layout
+The conditions for istournament must apply and the title must also contain
+ a DON identifier
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ismtt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if you play a multi-table-tournament.
+\end_layout
+
+\begin_layout Plain Layout
+The conditions for istournament must apply and the title must also contain
+ a MTT identifier
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+issng
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if you play a single-table-tournament
+\end_layout
+
+\begin_layout Plain Layout
+All tournaments that can't be recognized neither as MTT nor as DON will
+ qualify as SNGs..
 \end_layout
 
 \end_inset
@@ -1079,7 +1154,7 @@ any players with cardbacks, especially all players between the user and
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="2">
+<lyxtabular version="3" rows="7" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -1187,27 +1262,6 @@ In headsup situations the player to the dealers left is usually big-blind
  and in other situations the small blind might be missing.
  But it is your duty to consider these special case, dealposition does not
  magically auto-adapt to comply with the usual values for full-ring.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-originaldealposition
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-a memory of deal position which retains its value through the hand, even
- if the user folds
 \end_layout
 
 \end_inset
@@ -3112,7 +3166,7 @@ blind-raisers
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="30" columns="2">
+<lyxtabular version="3" rows="31" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -3131,6 +3185,32 @@ Symbol
 
 \begin_layout Plain Layout
 Meaning
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+maxnplayersdealt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+maximum number of dealt players seen in this session.
+\end_layout
+
+\begin_layout Plain Layout
+Especially meant to distinguish certain gametypes (FR / SH / HU) in tournaments.
+ The alternative symbol nchairs is only partially suitable as it depends
+ only on the tablemap shich might fit to multiple gametypes.
 \end_layout
 
 \end_inset
@@ -6741,7 +6821,7 @@ Table statistics for the last 15 minutes.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="2">
+<lyxtabular version="3" rows="10" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -6779,7 +6859,7 @@ floppct
 \begin_inset Text
 
 \begin_layout Plain Layout
-percentage of players seeing the flop for the last y minutes
+percentage of players seeing the flop for the last 15 hands
 \end_layout
 
 \end_inset
@@ -6799,7 +6879,7 @@ turnpct
 \begin_inset Text
 
 \begin_layout Plain Layout
-percentage of players seeing the turn for the last y minutes
+percentage of players seeing the turn for the last 15 hands
 \end_layout
 
 \end_inset
@@ -6819,7 +6899,7 @@ riverpct
 \begin_inset Text
 
 \begin_layout Plain Layout
-percentage of players seeing the river for the last y minutes
+percentage of players seeing the river for the last 15 hands
 \end_layout
 
 \end_inset
@@ -6839,7 +6919,7 @@ avgbetspf
 \begin_inset Text
 
 \begin_layout Plain Layout
-average number of bets preflop for the last y minutes
+average number of bets preflop for the last 15 hands
 \end_layout
 
 \end_inset
@@ -6859,7 +6939,7 @@ tablepfr
 \begin_inset Text
 
 \begin_layout Plain Layout
-pfr percentage preflop for the last y minutes 
+pfr percentage preflop for the last 15 hands
 \end_layout
 
 \end_inset
@@ -6879,8 +6959,47 @@ maxbalance
 \begin_inset Text
 
 \begin_layout Plain Layout
-my highest balance during the session handsplayed number of hands played
- this session 
+my highest balance during the session 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+handsplayed
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number of hands played this session by this OpenHoldem instance
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+handsplayed_headsup
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number of consecutive hands played headsup, meant for opponent modelling
 \end_layout
 
 \end_inset

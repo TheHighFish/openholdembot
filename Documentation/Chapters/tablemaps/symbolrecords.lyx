@@ -581,7 +581,7 @@ Legacy support of WinScrape's symbol.
 \begin_inset Text
 
 \begin_layout Plain Layout
-allinmethod
+allinconfirmationmethod
 \end_layout
 
 \end_inset
@@ -614,7 +614,7 @@ allin
 \end_layout
 
 \begin_layout Plain Layout
-nonn-zero: first click 
+non-zero: first click 
 \begin_inset Quotes eld
 \end_inset
 
