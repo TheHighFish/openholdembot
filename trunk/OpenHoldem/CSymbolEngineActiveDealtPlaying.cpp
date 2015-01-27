@@ -52,6 +52,7 @@ void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
 	_playersplayingbits = 0;
 	_playersdealtbits   = 0;
 	_playersseatedbits  = 0;
+  _maxnplayersdealt   = 0;   
 }
 
 void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
@@ -174,6 +175,9 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
     // _playersdealtbits once as decimal, once as 4-digit hexadecimal
     "[CSymbolEngineActiveDealtPlaying] playersdealtbits = %i = %#4x\n",
     _playersdealtbits, _playersdealtbits);
+  if (nplayersdealt() > _maxnplayersdealt) {
+    _maxnplayersdealt = nplayersdealt();
+  }
 }
 
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
@@ -282,7 +286,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *r
 		}
 		// Valid symbol
 		return true;
-	}
+	} else if (memcmp(name, "maxnplayersdealt", 16)==0 && strlen(name)==16) {
+    *result = _maxnplayersdealt;
+    return true;
+  }
 	// Symbol of a different symbol-engine
 	return false;
 }
@@ -291,5 +298,6 @@ CString CSymbolEngineActiveDealtPlaying::SymbolsProvided() {
   return "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying "
     "nplayersseated nplayersactive nplayersdealt nplayersplaying "
     "playersseatedbits playersactivebits playersdealtbits playersplayingbits "
-    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits ";
+    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits "
+    "maxnplayersdealt ";
 }

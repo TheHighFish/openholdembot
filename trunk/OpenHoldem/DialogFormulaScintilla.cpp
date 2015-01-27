@@ -2126,6 +2126,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ishiflush", "true when you have the highest flush possible");
 
 	mainParent = parent = AddSymbolTitle("Players, Opponents", NULL, hCatItem);
+  AddSymbol(parent, "maxnplayersdealt", "maximum number of dealt players in this session");
 	AddSymbol(parent, "nplayersseated", "number of players seated (including you) (0-10)");
 	AddSymbol(parent, "nplayersactive", "number of players active (including you) (0-10)");
 	AddSymbol(parent, "nplayersdealt", "number of players dealt (including you) (0-10)");
@@ -2156,7 +2157,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "opponentsblindbits", "bits 9-0: 1=blind 0=notblind");
 	AddSymbol(parent, "opponent_chair_headsup",  "headsup opponent chair number (0-9)");
 
-	mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
+  mainParent = parent = AddSymbolTitle("Flags", NULL, hCatItem);
 	AddSymbol(parent, "fmax", "highest numbered flag button pressed");
 	AddSymbol(parent, "f0 - f19", "true if flag 0 - flag 19 button is pressed false otherwise");
 	AddSymbol(parent, "flagbits", "flag button bits 19-0 - 1=pressed 0=notpressed");
