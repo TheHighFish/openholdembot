@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-01-21"/>
+<meta name="create-date" content="2015-01-27"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -220,6 +220,54 @@ istournament
 </td>
 <td align="left" valign="top" style="width: 65%;">
 true if a tournament table is detected. This feature works automatically, based on title-strings of the poker-table, blind-levels, sum of chips at the table, etc.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+isdon
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+true if you play a double-or-nothing tournament.<br/>
+The conditions for istournament must apply and the title must also contain a DON identifier
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ismtt
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+true if you play a multi-table-tournament.<br/>
+The conditions for istournament must apply and the title must also contain a MTT identifier
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+issng
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+true if you play a single-table-tournament<br/>
+All tournaments that can’t be recognized neither as MTT nor as DON will qualify as SNGs..
+</div>
+
 </td>
 
 </tr>
@@ -522,15 +570,6 @@ dealposition will not change as players fold<br/>
 In headsup situations the player to the dealers left is usually big-blind and in other situations the small blind might be missing. But it is your duty to consider these special case, dealposition does not magically auto-adapt to comply with the usual values for full-ring.
 </div>
 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-originaldealposition
-</td>
-<td align="left" valign="top" style="width: 65%;">
-a memory of deal position which retains its value through the hand, even if the user folds
 </td>
 
 </tr>
@@ -1415,6 +1454,22 @@ Symbol
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+maxnplayersdealt
+</td>
+<td align="left" valign="top" style="width: 65%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+maximum number of dealt players seen in this session.<br/>
+Especially meant to distinguish certain gametypes (FR / SH / HU) in tournaments. The alternative symbol nchairs is only partially suitable as it depends only on the tablemap shich might fit to multiple gametypes.
+</div>
+
 </td>
 
 </tr>
@@ -3067,7 +3122,7 @@ Meaning
 floppct 
 </td>
 <td align="left" valign="top" style="width: 65%;">
-percentage of players seeing the flop for the last y minutes
+percentage of players seeing the flop for the last 15 hands
 </td>
 
 </tr>
@@ -3076,7 +3131,7 @@ percentage of players seeing the flop for the last y minutes
 turnpct
 </td>
 <td align="left" valign="top" style="width: 65%;">
-percentage of players seeing the turn for the last y minutes
+percentage of players seeing the turn for the last 15 hands
 </td>
 
 </tr>
@@ -3085,7 +3140,7 @@ percentage of players seeing the turn for the last y minutes
 riverpct 
 </td>
 <td align="left" valign="top" style="width: 65%;">
-percentage of players seeing the river for the last y minutes
+percentage of players seeing the river for the last 15 hands
 </td>
 
 </tr>
@@ -3094,7 +3149,7 @@ percentage of players seeing the river for the last y minutes
 avgbetspf
 </td>
 <td align="left" valign="top" style="width: 65%;">
-average number of bets preflop for the last y minutes
+average number of bets preflop for the last 15 hands
 </td>
 
 </tr>
@@ -3103,7 +3158,7 @@ average number of bets preflop for the last y minutes
 tablepfr
 </td>
 <td align="left" valign="top" style="width: 65%;">
-pfr percentage preflop for the last y minutes 
+pfr percentage preflop for the last 15 hands
 </td>
 
 </tr>
@@ -3112,7 +3167,25 @@ pfr percentage preflop for the last y minutes
 maxbalance
 </td>
 <td align="left" valign="top" style="width: 65%;">
-my highest balance during the session handsplayed number of hands played this session 
+my highest balance during the session 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handsplayed
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of hands played this session by this OpenHoldem instance
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+handsplayed_headsup
+</td>
+<td align="left" valign="top" style="width: 65%;">
+number of consecutive hands played headsup, meant for opponent modelling
 </td>
 
 </tr>
@@ -4177,7 +4250,7 @@ Spade
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-21T20:01:13.607000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-27T10:31:26.250000</span>
 </div>
 </div>
 </body>
