@@ -90,6 +90,36 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"tournament"	
 };
 
+const int kNumberOfDONIdentifiers = 6;
+const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {	
+	"double ",
+	"double-",
+	" nothing",
+	"-nothing",
+	"shootout ",
+	"ticket ",
+};
+
+const int kNumberOfMTTIdentifiers = 16;
+const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
+	"free $",
+	"freeroll",
+	"garantis",			// french for "guaranteed"
+	"gratuit ",			// french for "free"
+	"guaranteed",
+	"miniroll",
+	" mtt",
+	"mtt ",
+	"(mtt",
+	"multitable",
+	"multi-table",
+	"qualif ",			  // french abbreviation
+	"qualificatif",		// french for "qualifier"
+	"qualification",
+	"qualifier",
+	"rebuy",
+};
+
 CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
@@ -178,12 +208,13 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	return (players_with_antes >= 3);
 }
 
-bool CSymbolEngineIsTournament::TitleStringLooksLikeTournament() {
+bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
+    const char *identifiers[], int number_of_identifiers) {
 	CString title = p_scraper->title();
 	title = title.MakeLower();
-	for (int i=0; i<k_number_of_tournament_identifiers; i++) {
-    assert(k_tournament_identifiers[i] != "");
-		if (title.Find(k_tournament_identifiers[i]) != -1) 	{
+	for (int i=0; i<number_of_identifiers; i++) {
+    assert(odentifiers[i] != "");
+		if (title.Find(identifiers[i]) != -1) 	{
 			return true;
 		}
 	}
@@ -220,7 +251,8 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // And there was a problem if during the sit-down-phase 
   // of a tournament there were no blinds to be detected:
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=294&t=17625&start=30#p125608
-	if (TitleStringLooksLikeTournament())	{
+	if (TitleStringContainsIdentifier(k_tournament_identifiers,
+      k_number_of_tournament_identifiers))	{
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
@@ -241,7 +273,6 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
   }
-	
   // If it is ManualMode, then we detect it by title-string "tourney".
   // High blinds (default) don~t make it a tournament.
   // Therefore don't continue.
@@ -291,8 +322,28 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	// but only for the current hand. Does this hurt much?
 }
 
+bool CSymbolEngineIsTournament::IsMTT() {
+  if (!istournament()) return false;
+  if (TitleStringContainsIdentifier(kMTTIdentifiers, kNumberOfMTTIdentifiers)) return true;
+  return false;
+}
+
+bool CSymbolEngineIsTournament::IsSNG() {
+  return (istournament() && !IsMTT() && !IsDON());
+}
+
+bool CSymbolEngineIsTournament::IsDON() {
+  if (!istournament()) return false;
+  if (TitleStringContainsIdentifier(kDONIdentifiers, kNumberOfDONIdentifiers)) return true;
+  return false;
+}
+
 bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result, bool log /* = false */) { 
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
+  if (memcmp(name, "is", 2)!=0)  {
+    // Symbol of a different symbol-engine
+    return false;
+  }
 	if (memcmp(name, "istournament", 12)==0 && strlen(name)==12) {
 		*result = istournament();
 		// Valid symbol
