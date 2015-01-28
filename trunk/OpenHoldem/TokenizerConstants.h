@@ -88,7 +88,7 @@ enum {
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 17;
+const int kNumberOfOpenPPLActions = 19;
 
 const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
@@ -109,9 +109,11 @@ const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "BetHalfPot",
   "BetMax",
   "BetPot",
+  "BetMin",
   "RaiseHalfPot",
   "RaiseMax",
   "RaisePot",
+  "RaiseMin",
   "Set",
 };
 
@@ -131,9 +133,11 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseHalfPot,
   kTokenActionRaiseMax,
   kTokenActionRaisePot,
+  kTokenActionRaise,
   kTokenActionRaiseHalfPot,
   kTokenActionRaiseMax,
   kTokenActionRaisePot,
+  kTokenActionRaise,
   kTokenActionUserVariableToBeSet,
 };
 
