@@ -305,7 +305,9 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
 // which usually is 50% or sometimes 40% of the big-blind
 double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
   // Highest bblind first
-  if ((guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
+  if ((kBlindLevels[kLastBlindLevel][0] > 0)
+      && (kBlindLevels[kLastBlindLevel][1] > 0)
+      && (guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
       && (guessed_blind <= kBlindLevels[kLastBlindLevel][1])) {
     write_log(preferences.debug_table_limits(), 
       "[CBlindLevels] Best match for %.2f -> %.2f\n",
@@ -314,7 +316,8 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
   }
   // Then all small blinds downwards
   for (int i=kLastBlindLevel; i>=0; ++i) {
-    if (guessed_blind <= kBlindLevels[i][0]) {
+    if ((kBlindLevels[i] > 0)
+        && (guessed_blind <= kBlindLevels[i][0])) {
       write_log(preferences.debug_table_limits(), 
         "[CBlindLevels] Best match for %.2f -> %.2f\n",
         guessed_blind, kBlindLevels[i][0]);
