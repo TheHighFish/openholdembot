@@ -2140,6 +2140,9 @@ void CManualModeDlg::OnBnClickedMacro()
 			  card[P0C1 + 2*chair] = CARD_NOCARD; 
         break;
     }
+    if *chair >= 10) {
+      break;
+    }
     // Setting bet and balance
     double total_balance = atof(playerbalance[chair]) + atof(playerbet[chair]);
     double sblind_value = atof(sblind);

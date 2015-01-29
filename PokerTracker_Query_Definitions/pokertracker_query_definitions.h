@@ -11,8 +11,8 @@
 //
 //******************************************************************************
 
-#ifndef INC_POKERTRQCKERQUERYDEFINITIONS_H
-#define INC_POKERTRQCKERQUERYDEFINITION_H
+#ifndef INC_POKERTRACKERQUERYDEFINITIONS_H
+#define INC_POKERTRACKERQUERYDEFINITION_H
 
 #ifdef POKERTRACKER_DLL_EXPORTS
 #define POKERTRACKER_DLL_API extern "C" __declspec(dllexport)
@@ -51,4 +51,4 @@ POKERTRACKER_DLL_API	CString PT_DLL_GetQuery(int stats_index,
 												bool isomaha, bool istournament,
 												int site_id, CString player_name);
 
-#endif INC_POKERTRQCKERQUERYDEFINITION_H
+#endif INC_POKERTRACKERQUERYDEFINITION_H
