@@ -71,9 +71,8 @@
 
 // Window constants for the improved GUI
 const int kBordersize     =   2;
-const int kSizeXForEditor = 532;
-const int kSizeYForEditor = 747;
-const int kSizeYForMenu   =  43;
-const int kSizeYForTitle  =  20;
+const int kSizeXForEditor = 600;
+const int kSizeYForEditor = 750;
+const int kYOffsetEditor  =  69;
 
 #endif //INC_STDAFX_H

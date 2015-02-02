@@ -199,12 +199,11 @@ void COpenScrapeApp::ArrangeWindows() {
   // Large suye for main window
   this->GetMainWnd()->SetWindowPos(NULL, 0, 0, 1024, 768, 0);
   // Position tablemap window inside main window
-  int y_position = kBordersize + kSizeYForMenu + kSizeYForTitle;
   m_TableMapDlg->SetWindowPos(NULL, 
     kBordersize, // x-position
-    y_position,
-    300, 
-    400, 
+    kYOffsetEditor,
+    kSizeXForEditor, 
+    kSizeYForEditor, 
     0);
 }
 

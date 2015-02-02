@@ -18,6 +18,7 @@
 #include "OpenScrapeDoc.h"
 
 #define		BLINKER_TIMER				1
+#define		GUI_POSITION_TIMER	2
 
 class CMainFrame : public CFrameWnd
 {
