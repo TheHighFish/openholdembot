@@ -8,13 +8,23 @@ NEW stuff:
   (FR / SH / HU) better.
   The alternative nchairs is only partially suitable for that, 
   as it only depends on the tablemap, which might fit multiple game-types.
-  This could e.g used to adapt the payout-structure in the f$icm_prizeX functions.
+  This could e.g be used to adapt the payout-structure in the f$icm_prizeX functions.
+  [THF]
+- Backup actions for betpot-buttons:
+  If openHoldem is not able to click betpot it will try 
+  to swag the corresponding amount.
   [THF]
 
 BUG FIXES:
 - The parser did not handle the OpenPPL actions BetMin and RaiseMin
   which are rarely used synonyms for bet and Raise anyway.
   This has now been fixed.
+  [THF]
+
+MAINTENANCE
+- Handling non-ASCII-chars in the input gracefully,
+  just replacing them by spaces. They are usually only
+  special characters in a comment and can be ignored.
   [THF]
 
 v7.4.3 2015-01-26

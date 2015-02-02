@@ -15,8 +15,9 @@
 #include "CAutoplayer.h"
 
 #include <complex>
-#include "CAutoplayerTrace.h"
+#include "BetpotCalculations.h"
 #include "BringKeyboard.h"
+#include "CAutoplayerTrace.h"
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
@@ -134,29 +135,58 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 bool CAutoplayer::DoBetPot(void) {
 	bool success = false;
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
-	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++)
-	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))
-		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] Function %s true.\n", 
-				k_standard_function_names[i]);
-			if (p_tablemap->betpotmethod() == BETPOT_RAISE)
-			{
+	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++) {
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i)) 	{
+			write_log(preferences.debug_autoplayer(), 
+        "[AutoPlayer] Function %s true.\n", k_standard_function_names[i]);
+			if (p_tablemap->betpotmethod() == BETPOT_RAISE)	{
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, preferences.swag_delay_3());
-			}
-			else 
-			{
+			}	else {
 				// Default: click only betpot
 				success = p_casino_interface->ClickButton(i);				
 			}
+      if (!success) {
+        // Backup action> try yo swag betpot_X_Y
+        double betpot_factor = 1.0;
+        switch (i) {
+          case k_autoplayer_function_betpot_2_1:
+            betpot_factor = 2.0;
+            break;
+          case k_autoplayer_function_betpot_1_1:
+            betpot_factor = 1.0;
+            break;
+          case k_autoplayer_function_betpot_3_4:
+            betpot_factor = 0.75;
+            break;
+          case k_autoplayer_function_betpot_2_3:
+            betpot_factor = 0.667;
+            break;
+          case k_autoplayer_function_betpot_1_2:
+            betpot_factor = 0.5;
+            break;
+          case k_autoplayer_function_betpot_1_3:
+            betpot_factor = 0.333;
+            break;
+          case k_autoplayer_function_betpot_1_4:
+            betpot_factor = 0.25;
+            break;
+          default:
+            betpot_factor = 1.0;
+        }
+        double betpot_amount = BetsizeForBetpot(betpot_factor);
+        write_log(preferences.debug_autoplayer(), 
+          "[AutoPlayer] Betpot %.2f with buttons failed\n", betpot_factor);
+        write_log(preferences.debug_autoplayer(), 
+          "[AutoPlayer] Trying to swag %.2f instead\n", betpot_amount);
+        success = p_casino_interface->EnterBetsize(betpot_amount);
+      }
 		}
-		if (success)
-		{
+    if (success) {
 			// Register the action
 			// Treat betpot like swagging, i.e. raising a user-defined amount
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
-		}
+    }
 		// Else continue trying with the next betpot function
 	}
 	// We didn't click any betpot-button
