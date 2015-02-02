@@ -714,6 +714,9 @@
     <ClCompile Include="CSymbolEngineCasino.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="BetpotCalculations.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1524,6 +1527,9 @@
     </ClInclude>
     <ClInclude Include="CSymbolEngineCasino.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="BetpotCalculations.h">
+      <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

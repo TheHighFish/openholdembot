@@ -12,9 +12,10 @@
 //******************************************************************************
 
 #include "stdafx.h"
-
 #include "SwagAdjustment.h"
+
 #include <assert.h>
+#include "BetpotCalculations.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolengineGameType.h"
@@ -65,18 +66,6 @@ double MaximumPossibleBetsizeBecauseOfBalance()
 		maximum_betsize);
 	return maximum_betsize;
 }
-
-double MaximumBetsizeForPotLimit()
-{
-	// ToDo: Preflop?
-	double maximum_swag_amount_for_pot_limit = 2 * (p_symbol_engine_chip_amounts->pot()
-		+ p_symbol_engine_chip_amounts->pot()); 
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_swag_amount_for_pot_limit);
-	assert(maximum_swag_amount_for_pot_limit >= 0);
-	return maximum_swag_amount_for_pot_limit;
-}
-
-
 
 double SwagAmountAjustedToCasino(double amount_to_raise_to)
 {
@@ -150,7 +139,9 @@ double MaximumBetsizeForGameType() {
 	if (p_symbol_engine_gametype->ispl())	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
-		maximum_betsize = MaximumBetsizeForPotLimit();
+		maximum_betsize = BetsizeForBetpot(1.0);
+    write_log(preferences.debug_betsize_adjustment(), 
+      "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_betsize);
 	}	else if (p_symbol_engine_gametype->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
