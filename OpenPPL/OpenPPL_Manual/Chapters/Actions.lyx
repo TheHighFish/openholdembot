@@ -173,12 +173,52 @@ RaisePot FORCE
 
 \begin_layout Plain Layout
 
+BetThreeFourthPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+RaiseThreeFourthPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+BetTwoThirdPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+RaiseTwoThirdPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
 BetHalfPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
 RaiseHalfPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+BetThirdPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+RaiseThirdPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+BetFourthPot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+RaiseFourthPot FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -193,6 +233,16 @@ Raise FORCE        // min-raise (fixed limit)
 
 \begin_layout Plain Layout
 
+MinBet FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+MinRaise FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
 Call FORCE
 \end_layout
 
@@ -203,7 +253,7 @@ Check FORCE
 
 \begin_layout Plain Layout
 
-Folf FORCE
+Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
