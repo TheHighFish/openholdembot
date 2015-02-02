@@ -67,10 +67,14 @@ enum {
   kTokenActionFold,
   kTokenActionCheck,
   kTokenActionCall,
-  kTokenActionRaise,
-  kTokenActionRaiseTo,
+  kTokenActionRaise,                // Also eqauls MinRaise, Bet and MinBet
+  kTokenActionRaiseTo,              
   kTokenActionRaiseBy,
+  kTokenActionRaiseFourthPot,
+  kTokenActionRaiseThirdPot,
   kTokenActionRaiseHalfPot,
+  kTokenActionRaiseTwoThirdPot,
+  kTokenActionRaiseThreeFourthPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
@@ -88,7 +92,7 @@ enum {
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 19;
+const int kNumberOfOpenPPLActions = 27;
 
 const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   // No longer considering
@@ -106,14 +110,22 @@ const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "RaiseBy",
   "Check",
   "Allin",
-  "BetHalfPot",
-  "BetMax",
-  "BetPot",
   "BetMin",
-  "RaiseHalfPot",
-  "RaiseMax",
-  "RaisePot",
+  "BetFourthPot",
+  "BetThirdPot",
+  "BetHalfPot",
+  "BetTwoThirdPot",
+  "BetThreeFourthPot",
+  "BetPot",
+  "BetMax",
   "RaiseMin",
+  "RaiseFourthPot",
+  "RaiseThirdPot",
+  "RaiseHalfPot",
+  "RaiseTwoThirdPot",
+  "RaiseThreeFourthPot",
+  "RaisePot",
+  "RaiseMax",
   "Set",
 };
 
@@ -130,14 +142,22 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseBy,
   kTokenActionCheck,
   kTokenActionRaiseMax,
-  kTokenActionRaiseHalfPot,
-  kTokenActionRaiseMax,
-  kTokenActionRaisePot,
   kTokenActionRaise,
+  kTokenActionRaiseFourthPot,
+  kTokenActionRaiseThirdPot,
   kTokenActionRaiseHalfPot,
-  kTokenActionRaiseMax,
+  kTokenActionRaiseTwoThirdPot,
+  kTokenActionRaiseThreeFourthPot,
   kTokenActionRaisePot,
+  kTokenActionRaiseMax,
   kTokenActionRaise,
+  kTokenActionRaiseFourthPot,
+  kTokenActionRaiseThirdPot,
+  kTokenActionRaiseHalfPot,
+  kTokenActionRaiseTwoThirdPot,
+  kTokenActionRaiseThreeFourthPot,
+  kTokenActionRaisePot,
+  kTokenActionRaiseMax,
   kTokenActionUserVariableToBeSet,
 };
 

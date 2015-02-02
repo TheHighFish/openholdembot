@@ -14,6 +14,11 @@ NEW stuff:
   If openHoldem is not able to click betpot it will try 
   to swag the corresponding amount.
   [THF]
+- More OpenPPL actions BetFourthPot, BetThirdPot, BetTwoThirdPot 
+  and BetThreeFourthPot. Same for raise too.
+  OpenHoldem will try to click betpot-buttons if supported by
+  tablemap and casino, but if this fails it will swag.
+  [THF]
 
 BUG FIXES:
 - The parser did not handle the OpenPPL actions BetMin and RaiseMin
