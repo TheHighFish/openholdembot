@@ -32,6 +32,7 @@ extern	char	_startup_path[MAX_PATH];
 class COpenScrapeApp : public CWinApp {
  public:
 	COpenScrapeApp();
+  void ArrangeWindows();
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
@@ -39,8 +40,6 @@ class COpenScrapeApp : public CWinApp {
 	int				sessionnum;
 	CDlgTableMap	*m_TableMapDlg;
   int ExitInstance();
- private: 
-  void ArrangeWindows();
 };
 
 extern COpenScrapeApp theApp;

@@ -127,13 +127,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
   // Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
+  SetTimer(GUI_POSITION_TIMER, 500, 0);
 
-  //!!!!!
-  CButton myButton1, myButton2, myButton3, myButton4;
-
-  // Create a push button.
-  myButton1.Create(_T("My button"), WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON, 
-    CRect(50,50,100,80), this, 1);
   return 0;
 }
 
@@ -399,10 +394,12 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
 
-	if (nIDEvent == BLINKER_TIMER) 	{
+	if (nIDEvent == BLINKER_TIMER) {
 		pDoc->blink_on = !pDoc->blink_on;
 		pView->blink_rect();
-	}
+	} else if (nIDEvent == GUI_POSITION_TIMER) {
+    theApp.ArrangeWindows();
+  }
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
@@ -441,8 +438,8 @@ void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc) {
     // both have to fit
     size_y = kSizeYForEditor;
   }
-  size_y += kSizeYForMenu;
-  size_y += 2 * kBordersize;
+  size_y += kYOffsetEditor;
+  size_y += kBordersize;
   // Calculate width
   // Both editor and image have to be displayed side by side
   size_x += kSizeXForEditor;
