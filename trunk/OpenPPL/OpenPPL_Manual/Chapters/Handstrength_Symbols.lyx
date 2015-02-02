@@ -405,7 +405,7 @@ We have the best or second best kicker
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveSecondBestOverpairOrBetter
+HaveSecondBestOverPairOrBetter
 \end_layout
 
 \end_inset
@@ -586,7 +586,7 @@ We have the third best kicker or better
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveThirdBestOverpairOrBetter
+HaveThirdBestOverPairOrBetter
 \end_layout
 
 \end_inset
@@ -646,7 +646,7 @@ We have the Third best flushdraw
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveThirdOverpair
+HaveThirdOverPair
 \end_layout
 
 \end_inset
@@ -746,7 +746,7 @@ We have the Fourth highest flushdraw
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveFourthOverpair
+HaveFourthOverPair
 \end_layout
 
 \end_inset
@@ -846,7 +846,7 @@ We have the Fifth highest flushdraw
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveFifthOverpair
+HaveFifthOverPair
 \end_layout
 
 \end_inset
@@ -1039,7 +1039,7 @@ We have the best kicker or a better hand
 \begin_inset Text
 
 \begin_layout Plain Layout
-HaveBestOverpairOrBetter
+HaveBestOverPairOrBetter
 \end_layout
 
 \end_inset
