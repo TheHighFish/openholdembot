@@ -1,5 +1,11 @@
 v7.5.0 2015-02.xx
 ==================
+BUG FIXES:
+- The parser did not handle the OpenPPL actions BetMin and RaiseMin
+  which are rarely used synonyms for bet and Raise anyway.
+  This has now been fixed.
+  [THF]
+
 NEW stuff:
 - New symbols issng, isdon and ismtt to distinguish 
   certain tournament types to support multiple-purpose-profiles.
@@ -20,16 +26,14 @@ NEW stuff:
   tablemap and casino, but if this fails it will swag.
   [THF]
 
-BUG FIXES:
-- The parser did not handle the OpenPPL actions BetMin and RaiseMin
-  which are rarely used synonyms for bet and Raise anyway.
-  This has now been fixed.
-  [THF]
-
 MAINTENANCE
 - Handling non-ASCII-chars in the input gracefully,
   just replacing them by spaces. They are usually only
   special characters in a comment and can be ignored.
+  [THF]
+- Improved szmbols InBigBlind and InSmallBlind for headsup situations.
+  [FqFq]
+- Improved effective AmountToCall for miss/scraped own balance.
   [THF]
 
 v7.4.3 2015-01-26

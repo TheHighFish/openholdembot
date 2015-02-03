@@ -1314,15 +1314,14 @@ me_re_MemStartingStackSize
 
 ##DollarsToCallForMisScrapedOpponentBet##
 // Opponents bet must be miss-scraped
-// Incorrect amount to call despite I alreadz acted.
-// Lets assume a min/raise, which must be at least as much as my bet (NL / PL)
-isfl ? 1 :
-currentbet
+// Incorrect amount to call despite I already acted.
+// Lets assume a min-raise, which must be at least as much as my bet (NL / PL)
+isfl ? 1 : currentbet
 
 ##DollarsToCall##
-// Effective DollarsToCall could go wrong, if our balance got mis-scraped
+// Effective DollarsToCall could go wrong, if our balance got miss-scraped
 // (Our balance must be always > 0 if it is our turn)
-// Therefore we create multiple functions for multiple cases of bad input_iterator
+// Therefore we create multiple functions for multiple cases of bad input.
 (ismyturn && balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
 // Preflop and I already did act, but nothing to call
 ((betround == ConstBetRoundPreflop) && (currentbet > 1) && (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
@@ -3427,10 +3426,12 @@ InSmallBlind ? 1 :
 // we decided to provide both forms of naming in the library.
 
 ##SmallBlind##
-(dealposition == 1)
+   ((nplayersdealt != 2) && (dealposition == 1))
+|| ((nplayersdealt == 2) && (dealposition == 2))
 
 ##BigBlind##
-(dealposition == 2)
+   ((nplayersdealt != 2) && (dealposition == 2))
+|| ((nplayersdealt == 2) && (dealposition == 1))
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.
