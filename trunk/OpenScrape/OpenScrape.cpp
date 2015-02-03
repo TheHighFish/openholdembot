@@ -124,17 +124,13 @@ BOOL COpenScrapeApp::InitInstance()
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
-
-
 	// Enable DDE Execute open
 	EnableShellOpen();
 	RegisterShellFileTypes(TRUE);
 
-
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-
 
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
@@ -154,8 +150,26 @@ BOOL COpenScrapeApp::InitInstance()
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=16464
 	m_TableMapDlg->Create(CDlgTableMap::IDD, CWnd::GetDesktopWindow());
 	m_TableMapDlg->ShowWindow(SW_SHOW);
-
+  ArrangeWindows();
 	return true;
+}
+
+void COpenScrapeApp::ArrangeWindows() {
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx
+  // TM-editor top-left
+  m_TableMapDlg->SetWindowPos(NULL,
+   	0,     // x-position 	
+ 	  0,     // y_position, 	
+    kSizeXForEditor,
+    kSizeYForEditor,
+ 	  0);
+  // Main window 
+  this->GetMainWnd()->SetWindowPos(NULL, 
+    kSizeXForEditor, // x-positioin: right to the TM-editor
+    0,              // y-position
+    0, 
+    0, 
+    SWP_NOSIZE);     // Keep current size
 }
 
 // CAboutDlg dialog used for App About

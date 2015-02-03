@@ -31,9 +31,9 @@ MAINTENANCE
   just replacing them by spaces. They are usually only
   special characters in a comment and can be ignored.
   [THF]
-- Improved szmbols InBigBlind and InSmallBlind for headsup situations.
+- Improved symbols InBigBlind and InSmallBlind for headsup situations.
   [FqFq]
-- Improved effective AmountToCall for miss/scraped own balance.
+- Improved effective AmountToCall for miss-scraped own balance.
   [THF]
 
 v7.4.3 2015-01-26
