@@ -1302,7 +1302,33 @@ me_re_MemStartingStackSize
 //
 //*****************************************************************************
 
+##DollarsToCallForMisScrapedEverything##
+// My balance and opponents bet miss-scraped
+// For NL and Pl assume a min-raise which must be about as much as my bet
+// The ability to check got already excluded
+(isnl || ispl) ? currentbet : 1
+
+##DollarsToCallForMisScrapedUserBalance##
+// My balance miss-scraped as 0
+(call > 0) ? call : DollarsToCallForMisScrapedEverything
+
+##DollarsToCallForMisScrapedOpponentBet##
+// Opponents bet must be miss-scraped
+// Incorrect amount to call despite I alreadz acted.
+// Lets assume a min/raise, which must be at least as much as my bet (NL / PL)
+isfl ? 1 :
+currentbet
+
 ##DollarsToCall##
+// Effective DollarsToCall could go wrong, if our balance got mis-scraped
+// (Our balance must be always > 0 if it is our turn)
+// Therefore we create multiple functions for multiple cases of bad input_iterator
+(ismyturn && balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
+// Preflop and I already did act, but nothing to call
+((betround == ConstBetRoundPreflop) && (currentbet > 1) && (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+// Postflop and I already did act, but nothing to call
+((betround > ConstBetRoundPreflop) && (currentbet > 0) && (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
+// The normal case (including correct and incorrect abilities to check)
 (call <= balance) ? call : balance
 
 ##AmountToCall##
