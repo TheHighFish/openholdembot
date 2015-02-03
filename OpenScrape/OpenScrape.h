@@ -29,7 +29,6 @@
 
 extern	char	_startup_path[MAX_PATH];
 
-
 //!  The Main class of openscrape that creates the other dialogues 
 class COpenScrapeApp : public CWinApp
 {
@@ -38,6 +37,7 @@ public:
 	virtual BOOL InitInstance();
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+  void ArrangeWindows();
 
 public:
 	int				sessionnum;

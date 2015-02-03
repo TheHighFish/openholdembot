@@ -70,5 +70,10 @@
 #include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
 
+// Window constants for the improved GUI
+const int kBordersize     =   2;
+const int kSizeXForEditor = 600;
+const int kSizeYForEditor = 750;
+const int kYOffsetEditor  =  69;
 
 #endif //INC_STDAFX_H
