@@ -1448,7 +1448,7 @@ rankhicommon
 ##FourCardsToWheelOnBoard##
 `(rankbitscommon & 0b0000000000111110) >= 4
 
-##FourOf1SuiteOnTurn##
+##FourOfOneSuitOnTurn##
 (($$cs0 == $$cs1) && ($$cs2 == $$cs3) && ($$cs0 == $$cs3))
 
 ##FullHouseOnBoard##
