@@ -284,7 +284,7 @@ True if a wheel can be made by using only one hole card, i.e.
 \begin_inset Text
 
 \begin_layout Plain Layout
-FourOf1SuiteOnTurn
+FourOfOneSuitOnTurn
 \end_layout
 
 \end_inset
@@ -293,7 +293,7 @@ FourOf1SuiteOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-True if only 1 suite is/was present on the board on the Turn
+True if only 1 suit is/was present on the board on the Turn
 \end_layout
 
 \end_inset
