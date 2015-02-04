@@ -41,6 +41,8 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 	{
 		SetFlag(i, false);
 	}
+  ResetButtonsOnDisconnect();
+  ResetButtonsOnAutoplayerOff();
 }
 
 CFlagsToolbar::~CFlagsToolbar()
@@ -49,12 +51,13 @@ CFlagsToolbar::~CFlagsToolbar()
 void CFlagsToolbar::ResetButtonsOnConnect() {
 	ResetButtonsOnAutoplayerOff();
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
 }
 
 void CFlagsToolbar::ResetButtonsOnDisconnect() {
   ResetButtonsOnAutoplayerOff();
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-	
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 }
 
 void CFlagsToolbar::ResetButtonsOnAutoplayerOn() {

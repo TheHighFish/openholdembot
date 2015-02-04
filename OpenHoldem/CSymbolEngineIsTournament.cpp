@@ -213,7 +213,7 @@ bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
 	CString title = p_scraper->title();
 	title = title.MakeLower();
 	for (int i=0; i<number_of_identifiers; i++) {
-    assert(odentifiers[i] != "");
+    assert(identifiers[i] != "");
 		if (title.Find(identifiers[i]) != -1) 	{
 			return true;
 		}

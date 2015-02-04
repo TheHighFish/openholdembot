@@ -49,6 +49,7 @@ protected: // create from serialization only
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
+  afx_msg void OnUpdateViewScraperOutput(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);

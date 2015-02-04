@@ -80,6 +80,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, &CMainFrame::OnUpdateMenuFileOpen)
   ON_UPDATE_COMMAND_UI(ID_EDIT_FORMULA, &CMainFrame::OnUpdateMenuFileEdit)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
+  ON_UPDATE_COMMAND_UI(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnUpdateViewScraperOutput)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
 	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
@@ -309,10 +310,8 @@ void CMainFrame::OnEditTagLog() {
 }
 
 // Menu -> Edit -> View Scraper Output
-void CMainFrame::OnScraperOutput() 
-{
-	if (m_ScraperOutputDlg) 
-	{
+void CMainFrame::OnScraperOutput() {
+	if (m_ScraperOutputDlg) {
 		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
 		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
@@ -323,14 +322,11 @@ void CMainFrame::OnScraperOutput()
 		delete m_ScraperOutputDlg;
 		m_ScraperOutputDlg = NULL;
 
-		if (bWasShown)
-		{
+		if (bWasShown) {
 			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
 		}
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 	
@@ -762,48 +758,40 @@ void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-
-void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI)
-{
+void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
 }
 
-void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI)
-{
-	if (p_perl->IsAFormulaLoaded()) 
-	{
+void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
+}
+
+void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) {
+	if (p_perl->IsAFormulaLoaded()) 	{
 		pCmdUI->SetText("&Unload Formula\tF7");
-	}
-	else 
-	{
+	}	else 	{
 		pCmdUI->SetText("&Load Formula\tF7");
 	}
+  pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
+}
 
+void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
-}
-
-void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(p_perl->IsAFormulaLoaded() 
 		&& !p_autoplayer->autoplayer_engaged());
 }
 
-void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) 
-{
+void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
 }
 
-void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) 
-{
+void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) {
 	pCmdUI->Enable(p_perl->IsAFormulaLoaded()
 		&& !p_autoplayer->autoplayer_engaged());
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
