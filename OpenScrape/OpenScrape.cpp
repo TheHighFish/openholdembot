@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(COpenScrapeApp, CWinApp)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
+  ON_MESSAGE(WM_HOTKEY, &CMainFrame::OnHotKey)
 END_MESSAGE_MAP()
 
 // COpenScrapeApp construction
