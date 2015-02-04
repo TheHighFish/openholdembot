@@ -65,17 +65,14 @@ ENDGROUP()
 END_WINDOW_MAP()
 
 CDlgScraperOutput::CDlgScraperOutput(CWnd* pParent /*=NULL*/)
-		: CDialog(CDlgScraperOutput::IDD, pParent), m_winMgr(ScraperOutputFormulaMap)
-{
+		: CDialog(CDlgScraperOutput::IDD, pParent), m_winMgr(ScraperOutputFormulaMap) {
 	in_startup = true;
 }
 
-CDlgScraperOutput::~CDlgScraperOutput()
-{
+CDlgScraperOutput::~CDlgScraperOutput() {
 }
 
-void CDlgScraperOutput::DoDataExchange(CDataExchange* pDX)
-{
+void CDlgScraperOutput::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_REGIONLIST, m_RegionList);
 	DDX_Control(pDX, IDC_SCRAPERBITMAP, m_ScraperBitmap);
@@ -84,25 +81,21 @@ void CDlgScraperOutput::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CDlgScraperOutput, CDialog)
-
-	// WinMgr
+  // WinMgr
 	ON_REGISTERED_MESSAGE(WM_WINMGR, OnWinMgr)
-
-	ON_WM_SIZE()
+  	ON_WM_SIZE()
 	ON_LBN_SELCHANGE(IDC_REGIONLIST, &CDlgScraperOutput::OnLbnSelchangeRegionlist)
 	ON_CBN_SELCHANGE(IDC_ZOOM, &CDlgScraperOutput::OnCbnSelchangeZoom)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 // CDlgScraperOutput message handlers
-BOOL CDlgScraperOutput::OnInitDialog()
-{
+BOOL CDlgScraperOutput::OnInitDialog() {
 	int			max_x = 0, max_y = 0;
 	RECT		rect = {0};
 
 	in_startup = true;
-
-	CDialog::OnInitDialog();
+  CDialog::OnInitDialog();
 
 	// Save tofit windows as current size
 	m_winMgr.InitToFitSizeFromCurrent(this);		// make tofit = current size
@@ -127,23 +120,28 @@ BOOL CDlgScraperOutput::OnInitDialog()
 	this->SetIcon(hIcon, FALSE);
 
 	// Restore window location and size, precision preference
-
-	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
+  max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
 	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.scraper_x(), max_x), min(preferences.scraper_y(), max_y),
-				   preferences.scraper_dx(), preferences.scraper_dy(), SWP_NOCOPYBITS);
+	  preferences.scraper_dx(), preferences.scraper_dy(), SWP_NOCOPYBITS);
 	m_Zoom.SetCurSel(preferences.scraper_zoom());
 	m_Zoom.GetWindowRect(&rect);
 	m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 
 	in_startup = false;
-
-	return TRUE;  // return TRUE unless you set the focus to a control
+  return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-BOOL CDlgScraperOutput::DestroyWindow()
-{
+void CDlgScraperOutput::DestroyWindowSafely() {
+  if (m_ScraperOutputDlg) {
+    m_ScraperOutputDlg->DestroyWindow();
+		delete m_ScraperOutputDlg;
+  }
+	m_ScraperOutputDlg = NULL;
+}
+
+BOOL CDlgScraperOutput::DestroyWindow() {
 	WINDOWPLACEMENT		wp;
 
 	// Save settings to registry
@@ -160,120 +158,96 @@ BOOL CDlgScraperOutput::DestroyWindow()
 	return CDialog::DestroyWindow();
 }
 
-void CDlgScraperOutput::PostNcDestroy()
-{
+void CDlgScraperOutput::PostNcDestroy() {
 	delete m_ScraperOutputDlg;
 	m_ScraperOutputDlg	=	NULL;
-
-	CDialog::PostNcDestroy();
+  CDialog::PostNcDestroy();
 }
 
-LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) 
-{
+LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) {
 	NMWINMGR& nmw = *(NMWINMGR*)lp;
 	RECT		rect = {0};
 
-	if (nmw.code==NMWINMGR::GET_SIZEINFO) 
-	{
-		if (wp==(WORD)GetDlgCtrlID()) 
-		{
+	if (nmw.code==NMWINMGR::GET_SIZEINFO) {
+		if (wp==(WORD)GetDlgCtrlID()) {
 			// Parent frame is requesting my size info. Report min size.
 			m_winMgr.GetMinMaxInfo(this, nmw.sizeinfo);
 			return true; // handled--important!
 		}
-	}
-
-	else if (nmw.code==NMWINMGR::SIZEBAR_MOVED) 
-	{
+	}	else if (nmw.code==NMWINMGR::SIZEBAR_MOVED) {
 		// User moved a sizer bar: call WinMgr to do it!
 		m_winMgr.MoveRect(wp, nmw.sizebar.ptMoved, this);
 		m_winMgr.SetWindowPositions(this);
-		if (!in_startup)
-		{
+		if (!in_startup) {
 			m_Zoom.GetWindowRect(&rect);
 			m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 			UpdateDisplay();
 		}
 		return true;
 	}
-
-	return false; // not handled
+  return false; // not handled
 }
 
-void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy)
-{
+void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy) {
 	RECT	rect = {0};
 
 	CDialog::OnSize(nType, cx, cy);
-
-	m_winMgr.CalcLayout(0, 0, cx, cy, this);
+  m_winMgr.CalcLayout(0, 0, cx, cy, this);
 	m_winMgr.SetWindowPositions(this);
-	if (!in_startup)
-	{
+	if (!in_startup) {
 		m_Zoom.GetWindowRect(&rect);
 		m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 		UpdateDisplay();
 	}
 }
 
-void CDlgScraperOutput::AddListboxItems()
-{
+void CDlgScraperOutput::AddListboxItems() {
 	m_RegionList.ResetContent();
 	m_RegionList.SetCurSel(-1);
 
-	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
+	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
 		m_RegionList.AddString(r_iter->second.name);
+  }
 }
 
-void CDlgScraperOutput::OnLbnSelchangeRegionlist()
-{
+void CDlgScraperOutput::OnLbnSelchangeRegionlist() {
 	UpdateDisplay();
 }
 
-void CDlgScraperOutput::OnCbnSelchangeZoom()
-{
+void CDlgScraperOutput::OnCbnSelchangeZoom() {
 	UpdateDisplay();
 }
 
-void CDlgScraperOutput::OnPaint()
-{
+void CDlgScraperOutput::OnPaint() {
 	CPaintDC dc(this); // device context for painting
 	UpdateDisplay();
 }
 
-void CDlgScraperOutput::UpdateDisplay()
-{
+void CDlgScraperOutput::UpdateDisplay() {
 	CString curtext = "";
 
-	if (in_startup)  
-		return;
-
-	// Only do this if we are not in the middle of a scraper/symbol update
-	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
-	{
-		if (m_RegionList.GetCurSel() == k_undefined)
-		{
+	if (in_startup) return;
+  // Only do this if we are not in the middle of a scraper/symbol update
+	if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress)) 	{
+		if (m_RegionList.GetCurSel() == k_undefined) {
 			DoBitblt(NULL, p_tablemap->r$()->end());  // Clear display
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 			return;
 		}
 
 		m_RegionList.GetText(m_RegionList.GetCurSel(), curtext);
+    RMapCI r_iter = p_tablemap->r$()->find(curtext.GetString());
 
-		RMapCI r_iter = p_tablemap->r$()->find(curtext.GetString());
-
-		if (r_iter != p_tablemap->r$()->end())
+		if (r_iter != p_tablemap->r$()->end()) {
 			DoBitblt(r_iter->second.last_bmp, r_iter);
-
-		else
+    }	else {
 			DoBitblt(NULL, p_tablemap->r$()->end());  // Clear display
-
+    }
 		LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 	}
 }
 
-void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
-{
+void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter) {
 	CDC			*pDC = m_ScraperBitmap.GetDC();
 	HDC			hdcControl = *pDC;
 	HDC			hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
@@ -287,8 +261,7 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 	CString		res = "";
 	CTransform	trans;
 
-	if (in_startup) 	
-	{
+	if (in_startup)	{
 		DeleteDC(hdcCompat1);
 		DeleteDC(hdcCompat2);
 		DeleteDC(hdcScreen);
@@ -310,8 +283,7 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 	pDC->SelectObject(oldpen);
 
 	// return if all we needed to do was erase display
-	if (bitmap == NULL)
-	{
+	if (bitmap == NULL)	{
 		DeleteDC(hdcCompat1);
 		DeleteDC(hdcCompat2);
 		DeleteDC(hdcScreen);
@@ -322,10 +294,10 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 	// load bitmap into 1st DC and stretchblt to 2nd DC
 	old_bitmap1 = (HBITMAP) SelectObject(hdcCompat1, bitmap);
 	zoom = m_Zoom.GetCurSel()==0 ? 1 :
-		   m_Zoom.GetCurSel()==1 ? 2 :
-		   m_Zoom.GetCurSel()==2 ? 4 :
-		   m_Zoom.GetCurSel()==3 ? 8 :
-		   m_Zoom.GetCurSel()==4 ? 16 : 1;
+		     m_Zoom.GetCurSel()==1 ? 2 :
+		     m_Zoom.GetCurSel()==2 ? 4 :
+		     m_Zoom.GetCurSel()==3 ? 8 :
+		     m_Zoom.GetCurSel()==4 ? 16 : 1;
 
 	w = (r_iter->second.right - r_iter->second.left) * zoom;
 	h = (r_iter->second.bottom - r_iter->second.top) * zoom;
@@ -356,16 +328,13 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter)
 	ReleaseDC(pDC);
 }
 
-void CDlgScraperOutput::OnCancel()
-{
+void CDlgScraperOutput::OnCancel() {
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
-
-	CDialog::OnCancel();
+  CDialog::OnCancel();
 }
 
-void CDlgScraperOutput::Reset()
-{
+void CDlgScraperOutput::Reset() {
 	AddListboxItems();
 	UpdateDisplay();
 }

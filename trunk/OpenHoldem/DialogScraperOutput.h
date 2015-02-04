@@ -20,10 +20,18 @@
 #include "Resource.h"
 
 // CDlgScraperOutput dialog
-class CDlgScraperOutput : public CDialog
-{
-public:
+class CDlgScraperOutput : public CDialog {
+ public:
 	CDlgScraperOutput(CWnd* pParent = NULL);   // standard constructor
+ public:
+  // This method
+  //   * checks if a window exists
+  //   * destroys it
+  //   * resets the pointer to NULL
+  // and may be called anytime from anywhere, 
+  // especially created to close the dialog on disappearing tables
+  static void DestroyWindowSafely();
+ public:
 	virtual ~CDlgScraperOutput();
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
@@ -33,7 +41,7 @@ public:
 
 	enum { IDD = IDD_SCRAPER_OUTPUT };
 
-protected:
+ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual void PostNcDestroy();
 	afx_msg void OnLbnSelchangeRegionlist();
@@ -52,7 +60,7 @@ protected:
 	bool			in_startup;
 
 	DECLARE_MESSAGE_MAP()
-private:
+ private:
 	void AddListboxItems();
 };
 

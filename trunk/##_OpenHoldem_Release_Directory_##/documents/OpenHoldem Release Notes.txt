@@ -5,6 +5,13 @@ BUG FIXES:
   which are rarely used synonyms for bet and Raise anyway.
   This has now been fixed.
   [THF]
+- If the scraper-output-dialog was open and updating during table-changes
+  OpenHoldem could crash as the dialog accessed data-structures
+  that became invalid. To fix this problem the scraper-output-dialog
+  can now only be opened if OpenHoldem is connected to a table
+  and it will automatically close on disconnect.
+  Thanks to !!!!! for reporting.
+  [THF]
 
 NEW stuff:
 - New symbols issng, isdon and ismtt to distinguish 

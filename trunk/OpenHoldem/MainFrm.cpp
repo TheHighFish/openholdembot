@@ -318,10 +318,7 @@ void CMainFrame::OnScraperOutput() {
 		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
 		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
-		m_ScraperOutputDlg->DestroyWindow();
-		delete m_ScraperOutputDlg;
-		m_ScraperOutputDlg = NULL;
-
+    CDlgScraperOutput::DestroyWindowSafely();
 		if (bWasShown) {
 			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
