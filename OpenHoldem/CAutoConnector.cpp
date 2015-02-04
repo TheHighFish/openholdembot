@@ -347,9 +347,12 @@ void CAutoConnector::LoadScraperDLL()
 	}
 }
 
-void CAutoConnector::Disconnect()
-{
+void CAutoConnector::Disconnect() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
+
+  // First close scraper-output-dialog,
+  // as an updating dialog without a connected table can crash.
+  CDlgScraperOutput::DestroyWindowSafely();
 
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
@@ -403,15 +406,13 @@ void CAutoConnector::Disconnect()
 	PMainframe()->ResetDisplay();
 
 	// Reset "ScraperOutput" dialog, if it is live
-	if (m_ScraperOutputDlg)
-	{
+	if (m_ScraperOutputDlg)	{
 		m_ScraperOutputDlg->Reset();
 	}
 	WriteLogTableReset();
 
 	// Close OH, when table disappears and leaving enabled in preferences.
-	if (preferences.autoconnector_close_when_table_disappears())
-	{
+	if (preferences.autoconnector_close_when_table_disappears()) {
 		PostQuitMessage(0);
 	}
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect done\n");
