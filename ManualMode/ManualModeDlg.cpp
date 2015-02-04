@@ -1513,8 +1513,8 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		for (int i=0; i<k_number_of_ranks_per_deck; i++) 
 		{
 			subrank = tracker->GetSubMenu(i);
-
-			mii.fState = CardMask_CARD_IS_SET(used_cards, StdDeck_MAKE_CARD(i, Suit_CLUBS)) ? MFS_DISABLED : MFS_ENABLED;
+      
+      mii.fState = CardMask_CARD_IS_SET(used_cards, StdDeck_MAKE_CARD(i, Suit_CLUBS)) ? MFS_DISABLED : MFS_ENABLED;
 			subrank->SetMenuItemInfo(0, &mii, true);
 
 			mii.fState = CardMask_CARD_IS_SET(used_cards, StdDeck_MAKE_CARD(i, Suit_DIAMONDS)) ? MFS_DISABLED : MFS_ENABLED;
@@ -1537,9 +1537,9 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		mii.fState = card[click_loc]!=CARD_NOCARD ? MFS_ENABLED : MFS_DISABLED;
 		tracker->SetMenuItemInfo(14, &mii, true);
 
-		// Display the context menu
+		// Display the context menu, unobstructive
 		tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
-			point.x, 
+			point.x + MM_WIDTH - point_adj.x, 
 			point.y, this);
 	}
 
@@ -1616,7 +1616,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		// Display the context menu
 		tracker->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, 
-			point.x, 
+			point.x + MM_WIDTH - point_adj.x,
 			point.y, this);
 	}
 }
@@ -2140,7 +2140,7 @@ void CManualModeDlg::OnBnClickedMacro()
 			  card[P0C1 + 2*chair] = CARD_NOCARD; 
         break;
     }
-    if *chair >= 10) {
+    if (chair >= 10) {
       break;
     }
     // Setting bet and balance
