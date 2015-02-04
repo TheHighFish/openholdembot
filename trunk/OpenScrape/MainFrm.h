@@ -19,10 +19,10 @@
 
 #define		BLINKER_TIMER				1
 
-class CMainFrame : public CFrameWnd
-{
-	
-protected: // create from serialization only
+class CMainFrame : public CFrameWnd {
+ public:
+  LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
+ protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -44,23 +44,20 @@ protected: // create from serialization only
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 
-	CStatusBar		m_wndStatusBar;
+	CStatusBar	m_wndStatusBar;
 	CToolBar		m_wndToolBar;
-
-public:
+ public:
 	virtual BOOL DestroyWindow();
 	afx_msg void OnViewConnecttowindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
-  
-private:
+ private:
 	bool CreateToolbar();
 	bool CreateStatusBar();
 	void ForceRedraw();
 	void ResizeWindow(COpenScrapeDoc *pDoc);
 	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
-
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

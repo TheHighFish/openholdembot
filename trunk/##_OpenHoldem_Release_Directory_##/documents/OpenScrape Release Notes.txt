@@ -1,3 +1,13 @@
+v7.5.0 2015-02.xx
+==================
+NEW stuff:
+- Automatically positioning the OS windows for better usability.
+  [THF]
+- Creating a global hotkey Ctrl+R to refresh the table-view.
+  Now it is possible to refresh without OS needing the input focus
+  (casino might display differently if the table is active).
+  [THF]
+
 v7.4.2 2015-01-22
 ==================
 BUG FIXES:

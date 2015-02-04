@@ -37,6 +37,8 @@
 
 // CMainFrame
 
+const int kHotkeyRefresh = 1234;
+
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
@@ -78,18 +80,24 @@ static UINT openscrape_indicators[] =
 //
 /////////////////////////////////////////////////////
 
-CMainFrame::CMainFrame()
-{
+CMainFrame::CMainFrame() {
 	__SEH_SET_EXCEPTION_HANDLER
 
 	// Save startup directory
-    ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
+  ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309%28v=vs.85%29.aspx
+  // http://www.cplusplus.com/forum/windows/47266/
+  // http://www.codeproject.com/Articles/2213/Beginner-s-Tutorial-Using-global-hotkeys
+  RegisterHotKey(NULL, 
+    kHotkeyRefresh,
+    MOD_CONTROL,
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx
+    0x52);   // 'r'
 }
 
-CMainFrame::~CMainFrame()
-{
+CMainFrame::~CMainFrame() {
+  UnregisterHotKey(NULL, kHotkeyRefresh);
 }
-
 
 /////////////////////////////////////////////////////
 //
@@ -232,7 +240,7 @@ BOOL CMainFrame::DestroyWindow()
 // TODO: Callers might need to be refactored
 void CMainFrame::ForceRedraw()
 {
-	Invalidate(true);
+	theApp.m_pMainWnd->Invalidate(true);
 	theApp.m_TableMapDlg->Invalidate(true);
 }
 
@@ -455,12 +463,26 @@ void CMainFrame::BringOpenScrapeBackToFront()
 	::SetActiveWindow(AfxGetApp()->m_pMainWnd->GetSafeHwnd());
 }
 
+LRESULT CMainFrame::OnHotKey(WPARAM wParam, LPARAM lParam) {
+  MessageBox("A", "Debug", 0);
+  if(wParam == kHotkeyRefresh) {
+    MessageBox("B", "Debug", 0);
+		OnViewRefresh();
+    return true;
+	}
+  return CallNextHookEx(NULL, WM_HOTKEY, wParam,lParam);
+}
+
 void CMainFrame::ResizeWindow(COpenScrapeDoc *pDoc)
 {
 	RECT newrect;
 	::GetClientRect(pDoc->attached_hwnd, &newrect);
 	AdjustWindowRect(&newrect, GetWindowLong(AfxGetApp()->m_pMainWnd->GetSafeHwnd(), GWL_STYLE), true);
-	SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
+  // We must use theApp.m_pMainWnd->SetWindowPos()
+  // as this function can get indirectly called by OpenScrape.cpp
+  // if we use the hotkey to refresh.
+  // It still triggers an assertion, but no harm seems to be done.
+	theApp.m_pMainWnd->SetWindowPos(NULL, 0, 0, newrect.right-newrect.left+4, newrect.bottom-newrect.top+47, SWP_NOMOVE);
 }
 
 void CMainFrame::OnViewRefresh()
