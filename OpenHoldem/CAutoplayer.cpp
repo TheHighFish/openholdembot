@@ -15,6 +15,7 @@
 #include "CAutoplayer.h"
 
 #include <complex>
+#include "AllinAdjustment.h"
 #include "BetpotCalculations.h"
 #include "BringKeyboard.h"
 #include "CAutoplayerTrace.h"
@@ -147,35 +148,9 @@ bool CAutoplayer::DoBetPot(void) {
 			}
       if (!success) {
         // Backup action> try yo swag betpot_X_Y
-        double betpot_factor = 1.0;
-        switch (i) {
-          case k_autoplayer_function_betpot_2_1:
-            betpot_factor = 2.0;
-            break;
-          case k_autoplayer_function_betpot_1_1:
-            betpot_factor = 1.0;
-            break;
-          case k_autoplayer_function_betpot_3_4:
-            betpot_factor = 0.75;
-            break;
-          case k_autoplayer_function_betpot_2_3:
-            betpot_factor = 0.667;
-            break;
-          case k_autoplayer_function_betpot_1_2:
-            betpot_factor = 0.5;
-            break;
-          case k_autoplayer_function_betpot_1_3:
-            betpot_factor = 0.333;
-            break;
-          case k_autoplayer_function_betpot_1_4:
-            betpot_factor = 0.25;
-            break;
-          default:
-            betpot_factor = 1.0;
-        }
-        double betpot_amount = BetsizeForBetpot(betpot_factor);
+        double betpot_amount = BetsizeForBetpot(i);
         write_log(preferences.debug_autoplayer(), 
-          "[AutoPlayer] Betpot %.2f with buttons failed\n", betpot_factor);
+          "[AutoPlayer] Betpot with buttons failed\n");
         write_log(preferences.debug_autoplayer(), 
           "[AutoPlayer] Trying to swag %.2f instead\n", betpot_amount);
         success = p_casino_interface->EnterBetsize(betpot_amount);
@@ -495,9 +470,12 @@ void CAutoplayer::DoAutoplayer(void) {
 }
 
 bool CAutoplayer::DoSwag(void) {
-	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize) > 0) 	{
-		int success = p_casino_interface->EnterBetsize(
-      p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+  double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
+	if (betsize > 0) 	{
+    if (ChangeBetsizeToAllin(betsize)) {
+      return DoAllin();
+    }
+		int success = p_casino_interface->EnterBetsize(betsize);
 		if (success) {
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;

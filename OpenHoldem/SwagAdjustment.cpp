@@ -139,7 +139,7 @@ double MaximumBetsizeForGameType() {
 	if (p_symbol_engine_gametype->ispl())	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
-		maximum_betsize = BetsizeForBetpot(1.0);
+		maximum_betsize = BetsizeForBetpot(k_autoplayer_function_betpot_1_1);
     write_log(preferences.debug_betsize_adjustment(), 
       "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_betsize);
 	}	else if (p_symbol_engine_gametype->isfl()) {

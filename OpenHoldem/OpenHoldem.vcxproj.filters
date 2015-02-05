@@ -717,6 +717,9 @@
     <ClCompile Include="BetpotCalculations.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="AllinAdjustment.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1529,6 +1532,9 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="BetpotCalculations.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="AllinAdjustment.h">
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>

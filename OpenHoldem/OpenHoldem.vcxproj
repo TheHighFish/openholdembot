@@ -181,6 +181,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
@@ -441,6 +442,7 @@
     <None Include="..\Checklist_Release_OpenPPL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CBlindGuesser.h" />
