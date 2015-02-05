@@ -1,4 +1,4 @@
-v7.5.0 2015-02.xx
+v7.5.0 2015-02.05
 ==================
 BUG FIXES:
 - The parser did not handle the OpenPPL actions BetMin and RaiseMin
