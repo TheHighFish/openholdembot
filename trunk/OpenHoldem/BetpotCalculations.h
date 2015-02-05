@@ -14,6 +14,6 @@
 #ifndef INC_BETPOTCALCULATIONS_H
 #define INC_BETPOTCALCULATIONS_H
 
-double BetsizeForBetpot(double betpot_factor);
+double BetsizeForBetpot(int betpot_action_code);
 
 #endif INC_BETPOTCALCULATIONS_H

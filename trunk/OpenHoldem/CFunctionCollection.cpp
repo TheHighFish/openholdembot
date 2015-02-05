@@ -326,7 +326,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   } else if (function_name.Compare(k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) == k_CString_identical) {
     function_text = 
       "// Allin if betsize is more than X% of our total balance (including currentbet).\n"
-      "// This includes f$betsize and all f$betpot_X_Y_ functions.\n" 
+      "// This affects f$betsize and all f$betpot_X_Y_ functions.\n" 
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
