@@ -22,7 +22,7 @@ const int kNumberOfBlindLevels    = 189;
 const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
-const int kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
+const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
   {{        0.01,         0.02,         0.04},
    {        0.01,         0.02,         0.05},
    {        0.02,         0.04,         0.08},

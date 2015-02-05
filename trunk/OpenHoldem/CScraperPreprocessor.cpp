@@ -13,8 +13,13 @@
 
 #include "stdafx.h"
 #include "CScraperPreprocessor.h"
-#include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
+
+#ifdef OPENHOLDEM_PROGRAM 
+// Preferences needed for logging, 
+// both onlz available for OpenHoldem
+#include "CPreferences.h"
+#endif OPENHOLDEM_PROGRAM
 
 CScraperPreprocessor::CScraperPreprocessor() {
 }
@@ -135,8 +140,9 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 		previous_character = ith_character;
 	}
 	*monetary_string = result;
-
+#ifdef OPENHOLDEM_PROGRAM 
 	write_log(preferences.debug_scraper_preprocessor(), "Monetary string after preprocessing: %s\n", result);
+#endif OPENHOLDEM_PROGRAM 
 }
 
 void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
