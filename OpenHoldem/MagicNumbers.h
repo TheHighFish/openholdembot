@@ -231,6 +231,7 @@ enum StandardFunctionConstants
 	k_standard_function_chat,
 	// Other functions
 	k_standard_function_delay,
+  k_standard_function_allin_on_betsize_balance_ratio,
 	// Ini-functions	
 	k_init_on_startup,
 	k_init_on_connection,
@@ -269,7 +270,7 @@ const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button
 };
 
 //  Standard function names
-const int k_max_length_of_standard_function_names = 28 + 1;
+const int k_max_length_of_standard_function_names = 32 + 1;
 const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] =
 {
 	// Primary autoplayer-functions
@@ -298,6 +299,7 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 	"f$chat",
 	// Other functions
 	"f$delay",
+  "f$allin_on_betsize_balance_ratio",
 	// Ini-functions	
 	"f$ini_function_on_startup",
 	"f$ini_function_on_connection",

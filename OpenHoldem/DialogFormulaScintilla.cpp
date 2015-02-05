@@ -560,7 +560,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
         AddFunctionToTree(parent, "notes");
         AddFunctionToTree(parent, "DLL");
         AddStandardFunctionsToTree(parent, 
-          k_standard_function_prefold, k_standard_function_delay);
+          k_standard_function_prefold, k_standard_function_allin_on_betsize_balance_ratio);
         break;
       case 2:
         // Ini functions
