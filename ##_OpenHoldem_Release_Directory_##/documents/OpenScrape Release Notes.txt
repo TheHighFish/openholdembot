@@ -1,4 +1,4 @@
-v7.5.0 2015-02.xx
+v7.5.0 2015-02.05
 ==================
 NEW stuff:
 - Automatically positioning the OS windows for better usability.
