@@ -12,6 +12,12 @@ BUG FIXES:
   and it will automatically close on disconnect.
   Thanks to NickPerry for reporting.
   [THF]
+- Completing partially known blind-lewels could go wrong 
+  for some micro-stakes, as we used a wrong data-type
+  at one point in our compuations.
+  Thanks to Lavezzi and Relhby for providing replay-frames and TM
+  to reproduce the problem.
+  [THF]
 
 NEW stuff:
 - New symbols issng, isdon and ismtt to distinguish 
