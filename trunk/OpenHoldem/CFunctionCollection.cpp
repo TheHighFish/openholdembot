@@ -314,6 +314,22 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "// f$fold should alwazs evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 ";
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_rebuy]) == k_CString_identical) {
+    function_text = 
+      "// f$rebuy should evaluate to the target-amount in dollars.\n"
+      "// This value will be passed to the rebuy-script as a parameter.\n"
+      "0\n";
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_delay]) == k_CString_identical) {
+    function_text = 
+      "// Autoplayer-delay in milli-seconds\n"
+      "0\n";
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) == k_CString_identical) {
+    function_text = 
+      "// Allin if betsize is more than X% of our total balance (including currentbet).\n"
+      "// This includes f$betsize and all f$betpot_X_Y_ functions.\n" 
+      "//  0.00 =  0% = disabled\n"
+      "//  0.50 = 50%\n"
+      "0.00\n";
   } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
     function_text = 
       "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
@@ -331,11 +347,6 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "// The sum of all f$icm_prizeX functions should be 1.00 (= 100%).\n"
       "// Default to get things going: the winner takes it all.\n"
       "1.00\n";
-  } else if (function_name.Compare(k_standard_function_names[k_standard_function_rebuy]) == k_CString_identical) {
-    function_text = 
-      "// f$rebuy should evaluate to the target-amount in dollars.\n"
-      "// This value will be passed to the rebuy-script as a parameter.\n"
-      "0\n";
   } else {
     // Add an empty function.
     // The function-text should contain at least one space.
