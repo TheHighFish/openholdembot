@@ -63,6 +63,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"debug_table_limits",
 	"debug_lazy_scraper",
 	"debug_betsize_adjustment",
+  "debug_betsize_adjustment",
 	"debug_handreset_detector",
 	"debug_engine_container",
 	"debug_dll_extension",
