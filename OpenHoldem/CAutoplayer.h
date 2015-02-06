@@ -62,12 +62,10 @@ private:
 	bool	_autoplayer_engaged;
 
 private:
-	RMapCI	_alli_but, _rais_but, _call_but, _chec_but, _fold_but;
-	RMapCI	_autopost_but, _sitin_but, _sitout_but, _leave_but, _pre_fold_but;
-	bool	_autopost_state, _sitin_state, _sitout_state;
 	POINT	cursor_position;
 	HWND	window_with_focus;
 	bool	action_sequence_needs_to_be_finished;
+  bool  _already_executing_allin_adjustment;
 
 	CCritSec	m_critsec;
 };

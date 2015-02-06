@@ -55,6 +55,7 @@ CAutoplayer::CAutoplayer(void) {
 	// However the toolbar is guaranteed to initialize correctly later.
 	_autoplayer_engaged = false;
 	action_sequence_needs_to_be_finished = false;
+  _already_executing_allin_adjustment = false;
 }
 
 
@@ -140,6 +141,10 @@ bool CAutoplayer::DoBetPot(void) {
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i)) 	{
 			write_log(preferences.debug_autoplayer(), 
         "[AutoPlayer] Function %s true.\n", k_standard_function_names[i]);
+      if (ChangeBetPotActionToAllin(i)) {
+        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting bhetpot_X_Y to allin.\n");
+        return DoAllin();
+      }
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)	{
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, preferences.swag_delay_3());
 			}	else {
@@ -469,17 +474,29 @@ void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
-bool CAutoplayer::DoSwag(void) {
+bool CAutoplayer::DoSwag(void) { 
   double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
 	if (betsize > 0) 	{
-    if (ChangeBetsizeToAllin(betsize)) {
-      return DoAllin();
+    if (!_already_executing_allin_adjustment) {
+      // We have to prevent a potential endless loop here>
+      // swag -> adjusted allin -> swag allin -> adjusted allin ...
+      if (ChangeBetsizeToAllin(betsize)) {
+        _already_executing_allin_adjustment = true;
+        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting swag to allin.\n");
+        bool success = DoAllin();
+        _already_executing_allin_adjustment = false;
+        return success;
+      }
     }
 		int success = p_casino_interface->EnterBetsize(betsize);
 		if (success) {
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f entered\n",
+        betsize);
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
+    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Failed to enter betsize %.2f\n",
+      betsize);
     return false;
 	}
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");

@@ -76,6 +76,7 @@ enum
 	k_prefs_debug_table_limits,
 	k_prefs_debug_lazy_scraper,
 	k_prefs_debug_betsize_adjustment,
+  k_prefs_debug_allin_adjustment,
 	k_prefs_debug_handreset_detector,
 	k_prefs_debug_engine_container,
 	k_prefs_debug_dll_extension,
@@ -254,6 +255,7 @@ public:
 	const bool  debug_table_limits() { return prefs_numerical_values[k_prefs_debug_table_limits]; }
 	const bool  debug_lazy_scraper() { return prefs_numerical_values[k_prefs_debug_lazy_scraper]; }
 	const bool  debug_betsize_adjustment() { return prefs_numerical_values[k_prefs_debug_betsize_adjustment]; }
+  const bool  debug_allin_adjustment() { return prefs_numerical_values[k_prefs_debug_allin_adjustment]; }
 	const bool  debug_handreset_detector() { return prefs_numerical_values[k_prefs_debug_handreset_detector]; }
 	const bool  debug_engine_container() { return prefs_numerical_values[k_prefs_debug_engine_container]; }
 	const bool  debug_preferences() { return prefs_numerical_values[k_prefs_debug_preferences]; }
