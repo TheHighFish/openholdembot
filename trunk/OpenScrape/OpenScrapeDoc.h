@@ -37,7 +37,7 @@ char * const s$strings[num_s$strings] =
 	  "allinconfirmationmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 	  "chipscrapemethod"};
 
-int	const num_r$strings = 383;
+int	const num_r$strings = 393;
 
 char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
@@ -96,7 +96,9 @@ char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardf
 								"p8name", "p9name", 
 								"p0seated", "p1seated", "p2seated", "p3seated", "p4seated", "p5seated", "p6seated", "p7seated", 
 								"p8seated", "p9seated", 
-								//100
+                "p0colourcode", "p1colourcode", "p2colourcode", "p3colourcode", "p4colourcode", 
+                "p5colourcode", "p6colourcode", "p7colourcode", "p8colourcode", "p9colourcode", 
+								//110
                 "p0cardface0nocard", "p1cardface0nocard", "p2cardface0nocard", "p3cardface0nocard", "p4cardface0nocard", 
                 "p5cardface0nocard", "p6cardface0nocard", "p7cardface0nocard", "p8cardface0nocard", "p9cardface0nocard", 
 								"p0cardface1nocard", "p1cardface1nocard", "p2cardface1nocard", "p3cardface1nocard", "p4cardface1nocard", 
