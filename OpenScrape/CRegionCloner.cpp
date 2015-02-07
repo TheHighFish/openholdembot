@@ -22,7 +22,7 @@
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "OpenScrape.h"
 
-const int k_number_of_circular_cloneable_regions = 31;
+const int k_number_of_circular_cloneable_regions = 32;
 
 // 1st string: name of 0-region
 // 2nd string: prefix before number
@@ -42,6 +42,7 @@ const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions]
  {"p0cardface1suit",   "p", "cardface1suit"},
  {"p0dealer",          "p", "dealer",},
  {"p0name",            "p", "name"},
+ {"p0colourcode",      "p", "colourcode"},
  {"p0seated",          "p", "seated"},
  // Alternative for blinking fonts, etc.
  {"u0active",          "u", "active"},  
