@@ -1,5 +1,8 @@
 v7.5.0 2015-02.xx
 ==================
+BUG FIXES:
+-
+
 NEW stuff:
 - OpenHoldem can now automatically adjust large betsizes
   and large betpot-actions to allin-actions depending on
