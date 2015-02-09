@@ -36,7 +36,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 46;
+const int k_number_of_tournament_identifiers = 52;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -52,11 +52,15 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"buyin ",
 	"double ",
 	"double-",
+  " event",
 	"free $",
 	"freeroll",
 	"garantis",			// french for "guaranteed"
 	"gratuit ",			// french for "free"
+  " gtd",
 	"guaranteed",
+  " knockout",
+  " k.o.",
 	"miniroll",
 	"mise initiale",		// french for "ante"
 	" mtt",
@@ -71,6 +75,8 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"qualification",
 	"qualifier",
 	"rebuy",
+  " semifinal",
+  " series",
 	"shootout ",
 	"sit and go",
 	"sit&go",
@@ -100,7 +106,7 @@ const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {
 	"ticket ",
 };
 
-const int kNumberOfMTTIdentifiers = 16;
+const int kNumberOfMTTIdentifiers = 17;
 const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	"free $",
 	"freeroll",
@@ -118,6 +124,7 @@ const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	"qualification",
 	"qualifier",
 	"rebuy",
+  " semifinal",
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
