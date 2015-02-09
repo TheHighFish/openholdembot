@@ -258,7 +258,7 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Hash1");
 	m_Transform.AddString("Hash2");
 	m_Transform.AddString("Hash3");
-  m_Transform.AddString("Web-safe Color");
+  m_Transform.AddString("ColourCode");
 	m_Transform.AddString("None");
 	m_Transform.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
 
@@ -746,7 +746,7 @@ void CDlgTableMap::OnRegionChange()
 		text == "Hash1" ? "H1" :
 		text == "Hash2" ? "H2" :
 		text == "Hash3" ? "H3" :
-    text == "Web-safe Color" ? "WC" :
+    text == "ColourCode" ? "CC" :
 		text == "None" ? "N" : 
 		"";
 
@@ -1122,7 +1122,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 	else if (sel_region->second.transform == "H1")		selected_transform = "Hash1";
 	else if (sel_region->second.transform == "H2")		selected_transform = "Hash2";
 	else if (sel_region->second.transform == "H3")		selected_transform = "Hash3";
-  else if (sel_region->second.transform == "WC")    selected_transform = "Web-safe Color";
+  else if (sel_region->second.transform == "CC")    selected_transform = "ColourCode";
 	else if (sel_region->second.transform == "N")		selected_transform = "None";
 	m_Transform.SelectString(-1, selected_transform);
 
@@ -1133,7 +1133,7 @@ void CDlgTableMap::update_r$_display(bool dont_update_spinners)
 		  || selected_transform == "Hash3" 
 		  || selected_transform == "None" 
 		  || selected_transform == "Image" 
-      || selected_transform == "Web-safe Color")	{
+      || selected_transform == "ColourCode")	{
 		m_Alpha.EnableWindow(false);
 		m_Red.EnableWindow(false);
 		m_Green.EnableWindow(false);
