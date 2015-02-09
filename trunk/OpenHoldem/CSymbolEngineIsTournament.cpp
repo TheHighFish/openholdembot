@@ -106,13 +106,17 @@ const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {
 	"ticket ",
 };
 
-const int kNumberOfMTTIdentifiers = 17;
+const int kNumberOfMTTIdentifiers = 22;
 const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
-	"free $",
+	" event",
+  "free $",
 	"freeroll",
 	"garantis",			// french for "guaranteed"
 	"gratuit ",			// french for "free"
+  " gtd",
 	"guaranteed",
+  " knockout",
+  " k.o.",
 	"miniroll",
 	" mtt",
 	"mtt ",
@@ -125,6 +129,7 @@ const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	"qualifier",
 	"rebuy",
   " semifinal",
+  " series",
 };
 
 CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
