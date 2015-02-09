@@ -1,12 +1,14 @@
 v7.5.0 2015-02.xx
 ==================
-BUG FIXES:
--
-
 NEW stuff:
 - OpenHoldem can now automatically adjust large betsizes
   and large betpot-actions to allin-actions depending on
   f$allin_on_betsize_balance_ration.
+  [THF]
+
+MAINTENANCE:
+- Some more tournament identifiers for the title-string.
+  Thanks to PokerDog for providing the info.
   [THF]
 
 v7.5.0 2015-02.05
