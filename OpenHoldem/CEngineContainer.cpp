@@ -35,6 +35,7 @@
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineColourCodes.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineEventLogging.h"
 #include "CSymbolEngineGameType.h"
@@ -193,6 +194,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMemorySymbols
   p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
   AddSymbolEngine(p_symbol_engine_memory_symbols);
+  // CSymbolEngineColourCodes
+  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
+  AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.

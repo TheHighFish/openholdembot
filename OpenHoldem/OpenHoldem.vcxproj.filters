@@ -720,6 +720,9 @@
     <ClCompile Include="AllinAdjustment.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineColourCodes.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1536,6 +1539,9 @@
     </ClInclude>
     <ClInclude Include="AllinAdjustment.h">
       <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineColourCodes.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

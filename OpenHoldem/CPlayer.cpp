@@ -26,6 +26,7 @@ void CPlayer::Reset() {
   for (int i=0; i<k_number_of_cards_per_player; ++i) {
     _hole_cards[i].ClearValue();
   }
+  _colourcode = k_undefined_zero;
 }
 
 bool CPlayer::HasAnyCards() {
