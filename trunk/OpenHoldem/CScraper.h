@@ -90,6 +90,7 @@ protected:
 	void ScrapeSeatedActive();
 	void ScrapeBetsBalances();
 	void ScrapeAllPlayerCards();
+  void ScrapeColourCodes();
 private:
 	void ScrapeSeated(int chair);
 	void ScrapeActive(int chair);
@@ -157,20 +158,20 @@ private:
 	// players - sitting out
 	bool				_sitting_out[k_max_number_of_players];
 	// players - seated / active
-	CString				_seated[k_max_number_of_players];
-	CString				_active[k_max_number_of_players];
+	CString			_seated[k_max_number_of_players];
+	CString			_active[k_max_number_of_players];
 	// players - money
-	double				_player_balance[k_max_number_of_players]; 
-	double				_player_bet[k_max_number_of_players];
+	double			_player_balance[k_max_number_of_players]; 
+	double			_player_bet[k_max_number_of_players];
 	// pot
-	double				_pot[k_max_number_of_pots];
+	double			_pot[k_max_number_of_pots];
 	// i3-slider-handle
 	bool				_handle_found_at_xy;
 	POINT				_handle_xy;
 	// limit
-	SLimitInfo			_s_limit_info;
+	SLimitInfo	_s_limit_info;
 	// misc
-	HBITMAP				_entire_window_cur;
+	HBITMAP			_entire_window_cur;
 	
  private:
 	// Old values of last heartbeat

@@ -404,6 +404,19 @@ void CScraper::ScrapeActive(int chair) {
 	}
 }
 
+void CScraper::ScrapeColourCodes() {
+  CString result;
+  CString region;
+  for (int i=0; i<p_tablemap->nchairs(); i++) {
+    region.Format("p%colourcode", i);
+    if (EvaluateRegion(region, &result)) {
+      p_table_state->_players[i]._colourcode = 0xFF; //!!!!!!
+    } else {
+      p_table_state->_players[i]._colourcode = k_undefined_zero;
+    }
+  }
+}
+
 void CScraper::ScrapeSlider() {
 	__HDC_HEADER
 

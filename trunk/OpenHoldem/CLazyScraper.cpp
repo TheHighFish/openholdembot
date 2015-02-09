@@ -15,6 +15,7 @@
 #include "CLazyScraper.h"
 
 #include "CAutoplayer.h"
+#include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -125,66 +126,58 @@ void CLazyScraper::DoScrape() {
 	if (NeedUnknownPlayerNames())	{
 		ScrapeUnknownPlayerNames();
 	}
+  if (NeedColourCodes()) {
+    p_scraper->ScrapeColourCodes();
+  }
 }
 
-bool CLazyScraper::NeedDealerChair()
-{
+bool CLazyScraper::NeedDealerChair() {
 	return true;
 }
 
-bool CLazyScraper::NeedHandNumber()
-{
+bool CLazyScraper::NeedHandNumber() {
 	return true;
 }
 
-bool CLazyScraper::NeedUsersCards()
-{
+bool CLazyScraper::NeedUsersCards() {
 	return (p_symbol_engine_userchair->userchair_confirmed());
 }
 
-bool CLazyScraper::NeedAllPlayersCards()
-{
+bool CLazyScraper::NeedAllPlayersCards() {
 	// User playing
 	// HH-gen
 	// DLL?
 	return true;
 }
 
-bool CLazyScraper::NeedFoldButton()
-{
+bool CLazyScraper::NeedFoldButton() {
 	// To detect my turn
 	return true;
 }
 
-bool CLazyScraper::NeedActionbuttons()
-{
+bool CLazyScraper::NeedActionbuttons() {
 	// If MyTurn
 	return true;
 }
 
-bool CLazyScraper::NeedInterfaceButtons()
-{
+bool CLazyScraper::NeedInterfaceButtons() {
 	return (p_autoplayer->TimeToHandleSecondaryFormulas());
 }
 
-bool CLazyScraper::NeedBetpotButtons()
-{
+bool CLazyScraper::NeedBetpotButtons() {
 	return (p_scraper_access->IsMyTurn()
 		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
 }
 
-bool CLazyScraper::NeedSlider()
-{
+bool CLazyScraper::NeedSlider() {
 	return NeedBetpotButtons(); 
 }
 
-bool CLazyScraper::NeedBetsAndBalances()
-{
+bool CLazyScraper::NeedBetsAndBalances() {
 	return true;
 }
 
-bool CLazyScraper::NeedAllPlayerNames()
-{
+bool CLazyScraper::NeedAllPlayerNames() {
 	// Scraping names is the most costly part and mostly needed for PokerTracker.
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
@@ -192,27 +185,29 @@ bool CLazyScraper::NeedAllPlayerNames()
 	return (!p_symbol_engine_history->DidActThisHand());
 }
 
-bool CLazyScraper::NeedUnknownPlayerNames()
-{
+bool CLazyScraper::NeedUnknownPlayerNames() {
 	// Always true
 	// If a new player sits down or we missed an existing player
 	// due to occlusion we should always scrape that name.
 	return true;
 }
 
-bool CLazyScraper::NeedCommunityCards()
-{
+bool CLazyScraper::NeedCommunityCards() {
 	return true;
 }
 
-void CLazyScraper::ScrapeUnknownPlayerNames()
-{
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+void CLazyScraper::ScrapeUnknownPlayerNames() {
+	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		if (p_scraper_access->IsPlayerSeated(i) 
-			&& (p_table_state->_players[i]._name == ""))
-		{
+			&& (p_table_state->_players[i]._name == "")) {
 			p_scraper->ScrapeName(i);
 		}
 	}
+}
+
+bool CLazyScraper::NeedColourCodes() {
+  // Scrape colour-codes at the beginning of a session 
+  // and at my turn -- that's enough.
+  return (p_scraper_access->IsMyTurn()
+    || (p_handreset_detector->hands_played() <= 0));
 }

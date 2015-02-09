@@ -11,28 +11,10 @@
 //
 //******************************************************************************
 
-#ifndef INC_CPLAYER_H
-#define INC_CPLAYER_H
+#ifndef INC_ALLINADJUSTMENT_H
+#define INC_ALLINADJUSTMENT_H
 
-#include "Card.h"
+bool ChangeBetsizeToAllin(double amount_to_raise_to);
+bool ChangeBetPotActionToAllin(int betpot_action_code);
 
-class CPlayer {
- public:
-  CPlayer();
-  ~CPlayer();
- public:
-  void Reset(); 
- public:
-  bool HasAnyCards();
-  bool HasKnownCards();
- public:
-  void CheckPlayerCardsForConsistency();
-  CString Cards();
- public:
-  CString _name;
-  double  _balance;
-  Card    _hole_cards[k_number_of_cards_per_player];
-  int     _colourcode;
-};
-
-#endif INC_CPLAYER_H
+#endif // INC_ALLINADJUSTMENT_H
