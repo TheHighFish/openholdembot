@@ -10,6 +10,10 @@ MAINTENANCE:
 - Some more tournament identifiers for the title-string.
   Thanks to PokerDog for providing the info.
   [THF]
+- Calculating and executing secondary formulas now only
+  once every 3 seconds. Due to flexible heartbeat delays
+  it could have taken a bit too long otherwise.
+  [THF].
 
 v7.5.0 2015-02.05
 ==================
