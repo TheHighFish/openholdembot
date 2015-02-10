@@ -289,10 +289,6 @@ bool CAutoplayer::ExecuteBeep() {
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
   int executed_secondary_function = k_undefined;
-	if (!TimeToHandleSecondaryFormulas())	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
-		return false;
-	}
 	if (!AnySecondaryFormulaTrue())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
@@ -437,39 +433,48 @@ bool CAutoplayer::DoAllin(void) {
 
 void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
-
-	CheckBringKeyboard();
-
-	p_scraper_access->GetNeccessaryTablemapObjects();
-
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
+  CheckBringKeyboard();
+  p_scraper_access->GetNeccessaryTablemapObjects();
+  write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
 		p_scraper_access->NumberOfVisibleButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
 		
 	// Care about I86 regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
-	if (!HandleInterfacebuttonsI86())	{
-		// Care about sitin, sitout, leave, etc.
-		p_autoplayer_functions->CalcSecondaryFormulas();
-		if (!ExecuteSecondaryFormulasIfNecessary())	{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
-			// Since OH 4.0.5 we support autoplaying immediatelly after connection
-			// without the need to know the userchair to act on secondary formulas.
-			// However: for primary formulas (f$alli, f$rais, etc.)
-			// knowing the userchair (combination of cards and buttons) is a must.
-			if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
-				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
-			}	else {
-				write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-				if(p_symbol_engine_autoplayer->isfinalanswer())	{
-					p_autoplayer_functions->CalcPrimaryFormulas();
-					ExecutePrimaryFormulasIfNecessary();
-				}	else {
-					write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
-				}
-			}
-		}
+	if (HandleInterfacebuttonsI86())	{
+    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
+    goto AutoPlayerCleanupAndFinalization;
+  }
+  // Care about sitin, sitout, leave, etc.
+  if (TimeToHandleSecondaryFormulas())	{
+	  p_autoplayer_functions->CalcSecondaryFormulas();	  
+    if (ExecuteSecondaryFormulasIfNecessary())	{
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondarz formulas executed\n");
+      goto AutoPlayerCleanupAndFinalization;
+    } else {
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
+    }
+  } else {
+    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 	}
+  if (!p_symbol_engine_userchair->userchair_confirmed()) {
+    // Since OH 4.0.5 we support autoplaying immediatelly after connection
+		// without the need to know the userchair to act on secondary formulas.
+		// However: for primary formulas (f$alli, f$rais, etc.)
+		// knowing the userchair (combination of cards and buttons) is a must.
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
+		goto AutoPlayerCleanupAndFinalization;
+  }
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
+	if(p_symbol_engine_autoplayer->isfinalanswer())	{
+		p_autoplayer_functions->CalcPrimaryFormulas();
+		ExecutePrimaryFormulasIfNecessary();
+	}	else {
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
+	}
+  // Gotos are usually considered bad code.
+  // Here it simplifies the control-flow.
+  AutoPlayerCleanupAndFinalization:  
 	FinishActionSequenceIfNecessary();
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
