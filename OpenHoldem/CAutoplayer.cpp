@@ -111,7 +111,7 @@ void CAutoplayer::FinishActionSequenceIfNecessary() {
 }
 
 bool CAutoplayer::TimeToHandleSecondaryFormulas() {
-	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
+	// Disabled (N-1) out of N heartbeats (3 out of 3 seconds)
 	// to avoid multiple fast clicking on the sitin / sitout-button.
 	// Contrary to the old f$play-function we use a heartbeat-counter
 	// for that logic, as with a small scrape-delay it was
@@ -119,10 +119,10 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	// Scrape_delay() should always be > 0, there's a check in the GUI.
 	assert(preferences.scrape_delay() > 0);
   // We need milli-seconds here, just like in the preferences
-  // and also floating-point-division (4000.0) before we truncate to integer.
+  // and also floating-point-division (3000.0) before we truncate to integer.
   // Otherwise we get always 0 and a constant secondary formula
   // would be executed every heartbeat and block all primary ones.
-	int hearbeats_to_pause = 4000.0 / preferences.scrape_delay();
+	int hearbeats_to_pause = 3000.0 / preferences.scrape_delay();
 	if  (hearbeats_to_pause < 1) {
  		hearbeats_to_pause = 1;
  	}
