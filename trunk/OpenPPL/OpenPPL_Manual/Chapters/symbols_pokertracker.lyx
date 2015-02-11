@@ -628,7 +628,7 @@ Poker Tracker attempt to steal blinds
 \begin_inset Text
 
 \begin_layout Plain Layout
-bigblind_fold_to_steal
+big_blind_fold_to_steal
 \end_layout
 
 \end_inset
@@ -648,7 +648,7 @@ Poker Tracker folded big blind to steal
 \begin_inset Text
 
 \begin_layout Plain Layout
-smallblind_fold_to_steal
+small_blind_fold_to_steal
 \end_layout
 
 \end_inset
@@ -689,7 +689,7 @@ Poker Tracker 3bet vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-bigblind_3bet_vs_steal
+big_blind_3bet_vs_steal
 \end_layout
 
 \end_inset
@@ -710,7 +710,7 @@ Poker Tracker BB 3bet vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-smallblind_3bet_vs_steal
+small_blind_3bet_vs_steal
 \end_layout
 
 \end_inset
