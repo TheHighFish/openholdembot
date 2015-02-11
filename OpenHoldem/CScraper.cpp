@@ -298,11 +298,7 @@ void CScraper::ScrapeSeatedActive() {
 	}
 }
 
-void CScraper::ScrapeBetsBalances() {
-	for (int i=0; i<k_max_number_of_players; i++) {
-		set_player_bet(i, 0.0);
-    p_table_state->_players[i]._balance = 0.0;
-	}
+void CScraper::ScrapeBetsAndBalances() {
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		// We have to scrape "every" player,

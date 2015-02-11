@@ -88,7 +88,7 @@ protected:
 	void ScrapeSlider();
 	void ScrapeCommonCards();
 	void ScrapeSeatedActive();
-	void ScrapeBetsBalances();
+	void ScrapeBetsAndBalances();
 	void ScrapeAllPlayerCards();
   void ScrapeColourCodes();
 private:
