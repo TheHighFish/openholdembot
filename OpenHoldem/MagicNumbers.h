@@ -460,16 +460,25 @@ const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;
 // Card sizes
 #define CARDSIZEX		26
 #define	CARDSIZEY		52
-// Colors
-// More color codes here: http://htmlhelp.com/cgi-bin/color.cgi
-#define	COLOR_RED		RGB(255,0,0)
-#define	COLOR_BLACK		RGB(0,0,0)
-#define	COLOR_BLUE		RGB(0,0,255)
-#define	COLOR_GREEN		RGB(0,128,0)
-#define	COLOR_WHITE		RGB(255,255,255)
-#define COLOR_LT_GRAY	RGB(212,208,200)
-#define COLOR_GRAY		RGB(182,182,182)
-#define COLOR_YELLOW	RGB(255,255,0)
+// Colors ("the 16 VGA colours")
+// https://en.wikipedia.org/wiki/List_of_software_palettes#Microsoft_Windows_default_16-color_palette
+// https://en.wikipedia.org/wiki/Web_colors
+#define	COLOR_WHITE		RGB(0xFF, 0xFF, 0xFF)
+#define COLOR_SILVER	RGB(0xC0, 0xC0, 0xC0)
+#define COLOR_GRAY		RGB(0x80, 0x80, 0x80)
+#define	COLOR_BLACK		RGB(0x00, 0x00, 0x00)
+#define	COLOR_RED		  RGB(0xFF, 0x00, 0x00)
+#define	COLOR_MAROON  RGB(0x80, 0x00, 0x00)
+#define COLOR_YELLOW	RGB(0xFF, 0xFF, 0x00)
+#define	COLOR_OLIVE   RGB(0x80, 0x80, 0x00)
+#define	COLOR_LIME    RGB(0x00, 0xFF, 0x00)
+#define	COLOR_GREEN		RGB(0x00, 0x80, 0x00)
+#define	COLOR_AQUA    RGB(0x00, 0xFF, 0xFF)
+#define	COLOR_TEAL    RGB(0x00, 0x80, 0x80)
+#define	COLOR_BLUE		RGB(0x00, 0x00, 0xFF)
+#define	COLOR_NAVY		RGB(0x00, 0x00, 0x80)
+#define	COLOR_FUCHSIA RGB(0xFF, 0x00, 0xFF)
+#define	COLOR_PURPLE  RGB(0x80, 0x00, 0x80)
 
 // Bitmap display
 #define BITMAP_WIDTH		344

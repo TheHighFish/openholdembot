@@ -61,7 +61,7 @@ private:
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);
 	bool				CheckIfNameHasChanged(int chair);
-	double				UpdateStat(const int m_chair, const int stat);
+	double			UpdateStat(const int m_chair, const int stat);
 	void				ClearSeatStats(int m_chair, bool clearNameAndFound = true);
 	bool				QueryName(const char * query_name, const char * scraped_name, char * best_name);
 	bool				FindName(const char *scraped_name, char *best_name);
@@ -74,16 +74,16 @@ private:
 	void				SetPlayerName(int chr, bool found, const char* pt_name, const char* scraped_name);
 	int					GetSkippedUpdates(int chr){return _player_data[chr].skipped_updates;}
 	bool				IsFound(int chair);
-	const char*         GetPlayerScrapedName(int chair){return _player_data[chair].scraped_name;}
+	const char* GetPlayerScrapedName(int chair){return _player_data[chair].scraped_name;}
 
-	CString				_conn_str;
+	CString			_conn_str;
 	bool				_connected;
-	PGconn *			_pgconn;
+	PGconn *		_pgconn;
 
-	HANDLE				_m_stop_thread;
-	HANDLE				_m_wait_thread;
+	HANDLE			_m_stop_thread;
+	HANDLE			_m_wait_thread;
 
-	CWinThread			*_pt_thread;
+	CWinThread	*_pt_thread;
 
 };
 

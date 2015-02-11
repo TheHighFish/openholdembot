@@ -27,6 +27,7 @@
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
 #include "CSymbolengineChipAmounts.h"
+#include "CSymbolengineColourCodes.h";
 #include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
@@ -272,8 +273,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 					  false);
 		}
 	}
-
-	// Draw collection of player info
+  // Draw collection of player info
 	for (int i=0; i<p_tablemap->nchairs(); i++) 
 	{
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
@@ -325,6 +325,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 				DrawPlayerCards(i);
 				DrawNameBox(i);
 				DrawBalanceBox(i);
+        DrawColourCodes(i);
 			}
 			// Drawing a bet, even if no player seated.
 			// The player might have left the table, 
@@ -565,7 +566,7 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 
 void COpenHoldemView::DrawSeatedActiveCircle(const int chair) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
 
@@ -601,7 +602,7 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair) {
 
 void COpenHoldemView::DrawDealerButton(const int chair) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
 
@@ -614,8 +615,7 @@ void COpenHoldemView::DrawDealerButton(const int chair) {
 	right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 8;
 	bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 8;
 
-
-	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+  pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 	pTempBrush = (CBrush*)pDC->SelectObject(&_red_brush);
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
@@ -801,7 +801,7 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 		pDC->SetBkMode(TRANSPARENT);
 		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
       p_table_state->_players[chair]._name.GetLength(), &drawrect,
-					  DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+			DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 		name_rect_last[chair].left = drawrect.left;
 		name_rect_last[chair].top = drawrect.top;
 		name_rect_last[chair].right = drawrect.right;
@@ -828,81 +828,62 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 
 void COpenHoldemView::DrawBalanceBox(const int chair) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		textrect = {0}, drawrect = {0};
 	CFont		*oldfont = NULL, cFont;
-	CString		t = "";
+	CString	t = "";
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
 	static RECT	balance_rect_last[10] = {0};
-
-	// Background color
+  // Background color
 	pDC->SetBkColor(COLOR_GRAY);
-
-	// Figure placement of box
+  // Figure placement of box
 	left = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 26;
 	top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 30;
 	right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 25;
 	bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 45;
-
-	// Set font basics
+  // Set font basics
 	_logfont.lfHeight = -12;
 	_logfont.lfWeight = FW_NORMAL;
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
-
-	if (p_scraper_access->IsPlayerSeated(chair) 
-		|| p_scraper_access->IsPlayerActive(chair)) /*||
-		(p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
-		 p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/ 
-	{
-
-		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+  if (p_scraper_access->IsPlayerSeated(chair) 
+		  || p_scraper_access->IsPlayerActive(chair)) 	{
+    pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Format Text
-		if (!p_scraper->sitting_out(chair)) 
-		{
+		if (!p_scraper->sitting_out(chair)) 	{
 			t = Number2CString(p_table_state->_players[chair]._balance);
-		}
-		else 
-		{
+		}	else {
 			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
 		}
-	}
-	else 
-	{
+	}	else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-		t = "";
+    t = "";
 	}
-
-	// Calc rectangle size for text
+  // Calc rectangle size for text
 	textrect.left = 0;
 	textrect.top = 0;
 	textrect.right = 0;
 	textrect.bottom = 0;
 	pDC->DrawText(t.GetString(), t.GetLength(), &textrect, DT_CALCRECT);
-
-	// Figure out placement of rectangle
+  // Figure out placement of rectangle
 	drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
 	drawrect.top = top;
 	drawrect.right = right > (left+(right-left)/2)+textrect.right/2+3 ? right : (left+(right-left)/2)+textrect.right/2+3;
 	drawrect.bottom = bottom;
-
-	// Invalidate everything if the balance has decreased in width
-	if (balance_rect_last[chair].right - balance_rect_last[chair].left != drawrect.right - drawrect.left) 
-	{
+  // Invalidate everything if the balance has decreased in width
+	if (balance_rect_last[chair].right - balance_rect_last[chair].left != drawrect.right - drawrect.left) {
 		InvalidateRect(NULL, true);
 	}
-
-	// Draw it
+  // Draw it
 	pDC->SetBkMode(OPAQUE);
 	pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
 	pDC->SetBkMode(TRANSPARENT);
@@ -922,16 +903,14 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 
 void COpenHoldemView::DrawPlayerBet(const int chair) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		textrect = {0}, drawrect = {0};
 	CFont		*oldfont = NULL, cFont;
-	CString		t = "";
-	
-	static RECT	bet_rect_last[10] = {0};
-	int			xcenter = 0, ycenter = 0, xadj = 0, yadj = 0;
-	CDC			*pDC = GetDC();
-
-	// Draw background colored rectangle over position of previous bet to erase it
+	CString	t = "";
+	static  RECT	bet_rect_last[10] = {0};
+	int		  xcenter = 0, ycenter = 0, xadj = 0, yadj = 0;
+	CDC		 *pDC = GetDC();
+  // Draw background colored rectangle over position of previous bet to erase it
 	pTempPen = (CPen*)pDC->SelectObject(&_null_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 	pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
@@ -940,50 +919,40 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 				   bet_rect_last[chair].right, bet_rect_last[chair].bottom);
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
-
-	// Background color
+  // Background color
 	pDC->SetBkColor(COLOR_GRAY);
-
-	// Figure placement
+  // Figure placement
 	xcenter = _client_rect.right * pc[p_tablemap->nchairs()][chair][0];
 	ycenter = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1];
 	xadj = pcbet[p_tablemap->nchairs()][chair][0];
 	yadj = pcbet[p_tablemap->nchairs()][chair][1];
-
-	// Set font basics
+  // Set font basics
 	_logfont.lfHeight = -12;
 	_logfont.lfWeight = FW_NORMAL;
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
-
-	// Format text
+  // Format text
 	if (p_scraper->player_bet(chair) != 0) 
 	{
 		t = Number2CString(p_scraper->player_bet(chair));
 	}
-	else 
-	{
+	else 	{
 		t = "";
 	}
-
-	// Calc rectangle size for text
+  // Calc rectangle size for text
 	textrect.left = 0;
 	textrect.top = 0;
 	textrect.right = 0;
 	textrect.bottom = 0;
 	pDC->DrawText(t.GetString(), t.GetLength(), &textrect, DT_CALCRECT);
-
-	// Figure out placement of rectangle
-	if (xadj<0) 
-	{
+  // Figure out placement of rectangle
+	if (xadj<0) {
 		drawrect.left = xcenter + xadj - textrect.right;
 		drawrect.top = ycenter + yadj - textrect.bottom/2;
 		drawrect.right = xcenter + xadj;
 		drawrect.bottom = ycenter + yadj + textrect.bottom/2;
-	}
-	else if (xadj>0) 
-	{
+	}	else if (xadj>0) {
 		drawrect.left = xcenter + xadj;
 		drawrect.top = ycenter + yadj - textrect.bottom/2;
 		drawrect.right = xcenter + xadj + textrect.right;
@@ -996,8 +965,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 		drawrect.right = xcenter + xadj + textrect.right/2;
 		drawrect.bottom = ycenter + yadj + textrect.bottom/2;
 	}
-
-	// Draw it
+  // Draw it
 	pDC->SetBkMode(OPAQUE);
 	pDC->DrawText(t.GetString(), t.GetLength(), &drawrect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 	bet_rect_last[chair].left = drawrect.left;
@@ -1010,8 +978,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 }
 
 void COpenHoldemView::DrawPlayerCards(const int chair) {
-	if (!p_scraper_access->IsPlayerActive(chair))
-	{
+	if (!p_scraper_access->IsPlayerActive(chair))	{
 		// Forget about inactive players, they have no cards.
 		// Don't draw them to point out the mistake faster
 		// for newbies with bad tablemaps.
@@ -1028,10 +995,41 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
   int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
 	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
-
   // Draw player cards (second)
   Card *player_card_1 = &p_table_state->_players[chair]._hole_cards[1];
   pos_x_right = pos_x_right + CARDSIZEX - 9; 
   pos_x_left  = pos_x_right - CARDSIZEX;
 	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+}
+
+void COpenHoldemView::DrawColourCodes(const int chair) {
+  if (p_symbol_engine_colourcodes == 0) {
+    // Not yet initialized
+    return;
+  }
+  int right = 0;
+  // Figure placement of box
+  int bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 15;
+  int top    = bottom - 10;
+  if (chair >= (p_tablemap->nchairs() / 2)) {
+    right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 20;
+  } else {
+    right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 31;
+  }
+  int left = right - 10;
+  // Draw it
+  CDC	*pDC = GetDC();
+	pDC->SetBkMode(TRANSPARENT);
+  // Background color
+  CPen *pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+	CPen oldpen;
+  oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
+	CBrush TempBrush; 
+  TempBrush.CreateSolidBrush(p_symbol_engine_colourcodes->ColourCodeToDisplay(chair));
+  //!!!CBrush oldbrush.FromHandle((HBRUSH)pTempBrush);		// Save old brush
+	pDC->Rectangle(left, top, right, bottom);
+	// Restore original pen and brush
+	pDC->SelectObject(oldpen);
+	//!!!pDC->SelectObject(oldbrush);
+	ReleaseDC(pDC);
 }

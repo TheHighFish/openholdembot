@@ -45,6 +45,7 @@ class COpenHoldemView : public CView {
 	void DrawBalanceBox(const int chair); 
 	void DrawPlayerBet(const int chair);
 	void DrawPlayerCards(const int chair);
+  void DrawColourCodes(const int chair);
  private:
 	CString			  _handnumber_last;
 	double		  	_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
