@@ -116,7 +116,7 @@ void CLazyScraper::DoScrape() {
 	// Swagbox AKA i3edit does not need to be scraped
 	// The CasinoInterface checks the existence and uses this region automatically
 	if (NeedBetsAndBalances()) {
-		p_scraper->ScrapeBetsBalances();
+		p_scraper->ScrapeBetsAndBalances();
 		p_scraper->ScrapePots();
 	}
 	if (NeedAllPlayerNames())	{
