@@ -13,7 +13,7 @@ MAINTENANCE:
 - Calculating and executing secondary formulas now only
   once every 3 seconds. Due to flexible heartbeat delays
   it could have taken a bit too long otherwise.
-  [THF].
+  [THF]
 
 v7.5.0 2015-02.05
 ==================

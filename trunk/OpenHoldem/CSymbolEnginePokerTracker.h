@@ -16,12 +16,11 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEnginePokerTracker: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEnginePokerTracker: public CVirtualSymbolEngine {
+ public:
 	CSymbolEnginePokerTracker();
 	~CSymbolEnginePokerTracker();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -29,18 +28,20 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors	
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
-private:
+ public:
+  int PlayerIcon(const int chair);
+ private:
 	void	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
 	void	WarnAboutInvalidPTSymbol(CString s);
 	bool	IsOldStylePTSymbol(CString s);
 	void	ClearSeatStats(int chair, bool clearNameAndFound);
 	void	ClearAllStatsOfChangedPlayers();
 	void	ClearAllStats();
-private:
+ private:
 	bool	check_for_identity_of_players_executed_this_heartbeat;
 };
 
