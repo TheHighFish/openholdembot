@@ -404,9 +404,9 @@ void CScraper::ScrapeColourCodes() {
   CString result;
   CString region;
   for (int i=0; i<p_tablemap->nchairs(); i++) {
-    region.Format("p%colourcode", i);
+    region.Format("p%icolourcode", i);
     if (EvaluateRegion(region, &result)) {
-      p_table_state->_players[i]._colourcode = 0xFF; //!!!!!!
+      p_table_state->_players[i]._colourcode = atoi(result);
     } else {
       p_table_state->_players[i]._colourcode = k_undefined_zero;
     }
