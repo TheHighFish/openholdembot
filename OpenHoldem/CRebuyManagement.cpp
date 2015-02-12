@@ -88,7 +88,7 @@ bool CRebuyManagement::NoCards()
 		// If all goes wrong, the rebuy-script has to handle that case.
 		return true;
 	}
-	if (p_table_state->User()->HasKnownCards())
+	if (!p_table_state->User()->HasKnownCards())
 	{
 		return true;
 	}
