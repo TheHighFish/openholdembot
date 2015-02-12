@@ -114,9 +114,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_FORMULA, &CMainFrame::OnEditFormula)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_VALIDATOR, &CMainFrame::OnValidator)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_TAGLOGFILE, &CMainFrame::OnEditTagLog)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_MINMAX, &CMainFrame::OnMinMax)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_TOP, &CMainFrame::OnAttachTop)
-	ON_BN_CLICKED(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &CMainFrame::OnAttachBottom)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, &CMainFrame::OnScraperOutput)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_SHOOTFRAME, &CMainFrame::OnViewShootreplayframe)
   ON_BN_CLICKED(ID_MAIN_TOOLBAR_MANUALMODE, &CMainFrame::OnManualMode)
@@ -192,28 +189,19 @@ CMainFrame::~CMainFrame()
 	}
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) 
-{
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CString			t = "";
 	lpCreateStruct->dwExStyle |= WS_MINIMIZE;
 	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined)
 		return -1;
-
 	// Tool bar
 	p_flags_toolbar = new CFlagsToolbar(this);
-
 	// Status bar
 	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
-
 	// Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
-
 	// Start timer that updates status bar
 	SetTimer(UPDATE_STATUS_BAR_TIMER, 500, 0);
-
-	// Start timer that attaches the OH window when the poker window moves
-	SetTimer(ATTACH_WINDOW_TIMER, 20, 0);
-
 	return 0;
 }
 
@@ -439,17 +427,8 @@ BOOL CMainFrame::DestroyWindow()
 	StopThreads();
 
 	// Save window position
-	if (!p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
-	{
-		GetWindowPlacement(&wp);
-		preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left);
-		preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
-	}
-	else 
-	{
-		preferences.SetValue(k_prefs_main_x, _table_view_size.left);
-		preferences.SetValue(k_prefs_main_y, _table_view_size.top);
-	}
+	preferences.SetValue(k_prefs_main_x, _table_view_size.left);
+	preferences.SetValue(k_prefs_main_y, _table_view_size.top);
 
 	return CFrameWnd::DestroyWindow();
 }
@@ -482,72 +461,30 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 	RECT			att_rect = {0}, wrect = {0};
 
 	if (nIDEvent == HWND_CHECK_TIMER)	{
-		if (!IsWindow(p_autoconnector->attached_hwnd()))
-		{
+		if (!IsWindow(p_autoconnector->attached_hwnd()))		{
 			// Table disappeared
 			p_autoplayer->EngageAutoplayer(false);
 			p_autoconnector->Disconnect();
 		}
-	}
-
-	else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
+	}	else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
 		if (p_symbol_engine_userchair != NULL
-			&& p_autoconnector->IsConnected())
-		{
+			  && p_autoconnector->IsConnected()) 	{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
-		}
-		else
-		{
+		}	else {
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 		}
 
-		// attach
-		if (p_autoconnector->attached_hwnd() != NULL) 
-		{
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, true);
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, true);
-		}
-		else 
-		{
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-		}
-
 		// Shoot replay frame
-		if (p_autoconnector->attached_hwnd() != NULL)
+		if (p_autoconnector->attached_hwnd() != NULL) {
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
-		else
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
-
-	}
-	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
+    }	else {
+      p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+    }
+	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
 		p_openholdem_statusbar->OnUpdateStatusbar();
-	}
-	else if (nIDEvent == ATTACH_WINDOW_TIMER)	{
-		::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
-		GetWindowRect(&wrect);
-
-		if (memcmp(&_prev_att_rect, &att_rect, sizeof(RECT))!=0 ||
-				memcmp(&_prev_wrect, &wrect, sizeof(RECT))!=0)
-		{
-			::GetWindowRect(p_autoconnector->attached_hwnd(), &_prev_att_rect);
-			GetWindowRect(&_prev_wrect);
-
-			if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP))
-			{
-				if (IsWindow(p_autoconnector->attached_hwnd()))
-					MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
-			}
-
-			if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM))
-			{
-				if (IsWindow(p_autoconnector->attached_hwnd()))
-					MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
-			}
-		}
 	}
 	CWnd::OnTimer(nIDEvent); 
 }
@@ -598,70 +535,6 @@ void CMainFrame::OnDllLoadspecificfile() {
 		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
 	}
 }
-
-void CMainFrame::OnMinMax(void) 
-{
-	RECT		crect = {0}, wrect = {0}, rectBar1 = {0}, rectBar2 = {0}, statusBar = {0};
-	POINT		pt = {0};
-
-	GetClientRect(&crect);
-	GetWindowRect(&wrect);
-
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_MINMAX)) 
-	{
-		GetWindowRect(&_table_view_size);
-		p_openholdem_statusbar->GetWindowRect(&statusBar);
-
-		pt.x = (wrect.right - wrect.left) - crect.right;
-		pt.y = (wrect.bottom - wrect.top) - crect.bottom;
-
-		// After refactoring the toolbar(s) it is no longer that easy to get its size,
-		// but as it is no longer moveable and dockable we can take a constant here.
-		const int k_height_of_toolbar = 48;
-		MoveWindow(wrect.left, wrect.top, wrect.right - wrect.left,
-				   pt.y + k_height_of_toolbar + (statusBar.bottom-statusBar.top) - 2,
-				   true);
-	}
-	else 
-	{
-		MoveWindow(_table_view_size.left, _table_view_size.top,
-		  _table_view_size.right - _table_view_size.left,
-			_table_view_size.bottom - _table_view_size.top, true);
-	}
-}
-
-void CMainFrame::OnAttachTop(void) 
-{
-	RECT	att_rect = {0}, wrect = {0};
-
-	::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
-	GetWindowRect(&wrect);
-
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_TOP)) 
-	{
-		// uncheck attach_bottom, if necessary
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-
-		MoveWindow(att_rect.left, att_rect.top-(wrect.bottom-wrect.top), att_rect.right-att_rect.left, wrect.bottom-wrect.top);
-	}
-}
-
-void CMainFrame::OnAttachBottom(void)
-{
-	RECT	att_rect = {0}, wrect = {0};
-
-	::GetWindowRect(p_autoconnector->attached_hwnd(), &att_rect);
-	GetWindowRect(&wrect);
-
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_ATTACH_BOTTOM)) 
-	{
-		// uncheck attach_top, if necessary
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-
-		MoveWindow(att_rect.left, att_rect.bottom, att_rect.right-att_rect.left, wrect.bottom-wrect.top);
-	}
-}
-
 
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {

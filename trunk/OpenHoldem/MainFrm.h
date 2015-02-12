@@ -7,7 +7,6 @@
 #define		HWND_CHECK_TIMER				1
 #define		ENABLE_BUTTONS_TIMER			2
 #define		UPDATE_STATUS_BAR_TIMER			3
-#define		ATTACH_WINDOW_TIMER				4
 
 class CMainFrame : public CFrameWnd 
 {
@@ -35,9 +34,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
 	afx_msg void OnValidator();
-	afx_msg void OnMinMax();
-	afx_msg void OnAttachTop();
-	afx_msg void OnAttachBottom();
 	afx_msg void OnClickedFlags();
 
 	afx_msg void OnUpdateMenuFileNew(CCmdUI* pCmdUI);

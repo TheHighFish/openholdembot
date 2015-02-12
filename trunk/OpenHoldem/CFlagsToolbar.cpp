@@ -206,13 +206,6 @@ void CFlagsToolbar::CreateMainToolbar(void)
 	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_AUTOPLAYER, &tbi);
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 
-	// Make minmax and attach buttons sticky and start disabled
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_MINMAX, &tbi);
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_TOP, &tbi);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-	m_MainToolBar.GetToolBarCtrl().SetButtonInfo(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, &tbi);
-	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
-
 	// Start shoot replay frame button disabled
 	m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
 
@@ -283,11 +276,7 @@ void CFlagsToolbar::AlignToolbars(void)
 	_parent_window->RecalcLayout();
 }
 
-void CFlagsToolbar::UnattachOHFromPokerWindow()
-{
-	// Unattach OH from any poker window
-	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_TOP, false);
-	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_ATTACH_BOTTOM, false);
+void CFlagsToolbar::UnattachOHFromPokerWindow() {
 }
 
 void CFlagsToolbar::EnableButton(int button_ID, bool new_status)
