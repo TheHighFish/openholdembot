@@ -89,10 +89,6 @@ BEGIN
     BUTTON      ID_MAIN_TOOLBAR_VALIDATOR
     BUTTON      ID_MAIN_TOOLBAR_TAGLOGFILE
     SEPARATOR
-    BUTTON      ID_MAIN_TOOLBAR_MINMAX
-    BUTTON      ID_MAIN_TOOLBAR_ATTACH_TOP
-    BUTTON      ID_MAIN_TOOLBAR_ATTACH_BOTTOM
-    SEPARATOR
     BUTTON      ID_MAIN_TOOLBAR_SCRAPER_OUTPUT
     BUTTON      ID_MAIN_TOOLBAR_SHOOTFRAME
     BUTTON      ID_MAIN_TOOLBAR_MANUALMODE
@@ -1391,14 +1387,6 @@ BEGIN
     ID_HELP_HELP            "Starts the help-file"
     ID_HELP_OPEN_PPL        "Starts the OpenPPL help-file"
     ID_HELP_FORUMS          "Connects to the OpenHoldem forums at www.maxinmontreal.com/forums/"
-END
-
-STRINGTABLE
-BEGIN
-    ID_MAIN_TOOLBAR_ATTACH_TOP "Attach to top of poker table\nAttach top"
-    ID_MAIN_TOOLBAR_MINMAX  "Show/hide table info\nShow/hide"
-    ID_MAIN_TOOLBAR_ATTACH_BOTTOM 
-                            "Attach to bottom of poker table\nAttach bottom"
 END
 
 STRINGTABLE
