@@ -66,6 +66,10 @@ int CTransform::DoTransform(RMapCI region,
 			return TTypeTransform(region, hdc, text, separation, background, character);
 			break;
 
+    case 'W':
+			return WTypeTransform(region, hdc, text);
+			break;
+
 		case 'N':
 			*text = "";
 			return ERR_GOOD_SCRAPE_GENERAL;
@@ -79,8 +83,8 @@ int CTransform::CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLO
 	int					x = 0, y = 0;
 	int					width = 0, height = 0;
 	int					rr_sum = 0, gg_sum = 0, bb_sum = 0, pix_cnt = 0;
-	double				rr_avg = 0., gg_avg = 0., bb_avg = 0.;
-	HBITMAP				hbm = NULL;
+	double			rr_avg = 0., gg_avg = 0., bb_avg = 0.;
+	HBITMAP			hbm = NULL;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 
 	// Allocate heap space for BITMAPINFO
@@ -262,12 +266,23 @@ int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text)
 	return retval;
 }
 
+int CTransform::WTypeTransform(RMapCI region, const HDC hdc, CString *text) {
+  // Just take the colour of the pixel in the middle of the region
+  int x_pos = (region->second.right + region->second.left) / 2;
+  int y_pos = (region->second.bottom + region->second.top) / 2;
+  int colour = GetPixel(hdc, 30, 30);//!!!x_pos, y_pos);
+  // Now transform the result to text, 
+  // as that's our general format for scraped values
+  text->Format("%i", colour);
+  return ERR_GOOD_SCRAPE_GENERAL;
+}
+
 int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text) 
 {
 	int					x = 0, y = 0, j = 0;
 	int					width = 0, height = 0;
 	int					hash_type = 0, pixcount = 0;
-	uint32_t			hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
+	uint32_t		hash = 0, pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int					retval = ERR_NOTHING_TO_SCRAPE;
 	BYTE				*pBits = NULL, red = 0, green = 0, blue = 0;
 

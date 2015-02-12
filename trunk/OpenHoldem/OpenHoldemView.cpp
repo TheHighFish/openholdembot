@@ -1009,7 +1009,7 @@ void COpenHoldemView::DrawColourCodes(const int chair) {
   }
   int right = 0;
   // Figure placement of box
-  int bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 15;
+  int bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 16;
   int top    = bottom - 10;
   if (chair >= (p_tablemap->nchairs() / 2)) {
     right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 20;
@@ -1019,17 +1019,17 @@ void COpenHoldemView::DrawColourCodes(const int chair) {
   int left = right - 10;
   // Draw it
   CDC	*pDC = GetDC();
-	pDC->SetBkMode(TRANSPARENT);
-  // Background color
-  CPen *pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-	CPen oldpen;
-  oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-	CBrush TempBrush; 
-  TempBrush.CreateSolidBrush(p_symbol_engine_colourcodes->ColourCodeToDisplay(chair));
-  //!!!CBrush oldbrush.FromHandle((HBRUSH)pTempBrush);		// Save old brush
+	CPen		*pTempPen = NULL, oldpen;
+	CBrush	*pTempBrush = NULL, oldbrush;
+  pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
+  COLORREF colour_code = p_symbol_engine_colourcodes->ColourCodeToDisplay(chair);
+  CBrush mybrush(colour_code);
+	pTempBrush = (CBrush*)pDC->SelectObject(mybrush); 
+	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 	pDC->Rectangle(left, top, right, bottom);
 	// Restore original pen and brush
 	pDC->SelectObject(oldpen);
-	//!!!pDC->SelectObject(oldbrush);
+	pDC->SelectObject(oldbrush);
 	ReleaseDC(pDC);
 }

@@ -88,6 +88,7 @@ class CTransform
 	int CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg);
 	int ITypeTransform(RMapCI region, const HDC hdc, CString *text);
 	int HTypeTransform(RMapCI region, const HDC hdc, CString *text);
+  int WTypeTransform(RMapCI region, const HDC hdc, CString *text);
 	int DoPlainFontScan(RMapCI region, const int width, const int height, 
 							  const bool bg[], const bool (*ch)[MAX_CHAR_HEIGHT], CString *text);
 	int DoFuzzyFontScan(RMapCI region, const int width, const int height, 

@@ -47,14 +47,14 @@ typedef SMap::const_iterator SMapCI;
 
 struct STablemapRegion 
 {
-	CString			name;
+	CString			  name;
 	unsigned int	left;
 	unsigned int	top;
 	unsigned int	right;
 	unsigned int	bottom;
-	COLORREF		color;
-	int				radius;
-	CString			transform;
+	COLORREF		  color;
+	int				    radius;
+	CString			  transform;
 
 	HBITMAP			cur_bmp;
 	HBITMAP			last_bmp;
