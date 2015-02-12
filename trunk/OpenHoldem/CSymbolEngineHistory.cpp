@@ -233,6 +233,10 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 			*result = didrais(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7) {
 			*result = didswag(p_betround_calculator->betround());
+		}	else if (memcmp(name, "didfold", 7)==0 && strlen(name)==7) {
+			*result = didfold(p_betround_calculator->betround());
+		}	else if (memcmp(name, "didalli", 7)==0 && strlen(name)==7) {
+			*result = didalli(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	{
 			*result = didchec(name[12]-'0');
 		}	else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	{
@@ -301,13 +305,14 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 	if (!p_symbol_engine_userchair->userchair_confirmed()) {
 		return false;
 	}
-	// Not considering fold or allin, because the game would be over.
-	return (didchec(betround) || didcall(betround) 
-		|| didswag(betround) || didrais(betround));
+	// Considering fold or allin too. It's unneccessary for bot logic, but usefull for lazy scraping.
+	return	(  didchec(betround) || didcall(betround) 
+			|| didswag(betround) || didrais(betround)
+			|| didfold(betround) || didalli(betround) );
 }
 
 CString CSymbolEngineHistory::SymbolsProvided() {
-  CString list = "didchec didcall didrais didswag "
+  CString list = "didchec didcall didrais didswag didfold didalli "
     "nplayersround nbetsround prevaction ";
   list += RangeOfSymbols("didchecround%i",  k_betround_preflop, k_betround_river);  
   list += RangeOfSymbols("didcallround%i",  k_betround_preflop, k_betround_river);

@@ -53,13 +53,13 @@ public:
   // Didchec can only be 0 or 1 poker-logically,
   // but the counter might be > 0 if the autoplayer did act more than once
   // or if the user scraped check- and call-buttons incorrectly.
-	int didchec(int betround)	{ 
-    return ((_autoplayer_actions[betround][k_autoplayer_function_check] > 0) ? 1:0) ; 
-  }
+	int didchec(int betround)			{ return ((_autoplayer_actions[betround][k_autoplayer_function_check] > 0) ? 1:0) ; }
 	int didcall(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_call]; }
 	int didrais(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_raise]; }
 	int didswag(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_betsize]; }
-	int prevaction()			    		{ return _prevaction; }
+	int didfold(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_fold]; }
+	int didalli(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_allin]; }
+	int prevaction()			    	{ return _prevaction; }
 public:
 	void RegisterAction(int autoplayer_action_code);
 private:
