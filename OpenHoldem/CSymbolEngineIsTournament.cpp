@@ -36,7 +36,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 52;
+const int k_number_of_tournament_identifiers = 55;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -68,6 +68,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"(mtt",
 	"multitable",
 	"multi-table",
+  "no limit hold'em - tbl#",
 	" nothing",
 	"-nothing",
 	"qualif ",			  // french abbreviation
@@ -93,10 +94,12 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"ticket ",
 	"tour ",
   "tourney",
-	"tournament"	
+	"tournament",
+  "triple-up",
+  "triple up",
 };
 
-const int kNumberOfDONIdentifiers = 6;
+const int kNumberOfDONIdentifiers = 8;
 const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {	
 	"double ",
 	"double-",
@@ -104,9 +107,12 @@ const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {
 	"-nothing",
 	"shootout ",
 	"ticket ",
+  // Triple-up: not really DON, but a liitle bit like DON.
+  "triple-up",
+  "triple up",
 };
 
-const int kNumberOfMTTIdentifiers = 22;
+const int kNumberOfMTTIdentifiers = 23;
 const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	" event",
   "free $",
@@ -123,6 +129,7 @@ const char* kMTTIdentifiers[kNumberOfMTTIdentifiers] = {
 	"(mtt",
 	"multitable",
 	"multi-table",
+  "no limit hold'em - tbl#",
 	"qualif ",			  // french abbreviation
 	"qualificatif",		// french for "qualifier"
 	"qualification",

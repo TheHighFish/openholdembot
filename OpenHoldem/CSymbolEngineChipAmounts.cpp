@@ -55,8 +55,10 @@ void CSymbolEngineChipAmounts::ResetOnHandreset() {
 		_currentbet[i] = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
-		_stacks_at_hand_start[i] = p_table_state->_players[i]._balance + p_scraper->player_bet(i);
-	}	_pot = 0;
+		_stacks_at_hand_start[i] = p_table_state->_players[i]._balance 
+      + p_table_state->_players[i]._bet;
+	}	
+  _pot = 0;
 	_potplayer = 0;
 	_potcommon = 0;
   _call = 0;
@@ -134,7 +136,7 @@ void CSymbolEngineChipAmounts::CalculateCurrentbets()
 {
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		_currentbet[i] = p_scraper->player_bet(i);
+		_currentbet[i] = p_table_state->_players[i]._bet;
     assert(_currentbet[i] >= 0.0);
 	}
 }

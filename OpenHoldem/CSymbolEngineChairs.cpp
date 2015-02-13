@@ -21,6 +21,7 @@
 #include "CSymbolEnginePokerAction.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
 
 CSymbolEngineChairs *p_symbol_engine_chairs = NULL;
@@ -104,7 +105,7 @@ void CSymbolEngineChairs::CalculateCutOffChair() {
 void CSymbolEngineChairs::CalculateCallerChairs() {
   _firstcaller_chair = k_undefined;
   _lastcaller_chair = k_undefined;
-  double last_raisers_bet = p_scraper->player_bet(USER_CHAIR);
+  double last_raisers_bet = p_table_state->User()->_bet;
   if ((p_betround_calculator->betround() == k_betround_preflop) 
       && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
     // Avoid problems with so-called "blind-raisers"
@@ -112,7 +113,7 @@ void CSymbolEngineChairs::CalculateCallerChairs() {
   }
   for (int i=1; i<_nchairs; ++i) {
     int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
-    double next_bet = p_scraper->player_bet(next_chair);
+    double next_bet = p_table_state->_players[next_chair]._bet;
     if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
       // We have a caller, at least the temporary last one
       _lastcaller_chair = next_chair;
@@ -129,10 +130,10 @@ void CSymbolEngineChairs::CalculateCallerChairs() {
 
 void CSymbolEngineChairs::CalculateFirstRaiserChair() {
   _firstraiser_chair = k_undefined;
-  double users_bet = p_scraper->player_bet(USER_CHAIR);
+  double users_bet = p_table_state->User()->_bet;
   for (int i=1; i<_nchairs; ++i) {
     int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
-    double next_bet = p_scraper->player_bet(next_chair);
+    double next_bet = p_table_state->_players[next_chair]._bet;
     if ((next_bet > users_bet) && (next_bet > p_symbol_engine_tablelimits->bblind())) {
       _firstraiser_chair = next_chair; 
       return;

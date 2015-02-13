@@ -54,7 +54,6 @@ public:
 	const CString		seated(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _seated[n]; }
 	const CString		active(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _active[n]; }
 	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
-	const double		player_bet(int n)          { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _player_bet[n]; }
 	const bool			sitting_out(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _sitting_out[n]; }
 	const double		pot(int n)                 { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _pot[n]; }
 	const CString		button_state(int n)        { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _button_state[n]; }
@@ -129,7 +128,6 @@ private:
 	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s;}
 	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
 	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
-	void	set_player_bet(const int n, const double d) { ENT if (n>=0 && n<=9) _player_bet[n] = d;}
 	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b;}
 	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d;}
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
@@ -162,7 +160,6 @@ private:
 	CString			_active[k_max_number_of_players];
 	// players - money
 	double			_player_balance[k_max_number_of_players]; 
-	double			_player_bet[k_max_number_of_players];
 	// pot
 	double			_pot[k_max_number_of_pots];
 	// i3-slider-handle

@@ -14,6 +14,9 @@ MAINTENANCE:
   once every 3 seconds. Due to flexible heartbeat delays
   it could have taken a bit too long otherwise.
   [THF]
+- Simplified main toolbar. The gimmick buttons for attach top,
+  attach bottom and min/max table-view are gone.
+  [THF]
 
 v7.5.0 2015-02.05
 ==================

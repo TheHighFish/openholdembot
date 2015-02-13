@@ -31,6 +31,7 @@ class CPlayer {
  public:
   CString _name;
   double  _balance;
+  double  _bet;
   Card    _hole_cards[k_number_of_cards_per_player];
   int     _colourcode;
 };

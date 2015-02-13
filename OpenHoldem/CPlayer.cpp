@@ -23,6 +23,7 @@ CPlayer::~CPlayer() {
 void CPlayer::Reset() {
   _name = "";
   _balance = 0.0;
+  _bet = 0.0;
   for (int i=0; i<k_number_of_cards_per_player; ++i) {
     _hole_cards[i].ClearValue();
   }

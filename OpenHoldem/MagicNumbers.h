@@ -252,6 +252,10 @@ enum StandardFunctionConstants
   k_icm_prize3,
   k_icm_prize4,
   k_icm_prize5,
+  k_icm_prize6,
+  k_icm_prize7,
+  k_icm_prize8,
+  k_icm_prize9,
 	// Attention! Always keep this at last place.
 	k_number_of_standard_functions
 };
@@ -320,6 +324,10 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
   "f$icm_prize3",
   "f$icm_prize4",
   "f$icm_prize5",
+  "f$icm_prize6",
+  "f$icm_prize7",
+  "f$icm_prize8",
+  "f$icm_prize9",
 };
 
 const int k_max_length_of_OpenPPL_function_names = 9 + 1;

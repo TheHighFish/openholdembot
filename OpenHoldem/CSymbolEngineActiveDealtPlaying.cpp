@@ -123,7 +123,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		// We don't consider players who are only "active",
 		// i.e. players who sat out but came back.
 		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters) && ! big_blind_found) {
-			double bet = p_scraper->player_bet(chair_to_consider);
+			double bet = p_table_state->_players[chair_to_consider]._bet;
 			if (bet > 0) {
         write_log(preferences.debug_symbolengine(),
           "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is a blind poster\n",

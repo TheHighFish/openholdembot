@@ -165,7 +165,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 		m_standard_functions[3].Add(k_standard_function_names[i]);
 	}
   // ICM functions
-  for (int i=k_icm_prize1; i<=k_icm_prize5; ++i) {
+  for (int i=k_icm_prize1; i<=k_icm_prize9; ++i) {
     m_standard_functions[4].Add(k_standard_function_names[i]);
   }
 	// Debug functions	
@@ -575,7 +575,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
       case 4:
         // ICM functions
         AddStandardFunctionsToTree(parent,
-          k_icm_prize1, k_icm_prize5);
+          k_icm_prize1, k_icm_prize9);
         break;
       case 5:
         // Debug functions

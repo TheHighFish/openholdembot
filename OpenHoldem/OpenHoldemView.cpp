@@ -307,9 +307,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_playerbalance_last[i] = p_table_state->_players[i]._balance;
 			update_it = true;
 		}
-		if (_playerbet_last[i] != p_scraper->player_bet(i)) 
+		if (_playerbet_last[i] != p_table_state->_players[i]._bet) 
 		{
-			_playerbet_last[i] = p_scraper->player_bet(i);
+			_playerbet_last[i] = p_table_state->_players[i]._bet;
 			update_it = true;
 		}
 
@@ -933,9 +933,9 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
   // Format text
-	if (p_scraper->player_bet(chair) != 0) 
+	if (p_table_state->_players[chair]._bet != 0) 
 	{
-		t = Number2CString(p_scraper->player_bet(chair));
+		t = Number2CString(p_table_state->_players[chair]._bet);
 	}
 	else 	{
 		t = "";
