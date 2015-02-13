@@ -246,7 +246,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 		}	else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)	{
 			*result = didswag(name[12]-'0');
 		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==7) {
-			*result = didfold(name[12]-'0'));
+			*result = didfold(name[12]-'0');
 		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==7) {
 			*result = didalli(name[12]-'0');
     }	else {
