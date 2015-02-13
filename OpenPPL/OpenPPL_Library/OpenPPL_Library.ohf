@@ -543,7 +543,7 @@ raischair
 // Raising (FL and NL)
 ((prevaction == 2) || (prevaction == 3)) ? Raise :
 // calling
-(prevaction == 1) ? call :
+(prevaction == 1) ? Call :
 // Checking postflop
 ((prevaction == 0) && (betround > 1) && (currentbet == 0)) ? Check :
 // Checking preflop
