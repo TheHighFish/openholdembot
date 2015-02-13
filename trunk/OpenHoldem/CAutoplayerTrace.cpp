@@ -50,9 +50,8 @@ void CAutoplayerTrace::Clear() {
 }
 
 bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
-  // DLL and Perl, as there is no caching and value might change
+  // DLL, as there is no caching and value might change
   if (memcmp(name, "dll$", 4) == 0) return true;
-  if (memcmp(name, "pl_", 3) == 0) return true;
   // Memory-store and recall-commands
   if (memcmp(name, "me_", 3) == 0) return true;
   // OpenPPL-user-variables might also change (once)

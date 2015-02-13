@@ -233,7 +233,7 @@ CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
 
 double CParseTreeNode::EvaluateIdentifier(CString name, bool log) {
 	// EvaluateSymbol cares about ALL symbols, 
-	// including DLL, PokerTracker and Perl
+	// including DLL and PokerTracker.
 	double result;
 	p_engine_container->EvaluateSymbol(name, &result, log);
 	return result;

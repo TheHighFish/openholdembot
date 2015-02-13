@@ -263,7 +263,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DialogSAPrefs8.cpp" />
-    <ClCompile Include="DialogSAPrefs9.cpp" />
+    <ClCompile Include="DialogSAPrefs9.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="SAPrefsDialog.cpp" />
     <ClCompile Include="SAPrefsStatic.cpp" />
     <ClCompile Include="SAPrefsSubDlg.cpp" />
@@ -329,7 +331,6 @@
     <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
     <ClCompile Include="CDllExtension.cpp" />
-    <ClCompile Include="CPerl.cpp" />
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
     <ClCompile Include="CPokerTrackerThread.cpp" />
     <ClCompile Include="CIteratorThread.cpp" />
@@ -602,8 +603,6 @@
     <ClInclude Include="CSharedMem.h" />
     <ClInclude Include="..\CCritSec\CCritSec.h" />
     <ClInclude Include="CDllExtension.h" />
-    <ClInclude Include="CPerl.hpp" />
-    <ClInclude Include="PerlEz.h" />
     <ClInclude Include="CPokerTrackerLookUp.h" />
     <ClInclude Include="CPokerTrackerThread.h" />
     <ClInclude Include="BringKeyboard.h" />
@@ -659,10 +658,6 @@
     <ResourceCompile Include="OpenHoldem.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Perl_Callback\Perl_Callback.vcxproj">
-      <Project>{a99b05f1-7eaf-4bed-ab9b-35853b1ecd4d}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\pokereval\poker-eval.vcxproj">
       <Project>{a4def05e-e072-493e-b282-84731d60bcf0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

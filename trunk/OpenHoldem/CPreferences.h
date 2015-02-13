@@ -158,14 +158,11 @@ enum
 	k_prefs_pt_dbname,
 	k_prefs_pt_user,
 	k_prefs_pt_pass,
-	k_prefs_perl_default_formula,
-	k_prefs_perl_editor,
 	k_prefs_rebuy_script,
 	k_prefs_window_class_name,
 	k_prefs_mutex_name,
 	k_prefs_path_ohf,
 	k_prefs_path_tm,
-	k_prefs_path_perl,
 	k_prefs_path_dll,
 	// leave this always at the last position
 	k_prefs_last_CString_value,
@@ -207,10 +204,7 @@ public:
 	const CString pt_dbname() { return prefs_CString_values[k_prefs_pt_dbname]; }
 	const CString pt_user() { return prefs_CString_values[k_prefs_pt_user]; }
 	const CString pt_pass() { return prefs_CString_values[k_prefs_pt_pass]; }
-	// Perl
-	const CString perl_default_formula() { return prefs_CString_values[k_prefs_perl_default_formula]; }
-	const CString perl_editor() { return prefs_CString_values[k_prefs_perl_editor]; }
-
+	
 	//  PokerChat
 	const int chat_min_delay() { return prefs_numerical_values[k_prefs_chat_min_delay]; }
 	const int chat_random_delay() { return prefs_numerical_values[k_prefs_chat_random_delay]; }
@@ -322,7 +316,6 @@ public:
 	// CFileDialog saved paths
 	const CString path_ohf()	{ return prefs_CString_values[k_prefs_path_ohf]; }
 	const CString path_tm()		{ return prefs_CString_values[k_prefs_path_tm]; }
-	const CString path_perl()	{ return prefs_CString_values[k_prefs_path_perl]; }
 	const CString path_dll()	{ return prefs_CString_values[k_prefs_path_dll]; }
 
 public:

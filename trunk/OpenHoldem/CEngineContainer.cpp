@@ -396,7 +396,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
   else {
     // Error found during execution
     // Though we check the syntax, this can still happen
-    // by gws-calls from Perl or a DLL, etc.
+    // by gws-calls from a DLL, etc.
     WarnAboutUnknownSymbol(name);
     *result = k_undefined;
     return false;

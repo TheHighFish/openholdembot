@@ -147,14 +147,11 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] =
 	"pt_dbname",
 	"pt_user",
 	"pt_pass",
-	"perl_default_formula",
-	"perl_editor",
 	"rebuy_script",
 	"window_class_name",
 	"mutex_name",
 	"path_ohf",
 	"path_tm",
-	"path_perl",
 	"path_dll",
 	// Finally an empty string
 	// This correspondents to k_prefs_last_numerical_value (unused)
@@ -248,18 +245,6 @@ void CPreferences::InitDefaults(void)
 	prefs_CString_values[k_prefs_rebuy_script] = "Rebuy.exe";
 	prefs_CString_values[k_prefs_window_class_name] = "OpenHoldem";
 	prefs_CString_values[k_prefs_mutex_name] = "OHAntiColl";
-	
-	//  Perl
-	TCHAR windows_path[MAX_PATH];
-	if (S_OK == SHGetFolderPath(NULL, CSIDL_WINDOWS, NULL, 0, windows_path)) 
-	{
-		prefs_CString_values[k_prefs_perl_editor] = windows_path;
-		prefs_CString_values[k_prefs_perl_editor] += _T("\\notepad.exe");
-	}
-	else
-	{
-		prefs_CString_values[k_prefs_perl_editor] = _T("C:\\Windows\\notepad.exe");
-	}
 }
 
 //

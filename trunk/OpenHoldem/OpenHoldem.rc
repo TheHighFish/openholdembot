@@ -164,15 +164,7 @@ BEGIN
         MENUITEM "&Load\tF3",                   ID_DLL_LOAD
         MENUITEM "Load &Specific File...\tF4",  ID_DLL_LOADSPECIFICFILE
     END
-    POPUP "Per&l"
-    BEGIN
-        MENUITEM "&Load Formula\tF7",           ID_PERL_LOADFORMULA
-        MENUITEM "&Reload Formula\tF8",         ID_PERL_RELOADFORMULA
-        MENUITEM "Load &Specific Formula...",   ID_PERL_LOADSPECIFICFORMULA
-        MENUITEM SEPARATOR
-        MENUITEM "Check S&yntax\tF9",           ID_PERL_CHECKSYNTAX
-        MENUITEM "&Edit Main Formula\tF10",     ID_PERL_EDITMAINFORMULA
-    END
+  
     MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
@@ -268,11 +260,6 @@ BEGIN
     VK_F1,          ID_MAIN_TOOLBAR_HELP,   VIRTKEY, CONTROL, NOINVERT
     VK_F5,          ID_EDIT_TAGLOG,         VIRTKEY, NOINVERT
     VK_F6,          ID_EDIT_VIEWLOG,        VIRTKEY, NOINVERT
-    VK_F10,         ID_PERL_CHECKSYNTAX,    VIRTKEY, NOINVERT
-    VK_F11,         ID_PERL_EDITMAINFORMULA, VIRTKEY, NOINVERT
-    VK_F7,          ID_PERL_LOADFORMULA,    VIRTKEY, NOINVERT
-    VK_F9,          ID_PERL_LOADSPECIFICFORMULA, VIRTKEY, NOINVERT
-    VK_F8,          ID_PERL_RELOADFORMULA,  VIRTKEY, NOINVERT
     VK_F12,         ID_VIEW_SHOOTREPLAYFRAME, VIRTKEY, NOINVERT
     VK_F1,          ID_HELP_HELP,           VIRTKEY, NOINVERT
 END
@@ -678,16 +665,6 @@ BEGIN
     LTEXT           "Replay-frames are a combination of images (bitmaps) and HTML-files with additional info. If you get asked for replay-frames for trouble-shooting please include both.",IDC_STATIC,4,180,186,37
 END
 
-IDD_SAPREFS9 DIALOGEX 0, 0, 237, 158
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    LTEXT           "Default formula",IDC_STATIC,4,12,61,8
-    EDITTEXT        IDC_DEFAULT_PERL_FORMULA,110,8,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
-    LTEXT           "Perl editor",IDC_STATIC,4,32,44,8
-    EDITTEXT        IDC_PERL_EDITOR,110,28,90,12,ES_AUTOHSCROLL,WS_EX_ACCEPTFILES
-END
-
 IDD_SAPREFS10 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1062,18 +1039,6 @@ BEGIN
         HORZGUIDE, 64
     END
 
-    IDD_SAPREFS9, DIALOG
-    BEGIN
-        RIGHTMARGIN, 219
-        VERTGUIDE, 4
-        VERTGUIDE, 110
-        VERTGUIDE, 200
-        BOTTOMMARGIN, 155
-        HORZGUIDE, 20
-        HORZGUIDE, 40
-        HORZGUIDE, 104
-    END
-
     IDD_SAPREFS10, DIALOG
     BEGIN
         VERTGUIDE, 16
@@ -1402,15 +1367,6 @@ BEGIN
     ID_VIEW_SHOOTREPLAYFRAME 
                             "Shoot an image of the current table-view for later inspection with OHReplay"
     ID_MAIN_TOOLBAR_MANUALMODE "Start ManualMode"
-END
-
-STRINGTABLE
-BEGIN
-    ID_PERL_LOADFORMULA     "Load the mostt recent Perl formula"
-    ID_PERL_LOADSPECIFICFORMULA "Select a Perl formula to load"
-    ID_PERL_EDITMAINFORMULA "Invoke the favorite Perl editor to edit the main formula file"
-    ID_PERL_RELOADFORMULA   "Reloads the most recent Perl formula"
-    ID_PERL_CHECKSYNTAX     "Check the most recent formula for errors"
 END
 
 #endif    // English (United States) resources

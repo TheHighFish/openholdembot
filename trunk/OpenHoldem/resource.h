@@ -139,7 +139,6 @@
 #define IDC_PT_PASS                     1103
 #define IDC_PT_DBNAME                   1104
 #define IDC_PT_DBNAME2                  1105
-#define IDC_DEFAULT_PERL_FORMULA        1105
 #define IDC_ICM_1                       1110
 #define IDC_ICM_2                       1111
 #define IDC_ICM_3                       1112
@@ -328,7 +327,6 @@
 #define IDC_MAXFRAMES_SPIN2             1289
 #define IDC_RANDOM_DELAY_SPIN           1289
 #define IDC_FUNCTIONS_TAB               1289
-#define IDC_PERL_EDITOR                 1292
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
 #define IDC_MAXIMUM_LOG                 1297
@@ -516,14 +514,8 @@
 #define ID_EDIT_FINDNEXT                32941
 #define ID_EDIT_FINDPREVIOUS            32942
 #define ID_FORMULA_EDIT_FINDNEXT        32943
-#define ID_PERL_LOADFORMULA             32946
-#define ID_PERL_LOADSPECIFICFORMULA     32947
-#define ID_PERL_EDITMAINFORMULA         32948
 #define ID_FORMULA_SYMBOL_COPY          32949
-#define ID_PERL_RELOADFORMULA           32950
-#define ID_PERL_COMPILEFORMULA          32951
 #define ID_Menu                         32952
-#define ID_PERL_CHECKSYNTAX             32953
 #define ID_FINISH_INITIALIZATION        32971
 #define ID_NUMBER11                     32972
 #define ID_NUMBER12                     32973
