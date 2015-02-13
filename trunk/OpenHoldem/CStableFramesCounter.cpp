@@ -61,7 +61,7 @@ void CStableFramesCounter::SaveCurrentState() {
 		_card_player_last[i][1]	= p_table_state->_players[i]._hole_cards[1].GetValue();
 		_dealer_last[i]         = p_scraper->dealer(i);
 		_playerbalance_last[i]  = p_table_state->_players[i]._balance;
-		_playerbet_last[i]      = p_scraper->player_bet(i);
+		_playerbet_last[i]      = p_table_state->_players[i]._bet;
 	}
 }
 
@@ -121,7 +121,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 		}	else if (p_table_state->_players[i]._balance != _playerbalance_last[i])	{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-balance does not match\n", i);
-		}	else if (p_scraper->player_bet(i)	 != _playerbet_last[i]) {
+		}	else if (p_table_state->_players[i]._bet	 != _playerbet_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-bet does not match\n", i);
 		}

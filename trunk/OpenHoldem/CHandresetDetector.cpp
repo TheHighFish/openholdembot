@@ -224,7 +224,7 @@ bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
 
 bool CHandresetDetector::SmallBlindExists() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    double players_bet = p_scraper->player_bet(i);
+    double players_bet = p_table_state->_players[i]._bet;
     if ((players_bet > 0) && (players_bet < _bblind)) {
       // Either SB or ante, first orbit preflop, hand-reset
       return true;

@@ -246,7 +246,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
       GetCardHtml(p_table_state->_players[i]._hole_cards[1].GetValue()));
 		player_info += text;  
 		// Bet
-		text.Format("      <td>%11.2f</td>\n", p_scraper->player_bet(i));
+		text.Format("      <td>%11.2f</td>\n", p_table_state->_players[i]._bet);
 		player_info += text; 
 		// Balance
 		text.Format("      <td>%11.2f</td>\n", p_table_state->_players[i]._balance);

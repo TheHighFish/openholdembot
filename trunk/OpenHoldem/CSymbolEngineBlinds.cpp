@@ -21,6 +21,7 @@
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineBlinds *p_symbol_engine_blinds = NULL;
@@ -94,7 +95,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 	else
 	{
 		// Is Hero SB or BB ?
-		double my_bet = p_scraper->player_bet(USER_CHAIR);
+		double my_bet = p_table_state->User()->_bet;
 
 		if (my_bet <= p_symbol_engine_tablelimits->sblind() && my_bet > 0)
 		{
@@ -112,7 +113,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 		{
 			int chair = i%p_tablemap->nchairs();
-			double p_bet = p_scraper->player_bet(chair);
+			double p_bet = p_table_state->_players[chair]._bet;
 
 			// search SB
 			if (sbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->sblind() && p_bet > 0) 
@@ -138,7 +139,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 			for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 			{
 				int chair = i%p_tablemap->nchairs();
-				double p_bet = p_scraper->player_bet(chair);
+				double p_bet = p_table_state->_players[chair]._bet;
 
 				// 1st caller/raiser after dealer is sb
 				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == k_undefined && chair != bbchair)

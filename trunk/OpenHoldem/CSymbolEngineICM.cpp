@@ -131,7 +131,7 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
 		{
 			int next_chair = i%p_tablemap->nchairs();
-			double p_bet = p_scraper->player_bet(next_chair);
+			double p_bet = p_table_state->_players[next_chair]._bet;
 
 			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
 				sb_offset = 0;
@@ -253,7 +253,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
   double		prizes[k_max_number_of_players] = {0};
 	double		stacks[k_max_number_of_players] = {0};
 
-  int number_of_icm_prizes = k_icm_prize5 - k_icm_prize1 + 1;
+  int number_of_icm_prizes = k_icm_prize9 - k_icm_prize1 + 1;
   double sum_of_prizes = 0.0;
   for (int i=0; i<number_of_icm_prizes; ++i) {
     int function_name_index = k_icm_prize1 + i;

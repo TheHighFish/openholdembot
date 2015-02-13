@@ -21,6 +21,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "NumericalFunctions.h"
 
 CSymbolEnginePositions *p_symbol_engine_positions = NULL;
@@ -81,7 +82,7 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 		  i<=DEALER_CHAIR+p_tablemap->nchairs();
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		double p_bet = p_scraper->player_bet(next_chair);
+		double p_bet = p_table_state->_players[next_chair]._bet;
 
 		if (next_chair == USER_CHAIR)	{
 			found_userchair = true;

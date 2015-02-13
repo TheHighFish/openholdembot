@@ -711,17 +711,16 @@ void CScraper::ScrapeBalance(int chair) {
 void CScraper::ScrapeBet(int chair) {
   RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
 
-	__HDC_HEADER
+	__HDC_HEADER;
 	CString				text = "";
 	CString				s = "", t="";
 
-	set_player_bet(chair, 0);
-
-	// Player bet pXbet
+	p_table_state->_players[chair]._bet = 0.0;
+  	// Player bet pXbet
   s.Format("p%dbet", chair);
   double result = 0;
 	if (EvaluateNumericalRegion(&result, s)) {
-	  set_player_bet(chair, result);
+	  p_table_state->_players[chair]._bet = result;
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return;
 	}
@@ -730,7 +729,7 @@ void CScraper::ScrapeBet(int chair) {
 	s.Format("u%dbet", chair);
   result = 0;
 	if (EvaluateNumericalRegion(&result, s)) {
-		set_player_bet(chair,result);
+		p_table_state->_players[chair]._bet = result;
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return;
 	}		
@@ -738,17 +737,17 @@ void CScraper::ScrapeBet(int chair) {
 	// pXchip00
 	s.Format("p%dchip00", chair);
 	RMapCI r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && _player_bet[chair] == 0)
-	{
+	if (r_iter != p_tablemap->r$()->end() && p_table_state->_players[chair]._bet == 0) 	{
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 		double chipscrape_res = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		t.Format("%.2f", chipscrape_res);
 		CScraperPreprocessor::PreprocessMonetaryString(&t);
-		set_player_bet(chair, strtod(t.GetString(), 0));
+		p_table_state->_players[chair]._bet = strtod(t.GetString(), 0);
 
-		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", chair, _player_bet[chair]);
+		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", 
+      chair, p_table_state->_players[chair]._bet);
 	}
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
@@ -778,7 +777,7 @@ void CScraper::ClearScrapeAreas(void) {
 		set_seated(i, "false");
 		set_active(i, "false");
 		set_dealer(i, false);
-		set_player_bet(i, 0.0);
+		p_table_state->_players[i]._bet = 0.0;
 		set_i86X_button_state(i, "false");
 		set_button_state(i, "false");
 		set_button_label(i, "");

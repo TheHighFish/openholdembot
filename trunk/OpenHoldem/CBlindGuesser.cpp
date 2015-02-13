@@ -179,7 +179,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   int last_chair  = dealer + p_tablemap->nchairs();
   for (int i=first_chair; i<=last_chair; ++i) {
     int normalized_chair = i % p_tablemap->nchairs();
-    double players_bet = p_scraper->player_bet(normalized_chair);
+    double players_bet = p_table_state->_players[normalized_chair]._bet;
     if (players_bet <= 0) continue;
     if (first_bet_after_dealer <= 0) {
       // Probablz SB found

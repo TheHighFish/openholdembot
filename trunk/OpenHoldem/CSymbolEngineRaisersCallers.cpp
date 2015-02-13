@@ -106,7 +106,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet() {
 	if (p_table_state->User()->HasKnownCards())	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)
-		return p_scraper->player_bet(USER_CHAIR);
+		return p_table_state->User()->_bet;
 	}
 	// Otherwise meaningless
 	return 0.0;
@@ -177,19 +177,20 @@ void CSymbolEngineRaisersCallers::CalculateCallers() {
 	// and do a circular search for callers.
   _nopponentscalling = 0;
   int first_bettor = p_symbol_engine_userchair->userchair();
-	double current_bet = p_scraper->player_bet(first_bettor);
+	double current_bet = p_table_state->_players[first_bettor]._bet;
 	for (int i=first_bettor+1; 
 		  i<=first_bettor+p_tablemap->nchairs()-1; 
 		  ++i) {
 		int chair = i%p_tablemap->nchairs();
     	// Exact match required. Players being allin don't count as callers.
-		if ((p_scraper->player_bet(chair) == current_bet) && (current_bet > 0)) {
+		if ((p_table_state->_players[chair]._bet == current_bet) 
+        && (current_bet > 0)) {
 			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
 			_nopponentscalling++;
 		}
-		else if (p_scraper->player_bet(chair) > current_bet) {
-			current_bet = p_scraper->player_bet(chair);
+		else if (p_table_state->_players[chair]._bet > current_bet) {
+			current_bet = p_table_state->_players[chair]._bet;
 		}
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);

@@ -97,7 +97,7 @@ bool COHScriptObject::IsPrWinFunction() {
 }
 
 bool COHScriptObject::IsICMConfigurationFunction() {
-  for (int i=k_icm_prize1; i<=k_icm_prize5; ++i) {
+  for (int i=k_icm_prize1; i<=k_icm_prize9; ++i) {
     if (_name == k_standard_function_names[i]) return true;
   }
   return false;

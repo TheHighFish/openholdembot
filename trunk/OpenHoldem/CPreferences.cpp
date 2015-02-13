@@ -178,7 +178,7 @@ void CPreferences::CheckForOutdatedICMConfig() {
       "Outdated ICM-configuration\n"
       "\n"
       "OpenHoldem does no longer use the ini-file for that\n"
-      "but f$icm_prize1 .. f$icm_prize5 functions\n"
+      "but f$icm_prize1 .. f$icm_prize9 functions\n"
       "\n"
       "Now you can adapt the payout-structure at runtime\n"
       "depending on casino, game-type, number of players...");
