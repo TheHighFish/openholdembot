@@ -36,7 +36,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 55;
+const int k_number_of_tournament_identifiers = 57;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -46,6 +46,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	" ante:",
 	"(ante ",		
 	"(ante:",
+  "(beginner ds)",
 	"buy-in:",		
 	"buyin:",
 	"buy-in ",
@@ -59,6 +60,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"gratuit ",			// french for "free"
   " gtd",
 	"guaranteed",
+  "hyper",
   " knockout",
   " k.o.",
 	"miniroll",
@@ -99,9 +101,10 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
   "triple up",
 };
 
-const int kNumberOfDONIdentifiers = 8;
+const int kNumberOfDONIdentifiers = 9;
 const char* kDONIdentifiers[kNumberOfDONIdentifiers] = {	
-	"double ",
+	"(beginner ds)",
+  "double ",
 	"double-",
 	" nothing",
 	"-nothing",
