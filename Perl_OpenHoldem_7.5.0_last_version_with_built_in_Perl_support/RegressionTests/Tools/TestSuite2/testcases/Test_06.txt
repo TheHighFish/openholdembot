@@ -1,0 +1,13 @@
+[table]
+sblind = 0.01
+bblind = 0.02
+gtype = NL
+balances = P0 2,P1 2,P2 2, P3 2, P4 2,P5 2,P6 2,Bot 2 ,P7 2, P8 2
+
+[preflop]
+Hand = Ah, Kh
+Actions = P0 S,P1 B,P2 F,P3 C,P4 F,P5 F,P6 F,Bot can FCRA do (R 0.08, A), P7 F,P8 F,P0 F, P1 C, P3 C 
+
+[flop]
+Cards = Qc, Qs, 9d
+Actions = P1 K, P3 K,Bot can FKRA do R 0.03  

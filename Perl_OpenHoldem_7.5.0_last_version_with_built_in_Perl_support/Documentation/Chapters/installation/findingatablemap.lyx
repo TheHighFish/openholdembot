@@ -1,0 +1,187 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Finding a 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Table Map
+\end_layout
+
+\end_inset
+
+Table Map 
+\end_layout
+
+\begin_layout Standard
+The “scraper” directory should be where your Table Map files are stored.
+ Table maps provide the OpenHoldem game state engine the instructions for
+ deriving the state of the game from the pixels on the screen.
+ These files have the “.tm” extension on them.
+ The challenge with table maps is that every casino needs its own map.
+ In some cases, you might need different maps for different game flavors.
+ NL vs.
+ FL, SNG vs.
+ Ring, 10-seat vs.
+ Heads-Up, for example.
+\end_layout
+
+\begin_layout Standard
+The OpenHoldem project team does not provide official Table Maps for any
+ casino or any Texas Hold’em game flavor.
+ The reason for this is that there are thousands of casinos out there, and
+ tens- or hundreds- of thousands of map combinations when you consider the
+ different game flavors.
+ Adding to that is the fact that casinos regularly update their client software
+ and make minor or comprehensive changes to the pixels as they are displayed
+ on the screen.
+ These changes most often require changes to the table map as well.
+ The OpenHoldem Project development team is a group of volunteers --- we
+ do not get paid for this, we have real lives and real families, and do
+ this as a hobby.
+ Maintaining working Table Maps would be a more than full time job, and
+ thus instead we put the power in your hands; we provide Table Map creation
+ tools and testing tools to allow you to be self-sufficient.
+ An explanation of the “OpenScrape” program, which is key to this self-sufficien
+cy, will be provided in more detail later in this document.
+\end_layout
+
+\begin_layout Standard
+That said, there are a number of places you can find pre-created maps for
+ use with OpenHoldem.
+ There is a section on our forums (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewforum.php?f=280
+\end_layout
+
+\end_inset
+
+) that contains user-contributed maps.
+ These maps are likely to be more or less out of date, and would require
+ some validation to ensure they are 100% correct.
+ Consider these maps to be a starting point for learning how maps are constructe
+d and how they work.
+ 
+\end_layout
+
+\begin_layout Standard
+Most probably you will experience some problems if you fix or create your
+ first map.
+ Feel welcome to ask for assistance in the OpenHoldem Tablemap School (
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/forums/viewforum.php?f=117
+\end_layout
+
+\end_inset
+
+).
+ There are always some friendly people who are willing to help.
+ But please
+\end_layout
+
+\begin_layout Itemize
+explain as good as possible what you problem is.
+\end_layout
+
+\begin_layout Itemize
+provide some screenshots for further explanations.
+\end_layout
+
+\begin_layout Itemize
+provide the table map, so that we can see what is wrong or what needs to
+ be done.
+\end_layout
+
+\begin_layout Itemize
+provide some replay-frames for critical situations.
+\end_layout
+
+\begin_layout Standard
+Helping can be a bit tough if you have to ask all day for missing information.
+\end_layout
+
+\end_body
+\end_document

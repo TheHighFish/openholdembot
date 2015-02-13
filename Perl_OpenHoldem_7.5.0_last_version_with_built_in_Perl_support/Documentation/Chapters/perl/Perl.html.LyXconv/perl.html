@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-01-05"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter">
+<a class="toc" name="toc-Chapter-1"></a><a class="IndexReference" name="entry-Perl-0" href="#index-Perl">↓</a>Perl 
+</h1>
+<div class="Unindented">
+The purpose of the Perl option is to provide a scripting language for beginners that is possibly easier to get productive with, if you either already familiar with Perl, or have a strong disposition for not using OH-Script.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>Advantages of Perl 
+</h2>
+<ul>
+<li>
+Suitability for rapid prototyping 
+</li>
+<li>
+Wide-spread usage
+</li>
+<li>
+Many libraries available and an active community at <a class="FlexURL" href="http://cpan.org">http://cpan.org</a> 
+</li>
+<li>
+Really good interfacing, e.g. to C. 
+</li>
+<li>
+Syntax similar to C and some other script languages (bash, awk, tcl)
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-2"></a>Disadvantages of Perl 
+</h2>
+<ul>
+<li>
+Performance: Perl compiles to intermediate code (similar to bytecode), which gets executed by the interpreter. This is slower than compiled binary code, however some built-in functions (e.g. string- and list-operations) are said to be faster than C. 
+</li>
+<li>
+Clarity. Perl is a language, which bought good ideas from nearly everywhere. You can write clear and understandable programs, if you want; but most Perl "gurus" are famous for the opposite. It is quite easy to write non-maintainable obfuscated Perl code.
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-3"></a>Installation and configuration of Perl 
+</h2>
+<ul>
+<li>
+Download ActivePerl from <a class="FlexURL" href="http://www.activestate.com/Products/activeperl ">http://www.activestate.com/Products/activeperl </a> and install.
+</li>
+<li>
+Perl needs the package "Win32::API" to interact with the callback DLL. Download this package using Perl’s package manager. Type at the command line (case sensitive; you should have administrator privileges to do this):<tt> <div class="listing">
+<pre class="listing">ppm install Win32::API
+</pre>
+</div>
+</tt>
+</li>
+<li>
+OpenHoldem must be able to find "PerlEz.dll" which contains our embedded interpreter. You must change the DLL search path from the DOS prompt:<div class="listing">
+<pre class="listing"> set PATH = C:\Programs\Perl\Bin;%PATH%
+</pre>
+</div>
+
+</li>
+<li>
+You need Visual C++ 2005 redist. package from Microsoft (SP1), especially msvcrt.dll, otherwise Perl can’t load correctly (you will get a message: "PerlEz.dll not found or not accessible").
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-4"></a>Perl usage 
+</h2>
+<div class="Unindented">
+All symbols beginning with "pl_" (e.g. "pl_call") in your formula will be treated as Perl symbols and requested from OpenHoldem’s built-in Perl interpreter. The same for gws-calls inside the dll. All symbols are expected to be either double constants, double variables or functions without parameters returning a double value. 
+</div>
+<div class="Indented">
+Perl for OpenHoldem has a built-in function "gws" (get_WinHoldem_Symbol), allowing you to request OpenHoldem symbols or DLL symbols in your Perl formulas. (Therefore you have full interoperability of OH script, DLL and Perl. You can further use all your existing code) This function "gws" resides in a package called "Perl_OH_Interaction.pm", which you have to include in your bot: use Perl_OH_Interaction; 
+</div>
+<div class="Indented">
+The table name can be accessed using the function gwt(). To get a player name for a given chair use gwp(N), where N is the chair number. Load a Perl file via the menu or using the preferences.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-5"></a>Perl recommended Resources
+</h2>
+<ul>
+<li>
+<a class="FlexURL" href="http://en.wikipedia.org/wiki/Perl ">http://en.wikipedia.org/wiki/Perl </a>
+</li>
+<li>
+Wainwright: Professional Perl Programing 
+</li>
+<li>
+Schwartz: Learning Perl, Intermediate Perl, Mastering 
+</li>
+<li>
+Perl Conway: Perl hacks, tips and tools for programing, debugging and surviving 
+</li>
+<li>
+Till: Teach yourself Perl in 21 days
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-6"></a>Perl editors 
+</h2>
+<div class="Unindented">
+You may need an editor with syntax-highlighting for Perl. 
+</div>
+<ul>
+<li>
+emacs (<a class="FlexURL" href="ftp://ftp.gnu.org/gnu/emacs/windows/">ftp://ftp.gnu.org/gnu/emacs/windows/</a> Take the bin.tar.gz.) Wonderful editor from the UNIX world; for windows and free.
+</li>
+<li>
+Komodo-Edit (recommended by <a class="FlexURL" href="http://www.activestate.com">http://www.activestate.com</a>)
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-7"></a>Perl demo bot 
+</h2>
+<div class="Unindented">
+You will find an extremely simple demo bot at <a class="FlexURL" href="http://www.maxinmontreal.com/forums/viewtopic.php?p=20129 ">http://www.maxinmontreal.com/forums/viewtopic.php?p=20129 </a>. It contains including:
+</div>
+<ul>
+<li>
+A classic formula, redirecting some symbols to Perl functions 
+</li>
+<li>
+A nearly empty Perl bot, giving you a start 
+</li>
+<li>
+The module Perl_OH_Interaction.pm, providing the "gws" function
+</li>
+
+</ul>
+<div class="Unindented">
+To use it, you have to adapt the following lines according to your system settings: 
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">use lib "C:\..."
+use constant the_DebugFile =&gt; "..."
+</pre>
+</div>
+
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-05T22:27:31.046000</span>
+</div>
+</div>
+</body>
+</html>
