@@ -2242,17 +2242,21 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "nplayersround1 - nplayersround4", "number of players that began betting round 1 - round 4");
 	AddSymbol(parent, "nplayersround", "number of players that began the current betting round");
 	AddSymbol(parent, "prevaction", "record of previously attempted autoplayer action. (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)");
+  AddSymbol(parent, "didfold", "true if the autoplayer has folded during current round");
 	AddSymbol(parent, "didchec", "true if the autoplayer has checked during current round");
 	AddSymbol(parent, "didcall", "true if the autoplayer has called during current round");
 	AddSymbol(parent, "didrais", "true if the autoplayer has raised during current round");
 	AddSymbol(parent, "didswag", "true if the autoplayer has swag'd during current round");
+  AddSymbol(parent, "didalli", "true if the autoplayer went allin during current round");
 	AddSymbol(parent, "nbetsround1 - nbetsround4", "the largest number of bets in front of any player during round 1- round 4");
 	AddSymbol(parent, "nbetsround", "the largest number of bets in front of any player right now");
+  AddSymbol(parent, "didfoldround1 - didfoldround4", "true if userchair folded during round 1 - round 4");
 	AddSymbol(parent, "didchecround1 - didchecround4", "true if userchair checked during round 1 - round 4");
 	AddSymbol(parent, "didcallround1 - didcallround4", "true if userchair called during round 1 - round 4");
 	AddSymbol(parent, "didraisround1 - didraisround4", "true if userchair raised during round 1 - round 4");
 	AddSymbol(parent, "didswaground1 - didswaground4", "true if userchair swag'd during round 1 - round 4");
-	
+	AddSymbol(parent, "didalliround1 - didalliround4", "true if userchair went allin during round 1 - round 4");
+
 	mainParent = parent = AddSymbolTitle("Versus symbols", NULL, hCatItem);
 	AddSymbol(parent, "vs$nhands", "Total possible number of opponent hands");
 	AddSymbol(parent, "vs$nhandshi", "Number of opponent hands that have higher river chances ");

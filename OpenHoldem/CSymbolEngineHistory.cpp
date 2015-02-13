@@ -245,7 +245,11 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 			*result = didrais(name[12]-'0');
 		}	else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)	{
 			*result = didswag(name[12]-'0');
-		}	else {
+		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==7) {
+			*result = didfold(name[12]-'0'));
+		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==7) {
+			*result = didalli(name[12]-'0');
+    }	else {
 			// Invalid symbol
 			return false;
 		}
@@ -306,9 +310,9 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 		return false;
 	}
 	// Considering fold or allin too. It's unneccessary for bot logic, but usefull for lazy scraping.
-	return	(  didchec(betround) || didcall(betround) 
+	return (didchec(betround) || didcall(betround) 
 			|| didswag(betround) || didrais(betround)
-			|| didfold(betround) || didalli(betround) );
+			|| didfold(betround) || didalli(betround));
 }
 
 CString CSymbolEngineHistory::SymbolsProvided() {
