@@ -297,37 +297,34 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 
 	// First sleep(), THEN check for stolen focus, then act
 	//  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
+
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
 	Sleep(preferences.swag_delay_1()); 
-
 	// Check for stolen , and thus misswag
 	if (TableLostFocus())
 		lost_focus = true;
 	
 	DeleteSwagText();
 
-	// Check for stolen focus, and thus misswag
-	if (TableLostFocus())
-		lost_focus = true;
-
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
-	
-	// SWAG AMOUNT ENTRY
-	double swag_adjusted = AdjustedBetsize(total_betsize_in_dollars);
-	swag_amt = Number2CString(swag_adjusted);
-
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount (not adjusted): %.2f\n", total_betsize_in_dollars);
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
-		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
-	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, preferences.swag_use_comma(), NULL, point_null);
-
 	Sleep(preferences.swag_delay_2());
 	// Check for stolen focus, and thus misswag
 	if (TableLostFocus())
 		lost_focus = true;
 
+	// SWAG AMOUNT ENTRY
+	double swag_adjusted = AdjustedBetsize(total_betsize_in_dollars);
+	swag_amt = Number2CString(swag_adjusted);
+	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount (not adjusted): %.2f\n", total_betsize_in_dollars);
+	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
+		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
+	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, preferences.swag_use_comma(), NULL, point_null);
+
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_3());
 	Sleep(preferences.swag_delay_3());
+	// Check for stolen focus, and thus misswag
+	if (TableLostFocus())
+		lost_focus = true;
 
 	// BET CONFIRMATION ACTION
 	if (!lost_focus)

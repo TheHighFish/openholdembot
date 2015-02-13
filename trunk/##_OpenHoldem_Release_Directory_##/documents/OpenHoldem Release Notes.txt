@@ -5,6 +5,8 @@ NEW stuff:
   and large betpot-actions to allin-actions depending on
   f$allin_on_betsize_balance_ration.
   [THF]
+- New symbols didfold (prefold included) and didalli.
+  [fqfq]
 
 MAINTENANCE:
 - Some more tournament identifiers for the title-string.
@@ -17,6 +19,11 @@ MAINTENANCE:
 - Simplified main toolbar. The gimmick buttons for attach top,
   attach bottom and min/max table-view are gone.
   [THF]
+
+BUG FIXES:
+- Delays in swag sequence were misplaced.
+  It could lead to unrecognized lost focus.
+  [fqfq]
 
 v7.5.0 2015-02.05
 ==================
