@@ -34,7 +34,6 @@
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
 #include "CParserSymbolTable.h"
-#include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPopupHandler.h"
 #include "CPreferences.h"
@@ -119,9 +118,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CGameState\n");
   assert(!p_game_state);
   p_game_state = new CGameState;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPerl\n");
-  assert(!p_perl);
-  p_perl = new CPerl;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
@@ -236,8 +232,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_table_positioner)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 04\n");
-  DELETE_AND_CLEAR(p_perl)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 05\n");
   DELETE_AND_CLEAR(p_game_state)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 06\n");

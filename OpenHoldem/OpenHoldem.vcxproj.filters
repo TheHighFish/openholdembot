@@ -336,9 +336,6 @@
     <ClCompile Include="DialogSAPrefs8.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
-    <ClCompile Include="DialogSAPrefs9.cpp">
-      <Filter>Source Files\GUI\prefs_dlg</Filter>
-    </ClCompile>
     <ClCompile Include="SAPrefsDialog.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
@@ -518,9 +515,6 @@
     </ClCompile>
     <ClCompile Include="CTablePositioner.cpp">
       <Filter>Source Files\AutoConnector</Filter>
-    </ClCompile>
-    <ClCompile Include="CPerl.cpp">
-      <Filter>Source Files\Programming the Bot</Filter>
     </ClCompile>
     <ClCompile Include="CPokerTrackerLookUp.cpp">
       <Filter>Source Files\PokerTracker</Filter>
@@ -722,6 +716,9 @@
     </ClCompile>
     <ClCompile Include="CSymbolEngineColourCodes.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs9.cpp">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1260,12 +1257,6 @@
     </ClInclude>
     <ClInclude Include="..\CCritSec\CCritSec.h">
       <Filter>Header Files\Synchronization\CCritSec</Filter>
-    </ClInclude>
-    <ClInclude Include="CPerl.hpp">
-      <Filter>Header Files\Programming the Bot</Filter>
-    </ClInclude>
-    <ClInclude Include="PerlEz.h">
-      <Filter>Header Files\Programming the Bot</Filter>
     </ClInclude>
     <ClInclude Include="CPokerTrackerLookUp.h">
       <Filter>Header Files\PokerTracker</Filter>

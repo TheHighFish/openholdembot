@@ -30,7 +30,6 @@
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemStatusbar.h"
 #include "COpenHoldemTitle.h"
-#include "CPerl.hpp"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
 #include "CSymbolEngineReplayFrameController.h"
@@ -45,7 +44,6 @@
 #include "DialogSAPrefs4.h"
 #include "DialogSAPrefs6.h"
 #include "DialogSAPrefs8.h"
-#include "DialogSAPrefs9.h"
 #include "DialogSAPrefs10.h"
 #include "DialogSAPrefs11.h"
 #include "DialogSAPrefs12.h"
@@ -83,11 +81,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
   ON_UPDATE_COMMAND_UI(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnUpdateViewScraperOutput)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
 	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
-	ON_UPDATE_COMMAND_UI(ID_PERL_LOADFORMULA, &CMainFrame::OnUpdateMenuPerlLoad)
-	ON_UPDATE_COMMAND_UI(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnUpdateMenuPerlLoadSpecificFormula)
-	ON_UPDATE_COMMAND_UI(ID_PERL_RELOADFORMULA, &CMainFrame::OnUpdateMenuPerlReloadFormula)
-	ON_UPDATE_COMMAND_UI(ID_PERL_CHECKSYNTAX, &CMainFrame::OnUpdateMenuPerlCheckSyntax)
-	ON_UPDATE_COMMAND_UI(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnUpdateMenuPerlEditMainFormula)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
@@ -99,11 +92,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
 	ON_COMMAND(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnDllLoadspecificfile)
-	ON_COMMAND(ID_PERL_LOADFORMULA, &CMainFrame::OnPerlLoadFormula)
-	ON_COMMAND(ID_PERL_LOADSPECIFICFORMULA, &CMainFrame::OnPerlLoadSpecificFormula)
-	ON_COMMAND(ID_PERL_RELOADFORMULA, &CMainFrame::OnPerlReloadFormula)
-	ON_COMMAND(ID_PERL_CHECKSYNTAX, &CMainFrame::OnPerlCheckSyntax)
-	ON_COMMAND(ID_PERL_EDITMAINFORMULA, &CMainFrame::OnPerlEditMainFormula)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
 	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
@@ -363,7 +351,6 @@ void CMainFrame::OnEditPreferences()
 	CDlgSAPrefs4 page4;
 	CDlgSAPrefs6 page6;
 	CDlgSAPrefs8 page8;
-	CDlgSAPrefs9 page9;
 	CDlgSAPrefs10 page10;
 	CDlgSAPrefs11 page11;
 	CDlgSAPrefs12 page12;
@@ -387,7 +374,6 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
 	dlg.AddPage(page11, "Logging");
-	dlg.AddPage(page9,  "Perl");
 	dlg.AddPage(page6,  "Poker Tracker v4");
 	dlg.AddPage(page22, "Popup Blocker");
 	dlg.AddPage(page16, "Rebuy");
@@ -547,57 +533,9 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CMainFrame::OnPerlLoadFormula() 
-{
-	if (p_perl->IsAFormulaLoaded())
-	{
-		p_perl->UnloadFormulaFile();
-	}
-	else
-	{
-		//  Reload the most recent formula
-		p_perl->ReloadFormulaFile();
-	}
-	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);	
-}
-
 void CMainFrame::OnClickedFlags()
 {
 	p_flags_toolbar->OnClickedFlags();
-}
-
-void CMainFrame::OnPerlLoadSpecificFormula() 
-{
-	CFileDialog			cfd(true);
-
-	cfd.m_ofn.lpstrInitialDir = preferences.path_perl();
-	cfd.m_ofn.lpstrFilter = "Perl Scripts (*.pl)\0*.pl\0Perl Modules (*.pm)\0*.pm\0All Files (*.*)\0*.*\0\0";
-	cfd.m_ofn.lpstrTitle = "Select Perl formula file to OPEN";
-	if (cfd.DoModal() == IDOK)
-	{
-		p_perl->LoadFormulaFile(cfd.m_ofn.lpstrFile);
-		preferences.SetValue(k_prefs_path_perl, cfd.GetPathName());
-	}
-}
-
-void CMainFrame::OnPerlEditMainFormula() 
-{
-	p_perl->EditMainFormulaFile();
-}
-
-void CMainFrame::OnPerlReloadFormula() 
-{
-	//  Reload the most recent formula
-	//	(This is a shortcut for unload + load.)
-	p_perl->ReloadFormulaFile();
-	//  Make some noise, as there's no visible reaction
-	Beep(880, 125);
-}
-
-void CMainFrame::OnPerlCheckSyntax() 
-{
-	p_perl->CheckSyntax();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -634,33 +572,6 @@ void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI) {
 
 void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
-}
-
-void CMainFrame::OnUpdateMenuPerlLoad(CCmdUI* pCmdUI) {
-	if (p_perl->IsAFormulaLoaded()) 	{
-		pCmdUI->SetText("&Unload Formula\tF7");
-	}	else 	{
-		pCmdUI->SetText("&Load Formula\tF7");
-	}
-  pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
-}
-
-void CMainFrame::OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
-}
-
-void CMainFrame::OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded() 
-		&& !p_autoplayer->autoplayer_engaged());
-}
-
-void CMainFrame::OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded());
-}
-
-void CMainFrame::OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(p_perl->IsAFormulaLoaded()
-		&& !p_autoplayer->autoplayer_engaged());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

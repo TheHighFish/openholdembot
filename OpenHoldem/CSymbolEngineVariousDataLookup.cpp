@@ -29,7 +29,6 @@
 #include "Chair$Symbols.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
-#include "CPerl.hpp"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -79,11 +78,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     } else {
 	    *result = k_undefined_zero;
     }
-  }
-  // Perl
-  else if (memcmp(name, "pl_", 3) == 0) {
-    assert(p_perl != NULL);
-    *result = p_perl->GetPerlSymbol(name);
   }
   // Various symbols below
   // without any optimized lookup.
