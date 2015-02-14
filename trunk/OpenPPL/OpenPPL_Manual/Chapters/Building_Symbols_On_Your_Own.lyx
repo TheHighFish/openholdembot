@@ -207,52 +207,52 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 0) RETURN balance0 FORCE
+    WHEN (f$BigBlindChair = 0) RETURN balance0 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 1) RETURN balance1 FORCE
+    WHEN (f$BigBlindChair = 1) RETURN balance1 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 2) RETURN balance2 FORCE
+    WHEN (f$BigBlindChair = 2) RETURN balance2 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 3) RETURN balance3 FORCE
+    WHEN (f$BigBlindChair = 3) RETURN balance3 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 4) RETURN balance4 FORCE
+    WHEN (f$BigBlindChair = 4) RETURN balance4 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 5) RETURN balance5 FORCE
+    WHEN (f$BigBlindChair = 5) RETURN balance5 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 6) RETURN balance6 FORCE
+    WHEN (f$BigBlindChair = 6) RETURN balance6 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 7) RETURN balance7 FORCE
+    WHEN (f$BigBlindChair = 7) RETURN balance7 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 8) RETURN balance8 FORCE
+    WHEN (f$BigBlindChair = 8) RETURN balance8 FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN (BigBlindChair = 9) RETURN balance9 FORCE
+    WHEN (f$BigBlindChair = 9) RETURN balance9 FORCE
 \end_layout
 
 \begin_layout Plain Layout
