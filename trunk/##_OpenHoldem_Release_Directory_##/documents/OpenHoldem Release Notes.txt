@@ -25,6 +25,8 @@ MAINTENANCE:
   as Perl obviously was unused recently. If anybody really 
   needs Perl he could put the interpreter into a user-DLL.
   [THF]
+- Changed mutex timeout for FIFO actions in most situations.
+  [fqfq]
 
 BUG FIXES:
 - Delays in swag sequence were misplaced.
