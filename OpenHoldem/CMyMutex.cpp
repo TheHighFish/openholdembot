@@ -16,7 +16,7 @@
 #include "CPreferences.h"
 
 CMyMutex::CMyMutex() : _mutex(false, preferences.mutex_name()) {
-	if (_mutex.Lock(500)) {
+	if (_mutex.Lock(4000)) {
 	  _locked = TRUE;
   }	else {
 	  _locked = FALSE;
