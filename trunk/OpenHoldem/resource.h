@@ -329,8 +329,6 @@
 #define IDC_FUNCTIONS_TAB               1289
 #define IDC_MINIMUM_DELAY               1294
 #define IDC_MINIMUM_DELAY_SPIN          1295
-#define IDC_MAXIMUM_LOG                 1297
-#define IDC_MAXIMUM_LOG_SPIN            1298
 #define IDC_ENABLE_TRACE                1299
 #define IDC_TRACE_LIST                  1300
 #define IDC_COMMENT                     1301
