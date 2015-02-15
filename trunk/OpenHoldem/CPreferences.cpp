@@ -89,6 +89,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"validator_stop_on_error",
 	"validator_use_heuristic_rules",
 	"validator_shoot_replayframe_on_error",
+  "validator_enabled",
 	"autoconnector_close_when_table_disappears",
 	"gui_start_minimized", 
 	"rebuy_condition_no_cards",
@@ -121,7 +122,6 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"scraper_dy",
 	"main_x",
 	"main_y",
-	"validator_enabled", 
 	"autoconnector_when_to_connect",
 	"rebuy_minimum_time_to_next_try",
 	"lazy_scraping_when_to_scrape",
@@ -228,8 +228,7 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_replay_max_frames] = 100;
 	prefs_numerical_values[k_prefs_chat_min_delay] = 600;		//  seconds
 	prefs_numerical_values[k_prefs_chat_random_delay] = 3000;	//  seconds;
-	prefs_numerical_values[k_prefs_log_max_logsize] = 10;		// MB
-	prefs_numerical_values[k_prefs_validator_enabled] = 1;		// 0 = disabled; 1 = when it's my turn; 2 = always
+	prefs_numerical_values[k_prefs_log_max_logsize] = 10;		// MB		
 	prefs_numerical_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;
 	prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
 	prefs_numerical_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;

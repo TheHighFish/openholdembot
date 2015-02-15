@@ -196,14 +196,11 @@ void CValidator::ValidateIt() {
 }
 
 void CValidator::ValidateGameState() {
-	if (// Always enabled?
-		  (preferences.validator_enabled() == 2)
-		  // Enabled, when it's my turn?
-		  || ((preferences.validator_enabled() == 1) && (p_symbol_engine_autoplayer->ismyturn())) 
+	if (// Enabled, when it's my turn?
+		  (preferences.validator_enabled() && (p_symbol_engine_autoplayer->ismyturn())) 
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
 	  // Validate.
-	  //
 	  //
 	  // Validator-rules are defined in "pseudo-code",
 	  // that is easily understandable for non-programmers,
