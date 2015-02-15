@@ -339,9 +339,7 @@
 #define IDC_OMF_CLASS_NAME              1304
 #define IDC_OMF_MUTEX_NAME              1305
 #define IDC_OMF_REG_NAME                1306
-#define IDC_RADIO_VALIDATOR_1           1306
-#define IDC_RADIO_VALIDATOR_2           1307
-#define IDC_RADIO_VALIDATOR_3           1308
+#define IDC_CHECK_VALIDATOR_ENABLED     1306
 #define IDC_CHECK_VALIDATOR_STOP_ON_ERROR 1310
 #define IDC_SIMPLE_TITLE                1312
 #define IDC_CHECK_VALIDATOR_HEURISTIC_RULES 1313

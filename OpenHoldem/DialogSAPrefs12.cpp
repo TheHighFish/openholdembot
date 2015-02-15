@@ -50,18 +50,7 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs12 message handlers
 BOOL CDlgSAPrefs12::OnInitDialog()
 {	
-	if (preferences.validator_enabled() == 0)
-	{
-		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_1);
-	}
-	else if (preferences.validator_enabled() == 1)
-	{
-		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_2);
-	}
-	else
-	{
-		CheckRadioButton(IDC_RADIO_VALIDATOR_1, IDC_RADIO_VALIDATOR_3, IDC_RADIO_VALIDATOR_3);
-	}
+	CheckDlgButton(IDC_CHECK_VALIDATOR_ENABLED, preferences.validator_enabled() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, preferences.validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, preferences.validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, preferences.validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
@@ -72,18 +61,7 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 
 void CDlgSAPrefs12::OnOK()
 {
-	if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_1))
-	{
-		preferences.SetValue(k_prefs_validator_enabled, 0);
-	}
-	else if (IsDlgButtonChecked(IDC_RADIO_VALIDATOR_2))
-	{
-		preferences.SetValue(k_prefs_validator_enabled, 1);
-	}
-	else
-	{
-		preferences.SetValue(k_prefs_validator_enabled, 2);
-	}
+	preferences.SetValue(k_prefs_validator_enabled, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_ENABLED));
 	preferences.SetValue(k_prefs_validator_use_heuristic_rules, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
 	preferences.SetValue(k_prefs_validator_stop_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
 	preferences.SetValue(k_prefs_validator_shoot_replayframe_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));

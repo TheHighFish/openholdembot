@@ -698,21 +698,19 @@ IDD_SAPREFS12 DIALOGEX 0, 0, 221, 242
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Enable Validator",IDC_STATIC,4,4,201,65
-    CONTROL         "Never",IDC_RADIO_VALIDATOR_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,8,20,142,8
-    CONTROL         "When it's my turn",IDC_RADIO_VALIDATOR_2,"Button",BS_AUTORADIOBUTTON,8,36,156,8
-    CONTROL         "Always",IDC_RADIO_VALIDATOR_3,"Button",BS_AUTORADIOBUTTON,8,52,150,8
+    CONTROL         "Enable validator on my turn",IDC_CHECK_VALIDATOR_ENABLED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,9,179,8
     CONTROL         "Use heuristic rules",IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,82,179,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,23,179,8
     CONTROL         "Stop autoplayer on error",IDC_CHECK_VALIDATOR_STOP_ON_ERROR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,98,166,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,37,166,8
     CONTROL         "Shoot replay-frames on error",IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,114,189,8
-    LTEXT           "The validator is a tool that tests the combination of",IDC_STATIC,6,140,216,8
-    LTEXT           "  * scraper",IDC_STATIC,6,152,216,8
-    LTEXT           "  * symbol engine",IDC_STATIC,6,162,216,8
-    LTEXT           "  * tablemap",IDC_STATIC,6,172,216,8
-    LTEXT           "to detect incosistencies, usually caused by bad tablemaps.",IDC_STATIC,6,184,215,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,51,189,8
+    LTEXT           "The validator is a tool that tests the combination of",IDC_STATIC,6,79,216,8
+    LTEXT           "  * scraper",IDC_STATIC,6,91,216,8
+    LTEXT           "  * symbol engine",IDC_STATIC,6,101,216,8
+    LTEXT           "  * tablemap",IDC_STATIC,6,111,216,8
+    LTEXT           "to detect incosistencies, usually caused by bad tablemaps.",IDC_STATIC,6,123,215,8
 END
 
 IDD_SAPREFS13 DIALOGEX 0, 0, 270, 188
