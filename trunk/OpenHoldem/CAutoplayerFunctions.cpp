@@ -248,7 +248,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 {
-	for (int i=k_standard_function_prefold; i<=k_standard_function_allin_on_betsize_balance_ratio; i++)
+	for (int i=k_hopper_function_sitin; i<=k_standard_function_allin_on_betsize_balance_ratio; i++)
 	{
 		double result = p_function_collection->Evaluate(k_standard_function_names[i], true);
 		write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 

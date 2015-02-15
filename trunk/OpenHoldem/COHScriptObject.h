@@ -48,6 +48,7 @@ class COHScriptObject {
   bool IsSecondaryFunction();
   bool IsPrWinFunction();
   bool IsIniFunction();
+  bool IsHopperFunction();
   bool IsDebugFunction();
   bool IsNotesOrDLL();
   bool IsICMConfigurationFunction();

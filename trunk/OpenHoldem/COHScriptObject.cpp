@@ -89,6 +89,13 @@ bool COHScriptObject::IsIniFunction() {
   return false;
 }
 
+bool COHScriptObject::IsHopperFunction() {
+  for (int i=k_hopper_function_sitin; i<=k_hopper_function_rebuy; ++i) {
+    if (_name == k_standard_function_names[i]) return true;
+  }
+  return false;
+}
+
 bool COHScriptObject::IsPrWinFunction() {
   for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i) {
     if (_name == k_standard_function_names[i]) return true;
@@ -117,21 +124,23 @@ int COHScriptObject::EditorGroupingCategory() {
   // Category 0: autoplayer / OpenPPL
   if (p_function_collection->IsOpenPPLProfile()  && IsMainOpenPPLFunction()) return 0;
   if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction())  return 0;
-  // Category 1: Secondary (f$sitout, f$close,..) DLL, notes)
+  // Category 1: Secondary (f$chat,..) DLL, notes)
   if (IsSecondaryFunction()) return 1;
   if (IsNotesOrDLL()) return 1;
-  // Category 2: Ini-fucntions
-  if (IsIniFunction()) return 2;
-  // Category 3: PrWin functions
-  if (IsPrWinFunction()) return 3;
-  // Category 4: ICM-functions
-  if (IsICMConfigurationFunction()) return 4;
-  // Category 5: debug-functions
-  if (IsDebugFunction()) return 5;
-  // Category 6: hand-lists
-  if (IsList()) return 6;
-  // Category 7: other user defined functions
-  if (IsUserDefinedFunction()) return 7;
+  // Category 2: Hopper funvtions (f$sitin, f$close, ...)
+  if (IsHopperFunction()) return 2;
+  // Category 3: Ini-fucntions
+  if (IsIniFunction()) return 3;
+  // Category 4: PrWin functions
+  if (IsPrWinFunction()) return 4;
+  // Category 5: ICM-functions
+  if (IsICMConfigurationFunction()) return 5;
+  // Category 6: debug-functions
+  if (IsDebugFunction()) return 6;
+  // Category 7: hand-lists
+  if (IsList()) return 7;
+  // Category 8: other user defined functions
+  if (IsUserDefinedFunction()) return 8;
   // Treat undefined as user-defined;
   return 7;
 }

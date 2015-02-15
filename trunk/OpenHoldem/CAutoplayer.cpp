@@ -303,19 +303,19 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		if (DoPrefold()) {
       executed_secondary_function = k_standard_function_prefold;
     }
-	}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_close))	{
+	}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_close))	{
 		// CloseWindow is "final".
 		// We don't expect any further action after that
 		// and can return immediatelly.
 		if (p_casino_interface->CloseWindow()) {
-      executed_secondary_function = k_standard_function_close;
+      executed_secondary_function = k_hopper_function_close;
     }
-  } else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_rebuy))	{
+  } else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_rebuy))	{
 		// This requires an external script and some time.
 		// No further actions here eihter, but immediate return.
 		p_rebuymanagement->TryToRebuy();
     // No waz to check for success here
-		executed_secondary_function = k_standard_function_rebuy;
+		executed_secondary_function = k_hopper_function_rebuy;
 	} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
 		if (DoChat()) {
       executed_secondary_function = k_standard_function_chat;
@@ -327,7 +327,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	// k_standard_function_leave,
 	// k_standard_function_autopost,
 	else 
-    for (int i=k_standard_function_sitin; i<=k_standard_function_autopost; ++i)	{
+    for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
     if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
 		  if (p_casino_interface->ClickButton(i)) {
         executed_secondary_function = i;

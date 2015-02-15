@@ -166,7 +166,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	double BigBet = p_symbol_engine_tablelimits->bigbet();
 	int UserChair = p_symbol_engine_userchair->userchair();
 	double Balance = p_table_state->User()->_balance;
-	double TargetAmount = p_function_collection->Evaluate(k_standard_function_names[k_standard_function_rebuy]);
+	double TargetAmount = p_function_collection->Evaluate(k_standard_function_names[k_hopper_function_rebuy]);
 	CString RebuyScript = preferences.rebuy_script();
 	CString CommandLine;
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
