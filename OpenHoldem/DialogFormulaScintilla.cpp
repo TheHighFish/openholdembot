@@ -130,48 +130,14 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
   } else {
     m_standard_headings.Add("OpenPPL Functions");
   }
-	m_standard_headings.Add("Standard Functions");
+	m_standard_headings.Add("Secondary Functions");
+  m_standard_headings.Add("Hopper Functions");
 	m_standard_headings.Add("Ini Functions");
 	m_standard_headings.Add("PrWin Functions");
   m_standard_headings.Add("ICM Functions");
   m_standard_headings.Add("Debug Functions");
-
-	ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
-  m_standard_functions[0].RemoveAll();
-  if (!p_function_collection->IsOpenPPLProfile()) {
-	  // Autoplayer Functions
-	  for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
-		  m_standard_functions[0].Add(k_standard_function_names[i]);
-	  }
-  } else {
-    // OpenPPL
-    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
-		  m_standard_functions[0].Add(k_OpenPPL_function_names[i]);
-    }
-  }
-	// Standard functions
-	// Notes and DLL are somewhat special
-	m_standard_functions[1].Add("notes");
-	m_standard_functions[1].Add("dll");
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i) {
-		m_standard_functions[1].Add(k_standard_function_names[i]);
-	}
-	// Ini Functions
-	for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i) {
-		m_standard_functions[2].Add(k_standard_function_names[i]);
-	}
-	// PrWin functions
-	for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i) {
-		m_standard_functions[3].Add(k_standard_function_names[i]);
-	}
-  // ICM functions
-  for (int i=k_icm_prize1; i<=k_icm_prize9; ++i) {
-    m_standard_functions[4].Add(k_standard_function_names[i]);
-  }
-	// Debug functions	
-	m_standard_functions[5].Add("f$test");
-	m_standard_functions[5].Add("f$debug");
-
+  ASSERT(m_standard_headings.GetSize() == k_number_of_standard_headings);
+  
 	m_current_edit = "";
 	m_dirty = false;
   ok_to_update_debug = false;
@@ -563,21 +529,26 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
           k_standard_function_prefold, k_standard_function_allin_on_betsize_balance_ratio);
         break;
       case 2:
+        // Hopper Functions
+        AddStandardFunctionsToTree(parent,
+          k_hopper_function_sitin, k_hopper_function_autopost);
+        break;
+      case 3:
         // Ini functions
         AddStandardFunctionsToTree(parent,
           k_init_on_startup, k_init_on_heartbeat);
         break;
-      case 3:
+      case 4:
         // PrWin functions
         AddStandardFunctionsToTree(parent,
           k_prwin_number_of_opponents, k_prwin_wontplay);
         break;
-      case 4:
+      case 5:
         // ICM functions
         AddStandardFunctionsToTree(parent,
           k_icm_prize1, k_icm_prize9);
         break;
-      case 5:
+      case 6:
         // Debug functions
         AddFunctionToTree(parent, "f$debug");
         AddFunctionToTree(parent, "f$test");

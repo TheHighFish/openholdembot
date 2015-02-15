@@ -230,7 +230,7 @@ class CDlgFormulaScintilla : public CDialog {
   //   * PrWin functions
   //   * ICM Functions
   //   * Debug functions
-  static const int k_number_of_standard_headings = 6;
+  static const int k_number_of_standard_headings = 7;
   CStringArray		m_standard_functions[k_number_of_standard_headings];
   DECLARE_MESSAGE_MAP()
 

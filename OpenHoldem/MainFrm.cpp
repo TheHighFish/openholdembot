@@ -232,8 +232,13 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// Restore window location and size
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
+  // Make sure that our coordinates are not out of screen
+  // (too large or even negative)
 	cs.x = min(preferences.main_x(), max_x);
 	cs.y = min(preferences.main_y(), max_y);
+  cs.x = max(cs.x, 0);
+  cs.y = max(cs.y, 0);
+  // GUI size
 	cs.cx = kMainSizeX;
 	cs.cy = kMainSizeY;
 

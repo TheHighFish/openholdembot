@@ -221,10 +221,10 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	button_names[k_autoplayer_function_check]		= GetButtonName(_check_button_number);
 	button_names[k_autoplayer_function_fold]		= GetButtonName(_fold_button_number);
 	button_names[k_standard_function_prefold]		= GetButtonName(_prefold_button_number);
-	button_names[k_standard_function_sitin]		  = GetButtonName(_sitin_button_number);
-	button_names[k_standard_function_sitout]		= GetButtonName(_sitout_button_number);
-	button_names[k_standard_function_leave]		  = GetButtonName(_leave_button_number);
-	button_names[k_standard_function_autopost]	= GetButtonName(_autopost_button_number);
+	button_names[k_hopper_function_sitin]		  = GetButtonName(_sitin_button_number);
+	button_names[k_hopper_function_sitout]		= GetButtonName(_sitout_button_number);
+	button_names[k_hopper_function_leave]		  = GetButtonName(_leave_button_number);
+	button_names[k_hopper_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
 		int button_index = i - k_autoplayer_function_betpot_2_1;
@@ -250,10 +250,10 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	visible_buttons[k_autoplayer_function_check]	= GetButtonVisible(_check_button_number);
 	visible_buttons[k_autoplayer_function_fold]		= GetButtonVisible(_fold_button_number);
 	visible_buttons[k_standard_function_prefold]	= GetButtonVisible(_prefold_button_number);
-	visible_buttons[k_standard_function_sitin]		= GetButtonVisible(_sitin_button_number);
-	visible_buttons[k_standard_function_sitout]		= GetButtonVisible(_sitout_button_number);
-	visible_buttons[k_standard_function_leave]		= GetButtonVisible(_leave_button_number);
-	visible_buttons[k_standard_function_autopost]	= GetButtonVisible(_autopost_button_number);
+	visible_buttons[k_hopper_function_sitin]		= GetButtonVisible(_sitin_button_number);
+	visible_buttons[k_hopper_function_sitout]		= GetButtonVisible(_sitout_button_number);
+	visible_buttons[k_hopper_function_leave]		= GetButtonVisible(_leave_button_number);
+	visible_buttons[k_hopper_function_autopost]	= GetButtonVisible(_autopost_button_number);
 	// visible betpot buttons
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
 		int button_index = i - k_autoplayer_function_betpot_2_1;

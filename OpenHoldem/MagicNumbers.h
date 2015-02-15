@@ -220,16 +220,16 @@ enum StandardFunctionConstants
 	k_autoplayer_function_call,
 	k_autoplayer_function_check,
 	k_autoplayer_function_fold,
-	// Secondary autoplayer-functions
-	k_standard_function_prefold,
-	k_standard_function_sitin,
-	k_standard_function_sitout,
-	k_standard_function_leave,
-	k_standard_function_autopost,
-	k_standard_function_close,
-	k_standard_function_rebuy,
-	k_standard_function_chat,
+	// hopper-functions
+	k_hopper_function_sitin,
+	k_hopper_function_sitout,
+	k_hopper_function_leave,
+	k_hopper_function_autopost,
+	k_hopper_function_close,
+	k_hopper_function_rebuy,
 	// Other functions
+  k_standard_function_prefold,
+  k_standard_function_chat,
 	k_standard_function_delay,
   k_standard_function_allin_on_betsize_balance_ratio,
 	// Ini-functions	
@@ -293,15 +293,15 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 	"f$check",
 	"f$fold",
 	// Secondary autoplayer-functions
-	"f$prefold",
 	"f$sitin",
 	"f$sitout",
 	"f$leave",
 	"f$autopost",
 	"f$close",
 	"f$rebuy",
-	"f$chat",
 	// Other functions
+  "f$prefold",
+  "f$chat",
 	"f$delay",
   "f$allin_on_betsize_balance_ratio",
 	// Ini-functions	
