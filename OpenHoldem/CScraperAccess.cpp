@@ -319,16 +319,15 @@ int CScraperAccess::NumberOfVisibleButtons()
 	return number_of_visible_buttons;
 }
 
-bool CScraperAccess::IsPlayerActive(int player)
-{
-	bool result = p_string_match->IsStringActive(p_scraper->active(player));
+bool CScraperAccess::IsPlayerActive(int player) {
+	bool result = p_table_state->_players[player]._active;
 	result = result && IsPlayerSeated(player);
 	return result;
 }
 
 bool CScraperAccess::IsPlayerSeated(int player)
 {
-	bool result = p_string_match->IsStringSeated(p_scraper->seated(player));
+	bool result = p_table_state->_players[player]._seated;
 	return result;
 }
 

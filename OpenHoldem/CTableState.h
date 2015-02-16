@@ -34,8 +34,10 @@ class CTableState {
  public:
   CPlayer *User();
  public:
-  Card _common_cards[k_number_of_community_cards];
+  Card    _common_cards[k_number_of_community_cards];
   CPlayer _players[kNumberOfPlayerEntries];
+  char		_title[MAX_WINDOW_TITLE];
+  double	_pot[k_max_number_of_pots];
 };
 
 extern CTableState *p_table_state;
