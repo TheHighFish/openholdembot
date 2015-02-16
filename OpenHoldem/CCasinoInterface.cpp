@@ -277,8 +277,7 @@ void CCasinoInterface::DeleteSwagText()
 	{}
 }
 
-bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
-{
+bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	POINT			cur_pos = {0};
 	bool			lost_focus = false;
 	POINT			point_null = {-1, -1};
@@ -301,17 +300,17 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
 	Sleep(preferences.swag_delay_1()); 
 	// Check for stolen , and thus misswag
-	if (TableLostFocus())
+	if (TableLostFocus()) {
 		lost_focus = true;
-	
+  }
 	DeleteSwagText();
 
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
 	Sleep(preferences.swag_delay_2());
 	// Check for stolen focus, and thus misswag
-	if (TableLostFocus())
+	if (TableLostFocus()) {
 		lost_focus = true;
-
+  }
 	// SWAG AMOUNT ENTRY
 	double swag_adjusted = AdjustedBetsize(total_betsize_in_dollars);
 	swag_amt = Number2CString(swag_adjusted);
@@ -323,47 +322,31 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars)
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_3());
 	Sleep(preferences.swag_delay_3());
 	// Check for stolen focus, and thus misswag
-	if (TableLostFocus())
-		lost_focus = true;
-
-	// BET CONFIRMATION ACTION
-	if (!lost_focus)
-	{
-		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER)
-		{
+	if (TableLostFocus()) {
+    lost_focus = true;
+  }
+  // BET CONFIRMATION ACTION
+	if (!lost_focus) {
+		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) 	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
-		}
-		else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET 
-			&& p_scraper_access->available_buttons[k_autoplayer_function_raise])
-		{
+		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET 
+			  && p_scraper_access->available_buttons[k_autoplayer_function_raise]) 	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Bet Confirmation: Using raise button\n");
-
-			if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)
-			{
+      if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) 	{
 				ClickButtonSequence(k_autoplayer_function_raise, 
 					k_autoplayer_function_raise, 
 					k_double_click_delay);
-			}
-			else
-			{
+			}	else {
 				ClickButton(k_autoplayer_function_raise);
 			}
-		}
-
-		else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)
-		{
-		}
-
-		else
-		{
+		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)	{
+		} else {
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (invalid swagconfirmationmethod).\n");
       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
 			return false;
 		}
-		
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), true);
-
 	}
 	int betround = p_betround_calculator->betround();
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag, 'didswag' now: %d\n", 

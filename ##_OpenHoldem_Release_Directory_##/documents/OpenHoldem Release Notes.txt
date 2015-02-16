@@ -5,6 +5,9 @@ NEW stuff:
   and large betpot-actions to allin-actions depending on
   f$allin_on_betsize_balance_ration.
   [THF]
+- OpenHoldem does now also round swagged betsizes 
+  to multiples of a small-blind and to "beautiful" numbers.
+  [THF]
 - f$icm_prize_X functions for the places 6..9.
   [Poker_Dog]
 - New symbols didfold, didalli, didfoldroundX, didalliroundX,

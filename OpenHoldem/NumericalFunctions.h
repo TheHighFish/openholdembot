@@ -71,6 +71,10 @@ inline void AdaptValueToMinMaxRange(double *value, double min, double max) {
 // returns a random number in the range 0..n-1
 int Random(int n);
 
+// Rounds value to N units
+// Default unit is 1.0 (integer)
+double Rounding(double value, double unit = 1.0);
+
 #define MAX(x, y)		(((x) > (y)) ? (x) : (y))
 #define MIN(x, y)		(((x) < (y)) ? (x) : (y))
 
