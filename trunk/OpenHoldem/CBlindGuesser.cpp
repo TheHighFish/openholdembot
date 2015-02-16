@@ -173,7 +173,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // (because of stable frames).
   int dealer = p_symbol_engine_dealerchair->dealerchair();  
   // Exit on undefined or wrong dealer (last hand)
-  if ((dealer == k_undefined) || !p_scraper->dealer(dealer)) return;
+  if ((dealer == k_undefined) || !p_table_state->_players[dealer]._dealer) return;
 
   int first_chair = dealer + 1;
   int last_chair  = dealer + p_tablemap->nchairs();

@@ -16,6 +16,7 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 CSymbolEngineDealerchair *p_symbol_engine_dealerchair = NULL;
@@ -51,14 +52,11 @@ void CSymbolEngineDealerchair::ResetOnNewRound()
 void CSymbolEngineDealerchair::ResetOnMyTurn()
 {}
 
-void CSymbolEngineDealerchair::ResetOnHeartbeat()
-{
+void CSymbolEngineDealerchair::ResetOnHeartbeat() {
 	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		if (p_scraper->dealer(i))
-		{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+		if (p_table_state->_players[i]._dealer)	{
 			write_log(preferences.debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
 			break;

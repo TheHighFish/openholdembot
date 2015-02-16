@@ -51,9 +51,6 @@ public:
 public:
 	// public accessors
 	const char*			title()                    { return _title; }
-	const CString		seated(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _seated[n]; }
-	const CString		active(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "false") return _active[n]; }
-	const bool			dealer(int n)              { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _dealer[n]; }
 	const bool			sitting_out(int n)         { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, false)   return _sitting_out[n]; }
 	const double		pot(int n)                 { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, 0.0)     return _pot[n]; }
 	const CString		button_state(int n)        { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, k_last_chair, "")      return _button_state[n]; }
@@ -125,9 +122,6 @@ private:
 	// public mutators 
 	// Used mainly by the scraper override dll to push their updates into the CScraper structures
 	void	set_title(const char *s) { ENT strncpy_s(_title, MAX_WINDOW_TITLE, s, MAX_WINDOW_TITLE);}
-	void	set_seated(const int n, CString s) { ENT if (n>=0 && n<=9) _seated[n] = s;}
-	void	set_active(const int n, CString s) { ENT if (n>=0 && n<=9) _active[n] = s;}
-	void	set_dealer(const int n, const bool b) { ENT if (n>=0 && n<=9) _dealer[n] = b;}
 	void	set_sitting_out(const int n, const bool b) { ENT if (n>=0 && n<=9) _sitting_out[n] = b;}
 	void	set_pot(const int n, const double d) { ENT if (n>=0 && n<=9) _pot[n] = d;}
 	void	set_button_state(const int n, const CString s) { ENT if (n>=0 && n<=9) _button_state[n] = s;}
@@ -151,15 +145,8 @@ private:
 private:
 	// private variables - use public accessors and public mutators to address these
 	char				_title[MAX_WINDOW_TITLE];
-	// dealer
-	bool				_dealer[k_max_number_of_players];
 	// players - sitting out
 	bool				_sitting_out[k_max_number_of_players];
-	// players - seated / active
-	CString			_seated[k_max_number_of_players];
-	CString			_active[k_max_number_of_players];
-	// players - money
-	double			_player_balance[k_max_number_of_players]; 
 	// pot
 	double			_pot[k_max_number_of_pots];
 	// i3-slider-handle

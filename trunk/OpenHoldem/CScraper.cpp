@@ -283,16 +283,13 @@ void CScraper::ScrapeBetpotButtons() {
 }
 
 void CScraper::ScrapeSeatedActive() {
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		set_seated(i, "false");
-		set_active(i, "false");
+	for (int i=0; i<k_max_number_of_players; i++)	{
+		p_table_state->_players[i]._seated = false;
+		p_table_state->_players[i]._active = false;
 	}
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		ScrapeSeated(i);
-		if (p_scraper_access->IsPlayerSeated(i))
-		{
+		if (p_scraper_access->IsPlayerSeated(i))		{
 			ScrapeActive(i);
 		}
 	}
@@ -322,27 +319,22 @@ void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
 
-	set_seated(chair, "false");
+	p_table_state->_players[chair]._seated = false;
 	seated.Format("p%dseated", chair);
-	if (EvaluateRegion(seated, &result))
-	{
-		if (result != "")
-		{
-			set_seated(chair, result);
+	if (EvaluateRegion(seated, &result)) {
+		if (result != "")	{
+			p_table_state->_players[chair]._seated = result;
 		}
 	}
-	if (p_scraper_access->IsPlayerSeated(chair))
-	{
+	if (p_scraper_access->IsPlayerSeated(chair)) {
 		return;
 	}
 	// try u region next uXseated,
 	// but only if we didn't get a positive result from the p region
 	seated.Format("u%dseated", chair);
-	if (EvaluateRegion(seated, &result))
-	{
-		if (result!="")
-		{
-			set_seated(chair, result);
+	if (EvaluateRegion(seated, &result)) {
+		if (result!="")	{
+			p_table_state->_players[chair]._seated = result;
 		}
 	}
 }
@@ -353,9 +345,8 @@ void CScraper::ScrapeDealer() {
 	CString dealer;
 	CString result;
 
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		set_dealer(i, false);
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+		p_table_state->_players[i]._dealer = false;
 	}
 
 	for (int i=0; i<p_tablemap->nchairs(); i++)
@@ -363,9 +354,8 @@ void CScraper::ScrapeDealer() {
 		dealer.Format("p%ddealer", i);
 		if (EvaluateRegion(dealer, &result))
 		{
-			if (p_string_match->IsStringDealer(result))
-			{
-				set_dealer(i, true);
+			if (p_string_match->IsStringDealer(result))	{
+				p_table_state->_players[i]._dealer = true;
 				return;
 			}
 		}
@@ -375,7 +365,7 @@ void CScraper::ScrapeDealer() {
 		{
 			if (p_string_match->IsStringDealer(result))
 			{
-				set_dealer(i, true);
+				p_table_state->_players[i]._dealer = true;
 				return;
 			}
 		}
@@ -385,18 +375,18 @@ void CScraper::ScrapeDealer() {
 void CScraper::ScrapeActive(int chair) {
 	CString active;
 	CString result;
-	set_active(chair, "false");
+	p_table_state->_players[chair]._active = false;
   // try p region first pXactive
 	active.Format("p%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		set_active(chair, result);
+		p_table_state->_players[chair]._active = result;
 	}
 	if (p_scraper_access->IsPlayerActive(chair)) {
 		return;
 	}
 	active.Format("u%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		set_active(chair, result);
+		p_table_state->_players[chair]._active = result;
 	}
 }
 
@@ -677,7 +667,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
 		}
 		else if (text.MakeLower().Find("out")!=-1) {
 			set_sitting_out(chair, true);
-			set_active(chair, "false");
+			p_table_state->_players[chair]._active = false;
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT\n", name);
       return k_undefined;
 		}	else {
@@ -774,9 +764,9 @@ void CScraper::ClearScrapeAreas(void) {
   }
 	for (int i=0; i<k_max_number_of_players; i++) {
     p_table_state->_players[i].Reset();
-		set_seated(i, "false");
-		set_active(i, "false");
-		set_dealer(i, false);
+		p_table_state->_players[i]._active = false;
+		p_table_state->_players[i]._active = false;
+		p_table_state->_players[i]._dealer = false;
 		p_table_state->_players[i]._bet = 0.0;
 		set_i86X_button_state(i, "false");
 		set_button_state(i, "false");

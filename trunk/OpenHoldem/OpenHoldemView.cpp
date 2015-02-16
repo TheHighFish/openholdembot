@@ -27,7 +27,7 @@
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
 #include "CSymbolengineChipAmounts.h"
-#include "CSymbolengineColourCodes.h";
+#include "CSymbolengineColourCodes.h"
 #include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
@@ -137,7 +137,9 @@ COpenHoldemView::COpenHoldemView() {
 
 	for (int i = 0; i<k_max_number_of_players ; i++)
 	{
-		_seated_last[i] = _active_last[i] = _playername_last[i] = "";
+		_seated_last[i] = false; 
+    _active_last[i] = false;
+    _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
 		for (int j=0; j<k_number_of_cards_per_player; j++)
@@ -274,16 +276,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 	}
   // Draw collection of player info
-	for (int i=0; i<p_tablemap->nchairs(); i++) 
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++) 	{
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
-		if (_seated_last[i] != p_scraper->seated(i) ||
-			_active_last[i] != p_scraper->active(i)) 
-		{
-			_seated_last[i] = p_scraper->seated(i);
-			_active_last[i] = p_scraper->active(i);
+		if (_seated_last[i] != p_table_state->_players[i]._seated 
+        || _active_last[i] != p_table_state->_players[i]._active) 	{
+			_seated_last[i] = p_table_state->_players[i]._seated;
+			_active_last[i] = p_table_state->_players[i]._active;
 			update_it = true;
 		}
     if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
@@ -292,18 +292,15 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
 			update_it = true;
 		}
-		if (_dealer_last[i] != p_scraper->dealer(i)) 
-		{
-			_dealer_last[i] = p_scraper->dealer(i);
+		if (_dealer_last[i] != p_table_state->_players[i]._dealer) {
+			_dealer_last[i] = p_table_state->_players[i]._dealer;
 			update_it = true;
 		}
-		if (_playername_last[i] != p_table_state->_players[i]._name) 
-		{
+		if (_playername_last[i] != p_table_state->_players[i]._name) {
 			_playername_last[i] = p_table_state->_players[i]._name;
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) 
-		{
+		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) {
 			_playerbalance_last[i] = p_table_state->_players[i]._balance;
 			update_it = true;
 		}
@@ -313,12 +310,10 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			update_it = true;
 		}
 
-		if (update_it || update_all) 
-		{
+		if (update_it || update_all) {
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
-			if (p_string_match->IsStringSeated(p_scraper->seated(i))) 
-			{
+			if (p_table_state->_players[i]._seated) 	{
 				DrawSeatedActiveCircle(i);
 				// Draw cards first, because we want the name 
 				// to occlude the cards and not the other way.
@@ -336,8 +331,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		// At some casinos the dealer can be at an empty seat.
 		// Therefore we draw the dealer-button anyway, inependent of "seated" and "active".
 		// Draw it at the very last, as we want to have it at the top of the cards.
-		if (p_scraper->dealer(i))
-		{
+		if (p_table_state->_players[i]._dealer) {
 			DrawDealerButton(i);
 		}
 	}

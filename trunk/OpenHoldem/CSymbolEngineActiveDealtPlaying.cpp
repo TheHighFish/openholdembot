@@ -97,13 +97,10 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	}
 }
 
-void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits()
-{
+void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 	_playersseatedbits = 0;
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (p_string_match->IsStringSeated(p_scraper->seated(i)))
-		{
+	for (int i=0; i<k_max_number_of_players; i++)	{
+		if (p_table_state->_players[i]._seated)	{
 			_playersseatedbits |= 1<<i;			
 		}
 	}
