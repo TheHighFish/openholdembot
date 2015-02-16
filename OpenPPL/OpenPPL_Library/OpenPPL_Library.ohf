@@ -446,10 +446,15 @@ HINT_Nothing_To_Do_But_All_OK
 me_re_MemBets
 
 ##BigBlindSittingOut##
--1 + msgbox$BigBlindStittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> BigBlindChair & 1) == 0)
 
 ##SmallBlindSittingOut##
--1 + msgbox$SmallBlindSittingOut_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> SmallBlindChair & 1) == 0)
+
+##OpponentsLeftSittingOut##
+(opponentsactivebits & opponentsplayingbits) == 0
 
 ##BotCalledBeforeFlop##
 didcallround1

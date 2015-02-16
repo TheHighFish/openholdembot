@@ -12,6 +12,9 @@ NEW stuff:
   [Poker_Dog]
 - New symbols didfold, didalli, didfoldroundX, didalliroundX,
   [FqFq]
+- Implementing the OpenPPL-symbols BigBlindSittingOut,
+  SmallBlindSittingOut, AllOpponentsLeftSittingOut.
+  [Poker_Dog and FqFq]
 
 MAINTENANCE:
 - Some more tournament identifiers for the title-string.
