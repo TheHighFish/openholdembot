@@ -27,20 +27,15 @@
 #include "debug.h"
 #include "NumericalFunctions.h"
 
-double MinimumBetsizeDueToPreviousRaise()
-{
+double MinimumBetsizeDueToPreviousRaise() {
 	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
 		+ p_symbol_engine_chip_amounts->sraiprev());
 	// If there are no bets and no raises the min-bet is 1 big-blind
-	if (minimums_swag_amount <= 0)
-	{
-		if (p_symbol_engine_tablelimits->bblind() > 0)
-		{
+	if (minimums_swag_amount <= 0)	{
+		if (p_symbol_engine_tablelimits->bblind() > 0) 	{
 			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: set to 1 big-blind\n");
 			minimums_swag_amount = p_symbol_engine_tablelimits->bblind();
-		}
-		else
-		{
+		}	else {
 			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: SERIOUS TABLEMAP-PROBLEM; no bets; big-blind unknown; setting it to 0.02\n");
 			// Setting it to the absolute minimum
 			minimums_swag_amount = 0.02;
@@ -51,8 +46,7 @@ double MinimumBetsizeDueToPreviousRaise()
 	return minimums_swag_amount;
 }
 
-double MaximumPossibleBetsizeBecauseOfBalance()
-{
+double MaximumPossibleBetsizeBecauseOfBalance() {
 	assert(p_symbol_engine_userchair != NULL);
 	int userchair = p_symbol_engine_userchair->userchair();
 	AssertRange(userchair, k_first_chair, k_last_chair);
@@ -67,8 +61,7 @@ double MaximumPossibleBetsizeBecauseOfBalance()
 	return maximum_betsize;
 }
 
-double SwagAmountAjustedToCasino(double amount_to_raise_to)
-{
+double SwagAmountAjustedToCasino(double amount_to_raise_to) {
 	int userchair = p_symbol_engine_userchair->userchair();
 	assert(amount_to_raise_to >= 0);
 	double swag_amount_ajusted_to_casino = amount_to_raise_to;
@@ -76,18 +69,13 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 	// so we have to calculate our adjustment the other way.
 	// http://www.winholdem.net/help/help-formula.html
 	// http://forum.winholdem.net/wbb/viewtopic.php?t=1849
-	if (p_tablemap->swagtextmethod() == 2)
-	{
+	if (p_tablemap->swagtextmethod() == 2) {
 		// Old adjustment: call, so currentbet is too much
 		swag_amount_ajusted_to_casino = amount_to_raise_to - p_symbol_engine_chip_amounts->currentbet(userchair);
-	}
-	else if (p_tablemap->swagtextmethod() == 3)
-	{
+	}	else if (p_tablemap->swagtextmethod() == 3)	{
 		// Old adjustment: call + currentbet.
 		// Everything fine, nothing to do.
-	}
-	else 
-	{
+	}	else {
 		// Default: swagtextmethod == 1
 		// Old adjustment: 0, currentbet and call are too much.
 		swag_amount_ajusted_to_casino = amount_to_raise_to 
@@ -99,8 +87,7 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to)
 	return swag_amount_ajusted_to_casino;
 }
 
-bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents)
-{
+bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents) {
 	double maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() desired betsize: %f\n",
 		amount_to_raise_to_in_dollars_and_cents);
@@ -109,24 +96,19 @@ bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents)
 	return (amount_to_raise_to_in_dollars_and_cents >= maximum_betsize);
 }
 
-double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents)
-{
-	if (!p_symbol_engine_istournament->istournament())
-	{
+double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents) {
+	if (!p_symbol_engine_istournament->istournament()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is cash-game. No rounding necessary.\n");
 		return amount_to_raise_to_in_dollars_and_cents;
 	}
 	write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] This is a tournament. Rounding to full dollars or to allin\n");
-	if (BetSizeIsAllin(amount_to_raise_to_in_dollars_and_cents))
-	{
+	if (BetSizeIsAllin(amount_to_raise_to_in_dollars_and_cents)) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Tournament, but no rounding because we will go allin.\n");
 		return amount_to_raise_to_in_dollars_and_cents;
-	}
-	else
-	{
+	}	else {
 		int rounded_amount = int(amount_to_raise_to_in_dollars_and_cents);
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Rounded dollars for tournaments: %.2f\n", rounded_amount);
@@ -158,9 +140,44 @@ double MaximumBetsizeForGameType() {
 	return maximum_betsize;	
 }
 
-double AdjustedBetsize(double amount_to_raise_to)
-{
+double RoundToBeautifulBetsize(const double amount_to_raise_to) {
+  assert(amount_to_raise_to >= 1.0);
+  // Don't round very smal betsizes.
+  // There might be aa reason for it in very small pots.
+  if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
+    return amount_to_raise_to;
+  }
+  // Otherwise: eound to beautiful numbers without caring about our stack/
+  // This adjustment will happen later.
+  double result;
+  // sblind / nnlind
+  if (amount_to_raise_to < (10 * p_symbol_engine_tablelimits->sblind())) {
+    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind());
+  } else {
+    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
+  }
+ 
+
+  // whole numbers (larg mu,bers)
+  if (result > 25000) {
+    result = Rounding(result, 1000);
+  } else if (result > 2500) {
+    result = Rounding(result, 100);
+  } else if (result > 250) {
+    result = Rounding(result, 10);
+  } else if (result > 20) {
+    result = Rounding(result, 1);
+  }  
+  // whole numbers (small)
+  else if (abs(result - int(result) < 0.10)) {
+    result = Rounding(result, 1);
+  }
+  return result;
+}
+
+double AdjustedBetsize(double amount_to_raise_to) {
 	double original_amount_to_raise_to = amount_to_raise_to;
+  amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
