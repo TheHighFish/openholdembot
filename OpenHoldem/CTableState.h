@@ -18,8 +18,9 @@
 #define INC_CTABLESTATE_H
 
 #include "Card.h"
-#include "MagicNumbers.h"
 #include "CPlayer.h"
+#include "MagicNumbers.h"
+#include "SLimitInfo.h"
 
 // One fake-entry for the case of unknown user-chair
 // This way we can avoid the handling of special cases
@@ -34,10 +35,12 @@ class CTableState {
  public:
   CPlayer *User();
  public:
-  Card    _common_cards[k_number_of_community_cards];
-  CPlayer _players[kNumberOfPlayerEntries];
-  char		_title[MAX_WINDOW_TITLE];
-  double	_pot[k_max_number_of_pots];
+  char		   _title[MAX_WINDOW_TITLE];
+  char		   _title_last[MAX_WINDOW_TITLE];
+  CLimitInfo _s_limit_info;
+  Card       _common_cards[k_number_of_community_cards];
+  double	   _pot[k_max_number_of_pots];
+  CPlayer    _players[kNumberOfPlayerEntries];
 };
 
 extern CTableState *p_table_state;

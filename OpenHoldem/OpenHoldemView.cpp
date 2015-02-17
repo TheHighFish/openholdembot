@@ -850,7 +850,7 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Format Text
-		if (!p_scraper->sitting_out(chair)) 	{
+		if (p_table_state->_players[chair]._active) 	{
 			t = Number2CString(p_table_state->_players[chair]._balance);
 		}	else {
 			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));

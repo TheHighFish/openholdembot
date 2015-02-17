@@ -7,11 +7,9 @@
 //
 //******************************************************************************
 //
-// Purpose: Scraping the poker-table and providing access to the scraped data.
-//  As the CScraper is low-level and quite large we created 
-//  an interface SCraperAccess that provides higher-level accessors
-//  like "UserHasCards()".
-//  Better use that interface to access scraper-data whenever possible.
+// Purpose: Reading the poker-table.
+//  State-less class for future multi-table support.
+//  All data is now in the CTable'state container.
 //
 //******************************************************************************
 
@@ -658,7 +656,6 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   CString	name;
   CString text;
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
-  set_sitting_out(chair, false);
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) {
@@ -666,7 +663,6 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
 		}
 		else if (text.MakeLower().Find("out")!=-1) {
-			set_sitting_out(chair, true);
 			p_table_state->_players[chair]._active = false;
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT\n", name);
       return k_undefined;
@@ -742,20 +738,7 @@ void CScraper::ScrapeBet(int chair) {
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
-void CScraper::ResetLimitInfo() {
-  _s_limit_info.handnumber = "";
-	_s_limit_info.sblind = k_undefined;
-	_s_limit_info.bblind = k_undefined;
-	_s_limit_info.bbet   = k_undefined;
-	_s_limit_info.ante   = k_undefined;
-	_s_limit_info.sb_bb  = k_undefined;
-	_s_limit_info.bb_BB  = k_undefined;
-	_s_limit_info.limit  = k_undefined_zero;
-  _s_limit_info.buyin  = k_undefined;
-  _s_limit_info.is_final_table = false;
-}
-
-//
+//p_table_state->
 // !! All code below not yet refactored
 //
 void CScraper::ClearScrapeAreas(void) {
@@ -771,7 +754,6 @@ void CScraper::ClearScrapeAreas(void) {
 		set_i86X_button_state(i, "false");
 		set_button_state(i, "false");
 		set_button_label(i, "");
-		set_pot(i, 0.);
 	}
 	set_i86_button_state("false");
   set_button_label(0, "fold");
@@ -780,7 +762,7 @@ void CScraper::ClearScrapeAreas(void) {
 	set_button_label(3, "allin");
 
 	ResetLimitInfo();
-	strcpy_s(_title_last, MAX_WINDOW_TITLE, "");
+	strcpy_s(p_table_state->_title_last, MAX_WINDOW_TITLE, "");
 }
 
 void CScraper::ScrapeAllPlayerCards() {
@@ -798,50 +780,47 @@ void CScraper::ScrapeAllPlayerCards() {
 
 void CScraper::ScrapePots() {
 	__HDC_HEADER
-	int					j = 0;
-	CString				text = "";
-	CTransform			trans;
-	CString				s = "", t="";
-	RMapCI				r_iter = p_tablemap->r$()->end();
+	CString			text = "";
+	CTransform	trans;
+	CString			s = "", t="";
+	RMapCI			r_iter = p_tablemap->r$()->end();
 
-	for (int j=0; j<k_max_number_of_pots; j++)
-		set_pot(j, 0);
-
-	for (int j=0; j<k_max_number_of_pots; j++)
-	{
+	for (int j=0; j<k_max_number_of_pots; j++) {
+    p_table_state->_pot[j] = 0.0;
+  }
+	for (int j=0; j<k_max_number_of_pots; j++) {
 		// r$c0potX
 		s.Format("c0pot%d", j);
     double result = 0;
 		if (EvaluateNumericalRegion(&result, s)) {
-			set_pot(j, result);
+			p_table_state->_pot[j] = result;
 			continue;
 		}
 		// r$c0potXchip00_index
 		s.Format("c0pot%dchip00", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
-		if (r_iter != p_tablemap->r$()->end() && _pot[j] == 0)
-		{
+		if (r_iter != p_tablemap->r$()->end() && p_table_state->_pot[j] == 0) {
 			ProcessRegion(r_iter);
 			//old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 			//trans.DoTransform(r_iter, hdcCompatible, &text);
 			//SelectObject(hdcCompatible, old_bitmap);
-
-			old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
+      old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 			double chipscrape_res = DoChipScrape(r_iter);
 			SelectObject(hdcCompatible, old_bitmap);
 
 			t.Format("%.2f", chipscrape_res);
 			CScraperPreprocessor::PreprocessMonetaryString(&t);
-			set_pot(j, strtod(t.GetString(), 0));
+			p_table_state->_pot[j] = strtod(t.GetString(), 0);
 
-			write_log(preferences.debug_scraper(), "[CScraper] c0pot%dchipXY, result %f\n", j, _pot[j]);
+			write_log(preferences.debug_scraper(), 
+        "[CScraper] c0pot%dchipXY, result %f\n", j, p_table_state->_pot[j]);
 
 			// update the bitmap for second chip position in the first stack
 			s.Format("c0pot%dchip01", j);
 			r_iter = p_tablemap->r$()->find(s.GetString());
-			if (r_iter != p_tablemap->r$()->end())
+			if (r_iter != p_tablemap->r$()->end()) {
 				ProcessRegion(r_iter);
-
+      }
 			// update the bitmap for first chip position in the second stack
 			s.Format("c0pot%dchip10", j);
 			r_iter = p_tablemap->r$()->find(s.GetString());
@@ -849,18 +828,16 @@ void CScraper::ScrapePots() {
 				ProcessRegion(r_iter);
 		}
 	}
-
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
 void CScraper::ScrapeLimits() {
 	__HDC_HEADER
-	CString				handnumber = "";
 	CString				text = "";
 	CString				titletext = "";
-	char				c_titletext[MAX_WINDOW_TITLE] = {0};
-	bool				got_new_scrape = false, log_blind_change = false;
-	CTransform			trans;
+	char				  c_titletext[MAX_WINDOW_TITLE] = {0};
+	bool				  got_new_scrape = false, log_blind_change = false;
+	CTransform		trans;
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
 	SMapCI				s_iter = p_tablemap->s$()->end();
@@ -869,15 +846,13 @@ void CScraper::ScrapeLimits() {
 	// the titlebar.  That way if we do not find handnumber
 	// information in the titlebar we won't overwrite the values we scraped
 	// from the handnumber region.
-	handnumber = "";
 
 	// r$c0handnumber
 	if (EvaluateRegion("c0handnumber", &text))
 	{
 		if (text!="")
 		{
-			handnumber = extractHandnumFromString(text);
-			set_handnumber(handnumber);
+      p_table_state->_s_limit_info.handnumber = extractHandnumFromString(text);
 			got_new_scrape = true;
 		}
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
@@ -891,8 +866,7 @@ void CScraper::ScrapeLimits() {
 		{
 			if (text!="")
 			{
-				handnumber = extractHandnumFromString (text);
-				set_handnumber(handnumber);
+				p_table_state->_s_limit_info.handnumber = extractHandnumFromString (text);
 				got_new_scrape = true;
 			}
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
@@ -911,7 +885,7 @@ void CScraper::ScrapeLimits() {
 	// the l_ locals so that we don't blindly overwrite the
 	// information we scraped from those specific regions with
 	// default values if we can't find them in the titlebar.
-	CString l_handnumber = handnumber; 
+	CString l_handnumber = p_table_state->_s_limit_info.handnumber; 
 
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
 	s_iter = p_tablemap->s$()->find("ttlimits");
@@ -974,43 +948,43 @@ void CScraper::ScrapeLimits() {
 			}
 		}
     // save what we just scanned through
-    if (handnumber != "") {
-			set_handnumber(l_handnumber);
+    if (l_handnumber != "") {
+			p_table_state->_s_limit_info.handnumber = l_handnumber;
     }
     if (l_sblind != k_undefined) {
-			_s_limit_info.sblind = l_sblind;
+			p_table_state->_s_limit_info.sblind = l_sblind;
     }
     if (l_bblind != k_undefined) {
-			_s_limit_info.bblind = l_bblind;
+			p_table_state->_s_limit_info.bblind = l_bblind;
     }
     if (l_bbet != k_undefined) {
-			_s_limit_info.bbet = l_bbet;
+			p_table_state->_s_limit_info.bbet = l_bbet;
     }
     if (l_ante != k_undefined) {
-			_s_limit_info.ante = l_ante;
+			p_table_state->_s_limit_info.ante = l_ante;
     }
     if (l_limit != k_undefined) {
-			_s_limit_info.limit = l_limit;
+			p_table_state->_s_limit_info.limit = l_limit;
     }
     if (l_sb_bb != k_undefined) {
-			_s_limit_info.sb_bb = l_sb_bb;
+			p_table_state->_s_limit_info.sb_bb = l_sb_bb;
     }
     if (l_bb_BB != k_undefined) {
-			_s_limit_info.bb_BB = l_bb_BB;
+			p_table_state->_s_limit_info.bb_BB = l_bb_BB;
     }
     if (l_buyin != k_undefined) {
-			_s_limit_info.buyin = l_buyin;
+			p_table_state->_s_limit_info.buyin = l_buyin;
     }
     // r$c0smallblind
-    EvaluateNumericalRegion(&_s_limit_info.sblind, "c0smallblind");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info.sblind, "c0smallblind");
 		// r$c0bigblind
-    EvaluateNumericalRegion(&_s_limit_info.bblind, "c0bigblind");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info.bblind, "c0bigblind");
 		// r$c0bigbet
-    EvaluateNumericalRegion(&_s_limit_info.bbet, "c0bigbet");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info.bbet, "c0bigbet");
 		// r$c0ante
-    EvaluateNumericalRegion(&_s_limit_info.ante, "c0ante");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info.ante, "c0ante");
 		// r$c0isfinaltable
-    EvaluateTrueFalseRegion(&_s_limit_info.is_final_table, "c0isfinaltable");
+    EvaluateTrueFalseRegion(&p_table_state->_s_limit_info.is_final_table, "c0isfinaltable");
 	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
@@ -1272,14 +1246,14 @@ bool CScraper::IsIdenticalScrape() {
 	SelectObject(hdcCompatible, old_bitmap);
 
 	// get window title
-	_title[0] = '\0';
-	GetWindowText(p_autoconnector->attached_hwnd(), _title, MAX_WINDOW_TITLE-1);
+	p_table_state->_title[0] = '\0';
+	GetWindowText(p_autoconnector->attached_hwnd(), p_table_state->_title, MAX_WINDOW_TITLE-1);
 
 	// If the bitmaps are the same, then return now
 	// !! How often does this happen?
 	// !! How costly is the comparison?
 	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
-		strcmp(_title, _title_last)==0)
+		strcmp(p_table_state->_title, p_table_state->_title_last)==0)
 	{
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
@@ -1290,7 +1264,7 @@ bool CScraper::IsIdenticalScrape() {
 	}
 
 	// Copy into "last" title
-	strcpy_s(_title_last, MAX_WINDOW_TITLE, _title);
+	strcpy_s(p_table_state->_title_last, MAX_WINDOW_TITLE, p_table_state->_title);
 
 	// Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);

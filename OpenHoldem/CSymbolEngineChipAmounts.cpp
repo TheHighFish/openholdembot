@@ -152,19 +152,19 @@ void CSymbolEngineChipAmounts::CalculatePots() {
   assert(_potplayer >= 0.0);
 	// pot, potcommon, based on value of potmethod
 	if (p_tablemap->potmethod() == 2)	{
-		_pot = p_scraper->pot(0);
+		_pot = p_table_state->_pot[0];
 		_potcommon = _pot - _potplayer;
 	}
 	else if(p_tablemap->potmethod() == 3) {
-		_pot = p_scraper->pot(0);
+		_pot = p_table_state->_pot[0];
 		for (int i=1; i<k_max_number_of_pots; i++) {
-			_pot = max(_pot, p_scraper->pot(i));
+			_pot = max(_pot, p_table_state->_pot[i]);
 		}
 		_potcommon = _pot - _potplayer;
 	} else { // potmethod() == 1
 		_potcommon = 0;
 		for (int i=0; i<k_max_number_of_pots; i++) {
-			_potcommon += p_scraper->pot(i);
+			_potcommon += p_table_state->_pot[i];
 		}
 		_pot = _potcommon + _potplayer;
 	}

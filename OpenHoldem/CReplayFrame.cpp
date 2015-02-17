@@ -82,12 +82,12 @@ void CReplayFrame::CreateReplayFrame(void){
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
-		fprintf(fp, "%s\n", p_scraper->title());
+		fprintf(fp, "%s\n", p_table_state->_title);
     fprintf(fp, "<br>\n");
 		// HTML header
 		fprintf(fp, "<html>\n");
 		fprintf(fp, "  <head>\n");
-		fprintf(fp, "    <title>%s</title>\n", p_scraper->title());
+		fprintf(fp, "    <title>%s</title>\n", p_table_state->_title);
 		fprintf(fp, "  </head>");
 		fprintf(fp, "<style>\n");
 		fprintf(fp, "td {text-align:right;}\n");
@@ -139,7 +139,7 @@ CString CReplayFrame::GeneralInfo() {
   result += "<table border=4 cellpadding=1 cellspacing=1>\n";
   // Table title
   result += "<tr><td>\n";
-	result += p_scraper->title();
+	result += p_table_state->_title;
   result += "</td></tr>\n";
 	// Session, 
   result += "<tr><td>\n";
@@ -322,14 +322,14 @@ CString CReplayFrame::GetPotsAsHTML() {
 	pots += "  <tr><th>#</th><th>pot</th></tr>\n";
 	pots += "  <tr>\n";
 	// Main pot
-	text.Format("    <td>0</td><td>%11.2f</td>\n", p_scraper->pot(0));
+	text.Format("    <td>0</td><td>%11.2f</td>\n", p_table_state->_pot[0]);
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
 	for (int i=1; i<k_max_number_of_pots; i++) {
-		if (p_scraper->pot(i)) {
+		if (p_table_state->_pot[i]) {
 			pots += "  <tr>\n";
-			text.Format("    <td>%d</td><td>%11.2f</td>\n", i, p_scraper->pot(i));
+			text.Format("    <td>%d</td><td>%11.2f</td>\n", i,p_table_state->_pot[i]);
 			pots += text;
 			pots += "  </tr>\n";
 		}	else {
