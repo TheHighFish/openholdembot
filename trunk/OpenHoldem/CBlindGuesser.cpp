@@ -233,11 +233,9 @@ void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind,
                                                  double *bblind, 
                                                  double *bbet) {
   // Get values from the scraper (ttlimits / c0limits)
-  assert(p_scraper != NULL);
-  assert(p_scraper->s_limit_info() != NULL);
-  *sblind = p_scraper->s_limit_info()->sblind;
-  *bblind = p_scraper->s_limit_info()->bblind;
-  *bbet   = p_scraper->s_limit_info()->bbet;
+  *sblind = p_table_state->_s_limit_info.sblind;
+  *bblind = p_table_state->_s_limit_info.bblind;
+  *bbet   = p_table_state->_s_limit_info.bbet;
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);

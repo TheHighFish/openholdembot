@@ -224,6 +224,7 @@
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
     <ClCompile Include="Singletons.cpp" />
+    <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
@@ -491,6 +492,7 @@
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
+    <ClInclude Include="SLimitInfo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\winmgr\SizerBar.h" />
     <ClInclude Include="..\winmgr\WinMgr.h" />

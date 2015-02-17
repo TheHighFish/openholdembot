@@ -28,6 +28,11 @@ CTableState::CTableState() {
   for (int i=0; i<kNumberOfPlayerEntries; ++i) {
     _players[i].Reset();
   }
+  for (int i=0; i<k_max_number_of_pots; ++i) {
+    _pot[i] = 0.0;
+  }
+  _title[0] = '\0';
+  _title_last[0] = '\0';
 }
 
 CTableState::~CTableState() {

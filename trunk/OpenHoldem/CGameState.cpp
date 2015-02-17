@@ -74,7 +74,7 @@ void CGameState::CaptureState() {
 
 	// Pot information
 	for (int i=0; i<k_max_number_of_players; i++) {
-		_state[_state_index&0xff].m_pot[i] = p_scraper->pot(i);
+		_state[_state_index&0xff].m_pot[i] = p_table_state->_pot[i];
   }
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)	{

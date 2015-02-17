@@ -236,7 +236,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 
 bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
     const char *identifiers[], int number_of_identifiers) {
-	CString title = p_scraper->title();
+	CString title = p_table_state->_title;
 	title = title.MakeLower();
 	for (int i=0; i<number_of_identifiers; i++) {
     assert(identifiers[i] != "");

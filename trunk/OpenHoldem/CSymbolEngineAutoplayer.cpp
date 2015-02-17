@@ -116,7 +116,7 @@ void CSymbolEngineAutoplayer::CalculateSitInState() {
 }
 
 bool CSymbolEngineAutoplayer::isfinaltable() {
-  return p_scraper->s_limit_info()->is_final_table;
+  return p_table_state->_s_limit_info.is_final_table;
 }
 
 void CSymbolEngineAutoplayer::CalculateFinalAnswer()
