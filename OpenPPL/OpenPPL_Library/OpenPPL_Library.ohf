@@ -2813,8 +2813,9 @@ HaveTrips && TripsRank==RankOfSecondHoleCard ? RankOfFirstHoleCard: 0
 (nstraightfill == 0)
 
 ##HaveStraightDraw##
+!HaveStraight && (
    HaveOpenEndedStraightDraw 
-|| HaveDoubleGutshotDraw
+|| HaveDoubleGutshotDraw)
 
 ##HaveStraightFlush##
 (isstraightflush || isroyalflush)
