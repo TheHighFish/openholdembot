@@ -19,6 +19,7 @@
 
 #include "Card.h"
 #include "CPlayer.h"
+#include "CScrapedActionInterface.h"
 #include "MagicNumbers.h"
 #include "SLimitInfo.h"
 
@@ -41,6 +42,7 @@ class CTableState {
   Card       _common_cards[k_number_of_community_cards];
   double	   _pot[k_max_number_of_pots];
   CPlayer    _players[kNumberOfPlayerEntries];
+  CScrapedActionInterface _SCI;
 };
 
 extern CTableState *p_table_state;

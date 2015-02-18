@@ -19,6 +19,8 @@ class CLimitInfo {
   CLimitInfo();
   ~CLimitInfo();
  public:
+  void Reset();
+ public:
 	double	sblind;
 	double	bblind;
 	double	bbet;

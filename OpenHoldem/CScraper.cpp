@@ -98,17 +98,17 @@ bool CScraper::GetButtonState(int button_index) {
 	if (button_index<=9) {
 		if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5)	{
 			// Don't MakeLower our mm_network symbol
-			l_button_state = _button_state[button_index];
+			l_button_state = p_table_state->_SCI._button_state[button_index];
 		}	else {
 			// Default
-			l_button_state = _button_state[button_index].MakeLower();
+			l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
 		}
 		return GetButtonState(l_button_state);
 	}	else if (button_index==86) {
-		l_button_state = _i86_button_state.MakeLower();
+		l_button_state = p_table_state->_SCI._i86_button_state.MakeLower();
 		return GetButtonState(l_button_state);
 	}	else if (button_index>=860)	{
-		l_button_state = _i86X_button_state[button_index-860];
+		l_button_state = p_table_state->_SCI._i86X_button_state[button_index-860];
 		return GetButtonState(l_button_state);
 	}
 	return false;
@@ -149,7 +149,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
 	if (r_iter != p_tablemap->r$()->end()) 
 	{
-    // !!! Lots of potential for optimization here
+    // Potential for optimization here
     ++total_region_counter;
 		if (ProcessRegion(r_iter)) {
       ++identical_region_counter;
@@ -220,7 +220,7 @@ void CScraper::ScrapeInterfaceButtons() {
 	// Normal i86-button
 	if (EvaluateRegion("i86state", &result))
 	{
-		SetButtonState(&_i86_button_state, result);	
+		SetButtonState(&p_table_state->_SCI._i86_button_state, result);	
 	}
 	// i86X-buttons
 	CString button_name;
@@ -229,7 +229,7 @@ void CScraper::ScrapeInterfaceButtons() {
 		button_name.Format("i86%dstate", i);
 		if (EvaluateRegion(button_name, &result))
 		{
-			SetButtonState(&_i86X_button_state[i], result);	
+			SetButtonState(&p_table_state->_SCI._i86X_button_state[i], result);	
 		}
 	}
 }
@@ -242,14 +242,14 @@ void CScraper::ScrapeActionButtons() {
 		button_name.Format("i%dstate", i);
 		if (EvaluateRegion(button_name, &result))
 		{
-			SetButtonState(&_button_state[i], result);	
+			SetButtonState(&p_table_state->_SCI._button_state[i], result);	
 		}
 	}
 	// Ugly WinHoldem convention
 	// When using ManualMode, grab i5state for PT network 
 	if (p_symbol_engine_casino->ConnectedToManualMode())
 	{
-		p_tablemap->set_network(p_scraper->button_state(5));
+		p_tablemap->set_network(p_table_state->_SCI._button_state[5]);
 	}
 }
 
@@ -259,11 +259,10 @@ void CScraper::ScrapeActionButtonLabels() {
   // Every button needs a label
   // No longer using any WinHoldem defaults
 	for (int i=0; i<k_max_number_of_buttons; i++)	{
-		set_button_label(i, "");
+		p_table_state->_SCI._button_label[i] = "";
 		label.Format("i%dlabel", i);
-		if (EvaluateRegion(label, &result))
-		{
-			set_button_label(i, result);
+		if (EvaluateRegion(label, &result))	{
+			p_table_state->_SCI._button_label[i] = result;
 		}
 	}
 }
@@ -275,7 +274,7 @@ void CScraper::ScrapeBetpotButtons() {
 	{
 		if (EvaluateRegion(button_name, &result))
 		{
-			SetButtonState(&_betpot_button_state[i], result);	
+			SetButtonState(&p_table_state->_SCI._betpot_button_state[i], result);	
 		}
 	}
 }
@@ -412,11 +411,12 @@ void CScraper::ScrapeSlider() {
 	// find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
-  if (handleCI!=p_tablemap->r$()->end() && slider!=p_tablemap->r$()->end() && _button_state[3]!="false")	
-	{
+  if (handleCI!=p_tablemap->r$()->end() 
+      && slider!=p_tablemap->r$()->end() 
+      && p_table_state->_SCI._button_state[3]!="false")	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
-		set_handle_found_at_xy(false);
+		p_table_state->_SCI._handle_found_at_xy = false;
 		for (int k=0; k<=j; k++) 
 		{
 			handleI = p_tablemap->set_r$()->find("i3handle");
@@ -431,13 +431,13 @@ void CScraper::ScrapeSlider() {
 				handleCI = p_tablemap->r$()->find("i3handle");
 				handle_xy.x = handleCI->second.left + k;
 				handle_xy.y = handleCI->second.top;
-				set_handle_found_at_xy(true);
-				set_handle_xy(handle_xy);
+				p_table_state->_SCI._handle_found_at_xy = true;
+				p_table_state->_SCI._handle_xy = handle_xy;
 				write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
 				break;
 			}
 		}
-		if (!handle_found_at_xy())
+		if (!p_table_state->_SCI._handle_found_at_xy)
 		{
 			write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
 		}
@@ -751,17 +751,18 @@ void CScraper::ClearScrapeAreas(void) {
 		p_table_state->_players[i]._active = false;
 		p_table_state->_players[i]._dealer = false;
 		p_table_state->_players[i]._bet = 0.0;
-		set_i86X_button_state(i, "false");
-		set_button_state(i, "false");
-		set_button_label(i, "");
+		p_table_state->_SCI._i86X_button_state[i] = "false";
+    p_table_state->_SCI._button_state[i] = "false";
+		p_table_state->_SCI._button_label[i] = "";
 	}
-	set_i86_button_state("false");
-  set_button_label(0, "fold");
-	set_button_label(1, "call");
-	set_button_label(2, "raise");
-	set_button_label(3, "allin");
+  // !!! not here
+	p_table_state->_SCI._i86_button_state = "false";
+  p_table_state->_SCI._button_label[0]  = "fold";
+	p_table_state->_SCI._button_label[1]  = "call";
+	p_table_state->_SCI._button_label[2]  = "raise";
+	p_table_state->_SCI._button_label[3]  = "allin";
 
-	ResetLimitInfo();
+	p_table_state->_s_limit_info.Reset(); 
 	strcpy_s(p_table_state->_title_last, MAX_WINDOW_TITLE, "");
 }
 
@@ -996,7 +997,7 @@ void CScraper::CreateBitmaps(void) {
 	RECT			cr = {0};
 	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
 	_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-	set_entire_window_cur(CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom));
+	_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
 
 	// r$regions
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
@@ -1013,7 +1014,7 @@ void CScraper::CreateBitmaps(void) {
 void CScraper::DeleteBitmaps(void) {
 	// Whole window
 	DeleteObject(_entire_window_last);
-	delete_entire_window_cur();
+  delete_entire_window_cur();
 
 	// Common cards
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)

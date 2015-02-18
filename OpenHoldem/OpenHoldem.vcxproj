@@ -469,6 +469,7 @@
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
+    <ClInclude Include="CScrapedActionInterface.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
