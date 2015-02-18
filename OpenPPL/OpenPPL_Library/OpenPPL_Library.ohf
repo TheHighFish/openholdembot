@@ -289,6 +289,9 @@ RaiseMax
 ##ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function##
 -1
 
+##ERROR_Board_Dont_Have_Any_Straight__Do_Not_Call_This_Function##
+-1
+
 ##ERROR_No_Opponents_Detected__Check_Your_TableMap##
 // Returning -bblind, because we divide by bblind to -1.
 (0 - bblind)
@@ -456,9 +459,6 @@ me_re_MemBets
 ##OpponentsLeftSittingOut##
 (opponentsactivebits & opponentsplayingbits) == 0
 
-##BotCalledBeforeFlop##
-didcallround1
-
 ##AggressorChair##
 // raischair (formerly ac_aggressor) alone is somewhat unreliable, as it gets scraped (by bets).
 // But if we raise and there are super-fast calls behind us (e.g. at PokerAcademy),
@@ -579,13 +579,21 @@ ERROR_IncorrectBotsLastAction
 ##BotsLastPreflopAction##
 me_re_MemBotsLastPreflopAction
 
-##CalledOnFlop##
+##BotCalledBeforeFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didcallround1
+
+##BotCalledOnFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 || didcallround2
 
-##CalledOnTurn##
+##BotCalledOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 || didcallround3
+
+##BotCalledOnRiver##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
+|| didcallround4
 
 ##BotCheckedPreflop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
@@ -1329,7 +1337,7 @@ isfl ? 1 : currentbet
 // Therefore we create multiple functions for multiple cases of bad input.
 (ismyturn && balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
 // Preflop and I already did act, but nothing to call
-((betround == ConstBetRoundPreflop) && (currentbet > 1) && (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+((betround == ConstBetRoundPreflop) && (currentbet > 0.01) && (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
 // Postflop and I already did act, but nothing to call
 ((betround > ConstBetRoundPreflop) && (currentbet > 0) && (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
 // The normal case (including correct and incorrect abilities to check)
@@ -1504,7 +1512,7 @@ StraightPossibleOnFlop && !ExactlyOneStraightPossibleOnFlop
 ##MoreThanOneStraightPossibleOnRiver##
 (betround == ConstBetRoundRiver && (NumberOfStraightsPossibleOnRiver > 1))
 
-##RankBitsCommOnRiver##
+##RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
 rankbitscommon
 
@@ -1512,31 +1520,31 @@ rankbitscommon
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommOnTurn >> 10) & 0x1f) >= 3 && (((RankBitsCommOnTurn >> 10) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  9) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  9) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  8) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  8) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  7) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  7) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  6) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  6) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  5) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  5) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  4) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  4) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  3) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  3) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  2) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  2) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommOnTurn >>  1) & 0x1f) >= 3 && (((RankBitsCommOnTurn >>  1) & 0x20) != 0x20)? 1 : 0)
+  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 && (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
 
 ##NumberOfStraightsPossibleOnRiver##
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommOnRiver >> 10) & 0x1f) >= 3 && (((RankBitsCommOnRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  9) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  8) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  7) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  6) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  5) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  4) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  3) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  2) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommOnRiver >>  1) & 0x1f) >= 3 && (((RankBitsCommOnRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
+  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 && (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
 
 ##MoreThanOneOneCardStraightPossible##
 DoubleGutShotOnBoard || OpenEndedStraightDrawOnBoard
@@ -1569,34 +1577,34 @@ DoubleGutShotOnBoard || OpenEndedStraightDrawOnBoard
 (nstraightfillcommon <= 1)
 
 ##OneCardStraightPossibleOnTurn_AceHigh##
-(`(RankBitsCommOnTurn & 0b111110000000000) >= 4)   
+(`(RankBitsCommonTurn & 0b111110000000000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_KingHigh##
-(`(RankBitsCommOnTurn & 0b011111000000000) >= 4)  
+(`(RankBitsCommonTurn & 0b011111000000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_QueenHigh##
-(`(RankBitsCommOnTurn & 0b001111100000000) >= 4)  
+(`(RankBitsCommonTurn & 0b001111100000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_JackHigh##
-(`(RankBitsCommOnTurn & 0b000111110000000) >= 4)  
+(`(RankBitsCommonTurn & 0b000111110000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_TenHigh##
-(`(RankBitsCommOnTurn & 0b000011111000000) >= 4)  
+(`(RankBitsCommonTurn & 0b000011111000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_NineHigh##
-(`(RankBitsCommOnTurn & 0b000001111100000) >= 4)  
+(`(RankBitsCommonTurn & 0b000001111100000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_EightHigh##
-(`(RankBitsCommOnTurn & 0b000000111110000) >= 4)   
+(`(RankBitsCommonTurn & 0b000000111110000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SevenHigh##
-(`(RankBitsCommOnTurn & 0b000000011111000) >= 4)   
+(`(RankBitsCommonTurn & 0b000000011111000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SixHigh##
-(`(RankBitsCommOnTurn & 0b000000001111100) >= 4)   
+(`(RankBitsCommonTurn & 0b000000001111100) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_FiveHigh##
-(`(RankBitsCommOnTurn & 0b000000000111110) >= 4)
+(`(RankBitsCommonTurn & 0b000000000111110) >= 4)
 
 ##OneCardStraightPossibleOnTurn##
 (NumberOfOneCardStraightsPossibleOnTurn >= 1)
@@ -1763,7 +1771,7 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 | (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : 0b100000000000010)
 | (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : 0b100000000000010)
 
-##RankBitsCommOnTurn##
+##RankBitsCommonTurn##
   (FirstFlopCard != ConstCardAce ? 2**FirstFlopCard : 0b100000000000010)
 | (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : 0b100000000000010)
 | (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : 0b100000000000010)
@@ -2047,6 +2055,20 @@ HINT_Such_A_Straight_Does_Not_Exist
 `(rankbits & 0b000000001111100) == 5 ? ConstCardSix   :
 `(rankbits & 0b000000000111110) == 5 ? ConstCardFive  :
 ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
+
+##HighCardOfCommonStraight##
+// Precondition: straight on board
+`(rankbitscommon & 0b111110000000000) == 5 ? ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) == 5 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) == 5 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) == 5 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) == 5 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) == 5 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) == 5 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) == 5 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) == 5 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) == 5 ? ConstCardFive  :
+ERROR_Board_Dont_Have_Any_Straight__Do_Not_Call_This_Function
 
 ##HaveSecondNutStraight##
 HaveStraight
