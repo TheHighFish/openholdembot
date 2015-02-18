@@ -1540,6 +1540,9 @@
     <ClInclude Include="SLimitInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CScrapedActionInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc">

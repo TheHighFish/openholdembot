@@ -15,6 +15,13 @@
 #include "SLimitInfo.h"
 
 CLimitInfo::CLimitInfo() {
+  Reset();
+}
+
+CLimitInfo::~CLimitInfo() {
+}
+
+void CLimitInfo::Reset() {
   handnumber = "";
 	sblind = k_undefined;
 	bblind = k_undefined;
@@ -25,7 +32,4 @@ CLimitInfo::CLimitInfo() {
 	limit  = k_undefined_zero;
   buyin  = k_undefined;
   is_final_table = false;
-}
-
-CLimitInfo::~CLimitInfo() {
 }
