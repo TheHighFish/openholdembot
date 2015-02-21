@@ -17,10 +17,16 @@
 #include "afxstr.h"
 
 class CScrapedActionInterface {
+  friend class CCasinoInterface;
   friend class CScraper;
+  friend class CScraperAccess;
+  friend class CSymbolEngineAutoplayer;
+  friend class COpenHoldemView;
  public:
   CScrapedActionInterface();
   ~CScrapedActionInterface();
+ public:
+  void Reset();
  public:
    /*
   CString	i86_button_state()         { return _i86_button_state; }
@@ -35,7 +41,9 @@ class CScrapedActionInterface {
   CString _i86_button_state;
 	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
 	CString	_button_state[k_max_number_of_buttons];
+public: //!!!!!
 	CString _button_label[k_max_number_of_buttons];
+protected:
 	CString	_betpot_button_state[k_max_betpot_buttons];
   bool		_handle_found_at_xy;
 	POINT		_handle_xy;

@@ -23,6 +23,7 @@
 
 class CScraper {
   friend class CLazyScraper;
+  friend class CAutoConnector;
  public:
 	// public functions and accessors
 	CScraper(void);
@@ -30,13 +31,13 @@ class CScraper {
  public:
   // For replay-frames
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
+ public:
+  bool GetButtonState(const int button_index);
+  bool GetButtonState(CString button_state_as_string);
+  bool IsCommonAnimation();
  protected:
-	void ClearScrapeAreas(void);
 	void CreateBitmaps(void);
 	void DeleteBitmaps(void);
-	bool GetButtonState(const int button_index);
-	bool GetButtonState(CString button_state_as_string);
-	bool IsCommonAnimation();
 	bool IsIdenticalScrape();
  protected:
 	void ScrapeDealer();

@@ -105,15 +105,15 @@ bool CCasinoInterface::UseSliderForAllin() {
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
 		return false;
 	}
-	if (!p_scraper->handle_found_at_xy())	{
+	if (!p_table_state->_SCI._handle_found_at_xy)	{
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
 		return false;
 	}
   // Click and drag handle
 	RECT drag_region;
-	drag_region.left      = p_scraper->handle_xy().x + ((i3_handle_region.right - i3_handle_region.left)/2);
-	drag_region.top       = p_scraper->handle_xy().y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
-	drag_region.right     = p_scraper->handle_xy().x + (i3_slider_region.right - i3_slider_region.left);
+	drag_region.left      = p_table_state->_SCI._handle_xy.x + ((i3_handle_region.right - i3_handle_region.left)/2);
+	drag_region.top       = p_table_state->_SCI._handle_xy.y + ((i3_handle_region.bottom - i3_handle_region.top)/2);
+	drag_region.right     = p_table_state->_SCI._handle_xy.x + (i3_slider_region.right - i3_slider_region.left);
 	drag_region.bottom    = drag_region.top;		
 
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);

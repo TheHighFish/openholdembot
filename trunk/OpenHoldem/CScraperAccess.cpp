@@ -106,10 +106,8 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 	{
 		// Check if there is a match for any of the corresponding button indexes
 		// and save it as the button number
-		for (int j = 0; j < k_max_number_of_buttons; j++)
-		{
-			if ((p_string_match->*StringMatch)(p_scraper->button_label(j)))
-			{
+		for (int j = 0; j < k_max_number_of_buttons; j++)	{
+			if ((p_string_match->*StringMatch)(p_table_state->_SCI._button_label[j]))	{
 				button_number = j;
 				break;
 			}
@@ -193,7 +191,7 @@ bool CScraperAccess::GetBetpotButtonVisible(int button_code)
 		i.e. available for taking an action
 	*/
 
-	CString betpot_button_state = p_scraper->betpot_button_state(button_code);
+  CString betpot_button_state = p_table_state->_SCI._betpot_button_state[button_code];
 	return p_scraper->GetButtonState(betpot_button_state);
 }
 
