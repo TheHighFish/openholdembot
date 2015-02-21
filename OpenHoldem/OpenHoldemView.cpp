@@ -352,52 +352,52 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
 		{
-			if (p_string_match->IsStringFold(p_scraper->button_label(i))) 
+			if (p_string_match->IsStringFold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
 				fold_drawn = true;
 			}
-			else if (p_string_match->IsStringCall(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringCall(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'C', _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
 				call_drawn = true;
 			}
-			else if (p_string_match->IsStringCheck(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringCheck(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'K', _client_rect.right-50, _client_rect.bottom-16, _client_rect.right-36, _client_rect.bottom-2);
 				check_drawn = true;
 			}
-			else if (p_string_match->IsStringRaise(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringRaise(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'R', _client_rect.right-33, _client_rect.bottom-16, _client_rect.right-19, _client_rect.bottom-2);
 				raise_drawn = true;
 			}
-			else if (p_string_match->IsStringAllin(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringAllin(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'A', _client_rect.right-16, _client_rect.bottom-16, _client_rect.right-2, _client_rect.bottom-2);
 				allin_drawn = true;
 			}
-			else if (p_string_match->IsStringAutopost(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringAutopost(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'T', _client_rect.left+2,  _client_rect.bottom-16, _client_rect.left+16, _client_rect.bottom-2);
 				autopost_drawn = true;
 			}
-			else if (p_string_match->IsStringSitin(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringSitin(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'I', _client_rect.left+19, _client_rect.bottom-16, _client_rect.left+33, _client_rect.bottom-2);
 				sitin_drawn = true;
 			}
-			else if (p_string_match->IsStringSitout(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringSitout(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'O', _client_rect.left+36, _client_rect.bottom-16, _client_rect.left+50, _client_rect.bottom-2);
 				sitout_drawn = true;
 			}
-			else if (p_string_match->IsStringLeave(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringLeave(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
 				leave_drawn = true;
 			}
-			else if (p_string_match->IsStringPrefold(p_scraper->button_label(i))) 
+			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
 				prefold_drawn = true;

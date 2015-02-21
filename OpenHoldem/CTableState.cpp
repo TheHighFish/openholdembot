@@ -15,13 +15,23 @@
 //******************************************************************************
 
 #include "stdafx.h"
-#include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
+
+#include "CSymbolEngineUserchair.h"
 #include "NumericalFunctions.h"
 
 CTableState *p_table_state = NULL;
 
 CTableState::CTableState() {
+  Reset();
+}
+
+CTableState::~CTableState() {
+}
+
+void CTableState::Reset() {
+  _SCI.Reset();
+  _s_limit_info.Reset();
   for (int i=0; i<k_number_of_community_cards; ++i) {
     _common_cards[i].ClearValue();
   }
@@ -33,9 +43,6 @@ CTableState::CTableState() {
   }
   _title[0] = '\0';
   _title_last[0] = '\0';
-}
-
-CTableState::~CTableState() {
 }
 
 CPlayer *CTableState::User() {

@@ -51,14 +51,14 @@ CScraper *p_scraper = NULL;
   --_leaking_GDI_objects;
 
 CScraper::CScraper(void) {
-	ClearScrapeAreas();
+	p_table_state->Reset();
   _leaking_GDI_objects = 0;
   total_region_counter = 0;
   identical_region_counter = 0;
 }
 
 CScraper::~CScraper(void) {
-	ClearScrapeAreas();
+	p_table_state->Reset();
   if (_leaking_GDI_objects != 0 ) {
     write_log(k_always_log_errors, "[CScraper] ERROR: leaking GDI objects: %i\n",
       _leaking_GDI_objects);
@@ -736,34 +736,6 @@ void CScraper::ScrapeBet(int chair) {
       chair, p_table_state->_players[chair]._bet);
 	}
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
-}
-
-//p_table_state->
-// !! All code below not yet refactored
-//
-void CScraper::ClearScrapeAreas(void) {
-	for (int i=0; i<k_number_of_community_cards; i++) {
-    p_table_state->_common_cards[i].ClearValue();
-  }
-	for (int i=0; i<k_max_number_of_players; i++) {
-    p_table_state->_players[i].Reset();
-		p_table_state->_players[i]._active = false;
-		p_table_state->_players[i]._active = false;
-		p_table_state->_players[i]._dealer = false;
-		p_table_state->_players[i]._bet = 0.0;
-		p_table_state->_SCI._i86X_button_state[i] = "false";
-    p_table_state->_SCI._button_state[i] = "false";
-		p_table_state->_SCI._button_label[i] = "";
-	}
-  // !!! not here
-	p_table_state->_SCI._i86_button_state = "false";
-  p_table_state->_SCI._button_label[0]  = "fold";
-	p_table_state->_SCI._button_label[1]  = "call";
-	p_table_state->_SCI._button_label[2]  = "raise";
-	p_table_state->_SCI._button_label[3]  = "allin";
-
-	p_table_state->_s_limit_info.Reset(); 
-	strcpy_s(p_table_state->_title_last, MAX_WINDOW_TITLE, "");
 }
 
 void CScraper::ScrapeAllPlayerCards() {

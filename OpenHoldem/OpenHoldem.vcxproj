@@ -203,6 +203,7 @@
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
+    <ClCompile Include="CScrapedActionInterface.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />

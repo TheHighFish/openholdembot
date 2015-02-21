@@ -32,6 +32,7 @@
 #include "CScraperAccess.h"
 #include "CSharedMem.h"
 #include "CTableMapLoader.h"
+#include "CTableState.h"
 #include "CTablePositioner.h"
 #include "CVersionInfo.h"
 #include "DialogScraperOutput.h"
@@ -269,8 +270,8 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
 
 			// Clear scraper fields
-			p_scraper->ClearScrapeAreas();
-			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scrape-areas cleared\n");
+			p_table_state->Reset();
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
 
 			// Reset symbols
 			p_engine_container->ResetOnConnection();
@@ -391,7 +392,7 @@ void CAutoConnector::Disconnect() {
 	p_scraper->DeleteBitmaps();
 
 	// Clear scraper fields
-	p_scraper->ClearScrapeAreas();
+	p_table_state->Reset();
 
 	// Reset symbols
 	p_engine_container->ResetOnConnection();
