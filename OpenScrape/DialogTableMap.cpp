@@ -55,7 +55,7 @@ CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD,
 	null_pen.CreatePen(PS_NULL, 0, COLOR_BLACK);
 
 	white_brush.CreateSolidBrush(COLOR_WHITE);
-	lt_gray_brush.CreateSolidBrush(COLOR_LT_GRAY);
+	lt_gray_brush.CreateSolidBrush(COLOR_SILVER);
 	gray_brush.CreateSolidBrush(COLOR_GRAY);
 	red_brush.CreateSolidBrush(COLOR_RED);
 	yellow_brush.CreateSolidBrush(COLOR_YELLOW);
