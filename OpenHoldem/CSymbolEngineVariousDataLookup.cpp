@@ -38,6 +38,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
+#include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
@@ -112,6 +113,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
       write_log(preferences.debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
+      p_white_info_box->SetCustomLogMessage(name);
     }
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {

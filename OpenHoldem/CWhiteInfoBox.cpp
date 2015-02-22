@@ -14,14 +14,13 @@
 #include "stdafx.h"
 #include "CWhiteInfoBox.h"
 
-#include "CAutoplayerTrace.h"
 #include "CHandresetDetector.h"
-#include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolengineTableLimits.h"
 #include "CSymbolengineUserchair.h"
 #include "CTableState.h"
+#include "StringFunctions.h"
 
 CWhiteInfoBox *p_white_info_box = NULL;
 
@@ -50,9 +49,9 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 		// Extra lines for symbol-logging
 		height += k_extra_height_per_line * kMaxLogSymbolsForWhiteBox;
 	}
-  	// Figure placement of box
+  // Figure placement of box
 	left = client_rect.right/2-70;
-	top = 4;
+	top = 0;
 	right = client_rect.right/2+70;
 	bottom = top+height;
 
@@ -131,10 +130,9 @@ CString CWhiteInfoBox::InfoText() {
 	result.Append(s);
 
   // logged symbols
-	if ((kMaxLogSymbolsForWhiteBox > 0)
-		&& p_symbol_engine_userchair->userchair_confirmed() 
-		&& p_table_state->User()->HasKnownCards()) {
-      result.Append(p_autoplayer_trace->LogSymbolsForGUI());
+	if (kMaxLogSymbolsForWhiteBox > 0) {
+    result.Append("  ");
+    result.Append(_custom_log_message);
 	}
   return result;
 }

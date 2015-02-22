@@ -33,17 +33,8 @@ class CAutoplayerTrace {
   void SetLastEvaluatedRelativeLineNumber(int relative_line_number) { _last_evaluated_relative_line_number = relative_line_number; }
   int  GetLastEvaluatedRelativeLineNumber() { return _last_evaluated_relative_line_number; }
  public:
-  CString LogSymbolsForGUI();
   CString BestAction();
- public:
-#define ENT CSLock lock(m_critsec);
-  void logsymbols_collection_add(const char *s) 	{ ENT _logsymbols_collection.Add(s);}
-  void logsymbols_collection_removeall() 			    { ENT _logsymbols_collection.RemoveAll();}
-  void symboltrace_collection_add(const char *s)	{ ENT _logsymbols_collection.Add(s);}
-  void symboltrace_collection_removeall();
-#undef ENT
  private:
-  void LogLogSymbols();
   void LogBasicInfo(const char *action_taken);
   void LogSecondaryAction(const char *action_taken);
   void LogAutoPlayerTrace();
@@ -51,8 +42,7 @@ class CAutoplayerTrace {
  private:
   CString Indentation();
  private:
-  CArray <CString, CString>   _logsymbols_collection; // Used to track the log$ symbols
-  CArray <CString, CString>   _symboltrace_collection;// Used to trace function execution
+  CArray <CString, CString> _symboltrace_collection;// Used to trace function execution
   std::map<CString, bool> _already_logged_symbols;
   int _indentation;
   int _number_of_log_lines;

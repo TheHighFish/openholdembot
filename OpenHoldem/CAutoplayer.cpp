@@ -92,7 +92,7 @@ void CAutoplayer::PrepareActionSequence() {
 
 void CAutoplayer::FinishActionSequenceIfNecessary() {
 	if (action_sequence_needs_to_be_finished) {
-    if (p_symbol_engine_casino->ConnectedToOHReplay()) {
+    if (p_symbol_engine_casino->ConnectedToOHReplay() && preferences.use_auto_replay()) {
       // Needs to be done very early
       // before we restore the focus
       p_casino_interface->PressTabToSwitchOHReplayToNextFrame();

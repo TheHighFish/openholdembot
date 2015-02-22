@@ -43,7 +43,7 @@ protected:
 
 	CEdit			m_FrameDelay, m_ClickDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
 	CSpinButtonCtrl m_FrameDelay_Spin, m_ClickDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
-	CButton			m_Autoplayer_Upon_Connection, m_SwagUseComma;
+	CButton			m_Autoplayer_Upon_Connection, m_Use_Auto_Replay, m_SwagUseComma;
 
 	DECLARE_MESSAGE_MAP()
 

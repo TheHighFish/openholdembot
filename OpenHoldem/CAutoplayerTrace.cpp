@@ -168,22 +168,6 @@ void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary
   Clear();
 }
 
-void CAutoplayerTrace::LogLogSymbols() {
-  int max_log = _logsymbols_collection.GetCount();
-  if (max_log <= 0) {
-    return;
-  }
-  if (max_log > kMaxLogSymbolsForWhiteBox) {
-    max_log = kMaxLogSymbolsForWhiteBox;
-  }
-  write_log(k_always_log_basic_information, "*** log$ (Total: %d | Showing: %d)\n", 
-    _logsymbols_collection.GetCount(), max_log);
-  for (int i=0; i<max_log; i++) {
-    write_log(k_always_log_basic_information, "***     %s\n", 
-      _logsymbols_collection.GetAt(i));
-  }
-}
-
 CString CAutoplayerTrace::BestAction() {
   for (int i=k_autoplayer_function_allin; i<=k_autoplayer_function_fold; ++i) {
     if (p_autoplayer_functions->GetAutoplayerFunctionValue(i)) {
@@ -291,12 +275,4 @@ void CAutoplayerTrace::LogAutoPlayerTrace() {
   write_log_separator(true, "");
 }
 
-CString CAutoplayerTrace::LogSymbolsForGUI() {
-  CString temp, result;
-  for (int i=0; i<min(5, _logsymbols_collection.GetCount()); i++) {
-	  temp.Format("  Log: %s\n", _logsymbols_collection.GetAt(i));
-	  result.Append(temp);
-  }
-  return result;
-}
 

@@ -33,11 +33,18 @@ MAINTENANCE:
   [THF]
 - Changed mutex timeout for FIFO actions in most situations.
   [fqfq]
+- Option to enable / disable switching to the next frame
+  if connected to OHReplay.
+  [PokerDog]
 
 BUG FIXES:
 - Delays in swag sequence were misplaced.
   It could lead to unrecognized lost focus.
   [fqfq]
+- log$ symbols did not get displyed in the "white box".
+  This has now been fixed and changed to one symbol only.
+  Thanks to Poker_Dog for reporting.
+  [THF]
 
 v7.5.0 2015-02.05
 ==================
