@@ -161,23 +161,21 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_nit.Format("0");
 	}
 	// action
-  if (p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold)) {
+	if (p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold)) {
 		_status_action = "Pre-fold";
 	}
-	else if (p_symbol_engine_userchair->userchair_confirmed() 
-      && p_iterator_thread->IteratorThreadComplete()) {
-		if (!p_symbol_engine_autoplayer->isfinalanswer())	{
-      _status_action = "N/A";
-    } else {
-      // Best action does no longer get calculated here, 
-      // but gets set by the autoplazer,
-      // because an advisor does not make sense
-      // and multiple evaluations of the autoplayer-functions
-      // cause lots of problems (DLL, memory-symbols)
-    }
-	} else if (p_symbol_engine_prwin->nopponents_for_prwin()==0) {
+	else if (p_symbol_engine_userchair->userchair_confirmed() && p_symbol_engine_autoplayer->ismyturn() && p_iterator_thread->IteratorThreadComplete() && p_symbol_engine_autoplayer->isfinalanswer())
+	{
+		if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin)) _status_action = "Allin";
+		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize)>0) _status_action.Format("Betsize: %.2f", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_raise)) _status_action = "Bet/Raise";
+		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)) _status_action = "Call";
+		else _status_action = "Fold/Check";
+	}
+	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0) {
 		_status_action = "Idle (f$prwin_number_of_opponents==0)";
-  } else {
-		_status_action = "Thinking";
-  }
+	}
+	else if (!p_symbol_engine_autoplayer->ismyturn()) {
+		_status_action = "Waiting my turn";
+	}
 }
