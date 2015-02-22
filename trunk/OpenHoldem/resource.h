@@ -436,6 +436,7 @@
 #define IDC_DEBUG_TOKENIZER             1401
 #define IDC_DEBUG_MEMORY_USAGE          1402
 #define IDC_DEBUG_ALLIN_ADJUSTMENT      1403
+#define IDC_USE_AUTO_REPLAY				1404
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -544,7 +545,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1404
+#define _APS_NEXT_CONTROL_VALUE         1405
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
