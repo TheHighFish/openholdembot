@@ -80,7 +80,7 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="43" columns="3">
+<lyxtabular version="3" rows="46" columns="3">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -226,7 +226,7 @@ BotCalledBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called Preflop, can also be used on the Flop and will be true if we called
+True if we called preflop
 \end_layout
 
 \end_inset
@@ -236,6 +236,93 @@ We called Preflop, can also be used on the Flop and will be true if we called
 
 \begin_layout Plain Layout
 None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotCalledOnFlop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if we called on the flop
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Postflop only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotCalledOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if we called on the turn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turn and River only
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotCalledOnRiver
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if we called on the river
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+River only
 \end_layout
 
 \end_inset
@@ -670,7 +757,7 @@ None
 \begin_inset Text
 
 \begin_layout Plain Layout
-CalledOnFlop
+
 \end_layout
 
 \end_inset
@@ -679,8 +766,7 @@ CalledOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called on the Flop, may also be used on the Flop and will be true if
- we called
+
 \end_layout
 
 \end_inset
@@ -689,7 +775,7 @@ We called on the Flop, may also be used on the Flop and will be true if
 \begin_inset Text
 
 \begin_layout Plain Layout
-Postflop only
+
 \end_layout
 
 \end_inset
@@ -700,7 +786,7 @@ Postflop only
 \begin_inset Text
 
 \begin_layout Plain Layout
-CalledOnTurn
+
 \end_layout
 
 \end_inset
@@ -709,8 +795,7 @@ CalledOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-We called on the Turn, may also be used on the Turn and will be true if
- we called
+
 \end_layout
 
 \end_inset
@@ -719,7 +804,7 @@ We called on the Turn, may also be used on the Turn and will be true if
 \begin_inset Text
 
 \begin_layout Plain Layout
-Turn and River only
+
 \end_layout
 
 \end_inset
