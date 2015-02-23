@@ -15,6 +15,11 @@ NEW stuff:
 - Implementing the OpenPPL-symbols BigBlindSittingOut,
   SmallBlindSittingOut, AllOpponentsLeftSittingOut.
   [Poker_Dog and FqFq]
+- New OpenPPL symbol HighCardOfCommonStraigh	
+  which returns the value of the highest card of a shared straight. 
+  Especially meant to decide if we have the shared nuts (Ace) 
+  or if we can beat the board.
+  [Nik0]
 
 MAINTENANCE:
 - Some more tournament identifiers for the title-string.
@@ -45,6 +50,10 @@ BUG FIXES:
   This has now been fixed and changed to one symbol only.
   Thanks to Poker_Dog for reporting.
   [THF]
+- The last action (formerly "best action") 
+  did no longer get shown in the statusbar.
+  This has now been fixed.
+  [Poker_Dog]
 
 v7.5.0 2015-02.05
 ==================
