@@ -24,6 +24,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEnginePrwin.h"
+#include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -33,6 +34,7 @@ COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
 
 COpenHoldemStatusbar::COpenHoldemStatusbar(CWnd *main_window){
 	_main_window = main_window;
+  _last_action = "";
   InitAdvancedStatusbar();
 }
 
@@ -53,14 +55,13 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar() {
 	_status_bar.SetPaneInfo(7, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 90);
 }
 
-void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position)
-{
+void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position) {
 	_status_bar.GetWindowRect(statusbar_position);
 }
 
 void COpenHoldemStatusbar::OnUpdateStatusbar() {
 	ComputeCurrentStatus(); 
-  _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), _status_action);
+  _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), LastAction());
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PLCARDS), _status_plcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_COMCARDS), _status_comcards);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_POKERHAND), _status_pokerhand);
@@ -70,32 +71,15 @@ void COpenHoldemStatusbar::OnUpdateStatusbar() {
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_NIT), _status_nit);
 }
 
-
-void COpenHoldemStatusbar::ComputeCurrentStatus()
-{
+void COpenHoldemStatusbar::ComputeCurrentStatus() {
 	CardMask	Cards;
-	CString		temp;
-
-	if (p_symbol_engine_userchair == NULL)
-	{
-		// Very early phase of initialization
-		// Can't continue here.
-		_status_action = "Not playing";
-		return;
-	}
-	if (!p_symbol_engine_userchair->userchair_confirmed())
-	{
-		_status_action = "Not playing";
-		return;
-	}
+	CString		temp; 
 	int userchair = p_symbol_engine_userchair->userchair();
-	
 	// Player cards
 	CardMask_RESET(Cards);
 	int nCards = 0;
 	_status_plcards = "";
-	 
-  if (p_table_state->User()->HasKnownCards()) {
+	if (p_table_state->User()->HasKnownCards()) {
 		for (int i=0; i<k_number_of_cards_per_player; i++) {	
 			// This condition got already checked: "playing"
       Card card = p_table_state->User()->_hole_cards[i];
@@ -108,8 +92,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
 	}	else 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) {
-			if (p_table_state->User()->HasKnownCards())
-			{
+			if (p_table_state->User()->HasKnownCards())	{
 				Card card = p_table_state->User()->_hole_cards[i];
 				_status_plcards.Append(card.ToString());
         CardMask_SET(Cards, card.GetValue());
@@ -122,11 +105,9 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 
 	// Common cards
 	_status_comcards = "";
-	for (int i=0; i<k_number_of_community_cards; i++) 
-	{
+	for (int i=0; i<k_number_of_community_cards; i++) {
     Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())
-		{
+		if (card.IsKnownCard())	{
 			_status_comcards.Append(card.ToString());
 			CardMask_SET(Cards, card.GetValue());
 			nCards++;
@@ -160,22 +141,24 @@ void COpenHoldemStatusbar::ComputeCurrentStatus()
 		// No iteratrions without userchair or cards
 		_status_nit.Format("0");
 	}
-	// action
-	if (p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold)) {
-		_status_action = "Pre-fold";
+}
+
+CString COpenHoldemStatusbar::LastAction() {
+  if (p_symbol_engine_userchair == NULL)	{
+		// Very early phase of initialization
+		// Can't continue here.
+		return "Not playing";
 	}
-	else if (p_symbol_engine_userchair->userchair_confirmed() && p_symbol_engine_autoplayer->ismyturn() && p_iterator_thread->IteratorThreadComplete() && p_symbol_engine_autoplayer->isfinalanswer())
-	{
-		if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin)) _status_action = "Allin";
-		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize)>0) _status_action.Format("Betsize: %.2f", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
-		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_raise)) _status_action = "Bet/Raise";
-		else if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)) _status_action = "Call";
-		else _status_action = "Fold/Check";
+	if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
+		return "Not playing";
 	}
-	else if (p_symbol_engine_prwin->nopponents_for_prwin()==0) {
-		_status_action = "Idle (f$prwin_number_of_opponents==0)";
-	}
-	else if (!p_symbol_engine_autoplayer->ismyturn()) {
-		_status_action = "Waiting my turn";
-	}
+  if (p_symbol_engine_time->elapsedauto() > 5) {
+    // Reset display of last action after 5 seconds
+    return "";
+  }
+  // Return the last saved action.
+  // This value should get set exactly once after autoplayer/actions
+  // to avoid multiple evaluations of the autoplayer-functions,
+  // especially at different heartbeats.
+  return _last_action;
 }

@@ -32,7 +32,7 @@ class CAutoplayerTrace {
  public:
   void SetLastEvaluatedRelativeLineNumber(int relative_line_number) { _last_evaluated_relative_line_number = relative_line_number; }
   int  GetLastEvaluatedRelativeLineNumber() { return _last_evaluated_relative_line_number; }
- public:
+ private:
   CString BestAction();
  private:
   void LogBasicInfo(const char *action_taken);
