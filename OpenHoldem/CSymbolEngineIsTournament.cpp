@@ -342,7 +342,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	// because they are too small for later tables of tournaments
 	_istournament    = false;
 	_decision_locked = true;
-	write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] high-stakes cash-game up to $200\\$400.n");
+	write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] high-stakes cash-game up to $200\\$400\n");
 	// The only case that can go wrong now:
 	// High-stakes cash-games ($250/$500 and above) can be recognized 
 	// as tournaments. 

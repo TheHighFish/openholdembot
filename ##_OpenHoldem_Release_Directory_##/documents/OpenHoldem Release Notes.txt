@@ -20,6 +20,10 @@ NEW stuff:
   Especially meant to decide if we have the shared nuts (Ace) 
   or if we can beat the board.
   [Nik0]
+- Implementing support for tablepoints again.
+  A table will be considered a match if all optional tablepoints
+  tablepoint0..tablepoint9 return true.
+  [Relhby]
 
 MAINTENANCE:
 - Some more tournament identifiers for the title-string.
@@ -357,7 +361,7 @@ NEW STUFF:
   combined with a tablemap-symbol "handresetmethod".
   As soon as one of the chosen handresetmethods fired a handreset got detected.
   This lead to lots of incorrect handresets by occluded tables (especially for beginners)
-  and as a consequence to a reset of game-hostory.
+  and as a consequence to a reset of game-history.
   Now we introduced 5 more ways to detect handresets:
     * disappearing community-cards
     * decreasing potsize preflop
@@ -366,7 +370,7 @@ NEW STUFF:
     * reappearence of a small blind
   in addition to the 3 old ones:
     * changing dealer-chair
-    * changing user=cards
+    * changing user-cards
     * changing hand-number
   OpenHoldem will now automatically detect a handreset
   if at least 2 independent methods fire within 3 heartbeats.

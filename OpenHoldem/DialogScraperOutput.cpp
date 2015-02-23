@@ -7,12 +7,9 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: DialogScraperOutput.cpp : implementation file
 //
 //******************************************************************************
-
-// DialogScraperOutput.cpp : implementation file
-//
 
 #include "stdafx.h"
 #include "DialogScraperOutput.h"

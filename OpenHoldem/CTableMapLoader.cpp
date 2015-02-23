@@ -27,8 +27,7 @@
 
 CTableMapLoader *p_tablemap_loader = NULL;
 
-typedef struct
-{
+typedef struct {
 	CString	FilePath;
 	CString	SiteName;
 	int	    ClientSizeX, ClientSizeY;
@@ -38,6 +37,9 @@ typedef struct
 	CString	TitleText_0_9[10];
 	CString	NegativeTitleText;
 	CString	NegativeTitleText_0_9[10];
+	STablemapRegion	TablePoint[10];
+	int			TablePointCount;
+
 } t_tablemap_connection_data;
 
 
@@ -137,8 +139,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
-	if (tablemap_connection_dataAlreadyStored(cmap->filepath()))
-	{
+	if (tablemap_connection_dataAlreadyStored(cmap->filepath())) 	{
 		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
 		return;
 	}
@@ -147,8 +148,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	tablemap_connection_data[_number_of_tablemaps_loaded].SiteName = cmap->sitename();
 	tablemap_connection_data[_number_of_tablemaps_loaded].TitleText = cmap->titletext();
 
-	if (cmap->sitename() == "")
-	{
+	if (cmap->sitename() == "") {
 		CString error_message;
 		error_message.Format("Tablemap contains no sitename.\n"
 			"Sitenames are necessary to recognize duplicate TMs\n"
@@ -168,24 +168,34 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	p_tablemap_access->SetTitleText("!titletext", tablemap_connection_data[_number_of_tablemaps_loaded].NegativeTitleText);
 		
 	CString s = "";
-	for (int i=0; i<k_max_number_of_titletexts; i++)
-	{
+	for (int i=0; i<k_max_number_of_titletexts; i++) {
 		s.Format("titletext%d", i);
 		p_tablemap_access->SetTitleText(s, tablemap_connection_data[_number_of_tablemaps_loaded].TitleText_0_9[i]);
 
 		s.Format("!titletext%d", i);
 		p_tablemap_access->SetTitleText(s, tablemap_connection_data[_number_of_tablemaps_loaded].NegativeTitleText_0_9[i]);		
 	}
-
-	_number_of_tablemaps_loaded++;
+	// Extract tablepoints r$tablepoint0..9
+	s = "";
+	int tpcount = 0;
+	for (int i=0; i<10; ++i) {
+		s.Format("tablepoint%d", i);
+		if (p_tablemap_access->GetTableMapRegion(s, &tablemap_connection_data[_number_of_tablemaps_loaded].TablePoint[i])) {
+		  ++tpcount;
+		} else {
+      break;
+    }
+	}
+	tablemap_connection_data[_number_of_tablemaps_loaded].TablePointCount = tpcount;
+	++_number_of_tablemaps_loaded;
 }
-
 
 // This function has to be global and can't be part of the class,
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title) {
-	bool			good_pos_title = false, good_neg_title = false, good_table_points = false;
+	bool			good_pos_title = false, good_neg_title = false; 
+  bool      good_table_points = false;
 	int				width = 0, height = 0, x = 0, y = 0;
 	HDC				hdcScreen = NULL, hdcCompatible = NULL;
 	HBITMAP			hbmScreen = NULL, hOldScreenBitmap = NULL;
@@ -199,19 +209,17 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	
 	// Check for exact match on client size
 	if (!((r.right == tablemap_connection_data[MapIndex].ClientSizeX)
-		&& (r.bottom == tablemap_connection_data[MapIndex].ClientSizeY)))
-	{
+	  	&& (r.bottom == tablemap_connection_data[MapIndex].ClientSizeY)))	{
 		// Exact size didn't match.
 		// So check for client size that falls within min/max
 		if (!((tablemap_connection_data[MapIndex].ClientSizeMinX != 0) 
-			&& (tablemap_connection_data[MapIndex].ClientSizeMinY != 0) 
-			&& (tablemap_connection_data[MapIndex].ClientSizeMaxX != 0) 
-			&& (tablemap_connection_data[MapIndex].ClientSizeMaxY != 0) 
-			&& (r.right  >= tablemap_connection_data[MapIndex].ClientSizeMinX)
-			&& (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
-			&& (r.bottom >= tablemap_connection_data[MapIndex].ClientSizeMinY)
-			&& (r.bottom <= tablemap_connection_data[MapIndex].ClientSizeMaxY)))
-		{
+			  && (tablemap_connection_data[MapIndex].ClientSizeMinY != 0) 
+			  && (tablemap_connection_data[MapIndex].ClientSizeMaxX != 0) 
+			  && (tablemap_connection_data[MapIndex].ClientSizeMaxY != 0) 
+			  && (r.right  >= tablemap_connection_data[MapIndex].ClientSizeMinX)
+			  && (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
+			  && (r.bottom >= tablemap_connection_data[MapIndex].ClientSizeMinY)
+			  && (r.bottom <= tablemap_connection_data[MapIndex].ClientSizeMaxY))) {
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
 				tablemap_connection_data[MapIndex].ClientSizeX,
 				tablemap_connection_data[MapIndex].ClientSizeY,
@@ -221,7 +229,8 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		}
 	}
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
-	// Check for match positive title text matches
+  
+  // Check for match positive title text matches
 	good_pos_title = false;
 	if ((tablemap_connection_data[MapIndex].TitleText != "")
 		&& title.Find(tablemap_connection_data[MapIndex].TitleText)!=-1)
@@ -271,6 +280,84 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	{
 		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Negative title found -> window is no match.\n"); 
 		return false;
+	}
+
+  // tablepoint routine 
+  if (tablemap_connection_data[MapIndex].TablePointCount > 0) {
+    for (int i=0; i<tablemap_connection_data[MapIndex].TablePointCount; i++) {
+      // Allocate heap space for BITMAPINFO
+      BITMAPINFO  *bmi;
+      int         info_len = sizeof(BITMAPINFOHEADER) + 1024;
+      bmi = (BITMAPINFO *) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
+
+      // Check table points for match
+      width = r.right - r.left;
+      height = r.bottom - r.top;
+      hdcScreen = GetDC(h);
+      hdcCompatible = CreateCompatibleDC(hdcScreen);
+      hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
+      hOldScreenBitmap = (HBITMAP) SelectObject(hdcCompatible, hbmScreen);
+      BitBlt(hdcCompatible, 0, 0, width, height, hdcScreen, 0, 0, SRCCOPY);
+
+      // Populate BITMAPINFOHEADER
+      bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
+      bmi->bmiHeader.biBitCount = 0;
+      GetDIBits(hdcCompatible, hbmScreen, 0, 0, NULL, bmi, DIB_RGB_COLORS);
+
+      // Get the actual argb bit information
+      bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
+      pBits = new BYTE[bmi->bmiHeader.biSizeImage];
+      GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
+
+      good_table_points = true;
+      x = tablemap_connection_data[MapIndex].TablePoint[i].left;
+      y = tablemap_connection_data[MapIndex].TablePoint[i].top;
+
+      int pbits_loc = y*width*4 + x*4;
+      alpha = pBits[pbits_loc + 3];
+      red = pBits[pbits_loc + 2];
+      green = pBits[pbits_loc + 1];
+      blue = pBits[pbits_loc + 0];
+
+      COLORREF Color = tablemap_connection_data[MapIndex].TablePoint[i].color;
+      // positive radius
+      if (tablemap_connection_data[MapIndex].TablePoint[i].radius >= 0)
+      {
+         if (!trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
+                               GetRValue(Color),
+                               GetGValue(Color),
+                               GetBValue(Color),
+                               tablemap_connection_data[MapIndex].TablePoint[i].radius,
+                               alpha, red, green, blue)) {
+            good_table_points = false;
+         }
+      }
+      // negative radius (logical not)
+      else {
+         if (trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
+                              GetRValue(Color),
+                              GetGValue(Color),
+                              GetBValue(Color),
+                              -tablemap_connection_data[MapIndex].TablePoint[i].radius,
+                              alpha, red, green, blue))
+         {
+            good_table_points = false;
+         }
+      }
+
+      // Clean up
+      HeapFree(GetProcessHeap(), NULL, bmi);
+      delete []pBits;
+      SelectObject(hdcCompatible, hOldScreenBitmap);
+      DeleteObject(hbmScreen);
+      DeleteDC(hdcCompatible);
+      ReleaseDC(h, hdcScreen);
+
+      if (!good_table_points) {
+         write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Not all tablepoints match.\n");
+         return false;
+      }
+    }
 	}
 
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Window ia a match\n");
