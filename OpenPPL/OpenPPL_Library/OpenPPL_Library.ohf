@@ -353,7 +353,7 @@ RaiseMax
 -1 
 
 ##HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
--1
+0
 
 ##HINT_There_Is_No_Pair_On_The_Board##
 -1
@@ -637,6 +637,7 @@ raischair == 9 ? currentbet9 :
 HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 
 ##PlayersRaisingOrColdCallingTheLastRaise##
+(LastRaiserCurrentBet == 0) ? 0 :
   (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
 + (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
 + (currentbet2 == LastRaiserCurrentBet ? 1 : 0)
