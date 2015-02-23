@@ -817,7 +817,7 @@ me_re_MemMissingSmallBlind
   && userchair!=8 && balance8>0] ? balance8/bblind:
 [(playersplayingbits & 0b1000000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
   && userchair!=9 && balance9>0] ? balance9/bblind:
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+ERROR_Game_Is_Not_HeadsUp
 
 
 ##InitRaisesBeforeFlop##
@@ -1766,7 +1766,7 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 ##StraightPossible##
 (nstraightfillcommon <= 2)
 
-##RankBitsCommOnFlop##
+##RankBitsCommonFlop##
   (FirstFlopCard != ConstCardAce ? 2**FirstFlopCard : 0b100000000000010)
 | (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : 0b100000000000010)
 | (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : 0b100000000000010)
@@ -1778,28 +1778,28 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 | (TurnCard != ConstCardAce ? 2**TurnCard : 0b100000000000010)
 
 ##StraightPossibleOnFlop##
-(`((RankBitsCommOnFlop >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnFlop >>  1) & 0x1f) >= 3) ? 1 : 0
+(`((RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##StraightPossibleOnTurn##
-(`((RankBitsCommOnTurn >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommOnTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+(`((RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
+(`((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##ThreeCardStraightOnBoard##
 nstraightcommon >= 3
@@ -3252,14 +3252,14 @@ ispair ?
 // 5) we pair the lower board card; probably several cases
 [(rankhiplayer == RankOfBottomPairOnBoard) || (rankloplayer == RankOfBottomPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WeHitBottomSet :
 //
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard##
 // Precondition: we have FH or quads, there is a pair on board.
 [ispair && (rankhiplayer == trankcommon)] ? NFH4OAK_PairOnBoard_WeHitQuads :
 [ispair && (pokerval & fullhouse)] ? NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
 [pokerval & fullhouse] ? NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##NutFullHouseOrFourOfAKind##
 [(pokerval & (fullhouse | fourofakind)) == 0] ? HINT_We_Dont_Have_A_FullHouse_At_All : 
@@ -3268,7 +3268,7 @@ FullHouseOnBoard ? NutFullHouseOrFourOfAKind_FullHouseOnBoard :
 TripsOnBoard     ? NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard :
 TwoPairOnBoard   ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard :
 PairOnBoard      ? NutFullHouseOrFourOfAKind_PairOnBoard :
-ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##Overcards##
 ((RankOfFirstHoleCard > rankhicommon)  && (RankOfSecondHoleCard > rankhicommon))  ? 2 :
