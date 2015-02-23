@@ -18,6 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
 #include "COHScriptObject.h"
+#include "CopenHoldemStatusbar.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -255,6 +256,10 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
   write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
   write_log_separator(true, "");
+  // Also show "BestAction" in the statusbar.
+  // This needs to be set exactlz once to avoid multiple evaluations 
+  // of the autoplayer functions
+  p_openholdem_statusbar->SetLastAction(BestAction());
 }
 
 void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {
