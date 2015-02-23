@@ -94,7 +94,7 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="54" columns="2">
+<lyxtabular version="3" rows="55" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="40text%">
 <column alignment="left" valignment="top" width="60text%">
@@ -314,6 +314,28 @@ FullHouseOnBoard
 
 \begin_layout Plain Layout
 There is a full house on the board
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HighCardOfCommonStraigh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Returns the value of the highest card of a shared straight.
+ Especially meant to decide if we have the shared nuts (Ace) or if we can
+ beat the board
 \end_layout
 
 \end_inset

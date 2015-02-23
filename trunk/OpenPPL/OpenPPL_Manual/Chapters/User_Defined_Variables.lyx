@@ -212,12 +212,6 @@ Expert Tricks (MEMORY SYMBOLS)
 \end_layout
 
 \begin_layout Standard
-
-\series bold
-Please note that Memory Symbols are actually not working.
-\end_layout
-
-\begin_layout Standard
 Do you need variables that can be set to any arbitrary value? Do you need
  variables that can be reset back? Do you need variables that don't reset
  automatically, but keep their values till the next hand or even for the

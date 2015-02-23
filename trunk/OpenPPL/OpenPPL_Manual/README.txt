@@ -12,6 +12,11 @@ To modify the docu:
   (http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-c8a6-452f-9aa0-d597d16580cc)
   This program makes it possible to create a structured help-file
   from your html-files (first open the *.hhp file)
+  
+All in one PDF.
+As some people have problems with CHM files there is also "OpenPPL_Manual.lyx",
+which imports all chapters.
+* Simply export to PDF
 
 Don't worry - it is quite easy, you will see.
   
