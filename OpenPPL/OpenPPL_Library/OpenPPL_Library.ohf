@@ -355,6 +355,9 @@ RaiseMax
 ##HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
 0
 
+##HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise##
+0
+
 ##HINT_There_Is_No_Pair_On_The_Board##
 -1
 
@@ -650,6 +653,7 @@ HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 + (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
 
 ##CallsSinceLastRaise##
+!PlayersRaisingOrColdCallingTheLastRaise ? HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise :
 ismyturn ? (PlayersRaisingOrColdCallingTheLastRaise - 1) :
 ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
@@ -2243,7 +2247,8 @@ ispair && (RankOfFirstHoleCard < FourthBestBoardCard) && (RankOfFirstHoleCard > 
 // Note: This does also count straightdraws at the board,
 // where we don't contribute any card. Special care should be taken
 // in HaveInsideStraightDraw
-(nstraightfill <= 1)
+	(nstraightfill <= 1)
+&& !HaveStraight 
 
 ##HaveBackdoorFlushDrawContributingTwoCards##
    (betround == ConstBetRoundFlop)
@@ -2735,10 +2740,12 @@ HINT_Such_A_Straight_Does_Not_Exist
 + GetBestPossibleStraightIfTwoHitsTheBoard
 
 ##HaveNutStraightDraw##
-(nsuitedcommon < 2) && (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2)
+	( (nsuitedcommon < 2) && (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) )
+&& !HaveStraight
 
 ##HaveInsideNutStraightDraw##
-(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+	(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+&& !HaveStraight
 
 ##HaveInsideStraightDraw##
 HaveAnyKindOfInsideStraightDraw
@@ -2765,8 +2772,7 @@ isroyalflush ? False :
 isstraightflush && !HigherStraightFlushPossible
 
 ##HaveOpenEndedStraightDraw##
-HaveStraight
-|| ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
+[  ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
 || ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
 || ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
 || ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
@@ -2774,7 +2780,8 @@ HaveStraight
 || ((rankbits >> 5) & 0b111100) == 0b111100 // T987
 || ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
 || ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
-|| ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT
+|| ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
+] && !HaveStraight
 
 ##HaveQuads##
 [ isfourofakind && (nrankedcommon < 4) ]
@@ -3925,7 +3932,8 @@ Middle
 //*****************************************************************************
 
 ##HaveBackdoorStraightDraw##
--1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D
+	(-1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D)
+&& !HaveStraight 
 
 //*****************************************************************************
 //
