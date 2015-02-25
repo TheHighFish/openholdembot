@@ -58,6 +58,9 @@ BUG FIXES:
   did no longer get shown in the statusbar.
   This has now been fixed.
   [Poker_Dog]
+- The query for total fold to 3bet hand an error.
+  thanks to Satanikut for reporting and to Mobz for finding the mistake.
+  [THF]
 
 v7.5.0 2015-02.05
 ==================
