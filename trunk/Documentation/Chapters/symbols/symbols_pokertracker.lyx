@@ -406,7 +406,7 @@ aggr_factor
 \begin_inset Text
 
 \begin_layout Plain Layout
-Poker Tracker total aggression
+Poker Tracker total aggression 
 \end_layout
 
 \end_inset
@@ -446,7 +446,7 @@ fold_to_3bet
 \begin_inset Text
 
 \begin_layout Plain Layout
-Poker Tracker folded while facing 3bet total
+Poker Tracker total folded while facing 3bet excluding preflop
 \end_layout
 
 \end_inset
