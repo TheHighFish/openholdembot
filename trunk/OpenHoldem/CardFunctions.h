@@ -50,7 +50,7 @@ inline bool IsCardRankCharacter(char c)
 {
 	return (isdigit(c)  || c == 'T' || c == 'J'
 		 || c == 'Q' || c == 'K' || c == 'A' || c == 't'
-		 || c == 'j' || c == 'q' || c == 'k' || c == 'A');
+		 || c == 'j' || c == 'q' || c == 'k' || c == 'a');
 }
 
 inline int CardRankCharacterToCardRank(char rank)
