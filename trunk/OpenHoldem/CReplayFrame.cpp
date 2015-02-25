@@ -74,6 +74,10 @@ void CReplayFrame::CreateReplayFrame(void){
 	// Get exclusive access to CScraper and CSymbols variables
 	// (Wait for scrape/symbol cycle to finish before saving frame)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+  CString next_frame;
+	next_frame.Format("[%06d]", _next_replay_frame);
+  // Replay-frame should always be mentioned in the log for easy reference
+  write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame [%s]\n", next_frame);
 	CreateBitMapFile();
   // Create HTML file
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
@@ -342,8 +346,8 @@ CString CReplayFrame::GetPotsAsHTML() {
 
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
 	CString path = p_filenames->ReplaySessionDirectory();
-	write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating bitmap file %s\n", path);
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
+    write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 	}
 }
