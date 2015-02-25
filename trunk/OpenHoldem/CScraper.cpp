@@ -320,7 +320,7 @@ void CScraper::ScrapeSeated(int chair) {
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
-			p_table_state->_players[chair]._seated = result;
+			p_table_state->_players[chair]._seated = p_string_match->IsStringSeated(result);
 		}
 	}
 	if (p_scraper_access->IsPlayerSeated(chair)) {
@@ -331,7 +331,7 @@ void CScraper::ScrapeSeated(int chair) {
 	seated.Format("u%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result!="")	{
-			p_table_state->_players[chair]._seated = result;
+			p_table_state->_players[chair]._seated = p_string_match->IsStringSeated(result);
 		}
 	}
 }
@@ -376,14 +376,14 @@ void CScraper::ScrapeActive(int chair) {
   // try p region first pXactive
 	active.Format("p%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		p_table_state->_players[chair]._active = result;
+		p_table_state->_players[chair]._active = p_string_match->IsStringActive(result);
 	}
 	if (p_scraper_access->IsPlayerActive(chair)) {
 		return;
 	}
 	active.Format("u%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		p_table_state->_players[chair]._active = result;
+		p_table_state->_players[chair]._active = p_string_match->IsStringActive(result);
 	}
 }
 
