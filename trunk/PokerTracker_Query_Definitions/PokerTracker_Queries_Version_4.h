@@ -501,15 +501,15 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 #if PT4_QUERY_SUPPORT__OVERALL_FOLD_TO_3B
-	/* PT4  query to get TOTAL fold to 3 bet */
+	/* PT4  query to get total fold to 3 bet without preflop*/
 	{
 		// name
 		"fold_to_3bet",		
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet total",
+		"Poker Tracker folded while facing 3bet total without preflop",
 		// query
 		"SELECT (case when sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
-		        cast(sum(case when not enum_p_3bet_action = 'F' or enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
+		        cast(sum(case when enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
 				/ sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) end) as result \
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
