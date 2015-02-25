@@ -29,13 +29,14 @@ const int k_number_of_circular_cloneable_regions = 32;
 // 3rd string: postfix after number
 const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions][3] =
 {{"p0active",          "p", "active"},  
- {"p0balance",         "p", "balance"},
+// we should already have pXbalance regions, so don't clone them
+// {"p0balance",         "p", "balance"},
  {"p0bet",             "p", "bet"},
  {"p0cardback",        "p", "cardback"},
  {"p0cardface0",       "p", "cardface0"},
  {"p0cardface1",       "p", "cardface1"},
- {"p0cardface0nocard", "p", "cardface0"},
- {"p0cardface1nocard", "p", "cardface1"},
+ {"p0cardface0nocard", "p", "cardface0nocard"},
+ {"p0cardface1nocard", "p", "cardface1nocard"},
  {"p0cardface0rank",   "p", "cardface0rank"},
  {"p0cardface0suit",   "p", "cardface0suit"},
  {"p0cardface1rank",   "p", "cardface1rank"},
@@ -197,16 +198,13 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 	}	
 }
 
-void CRegionCloner::CalculateCircularRegionsForFirstCloneableObject()
-{
+void CRegionCloner::CalculateCircularRegionsForFirstCloneableObject() {
 	STablemapRegion region_to_be_cloned;
 	// Find first cloneable region for position calculations
-	for (int i = 0; i<k_number_of_circular_cloneable_regions; i++)
-	{
+	for (int i = 0; i<k_number_of_circular_cloneable_regions; i++) {
 		if (p_tablemap_access->GetTableMapRegion(
-			circular_cloneable_regions[i][0], // name of region
-			&region_to_be_cloned))
-		{
+			  circular_cloneable_regions[i][0], // name of region
+			  &region_to_be_cloned)) {
 			CalculateCircularRegions(region_to_be_cloned, k_max_number_of_players);
 			break;
 		}
@@ -282,27 +280,36 @@ void CRegionCloner::CloneCommonCards()
 	}
 }
 
-void CRegionCloner::CloneCircularCloneableRegions()
-{
-	CalculateCircularRegionsForFirstCloneableObject();
+void CRegionCloner::CloneCircularCloneableRegions() {
+	//CalculateCircularRegionsForFirstCloneableObject();
+  STablemapRegion region_to_be_cloned;
+	STablemapRegion region_with_balance;
+	int balance_0_top, balance_0_left, balance_0_bottom, balance_0_right;
 
-	STablemapRegion region_to_be_cloned;
-	for (int i = 0; i<k_number_of_circular_cloneable_regions; i++)
-	{
+	if (p_tablemap_access->GetTableMapRegion(
+			"p0balance", // get p0balance and its coordinates to calculate offsets
+			&region_to_be_cloned)) {
+		balance_0_top = region_to_be_cloned.top;
+		balance_0_left = region_to_be_cloned.left;
+		balance_0_bottom = region_to_be_cloned.bottom;
+		balance_0_right = region_to_be_cloned.right;
+	} else {
+		MessageBox(NULL,"You must have p0balance object at first!", "Warning",0);
+		return;
+	}
+	for (int i=0; i<k_number_of_circular_cloneable_regions; ++i) {
 		// Clone a single region;
 		if (!p_tablemap_access->GetTableMapRegion(
-			circular_cloneable_regions[i][0], // name of region
-			&region_to_be_cloned))
-		{
+			  circular_cloneable_regions[i][0], // name of region
+			  &region_to_be_cloned)) {
 			continue;
 		}
-		CalculateDistanceToFirstCloneableRegion(region_to_be_cloned);
+		//CalculateDistanceToFirstCloneableRegion(region_to_be_cloned);
 
 		// Start with player 1 and keep player 0 as is
-		for (int p=1; p<k_max_number_of_players; p++)
-		{	
-			STablemapRegion new_region;
-			ApplyNextCircularRegionPosition(region_to_be_cloned, &new_region, p);
+		for (int p=1; p<k_max_number_of_players; p++)	{	
+			STablemapRegion new_region, existing_region;
+		  //	ApplyNextCircularRegionPosition(region_to_be_cloned, &new_region, p);
 
 			new_region.name = CreateName( 
 				circular_cloneable_regions[i][1],   // prefix
@@ -312,21 +319,25 @@ void CRegionCloner::CloneCircularCloneableRegions()
 			new_region.radius = region_to_be_cloned.radius;
 			new_region.transform = region_to_be_cloned.transform;
 
-			p_tablemap->r$_insert(new_region);
+			CString s = "";
+			s.Format("p%dbalance", p);
 
-			theApp.m_TableMapDlg->UpdateDisplayOfAllRegions();
+			if (p_tablemap_access->GetTableMapRegion(
+			      s, // if this region has balance then continue and clone
+			      &region_with_balance) 
+          && !p_tablemap_access->GetTableMapRegion(new_region.name, &existing_region)) {
+				new_region.top = region_with_balance.top - ( balance_0_top - region_to_be_cloned.top );
+				new_region.left = region_with_balance.left - ( balance_0_left - region_to_be_cloned.left );
+				new_region.bottom = new_region.top + (region_to_be_cloned.bottom-region_to_be_cloned.top );
+				new_region.right = new_region.left + ( region_to_be_cloned.right - region_to_be_cloned.left );
+				p_tablemap->r$_insert(new_region);
+			}
 		}
 	}
+	theApp.m_TableMapDlg->UpdateDisplayOfAllRegions(); 
 }
 
-void CRegionCloner::CloneRegions()
-{
-	if (TableSizeUndefined())
-	{
-		MessageBox(0, "Can't clone regions.\n"
-			"Table size undefined.", "Error", 0);
-		return;
-	}
-	CloneCommonCards();
+void CRegionCloner::CloneRegions() {
+  CloneCommonCards();
 	CloneCircularCloneableRegions();
 }

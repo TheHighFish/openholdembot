@@ -1,3 +1,12 @@
+v7.6.0 2015-02.xx
+==================
+NEW stuff:
+- Improved region-cloner, which clones now all p0-regions
+  relative to the balance regions of all players.
+  p0 has to be complete, pX balance must exist for the other players,
+  the rest works automatically.
+  [Relhby]
+
 v7.5.0 2015-02.05
 ==================
 NEW stuff:
