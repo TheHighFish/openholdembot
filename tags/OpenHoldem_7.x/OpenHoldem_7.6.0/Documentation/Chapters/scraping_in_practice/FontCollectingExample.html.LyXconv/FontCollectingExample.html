@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="fontcollectingexample.tex"> 
+<meta name="date" content="2010-05-10 01:45:00"> 
+<link rel="stylesheet" type="text/css" href="fontcollectingexample.css"> 
+</head><body 
+>
+   <h3 class="sectionHead"><a 
+ id="x1-1000"></a>Collection fonts</h3>
+<!--l. 28--><p class="noindent" >This example on collecting fonts was reproduced from the Wiki
+(<a 
+href="http://www.maxinmontreal.com/wiki/index.php5?title=Collecting_text" class="url" ><span 
+class="ectt-1000">http://www.maxinmontreal.com/wiki/index.php5?title=Collecting_text</span></a>).
+<!--l. 30--><p class="indent" >   We start with nothing except a table that we need to extract fonts from, here I am
+using a Notepad document for simplicity.
+<!--l. 33--><p class="indent" >   <img 
+src="fontcollectingexample0x.png" alt="PIC" class="graphics" width="276.03125pt" height="290.08374pt" ><!--tex4ht:graphics  
+name="fontcollectingexample0x.png" src="0E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text1.eps"  
+-->
+<!--l. 35--><p class="indent" >   Next we fire up OpenScrape, and attach it to our "Table". Then we build a region
+around the area we are working on. Click "New" -&#x003E; "Region" and name it characters.
+Use the coordinate editor to enclose the Region. You can also "shift-drag" the rectangle
+around to place it.
+
+<!--l. 41--><p class="indent" >   <img 
+src="fontcollectingexample1x.png" alt="PIC" class="graphics" width="628.34749pt" height="715.67374pt" ><!--tex4ht:graphics  
+name="fontcollectingexample1x.png" src="1E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text2.eps"  
+-->
+<!--l. 43--><p class="indent" >   Set the region to the correct "transform", Type 0 in this case. Use the
+eyedropper to highlight the foreground pixels until we have nice seperation
+in the "Pixel seperation" field. Press "Create Font". We are presented with
+the "Add font characters" window. Highlight each "?" in turn and enter the
+correct character. "OK" to save. "Sort" when done here, then "save" on main
+GUI.
+<!--l. 52--><p class="indent" >   If you hit the problem of openscrape seeing two letters as one because they have
+touching pixels then you will need to collect them seperately. Make a new temporary
+region that only encloses one character (call it char), capture the problem characters
+individualy and all should be good.
+
+<!--l. 58--><p class="indent" >   <img 
+src="fontcollectingexample2x.png" alt="PIC" class="graphics" width="843.15pt" height="714.67pt" ><!--tex4ht:graphics  
+name="fontcollectingexample2x.png" src="2E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text3.eps"  
+-->
+<!--l. 60--><p class="indent" >   Here is the result after collecting only "A", you can see this by clicking inside the
+"characters" Region.
+
+<!--l. 64--><p class="indent" >   <img 
+src="fontcollectingexample3x.png" alt="PIC" class="graphics" width="623.32874pt" height="711.65874pt" ><!--tex4ht:graphics  
+name="fontcollectingexample3x.png" src="3E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text4.eps"  
+-->
+<!--l. 66--><p class="indent" >   "A,B,C" are already present in the Table Map.
+
+<!--l. 69--><p class="indent" >   <img 
+src="fontcollectingexample4x.png" alt="PIC" class="graphics" width="851.18pt" height="715.67374pt" ><!--tex4ht:graphics  
+name="fontcollectingexample4x.png" src="4E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text5.eps"  
+-->
+<!--l. 71--><p class="indent" >   So on we go collecting fonts, here we collect "D".
+
+<!--l. 73--><p class="indent" >   <img 
+src="fontcollectingexample5x.png" alt="PIC" class="graphics" width="848.16875pt" height="713.66624pt" ><!--tex4ht:graphics  
+name="fontcollectingexample5x.png" src="5E__Dokumente_und_Einstellungen_Development_Des___ng_in_practice_images_font_collection_Text6.eps"  
+-->  
+</body></html> 
+
+
+
