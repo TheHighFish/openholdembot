@@ -14,7 +14,9 @@
 #ifndef INC_POKERTRACKER_QUERIES_VERSION_4_H
 #define INC_POKERTRACKER_QUERIES_VERSION_4_H
 //PREFLOP GENERAL STATS
-#define PT4_QUERY_SUPPORT__ICON							(TRUE)
+// ICON disabled, as not supported bz PT 4.
+// https://pt4.pokertracker.com/forums/viewtopic.php?f=59&t=49035
+#define PT4_QUERY_SUPPORT__ICON							(FALSE)
 #define PT4_QUERY_SUPPORT__NB_HANDS					(TRUE)
 #define PT4_QUERY_SUPPORT__VPIP							(TRUE)
 #define PT4_QUERY_SUPPORT__PFR							(TRUE)
@@ -31,7 +33,7 @@
 #define PT4_QUERY_SUPPORT__SEEN_TURN_PCT			  	(TRUE)
 #define PT4_QUERY_SUPPORT__SEEN_RIVER_PCT			  	(TRUE)
 #define PT4_QUERY_SUPPORT__OVERALL_FOLD_TO_3B			(TRUE)
-#define PT4_QUERY_SUPPORT__OVERALL_4B					(TRUE)
+#define PT4_QUERY_SUPPORT__OVERALL_4B					    (TRUE)
 //PREFLOP OTHER STATS
 #define PT4_QUERY_SUPPORT__PREFLOP_3B					    (TRUE)
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B			(TRUE)
@@ -43,14 +45,14 @@
 #define PT4_QUERY_SUPPORT__BB_3B_VS_STEAL         (TRUE)
 #define PT4_QUERY_SUPPORT__SB_3B_VS_STEAL         (TRUE)
 #define PT4_QUERY_SUPPORT__PREFLOP_4B             (TRUE)
-#define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B           (TRUE)
+#define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B     (TRUE)
 //FLOP
 #define PT4_QUERY_SUPPORT__FLOP_CBET              (TRUE)
 #define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET			(TRUE)
 #define PT4_QUERY_SUPPORT__RAISE_FLOP_CBET				(TRUE)
 #define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B				(TRUE)
-#define PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE             (TRUE)
-#define PT4_QUERY_SUPPORT__FLOP_DONK					(TRUE)
+#define PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE       (TRUE)
+#define PT4_QUERY_SUPPORT__FLOP_DONK					    (TRUE)
 //TURN
 #define PT4_QUERY_SUPPORT__TURN_CBET					    (TRUE)
 #define PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET			(TRUE)
@@ -60,7 +62,7 @@
 //RIVER
 #define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B				(TRUE)
 #define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET			(TRUE)
-#define PT4_QUERY_SUPPORT__RIVER_BET     				(TRUE)
+#define PT4_QUERY_SUPPORT__RIVER_BET     				  (TRUE)
 
 //!!!!!! Needs to be reorganized *bad sorting)
 const int k_number_of_pokertracker_stats =  //PREFLOP GENERAL STATS
@@ -508,9 +510,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet total without preflop",
 		// query
-		"SELECT (case when sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
+		"SELECT (case when sum(case when flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
 		        cast(sum(case when enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) as real) \
-				/ sum(case when flg_p_3bet_def_opp or flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) end) as result \
+				/ sum(case when flg_f_3bet_def_opp or flg_t_3bet_def_opp or flg_r_3bet_def_opp then 1 else 0 end) end) as result \
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
