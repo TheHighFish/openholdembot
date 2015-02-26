@@ -1,4 +1,4 @@
-v7.6.0 2015-02.xx
+v7.6.0 2015-02.25
 ==================
 NEW stuff:
 - OpenHoldem can now automatically adjust large betsizes

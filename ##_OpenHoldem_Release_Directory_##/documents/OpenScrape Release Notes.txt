@@ -1,4 +1,4 @@
-v7.6.0 2015-02.xx
+v7.6.0 2015-02.26
 ==================
 NEW stuff:
 - Improved region-cloner, which clones now all p0-regions

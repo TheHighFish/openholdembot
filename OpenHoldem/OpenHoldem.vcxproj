@@ -267,6 +267,7 @@
     <ClCompile Include="DialogSAPrefs8.cpp" />
     <ClCompile Include="DialogSAPrefs9.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="SAPrefsDialog.cpp" />
     <ClCompile Include="SAPrefsStatic.cpp" />
