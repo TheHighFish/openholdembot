@@ -198,7 +198,9 @@ bool CAutoplayer::AnyPrimaryFormulaTrue() {
 }
 
 bool CAutoplayer::AnySecondaryFormulaTrue() {
-	for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i)	{
+  // Considering all hopper functions
+  // and the functions f$prefold and f$chat.
+	for (int i=k_hopper_function_sitin; i<=k_standard_function_chat; ++i)	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_standard_function_names[i], Bool2CString(function_result));

@@ -1,3 +1,16 @@
+v7.6.1 2015-02.xx
+==================
+BUG FIXES:
+- The new rouinding functions for betsize adjustment
+  could -- depite some safety measures -- round to zero,
+  which got then adapted to a min-raise. 
+  Thanks to Johnny for reporting.
+  [THF]
+- Introducing a new category "Hopper Functions" broke
+  the execution of f$sitin, f$sitout, etc.
+  Thanks to Relhbz for reporting.
+  [THF]
+
 v7.6.0 2015-02.25
 ==================
 NEW stuff:

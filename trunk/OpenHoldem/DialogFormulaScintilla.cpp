@@ -531,7 +531,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
       case 2:
         // Hopper Functions
         AddStandardFunctionsToTree(parent,
-          k_hopper_function_sitin, k_hopper_function_autopost);
+          k_hopper_function_sitin, k_hopper_function_rebuy);
         break;
       case 3:
         // Ini functions

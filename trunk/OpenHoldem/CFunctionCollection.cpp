@@ -273,8 +273,8 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
 	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
   }
-  // standard, ini and PrWin functions
-  for (int i=k_standard_function_prefold; i<=k_icm_prize9; ++i) {
+  // hopper,standard, ini and PrWin functions
+  for (int i=k_hopper_function_sitin; i<=k_icm_prize9; ++i) {
 	  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString(k_standard_function_names[i]));
   }
   // Debug functions	

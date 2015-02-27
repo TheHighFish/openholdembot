@@ -41,7 +41,7 @@ double MinimumBetsizeDueToPreviousRaise() {
 			minimums_swag_amount = 0.02;
 		}
 	}
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: %f\n", minimums_swag_amount);
+	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: %.2f\n", minimums_swag_amount);
 	assert(minimums_swag_amount > 0);
 	return minimums_swag_amount;
 }
@@ -56,7 +56,7 @@ double MaximumPossibleBetsizeBecauseOfBalance() {
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
     write_log(k_always_log_errors, "[SwagAdjustment] Invalid balance and bet. Sum <= 0.\n");
   }
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %f\n",
+	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %.2f\n",
 		maximum_betsize);
 	return maximum_betsize;
 }
@@ -82,16 +82,16 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to) {
 			- p_symbol_engine_chip_amounts->currentbet(userchair)
 			- p_symbol_engine_chip_amounts->call();
 	}
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] SwagAmountAjustedToCasino %f\n",
+	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] SwagAmountAjustedToCasino %.2f\n",
 		swag_amount_ajusted_to_casino);
 	return swag_amount_ajusted_to_casino;
 }
 
 bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents) {
 	double maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() desired betsize: %f\n",
+	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() desired betsize: %.2f\n",
 		amount_to_raise_to_in_dollars_and_cents);
-	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() maximum betsize: %f\n",
+	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] BetSizeIsAllin() maximum betsize: %.2f\n",
 		maximum_betsize);
 	return (amount_to_raise_to_in_dollars_and_cents >= maximum_betsize);
 }
@@ -123,7 +123,7 @@ double MaximumBetsizeForGameType() {
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
 		maximum_betsize = BetsizeForBetpot(k_autoplayer_function_betpot_1_1);
     write_log(preferences.debug_betsize_adjustment(), 
-      "[SwagAdjustment] MaximumBetsizeForPotLimit: %f\n", maximum_betsize);
+      "[SwagAdjustment] MaximumBetsizeForPotLimit: %.2f\n", maximum_betsize);
 	}	else if (p_symbol_engine_gametype->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
@@ -135,19 +135,21 @@ double MaximumBetsizeForGameType() {
 		maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
 	}
 	write_log(preferences.debug_betsize_adjustment(), 
-		"[SwagAdjustment] MaximumBetsizeForGameType(): %f\n", maximum_betsize);
+		"[SwagAdjustment] MaximumBetsizeForGameType(): %.2f\n", maximum_betsize);
 	assert(maximum_betsize >= 0);
 	return maximum_betsize;	
 }
 
 double RoundToBeautifulBetsize(const double amount_to_raise_to) {
-  assert(amount_to_raise_to >= 1.0);
+  assert(amount_to_raise_to >= p_symbol_engine_tablelimits->bblind());
   // Don't round very smal betsizes.
   // There might be aa reason for it in very small pots.
   if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because too small betsize\n");
     return amount_to_raise_to;
   }
-  // Otherwise: eound to beautiful numbers without caring about our stack/
+  // Otherwise: eo0und to beautiful numbers without caring about our stack/
   // This adjustment will happen later.
   double result;
   // sblind / nnlind
@@ -157,7 +159,6 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
     result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
   }
  
-
   // whole numbers (larg mu,bers)
   if (result > 25000) {
     result = Rounding(result, 1000);
@@ -168,10 +169,15 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   } else if (result > 20) {
     result = Rounding(result, 1);
   }  
-  // whole numbers (small)
-  else if (abs(result - int(result) < 0.10)) {
+  // Whole numbers (small),
+  // but onlz if we want to bet more than 0.90.
+  // Avoid rounding to 0.
+  else if ((result > 0.90) && (abs(result - int(result) < 0.10))) {
     result = Rounding(result, 1);
   }
+  write_log(preferences.debug_betsize_adjustment(),
+    "[SwagAdjustment] RoundToBeautifulBetsize: %.2f rounded to %.2f\n",
+    amount_to_raise_to, result);
   return result;
 }
 
