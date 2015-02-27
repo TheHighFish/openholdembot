@@ -56,12 +56,9 @@ enum
  	simple_chat_hi,
  	simple_chat_hello,
  	simple_chat_bye,
-	//  Due to a missing mapping function of characters 
-	//	to keybord scan codes we do atm not support
-	//	non-alpha-numeric characters.
- 	//  simple_Chat_happy,  //  Message: ":)"
- 	//  simple_Chat_sad,	//  Message: ":("
-	last_chat_message = simple_chat_bye
+	simple_chat_happy,  //  Message: ":)"
+	simple_chat_sad,	//  Message: ":("
+	last_chat_message = simple_chat_sad
 };
 
 
