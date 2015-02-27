@@ -99,7 +99,6 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	int CreateStatusBar(void);
 
-	RECT			_table_view_size;
 	RECT			_prev_att_rect, _prev_wrect;
 
 	CCritSec		m_critsec;

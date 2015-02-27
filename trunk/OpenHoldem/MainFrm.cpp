@@ -230,8 +230,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.lpszClass = preferences.window_class_name();
 
 	// Restore window location and size
-	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
-	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
+  // -32 to avoid placement directlz under the taskbar,
+  // so that at least a little bit is visible
+  // if the values in the ini-file are out of range.
+	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON - 32);
+	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON - 32);
   // Make sure that our coordinates are not out of screen
   // (too large or even negative)
 	cs.x = min(preferences.main_x(), max_x);
@@ -408,20 +411,15 @@ void CMainFrame::OnEditPreferences()
 	}
 }
 
-BOOL CMainFrame::DestroyWindow() 
-{
-	WINDOWPLACEMENT wp;
-
-	//unload dll
+BOOL CMainFrame::DestroyWindow() {
 	p_dll_extension->Unload();
-
 	StopThreads();
-
 	// Save window position
-	preferences.SetValue(k_prefs_main_x, _table_view_size.left);
-	preferences.SetValue(k_prefs_main_y, _table_view_size.top);
-
-	return CFrameWnd::DestroyWindow();
+  WINDOWPLACEMENT wp;
+	GetWindowPlacement(&wp); 		
+	preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
+ 	preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
+  return CFrameWnd::DestroyWindow();
 }
 
 void CMainFrame::OnFileOpen() 

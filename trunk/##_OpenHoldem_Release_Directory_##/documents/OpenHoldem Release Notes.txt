@@ -1,4 +1,4 @@
-v7.6.1 2015-02.xx
+v7.6.1 2015-02.27
 ==================
 BUG FIXES:
 - The new rouinding functions for betsize adjustment
@@ -9,6 +9,11 @@ BUG FIXES:
 - Introducing a new category "Hopper Functions" broke
   the execution of f$sitin, f$sitout, etc.
   Thanks to Relhby for reporting.
+  [THF]
+- The GUI could be outside of the visible desktop
+  as some uninitialiyed data got saved to the ini-file.
+  this has now been fixed.
+  Thanks to Ayure for reporting.
   [THF]
 
 v7.6.0 2015-02.25
