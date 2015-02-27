@@ -290,38 +290,41 @@ bool CAutoplayer::ExecuteBeep() {
 }
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
-  int executed_secondary_function = k_undefined;
+	int executed_secondary_function = k_undefined;
 	if (!AnySecondaryFormulaTrue())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-  PrepareActionSequence();
+	PrepareActionSequence();
 	// Prefold, close, rebuy and chat work require different treatment,
 	// more than just clicking a simple region...
 	if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_prefold)) {
 		// Prefold is technically more than a simple button-click,
 		// because we need to create an autoplayer-trace afterwards.
 		if (DoPrefold()) {
-      executed_secondary_function = k_standard_function_prefold;
-    }
-	}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_close))	{
+			executed_secondary_function = k_standard_function_prefold;
+		}
+	}
+	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_close))	{
 		// CloseWindow is "final".
 		// We don't expect any further action after that
 		// and can return immediatelly.
 		if (p_casino_interface->CloseWindow()) {
-      executed_secondary_function = k_hopper_function_close;
-    }
-  } else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_rebuy))	{
+			executed_secondary_function = k_hopper_function_close;
+		}
+	}
+	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_rebuy))	{
 		// This requires an external script and some time.
 		// No further actions here eihter, but immediate return.
 		p_rebuymanagement->TryToRebuy();
-    // No waz to check for success here
+		// No waz to check for success here
 		executed_secondary_function = k_hopper_function_rebuy;
-	} else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
-		if (DoChat()) {
-      executed_secondary_function = k_standard_function_chat;
-    }
+	}
+	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
+			if (DoChat()) {
+				executed_secondary_function = k_standard_function_chat;
+			}
 	}
 	// Otherwise: handle the simple simple button-click
 	// k_standard_function_sitin,
@@ -330,18 +333,18 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	// k_standard_function_autopost,
 	else 
     for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
-    if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
-		  if (p_casino_interface->ClickButton(i)) {
-        executed_secondary_function = i;
-        break;
-      }
-    }
+		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
+			if (p_casino_interface->ClickButton(i)) {
+				executed_secondary_function = i;
+				break;
+			}
+		}
 	}
-  if (executed_secondary_function != k_undefined) {
-    FinishActionSequenceIfNecessary();
-    p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
+	if (executed_secondary_function != k_undefined) {
+		FinishActionSequenceIfNecessary();
+		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
 	}
-  return false;
+	return false;
 }
 
 #define ENT CSLock lock(m_critsec);
@@ -376,18 +379,19 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 #undef ENT
 
 bool CAutoplayer::DoChat(void) {
+	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat) != 0);
 	if (!IsChatAllowed())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
-	if ((p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat == 0)) 
-      || (_the_chat_message == NULL))	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because no chat message.\n");
-		return false;
-	}
-  // Converting the result of the $chat-function to a string.
+	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
-	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat)); 
+	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat));
+	if (_the_chat_message == NULL) {
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because wrong chat code. Please read: ""Available chat messages"" .\n");
+		return false ;
+	}
+
 	return p_casino_interface->EnterChatMessage(CString(_the_chat_message));
 }
 

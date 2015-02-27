@@ -56,7 +56,7 @@ char _message_table[][max_length_of_simple_messages] =
 	"nh\0",
 	"vnh\0",
 	"n1\0",
-	"wow\0"
+	"wow\0",
 	"lol\0",
 	"rofl\0",
 	"haha\0",
@@ -68,12 +68,9 @@ char _message_table[][max_length_of_simple_messages] =
 	"fish\0",
 	"hi\0",
 	"hello\0",
-	"bye\0"
-	//  Due to a missing mapping function of characters
-	//	to keybord scan codes we do atm not support
-	//	non-alpha-numeric characters.
-	//":)\0",
-	//":(\0"
+	"bye\0",
+	":)\0",
+	":(\0"
 };
 
 

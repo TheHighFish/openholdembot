@@ -190,6 +190,7 @@ void CDlgEditSymbols::SetDefaultValues()
 	{
 		m_Value.AddString("Sgl Click");
 		m_Value.AddString("Dbl Click");
+		m_Value.AddString("Triple Click");
 		m_Value.AddString("Click Drag");
 		m_Value.AddString("Nothing");
 	}
