@@ -8,7 +8,7 @@ BUG FIXES:
   [THF]
 - Introducing a new category "Hopper Functions" broke
   the execution of f$sitin, f$sitout, etc.
-  Thanks to Relhbz for reporting.
+  Thanks to Relhby for reporting.
   [THF]
 
 v7.6.0 2015-02.25
