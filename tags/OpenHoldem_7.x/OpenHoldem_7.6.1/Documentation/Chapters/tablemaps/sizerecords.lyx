@@ -1,0 +1,236 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Size Records 
+\end_layout
+
+\begin_layout Subsection
+Description 
+\end_layout
+
+\begin_layout Standard
+Size records are used for one purpose only, to allow OpenHoldem’s “Green
+ Circle Button” to find windows of the correct size.
+ More specifically, they provide the ability to specify the accepted sizes
+ for the casino table that the scraper engine will recognize.
+ Upon a click of the “Green Circle Button”, OpenHoldem will first search
+ for poker table windows that match the exact size (clientsize) and if no
+ match is found, will then look for poker table windows that are between
+ the clientsizemin and clientsizemax sizes.
+ In the majority of Table Maps, the only size record that is needed is the
+ clientsize record.
+ Use of clientsizemin and clientsizemax records should only be considered
+ in unusual and exceptional cases.
+ 
+\end_layout
+
+\begin_layout Subsection
+Manipulating size records using OpenScrape 
+\end_layout
+
+\begin_layout Standard
+To create a new size record, select the “Sizes” category in the record tree
+ display on the Table Map Editor window, and click the “New” button.
+ A window will be displayed that allows you to enter the width and height
+ parameters for this new record.
+ To edit an existing size record, select the record in the record tree display
+ on the Table Map Editor window, and click the “Edit” button.
+ A window will be displayed that allows you to adjust the width and height
+ parameters for this record, or change the record name itself.
+ To delete an existing size record, select the record in the record tree
+ display on the Table Map Editor window, and click the “Delete” button.
+ A window will be displayed asking for verification of this action.
+\end_layout
+
+\begin_layout Standard
+A note about window client sizes: Microsoft Windows provides several different
+ measures of a windows’ size, such as the complete window including frame
+ and title bar, and an altogether different measure, the so-called “client
+ area”, that lies inside the window frame and excludes frames and title
+ bars.
+ OpenHoldem references the Microsoft “client area” measurement for these
+ “Size” records.
+ To help you understand the size of the poker window that you have attached
+ to (with the Green Circle Button), OpenScrape always displays the client
+ size of the attached poker table in the “View” menu on the main OpenScrape
+ window.
+ The menu option is at the bottom of this menu and is preceeded by “Current
+ Size: “.
+ The width and height displayed in this menu can be entered directly into
+ a clientsize record.
+ 
+\end_layout
+
+\begin_layout Subsection
+Technical reference 
+\end_layout
+
+\begin_layout Standard
+In the Table Map (.tm) file, the size records will be preceded with the character
+s "z$”.
+ These records have the following format: 
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+z$<name> <width> <height>
+\end_layout
+
+\begin_layout Standard
+<name> is the name of the record (see table below) <width> and <height>
+ are integer values.
+ 
+\end_layout
+
+\begin_layout Standard
+Valid size records and their descriptions:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="25text%">
+<column alignment="left" valignment="top" width="75text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Size record
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsize
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the exact client size of the poker table window.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsizemin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the minimum allowed client size of the poker table window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+clientsizemax
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the maximum allowed client size of the poker table window.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+
+\end_layout
+
+\end_body
+\end_document
