@@ -13,7 +13,7 @@ BUG FIXES:
 - The GUI could be outside of the visible desktop
   as some uninitialiyed data got saved to the ini-file.
   this has now been fixed.
-  Thanks to Ayure for reporting.
+  Thanks to Azure for reporting.
   [THF]
 
 v7.6.0 2015-02.25
