@@ -1314,6 +1314,17 @@ ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 ##StartingStackSize##
 me_re_MemStartingStackSize
 
+##CalculateStartingChips##
+// Precondition: first hand, preflop
+(bblind > 0) ? (currentbet + balance) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##InitStartingChips##
+((handsplayed == 0 || StartingChips == 0) && (betround == ConstBetRoundPreflop)) ?
+  me_st_MemStartingChips_CalculateStartingChips : HINT_Nothing_To_Do_But_All_OK
+
+##StartingChips##
+me_re_MemStartingChips
+
 //*****************************************************************************
 //
 // OpenPPL - Betsizes and StackSizes
