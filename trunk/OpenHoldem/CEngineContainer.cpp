@@ -46,6 +46,7 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
+#include "CSymbolEngineMTTInfo.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -197,6 +198,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineColourCodes
   p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
   AddSymbolEngine(p_symbol_engine_colourcodes);
+  // CSymbolEngineMTTInfo"
+  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
+  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.

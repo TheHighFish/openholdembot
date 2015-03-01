@@ -69,6 +69,9 @@ void CSymbolEngineVariousDataLookup::ResetOnNewRound() {
 void CSymbolEngineVariousDataLookup::ResetOnMyTurn() {
 }
 
+void CSymbolEngineVariousDataLookup::ResetOnHeartbeat() {
+}
+
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   // DLL
@@ -82,7 +85,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   }
   // Various symbols below
   // without any optimized lookup.
-  //
   //ROUND&POSITIONS
   else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   //FLAGS
@@ -136,6 +138,5 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   return list;
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnHeartbeat()
-{}
+
 
