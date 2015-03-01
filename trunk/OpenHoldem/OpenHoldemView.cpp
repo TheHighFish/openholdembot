@@ -320,7 +320,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 				DrawPlayerCards(i);
 				DrawNameBox(i);
 				DrawBalanceBox(i);
-        //!!!DrawColourCodes(i);
+        DrawColourCodes(i);
 			}
 			// Drawing a bet, even if no player seated.
 			// The player might have left the table, 
