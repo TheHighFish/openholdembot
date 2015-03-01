@@ -39,6 +39,7 @@ class CLazyScraper {
 	bool NeedUnknownPlayerNames();
 	bool NeedCommunityCards();
   bool NeedColourCodes();
+  bool NeedMTTRegions();
  private:
 	void ScrapeUnknownPlayerNames();
  private:

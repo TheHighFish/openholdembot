@@ -1990,7 +1990,16 @@ void CDlgFormulaScintilla::PopulateSymbols()
   AddSymbol(parent, "ismtt", "true if a multi-table tournament is detected");
   AddSymbol(parent, "issng", "true if a single-table tournament is detected");
   AddSymbol(parent, "isfinaltable", "true if you are playing the finaltable of an MTT and the tables can be visually distinguished.");
-
+	AddSymbol(parent, "userdefined0 - userdefined9", "user defined table map regions");
+	AddSymbol(parent, "mtt_number_entrants", "number of entrants in the tournament");
+	AddSymbol(parent, "mtt_players_remaining", "number of players remaining in the tournament");
+	AddSymbol(parent, "mtt_paid_places", "number of places paid in the tournament");
+	AddSymbol(parent, "mtt_my_rank", "my ranking in the tournament");
+	AddSymbol(parent, "mtt_largest_stack", "the largest stack size in the tournament");
+	AddSymbol(parent, "mtt_average_stack", "the average stack size in the tournament");
+	AddSymbol(parent, "mtt_smallest_stack", "the smallest stack size in the tournament");
+	AddSymbol(parent, "mtt_next_level", "time until the next blind level in the tournament");
+	
 	mainParent = parent = AddSymbolTitle("Hand Rank", NULL, hCatItem);
 	AddSymbol(parent, "handrank169", "your pocket holdem hand rank 1-169 (see table)");
 	AddSymbol(parent, "handrank2652", "your pocket holdem hand rank 12-2652 (see table)");

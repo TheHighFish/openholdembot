@@ -726,6 +726,9 @@
     <ClCompile Include="CScrapedActionInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolEngineMTTInfor.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1545,6 +1548,9 @@
     </ClInclude>
     <ClInclude Include="CScrapedActionInterface.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineMTTInfo.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

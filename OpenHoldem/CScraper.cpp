@@ -27,6 +27,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineMTTInfo.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
@@ -802,6 +803,45 @@ void CScraper::ScrapePots() {
 		}
 	}
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
+}
+
+void CScraper::ScrapeMTTRegions() {
+  assert(p_symbol_engine_mtt_info != NULL);
+	double result = 0;
+	p_symbol_engine_mtt_info->set_mtt_number_entrants(0);	
+	if (EvaluateNumericalRegion(&result, "mtt_number_entrants")) {	
+		p_symbol_engine_mtt_info->set_mtt_number_entrants(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_players_remaining(0);
+	if (EvaluateNumericalRegion(&result, "mtt_players_remaining")) {
+		p_symbol_engine_mtt_info->set_mtt_players_remaining(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_my_rank(0);
+	if (EvaluateNumericalRegion(&result, "mtt_my_rank")) {
+		p_symbol_engine_mtt_info->set_mtt_my_rank(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_paid_places(0);
+	if (EvaluateNumericalRegion(&result, "mtt_paid_places")) {
+		p_symbol_engine_mtt_info->set_mtt_paid_places(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_largest_stack(0);
+	if (EvaluateNumericalRegion(&result, "mtt_largest_stack")) {
+		p_symbol_engine_mtt_info->set_mtt_largest_stack(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_average_stack(0);
+	if (EvaluateNumericalRegion(&result, "mtt_average_stack")) {
+		p_symbol_engine_mtt_info->set_mtt_average_stack(result);
+	}
+	result = 0;
+	p_symbol_engine_mtt_info->set_mtt_smallest_stack(0);
+	if (EvaluateNumericalRegion(&result, "mtt_smallest_stack")) {
+		p_symbol_engine_mtt_info->set_mtt_smallest_stack(result);
+	}
 }
 
 void CScraper::ScrapeLimits() {

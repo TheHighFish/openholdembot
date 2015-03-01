@@ -54,6 +54,7 @@ class CScraper {
 	void ScrapeBetsAndBalances();
 	void ScrapeAllPlayerCards();
   void ScrapeColourCodes();
+  void ScrapeMTTRegions();
  private:
 	void ScrapeSeated(int chair);
 	void ScrapeActive(int chair);

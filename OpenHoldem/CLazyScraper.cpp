@@ -129,6 +129,9 @@ void CLazyScraper::DoScrape() {
   if (NeedColourCodes()) {
     p_scraper->ScrapeColourCodes();
   }
+  if (NeedMTTRegions()) {
+    p_scraper->ScrapeMTTRegions();
+  }
 }
 
 bool CLazyScraper::NeedDealerChair() {
@@ -199,7 +202,7 @@ bool CLazyScraper::NeedCommunityCards() {
 void CLazyScraper::ScrapeUnknownPlayerNames() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		if (p_scraper_access->IsPlayerSeated(i) 
-			&& (p_table_state->_players[i]._name == "")) {
+			  && (p_table_state->_players[i]._name == "")) {
 			p_scraper->ScrapeName(i);
 		}
 	}
@@ -209,5 +212,12 @@ bool CLazyScraper::NeedColourCodes() {
   // Scrape colour-codes at the beginning of a session 
   // and at my turn -- that's enough.
   return (p_scraper_access->IsMyTurn()
-    || (p_handreset_detector->hands_played() <= 0));
+    || (p_handreset_detector->hands_played() <= 1));
+}
+
+bool CLazyScraper::NeedMTTRegions() {
+  // Once per hand is enough, as these values change slowly.
+  // Also on my turn is good, as that's when we need it.
+  return (p_scraper_access->IsMyTurn()
+    && !p_symbol_engine_history->DidActThisHand());
 }

@@ -1,3 +1,27 @@
+v7.7.0 2015-03.xx
+==================
+BUG FIXES:
+- Fixing the f$chat-fucntion.
+  [FqFq]
+  
+NEW stuff:
+- New MTT-symbols
+    mtt_number_entrants 
+    mtt_players_remaining 
+    mtt_paid_places 
+    mtt_my_rank
+    mtt_largest_stack 
+    mtt_average_stack 
+    mtt_smallest_stack
+  that return the value of the corresponding tablemap-regions 
+  (r$mtt_number_entrants, etc.). To make use of these symbols
+  they must be displayed at the table.
+  [Poker_Dog] 
+- New OpenPPL-szmbol StartingChips, especially meant for
+  tournaments.
+  [Poker_Dog]
+
+
 v7.6.1 2015-02.27
 ==================
 BUG FIXES:
