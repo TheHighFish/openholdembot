@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-03-01"/>
+<meta name="create-date" content="2015-03-02"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -453,119 +453,158 @@ Please note OpenHoldem needs to see player-cards in a non-showdown-situation to 
 <div class="Indented">
 <table>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
-Symbol
+<td align="left" valign="top">
+
 </td>
-<td align="left" valign="top" style="width: 65%;">
-Meaning
+<td align="left" valign="top">
+
+</td>
+<td align="left" valign="top">
+Limitations
 </td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 userchair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 user chair number (0-9), 0 is usually top right
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 dealerchair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 dealer chair number (0-9)
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 raischair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 raising chair number (0-9)
 </td>
+<td align="left" valign="top">
+Valid only at our turn.
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 smallblind_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the small-blind (0-9)
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 bigblind_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the big-blind (0-9)
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 cutoff_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the cut-off (0-9)
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 firstcaller_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the first caller (0-9), current orbit only
 </td>
+<td align="left" valign="top">
+Valid only at our turn.
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 lastcaller_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the last caller (0-9), current orbit only
 </td>
+<td align="left" valign="top">
+Valid only at our turn.
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 firstraiser_chair
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of the first raiser (0-9), current orbit only
 </td>
+<td align="left" valign="top">
+Valid only at our turn.
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 opponent_chair_headsup
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 the chair of your single opponent (0-9) if the game is or became headsup
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 chair$abc
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 player “abc” chair number (0-9); -1 if not found
+</td>
+<td align="left" valign="top">
+
 </td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 chairbit$abc
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top">
 player “abc” chairbit (1 &lt;&lt; chair$abc); 0 if not found 
+</td>
+<td align="left" valign="top">
+
 </td>
 
 </tr>
@@ -597,90 +636,86 @@ any players with cardbacks, especially all players between the user and the deal
 <div class="Unindented">
 <table>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 Symbol
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 Meaning
 </td>
+<td align="left" valign="top">
+Limitations
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 betround
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 betposition
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition will change as players fold in front of you.
 </td>
+<td align="left" valign="top">
+
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 dealposition
 </td>
-<td align="left" valign="top" style="width: 65%;">
-<div class="PlainVisible">
-your deal position 
-</div>
-<ul>
-<li>
-1 = left to the dealer, usually small blind
-</li>
-<li>
-2 = 2 left to the dealer, usually big blind 
-</li>
-<li>
-... 
-</li>
-<li>
-nplayersdealt = dealer 
-</li>
-
-</ul>
-<div class="PlainVisible">
-
-</div>
-<div class="PlainVisible">
-dealposition will not change as players fold<br/>
-In headsup situations the player to the dealers left is usually big-blind and in other situations the small blind might be missing. But it is your duty to consider these special case, dealposition does not magically auto-adapt to comply with the usual values for full-ring.
-</div>
+<td align="left" valign="top" style="width: 35%;">
+your deal position 1 = left to the dealer, usually small blind2 = 2 left to the dealer, usually big blind ... nplayersdealt = dealer dealposition will not change as players foldIn headsup situations the player to the dealers left is usually big-blind and in other situations the small blind might be missing. But it is your duty to consider these special case, dealposition does not magically auto-adapt to comply with the usual values for full-ring.
+</td>
+<td align="left" valign="top">
 
 </td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 callposition
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 your numbered offset from the raising player (who is 0)
 </td>
+<td align="left" valign="top">
+Valid only on our turn
+</td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 dealpositionrais
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 the deal position of the raising player (1-10)
+</td>
+<td align="left" valign="top">
+Valid only on our turn
 </td>
 
 </tr>
 <tr>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="top">
 betpositionrais
 </td>
-<td align="left" valign="top" style="width: 65%;">
+<td align="left" valign="top" style="width: 35%;">
 the bet position of the raising player (1-10)
+</td>
+<td align="left" valign="top">
+Valid only on our turn
 </td>
 
 </tr>
@@ -3355,6 +3390,9 @@ The scraped colourcode for playerX, depending on the tablemap region r$pXcolourc
 <h2 class="Section">
 <a class="toc" name="toc-Section-34"></a>Betting Action 
 </h2>
+<div class="Remark*">
+Betting action symbols depend on game-history, They get updated once per orbit at our turn and can therefore only used at our turn; otherwise they are undefined.
+</div>
 <div class="Unindented">
 <table>
 <tr>
@@ -3616,7 +3654,7 @@ my tournament equity if I fold
 icm_callwin
 </td>
 <td align="left" valign="top" style="width: 65%;">
-my tournament equity if I call and win
+my tournament equity if I call and win (conservativly: against the smallest remaining stack)
 </td>
 
 </tr>
@@ -3625,7 +3663,7 @@ my tournament equity if I call and win
 icm_calllose
 </td>
 <td align="left" valign="top" style="width: 65%;">
-my tournament equity if I call and lose
+my tournament equity if I call and lose (conservativly: against the largest remaining stack)
 </td>
 
 </tr>
@@ -4400,7 +4438,7 @@ Spade
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-01T21:33:02.531000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-02T13:52:42.640000</span>
 </div>
 </div>
 </body>
