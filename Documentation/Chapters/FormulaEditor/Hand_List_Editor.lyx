@@ -75,19 +75,41 @@ figs-within-sections
 \begin_body
 
 \begin_layout Section
-To be done
+Handlist Editor
 \end_layout
 
 \begin_layout Standard
-In addition to the debug-tab there is a special function named 
-\emph on
-f$test.
- 
-\emph default
-While f$debug is meant for a set of multiple expressions f$test is for a
- single large expression, even up to complete multi-line function text.
- No equality-sign here.
- Just enter your code and play around until you are satisfied with the results.
+OpenHoldem supports hand-lists, mainly for preflop decisions.
+ Creating a new handlist works basically the same way like creating a new
+ formula.
+ Select the category 
+\begin_inset Quotes eld
+\end_inset
+
+Hand Lists
+\begin_inset Quotes erd
+\end_inset
+
+, then press the button with the blank sheet and a dialog will pop up that
+ asks you for the name of your list.
+ All names are allowed as long as they start with the prefix 
+\begin_inset Quotes eld
+\end_inset
+
+list
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Choose a name, press 
+\begin_inset Quotes eld
+\end_inset
+
+OK
+\begin_inset Quotes erd
+\end_inset
+
+ and the list has been created; empty for the moment.
 \end_layout
 
 \begin_layout Standard
@@ -102,7 +124,35 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename images/f_test.JPG
+	filename images/handlist_editor.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To edit your newly created list select it in the tree-view and click the
+ matrix-button in the toolbar.
+ A dialog will pop up that allows you to choose the hands in the lists.
+ Pairs are at the main diagonal, Suited hands above and offsuited hands
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/handlist_editor_matrix.JPG
 
 \end_inset
 

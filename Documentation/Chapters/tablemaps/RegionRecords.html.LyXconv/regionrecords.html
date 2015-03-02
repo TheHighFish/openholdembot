@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-12-15"/>
+<meta name="create-date" content="2015-03-01"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -141,7 +141,7 @@ r$&lt;name&gt; &lt;left&gt; &lt;top&gt; &lt;right&gt; &lt;bottom&gt; &lt;color&g
 <div class="Unindented">
 <table>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 Transform
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -150,7 +150,7 @@ Description
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 N (none)
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -159,7 +159,7 @@ This is used for those regions that do not need a transform as their only purpos
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 C (color)
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -168,7 +168,7 @@ This is a calculation of the average RGB color for the entire region. Used in co
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 I (image)
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -183,7 +183,7 @@ http://pdiff.sourceforge.net/
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 T (text)
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -198,7 +198,7 @@ http://en.wikipedia.org/wiki/Optical_character_recognition
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 Hn (hash n)
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -217,6 +217,15 @@ Once a region is hashed, the resultant 32-bit hash value is then looked up in th
 </td>
 
 </tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+W (colour)
+</td>
+<td align="left" valign="top" style="width: 85%;">
+This transform takes the pixel in the middle of the region and transforms it to the closest web-safe colour (216 possible values). It is meant for player-profiling with colourcodes.
+</td>
+
+</tr>
 
 </table>
 
@@ -227,118 +236,118 @@ Once a region is hashed, the resultant 32-bit hash value is then looked up in th
 <div class="Unindented">
 <table>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 Record
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Description
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0cardface0 - c0cardface4 
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Common cards 0-4; represents the entire card, the best transformation is probably hash. Typically either c0cardfaceX is used, or c0cardfaceXrank / c0cardfaceXsuit, but not both. Valid results are a case-insensitive, two character string. The first character is the rank and should be one of: “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”. The second character is the suit and should be one of: “c”, “d”, “h” or “s”. c0cardface0rank - c0cardface4rank Rank of common cards 0-4; the best transformation is probably text. Typically either c0cardfaceX is used, or c0cardfaceXrank / c0cardfaceXsuit, but not both. Valid results are case-insensitive, and are one of “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “10”, “t”, “j”, “q”, “k”, or “a”. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0cardface0suit - c0cardface4suit
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Suit of common cards 0-4; the best transformation is probably text. Typically either c0cardfaceX is used, or c0cardfaceXrank / c0cardfaceXsuit, but not both. Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0handnumber, c0handnumber1 - c0handnumber9
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Ten regions to specify where the game state engine should find the current handnumber. The first region found with valid numeric information will be used and the remainder skipped. c0handnumber is searched first, then c0handnumber1 to c0handnumber9 in that order. The handnumber will be used internally to detect handresets (depending on handresetmethod) and is also accessible at the DLL-level. To avoid bad scrapes and invalid handresets the handnumber is optionally ranged between s$handnumber_min_expected_digits and s$handnumber_max_expected_digits.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0istournament
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Used to identify if this table is a tournament game. Any transform can be used equally well with this region. If the result from this region’s transform is anything besides blank (empty string) then this region is considered to represent a tournament game. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0smallblind 
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies the region on the poker table where the small blind can be found. Title text parsing is much easier to implement if that option is available, otherwise a text transformation can be used with this region to identify the small blind.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0bigblind
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies the region on the poker table where the big blind can be found. Title text parsing is much easier to implement if that option is available, otherwise a text transformation can be used with this region to identify the big blind. c0bigbet Identifies the region on the poker table where the big bet can be found. Title text parsing is much easier to implement if that option is available, otherwise a text transformation can be used with this region to identify the big bet. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0ante
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies the region on the poker table where the ante can be found. Title text parsing is much easier to implement if that option is available, otherwise a text transformation can be used with this region to identify the ante.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0pot0 - c0pot4 
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The value of the main pot should be identified by c0pot0 using a text transform.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0pot1 to c0pot4
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 can be used to identify side pots if required. c0potNchipXY See chip scraping instructions for p0chipXY - p9chipXY below. The difference is that the "N" refers to the different pots - N=0 is the main pot, N=1-4 are side pots.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 c0limits, c0limits0 - c0limits9
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies the region on the casino table where the limit information can be found; this region is used in conjunction with the Symbol records c0limits and c0limits0-c0limit9 text parse strings. This region should really only be used if title text parsing is not an option. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i0button - i9button
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Specifies the rectangular area in which the Autoplayer can click the mouse for each button 0-9.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i0label - i9label
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 <div class="PlainVisible">
 
 </div>
@@ -355,154 +364,235 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will be recog
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i0labelY - i9labelY Where Y = 0 - 9.
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 As an adjunct to the iXlabel regions, the iXlabelY region definitions allow the specification of an alternative location with alternate properties, such as color, for any button. The specification of these regions is exactly as that of the iXlabel regions with an addition of a numeric (0 - 9) suffix. The iXlabel regions are searched first, then the iXlabelY regions. The first region that resolves to a text value will stop any subsequent evaluations. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i0state - i9state
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Specifies whether the button0 - button9 is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i3edit
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Specifies the rectangular region that can be used for entering a SWAG bet. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i86button, i860button - i869button
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Similar to the i0button - i9button regions, however these regions are intended to be used to combat spam/popups that could occlude the poker window. If the corresponding state region returns true, the Autoplayer will try to click in this region to dismiss the spam/popup. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 i86state, i860state - i869state
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The corresponding state regions for the i86button, i860button - i869button regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive. p0active - p9active Used to determine if a player is active (sitting in) or not (sitting out). Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
+mtt_number_entrants 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+Used to scrape the corresponding MTT symbols from the table
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_players_remaining 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_paid_places 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_my_rank 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_largest_stack 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_average_stack 
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+mtt_smallest_stack
+</td>
+<td align="left" valign="top" style="width: 85%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
 p0balance - p9balance
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Used to identify a player’s balance. It only makes sense to use a text transform for these regions. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0bet - p9bet
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Used to identify a player’s bet. It only makes sense to use a text transform for these regions. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0cardback - p9cardback
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Used to identify when a seat 0-9 displays a card back. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true” or “cardback”, then the region is considered to be showing a cardback. If any other result is returned, such as "false", then the chair is not considered to have be showing a cardback. Results are case-insensitive. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0cardface0 - p9cardface0
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The first card for seats 0-9; represents the entire card. The best transformation is probably hash. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are a case-insensitive, two character string. The first character is the rank and should be one of: “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”. The second character is the suit and should be one of: “c”, “d”, “h” or “s”.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0cardface1 - p9cardface1
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The second card for seats 0-9; represents the entire card. The best transformation is probably hash. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are a case-insensitive, two character string. The first character is the rank and should be one of: “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”. The second character is the suit and should be one of: “c”, “d”, “h” or “s”. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
+p0cardface0nocard - p9cardface1nocard
+</td>
+<td align="left" valign="top" style="width: 85%;">
+!!!
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
 p0cardface0rank - p9cardface0rank
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The rank of the first card for seats 0-9. The best transformation is probably text. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are case-insensitive, and are one of “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “10”, “t”, “j”, “q”, “k”, or “a”. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0cardface0suit - p9cardface0suit
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The suit of the first card for seats 0-9. The best transformation is probably text. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0cardface1rank - p9cardface1rank
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 The rank of the second card for seats 0-9. The best transformation is probably text. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are case-insensitive, and are one of “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “10”, “t”, “j”, “q”, “k”, or “a”. p0cardface1suit - p9cardface1suit The suit of the second card for seats 0-9. The best transformation is probably text. Typically either pXcardfaceY is used, or pXcardfaceYrank / pXcardfaceYsuit, but not both. Valid results are case-insensitive, and are one of “c”, “d”, “h” or “s”. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
+p0colourcode - p9colourcode
+</td>
+<td align="left" valign="top" style="width: 85%;">
+The colourcode for players 0..9, meant for easy opponent profiling
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
 p0dealer - p9dealer
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies if the dealer button is found for seat 0-9, or not. Color transforms are usually used for these regions, but hash, text or image transforms can be used too. If the leftmost characters of the result from this region’s transform are either “true” or “dealer”, then the chair is considered to have the dealer button. If any other result is returned, such as "false", then the chair is not considered to have the dealer button. Results are case-insensitive. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0name - p9name
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies the name of the player in seat 0-9. It only makes sense to use a text transform for these regions.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0seated - p9seated
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 Identifies whether seat 0-9 is occupied (seated) or not. Color transforms are usually used for these regions, but hash, text or image transforms can be used too. If the leftmost characters of the result from this region’s transform are either “true” or “seated”, then the chair is considered to be seated. If any other result is returned, such as "false" or "unseated", then the chair is not considered to be seated. Results are case-insensitive. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 p0chipXY - p9chipXY
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 <div class="PlainVisible">
 
 </div>
@@ -515,73 +605,73 @@ Step 1 : Ensure that the poker site uses static landings for all of the chip st
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0active - u9active
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0active-p9active regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. ubalance, u0balance - u9balance These are alternatives to the p0balance-p9balance regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0balance - u9balance
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0balance-p9balance regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0bet – u9bet
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0bet-p9bet regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0cardface0 - u9cardface0
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0cardface0-p9cardface0 regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Valid results are a case-insensitive, two character string. The first character is the rank and should be one of: “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”. The second character is the suit and should be one of: “c”, “d”, “h” or “s”.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0cardface1 - u9cardface1
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0cardface1-p9cardface1 regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Valid results are a case-insensitive, two character string. The first character is the rank and should be one of: “2”, “3”, “4”, “5”, “6”, “7”, “8”, “9”, “t”, “j”, “q”, “k”, or “a”. The second character is the suit and should be one of: “c”, “d”, “h” or “s”. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0dealer – u9dealer
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0dealer-p9dealer regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Color transforms are usually used for these regions, but hash, text or image transforms can be used too. If the leftmost characters of the result from this region’s transform are either “true” or “dealer”, then the chair is considered to have the dealer button. If any other result is returned, such as "false", then the chair is not considered to have the dealer button. Results are case-insensitive. 
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0name - u9name
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These are alternatives to the p0name-p9name regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions.
 </td>
 
 </tr>
 <tr>
-<td align="center" valign="top" style="width: 15%;">
+<td align="left" valign="top" style="width: 15%;">
 u0seated - u9seated
 </td>
-<td align="center" valign="top" style="width: 85%;">
+<td align="left" valign="top" style="width: 85%;">
 These regions are alternatives to the p0seated-p9seated regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Color transforms are usually used for these regions, but hash, text or image transforms can be used too. If the leftmost characters of the result from this region’s transform are either “true” or “seated”, then the chair is considered to be seated. If any other result is returned, such as "false" or "unseated", then the chair is not considered to be seated. Results are case-insensitive.
 </td>
 
@@ -593,7 +683,7 @@ These regions are alternatives to the p0seated-p9seated regions, and are used fo
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-15T08:02:39.206000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-01T22:20:02.781000</span>
 </div>
 </div>
 </body>

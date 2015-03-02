@@ -459,77 +459,67 @@
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Advanced Programming">
-		<param name="Local" value="Chapters\titlepages_for_main_parts\advanced_programming.html.LyXconv\advanced_programming.html">
+		<param name="Name" value="User-DLL">
+		<param name="Local" value="Chapters\dll\dll_title.html.LyXconv\dll_title.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="User-DLL">
-			<param name="Local" value="Chapters\dll\dll_title.html.LyXconv\dll_title.html">
+			<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="DLL-Tutorial">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="User-DLL">
-				<param name="Local" value="Chapters\dll\dll.html.LyXconv\dll.html">
+				<param name="Name" value="Compiling the first DLL">
+				<param name="Local" value="Chapters\dll_tutorial\part_a_compiling_the_first_dll.html.LyXconv\part_a_compiling_the_first_dll.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="DLL-Tutorial">
+				<param name="Name" value="Basic Overview over the DLL Structure and Examples">
+				<param name="Local" value="Chapters\dll_tutorial\part_b_basic_overview.html.LyXconv\part_b_basic_overview.html">
 				</OBJECT>
-			<UL>
-				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="Compiling the first DLL">
-					<param name="Local" value="Chapters\dll_tutorial\part_a_compiling_the_first_dll.html.LyXconv\part_a_compiling_the_first_dll.html">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="Basic Overview over the DLL Structure and Examples">
-					<param name="Local" value="Chapters\dll_tutorial\part_b_basic_overview.html.LyXconv\part_b_basic_overview.html">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="Setting up the *.ohf File for DLL Use">
-					<param name="Local" value="Chapters\dll_tutorial\part_c_setting_up_ohf_for_dll.html.LyXconv\part_c_setting_up_ohf_for_dll.html">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="Using prw1326">
-					<param name="Local" value="Chapters\dll_tutorial\part_e_using_prw1326.html.LyXconv\part_e_using_prw1326.html">
-					</OBJECT>
-			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Setting up the *.ohf File for DLL Use">
+				<param name="Local" value="Chapters\dll_tutorial\part_c_setting_up_ohf_for_dll.html.LyXconv\part_c_setting_up_ohf_for_dll.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Using prw1326">
+				<param name="Local" value="Chapters\dll_tutorial\part_e_using_prw1326.html.LyXconv\part_e_using_prw1326.html">
+				</OBJECT>
 		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Perl">
-			<param name="Local" value="Chapters\perl\Perl.html.LyXconv\Perl.html">
-			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Advanced Topics">
-		<param name="Local" value="Chapters\titlepages_for_main_parts\advanced_topics.html.LyXconv\advanced_topics.html">
+		<param name="Name" value="OpenHoldem Extensions">
+		<param name="Local" value="Chapters\extensions\extensions.html.LyXconv\extensions.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="OpenHoldem Extensions">
-			<param name="Local" value="Chapters\extensions\extensions.html.LyXconv\extensions.html">
+			<param name="Name" value="Mouse-DLL">
+			<param name="Local" value="Chapters\extensions\MouseDLL.html.LyXconv\MouseDLL.html">
 			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Mouse-DLL">
-				<param name="Local" value="Chapters\extensions\MouseDLL.html.LyXconv\MouseDLL.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="KeyBoard-DLL">
-				<param name="Local" value="Chapters\extensions\KeyBoardDLL.html.LyXconv\KeyBoardDLL.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Scraper-DLL">
-				<param name="Local" value="Chapters\extensions\ScraperDLL.html.LyXconv\ScraperDLL.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="PokerTracker-Query-Definitions-DLL">
-				<param name="Local" value="Chapters\extensions\pokertracker_query_definitions_dll.html.LyXconv\pokertracker_query_definitions_dll.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Chat">
-				<param name="Local" value="Chapters\chat\Chat.html.LyXconv\chat.html">
-				</OBJECT>
-		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="KeyBoard-DLL">
+			<param name="Local" value="Chapters\extensions\KeyBoardDLL.html.LyXconv\KeyBoardDLL.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Scraper-DLL">
+			<param name="Local" value="Chapters\extensions\ScraperDLL.html.LyXconv\ScraperDLL.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="PokerTracker-Query-Definitions-DLL">
+			<param name="Local" value="Chapters\extensions\pokertracker_query_definitions_dll.html.LyXconv\pokertracker_query_definitions_dll.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Chat">
+			<param name="Local" value="Chapters\chat\Chat.html.LyXconv\chat.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Real-Money Botting">
+		<param name="Local" value="Chapters\titlepages_for_main_parts\advanced_topics.html.LyXconv\advanced_topics.html">
+		</OBJECT>
+	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Automation">
 			<param name="Local" value="Chapters\automation\automation_title.html.LyXconv\automation_title.html">

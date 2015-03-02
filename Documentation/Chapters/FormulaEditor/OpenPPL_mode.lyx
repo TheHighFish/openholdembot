@@ -79,15 +79,19 @@ OpenPPL-Mode
 \end_layout
 
 \begin_layout Standard
-OpenHoldem will switch the formula editor into OpenPPL mode as soon as the
- formula contains a 
+OpenHoldem uses per default the main autoplayer functions (f$alli, f$betsize,
+ etc.).
+ We call this default mode OH-script-mode.
+ It is more or less compatibel to the former WinHoldem behaviour.
+ However if you develop OpenPPL profiles the main autoplayer functions won't
+ be used; OpenHoldem will use f$preflop..f$river instead and the formula editor
+ will switch to OpenPPL mode as soon as the formula contains a 
 \emph on
 non-empty f$preflop
 \emph default
  function.
  Then all primary autoplayer-functions will be hidden and a subtree with
- the four main OpenPPL functions will be shown instead (f$preflop, f$flop,
- f$turn and f$river).
+ the four main OpenPPL functions will be shown instead.
 \end_layout
 
 \begin_layout Standard
