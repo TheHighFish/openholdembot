@@ -330,6 +330,10 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Seated, active and playing">
+				<param name="Local" value="Chapters\scraping_in_practice\Seated_active_playing.html.LyXconv\Seated_active_playing.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Getting started">
 				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
 				</OBJECT>
@@ -356,12 +360,16 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Defining the Game-Type">
-				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraping &quot;10&quot; as T">
 				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping Cents and Dollars">
+				<param name="Local" value="Chapters\scraping_in_practice\Scraping_dollars_and_cents.html.LyXconv\Scraping_dollars_and_cents.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Defining the Game-Type">
+				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraping Fonts which are glued together">
