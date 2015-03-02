@@ -1,8 +1,8 @@
 .osdb2
 
-// OpenScrape 7.5.0
+// OpenScrape 7.6.0
 
-// 2015-02-22 09:53:58
+// 2015-03-02 15:52:23
 // 32 bits per pixel
 
 //
@@ -15,6 +15,7 @@ z$clientsize       1018  693
 // strings
 //
 
+s$allinconfirmationmethod   1
 s$nchairs                   10
 s$network                   pokerstars
 s$potmethod                 2
