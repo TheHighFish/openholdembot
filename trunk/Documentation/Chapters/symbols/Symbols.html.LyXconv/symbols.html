@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-02-13"/>
+<meta name="create-date" content="2015-03-01"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -59,7 +59,7 @@ returns the version number of OpenHoldem that is currently running
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-2"></a>Casino and Ppker Table 
+<a class="toc" name="toc-Section-2"></a>Casino and Poker Table 
 </h2>
 <div class="Unindented">
 <table>
@@ -295,7 +295,91 @@ true if you play the final table of a MTT, depending on the tablemap region r$c0
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-4"></a>Hand Rank 
+<a class="toc" name="toc-Section-4"></a>Tournament Info
+</h2>
+<div class="Unindented">
+MTT symbols provide you some info about the tournament you currently play. They are most useful forswcisions at the bubble. Each one of these symbols returns the value of the corresponding tablemap-region (e.g. r$mtt_number_entrants, etc.). To make use of these symbols they must be displayed at the table, so that OpenHoldem can scrape them.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_number_entrants 
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Number of players participating in the tournament
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_players_remaining 
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Number of players still alive in the tournament
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_paid_places 
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Number of paid places, useful for decisions at the bubble
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_my_rank 
+</td>
+<td align="left" valign="top" style="width: 60%;">
+My current place in the tournament depending on stacksize, assuming that all players with smaller stacks bust before me
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_largest_stack k
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Stacksize of the chip-leader, usually in dollars
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_average_stack 
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Average stacksize of all tournament plazers, usually in dollars
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+mtt_smallest_stack
+</td>
+<td align="left" valign="top" style="width: 60%;">
+Smallest stack in the tournament, usually in dollars
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-5"></a>Hand Rank 
 </h2>
 <div class="Unindented">
 Handrank rates your hand-value, assuming you go preflop allin against N opponents, who hold random cards (N = f$prwin_number_of_opponents). A low handrank means. your hand is good, a high handrank means, that many holdings are a favourit against you. For more info see the chapter about handrank.
@@ -361,7 +445,7 @@ handrankp
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-5"></a>Chairs 
+<a class="toc" name="toc-Section-6"></a>Chairs 
 </h2>
 <div class="Unindented">
 Please note OpenHoldem needs to see player-cards in a non-showdown-situation to recognize the userchair and then will lock the chair for stability reasons until the session of the hand. A change in userchair can happen on table-change in MTTs at some casinos and will be handled automatically.
@@ -490,7 +574,7 @@ player “abc” chairbit (1 &lt;&lt; chair$abc); 0 if not found
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-6"></a>Positions
+<a class="toc" name="toc-Section-7"></a>Positions
 </h2>
 <div class="Unindented">
 To avoid problems with fast folds in early position the dealposition-symbols will consider the following players as dealt 
@@ -615,7 +699,7 @@ the bet position of the raising player (1-10)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-7"></a>Probabilities 
+<a class="toc" name="toc-Section-8"></a>Probabilities 
 </h2>
 <div class="Unindented">
 There are several variations of PrWin (standard, weighted and enhanced), each with several pros and cons. For more info see the chapter about PrWin.
@@ -739,7 +823,7 @@ random number between (0.000-1.000) for the hand. Value is calculated only once 
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-8"></a>Formulas
+<a class="toc" name="toc-Section-9"></a>Formulas
 </h2>
 <div class="Unindented">
 <table>
@@ -769,7 +853,7 @@ reference the specified standard or user defined function
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-9"></a>Chip Amounts
+<a class="toc" name="toc-Section-10"></a>Chip Amounts
 </h2>
 <div class="Unindented">
 <table>
@@ -895,7 +979,7 @@ the total amount of chips in front of all players
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-10"></a>Number of Bets
+<a class="toc" name="toc-Section-11"></a>Number of Bets
 </h2>
 <div class="Unindented">
 Please note that in a fixed-limit game (default) the bets double up at the turn. This will affect the symbols below. If you play no-limit or pot-limit please make sure that your tablemap detects the game-type correctly.
@@ -961,7 +1045,7 @@ total number of bets you would have on the table if you min-raise (Fixed Limit)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-11"></a>List Tests 
+<a class="toc" name="toc-Section-12"></a>List Tests 
 </h2>
 <div class="Unindented">
 <table>
@@ -994,7 +1078,7 @@ Please note that OpenHoldem 5.x+ supports arbitrary many lists with user-defined
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-12"></a>Poker Values
+<a class="toc" name="toc-Section-13"></a>Poker Values
 </h2>
 <div class="Unindented">
 <table>
@@ -1075,7 +1159,7 @@ As npcbits symbol depends on pcbits, the same word of caution applies to this sy
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-13"></a>Poker Value Constants 
+<a class="toc" name="toc-Section-14"></a>Poker Value Constants 
 </h2>
 <div class="Unindented">
 <table>
@@ -1183,7 +1267,7 @@ royalflush
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-14"></a>Hand Tests
+<a class="toc" name="toc-Section-15"></a>Hand Tests
 </h2>
 <div class="Unindented">
 <table>
@@ -1333,7 +1417,7 @@ true when you have a royal flush
 !!!???
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-15"></a>Pocket Tests 
+<a class="toc" name="toc-Section-16"></a>Pocket Tests 
 </h2>
 <div class="Unindented">
 <table>
@@ -1378,7 +1462,7 @@ true when your two dealt pocket cards are rank adjacent (0-1)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-16"></a>Pocket / Common Tests 
+<a class="toc" name="toc-Section-17"></a>Pocket / Common Tests 
 </h2>
 <div class="Unindented">
 <table>
@@ -1441,7 +1525,7 @@ true when you have the highest flush possible
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-17"></a>Players, Opponents
+<a class="toc" name="toc-Section-18"></a>Players, Opponents
 </h2>
 <div class="Unindented">
 Note that &ldquo;raising players&rdquo; does no longer count the so-called &ldquo;blind-raisers&rdquo; (former WinHoldem definition).
@@ -1739,7 +1823,7 @@ bits 9-0: 1=blind 0=notblind
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-18"></a>Flags 
+<a class="toc" name="toc-Section-19"></a>Flags 
 </h2>
 <div class="Unindented">
 <table>
@@ -1806,7 +1890,7 @@ WHEN Others RETURN f$SklanskySHCAction FORCE
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-19"></a>Common Cards 
+<a class="toc" name="toc-Section-20"></a>Common Cards 
 </h2>
 <div class="Unindented">
 <table>
@@ -1833,7 +1917,7 @@ number of common cards known (normal not highlighted)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-20"></a>(Un)known Cards
+<a class="toc" name="toc-Section-21"></a>(Un)known Cards
 </h2>
 <div class="Unindented">
 <table>
@@ -1890,7 +1974,7 @@ total number of single unknown cards that can beat you, e.g. if the board is fou
 Ray E. Bornerts definition of an out is way too optimistic and nearly unusable (a hand like 72o at a board of AKQ will give you 6 outs, as every 7 and every 2 will bump your handlevel to a pair, which beats high-card ace at the board). To calculate outs in a meaningful way, there is f$mh_nouts in Winngys and HTCs hand-strength-library and there are also some good outs-counters available in the forum. However we had to keep this symbol in the code-base, as some outs-counters are based on nouts and try to discount it in a meanigful way.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-21"></a>nhands 
+<a class="toc" name="toc-Section-22"></a>nhands 
 </h2>
 <div class="Unindented">
 <table>
@@ -1944,7 +2028,7 @@ number of hands that can tie you in a showdown right now
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-22"></a>Flushes / Straights / Sets 
+<a class="toc" name="toc-Section-23"></a>Flushes / Straights / Sets 
 </h2>
 <div class="Unindented">
 <table>
@@ -2106,7 +2190,7 @@ total number of cards needed to fill a common straightflush (0-5)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-23"></a>Rank Bits 
+<a class="toc" name="toc-Section-24"></a>Rank Bits 
 </h2>
 <div class="Unindented">
 Please note: aces are both hi and lo.
@@ -2199,7 +2283,7 @@ bit list of suited card ranks (pokerval tsuit)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-24"></a>Rank Hi
+<a class="toc" name="toc-Section-25"></a>Rank Hi
 </h2>
 <div class="Unindented">
 Aces are hi.
@@ -2292,7 +2376,7 @@ highest suited card rank (14-2) (pokerval tsuit)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-25"></a>Rank Lo
+<a class="toc" name="toc-Section-26"></a>Rank Lo
 </h2>
 <div class="Unindented">
 Aces are hi.
@@ -2385,7 +2469,7 @@ lowest suited card rank (14-2) (pokerval tsuit)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-26"></a>Time 
+<a class="toc" name="toc-Section-27"></a>Time 
 </h2>
 <div class="Unindented">
 <table>
@@ -2439,7 +2523,7 @@ time in seconds since midnight GMT
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-27"></a>Autoplayer 
+<a class="toc" name="toc-Section-28"></a>Autoplayer 
 </h2>
 <div class="Unindented">
 <table>
@@ -2524,7 +2608,7 @@ true when autoplayer preparing to act; false any other time.
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-28"></a>History (I)
+<a class="toc" name="toc-Section-29"></a>History (I)
 </h2>
 <div class="Remark">
 The action-symbols (didrais, didcall, etc.) mean: what the autoplayer did, not what the user did or what happened in the hand. That does regularly confuse new users and causes problem when simulating hands at ManualMode or with Replay Frames.
@@ -2719,7 +2803,7 @@ true if userchair went allin during round 1 - round 4
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-29"></a>Versus 
+<a class="toc" name="toc-Section-30"></a>Versus 
 </h2>
 <div class="Unindented">
 <table>
@@ -3016,7 +3100,7 @@ Probability (0.000 - 1.000) of losing versus currently lower opponent hands
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-30"></a>History (II)
+<a class="toc" name="toc-Section-31"></a>History (II)
 </h2>
 <div class="Unindented">
 hi_&lt;sym&gt;x (x=1-4) the value of the symbol &lt;sym&gt; as of your last turn in betting round x. Example: hi_prwin1 would return prwin as of your last turn in br1. 
@@ -3137,7 +3221,7 @@ ranklo, ranklocommon, rankloplayer, ranklopoker, sranklo, sranklocommon, sranklo
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-31"></a>Table statistics 
+<a class="toc" name="toc-Section-32"></a>Table statistics 
 </h2>
 <div class="Unindented">
 Table statistics for the last 15 minutes.
@@ -3239,7 +3323,37 @@ ranked list of player balances (includes players not currently in hand, and incl
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-32"></a>Betting Action 
+<a class="toc" name="toc-Section-33"></a>Colourcodes
+</h2>
+<div class="Unindented">
+Colourcodes for player-profiling if a casino is not supported by PokerTracker. Can also be used for easy adaption against regulars and other friends.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="center" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="center" valign="top" style="width: 60%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="center" valign="top" style="width: 35%;">
+colourcode0..colourcode9
+</td>
+<td align="center" valign="top" style="width: 60%;">
+The scraped colourcode for playerX, depending on the tablemap region r$pXcolourcode. All colourcodes will be transformed to the closest web-safe-colour (216 values). This avoids problems with fuzzy casino-displays and 216 values are more easy to be handled by the end-user.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-34"></a>Betting Action 
 </h2>
 <div class="Unindented">
 <table>
@@ -3356,7 +3470,7 @@ returns deal position of specified chair
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-33"></a>Logging 
+<a class="toc" name="toc-Section-35"></a>Logging 
 </h2>
 <div class="Unindented">
 <table>
@@ -3409,7 +3523,7 @@ Note: You want to use the log$ symbol at the end of a logic block, to make sure 
 Note: You have to turn on Log Symbols in the preferences. You can also dictate the maximum number of log symbols that will be logged per action. When enabled, up to 4 log symbols will be displayed in OpenHoldem’s main window. 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-34"></a>MessageBoxes with Info
+<a class="toc" name="toc-Section-36"></a>MessageBoxes with Info
 </h2>
 <div class="Unindented">
 In addition to logging it might be useful to notify the user at run-time and pause script-execution, mainly in a debugging session. For this usecase OpenHoldem provides a symbol msgbox$TEXT, that — surprise — will show a messagebox with text. As the character-set in symbols is slightly limited the following replacements will take place.
@@ -3451,7 +3565,7 @@ WHEN Others RETURN (Call + msgbox$WOOHOO_NPreflop_Bworks_D) FORCE
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-35"></a>ICM calculator
+<a class="toc" name="toc-Section-37"></a>ICM calculator
 </h2>
 <div class="Unindented">
 An overview of basic ICM push/fold decisions and how they work with OpenHoldem can be found here: <a class="FlexURL" href="http://www.maxinmontreal.com/wiki/index.php5?title=ICM">http://www.maxinmontreal.com/wiki/index.php5?title=ICM</a>.
@@ -3844,7 +3958,7 @@ my tournament equity if I push all-in and lose against the dealer
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-36"></a>Hand multiplexor
+<a class="toc" name="toc-Section-38"></a>Hand multiplexor
 </h2>
 <div class="Unindented">
 The purpose of the hand multiplexor is to transfer control to a specific named formula based on your actual 2 card hand. Note that the X’s and x’s are not case sensitive.
@@ -3905,7 +4019,7 @@ OpenHoldem will then evaluate the corresponding user defined function and return
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-37"></a>Memory Symbols 
+<a class="toc" name="toc-Section-39"></a>Memory Symbols 
 </h2>
 <div class="Unindented">
 The purpose of these symbols is to provide storage for values in order to reuse them at some later time. They once got invented as a substitute??? for left-hand-side-expressions (assignments of variables), that did not exist in the WinHoldem-scripting-language, but in reality, this is a bit a kludge???. A much better choice for LHS expressions is Perl or via the user-DLL extension. Please see the {Memory Symbols} section for more information.
@@ -3975,7 +4089,7 @@ Increments a memory_symbol
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-38"></a>Hand Symbols 
+<a class="toc" name="toc-Section-40"></a>Hand Symbols 
 </h2>
 <div class="Unindented">
 You can reference your dealt hand (hole cards) directly by using the $ symbols. The general form of the $ hand symbols are: $RRs. The $ character is required, followed by 1 or 2 standard card rank characters. The hand symbols are not case sensitive. A,K,Q,J,T,9-2 or by X or x which is a wild card that will match any rank. This is followed by an optional suit indicator: s - suited, o - offsuit. If the suit indicator is omitted then suit does not matter. 
@@ -4080,7 +4194,7 @@ true if you were dealt queen two
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-39"></a>Card Symbols 
+<a class="toc" name="toc-Section-41"></a>Card Symbols 
 </h2>
 <div class="Unindented">
 The actual card value or rank/suit value for both your hand and the board can be referenced using card symbols. The general form of the $$ card symbols are: $$AB#. The card symbols are not case sensitive. $$ is required. A - is p for player, c for common B - is c for card, r for rank, s for suit # - is the card number (player 0-1, common 0-4) 
@@ -4158,7 +4272,7 @@ the suit value of common card four (5th common card dealt - river)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-40"></a>Card Values 
+<a class="toc" name="toc-Section-42"></a>Card Values 
 </h2>
 <div class="Unindented">
 A single card value is stored in a single 8-bit byte. All bits (7-0) are used. The card rank is stored in the hi-order 4 bit nibble (bits 7-4). The card suit is stored in the lo-order 4 bit nibble (bits 3-0). The valid values for card rank are 1-14 as follows: 
@@ -4286,7 +4400,7 @@ Spade
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-02-13T13:08:00.093000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-01T21:33:02.531000</span>
 </div>
 </div>
 </body>
