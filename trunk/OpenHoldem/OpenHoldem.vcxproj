@@ -352,6 +352,7 @@
     <ClCompile Include="MagicNumbers.cpp" />
     <ClCompile Include="NumericalFunctions.cpp" />
     <ClCompile Include="StringFunctions.cpp" />
+    <ClCompile Include="WebSafeColours.cpp" />
     <ClCompile Include="WindowFunctions.cpp" />
     <ClCompile Include="CFormulaFileSplitter.cpp" />
     <ClCompile Include="CFormulaParser.cpp" />
@@ -645,6 +646,7 @@
     <ClInclude Include="MagicNumbers.h" />
     <ClInclude Include="NumericalFunctions.h" />
     <ClInclude Include="StringFunctions.h" />
+    <ClInclude Include="WebSafeColours.h" />
     <ClInclude Include="WindowFunctions.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
     <ClInclude Include="CFormulaParser.h" />

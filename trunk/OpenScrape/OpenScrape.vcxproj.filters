@@ -132,6 +132,9 @@
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp">
       <Filter>Source Files\CTablemap</Filter>
     </ClCompile>
+    <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRegionCloner.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="..\CTablemap\CTableMapAccess.h">
       <Filter>Header Files\CTablemap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenHoldem\WebSafeColours.h">
+      <Filter>Header Files\CTransform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

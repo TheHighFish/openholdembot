@@ -11,7 +11,6 @@
 //
 //*******************************************************************************
 
-
 #include "StdAfx.h"
 #include "CTransform.h"
 
@@ -20,6 +19,7 @@
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
 #include "..\OpenHoldem\StringFunctions.h"
+#include "..\OpenHoldem\WebSafeColours.h"
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../OpenHoldem/debug.h"
@@ -268,13 +268,13 @@ int CTransform::ITypeTransform(RMapCI region, const HDC hdc, CString *text)
 
 int CTransform::WTypeTransform(RMapCI region, const HDC hdc, CString *text) {
   // Just take the colour of the pixel in the middle of the region
-  HDC hdcs = GetDC(0);
   int x_pos = (region->second.right + region->second.left) / 2;
   int y_pos = (region->second.bottom + region->second.top) / 2;
-  int colour = GetPixel(hdcs, x_pos, y_pos); //!!!
+  int colour = GetPixel(hdc, x_pos, y_pos); 
+  int web_safe_colour = ClosestWebSafeColour(colour);
   // Now transform the result to text, 
   // as that's our general format for scraped values
-  text->Format("%i", colour);
+  text->Format("%i", web_safe_colour);
   return ERR_GOOD_SCRAPE_GENERAL;
 }
 
@@ -895,7 +895,7 @@ void CTransform::CalcHexmash(const int left, const int right, const int top, con
 // For OpenHoldem 7.3.1 we removed the superfluous parameters
 // bool *found_handnumber=NULL, bool *found_sblind=NULL, bool *found_bblind=NULL, 
 // bool *found_bbet=NULL, bool *found_ante=NULL, bool *found_limit=NULL, 
-// bool *found_sb_bb=NULL, bool *found_bb_BB=NULL
+// bool *founds_b_bb=NULL, bool *found_bb_BB=NULL
 // to get a cleanner interface and cleaner code.
 // The other in-out-parameters must be initialized with k_undefined now
 // (or with the empty string). This value represents the same information.

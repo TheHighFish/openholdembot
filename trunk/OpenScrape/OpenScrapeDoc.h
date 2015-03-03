@@ -37,7 +37,7 @@ char * const s$strings[num_s$strings] =
 	  "allinconfirmationmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
 	  "chipscrapemethod"};
 
-int	const num_r$strings = 393;
+int	const num_r$strings = 382;
 
 char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
 								"c0cardface0rank", "c0cardface1rank", "c0cardface2rank", "c0cardface3rank", "c0cardface4rank", 
@@ -128,12 +128,9 @@ char * const r$strings[num_r$strings] = { "c0cardface0", "c0cardface1", "c0cardf
 								"u0seated", "u1seated", "u2seated", "u3seated", "u4seated", "u5seated", "u6seated", "u7seated", 
 								"u8seated", "u9seated",
 								//61
-								"userdefined0","userdefined1","userdefined2","userdefined3","userdefined4","userdefined5","userdefined6",
-								"userdefined7","userdefined8","userdefined9",
-								//10
 								"mtt_number_entrants","mtt_players_remaining","mtt_paid_places","mtt_my_rank","mtt_largest_stack",
-								"mtt_average_stack","mtt_smallest_stack","mtt_next_level"};
-								// 8
+								"mtt_average_stack","mtt_smallest_stack"};
+								// 7
 
 //!  Container class for Tablemap data to aid with loading/saving
 class COpenScrapeDoc : public CDocument
