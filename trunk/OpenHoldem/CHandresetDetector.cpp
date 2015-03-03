@@ -239,9 +239,9 @@ void CHandresetDetector::GetNewSymbolValues() {
 		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
-	if (IsValidHandNumber(p_table_state->_s_limit_info.handnumber))	{
+	if (IsValidHandNumber(p_table_state->_s_limit_info.handnumber()))	{
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s]\n", handnumber);
-		handnumber = p_table_state->_s_limit_info.handnumber;	
+		handnumber = p_table_state->_s_limit_info.handnumber();	
 	}	else {
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}

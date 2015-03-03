@@ -861,25 +861,20 @@ void CScraper::ScrapeLimits() {
 	// from the handnumber region.
 
 	// r$c0handnumber
-	if (EvaluateRegion("c0handnumber", &text))
-	{
-		if (text!="")
-		{
-      p_table_state->_s_limit_info.handnumber = extractHandnumFromString(text);
+	if (EvaluateRegion("c0handnumber", &text)) {
+		if (text!="") {
+      p_table_state->_s_limit_info._handnumber = extractHandnumFromString(text);
 			got_new_scrape = true;
 		}
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
 
-	for (int j=0; j<=9; j++)
-	{
+	for (int j=0; j<=9; j++) {
 		// r$c0handnumberX
 		s.Format("c0handnumber%d", j);
-		if (EvaluateRegion(s, &text))
-		{
-			if (text!="")
-			{
-				p_table_state->_s_limit_info.handnumber = extractHandnumFromString (text);
+		if (EvaluateRegion(s, &text))	{
+			if (text!="")	{
+				p_table_state->_s_limit_info._handnumber = extractHandnumFromString (text);
 				got_new_scrape = true;
 			}
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
@@ -898,7 +893,7 @@ void CScraper::ScrapeLimits() {
 	// the l_ locals so that we don't blindly overwrite the
 	// information we scraped from those specific regions with
 	// default values if we can't find them in the titlebar.
-	CString l_handnumber = p_table_state->_s_limit_info.handnumber; 
+	CString l_handnumber = p_table_state->_s_limit_info.handnumber(); 
 
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
 	s_iter = p_tablemap->s$()->find("ttlimits");
@@ -962,42 +957,42 @@ void CScraper::ScrapeLimits() {
 		}
     // save what we just scanned through
     if (l_handnumber != "") {
-			p_table_state->_s_limit_info.handnumber = l_handnumber;
+			p_table_state->_s_limit_info._handnumber = l_handnumber;
     }
     if (l_sblind != k_undefined) {
-			p_table_state->_s_limit_info.sblind = l_sblind;
+			p_table_state->_s_limit_info._sblind = l_sblind;
     }
     if (l_bblind != k_undefined) {
-			p_table_state->_s_limit_info.bblind = l_bblind;
+			p_table_state->_s_limit_info._bblind = l_bblind;
     }
     if (l_bbet != k_undefined) {
-			p_table_state->_s_limit_info.bbet = l_bbet;
+			p_table_state->_s_limit_info._bbet = l_bbet;
     }
     if (l_ante != k_undefined) {
-			p_table_state->_s_limit_info.ante = l_ante;
+			p_table_state->_s_limit_info._ante = l_ante;
     }
     if (l_limit != k_undefined) {
-			p_table_state->_s_limit_info.limit = l_limit;
+			p_table_state->_s_limit_info._limit = l_limit;
     }
     if (l_sb_bb != k_undefined) {
-			p_table_state->_s_limit_info.sb_bb = l_sb_bb;
+			p_table_state->_s_limit_info._sb_bb = l_sb_bb;
     }
     if (l_bb_BB != k_undefined) {
-			p_table_state->_s_limit_info.bb_BB = l_bb_BB;
+			p_table_state->_s_limit_info._bb_BB = l_bb_BB;
     }
     if (l_buyin != k_undefined) {
-			p_table_state->_s_limit_info.buyin = l_buyin;
+			p_table_state->_s_limit_info._buyin = l_buyin;
     }
     // r$c0smallblind
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info.sblind, "c0smallblind");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info._sblind, "c0smallblind");
 		// r$c0bigblind
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info.bblind, "c0bigblind");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info._bblind, "c0bigblind");
 		// r$c0bigbet
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info.bbet, "c0bigbet");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info._bbet, "c0bigbet");
 		// r$c0ante
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info.ante, "c0ante");
+    EvaluateNumericalRegion(&p_table_state->_s_limit_info._ante, "c0ante");
 		// r$c0isfinaltable
-    EvaluateTrueFalseRegion(&p_table_state->_s_limit_info.is_final_table, "c0isfinaltable");
+    EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
 	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }

@@ -3,6 +3,16 @@ v7.7.0 2015-03.xx
 BUG FIXES:
 - Fixing the f$chat-fucntion.
   [FqFq]
+- There are some very rarely used parameters
+  for titleparsing: ^v and ^V that evaluate
+  big-bind and big-bet for fixed-limit
+  or alternatively small-blind and big-blind for FL / PL,
+  thus supporting both naming conventions for the stakes in one map.
+  These parameters have been forgotten when we rewrote
+  blind-detection, but now they are supported again.
+  Thanks to Poker_Dog for providing replay-frames and tablemap
+  to reproduce the problem.
+  [THF]
   
 NEW stuff:
 - New MTT-symbols

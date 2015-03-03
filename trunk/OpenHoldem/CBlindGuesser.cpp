@@ -19,6 +19,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHistory.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
@@ -232,10 +233,12 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
 void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind, 
                                                  double *bblind, 
                                                  double *bbet) {
+  assert(p_symbol_engine_gametype != NULL);
+  bool is_fixed_limit = p_symbol_engine_gametype->isfl();
   // Get values from the scraper (ttlimits / c0limits)
-  *sblind = p_table_state->_s_limit_info.sblind;
-  *bblind = p_table_state->_s_limit_info.bblind;
-  *bbet   = p_table_state->_s_limit_info.bbet;
+  *sblind = p_table_state->_s_limit_info.sblind(is_fixed_limit);
+  *bblind = p_table_state->_s_limit_info.bblind(is_fixed_limit);
+  *bbet   = p_table_state->_s_limit_info.bbet(is_fixed_limit);
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);

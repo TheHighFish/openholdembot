@@ -107,7 +107,9 @@ void CSymbolEngineTableLimits::ResetOnHeartbeat() {
     _blind_guesser.Guess(&tablelimit_best_guess.sblind,
       &tablelimit_best_guess.bblind,
       &tablelimit_best_guess.bbet);
-    if (p_table_state->_s_limit_info.ante > 0) _ante = p_table_state->_s_limit_info.ante;
+    if (p_table_state->_s_limit_info.ante() > 0) {
+      _ante = p_table_state->_s_limit_info.ante();
+    }
     AutoLockBlinds();
   }
 }
@@ -250,8 +252,8 @@ double CSymbolEngineTableLimits::ante() {
 }
 
 double CSymbolEngineTableLimits::buyin() {
-  if (p_table_state->_s_limit_info.buyin > 0) {
-    return p_table_state->_s_limit_info.buyin;
+  if (p_table_state->_s_limit_info.buyin() > 0) {
+    return p_table_state->_s_limit_info.buyin();
   }
   return k_undefined_zero;
 }
