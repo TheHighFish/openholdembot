@@ -17,9 +17,17 @@ NEW stuff:
   (r$mtt_number_entrants, etc.). To make use of these symbols
   they must be displayed at the table.
   [Poker_Dog] 
-- New OpenPPL-szmbol StartingChips, especially meant for
+- New OpenPPL-symbol StartingChips, especially meant for
   tournaments.
   [Poker_Dog]
+- New symbols colourcode0..colourcode9 for player-profiling 
+  if a casino is not supported by PokerTracker. Can also be used 
+  for easy adaption against regulars and other friends.
+  The values depend on the tablemap regions r$pXcolourcode. 
+  All colourcodes will be transformed to the closest web-safe-colour 
+  (216 values). This avoids problems with fuzzy casino-displays 
+  and 216 values are more easy to be handled by the end-user.
+  [THF]
 
 
 v7.6.1 2015-02.27

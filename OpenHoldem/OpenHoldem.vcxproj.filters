@@ -729,6 +729,9 @@
     <ClCompile Include="CSymbolEngineMTTInfor.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="WebSafeColours.cpp">
+      <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1551,6 +1554,9 @@
     </ClInclude>
     <ClInclude Include="CSymbolengineMTTInfo.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="WebSafeColours.h">
+      <Filter>Header Files\CTransform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

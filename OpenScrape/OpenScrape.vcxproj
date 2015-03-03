@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp" />
     <ClCompile Include="CRegionCloner.cpp" />
     <ClCompile Include="CTablemap_TroubleChecking.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -162,6 +163,7 @@
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\OpenHoldem\WebSafeColours.h" />
     <ClInclude Include="CRegionCloner.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="DialogCopyRegion.h" />
