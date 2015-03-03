@@ -54,7 +54,7 @@ void CSymbolEngineGameType::ResetOnMyTurn() {
 }
 
 void CSymbolEngineGameType::ResetOnHeartbeat() {
-  int scraped_limit = p_table_state->_s_limit_info.limit;
+  int scraped_limit = p_table_state->_s_limit_info.limit();
   switch (scraped_limit) {
     case k_gametype_NL:
     case k_gametype_PL:
