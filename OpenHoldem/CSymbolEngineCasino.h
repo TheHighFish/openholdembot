@@ -38,6 +38,7 @@ class CSymbolEngineCasino: public CVirtualSymbolEngine {
   bool ConnectedToOfflineSimulation();
   bool ConnectedToRealCasino();
   bool ConnectedToBring();
+  bool ConnectedToDDPoker();
  private:
   bool SitenameContainsCasinoIdentifier(const char *casino);
 };

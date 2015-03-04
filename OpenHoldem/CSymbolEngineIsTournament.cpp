@@ -272,6 +272,14 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
 	}
+  // If we plaz at DDPoiker the game is a tournament,
+  // even though it can~t be detected bz titlestring.
+  if (p_symbol_engine_casino->ConnectedToDDPoker()) {
+    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
+    _istournament    = true;
+		_decision_locked = true;
+		return;
+  }
   // If the title-string looks like a tournament then it is a tournament.
   // This should be checked before the size of the blinds,
   // because incorrectly detecting a cash-game as tournament
