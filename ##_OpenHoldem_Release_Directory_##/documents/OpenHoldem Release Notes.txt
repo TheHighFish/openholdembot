@@ -30,6 +30,8 @@ NEW stuff:
 - New OpenPPL-symbol StartingChips, especially meant for
   tournaments.
   [Poker_Dog]
+ - New OpenPPL-symbol NutsOnBoard
+  [Lavezzi]
 - New symbols colourcode0..colourcode9 for player-profiling 
   if a casino is not supported by PokerTracker. Can also be used 
   for easy adaption against regulars and other friends.
