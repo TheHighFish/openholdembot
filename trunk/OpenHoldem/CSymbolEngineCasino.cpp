@@ -81,6 +81,7 @@ bool CSymbolEngineCasino::ConnectedToOHReplay() {
 bool CSymbolEngineCasino::ConnectedToOfflineSimulation() {
   return (ConnectedToManualMode()
     || ConnectedToOHReplay()
+    || ConnectedToDDPoker()
     || SitenameContainsCasinoIdentifier("pokeracademy")
     || SitenameContainsCasinoIdentifier("pokerth")
     || SitenameContainsCasinoIdentifier("pokersnowie"));
@@ -95,6 +96,10 @@ bool CSymbolEngineCasino::ConnectedToBring() {
 	char classname[k_max_length_of_classname] = "";
   GetClassName(p_autoconnector->attached_hwnd(), classname, k_max_length_of_classname);
   return (strcmp(classname, "BRING") == 0);
+}
+
+bool CSymbolEngineCasino::ConnectedToDDPoker() {
+  return SitenameContainsCasinoIdentifier("ddpoker");
 }
 
 bool CSymbolEngineCasino::SitenameContainsCasinoIdentifier(const char *casino) {

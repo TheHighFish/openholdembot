@@ -58,6 +58,12 @@ BUG FIXES:
   Thanks to Azure for reporting.
   [THF]
 
+MAINTENANCE:
+- Handling istournament for DDPoker,
+  that couldn't be done previously by titlestring or other methods.
+  Thanks to Ares for the suggestion.
+  [THF]
+
 v7.6.0 2015-02.25
 ==================
 NEW stuff:
