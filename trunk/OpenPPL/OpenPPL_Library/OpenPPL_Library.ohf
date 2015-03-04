@@ -2425,6 +2425,9 @@ ERROR_You_Dont_Have_Any_Kicker
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
 - (`(rankbitspoker >> (MyKicker + 1)))]
 
+##NutsOnBoard##
+nhands == nhandsti
+
 ##RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010
 
