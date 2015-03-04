@@ -217,7 +217,7 @@ Do you need variables that can be set to any arbitrary value? Do you need
  automatically, but keep their values till the next hand or even for the
  complete session? There is a solution for it (of course).
  Instead of PPL-like user-variables it is also possible to use OpenHoldem's
- memory-store-command:
+ memory-store-command (following example store the decimal number 3,14..):
 \end_layout
 
 \begin_layout Standard
@@ -227,7 +227,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (...) me_st_MySecretVariable_3_141592653
+WHEN (...) Set me_st_MySecretVariable_3_141592653
 \end_layout
 
 \end_inset
@@ -285,7 +285,7 @@ WHEN (BotsActionsOnThisRound = 0)
 
 \begin_layout Plain Layout
 
-    WHEN Others me_st_MySecretVariable_0
+    WHEN Others Set me_st_MySecretVariable_0
 \end_layout
 
 \begin_layout Plain Layout
@@ -296,6 +296,10 @@ WHEN (BotsActionsOnThisRound = 0)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Itemize
+Table occlusion reset the memory variables.
 \end_layout
 
 \begin_layout Standard
