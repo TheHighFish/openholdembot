@@ -70,8 +70,7 @@
 
 
 // mandatory to use toolTip : "http://forums.codeguru.com/showthread.php?231227-MFC-Tree-Control-How-to-use-SetItemData()-and-GetItemData()"
-struct toolTipData
-{
+struct toolTipData {
 	CString* description;
 };
 
@@ -240,6 +239,7 @@ class CDlgFormulaScintilla : public CDialog {
   void SetExtendedWindowTitle(CString additional_information);
  private:
   void FormerShowEnableHideCodeClone(CScintillaWnd *new_pActiveScinCtrl);
+  void ReEnableLineNumbersUglyWorkaroundForHugeShankyMonkeyStyleFormulas();
  private:
   HTREEITEM _subtree_handlists;
   HTREEITEM _subtree_user_defined_functions;

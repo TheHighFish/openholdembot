@@ -746,20 +746,29 @@ void CDlgFormulaScintilla::OnTreeContextMenu(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CDlgFormulaScintilla::SelectFunctionTab(CScintillaWnd *pCurScin)
-{
+void CDlgFormulaScintilla::ReEnableLineNumbersUglyWorkaroundForHugeShankyMonkeyStyleFormulas() {
+  // The formula editor shows line-numbers per default
+  // only up to 3 digits, but some people need to create single functions
+  // with tens of thousands lines of code.
+  // We didn~t manage to handle such large line/numbers correctly,
+  // but disableing and then enabling line/numbers again
+  // seems to do the job.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18213
+  m_pActiveScinCtrl->SetDisplayLinenumbers(false);
+  m_pActiveScinCtrl->SetDisplayLinenumbers(true);
+}
+
+void CDlgFormulaScintilla::SelectFunctionTab(CScintillaWnd *pCurScin) {
 	int iSel = k_not_found;
-	for (int iWnd=0; iWnd<m_ScinArray.GetSize(); iWnd++)
-	{
-		if (m_ScinArray[iWnd]._pWnd == pCurScin) 
-		{
+	for (int iWnd=0; iWnd<m_ScinArray.GetSize(); iWnd++) 	{
+		if (m_ScinArray[iWnd]._pWnd == pCurScin) {
 			iSel = iWnd;
 			break;
 		}
 	}
-	if (iSel != k_not_found)
-	{
+	if (iSel != k_not_found) {
 		m_FunctionTab.SetCurSel(iSel);
+    ReEnableLineNumbersUglyWorkaroundForHugeShankyMonkeyStyleFormulas();    
 	}
 }
 
