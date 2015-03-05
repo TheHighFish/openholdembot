@@ -130,7 +130,7 @@ int CScintillaWnd::GetLinenumberChars(void) {
 //
 int CScintillaWnd::GetLinenumberWidth(void) {
     // get number of chars needed to display highest linenumber
-    int nChars = GetLinenumberChars ()+1;
+    int nChars = GetLinenumberChars() + 1;
     // get width of character '9' in pixels
     LRESULT lWidth = SendMessage(SCI_TEXTWIDTH, STYLE_LINENUMBER, (ULONG_PTR)_T("9"));
     return nChars * lWidth;

@@ -82,7 +82,7 @@ void CReplayFrame::CreateReplayFrame(void){
   // Create HTML file
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0) {
-		write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: $s\n", path);
+		write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
