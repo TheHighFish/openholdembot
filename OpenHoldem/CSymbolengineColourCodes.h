@@ -36,8 +36,6 @@ class CSymbolEngineColourCodes: public CVirtualSymbolEngine {
   // Pokertracker icon (if meaningful sample-size),
   // otherwise scraped colour-code.
   int ColourCodeToDisplay(const int chair);
- private:
-  int ColourCodeForPokerTrackerIcon(const int icon);
 };
 
 extern CSymbolEngineColourCodes *p_symbol_engine_colourcodes;
