@@ -76,53 +76,11 @@ CString CSymbolEngineColourCodes::SymbolsProvided() {
   return RangeOfSymbols("colourcode%i", k_first_chair, k_last_chair);
 }
 
-int CSymbolEngineColourCodes::ColourCodeForPokerTrackerIcon(const int icon) {
-  switch (icon) {
-    case  1: 
-      return COLOR_SILVER;
-    case  2: 
-      return COLOR_GRAY;
-    case  3: 
-      return COLOR_BLACK;
-    case  4:
-      return COLOR_RED;
-    case  5: 
-      return COLOR_MAROON;
-    case  6: 
-      return COLOR_YELLOW;
-    case  7: 
-      return COLOR_OLIVE;
-    case  8: 
-      return COLOR_LIME;
-    case  9: 
-      return COLOR_GREEN;
-    case 10: 
-      return COLOR_AQUA;
-    case 11: 
-      return COLOR_TEAL;
-    case 12: 
-      return COLOR_BLUE;
-    case 13: 
-      return COLOR_NAVY;
-    case 14:
-      return COLOR_FUCHSIA;
-    case 15:
-      return COLOR_PURPLE;
-    default: 
-      return COLOR_WHITE;
-  }
-}
-
 int CSymbolEngineColourCodes::ColourCodeToDisplay(const int chair) {
   assert(chair >= 0);
   assert(chair <= k_last_chair);
-  // PT-icon available and meaningful sample-size?
-  assert(p_symbol_engine_pokertracker != NULL);
-  assert(p_pokertracker_thread != NULL);
-  if (p_pokertracker_thread->IsConnected()) {
-    int icon = p_symbol_engine_pokertracker->PlayerIcon(chair);
-    return ColourCodeForPokerTrackerIcon(icon);
-  }
   // Scraped colour-code 
+  // Coloour-code for PT-Icon removed in rev. 4283,
+  // as PT4 does no longer support the auto-rate-icon
   return p_table_state->_players[chair]._colourcode;
 }
