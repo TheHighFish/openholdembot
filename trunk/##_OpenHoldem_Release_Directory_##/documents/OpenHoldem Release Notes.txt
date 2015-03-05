@@ -13,6 +13,11 @@ BUG FIXES:
   Thanks to Poker_Dog for providing replay-frames and tablemap
   to reproduce the problem.
   [THF]
+- Supporting now correct line-numbering in the formula-editor
+  for large monkey-style formulas with more than 999 lines of code 
+  in a single function.
+  Thanks to Lavezzi and Ares for helping to fix it.
+  [THF]
   
 NEW stuff:
 - New MTT-symbols
