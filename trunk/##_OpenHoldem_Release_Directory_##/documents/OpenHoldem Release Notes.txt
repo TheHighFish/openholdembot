@@ -35,8 +35,6 @@ NEW stuff:
 - New OpenPPL-symbol StartingChips, especially meant for
   tournaments.
   [Poker_Dog]
- - New OpenPPL-symbol NutsOnBoard
-  [Lavezzi]
 - New symbols colourcode0..colourcode9 for player-profiling 
   if a casino is not supported by PokerTracker. Can also be used 
   for easy adaption against regulars and other friends.
@@ -44,6 +42,9 @@ NEW stuff:
   All colourcodes will be transformed to the closest web-safe-colour 
   (216 values). This avoids problems with fuzzy casino-displays 
   and 216 values are more easy to be handled by the end-user.
+  216 values means, that each red / green / blue colour component
+  can take 6 values: 0x00, 0x33, 0x66, 0x99, 0xCC and 0xFF
+  and the colour/code is a 6/digit hex-number.
   [THF]
 
 
