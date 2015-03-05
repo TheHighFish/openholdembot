@@ -210,7 +210,7 @@
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
-    <ClCompile Include="CSymbolEngineMTTInfor.cpp" />
+    <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolengineTableStats.cpp" />
