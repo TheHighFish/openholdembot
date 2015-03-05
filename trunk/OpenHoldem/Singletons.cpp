@@ -241,8 +241,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 08\n");
   DELETE_AND_CLEAR(p_formula_parser)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 09\n");
-  //!!!!! Sometimes crash after that
-  //!!!!!DELETE_AND_CLEAR(p_parser_symbol_table)
+  DELETE_AND_CLEAR(p_parser_symbol_table)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 10\n");
   DELETE_AND_CLEAR(p_debug_tab)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 11\n");
