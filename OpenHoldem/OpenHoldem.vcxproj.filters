@@ -726,11 +726,11 @@
     <ClCompile Include="CScrapedActionInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSymbolEngineMTTInfor.cpp">
-      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </ClCompile>
     <ClCompile Include="WebSafeColours.cpp">
       <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineMTTInfo.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
