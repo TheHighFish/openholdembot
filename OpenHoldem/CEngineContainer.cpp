@@ -1,7 +1,7 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
+//   Download page:        h ttp://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
@@ -103,7 +103,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // But we assure correct ordering by assertions in the constructors of the engines.
 
   // CFunctionCollection
-  p_function_collection = new CFunctionCollection;
+  _p_function_collection = new CFunctionCollection;
   AddSymbolEngine(_p_function_collection);
   // CSymbolEngineUserchair
   _p_symbol_engine_userchair = new CSymbolEngineUserchair();
@@ -257,11 +257,9 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines()
 	delete p_betround_calculator;
 }
 
-void CEngineContainer::EvaluateAll()
-{
+void CEngineContainer::EvaluateAll() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
-	if (!_reset_on_connection_executed)
-	{
+	if (!_reset_on_connection_executed)	{
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
 		// The problem with ResetOnConnection:
@@ -280,7 +278,7 @@ void CEngineContainer::EvaluateAll()
 		return;
 	}
 	p_betround_calculator->OnNewHeartbeat();
-	p_handreset_detector->OnNewHeartbeat();
+	_p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
 	p_symbol_engine_tablelimits()->CalcTableLimits();
 
@@ -290,16 +288,13 @@ void CEngineContainer::EvaluateAll()
 	// * ResetOnHandreset()
 	// * ResetOnNewRound()
 	// * ResetOnMyTurn()
-	if (p_handreset_detector->IsHandreset())
-	{
+	if (_p_handreset_detector->IsHandreset())	{
 		ResetOnHandreset();
 	}
-	if (p_betround_calculator->IsNewBetround())
-	{
+	if (p_betround_calculator->IsNewBetround())	{
 		ResetOnNewRound();
 	}
-	if (p_scraper_access->IsMyTurn())
-	{
+	if (p_scraper_access->IsMyTurn())	{
 		ResetOnMyTurn();
 	}
 	// And finally ResetOnHeartbeat() gets always called.

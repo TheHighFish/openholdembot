@@ -55,6 +55,9 @@ class CSymbolEngineTime;
 class CSymbolEngineUserchair;
 class CSymbolEngineVariousDataLookup;
 class CSymbolEngineVersus;
+// Special symbol engines
+class CFunctionCollection;
+class CHandresetDetector;
 // Forward declaration for hand-history modules
 class CHandHistoryAction;   
 class CHandHistoryDealPhase;    
@@ -172,15 +175,23 @@ class CEngineContainer {
   CSymbolEngineVariousDataLookup              *_p_symbol_engine_various_data_lookup;
   CSymbolEngineVersus                         *_p_symbol_engine_versus;
  private:
+  // Special szmbol engines
+  CFunctionCollection                         *_p_function_collection;
+  CHandresetDetector                          *_p_handreset_detector;
+ private:
   // Private modules for hand-history-hgeneration
   CHandHistoryAction       *_p_handhistory_action;
   CHandHistoryDealPhase    *_p_handhistory_deal_phase;
   CHandHistoryShowdown     *_p_handhistory_showdown;
   CHandHistoryUncontested  *_p_handhistory_uncontested;
   CHandHistoryWriter       *_p_handhistory_writer;
-  CHandresetDetector       *_p_handreset_detector;
 };
 
 extern CEngineContainer *_p_engine_container;
+
+// Abbreviation, otherwise the code becomes extremely long:
+//   _p_engine_container->p_symbol_engine_dealerchai()->dealerchair()
+// and even longer once the engine-containere is part of a table-object.
+#define SYM _p_engine_container
 
 #endif INC_CENGINECONTAINER_H
