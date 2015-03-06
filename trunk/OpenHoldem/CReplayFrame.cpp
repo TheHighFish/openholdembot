@@ -77,7 +77,7 @@ void CReplayFrame::CreateReplayFrame(void){
   CString next_frame;
 	next_frame.Format("[%06d]", _next_replay_frame);
   // Replay-frame should always be mentioned in the log for easy reference
-  write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame [%s]\n", next_frame);
+  write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame %s\n", next_frame);
 	CreateBitMapFile();
   // Create HTML file
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
