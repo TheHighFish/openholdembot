@@ -216,8 +216,6 @@ bool CLazyScraper::NeedColourCodes() {
 }
 
 bool CLazyScraper::NeedMTTRegions() {
-  // Once per hand is enough, as these values change slowly.
   // Also on my turn is good, as that's when we need it.
-  return (p_scraper_access->IsMyTurn()
-    && !p_symbol_engine_history->DidActThisHand());
+  return (p_scraper_access->IsMyTurn());
 }
