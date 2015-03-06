@@ -110,6 +110,4 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   CCritSec m_critsec;
 };
 
-extern CFunctionCollection *p_function_collection;
-
 #endif INC_CFUNCTIONCOLLECTION_H
