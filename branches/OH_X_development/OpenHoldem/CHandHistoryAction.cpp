@@ -18,8 +18,6 @@
 #include "CScraper.h"
 #include "MagicNumbers.h"
 
-CHandHistoryAction *p_handhistory_action = NULL;
-
 CHandHistoryAction::CHandHistoryAction() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

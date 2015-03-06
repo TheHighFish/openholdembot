@@ -104,138 +104,138 @@ void CEngineContainer::CreateSymbolEngines() {
 
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
-  AddSymbolEngine(p_function_collection);
+  AddSymbolEngine(_p_function_collection);
   // CSymbolEngineUserchair
-  p_symbol_engine_userchair = new CSymbolEngineUserchair();
-  AddSymbolEngine(p_symbol_engine_userchair);
+  _p_symbol_engine_userchair = new CSymbolEngineUserchair();
+  AddSymbolEngine(_p_symbol_engine_userchair);
   // CSymbolEngineDealerchair
-  p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
-  AddSymbolEngine(p_symbol_engine_dealerchair);
+  _p_symbol_engine_dealerchair = new CSymbolEngineDealerchair();
+  AddSymbolEngine(_p_symbol_engine_dealerchair);
   // CSymbolEngineEventLogging
-  p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
-  AddSymbolEngine(p_symbol_engine_event_logging);
+  _p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
+  AddSymbolEngine(_p_symbol_engine_event_logging);
   // CSymbolEngineTableLimits
-  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
-  AddSymbolEngine(p_symbol_engine_tablelimits);
+  _p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
+  AddSymbolEngine(_p_symbol_engine_tablelimits);
   // CSymbolEngineTime
-  p_symbol_engine_time = new CSymbolEngineTime();
-  AddSymbolEngine(p_symbol_engine_time);
+  _p_symbol_engine_time = new CSymbolEngineTime();
+  AddSymbolEngine(_p_symbol_engine_time);
   // CSymbolEngineAutoplayer
-  p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
-  AddSymbolEngine(p_symbol_engine_autoplayer);
+  _p_symbol_engine_autoplayer = new CSymbolEngineAutoplayer();
+  AddSymbolEngine(_p_symbol_engine_autoplayer);
   // CSymbolEngineReplayFrameController
-  p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
-  AddSymbolEngine(p_symbol_engine_replayframe_controller);
+  _p_symbol_engine_replayframe_controller = new CSymbolEngineReplayFrameController();
+  AddSymbolEngine(_p_symbol_engine_replayframe_controller);
   // CSymbolEngineRandom
-  p_symbol_engine_random = new CSymbolEngineRandom();
-  AddSymbolEngine(p_symbol_engine_random);
+  _p_symbol_engine_random = new CSymbolEngineRandom();
+  AddSymbolEngine(_p_symbol_engine_random);
   // CSymbolEngineVersus
-  p_symbol_engine_versus = new CSymbolEngineVersus;
-  AddSymbolEngine(p_symbol_engine_versus);
+  _p_symbol_engine_versus = new CSymbolEngineVersus;
+  AddSymbolEngine(_p_symbol_engine_versus);
   // CSymbolEngineActiveDealtPlaying
-  p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
-  AddSymbolEngine(p_symbol_engine_active_dealt_playing);
+  _p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
+  AddSymbolEngine(_p_symbol_engine_active_dealt_playing);
   // CSymbolEnginePositions
-  p_symbol_engine_positions = new CSymbolEnginePositions();
-  AddSymbolEngine(p_symbol_engine_positions);
+  _p_symbol_engine_positions = new CSymbolEnginePositions();
+  AddSymbolEngine(_p_symbol_engine_positions);
   // CSymbolEngineBlinds
-  p_symbol_engine_blinds = new CSymbolEngineBlinds();
-  AddSymbolEngine(p_symbol_engine_blinds);
+  _p_symbol_engine_blinds = new CSymbolEngineBlinds();
+  AddSymbolEngine(_p_symbol_engine_blinds);
   // CSymbolEngineChipAmounts
-  p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();
-  AddSymbolEngine(p_symbol_engine_chip_amounts);
+  _p_symbol_engine_chip_amounts = new CSymbolEngineChipAmounts();
+  AddSymbolEngine(_p_symbol_engine_chip_amounts);
   // CSymbolEngineTableStats
-  p_symbol_engine_table_stats = new CSymbolEngineTableStats();
-  AddSymbolEngine(p_symbol_engine_table_stats);
+  _p_symbol_engine_table_stats = new CSymbolEngineTableStats();
+  AddSymbolEngine(_p_symbol_engine_table_stats);
   // CSymbolEngineICM
-  p_symbol_engine_icm = new CSymbolEngineICM();
-  AddSymbolEngine(p_symbol_engine_icm);
+  _p_symbol_engine_icm = new CSymbolEngineICM();
+  AddSymbolEngine(_p_symbol_engine_icm);
   // CSymbolEngineRaisersCallers
-  p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
-  AddSymbolEngine(p_symbol_engine_raisers_callers);
+  _p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
+  AddSymbolEngine(_p_symbol_engine_raisers_callers);
   // CSymbolEnginePokerTracker
-  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
-  AddSymbolEngine(p_symbol_engine_pokertracker);
+  _p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
+  AddSymbolEngine(_p_symbol_engine_pokertracker);
   // CSymbolEnginePokerActio
-  p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
-  AddSymbolEngine(p_symbol_engine_poker_action);
+  _p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
+  AddSymbolEngine(_p_symbol_engine_poker_action);
   // CSymbolEngineChairs
-  p_symbol_engine_chairs = new CSymbolEngineChairs();
-  AddSymbolEngine(p_symbol_engine_chairs);
+  _p_symbol_engine_chairs = new CSymbolEngineChairs();
+  AddSymbolEngine(_p_symbol_engine_chairs);
   // CSymbolEngineCasino.h
-  p_symbol_engine_casino = new CSymbolEngineCasino;
-  AddSymbolEngine(p_symbol_engine_casino);
+  _p_symbol_engine_casino = new CSymbolEngineCasino;
+  AddSymbolEngine(_p_symbol_engine_casino);
   // CSymbolEngineIsTournament
-  p_symbol_engine_istournament = new CSymbolEngineIsTournament();
-  AddSymbolEngine(p_symbol_engine_istournament);
+  _p_symbol_engine_istournament = new CSymbolEngineIsTournament();
+  AddSymbolEngine(_p_symbol_engine_istournament);
   // CSymbolEngineGameType
-  p_symbol_engine_gametype = new CSymbolEngineGameType;
-  AddSymbolEngine(p_symbol_engine_gametype);
+  _p_symbol_engine_gametype = new CSymbolEngineGameType;
+  AddSymbolEngine(_p_symbol_engine_gametype);
   // CSymbolEngineCards
-  p_symbol_engine_cards = new CSymbolEngineCards();
-  AddSymbolEngine(p_symbol_engine_cards);
+  _p_symbol_engine_cards = new CSymbolEngineCards();
+  AddSymbolEngine(_p_symbol_engine_cards);
   // CSymbolEngineIsOmaha
-  p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
-  AddSymbolEngine(p_symbol_engine_isomaha);
+  _p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
+  AddSymbolEngine(_p_symbol_engine_isomaha);
   // CSymbolEnginePokerval
-  p_symbol_engine_pokerval = new CSymbolEnginePokerval();
-  AddSymbolEngine(p_symbol_engine_pokerval);
+  _p_symbol_engine_pokerval = new CSymbolEnginePokerval();
+  AddSymbolEngine(_p_symbol_engine_pokerval);
   // CSymbolEngineOpenPPLHandAndBoardExpression
-  p_symbol_engine_open_ppl_hand_and_board_expression = new CSymbolEngineOpenPPLHandAndBoardExpression();
-  AddSymbolEngine(p_symbol_engine_open_ppl_hand_and_board_expression);
+  _p_symbol_engine_open_ppl_hand_and_board_expression = new CSymbolEngineOpenPPLHandAndBoardExpression();
+  AddSymbolEngine(_p_symbol_engine_open_ppl_hand_and_board_expression);
   // CSymbolEngineHistory
-  p_symbol_engine_history = new CSymbolEngineHistory();
-  AddSymbolEngine(p_symbol_engine_history);
+  _p_symbol_engine_history = new CSymbolEngineHistory();
+  AddSymbolEngine(_p_symbol_engine_history);
   // CSymbolEnginePrwin
-  p_symbol_engine_prwin = new CSymbolEnginePrwin();
-  AddSymbolEngine(p_symbol_engine_prwin);
+  _p_symbol_engine_prwin = new CSymbolEnginePrwin();
+  AddSymbolEngine(_p_symbol_engine_prwin);
   // CSymbolEngineHandrank
-  p_symbol_engine_handrank = new CSymbolEngineHandrank();
-  AddSymbolEngine(p_symbol_engine_handrank);
+  _p_symbol_engine_handrank = new CSymbolEngineHandrank();
+  AddSymbolEngine(_p_symbol_engine_handrank);
   // CSymbolEngineMemorySymbols
-  p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
-  AddSymbolEngine(p_symbol_engine_memory_symbols);
+  _p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
+  AddSymbolEngine(_p_symbol_engine_memory_symbols);
   // CSymbolEngineColourCodes
-  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
-  AddSymbolEngine(p_symbol_engine_colourcodes);
+  _p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
+  AddSymbolEngine(_p_symbol_engine_colourcodes);
   // CSymbolEngineMTTInfo"
-  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
-  AddSymbolEngine(p_symbol_engine_mtt_info);
+  _p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
+  AddSymbolEngine(_p_symbol_engine_mtt_info);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
-  p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
-  AddSymbolEngine(p_symbol_engine_ini_functions);
+  _p_symbol_engine_ini_functions = new CSymbolEngineIniFunctions();
+  AddSymbolEngine(_p_symbol_engine_ini_functions);
   // CSymbolEngineVariousDataLookup
   // Deals with symbol-lookups and depends on all the other OH-script ones.
   // Therefore it has to be the last OH-script one.
-  p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;
-  AddSymbolEngine(p_symbol_engine_various_data_lookup);
+  _p_symbol_engine_various_data_lookup = new CSymbolEngineVariousDataLookup;
+  AddSymbolEngine(_p_symbol_engine_various_data_lookup);
   // OpenPPL-symbol-engines
-  p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
-  AddSymbolEngine(p_symbol_engine_openppl_user_variables);
+  _p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
+  AddSymbolEngine(_p_symbol_engine_openppl_user_variables);
   // CSymbolEngineOpenPPL triigers calculation of history-symbols
   // and therefore has to be the very last openPPL-symbol-engine
-  p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
-  AddSymbolEngine(p_symbol_engine_open_ppl);
+  _p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
+  AddSymbolEngine(_p_symbol_engine_open_ppl);
   // After all real symbol-engines have been handled
   // we can add the hand-history-generator modules.
   // Order of insertion has order of later usage.
   // CHandHistoryDealPhase
-  p_handhistory_deal_phase = new CHandHistoryDealPhase;
-  AddSymbolEngine(p_handhistory_deal_phase);
+  _p_handhistory_deal_phase = new CHandHistoryDealPhase;
+  AddSymbolEngine(_p_handhistory_deal_phase);
   // CHandHistoryAction
-  p_handhistory_action = new CHandHistoryAction;
-  AddSymbolEngine(p_handhistory_action);
+  _p_handhistory_action = new CHandHistoryAction;
+  AddSymbolEngine(_p_handhistory_action);
   // CHandHistoryUncontested
-  p_handhistory_uncontested = new CHandHistoryUncontested;
-  AddSymbolEngine(p_handhistory_uncontested);
+  _p_handhistory_uncontested = new CHandHistoryUncontested;
+  AddSymbolEngine(_p_handhistory_uncontested);
   // CHandHistoryShowdown
-  p_handhistory_showdown = new CHandHistoryShowdown;
-  AddSymbolEngine(p_handhistory_showdown);
+  _p_handhistory_showdown = new CHandHistoryShowdown;
+  AddSymbolEngine(_p_handhistory_showdown);
   // CHandHistoryWriter
-  p_handhistory_writer = new CHandHistoryWriter;
-  AddSymbolEngine(p_handhistory_writer);
+  _p_handhistory_writer = new CHandHistoryWriter;
+  AddSymbolEngine(_p_handhistory_writer);
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
@@ -282,7 +282,7 @@ void CEngineContainer::EvaluateAll()
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
-	p_symbol_engine_tablelimits->CalcTableLimits();
+	p_symbol_engine_tablelimits()->CalcTableLimits();
 
 	// ResetOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.

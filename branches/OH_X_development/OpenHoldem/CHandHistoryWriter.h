@@ -64,6 +64,4 @@ private:
   CString _message;
 };
 
-extern CHandHistoryWriter *p_handhistory_writer;
-
 #endif INC_CHANDHISTORYWRITER_H

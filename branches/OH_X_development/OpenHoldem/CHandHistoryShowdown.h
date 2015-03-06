@@ -40,6 +40,4 @@ class CHandHistoryShowdown: public CVirtualSymbolEngine {
    bool _river_seen;
 };
 
-extern CHandHistoryShowdown *p_handhistory_showdown;
-
 #endif INC_CHANDHISTORYSHOWDOWN_H

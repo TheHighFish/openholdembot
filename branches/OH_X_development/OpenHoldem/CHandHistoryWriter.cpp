@@ -28,8 +28,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CHandHistoryWriter *p_handhistory_writer = NULL;
-
 CHandHistoryWriter::CHandHistoryWriter() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

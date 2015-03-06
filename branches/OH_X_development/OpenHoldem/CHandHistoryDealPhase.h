@@ -39,6 +39,4 @@ class CHandHistoryDealPhase: public CVirtualSymbolEngine {
    bool _job_done;
 };
 
-extern CHandHistoryDealPhase *p_handhistory_deal_phase;
-
 #endif INC_CHANDHISTORYDEALPHASE_H
