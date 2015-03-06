@@ -72,5 +72,4 @@ private:
 
 extern CAutoplayer *p_autoplayer;
 
-
 #endif //INC_CAUTOPLAYER_H

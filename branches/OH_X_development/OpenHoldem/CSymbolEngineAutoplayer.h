@@ -62,6 +62,6 @@ private:
 	bool _last_myturnbits;
 };
 
-extern CSymbolEngineAutoplayer *p_symbol_engine_autoplayer;
+
 
 #endif INC_CSYMBOLENGINEAUTOPLAYER_H

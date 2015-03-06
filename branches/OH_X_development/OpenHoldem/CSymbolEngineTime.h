@@ -50,6 +50,6 @@ class CSymbolEngineTime: public CVirtualSymbolEngine {
   time_t _elapsedhandhold;	// The time since start of last hand
 };
 
-extern CSymbolEngineTime *p_symbol_engine_time;
+
 
 #endif INC_CSYMBOLENGINETIME_H

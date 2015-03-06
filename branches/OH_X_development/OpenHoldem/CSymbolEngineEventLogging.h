@@ -35,6 +35,6 @@ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 };
 
-extern CSymbolEngineEventLogging *p_symbol_engine_event_logging;
+
 
 #endif INC_CSYMBOLENGINEEVENTLOGGING_H

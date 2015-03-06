@@ -38,6 +38,4 @@ public:
 	bool isomaha()		{ return false; }
 };
 
-extern CSymbolEngineIsOmaha *p_symbol_engine_isomaha;
-
 #endif INC_CSYMBOLENGINEISOMAHA_H

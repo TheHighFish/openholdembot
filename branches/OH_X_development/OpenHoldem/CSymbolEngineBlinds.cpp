@@ -152,6 +152,10 @@ void CSymbolEngineBlinds::CalculateBlinds()
 	}							
 }
 
+int CSymbolEngineBlinds::opponentsblindbits()	{ 
+  return _playersblindbits & ~p_symbol_engine_userchair->userchairbit(); 
+}
+
 bool CSymbolEngineBlinds::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);

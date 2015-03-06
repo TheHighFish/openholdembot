@@ -39,6 +39,4 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
   void InitMemorySymbols();
 };
 
-extern CSymbolEngineOpenPPL *p_symbol_engine_open_ppl;
-
 #endif INC_CSYMBOLENGINE_OPENPPL_HANDSTRENGTH_H

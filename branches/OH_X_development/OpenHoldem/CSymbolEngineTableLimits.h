@@ -85,6 +85,4 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	double _ante;
 };
 
-extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
-
 #endif // INC_CTABLELIMITS_H

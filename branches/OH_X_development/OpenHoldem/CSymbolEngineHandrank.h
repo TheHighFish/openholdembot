@@ -49,6 +49,4 @@ private:
 	double _handrankp;
 };
 
-extern CSymbolEngineHandrank *p_symbol_engine_handrank;
-
 #endif INC_CSYMBOLENGINEHANDRANK_H

@@ -46,6 +46,4 @@ private:
 	int _userchair;
 };
 
-extern CSymbolEngineUserchair *p_symbol_engine_userchair;
-
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

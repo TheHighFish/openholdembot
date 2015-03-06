@@ -37,6 +37,4 @@ class CSymbolEngineICM: public CVirtualSymbolEngine {
   double EquityICM(double *stacks, double *prizes, int playerNB, int player);
 };
 
-extern CSymbolEngineICM *p_symbol_engine_icm;
-
 #endif INC_CSYMBOLENGINEICM

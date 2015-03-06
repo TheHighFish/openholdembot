@@ -57,6 +57,4 @@ class CSymbolEngineTableStats: public CVirtualSymbolEngine {
   int dealt_players[kNumberOfHands + 1];
 };
 
-extern CSymbolEngineTableStats *p_symbol_engine_table_stats;
-
 #endif INC_CSYMBOLENGINE_TABLESTATS_H

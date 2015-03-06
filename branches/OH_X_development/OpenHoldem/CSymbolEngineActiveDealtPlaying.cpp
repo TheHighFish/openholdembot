@@ -177,6 +177,10 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
   }
 }
 
+int CSymbolEngineActiveDealtPlaying::userchairbit()	{ 
+  return 1 << USER_CHAIR; 
+}
+
 bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);

@@ -45,6 +45,4 @@ class CSymbolEngineGameType: public CVirtualSymbolEngine {
 	int		 _gametype;
 };
 
-extern CSymbolEngineGameType *p_symbol_engine_gametype;
-
 #endif // INC_CSYMBOLENGINEGAMETYPE_H

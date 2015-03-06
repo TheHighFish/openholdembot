@@ -85,8 +85,6 @@ private:
 	double _hist_sym[k_hist_sym_count][k_number_of_betrounds+1];
 };
 
-extern CSymbolEngineHistory *p_symbol_engine_history;
-
 #endif INC_CSYMBOLENGINEHISTORY_H
 
 

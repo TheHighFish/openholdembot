@@ -36,6 +36,4 @@ public:
   CString SymbolsProvided();
 };
 
-extern CSymbolEngineIniFunctions *p_symbol_engine_ini_functions;
-
 #endif INC_CSYMBOLENGINEINIFUNCTIONS_H
