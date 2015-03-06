@@ -22,8 +22,6 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
-CHandHistoryUncontested *p_handhistory_uncontested = NULL;
-
 CHandHistoryUncontested::CHandHistoryUncontested() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

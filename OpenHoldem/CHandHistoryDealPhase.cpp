@@ -26,8 +26,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CHandHistoryDealPhase *p_handhistory_deal_phase = NULL;
-
 CHandHistoryDealPhase::CHandHistoryDealPhase() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

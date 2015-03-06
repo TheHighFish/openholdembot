@@ -28,7 +28,6 @@
 #include "MagicNumbers.h"
 #include "StringFunctions.h"
 
-CHandresetDetector *p_handreset_detector = NULL;
 
 const int kNumberOfHandresetMethods = 9;
 

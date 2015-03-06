@@ -39,6 +39,4 @@ class CHandHistoryUncontested: public CVirtualSymbolEngine {
    bool _job_done;
 };
 
-extern CHandHistoryUncontested *p_handhistory_uncontested;
-
 #endif INC_CHANDHISTORYUNCONTESTED_H

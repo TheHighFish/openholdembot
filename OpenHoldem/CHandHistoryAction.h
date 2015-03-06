@@ -38,6 +38,4 @@ class CHandHistoryAction: public CVirtualSymbolEngine {
  private:
 };
 
-extern CHandHistoryAction *p_handhistory_action;
-
 #endif INC_CHANDHISTORYACTION_H

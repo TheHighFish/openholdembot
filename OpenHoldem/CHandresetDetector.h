@@ -81,6 +81,4 @@ public:
   int _hands_played_headsup;
 };
 
-extern CHandresetDetector *p_handreset_detector;
-
 #endif INC_CHANDRESETDETECTOR_H
