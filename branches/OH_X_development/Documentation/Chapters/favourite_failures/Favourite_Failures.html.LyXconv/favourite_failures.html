@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2014-12-26"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter">
+<a class="toc" name="toc-Chapter-1"></a>Favourite Failures
+</h1>
+<div class="Unindented">
+This chapter will teach you about the most common beginners mistakes. They range from quite subtle and hard to diagnose to pure idiotism. They all have been reported at least several times; solving these problems over and over again has cost the forum-regulars quite some time and nerves. But the good news is: these issues are easy to avoid once you are aware of them.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>OH does not connect to the table (I)
+</h2>
+<div class="Unindented">
+<i>Reason: Table not recognized because of incorrect system-settings.</i>
+</div>
+<div class="Indented">
+To recognize a table the following criteria have to match:
+</div>
+<ul>
+<li>
+size of the window
+</li>
+<li>
+table-title
+</li>
+
+</ul>
+<div class="Unindented">
+Usually the problem is the window-size caused by incorrect system-settings; <a class="IndexReference" name="entry-Windows-XP-0" href="#index-Windows-XP">↓</a>Windows XP and <a class="IndexReference" name="entry-Windows-Vista-0" href="#index-Windows-Vista">↓</a>Vista possess a higher titlebar than <a class="IndexReference" name="entry-Windows-2000-0" href="#index-Windows-2000">↓</a>Windows 2000 <a class="IndexReference" name="entry-classic-theme-0" href="#index-classic-theme">↓</a>classic-theme.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-2"></a>OH does not play (I) and the <a class="IndexReference" name="entry-autoplayer-0" href="#index-autoplayer">↓</a>autoplayer-button can’t be enabled
+</h2>
+<div class="Unindented">
+<i>Reason: <a class="IndexReference" name="entry-Userchair-0" href="#index-Userchair">↓</a>Userchair not recognized.</i>
+</div>
+<div class="Indented">
+The autoplayer can only be enabled after OpenHoldem has recognized your chair. To do so OpenHoldem must see:
+</div>
+<ul>
+<li>
+your cards
+</li>
+<li>
+some <a class="IndexReference" name="entry-buttons-0" href="#index-buttons">↓</a>buttons, so OpenHoldem really knows it is your turn and not a gamestate with cards shown for your opponents (i.e. at showdown).
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-3"></a>OH does not play (II)
+</h2>
+<div class="Unindented">
+<i>Reason:</i> no stable input (&ldquo;balance-stability&rdquo; and &ldquo;card-stability&rdquo;)
+</div>
+<div class="Indented">
+One safety-measure to avoid incorrect plays is the option to wait for &ldquo;balance-stability&rdquo;. Without reasonable input you can be sure to become a victim of the gigo-principle (garbage in - garbage out). The example below shows a FullTilt mini-table, where the regions for player-names and balances partially overlap. 
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="Figure-1.1"> </a><div class="figure">
+<img class="embedded" src="Images/balance_stability.jpg" alt="figure Images/balance_stability.jpg" style="max-width: 326px; max-height: 180px;"/>
+<div class="caption">
+Figure 1.1 Unreliable input at FullTilt mini-tables
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+There are several counter-meassures that will help you to deal with such issues:
+</div>
+<ul>
+<li>
+avoid mini-tables
+</li>
+<li>
+make sure, that regions don’t overlap
+</li>
+<li>
+turn off all kind of animations
+</li>
+<li>
+<i>always use replay-frames</i> for building tablemaps and for investigation if you experience problems at a real casino.
+</li>
+
+</ul>
+<h2 class="Section">
+<a class="toc" name="toc-Section-4"></a>OH calls any hand
+</h2>
+<div class="Unindented">
+<i>Reason: Tablemap does not detect bet amounts.</i>
+</div>
+<div class="Indented">
+If OpenHoldem calls every hand — except maybe the strong ones — this is probably neither a bug in OpenHoldem nor bad logic in the bot but a problem with the Tablemap or with your settings again: The TM does most probably not recognize your opponents bet, so OpenHoldem thinks you have a <a class="IndexReference" name="entry-free-play-0" href="#index-free-play">↓</a>free play and calls.
+</div>
+<div class="Indented">
+Whenever you experience strange actions, you should ask yourself the following questions (<a class="FlexURL" href="http://forum.winholdem.net/wbb/viewtopic.php?f=38&amp;t=12408">http://forum.winholdem.net/wbb/viewtopic.php?f=38&amp;t=12408</a>):
+</div>
+<ul>
+<li>
+is the scraper reading the bet values correctly? 
+</li>
+<li>
+is the scraper reading my cardfaces correctly? 
+</li>
+<li>
+is the scraper reading opponent cardbacks correctly? 
+</li>
+<li>
+do the blind values look sane? 
+</li>
+<li>
+does the site provide handnumbers? 
+</li>
+<li>
+are my action buttons being seen when my turn arrives?
+</li>
+
+</ul>
+<div class="Unindented">
+You can check the values for these symbols in the <a class="IndexReference" name="entry-Debug-tab-0" href="#index-Debug-tab">↓</a>debug-tab of the <a class="IndexReference" name="entry-Formula-editor-0" href="#index-Formula-editor">↓</a>formula-editor.
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing"> = br 
+ = sblind 
+ = bblind 
+ = handnumber 
+ = nplayersdealt 
+ = myturnbits
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+<div class="float">
+<a class="Label" name="Figure-1.2"> </a><div class="figure">
+<img class="embedded" src="Images/debug_tab.png" alt="figure Images/debug_tab.png" style="max-width: 581px; max-height: 739px;"/>
+<div class="caption">
+Figure 1.2 Debug-tab
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+If you want to invstigate in detail how OpenHoldem did choose a decision, you should enable the full autoplayer-trace in the preferences and have a look at the log-files.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-5"></a>OH does not work in ManualMode
+</h2>
+<div class="Unindented">
+<i>Reason: Not your turn or userchair not recognized.</i>
+</div>
+<div class="Indented">
+To work properly OpenHoldem must have recognized the userchair. Also some symbols are only valid when it is your turn to act. So you should highlight some buttons in ManualMode; just click them; usually they are grey, which means not existent.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-6"></a>OH acts multiple times
+</h2>
+<div class="Unindented">
+<i>Reason: Improper bring-delay and scraper-delay.</i>
+</div>
+<div class="Indented">
+The <a class="IndexReference" name="entry-Bring-delay-0" href="#index-Bring-delay">↓</a>bring-delay should be somewhat smaller than the <a class="IndexReference" name="entry-Scraper-delay-0" href="#index-Scraper-delay">↓</a>scraper-delay. Otherwise it can happen that OH acts but bring doesn’t display a new image in time. So when the next <a class="IndexReference" name="entry-Heartbeat-cycle-0" href="#index-Heartbeat-cycle">↓</a>heart-beat-cycle starts, OH will scrape the exact same game-state another time and act another time. 
+</div>
+<div class="Remark">
+This problem has been improved by marking frames as unstable when OpenHoldem acts, so OpenHoldem has to wait for a certain number of stable frames again. However the problem may still appear, if your scraper- and bring-delay do mismatch or if you don’t wait for stable frames.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-7"></a>OH permanently clicks sitout / sitin
+</h2>
+<div class="Unindented">
+<i>Reason: Table Map does not correctly scrape sitin/sitout.</i>
+</div>
+<div class="Indented">
+The Table Map probably does not correctly determine the state of the sitin- or sitout-region; as a consequence the bot will think its action had no effect and will try over and over again. There is a funny legend back from the ancient times of WinHoldem or OPI: the Table Map (a built-in feature of the software at that time) once again failed because of a casino-update. As a consequence lots of &ldquo;players&rdquo; were suddenly sitting in and sitting out once per second. It must have been a devilish joy for their opponents; innummerable bots got reported and finally busted.
+</div>
+<div class="Indented">
+So always remember: Bots are very stupid and very volatile beings.
+</div>
+<div class="Indented">
+(This can no longer happen as we execute the
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-8"></a>OpenScrape does recognize something, but OH does not (I)
+</h2>
+<div class="Unindented">
+<i>Reason: Different versions of the same map.</i>
+</div>
+<div class="Indented">
+A very common &ldquo;bug&rdquo;-report: some beginner has just fixed his first map and complains that OpenScrape recognizes the bets, the fonts of the player names or whatever; but OpenHoldem fails to do so. The reason is quite simple: he usually has multiple versions of the map in his scraper-folder and has simply loaded the wrong map. If you have the auto-connector enabled, OpenHoldem will load the &ldquo;first&rdquo; map that fits. 
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-9"></a>OpenScrape does recognize something, but OH does not (II)
+</h2>
+<div class="Unindented">
+<i>Reason: Halfmade tablemap</i>
+</div>
+<div class="Indented">
+Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem does implement some reasonable optimizations. It will only scrape names, bets and balances of a certain chair, if that chair is occupied. If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem does not do so, then you have most probably forgotten to define pXseated or uXseated.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-10"></a>OH does work locally, but not remotely with bring
+</h2>
+<div class="Unindented">
+<i>Reason: Different system configurations on your casino-machine and your bot-machine.</i>
+</div>
+<div class="Indented">
+It is a quite common beginners mistake to setup the casino-machine in a different way than the bot-machine. The casino-client will be rendered in a different way, so OpenHoldem will no longer be able to scrape the screenshots displayed by Bring. If you don’t want to install OH on the casino-machine to check the settings, the only way to fix that problem is a careful manual walk-through (experts could clone a VM or deploy some registry-settings).
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-11"></a>Perl (or the user-DLL) <a class="IndexReference" name="entry-Crash-0" href="#index-Crash">↓</a>crashes immediately
+</h2>
+<div class="Unindented">
+<i>Reason: Usage of functionality, that is not yet initialized.</i>
+</div>
+<div class="Indented">
+Probably the most prominent example is the usage of the function &ldquo;getsym&rdquo; during the initialization-phase of <a class="IndexReference" name="entry-Perl-0" href="#index-Perl">↓</a>Perl or a <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a>DLL.
+</div>
+<div class="Indented">
+<span class="versalitas">double BigBlind = getsym(&ldquo;bblind&rdquo;);</span>
+</div>
+<div class="Indented">
+BigBlind is a global variable that gets initialized immediately when the DLL gets loaded. But the function getsym uses a callback-pointer that gets initialized later with one of the first messages from OpenHoldem to the DLL. So you dereference an undefined pointer and crash because of a memory-access-error.
+</div>
+<div class="Indented">
+This error may also occur when debug messages attempt to write to a file that has not yet been opened for writing, or if Perl modules are not loaded in the correct order. 
+</div>
+<div class="Indented">
+Please note that this issue has been improved as OpenHoldem 4.x now gets linked to the DLL at load-time the normal way and does no longer send any function-pointers at run-time as WinHoldem did. But things like that can still happen to Perl-users.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-12"></a>OpenHoldem does not load my DLL (I).
+</h2>
+<div class="Unindented">
+<i>Reason:</i> Missing or incorrect lilbraries.
+</div>
+<div class="Indented">
+Most DLLs use external functionalitzy and therefore depend on supporting libraries. Most often this is msvcrt (MicroSoft Visual Studio C++ RunTime Library). Also the correct version is important. OpenHoldem requires currently Visual Studio 2010 Professional, but Perl needs 2005.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-13"></a>OpenHoldem does not load my DLL (II).
+</h2>
+<div class="Unindented">
+<i>Reason:</i> Libraries not found.
+</div>
+<div class="Indented">
+Even if you have installed, it might be, that your operating system does not find your DLL or other required libraries. Windows uses the following &ldquo;Dynamic-Link Library Search Order&rdquo; 
+</div>
+<ol>
+<li>
+The directory from which the application loaded. 
+</li>
+<li>
+The current directory. 
+</li>
+<li>
+The system directory. Use the GetSystemDirectory function to get the path of this directory. 
+</li>
+<li>
+The 16-bit system directory. There is no function that obtains the path of this directory, but it is searched. 
+</li>
+<li>
+The Windows directory. Use the GetWindowsDirectory function to get the path of this directory. 
+</li>
+<li>
+The directories that are listed in the PATH environment variable. Note that this does not include the per-application path specified by the App Paths registry key. The App Paths key is not used when computing the DLL search path.
+</li>
+
+</ol>
+<div class="Remark">
+This is the default search order for Windows XP, SafeDllSearchMode disabled. It might be different for your operating system or configuration. For details please refer to (<a class="FlexURL" href="http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx">http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx</a>).
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-14"></a>OpenHoldem connects to all tables but one
+</h2>
+<div class="Unindented">
+<i>Reason: Not correctly disconnected.</i>
+</div>
+<div class="Indented">
+If OpenHoldem connects to all tables but one (despite having enough instances of OH open) there is a simple reason: the auto-connector uses shared memory to synchronize all OpenHoldem processes. If one process does crash (because of a buggy user-DLL for example), it will no longer be able to disconnect correctly and that table (or future tables with the same HWND) will be marked as occupied forever. Close that table and open another one. To clear the shared memory: shutdown all bots and restart them again.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-15"></a>OpenHoldem checked, but didfold is true
+</h2>
+<div class="Unindented">
+<i>Reason: TM does not recognize buttons correctly.</i>
+</div>
+<div class="Indented">
+If you get a freeplay, it might be that your check-button (or a check/fold-button!) is at the same location where usually the fold-button is located. If you have a simple way to detect buttons (e.g. by colour) you probably will recognize that button as fold. So OpenHoldem — not seeing a check-button — will check by clicking &ldquo;fold&rdquo; and didfold will be true. Similar things can happen if buttons move, e.g. a call-button at the raise-position when you can only fold or call allin.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-16"></a>
+</h2>
+<h2 class="Section">
+<a class="toc" name="toc-Section-17"></a>History symbols do not work
+</h2>
+<div class="Unindented">
+<i>Reason: Incorrect hand-reset.</i>
+</div>
+<div class="Indented">
+Some symbols only require the current gamestate to be calculated (e.g. dealerchair, balance, nbetstocall). Others (like didcallround1, nbetsround3 etc.) require a complete game-history and will reset at the beginning of a new hand. If they all are zero (or -1), you have probably caused an incorrect hand-reset, e.g. by temporary occlusion. You should avoid occlusion by any means.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-18"></a>
+</h2>
+<h2 class="Section">
+<a class="toc" name="toc-Section-19"></a>Pokerval does not work
+</h2>
+<div class="Unindented">
+<i>Reason: Pokerval is a bitvector. You are probably confusing logical operations and bitwise operations.</i>
+</div>
+<div class="Indented">
+In short: boolean operations work on true/false-values; bitwise operations work on long series of 0/1-values simultaneously. Lots of wisdom has been written about both topics — too much to explain it here. If you don’t really understand what I am talking about, then you <i>really </i>should take a pause from coding and do some homework. There is no way around it.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-20"></a>PokerTracker does not work
+</h2>
+<div class="Unindented">
+<i>Reason: Invalid Sitename in the TableMap</i>
+</div>
+<div class="Indented">
+OpenHoldem supports Poker Tracker functionality for a dozen different casinos. To query the correct stats OpenHoldem must know, at what casino you currently play. This happens by the TableMap symbol <i>sitename</i> and <i>network</i>. Please refer to the PokerTracker and TableMap section of this manual for a detailed explanantion what to do.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-21"></a>Quickfolding AA and other unexpected plays
+</h2>
+<div class="Unindented">
+<i>Reason: Unstable frames and careless coding.</i>
+</div>
+<div class="Indented">
+Consider code like below:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##list77## 
+AA KK QQ
+AKs AQs
+AKo
+​
+##f$prefold##
+((betround == 1) &amp;&amp; !islist77)
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+This code basically says: &ldquo;do prefold, if is is preflop and I don’t have a very great hand&rdquo;. However you only get stable frames when it is your turn. So it might be that you get a mis-scrape, e.g. occlusion by a rebuy-window. Or the poker-room might update its display, temporarily showing only one of your wonderful aces. So OpenHoldem can’t recognize your great hand and folds. To avoid that problem, you need more fail-safe coding and explicitly specify the hands to fold: &ldquo;do prefold, if it is preflop and I have a trash-hand.&rdquo;
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">##list13##
+72o ....
+​
+##f$prefold##
+((betround == 1) &amp;&amp; islist13)
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+This way mis-scrapes will not be able to defeat your fine strategy. Instead a mis-scrape will only keep f$prefold false and delay the folding of trash. The same problem might occur in all functions that might act on unstable frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout, f$leave, f$rebuy and f$chat.
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-26T17:35:15.078000</span>
+</div>
+</div>
+</body>
+</html>
