@@ -52,6 +52,4 @@ class CSymbolEngineMTTInfo: public CVirtualSymbolEngine {
 	double _mtt_smallest_stack;
 };
 
-extern CSymbolEngineMTTInfo *p_symbol_engine_mtt_info;
-
 #endif INC_CSymbolEngineMTTInfo_H

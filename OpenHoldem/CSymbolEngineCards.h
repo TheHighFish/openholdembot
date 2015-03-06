@@ -138,6 +138,4 @@ private:
 	CardMask heartsCards, diamondsCards, clubsCards, spadesCards;
 };
 
-extern CSymbolEngineCards *p_symbol_engine_cards;
-
 #endif INC_CSYMBOLENGINECARDS_H

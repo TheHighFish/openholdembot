@@ -59,6 +59,4 @@ private:
 	int _nopponents_for_prwin;
 };
 
-extern CSymbolEnginePrwin *p_symbol_engine_prwin;
-
 #endif INC_CSYMBOLENGINEPRWIN_H

@@ -41,6 +41,4 @@ class CSymbolEngineMemorySymbols: public CVirtualSymbolEngine {
   std::map<CString, double> _memory_symbols;
 };
 
-extern CSymbolEngineMemorySymbols *p_symbol_engine_memory_symbols;
-
 #endif INC_C_SYMBOLENGINEMEMORYSYMBOLS_H

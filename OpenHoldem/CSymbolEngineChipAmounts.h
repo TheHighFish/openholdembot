@@ -16,8 +16,6 @@
 
 #include "CVirtualSymbolEngine.h"
 #include "assert.h"
-#include "CSymbolEngineUserChair.h"
-#include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
 class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
@@ -64,13 +62,8 @@ public:
 		}
 		return _currentbet[player];
 	}
-
-	double ncurrentbets()	{
-		if (p_symbol_engine_tablelimits->bet() == 0)		{
-			return 0;
-		}
-		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
-	}
+ public:
+	double ncurrentbets();	
  public:
 	double pot()		    	{ return _pot; }
 	double potcommon()		{ return _potcommon; }
@@ -120,7 +113,5 @@ public:
 	double _ncallbets;
 	double _nraisbets;
 };
-
-extern CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

@@ -38,7 +38,7 @@ public:
 public:
 	// Public accessors
 	int bblindbits()			{ return _bblindbits; }
-	int opponentsblindbits()	{ return _playersblindbits & ~p_symbol_engine_userchair->userchairbit(); }
+	int opponentsblindbits();
 	int playersblindbits()	{ return _playersblindbits; }
 	int nplayersblind()		{ return bitcount(_playersblindbits); }
 	int nopponentsblind()	{ return bitcount(opponentsblindbits()); }
@@ -49,7 +49,5 @@ private:
 	int _playersblindbits;
 	int _bblindbits;
 };
-
-extern CSymbolEngineBlinds *p_symbol_engine_blinds;
 
 #endif INC_CSYMBOLENGINEBLINDS_H

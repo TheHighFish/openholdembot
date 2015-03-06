@@ -37,6 +37,4 @@ class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine {
 	bool _replay_recored_this_turn;
 };
 
-extern CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
-
 #endif INC_CSYMBOLENGINEREPLAYFRAMECONTROLLER_H

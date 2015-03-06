@@ -42,6 +42,4 @@ private:
 	int _dealerchair;
 };
 
-extern CSymbolEngineDealerchair *p_symbol_engine_dealerchair;
-
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

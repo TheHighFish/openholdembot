@@ -37,6 +37,4 @@ public:
 private:
 };
 
-extern CSymbolEngineVariousDataLookup *p_symbol_engine_various_data_lookup;
-
 #endif /* INC_CSYMBOLS_H */

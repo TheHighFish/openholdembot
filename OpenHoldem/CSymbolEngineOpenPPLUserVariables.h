@@ -38,6 +38,4 @@ class CSymbolEngineOpenPPLUserVariables: public CVirtualSymbolEngine {
   std::map<CString, bool> _user_variables;
 };
 
-extern CSymbolEngineOpenPPLUserVariables *p_symbol_engine_openppl_user_variables;
-
 #endif INC_CSYMBOL_ENGINE_OPENPPL_USER_VARIABLES_H
