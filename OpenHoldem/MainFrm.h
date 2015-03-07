@@ -20,12 +20,12 @@ class CMainFrame : public CFrameWnd {
  public:
   // Read-only access to GUI elements
   // GUI objects
-  COpenHoldemStatusbar* p_openholdem_statusbar();
-  CDlgFormulaScintilla* m_formulaScintillaDlg();
-  CDlgScraperOutput*    m_ScraperOutputDlg();
-  COpenHoldemTitle*     p_openholdem_title();
-  CFlagsToolbar*        p_flags_toolbar();
-  CWhiteInfoBox*        p_white_info_box();
+  COpenHoldemStatusbar* p_openholdem_statusbar()  { return _p_openholdem_statusbar; }
+  CDlgFormulaScintilla* p_formulaScintillaDlg()   { return _p_formulaScintillaDlg; } 
+  CDlgScraperOutput*    p_ScraperOutputDlg()      { return _p_ScraperOutputDlg; }
+  COpenHoldemTitle*     p_openholdem_title()      { return _p_openholdem_title; }
+  CFlagsToolbar*        p_flags_toolbar()         { return _p_flags_toolbar; }
+  CWhiteInfoBox*        p_white_info_box()        { return _p_white_info_box; }
  protected: // create from serialization only
 	DECLARE_DYNCREATE(CMainFrame)
 	DECLARE_MESSAGE_MAP()
@@ -113,7 +113,7 @@ class CMainFrame : public CFrameWnd {
   CDlgScraperOutput    *_p_ScraperOutputDlg;
   COpenHoldemTitle     *_p_openholdem_title;
   CFlagsToolbar        *_p_flags_toolbar;
-  CWhiteInfoBox        *_gp_white_info_box;
+  CWhiteInfoBox        *_p_white_info_box;
  private:
 	// private variables - use public accessors and public mutators to address these
 	bool			_wait_cursor;	 // Used if we need to display a wait cursor anywhere

@@ -407,8 +407,8 @@ void CAutoConnector::Disconnect() {
 	PMainframe()->ResetDisplay();
 
 	// Reset "ScraperOutput" dialog, if it is live
-	if (m_ScraperOutputDlg)	{
-		m_ScraperOutputDlg->Reset();
+	if (GUI->p_ScraperOutputDlg())	{
+		GUI->p_ScraperOutputDlg()->Reset();
 	}
 	WriteLogTableReset();
 

@@ -73,6 +73,6 @@ void CDlgSAPrefs13::OnOK()
 	preferences.SetValue(k_prefs_mutex_name, temp);
 	preferences.SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
 
-	GUI->p_openholdem_title()->UpdateTitle();
+	//R!!!!!GUI->p_openholdem_title()->UpdateTitle();
 	CSAPrefsSubDlg::OnOK();
 }
