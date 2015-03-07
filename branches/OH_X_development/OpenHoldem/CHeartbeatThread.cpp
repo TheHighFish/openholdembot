@@ -179,8 +179,8 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	GUI->p_openholdem_title()->UpdateTitle();
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Update scraper output dialog if it is present
-	if (m_ScraperOutputDlg) {
-		m_ScraperOutputDlg->UpdateDisplay();
+	if (GUI->p_ScraperOutputDlg()) {
+		GUI->p_ScraperOutputDlg()->UpdateDisplay();
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
 	// Save state

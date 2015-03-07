@@ -37,9 +37,10 @@ END_MESSAGE_MAP()
 LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8001: OnSetWindowText\n"); 
-	if (p_openholdem_title == NULL)	return false;
-	if (title) 
-	{
+	if (GUI->p_openholdem_title() == NULL)	 {
+    return false;
+  }
+	if (title) {
 		CString *sTitle = (CString *)title;
 		GUI->p_openholdem_title()->SetUserDefinedOpenHoldemTitle(sTitle->GetString());
 		delete sTitle;

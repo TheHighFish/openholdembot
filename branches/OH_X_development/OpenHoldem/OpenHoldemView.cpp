@@ -35,6 +35,7 @@
 #include "CTableState.h"
 #include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
+#include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 

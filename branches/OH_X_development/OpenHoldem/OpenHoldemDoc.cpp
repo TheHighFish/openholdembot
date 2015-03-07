@@ -45,9 +45,9 @@ COpenHoldemDoc::~COpenHoldemDoc() {
 
 BOOL COpenHoldemDoc::SaveModified()
 {
-	if (m_formulaScintillaDlg)
+	if (GUI->p_formulaScintillaDlg())
 	{
-		if (m_formulaScintillaDlg->m_dirty)
+		if (GUI->p_formulaScintillaDlg()->m_dirty)
 		{
 			if (OH_MessageBox_Interactive(
 				"The Formula Editor has un-applied changes.\n"
@@ -59,9 +59,9 @@ BOOL COpenHoldemDoc::SaveModified()
 		}
 
 		// Kill the formula dialog
-		if(m_formulaScintillaDlg) 
-			m_formulaScintillaDlg->DestroyWindow();
-
+		if(GUI->p_formulaScintillaDlg()) {
+			GUI->p_formulaScintillaDlg()->DestroyWindow();
+    }
 	}
 	return CDocument::SaveModified();
 }

@@ -29,6 +29,7 @@
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
+#include "MainFrm.h"
 
 #define ENT CSLock lock(m_critsec);
 
