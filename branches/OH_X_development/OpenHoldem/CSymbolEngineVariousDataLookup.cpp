@@ -44,9 +44,6 @@
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
 
-CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
-
-
 CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
 }
 
