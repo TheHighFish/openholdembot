@@ -22,8 +22,6 @@
 #include "CTableState.h"
 #include "StringFunctions.h"
 
-CWhiteInfoBox *GUI->p_white_info_box()-> = NULL;
-
 CWhiteInfoBox::CWhiteInfoBox() {
 }
 

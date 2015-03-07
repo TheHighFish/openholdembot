@@ -280,8 +280,8 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
 
 			// Reset "ScraperOutput" dialog, if it is live
-			if (m_ScraperOutputDlg) {
-				m_ScraperOutputDlg->Reset();
+			if (GUI->p_ScraperOutputDlg()) {
+				GUI->p_ScraperOutputDlg()->Reset();
 			}
 
 			LoadScraperDLL();
