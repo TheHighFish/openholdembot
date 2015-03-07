@@ -259,7 +259,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // Also show "BestAction" in the statusbar.
   // This needs to be set exactlz once to avoid multiple evaluations 
   // of the autoplayer functions
-  p_openholdem_statusbar->SetLastAction(BestAction());
+  GUI->p_openholdem_statusbar()->SetLastAction(BestAction());
 }
 
 void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {

@@ -22,7 +22,7 @@
 #include "CTableState.h"
 #include "StringFunctions.h"
 
-CWhiteInfoBox *p_white_info_box = NULL;
+CWhiteInfoBox *GUI->p_white_info_box()-> = NULL;
 
 CWhiteInfoBox::CWhiteInfoBox() {
 }

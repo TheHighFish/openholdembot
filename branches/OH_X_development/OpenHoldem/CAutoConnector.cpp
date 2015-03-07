@@ -285,7 +285,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			}
 
 			LoadScraperDLL();
-			p_flags_toolbar->ResetButtonsOnConnect();
+			GUI->p_flags_toolbar()->ResetButtonsOnConnect();
 
 			// Send "connect" and HWND to scraper DLL, if loaded
 			if (theApp._dll_scraper_process_message) {
@@ -377,8 +377,8 @@ void CAutoConnector::Disconnect() {
 
 	// Stop timer that checks for valid hwnd, then unattach OH.
 	PMainframe()->KillTimer();
-	p_flags_toolbar->UnattachOHFromPokerWindow();
-	p_flags_toolbar->ResetButtonsOnDisconnect();
+	GUI->p_flags_toolbar()->UnattachOHFromPokerWindow();
+	GUI->p_flags_toolbar()->ResetButtonsOnDisconnect();
 
 	// Mark table as not attached
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");
@@ -401,7 +401,7 @@ void CAutoConnector::Disconnect() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
 
 	// Change window title
-	p_openholdem_title->UpdateTitle();
+	GUI->p_openholdem_title()->UpdateTitle();
 
 	// Reset Display 
 	PMainframe()->ResetDisplay();

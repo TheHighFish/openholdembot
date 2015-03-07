@@ -52,6 +52,4 @@ class CFlagsToolbar: public CWnd {
 	CCritSec   m_critsec;
 };
 
-extern CFlagsToolbar *p_flags_toolbar;
-
 #endif INC_CFLAGSTOOLBAR_H

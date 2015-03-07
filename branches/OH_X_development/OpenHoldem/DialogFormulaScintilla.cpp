@@ -1242,7 +1242,7 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	CloseFindReplaceDialog();
 	
 	// Uncheck formula button on main toolbar
-	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
+	GUI->p_flags_toolbar()->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
 	return CDialog::DestroyWindow();
 	return 0;
