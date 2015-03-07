@@ -278,7 +278,7 @@ void CEngineContainer::EvaluateAll() {
 		return;
 	}
 	p_betround_calculator->OnNewHeartbeat();
-	_p_handreset_detector->OnNewHeartbeat();
+	SYM->p_handreset_detector()->OnNewHeartbeat();
 	// table-limits depend on betround
 	p_symbol_engine_tablelimits()->CalcTableLimits();
 
@@ -288,7 +288,7 @@ void CEngineContainer::EvaluateAll() {
 	// * ResetOnHandreset()
 	// * ResetOnNewRound()
 	// * ResetOnMyTurn()
-	if (_p_handreset_detector->IsHandreset())	{
+	if (SYM->p_handreset_detector()->IsHandreset())	{
 		ResetOnHandreset();
 	}
 	if (p_betround_calculator->IsNewBetround())	{

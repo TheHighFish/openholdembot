@@ -459,7 +459,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   CSLock lock(m_critsec);
   COHScriptObject *object_to_rename = LookUp(from_name);
   if (object_to_rename == NULL) return false;
-  if (p_function_collection->LookUp(to_name) != NULL) {
+  if (SYM->p_function_collection()->LookUp(to_name) != NULL) {
     OH_MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
     return false;
   }

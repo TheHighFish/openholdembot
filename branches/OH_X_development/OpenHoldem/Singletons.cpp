@@ -69,7 +69,7 @@ void InstantiateAllSingletons() {
   p_table_state = new CTableState;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
   assert(!p_handreset_detector);
-  p_handreset_detector = new CHandresetDetector;
+  //!!!!!p_handreset_detector = new CHandresetDetector;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CConfigurationCheck\n");
   assert(!p_configurationcheck);
   p_configurationcheck = new CConfigurationCheck;
@@ -265,7 +265,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 20\n");
   DELETE_AND_CLEAR(p_configurationcheck)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 21\n");
-  DELETE_AND_CLEAR(p_handreset_detector)
+  //!!!!!DELETE_AND_CLEAR(p_handreset_detector)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 22\n");
   DELETE_AND_CLEAR(p_autoplayer_trace)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 23\n");

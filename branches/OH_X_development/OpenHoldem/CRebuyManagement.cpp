@@ -65,7 +65,7 @@ bool CRebuyManagement::ChangeInHandNumber()
 	{
 		return true;
 	}
-	else if (p_handreset_detector->GetHandNumber() > PreviousRebuyHandNumber)
+	else if (SYM->p_handreset_detector()->GetHandNumber() > PreviousRebuyHandNumber)
 	{
 		return true;
 	}
@@ -79,7 +79,7 @@ bool CRebuyManagement::NoCards()
 	{
 		return true;
 	}
-	int UserChair = p_symbol_engine_userchair->userchair();
+	int UserChair = SYM->p_symbol_engine_userchair()->userchair();
 	if ((UserChair < 0) || (UserChair > 9)) 
 	{
 		// "No cards", but not even seated.
@@ -136,7 +136,7 @@ void CRebuyManagement::TryToRebuy()
 	if (RebuyPossible())
 	{
 		RebuyLastTime = CurrentTime;		
-		PreviousRebuyHandNumber = p_handreset_detector->GetHandNumber();
+		PreviousRebuyHandNumber = SYM->p_handreset_detector()->GetHandNumber();
 		ExecuteRebuyScript();
 	}
 }	
@@ -161,12 +161,12 @@ void CRebuyManagement::ExecuteRebuyScript()
 		Casino = "Undefined";
 	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
-	double SmallBlind = p_symbol_engine_tablelimits->sblind();
-	double BigBlind = p_symbol_engine_tablelimits->bblind();
-	double BigBet = p_symbol_engine_tablelimits->bigbet();
-	int UserChair = p_symbol_engine_userchair->userchair();
+	double SmallBlind = SYM->p_symbol_engine_tablelimits()->sblind();
+	double BigBlind = SYM->p_symbol_engine_tablelimits()->bblind();
+	double BigBet = SYM->p_symbol_engine_tablelimits()->bigbet();
+	int UserChair = SYM->p_symbol_engine_userchair()->userchair();
 	double Balance = p_table_state->User()->_balance;
-	double TargetAmount = p_function_collection->Evaluate(k_standard_function_names[k_hopper_function_rebuy]);
+	double TargetAmount = SYM->p_function_collection()->Evaluate(k_standard_function_names[k_hopper_function_rebuy]);
 	CString RebuyScript = preferences.rebuy_script();
 	CString CommandLine;
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 

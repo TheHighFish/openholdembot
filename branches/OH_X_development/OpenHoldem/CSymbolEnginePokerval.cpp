@@ -323,13 +323,13 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	_srankbitscommon = 0;
 	_srankbitspoker  = 0;
 
-	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
+	int tsuitcommon = SYM->p_symbol_engine_cards()->tsuitcommon();
 	comsuit = (tsuitcommon==OH_SUIT_CLUBS ? Suit_CLUBS :
 		tsuitcommon==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
 		tsuitcommon==OH_SUIT_HEARTS ? Suit_HEARTS :
 		tsuitcommon==OH_SUIT_SPADES ? Suit_SPADES : 0);
 
-	int tsuit = p_symbol_engine_cards->tsuit();
+	int tsuit = SYM->p_symbol_engine_cards()->tsuit();
 	plcomsuit = (tsuit==OH_SUIT_CLUBS ? Suit_CLUBS :
 		tsuit==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
 		tsuit==OH_SUIT_HEARTS ? Suit_HEARTS :

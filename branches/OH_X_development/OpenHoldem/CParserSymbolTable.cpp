@@ -85,7 +85,7 @@ void CParserSymbolTable::VeryfyAllUsedFunctionsAtEndOfParse() {
   while (enumerator_it != _used_functions.end())
   {
     function_name = enumerator_it->first;
-    p_function_collection->VerifyExistence(function_name);
+    SYM->p_function_collection()->VerifyExistence(function_name);
     ++enumerator_it;
   }
 }

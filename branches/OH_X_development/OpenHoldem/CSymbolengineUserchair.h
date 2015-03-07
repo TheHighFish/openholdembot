@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-#define USER_CHAIR p_symbol_engine_userchair->userchair()
+#define USER_CHAIR SYM->p_symbol_engine_userchair()->userchair()
 
 class CSymbolEngineUserchair: public CVirtualSymbolEngine
 {

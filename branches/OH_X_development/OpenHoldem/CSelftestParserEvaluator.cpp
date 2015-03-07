@@ -24,12 +24,12 @@ CSelftestParserEvaluator::~CSelftestParserEvaluator() {
 }
 
 void CSelftestParserEvaluator::Test() {
-  if (!p_function_collection->Exists(kSelftestName)) {
+  if (!SYM->p_function_collection()->Exists(kSelftestName)) {
     OH_MessageBox_Error_Warning("Can't find selftest-function\n"
       "Please get in contact with the developmen team.\n");
     return;
   }
-  double result = p_function_collection->Evaluate(kSelftestName);
+  double result = SYM->p_function_collection()->Evaluate(kSelftestName);
   if (result != kSelftestExpectedResult) {
     CString message;
     message.Format("Selftest failed.\n"

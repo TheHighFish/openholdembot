@@ -140,7 +140,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
   // if we are not playing (occluded?) 2008-03-25 Matrix
 	else if (!p_table_state->User()->HasKnownCards())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_symbol_engine_userchair->userchair());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", SYM->p_symbol_engine_userchair()->userchair());
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}
@@ -152,7 +152,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
 	unsigned int additional_frames_to_wait = 0;
-  double desired_delay_in_seconds = p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay);
+  double desired_delay_in_seconds = SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_delay);
   if (preferences.scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
     additional_frames_to_wait = desired_delay_in_seconds / preferences.scrape_delay();
   }
@@ -160,7 +160,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
-      p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay));
+      SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_delay));
 		_isfinalanswer = false;
 	}
 }

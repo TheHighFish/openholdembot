@@ -92,14 +92,14 @@ void CAutoplayer::PrepareActionSequence() {
 
 void CAutoplayer::FinishActionSequenceIfNecessary() {
 	if (action_sequence_needs_to_be_finished) {
-    if (p_symbol_engine_casino->ConnectedToOHReplay() && preferences.use_auto_replay()) {
+    if (SYM->p_symbol_engine_casino()->ConnectedToOHReplay() && preferences.use_auto_replay()) {
       // Needs to be done very early
       // before we restore the focus
       p_casino_interface->PressTabToSwitchOHReplayToNextFrame();
     }
     // avoid multiple-clicks within a short frame of time
     p_stableframescounter->ResetOnAutoplayerAction();
-    if (p_symbol_engine_casino->ConnectedToOfflineSimulation()) {
+    if (SYM->p_symbol_engine_casino()->ConnectedToOfflineSimulation()) {
       // Restore mouse position and window focus
       // Only for simulations, not for real casinos (stealth).
 		  // Restoring the original state has to be done in reversed order
@@ -164,7 +164,7 @@ bool CAutoplayer::DoBetPot(void) {
     if (success) {
 			// Register the action
 			// Treat betpot like swagging, i.e. raising a user-defined amount
-			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
+			SYM->p_symbol_engine_history()->RegisterAction(k_autoplayer_function_betsize);
 			return true;
     }
 		// Else continue trying with the next betpot function
@@ -224,8 +224,8 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	// and with autoplayer-actions.
 	ExecuteBeep();
 
-	assert(p_symbol_engine_autoplayer->isfinalanswer());
-	assert(p_symbol_engine_autoplayer->ismyturn());
+	assert(SYM->p_symbol_engine_autoplayer()->isfinalanswer());
+	assert(SYM->p_symbol_engine_autoplayer()->ismyturn());
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
@@ -239,7 +239,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 
 	PrepareActionSequence();
 
-	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin))
+	if (SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_allin))
 	{
 		if (DoAllin())
 		{
@@ -262,15 +262,15 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 	write_log(preferences.debug_autoplayer(), 
     "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
-    if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
+    if ((i == k_autoplayer_function_check) && SYM->p_symbol_engine_chip_amounts()->call() > 0) {
       write_log(k_always_log_errors, 
         "[AutoPlayer] ERROR: Can't execute f$check because there is a bet to call\n");
       continue;
     }
-		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
+		if (SYM->p_function_collection()->Evaluate(k_standard_function_names[i])) 	{
 			if (p_casino_interface->ClickButton(i)) 			{
 				p_autoplayer_trace->Print(ActionConstantNames(i), true);
-				p_symbol_engine_history->RegisterAction(i);
+				SYM->p_symbol_engine_history()->RegisterAction(i);
 				return true;
 			}
 		}
@@ -280,7 +280,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 
 bool CAutoplayer::ExecuteBeep() {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
-	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
+	if (SYM->p_function_collection()->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
 	{
 		// Pitch standard: 440 Hz, 1/2 second
 		// http://en.wikipedia.org/wiki/A440_%28pitch_standard%29
@@ -358,7 +358,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 
 	if (to_be_enabled_or_not) 
 	{
-		if (!p_function_collection->BotLogicCorrectlyParsed())
+		if (!SYM->p_function_collection()->BotLogicCorrectlyParsed())
 		{
 			// Invalid formula
 			// Can't autoplay
@@ -379,14 +379,14 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 #undef ENT
 
 bool CAutoplayer::DoChat(void) {
-	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat) != 0);
+	assert(SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_chat) != 0);
 	if (!IsChatAllowed())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
-	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat));
+	RegisterChatMessage(SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_chat));
 	if (_the_chat_message == NULL) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because wrong chat code. Please read: ""Available chat messages"" .\n");
 		return false ;
@@ -431,7 +431,7 @@ bool CAutoplayer::DoAllin(void) {
 		// Not really necessary to register the action,
 		// as the game is over and there is no doallin-symbol,
 		// but it does not hurt to register it anyway.
-		p_symbol_engine_history->RegisterAction(k_autoplayer_function_allin);
+		SYM->p_symbol_engine_history()->RegisterAction(k_autoplayer_function_allin);
 		return true;
 	}
 	return false;
@@ -443,7 +443,7 @@ void CAutoplayer::DoAutoplayer(void) {
   p_scraper_access->GetNeccessaryTablemapObjects();
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
 		p_scraper_access->NumberOfVisibleButtons(),
-		p_symbol_engine_autoplayer->GetFCKRAString());
+		SYM->p_symbol_engine_autoplayer()->GetFCKRAString());
 		
 	// Care about I86 regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
@@ -463,7 +463,7 @@ void CAutoplayer::DoAutoplayer(void) {
   } else {
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 	}
-  if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
     // Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
 		// However: for primary formulas (f$alli, f$rais, etc.)
@@ -472,7 +472,7 @@ void CAutoplayer::DoAutoplayer(void) {
 		goto AutoPlayerCleanupAndFinalization;
   }
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-	if(p_symbol_engine_autoplayer->isfinalanswer())	{
+	if(SYM->p_symbol_engine_autoplayer()->isfinalanswer())	{
 		p_autoplayer_functions->CalcPrimaryFormulas();
 		ExecutePrimaryFormulasIfNecessary();
 	}	else {
@@ -486,7 +486,7 @@ void CAutoplayer::DoAutoplayer(void) {
 }
 
 bool CAutoplayer::DoSwag(void) { 
-  double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
+  double betsize = SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
 	if (betsize > 0) 	{
     if (!_already_executing_allin_adjustment) {
       // We have to prevent a potential endless loop here>
@@ -503,7 +503,7 @@ bool CAutoplayer::DoSwag(void) {
 		if (success) {
       write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f entered\n",
         betsize);
-			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
+			SYM->p_symbol_engine_history()->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Failed to enter betsize %.2f\n",
@@ -515,7 +515,7 @@ bool CAutoplayer::DoSwag(void) {
 }
 
 bool CAutoplayer::DoPrefold(void) {
-	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
+	assert(SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
 	if (!p_table_state->User()->HasKnownCards())
 	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
@@ -523,7 +523,7 @@ bool CAutoplayer::DoPrefold(void) {
 	}
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
-		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
+		SYM->p_symbol_engine_history()->RegisterAction(k_autoplayer_function_fold);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}

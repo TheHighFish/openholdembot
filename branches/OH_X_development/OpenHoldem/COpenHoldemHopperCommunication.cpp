@@ -105,7 +105,7 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
-	if (p_function_collection->Title() == "" 
+	if (SYM->p_function_collection()->Title() == "" 
 		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{

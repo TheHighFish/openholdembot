@@ -57,8 +57,8 @@ void CGameState::CaptureState() {
 	unsigned char		card = CARD_NOCARD;
 
 	// figure out if I am playing
-	int sym_chair = p_symbol_engine_userchair->userchair();
-	if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
+	int sym_chair = SYM->p_symbol_engine_userchair()->userchair();
+	if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) 	{
 		playing = false;
 	}
 	else if (!p_table_state->User()->HasKnownCards())	{
@@ -85,8 +85,8 @@ void CGameState::CaptureState() {
 	}
 
 	// playing, posting, dealerchair
-	int sym_dealerchair = p_symbol_engine_dealerchair->dealerchair();
-	bool sym_isautopost = p_symbol_engine_autoplayer->isautopost();
+	int sym_dealerchair = SYM->p_symbol_engine_dealerchair()->dealerchair();
+	bool sym_isautopost = SYM->p_symbol_engine_autoplayer()->isautopost();
 	_state[_state_index&0xff].m_is_playing = playing;
 	_state[_state_index&0xff].m_is_posting = sym_isautopost;
 	_state[_state_index&0xff].m_fillerbits = 0;
@@ -98,7 +98,7 @@ void CGameState::CaptureState() {
     // player name, balance, currentbet
     strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i]._name.GetString(), _TRUNCATE);
     _state[_state_index&0xff].m_player[i].m_balance = p_table_state->_players[i]._balance;
-		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbol_engine_chip_amounts->currentbet(i);
+		_state[_state_index&0xff].m_player[i].m_currentbet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 
 		// player cards
 		for (int j=0; j<k_number_of_cards_per_player; j++) {

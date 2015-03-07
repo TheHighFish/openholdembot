@@ -133,7 +133,7 @@ void CIteratorThread::RestartPrWinComputations() {
 void CIteratorThread::StartPrWinComputationsIfNeeded() {		
 	p_validator->ValidateIt();
 	assert(p_iterator_thread != NULL);
-	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
+	if (SYM->p_symbol_engine_autoplayer()->IsFirstHeartbeatOfMyTurn())	{
     write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
     assert(IteratorThreadWorking() == false);
     RestartPrWinComputations();
@@ -146,7 +146,7 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary() {
 	// Cut off from IteratorThreadFunction
 	// Also moved outside of the loop.
 	// Correct the protection aganst low f$willplay/f$wontplay - Matrix 2008-12-22
-  _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  _nopponents = SYM->p_symbol_engine_prwin()->nopponents_for_prwin();
 	if (_willplay && (_willplay < 2 * _nopponents + 1))
 	{
 		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
@@ -181,7 +181,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 			AfxEndThread(0);
 		}
     Sleep(500);
-    if (!p_symbol_engine_autoplayer->ismyturn()) {
+    if (!SYM->p_symbol_engine_autoplayer()->ismyturn()) {
       // Not my turn;
       // Nothing to simulate
       continue;
@@ -197,7 +197,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 	  write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
     // "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	  // as we check afterwards, if the loop terminated successfully.
-    _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+    _nopponents = SYM->p_symbol_engine_prwin()->nopponents_for_prwin();
 	  AdjustPrwinVariablesIfNecessary();
 	  for (_iterations_calculated=0; _iterations_calculated < _iterations_required; ++_iterations_calculated) {
 		  // Check event for thread stop signal once every 1000 iterations
@@ -218,7 +218,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 		  CardMask_OR(evalCards, pParent->_plCards, pParent->_comCards);
 		  CardMask_OR(evalCards, evalCards, addlcomCards);
 		  pl_hv = Hand_EVAL_N(evalCards, 7);
-		  pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
+		  pl_pokval = SYM->p_symbol_engine_pokerval()->CalculatePokerval(pl_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);//??
       // Scan through opponents' handvals/pokervals
 		  // - if we find one better than ours, then we are done, increment los
 		  // - for win/tie, we need to wait until we scan them all
@@ -230,7 +230,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 			  CardMask_SET(opp_evalCards, ocard[i*2]);
 			  CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
 			  opp_hv = Hand_EVAL_N(opp_evalCards, 7);
-			  opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
+			  opp_pokval = SYM->p_symbol_engine_pokerval()->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
         write_log(preferences.debug_prwin(), "[PrWinThread] PlayerPV: %i OppPV: %i\n",
           pl_pokval, opp_pokval);
         if (opp_pokval > pl_pokval) {
@@ -303,7 +303,7 @@ void CIteratorThread::ResetGlobalVariables() {
 }
 
 void CIteratorThread::InitNumberOfIterations() {
-	_iterations_required = p_function_collection->Evaluate(
+	_iterations_required = SYM->p_function_collection()->Evaluate(
 		k_standard_function_names[k_prwin_number_of_iterations]);
 }
 
@@ -320,7 +320,7 @@ void CIteratorThread::InitIteratorLoop() {
 	// Counters
 	_win = _tie = _los = 0;
 
-  int userchair = p_symbol_engine_userchair->userchair();
+  int userchair = SYM->p_symbol_engine_userchair()->userchair();
   if (userchair == k_undefined) return;
 
 	// setup masks
@@ -341,10 +341,10 @@ void CIteratorThread::InitIteratorLoop() {
 	}
 
 	//Weighted prwin only for nopponents <=13
-	_willplay = p_function_collection->Evaluate("f$prwin_willplay");
-	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay");
-	_mustplay = p_function_collection->Evaluate("f$prwin_mustplay");
-	_topclip = p_function_collection->Evaluate("f$prwin_topclip");
+	_willplay = SYM->p_function_collection()->Evaluate("f$prwin_willplay");
+	_wontplay = SYM->p_function_collection()->Evaluate("f$prwin_wontplay");
+	_mustplay = SYM->p_function_collection()->Evaluate("f$prwin_mustplay");
+	_topclip = SYM->p_function_collection()->Evaluate("f$prwin_topclip");
 
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
@@ -605,10 +605,10 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 				//if we called then we are not BB, BB limped to flop,
 				//BB still playing, so do not weight his cards
 				int betround = p_betround_calculator->betround();
-				if (p_symbol_engine_history->nbetsround(betround) < 1.1 
-					&& p_symbol_engine_history->didcall(betround) 
-					&& (p_symbol_engine_active_dealt_playing->playersplayingbits() 
-						& p_symbol_engine_blinds->bblindbits()))
+				if (SYM->p_symbol_engine_history()->nbetsround(betround) < 1.1 
+					&& SYM->p_symbol_engine_history()->didcall(betround) 
+					&& (SYM->p_symbol_engine_active_dealt_playing()->playersplayingbits() 
+						& SYM->p_symbol_engine_blinds()->bblindbits()))
 				{
 					break;
 				}
@@ -638,12 +638,12 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 	int k = 0; //k is used as an index into ocard[] 
 	unsigned int	card = 0;
 
-	int userchair = p_symbol_engine_userchair->userchair();
-	int playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
+	int playersplayingbits = SYM->p_symbol_engine_active_dealt_playing()->playersplayingbits();
 	//we have to use actual opponents for prw1326 calculations
 	int nopponents = bitcount(playersplayingbits & ~(1 << userchair));
 	int betround   = p_betround_calculator->betround();
-	int bblindbits = p_symbol_engine_blinds->bblindbits();
+	int bblindbits = SYM->p_symbol_engine_blinds()->bblindbits();
 
 	// loop through active opponents
 	for(int i=0; i<k_max_number_of_players; i++) 
@@ -657,7 +657,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 		// first deal with the special non-weighted cases
 		// player who is marked 'ignore' or one who is BB and has not VPIP'd
 		if (_prw1326.chair[i].ignore || 
-			(_prw1326.bblimp && p_symbol_engine_history->nbetsround(betround)<1.1 
+			(_prw1326.bblimp && SYM->p_symbol_engine_history()->nbetsround(betround)<1.1 
 				&& (bblindbits&(1<<i))) )
 		{
 			card = GetRandomCard();

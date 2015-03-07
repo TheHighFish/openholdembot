@@ -127,7 +127,7 @@ bool CSymbolEngineTableLimits::TableLimitsNeedToBeComputed() {
 }
 
 void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
-	if (p_symbol_engine_istournament == NULL)	{
+	if (SYM->p_symbol_engine_istournament() == NULL)	{
 		// Initialization phase
 		// Null pointer possible due to circular dependency
 		// Simply leave because it is too early to lock the blinds
@@ -140,7 +140,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
     Bool2CString(blinds_locked_for_complete_session));
 	write_log(preferences.debug_table_limits(), 
     "[CSymbolEngineTableLimits] istournament: %s\n", 
-    Bool2CString(p_symbol_engine_istournament->istournament()));
+    Bool2CString(SYM->p_symbol_engine_istournament()->istournament()));
 	if (blinds_locked_for_complete_session) {
     write_log(preferences.debug_table_limits(), 
       "[CSymbolEngineTableLimits] blinds_locked_for_complete_session\n");
@@ -148,7 +148,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
       "[CSymbolEngineTableLimits] Leaving CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
   }
-  if (p_symbol_engine_istournament->istournament())	{
+  if (SYM->p_symbol_engine_istournament()->istournament())	{
 		write_log(preferences.debug_table_limits(), 
       "[CSymbolEngineTableLimits] istournament\n");
 		write_log(preferences.debug_table_limits(), 
@@ -262,7 +262,7 @@ double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
   assert(p_symbol_engine_gametype != NULL);
-  if (p_symbol_engine_gametype->isfl() && (betround >= k_betround_turn)) {
+  if (SYM->p_symbol_engine_gametype()->isfl() && (betround >= k_betround_turn)) {
     return bigbet();
   }
 	return bblind();

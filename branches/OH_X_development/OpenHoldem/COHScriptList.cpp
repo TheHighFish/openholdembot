@@ -167,9 +167,9 @@ double COHScriptList::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
     "[COHScriptList] Evaluating list %s\n", _name); 
   if (!p_table_state->User()->HasKnownCards()) return false;
-  return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
-    p_symbol_engine_pokerval->rankloplayer(),
-    p_symbol_engine_cards->issuited());
+  return IsOnList(SYM->p_symbol_engine_pokerval()->rankhiplayer(),
+    SYM->p_symbol_engine_pokerval()->rankloplayer(),
+    SYM->p_symbol_engine_cards()->issuited());
 }
 
 CString COHScriptList::function_text() {

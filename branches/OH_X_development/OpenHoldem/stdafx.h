@@ -104,6 +104,7 @@
 #include <assert.h>
 
 // Important project headers
+#include "CEngineContainer.h"
 #include "CValidator.h"
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"

@@ -177,7 +177,7 @@ CString CAutoplayerTrace::BestAction() {
         // e.g. "f$betsize = 201.47"
         CString best_action;
         best_action.Format("%s = %.2f", k_standard_function_names[i],
-          p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+          SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
         return best_action;
       }
       else {
@@ -192,11 +192,11 @@ CString CAutoplayerTrace::BestAction() {
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   CString	pcards, comcards, temp, rank, pokerhand;
   CString	fcra_formula_status;
-  int		userchair = p_symbol_engine_userchair->userchair();
+  int		userchair = SYM->p_symbol_engine_userchair()->userchair();
   int		betround  = p_betround_calculator->betround();
 
   // player cards
-  if (p_symbol_engine_userchair->userchair_confirmed()) {
+  if (SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
     for (int i=0; i<=1; i++) {
       Card card = p_table_state->User()->_hole_cards[i];
       pcards.Append(card.ToString());
@@ -222,18 +222,18 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   comcards.Append("..........");
   comcards = comcards.Left(10);
   // Always use handrank169 here
-  rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
+  rank.Format("%.0f", SYM->p_symbol_engine_handrank()->handrank169());
   // poker hand
-  pokerhand = p_symbol_engine_pokerval->HandType();
+  pokerhand = SYM->p_symbol_engine_pokerval()->HandType();
   // fcra_seen
-  CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
+  CString fcra_seen = SYM->p_symbol_engine_autoplayer()->GetFCKRAString();
   // fcra formula status
   fcra_formula_status.Format("%s%s%s%s%s",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_fold)  ? "F" : ".",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "C" : ".",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_check) ? "K" : ".",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_raise) ? "R" : ".",
-	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
+	SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_fold)  ? "F" : ".",
+	SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_call)  ? "C" : ".",
+	SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_check) ? "K" : ".",
+	SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_raise) ? "R" : ".",
+	SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
   write_log_separator(true, "Basic Info");
@@ -245,12 +245,12 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
   write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
   write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->_balance);
-  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_symbol_engine_chip_amounts->currentbet(userchair)); 
-  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
-  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
-  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
-  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
-  write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", SYM->p_symbol_engine_chip_amounts()->currentbet(userchair)); 
+  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", SYM->p_symbol_engine_chip_amounts()->call());
+  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", SYM->p_symbol_engine_chip_amounts()->pot());
+  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", SYM->p_symbol_engine_tablelimits()->bblind());
+  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", SYM->p_symbol_engine_tablelimits()->bigbet());
+  write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
   write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
   write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
   write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());

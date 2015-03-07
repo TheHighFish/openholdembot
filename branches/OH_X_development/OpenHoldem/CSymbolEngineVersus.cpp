@@ -126,7 +126,7 @@ bool CSymbolEngineVersus::GetCounts() {
 	int				listnum = 0;
 	
 	int betround = p_betround_calculator->betround();
-	int sym_userchair = p_symbol_engine_userchair->userchair();
+	int sym_userchair = SYM->p_symbol_engine_userchair()->userchair();
 
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
     card_player[i] = p_table_state->_players[sym_userchair]._hole_cards[i].GetValue();
@@ -137,7 +137,7 @@ bool CSymbolEngineVersus::GetCounts() {
   // Get the lock
 	CSLock lock(m_critsec);
   ClearWinTieLosData();
-	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
+	if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) return false;
 
   if (!p_table_state->User()->HasKnownCards()) return false;
 
@@ -408,7 +408,7 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     *result = k_undefined_zero;
   }
   CString list_name = symbol.Mid(3, list_name_lenght);
-  COHScriptList *hand_list = (COHScriptList*)p_function_collection->LookUp(list_name);
+  COHScriptList *hand_list = (COHScriptList*)SYM->p_function_collection()->LookUp(list_name);
   if (hand_list == NULL) {
     // List not found
     // Symbol valid anyway
@@ -500,7 +500,7 @@ bool CSymbolEngineVersus::EvaluateVersusMultiplexSymbol(const char *name, double
   }
   CString infix = csname.Mid(13, infix_length);
   // Now evaluate the infix to get the ID of a numbered list
-  double d_list_ID = p_function_collection->Evaluate(infix, log);
+  double d_list_ID = SYM->p_function_collection()->Evaluate(infix, log);
   int list_ID = int(d_list_ID + 0.5);
   CString list;
   list.Format("list%d", list_ID);

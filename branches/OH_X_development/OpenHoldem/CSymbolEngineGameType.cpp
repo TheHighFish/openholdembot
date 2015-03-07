@@ -95,7 +95,7 @@ CString CSymbolEngineGameType::GetGameTypeAsString() {
     // That's better than former "unknown".
 		result = "FL";
 	}
-	if (p_symbol_engine_istournament->istournament()) {
+	if (SYM->p_symbol_engine_istournament()->istournament()) {
 		result += "T";
 	}
 	return result;

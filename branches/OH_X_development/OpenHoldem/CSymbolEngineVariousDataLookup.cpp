@@ -96,14 +96,14 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
   else if (memcmp(name, "version", 7)==0 && strlen(name)==7)	*result = VERSION_NUMBER;
   // Handreset
-  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = p_handreset_detector->hands_played();
-  else if (memcmp(name, "handsplayed_headsup", 19)==0 && strlen(name)==19)  *result = p_handreset_detector->hands_played_headsup();
+  else if (memcmp(name, "handsplayed", 11)==0 && strlen(name)==11) *result = SYM->p_handreset_detector()->hands_played();
+  else if (memcmp(name, "handsplayed_headsup", 19)==0 && strlen(name)==19)  *result = SYM->p_handreset_detector()->hands_played_headsup();
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
     if (p_formula_parser->IsParsing()
         || !p_autoconnector->IsConnected()
-	      || !p_symbol_engine_userchair->userchair_confirmed()) {
+	      || !SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
 	    *result = 0;
     } else {
 	    OH_MessageBox_OH_Script_Messages(name);

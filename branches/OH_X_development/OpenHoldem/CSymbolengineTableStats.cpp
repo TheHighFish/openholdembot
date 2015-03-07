@@ -86,9 +86,9 @@ void CSymbolEngineTableStats::ShiftOldestDataAway() {
 void CSymbolEngineTableStats::UpdateData() {
   switch (BETROUND) {
     case k_betround_preflop:
-      dealt_players[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nplayersdealt();
-      bets_preflop[kIndexCurrentHand] = p_symbol_engine_chip_amounts->ncallbets();
-      if (p_symbol_engine_chip_amounts->ncallbets() > 1) {
+      dealt_players[kIndexCurrentHand] = SYM->p_symbol_engine_active_dealt_playing()->nplayersdealt();
+      bets_preflop[kIndexCurrentHand] = SYM->p_symbol_engine_chip_amounts()->ncallbets();
+      if (SYM->p_symbol_engine_chip_amounts()->ncallbets() > 1) {
         // raised_preflop is a "counter" with state 0/1
         // so that we can use SumUp().
         raised_preflop[kIndexCurrentHand] = 1;
@@ -96,17 +96,17 @@ void CSymbolEngineTableStats::UpdateData() {
       break;
     case k_betround_flop:
       if (seen_flop[kIndexCurrentHand] == 0) {
-        seen_flop[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_flop[kIndexCurrentHand] = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
     case k_betround_turn:
       if (seen_turn[kIndexCurrentHand] == 0) {
-        seen_turn[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_turn[kIndexCurrentHand] = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
     case k_betround_river:
       if (seen_river[kIndexCurrentHand] == 0) {
-        seen_river[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_river[kIndexCurrentHand] = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
   }
@@ -123,7 +123,7 @@ double CSymbolEngineTableStats::SumUp(int *data_set_for_n_hands) {
 }
 
 int CSymbolEngineTableStats::NumberOfHandsStored() {
-  int hands_played = p_handreset_detector->hands_played();
+  int hands_played = SYM->p_handreset_detector()->hands_played();
   if (hands_played > kNumberOfHands) {
     // All entries contains valid date
     return kNumberOfHands;

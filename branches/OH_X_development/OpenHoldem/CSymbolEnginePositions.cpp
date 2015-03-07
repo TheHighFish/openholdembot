@@ -72,7 +72,7 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 	_nchairsdealtright = 0;
 	_nchairsdealtleft  = 0;
 
-	if (!p_symbol_engine_userchair->userchair_confirmed())	{
+	if (!SYM->p_symbol_engine_userchair()->userchair_confirmed())	{
 		// Nothing to search for
 		return;
 	}
@@ -86,7 +86,7 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 
 		if (next_chair == USER_CHAIR)	{
 			found_userchair = true;
-		}	else if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) 	{
+		}	else if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits(), next_chair)) 	{
 			if (!found_userchair)	{
 				_nchairsdealtright++;
 			}	else {
@@ -106,14 +106,14 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		  i<=(DEALER_CHAIR+p_tablemap->nchairs());
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)
-		  	&& IsBitSet(p_symbol_engine_active_dealt_playing->playersseatedbits(), next_chair)) {
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits(), next_chair)
+		  	&& IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersseatedbits(), next_chair)) {
 			_betpositionrais++;
 		}
-    if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
+    if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits(), next_chair)) {
 			_dealpositionrais++;
 		}
-		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
+		if (next_chair == SYM->p_symbol_engine_raisers_callers()->raischair()) break;	
 	}
 	AssertRange(_betpositionrais,  k_undefined, k_max_number_of_players);
 	AssertRange(_dealpositionrais, k_undefined, k_max_number_of_players);
@@ -128,10 +128,10 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 		  i<=DEALER_CHAIR+p_tablemap->nchairs();
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair))	{
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersplayingbits(), next_chair))	{
 			_betposition++;
 		}
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits(), next_chair)) {
 			_dealposition++;
 		}
 		if ((next_chair) == USER_CHAIR)	{
@@ -140,10 +140,10 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 		}
 	}
 
-	int raischair = p_symbol_engine_raisers_callers->raischair();
+	int raischair = SYM->p_symbol_engine_raisers_callers()->raischair();
 	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); i++) 	{
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair)) 	{
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->nplayersdealt(), next_chair)) 	{
 			_callposition++;
 		}
 	}

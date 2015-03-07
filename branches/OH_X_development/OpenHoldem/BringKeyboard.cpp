@@ -32,7 +32,7 @@ void CheckBringKeyboard(void) {
 	int				keybd_item_pos = 0;
 	int				e = SUCCESS;
 
-	if (!p_symbol_engine_casino->ConnectedToBring()) 	{
+	if (!SYM->p_symbol_engine_casino()->ConnectedToBring()) 	{
 		write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
 		return;
 	}

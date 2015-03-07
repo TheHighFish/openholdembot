@@ -35,7 +35,7 @@ CSymbolEngineCards::CSymbolEngineCards()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	//
-	// We use 2 times the function p_symbol_engine_pokerval->CalculatePokerval,
+	// We use 2 times the function SYM->p_symbol_engine_pokerval()->CalculatePokerval,
 	// but luckily this does not create name symbol-dependency.
 	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid name circular dependency.
 	assert(p_symbol_engine_userchair != NULL);
@@ -621,7 +621,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	_nouts = 0;
 	_ncardsbetter = 0;
 
-	if (p_symbol_engine_userchair->userchair_confirmed())
+	if (SYM->p_symbol_engine_userchair()->userchair_confirmed())
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
@@ -644,13 +644,13 @@ void CSymbolEngineCards::CalcUnknownCards()
 
 				if (BETROUND < k_betround_river 
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
-					&& p_symbol_engine_pokerval->CalculatePokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval()
+					&& SYM->p_symbol_engine_pokerval()->CalculatePokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > SYM->p_symbol_engine_pokerval()->pokerval()
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
 				{
 					_nouts++;										
 				}
 
-				if (p_symbol_engine_pokerval->CalculatePokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval())
+				if (SYM->p_symbol_engine_pokerval()->CalculatePokerval(handval_common_plus1, ncommonCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > SYM->p_symbol_engine_pokerval()->pokerval())
 				{
 					_ncardsbetter++;							
 				}
@@ -697,7 +697,7 @@ bool CSymbolEngineCards::IsHand(const char *name) {
 			return false;
 		}
 	}
-  if (!p_symbol_engine_userchair->userchair_confirmed())
+  if (!SYM->p_symbol_engine_userchair()->userchair_confirmed())
 		return false;
   // sort
 	if (cardrank[1] > cardrank[0]) {
@@ -960,7 +960,7 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 	}
 	else if (memcmp(name, "ncommoncardsknown", 17)==0 && strlen(name)==17)	
 	{
-		*result = p_symbol_engine_cards->ncommoncardsknown();
+		*result = SYM->p_symbol_engine_cards()->ncommoncardsknown();
 		return true;
 	}
   else if (memcmp(name, "nouts", 5)==0 && strlen(name)==5)						

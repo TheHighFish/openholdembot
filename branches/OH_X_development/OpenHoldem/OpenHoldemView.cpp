@@ -190,13 +190,13 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	bool		update_it = false;
 	CDC			*pDC = GetDC();
 
-	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
-	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double  sym_ante = p_symbol_engine_tablelimits->ante();
-	int     sym_lim = p_symbol_engine_gametype->gametype();
-	bool    sym_istournament = p_symbol_engine_istournament->istournament();
-	double  sym_pot = p_symbol_engine_chip_amounts->pot();
+	CString sym_handnumber = SYM->p_handreset_detector()->GetHandNumber();
+	double  sym_bblind = SYM->p_symbol_engine_tablelimits()->bblind();
+	double  sym_sblind = SYM->p_symbol_engine_tablelimits()->sblind();
+	double  sym_ante = SYM->p_symbol_engine_tablelimits()->ante();
+	int     sym_lim = SYM->p_symbol_engine_gametype()->gametype();
+	bool    sym_istournament = SYM->p_symbol_engine_istournament()->istournament();
+	double  sym_pot = SYM->p_symbol_engine_chip_amounts()->pot();
 
 	// Get size of current client window
 	GetClientRect(&_client_rect);
@@ -248,7 +248,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		update_it = true;
 	}
 
-  if ((p_symbol_engine_autoplayer->ismyturn()) || update_it || update_all) 
+  if ((SYM->p_symbol_engine_autoplayer()->ismyturn()) || update_it || update_all) 
 	{
 		assert(p_white_info_box != NULL);
     p_white_info_box->Draw(_client_rect, _logfont, pDC,
@@ -997,12 +997,12 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 }
 
 void COpenHoldemView::DrawColourCodes(const int chair) {
-  if (p_symbol_engine_colourcodes == 0) {
+  if (SYM->p_symbol_engine_colourcodes() == NULL) {
     // Not yet initialized
     return;
   }
-  int right = 0;
   // Figure placement of box
+  int right = 0;
   int bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 16;
   int top    = bottom - 10;
   if (chair >= (p_tablemap->nchairs() / 2)) {
@@ -1017,7 +1017,7 @@ void COpenHoldemView::DrawColourCodes(const int chair) {
 	CBrush	*pTempBrush = NULL, oldbrush;
   pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-  COLORREF colour_code = p_symbol_engine_colourcodes->ColourCodeToDisplay(chair);
+  COLORREF colour_code = SYM->p_symbol_engine_colourcodes()->ColourCodeToDisplay(chair);
   CBrush mybrush(colour_code);
 	pTempBrush = (CBrush*)pDC->SelectObject(mybrush); 
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush

@@ -89,12 +89,12 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 }
 
 CString CWhiteInfoBox::InfoText() {
-  double sym_bblind		= p_symbol_engine_tablelimits->bblind();
-	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
-	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				  = p_symbol_engine_gametype->gametype();
-	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double sym_pot			= p_symbol_engine_chip_amounts->pot();
+  double sym_bblind		= SYM->p_symbol_engine_tablelimits()->bblind();
+	double sym_sblind		= SYM->p_symbol_engine_tablelimits()->sblind();
+	double sym_ante			= SYM->p_symbol_engine_tablelimits()->ante();
+	int sym_lim				  = SYM->p_symbol_engine_gametype()->gametype();
+	CString sym_handnumber = SYM->p_handreset_detector()->GetHandNumber();
+	double sym_pot			= SYM->p_symbol_engine_chip_amounts()->pot();
   CString result, s;
 	// handnumber
 	if (sym_handnumber != "") {
@@ -115,8 +115,8 @@ CString CWhiteInfoBox::InfoText() {
 		format_string = "  %s %.2f/%.2f/%.2f\n";
 	}
 	s.Format(format_string,
-		p_symbol_engine_gametype->GetGameTypeAsString(),
-		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
+		SYM->p_symbol_engine_gametype()->GetGameTypeAsString(),
+		sym_sblind, sym_bblind, SYM->p_symbol_engine_tablelimits()->bigbet());
 	result.Append(s);
 
 	// ante

@@ -85,8 +85,8 @@ void CLazyScraper::DoScrape() {
 		p_scraper->ScrapeDealer();
 	}
 	if (NeedUsersCards())	{
-		assert(p_symbol_engine_userchair->userchair_confirmed());
-		p_scraper->ScrapePlayerCards(p_symbol_engine_userchair->userchair());
+		assert(SYM->p_symbol_engine_userchair()->userchair_confirmed());
+		p_scraper->ScrapePlayerCards(SYM->p_symbol_engine_userchair()->userchair());
 	}
 	p_scraper->ScrapeSeatedActive();
 	if (NeedAllPlayersCards()) {
@@ -143,7 +143,7 @@ bool CLazyScraper::NeedHandNumber() {
 }
 
 bool CLazyScraper::NeedUsersCards() {
-	return (p_symbol_engine_userchair->userchair_confirmed());
+	return (SYM->p_symbol_engine_userchair()->userchair_confirmed());
 }
 
 bool CLazyScraper::NeedAllPlayersCards() {
@@ -169,7 +169,7 @@ bool CLazyScraper::NeedInterfaceButtons() {
 
 bool CLazyScraper::NeedBetpotButtons() {
 	return (p_scraper_access->IsMyTurn()
-		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
+		&& (SYM->p_symbol_engine_gametype()->isnl() || SYM->p_symbol_engine_gametype()->ispl()));
 }
 
 bool CLazyScraper::NeedSlider() {
@@ -185,7 +185,7 @@ bool CLazyScraper::NeedAllPlayerNames() {
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
 	// * new players after our turn can't affect the current hand
-	return (!p_symbol_engine_history->DidActThisHand());
+	return (!SYM->p_symbol_engine_history()->DidActThisHand());
 }
 
 bool CLazyScraper::NeedUnknownPlayerNames() {
@@ -212,12 +212,12 @@ bool CLazyScraper::NeedColourCodes() {
   // Scrape colour-codes at the beginning of a session 
   // and at my turn -- that's enough.
   return (p_scraper_access->IsMyTurn()
-    || (p_handreset_detector->hands_played() <= 1));
+    || (SYM->p_handreset_detector()->hands_played() <= 1));
 }
 
 bool CLazyScraper::NeedMTTRegions() {
   // Once per hand is enough, as these values change slowly.
   // Also on my turn is good, as that's when we need it.
   return (p_scraper_access->IsMyTurn()
-    && !p_symbol_engine_history->DidActThisHand());
+    && !SYM->p_symbol_engine_history()->DidActThisHand());
 }

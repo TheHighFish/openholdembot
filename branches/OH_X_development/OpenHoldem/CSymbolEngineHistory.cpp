@@ -135,7 +135,7 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code) {
 	// depending on the amount to call.
 	if ((autoplayer_action_code == k_autoplayer_function_call)
 		  || (autoplayer_action_code == k_autoplayer_function_check)) {
-		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0)) {
+		if (IsSmallerOrEqual(SYM->p_symbol_engine_chip_amounts()->call(), 0.0)) {
 			// It was free to check
 			_autoplayer_actions[BETROUND][k_autoplayer_function_check]++;
 			SetPrevaction(k_autoplayer_function_check);
@@ -190,7 +190,7 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 void CSymbolEngineHistory::CalculateHistory() {
 	if (_nplayersround[BETROUND] == 0) {
 		_nplayersround[BETROUND] = 
-			p_symbol_engine_active_dealt_playing->nplayersplaying();
+			SYM->p_symbol_engine_active_dealt_playing()->nplayersplaying();
 	}
   double maxbet = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
@@ -199,12 +199,12 @@ void CSymbolEngineHistory::CalculateHistory() {
 		// This may lead to ugly mis-scrapes, that's why he have to check
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
-			double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersplayingbits(), i)) 	{
+			double current_players_bet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
-  double bet = MAX(p_symbol_engine_tablelimits->bet(), p_symbol_engine_tablelimits->bblind());
+  double bet = MAX(SYM->p_symbol_engine_tablelimits()->bet(), SYM->p_symbol_engine_tablelimits()->bblind());
 	if (bet > 0) {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
@@ -296,9 +296,9 @@ bool CSymbolEngineHistory::DidAct() {
   // Extra pre-caution for preflop, in case of failed hand-reset,
   // including another extra fail-safe for unknown big-blind
   if ((BETROUND == k_betround_preflop)
-      && p_symbol_engine_userchair->userchair_confirmed()
-      && ((p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) < p_symbol_engine_tablelimits->bblind())
-        || (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) == 0))) {
+      && SYM->p_symbol_engine_userchair()->userchair_confirmed()
+      && ((SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR) < SYM->p_symbol_engine_tablelimits()->bblind())
+        || (SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR) == 0))) {
     return false;
   }
   // Otherwise: return "normal" value, depending on didswag, didrais, ...
@@ -306,7 +306,7 @@ bool CSymbolEngineHistory::DidAct() {
 }
 
 bool CSymbolEngineHistory::DidAct(int betround) {
-	if (!p_symbol_engine_userchair->userchair_confirmed()) {
+	if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
 		return false;
 	}
 	// Considering fold or allin too. It's unneccessary for bot logic, but usefull for lazy scraping.

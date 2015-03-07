@@ -37,7 +37,7 @@ END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() {
-	p_function_collection->DeleteAll(false, true);
+	SYM->p_function_collection()->DeleteAll(false, true);
 }
 
 COpenHoldemDoc::~COpenHoldemDoc() {
@@ -71,7 +71,7 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 		return FALSE;
 
 	// Default bot
-	p_function_collection->SetEmptyDefaultBot();
+	SYM->p_function_collection()->SetEmptyDefaultBot();
 	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
 
@@ -88,7 +88,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring()) 
 	{
 		// Store archive in the new OpenHoldem format
-		p_function_collection->Save(ar);
+		SYM->p_function_collection()->Save(ar);
 		// Do not close this archive here.
 		// It's expected to stay open at this point!
 	}

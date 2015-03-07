@@ -74,7 +74,7 @@ void COpenHoldemStatusbar::OnUpdateStatusbar() {
 void COpenHoldemStatusbar::ComputeCurrentStatus() {
 	CardMask	Cards;
 	CString		temp; 
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
 	// Player cards
 	CardMask_RESET(Cards);
 	int nCards = 0;
@@ -89,7 +89,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
       CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
-		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
+		_status_nopp.Format("%d", SYM->p_symbol_engine_prwin()->nopponents_for_prwin());
 	}	else 	{
 		for (int i=0; i<k_number_of_cards_per_player; i++) {
 			if (p_table_state->User()->HasKnownCards())	{
@@ -122,10 +122,10 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 	_status_pokerhand = _status_pokerhand.Mid(0, _status_pokerhand.Find(" "));
 
 	// Always use handrank169 here
-	_status_handrank.Format("%.0f/169", p_symbol_engine_handrank->handrank169());
+	_status_handrank.Format("%.0f/169", SYM->p_symbol_engine_handrank()->handrank169());
 
 	// Always update prwin/nit
-	if (p_symbol_engine_userchair->userchair_confirmed() 
+	if (SYM->p_symbol_engine_userchair()->userchair_confirmed() 
 		  && p_table_state->User()->HasKnownCards()) {
 		_status_prwin.Format("%d/%d/%d", 
 			(int) (p_iterator_thread->prwin()*1000), 
@@ -144,15 +144,15 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 }
 
 CString COpenHoldemStatusbar::LastAction() {
-  if (p_symbol_engine_userchair == NULL)	{
+  if (SYM->p_symbol_engine_userchair() == NULL)	{
 		// Very early phase of initialization
 		// Can't continue here.
 		return "Not playing";
 	}
-	if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
+	if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) 	{
 		return "Not playing";
 	}
-  if (p_symbol_engine_time->elapsedauto() > 5) {
+  if (SYM->p_symbol_engine_time()->elapsedauto() > 5) {
     // Reset display of last action after 5 seconds
     return "";
   }
