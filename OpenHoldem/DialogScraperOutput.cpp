@@ -150,7 +150,7 @@ BOOL CDlgScraperOutput::DestroyWindow() {
 	preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
 
 	// Uncheck scraper output button on main toolbar
-	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
+	GUI->p_flags_toolbar()->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 
 	return CDialog::DestroyWindow();
 }
@@ -327,7 +327,7 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter) {
 
 void CDlgScraperOutput::OnCancel() {
 	// Uncheck scraper output button on main toolbar
-	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
+	GUI->p_flags_toolbar()->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
   CDialog::OnCancel();
 }
 

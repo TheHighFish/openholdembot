@@ -88,10 +88,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   //ROUND&POSITIONS
   else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   //FLAGS
-  else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = p_flags_toolbar->GetFlagMax();
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = p_flags_toolbar->GetFlag(name[1]-'0');
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * (name[1]-'0') + name[2] - '0');
-  else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = p_flags_toolbar->GetFlagBits();
+  else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = GUI->p_flags_toolbar()->GetFlagMax();
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = GUI->p_flags_toolbar()->GetFlag(name[1]-'0');
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = GUI->p_flags_toolbar()->GetFlag(10 * (name[1]-'0') + name[2] - '0');
+  else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = GUI->p_flags_toolbar()->GetFlagBits();
   // GENERAL
   else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
   else if (memcmp(name, "version", 7)==0 && strlen(name)==7)	*result = VERSION_NUMBER;
@@ -115,7 +115,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
       write_log(preferences.debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
-      p_white_info_box->SetCustomLogMessage(name);
+      GUI->p_white_info_box()->SetCustomLogMessage(name);
     }
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {

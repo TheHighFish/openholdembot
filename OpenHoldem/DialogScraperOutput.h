@@ -64,7 +64,4 @@ class CDlgScraperOutput : public CDialog {
 	void AddListboxItems();
 };
 
-
-extern CDlgScraperOutput	*m_ScraperOutputDlg;
-
 #endif //INC_DIALOGSCRAPEROUTPUT_H

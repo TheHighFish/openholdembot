@@ -231,7 +231,7 @@ void COpenHoldemApp::FinishInitialization() {
 		m_pMainWnd);
 
 	assert(p_openholdem_title != NULL);
-	p_openholdem_title->UpdateTitle();
+	GUI->p_openholdem_title()->UpdateTitle();
 
 	// The one and only window has been initialized, so show and update it
 	if (preferences.gui_start_minimized())

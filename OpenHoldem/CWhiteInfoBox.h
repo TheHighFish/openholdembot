@@ -11,6 +11,9 @@
 //
 //******************************************************************************
 
+#ifndef INC_CWHITEINFOBOX_H
+#define INC_CWHITEINFOBOX_H
+
 class CWhiteInfoBox {
  public:
   CWhiteInfoBox();
@@ -26,4 +29,4 @@ class CWhiteInfoBox {
   CString _custom_log_message;
 };
 
-extern CWhiteInfoBox *p_white_info_box;
+#endif // INC_CWHITEINFOBOX_H

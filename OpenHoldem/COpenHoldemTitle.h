@@ -11,8 +11,10 @@
 //
 //******************************************************************************
 
-class COpenHoldemTitle
-{
+#ifndef INC_COPENHOLDEM_TITLE_H
+#define INC_COPENHOLDEM_TITLE_H
+
+class COpenHoldemTitle {
 public:
 	COpenHoldemTitle();
 	~COpenHoldemTitle();
@@ -27,4 +29,4 @@ private:
 	CString simple_title;			// executale-name
 };
 
-extern COpenHoldemTitle *p_openholdem_title;
+#endif // INC_COPENHOLDEM_TITLE_H

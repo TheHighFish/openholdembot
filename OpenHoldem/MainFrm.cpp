@@ -168,12 +168,10 @@ CMainFrame::CMainFrame()
 	_prev_wrect.top = 0;
 }
 
-CMainFrame::~CMainFrame() 
-{
-	if (p_flags_toolbar != NULL)
-	{
-		p_flags_toolbar->~CFlagsToolbar();
-		delete(p_flags_toolbar);
+CMainFrame::~CMainFrame() {
+	if (_p_flags_toolbar != NULL)	{
+		_p_flags_toolbar->~CFlagsToolbar();
+		delete(_p_flags_toolbar);
 	}
 }
 
@@ -183,9 +181,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined)
 		return -1;
 	// Tool bar
-	p_flags_toolbar = new CFlagsToolbar(this);
+	_p_flags_toolbar = new CFlagsToolbar(this);
 	// Status bar
-	p_openholdem_statusbar = new COpenHoldemStatusbar(this);
+	_p_openholdem_statusbar = new COpenHoldemStatusbar(this);
 	// Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
 	// Start timer that updates status bar
@@ -251,21 +249,20 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 // CMainFrame message handlers
 
 void CMainFrame::OnEditFormula() {
-	if (m_formulaScintillaDlg) {
-		if (m_formulaScintillaDlg->m_dirty)	{
+	if (_p_formulaScintillaDlg) {
+		if (_p_formulaScintillaDlg->m_dirty)	{
 			if (OH_MessageBox_Interactive(
 				  "The Formula Editor has un-applied changes.\n"
 				  "Really exit?", 
 				  "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO) {
-				p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
+				_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 				return;
 			}
 		}
-    BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
-    m_formulaScintillaDlg->DestroyWindow();
-    if (bWasShown)
-    {
-			return;
+    BOOL	bWasShown = ::IsWindow(_p_formulaScintillaDlg->m_hWnd) && _p_formulaScintillaDlg->IsWindowVisible();
+    _p_formulaScintillaDlg->DestroyWindow();
+    if (bWasShown) {
+      return;
     }
 	}
   if (p_autoplayer->autoplayer_engaged()) {
@@ -273,10 +270,10 @@ void CMainFrame::OnEditFormula() {
     // this is just an extra failsafe.
     return;
   }
-  m_formulaScintillaDlg = new CDlgFormulaScintilla(this);
-	m_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
-	m_formulaScintillaDlg->ShowWindow(SW_SHOW);
-	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
+  _p_formulaScintillaDlg = new CDlgFormulaScintilla(this);
+	_p_formulaScintillaDlg->Create(CDlgFormulaScintilla::IDD,this);
+	_p_formulaScintillaDlg->ShowWindow(SW_SHOW);
+	_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 }
 
 void CMainFrame::OnEditViewLog()
@@ -295,11 +292,11 @@ void CMainFrame::OnEditTagLog() {
 
 // Menu -> Edit -> View Scraper Output
 void CMainFrame::OnScraperOutput() {
-	if (m_ScraperOutputDlg) {
-		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
+	if (_p_ScraperOutputDlg) {
+		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", _p_ScraperOutputDlg);
 		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
-		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
+		BOOL	bWasShown = ::IsWindow(_p_ScraperOutputDlg->m_hWnd) && _p_ScraperOutputDlg->IsWindowVisible();
 		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
     CDlgScraperOutput::DestroyWindowSafely();
@@ -321,13 +318,13 @@ void CMainFrame::OnScraperOutput() {
 	  "Info", 0);
 
 	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
-	m_ScraperOutputDlg = new CDlgScraperOutput(this);
+	_p_ScraperOutputDlg = new CDlgScraperOutput(this);
 	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
-	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
+	_p_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
 	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
-	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
+	_p_ScraperOutputDlg->ShowWindow(SW_SHOW);
 	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
-	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
+	_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
 	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
@@ -440,7 +437,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
-		p_openholdem_title->UpdateTitle();
+		_p_openholdem_title->UpdateTitle();
 		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 		theApp.StoreLastRecentlyUsedFileList();
 	}
@@ -461,19 +458,19 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 		// without the need to know the userchair to act on secondary formulas.
 		if (SYM->p_symbol_engine_userchair() != NULL
 			  && p_autoconnector->IsConnected()) 	{
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
+			_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}	else {
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
+			_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
 		}
 
 		// Shoot replay frame
 		if (p_autoconnector->attached_hwnd() != NULL) {
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+			_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
     }	else {
-      p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+      _p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
     }
 	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
-		p_openholdem_statusbar->OnUpdateStatusbar();
+		GUI->p_openholdem_statusbar()->OnUpdateStatusbar();
 	}
 	CWnd::OnTimer(nIDEvent); 
 }
@@ -485,23 +482,19 @@ void CMainFrame::OnAutoplayer()
 	p_autoplayer->EngageAutoplayer(!is_autoplaying);
 }
 
-void CMainFrame::OnValidator() 
-{
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) 
-	{
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
+void CMainFrame::OnValidator()  {
+	if (_p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) {
+		_p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
 		p_validator->SetEnabledManually(true);
-	}
-	else
-	{
-		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
+	}	else {
+		_p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
 		p_validator->SetEnabledManually(false);
 	}
 }
 
 void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) 
 {
-	p_openholdem_statusbar->OnUpdateStatusbar();
+	GUI->p_openholdem_statusbar()->OnUpdateStatusbar();
 }
 
 void CMainFrame::OnDllLoad() 
@@ -536,9 +529,8 @@ BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CMainFrame::OnClickedFlags()
-{
-	p_flags_toolbar->OnClickedFlags();
+void CMainFrame::OnClickedFlags() {
+	_p_flags_toolbar->OnClickedFlags();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

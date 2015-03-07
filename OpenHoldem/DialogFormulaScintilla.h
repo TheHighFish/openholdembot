@@ -247,6 +247,4 @@ class CDlgFormulaScintilla : public CDialog {
   CFont _edit_font;
 };
 
-extern CDlgFormulaScintilla	*m_formulaScintillaDlg;
-
 #endif //INC_DIALOGFORMULASCINTILLA_H

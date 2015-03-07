@@ -73,7 +73,7 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 	// Default bot
 	SYM->p_function_collection()->SetEmptyDefaultBot();
 	SetModifiedFlag(false);
-	p_openholdem_title->UpdateTitle();
+	GUI->p_openholdem_title()->UpdateTitle();
 
   // Try to (re)load dll
 	p_dll_extension->Load("");
@@ -125,7 +125,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
     assert(p_formula_parser != NULL);
 		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
-		p_openholdem_title->UpdateTitle();
+		GUI->p_openholdem_title()->UpdateTitle();
 
     // Try to (re)load (new) dll
 		p_dll_extension->Load("");

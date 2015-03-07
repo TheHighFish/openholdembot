@@ -36,6 +36,4 @@ class COpenHoldemStatusbar {
   CString _last_action;
 };
 
-extern COpenHoldemStatusbar *p_openholdem_statusbar;
-
 #endif // INC_STATUSBAR_H

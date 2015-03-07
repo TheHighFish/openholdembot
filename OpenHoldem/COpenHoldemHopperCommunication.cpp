@@ -41,12 +41,12 @@ LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 	if (title) 
 	{
 		CString *sTitle = (CString *)title;
-		p_openholdem_title->SetUserDefinedOpenHoldemTitle(sTitle->GetString());
+		GUI->p_openholdem_title()->SetUserDefinedOpenHoldemTitle(sTitle->GetString());
 		delete sTitle;
 	} 
 	else 
 	{
-		p_openholdem_title->SetUserDefinedOpenHoldemTitle("");
+		GUI->p_openholdem_title()->SetUserDefinedOpenHoldemTitle("");
 	}
 	return true;
 }
@@ -82,7 +82,7 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 	{
 		return false;
 	}
-	p_flags_toolbar->SetFlag(_flag_to_set, true);
+	GUI->p_flags_toolbar()->SetFlag(_flag_to_set, true);
 	return true;
 }
 
@@ -95,7 +95,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 	{
 		return false;
 	}
-	p_flags_toolbar->SetFlag(_flag_to_reset, true);
+	GUI->p_flags_toolbar()->SetFlag(_flag_to_reset, true);
 	return true;
 }
 
