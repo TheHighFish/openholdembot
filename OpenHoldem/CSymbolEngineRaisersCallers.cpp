@@ -34,7 +34,7 @@
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
 // Some symbols are only well-defined if it is my turn
-#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = k_undefined; }
+#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!SYM->p_symbol_engine_autoplayer()->ismyturn()) *result = k_undefined; }
 
 CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers() {
 	// The values of some symbol-engines depend on other engines.
@@ -93,11 +93,11 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat() {
 
 double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet() {
 	// Not yet acted: 0
-	if (!p_symbol_engine_history->DidAct()) {
+	if (!SYM->p_symbol_engine_history()->DidAct()) {
     if (p_betround_calculator->betround() == k_betround_preflop) {
       // Preflop:
       // Start with big blind and forget about former blind raisers
-      return p_symbol_engine_tablelimits->bblind();
+      return SYM->p_symbol_engine_tablelimits()->bblind();
     } else {
       // Postflop
 		  return 0.0;
@@ -114,7 +114,7 @@ double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet() {
 
 void CSymbolEngineRaisersCallers::CalculateRaisers() {
 	_nopponentstruelyraising = 0;
-	if (p_symbol_engine_chip_amounts->call() <= 0.0) 	{
+	if (SYM->p_symbol_engine_chip_amounts()->call() <= 0.0) 	{
 		// There are no bets and raises.
 		// Skip the calculations to keep the raischair of the previous round.
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
@@ -130,7 +130,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
+		double current_players_bet = SYM->p_symbol_engine_chip_amounts()->currentbet(chair);
     write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisersCallers] chair %d bet %.2f\n",
       chair, current_players_bet);
@@ -148,7 +148,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
         "[CSymbolEngineRaisersCallers] chair %d is not raising\n", chair);
       continue;
     } else if ((p_betround_calculator->betround() == k_betround_preflop)
-				&& (current_players_bet <= p_symbol_engine_tablelimits->bblind())) {
+				&& (current_players_bet <= SYM->p_symbol_engine_tablelimits()->bblind())) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisersCallers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
       continue;
@@ -176,7 +176,7 @@ void CSymbolEngineRaisersCallers::CalculateCallers() {
   // Then we can simply start searching after the userchair
 	// and do a circular search for callers.
   _nopponentscalling = 0;
-  int first_bettor = p_symbol_engine_userchair->userchair();
+  int first_bettor = SYM->p_symbol_engine_userchair()->userchair();
 	double current_bet = p_table_state->_players[first_bettor]._bet;
 	for (int i=first_bettor+1; 
 		  i<=first_bettor+p_tablemap->nchairs()-1; 
@@ -224,7 +224,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
   assert(p_tablemap->nchairs() <= k_max_number_of_players);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double current_players_bet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 		if (current_players_bet < RaisersBet()
       && p_table_state->_players[i].HasAnyCards())
 		{
@@ -241,7 +241,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 			_nopponentsbetting++;
 		}
 		// Players might have been betting, but folded, so no else for the if
-		if ((p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<(i)))
+		if ((SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits() & (1<<(i)))
         && !p_table_state->_players[i].HasAnyCards())	{
 			_nopponentsfolded++;					
 		}
@@ -265,7 +265,7 @@ double CSymbolEngineRaisersCallers::RaisersBet()
 	double result = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double current_players_bet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 		if (current_players_bet > result
       && p_table_state->_players[i].HasAnyCards())
 		{
@@ -286,7 +286,7 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 		}
 	}
 	// remove players, who didn't get dealt.
-	new_foldbits &= p_symbol_engine_active_dealt_playing->playersdealtbits();
+	new_foldbits &= SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits();
 
 	// remove players, who folded in earlier betting-rounds.
 	if (BETROUND >= k_betround_flop)

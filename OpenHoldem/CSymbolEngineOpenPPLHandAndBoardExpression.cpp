@@ -70,11 +70,11 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnMyTurn() {
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat()
 {
-	_prime_coded_hole_cards = PrimeCodedRanks(p_symbol_engine_cards->$$pr(0), 
-		p_symbol_engine_cards->$$pr(1));
-	_prime_coded_board_cards = PrimeCodedRanks(p_symbol_engine_cards->$$cr(0), 
-		p_symbol_engine_cards->$$cr(1), p_symbol_engine_cards->$$cr(2), 
-		p_symbol_engine_cards->$$cr(3),	p_symbol_engine_cards->$$cr(4));
+	_prime_coded_hole_cards = PrimeCodedRanks(SYM->p_symbol_engine_cards()->$$pr(0), 
+		SYM->p_symbol_engine_cards()->$$pr(1));
+	_prime_coded_board_cards = PrimeCodedRanks(SYM->p_symbol_engine_cards()->$$cr(0), 
+		SYM->p_symbol_engine_cards()->$$cr(1), SYM->p_symbol_engine_cards()->$$cr(2), 
+		SYM->p_symbol_engine_cards()->$$cr(3),	SYM->p_symbol_engine_cards()->$$cr(4));
   write_log(preferences.debug_hand_and_baord_expressions(), 
 		"[CSymbolEngineOpenPPLHandAndBoardExpression] _prime_coded_hole_cards = %i\n",
 		_prime_coded_hole_cards);
@@ -154,7 +154,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		{
 			// Suited hand-expression
 			// Ranks already checked, there are only 2, this simplifies things
-			if (!p_symbol_engine_cards->issuited())
+			if (!SYM->p_symbol_engine_cards()->issuited())
 			{
         write_log(preferences.debug_hand_and_baord_expressions(), 
 			    "[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because off-suited hole-cards\n");
@@ -166,7 +166,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		else
 		{
 			// Suited board-expression
-			int rankbits_available = p_symbol_engine_pokerval->srankbitscommon();
+			int rankbits_available = SYM->p_symbol_engine_pokerval()->srankbitscommon();
 	
 			// Check ranks in expression against available ranks
 			if ((rankbits_to_be_searched & rankbits_available) != rankbits_to_be_searched)
@@ -196,7 +196,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 			if (is_hand_expression)
 			{
 				if (!IsCardInCollection(icard_with_specific_suit,
-					p_symbol_engine_cards->$$pc(0), p_symbol_engine_cards->$$pc(1)))
+					SYM->p_symbol_engine_cards()->$$pc(0), SYM->p_symbol_engine_cards()->$$pc(1)))
 				{
 					write_log(preferences.debug_hand_and_baord_expressions(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete hole cards do not fit\n");
@@ -207,9 +207,9 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 			else
 			{
 				if (!IsCardInCollection(icard_with_specific_suit,
-					p_symbol_engine_cards->$$cc(0), p_symbol_engine_cards->$$cc(1),
-					p_symbol_engine_cards->$$cc(2), p_symbol_engine_cards->$$cc(3),
-					p_symbol_engine_cards->$$cc(4)))
+					SYM->p_symbol_engine_cards()->$$cc(0), SYM->p_symbol_engine_cards()->$$cc(1),
+					SYM->p_symbol_engine_cards()->$$cc(2), SYM->p_symbol_engine_cards()->$$cc(3),
+					SYM->p_symbol_engine_cards()->$$cc(4)))
 				{
 					write_log(preferences.debug_hand_and_baord_expressions(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete board cards do not fit\n");
@@ -251,7 +251,7 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	}
   write_log(preferences.debug_hand_and_baord_expressions(),
       "[CSymbolEngineOpenPPLHandAndBoardExpression] $$cr2 = %i\n",
-      p_symbol_engine_cards->$$cr(2));
+      SYM->p_symbol_engine_cards()->$$cr(2));
 	return result;
 }
 

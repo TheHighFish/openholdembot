@@ -60,7 +60,7 @@ void CDllExtension::Load(const char * path){
 	}	else {
 		// Nothing passed in, so we try the DLL of the formula
 		// and the DLL from preferences.
-		dll_path = p_function_collection->DLLPath();
+		dll_path = SYM->p_function_collection()->DLLPath();
 		write_log(preferences.debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
 		if (dll_path == "") {
@@ -143,7 +143,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
     p_iterator_thread->RestartPrWinComputations();
 		
 		// Recompute versus tables
-		p_symbol_engine_versus->GetCounts ();
+		SYM->p_symbol_engine_versus()->GetCounts ();
 		iserr = false;
 		return 0;
 	}
@@ -176,11 +176,11 @@ extern "C" __declspec(dllexport) void* __stdcall GetPrw1326FromDll()
 
 extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll()
 {
-	assert(p_handreset_detector->GetHandNumber().GetLength() < k_max_length_of_handnumber);
+	assert(SYM->p_handreset_detector()->GetHandNumber().GetLength() < k_max_length_of_handnumber);
 	static char handnumber_as_char_array[k_max_length_of_handnumber];
 	strcpy_s(handnumber_as_char_array, 
 		k_max_length_of_handnumber, 
-		p_handreset_detector->GetHandNumber());
+		SYM->p_handreset_detector()->GetHandNumber());
 	return handnumber_as_char_array;
 }
 

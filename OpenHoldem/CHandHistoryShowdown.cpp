@@ -52,7 +52,7 @@ void CHandHistoryShowdown::ResetOnMyTurn() {
 
 bool AnyOpponentsCardsVisible() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    if (i == p_symbol_engine_userchair->userchair()) {
+    if (i == SYM->p_symbol_engine_userchair()->userchair()) {
       // Not an opponent
       continue;
     }

@@ -108,7 +108,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	// player/common cards and pokerval
 	CardMask_OR(playerEvalCards, plCards, comCards);
 	hv_player = Hand_EVAL_N(playerEvalCards, nplCards+ncomCards);
-	pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_player, 
+	pl_pokval = SYM->p_symbol_engine_pokerval()->CalculatePokerval(hv_player, 
 		nplCards+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 
 	for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
@@ -127,7 +127,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 
 				CardMask_OR(opponentEvalCards, oppCards, comCards);
 				hv_opponent = Hand_EVAL_N(opponentEvalCards, 2+ncomCards);
-				opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_opponent,
+				opp_pokval = SYM->p_symbol_engine_pokerval()->CalculatePokerval(hv_opponent,
 					(k_number_of_cards_per_player + ncomCards), 
 					&dummy, CARD_NOCARD, CARD_NOCARD);
 
@@ -162,7 +162,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 
 void CSymbolEnginePrwin::CalculateNOpponents()
 {
-	_nopponents_for_prwin = p_function_collection->Evaluate(
+	_nopponents_for_prwin = SYM->p_function_collection()->Evaluate(
 		"f$prwin_number_of_opponents");
 	if (_nopponents_for_prwin > MAX_OPPONENTS)
 	{

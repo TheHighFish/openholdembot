@@ -332,7 +332,7 @@ void CMainFrame::OnScraperOutput() {
 }
 
 void CMainFrame::OnViewShootreplayframe() {
-	p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+	SYM->p_symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 }
 
 void CMainFrame::OnManualMode() {
@@ -459,7 +459,7 @@ void CMainFrame::OnTimer(UINT nIDEvent) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
-		if (p_symbol_engine_userchair != NULL
+		if (SYM->p_symbol_engine_userchair() != NULL
 			  && p_autoconnector->IsConnected()) 	{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
 		}	else {

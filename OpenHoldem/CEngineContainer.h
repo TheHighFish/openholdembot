@@ -19,7 +19,6 @@
 const int k_max_number_of_symbol_engines = 100;
 
 // Forward declaration to avoid including lots of header files
-class CSymbolEngineTableLimits;
 class CSymbolEngineActiveDealtPlaying;
 class CSymbolEngineAutoplayer;
 class CSymbolEngineBlinds;
@@ -50,6 +49,7 @@ class CSymbolEnginePrwin;
 class CSymbolEngineRaisersCallers;
 class CSymbolEngineRandom;
 class CSymbolEngineReplayFrameController;
+class CSymbolEngineTableLimits;
 class CSymbolEngineTableStats;
 class CSymbolEngineTime;
 class CSymbolEngineUserchair;
@@ -81,42 +81,48 @@ class CEngineContainer {
   CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
  public:
   // Accessors for symbol engines
-  CSymbolEngineActiveDealtPlaying* p_symbol_engine_active_dealt_playing();
-  CSymbolEngineAutoplayer*         p_symbol_engine_autoplayer();
-  CSymbolEngineBlinds*             p_symbol_engine_blinds();
-  CSymbolEngineCards*              p_symbol_engine_cards();
-  CSymbolEngineCasino*             p_symbol_engine_casino();
-  CSymbolEngineChairs*             p_symbol_engine_chairs();
-  CSymbolEngineChipAmounts*        p_symbol_engine_chip_amounts();
-  CSymbolEngineColourCodes*        p_symbol_engine_colourcodes();
-  CSymbolEngineDealerchair*        p_symbol_engine_dealerchair();
-  CSymbolEngineEventLogging*       p_symbol_engine_event_logging();
-  CSymbolEngineGameType*           p_symbol_engine_gametype();
-  CSymbolEngineHandrank*           p_symbol_engine_handrank();
-  CSymbolEngineICM*                p_symbol_engine_icm();
-  CSymbolEngineHistory*            p_symbol_engine_history();
-  CSymbolEngineIniFunctions*       p_symbol_engine_ini_functions();
-  CSymbolEngineIsOmaha*            p_symbol_engine_isomaha();
-  CSymbolEngineIsTournament*       p_symbol_engine_istournament();
-  CSymbolEngineMemorySymbols*      p_symbol_engine_memory_symbols();
-  CSymbolEngineMTTInfo*            p_symbol_engine_mtt_info();
-  CSymbolEngineOpenPPL*            p_symbol_engine_open_ppl();
-  CSymbolEngineOpenPPLHandAndBoardExpression* p_symbol_engine_open_ppl_hand_and_board_expression();
-  CSymbolEngineOpenPPLUserVariables*          p_symbol_engine_openppl_user_variables();
-  CSymbolEnginePokerAction*        p_symbol_engine_poker_action();
-  CSymbolEnginePokerTracker*       p_symbol_engine_pokertracker();
-  CSymbolEnginePokerval*           p_symbol_engine_pokerval();
-  CSymbolEnginePositions*          p_symbol_engine_positions();
-  CSymbolEnginePrwin*              p_symbol_engine_prwin();
-  CSymbolEngineRaisersCallers*     p_symbol_engine_raisers_callers();
-  CSymbolEngineRandom*             p_symbol_engine_random();
-  CSymbolEngineReplayFrameController*         p_symbol_engine_replayframe_controller();
-  CSymbolEngineTableLimits*        p_symbol_engine_tablelimits();
-  CSymbolEngineTableStats*         p_symbol_engine_table_stats();
-  CSymbolEngineTime*               p_symbol_engine_time();
-  CSymbolEngineUserchair*          p_symbol_engine_userchair();
-  CSymbolEngineVariousDataLookup*  p_symbol_engine_various_data_lookup();
-  CSymbolEngineVersus*             p_symbol_engine_versus;
+   CSymbolEngineActiveDealtPlaying* p_symbol_engine_active_dealt_playing()    { return _p_symbol_engine_active_dealt_playing; }
+  CSymbolEngineAutoplayer*         p_symbol_engine_autoplayer()               { return _p_symbol_engine_autoplayer; }
+  CSymbolEngineBlinds*             p_symbol_engine_blinds()                   { return _p_symbol_engine_blinds; }
+  CSymbolEngineCards*              p_symbol_engine_cards()                    { return _p_symbol_engine_cards; }
+  CSymbolEngineCasino*             p_symbol_engine_casino()                   { return _p_symbol_engine_casino; }
+  CSymbolEngineChairs*             p_symbol_engine_chairs()                   { return _p_symbol_engine_chairs; }
+  CSymbolEngineChipAmounts*        p_symbol_engine_chip_amounts()             { return _p_symbol_engine_chip_amounts; }
+  CSymbolEngineColourCodes*        p_symbol_engine_colourcodes()              { return _p_symbol_engine_colourcodes; }
+  CSymbolEngineDealerchair*        p_symbol_engine_dealerchair()              { return _p_symbol_engine_dealerchair; }
+  CSymbolEngineEventLogging*       p_symbol_engine_event_logging()            { return _p_symbol_engine_event_logging; }
+  CSymbolEngineGameType*           p_symbol_engine_gametype()                 { return _p_symbol_engine_gametype; }
+  CSymbolEngineHandrank*           p_symbol_engine_handrank()                 { return _p_symbol_engine_handrank; }
+  CSymbolEngineICM*                p_symbol_engine_icm()                      { return _p_symbol_engine_icm; }
+  CSymbolEngineHistory*            p_symbol_engine_history()                  { return _p_symbol_engine_history; }
+  CSymbolEngineIniFunctions*       p_symbol_engine_ini_functions()            { return _p_symbol_engine_ini_functions; }
+  CSymbolEngineIsOmaha*            p_symbol_engine_isomaha()                  { return _p_symbol_engine_isomaha; }
+  CSymbolEngineIsTournament*       p_symbol_engine_istournament()             { return _p_symbol_engine_istournament; }
+  CSymbolEngineMemorySymbols*      p_symbol_engine_memory_symbols()           { return _p_symbol_engine_memory_symbols; }
+  CSymbolEngineMTTInfo*            p_symbol_engine_mtt_info()                 { return _p_symbol_engine_mtt_info; }
+  CSymbolEngineOpenPPL*            p_symbol_engine_open_ppl()                 { return _p_symbol_engine_open_ppl; }
+  CSymbolEngineOpenPPLHandAndBoardExpression* p_symbol_engine_open_ppl_hand_and_board_expression()  { return _p_symbol_engine_open_ppl_hand_and_board_expression; }
+  CSymbolEngineOpenPPLUserVariables*          p_symbol_engine_openppl_user_variables()              { return _p_symbol_engine_openppl_user_variables; }
+  CSymbolEnginePokerAction*        p_symbol_engine_poker_action()             { return _p_symbol_engine_poker_action; }
+  CSymbolEnginePokerTracker*       p_symbol_engine_pokertracker()             { return _p_symbol_engine_pokertracker; }
+  CSymbolEnginePokerval*           p_symbol_engine_pokerval()                 { return _p_symbol_engine_pokerval; }
+  CSymbolEnginePositions*          p_symbol_engine_positions()                { return _p_symbol_engine_positions; }
+  CSymbolEnginePrwin*              p_symbol_engine_prwin()                    { return _p_symbol_engine_prwin; }
+  CSymbolEngineRaisersCallers*     p_symbol_engine_raisers_callers()          { return _p_symbol_engine_raisers_callers; }
+  CSymbolEngineRandom*             p_symbol_engine_random()                   { return _p_symbol_engine_random; }
+  CSymbolEngineReplayFrameController*         p_symbol_engine_replayframe_controller()              { return _p_symbol_engine_replayframe_controller; }
+  CSymbolEngineTableLimits*        p_symbol_engine_tablelimits()              { return _p_symbol_engine_tablelimits; }
+  CSymbolEngineTableStats*         p_symbol_engine_table_stats()              { return _p_symbol_engine_table_stats; }
+  CSymbolEngineTime*               p_symbol_engine_time()                     { return _p_symbol_engine_time; }
+  CSymbolEngineUserchair*          p_symbol_engine_userchair()                { return _p_symbol_engine_userchair; }
+  CSymbolEngineVariousDataLookup*  p_symbol_engine_various_data_lookup()      { return _p_symbol_engine_various_data_lookup; }
+  CSymbolEngineVersus*             p_symbol_engine_versus()                   { return _p_symbol_engine_versus; }
+  // Special engines
+  CFunctionCollection*             p_function_collection()                    { return _p_function_collection; }
+  CHandresetDetector*              p_handreset_detector()                     { return _p_handreset_detector; }
+  // Hand history generation
+  // Only the writer module needs to be exposed for the others
+  CHandHistoryWriter*              p_handhistory_writer()                     { return _p_handhistory_writer; }
  private:
   void BuildListOfSymbolsProvided();
  private:
@@ -187,11 +193,11 @@ class CEngineContainer {
   CHandHistoryWriter       *_p_handhistory_writer;
 };
 
-extern CEngineContainer *_p_engine_container;
+extern CEngineContainer *p_engine_container;
 
 // Abbreviation, otherwise the code becomes extremely long:
 //   _p_engine_container->p_symbol_engine_dealerchai()->dealerchair()
 // and even longer once the engine-containere is part of a table-object.
-#define SYM _p_engine_container
+#define SYM p_engine_container
 
 #endif INC_CENGINECONTAINER_H

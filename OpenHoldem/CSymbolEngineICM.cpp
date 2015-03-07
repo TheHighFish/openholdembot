@@ -113,10 +113,10 @@ double P(int i, int n, double *s, int N)
 
 int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
-	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
-	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
-	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
-	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
+	int	sym_playersseatedbits =	SYM->p_symbol_engine_active_dealt_playing()->playersseatedbits();
+	int	sym_nplayersseated    =	SYM->p_symbol_engine_active_dealt_playing()->nplayersseated();
+	int	sym_dealerchair       =	SYM->p_symbol_engine_dealerchair()->dealerchair();
+	int	sym_nplayersblind     =	SYM->p_symbol_engine_blinds()->nplayersblind();
 	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
 
 	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
@@ -133,7 +133,7 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 			int next_chair = i%p_tablemap->nchairs();
 			double p_bet = p_table_state->_players[next_chair]._bet;
 
-			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
+			if (p_bet > 0 && p_bet <= SYM->p_symbol_engine_tablelimits()->sblind())
 				sb_offset = 0;
 		}
 	}
@@ -201,7 +201,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 {
 	double ICM = 0.0;
 
-	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
+	int			sym_opponentsseatedbits = SYM->p_symbol_engine_active_dealt_playing()->opponentsseatedbits();
 
 	for (int i=0; i<playerNB; ++i) {
     write_log(preferences.debug_icm(),
@@ -243,7 +243,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 
 bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   // Fast exit on other symbols
-  int	sym_userchair = p_symbol_engine_userchair->userchair();
+  int	sym_userchair = SYM->p_symbol_engine_userchair()->userchair();
   if (memcmp(name, "icm", 3) != 0) return false;
 	if (sym_userchair == k_undefined) {
 		*result = 0.0;
@@ -257,7 +257,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
   double sum_of_prizes = 0.0;
   for (int i=0; i<number_of_icm_prizes; ++i) {
     int function_name_index = k_icm_prize1 + i;
-    prizes[i] = p_function_collection->Evaluate(
+    prizes[i] = SYM->p_function_collection()->Evaluate(
       k_standard_function_names[function_name_index]);
     sum_of_prizes += prizes[i];
   }
@@ -272,12 +272,12 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
     return true;
   }
 
-	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
-	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
-	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
-	double	sym_pot = p_symbol_engine_chip_amounts->pot();
-	double	sym_call = p_symbol_engine_chip_amounts->call();
+	int			sym_opponentsplayingbits = SYM->p_symbol_engine_active_dealt_playing()->opponentsplayingbits();
+	int			sym_nopponentsplaying = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying();
+	int			sym_nplayersseated = SYM->p_symbol_engine_active_dealt_playing()->nplayersseated();
+	int			sym_playersseatedbits = SYM->p_symbol_engine_active_dealt_playing()->playersseatedbits();
+	double	sym_pot = SYM->p_symbol_engine_chip_amounts()->pot();
+	double	sym_call = SYM->p_symbol_engine_chip_amounts()->call();
 	double	sym_currentbet[k_max_number_of_players]={0};
 
 	for (int i = 0; i < k_max_number_of_players; i++)
@@ -285,13 +285,13 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
 			stacks[i] = p_table_state->_players[i]._balance;
-			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
+			sym_currentbet[i] = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 		}
 	}
 
 	if (strncmp(name,"icm_fold",8)==0)
 	{
-		double to_split = p_symbol_engine_chip_amounts->potcommon();
+		double to_split = SYM->p_symbol_engine_chip_amounts()->potcommon();
 
 		for (int i = 0; i < k_max_number_of_players; i++)
 		{
@@ -543,7 +543,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			if (IsBitSet(sym_playersseatedbits, i))
 			{
-				stacks[i] = p_symbol_engine_chip_amounts->stacks_at_hand_start(i);
+				stacks[i] = SYM->p_symbol_engine_chip_amounts()->stacks_at_hand_start(i);
 			}
 	   }
 	}

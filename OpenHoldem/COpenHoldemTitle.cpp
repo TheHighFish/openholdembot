@@ -64,12 +64,12 @@ CString COpenHoldemTitle::FullTitle()
 		MAX_WINDOW_TITLE);
 	if (p_autoconnector->IsConnected())
 	{
-		full_title.Format("%s - %s (%s)", p_function_collection->Title(), 
+		full_title.Format("%s - %s (%s)", SYM->p_function_collection()->Title(), 
 			p_tablemap->sitename(), table_title);
 	}
 	else
 	{
-		full_title.Format("%s", p_function_collection->Title());
+		full_title.Format("%s", SYM->p_function_collection()->Title());
 	}
 	return full_title;
 }

@@ -97,7 +97,7 @@ bool CScraper::GetButtonState(CString button_state_as_string) {
 bool CScraper::GetButtonState(int button_index) {
 	CString l_button_state = "";
 	if (button_index<=9) {
-		if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5)	{
+		if (SYM->p_symbol_engine_casino()->ConnectedToManualMode() && button_index == 5)	{
 			// Don't MakeLower our mm_network symbol
 			l_button_state = p_table_state->_SCI._button_state[button_index];
 		}	else {
@@ -248,7 +248,7 @@ void CScraper::ScrapeActionButtons() {
 	}
 	// Ugly WinHoldem convention
 	// When using ManualMode, grab i5state for PT network 
-	if (p_symbol_engine_casino->ConnectedToManualMode())
+	if (SYM->p_symbol_engine_casino()->ConnectedToManualMode())
 	{
 		p_tablemap->set_network(p_table_state->_SCI._button_state[5]);
 	}
@@ -303,8 +303,8 @@ void CScraper::ScrapeBetsAndBalances() {
 		//   * scrape everybody up to my first action (then we know who was dealt)
 		//   * after that we scrape only dealt players
 		//   * and also players who have cards (fresh sitdown and hand-reset, former playersdealt is wrong)
-		if ((!p_symbol_engine_history->DidActThisHand())
-			|| IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), i)
+		if ((!SYM->p_symbol_engine_history()->DidActThisHand())
+			|| IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->playersdealtbits(), i)
       || p_table_state->_players[i].HasAnyCards())
 		{
 			ScrapeBet(i);
@@ -808,39 +808,39 @@ void CScraper::ScrapePots() {
 void CScraper::ScrapeMTTRegions() {
   assert(p_symbol_engine_mtt_info != NULL);
 	double result = 0;
-	p_symbol_engine_mtt_info->set_mtt_number_entrants(0);	
+	SYM->p_symbol_engine_mtt_info()->set_mtt_number_entrants(0);	
 	if (EvaluateNumericalRegion(&result, "mtt_number_entrants")) {	
-		p_symbol_engine_mtt_info->set_mtt_number_entrants(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_number_entrants(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_players_remaining(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_players_remaining(0);
 	if (EvaluateNumericalRegion(&result, "mtt_players_remaining")) {
-		p_symbol_engine_mtt_info->set_mtt_players_remaining(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_players_remaining(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_my_rank(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_my_rank(0);
 	if (EvaluateNumericalRegion(&result, "mtt_my_rank")) {
-		p_symbol_engine_mtt_info->set_mtt_my_rank(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_my_rank(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_paid_places(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_paid_places(0);
 	if (EvaluateNumericalRegion(&result, "mtt_paid_places")) {
-		p_symbol_engine_mtt_info->set_mtt_paid_places(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_paid_places(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_largest_stack(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_largest_stack(0);
 	if (EvaluateNumericalRegion(&result, "mtt_largest_stack")) {
-		p_symbol_engine_mtt_info->set_mtt_largest_stack(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_largest_stack(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_average_stack(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_average_stack(0);
 	if (EvaluateNumericalRegion(&result, "mtt_average_stack")) {
-		p_symbol_engine_mtt_info->set_mtt_average_stack(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_average_stack(result);
 	}
 	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_smallest_stack(0);
+	SYM->p_symbol_engine_mtt_info()->set_mtt_smallest_stack(0);
 	if (EvaluateNumericalRegion(&result, "mtt_smallest_stack")) {
-		p_symbol_engine_mtt_info->set_mtt_smallest_stack(result);
+		SYM->p_symbol_engine_mtt_info()->set_mtt_smallest_stack(result);
 	}
 }
 

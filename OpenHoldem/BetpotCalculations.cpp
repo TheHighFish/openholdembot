@@ -52,12 +52,12 @@ double BetPotFactor(int betpot_action_code) {
 double BetsizeForBetpot(int betpot_action_code) {
   assert(betpot_action_code >= k_autoplayer_function_betpot_2_1);
   assert(betpot_action_code <= k_autoplayer_function_betpot_1_4);
-  double pot_after_i_call = p_symbol_engine_chip_amounts->pot()
-    + p_symbol_engine_chip_amounts->call();
+  double pot_after_i_call = SYM->p_symbol_engine_chip_amounts()->pot()
+    + SYM->p_symbol_engine_chip_amounts()->call();
   double additional_money_into_pot = BetPotFactor(betpot_action_code) 
     * pot_after_i_call;
-  double final_betsize = p_symbol_engine_chip_amounts->currentbet(USER_CHAIR)
-    + p_symbol_engine_chip_amounts->call()
+  double final_betsize = SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR)
+    + SYM->p_symbol_engine_chip_amounts()->call()
     + additional_money_into_pot;
   assert(final_betsize > 0);
   return final_betsize;

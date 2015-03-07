@@ -170,25 +170,25 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
     // RaiseBy N Force
     double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+    double final_betsize_in_bblinds = SYM->p_symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
       "[CParseTreeNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
-      p_symbol_engine_chip_amounts->ncallbets(),
+      SYM->p_symbol_engine_chip_amounts()->ncallbets(),
       final_betsize_in_bblinds);
 		return final_betsize_in_bblinds;
 	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
     // RaiseBy X% Force
 		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
-    assert(p_symbol_engine_tablelimits->bet() > 0);
+    assert(SYM->p_symbol_engine_tablelimits()->bet() > 0);
 		double pot_size_after_call_in_big_blinds = 
-      (p_symbol_engine_chip_amounts->pot() / p_symbol_engine_tablelimits->bet()) 
-      + p_symbol_engine_chip_amounts->nbetstocall();
+      (SYM->p_symbol_engine_chip_amounts()->pot() / SYM->p_symbol_engine_tablelimits()->bet()) 
+      + SYM->p_symbol_engine_chip_amounts()->nbetstocall();
     assert(pot_size_after_call_in_big_blinds >= 0);
 		double raise_by_amount_in_bblinds = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+    double final_betsize_in_bblinds = SYM->p_symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
       "[CParseTreeNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
@@ -530,10 +530,10 @@ bool CParseTreeNode::SecondSibblingIsUserVariableToBeSet() {
 
 void CParseTreeNode::SetUserVariable(CString name) {
   if (name.Left(4).MakeLower() == "user") {   
-    p_symbol_engine_openppl_user_variables->Set(name);
+    SYM->p_symbol_engine_openppl_user_variables()->Set(name);
   } else if (name.Left(3) == "me_") {
     double temp_result;
-    p_symbol_engine_memory_symbols->EvaluateSymbol(name, 
+    SYM->p_symbol_engine_memory_symbols()->EvaluateSymbol(name, 
       &temp_result, true);
   }
   else {
@@ -556,7 +556,7 @@ bool CParseTreeNode::EvaluatesToBinaryNumber() {
   }
   else if (IsBinaryIdentifier()) return true;
   else if ((_node_type == kTokenIdentifier)
-      && p_function_collection->EvaluatesToBinaryNumber(_terminal_name)) {
+      && SYM->p_function_collection()->EvaluatesToBinaryNumber(_terminal_name)) {
     return true;
   }
   // Nothing binary

@@ -28,13 +28,13 @@
 #include "NumericalFunctions.h"
 
 double MinimumBetsizeDueToPreviousRaise() {
-	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
-		+ p_symbol_engine_chip_amounts->sraiprev());
+	double minimums_swag_amount = (SYM->p_symbol_engine_chip_amounts()->call() 
+		+ SYM->p_symbol_engine_chip_amounts()->sraiprev());
 	// If there are no bets and no raises the min-bet is 1 big-blind
 	if (minimums_swag_amount <= 0)	{
-		if (p_symbol_engine_tablelimits->bblind() > 0) 	{
+		if (SYM->p_symbol_engine_tablelimits()->bblind() > 0) 	{
 			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: set to 1 big-blind\n");
-			minimums_swag_amount = p_symbol_engine_tablelimits->bblind();
+			minimums_swag_amount = SYM->p_symbol_engine_tablelimits()->bblind();
 		}	else {
 			write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MinimumBetsizeDueToPreviousRaise: SERIOUS TABLEMAP-PROBLEM; no bets; big-blind unknown; setting it to 0.02\n");
 			// Setting it to the absolute minimum
@@ -48,9 +48,9 @@ double MinimumBetsizeDueToPreviousRaise() {
 
 double MaximumPossibleBetsizeBecauseOfBalance() {
 	assert(p_symbol_engine_userchair != NULL);
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
 	AssertRange(userchair, k_first_chair, k_last_chair);
-	double maximum_betsize = p_symbol_engine_chip_amounts->currentbet(userchair)
+	double maximum_betsize = SYM->p_symbol_engine_chip_amounts()->currentbet(userchair)
 		+ p_table_state->User()->_balance;
 	if (maximum_betsize <= 0) {
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
@@ -62,7 +62,7 @@ double MaximumPossibleBetsizeBecauseOfBalance() {
 }
 
 double SwagAmountAjustedToCasino(double amount_to_raise_to) {
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
 	assert(amount_to_raise_to >= 0);
 	double swag_amount_ajusted_to_casino = amount_to_raise_to;
 	// WinHoldems f$srai should return, what we want to add to (call + currentbet)
@@ -71,7 +71,7 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to) {
 	// http://forum.winholdem.net/wbb/viewtopic.php?t=1849
 	if (p_tablemap->swagtextmethod() == 2) {
 		// Old adjustment: call, so currentbet is too much
-		swag_amount_ajusted_to_casino = amount_to_raise_to - p_symbol_engine_chip_amounts->currentbet(userchair);
+		swag_amount_ajusted_to_casino = amount_to_raise_to - SYM->p_symbol_engine_chip_amounts()->currentbet(userchair);
 	}	else if (p_tablemap->swagtextmethod() == 3)	{
 		// Old adjustment: call + currentbet.
 		// Everything fine, nothing to do.
@@ -79,8 +79,8 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to) {
 		// Default: swagtextmethod == 1
 		// Old adjustment: 0, currentbet and call are too much.
 		swag_amount_ajusted_to_casino = amount_to_raise_to 
-			- p_symbol_engine_chip_amounts->currentbet(userchair)
-			- p_symbol_engine_chip_amounts->call();
+			- SYM->p_symbol_engine_chip_amounts()->currentbet(userchair)
+			- SYM->p_symbol_engine_chip_amounts()->call();
 	}
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] SwagAmountAjustedToCasino %.2f\n",
 		swag_amount_ajusted_to_casino);
@@ -97,7 +97,7 @@ bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents) {
 }
 
 double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents) {
-	if (!p_symbol_engine_istournament->istournament()) {
+	if (!SYM->p_symbol_engine_istournament()->istournament()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is cash-game. No rounding necessary.\n");
 		return amount_to_raise_to_in_dollars_and_cents;
@@ -118,18 +118,18 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 
 double MaximumBetsizeForGameType() {
 	double maximum_betsize = 0;
-	if (p_symbol_engine_gametype->ispl())	{
+	if (SYM->p_symbol_engine_gametype()->ispl())	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[SwagAdjustment] Game-type is Pot Limit.\n");
 		maximum_betsize = BetsizeForBetpot(k_autoplayer_function_betpot_1_1);
     write_log(preferences.debug_betsize_adjustment(), 
       "[SwagAdjustment] MaximumBetsizeForPotLimit: %.2f\n", maximum_betsize);
-	}	else if (p_symbol_engine_gametype->isfl()) {
+	}	else if (SYM->p_symbol_engine_gametype()->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
 		maximum_betsize = 0;
 	}	else {
-		int userchair = p_symbol_engine_userchair->userchair();
+		int userchair = SYM->p_symbol_engine_userchair()->userchair();
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[SwagAdjustment] Game-type is No Limit. Betsize restricted only by users balance.\n");
 		maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
@@ -141,10 +141,10 @@ double MaximumBetsizeForGameType() {
 }
 
 double RoundToBeautifulBetsize(const double amount_to_raise_to) {
-  assert(amount_to_raise_to >= p_symbol_engine_tablelimits->bblind());
+  assert(amount_to_raise_to >= SYM->p_symbol_engine_tablelimits()->bblind());
   // Don't round very smal betsizes.
   // There might be aa reason for it in very small pots.
-  if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
+  if (amount_to_raise_to < (2.0 * SYM->p_symbol_engine_tablelimits()->bblind())) {
     write_log(preferences.debug_betsize_adjustment(),
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because too small betsize\n");
     return amount_to_raise_to;
@@ -153,10 +153,10 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   // This adjustment will happen later.
   double result;
   // sblind / nnlind
-  if (amount_to_raise_to < (10 * p_symbol_engine_tablelimits->sblind())) {
-    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind());
+  if (amount_to_raise_to < (10 * SYM->p_symbol_engine_tablelimits()->sblind())) {
+    result = Rounding(amount_to_raise_to, SYM->p_symbol_engine_tablelimits()->sblind());
   } else {
-    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
+    result = Rounding(amount_to_raise_to, SYM->p_symbol_engine_tablelimits()->bblind());
   }
  
   // whole numbers (larg mu,bers)

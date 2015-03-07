@@ -50,7 +50,7 @@ void CStableFramesCounter::SaveCurrentState() {
 	/* 
 		Saves the current state for future reference
 	*/
-  _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
+  _myturnbitslast = SYM->p_symbol_engine_autoplayer()->myturnbits();
 
 	for (int i=0; i<k_number_of_community_cards; i++) {
     _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
@@ -92,7 +92,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	// - button states
 	bool same_scrape = true;
 
-	if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
+	if (_myturnbitslast != SYM->p_symbol_engine_autoplayer()->myturnbits()) {
 		same_scrape = false;
   }
 	for (int i=0; i<k_number_of_community_cards; i++) {

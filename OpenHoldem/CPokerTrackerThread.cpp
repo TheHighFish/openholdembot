@@ -355,7 +355,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	clock_t		updStart, updEnd;
 	int			duration;
 
-	int sym_elapsed = p_symbol_engine_time->elapsed();
+	int sym_elapsed = SYM->p_symbol_engine_time()->elapsed();
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	int siteid = pt_lookup.GetSiteId();
@@ -372,8 +372,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 	// get query string for the requested statistic
 	CString query = PT_DLL_GetQuery(stat,
-		p_symbol_engine_isomaha->isomaha(),
-		p_symbol_engine_istournament->istournament(),
+		SYM->p_symbol_engine_isomaha()->isomaha(),
+		SYM->p_symbol_engine_istournament()->istournament(),
 		siteid, _player_data[m_chr].pt_name);
 
 	// Do the query against the PT database
@@ -583,8 +583,8 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 
 bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 {
-	int userchair = p_symbol_engine_userchair->userchair();
-	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
+	bool confirmed = SYM->p_symbol_engine_userchair()->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
@@ -716,8 +716,8 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		double players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
-			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
+		double players = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying() 
+			+ (SYM->p_symbol_engine_userchair()->userchair_confirmed() ? 1 : 0); 
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
 				
 		if (players < 2)

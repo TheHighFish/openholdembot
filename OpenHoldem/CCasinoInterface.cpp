@@ -60,7 +60,7 @@ void CCasinoInterface::ClickRect(RECT rect) {
 		rect.left, rect.top, rect.right, rect.bottom);
 
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1, GetFocus(), p_null);
-  p_symbol_engine_time->ResetOnAutoPlayerAction();
+  SYM->p_symbol_engine_time()->ResetOnAutoPlayerAction();
 }
 
 bool CCasinoInterface::ButtonAvailable(int autoplayer_code) {
@@ -183,7 +183,7 @@ void CCasinoInterface::PressTabToSwitchOHReplayToNextFrame() {
   RECT	rect_somewhere = {1, 1, 2, 2};
 	POINT	cur_pos = {0};
 
-  assert(p_symbol_engine_casino->ConnectedToOHReplay());
+  assert(SYM->p_symbol_engine_casino()->ConnectedToOHReplay());
   (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), 
     rect_somewhere, "\t", false, GetFocus(), cur_pos);
 }
@@ -350,14 +350,14 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	}
 	int betround = p_betround_calculator->betround();
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag, 'didswag' now: %d\n", 
-		p_symbol_engine_history->didswag(betround));
+		SYM->p_symbol_engine_history()->didswag(betround));
 	return (!lost_focus);
 }
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to swag allin\n");
-  int userchair = p_symbol_engine_userchair->userchair();
-	double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
+  int userchair = SYM->p_symbol_engine_userchair()->userchair();
+	double betsize_for_allin = SYM->p_symbol_engine_chip_amounts()->currentbet(userchair)
 	  + p_table_state->User()->_balance; 
   return EnterBetsize(betsize_for_allin);
 }

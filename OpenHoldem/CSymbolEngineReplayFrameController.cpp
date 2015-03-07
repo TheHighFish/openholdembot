@@ -73,7 +73,7 @@ void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
     return;
   }
 	if ((preferences.replay_record() == kShootReplyFramesOnMyTurn)			
-		  && p_symbol_engine_autoplayer->ismyturn() 
+		  && SYM->p_symbol_engine_autoplayer()->ismyturn() 
       && p_autoplayer->autoplayer_engaged()
 		  && p_stableframescounter->NumberOfStableFrames() == preferences.frame_delay()) {
     // If it's my turn and we have enough stable frames

@@ -17,8 +17,8 @@
 #include "MagicNumbers.h"
 #include "CVirtualSymbolEngine.h"
 
-#define BIG_BLIND p_symbol_engine_tablelimits->bblind()
-#define SMALL_BLIND p_symbol_engine_tablelimits->sblind()
+#define BIG_BLIND SYM->p_symbol_engine_tablelimits()->bblind()
+#define SMALL_BLIND SYM->p_symbol_engine_tablelimits()->sblind()
 
 struct STableLimit {
 	double sblind;

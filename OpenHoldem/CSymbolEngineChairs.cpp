@@ -66,7 +66,7 @@ void CSymbolEngineChairs::ResetOnMyTurn() {
   // Only well-defined at my turn and requires userchair for calculation.
   // But it seems some "casinos" like test-suite can break that condition.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
-  //assert(p_symbol_engine_userchair->userchair_confirmed());
+  //assert(SYM->p_symbol_engine_userchair()->userchair_confirmed());
   CalculateOpponentHeadsupChair();
   CalculateSmallBlindChair();
   CalculateBigBlindChair();
@@ -80,9 +80,9 @@ void CSymbolEngineChairs::ResetOnHeartbeat() {
 
 void CSymbolEngineChairs::CalculateOpponentHeadsupChair(){
   _opponent_headsup_chair = k_undefined;
-	if (p_symbol_engine_active_dealt_playing->nopponentsplaying() > 1) return;
+	if (SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying() > 1) return;
 	for (int i = 0; i < k_max_number_of_players; ++i)	{
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->opponentsplayingbits(), i)) {
+		if (IsBitSet(SYM->p_symbol_engine_active_dealt_playing()->opponentsplayingbits(), i)) {
       _opponent_headsup_chair = i;
       return;
     }
@@ -98,7 +98,7 @@ void CSymbolEngineChairs::CalculateBigBlindChair() {
 }
 
 void CSymbolEngineChairs::CalculateCutOffChair() {
-  int cutoff_dealposition = p_symbol_engine_active_dealt_playing->nplayersdealt() - 1;
+  int cutoff_dealposition = SYM->p_symbol_engine_active_dealt_playing()->nplayersdealt() - 1;
   _cutoff_chair = GetChairByDealposition(cutoff_dealposition);
 }
 
@@ -107,12 +107,12 @@ void CSymbolEngineChairs::CalculateCallerChairs() {
   _lastcaller_chair = k_undefined;
   double last_raisers_bet = p_table_state->User()->_bet;
   if ((p_betround_calculator->betround() == k_betround_preflop) 
-      && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
+      && (last_raisers_bet < SYM->p_symbol_engine_tablelimits()->bblind())) {
     // Avoid problems with so-called "blind-raisers"
-    last_raisers_bet = p_symbol_engine_tablelimits->bblind();
+    last_raisers_bet = SYM->p_symbol_engine_tablelimits()->bblind();
   }
   for (int i=1; i<_nchairs; ++i) {
-    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
+    int next_chair = (SYM->p_symbol_engine_userchair()->userchair() + i) % _nchairs;
     double next_bet = p_table_state->_players[next_chair]._bet;
     if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
       // We have a caller, at least the temporary last one
@@ -132,9 +132,9 @@ void CSymbolEngineChairs::CalculateFirstRaiserChair() {
   _firstraiser_chair = k_undefined;
   double users_bet = p_table_state->User()->_bet;
   for (int i=1; i<_nchairs; ++i) {
-    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
+    int next_chair = (SYM->p_symbol_engine_userchair()->userchair() + i) % _nchairs;
     double next_bet = p_table_state->_players[next_chair]._bet;
-    if ((next_bet > users_bet) && (next_bet > p_symbol_engine_tablelimits->bblind())) {
+    if ((next_bet > users_bet) && (next_bet > SYM->p_symbol_engine_tablelimits()->bblind())) {
       _firstraiser_chair = next_chair; 
       return;
     }
@@ -143,7 +143,7 @@ void CSymbolEngineChairs::CalculateFirstRaiserChair() {
 
 int CSymbolEngineChairs::GetChairByDealposition(int dealposition) {
   for (int i=0; i<_nchairs; ++i) {
-    if (p_symbol_engine_poker_action->DealPosition(i) == dealposition) {
+    if (SYM->p_symbol_engine_poker_action()->DealPosition(i) == dealposition) {
       return i;
     }
   }

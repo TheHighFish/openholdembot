@@ -15,6 +15,7 @@
 #include "CHandHistoryDealPhase.h"
 
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CHandHistoryWriter.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -65,7 +66,7 @@ void CHandHistoryDealPhase::ResetOnHeartbeat() {
     _job_done = true;
     return;
   }
-  if (p_symbol_engine_active_dealt_playing->nopponentsdealt() < 1 ) {
+  if (SYM->p_symbol_engine_active_dealt_playing()->nopponentsdealt() < 1 ) {
     // Blind-Posting not yet finished
     return;
   }
@@ -74,17 +75,17 @@ void CHandHistoryDealPhase::ResetOnHeartbeat() {
   // Searching clockwise for blind posters
   bool smallblind_seen = false;
   bool bigblind_seen   = false;
-  int last_chair  = p_symbol_engine_dealerchair->dealerchair();
+  int last_chair  = SYM->p_symbol_engine_dealerchair()->dealerchair();
   int first_chair = (last_chair + 1) % p_tablemap->nchairs();
   for (int i=first_chair; i<=last_chair; ++i) {
-    double currentbet = p_symbol_engine_chip_amounts->currentbet(i);
+    double currentbet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
     if (currentbet <= 0) {
       // Not having to post, not posting or not participating at all
       continue;
     }
     if (smallblind_seen && bigblind_seen) {
-      if (currentbet < p_symbol_engine_tablelimits->sblind()) {
-        p_handhistory_writer->PostsAnte(i);
+      if (currentbet < SYM->p_symbol_engine_tablelimits()->sblind()) {
+        SYM->p_handhistory_writer()->PostsAnte(i);
       }
       // We ignore additional people with a bigblind
       // They are maybe additional blind-posters
@@ -94,7 +95,7 @@ void CHandHistoryDealPhase::ResetOnHeartbeat() {
     if (smallblind_seen) {
       assert(!bigblind_seen);
       // Player must be posting the bigblind
-      p_handhistory_writer->PostsBigBlind(i);
+      SYM->p_handhistory_writer()->PostsBigBlind(i);
       bigblind_seen = true;
       continue;
     }
@@ -102,15 +103,15 @@ void CHandHistoryDealPhase::ResetOnHeartbeat() {
     // Usually a smallblind
     // Might be also a bigblind with missing small blind
     assert(currentbet > 0);
-    if (currentbet <= p_symbol_engine_tablelimits->sblind()) {
-      p_handhistory_writer->PostsSmallBlind(0);
+    if (currentbet <= SYM->p_symbol_engine_tablelimits()->sblind()) {
+      SYM->p_handhistory_writer()->PostsSmallBlind(0);
       smallblind_seen = true;
       continue;
     }
-    if ((currentbet > p_symbol_engine_tablelimits->sblind()) 
-        && (currentbet <= p_symbol_engine_tablelimits->sblind())) {
+    if ((currentbet > SYM->p_symbol_engine_tablelimits()->sblind()) 
+        && (currentbet <= SYM->p_symbol_engine_tablelimits()->sblind())) {
       // Bigblind and missing smallblind
-      p_handhistory_writer->PostsBigBlind(i);
+      SYM->p_handhistory_writer()->PostsBigBlind(i);
       smallblind_seen = true;
       bigblind_seen = true;
       continue;

@@ -122,8 +122,8 @@ bool COHScriptObject::IsNotesOrDLL() {
 
 int COHScriptObject::EditorGroupingCategory() {
   // Category 0: autoplayer / OpenPPL
-  if (p_function_collection->IsOpenPPLProfile()  && IsMainOpenPPLFunction()) return 0;
-  if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction())  return 0;
+  if (SYM->p_function_collection()->IsOpenPPLProfile()  && IsMainOpenPPLFunction()) return 0;
+  if (!SYM->p_function_collection()->IsOpenPPLProfile() && IsAutoplayerFunction())  return 0;
   // Category 1: Secondary (f$chat,..) DLL, notes)
   if (IsSecondaryFunction()) return 1;
   if (IsNotesOrDLL()) return 1;

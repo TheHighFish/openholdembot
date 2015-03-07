@@ -92,13 +92,13 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
     // Keep scrape_delay as is
     // We want fast auto-connects 
     // and the auto-connector is extremely optimized.
-  }	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  }	else if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
     // Not yet seated
     // Probably not much critical work to be done.
     scrape_delay *= 2; 
   } else if (!p_table_state->User()->HasKnownCards()) {
     // Folded
-    if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
+    if (SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying() >= 3) {
       // Multiway, not participating.
       // Hand will continue for some time.
       scrape_delay *= 2;
@@ -114,7 +114,7 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
     scrape_delay *= 0.5; 
 	} else {
     // Playing, but not my turn
-    if (p_symbol_engine_time->elapsedauto() < p_symbol_engine_active_dealt_playing->nopponentsplaying()) {
+    if (SYM->p_symbol_engine_time()->elapsedauto() < SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying()) {
       // Short after autoplyer-action
       // Will take some time until it is our turn again.
       // Slow down a little bit.
@@ -199,7 +199,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer
-	if (p_dll_extension->IsLoaded() && p_symbol_engine_autoplayer->ismyturn())	{
+	if (p_dll_extension->IsLoaded() && SYM->p_symbol_engine_autoplayer()->ismyturn())	{
 		iswait = (p_dll_extension->process_message()) ("query", "dll$iswait");
 	}	else {
 		iswait = false;
@@ -208,7 +208,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %s\n", 
-		Bool2CString(p_symbol_engine_userchair->userchair_confirmed()));
+		Bool2CString(SYM->p_symbol_engine_userchair()->userchair_confirmed()));
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] iswait: %s\n", 
 		Bool2CString(iswait));
 	// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!

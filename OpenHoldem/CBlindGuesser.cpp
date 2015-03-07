@@ -172,7 +172,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // but this looks acceptable, because we have to guess only
   // verz few times and don't have to act at the verz first heartbeat
   // (because of stable frames).
-  int dealer = p_symbol_engine_dealerchair->dealerchair();  
+  int dealer = SYM->p_symbol_engine_dealerchair()->dealerchair();  
   // Exit on undefined or wrong dealer (last hand)
   if ((dealer == k_undefined) || !p_table_state->_players[dealer]._dealer) return;
 
@@ -234,7 +234,7 @@ void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind,
                                                  double *bblind, 
                                                  double *bbet) {
   assert(p_symbol_engine_gametype != NULL);
-  bool is_fixed_limit = p_symbol_engine_gametype->isfl();
+  bool is_fixed_limit = SYM->p_symbol_engine_gametype()->isfl();
   // Get values from the scraper (ttlimits / c0limits)
   *sblind = p_table_state->_s_limit_info.sblind(is_fixed_limit);
   *bblind = p_table_state->_s_limit_info.bblind(is_fixed_limit);

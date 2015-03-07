@@ -33,7 +33,7 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   assert(amount_to_raise_to >= 0.0);
   assert(p_function_collection != NULL);
   double critical_betsize_to_balance_ratio = 
-    p_function_collection->EvaluateAutoplayerFunction(k_standard_function_allin_on_betsize_balance_ratio);
+    SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_allin_on_betsize_balance_ratio);
   // Enabled?
   if (critical_betsize_to_balance_ratio <= 0.0) {
     write_log(preferences.debug_allin_adjustment(),
@@ -52,7 +52,7 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   // If our currentbet is "too large" or our balance "too low"
   // then we alreadz should be allin or something is wrong.
   // Act conservatively here
-  if (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) >= critical_betsize) {
+  if (SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR) >= critical_betsize) {
     write_log(preferences.debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled as we already should be allin if input was right.\n");
     return false;

@@ -198,7 +198,7 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
 	double sum_of_all_cips = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		sum_of_all_cips += p_table_state->_players[i]._balance;
-		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
+		sum_of_all_cips += SYM->p_symbol_engine_chip_amounts()->currentbet(i);
 	}
 	if (sum_of_all_cips != int(sum_of_all_cips)) {
 		// Franctional number.
@@ -222,14 +222,14 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	// Antes are present, if all players are betting 
 	// and at least 3 have a bet smaller than SB 
 	// (remember: this is for the first few hands only).
-	if ((p_symbol_engine_raisers_callers->nopponentsbetting() + 1)
-		  < p_symbol_engine_active_dealt_playing->nplayersseated()) {
+	if ((SYM->p_symbol_engine_raisers_callers()->nopponentsbetting() + 1)
+		  < SYM->p_symbol_engine_active_dealt_playing()->nplayersseated()) {
 		return false;
 	}
 	int players_with_antes = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
-		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
+		double players_bet = SYM->p_symbol_engine_chip_amounts()->currentbet(i);
+		if ((players_bet > 0) && (players_bet < SYM->p_symbol_engine_tablelimits()->sblind())) {
 			players_with_antes++;
 		}
 	}
@@ -266,15 +266,15 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	// Also checking for (elapsedauto < elapsed). i.e. at least one action
 	// since connection, as handsplayed does not reset if we play multiple games.
 	if ((_istournament != k_undefined)
-		  && (p_handreset_detector->hands_played() > 2)
-		  && (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed())) {
+		  && (SYM->p_handreset_detector()->hands_played() > 2)
+		  && (SYM->p_symbol_engine_time()->elapsedauto() < SYM->p_symbol_engine_time()->elapsed())) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
 		_decision_locked = true;
 		return;
 	}
   // If we plaz at DDPoiker the game is a tournament,
   // even though it can~t be detected bz titlestring.
-  if (p_symbol_engine_casino->ConnectedToDDPoker()) {
+  if (SYM->p_symbol_engine_casino()->ConnectedToDDPoker()) {
     write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
     _istournament    = true;
 		_decision_locked = true;
@@ -298,11 +298,11 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // Only consider this option if a game is going on (playersplaying)
   // to avoid problems with no blinds during the sit-down-phase 
   // of a tournament.
-  if (p_symbol_engine_active_dealt_playing->nplayersplaying() < 2) {
+  if (SYM->p_symbol_engine_active_dealt_playing()->nplayersplaying() < 2) {
     write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Can't consider the blinds -- too few people playing.\n");
     return;
   }
-  double bigblind = p_symbol_engine_tablelimits->bblind();
+  double bigblind = SYM->p_symbol_engine_tablelimits()->bblind();
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
 	  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
 	  _istournament    = false;
@@ -312,7 +312,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // If it is ManualMode, then we detect it by title-string "tourney".
   // High blinds (default) don~t make it a tournament.
   // Therefore don't continue.
-  if (p_symbol_engine_casino->ConnectedToManualMode()) {
+  if (SYM->p_symbol_engine_casino()->ConnectedToManualMode()) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] ManualMode, but no tournament identifier\n");
     return;
   }

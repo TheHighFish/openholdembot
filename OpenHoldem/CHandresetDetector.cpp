@@ -72,7 +72,7 @@ void CHandresetDetector::CalculateIsHandreset() {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
     ++_hands_played;
-    if (p_symbol_engine_active_dealt_playing->nopponentsdealt() == 1) {
+    if (SYM->p_symbol_engine_active_dealt_playing()->nopponentsdealt() == 1) {
       // Last hand (data not yet reset) was headsup
       ++_hands_played_headsup;
     } else {
@@ -234,8 +234,8 @@ bool CHandresetDetector::SmallBlindExists() {
 
 void CHandresetDetector::GetNewSymbolValues() {
 	assert(p_symbol_engine_dealerchair != NULL);
-	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))	{
-		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
+	if (IsValidDealerChair(SYM->p_symbol_engine_dealerchair()->dealerchair()))	{
+		dealerchair = SYM->p_symbol_engine_dealerchair()->dealerchair();	
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
 	if (IsValidHandNumber(p_table_state->_s_limit_info.handnumber()))	{
@@ -245,11 +245,11 @@ void CHandresetDetector::GetNewSymbolValues() {
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
 	assert(p_symbol_engine_userchair != NULL);
-	int userchair = p_symbol_engine_userchair->userchair();
-  _potsize = p_symbol_engine_chip_amounts->pot();
+	int userchair = SYM->p_symbol_engine_userchair()->userchair();
+  _potsize = SYM->p_symbol_engine_chip_amounts()->pot();
   _community_cards = p_scraper_access->NumberOfCommonCards();
-  _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-  _bblind = p_symbol_engine_tablelimits->bblind();
+  _nopponentsplaying = SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying();
+  _bblind = SYM->p_symbol_engine_tablelimits()->bblind();
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
@@ -277,7 +277,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 }
 
 void CHandresetDetector::OnNewHeartbeat() {
-	if (p_symbol_engine_dealerchair == NULL) {
+	if (SYM->p_symbol_engine_dealerchair() == NULL) {
 		// Very early initialization phase
 		return;
 	}

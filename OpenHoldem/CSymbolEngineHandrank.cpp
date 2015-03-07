@@ -90,7 +90,7 @@ void CSymbolEngineHandrank::ResetOnMyTurn() {
 		p_table_state->User()->_hole_cards[1].GetValue());
 
 	// if nopponents<1 or >9 then default to name sane value
-	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+	int _nopponents = SYM->p_symbol_engine_prwin()->nopponents_for_prwin();
 		
 	for (int i=0; i<k_number_of_starting_hands; i++)
 	{

@@ -17,6 +17,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "FloatingPoint_Comparisions.h"
@@ -182,7 +183,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	int	next_largest_bet = 0;
 	double largest_bet = Largestbet();
 
-	if (p_symbol_engine_userchair->userchair_confirmed()) {
+	if (SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
 		_call = largest_bet - _currentbet[USER_CHAIR];
 	} else {
 		_call = 0;
@@ -208,14 +209,14 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 }
 
 void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
-	double bet = p_symbol_engine_tablelimits->bet();
+	double bet = SYM->p_symbol_engine_tablelimits()->bet();
 	if (bet <= 0) {
     // Fail-safe for the case of not being connected 
     // and completely bogus input
     bet = 1.00;
 	}
   double users_currentbet = 0;
-	if (p_symbol_engine_userchair->userchair_confirmed())	{
+	if (SYM->p_symbol_engine_userchair()->userchair_confirmed())	{
 		_nbetstocall = _call / bet;	
     users_currentbet = _currentbet[USER_CHAIR];
 	} else {
@@ -264,10 +265,10 @@ double CSymbolEngineChipAmounts::SortedBalance(const int rank) {
 }
 
 double CSymbolEngineChipAmounts::ncurrentbets() {
-	if (p_symbol_engine_tablelimits->bet() == 0)		{
+	if (SYM->p_symbol_engine_tablelimits()->bet() == 0)		{
 		return 0;
 	}
-	return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
+	return (currentbet(SYM->p_symbol_engine_userchair()->userchair()) / SYM->p_symbol_engine_tablelimits()->bet());
 }
 
 bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
@@ -307,7 +308,7 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	}	else if (memcmp(name, "stack", 5)==0 && strlen(name)==6) {
 		*result = stack(name[5]-'0');
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==10)	{
-		*result = currentbet(p_symbol_engine_userchair->userchair());
+		*result = currentbet(SYM->p_symbol_engine_userchair()->userchair());
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==11)	{
 		*result = currentbet(name[10]-'0');
 	}	else if (memcmp(name, "call", 4)==0 && strlen(name)==4)	{

@@ -46,13 +46,13 @@ void CTableState::Reset() {
 }
 
 CPlayer *CTableState::User() {
-  if (p_symbol_engine_userchair == NULL) {
+  if (SYM->p_symbol_engine_userchair() == NULL) {
     return &_players[kFakeEntryForUnknownUserchair];
   }
-  if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  if (!SYM->p_symbol_engine_userchair()->userchair_confirmed()) {
     return &_players[kFakeEntryForUnknownUserchair];
   }
-  int userchair = p_symbol_engine_userchair->userchair();
+  int userchair = SYM->p_symbol_engine_userchair()->userchair();
   AssertRange(userchair, 0, k_last_chair);
   return &_players[userchair];
 }

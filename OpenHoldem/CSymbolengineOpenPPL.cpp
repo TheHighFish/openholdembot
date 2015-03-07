@@ -70,12 +70,12 @@ void CSymbolEngineOpenPPL::ResetOnMyTurn() {
 
 void CSymbolEngineOpenPPL::InitMemorySymbols() {
   // Nothing to be done if no OpenPPL-library loaded.
-  if (!p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+  if (!SYM->p_function_collection()->OpenPPLLibraryCorrectlyParsed()) {
     return;
   }
   // Verify that ini-functions exists.
   // Avoid PEBKACs by stupid renaming, that breaks everything
-  if (!p_function_collection->Exists(kOpenPPLIniFunctionsForHistorySymbols)) {
+  if (!SYM->p_function_collection()->Exists(kOpenPPLIniFunctionsForHistorySymbols)) {
     CString message;
     message.Format("Can't find initialization-function\n"
       "%s\n"
@@ -91,7 +91,7 @@ void CSymbolEngineOpenPPL::InitMemorySymbols() {
   // that will soon be used by the autoplayer during this heartbeat.
   // Therefore we log these initializations too if an autoplayer-trace
   // is desired.
-  p_function_collection->Evaluate(
+  SYM->p_function_collection()->Evaluate(
     kOpenPPLIniFunctionsForHistorySymbols,
     preferences.trace_enabled());
 }

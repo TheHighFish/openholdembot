@@ -169,7 +169,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	int chair = 0;
 
 	if (!p_pokertracker_thread->IsConnected()) 	{
-		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula_parser->IsParsing()) {
+		if (!SYM->p_symbol_engine_userchair()->userchair_confirmed() || p_formula_parser->IsParsing()) {
 			// We are not yet seated or formula is getting parsed.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
@@ -189,43 +189,43 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	assert(StringAIsPrefixOfStringB("pt_", s));
 	// PokerTracker symbols for the raise-chair
 	if (s.Right(10) == "_raischair") {
-		chair = p_symbol_engine_raisers_callers->raischair();
+		chair = SYM->p_symbol_engine_raisers_callers()->raischair();
 	}
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup") {
-    chair = p_symbol_engine_chairs->opponent_headsup_chair();
+    chair = SYM->p_symbol_engine_chairs()->opponent_headsup_chair();
 	}
   // PokerTracker symbols for the smallblind chair
 	else if (s.Right(11) == "_smallblind") {
-    chair = p_symbol_engine_chairs->smallblind_chair();
+    chair = SYM->p_symbol_engine_chairs()->smallblind_chair();
 	}
   // PokerTracker symbols for the bigblind chair
 	else if (s.Right(9) == "_bigblind") {
-    chair = p_symbol_engine_chairs->bigblind_chair();
+    chair = SYM->p_symbol_engine_chairs()->bigblind_chair();
 	}
   // PokerTracker symbols for the cutoff chair
 	else if (s.Right(7) == "_cutoff ") {
-    chair = p_symbol_engine_chairs->cutoff_chair();
+    chair = SYM->p_symbol_engine_chairs()->cutoff_chair();
 	}
   // PokerTracker symbols for the firstcaller chair
 	else if (s.Right(12) == "_firstcaller") {
-    chair = p_symbol_engine_chairs->firstcaller_chair();
+    chair = SYM->p_symbol_engine_chairs()->firstcaller_chair();
 	}
   // PokerTracker symbols for the lastcaller chair
 	else if (s.Right(11) == "_lastcaller") {
-    chair = p_symbol_engine_chairs->lastcaller_chair();
+    chair = SYM->p_symbol_engine_chairs()->lastcaller_chair();
 	}
   // PokerTracker symbols for the firstraiser chair
 	else if (s.Right(12) == "_firstraiser") {
-    chair = p_symbol_engine_chairs->firstraiser_chair();
+    chair = SYM->p_symbol_engine_chairs()->firstraiser_chair();
 	}
   // PokerTracker symbols for the dealerchair chair
 	else if (s.Right(7) == "_dealer") {
-    chair = p_symbol_engine_dealerchair->dealerchair();
+    chair = SYM->p_symbol_engine_dealerchair()->dealerchair();
 	}
   // PokerTracker symbols for the  chair
 	else if (s.Right(5) == "_user") {
-    chair = p_symbol_engine_userchair->userchair();
+    chair = SYM->p_symbol_engine_userchair()->userchair();
 	}
   // PokerTracker symbols for chair X
 	else {

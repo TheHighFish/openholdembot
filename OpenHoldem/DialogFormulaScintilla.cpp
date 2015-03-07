@@ -123,7 +123,7 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	in_startup = true;
   
-  if (!p_function_collection->IsOpenPPLProfile()) {
+  if (!SYM->p_function_collection()->IsOpenPPLProfile()) {
     // Either use autoplayer-functions (default) or OpenPPL
     // but not both, because they are incompatible
 	  m_standard_headings.Add("Autoplayer Functions");
@@ -510,7 +510,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     }
     switch(j) {
       case 0: 
-        if (p_function_collection->IsOpenPPLProfile()) {
+        if (SYM->p_function_collection()->IsOpenPPLProfile()) {
           // OpenPPL-functions
           for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
             AddFunctionToTree(parent, k_OpenPPL_function_names[i]);
@@ -559,7 +559,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   parent = _subtree_handlists;
   m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
 
-  p_OH_script_object = p_function_collection->GetFirst();
+  p_OH_script_object = SYM->p_function_collection()->GetFirst();
   while (p_OH_script_object != NULL) {
     if (p_OH_script_object->IsList())
     {
@@ -567,18 +567,18 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
       m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
         p_OH_script_object->name()));
     }
-    p_OH_script_object = p_function_collection->GetNext();
+    p_OH_script_object = SYM->p_function_collection()->GetNext();
   }
  
   _subtree_user_defined_functions = m_FormulaTree.InsertItem("User Defined Functions");
   hUDFItem = parent = _subtree_user_defined_functions;
-  p_OH_script_object = p_function_collection->GetFirst();
+  p_OH_script_object = SYM->p_function_collection()->GetFirst();
   while (p_OH_script_object != NULL) {
     m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
     if (p_OH_script_object->IsUserDefinedFunction()) {
       AddFunctionToTree(parent, p_OH_script_object->name());
     }
-    p_OH_script_object = p_function_collection->GetNext();
+    p_OH_script_object = SYM->p_function_collection()->GetNext();
   }
   GroupUDFs();
 }
@@ -810,7 +810,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
         || COHScriptObject::IsFunction(s)
         || COHScriptObject::IsList(s)) {
       SetExtendedWindowTitle(s);
-      COHScriptObject *p_function_or_list = p_function_collection->LookUp(s);
+      COHScriptObject *p_function_or_list = SYM->p_function_collection()->LookUp(s);
       if (p_function_or_list != NULL) {
         CScintillaWnd *pCurScin = reinterpret_cast<CScintillaWnd *>(m_FormulaTree.GetItemData(m_FormulaTree.GetSelectedItem()));
         if (!pCurScin) 
@@ -911,7 +911,7 @@ void CDlgFormulaScintilla::OnNew() {
     newdlg.is_function = true;
   }
   if (newdlg.DoModal() != IDOK) return;
-  if (p_function_collection->Exists(newdlg.CSnewname)) {
+  if (SYM->p_function_collection()->Exists(newdlg.CSnewname)) {
 	OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
 	return;
   }
@@ -921,7 +921,7 @@ void CDlgFormulaScintilla::OnNew() {
     COHScriptList *p_new_list = new COHScriptList(&newdlg.CSnewname, 
       NULL, kNoAbsoluteLineNumberExists);
     // Add it to working set CArray
-    p_function_collection->Add((COHScriptObject*)p_new_list);
+    SYM->p_function_collection()->Add((COHScriptObject*)p_new_list);
     // Add to tree
     p = m_FormulaTree.GetParentItem(m_FormulaTree.GetSelectedItem());
     if (p == NULL) { 
@@ -935,7 +935,7 @@ void CDlgFormulaScintilla::OnNew() {
     CFunction *p_new_function = new CFunction(&newdlg.CSnewname, 
       NULL, kNoAbsoluteLineNumberExists);
     // Add it to working set CArray
-    p_function_collection->Add((COHScriptObject*)p_new_function);
+    SYM->p_function_collection()->Add((COHScriptObject*)p_new_function);
     // Add to tree
     HTREEITEM hNewParent = hUDFItem;
 
@@ -983,7 +983,7 @@ void CDlgFormulaScintilla::OnRename() {
   strcpy_s(str, MAX_WINDOW_TITLE, s.GetString());
   rendlg.CSoldname = s;
   if (rendlg.DoModal() != IDOK) return;
-  if (!p_function_collection->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
+  if (!SYM->p_function_collection()->Rename(rendlg.CSoldname, rendlg.CSnewname)) return;
 
   // Rename the tab
   for (int i=0; i<m_ScinArray.GetSize(); ++i) {
@@ -1047,7 +1047,7 @@ void CDlgFormulaScintilla::OnDelete() {
   // Delete a UDF or list
   HTREEITEM h_item = m_FormulaTree.GetSelectedItem();
   CString name = m_FormulaTree.GetItemText(h_item);
-  p_function_collection->Delete(name);
+  SYM->p_function_collection()->Delete(name);
   m_dirty = true;
   // Clear the tab
   // The rest of the code is a partial clone 
@@ -1208,7 +1208,7 @@ void CDlgFormulaScintilla::OnHandList()  {
   CString			token = "", hand = "", newstring = "";
 
   CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
-  COHScriptList *p_handlist = (COHScriptList*)p_function_collection->LookUp(s);
+  COHScriptList *p_handlist = (COHScriptList*)SYM->p_function_collection()->LookUp(s);
   if (p_handlist == NULL)  return;
   // Window title and static text content
   myDialog.p_list = p_handlist;
@@ -1462,7 +1462,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   ClearCalcResult();
   OnBnClickedApply();
   
-  if (!p_function_collection->BotLogicCorrectlyParsed()) {
+  if (!SYM->p_function_collection()->BotLogicCorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");
     s.Append("preventing calculation.\n");
     s.Append("These errors need to be corrected before the 'Calc'\n");
@@ -1478,8 +1478,8 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
   // Processing for any other formula
   else {
     // Execute the currently selected formula
-    p_function_collection->Dump();
-    ret = p_function_collection->Evaluate(m_current_edit);
+    SYM->p_function_collection()->Dump();
+    ret = SYM->p_function_collection()->Evaluate(m_current_edit);
     int line = p_autoplayer_trace->GetLastEvaluatedRelativeLineNumber();
     sprintf_s(format, 50, "%%.%df", k_precision_for_debug_tab);
     Cstr.Format(format, ret);
@@ -1496,7 +1496,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
     ClearCalcResult();
     OnBnClickedApply();
 	  // Validate parse trees
-	  if (!p_function_collection->BotLogicCorrectlyParsed()) {
+	  if (!SYM->p_function_collection()->BotLogicCorrectlyParsed()) {
         CString s;
 	    s.Format("There are syntax errors in one or more formulas that are\n");
 	    s.Append("preventing calculation of this formula.\n");
@@ -1526,7 +1526,7 @@ void CDlgFormulaScintilla::StopAutoButton()
 }
 
 void CDlgFormulaScintilla::UpdateDebugAuto(void) {
-  p_function_collection->ClearCache();
+  SYM->p_function_collection()->ClearCache();
   CString result = p_debug_tab->EvaluateAll();
   m_pActiveScinCtrl->SendMessage(SCI_SETMODEVENTMASK, 0, 0);
   m_pActiveScinCtrl->SendMessage(SCI_SETTEXT,0,(LPARAM)result.GetString());
@@ -1554,7 +1554,7 @@ void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
       // This should only happen for the default "Empty" tab
       continue;
     }
-    p_function_collection->SetFunctionText(name, 
+    SYM->p_function_collection()->SetFunctionText(name, 
       m_ScinArray.GetAt(i)._pWnd->GetText());  
   }
 }
@@ -1570,8 +1570,8 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   // Save settings to registry
   SaveSettingsToRegistry();
   CopyTabContentsToFormulaSet();
-  p_function_collection->ParseAll();
-  if (!p_function_collection->BotLogicCorrectlyParsed()) {
+  SYM->p_function_collection()->ParseAll();
+  if (!SYM->p_function_collection()->BotLogicCorrectlyParsed()) {
     if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
         "Would you still like to apply changes in the working set to the main set?\n\n"
         "Note that if you choose yes here, then the main formula set will \n"

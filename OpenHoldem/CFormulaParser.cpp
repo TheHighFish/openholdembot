@@ -56,7 +56,7 @@ void CFormulaParser::InitNewParse() {
 }
 
 void CFormulaParser::FinishParse() {
-  p_function_collection->CheckForDefaultFormulaEntries();
+  SYM->p_function_collection()->CheckForDefaultFormulaEntries();
   p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
@@ -71,7 +71,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   //
   assert(p_function_collection != NULL);
-  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+  if (SYM->p_function_collection()->OpenPPLLibraryCorrectlyParsed()) {
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] OpenPPL-library already correctly loaded. Nothing to do.\n");
     return;
@@ -81,7 +81,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   if (_access(openPPL_path, F_OK) != 0) {
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Can not load OpenPPL-library. File not found.\n");
-    p_function_collection->SetOpenPPLLibraryLoadingState(false);
+    SYM->p_function_collection()->SetOpenPPLLibraryLoadingState(false);
     return;
   }
   CFile openPPL_file(openPPL_path, 
@@ -90,14 +90,14 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
 	    "[FormulaParser] Going to load OpenPPL-library\n");
   CArchive openPPL_archive(&openPPL_file, CArchive::load); 
   ParseFile(openPPL_archive);
-  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
+  SYM->p_function_collection()->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
   InitNewParse();
-  p_function_collection->DeleteAll(false, true);
-  p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
-  p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
+  SYM->p_function_collection()->DeleteAll(false, true);
+  SYM->p_function_collection()->SetTitle(formula_file.GetFile()->GetFileName());
+  SYM->p_function_collection()->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {
     _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
     CString function_header = _formula_file_splitter.GetFunctionHeader(); 
@@ -118,7 +118,7 @@ ExitLoop:
   write_log(preferences.debug_formula() || preferences.debug_parser(),
     "[CFormulaParser] ParseFile() done: %s\n",
     formula_file.GetFile()->GetFileName());
-  p_function_collection->Dump();
+  SYM->p_function_collection()->Dump();
 }
 
 bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
@@ -263,7 +263,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   }
   if (_function_name == "f$debug") {
     ParseDebugTab(function_text);
-    p_function_collection->Add((COHScriptObject*)p_debug_tab);
+    SYM->p_function_collection()->Add((COHScriptObject*)p_debug_tab);
     return;
   }
   TPParseTreeNode function_body = NULL;
@@ -283,7 +283,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     COHScriptList *new_list = new COHScriptList(&_function_name, 
         &function_text, _formula_file_splitter.starting_line_of_current_function());
     ParseListBody(new_list);
-    p_function_collection->Add((COHScriptObject*)new_list); 
+    SYM->p_function_collection()->Add((COHScriptObject*)new_list); 
     return;
   }
   else if (_function_name.MakeLower() == "dll") {
@@ -308,7 +308,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   CFunction *p_new_function = new CFunction(&_function_name, 
 	  &function_text, _formula_file_splitter.starting_line_of_current_function());
   p_new_function->SetParseTree(function_body);
-  p_function_collection->Add((COHScriptObject*)p_new_function);
+  SYM->p_function_collection()->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence
   _parse_tree_rotator.Rotate(p_new_function);
 #ifdef DEBUG_PARSER

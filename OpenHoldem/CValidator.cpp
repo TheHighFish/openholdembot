@@ -79,7 +79,7 @@ void CValidator::ValidateSingleRule() {
 			if (_no_errors_this_heartbeat) {
 				// First error: shoot replayframe, if needed
 				if (preferences.validator_shoot_replayframe_on_error()) {
-					p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+					SYM->p_symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}
@@ -189,7 +189,7 @@ double CValidator::gws(const char *the_Symbol) {
 
 void CValidator::ValidateIt() {
   // Some silent extra-validation,  to detect problems early in debug-mode
-	if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (12345 - 67*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.03141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
+	if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((SYM->p_symbol_engine_time()->elapsed() > (12345 - 67*SYM->p_symbol_engine_handrank()->handrank169())) && (SYM->p_symbol_engine_time()->elapsedauto() < 20) && (SYM->p_symbol_engine_random()->random() < 0.03141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
 		// Full validation needed
 		ValidateGameState();
 	}
@@ -197,7 +197,7 @@ void CValidator::ValidateIt() {
 
 void CValidator::ValidateGameState() {
 	if (// Enabled, when it's my turn?
-		  (preferences.validator_enabled() && (p_symbol_engine_autoplayer->ismyturn())) 
+		  (preferences.validator_enabled() && (SYM->p_symbol_engine_autoplayer()->ismyturn())) 
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
 	  // Validate.
@@ -259,13 +259,13 @@ void CValidator::ValidateGameState() {
 }
 
 void CValidator::ValidateVersusDBOnlyIfInstalled() {
-	if(p_symbol_engine_versus->VersusBinLoaded())	{
+	if(SYM->p_symbol_engine_versus()->VersusBinLoaded())	{
 #include "Validator_Rules\range_checks_versus_inline.cpp_"
 	}
 }
 
 void CValidator::ValidateICMOnlyIfTournament() {
-  if (p_symbol_engine_istournament->istournament()) {
+  if (SYM->p_symbol_engine_istournament()->istournament()) {
 #include "Validator_Rules\range_checks_icm_symbols_inline.cpp_"
   }
 }
