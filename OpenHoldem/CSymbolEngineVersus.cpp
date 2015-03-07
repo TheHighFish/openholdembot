@@ -29,8 +29,6 @@
 #include "OH_MessageBox.h"
 #include "COHScriptList.h"
 
-CSymbolEngineVersus *p_symbol_engine_versus = NULL;
-
 CSymbolEngineVersus::CSymbolEngineVersus() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

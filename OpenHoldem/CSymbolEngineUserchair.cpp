@@ -22,8 +22,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CSymbolEngineUserchair *p_symbol_engine_userchair = NULL;
-
 CSymbolEngineUserchair::CSymbolEngineUserchair() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
