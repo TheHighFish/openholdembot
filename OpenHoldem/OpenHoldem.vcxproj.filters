@@ -507,9 +507,6 @@
     <ClCompile Include="CAutoConnector.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
-    <ClCompile Include="CAutoConnectorThread.cpp">
-      <Filter>Source Files\AutoConnector</Filter>
-    </ClCompile>
     <ClCompile Include="CTableMapLoader.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
@@ -538,9 +535,6 @@
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
     <ClCompile Include="CScraper.cpp">
-      <Filter>Source Files\Scraper</Filter>
-    </ClCompile>
-    <ClCompile Include="CScraperAccess.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
     <ClCompile Include="CScraperPreprocessor.cpp">
@@ -1303,9 +1297,6 @@
     <ClInclude Include="CAutoConnector.h">
       <Filter>Header Files\AutoConnector</Filter>
     </ClInclude>
-    <ClInclude Include="CAutoConnectorThread.h">
-      <Filter>Header Files\AutoConnector</Filter>
-    </ClInclude>
     <ClInclude Include="CTableMapLoader.h">
       <Filter>Header Files\AutoConnector</Filter>
     </ClInclude>
@@ -1334,9 +1325,6 @@
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="CScraper.h">
-      <Filter>Header Files\Scraper</Filter>
-    </ClInclude>
-    <ClInclude Include="CScraperAccess.h">
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="CScraperPreprocessor.h">
