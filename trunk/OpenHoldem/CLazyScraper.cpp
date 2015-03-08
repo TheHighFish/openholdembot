@@ -216,6 +216,8 @@ bool CLazyScraper::NeedColourCodes() {
 }
 
 bool CLazyScraper::NeedMTTRegions() {
-  // Also on my turn is good, as that's when we need it.
-  return (p_scraper_access->IsMyTurn());
+  // return when it is our turn
+  // or if we have played less than 3 hands (for possible mtt detect)
+  return (p_scraper_access->IsMyTurn()
+	  || p_handreset_detector->hands_played() < 3);
 }

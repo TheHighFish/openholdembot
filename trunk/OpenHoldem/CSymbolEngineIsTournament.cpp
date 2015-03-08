@@ -22,6 +22,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
+#include "CSymbolengineMTTInfo.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineTime.h"
@@ -153,8 +154,9 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-  assert(p_symbol_engine_casino != NULL);
+	assert(p_symbol_engine_autoplayer != NULL);
+	assert(p_symbol_engine_casino != NULL);
+	assert(p_symbol_engine_mtt_info != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
@@ -261,6 +263,12 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
+	if (p_symbol_engine_mtt_info->ConnectedToMTT()) {
+		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] MTT tournament detected\n");
+		_istournament    = true;
+		_decision_locked = true;
+		return;
+	}
 	// If we have more than 2 hands played we should be sure
 	// and stick to our decision, whatever it is (probably cash-game).
 	// Also checking for (elapsedauto < elapsed). i.e. at least one action
@@ -361,6 +369,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 bool CSymbolEngineIsTournament::IsMTT() {
   if (!istournament()) return false;
   if (TitleStringContainsIdentifier(kMTTIdentifiers, kNumberOfMTTIdentifiers)) return true;
+  if (p_symbol_engine_mtt_info->ConnectedToMTT()) return true;
   return false;
 }
 
