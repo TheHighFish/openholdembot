@@ -40,7 +40,7 @@ void CSymbolEngineMTTInfo::InitOnStartup() {
 }
 
 void CSymbolEngineMTTInfo::ResetOnConnection() {
-  _mtt_number_entrants = 0;
+	_mtt_number_entrants = 0;
 	_mtt_players_remaining = 0;
 	_mtt_my_rank = 0;
 	_mtt_paid_places = 0;
@@ -81,6 +81,14 @@ bool CSymbolEngineMTTInfo::EvaluateSymbol(const char *name, double *result, bool
 	  return false;
   }
   return true;
+}
+
+// if any of these are true then we are connected to a mtt
+bool CSymbolEngineMTTInfo::ConnectedToMTT() {
+  return (_mtt_number_entrants > p_tablemap->nchairs()
+	  || _mtt_players_remaining > p_tablemap->nchairs()
+	  || _mtt_paid_places > p_tablemap->nchairs()
+	  || _mtt_my_rank > p_tablemap->nchairs());
 }
 
 CString CSymbolEngineMTTInfo::SymbolsProvided() {
