@@ -66,6 +66,9 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
 	    // break;
     }
     ++_total_line_processed;
+    // Avoid problems with "empty" lines before first function header
+    // that contain spaces.
+    _next_line.TrimRight();
 #ifdef DEBUG_FORMULA_FILESPLITTER
     //printf("[CFormulaFileSplitter] next line: %s\n", _next_line);
 #endif
@@ -77,16 +80,15 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       // In case of break: keep that function-header for the next query
       _starting_line_of_current_function = _total_line_processed;
       break;
-	}
-    _first_function_processed = true;
-    if (_function_header.IsEmpty()
-        // Escpecially meant to catch OpenGeeks newlines 
-        // (which are not empty) at the beginning of the file.
-        // Other cases can't happen, as we search for ## 
-        // when looking for the next function-header.
-        || (_function_header.Find('#') < 0)) {
+	  }
+    if (_function_header.IsEmpty() || (_function_header.Find('#') < 0)) {
+      // Escpecially meant to catch OpenGeeks newlines 
+      // (which are not empty) at the beginning of the file.
+      // Other cases can't happen, as we search for ## 
+      // when looking for the next function-header. 
       _function_header = _next_line;
     } else {
+      _first_function_processed = true;
       // Add non-function-header (content) to the functions body
       _function_text += _next_line;
       _function_text += "\n";

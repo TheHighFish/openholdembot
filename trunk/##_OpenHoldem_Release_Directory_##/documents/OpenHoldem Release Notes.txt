@@ -1,3 +1,18 @@
+v7.7.1 2015-03.xx
+==================
+BUG FIXES:
+- "Empty" lines that contained one or more spaces at the 
+  beginning of a formula-file could throw the search for 
+  the first function header off, so that the file did not
+  get loaded.
+  Thanks to Lavezzi for reporting and providing such 
+  a  formula file.
+  [THF]
+- There was a problem that affected scraping of betpot-buttons.
+  Thanks to Johhny for asking and to Ares for helping to
+  solve the issue.
+  [THF]
+
 v7.7.0 2015-03.05
 ==================
 BUG FIXES:

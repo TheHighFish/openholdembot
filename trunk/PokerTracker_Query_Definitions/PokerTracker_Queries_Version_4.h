@@ -253,7 +253,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT4 query to get Went to SD */
 	{
 		// name
-		"wsdp",			
+		"wtsd",			
 		// description_for_editor
 		"Poker Tracker went to showdown",
 		// query

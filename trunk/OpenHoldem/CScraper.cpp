@@ -271,10 +271,9 @@ void CScraper::ScrapeActionButtonLabels() {
 void CScraper::ScrapeBetpotButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_betpot_buttons; i++)
-	{
-		if (EvaluateRegion(button_name, &result))
-		{
+	for (int i=0; i<k_max_betpot_buttons; i++) {
+    button_name.Format("%sstate", k_betpot_button_name[i]);
+		if (EvaluateRegion(button_name, &result))	{
 			SetButtonState(&p_table_state->_SCI._betpot_button_state[i], result);	
 		}
 	}
