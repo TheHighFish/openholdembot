@@ -69,7 +69,6 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 }
 
 void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
-  //
   assert(p_function_collection != NULL);
   if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
     write_log(preferences.debug_parser(), 
@@ -101,10 +100,10 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   while (true) {
     _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
     CString function_header = _formula_file_splitter.GetFunctionHeader(); 
-    if (function_header.GetLength() < 2) {
-	  write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Empty function received. Parse finished.\n");
-	  goto ExitLoop;
+    if (function_header.GetLength() <= 0) {
+	    write_log(preferences.debug_parser(), 
+	      "[FormulaParser] Empty function received. Parse finished.\n");
+	    goto ExitLoop;
     }
     if (!VerifyFunctionHeader(function_header)) {
       // Skip this function
@@ -163,11 +162,12 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
     return false;
   }
   // Leading ## found
-  _function_name = function_header.TrimRight();
-  if (_function_name.Right(2) != "##") {
+  if (function_name_lower_case.Right(2) != "##") {
     CParseErrors::Error("Malformed function-header. Trailing ## expected.\n");
     return false;
   }
+  // New header verified
+  _function_name = function_header;
   // Get rid pf ## at both ends
   int length = _function_name.GetLength();
   assert(length >= 4);
