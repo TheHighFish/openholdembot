@@ -3937,6 +3937,7 @@ Middle
 || [InitMaxOpponentStackSize * 0]
 || [InitMinOpponentStackSize * 0]
 || [InitStartingStackSize * 0]
+|| [InitStartingChips * 0]
 || [RememberCurrentGameState * 0]
 
 //*****************************************************************************
