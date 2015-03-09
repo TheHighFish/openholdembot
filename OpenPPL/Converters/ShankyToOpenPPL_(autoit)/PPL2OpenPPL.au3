@@ -26,7 +26,7 @@
 
 HotKeySet("{ESC}", "Terminate")
 
-Dim $version = "1.01"
+Dim $version = "1.10"
 
 Dim $PPL = ""
 Dim $OpenPPL = ""
@@ -155,6 +155,285 @@ Func CreateConsistencies()
 	For $i = 0 to $NumberOfLines Step + 1
 		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " and(") Then
 			$source[$i] = StringReplace($source[$i], " and(", " and (", 0)
+		EndIf
+	Next
+	
+	; look for split card ranks and remove the space
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "hand=2 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=2 ", "hand=2", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=3 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=3 ", "hand=3", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=4 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=4 ", "hand=4", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=5 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=5 ", "hand=5", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=6 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=6 ", "hand=6", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=7 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=7 ", "hand=7", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=8 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=8 ", "hand=8", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=9 ") Then
+				$source[$i] = StringReplace($source[$i], "hand=9 ", "hand=9", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=T ") Then
+				$source[$i] = StringReplace($source[$i], "hand=T ", "hand=T", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=J ") Then
+				$source[$i] = StringReplace($source[$i], "hand=J ", "hand=J", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Q ") Then
+				$source[$i] = StringReplace($source[$i], "hand=Q ", "hand=Q", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=K ") Then
+				$source[$i] = StringReplace($source[$i], "hand=K ", "hand=K", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=A ") Then
+				$source[$i] = StringReplace($source[$i], "hand=A ", "hand=A", 0)
+			EndIf
+		EndIf
+	Next
+	
+	; fix any single rank 'and' that just had the space removed like hand = A and is now hand = Aand
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "hand=2and") Then
+				$source[$i] = StringReplace($source[$i], "hand=2and", "hand=2 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=3and") Then
+				$source[$i] = StringReplace($source[$i], "hand=3and", "hand=3 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=4and") Then
+				$source[$i] = StringReplace($source[$i], "hand=4and", "hand=4 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=5and") Then
+				$source[$i] = StringReplace($source[$i], "hand=5and", "hand=5 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=6and") Then
+				$source[$i] = StringReplace($source[$i], "hand=6and", "hand=6 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=7and") Then
+				$source[$i] = StringReplace($source[$i], "hand=7and", "hand=7 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=8and") Then
+				$source[$i] = StringReplace($source[$i], "hand=8and", "hand=8 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=9and") Then
+				$source[$i] = StringReplace($source[$i], "hand=9and", "hand=9 and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Tand") Then
+				$source[$i] = StringReplace($source[$i], "hand=Tand", "hand=T and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Jand") Then
+				$source[$i] = StringReplace($source[$i], "hand=Jand", "hand=J and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Qand") Then
+				$source[$i] = StringReplace($source[$i], "hand=Qand", "hand=Q and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Kand") Then
+				$source[$i] = StringReplace($source[$i], "hand=Kand", "hand=K and", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Aand") Then
+				$source[$i] = StringReplace($source[$i], "hand=Aand", "hand=A and", 0)
+			EndIf
+		EndIf
+	Next
+	
+	; fix any single rank 'or' that just had the space removed like hand = A or is now hand = Aor
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "hand=2or") Then
+				$source[$i] = StringReplace($source[$i], "hand=2or", "hand=2 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=3or") Then
+				$source[$i] = StringReplace($source[$i], "hand=3or", "hand=3 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=4or") Then
+				$source[$i] = StringReplace($source[$i], "hand=4or", "hand=4 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=5or") Then
+				$source[$i] = StringReplace($source[$i], "hand=5or", "hand=5 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=6or") Then
+				$source[$i] = StringReplace($source[$i], "hand=6or", "hand=6 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=7or") Then
+				$source[$i] = StringReplace($source[$i], "hand=7or", "hand=7 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=8or") Then
+				$source[$i] = StringReplace($source[$i], "hand=8or", "hand=8 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=9or") Then
+				$source[$i] = StringReplace($source[$i], "hand=9or", "hand=9 or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Tor") Then
+				$source[$i] = StringReplace($source[$i], "hand=Tor", "hand=T or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Jor") Then
+				$source[$i] = StringReplace($source[$i], "hand=Jor", "hand=J or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Qor") Then
+				$source[$i] = StringReplace($source[$i], "hand=Qor", "hand=Q or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Kor") Then
+				$source[$i] = StringReplace($source[$i], "hand=Kor", "hand=K or", 0)
+			EndIf
+			If StringInStr($source[$i], "hand=Aor") Then
+				$source[$i] = StringReplace($source[$i], "hand=Aor", "hand=A or", 0)
+			EndIf
+		EndIf
+	Next
+	
+	; look for split card ranks on the board and remove the space
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "board=2 2") Then
+				$source[$i] = StringReplace($source[$i], "board=2 2", "board=22", 0)
+			EndIf
+			If StringInStr($source[$i], "board=3 3") Then
+				$source[$i] = StringReplace($source[$i], "board=3 3", "board=33", 0)
+			EndIf
+			If StringInStr($source[$i], "board=4 4") Then
+				$source[$i] = StringReplace($source[$i], "board=4 4", "board=44", 0)
+			EndIf
+			If StringInStr($source[$i], "board=5 5") Then
+				$source[$i] = StringReplace($source[$i], "board=5 5", "board=55", 0)
+			EndIf
+			If StringInStr($source[$i], "board=6 6") Then
+				$source[$i] = StringReplace($source[$i], "board=6 6", "board=66", 0)
+			EndIf
+			If StringInStr($source[$i], "board=7 7") Then
+				$source[$i] = StringReplace($source[$i], "board=7 7", "board=77", 0)
+			EndIf
+			If StringInStr($source[$i], "board=8 8") Then
+				$source[$i] = StringReplace($source[$i], "board=8 8", "board=88", 0)
+			EndIf
+			If StringInStr($source[$i], "board=9 9") Then
+				$source[$i] = StringReplace($source[$i], "board=9 9", "board=99", 0)
+			EndIf
+			If StringInStr($source[$i], "board=T T") Then
+				$source[$i] = StringReplace($source[$i], "board=T T", "board=TT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=J J") Then
+				$source[$i] = StringReplace($source[$i], "board=J J", "board=JJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q Q") Then
+				$source[$i] = StringReplace($source[$i], "board=Q Q", "board=QQ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K K") Then
+				$source[$i] = StringReplace($source[$i], "board=K K", "board=KK", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A A") Then
+				$source[$i] = StringReplace($source[$i], "board=A A", "board=AA", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A K Q") Then
+				$source[$i] = StringReplace($source[$i], "board=A K Q", "board=AKQ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A K J") Then
+				$source[$i] = StringReplace($source[$i], "board=A K J", "board=AKJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A K T") Then
+				$source[$i] = StringReplace($source[$i], "board=A K T", "board=AKT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A Q J") Then
+				$source[$i] = StringReplace($source[$i], "board=A Q J", "board=AQJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A Q T") Then
+				$source[$i] = StringReplace($source[$i], "board=A Q T", "board=AQT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A J T") Then
+				$source[$i] = StringReplace($source[$i], "board=A J T", "board=AJT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K Q J") Then
+				$source[$i] = StringReplace($source[$i], "board=K Q J", "board=KQJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K Q T") Then
+				$source[$i] = StringReplace($source[$i], "board=K Q T", "board=KQT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K Q 9") Then
+				$source[$i] = StringReplace($source[$i], "board=K Q 9", "board=KQ9", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K J T") Then
+				$source[$i] = StringReplace($source[$i], "board=K J T", "board=KJT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K J 9") Then
+				$source[$i] = StringReplace($source[$i], "board=K J 9", "board=KJ9", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q J T") Then
+				$source[$i] = StringReplace($source[$i], "board=Q J T", "board=QJT", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q J 9") Then
+				$source[$i] = StringReplace($source[$i], "board=Q J 9", "board=QJ9", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q J 8") Then
+				$source[$i] = StringReplace($source[$i], "board=Q J 8", "board=QJ8", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q T 9") Then
+				$source[$i] = StringReplace($source[$i], "board=Q T 9", "board=QT9", 0)
+			EndIf
+			If StringInStr($source[$i], "board=J T 9") Then
+				$source[$i] = StringReplace($source[$i], "board=J T 9", "board=JT9", 0)
+			EndIf
+			If StringInStr($source[$i], "board=T 9 8") Then
+				$source[$i] = StringReplace($source[$i], "board=T 9 8", "board=T98", 0)
+			EndIf
+			If StringInStr($source[$i], "board=9 8 7") Then
+				$source[$i] = StringReplace($source[$i], "board=9 8 7", "board=987", 0)
+			EndIf
+			If StringInStr($source[$i], "board=8 7 6") Then
+				$source[$i] = StringReplace($source[$i], "board=8 7 6", "board=876", 0)
+			EndIf
+			If StringInStr($source[$i], "board=2 3 4") Then
+				$source[$i] = StringReplace($source[$i], "board=2 3 4", "board=234", 0)
+			EndIf
+			If StringInStr($source[$i], "board=3 4 5") Then
+				$source[$i] = StringReplace($source[$i], "board=3 4 5", "board=345", 0)
+			EndIf
+			If StringInStr($source[$i], "board=4 5 6") Then
+				$source[$i] = StringReplace($source[$i], "board=4 5 6", "board=456", 0)
+			EndIf
+			If StringInStr($source[$i], "board=5 6 7") Then
+				$source[$i] = StringReplace($source[$i], "board=5 6 7", "board=567", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A K") Then
+				$source[$i] = StringReplace($source[$i], "board=A K", "board=AK", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A Q") Then
+				$source[$i] = StringReplace($source[$i], "board=A Q", "board=AQ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=A J") Then
+				$source[$i] = StringReplace($source[$i], "board=A J", "board=AJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K Q") Then
+				$source[$i] = StringReplace($source[$i], "board=K Q", "board=KQ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=K J") Then
+				$source[$i] = StringReplace($source[$i], "board=K J", "board=KJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q J") Then
+				$source[$i] = StringReplace($source[$i], "board=Q J", "board=QJ", 0)
+			EndIf
+			If StringInStr($source[$i], "board=Q T") Then
+				$source[$i] = StringReplace($source[$i], "board=Q T", "board=QT", 0)
+			EndIf
+		EndIf
+	Next
+	
+	; fix any board 'and' that just had the space removed like board = A and is now board = AAnd
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "board=AAnd") Then
+				$source[$i] = StringReplace($source[$i], "board=AAnd", "board=A and", 0)
+			EndIf
 		EndIf
 	Next
 	
