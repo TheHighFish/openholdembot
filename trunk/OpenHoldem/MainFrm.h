@@ -82,9 +82,7 @@ public:
 	void EnableButtonsOnDisconnect();
 	void UnattachOHFromPokerWindow();
 public:
-	void StartTimer();
 	void ResetDisplay();
-	void KillTimer();
 public:
 #define ENT CSLock lock(m_critsec);
 	// public mutators
