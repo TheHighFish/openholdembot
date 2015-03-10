@@ -38,9 +38,9 @@
 #undef Rank_FIRST        
 #undef Rank_COUNT        
 
-#undef Suit_HEARTS       
-#undef Suit_DIAMONDS     
 #undef Suit_CLUBS        
+#undef Suit_DIAMONDS     
+#undef Suit_HEARTS       
 #undef Suit_SPADES       
 #undef Suit_FIRST        
 #undef Suit_COUNT        
@@ -52,14 +52,14 @@
 #undef CardMask_ANY_SET       
 #undef CardMask_RESET         
 
-#undef CardMask_SPADES        
-#undef CardMask_HEARTS        
 #undef CardMask_CLUBS         
 #undef CardMask_DIAMONDS      
-#undef CardMask_SET_SPADES        
-#undef CardMask_SET_HEARTS        
+#undef CardMask_HEARTS        
+#undef CardMask_SPADES        
 #undef CardMask_SET_CLUBS         
 #undef CardMask_SET_DIAMONDS      
+#undef CardMask_SET_HEARTS        
+#undef CardMask_SET_SPADES        
 
 #undef Deck_cardToString
 #undef Deck_maskToString

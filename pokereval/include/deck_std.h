@@ -54,11 +54,11 @@
 #define StdDeck_SUIT(index)  ((index) / StdDeck_Rank_COUNT)
 #define StdDeck_MAKE_CARD(rank, suit) ((suit * StdDeck_Rank_COUNT) + rank)
 
-#define StdDeck_Suit_HEARTS   0
+#define StdDeck_Suit_CLUBS    0
 #define StdDeck_Suit_DIAMONDS 1
-#define StdDeck_Suit_CLUBS    2
+#define StdDeck_Suit_HEARTS   2
 #define StdDeck_Suit_SPADES   3
-#define StdDeck_Suit_FIRST    StdDeck_Suit_HEARTS
+#define StdDeck_Suit_FIRST    StdDeck_Suit_CLUBS
 #define StdDeck_Suit_LAST     StdDeck_Suit_SPADES
 #define StdDeck_Suit_COUNT    4
 
@@ -86,35 +86,35 @@ typedef union {
     */
 #ifdef WORDS_BIGENDIAN
     uint32         : 3;
-    uint32 spades  :13;
-    uint32         : 3;
     uint32 clubs   :13;
     uint32         : 3;
     uint32 diamonds:13;
     uint32         : 3;
     uint32 hearts  :13;
+	uint32         : 3;
+    uint32 spades  :13;
 #else
-    uint32 spades  :13;
-    uint32         : 3;
     uint32 clubs   :13;
     uint32         : 3;
     uint32 diamonds:13;
     uint32         : 3;
     uint32 hearts  :13;
+    uint32         : 3;
+	uint32 spades  :13;
     uint32         : 3;
 #endif
   } cards;
 } StdDeck_CardMask;
 
-#define StdDeck_CardMask_SPADES(cm)   ((cm).cards.spades)
 #define StdDeck_CardMask_CLUBS(cm)    ((cm).cards.clubs)
 #define StdDeck_CardMask_DIAMONDS(cm) ((cm).cards.diamonds)
 #define StdDeck_CardMask_HEARTS(cm)   ((cm).cards.hearts)
+#define StdDeck_CardMask_SPADES(cm)   ((cm).cards.spades)
 
-#define StdDeck_CardMask_SET_SPADES(cm, ranks)   ((cm).cards.spades=(ranks))
 #define StdDeck_CardMask_SET_CLUBS(cm, ranks)    ((cm).cards.clubs=(ranks))
 #define StdDeck_CardMask_SET_DIAMONDS(cm, ranks) ((cm).cards.diamonds=(ranks))
 #define StdDeck_CardMask_SET_HEARTS(cm, ranks)   ((cm).cards.hearts=(ranks))
+#define StdDeck_CardMask_SET_SPADES(cm, ranks)   ((cm).cards.spades=(ranks))
 
 #ifdef USE_INT64
 #define StdDeck_CardMask_OP(result, op1, op2, OP) \
@@ -277,9 +277,9 @@ extern POKEREVAL_EXPORT Deck StdDeck;
 #define Rank_FIRST        StdDeck_Rank_FIRST 
 #define Rank_COUNT        StdDeck_Rank_COUNT
 
-#define Suit_HEARTS       StdDeck_Suit_HEARTS
-#define Suit_DIAMONDS     StdDeck_Suit_DIAMONDS
 #define Suit_CLUBS        StdDeck_Suit_CLUBS
+#define Suit_DIAMONDS     StdDeck_Suit_DIAMONDS
+#define Suit_HEARTS       StdDeck_Suit_HEARTS
 #define Suit_SPADES       StdDeck_Suit_SPADES
 #define Suit_FIRST        StdDeck_Suit_FIRST
 #define Suit_COUNT        StdDeck_Suit_COUNT
@@ -295,15 +295,15 @@ extern POKEREVAL_EXPORT Deck StdDeck;
 #define CardMask_RESET         StdDeck_CardMask_RESET
 #define CardMask_UNSET         StdDeck_CardMask_UNSET
 
-#define CardMask_SPADES        StdDeck_CardMask_SPADES
-#define CardMask_HEARTS        StdDeck_CardMask_HEARTS
 #define CardMask_CLUBS         StdDeck_CardMask_CLUBS
 #define CardMask_DIAMONDS      StdDeck_CardMask_DIAMONDS
+#define CardMask_HEARTS        StdDeck_CardMask_HEARTS
+#define CardMask_SPADES        StdDeck_CardMask_SPADES
 
-#define CardMask_SET_SPADES    StdDeck_CardMask_SET_SPADES
-#define CardMask_SET_HEARTS    StdDeck_CardMask_SET_HEARTS
 #define CardMask_SET_CLUBS     StdDeck_CardMask_SET_CLUBS
 #define CardMask_SET_DIAMONDS  StdDeck_CardMask_SET_DIAMONDS
+#define CardMask_SET_HEARTS    StdDeck_CardMask_SET_HEARTS
+#define CardMask_SET_SPADES    StdDeck_CardMask_SET_SPADES
 
 #define CurDeck StdDeck
 
