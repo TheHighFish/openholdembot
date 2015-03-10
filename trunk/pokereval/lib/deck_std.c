@@ -25,7 +25,7 @@
 
 
 char StdDeck_rankChars[] = "23456789TJQKA";
-char StdDeck_suitChars[] = "hdcs";
+char StdDeck_suitChars[] = "cdhs";
 
 int tototo[8];
 
