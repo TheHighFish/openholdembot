@@ -12,6 +12,10 @@ BUG FIXES:
   Thanks to Johhny for asking and to Ares for helping to
   solve the issue.
   [THF]
+- OpenHoldem could crash at termination if the disconnection-code
+  was executed when the auto-connector-thread was still running.
+  This race-condition has now been fixed.
+  [Moby]
 
 v7.7.0 2015-03.05
 ==================

@@ -293,9 +293,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
       }
 
 			p_scraper_access->InitOnConnect();
-			// Start timer that checks for continued existence of attached HWND
-			PMainframe()->StartTimer();
-
 			// Reset display
 			PMainframe()->ResetDisplay();
 
@@ -375,8 +372,7 @@ void CAutoConnector::Disconnect() {
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
 
-	// Stop timer that checks for valid hwnd, then unattach OH.
-	PMainframe()->KillTimer();
+	// Unattach OH.
 	p_flags_toolbar->UnattachOHFromPokerWindow();
 	p_flags_toolbar->ResetButtonsOnDisconnect();
 

@@ -143,6 +143,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     LogMemoryUsage("Begin of heartbeat thread cycle");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
 		if (!p_autoconnector->IsConnected()) {
+			if (!IsWindow(p_autoconnector->attached_hwnd()))		{
+				// Table disappeared
+				p_autoplayer->EngageAutoplayer(false);
+				p_autoconnector->Disconnect();
+			}
 			AutoConnect();			
 		}	else {
 			ScrapeEvaluateAct();
