@@ -17,7 +17,7 @@
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -55,14 +55,14 @@ void CSymbolEngineUserchair::ResetOnMyTurn()
 
 void CSymbolEngineUserchair::ResetOnHeartbeat()
 {
-	if (!userchair_confirmed() || (p_scraper_access->NumberOfVisibleButtons() > 0))
+	if (!userchair_confirmed() || (p_table_state->_SCI.NumberOfVisibleButtons() > 0))
 	{
 		CalculateUserChair();
 	}
 }
 
 bool CSymbolEngineUserchair::IsNotShowdown() {
-  int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
+  int num_buttons_enabled = p_table_state->_SCI.NumberOfVisibleButtons();
   if (num_buttons_enabled >= k_min_buttons_needed_for_my_turn) return true;
   if (p_betround_calculator->betround() < k_betround_river) return true;
   return false;

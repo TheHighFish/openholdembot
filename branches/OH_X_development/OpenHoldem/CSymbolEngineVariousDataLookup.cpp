@@ -32,7 +32,7 @@
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"

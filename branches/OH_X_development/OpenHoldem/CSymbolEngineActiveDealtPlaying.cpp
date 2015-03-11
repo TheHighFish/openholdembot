@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
@@ -76,13 +76,10 @@ void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat() {
 	CalculateSeatedBits();
 }
 
-void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
-{
+void CSymbolEngineActiveDealtPlaying::CalculateActiveBits() {
 	_playersactivebits  = 0;
-	for (int i=0; i<k_max_number_of_players; i++)
-	{
-		if (p_scraper_access->IsPlayerActive(i))
-		{
+	for (int i=0; i<k_max_number_of_players; i++)	{
+		if (p_table_state->_players[i].active()) 	{
 			_playersactivebits |= (1<<i);			
 		}
 	}
@@ -100,7 +97,7 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 	_playersseatedbits = 0;
 	for (int i=0; i<k_max_number_of_players; i++)	{
-		if (p_table_state->_players[i]._seated)	{
+		if (p_table_state->_players[i].seated())	{
 			_playersseatedbits |= 1<<i;			
 		}
 	}
@@ -155,7 +152,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
       if (first_non_blind_with_cards_found == false) {
         // Not yet anybody with cards outside the blinds found
         // Consider active players as dealt with fast folds.
-			  if (p_scraper_access->IsPlayerActive(chair_to_consider)) {
+			  if (p_table_state->_players[chair_to_consider].active()) {
           write_log(preferences.debug_symbolengine(),
             "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
             chair_to_consider);

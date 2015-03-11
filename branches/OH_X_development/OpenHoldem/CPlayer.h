@@ -25,6 +25,15 @@ class CPlayer {
  public:
   bool HasAnyCards();
   bool HasKnownCards();
+  bool IsGoodPlayername();
+ public:
+  bool seated()   { return _seated; }
+  bool active()   { return seated() && _active; }
+  bool dealer()   { return _dealer; }
+ public:
+  void set_seated(bool b)     { _seated = b; }
+  void set_active(bool b)     { _active = b; }
+  void set_dealer(bool b)     { _dealer = b; }
  public:
   void CheckPlayerCardsForConsistency();
   CString Cards();
@@ -34,7 +43,7 @@ class CPlayer {
   double  _bet;
   Card    _hole_cards[k_number_of_cards_per_player];
   int     _colourcode;
-public:
+ private:
   bool _seated;
   bool _active;
   bool _dealer;

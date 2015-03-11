@@ -4,7 +4,7 @@
 #include "CardFunctions.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"

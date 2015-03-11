@@ -25,7 +25,7 @@
 #include "Chair$Symbols.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"

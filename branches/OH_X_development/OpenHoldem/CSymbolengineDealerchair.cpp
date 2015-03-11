@@ -56,7 +56,7 @@ void CSymbolEngineDealerchair::ResetOnHeartbeat() {
 	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		if (p_table_state->_players[i]._dealer)	{
+		if (p_table_state->_players[i].dealer())	{
 			write_log(preferences.debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
 			break;

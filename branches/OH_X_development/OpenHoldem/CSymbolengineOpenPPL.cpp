@@ -19,7 +19,7 @@
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEngineVariousDataLookup.h"

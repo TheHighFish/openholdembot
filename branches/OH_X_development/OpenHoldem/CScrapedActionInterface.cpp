@@ -324,32 +324,6 @@ int CScrapedActionInterface::NumberOfVisibleButtons()
 	return number_of_visible_buttons;
 }
 
-bool CScrapedActionInterface::IsPlayerActive(int player) {
-	bool result = p_table_state->_players[player]._active;
-	result = result && IsPlayerSeated(player);
-	return result;
-}
-
-bool CScrapedActionInterface::IsPlayerSeated(int player)
-{
-	bool result = p_table_state->_players[player]._seated;
-	return result;
-}
-
-bool CScrapedActionInterface::IsGoodPlayername(int chair)
-{
-	CString playername = p_table_state->_players[chair]._name;
-	int length = playername.GetLength();
-	if (length == 0) 
-		return false;
-	for (int i=0; i<length; i++)
-	{
-		if (isalnum(playername[i])) 
-			return true;
-	}
-	return false;
-}
-
 bool CScrapedActionInterface::IsKnownCard(int card)
 {
 	if (card == CARD_NOCARD 

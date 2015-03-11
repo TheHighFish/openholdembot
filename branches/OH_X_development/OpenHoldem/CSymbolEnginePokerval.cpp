@@ -19,7 +19,7 @@
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineCards.h"
 #include "CTableState.h"
 #include "CSymbolEngineUserchair.h"
