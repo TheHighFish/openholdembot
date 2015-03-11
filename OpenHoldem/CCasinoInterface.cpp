@@ -22,7 +22,7 @@
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
@@ -34,8 +34,6 @@
 #include "PokerChat.hpp"
 #include "SwagAdjustment.h"
 #include "CMyMutex.h"
-
-CCasinoInterface *p_casino_interface = NULL;
 
 CCasinoInterface::CCasinoInterface() {
 	// dummy point for mouse and keyboard DLL
@@ -64,12 +62,12 @@ void CCasinoInterface::ClickRect(RECT rect) {
 }
 
 bool CCasinoInterface::ButtonAvailable(int autoplayer_code) {
-	return p_scraper_access->available_buttons[autoplayer_code];
+	return p_table_state->_SCI.available_buttons[autoplayer_code];
 }
 
 bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
 	return (ButtonAvailable(autoplayer_code)
-		&& p_scraper_access->visible_buttons[autoplayer_code]);
+		&& p_table_state->_SCI.visible_buttons[autoplayer_code]);
 }
 
 bool CCasinoInterface::ClickButton(int autoplayer_function_code) {
@@ -101,7 +99,7 @@ bool CCasinoInterface::UseSliderForAllin() {
 
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSlider...\n");
 
-	if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
+	if (!(p_table_state->_SCI.i3_slider_defined && p_table_state->_SCI.i3_handle_defined)) {
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
 		return false;
 	}
@@ -127,12 +125,12 @@ bool CCasinoInterface::UseSliderForAllin() {
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : calling keyboard.dll to press 'Enter'\n");
 		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 	}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
-			 (p_scraper_access->available_buttons[k_autoplayer_function_raise] || p_scraper_access->i3_button_available)) {
+			 (p_table_state->_SCI.available_buttons[k_autoplayer_function_raise] || p_table_state->_SCI.i3_button_available)) {
 		int confirmation_button = k_button_undefined;
 
 		// use allin button if it exists,  
 		// otherwise use the bet/raise button region
-		if (p_scraper_access->available_buttons[k_autoplayer_function_allin])	{
+		if (p_table_state->_SCI.available_buttons[k_autoplayer_function_allin])	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : Using the allin button\n");
 			confirmation_button = k_autoplayer_function_allin;
 		}	else {
@@ -210,7 +208,7 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 	assert(button_number >= 0);
 	assert(button_number < k_max_number_of_i86X_buttons);
 
-	if (p_scraper_access->i86X_button_available[button_number])
+	if (p_table_state->_SCI.i86X_button_available[button_number])
 	{
 		CMyMutex	mutex;
 
@@ -286,7 +284,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSwag...\n");
 
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
-	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)
+	if (!p_table_state->_SCI.i3_edit_defined || !p_table_state->_SCI.i3_button_available)
 	{
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (no edit field or no i3button).\n");
 		return false;
@@ -331,7 +329,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET 
-			  && p_scraper_access->available_buttons[k_autoplayer_function_raise]) 	{
+			  && p_table_state->_SCI.available_buttons[k_autoplayer_function_raise]) 	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Bet Confirmation: Using raise button\n");
       if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) 	{
 				ClickButtonSequence(k_autoplayer_function_raise, 
@@ -364,10 +362,10 @@ bool CCasinoInterface::EnterBetsizeForAllin() {
 
 int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 	int number_of_available_buttons =
-		(p_scraper_access->available_buttons[k_autoplayer_function_allin] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_raise] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_call]  ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_check] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
+		(p_table_state->_SCI.available_buttons[k_autoplayer_function_allin] ? 1 : 0)
+	  + (p_table_state->_SCI.available_buttons[k_autoplayer_function_raise] ? 1 : 0)
+	  + (p_table_state->_SCI.available_buttons[k_autoplayer_function_call]  ? 1 : 0)
+	  + (p_table_state->_SCI.available_buttons[k_autoplayer_function_check] ? 1 : 0)
+	  + (p_table_state->_SCI.available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
 	return number_of_available_buttons;
 }

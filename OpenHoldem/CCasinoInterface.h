@@ -53,6 +53,4 @@ class CCasinoInterface {
 	RECT i86X_button[k_max_number_of_i86X_buttons];
 }; 
 
-extern CCasinoInterface *p_casino_interface;
-
 #endif // INC_CCasinoInterface_H

@@ -21,7 +21,7 @@
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"  
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStableFramesCounter.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
@@ -131,12 +131,13 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 		_isfinalanswer = false;
 	}
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
-	else if (p_casino_interface->NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)	{
+  /*!!!!!
+	else if (p_table_state->_SCI.NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Either not your turn or problem with the tablemap\n");
 		_isfinalanswer = false;
-	}
+	}*/
   // if we are not playing (occluded?) 2008-03-25 Matrix
 	else if (!p_table_state->User()->HasKnownCards())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");

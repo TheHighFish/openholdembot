@@ -19,7 +19,7 @@
 #include "CBlindGuesser.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineIsTournament.h"
@@ -214,7 +214,7 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
     Bool2CString(blinds_locked_for_current_hand));
 	// Reasonable blinds guaranteed bz the waz we guess.
   // And IsMzTurn guarantees stable input
-  if (!blinds_locked_for_current_hand && p_scraper_access->IsMyTurn()) {
+  if (!blinds_locked_for_current_hand && p_table_state->_SCI.IsMyTurn()) {
 		AutoLockBlindsForCurrentHand();
 		AutoLockBlindsForCashgamesAfterNHands();
 	}

@@ -20,7 +20,7 @@
 #include "CardFunctions.h"
 #include "CAutoconnector.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CScraperPreprocessor.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -280,12 +280,12 @@ void CScraper::ScrapeBetpotButtons() {
 
 void CScraper::ScrapeSeatedActive() {
 	for (int i=0; i<k_max_number_of_players; i++)	{
-		p_table_state->_players[i]._seated = false;
-		p_table_state->_players[i]._active = false;
+		p_table_state->_players[i].set_seated(false);
+		p_table_state->_players[i].set_active(false);
 	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		ScrapeSeated(i);
-		if (p_scraper_access->IsPlayerSeated(i))		{
+		if (p_table_state->_players[i].seated())		{
 			ScrapeActive(i);
 		}
 	}
@@ -315,14 +315,14 @@ void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
 
-	p_table_state->_players[chair]._seated = false;
+	p_table_state->_players[chair].set_seated(false);
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
-			p_table_state->_players[chair]._seated = p_string_match->IsStringSeated(result);
+			p_table_state->_players[chair].set_seated(p_string_match->IsStringSeated(result));
 		}
 	}
-	if (p_scraper_access->IsPlayerSeated(chair)) {
+	if (p_table_state->_players[chair].active()) {
 		return;
 	}
 	// try u region next uXseated,
@@ -330,7 +330,7 @@ void CScraper::ScrapeSeated(int chair) {
 	seated.Format("u%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result!="")	{
-			p_table_state->_players[chair]._seated = p_string_match->IsStringSeated(result);
+			p_table_state->_players[chair].set_seated(p_string_match->IsStringSeated(result));
 		}
 	}
 }
@@ -342,26 +342,22 @@ void CScraper::ScrapeDealer() {
 	CString result;
 
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		p_table_state->_players[i]._dealer = false;
+		p_table_state->_players[i].set_dealer(false);
 	}
 
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		dealer.Format("p%ddealer", i);
-		if (EvaluateRegion(dealer, &result))
-		{
+		if (EvaluateRegion(dealer, &result)) {
 			if (p_string_match->IsStringDealer(result))	{
-				p_table_state->_players[i]._dealer = true;
+				p_table_state->_players[i].set_dealer(true);
 				return;
 			}
 		}
 		// Now search for uXdealer
 		dealer.Format("u%ddealer", i);
-		if (EvaluateRegion(dealer, &result))
-		{
-			if (p_string_match->IsStringDealer(result))
-			{
-				p_table_state->_players[i]._dealer = true;
+		if (EvaluateRegion(dealer, &result)) {
+			if (p_string_match->IsStringDealer(result))	{
+				p_table_state->_players[i].set_dealer(true);
 				return;
 			}
 		}
@@ -371,18 +367,18 @@ void CScraper::ScrapeDealer() {
 void CScraper::ScrapeActive(int chair) {
 	CString active;
 	CString result;
-	p_table_state->_players[chair]._active = false;
+	p_table_state->_players[chair].set_active(false);
   // try p region first pXactive
 	active.Format("p%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		p_table_state->_players[chair]._active = p_string_match->IsStringActive(result);
+		p_table_state->_players[chair].set_active(p_string_match->IsStringActive(result));
 	}
-	if (p_scraper_access->IsPlayerActive(chair)) {
+	if (p_table_state->_players[chair].active()) {
 		return;
 	}
 	active.Format("u%dactive", chair);
 	if (EvaluateRegion(active, &result)) {
-		p_table_state->_players[chair]._active = p_string_match->IsStringActive(result);
+		p_table_state->_players[chair].set_active(p_string_match->IsStringActive(result));
 	}
 }
 
@@ -662,7 +658,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
 		}
 		else if (text.MakeLower().Find("out")!=-1) {
-			p_table_state->_players[chair]._active = false;
+			p_table_state->_players[chair].set_active(false);
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT\n", name);
       return k_undefined;
 		}	else {

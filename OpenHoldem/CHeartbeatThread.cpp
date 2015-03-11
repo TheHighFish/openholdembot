@@ -34,7 +34,7 @@
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStableFramesCounter.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -52,8 +52,8 @@
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
-long int			CHeartbeatThread::_heartbeat_counter = 0;
-CHeartbeatThread    *CHeartbeatThread::pParent = NULL;
+long int			    CHeartbeatThread::_heartbeat_counter = 0;
+CHeartbeatThread  *CHeartbeatThread::pParent = NULL;
 
 CHeartbeatThread::CHeartbeatThread() {
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
@@ -66,16 +66,12 @@ CHeartbeatThread::CHeartbeatThread() {
 CHeartbeatThread::~CHeartbeatThread() {
 	// Trigger thread to stop
 	::SetEvent(_m_stop_thread);
-
 	// Wait until thread finished
 	::WaitForSingleObject(_m_wait_thread, k_max_time_to_wait_for_thread_to_shutdown);
-
 	// Close handles
 	::CloseHandle(_m_stop_thread);
 	::CloseHandle(_m_wait_thread);
-
 	DeleteCriticalSection(&cs_update_in_progress);
-
 	p_heartbeat_thread = NULL;
 }
 
@@ -107,7 +103,7 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
       // Hand might be over soon.
       scrape_delay *= 1.5;
     }
-  } else if (p_scraper_access->NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+  } else if (p_table_state->_SCI.NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
 		// Playing and my turn
 		// Stable frames expected
 		// Shorter reaction times desired
@@ -130,8 +126,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 	pParent = static_cast<CHeartbeatThread*>(pParam);
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
-
-	while (true) {
+  while (true) {
 		_heartbeat_counter++;
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Starting next cycle\n");
 		// Check event for stop thread
@@ -171,7 +166,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
   // Necessary to pre-compute some info 
 	// which is needed by the symbol-engines.
   // ismyturn, myturnbits (visible buttons), ...
-	p_scraper_access->GetNeccessaryTablemapObjects();
+	p_table_state->_SCI.GetNeccessaryTablemapObjects();
 	p_engine_container->EvaluateAll();
 	// Reply-frames no longer here in the heartbeat.
   // we have a "ReplayFrameController for that.

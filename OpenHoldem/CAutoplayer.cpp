@@ -30,7 +30,7 @@
 #include "CRebuyManagement.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
@@ -55,12 +55,14 @@ CAutoplayer::CAutoplayer(void) {
 	// However the toolbar is guaranteed to initialize correctly later.
 	_autoplayer_engaged = false;
 	action_sequence_needs_to_be_finished = false;
-  _already_executing_allin_adjustment = false;
+  _already_executing_allin_adjustment = false; 
+  p_casino_interface = new CCasinoInterface;
 }
 
 
 CAutoplayer::~CAutoplayer(void) {
 	FinishActionSequenceIfNecessary();
+  delete p_casino_interface;
 }
 
 void CAutoplayer::EngageAutoPlayerUponConnectionIfNeeded() {
@@ -440,9 +442,9 @@ bool CAutoplayer::DoAllin(void) {
 void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
   CheckBringKeyboard();
-  p_scraper_access->GetNeccessaryTablemapObjects();
+  p_table_state->_SCI.GetNeccessaryTablemapObjects();
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
-		p_scraper_access->NumberOfVisibleButtons(),
+		p_table_state->_SCI.NumberOfVisibleButtons(),
 		SYM->p_symbol_engine_autoplayer()->GetFCKRAString());
 		
 	// Care about I86 regions first, because they are usually used 

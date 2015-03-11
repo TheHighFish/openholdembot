@@ -19,7 +19,7 @@
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolenginePokerval.h"
 #include "CTableState.h"
 

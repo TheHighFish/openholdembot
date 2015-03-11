@@ -23,7 +23,7 @@
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
 #include "CSymbolengineChipAmounts.h"
@@ -281,10 +281,10 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
-		if (_seated_last[i] != p_table_state->_players[i]._seated 
-        || _active_last[i] != p_table_state->_players[i]._active) 	{
-			_seated_last[i] = p_table_state->_players[i]._seated;
-			_active_last[i] = p_table_state->_players[i]._active;
+		if (_seated_last[i] != p_table_state->_players[i].seated() 
+        || _active_last[i] != p_table_state->_players[i].active()) 	{
+			_seated_last[i] = p_table_state->_players[i].seated();
+			_active_last[i] = p_table_state->_players[i].active();
 			update_it = true;
 		}
     if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
@@ -293,8 +293,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
 			update_it = true;
 		}
-		if (_dealer_last[i] != p_table_state->_players[i]._dealer) {
-			_dealer_last[i] = p_table_state->_players[i]._dealer;
+		if (_dealer_last[i] != p_table_state->_players[i].dealer()) {
+			_dealer_last[i] = p_table_state->_players[i].dealer();
 			update_it = true;
 		}
 		if (_playername_last[i] != p_table_state->_players[i]._name) {
@@ -314,7 +314,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		if (update_it || update_all) {
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
-			if (p_table_state->_players[i]._seated) 	{
+			if (p_table_state->_players[i].seated()) 	{
 				DrawSeatedActiveCircle(i);
 				// Draw cards first, because we want the name 
 				// to occlude the cards and not the other way.
@@ -332,7 +332,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		// At some casinos the dealer can be at an empty seat.
 		// Therefore we draw the dealer-button anyway, inependent of "seated" and "active".
 		// Draw it at the very last, as we want to have it at the top of the cards.
-		if (p_table_state->_players[i]._dealer) {
+		if (p_table_state->_players[i].dealer()) {
 			DrawDealerButton(i);
 		}
 	}
@@ -577,12 +577,9 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair) {
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-	if (p_scraper_access->IsPlayerActive(chair))
-	{
+  if (p_table_state->_players[chair].active())	{
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-	}
-	else 
-	{
+	}	else 	{
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 	}
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
@@ -759,8 +756,8 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
 
-	if (p_scraper_access->IsPlayerSeated(chair) 
-		|| p_scraper_access->IsPlayerActive(chair)) 
+	if (p_table_state->_players[chair].seated() 
+		|| p_table_state->_players[chair].active()) 
 		/*|| (p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
 		|| p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/  
 	{
@@ -843,15 +840,15 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
-  if (p_scraper_access->IsPlayerSeated(chair) 
-		  || p_scraper_access->IsPlayerActive(chair)) 	{
+  if (p_table_state->_players[chair].seated() 
+		  || p_table_state->_players[chair].active()) 	{
     pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Format Text
-		if (p_table_state->_players[chair]._active) 	{
+		if (p_table_state->_players[chair].active()) 	{
 			t = Number2CString(p_table_state->_players[chair]._balance);
 		}	else {
 			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
@@ -973,7 +970,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 }
 
 void COpenHoldemView::DrawPlayerCards(const int chair) {
-	if (!p_scraper_access->IsPlayerActive(chair))	{
+	if (!p_table_state->_players[chair].active())	{
 		// Forget about inactive players, they have no cards.
 		// Don't draw them to point out the mistake faster
 		// for newbies with bad tablemaps.

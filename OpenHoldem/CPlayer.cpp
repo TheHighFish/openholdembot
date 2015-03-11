@@ -69,3 +69,14 @@ void CPlayer::CheckPlayerCardsForConsistency() {
     _hole_cards[1].SetValue(CARD_BACK);
   } 
 }
+
+bool CPlayer::IsGoodPlayername() {
+	int length = _name.GetLength();
+	if (length == 0) 
+		return false;
+	for (int i=0; i<length; i++) {
+		if (isalnum(_name[i])) 
+			return true;
+	}
+	return false;
+}

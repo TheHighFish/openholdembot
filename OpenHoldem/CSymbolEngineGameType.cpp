@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CTableState.h"
 #include "debug.h"
@@ -70,10 +70,10 @@ void CSymbolEngineGameType::ResetOnHeartbeat() {
     // Known type. Can't go back to FL/PL.
     return;
   }
-  // p_scraper_access->GetNeccessaryTablemapObjects()
+  // p_table_state->_SCI.GetNeccessaryTablemapObjects()
   // already executed in heartbeat-thread.
   // Therefore we can access this info.
-  if (p_scraper_access->allin_option_available) {
+  if (p_table_state->_SCI.allin_option_available) {
     _gametype = k_gametype_NL;
 
   } else if (isfl()) {

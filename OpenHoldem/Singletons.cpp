@@ -39,7 +39,7 @@
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
@@ -86,8 +86,6 @@ void InstantiateAllSingletons() {
   assert(!p_scraper); 
   p_scraper = new CScraper;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraperAccess\n");
-  assert(!p_scraper_access);
-  p_scraper_access = new CScraperAccess;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CLazyScraper\n");
   assert(!p_lazyscraper);
   p_lazyscraper = new CLazyScraper;
@@ -155,8 +153,6 @@ void InstantiateAllSingletons() {
   assert(!p_occlusioncheck);
   p_occlusioncheck = new COcclusionCheck;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
-  assert(!p_casino_interface);
-  p_casino_interface = new CCasinoInterface;
   write_log(preferences.debug_alltherest(), "[Singletons] All singletons created.\n");
 }
 
@@ -213,7 +209,6 @@ void DeleteAllSingletons() {
   // that depends on other classes, e.g. the destructor of the autoconnector
   // needs its session_id (CSessionCounter).
   //
-  DELETE_AND_CLEAR(p_casino_interface)
   DELETE_AND_CLEAR(p_occlusioncheck)
   DELETE_AND_CLEAR(p_rebuymanagement)
   DELETE_AND_CLEAR(p_engine_container)
@@ -250,8 +245,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_tablemap)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 13\n");
   DELETE_AND_CLEAR(p_lazyscraper)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 14\n");
-  DELETE_AND_CLEAR(p_scraper_access)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 15\n");
   DELETE_AND_CLEAR(p_scraper)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 16\n");

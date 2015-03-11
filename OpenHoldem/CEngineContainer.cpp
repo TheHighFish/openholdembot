@@ -27,7 +27,7 @@
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
+#include "CScrapedActionInterface.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -63,6 +63,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineVariousDataLookup.h"
 #include "CSymbolEngineVersus.h"
+#include "CTableState.h"
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
@@ -295,7 +296,7 @@ void CEngineContainer::EvaluateAll() {
 	if (p_betround_calculator->IsNewBetround())	{
 		ResetOnNewRound();
 	}
-	if (p_scraper_access->IsMyTurn())	{
+	if (p_table_state->_SCI.IsMyTurn())	{
 		ResetOnMyTurn();
 	}
 	// And finally ResetOnHeartbeat() gets always called.

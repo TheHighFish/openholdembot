@@ -20,26 +20,24 @@
 #include "../CTablemap/CTableMapAccess.h"
 #include "OpenHoldem.h"
 
-class CAutoplayer 
-{
-public:
+class CCasinoInterface;
+
+class CAutoplayer {
+ public:
 	// public functions
 	CAutoplayer();
 	~CAutoplayer();
-public:
+ public:
 	void EngageAutoPlayerUponConnectionIfNeeded();
 	void DoAutoplayer();
-
-public:
+ public:
 	// public accessors
 	const bool autoplayer_engaged() { return _autoplayer_engaged; }
 	bool TimeToHandleSecondaryFormulas();
-
-public:
+ public:
 	// public mutators
 	void EngageAutoplayer(bool to_be_enabled_or_not);
-
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators
 	void DoRebuyIfNeccessary();
 	bool ExecutePrimaryFormulasIfNecessary();
@@ -56,18 +54,17 @@ private:
 	bool DoSwag();
 	bool DoPrefold();
 	bool DoChat();
-
-private:
+ private:
 	// private variables - use public accessors and public mutators to address these
 	bool	_autoplayer_engaged;
-
-private:
+ private:
 	POINT	cursor_position;
 	HWND	window_with_focus;
 	bool	action_sequence_needs_to_be_finished;
   bool  _already_executing_allin_adjustment;
-
 	CCritSec	m_critsec;
+ private:
+  CCasinoInterface* p_casino_interface;
 };
 
 extern CAutoplayer *p_autoplayer;
