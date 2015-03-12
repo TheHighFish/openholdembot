@@ -35,6 +35,4 @@ class CTablemapCompletenessChecker {
   bool _error_flag;
 };
 
-extern CTablemapCompletenessChecker *p_tablemap_versionchecker;
-
 #endif // INC_CTABLEMAPCOMPLETENESSCHECKER_H 
