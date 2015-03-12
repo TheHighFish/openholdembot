@@ -150,7 +150,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 void CHeartbeatThread::ScrapeEvaluateAct() {
 	bool iswait = false;
 
-	p_table_positioner->AlwaysKeepPositionIfEnabled();
+	MAIN->p_table_positioner()->AlwaysKeepPositionIfEnabled();
 	// This critical section lets other threads know that the internal state is being updated
 	EnterCriticalSection(&pParent->cs_update_in_progress);
 

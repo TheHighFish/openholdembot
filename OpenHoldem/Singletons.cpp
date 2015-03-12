@@ -120,8 +120,8 @@ void InstantiateAllSingletons() {
   assert(!p_validator);
   p_validator = new CValidator;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablePositioner\n");
-  assert(!p_table_positioner);
-  p_table_positioner = new CTablePositioner;
+  //assert(!p_table_positioner);
+  //p_table_positioner = new CTablePositioner;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFileSystemMonitor\n");
   assert(!p_filesystem_monitor);
   p_filesystem_monitor = new CFileSystemMonitor;
@@ -129,8 +129,8 @@ void InstantiateAllSingletons() {
   assert(!p_tablemap_loader);
   p_tablemap_loader = new CTableMapLoader;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
-  assert(!p_version_info);
-  p_version_info = new CVersionInfo;
+  //R!!!assert(!p_version_info);
+  //p_version_info = new CVersionInfo;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPopupHandler\n");
   assert(!p_popup_handler);
   p_popup_handler = new CPopupHandler;
@@ -218,13 +218,13 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
   DELETE_AND_CLEAR(p_autoconnector)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting version_info\n");
-  DELETE_AND_CLEAR(p_version_info)
+  //R!!!DELETE_AND_CLEAR(p_version_info)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting tablemap loader\n");
   DELETE_AND_CLEAR(p_tablemap_loader)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 01\n");
   DELETE_AND_CLEAR(p_filesystem_monitor)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 02\n");
-  DELETE_AND_CLEAR(p_table_positioner)
+  //DELETE_AND_CLEAR(p_table_positioner)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 05\n");

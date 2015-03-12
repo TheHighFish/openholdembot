@@ -43,6 +43,4 @@ private:
 	RECT _desktop_rectangle;
 };
 
-extern CTablePositioner *p_table_positioner;
-
 #endif // INC_TABLE_POSITIONER_H
