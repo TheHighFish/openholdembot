@@ -30,6 +30,4 @@ private:
 	CString _openholdem_MD5;
 };
 
-extern CVersionInfo *p_version_info;
-
 #endif INC_CVERSIONINFO_H

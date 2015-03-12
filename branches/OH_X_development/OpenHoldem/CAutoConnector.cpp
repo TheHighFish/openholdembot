@@ -159,7 +159,7 @@ void CAutoConnector::WriteLogTableReset()
 		"%s"
 		"TABLE RESET\n"
 		"==============================================\n",
-		p_version_info->GetVersionInfo());
+		MAIN->p_version_info()->GetVersionInfo());
 }
 
 void CAutoConnector::FailedToConnectBecauseNoWindowInList()
@@ -303,7 +303,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
       WriteLogTableReset();
 
-			p_table_positioner->PositionMyWindow();
+			MAIN->p_table_positioner()->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
 		}
 	}

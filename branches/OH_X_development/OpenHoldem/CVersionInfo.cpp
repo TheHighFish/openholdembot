@@ -25,19 +25,15 @@
 #include "..\CTablemap\CTablemap.h"
 #include "MD5_Checksum.h"
 
-CVersionInfo *p_version_info = NULL;
-
-CVersionInfo::CVersionInfo()
-{
+CVersionInfo::CVersionInfo() {
 	// Getting the check-sum only once on start-up
 	_openholdem_MD5 = CalculateMD5(p_filenames->PathOfExecutable());
 }
 
-CVersionInfo::~CVersionInfo()
-{}
+CVersionInfo::~CVersionInfo() {
+}
 
-CString CVersionInfo::GetVersionInfo()
-{
+CString CVersionInfo::GetVersionInfo() {
 	CString version_info;
 
 	assert(p_function_collection != NULL);
