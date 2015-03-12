@@ -142,6 +142,12 @@ double MaximumBetsizeForGameType() {
 
 double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   assert(amount_to_raise_to >= p_symbol_engine_tablelimits->bblind());
+  // Don't round allin betsizes.
+  if (BetSizeIsAllin(amount_to_raise_to) ) {
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is allin.\n");
+    return amount_to_raise_to;
+  }
   // Don't round very smal betsizes.
   // There might be aa reason for it in very small pots.
   if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
