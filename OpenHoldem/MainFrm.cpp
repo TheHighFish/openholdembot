@@ -485,10 +485,10 @@ void CMainFrame::OnAutoplayer()
 void CMainFrame::OnValidator()  {
 	if (_p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) {
 		_p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
-		p_validator->SetEnabledManually(true);
+		MAIN->p_validator()->SetEnabledManually(true);
 	}	else {
 		_p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
-		p_validator->SetEnabledManually(false);
+		MAIN->p_validator()->SetEnabledManually(false);
 	}
 }
 

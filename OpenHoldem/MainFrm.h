@@ -17,7 +17,9 @@ class COpenHoldemTitle;
 class CFlagsToolbar;
 class CWhiteInfoBox;
 // Other objects
+class CPopupHandler;
 class CTablePositioner;
+class CValidator;
 class CVersionInfo;
 
 class CMainFrame : public CFrameWnd {
@@ -32,8 +34,10 @@ class CMainFrame : public CFrameWnd {
   CWhiteInfoBox*        p_white_info_box()        { return _p_white_info_box; }
  public:
   // Read-only access to other "global" obkects
-  CTablePositioner*    p_table_positioner()       { return _p_table_positioner; }
-  CVersionInfo*        p_version_info()           { return _p_version_info; }
+  CPopupHandler*        p_popup_handler()         { return _p_popup_handler; }
+  CTablePositioner*     p_table_positioner()      { return _p_table_positioner; }
+  CValidator*           p_validator()             { return _p_validator; }
+  CVersionInfo*         p_version_info()          { return _p_version_info; }
  protected: // create from serialization only
 	DECLARE_DYNCREATE(CMainFrame)
 	DECLARE_MESSAGE_MAP()
@@ -124,7 +128,9 @@ class CMainFrame : public CFrameWnd {
   CWhiteInfoBox         *_p_white_info_box;
  private:
   // Other "global" objects
+  CPopupHandler         *_p_popup_handler;
   CTablePositioner      *_p_table_positioner;
+  CValidator            *_p_validator;
   CVersionInfo          *_p_version_info;
  private:
 	// private variables - use public accessors and public mutators to address these

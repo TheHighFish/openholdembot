@@ -31,6 +31,7 @@
 #include "CValidator.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
+#include "MainFrm.h"
 #include "Numericalfunctions.h"
 #include "PrWinHandranges.h"
 
@@ -131,7 +132,7 @@ void CIteratorThread::RestartPrWinComputations() {
 }
 
 void CIteratorThread::StartPrWinComputationsIfNeeded() {		
-	p_validator->ValidateIt();
+	MAIN->p_validator()->ValidateIt();
 	assert(p_iterator_thread != NULL);
 	if (SYM->p_symbol_engine_autoplayer()->IsFirstHeartbeatOfMyTurn())	{
     write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");

@@ -212,8 +212,8 @@ void CAutoConnector::GoIntoPopupBlockingMode()
 		// Only handle popups if at least one bot is connected to a table.
 		// Especially stop popup-handling if the last table got closed
 		// to allow "normal" human work again.
-		assert(p_popup_handler != NULL);
-		p_popup_handler->HandleAllWindows();
+		assert(MAIN->p_popup_handler() != NULL);
+		MAIN->p_popup_handler()->HandleAllWindows();
 	}
 }
 

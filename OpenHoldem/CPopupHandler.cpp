@@ -17,12 +17,10 @@
 #include "CPreferences.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
+#include "MainFrm.h"
 #include "WindowFunctions.h"
 
 #undef MESSAGEBOX_BEFORE_MINIMIZING
-
-CPopupHandler *p_popup_handler = NULL;
-
 
 CPopupHandler::CPopupHandler()
 {
@@ -65,7 +63,7 @@ void CPopupHandler::HandleAllWindows()
 BOOL CALLBACK EnumProcPotentialPopups(HWND hwnd, LPARAM lparam) 
 {
 	bool hard_kill = bool(lparam);
-	p_popup_handler->HandlePotentialPopup(hwnd, hard_kill);
+	MAIN->p_popup_handler()->HandlePotentialPopup(hwnd, hard_kill);
 	return true;  // keep processing through entire list of windows
 }
 
