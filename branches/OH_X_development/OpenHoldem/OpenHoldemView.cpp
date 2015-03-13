@@ -268,7 +268,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		if (_card_common_last[i] != card_value || update_all) 
 		{
 			_card_common_last[i] = card_value;
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
+			write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
         i, p_card->ToString());
 			DrawCard(p_card,
 					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
@@ -278,7 +278,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	}
   // Draw collection of player info
 	for (int i=0; i<p_tablemap->nchairs(); i++) 	{
-		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
+		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
 		if (_seated_last[i] != p_table_state->_players[i].seated() 
@@ -312,7 +312,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 
 		if (update_it || update_all) {
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
+			write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
 			if (p_table_state->_players[i].seated()) 	{
 				DrawSeatedActiveCircle(i);
@@ -336,9 +336,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			DrawDealerButton(i);
 		}
 	}
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) {
@@ -353,52 +353,52 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
 		{
-			if (p_string_match->IsStringFold(p_table_state->_SCI._button_label[i])) 
+			if (CStringMatch::IsStringFold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
 				fold_drawn = true;
 			}
-			else if (p_string_match->IsStringCall(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringCall(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'C', _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
 				call_drawn = true;
 			}
-			else if (p_string_match->IsStringCheck(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringCheck(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'K', _client_rect.right-50, _client_rect.bottom-16, _client_rect.right-36, _client_rect.bottom-2);
 				check_drawn = true;
 			}
-			else if (p_string_match->IsStringRaise(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringRaise(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'R', _client_rect.right-33, _client_rect.bottom-16, _client_rect.right-19, _client_rect.bottom-2);
 				raise_drawn = true;
 			}
-			else if (p_string_match->IsStringAllin(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringAllin(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'A', _client_rect.right-16, _client_rect.bottom-16, _client_rect.right-2, _client_rect.bottom-2);
 				allin_drawn = true;
 			}
-			else if (p_string_match->IsStringAutopost(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringAutopost(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'T', _client_rect.left+2,  _client_rect.bottom-16, _client_rect.left+16, _client_rect.bottom-2);
 				autopost_drawn = true;
 			}
-			else if (p_string_match->IsStringSitin(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringSitin(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'I', _client_rect.left+19, _client_rect.bottom-16, _client_rect.left+33, _client_rect.bottom-2);
 				sitin_drawn = true;
 			}
-			else if (p_string_match->IsStringSitout(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringSitout(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'O', _client_rect.left+36, _client_rect.bottom-16, _client_rect.left+50, _client_rect.bottom-2);
 				sitout_drawn = true;
 			}
-			else if (p_string_match->IsStringLeave(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringLeave(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
 				leave_drawn = true;
 			}
-			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
+			else if (CStringMatch::IsStringPrefold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
 				prefold_drawn = true;
@@ -980,7 +980,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 	GetClientRect(&_client_rect);
 	// Draw player cards (first)
   Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
     chair, player_card_0->ToString());
   int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
   int pos_x_left   = pos_x_right - CARDSIZEX;

@@ -54,11 +54,11 @@ BOOL CDlgSAPrefs22::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (preferences.popup_blocker() == k_popup_minimize)
+	if (MAIN->p_preferences()->popup_blocker() == k_popup_minimize)
 	{
 		_popup_minimize.SetCheck(true);
 	}
-	else if (preferences.popup_blocker() == k_popup_kill)
+	else if (MAIN->p_preferences()->popup_blocker() == k_popup_kill)
 	{
 		_popup_kill.SetCheck(true);
 	}
@@ -76,15 +76,15 @@ void CDlgSAPrefs22::OnOK()
 {
 	if (bool(_popup_minimize.GetCheck()) == true)
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_minimize);
+		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_minimize);
 	}
 	else if (bool(_popup_kill.GetCheck()) == true)
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_kill);
+		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_kill);
 	}
 	else // _popup_disabled.GetCheck() == true
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_disabled);
+		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_disabled);
 	}
 
 	CSAPrefsSubDlg::OnOK();

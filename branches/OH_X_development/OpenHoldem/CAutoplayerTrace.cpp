@@ -71,7 +71,7 @@ bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
 
 int CAutoplayerTrace::Add(CString symbol) {
   ENT
-  write_log(preferences.debug_auto_trace(),
+  write_log(MAIN->p_preferences()->debug_auto_trace(),
     "[CAutoplayerTrace] Add (%s, ...)\n", symbol);
   // This function for symbols without value is for functions only.
   // These functions are eitherpredefined (f$), userdefined (f$)
@@ -92,7 +92,7 @@ int CAutoplayerTrace::Add(CString symbol) {
 
 void CAutoplayerTrace::Add(CString symbol, double value) {
   ENT
-  write_log(preferences.debug_auto_trace(),
+  write_log(MAIN->p_preferences()->debug_auto_trace(),
     "[CAutoplayerTrace] Add (%s, %.3f)\n",
     symbol, value);
   if (!SymbolNeedsToBeLogged(symbol)) return;
@@ -156,7 +156,7 @@ CString CAutoplayerTrace::Indentation() {
 }
 
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
-  if (!preferences.trace_enabled()) {
+  if (!MAIN->p_preferences()->trace_enabled()) {
     return;
   }
   CSLock lock(log_critsec);
@@ -270,7 +270,7 @@ void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {
 }
 
 void CAutoplayerTrace::LogAutoPlayerTrace() {
-  if (!preferences.trace_enabled() 
+  if (!MAIN->p_preferences()->trace_enabled() 
       || (_symboltrace_collection.GetSize() <= 0)) {
     return;
   }

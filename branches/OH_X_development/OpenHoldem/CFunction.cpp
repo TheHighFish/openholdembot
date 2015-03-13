@@ -48,7 +48,7 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree)
 }
 
 double CFunction::Evaluate(bool log /* = false */) {
-  write_log(preferences.debug_formula(), 
+  write_log(MAIN->p_preferences()->debug_formula(), 
     "[CFunction] Evaluating function %s\n", _name); 
   // Check recursion depth of DoCalcF$symbol 
   // to detect a recursive formula.
@@ -69,7 +69,7 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Result already cached
   if (_is_result_cached) {
     if (log) {
-      write_log(preferences.debug_auto_trace(),
+      write_log(MAIN->p_preferences()->debug_auto_trace(),
         "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
       p_autoplayer_trace->Add(_name, _cached_result);  
     }
@@ -125,7 +125,7 @@ void CFunction::Dump() {
     (_is_result_cached ? "[cached]" : "[not chached]"),
     _cached_result,
     _parse_tree_node);
-  write_log(preferences.debug_auto_trace(), (char*)(LPCTSTR)data);
+  write_log(MAIN->p_preferences()->debug_auto_trace(), (char*)(LPCTSTR)data);
 }
 
 void CFunction::SetValue(double value) {

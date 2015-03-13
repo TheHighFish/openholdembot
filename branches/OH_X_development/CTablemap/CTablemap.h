@@ -21,6 +21,9 @@
 #include "../CCritSec/CCritSec.h"
 #include "../OpenHoldem/MagicNumbers.h"
 
+//!!!!
+#include "..\StructsDefines\structs_defines.h"
+
 ///////////////////////////////
 // structs
 ///////////////////////////////

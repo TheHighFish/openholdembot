@@ -51,7 +51,7 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
   CSAPrefsSubDlg::OnInitDialog();
   // Starting with 3 to avoid confusion with old values (on off)
   // and defaulting to off
-	switch (preferences.replay_record()) {
+	switch (MAIN->p_preferences()->replay_record()) {
     case kShootReplyFramesOnMyTurn:
       m_RecordMyTurn.SetCheck(BST_CHECKED);
       break;
@@ -66,10 +66,10 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
       m_RecordNever.SetCheck(BST_CHECKED);
       break;
   }
-	text.Format("%d", preferences.replay_max_frames());
+	text.Format("%d", MAIN->p_preferences()->replay_max_frames());
 	m_MaxFrames.SetWindowText(text.GetString());
 	m_MaxFramesSpin.SetRange(1, 1000);
-	m_MaxFramesSpin.SetPos(preferences.replay_max_frames());
+	m_MaxFramesSpin.SetPos(MAIN->p_preferences()->replay_max_frames());
 	m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
   return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -78,20 +78,20 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
 void CDlgSAPrefs8::OnOK() {
 	CString			text = "";
   if (m_RecordMyTurn.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		MAIN->p_preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnMyTurn);
 	} else if (m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		MAIN->p_preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnEveryChangeWhilePlaying);
 	} else if (m_RecordEveryChange.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		MAIN->p_preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnEveryChange);
 	} else {
     // default off
-    preferences.SetValue(k_prefs_replay_record, 
+    MAIN->p_preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesNever);
   }
   m_MaxFrames.GetWindowText(text);
-	preferences.SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
+	MAIN->p_preferences()->SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
   CSAPrefsSubDlg::OnOK();
 }

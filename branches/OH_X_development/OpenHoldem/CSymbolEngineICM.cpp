@@ -204,7 +204,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	int			sym_opponentsseatedbits = SYM->p_symbol_engine_active_dealt_playing()->opponentsseatedbits();
 
 	for (int i=0; i<playerNB; ++i) {
-    write_log(preferences.debug_icm(),
+    write_log(MAIN->p_preferences()->debug_icm(),
       "[CSymbolEngineICM] player %d  stack = %1.2f \n", i, stacks[i]);
 	}
 
@@ -232,7 +232,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	int i = 0;
 	while (i < playerNB && prizes[i] > 0.) {
 		double p = P(player, i + 1, stacks, playerNB);
-		write_log(preferences.debug_icm(),
+		write_log(MAIN->p_preferences()->debug_icm(),
       "[CSymbolEngineICM] prob place %d = %1.4f \n", i + 1, p);
 		ICM += prizes[i] * p;
 		i++;

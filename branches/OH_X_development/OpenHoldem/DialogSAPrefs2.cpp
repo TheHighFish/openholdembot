@@ -19,8 +19,8 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs2.h"
 #include "CPreferences.h"
+#include "MainFrm.h"
 #include "OH_MessageBox.h"
-
 
 // CDlgSAPrefs2 dialog
 
@@ -66,39 +66,39 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	text.Format("%d", preferences.frame_delay());
+	text.Format("%d", MAIN->p_preferences()->frame_delay());
 	m_FrameDelay.SetWindowText(text);
 	m_FrameDelay_Spin.SetRange(0, 9);
-	m_FrameDelay_Spin.SetPos(preferences.frame_delay());
+	m_FrameDelay_Spin.SetPos(MAIN->p_preferences()->frame_delay());
 	m_FrameDelay_Spin.SetBuddy(&m_FrameDelay);
 
-	text.Format("%d", preferences.click_delay());
+	text.Format("%d", MAIN->p_preferences()->click_delay());
 	m_ClickDelay.SetWindowText(text);
 	m_ClickDelay_Spin.SetRange(0, 5000);
-	m_ClickDelay_Spin.SetPos(preferences.click_delay());
+	m_ClickDelay_Spin.SetPos(MAIN->p_preferences()->click_delay());
 	m_ClickDelay_Spin.SetBuddy(&m_ClickDelay);
 
-	text.Format("%d", preferences.swag_delay_1());
+	text.Format("%d", MAIN->p_preferences()->swag_delay_1());
 	m_SwagDelay1.SetWindowText(text);
 	m_SwagDelay1_Spin.SetRange(0, 5000);
-	m_SwagDelay1_Spin.SetPos(preferences.swag_delay_1());
+	m_SwagDelay1_Spin.SetPos(MAIN->p_preferences()->swag_delay_1());
 	m_SwagDelay1_Spin.SetBuddy(&m_SwagDelay1);
 
-	text.Format("%d", preferences.swag_delay_2());
+	text.Format("%d", MAIN->p_preferences()->swag_delay_2());
 	m_SwagDelay2.SetWindowText(text);
 	m_SwagDelay2_Spin.SetRange(0, 5000);
-	m_SwagDelay2_Spin.SetPos(preferences.swag_delay_2());
+	m_SwagDelay2_Spin.SetPos(MAIN->p_preferences()->swag_delay_2());
 	m_SwagDelay2_Spin.SetBuddy(&m_SwagDelay2);
 
-	text.Format("%d", preferences.swag_delay_3());
+	text.Format("%d", MAIN->p_preferences()->swag_delay_3());
 	m_SwagDelay3.SetWindowText(text);
 	m_SwagDelay3_Spin.SetRange(0, 5000);
-	m_SwagDelay3_Spin.SetPos(preferences.swag_delay_3());
+	m_SwagDelay3_Spin.SetPos(MAIN->p_preferences()->swag_delay_3());
 	m_SwagDelay3_Spin.SetBuddy(&m_SwagDelay3);
 
-	m_Autoplayer_Upon_Connection.SetCheck(preferences.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
-	m_Use_Auto_Replay.SetCheck(preferences.use_auto_replay() ? BST_CHECKED : BST_UNCHECKED);
-	m_SwagUseComma.SetCheck(preferences.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
+	m_Autoplayer_Upon_Connection.SetCheck(MAIN->p_preferences()->engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
+	m_Use_Auto_Replay.SetCheck(MAIN->p_preferences()->use_auto_replay() ? BST_CHECKED : BST_UNCHECKED);
+	m_SwagUseComma.SetCheck(MAIN->p_preferences()->swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -114,7 +114,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_frame_delay, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_frame_delay, strtoul(text.GetString(), 0, 10));
 
 	m_ClickDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_CLICKDELAY)
@@ -122,7 +122,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Error_Warning("Invalid Click Delay");
 		return;
 	}
-	preferences.SetValue(k_prefs_click_delay, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_click_delay, strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
@@ -130,7 +130,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Select to Delete)", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_swag_delay_1, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_swag_delay_1, strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay2.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY2)
@@ -138,7 +138,7 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Delete to Entry)", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_swag_delay_2, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_swag_delay_2, strtoul(text.GetString(), 0, 10));
 
 	m_SwagDelay3.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY3) 
@@ -146,11 +146,11 @@ void CDlgSAPrefs2::OnOK()
 		OH_MessageBox_Interactive("Invalid Swag Delay (Entry to Confirm)", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_swag_delay_3, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_swag_delay_3, strtoul(text.GetString(), 0, 10));
 
-	preferences.SetValue(k_prefs_engage_autoplayer, m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_use_auto_replay, m_Use_Auto_Replay.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_swag_use_comma, m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
+	MAIN->p_preferences()->SetValue(k_prefs_engage_autoplayer, m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
+	MAIN->p_preferences()->SetValue(k_prefs_use_auto_replay, m_Use_Auto_Replay.GetCheck()==BST_CHECKED ? true : false);
+	MAIN->p_preferences()->SetValue(k_prefs_swag_use_comma, m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
 }

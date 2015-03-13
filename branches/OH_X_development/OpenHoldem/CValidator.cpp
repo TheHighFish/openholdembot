@@ -69,7 +69,7 @@ CString CValidator::Symbols_And_Values(const CString symbols_possibly_affected) 
 
 void CValidator::ValidateSingleRule() {
 	// Heuristic rules and not to be tested?
-	if (_heuristic && !preferences.validator_use_heuristic_rules()) {
+	if (_heuristic && !MAIN->p_preferences()->validator_use_heuristic_rules()) {
 		return;
 	}
 	// Test to be executed?
@@ -78,12 +78,12 @@ void CValidator::ValidateSingleRule() {
 	  if (!_postcondition ) { 
 			if (_no_errors_this_heartbeat) {
 				// First error: shoot replayframe, if needed
-				if (preferences.validator_shoot_replayframe_on_error()) {
+				if (MAIN->p_preferences()->validator_shoot_replayframe_on_error()) {
 					SYM->p_symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}
-			if (preferences.validator_stop_on_error()) { 
+			if (MAIN->p_preferences()->validator_stop_on_error()) { 
 				p_autoplayer->EngageAutoplayer(false); 
 			}
 			// Create error message
@@ -197,7 +197,7 @@ void CValidator::ValidateIt() {
 
 void CValidator::ValidateGameState() {
 	if (// Enabled, when it's my turn?
-		  (preferences.validator_enabled() && (SYM->p_symbol_engine_autoplayer()->ismyturn())) 
+		  (MAIN->p_preferences()->validator_enabled() && (SYM->p_symbol_engine_autoplayer()->ismyturn())) 
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
 	  // Validate.

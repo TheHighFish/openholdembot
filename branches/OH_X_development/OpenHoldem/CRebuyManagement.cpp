@@ -47,13 +47,13 @@ CRebuyManagement::~CRebuyManagement()
 
 bool CRebuyManagement::MinimumDelayElapsed()
 {
-	unsigned int MinimumTimeDifference = preferences.rebuy_minimum_time_to_next_try();
+	unsigned int MinimumTimeDifference = MAIN->p_preferences()->rebuy_minimum_time_to_next_try();
 	// Make sure, we don't try to rebuy too often in a short time
 	time(&CurrentTime);
 	double RebuyTimeDifference = difftime(CurrentTime, RebuyLastTime);
 	if (RebuyTimeDifference < MinimumTimeDifference)
 	{
-		write_log(preferences.debug_rebuy(), "[CRebuyManagement] MinimumDelayElapsed(): false\n");
+		write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] MinimumDelayElapsed(): false\n");
 		return false;
 	}
 	return true;
@@ -61,7 +61,7 @@ bool CRebuyManagement::MinimumDelayElapsed()
 
 bool CRebuyManagement::ChangeInHandNumber()
 {
-	if (!preferences.rebuy_condition_change_in_handnumber()) 
+	if (!MAIN->p_preferences()->rebuy_condition_change_in_handnumber()) 
 	{
 		return true;
 	}
@@ -69,13 +69,13 @@ bool CRebuyManagement::ChangeInHandNumber()
 	{
 		return true;
 	}
-	write_log(preferences.debug_rebuy(), "[CRebuyManagement] ChangeInHandNumber(): false\n");
+	write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] ChangeInHandNumber(): false\n");
 	return false;
 }
 
 bool CRebuyManagement::NoCards()
 {
-	if (!preferences.rebuy_condition_no_cards()) 
+	if (!MAIN->p_preferences()->rebuy_condition_no_cards()) 
 	{
 		return true;
 	}
@@ -94,19 +94,19 @@ bool CRebuyManagement::NoCards()
 	}
 	// We hold cards. No good time to rebuy,
 	// if we play at a real casino.
-	write_log(preferences.debug_rebuy(), "[CRebuyManagement] No_Cards: false: we hold cards.\n");	
+	write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] No_Cards: false: we hold cards.\n");	
 	return false;
 }
 
 bool CRebuyManagement::OcclusionCheck()
 {
-	if (!preferences.rebuy_condition_heuristic_check_for_occlusion()) 
+	if (!MAIN->p_preferences()->rebuy_condition_heuristic_check_for_occlusion()) 
 	{
 		return true;
 	}
 	else if (p_occlusioncheck->UserBalanceOccluded())
 	{
-		write_log(preferences.debug_rebuy(), "[CRebuyManagement] OcclusionCheck: false (occluded)\n");
+		write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] OcclusionCheck: false (occluded)\n");
 		return false;
 	}
 	return true;
@@ -120,19 +120,19 @@ bool CRebuyManagement::RebuyPossible()
 		&& NoCards()
 		&& OcclusionCheck())
 	{
-		write_log(preferences.debug_rebuy(), "[CRebuyManagement] RebuyPossible: true\n");
+		write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] RebuyPossible: true\n");
 		return true;
 	}
 	else
 	{
-		write_log(preferences.debug_rebuy(), "[CRebuyManagement] RebuyPossible: false\n");
+		write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] RebuyPossible: false\n");
 		return false;
 	}
 }
 
 void CRebuyManagement::TryToRebuy()
 {
-	write_log(preferences.debug_rebuy(), "[CRebuyManagement] TryToRebuy()\n");
+	write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] TryToRebuy()\n");
 	if (RebuyPossible())
 	{
 		RebuyLastTime = CurrentTime;		
@@ -150,7 +150,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	// We assume, the autoplayer does that.
 	//
 	// Build command-line-options for rebuy-script
-	write_log(preferences.debug_rebuy(), "[CRebuyManagement] ExecuteRebuyScript");
+	write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] ExecuteRebuyScript");
 	CString Casino;
 	if (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end())
 	{
@@ -167,7 +167,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	int UserChair = SYM->p_symbol_engine_userchair()->userchair();
 	double Balance = p_table_state->User()->_balance;
 	double TargetAmount = SYM->p_function_collection()->Evaluate(k_standard_function_names[k_hopper_function_rebuy]);
-	CString RebuyScript = preferences.rebuy_script();
+	CString RebuyScript = MAIN->p_preferences()->rebuy_script();
 	CString CommandLine;
 	CommandLine.Format(CString("%s %s %u %f %f %f %f %f %f"), 
 		RebuyScript, Casino, WindowHandleOfThePokerTable, 
@@ -181,7 +181,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	memset(&StartupInfo, 0, sizeof(StartupInfo));
 	memset(&ProcessInfo, 0, sizeof(ProcessInfo));
 	StartupInfo.cb = sizeof(StartupInfo); 
-	write_log(preferences.debug_rebuy(), "[CRebuyManagement] command line: %s\n", CommandLine);
+	write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] command line: %s\n", CommandLine);
 	if(CreateProcess(NULL, CommandLine.GetBuffer(), NULL, 
 		false, 0, NULL, NULL, 0, &StartupInfo, &ProcessInfo))
 	{
@@ -196,7 +196,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	else
 	{
 		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
-		write_log(preferences.debug_rebuy(), ErrorMessage.GetBuffer());
+		write_log(MAIN->p_preferences()->debug_rebuy(), ErrorMessage.GetBuffer());
 		OH_MessageBox_Error_Warning(ErrorMessage.GetBuffer());
 	}
 }

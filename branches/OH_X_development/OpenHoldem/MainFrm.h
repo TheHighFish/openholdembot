@@ -10,14 +10,16 @@
 
 // Forward declarations to avoid unnecessary include files
 // GUI
-class COpenHoldemStatusbar;
+class CDebugTab;
 class CDlgFormulaScintilla;
 class CDlgScraperOutput;
+class COpenHoldemStatusbar;
 class COpenHoldemTitle;
 class CFlagsToolbar;
 class CWhiteInfoBox;
 // Other objects
 class CPopupHandler;
+class CPreferences;
 class CTablePositioner;
 class CValidator;
 class CVersionInfo;
@@ -26,15 +28,17 @@ class CMainFrame : public CFrameWnd {
  public:
   // Read-only access to GUI elements
   // GUI objects
-  COpenHoldemStatusbar* p_openholdem_statusbar()  { return _p_openholdem_statusbar; }
+  CDebugTab*            p_debug_tab()             { return _p_debug_tab; }
   CDlgFormulaScintilla* p_formulaScintillaDlg()   { return _p_formulaScintillaDlg; } 
   CDlgScraperOutput*    p_ScraperOutputDlg()      { return _p_ScraperOutputDlg; }
+  COpenHoldemStatusbar* p_openholdem_statusbar()  { return _p_openholdem_statusbar; }
   COpenHoldemTitle*     p_openholdem_title()      { return _p_openholdem_title; }
   CFlagsToolbar*        p_flags_toolbar()         { return _p_flags_toolbar; }
   CWhiteInfoBox*        p_white_info_box()        { return _p_white_info_box; }
  public:
   // Read-only access to other "global" obkects
   CPopupHandler*        p_popup_handler()         { return _p_popup_handler; }
+  CPreferences*         p_preferences()           { return _p_preferences; }
   CTablePositioner*     p_table_positioner()      { return _p_table_positioner; }
   CValidator*           p_validator()             { return _p_validator; }
   CVersionInfo*         p_version_info()          { return _p_version_info; }
@@ -120,15 +124,17 @@ class CMainFrame : public CFrameWnd {
 #undef ENT
  private:
   // GUI objects
-  COpenHoldemStatusbar  *_p_openholdem_statusbar;
+  CDebugTab             *_p_debug_tab;
   CDlgFormulaScintilla  *_p_formulaScintillaDlg;
   CDlgScraperOutput     *_p_ScraperOutputDlg;
+  COpenHoldemStatusbar  *_p_openholdem_statusbar;
   COpenHoldemTitle      *_p_openholdem_title;
   CFlagsToolbar         *_p_flags_toolbar;
   CWhiteInfoBox         *_p_white_info_box;
  private:
   // Other "global" objects
   CPopupHandler         *_p_popup_handler;
+  CPreferences          *_p_preferences;
   CTablePositioner      *_p_table_positioner;
   CValidator            *_p_validator;
   CVersionInfo          *_p_version_info;
@@ -146,6 +152,7 @@ private:
 
 // used by EnumProcTopLevelWindowList function
 //!!!!!
+#include "..\StructsDefines\structs_defines.h"
 extern CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam);

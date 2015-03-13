@@ -66,17 +66,17 @@ const int CPokerTrackerLookup::GetSiteId()
 		if (sitename.MakeLower().Find(supported_sitename.MakeLower()) >= 0
 			|| network.CompareNoCase(supported_sitename) == 0)
 		{
-			write_log(preferences.debug_pokertracker(), "[PokerTrackerLookup] Site or network is: %s\n",
+			write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTrackerLookup] Site or network is: %s\n",
 				supported_sitename);
-			write_log(preferences.debug_pokertracker(), "[PokerTrackerLookup] SiteID is %i\n",
+			write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTrackerLookup] SiteID is %i\n",
 				lookup->second);
 			return lookup->second;
 		}
 		lookup++;
 	}
-	write_log(preferences.debug_pokertracker(), 
+	write_log(MAIN->p_preferences()->debug_pokertracker(), 
 		"[PokerTrackerLookup] ERROR: unsupported sitename and unsupported network.\n");
-	write_log(preferences.debug_pokertracker(), 
+	write_log(MAIN->p_preferences()->debug_pokertracker(), 
 		"[PokerTrackerLookup] Probably wrong data in tablemap.\n");
 	return -1;
 }

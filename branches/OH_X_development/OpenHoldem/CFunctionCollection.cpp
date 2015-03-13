@@ -38,7 +38,7 @@ CFunctionCollection::~CFunctionCollection() {
 }
 
 void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
-  write_log(preferences.debug_formula(), 
+  write_log(MAIN->p_preferences()->debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
   if (!_openPPL_library_correctly_loaded) {
     open_ppl = true;
@@ -52,7 +52,7 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
       needs_deletion = true;
     }
     if (needs_deletion) {
-      write_log(preferences.debug_formula(), 
+      write_log(MAIN->p_preferences()->debug_formula(), 
         "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
       Delete(p_nextObject->name());
     }
@@ -115,12 +115,12 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
   CString name = new_function->name();
   if (name == "") {
-    write_log(preferences.debug_formula(), 
+    write_log(MAIN->p_preferences()->debug_formula(), 
 	  "[CFunctionCollection] Invalid empty name\n");
     return;
   }
   if (Exists(name)) {
-    write_log(preferences.debug_formula(), 
+    write_log(MAIN->p_preferences()->debug_formula(), 
 	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
   }
@@ -130,7 +130,7 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
     return;
   }
 
-  write_log(preferences.debug_formula(), 
+  write_log(MAIN->p_preferences()->debug_formula(), 
 	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
 }
@@ -181,12 +181,12 @@ CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_n
 
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
   CSLock lock(m_critsec);
-  write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
+  write_log(MAIN->p_preferences()->debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name); 
   if (it == _function_map.end()) {
     // Function or list does not exist
-    write_log(preferences.debug_formula(), "[CFunctionCollection] Function does not exist\n");
+    write_log(MAIN->p_preferences()->debug_formula(), "[CFunctionCollection] Function does not exist\n");
     return NULL;
   }
   return it->second;
@@ -566,7 +566,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
       // Function does not exist
       *result = k_undefined_zero;
       if (log) {
-        write_log(preferences.debug_auto_trace(),
+        write_log(MAIN->p_preferences()->debug_auto_trace(),
           "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }

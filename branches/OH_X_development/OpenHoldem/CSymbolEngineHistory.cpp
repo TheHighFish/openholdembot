@@ -209,7 +209,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
 	}	else {
-		write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
+		write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
 }
 

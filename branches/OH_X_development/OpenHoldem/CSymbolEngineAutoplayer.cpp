@@ -77,36 +77,36 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
+	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
 	for (int i=0; i<k_max_number_of_buttons; i++) {
 		if (p_scraper->GetButtonState(i)) {
       CString button_label = p_table_state->_SCI._button_label[i];
-      if (p_string_match->IsStringFold(button_label))	{
+      if (CStringMatch::IsStringFold(button_label))	{
 				_myturnbits |= (1<<0);
-			}	else if (p_string_match->IsStringCall(button_label)) 	{
+			}	else if (CStringMatch::IsStringCall(button_label)) 	{
 				_myturnbits |= (1<<1);
-			}	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
+			}	else if (CStringMatch::IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
 				_myturnbits |= (1<<2);
-			}	else if (p_string_match->IsStringCheck(button_label))	{
+			}	else if (CStringMatch::IsStringCheck(button_label))	{
 				_myturnbits |= (1<<4);
-			}	else if (p_string_match->IsStringAllin(button_label)) {
+			}	else if (CStringMatch::IsStringAllin(button_label)) {
 				_myturnbits |= (1<<3);
-			}	else if (p_string_match->IsStringAutopost(button_label)) 	{
+			}	else if (CStringMatch::IsStringAutopost(button_label)) 	{
 				_isautopost = true;
 			}
 		}
 	}
-	write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
+	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits now: %i\n", _myturnbits);
 }
 
 void CSymbolEngineAutoplayer::CalculateSitInState() {
   for (int i=0; i<k_max_number_of_buttons; i++) {
-    if (p_string_match->IsStringSitin(p_table_state->_SCI._button_label[i])) {
+    if (CStringMatch::IsStringSitin(p_table_state->_SCI._button_label[i])) {
 	    // Sitin-button found
       // We are sitting in if that button can NOT be clicked
 	    _issittingin = !p_scraper->GetButtonState(i);
 	    return;
-    } else if (p_string_match->IsStringSitout(p_table_state->_SCI._button_label[i])) {
+    } else if (CStringMatch::IsStringSitout(p_table_state->_SCI._button_label[i])) {
 	    // Sitout-button found
       // We are sitting in if that button CAN be clicked
 	    _issittingin = (p_scraper->GetButtonState(i));
@@ -127,22 +127,22 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	_isfinalanswer = true;
 	// check factors that affect isFinalAnswer status
 	if (p_iterator_thread->IteratorThreadWorking())	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Not Final Answer because iterator_thread still running\n");
 		_isfinalanswer = false;
 	}
 	// Change from only requiring one visible button (OpenHoldem 2008-04-03)
   /*!!!!!
 	else if (p_table_state->_SCI.NumberOfVisibleAutoplayerButtons() < k_min_buttons_needed_for_my_turn)	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Either not your turn or problem with the tablemap\n");
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Not Final Answer because too few buttons visible\n");
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Buttons visible: %i\n", p_casino_interface->NumberOfVisibleAutoplayerButtons());
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Either not your turn or problem with the tablemap\n");
 		_isfinalanswer = false;
 	}*/
   // if we are not playing (occluded?) 2008-03-25 Matrix
 	else if (!p_table_state->User()->HasKnownCards())	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", SYM->p_symbol_engine_userchair()->userchair());
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", SYM->p_symbol_engine_userchair()->userchair());
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}
 
@@ -150,17 +150,17 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	if (_isfinalanswer)	{
 		p_stableframescounter->UpdateNumberOfStableFrames();
 	}
-  write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
+  write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
 	unsigned int additional_frames_to_wait = 0;
   double desired_delay_in_seconds = SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_delay);
-  if (preferences.scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
-    additional_frames_to_wait = desired_delay_in_seconds / preferences.scrape_delay();
+  if (MAIN->p_preferences()->scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
+    additional_frames_to_wait = desired_delay_in_seconds / MAIN->p_preferences()->scrape_delay();
   }
 
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait) {
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
+	if (p_stableframescounter->NumberOfStableFrames() < MAIN->p_preferences()->frame_delay() + additional_frames_to_wait) {
+		write_log(MAIN->p_preferences()->debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
       SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_delay));
 		_isfinalanswer = false;
 	}

@@ -123,17 +123,17 @@ void CSharedMem::RememberTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
 	time(&last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(MAIN->p_preferences()->debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
 	session_ID_of_last_instance_that_failed_to_connect = p_sessioncounter->session_id();
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Instance %d failed to connect\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(MAIN->p_preferences()->debug_autoconnector(), "[CSharedMem] Instance %d failed to connect\n", session_ID_of_last_instance_that_failed_to_connect);
 }
 
 
 time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect()
 {
 	ENT;
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(MAIN->p_preferences()->debug_autoconnector(), "[CSharedMem] Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(MAIN->p_preferences()->debug_autoconnector(), "[CSharedMem] Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
 	return last_failed_attempt_to_connect;
 }
 
@@ -160,18 +160,18 @@ HWND *CSharedMem::GetDenseListOfConnectedPokerWindows()
 
 void CSharedMem::CreateDenseListOfConnectedPokerWindows()
 {
-	write_log(preferences.debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
+	write_log(MAIN->p_preferences()->debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
 	int size_of_list = 0;
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		if (attached_poker_windows[i] != NULL)
 		{
-			write_log(preferences.debug_table_positioner(), "[CSharedMem] First HWND: %i\n", attached_poker_windows[i]);
+			write_log(MAIN->p_preferences()->debug_table_positioner(), "[CSharedMem] First HWND: %i\n", attached_poker_windows[i]);
 			dense_list_of_attached_poker_windows[size_of_list] = attached_poker_windows[i];
 			size_of_list++;
 		}
 	}
-	write_log(preferences.debug_table_positioner(), "[CSharedMem] Total tables %i\n", size_of_list);
+	write_log(MAIN->p_preferences()->debug_table_positioner(), "[CSharedMem] Total tables %i\n", size_of_list);
 	// Only at the very end update the size of the list.
 	// This helps to avoid potential race-conditions,
 	// if another application uses the list at the same time,
@@ -196,7 +196,7 @@ void CSharedMem::VerifyMainMutexName()
 	// * autoplayer actions no longer synchronized
 	// * no longer unique session ID
 	// * all bots try to write to the same log-file
-	int CRC = crc32((const unsigned char *) preferences.mutex_name().GetString());
+	int CRC = crc32((const unsigned char *) MAIN->p_preferences()->mutex_name().GetString());
 	if (CRC_of_main_mutexname == 0)
 	{
 		// Set the mutex

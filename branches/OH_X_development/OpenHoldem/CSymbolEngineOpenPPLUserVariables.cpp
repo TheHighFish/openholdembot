@@ -35,7 +35,7 @@ void CSymbolEngineOpenPPLUserVariables::ResetOnConnection() {
 void CSymbolEngineOpenPPLUserVariables::ResetOnHandreset() {
   // All user-variables are for the current hand only 
   // and get deleted on hand-reset.
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] Deleting all user variables on hand-reset\n");
   _user_variables.clear();
 }
@@ -50,7 +50,7 @@ void CSymbolEngineOpenPPLUserVariables::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPLUserVariables::Set(CString symbol) {
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] Setting user-variable %s\n", symbol);
   _user_variables[symbol] = true;
 }
@@ -67,12 +67,12 @@ bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const char *name, double 
   }
   // Try to look it up
   if (_user_variables[name]) {
-    write_log(preferences.debug_symbolengine_open_ppl(),
+    write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
       "[CSymbolEngineOpenPPLUserVariables] user-variable exists: %s\n", name);
     *result = double(true);
     return true;
   }
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] user-variable does not exist: %s\n", name);
   *result = double(false);
   return true;

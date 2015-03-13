@@ -49,9 +49,9 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_ConfigurationInputSettings_Button.SetCheck(preferences.configurationcheck_input_settings() != 0);
-	m_ConfigurationThemeSettings_Button.SetCheck(preferences.configurationcheck_theme_settings() != 0);
-	m_ConfigurationFontSettings_Button.SetCheck(preferences.configurationcheck_font_settings() != 0);
+	m_ConfigurationInputSettings_Button.SetCheck(MAIN->p_preferences()->configurationcheck_input_settings() != 0);
+	m_ConfigurationThemeSettings_Button.SetCheck(MAIN->p_preferences()->configurationcheck_theme_settings() != 0);
+	m_ConfigurationFontSettings_Button.SetCheck(MAIN->p_preferences()->configurationcheck_font_settings() != 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -59,9 +59,9 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	preferences.SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
-	preferences.SetValue(k_prefs_configurationcheck_theme_settings, m_ConfigurationThemeSettings_Button.GetCheck());
-	preferences.SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
+	MAIN->p_preferences()->SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
+	MAIN->p_preferences()->SetValue(k_prefs_configurationcheck_theme_settings, m_ConfigurationThemeSettings_Button.GetCheck());
+	MAIN->p_preferences()->SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }
 

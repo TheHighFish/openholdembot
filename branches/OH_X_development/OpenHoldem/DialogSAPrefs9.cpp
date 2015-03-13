@@ -45,8 +45,8 @@ BOOL CDlgSAPrefs9::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_DefaultPerlFormula.SetWindowText(preferences.perl_default_formula());
-	m_PerlEditor.SetWindowText(preferences.perl_editor());
+	m_DefaultPerlFormula.SetWindowText(MAIN->p_preferences()->perl_default_formula());
+	m_PerlEditor.SetWindowText(MAIN->p_preferences()->perl_editor());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -57,10 +57,10 @@ void CDlgSAPrefs9::OnOK()
 	CString text = "";
 
 	m_DefaultPerlFormula.GetWindowText(text);
-	preferences.SetValue(k_prefs_perl_default_formula, text);
+	MAIN->p_preferences()->SetValue(k_prefs_perl_default_formula, text);
 
 	m_PerlEditor.GetWindowText(text);
-	preferences.SetValue(k_prefs_perl_editor, text);
+	MAIN->p_preferences()->SetValue(k_prefs_perl_editor, text);
 
    	// Load Perl interpreter without a restart
 	if (p_perl)

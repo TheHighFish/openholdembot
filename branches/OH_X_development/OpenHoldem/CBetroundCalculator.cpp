@@ -41,7 +41,7 @@ void CBetroundCalculator::OnNewHeartbeat()
 	// Save old value first before before changing _betround
 	// Otherwise the values will be identical all the time.
 	_betround_previous_heartbeat = _betround;
-	write_log(preferences.debug_alltherest(), "[CBetroundCalculator] _betround_previous_heartbeat = %i\n",
+	write_log(MAIN->p_preferences()->debug_alltherest(), "[CBetroundCalculator] _betround_previous_heartbeat = %i\n",
 		_betround_previous_heartbeat);
 	// Betround is a very important prerequisite
 	// to determine what symbols shall be calculated.
@@ -65,13 +65,13 @@ void CBetroundCalculator::OnNewHeartbeat()
 		// There is a common card animation going on currently
 		// so lets not try to determine the betround,
 		// but if it's a new hand then lets default to pre-flop
-		write_log(preferences.debug_alltherest(), "[CBetroundCalculator] Animation going on\n");
+		write_log(MAIN->p_preferences()->debug_alltherest(), "[CBetroundCalculator] Animation going on\n");
 		if (_betround_previous_heartbeat == k_undefined)
 		{
 			_betround = k_betround_preflop;
 		}
 	}
-	write_log(preferences.debug_alltherest(), "[CBetroundCalculator] _betround = %i\n",
+	write_log(MAIN->p_preferences()->debug_alltherest(), "[CBetroundCalculator] _betround = %i\n",
 		_betround);
 }
 
@@ -79,7 +79,7 @@ void CBetroundCalculator::OnNewHeartbeat()
 bool CBetroundCalculator::IsNewBetround()
 { 
 	bool result = (_betround != _betround_previous_heartbeat);
-	write_log(preferences.debug_alltherest(), "[CBetroundCalculator] IsNewBetround() = %s\n",
+	write_log(MAIN->p_preferences()->debug_alltherest(), "[CBetroundCalculator] IsNewBetround() = %s\n",
 		Bool2CString(result));
 	return result; 
 }

@@ -348,6 +348,4 @@ private:
 	CString			_preferences_heading;
 };
 
-extern CPreferences preferences;
-
 #endif // INC_CPREFERENCES_H_

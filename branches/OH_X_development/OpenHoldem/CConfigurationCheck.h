@@ -14,17 +14,13 @@
 #ifndef INC_CCONFIGURATIONCHECK_H
 #define INC_CCONFIGURATIONCHECK_H
 
-class CConfigurationCheck
-{
-
-public:
+class CConfigurationCheck {
+ public:
 	CConfigurationCheck();
 	~CConfigurationCheck();
-
-private:
+ public:
 	void CheckEverything();
-
-private:
+ private:
 	HKEY GetHive(CString mhive);
 	bool OpenKey(CString mhive, CString registry_path);
 	CString GetValue(CString mhive, int type, CString registry_path, CString key_name);
@@ -34,7 +30,5 @@ private:
 	void CheckForClassicalTheme();
 	void CheckForFontSmoothing();
 };
-
-extern CConfigurationCheck *p_configurationcheck;
 
 #endif // INC_CCONFIGURATIONCHECK_H

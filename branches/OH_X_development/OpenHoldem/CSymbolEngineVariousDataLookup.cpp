@@ -110,7 +110,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   }
   else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
-      write_log(preferences.debug_auto_trace(), 
+      write_log(MAIN->p_preferences()->debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
       GUI->p_white_info_box()->SetCustomLogMessage(name);

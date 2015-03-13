@@ -7,38 +7,38 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: class for string comparisons,
+//   "dealer", seated", etc.
+//   Stateless. therefore no instance needed
 //
 //******************************************************************************
 
 #ifndef INC_CSTRINGMATCH_H
 #define INC_CSTRINGMATCH_H
 
-class CStringMatch
-{
-public:
+class CStringMatch {
+ public:
 	// public functions
 	CStringMatch();
 	~CStringMatch();
-public:
-	const bool IsNumeric(const CString t);
-	const bool IsStringAllin(const CString s);
-	const bool IsStringRaise(const CString s);
-	const bool IsStringCall(const CString s);
-	const bool IsStringCheck(const CString s);
-	const bool IsStringFold(const CString s);
-	const bool IsStringAutopost(const CString s);
-	const bool IsStringSitin(const CString s);
-	const bool IsStringSitout(const CString s);
-	const bool IsStringLeave(const CString s);
-	const bool IsStringPrefold(const CString s);
-	const bool IsStringSeated(const CString s);
-	const bool IsStringActive(const CString s);
-	const bool IsStringCardback(const CString s);
-	const bool IsStringDealer(const CString s);
-
+ public:
+	static bool IsNumeric(const CString t);
+	static bool IsStringAllin(const CString s);
+	static bool IsStringRaise(const CString s);
+	static bool IsStringCall(const CString s);
+	static bool IsStringCheck(const CString s);
+	static bool IsStringFold(const CString s);
+	static bool IsStringAutopost(const CString s);
+	static bool IsStringSitin(const CString s);
+	static bool IsStringSitout(const CString s);
+	static bool IsStringLeave(const CString s);
+	static bool IsStringPrefold(const CString s);
+	static bool IsStringSeated(const CString s);
+	static bool IsStringActive(const CString s);
+	static bool IsStringCardback(const CString s);
+	static bool IsStringDealer(const CString s);
+ public:
+  static bool IsStringMatch(const CString s, const int button_code);
 };
-
-extern CStringMatch *p_string_match;
 
 #endif // INC_CSTRINGMATCH_H
