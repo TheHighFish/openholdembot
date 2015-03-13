@@ -164,7 +164,7 @@ bool CLazyScraper::NeedActionbuttons() {
 }
 
 bool CLazyScraper::NeedInterfaceButtons() {
-	return (p_autoplayer->TimeToHandleSecondaryFormulas());
+	return true;
 }
 
 bool CLazyScraper::NeedBetpotButtons() {
