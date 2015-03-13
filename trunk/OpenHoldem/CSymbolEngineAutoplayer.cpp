@@ -86,11 +86,11 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 			}	else if (p_string_match->IsStringCall(button_label)) 	{
 				_myturnbits |= (1<<1);
 			}	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
-				_myturnbits |= (1<<2);
-			}	else if (p_string_match->IsStringCheck(button_label))	{
-				_myturnbits |= (1<<4);
-			}	else if (p_string_match->IsStringAllin(button_label)) {
 				_myturnbits |= (1<<3);
+			}	else if (p_string_match->IsStringCheck(button_label))	{
+				_myturnbits |= (1<<2);
+			}	else if (p_string_match->IsStringAllin(button_label)) {
+				_myturnbits |= (1<<4);
 			}	else if (p_string_match->IsStringAutopost(button_label)) 	{
 				_isautopost = true;
 			}
