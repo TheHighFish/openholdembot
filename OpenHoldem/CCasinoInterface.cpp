@@ -216,9 +216,6 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
 
 		if (!mutex.IsLocked())
 			return false;
-		
-		PrepareActionSequence();
-
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86 (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);
 		return true;
