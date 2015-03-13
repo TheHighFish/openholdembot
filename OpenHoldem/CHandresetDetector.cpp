@@ -26,13 +26,14 @@
 #include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
+#include "MainFrm.h"
 #include "StringFunctions.h"
 
 
 const int kNumberOfHandresetMethods = 9;
 
 CHandresetDetector::CHandresetDetector() {
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
 	playercards[0] = CARD_UNDEFINED;
 	playercards[1] = CARD_UNDEFINED;
 	dealerchair = k_undefined;
@@ -63,13 +64,13 @@ void CHandresetDetector::CalculateIsHandreset() {
   int total_methods_firing = _methods_firing_the_last_three_heartbeats[2]
     | _methods_firing_the_last_three_heartbeats[1]
     | _methods_firing_the_last_three_heartbeats[0];
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing last 3 heartbeat2: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Methods firing last 3 heartbeat2: %s\n",
     IntToBinaryString(total_methods_firing));
   int number_of_methods_firing = bitcount(total_methods_firing);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat2: %i\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat2: %i\n",
     number_of_methods_firing);
   if (number_of_methods_firing >= 2) {
-    write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
+    write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
     ++_hands_played;
     if (SYM->p_symbol_engine_active_dealt_playing()->nopponentsdealt() == 1) {
@@ -84,7 +85,7 @@ void CHandresetDetector::CalculateIsHandreset() {
     _methods_firing_the_last_three_heartbeats[1] = 0;
     _methods_firing_the_last_three_heartbeats[2] = 0;
   } else {
-    write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset\n");
+    write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] No handreset\n");
     _is_handreset_on_this_heartbeat = false;
   }
 }
@@ -111,7 +112,7 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByNewSmallBlind() ? 1 : 0 );
   // No shift-left after the last bit
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
     IntToBinaryString(handresetmethods_fired, kNumberOfHandresetMethods));
   return handresetmethods_fired;
 }
@@ -120,7 +121,7 @@ bool CHandresetDetector::IsHandresetByDealerChair() {
 	bool ishandreset = (dealerchair != last_dealerchair)
     && IsValidDealerChair(dealerchair)
     && IsValidDealerChair(last_dealerchair);
-	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by dealerchair: %s\n",
+	write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by dealerchair: %s\n",
 		Bool2CString(ishandreset));
 	return ishandreset;
 }
@@ -129,7 +130,7 @@ bool CHandresetDetector::IsHandresetByUserCards() {
 	bool ishandreset = (p_table_state->User()->HasKnownCards()
 		&& (playercards[0] != last_playercards[0]) 
 		&& (playercards[1] != last_playercards[1]));
-	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by cards: %s\n",
+	write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by cards: %s\n",
 		Bool2CString(ishandreset));
 	return ishandreset;
 }
@@ -138,7 +139,7 @@ bool CHandresetDetector::IsHandresetByHandNumber() {
 	bool ishandreset = (handnumber != last_handnumber)
     && IsValidHandNumber(handnumber)
     && IsValidHandNumber(last_handnumber);
-	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by handnumber: %s\n",
+	write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by handnumber: %s\n",
 		Bool2CString(ishandreset));
 	return ishandreset;
 }
@@ -165,7 +166,7 @@ bool CHandresetDetector::IsValidDealerChair(int dealerchair) {
 bool CHandresetDetector::IsHandresetByCommunityCards() {
   bool ishandreset = ((_community_cards < _last_community_cards)
     && (_community_cards == 0));
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by community cards: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by community cards: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -176,7 +177,7 @@ bool CHandresetDetector::IsHandresetByPotsize() {
     && (_potsize >= 1 * BIG_BLIND)
     && (_potsize <  6 * BIG_BLIND)
     && (_community_cards == 0);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by potsize: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by potsize: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -184,7 +185,7 @@ bool CHandresetDetector::IsHandresetByPotsize() {
 bool CHandresetDetector::IsHandresetByNopponentsplaying() {
   bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying)
     && (_community_cards == 0);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -198,7 +199,7 @@ bool CHandresetDetector::IsHandresetByIncreasingBalance() {
       break;
     }
   }
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by increasing balance: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by increasing balance: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -207,7 +208,7 @@ bool CHandresetDetector::IsHandresetByNewSmallBlind() {
   bool ishandreset = SmallBlindExists() 
     && !_small_blind_existed_last_hand
     && (_community_cards == 0);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by new small blind: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by new small blind: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -216,7 +217,7 @@ bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
   bool ishandreset = (_bblind != _last_bblind)
     && (_bblind != 0)
     && (_last_bblind != 0);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by changing blind level: %s\n",
+  write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by changing blind level: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -236,13 +237,13 @@ void CHandresetDetector::GetNewSymbolValues() {
 	assert(p_symbol_engine_dealerchair != NULL);
 	if (IsValidDealerChair(SYM->p_symbol_engine_dealerchair()->dealerchair()))	{
 		dealerchair = SYM->p_symbol_engine_dealerchair()->dealerchair();	
-		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
+		write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
 	if (IsValidHandNumber(p_table_state->_s_limit_info.handnumber()))	{
-		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s]\n", handnumber);
+		write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s]\n", handnumber);
 		handnumber = p_table_state->_s_limit_info.handnumber();	
 	}	else {
-		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
+		write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
 	assert(p_symbol_engine_userchair != NULL);
 	int userchair = SYM->p_symbol_engine_userchair()->userchair();
@@ -264,7 +265,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 
 void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 	last_dealerchair = dealerchair;
-	write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting last dealerchair to [%i]\n", dealerchair);
+	write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting last dealerchair to [%i]\n", dealerchair);
 	last_handnumber = handnumber;
   _last_potsize = _potsize;
   _last_community_cards = _community_cards;

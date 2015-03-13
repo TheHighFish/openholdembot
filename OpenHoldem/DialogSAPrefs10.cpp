@@ -51,16 +51,16 @@ BOOL CDlgSAPrefs10::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	text.Format("%d", preferences.chat_min_delay());
+	text.Format("%d", MAIN->p_preferences()->chat_min_delay());
 	m_MinimumDelay.SetWindowText(text);
 	m_MinimumDelay_Spin.SetRange(0, (short) MAX_DELAY);
-	m_MinimumDelay_Spin.SetPos(preferences.chat_min_delay());
+	m_MinimumDelay_Spin.SetPos(MAIN->p_preferences()->chat_min_delay());
 	m_MinimumDelay_Spin.SetBuddy(&m_MinimumDelay);
 
-	text.Format("%d", preferences.chat_random_delay());
+	text.Format("%d", MAIN->p_preferences()->chat_random_delay());
 	m_RandomDelay.SetWindowText(text);
 	m_RandomDelay_Spin.SetRange(0, (short) MAX_DELAY);
-	m_RandomDelay_Spin.SetPos(preferences.chat_random_delay());
+	m_RandomDelay_Spin.SetPos(MAIN->p_preferences()->chat_random_delay());
 	m_RandomDelay_Spin.SetBuddy(&m_RandomDelay);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -76,14 +76,14 @@ void CDlgSAPrefs10::OnOK()
 		OH_MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
 
 	m_RandomDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
 		OH_MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));
 
 	CSAPrefsSubDlg::OnOK();
 }

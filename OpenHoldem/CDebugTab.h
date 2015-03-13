@@ -37,7 +37,5 @@ class CDebugTab: public COHScriptObject{
   int _number_of_expressions;
 };
 
-extern CDebugTab *p_debug_tab;
-
 #endif INC_CDEBUGTAB_H
 

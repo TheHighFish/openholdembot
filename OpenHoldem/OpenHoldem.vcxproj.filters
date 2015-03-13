@@ -657,9 +657,6 @@
     <ClCompile Include="CSelftestParserEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CLimitScraper.cpp">
-      <Filter>Source Files\Scraper</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolengineTableStats.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>

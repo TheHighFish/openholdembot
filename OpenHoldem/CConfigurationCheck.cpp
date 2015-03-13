@@ -18,66 +18,55 @@
 #include "OH_MessageBox.h"
 
 
-CConfigurationCheck *p_configurationcheck = 0;
-
 // A full list of keyboard layout codes can be found here:
 // http://msdn.microsoft.com/en-us/goglobal/bb895996.aspx
 const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
-CConfigurationCheck::CConfigurationCheck()
-{
-	CheckEverything();
+CConfigurationCheck::CConfigurationCheck() {
 }
 
-CConfigurationCheck::~CConfigurationCheck()
-{}
+CConfigurationCheck::~CConfigurationCheck() {
+}
 
-void CConfigurationCheck::CheckEverything()
-{
+void CConfigurationCheck::CheckEverything() {
 	// Check really critical settings in any case.
 	// OpenHoldem will never work, if these are not right.
 	CheckColourDepth();
 	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (preferences.configurationcheck_input_settings())
-	{
+	if (MAIN->p_preferences()->configurationcheck_input_settings()) {
 		CheckInputSettings();
 	}
 
-	if (preferences.configurationcheck_theme_settings())
-	{
+	if (MAIN->p_preferences()->configurationcheck_theme_settings()) {
 		CheckForClassicalTheme();
 	}
 
-	if (preferences.configurationcheck_font_settings())
-	{
+	if (MAIN->p_preferences()->configurationcheck_font_settings())	{
 		CheckForFontSmoothing();
 	}
   // !!! Might be reused for MSVCRT 2010
 	//CheckForMissingMSVCRT();
 }
 
-HKEY CConfigurationCheck::GetHive(CString mhive)
-{
+HKEY CConfigurationCheck::GetHive(CString mhive) {
 	HKEY hive;
 
-	if (mhive == "HKCU")
+	if (mhive == "HKCU") {
 		hive = HKEY_CURRENT_USER;
-
-	if (mhive == "HKLM")
+  }
+	if (mhive == "HKLM") {
 		hive = HKEY_LOCAL_MACHINE;
-
+  }
 	return hive;
 }
 
-bool CConfigurationCheck::OpenKey(CString mhive, CString registry_path)
-{
+bool CConfigurationCheck::OpenKey(CString mhive, CString registry_path) {
 	HKEY hive, hKey;
 	hive = GetHive(mhive);
 
-	if (RegOpenKeyEx(hive, registry_path, 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
-	{
+	if (RegOpenKeyEx(hive, registry_path, 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS) {
 		RegCloseKey(hKey);
 		return true;
 	}
@@ -86,19 +75,15 @@ bool CConfigurationCheck::OpenKey(CString mhive, CString registry_path)
 	return false;
 }
 
-
-CString CConfigurationCheck::GetValue(CString mhive, int type, CString registry_path, CString key_name)
-{
+CString CConfigurationCheck::GetValue(CString mhive, int type, CString registry_path, CString key_name) {
 	DWORD dwData, nBytes, dwType;
 	CString value;
 	HKEY hive, pKey;
 	hive = GetHive(mhive);
 
 	// Open the Key
-	if(RegOpenKeyEx(hive,registry_path,0,KEY_QUERY_VALUE,&pKey)==ERROR_SUCCESS)
-	{
-		switch(type)
-		{
+	if(RegOpenKeyEx(hive,registry_path,0,KEY_QUERY_VALUE,&pKey)==ERROR_SUCCESS)	{
+		switch(type) {
 			//REG_DWORD
 			case 0 :
 
@@ -135,8 +120,7 @@ CString CConfigurationCheck::GetValue(CString mhive, int type, CString registry_
 	}
 }
 
-void CConfigurationCheck::CheckColourDepth()
-{
+void CConfigurationCheck::CheckColourDepth() {
 	CWindowDC dc(NULL);
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 	if (nBitsPerPixel < 24)
@@ -146,13 +130,11 @@ void CConfigurationCheck::CheckColourDepth()
 				"Caution: Color Depth Too Low");
 }
 
-void CConfigurationCheck::CheckInputSettings()
-{
+void CConfigurationCheck::CheckInputSettings() {
 	TCHAR KeyboardLayout[KL_NAMELENGTH];
 	bool Success = GetKeyboardLayoutName((LPSTR)&KeyboardLayout);
 
-	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
-	{
+	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0)) {
 		OH_MessageBox_Error_Warning("You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"

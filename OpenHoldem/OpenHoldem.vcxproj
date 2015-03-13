@@ -196,7 +196,6 @@
     <ClCompile Include="CHandresetDetector.cpp" />
     <ClCompile Include="CHeartbeatThread.cpp" />
     <ClCompile Include="CLevDistance.cpp" />
-    <ClCompile Include="CLimitScraper.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
     <ClCompile Include="CPlayer.cpp" />

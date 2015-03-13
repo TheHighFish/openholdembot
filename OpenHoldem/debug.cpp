@@ -249,7 +249,7 @@ void start_log(void) {
 	struct stat file_stats = { 0 };
 	if (stat(fn.GetString(), &file_stats) == 0)
 	{
-		unsigned long int max_file_size = 1E06 * preferences.log_max_logsize();
+		unsigned long int max_file_size = 1E06 * MAIN->p_preferences()->log_max_logsize();
 		size_t file_size = file_stats.st_size;
 		if (file_size > max_file_size)
 		{

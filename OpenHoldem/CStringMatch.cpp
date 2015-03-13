@@ -7,7 +7,9 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: class for string comparisons,
+//   "dealer", seated", etc.
+//   Stateless. therefore no instance needed
 //
 //******************************************************************************
 
@@ -15,18 +17,13 @@
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
 
-
-CStringMatch *p_string_match = NULL;
-
-CStringMatch::CStringMatch(void)
-{
+CStringMatch::CStringMatch(void) {
 }
 
-CStringMatch::~CStringMatch(void)
-{
+CStringMatch::~CStringMatch(void) {
 }
 
-const bool CStringMatch::IsNumeric(CString t)
+bool CStringMatch::IsNumeric(CString t)
 {
 	int num_dots = 0, nums_after_dot = 0;
 
@@ -55,7 +52,7 @@ const bool CStringMatch::IsNumeric(CString t)
 	return true;
 }
 
-const bool CStringMatch::IsStringAllin(CString s) {
+bool CStringMatch::IsStringAllin(CString s) {
 	// Check for bad parameters
 	if (!s || s == "") return false;
 	s.Remove(' ');
@@ -71,7 +68,7 @@ const bool CStringMatch::IsStringAllin(CString s) {
 		|| s.Left(3) == "max");
 }
 
-const bool CStringMatch::IsStringRaise(CString s)
+bool CStringMatch::IsStringRaise(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -85,7 +82,7 @@ const bool CStringMatch::IsStringRaise(CString s)
 		|| s.Left(3) == "bet");
 }
 
-const bool CStringMatch::IsStringCall(CString s)
+bool CStringMatch::IsStringCall(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -96,7 +93,7 @@ const bool CStringMatch::IsStringCall(CString s)
 	return (s == "call" || s == "caii" || s == "ca11");
 }
 
-const bool CStringMatch::IsStringCheck(CString s)
+bool CStringMatch::IsStringCheck(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -107,7 +104,7 @@ const bool CStringMatch::IsStringCheck(CString s)
 	return (s == "check" || s == "cheok");
 }
 
-const bool CStringMatch::IsStringFold(CString s)
+bool CStringMatch::IsStringFold(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -118,7 +115,7 @@ const bool CStringMatch::IsStringFold(CString s)
 	return (s == "fold" || s == "fo1d" || s == "foid");
 }
 
-const bool CStringMatch::IsStringAutopost(CString s)
+bool CStringMatch::IsStringAutopost(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -133,7 +130,7 @@ const bool CStringMatch::IsStringAutopost(CString s)
 	return (s == "autopost" || s == "aut0p0st");
 }
 
-const bool CStringMatch::IsStringSitin(CString s)
+bool CStringMatch::IsStringSitin(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -146,7 +143,7 @@ const bool CStringMatch::IsStringSitin(CString s)
 	return (s == "sitin" ||	s == "s1t1n");
 }
 
-const bool CStringMatch::IsStringSitout(CString s)
+bool CStringMatch::IsStringSitout(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -160,7 +157,7 @@ const bool CStringMatch::IsStringSitout(CString s)
 	return (s == "sitout" || s == "s1tout" || s == "sit0ut" || s == "s1t0ut");
 }
 
-const bool CStringMatch::IsStringLeave(CString s)
+bool CStringMatch::IsStringLeave(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -169,7 +166,7 @@ const bool CStringMatch::IsStringLeave(CString s)
 	return (s.MakeLower().Left(5) == "leave");
 }
 
-const bool CStringMatch::IsStringPrefold(CString s)
+bool CStringMatch::IsStringPrefold(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -179,7 +176,7 @@ const bool CStringMatch::IsStringPrefold(CString s)
 }
 
 
-const bool CStringMatch::IsStringSeated(CString s)
+bool CStringMatch::IsStringSeated(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -197,7 +194,7 @@ const bool CStringMatch::IsStringSeated(CString s)
 	}
 }
 
-const bool CStringMatch::IsStringActive(CString s)
+bool CStringMatch::IsStringActive(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "") return false;
@@ -217,7 +214,7 @@ const bool CStringMatch::IsStringActive(CString s)
   return false;
 }
 
-const bool CStringMatch::IsStringCardback(CString s)
+bool CStringMatch::IsStringCardback(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -228,7 +225,7 @@ const bool CStringMatch::IsStringCardback(CString s)
 	return (s.Left(4) == "true" || s.Left(8) == "cardback");
 }
 
-const bool CStringMatch::IsStringDealer(CString s)
+bool CStringMatch::IsStringDealer(CString s)
 {
 	// Check for bad parameters
 	if (!s || s == "")
@@ -238,4 +235,38 @@ const bool CStringMatch::IsStringDealer(CString s)
 	s = s_lower_case;
 
 	return (s.Left(4) == "true" || s.Left(6) == "dealer");
+}
+
+bool CStringMatch::IsStringMatch(const CString s, const int button_code) {
+  switch (button_code) {
+		// ALLIN
+		case k_button_allin:
+			return IsStringAllin(s);
+		// RAISE
+		case k_button_raise:
+			return IsStringRaise(s);
+		// CALL
+		case k_button_call:
+			return IsStringCall(s);
+		// FOLD
+		case k_button_fold:
+			return IsStringFold(s);
+		// CHECK
+		case k_button_check:
+			return IsStringCheck(s);
+		// SITIN
+		case k_button_sitin:
+			return IsStringSitin(s);
+		// SITOUT
+		case k_button_sitout:
+			return IsStringSitout(s);
+		// LEAVE
+    case k_button_leave:
+			return IsStringLeave(s);
+		// PRE-FOLD
+		case k_button_prefold:
+			return IsStringPrefold(s);
+		default:
+			return false;
+	}
 }

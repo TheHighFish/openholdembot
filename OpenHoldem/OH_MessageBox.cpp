@@ -29,7 +29,7 @@ void OH_MessageBox_Error_Warning(CString Message, CString Title /* = "Error" */)
 #ifdef OPENHOLDEM_PROGRAM
 	// Only OpenHoldem supports this setting,
 	// but not OpenScrape or other potential applications
-	if (preferences.disable_msgbox())	{
+	if (MAIN->p_preferences()->disable_msgbox())	{
 		return;
 	}
 #endif

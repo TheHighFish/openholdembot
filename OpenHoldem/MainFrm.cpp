@@ -22,6 +22,7 @@
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
+#include "CConfigurationCheck.h"
 #include "CDllExtension.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -166,6 +167,10 @@ CMainFrame::CMainFrame()
 	_prev_wrect.left = 0;
 	_prev_wrect.right = 0;
 	_prev_wrect.top = 0;
+
+  //!!!!! Here?
+  CConfigurationCheck configuration_check;
+  configuration_check.CheckEverything();
 }
 
 CMainFrame::~CMainFrame() {
@@ -191,8 +196,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) 
-{
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if ( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 
@@ -202,7 +206,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	HINSTANCE hInst = AfxGetInstanceHandle();
 
 	// Set class name
-	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd)))
+	if (!(::GetClassInfo(hInst, MAIN->p_preferences()->window_class_name(), &wnd)))
 	{
 		wnd.style			    = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc		= ::DefWindowProc;
@@ -212,7 +216,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		wnd.hCursor			  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
 		wnd.lpszMenuName	= NULL;
-		wnd.lpszClassName	= preferences.window_class_name();
+		wnd.lpszClassName	= MAIN->p_preferences()->window_class_name();
     // Fixed size window, not resizable 
     // Because bad-sized windows are annoying
     // and because of potential support for a 4th user-card ;-)
@@ -225,7 +229,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 		AfxRegisterClass( &wnd );
 	}
-	cs.lpszClass = preferences.window_class_name();
+	cs.lpszClass = MAIN->p_preferences()->window_class_name();
 
 	// Restore window location and size
   // -32 to avoid placement directlz under the taskbar,
@@ -235,8 +239,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON - 32);
   // Make sure that our coordinates are not out of screen
   // (too large or even negative)
-	cs.x = min(preferences.main_x(), max_x);
-	cs.y = min(preferences.main_y(), max_y);
+	cs.x = min(MAIN->p_preferences()->main_x(), max_x);
+	cs.y = min(MAIN->p_preferences()->main_y(), max_y);
   cs.x = max(cs.x, 0);
   cs.y = max(cs.y, 0);
   // GUI size
@@ -293,19 +297,19 @@ void CMainFrame::OnEditTagLog() {
 // Menu -> Edit -> View Scraper Output
 void CMainFrame::OnScraperOutput() {
 	if (_p_ScraperOutputDlg) {
-		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", _p_ScraperOutputDlg);
-		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
+		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", _p_ScraperOutputDlg);
+		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
 		BOOL	bWasShown = ::IsWindow(_p_ScraperOutputDlg->m_hWnd) && _p_ScraperOutputDlg->IsWindowVisible();
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
+		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
     CDlgScraperOutput::DestroyWindowSafely();
 		if (bWasShown) {
-			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
+			write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
 		}
 	}	else {
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
+		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 	
 	OH_MessageBox_Interactive("Please note:\n"
@@ -317,15 +321,15 @@ void CMainFrame::OnScraperOutput() {
 	  "This is a feature, not a bug.\n",
 	  "Info", 0);
 
-	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Going to create scraper output dialog\n");
 	_p_ScraperOutputDlg = new CDlgScraperOutput(this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
 	_p_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
 	_p_ScraperOutputDlg->ShowWindow(SW_SHOW);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
 	_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
+	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
 void CMainFrame::OnViewShootreplayframe() {
@@ -414,8 +418,8 @@ BOOL CMainFrame::DestroyWindow() {
 	// Save window position
   WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp); 		
-	preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
- 	preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
+	MAIN->p_preferences()->SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
+ 	MAIN->p_preferences()->SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
   return CFrameWnd::DestroyWindow();
 }
 
@@ -428,7 +432,7 @@ void CMainFrame::OnFileOpen()
 
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = preferences.path_ohf();
+	cfd.m_ofn.lpstrInitialDir = MAIN->p_preferences()->path_ohf();
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
   cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.oppl)\0*.ohf;*.oppl\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
@@ -438,7 +442,7 @@ void CMainFrame::OnFileOpen()
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		_p_openholdem_title->UpdateTitle();
-		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
+		MAIN->p_preferences()->SetValue(k_prefs_path_ohf, cfd.GetPathName());
 		theApp.StoreLastRecentlyUsedFileList();
 	}
 }
@@ -508,13 +512,13 @@ void CMainFrame::OnDllLoad()
 void CMainFrame::OnDllLoadspecificfile() {
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = preferences.path_dll();
+	cfd.m_ofn.lpstrInitialDir = MAIN->p_preferences()->path_dll();
 	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
 	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
 
 	if (cfd.DoModal() == IDOK) {
 		p_dll_extension->Load(cfd.m_ofn.lpstrFile);
-		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
+		MAIN->p_preferences()->SetValue(k_prefs_path_dll, cfd.GetPathName());
 	}
 }
 

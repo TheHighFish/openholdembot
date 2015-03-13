@@ -83,7 +83,7 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {
 void CSymbolEngineIniFunctions::InitOnStartup() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
   ResetOnConnection();
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_startup]); 
 }
@@ -91,37 +91,37 @@ void CSymbolEngineIniFunctions::InitOnStartup() {
 void CSymbolEngineIniFunctions::ResetOnConnection() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection()\n");
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_connection]);
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnConnection() completed\n");
 }
 
 void CSymbolEngineIniFunctions::ResetOnHandreset(){
   RETURN_IF_LOADING_NEW_FORMULA
 
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHandreset()\n");
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_handreset]);
 }
 
 void CSymbolEngineIniFunctions::ResetOnNewRound() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnNewRound()\n");
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_new_round]);
 }
 
 void CSymbolEngineIniFunctions::ResetOnMyTurn() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnMyTurn()\n");
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_my_turn]);
 }
 
 void CSymbolEngineIniFunctions::ResetOnHeartbeat() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat()\n");
+  write_log(MAIN->p_preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::ResetOnHeartbeat() evaluating %s\n",
 	  k_standard_function_names[k_init_on_heartbeat]);
   SYM->p_function_collection()->Evaluate(k_standard_function_names[k_init_on_heartbeat]);
 }

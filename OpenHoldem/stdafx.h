@@ -109,6 +109,7 @@
 #include "debug.h"
 #include "FloatingPoint_Comparisions.h"
 #include "MagicNumbers.h"
+#include "MainFrm.h"
 #include "..\StructsDefines\structs_defines.h"
 
 #endif //INC_STDAFX_H

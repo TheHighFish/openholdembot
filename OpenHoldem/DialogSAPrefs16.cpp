@@ -60,17 +60,17 @@ BOOL CDlgSAPrefs16::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_rebuy_condition_no_cards_Button.SetCheck(preferences.rebuy_condition_no_cards());
-	_rebuy_condition_change_in_handnumber_Button.SetCheck(preferences.rebuy_condition_change_in_handnumber());
-	_rebuy_condition_heuristic_check_for_occlusion_Button.SetCheck(preferences.rebuy_condition_heuristic_check_for_occlusion());
+	_rebuy_condition_no_cards_Button.SetCheck(MAIN->p_preferences()->rebuy_condition_no_cards());
+	_rebuy_condition_change_in_handnumber_Button.SetCheck(MAIN->p_preferences()->rebuy_condition_change_in_handnumber());
+	_rebuy_condition_heuristic_check_for_occlusion_Button.SetCheck(MAIN->p_preferences()->rebuy_condition_heuristic_check_for_occlusion());
 
-	text.Format("%d", preferences.rebuy_minimum_time_to_next_try());
+	text.Format("%d", MAIN->p_preferences()->rebuy_minimum_time_to_next_try());
 	_rebuy_minimum_time_to_next_try_Edit.SetWindowText(text);
 	_rebuy_minimum_time_to_next_try_Spin.SetRange(0, (short)MAX_MINIMUM_DELAY_TO_NEXT_REBUY);
-	_rebuy_minimum_time_to_next_try_Spin.SetPos(preferences.rebuy_minimum_time_to_next_try());
+	_rebuy_minimum_time_to_next_try_Spin.SetPos(MAIN->p_preferences()->rebuy_minimum_time_to_next_try());
 	_rebuy_minimum_time_to_next_try_Spin.SetBuddy(&_rebuy_minimum_time_to_next_try_Edit);
 
-	_rebuy_script_Edit.SetWindowText(preferences.rebuy_script());
+	_rebuy_script_Edit.SetWindowText(MAIN->p_preferences()->rebuy_script());
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -80,9 +80,9 @@ void CDlgSAPrefs16::OnOK()
 {
 	CString text = "";
 	
-	preferences.SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == true);
+	MAIN->p_preferences()->SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == true);
+	MAIN->p_preferences()->SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == true);
+	MAIN->p_preferences()->SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == true);
 
 	_rebuy_minimum_time_to_next_try_Edit.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MINIMUM_DELAY_TO_NEXT_REBUY) 
@@ -90,10 +90,10 @@ void CDlgSAPrefs16::OnOK()
 		OH_MessageBox_Interactive("Invalid minimum time to next rebuy", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_rebuy_minimum_time_to_next_try, strtoul(text.GetString(), 0, 10));
+	MAIN->p_preferences()->SetValue(k_prefs_rebuy_minimum_time_to_next_try, strtoul(text.GetString(), 0, 10));
 
 	_rebuy_script_Edit.GetWindowText(text);
-	preferences.SetValue(k_prefs_rebuy_script, text);
+	MAIN->p_preferences()->SetValue(k_prefs_rebuy_script, text);
 	
 	CSAPrefsSubDlg::OnOK();
 }

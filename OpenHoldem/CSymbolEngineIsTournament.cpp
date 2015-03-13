@@ -251,14 +251,14 @@ bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
 
 void CSymbolEngineIsTournament::TryToDetectTournament() {
 	if (_istournament != k_undefined) {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
   } else {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = unknown\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = unknown\n");
   }
 	// Don't do anything if we are already sure.
 	// Don't mix things up.
 	if (_decision_locked) {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
 	// If we have more than 2 hands played we should be sure
@@ -268,14 +268,14 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	if ((_istournament != k_undefined)
 		  && (SYM->p_handreset_detector()->hands_played() > 2)
 		  && (SYM->p_symbol_engine_time()->elapsedauto() < SYM->p_symbol_engine_time()->elapsed())) {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");
 		_decision_locked = true;
 		return;
 	}
   // If we plaz at DDPoiker the game is a tournament,
   // even though it can~t be detected bz titlestring.
   if (SYM->p_symbol_engine_casino()->ConnectedToDDPoker()) {
-    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
+    write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
     _istournament    = true;
 		_decision_locked = true;
 		return;
@@ -289,7 +289,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=294&t=17625&start=30#p125608
 	if (TitleStringContainsIdentifier(k_tournament_identifiers,
       k_number_of_tournament_identifiers))	{
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Table title looks like a tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
@@ -299,12 +299,12 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // to avoid problems with no blinds during the sit-down-phase 
   // of a tournament.
   if (SYM->p_symbol_engine_active_dealt_playing()->nplayersplaying() < 2) {
-    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Can't consider the blinds -- too few people playing.\n");
+    write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Can't consider the blinds -- too few people playing.\n");
     return;
   }
   double bigblind = SYM->p_symbol_engine_tablelimits()->bblind();
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
-	  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
+	  write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
 	  _istournament    = false;
 		_decision_locked = true;
 		return;
@@ -313,19 +313,19 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
   // High blinds (default) don~t make it a tournament.
   // Therefore don't continue.
   if (SYM->p_symbol_engine_casino()->ConnectedToManualMode()) {
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] ManualMode, but no tournament identifier\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] ManualMode, but no tournament identifier\n");
     return;
   }
 	// If there are antes then it is a tournament.
 	if (AntesPresent())	{
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Game with antes; therefore tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
 	}
 	// If bets and balances are "tournament-like", then it is a tournament
 	if (BetsAndBalancesAreTournamentLike())	{
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Bets and balances look like tournament\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] Bets and balances look like tournament\n");
 		_istournament    = true;
 		_decision_locked = true;
 		return;
@@ -342,7 +342,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	if (bigblind > k_large_bigblind_probably_later_table_in_tournament) {
 		// Probably tournament, but not really sure yet,
 		// so don't lock the decision.
-		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] bigblind very large; probably tournament\n");
+		write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] bigblind very large; probably tournament\n");
 		_istournament = true;
 		return;
 	}
@@ -350,7 +350,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	// because they are too small for later tables of tournaments
 	_istournament    = false;
 	_decision_locked = true;
-	write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] high-stakes cash-game up to $200\\$400\n");
+	write_log(MAIN->p_preferences()->debug_istournament(), "[CSymbolEngineIsTournament] high-stakes cash-game up to $200\\$400\n");
 	// The only case that can go wrong now:
 	// High-stakes cash-games ($250/$500 and above) can be recognized 
 	// as tournaments. 

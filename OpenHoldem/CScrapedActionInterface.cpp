@@ -63,61 +63,12 @@ int CScrapedActionInterface::SearchForButtonNumber(int button_code)
 
 	int button_number = k_button_undefined;
 
-	// Define a function pointer for the string matching function corresponding to each button_code
-	const bool (CStringMatch::*StringMatch)(CString) = NULL;
-
-	switch (button_code)
-	{
-		// ALLIN
-		case k_button_allin:
-			StringMatch = &CStringMatch::IsStringAllin;
+	// Check if there is a match for any of the corresponding button indexes
+	// and save it as the button number
+	for (int j = 0; j < k_max_number_of_buttons; j++)	{
+		if ((CStringMatch::IsStringMatch)(p_table_state->_SCI._button_label[j], button_code))	{
+			button_number = j;
 			break;
-		// RAISE
-		case k_button_raise:
-			StringMatch = &CStringMatch::IsStringRaise;
-			break;
-		// CALL
-		case k_button_call:
-			StringMatch = &CStringMatch::IsStringCall;
-			break;
-		// FOLD
-		case k_button_fold:
-			StringMatch = &CStringMatch::IsStringFold;
-			break;
-		// CHECK
-		case k_button_check:
-			StringMatch = &CStringMatch::IsStringCheck;
-			break;
-		// SITIN
-		case k_button_sitin:
-			StringMatch = &CStringMatch::IsStringSitin;
-			break;
-		// SITOUT
-		case k_button_sitout:
-			StringMatch = &CStringMatch::IsStringSitout;
-			break;
-		// LEAVE
-		case k_button_leave:
-			StringMatch = &CStringMatch::IsStringLeave;
-			break;
-		// PRE-FOLD
-		case k_button_prefold:
-			StringMatch = &CStringMatch::IsStringPrefold;
-			break;
-		default:
-			break;
-	}
-
-	// If a string verification routine is available
-	if (StringMatch)
-	{
-		// Check if there is a match for any of the corresponding button indexes
-		// and save it as the button number
-		for (int j = 0; j < k_max_number_of_buttons; j++)	{
-			if ((p_string_match->*StringMatch)(p_table_state->_SCI._button_label[j]))	{
-				button_number = j;
-				break;
-			}
 		}
 	}
 
@@ -319,7 +270,7 @@ int CScrapedActionInterface::NumberOfVisibleButtons()
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
-	write_log(preferences.debug_scraper(), "[CScrapedActionInterface] NumberOfVisibleButtons() found %d buttons\n",
+	write_log(MAIN->p_preferences()->debug_scraper(), "[CScrapedActionInterface] NumberOfVisibleButtons() found %d buttons\n",
 		number_of_visible_buttons);
 	return number_of_visible_buttons;
 }

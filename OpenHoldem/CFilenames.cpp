@@ -49,7 +49,7 @@ CFilenames::~CFilenames() {
 void CFilenames::Log(CString name, CString value) {
   CString message;
   message.Format("[CFilenames] %s = %s\n", name, value);
-  write_log(preferences.debug_filenames(), (char*)message.GetString());
+  write_log(MAIN->p_preferences()->debug_filenames(), (char*)message.GetString());
 }
 
 CString CFilenames::OpenHoldemDirectory() {
@@ -137,7 +137,7 @@ CString CFilenames::ReplaySessionDirectory() {
 }
 
 CString CFilenames::ReplayBitmapFilename(int frame_number) {
-  AssertRange(frame_number, 0, preferences.replay_max_frames());
+  AssertRange(frame_number, 0, MAIN->p_preferences()->replay_max_frames());
 	CString path;
 	path.Format("%sframe%06d.bmp", ReplaySessionDirectory(), frame_number);
   Log("ReplayBitmapFilename", path.GetString());
@@ -145,7 +145,7 @@ CString CFilenames::ReplayBitmapFilename(int frame_number) {
 }
 
 CString CFilenames::ReplayHTMLFilename(int frame_number) {
-  AssertRange(frame_number, 0, preferences.replay_max_frames());
+  AssertRange(frame_number, 0, MAIN->p_preferences()->replay_max_frames());
 	CString path;
 	path.Format("%sframe%06d.htm", ReplaySessionDirectory(), frame_number);
   Log("ReplayHTMLFilename", path.GetString());
