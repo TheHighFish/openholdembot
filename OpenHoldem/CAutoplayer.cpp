@@ -296,6 +296,14 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
+
+	CMyMutex mutex;
+
+	if (!mutex.IsLocked())
+	{
+		return false;
+	}
+
 	PrepareActionSequence();
 	// Prefold, close, rebuy and chat work require different treatment,
 	// more than just clicking a simple region...
