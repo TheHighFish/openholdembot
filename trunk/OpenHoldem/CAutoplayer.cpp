@@ -457,7 +457,8 @@ void CAutoplayer::DoAutoplayer(void) {
 	// to handle popups which occlude the table (unstable input)
 	if (HandleInterfacebuttonsI86())	{
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
-    goto AutoPlayerCleanupAndFinalization;
+    action_sequence_needs_to_be_finished = true;
+	goto AutoPlayerCleanupAndFinalization;
   }
   // Care about sitin, sitout, leave, etc.
   if (TimeToHandleSecondaryFormulas())	{
