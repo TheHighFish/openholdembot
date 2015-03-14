@@ -236,14 +236,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker pre-flop raise first",
 		// query
-		"SELECT (case when count(*) = 0 then -1 else \
-		        cast(sum(case when flg_p_first_raise then 1 else 0 end) as real) / count(*) end) as result \
-		 FROM   player as P, %TYPE%_hand_player_statistics as S \
-		 WHERE  S.id_player = P.id_player AND \
-		 	    S.flg_p_open_opp AND \
-				S.id_gametype = %GAMETYPE% AND \
-		        P.id_site = %SITEID% AND \
-		        P.player_name LIKE '%SCREENNAME%'",
+		"SELECT (case when  (sum((case when(s.flg_p_open_opp) then  1 else  0 end))) = 0 then -1 else \
+                 cast(sum(case when(s.flg_p_first_raise AND \
+                 s.flg_p_open_opp) then  1 else  0 end)As Real)/ \
+				 (sum((case when(s.flg_p_open_opp) then  1 else  0 end))) end) \
+                 as result \
+         FROM   player as P, %TYPE%_hand_player_statistics as S \
+         WHERE  S.id_player = P.id_player AND \
+                S.id_gametype = %GAMETYPE% AND \
+                P.id_site = %SITEID% AND \
+                P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
 		pt_group_basic
 	},
@@ -277,12 +279,11 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker won $ at showdown",
 		// query
-		"SELECT (case when count(*) = 0 then -1 else \
-		        cast(sum(case when flg_won_hand then 1 else 0 end) as real) \
-				/ count(*) end) as result \
+		"SELECT  (case when (sum((case when(s.flg_showdown) then  1 else  0 end))) = 0 then -1 else\
+                  cast ( sum (case when (s.flg_showdown AND s.flg_won_hand) then  1 else  0 end)as real)\
+                  /(sum((case when(s.flg_showdown) then  1 else  0 end)))end ) as result\
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
-				flg_showdown AND \
 				S.id_gametype = %GAMETYPE% AND \
 		        P.id_site = %SITEID% AND \
 		        P.player_name LIKE '%SCREENNAME%'",
@@ -468,15 +469,14 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker saw turn",
 		// query
-		"SELECT (case when (count(*) = 0) \
-		         then -1 \
-				 else cast(sum(case when flg_t_saw then 1 else 0 end) as real) / count(*) \
-				 end) as result \
-		FROM   player as P, %TYPE%_hand_player_statistics as S \
-		WHERE  S.id_player = P.id_player AND \
-			   S.id_gametype = %GAMETYPE% AND \
-		       P.id_site = %SITEID% AND \
-		       P.player_name LIKE '%SCREENNAME%'",
+		"SELECT (case when (sum((case when (s.flg_f_saw) then 1 else 0 end)) = 0) then -1\
+                 else cast(sum(case when s.flg_t_saw then 1 else 0 end) as real) / \
+                 sum((case when (flg_f_saw) then 1 else 0 end))end) as result\
+         FROM   player as P, %TYPE%_hand_player_statistics as S \
+         WHERE  S.id_player = P.id_player AND \
+                S.id_gametype = %GAMETYPE% AND \
+                P.id_site = %SITEID% AND \
+                P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
 		pt_group_advanced
 	},
@@ -669,13 +669,14 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker 3bet vs. steal",
 		// query
-		"SELECT (case when count(*) = 0 then -1 else \
-			cast(sum(case when (flg_blind_def_opp AND flg_blind_b AND flg_p_3bet) then 1 else 0 end) as real) / count(*) end) as result \
+		"SELECT (case when (sum((case when (flg_blind_def_opp AND flg_p_3bet_opp) then  1 else  0 end))) = 0 then -1 else \
+                cast(sum(case when (flg_blind_def_opp AND flg_p_3bet) then 1 else 0 end) as real) / \
+                (sum((case when (flg_blind_def_opp AND flg_p_3bet_opp) then  1 else  0 end))) end) as result\
 		FROM   player as P, %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
-			S.id_gametype = %GAMETYPE% AND \
-            P.id_site = %SITEID% AND \
-            P.player_name LIKE '%SCREENNAME%'",
+		       S.id_gametype = %GAMETYPE% AND \
+               P.id_site = %SITEID% AND \
+               P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
 		pt_group_positional
 	},
