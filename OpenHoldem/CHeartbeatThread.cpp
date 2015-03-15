@@ -136,7 +136,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			AfxEndThread(0);
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
-		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+    // Future: part of auto/connect? Disconnect all?
+		//!!!!!p_tablemap_loader->ReloadAllTablemapsIfChanged();
 		if (!p_autoconnector->IsConnected()) {
 			AutoConnect();			
 		}	else {

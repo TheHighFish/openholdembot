@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include "CAutoPlayer.h"
+#include "CHeartbeatThread.h"
 #include "CLazyScraper.h"
 #include "CPreferences.h"
 #include "CReplayFrame.h"
@@ -56,7 +57,7 @@ void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
 }
 
 void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
-  if (HBT->p_lazyscraper->IsIdenticalScrape()) {
+  if (HBT->p_lazyscraper()->IsIdenticalScrape()) {
     // There is no benefit in duplicate frames, so we abort
     write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");
     return;

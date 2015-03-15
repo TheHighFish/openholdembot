@@ -28,7 +28,7 @@ COpenHoldemTitle::COpenHoldemTitle()
 {
 	user_defined_title = "";
 	assert(p_filenames != NULL);
-	simple_title = p_filenames->PureExecutableFilename();
+	simple_title = MAIN->p_filenames()->PureExecutableFilename();
 }
 
 COpenHoldemTitle::~COpenHoldemTitle()

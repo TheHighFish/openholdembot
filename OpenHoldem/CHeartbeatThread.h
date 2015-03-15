@@ -27,7 +27,7 @@ class CHeartbeatThread {
 	// public accessors
 	void StartThread();
 	long int heartbeat_counter()    { return _heartbeat_counter; }
-  CLazyScraper* p_lazyscraper     { return _p_lazyscraper; }
+  CLazyScraper* p_lazyscraper()   { return _p_lazyscraper; }
  public:
 	// This critical section does not control access to any variables/members, but is used as 
 	// a flag to indicate when the scraper/symbol classes are in an update cycle
@@ -47,7 +47,7 @@ class CHeartbeatThread {
 	HANDLE		_m_stop_thread;
 	HANDLE		_m_wait_thread;
  private:
-  CLazyScraper *_p_lazyscraper;
+  static CLazyScraper *_p_lazyscraper;
 };
 
 extern CHeartbeatThread *p_heartbeat_thread;

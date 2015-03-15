@@ -29,6 +29,4 @@ class CParserSymbolTable {
   std::map<CString, bool> _used_functions;
 };
 
-extern CParserSymbolTable *p_parser_symbol_table;
-
 #endif INC_CPARSERSYMBOLTABLE_H

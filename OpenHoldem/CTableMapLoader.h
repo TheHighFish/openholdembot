@@ -41,6 +41,4 @@ private:
 	int		_number_of_tablemaps_loaded;
 };
 
-extern CTableMapLoader *p_tablemap_loader;
-
 #endif // INC_CTABLEMAPLOADER_H

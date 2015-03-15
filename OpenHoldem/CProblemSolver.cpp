@@ -32,48 +32,38 @@ CProblemSolver::~CProblemSolver()
 
 const char *k_title_string = "Problem Solver";
 
-bool CProblemSolver::NoTableMapsInScraperFolder()
-{
-	return (p_tablemap_loader->NumberOfTableMapsLoaded() == 0);
+bool CProblemSolver::NoTableMapsInScraperFolder() {
+	return (p_autoconnector->p_tablemap_loader()->NumberOfTableMapsLoaded() == 0);
 }
 
-bool CProblemSolver::NotConnected()
-{
+bool CProblemSolver::NotConnected() {
 	return (p_autoconnector->IsConnected() == false);
 }
 
-bool CProblemSolver::UserChairUnknown()
-{
+bool CProblemSolver::UserChairUnknown() {
 	return (SYM->p_symbol_engine_userchair()->userchair_confirmed() == false);
 }
 
-bool CProblemSolver::NoOpponents()
-{
+bool CProblemSolver::NoOpponents() {
 	return (SYM->p_symbol_engine_active_dealt_playing()->nopponentsplaying() == 0);
 }
 
-bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
-{
+bool CProblemSolver::AutoPlayerDidActAtLeastOnce() {
 	// We compare the time since connection to the time since last action.
 	return (SYM->p_symbol_engine_time()->elapsed() != SYM->p_symbol_engine_time()->elapsedauto());
 }
 
-bool CProblemSolver::NoCardsVisible()
-{
+bool CProblemSolver::NoCardsVisible() {
 	return (!p_table_state->User()->HasKnownCards());
 }
 
-bool CProblemSolver::NotEnoughButtonsVisible()
-{
+bool CProblemSolver::NotEnoughButtonsVisible() {
 	// We need at least 2 visible buttons to play
 	return (p_table_state->_SCI.NumberOfVisibleButtons() < 2);
 }
 
-
-void CProblemSolver::TryToDetectBeginnersProblems()
-{
-	if (NoTableMapsInScraperFolder())
-	{
+void CProblemSolver::TryToDetectBeginnersProblems() {
+	if (NoTableMapsInScraperFolder()) {
 		OH_MessageBox_Interactive(
 			"BAD NEWS:\n"
 			"    - No tablemaps in scraper folder.\n"
@@ -81,9 +71,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"You need a tablemap for every casino and game-type.",
 			k_title_string, 0);
 
-	}
-	else if (NotConnected())
-	{
+	}	else if (NotConnected()) {
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
@@ -97,9 +85,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    - The titlestring must match.\n"
 			"If OpenHoldem does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
-	}
-	else if (NoOpponents())
-	{
+	}	else if (NoOpponents()) {
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n."
@@ -113,9 +99,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    - Active regions\n"
 			"    - Cardbacks\n",
 			k_title_string, 0);
-	}
-	else if (UserChairUnknown())
-	{
+	}	else if (UserChairUnknown()) {
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
@@ -131,9 +115,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    -  Buttons visible at the same time.\n"
 			"Please revisit your tablemap.",
 			k_title_string, 0);
-	}
-	else if (AutoPlayerDidActAtLeastOnce())
-	{
+	}	else if (AutoPlayerDidActAtLeastOnce())	{
 		// This is the GOOD case!
 		OH_MessageBox_Interactive(
 			"REALLY GOOD NEWS:\n"
@@ -154,8 +136,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	// Cards and buttons get handled after the good case,
 	// because cards and buttons are not always visible,
 	// even if everything is ok.
-	else if (NoCardsVisible())
-	{
+	else if (NoCardsVisible()) {
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
@@ -169,9 +150,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"Please revisit your tablemap\n"
 			"to make sure that cards get scraped correctly.",
 			k_title_string, 0);
-	}
-	else if (NotEnoughButtonsVisible())
-	{
+	}	else if (NotEnoughButtonsVisible())	{
 		OH_MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
@@ -186,9 +165,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"Please revisit your tablemap\n"
 			"to make sure that all buttons get scraped correctly.",     
 			k_title_string, 0);
-	}
-	else
-	{
+	}	else {
 		// This should not happen.
 		// No error detected, but autoplayer did not yet act.
 		OH_MessageBox_Interactive(

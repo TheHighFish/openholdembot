@@ -73,7 +73,7 @@ void CDllExtension::Load(const char * path){
 		// Nothing to do
 		return;
 	}
-	p_filenames->SwitchToOpenHoldemDirectory();
+	MAIN->p_filenames()->SwitchToOpenHoldemDirectory();
 	_hmod_dll = LoadLibrary(dll_path);
 	DWORD dll_error = GetLastError();
 

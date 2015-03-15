@@ -270,13 +270,11 @@ void CMainFrame::OnEditFormula() {
 	_p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 }
 
-void CMainFrame::OnEditViewLog()
-{
-	if (p_filenames == NULL)
-	{
+void CMainFrame::OnEditViewLog() {
+	if (MAIN->p_filenames()) 	{
 		return;
 	}
-	ShellExecute(NULL, "open", p_filenames->LogFilename(), NULL, NULL, SW_SHOW);
+	ShellExecute(NULL, "open", MAIN->p_filenames()->LogFilename(), NULL, NULL, SW_SHOW);
 }
 
 void CMainFrame::OnEditTagLog() {
@@ -335,7 +333,7 @@ void CMainFrame::OnManualMode() {
 		"open",             // "open" == "execute" for an executable
 		"ManualMode.exe",		// ManualMode to be executed
 		NULL, 		          // Parameters
-		p_filenames->OpenHoldemDirectory(), // Working directory
+		MAIN->p_filenames()->OpenHoldemDirectory(), // Working directory
 		SW_SHOWNORMAL);		  // Active window, default size
 }
 

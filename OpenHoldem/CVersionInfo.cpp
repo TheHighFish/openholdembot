@@ -27,7 +27,7 @@
 
 CVersionInfo::CVersionInfo() {
 	// Getting the check-sum only once on start-up
-	_openholdem_MD5 = CalculateMD5(p_filenames->PathOfExecutable());
+	_openholdem_MD5 = CalculateMD5(MAIN->p_filenames()->PathOfExecutable());
 }
 
 CVersionInfo::~CVersionInfo() {

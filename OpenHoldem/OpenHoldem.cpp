@@ -121,7 +121,7 @@ BOOL COpenHoldemApp::InitInstance() {
 	AfxEnableControlContainer();
 
 	free((void*)m_pszProfileName);
-	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
+	m_pszProfileName = _strdup(MAIN->p_filenames()->IniFilePath().GetString());
 	MAIN->p_preferences()->LoadPreferences();
 	
 	// Classes
