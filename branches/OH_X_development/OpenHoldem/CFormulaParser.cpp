@@ -53,12 +53,12 @@ void CFormulaParser::InitNewParse() {
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
-  p_parser_symbol_table->Clear();
+  _p_parser_symbol_table->Clear();
 }
 
 void CFormulaParser::FinishParse() {
   SYM->p_function_collection()->CheckForDefaultFormulaEntries();
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  _p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
 
@@ -78,7 +78,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
     return;
   }
   assert(p_filenames != NULL);
-  CString openPPL_path = p_filenames->OpenPPLLibraryPath();
+  CString openPPL_path = MAIN->p_filenames()->OpenPPLLibraryPath();
   if (_access(openPPL_path, F_OK) != 0) {
     write_log(MAIN->p_preferences()->debug_parser(), 
 	    "[FormulaParser] Can not load OpenPPL-library. File not found.\n");

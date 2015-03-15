@@ -24,6 +24,8 @@
 #include "CParseTreeRotator.h"
 #include "CTokenizer.h"
 
+class CParserSymbolTable;
+
 class CFormulaParser {
  public:
   CFormulaParser();
@@ -42,7 +44,8 @@ class CFormulaParser {
   void ParseOpenPPLLibraryIfNeeded();
  public:
   static CString CurrentFunctionName();
-  bool IsParsing()	{ return _is_parsing; }
+  bool IsParsing()	                          { return _is_parsing; }
+  CParserSymbolTable* p_parser_symbol_table() { return _p_parser_symbol_table; }
  private:
   void ParseFile(CArchive & formula_file);
  private:
@@ -78,14 +81,17 @@ class CFormulaParser {
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
  private:
-  CFormulaFileSplitter _formula_file_splitter;
-  CTokenizer _tokenizer;
-  CParseTreeRotator _parse_tree_rotator;
+  CFormulaFileSplitter  _formula_file_splitter;
+  CTokenizer            _tokenizer;
+  CParseTreeRotator     _parse_tree_rotator;
+  CParserSymbolTable    *_p_parser_symbol_table;
  private:
   CString _token;
   bool _is_parsing;
 };
 
 extern CFormulaParser *p_formula_parser;
+
+#define PARSER p_formula_parser;
 
 #endif INC_CFORMULAPARSER_H

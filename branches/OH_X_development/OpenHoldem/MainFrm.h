@@ -18,6 +18,7 @@ class COpenHoldemTitle;
 class CFlagsToolbar;
 class CWhiteInfoBox;
 // Other objects
+class CFilenames;
 class CPopupHandler;
 class CPreferences;
 class CTablePositioner;
@@ -37,6 +38,7 @@ class CMainFrame : public CFrameWnd {
   CWhiteInfoBox*        p_white_info_box()        { return _p_white_info_box; }
  public:
   // Read-only access to other "global" obkects
+  CFilenames*           p_filenames()             { return _p_filenames; }
   CPopupHandler*        p_popup_handler()         { return _p_popup_handler; }
   CPreferences*         p_preferences()           { return _p_preferences; }
   CTablePositioner*     p_table_positioner()      { return _p_table_positioner; }
@@ -133,6 +135,7 @@ class CMainFrame : public CFrameWnd {
   CWhiteInfoBox         *_p_white_info_box;
  private:
   // Other "global" objects
+  CFilenames            *_p_filenames;
   CPopupHandler         *_p_popup_handler;
   CPreferences          *_p_preferences;
   CTablePositioner      *_p_table_positioner;

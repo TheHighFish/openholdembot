@@ -43,6 +43,4 @@ class CFilenames {
 	char _startup_path[MAX_PATH];
 };
 
-extern CFilenames *p_filenames;
-
 #endif INC_CFILENAMES_H

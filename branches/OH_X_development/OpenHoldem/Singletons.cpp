@@ -56,11 +56,9 @@ void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
   // session-counter has to be done do earlier, as it is needed 
   // to create the log-file, which might be needed before this point.
-    // This function gets executed exactly once at startup.
+  // This function gets executed exactly once at startup.
   // So the global class-pointers have to be NULL.
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CStringMatch\n");
-  //assert(!p_string_match);
-  //p_string_match = new CStringMatch;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CAutoplayerTrace\n");
   assert(!p_autoplayer_trace);
   p_autoplayer_trace = new CAutoplayerTrace;
@@ -69,7 +67,6 @@ void InstantiateAllSingletons() {
   p_table_state = new CTableState;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
   assert(!p_handreset_detector);
-  //!!!!!p_handreset_detector = new CHandresetDetector;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CAutoplayerFunctions\n");
   assert(!p_autoplayer_functions);
   p_autoplayer_functions = new CAutoplayerFunctions;
@@ -82,7 +79,6 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
-  
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CTablemap\n");
   assert(!p_tablemap);
   p_tablemap = new CTablemap;
@@ -90,11 +86,6 @@ void InstantiateAllSingletons() {
   assert(!p_tablemap_access);
   p_tablemap_access = new CTablemapAccess;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CDebugTab\n");
-  //assert(p_debug_tab == NULL);
-  //p_debug_tab = new CDebugTab;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CParserSymbolTable\n");
-  assert(!p_parser_symbol_table);
-  p_parser_symbol_table = new CParserSymbolTable;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
@@ -119,9 +110,6 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CFileSystemMonitor\n");
   assert(!p_filesystem_monitor);
   p_filesystem_monitor = new CFileSystemMonitor;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CTableMapLoader\n");
-  assert(!p_tablemap_loader);
-  p_tablemap_loader = new CTableMapLoader;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
   //R!!!assert(!p_version_info);
   //p_version_info = new CVersionInfo;
@@ -147,12 +135,11 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] All singletons created.\n");
 }
 
-void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
-{
+void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
 	// Filenames have to be available very early,
 	// even before we read the ini-file.
-	assert(!p_filenames);
-	p_filenames = new CFilenames;
+	// assert(!p_filenames);
+	//!!!!!p_filenames = new CFilenames;
 }
 
 bool all_threads_stopped = false;
@@ -210,7 +197,6 @@ void DeleteAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting version_info\n");
   //R!!!DELETE_AND_CLEAR(p_version_info)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting tablemap loader\n");
-  DELETE_AND_CLEAR(p_tablemap_loader)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 01\n");
   DELETE_AND_CLEAR(p_filesystem_monitor)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 02\n");
@@ -225,10 +211,7 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_autoplayer)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 08\n");
   DELETE_AND_CLEAR(p_formula_parser)
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 09\n");
-  DELETE_AND_CLEAR(p_parser_symbol_table)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 10\n");
-  //DELETE_AND_CLEAR(p_debug_tab)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 12\n");
@@ -251,10 +234,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_autoplayer_trace)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 23\n");
   DELETE_AND_CLEAR(p_table_state)
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 24\n");
-  //DELETE_AND_CLEAR(p_string_match)
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 25\n");
-  DELETE_AND_CLEAR(p_filenames)
 }
   
   

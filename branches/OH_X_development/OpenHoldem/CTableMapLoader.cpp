@@ -25,8 +25,6 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
-CTableMapLoader *p_tablemap_loader = NULL;
-
 typedef struct {
 	CString	FilePath;
 	CString	SiteName;
@@ -92,7 +90,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
 	
 	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
 	_number_of_tablemaps_loaded = 0;
-	ParseAllTableMapsToLoadConnectionData(p_filenames->TableMapWildcard());	
+	ParseAllTableMapsToLoadConnectionData(MAIN->p_filenames()->TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
 

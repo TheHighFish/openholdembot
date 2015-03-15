@@ -244,7 +244,7 @@ void start_log(void) {
 
 	CSLock lock(log_critsec);
 
-	CString fn = p_filenames->LogFilename();
+	CString fn = MAIN->p_filenames()->LogFilename();
 	// Check, if file exists and size is too large
 	struct stat file_stats = { 0 };
 	if (stat(fn.GetString(), &file_stats) == 0)
@@ -360,7 +360,7 @@ int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers)
     
     MINIDUMP_EXCEPTION_INFORMATION	ExpParam;
 
-	hDumpFile = CreateFile(p_filenames->MiniDumpFilename(), 
+	hDumpFile = CreateFile(MAIN->p_filenames()->MiniDumpFilename(), 
 		GENERIC_READ|GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, 
 		0, CREATE_ALWAYS, 0, 0);
    

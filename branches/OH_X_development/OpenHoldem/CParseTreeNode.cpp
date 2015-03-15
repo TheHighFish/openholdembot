@@ -17,6 +17,7 @@
 #include <math.h>
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+#include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
@@ -60,17 +61,15 @@ void CParseTreeNode::MakeConstant(double value)
 	_constant_value = value;
 }
 
-void CParseTreeNode::MakeIdentifier(CString name)
-{
+void CParseTreeNode::MakeIdentifier(CString name) {
 	_node_type = kTokenIdentifier;
   assert(name != "");
 	_terminal_name = name;
   assert(p_parser_symbol_table != NULL);
-  p_parser_symbol_table->VerifySymbol(name);
+  p_formula_parser->p_parser_symbol_table()->VerifySymbol(name);
 }
 
-void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
-{
+void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling) {
 	_node_type = node_type;
 	_first_sibbling = first_sibbling;
 }

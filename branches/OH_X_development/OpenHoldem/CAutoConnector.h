@@ -17,6 +17,8 @@
 #include "..\CCritSec\CCritSec.h"
 #include "..\CTablemap\CTablemap.h"
 
+class CTableMapLoader;
+
 class CAutoConnector {
  public:
 	CAutoConnector();
@@ -27,7 +29,8 @@ class CAutoConnector {
 	double TimeSincelast_failed_attempt_to_connect(); // seconds
  public:
 	// public accessors
-	const HWND attached_hwnd()    { return _attached_hwnd; }
+	const HWND attached_hwnd()            { return _attached_hwnd; }
+  CTableMapLoader*  p_tablemap_loader() { return _p_tablemap_loader; }
  private:
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
@@ -46,6 +49,8 @@ class CAutoConnector {
 	// private variables - use public accessors and public mutators to address these
 	HWND		  _attached_hwnd;	 // Table that we are attached to
 	CCritSec	m_critsec;
+ private:
+  CTableMapLoader *_p_tablemap_loader;
  private:
 	// Mutex used for cross-instance autoconnector coordination
 	CMutex		*_autoconnector_mutex;

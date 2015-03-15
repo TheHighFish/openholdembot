@@ -92,7 +92,6 @@ void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_ind
 		EnumProcTopLevelWindowList(targetHWnd, (LPARAM) tablemap_index);
 }
 
-
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 {
 	CString			title = "", winclass = "";
@@ -139,7 +138,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 			write_log(MAIN->p_preferences()->debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
 			tablelisthold.title = title;
-			tablelisthold.path = p_tablemap_loader->GetTablemapPathToLoad(tablemap_index);
+			tablelisthold.path = p_autoconnector->p_tablemap_loader()->GetTablemapPathToLoad(tablemap_index);
 			tablelisthold.crect.left = crect.left;
 			tablelisthold.crect.top = crect.top;
 			tablelisthold.crect.right = crect.right;
@@ -236,10 +235,10 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
   // Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 	write_log(MAIN->p_preferences()->debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded: %i\n",
-    p_tablemap_loader->NumberOfTableMapsLoaded());
-	for (int tablemap_index=0; tablemap_index<p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++) {
+    _p_tablemap_loader->NumberOfTableMapsLoaded());
+	for (int tablemap_index=0; tablemap_index<_p_tablemap_loader->NumberOfTableMapsLoaded(); tablemap_index++) {
 		write_log(MAIN->p_preferences()->debug_autoconnector(), "[CAutoConnector] Going to check TM nr. %d out of %d\n", 
-			tablemap_index, p_tablemap_loader->NumberOfTableMapsLoaded());
+			tablemap_index, _p_tablemap_loader->NumberOfTableMapsLoaded());
 		Check_TM_Against_All_Windows_Or_TargetHWND(tablemap_index, targetHWnd);
 	}
 	
@@ -322,7 +321,7 @@ void CAutoConnector::LoadScraperDLL()
 		return;
 	}
 	// Otherwise: try to load DLL
-	p_filenames->SwitchToOpenHoldemDirectory();
+	MAIN->p_filenames()->SwitchToOpenHoldemDirectory();
 	theApp._scraper_dll = LoadLibrary(filename);
 
 	if (theApp._scraper_dll == NULL)
