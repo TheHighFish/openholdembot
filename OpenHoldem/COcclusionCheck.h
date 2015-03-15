@@ -32,6 +32,4 @@ private:
 	bool AnyApponentBalanceNonZero();
 };
 
-extern COcclusionCheck *p_occlusioncheck;
-
 #endif // __LIB_COCCLUSIONCHECK_H

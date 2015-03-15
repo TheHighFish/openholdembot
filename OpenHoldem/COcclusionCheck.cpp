@@ -24,14 +24,11 @@
 #include "CTableState.h"
 #include "debug.h"
 
-COcclusionCheck *p_occlusioncheck = NULL;
+COcclusionCheck::COcclusionCheck() {
+}
 
-
-COcclusionCheck::COcclusionCheck()
-{}
-
-COcclusionCheck::~COcclusionCheck()
-{}
+COcclusionCheck::~COcclusionCheck() {
+}
 
 bool COcclusionCheck::UserChairKnown()
 {

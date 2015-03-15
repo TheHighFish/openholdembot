@@ -179,6 +179,7 @@ bool CPokerTrackerThread::IsConnected()
 	return (_connected && PQstatus(_pgconn) == CONNECTION_OK);
 }
 
+//!!! Code-clone to CPlayer.h
 /* A scraped name is "bad" if it consists only of characters 
    like "l", "1", "i", "." and "," */
 bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
@@ -186,7 +187,7 @@ bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
 	int len = (int) strlen(oh_scraped_name);
 	for (int i=0; i<len; i++)
 	{
-		if (oh_scraped_name[i]    != 'l'
+		if (oh_scraped_name[i]  != 'l'
 			&& oh_scraped_name[i] != '1'
 			&& oh_scraped_name[i] != 'i' 
 			&& oh_scraped_name[i] != '.' 

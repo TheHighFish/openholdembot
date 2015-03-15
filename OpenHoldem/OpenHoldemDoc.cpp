@@ -19,7 +19,6 @@
 #include "CDllExtension.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
-#include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "DialogFormulaScintilla.h"

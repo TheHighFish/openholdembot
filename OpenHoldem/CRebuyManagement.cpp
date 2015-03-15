@@ -98,14 +98,12 @@ bool CRebuyManagement::NoCards()
 	return false;
 }
 
-bool CRebuyManagement::OcclusionCheck()
-{
-	if (!MAIN->p_preferences()->rebuy_condition_heuristic_check_for_occlusion()) 
-	{
+bool CRebuyManagement::OcclusionCheck() {
+	if (!MAIN->p_preferences()->rebuy_condition_heuristic_check_for_occlusion()) {
 		return true;
 	}
-	else if (p_occlusioncheck->UserBalanceOccluded())
-	{
+  COcclusionCheck occlusioncheck;
+	if (occlusioncheck.UserBalanceOccluded()) 	{
 		write_log(MAIN->p_preferences()->debug_rebuy(), "[CRebuyManagement] OcclusionCheck: false (occluded)\n");
 		return false;
 	}
