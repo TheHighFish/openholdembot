@@ -82,10 +82,7 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CScraperAccess\n");
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CLazyScraper\n");
-  assert(!p_lazyscraper);
-  p_lazyscraper = new CLazyScraper;
+  
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CTablemap\n");
   assert(!p_tablemap);
   p_tablemap = new CTablemap;
@@ -146,9 +143,6 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CRebuyManagement\n");
   assert(!p_rebuymanagement); 
   p_rebuymanagement = new CRebuyManagement;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create COcclusionCheck\n");
-  assert(!p_occlusioncheck);
-  p_occlusioncheck = new COcclusionCheck;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] All singletons created.\n");
 }
@@ -206,7 +200,6 @@ void DeleteAllSingletons() {
   // that depends on other classes, e.g. the destructor of the autoconnector
   // needs its session_id (CSessionCounter).
   //
-  DELETE_AND_CLEAR(p_occlusioncheck)
   DELETE_AND_CLEAR(p_rebuymanagement)
   DELETE_AND_CLEAR(p_engine_container)
   //!!!!!DELETE_AND_CLEAR(p_white_info_box())
@@ -241,7 +234,6 @@ void DeleteAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 12\n");
   DELETE_AND_CLEAR(p_tablemap)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 13\n");
-  DELETE_AND_CLEAR(p_lazyscraper)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 15\n");
   DELETE_AND_CLEAR(p_scraper)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 16\n");

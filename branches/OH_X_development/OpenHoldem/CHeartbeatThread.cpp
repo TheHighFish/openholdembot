@@ -28,7 +28,6 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
-#include "CopenHoldemHopperCommunication.h"
 #include "CopenHoldemStatusbar.h"
 #include "CopenHoldemTitle.h"
 #include "CPreferences.h"
@@ -61,6 +60,7 @@ CHeartbeatThread::CHeartbeatThread() {
   // Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
 	_m_wait_thread = CreateEvent(0, TRUE, FALSE, 0);
+  _p_lazyscraper = new CLazyScraper;
 }
 
 CHeartbeatThread::~CHeartbeatThread() {
@@ -157,7 +157,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
   write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-  p_lazyscraper->DoScrape();
+  _p_lazyscraper->DoScrape();
   // We must not check if the scrape of the table changed, because:
   //   * some symbol-engines must be evaluated no matter what
   //   * we might need to act (sitout, ...) on empty/non-changing tables

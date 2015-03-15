@@ -1,3 +1,14 @@
+v10.0.0 2015-xx-zz
+==================
+MAINTENANCE:
+- Removed ability to communicate with hoppers,
+  as this functionality was from bygone green-button-only times
+  and technically restricted to a single table.
+  OpenHolden provides multi-table-support nowadays
+  and the hopper needs to be only a simple table-opener,
+  so we decided to remove that features.
+  [THF]
+
 v7.7.0 2015-03.05
 ==================
 BUG FIXES:

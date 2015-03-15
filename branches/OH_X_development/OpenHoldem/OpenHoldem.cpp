@@ -26,7 +26,6 @@
 #include "CFormulaParser.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
-#include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
 #include "CSessionCounter.h"

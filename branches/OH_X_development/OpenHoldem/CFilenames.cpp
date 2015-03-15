@@ -27,8 +27,8 @@ CFilenames::CFilenames() {
   // This is NOT GetCurrentDirectory(), which returns the working-directorz,
   // i.e. the working directorz of the process that started OpenHoldem.
   //  
-  // If we don't get this path right and the user stars OpenHoldem
-  // from a different directorz with a script we won't find our files.
+  // If we don't get this path right and the user starts OpenHoldem
+  // from a different directory with a script we won't find our files.
   // http://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
   // http://stackoverflow.com/questions/4517425/how-to-get-program-path
   ::GetModuleFileName(NULL, _startup_path, _MAX_PATH);

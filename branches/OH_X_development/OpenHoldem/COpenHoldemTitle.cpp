@@ -91,9 +91,10 @@ void COpenHoldemTitle::UpdateTitle()
 	}
 
 	// PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)(GetTitle().GetString()));
-	// can't be used, because that would call COpenHoldemHopperCommunication::OnSetWindowText
-	// which would then call SetUserDefinedOpenHoldemTitle()
-	// which would call UpdateTitle()
+	// could not be used in the past, because that would have called 
+  // COpenHoldemHopperCommunication::OnSetWindowText
+	// which would then have called SetUserDefinedOpenHoldemTitle()
+	// which would have called UpdateTitle()
 	// -> endless recursion
 	static CString current_title;
 	current_title = GetTitle();

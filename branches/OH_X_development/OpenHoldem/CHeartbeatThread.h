@@ -16,37 +16,42 @@
 
 #include "..\CCritSec\CCritSec.h"
 
-class CHeartbeatThread
-{
-public:
+class CLazyScraper;
+
+class CHeartbeatThread {
+ public:
 	// public functions
 	CHeartbeatThread();
 	~CHeartbeatThread();
-public:
+ public:
 	// public accessors
 	void StartThread();
-	long int heartbeat_counter() { return _heartbeat_counter; }
-public:
+	long int heartbeat_counter()    { return _heartbeat_counter; }
+  CLazyScraper* p_lazyscraper     { return _p_lazyscraper; }
+ public:
 	// This critical section does not control access to any variables/members, but is used as 
 	// a flag to indicate when the scraper/symbol classes are in an update cycle
 	static CRITICAL_SECTION	cs_update_in_progress;
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
 	static void ScrapeEvaluateAct();
 	static void AutoConnect();
 	static void FlexibleHeartbeatSleeping();
-
-private:
+ private:
 	// private variables - use public accessors and public mutators to address these	
 	CCritSec	m_critsec;
 	static		CHeartbeatThread *pParent;
 	static		long int _heartbeat_counter;
-private:
+ private:
 	HANDLE		_m_stop_thread;
 	HANDLE		_m_wait_thread;
+ private:
+  CLazyScraper *_p_lazyscraper;
 };
 
 extern CHeartbeatThread *p_heartbeat_thread;
+
+#define HBT p_heartbeat_thread
 
 #endif //INC_CHEARTBEATTHREAD_H

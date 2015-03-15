@@ -283,7 +283,6 @@
     <ClCompile Include="OpenHoldemView.cpp" />
     <ClCompile Include="ScintillaWnd.cpp" />
     <ClCompile Include="VerifyFunctionAndListNames.cpp" />
-    <ClCompile Include="COpenHoldemHopperCommunication.cpp" />
     <ClCompile Include="CSessionCounter.cpp" />
     <ClCompile Include="CSharedMem.cpp" />
     <ClCompile Include="CBetroundCalculator.cpp" />
@@ -603,7 +602,6 @@
     <ClInclude Include="SAPrefsDialog.h" />
     <ClInclude Include="SAPrefsStatic.h" />
     <ClInclude Include="SAPrefsSubDlg.h" />
-    <ClInclude Include="COpenHoldemHopperCommunication.h" />
     <ClInclude Include="CSessionCounter.h" />
     <ClInclude Include="CSharedMem.h" />
     <ClInclude Include="..\CCritSec\CCritSec.h" />

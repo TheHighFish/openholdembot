@@ -378,9 +378,6 @@
     <ClCompile Include="VerifyFunctionAndListNames.cpp">
       <Filter>Source Files\GUI\Other Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="COpenHoldemHopperCommunication.cpp">
-      <Filter>Source Files\Synchronization</Filter>
-    </ClCompile>
     <ClCompile Include="CSessionCounter.cpp">
       <Filter>Source Files\Synchronization</Filter>
     </ClCompile>
@@ -1248,9 +1245,6 @@
     </ClInclude>
     <ClInclude Include="SAPrefsSubDlg.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
-    </ClInclude>
-    <ClInclude Include="COpenHoldemHopperCommunication.h">
-      <Filter>Header Files\Synchronization</Filter>
     </ClInclude>
     <ClInclude Include="CSessionCounter.h">
       <Filter>Header Files\Synchronization</Filter>

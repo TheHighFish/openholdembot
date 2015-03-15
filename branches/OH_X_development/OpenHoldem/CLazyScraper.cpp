@@ -26,8 +26,6 @@
 #include "CTableState.h"
 #include "debug.h"
 
-CLazyScraper *p_lazyscraper = NULL;
-
 CLazyScraper::CLazyScraper() {
   _is_identical_scrape = false;
 }
