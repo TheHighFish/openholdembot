@@ -17,7 +17,6 @@ BUG FIXES:
   This race-condition has now been fixed.
   [Moby]
 - FCKRA buttons were wrongly displayed in autoplayer trace.
-  (K,R and A action buttons were inverted)
   [fqfq]
 - i86 buttons states were updated slowly, causing multiple clicks.
   [fqfq]		

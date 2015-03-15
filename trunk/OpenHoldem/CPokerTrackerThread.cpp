@@ -353,7 +353,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	PGresult	*res = NULL;
 	double		result = k_undefined;
 	clock_t		updStart, updEnd;
-	int			duration;
+	int			  duration;
 
 	int sym_elapsed = p_symbol_engine_time->elapsed();
 
