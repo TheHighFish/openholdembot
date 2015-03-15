@@ -19,7 +19,10 @@ BUG FIXES:
 - FCKRA buttons were wrongly displayed in autoplayer trace.
   [fqfq]
 - i86 buttons states were updated slowly, causing multiple clicks.
-  [fqfq]		
+  [fqfq]
+- Pokertracker4 stat turn_seen is now as in PT4 (turn_seen/flop_seen). 
+  Stat prefop_3bet_vs_steal is also changed from 3bet_Vs_steal/total_hands to 3bet_vs_steal/opportunity_to_3bet_vs_steal
+  [Wavelen]		
 
 v7.7.0 2015-03.05
 ==================
