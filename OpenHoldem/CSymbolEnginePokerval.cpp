@@ -324,17 +324,8 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	_srankbitspoker  = 0;
 
 	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
-	comsuit = (tsuitcommon==OH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuitcommon==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuitcommon==OH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuitcommon==OH_SUIT_SPADES ? Suit_SPADES : 0);
-
-	int tsuit = p_symbol_engine_cards->tsuit();
-	plcomsuit = (tsuit==OH_SUIT_CLUBS ? Suit_CLUBS :
-		tsuit==OH_SUIT_DIAMONDS ? Suit_DIAMONDS :
-		tsuit==OH_SUIT_HEARTS ? Suit_HEARTS :
-		tsuit==OH_SUIT_SPADES ? Suit_SPADES : 0);
-
+  int tsuit = p_symbol_engine_cards->tsuit();
+	
 	// player cards
 	for (int i=0; i<k_number_of_cards_per_player; i++) {
 		if (p_table_state->User()->HasKnownCards()) {
