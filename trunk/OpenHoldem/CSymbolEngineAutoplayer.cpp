@@ -81,23 +81,19 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 	for (int i=0; i<k_max_number_of_buttons; i++) {
 		if (p_scraper->GetButtonState(i)) {
       CString button_label = p_table_state->_SCI._button_label[i];
-      // According to the docu
       // myturnbits  
-      // a bit-vector that tells you what buttons are visible 
-      // bits 43210 correspond to buttons KARCF 
-      // (check alli rais call fold). 
-      // Bit 4 (check) was added in OpenHoldem 2.0, 
-      // that’s why it is “out of order"  
+      // Since OH 7.7.2 in the form FCKRA 
+      // like the butons in the GUI (F =lowest bit) 
       if (p_string_match->IsStringFold(button_label))	{
-				_myturnbits |= (1<<0);
+				_myturnbits |= kMyTurnBitsFold;
 			}	else if (p_string_match->IsStringCall(button_label)) 	{
-				_myturnbits |= (1<<1);
-			}	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
-				_myturnbits |= (1<<2);
+				_myturnbits |= kMyTurnBitsCall;
 			}	else if (p_string_match->IsStringCheck(button_label))	{
-				_myturnbits |= (1<<4);
+				_myturnbits |= kMyTurnBitsCheck;
+      }	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
+				_myturnbits |= kMyTurnBitsRaise;
 			}	else if (p_string_match->IsStringAllin(button_label)) {
-				_myturnbits |= (1<<3);
+				_myturnbits |= kMyTurnBitsAllin;
 			}	else if (p_string_match->IsStringAutopost(button_label)) 	{
 				_isautopost = true;
 			}
@@ -184,13 +180,11 @@ CString CSymbolEngineAutoplayer::GetFCKRAString()
     // (check alli rais call fold). 
     // Bit 4 (check) was added in OpenHoldem 2.0, 
     // that’s why it is “out of order"
-		IsBitSet(_myturnbits, 0) ? "F" : ".",
-    IsBitSet(_myturnbits, 1) ? "C" : ".",
-		// Check button out of order to stay consistent
-		// with button order in manual mode.
-		IsBitSet(_myturnbits, 4) ? "K" : ".",
-		IsBitSet(_myturnbits, 2) ? "R" : ".",
-		IsBitSet(_myturnbits, 3) ? "A" : ".");
+		(_myturnbits & kMyTurnBitsFold  ? "F" : "."),
+    (_myturnbits & kMyTurnBitsCall  ? "C" : "."),
+		(_myturnbits & kMyTurnBitsCheck ? "K" : "."),
+		(_myturnbits & kMyTurnBitsRaise ? "R" : "."),
+		(_myturnbits & kMyTurnBitsAllin ? "A" : "."));
 	return fckra_seen;
 }
 
