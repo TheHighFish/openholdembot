@@ -1,0 +1,620 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass amsbook
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth -2
+\tocdepth -2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Log Files 
+\end_layout
+
+\begin_layout Standard
+Sometimes the bot will take an unexpected decision, more rarely for bots
+ in production, but for sure regularly for bots in development.
+ The reason can be mis-scrapes (Table Map or improper system settings);
+ it can be bad bot-logic; it can even be a bug in OpenHoldem.
+\end_layout
+
+\begin_layout Standard
+Many newbies will automatically assume the latter case.
+ Whenever you encounter a strange behaviour it is a good decision to make
+ use of OpenHoldems logging capabilities.
+ OpenHoldem will generate a log file as it operates, less detailed logs
+ for production, more detailed logs for debugging.
+ The verbosity of the log can be set in with the Preferences tabs 
+\emph on
+Logging
+\emph default
+ and 
+\emph on
+Debugging
+\emph default
+.
+ The log file can be found at 
+\emph on
+OpenHoldem
+\backslash
+logs
+\backslash
+oh_NN.log
+\emph default
+ where NN is the session-ID.
+\end_layout
+
+\begin_layout Section*
+Basic Info
+\end_layout
+
+\begin_layout Standard
+OpenHolldem will on every autoplayer action create a section with some basic
+ info about the table-state, the decision taken and the action executed.
+ You might wonder about the latter one, but action executed can differ from
+ decision taken for example if certain buttons and therefore actions aew
+ not available..
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2014-09-30 07:11:37**** Basic Info *********************************************
+      
+\end_layout
+
+\begin_layout Plain Layout
+
+  Version:       7.3.4
+\end_layout
+
+\begin_layout Plain Layout
+
+  Chairs:           10
+\end_layout
+
+\begin_layout Plain Layout
+
+  Userchair:         3
+\end_layout
+
+\begin_layout Plain Layout
+
+  Holecards:     5c5d
+\end_layout
+
+\begin_layout Plain Layout
+
+  Community:     ..........
+\end_layout
+
+\begin_layout Plain Layout
+
+  Handrank:      24
+\end_layout
+
+\begin_layout Plain Layout
+
+  Hand:          1pair
+\end_layout
+
+\begin_layout Plain Layout
+
+  My balance:      1000.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  My currentbet:      0.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  To call:           10.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  Pot:               15.00   
+\end_layout
+
+\begin_layout Plain Layout
+
+  Big blind:         10.00   
+\end_layout
+
+\begin_layout Plain Layout
+
+  Big bet (FL):      20.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  f$betsize:         30.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  Formulas:      FC.RA
+\end_layout
+
+\begin_layout Plain Layout
+
+  Buttons:       FC.RA
+\end_layout
+
+\begin_layout Plain Layout
+
+  Best action:   f$betsize = 30.00
+\end_layout
+
+\begin_layout Plain Layout
+
+  Action taken:  f$betsize
+\end_layout
+
+\begin_layout Plain Layout
+
+***** Autoplayer Trace **************************************
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Autoplayer Trace 
+\end_layout
+
+\begin_layout Standard
+This is an example of the log entries that are added to the standard log
+ if the Autoplayer Trace option is enabled in {Preferences}.!!!!!
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+*************************************************************
+\end_layout
+
+\begin_layout Plain Layout
+
+HAND RESET (num:0 dealer:2 cards:KsKc): Poker Academy Pro **********************
+*************************************** ROUND 1 >>> New hand 0 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> My turn, br=1 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> Chair 2 (6lleilli) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> Chair 3 (GusXensen) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> Chair 4 (JackPott) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> Chair 5 (Kale) posted the sb: $0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+>>> Chair 1 (DanielXn) posted the sb: $0.00 log$ (Total: 19 | Showing: 19)
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+f$swag=40.00 [Line: 1, Col: 49]           
+\end_layout
+
+\begin_layout Plain Layout
+
+f$srai=40.00 [Line: 4, Col: 9]                 f$preflop_srai=40.00 [Line:
+ 12, Col: 87]                       f$preflop_position=4.00 [Line: 5, Col:
+ 50]                        nplayersdealt=6.00                          
+   	dealposition=6.00                       
+\end_layout
+
+\begin_layout Plain Layout
+
+	ncallbets=1.00                       
+\end_layout
+
+\begin_layout Plain Layout
+
+	nopponentsbetting=3.00                       
+\end_layout
+
+\begin_layout Plain Layout
+
+	islist16=1.00                       
+\end_layout
+
+\begin_layout Plain Layout
+
+	bblind=10.00                 
+\end_layout
+
+\begin_layout Plain Layout
+
+	br=1.00           
+\end_layout
+
+\begin_layout Plain Layout
+
+f$raise_min_amount=10.00 [Line: 1, Col: 12]                 	currentbet=0.00
+                 
+\end_layout
+
+\begin_layout Plain Layout
+
+	call=10.00           
+\end_layout
+
+\begin_layout Plain Layout
+
+f$swag_adjust=0.00 [Line: 3, Col: 1]                 	swagtextmethod=1.00
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+	f$call=1.00 [Line: 7, Col: 4]           
+\end_layout
+
+\begin_layout Plain Layout
+
+f$srai=40.00 [Cached]           
+\end_layout
+
+\begin_layout Plain Layout
+
+call=10.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+6 KsKc ..........    2 1pair  578  417    5  3     1000 $40.00     - SWAG      10.00 
+    10.00     25.00      0.00 - FCRA .C..
+ 40.00
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+How to read the AutoPlayer Trace 
+\end_layout
+
+\begin_layout Standard
+f$swag returned 40 processing line 1, character 49.
+ It called the following functions: f$srai, f$raise_min_amount, f$swag_adjust,
+ and used no other symbols.
+\end_layout
+
+\begin_layout Standard
+f$preflop_position (returning on line 5 processing character 50) was called
+ from f$preflop_srai which was called from f$srai.
+ It called no other functions and used 2 symbols; nplayersdealt, dealposition
+ whose values were 6 and 6.
+ !!!!!
+\end_layout
+
+\begin_layout Standard
+ROUND 2 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+log$ (Total: 34 | Showing: 34)     Monster_Hand     checkLast_Monster_Raise
+     f$swag=115.33 [Line: 1, Col: 49]           f$srai=115.33 [Line: 10, Col:
+ 9]                 f$postflop_srai=115.33 [Line: 6, Col: 31]            
+           f$postflop_scenario=2.00 [Line: 7, Col: 77]                  
+           f$round_first_action=1.00 [Line: 2, Col: 38]                  
+                 didswag=0.00                                   didrais=0.00
+                                   didcall=0.00                          
+         didchec=0.00                             betposition=3.00        
+                     ncallbets=0.00                             nplayersround=3.00
+                       f$flop_checklast_srai=115.33 [Line: 2, Col: 67]  
+                           f$handstrength=1.00 [Line: 8, Col: 105]      
+                             f$c_hs_MONSTER=1.00 [Line: 1, Col: 1]      
+                             br=2.00                                   vs$80$prlo
+s=0.06                                   log$Monster_Hand=1.00            
+                 f$c_hs_MONSTER=1.00 [Cached]                            
+ f$cbet_amount=115.33 [Line: 1, Col: 23]                                
+   random=0.60                                   pot=160.00              
+               log$checkLast_Monster_Raise=1.00                       br=2.00
+                 br=2.00           f$raise_min_amount=0.00 [Line: 1, Col:
+ 12]                 currentbet=0.00                 call=0.00           f$swag_ad
+just=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00
+ [Line: 5, Col: 7]           call=0.00 6 KsKc JsKd4c....    2 3kind  915   85 
+   0  2     1000 $115.33    - SWAG       0.00     10.00    160.00      0.00 -
+ FCRA .C..
+ 115.33
+\end_layout
+
+\begin_layout Plain Layout
+
+log$ (Total: 30 | Showing: 30)     Monster_Hand     reraise_Monster_BIGRaise
+     f$swag=2340.00 [Line: 1, Col: 49]           f$srai=2340.00 [Line: 10,
+ Col: 9]                 f$postflop_srai=2340.00 [Line: 12, Col: 31]    
+                   f$postflop_scenario=5.00 [Line: 9, Col: 30]          
+                   f$round_first_action=0.00 [Line: 2, Col: 2]          
+                         didswag=1.00                             didswag=1.00
+                             nbetstocall=78.00                       f$flop_rerai
+sed_srai=2340.00 [Line: 2, Col: 68]                             f$handstrength=1.0
+0 [Line: 8, Col: 105]                                   f$c_hs_MONSTER=1.00
+ [Line: 1, Col: 1]                                   br=2.00            
+                       vs$80$prlos=0.06                                  
+ log$Monster_Hand=1.00                             f$c_hs_MONSTER=1.00 [Cached]
+                             f$raise_big_amount=2340.00 [Line: 1, Col: 5]
+                                   pot=1170.00                          
+   log$reraise_Monster_BIGRaise=1.00                       br=2.00        
+         br=2.00           f$raise_min_amount=895.00 [Line: 1, Col: 12]  
+               currentbet=115.00                 call=780.00           f$swag_adju
+st=0.00 [Line: 3, Col: 1]                 swagtextmethod=1.00     f$call=1.00
+ [Line: 7, Col: 4]           f$srai=2340.00 [Cached]           call=780.00
+ 6 KsKc JsKd4c....    2 3kind  969   31    0  1     1000 $2340.00   - SWAG   
+  780.00     10.00   1170.00      0.00 - FCRA .C..
+ 2340.00
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Errors and Warnings
+\end_layout
+
+\begin_layout Standard
+Furtermore OpenHoldem logs all errors and warnings, i.e.:
+\end_layout
+
+\begin_layout Itemize
+all shown error-messages
+\end_layout
+
+\begin_layout Itemize
+all message-boxes that got suppressed by your option settings 
+\end_layout
+
+\begin_layout Itemize
+some more errors and warnings where an error-dialog would not be appropriate.
+\end_layout
+
+\begin_layout Section*
+Debug Messages
+\end_layout
+
+\begin_layout Standard
+Debug messages are mainly meant for developers and for experienced users
+ who want to get more info about the way how OpenHoldem works internally.
+ These messages can be turned on with the Debugging-tab of the Preferences
+ dialog.
+ They are very useful for finding and fixing bugs but usually not needed
+ for most end-users.
+ Below a short example about blind-detection and blind-locking (for stability):
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] CalcTableLimits() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed()
+ true, because not locked
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CBlindGuesser] Data from scraper (ttlimits, c0limits):
+ 5.00 / 10.00 / -1.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CBlindLevels] Trying to find best matching blind-level
+ for 5.00 / 10.00 / -1.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CBlindLevels] Perfect match found
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand:
+ false
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCurrentHand()
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Locked blinds at 5.00 /
+ 10.00 / 20.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] RememberBlindsForCashgames()
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Saving blinds for hand
+ 0
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCashgamesAfter
+NHands()
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_complete_sess
+ion: false
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] istournament: false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Not yet enough hands to
+ lock blinds permanent.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Logging for DLL and Perl
+\end_layout
+
+\begin_layout Standard
+Usually OpenHoldem will stop going into more detail when it reaches a DLL
+ or Perl symbol, because DLL-functions and C-functions are a black-box for
+ OpenHoldem.
+ However it is possible to enable DLL-logging (also for Perl), then OpenHoldem
+ will continue like in the axample above if the DLL-function calls back
+ to OH-script.
+ Furthermore it is possible to log any user-defined messages from the DLL
+ to the standard OpenHoldem-log with a function from the DLL-interface:
+\end_layout
+
+\begin_layout Standard
+!!!!!
+\end_layout
+
+\end_body
+\end_document
