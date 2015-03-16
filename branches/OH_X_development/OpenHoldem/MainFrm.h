@@ -20,7 +20,6 @@ class CWhiteInfoBox;
 // Other objects
 class CFilenames;
 class CPopupHandler;
-class CPreferences;
 class CTablePositioner;
 class CValidator;
 class CVersionInfo;
@@ -40,7 +39,6 @@ class CMainFrame : public CFrameWnd {
   // Read-only access to other "global" obkects
   CFilenames*           p_filenames()             { return _p_filenames; }
   CPopupHandler*        p_popup_handler()         { return _p_popup_handler; }
-  CPreferences*         p_preferences()           { return _p_preferences; }
   CTablePositioner*     p_table_positioner()      { return _p_table_positioner; }
   CValidator*           p_validator()             { return _p_validator; }
   CVersionInfo*         p_version_info()          { return _p_version_info; }
@@ -137,7 +135,6 @@ class CMainFrame : public CFrameWnd {
   // Other "global" objects
   CFilenames            *_p_filenames;
   CPopupHandler         *_p_popup_handler;
-  CPreferences          *_p_preferences;
   CTablePositioner      *_p_table_positioner;
   CValidator            *_p_validator;
   CVersionInfo          *_p_version_info;

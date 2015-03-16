@@ -27,13 +27,14 @@
 #include "..\..\Reference Keyboard DLL\keyboarddll.h"
 #include "..\..\Reference Scraper DLL\scraperdll.h"
 
+class CPreferences;
+
 // COpenHoldemApp:
 // See OpenHoldem.cpp for the implementation of this class
 //
 
-class COpenHoldemApp : public CWinApp 
-{
-public:
+class COpenHoldemApp : public CWinApp {
+ public:
 	COpenHoldemApp();
 	~COpenHoldemApp();
 	void MyLoadStdProfileSettings(UINT nMaxMRU);
@@ -42,14 +43,15 @@ public:
 	DECLARE_MESSAGE_MAP()
 	virtual int ExitInstance();
 
-public:
+ public:
 	void UnloadScraperDLL();
 	void StoreLastRecentlyUsedFileList();
-private:
+ private:
 	void LoadLastRecentlyUsedFileList();
 	void OpenLastRecentlyUsedFile();
-
-public:
+ public:
+  CPreferences*         p_preferences()           { return _p_preferences; }
+ public:
 	mouse_process_message_t		_dll_mouse_process_message;
 	mouse_click_t				_dll_mouse_click;
 	mouse_clickdrag_t			_dll_mouse_click_drag;
@@ -63,7 +65,9 @@ public:
 	HMODULE							_scraper_dll;
 	scraper_process_message_t		_dll_scraper_process_message;
 	scraper_override_t				_dll_scraper_override;
-private:
+ private:
+  CPreferences          *_p_preferences;
+ private:
 	void FinishInitialization();
 };
 

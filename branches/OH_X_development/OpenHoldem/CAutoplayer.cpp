@@ -355,7 +355,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 	ENT 
 	// Set correct button state
 	// We have to be careful, as during initialization the GUI does not yet exist.
-	assert(p_flags_toolbar != NULL);
+	assert(GUI->p_flags_toolbar() != NULL);
 	GUI->p_flags_toolbar()->CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
 
 	if (to_be_enabled_or_not) 

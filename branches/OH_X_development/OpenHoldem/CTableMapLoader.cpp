@@ -90,7 +90,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
 	
 	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
 	_number_of_tablemaps_loaded = 0;
-	ParseAllTableMapsToLoadConnectionData(MAIN->p_filenames()->TableMapWildcard());	
+	ParseAllTableMapsToLoadConnectionData(CFilenames::TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
 
@@ -363,8 +363,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 }
 
 void CTableMapLoader::ReloadAllTablemapsIfChanged() {
-	if (p_filesystem_monitor->AnyChanges())
-	{		
+	if (_p_filesystem_monitor->AnyChanges())	{		
 		// Since OpenHoldem 4.0.0 there is no longer any possibility 
 		// for manual connection; i.e. no possibility for re-connection.
 		// Therefore the file-system-monitor does now dis-connect
@@ -377,9 +376,7 @@ void CTableMapLoader::ReloadAllTablemapsIfChanged() {
 		write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemapLoader] Tablemaps changed; going to reload.\n");
 		p_autoconnector->Disconnect();
 		ParseAllTableMapsToLoadConnectionData();
-	}
-	else
-	{
+	}	else {
 		write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemapLoader] All tablemaps unchanged; nothing to do.\n");
 	}
 }

@@ -158,7 +158,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
   write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
-  _p_lazyscraper->DoScrape();
+  p_heartbeat_thread->_p_lazyscraper->DoScrape();
   // We must not check if the scrape of the table changed, because:
   //   * some symbol-engines must be evaluated no matter what
   //   * we might need to act (sitout, ...) on empty/non-changing tables

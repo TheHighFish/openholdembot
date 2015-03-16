@@ -321,7 +321,7 @@ void CAutoConnector::LoadScraperDLL()
 		return;
 	}
 	// Otherwise: try to load DLL
-	MAIN->p_filenames()->SwitchToOpenHoldemDirectory();
+	CFilenames::SwitchToOpenHoldemDirectory();
 	theApp._scraper_dll = LoadLibrary(filename);
 
 	if (theApp._scraper_dll == NULL)

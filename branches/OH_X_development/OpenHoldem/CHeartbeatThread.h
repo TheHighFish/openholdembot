@@ -47,7 +47,7 @@ class CHeartbeatThread {
 	HANDLE		_m_stop_thread;
 	HANDLE		_m_wait_thread;
  private:
-  static CLazyScraper *_p_lazyscraper;
+  /*static*/ CLazyScraper *_p_lazyscraper;
 };
 
 extern CHeartbeatThread *p_heartbeat_thread;

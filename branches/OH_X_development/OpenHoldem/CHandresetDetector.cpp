@@ -234,7 +234,7 @@ bool CHandresetDetector::SmallBlindExists() {
 }
 
 void CHandresetDetector::GetNewSymbolValues() {
-	assert(p_symbol_engine_dealerchair != NULL);
+	assert(SYM->p_symbol_engine_dealerchair() != NULL);
 	if (IsValidDealerChair(SYM->p_symbol_engine_dealerchair()->dealerchair()))	{
 		dealerchair = SYM->p_symbol_engine_dealerchair()->dealerchair();	
 		write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
@@ -245,7 +245,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 	}	else {
 		write_log(MAIN->p_preferences()->debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
-	assert(p_symbol_engine_userchair != NULL);
+	assert(SYM->p_symbol_engine_userchair() != NULL);
 	int userchair = SYM->p_symbol_engine_userchair()->userchair();
   _potsize = SYM->p_symbol_engine_chip_amounts()->pot();
   _community_cards = p_table_state->_SCI.NumberOfCommonCards();

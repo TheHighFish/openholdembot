@@ -144,7 +144,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   // Large negative values: action constants
   if (decision > 0) {
     // OpenHoldem uses f$betsize in dollars
-    assert(p_symbol_engine_tablelimits != NULL);
+    assert(SYM->p_symbol_engine_tablelimits() != NULL);
     double betsize = decision * SYM->p_symbol_engine_tablelimits()->bblind();
     SYM->p_function_collection()->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, 
       betsize);
@@ -235,8 +235,8 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   write_log(MAIN->p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] Calculate f$betsize for %.2f percent potsize\n",
     percentage_0_100);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_userchair != NULL);
+  assert(SYM->p_symbol_engine_chip_amounts() != NULL);
+  assert(SYM->p_symbol_engine_userchair() != NULL);
   assert(SYM->p_symbol_engine_userchair()->userchair_confirmed());
   double betsize = SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR) 
     + SYM->p_symbol_engine_chip_amounts()->call() 

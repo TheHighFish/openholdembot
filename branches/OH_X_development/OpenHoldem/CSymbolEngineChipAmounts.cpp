@@ -30,8 +30,8 @@ CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(SYM->p_symbol_engine_tablelimits() != NULL);
+	assert(SYM->p_symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineChipAmounts::~CSymbolEngineChipAmounts()

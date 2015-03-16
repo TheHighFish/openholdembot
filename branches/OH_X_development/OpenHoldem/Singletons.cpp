@@ -66,7 +66,6 @@ void InstantiateAllSingletons() {
   assert(!p_table_state);
   p_table_state = new CTableState;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
-  assert(!p_handreset_detector);
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CAutoplayerFunctions\n");
   assert(!p_autoplayer_functions);
   p_autoplayer_functions = new CAutoplayerFunctions;
@@ -101,30 +100,9 @@ void InstantiateAllSingletons() {
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CGameState\n");
   assert(!p_game_state);
   p_game_state = new CGameState;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CValidator\n");
-  //assert(!p_validator);
-  //p_validator = new CValidator;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CTablePositioner\n");
-  //assert(!p_table_positioner);
-  //p_table_positioner = new CTablePositioner;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CFileSystemMonitor\n");
-  assert(!p_filesystem_monitor);
-  p_filesystem_monitor = new CFileSystemMonitor;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
-  //R!!!assert(!p_version_info);
-  //p_version_info = new CVersionInfo;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CPopupHandler\n");
-  //assert(!p_popup_handler);
-  //p_popup_handler = new CPopupHandler;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CAutoConnector\n");
   assert(!p_autoconnector);
   p_autoconnector = new CAutoConnector;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create COpenHoldemTitle\n");
-  assert(!p_openholdem_title);
-  //!!!!!p_openholdem_title = new COpenHoldemTitle;
-  write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CWhiteInfoBox\n");
-  assert(!GUI->p_white_info_box()->);
-  //!!!!!GUI->p_white_info_box() = new CWhiteInfoBox;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
@@ -133,13 +111,6 @@ void InstantiateAllSingletons() {
   p_rebuymanagement = new CRebuyManagement;
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] All singletons created.\n");
-}
-
-void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
-	// Filenames have to be available very early,
-	// even before we read the ini-file.
-	// assert(!p_filenames);
-	//!!!!!p_filenames = new CFilenames;
 }
 
 bool all_threads_stopped = false;
@@ -189,20 +160,13 @@ void DeleteAllSingletons() {
   //
   DELETE_AND_CLEAR(p_rebuymanagement)
   DELETE_AND_CLEAR(p_engine_container)
-  //!!!!!DELETE_AND_CLEAR(p_white_info_box())
-  //!!!!!DELETE_AND_CLEAR(p_openholdem_title)
-  //DELETE_AND_CLEAR(p_popup_handler)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting autoconnector\n");
   DELETE_AND_CLEAR(p_autoconnector)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting version_info\n");
-  //R!!!DELETE_AND_CLEAR(p_version_info)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting tablemap loader\n");
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 01\n");
-  DELETE_AND_CLEAR(p_filesystem_monitor)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 02\n");
-  //DELETE_AND_CLEAR(p_table_positioner)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 03\n");
-  //DELETE_AND_CLEAR(p_validator)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 05\n");
   DELETE_AND_CLEAR(p_game_state)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 06\n");
@@ -229,7 +193,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_autoplayer_functions)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 20\n");
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 21\n");
-  //!!!!!DELETE_AND_CLEAR(p_handreset_detector)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 22\n");
   DELETE_AND_CLEAR(p_autoplayer_trace)
   write_log(MAIN->p_preferences()->debug_alltherest(), "[Singletons] Deleting 23\n");

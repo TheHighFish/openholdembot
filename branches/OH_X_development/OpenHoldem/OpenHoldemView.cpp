@@ -251,7 +251,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 
   if ((SYM->p_symbol_engine_autoplayer()->ismyturn()) || update_it || update_all) 
 	{
-		assert(GUI->p_white_info_box()-> != NULL);
+		assert(GUI->p_white_info_box() != NULL);
     GUI->p_white_info_box()->Draw(_client_rect, _logfont, pDC,
       &_black_pen, &_white_brush);
     ReleaseDC(pDC);

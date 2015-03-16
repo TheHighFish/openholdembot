@@ -18,29 +18,9 @@
 #include "CSessionCounter.h"
 #include "OH_MessageBox.h"
 
-CFilenames *p_filenames = NULL;
-
 const char* k_default_ini_filename = "OpenHoldem_Preferences__feel_free_to_rename_this_file_to_whatever_you_like.INI";
 
 CFilenames::CFilenames() {
-  // Save directory that contains openHoldem for future use.
-  // This is NOT GetCurrentDirectory(), which returns the working-directorz,
-  // i.e. the working directorz of the process that started OpenHoldem.
-  //  
-  // If we don't get this path right and the user starts OpenHoldem
-  // from a different directory with a script we won't find our files.
-  // http://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
-  // http://stackoverflow.com/questions/4517425/how-to-get-program-path
-  ::GetModuleFileName(NULL, _startup_path, _MAX_PATH);
-  // Remove executable filename from path
-  // http://pic.dhe.ibm.com/infocenter/zvm/v6r2/index.jsp?topic=%2Fcom.ibm.zvm.v620.edclv%2Fstrrchr.htm
-  char *last_backslash_in_path = strrchr(_startup_path, '\\');
-  if (last_backslash_in_path != NULL) {
-    ++last_backslash_in_path;
-    *last_backslash_in_path = '\0';
-  }
-  // Create logs-directoy if necessary
-  CreateDirectory(LogsDirectory(), NULL);
 }
 
 CFilenames::~CFilenames() {
@@ -53,9 +33,8 @@ void CFilenames::Log(CString name, CString value) {
 }
 
 CString CFilenames::OpenHoldemDirectory() {
-	assert(_startup_path != "");
-  Log("OpenHoldemDirectory", _startup_path);
-	return _startup_path;
+  Log("OpenHoldemDirectory", StartupPath());
+	return StartupPath();
 }
 
 CString CFilenames::IniFilePath() {
@@ -110,29 +89,26 @@ CString CFilenames::IniFilename() {
 }
 
 void CFilenames::SwitchToOpenHoldemDirectory() {
-	assert(_startup_path != "");
-	SetCurrentDirectory(_startup_path);
+	SetCurrentDirectory(StartupPath());
 }
 
 CString CFilenames::TableMapWildcard() {
-	assert(_startup_path != "");
 	CString wildcard;
-	wildcard.Format("%sscraper\\*.tm", _startup_path);
+	wildcard.Format("%sscraper\\*.tm", StartupPath());
   Log("TableMapWildcard", wildcard.GetString());
 	return wildcard;
 }
 
 CString CFilenames::ScraperDirectory() {
-	assert(_startup_path != "");
-  CString scraper_dir = CString(_startup_path) + "scraper\\";
+  CString scraper_dir = CString(StartupPath()) + "scraper\\";
   Log("ScraperDirectory", (char*)scraper_dir.GetString());
 	return scraper_dir;
 }
 
 CString CFilenames::ReplaySessionDirectory() {
-	assert(_startup_path != "");
 	CString path;
-	path.Format("%sreplay\\session_%lu\\", _startup_path, p_sessioncounter->session_id());
+	path.Format("%sreplay\\session_%lu\\", StartupPath(), 
+    p_sessioncounter->session_id());
 	return path;
 }
 
@@ -153,9 +129,8 @@ CString CFilenames::ReplayHTMLFilename(int frame_number) {
 }
 
 CString CFilenames::LogsDirectory() {
-	assert(_startup_path != "");
 	CString path;
-	path.Format("%slogs\\", _startup_path);
+	path.Format("%slogs\\", StartupPath());
   Log("LogsDirectory", path.GetString());
 	return path;
 };
@@ -172,9 +147,8 @@ CString CFilenames::MiniDumpFilename() {
 	char		szFileName[MAX_PATH]; 
 
 	GetLocalTime(&stLocalTime);
-	assert(_startup_path != "");
 	sprintf_s(szFileName, MAX_PATH, "%s\\%s-%s-%04d%02d%02d-%02d%02d%02d-%ld-%ld.dmp", 
-		_startup_path, "OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, 
+		StartupPath(), "OpenHoldem", VERSION_TEXT, stLocalTime.wYear, stLocalTime.wMonth, 
 		stLocalTime.wDay, stLocalTime.wHour, stLocalTime.wMinute, stLocalTime.wSecond, 
 		GetCurrentProcessId(), GetCurrentThreadId());
   Log("MiniDumpFilename", szFileName);
@@ -224,4 +198,25 @@ CString CFilenames::OpenPPLLibraryPath() {
   CString result = OpenHoldemDirectory() + "\\OpenPPL_Library.ohf";
   Log("OpenPPLLibraryPath", result.GetString());
 	return result;
+}
+
+CString CFilenames::StartupPath() {
+  // Returns directory that contains openHoldem.
+  // This is NOT GetCurrentDirectory(), which returns the working-directorz,
+  // i.e. the working directorz of the process that started OpenHoldem.
+  //  
+  // If we don't get this path right and the user starts OpenHoldem
+  // from a different directory with a script we won't find our files.
+  // http://stackoverflow.com/questions/143174/how-do-i-get-the-directory-that-a-program-is-running-from
+  // http://stackoverflow.com/questions/4517425/how-to-get-program-path
+  char _startup_path[MAX_PATH];
+  ::GetModuleFileName(NULL, _startup_path, _MAX_PATH);
+  // Remove executable filename from path
+  // http://pic.dhe.ibm.com/infocenter/zvm/v6r2/index.jsp?topic=%2Fcom.ibm.zvm.v620.edclv%2Fstrrchr.htm
+  char *last_backslash_in_path = strrchr(_startup_path, '\\');
+  if (last_backslash_in_path != NULL) {
+    ++last_backslash_in_path;
+    *last_backslash_in_path = '\0';
+  }
+  return CString(_startup_path);
 }

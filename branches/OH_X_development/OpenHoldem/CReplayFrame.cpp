@@ -62,7 +62,7 @@ void CReplayFrame::CreateReplayFrame(void){
 	free_bytes_total_on_disk = {0};
 	//  Sanity check: Enough disk-space for replay frame?	
 	GetDiskFreeSpaceEx(
-		MAIN->p_filenames()->OpenHoldemDirectory(),  //  Directory on disk of interest
+		CFilenames::OpenHoldemDirectory(),  //  Directory on disk of interest
 		&free_bytes_for_user_on_disk,  
 		&total_bytes_on_disk,	
 		&free_bytes_total_on_disk);
@@ -80,7 +80,7 @@ void CReplayFrame::CreateReplayFrame(void){
   write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame [%s]\n", next_frame);
 	CreateBitMapFile();
   // Create HTML file
-	CString path = MAIN->p_filenames()->ReplayHTMLFilename(_next_replay_frame);
+	CString path = CFilenames::ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0) {
 		write_log(MAIN->p_preferences()->debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
 		// First line has to be the "title" of the table.
@@ -345,7 +345,7 @@ CString CReplayFrame::GetPotsAsHTML() {
 }
 
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
-	CString path = MAIN->p_filenames()->ReplaySessionDirectory();
+	CString path = CFilenames::ReplaySessionDirectory();
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
     write_log(MAIN->p_preferences()->debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
@@ -355,7 +355,7 @@ void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
 void CReplayFrame::CreateBitMapFile() {
 	CString path;
   CreateReplaySessionDirectoryIfNecessary();
-	CreateBMPFile(MAIN->p_filenames()->ReplayBitmapFilename(_next_replay_frame), 
+	CreateBMPFile(CFilenames::ReplayBitmapFilename(_next_replay_frame), 
 		p_scraper->entire_window_cur());
 }
 

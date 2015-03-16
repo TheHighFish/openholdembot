@@ -64,10 +64,10 @@ CSymbolEngineHistory::CSymbolEngineHistory() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(SYM->p_symbol_engine_active_dealt_playing() != NULL);
+	assert(SYM->p_symbol_engine_chip_amounts() != NULL);
+  assert(SYM->p_symbol_engine_tablelimits() != NULL);
+	assert(SYM->p_symbol_engine_userchair() != NULL);
   // Making sure that _hist_sym_count is correct,
 	// to avoid array overflows later if we remove symbols
 	// without adapting the counter.

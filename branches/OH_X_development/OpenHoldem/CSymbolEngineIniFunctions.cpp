@@ -57,24 +57,24 @@ CSymbolEngineIniFunctions::CSymbolEngineIniFunctions() {
   //
   // CSymbolEngineIniFunctions() "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-  assert(p_symbol_engine_blinds != NULL);
-  assert(p_symbol_engine_cards != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_handrank != NULL);
-  assert(p_symbol_engine_history != NULL);
-  assert(p_symbol_engine_isomaha != NULL);
-  assert(p_symbol_engine_istournament != NULL);
-  assert(p_symbol_engine_pokertracker != NULL);
-  assert(p_symbol_engine_pokerval != NULL);
-  assert(p_symbol_engine_positions != NULL);
-  assert(p_symbol_engine_prwin != NULL);
-  assert(p_symbol_engine_raisers_callers != NULL);
-  assert(p_symbol_engine_random != NULL);
-  assert(p_symbol_engine_time != NULL);
-  assert(p_symbol_engine_userchair != NULL);
+  assert(SYM->p_symbol_engine_active_dealt_playing() != NULL);
+  assert(SYM->p_symbol_engine_autoplayer() != NULL);
+  assert(SYM->p_symbol_engine_blinds() != NULL);
+  assert(SYM->p_symbol_engine_cards() != NULL);
+  assert(SYM->p_symbol_engine_chip_amounts() != NULL);
+  assert(SYM->p_symbol_engine_dealerchair() != NULL);
+  assert(SYM->p_symbol_engine_handrank() != NULL);
+  assert(SYM->p_symbol_engine_history() != NULL);
+  assert(SYM->p_symbol_engine_isomaha() != NULL);
+  assert(SYM->p_symbol_engine_istournament() != NULL);
+  assert(SYM->p_symbol_engine_pokertracker() != NULL);
+  assert(SYM->p_symbol_engine_pokerval() != NULL);
+  assert(SYM->p_symbol_engine_positions() != NULL);
+  assert(SYM->p_symbol_engine_prwin() != NULL);
+  assert(SYM->p_symbol_engine_raisers_callers() != NULL);
+  assert(SYM->p_symbol_engine_random() != NULL);
+  assert(SYM->p_symbol_engine_time() != NULL);
+  assert(SYM->p_symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {

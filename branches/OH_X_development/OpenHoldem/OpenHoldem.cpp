@@ -66,6 +66,8 @@ COpenHoldemApp::COpenHoldemApp() {
 
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp() {
+  delete _p_preferences;
+  delete p_sessioncounter;
 }
 
 // The one and only COpenHoldemApp object
@@ -89,13 +91,13 @@ BOOL COpenHoldemApp::InitInstance() {
 	// in your application.
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls); 
+  // Create logs-directoy if necessary
+  CreateDirectory(CFilenames::LogsDirectory(), NULL);
 	// Since OH 4.0.0 we always use an ini-file,
 	// the one and only in our OH-directory,
 	// no matter how it is named.
 	// For the technical details please see:
 	// http://msdn.microsoft.com/de-de/library/xykfyy20(v=vs.80).aspx
-	InstantiateSomeSingletonsForVeryEarlyUseInInitInstance();
-
 	Scintilla_RegisterClasses(AfxGetInstanceHandle());
 
 	// Initialize richedit2 library
@@ -121,11 +123,12 @@ BOOL COpenHoldemApp::InitInstance() {
 	AfxEnableControlContainer();
 
 	free((void*)m_pszProfileName);
-	m_pszProfileName = _strdup(MAIN->p_filenames()->IniFilePath().GetString());
+	m_pszProfileName = _strdup(CFilenames::IniFilePath().GetString());
 	MAIN->p_preferences()->LoadPreferences();
 	
 	// Classes
-	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
+	p_sessioncounter = new CSessionCounter;
+  _p_preferences = new CPreferences;
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
@@ -229,7 +232,7 @@ void COpenHoldemApp::FinishInitialization() {
 	write_log(MAIN->p_preferences()->debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 
-	assert(p_openholdem_title != NULL);
+	assert(GUI->p_openholdem_title() != NULL);
 	GUI->p_openholdem_title()->UpdateTitle();
 
 	// The one and only window has been initialized, so show and update it

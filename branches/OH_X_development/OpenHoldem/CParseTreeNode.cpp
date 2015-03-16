@@ -65,7 +65,7 @@ void CParseTreeNode::MakeIdentifier(CString name) {
 	_node_type = kTokenIdentifier;
   assert(name != "");
 	_terminal_name = name;
-  assert(p_parser_symbol_table != NULL);
+  assert(p_formula_parser->p_parser_symbol_table() != NULL);
   p_formula_parser->p_parser_symbol_table()->VerifySymbol(name);
 }
 

@@ -19,28 +19,27 @@ class CFilenames {
 	CFilenames();
 	~CFilenames();
  public:
-	CString OpenHoldemDirectory();
-	CString IniFilePath();
-	CString TableMapWildcard();
-	CString LogsDirectory();
-	CString LogFilename();
-	CString MiniDumpFilename();
-	CString ScraperDirectory();
-	CString ReplaySessionDirectory();
-	CString ReplayBitmapFilename(int frame_number);
-	CString ReplayHTMLFilename(int frame_number);
-	CString PathOfExecutable();
-	CString ExecutableFilename();
-	CString PureExecutableFilename();
-  CString VersusPath();
-  CString OpenPPLLibraryPath();
+	static CString OpenHoldemDirectory();
+	static CString IniFilePath();
+	static CString TableMapWildcard();
+	static CString LogsDirectory();
+	static CString LogFilename();
+	static CString MiniDumpFilename();
+	static CString ScraperDirectory();
+	static CString ReplaySessionDirectory();
+	static CString ReplayBitmapFilename(int frame_number);
+	static CString ReplayHTMLFilename(int frame_number);
+	static CString PathOfExecutable();
+	static CString ExecutableFilename();
+	static CString PureExecutableFilename();
+  static CString VersusPath();
+  static CString OpenPPLLibraryPath();
  public:
-	void SwitchToOpenHoldemDirectory();
+	static void SwitchToOpenHoldemDirectory();
  private:
-	CString IniFilename();
-  void Log(CString name, CString value);
- private:
-	char _startup_path[MAX_PATH];
+	static CString IniFilename();
+  static void Log(CString name, CString value);
+  static CString StartupPath();
 };
 
 #endif INC_CFILENAMES_H

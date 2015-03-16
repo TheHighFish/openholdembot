@@ -23,6 +23,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CConfigurationCheck.h"
+#include "CDebugTab.h"
 #include "CDllExtension.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -30,14 +31,17 @@
 #include "CIteratorThread.h"
 #include "COpenHoldemStatusbar.h"
 #include "COpenHoldemTitle.h"
+#include "CPopupHandler.h"
 #include "CPreferences.h"
 #include "CProblemSolver.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTablePositioner.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
+#include "CVersionInfo.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
@@ -145,8 +149,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
-CMainFrame::CMainFrame() 
-{
+CMainFrame::CMainFrame() {
 	_wait_cursor = false;
 
 	_prev_att_rect.bottom = 0;
@@ -161,13 +164,36 @@ CMainFrame::CMainFrame()
   //!!!!! Here?
   CConfigurationCheck configuration_check;
   configuration_check.CheckEverything();
+
+  // Other "global" objects, not GUI
+  _p_popup_handler = new CPopupHandler;
+  _p_table_positioner = new CTablePositioner;
+  _p_validator = new CValidator;
+  _p_version_info = new CVersionInfo;
+  // GUI objects
+  _p_debug_tab = new CDebugTab;
+  _p_formulaScintillaDlg = new CDlgFormulaScintilla;
+  _p_ScraperOutputDlg = new CDlgScraperOutput;
+  //!!!!!_p_openholdem_statusbar = new COpenHoldemStatusbar;
+  _p_openholdem_title = new COpenHoldemTitle;
+  //!!!_p_flags_toolbar = new CFlagsToolbar;
+  //!!!_p_white_info_box = new CWhiteInfoBox;
 }
 
 CMainFrame::~CMainFrame() {
-	if (_p_flags_toolbar != NULL)	{
-		_p_flags_toolbar->~CFlagsToolbar();
-		delete(_p_flags_toolbar);
-	}
+  // GUI objects
+  delete _p_debug_tab;
+  delete _p_formulaScintillaDlg;
+  delete _p_ScraperOutputDlg;
+  delete _p_openholdem_statusbar;
+  delete _p_openholdem_title;
+  delete _p_flags_toolbar;
+  delete _p_white_info_box;
+  // Other "global" objects, not GUI
+  delete _p_popup_handler;
+  delete _p_table_positioner;
+  delete _p_validator;
+  delete _p_version_info;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
@@ -271,10 +297,7 @@ void CMainFrame::OnEditFormula() {
 }
 
 void CMainFrame::OnEditViewLog() {
-	if (MAIN->p_filenames()) 	{
-		return;
-	}
-	ShellExecute(NULL, "open", MAIN->p_filenames()->LogFilename(), NULL, NULL, SW_SHOW);
+	ShellExecute(NULL, "open", CFilenames::LogFilename(), NULL, NULL, SW_SHOW);
 }
 
 void CMainFrame::OnEditTagLog() {
@@ -333,7 +356,7 @@ void CMainFrame::OnManualMode() {
 		"open",             // "open" == "execute" for an executable
 		"ManualMode.exe",		// ManualMode to be executed
 		NULL, 		          // Parameters
-		MAIN->p_filenames()->OpenHoldemDirectory(), // Working directory
+		CFilenames::OpenHoldemDirectory(), // Working directory
 		SW_SHOWNORMAL);		  // Active window, default size
 }
 

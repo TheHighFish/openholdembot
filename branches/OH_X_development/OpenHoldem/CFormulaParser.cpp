@@ -71,14 +71,13 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 
 void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   //
-  assert(p_function_collection != NULL);
+  assert(SYM->p_function_collection() != NULL);
   if (SYM->p_function_collection()->OpenPPLLibraryCorrectlyParsed()) {
     write_log(MAIN->p_preferences()->debug_parser(), 
 	    "[FormulaParser] OpenPPL-library already correctly loaded. Nothing to do.\n");
     return;
   }
-  assert(p_filenames != NULL);
-  CString openPPL_path = MAIN->p_filenames()->OpenPPLLibraryPath();
+  CString openPPL_path = CFilenames::OpenPPLLibraryPath();
   if (_access(openPPL_path, F_OK) != 0) {
     write_log(MAIN->p_preferences()->debug_parser(), 
 	    "[FormulaParser] Can not load OpenPPL-library. File not found.\n");

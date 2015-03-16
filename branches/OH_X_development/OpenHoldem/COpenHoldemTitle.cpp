@@ -24,11 +24,9 @@
 
 COpenHoldemTitle *p_openholdem_title = NULL;
 
-COpenHoldemTitle::COpenHoldemTitle()
-{
+COpenHoldemTitle::COpenHoldemTitle() {
 	user_defined_title = "";
-	assert(p_filenames != NULL);
-	simple_title = MAIN->p_filenames()->PureExecutableFilename();
+	simple_title = CFilenames::PureExecutableFilename();
 }
 
 COpenHoldemTitle::~COpenHoldemTitle()
@@ -54,7 +52,7 @@ CString COpenHoldemTitle::GetTitle()
 CString COpenHoldemTitle::FullTitle()
 {
 	assert(p_autoconnector != NULL);
-	assert(p_function_collection != NULL);
+	assert(SYM->p_function_collection() != NULL);
 	assert(p_tablemap != NULL);
 
 	CString full_title;

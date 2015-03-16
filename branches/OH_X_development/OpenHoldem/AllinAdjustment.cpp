@@ -32,7 +32,7 @@
 
 bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   assert(amount_to_raise_to >= 0.0);
-  assert(p_function_collection != NULL);
+  assert(SYM->p_function_collection() != NULL);
   double critical_betsize_to_balance_ratio = 
     SYM->p_function_collection()->EvaluateAutoplayerFunction(k_standard_function_allin_on_betsize_balance_ratio);
   // Enabled?
