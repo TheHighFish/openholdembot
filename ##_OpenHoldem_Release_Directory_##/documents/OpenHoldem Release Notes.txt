@@ -1,3 +1,9 @@
+v7.7.1 2015-03.xx
+==================
+MAINTENANCE:
+- Changing myturnbits from FCRAK to FCKRA.
+  [THF]
+
 v7.7.1 2015-03.16
 ==================
 BUG FIXES:

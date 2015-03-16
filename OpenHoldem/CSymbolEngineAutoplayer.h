@@ -19,12 +19,18 @@
 #include "CSymbolEngineTableLimits.h"
 #include "MagicNumbers.h"
 
-class CSymbolEngineAutoplayer: public CVirtualSymbolEngine
-{
-public:
+// Changing myturnbits to FCKRA (F = lowest bit)
+const int kMyTurnBitsFold  = 0x01;
+const int kMyTurnBitsCall  = 0x02;
+const int kMyTurnBitsCheck = 0x04;
+const int kMyTurnBitsRaise = 0x08;
+const int kMyTurnBitsAllin = 0x10;
+
+class CSymbolEngineAutoplayer: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineAutoplayer();
 	~CSymbolEngineAutoplayer();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void ResetOnConnection();
@@ -32,11 +38,11 @@ public:
 	void ResetOnNewRound();
 	void ResetOnMyTurn();
 	void ResetOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
-public:
+ public:
 	int  myturnbits()		{ return _myturnbits; }
 	bool ismyturn()			{ return ((_myturnbits & k_my_turn_bits_fold_call_raise) != 0); }
 	bool issittingin()	{ return _issittingin; }
@@ -44,21 +50,21 @@ public:
 	bool isautopost()		{ return _isautopost; }
 	bool isfinalanswer(){ return _isfinalanswer; }
   bool isfinaltable();
-public:
+ public:
 	// Especially needed to start the PrWin-calculations
 	bool IsFirstHeartbeatOfMyTurn();
 	// Visible buttons
 	CString GetFCKRAString();
-private:
+ private:
 	void CalculateMyTurnBits();
 	void CalculateSitInState();
 	void CalculateFinalAnswer();
-private:
+ private:
 	int  _myturnbits;
 	bool _issittingin;
 	bool _isautopost;
 	bool _isfinalanswer; 
-private:
+ private:
 	bool _last_myturnbits;
 };
 

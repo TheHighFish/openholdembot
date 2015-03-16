@@ -2220,8 +2220,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "elapsedtoday", "time in seconds since midnight GMT");
 
 	mainParent = parent = AddSymbolTitle("Autoplayer", NULL, hCatItem);
-	AddSymbol(parent, "myturnbits", "bits 43210 correspond to buttons KARCF (check allin raise call fold)");
-	AddSymbol(parent, "ismyturn", "(myturnbits & 7) (raise or call/check or fold)");
+	AddSymbol(parent, "myturnbits", "bits 01234 correspond to buttons FCKRA (check allin raise call fold)");
+	AddSymbol(parent, "ismyturn", "true if myturnbits in non/zero");
 	AddSymbol(parent, "issittingin", "true when you are not being dealt out");
 	AddSymbol(parent, "issittingout", "true when you are being dealt out");
 	AddSymbol(parent, "isautopost", "true when you are autoposting");
