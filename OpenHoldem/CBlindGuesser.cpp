@@ -234,7 +234,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
 void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind, 
                                                  double *bblind, 
                                                  double *bbet) {
-  assert(p_symbol_engine_gametype != NULL);
+  assert(SYM->p_symbol_engine_gametype() != NULL);
   bool is_fixed_limit = SYM->p_symbol_engine_gametype()->isfl();
   // Get values from the scraper (ttlimits / c0limits)
   *sblind = p_table_state->_s_limit_info.sblind(is_fixed_limit);

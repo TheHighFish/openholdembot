@@ -16,29 +16,32 @@
 
 #include "..\CTablemap\CTablemap.h"
 
+class CFileSystemMonitor;
+
 // This function has to be global and can't be part of the class,
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title);
 
-class CTableMapLoader
-{
-public:
+class CTableMapLoader {
+ public:
 	CTableMapLoader();
 	~CTableMapLoader();
-public:
+ public:
 	int NumberOfTableMapsLoaded() { return _number_of_tablemaps_loaded; }
 	void ReloadAllTablemapsIfChanged();
 	CString GetTablemapPathToLoad(int tablemap_index);
-private:
+ private:
 	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
 	void ParseAllTableMapsToLoadConnectionData();
 	bool tablemap_connection_dataAlreadyStored(CString TablemapFilePath);
 	void CheckForDuplicatedTablemaps();
 	void ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap);
-private:
-	bool	tablemaps_in_scraper_folder_already_parsed;
-	int		_number_of_tablemaps_loaded;
+ private:
+	bool tablemaps_in_scraper_folder_already_parsed;
+	int  _number_of_tablemaps_loaded;
+ private:
+  CFileSystemMonitor *_p_filesystem_monitor;
 };
 
 #endif // INC_CTABLEMAPLOADER_H

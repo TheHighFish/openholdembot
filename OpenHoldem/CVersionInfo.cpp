@@ -27,7 +27,7 @@
 
 CVersionInfo::CVersionInfo() {
 	// Getting the check-sum only once on start-up
-	_openholdem_MD5 = CalculateMD5(MAIN->p_filenames()->PathOfExecutable());
+	_openholdem_MD5 = CalculateMD5(CFilenames::PathOfExecutable());
 }
 
 CVersionInfo::~CVersionInfo() {
@@ -36,7 +36,7 @@ CVersionInfo::~CVersionInfo() {
 CString CVersionInfo::GetVersionInfo() {
 	CString version_info;
 
-	assert(p_function_collection != NULL);
+	assert(SYM->p_function_collection() != NULL);
 	assert(p_tablemap != NULL);
 
 	version_info.Format("OpenHoldem\n" 

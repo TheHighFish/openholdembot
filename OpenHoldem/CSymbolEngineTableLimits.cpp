@@ -37,7 +37,7 @@ CSymbolEngineTableLimits::CSymbolEngineTableLimits() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_dealerchair != NULL);
+	assert(SYM->p_symbol_engine_dealerchair() != NULL);
 	//
 	// Actually this symbol-engine also depends on 
 	// p_symbol_engine_is_tournament.
@@ -261,7 +261,7 @@ double CSymbolEngineTableLimits::buyin() {
 double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= k_betround_preflop);
 	assert(betround <= k_betround_river);
-  assert(p_symbol_engine_gametype != NULL);
+  assert(SYM->p_symbol_engine_gametype()!= NULL);
   if (SYM->p_symbol_engine_gametype()->isfl() && (betround >= k_betround_turn)) {
     return bigbet();
   }

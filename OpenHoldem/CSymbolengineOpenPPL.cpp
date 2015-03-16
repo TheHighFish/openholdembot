@@ -41,8 +41,8 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
   // that use nearly all other symbol-engines.
   // For convenience we assure only 
   // that the last other engines got initialiyed
-	assert(p_symbol_engine_various_data_lookup != NULL);
-  assert(p_symbol_engine_openppl_user_variables != NULL);
+	assert(SYM->p_symbol_engine_various_data_lookup() != NULL);
+  assert(SYM->p_symbol_engine_openppl_user_variables() != NULL);
 }
 
 CSymbolEngineOpenPPL::~CSymbolEngineOpenPPL() {

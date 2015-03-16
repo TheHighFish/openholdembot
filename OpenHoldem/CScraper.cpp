@@ -800,7 +800,7 @@ void CScraper::ScrapePots() {
 }
 
 void CScraper::ScrapeMTTRegions() {
-  assert(p_symbol_engine_mtt_info != NULL);
+  assert(SYM->p_symbol_engine_mtt_info() != NULL);
 	double result = 0;
 	SYM->p_symbol_engine_mtt_info()->set_mtt_number_entrants(0);	
 	if (EvaluateNumericalRegion(&result, "mtt_number_entrants")) {	

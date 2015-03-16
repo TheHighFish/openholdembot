@@ -47,7 +47,7 @@ double MinimumBetsizeDueToPreviousRaise() {
 }
 
 double MaximumPossibleBetsizeBecauseOfBalance() {
-	assert(p_symbol_engine_userchair != NULL);
+	assert(SYM->p_symbol_engine_userchair() != NULL);
 	int userchair = SYM->p_symbol_engine_userchair()->userchair();
 	AssertRange(userchair, k_first_chair, k_last_chair);
 	double maximum_betsize = SYM->p_symbol_engine_chip_amounts()->currentbet(userchair)

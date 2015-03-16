@@ -26,7 +26,7 @@ CHandHistoryUncontested::CHandHistoryUncontested() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(SYM->p_symbol_engine_active_dealt_playing() != NULL);
 	_job_done = false;
 }
 

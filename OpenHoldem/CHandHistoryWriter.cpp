@@ -35,8 +35,8 @@ CHandHistoryWriter::CHandHistoryWriter() {
 	//
 	// This engine collects data from other HH-modules
   // and therefore should be executes after all the rest.
-  assert(p_handhistory_deal_phase != NULL);
-  assert(p_handhistory_uncontested != NULL);
+  //!!!!!assert(p_handhistory_deal_phase != NULL);
+  //!!!!!assert(p_handhistory_uncontested != NULL);
   _lines_collected = 0;
 }
 

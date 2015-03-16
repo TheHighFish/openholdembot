@@ -38,7 +38,7 @@ CSymbolEngineCards::CSymbolEngineCards()
 	// We use 2 times the function SYM->p_symbol_engine_pokerval()->CalculatePokerval,
 	// but luckily this does not create name symbol-dependency.
 	// We leave the file ""CSymbolEnginePokerval.h" here out to avoid name circular dependency.
-	assert(p_symbol_engine_userchair != NULL);
+	assert(SYM->p_symbol_engine_userchair() != NULL);
 	// Set up some suit masks
 	CardMaskCreateCMAllCardsOfOfSuit(&heartsCards,   Suit_HEARTS);
 	CardMaskCreateCMAllCardsOfOfSuit(&diamondsCards, Suit_DIAMONDS);

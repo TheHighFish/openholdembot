@@ -31,10 +31,10 @@ CHandHistoryDealPhase::CHandHistoryDealPhase() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_tablelimits != NULL);
+	assert(SYM->p_symbol_engine_active_dealt_playing() != NULL);
+  assert(SYM->p_symbol_engine_chip_amounts() != NULL);
+  assert(SYM->p_symbol_engine_dealerchair() != NULL);
+  assert(SYM->p_symbol_engine_tablelimits() != NULL);
   // No dependency to CHandHistoryWriter as this modules
   // does not compute any symbols but collects our data.
 }
