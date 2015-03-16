@@ -55,23 +55,23 @@ CParseTreeRotator::~CParseTreeRotator() {
 
 void CParseTreeRotator::Rotate(CFunction *function)
 {
-  write_log(MAIN->p_preferences()->debug_ast_priority_ordering(),
+  write_log(theApp.p_preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] starting rotation\n");
   if (function == NULL) {
     return;
   }
-  write_log(MAIN->p_preferences()->debug_ast_priority_ordering(),
+  write_log(theApp.p_preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] finished rotation\n");
   Rotate(function->_parse_tree_node, &function->_parse_tree_node);
   VerifyCorrectRotation(function->_parse_tree_node);
 #ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION_COMPLETELY_FINISHED
   OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
-  if (MAIN->p_preferences()->debug_ast_priority_ordering()) {
+  if (theApp.p_preferences()->debug_ast_priority_ordering()) {
     CString serialized_function = function->Serialize();
     if (serialized_function.GetLength() < 2000) {
       // Extremely large functions overflow the print-buffer.
       // Therefore we skip everything that looks "large".
-      write_log(MAIN->p_preferences()->debug_ast_priority_ordering(),
+      write_log(theApp.p_preferences()->debug_ast_priority_ordering(),
         "[CParseTreeRotator] function [%s] after rotation: %s\n",
         function->name(), serialized_function);
     }
@@ -81,7 +81,7 @@ void CParseTreeRotator::Rotate(CFunction *function)
 
 void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
                                TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
-  write_log(MAIN->p_preferences()->debug_ast_priority_ordering(),
+  write_log(theApp.p_preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;
@@ -143,7 +143,7 @@ void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_n
   //    / \    
   //   2   3 
   //
-  write_log(MAIN->p_preferences()->debug_ast_priority_ordering(),
+  write_log(theApp.p_preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node to left as long as necessary %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;

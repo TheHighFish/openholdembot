@@ -77,13 +77,13 @@ CHeartbeatThread::~CHeartbeatThread() {
 
 void CHeartbeatThread::StartThread() {
 	// Start thread
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Starting heartbeat thread\n");
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Starting heartbeat thread\n");
     assert(this != NULL);
 	AfxBeginThread(HeartbeatThreadFunction, this);
 }
 
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
-	double scrape_delay = MAIN->p_preferences()->scrape_delay();
+	double scrape_delay = theApp.p_preferences()->scrape_delay();
   if (!p_autoconnector->IsConnected()) {
     // Keep scrape_delay as is
     // We want fast auto-connects 
@@ -118,7 +118,7 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
     }
     // Else: keep default value
   }
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
   Sleep(scrape_delay);
 }
 
@@ -128,7 +128,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 	srand((unsigned)GetTickCount());
   while (true) {
 		_heartbeat_counter++;
-		write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Starting next cycle\n");
+		write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Starting next cycle\n");
 		// Check event for stop thread
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
@@ -144,7 +144,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			ScrapeEvaluateAct();
 		}
 		FlexibleHeartbeatSleeping();
-		write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
+		write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}
 }
 
@@ -157,7 +157,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
-  write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+  write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
   p_heartbeat_thread->_p_lazyscraper->DoScrape();
   // We must not check if the scrape of the table changed, because:
   //   * some symbol-engines must be evaluated no matter what
@@ -180,17 +180,17 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	}
   ////////////////////////////////////////////////////////////////////////////////////////////
 	// Save state
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
 	p_game_state->CaptureState();
   
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");
 	MAIN->p_validator()->ValidateGameState();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// DLL - always send state
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
 	p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,27 +201,27 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 		iswait = false;
 	}
 
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %s\n", 
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %s\n", 
 		Bool2CString(SYM->p_symbol_engine_userchair()->userchair_confirmed()));
-	write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] iswait: %s\n", 
+	write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] iswait: %s\n", 
 		Bool2CString(iswait));
 	// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 	if (p_autoplayer->autoplayer_engaged() && !iswait) {
-		write_log(MAIN->p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
+		write_log(theApp.p_preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 		p_autoplayer->DoAutoplayer();
 	}
 }
 
 void CHeartbeatThread::AutoConnect() {
 	assert(!p_autoconnector->IsConnected());
-	if (MAIN->p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
+	if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
 		if (p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */) {
-			write_log(MAIN->p_preferences()->debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
+			write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
 			p_autoconnector->Connect(NULL);
 		}	else {
-			write_log(MAIN->p_preferences()->debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
+			write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
 		}
 	}
 }

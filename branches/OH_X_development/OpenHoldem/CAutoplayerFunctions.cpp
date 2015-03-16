@@ -42,7 +42,7 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
   write_log(true, "f$alli = %.3f\n", SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
   SYM->p_function_collection()->ClearCache();
   write_log(true, "f$alli = %.3f\n", SYM->p_function_collection()->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
@@ -59,20 +59,20 @@ void CAutoplayerFunctions::CalcPrimaryFormulas() {
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulasOHScript() {
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOHScript()\n");
-  bool trace_needed = MAIN->p_preferences()->trace_enabled();
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(MAIN->p_preferences()->trace_enabled()));
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOHScript()\n");
+  bool trace_needed = theApp.p_preferences()->trace_enabled();
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(theApp.p_preferences()->trace_enabled()));
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++) {
 		double result = SYM->p_function_collection()->Evaluate(k_standard_function_names[i], trace_needed);
-		write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
+		write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], result);
 	}
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
-  bool trace_needed = MAIN->p_preferences()->trace_enabled();
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(MAIN->p_preferences()->trace_enabled()));
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
+  bool trace_needed = theApp.p_preferences()->trace_enabled();
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(theApp.p_preferences()->trace_enabled()));
   // First do the calculation of memory/history-symbols,
   //   * exactly once per my turn
   //   * when we have stable frames (isfinal-answer == true)
@@ -84,13 +84,13 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   // Now do the main evaluation
   int betround = p_betround_calculator->betround();
 	if (betround < k_betround_preflop || betround > k_betround_river) {
-    write_log(MAIN->p_preferences()->debug_formula(), 
+    write_log(theApp.p_preferences()->debug_formula(), 
       "[CAutoplayerFunctions] Betround out of range. Can't calculate OpenPPL-decision\n");
     return;
   }
   double decision = SYM->p_function_collection()->Evaluate(k_OpenPPL_function_names[betround], 
     trace_needed);
-  write_log(MAIN->p_preferences()->debug_formula(), 
+  write_log(theApp.p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] Decision (non-translated) = %.2f\n", decision);
   TranslateOpenPPLDecisionToAutoplayerFunctions(decision);
 }
@@ -127,18 +127,18 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
       assert (k_this_must_not_happen);
   }
   double open_ppl_action_code = SYM->p_function_collection()->Evaluate(action_name);
-  write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
+  write_log(theApp.p_preferences()->debug_symbolengine_open_ppl(),
     "[CAutoplayerFunctions] Checking if decision %.3f matches action %s (%.3f)\n",
     decision, action_name, open_ppl_action_code);
   if (decision == open_ppl_action_code) {
-    write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
+    write_log(theApp.p_preferences()->debug_symbolengine_open_ppl(),
     "[CAutoplayerFunctions] Decision matches action\n");
     SYM->p_function_collection()->SetAutoplayerFunctionValue(action, true);
   }
 }
 
 void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double decision) {
-  write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] TranslateOpenPPLDecisionToAutoplayerFunctions()\n");
+  write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] TranslateOpenPPLDecisionToAutoplayerFunctions()\n");
   // Positive values mean:  betsizes (in big-blinds)
   // Small negative values: percentaged potsized bets
   // Large negative values: action constants
@@ -165,7 +165,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   } else {
     // This can onlz be undefined == 0.0
     assert(decision == k_undefined_zero);
-    write_log(MAIN->p_preferences()->debug_symbolengine_open_ppl(),
+    write_log(theApp.p_preferences()->debug_symbolengine_open_ppl(),
       "[CAutoplayerFunctions] OpenPPL-decision undefined. Defaulting to check/fold.\n");
     SYM->p_function_collection()->SetAutoplayerFunctionValue(k_autoplayer_function_check, true);
     SYM->p_function_collection()->SetAutoplayerFunctionValue(k_autoplayer_function_fold, true);
@@ -176,7 +176,7 @@ void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
     int potential_action, int potential_backup) {
   double action_value = SYM->p_function_collection()->EvaluateAutoplayerFunction(
     potential_action);
-  write_log(MAIN->p_preferences()->debug_formula(), 
+  write_log(theApp.p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] %s -> %.3f\n",
     k_standard_function_names[potential_action], 
     action_value);
@@ -187,7 +187,7 @@ void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
 }
 
 void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
-  write_log(MAIN->p_preferences()->debug_formula(), 
+  write_log(theApp.p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] CalculateOpenPPLBackupActions()\n");
   // Beep is a stand-alone action
   // No backup, can't be combined with pother actions
@@ -232,7 +232,7 @@ bool CAutoplayerFunctions::IsPercentagePotsizeBet(double decision) {
 
 double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   double percentage_0_100 = -100 * decision;
-  write_log(MAIN->p_preferences()->debug_formula(), 
+  write_log(theApp.p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] Calculate f$betsize for %.2f percent potsize\n",
     percentage_0_100);
   assert(SYM->p_symbol_engine_chip_amounts() != NULL);
@@ -241,7 +241,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   double betsize = SYM->p_symbol_engine_chip_amounts()->currentbet(USER_CHAIR) 
     + SYM->p_symbol_engine_chip_amounts()->call() 
     + (-1 * decision) * (SYM->p_symbol_engine_chip_amounts()->pot() + SYM->p_symbol_engine_chip_amounts()->call());
-    write_log(MAIN->p_preferences()->debug_formula(), 
+    write_log(theApp.p_preferences()->debug_formula(), 
     "[CAutoplayerFunctions] f$betsize is %s\n",
     Number2CString(betsize, 2));
   return betsize;
@@ -252,7 +252,7 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void)
 	for (int i=k_hopper_function_sitin; i<=k_standard_function_allin_on_betsize_balance_ratio; i++)
 	{
 		double result = SYM->p_function_collection()->Evaluate(k_standard_function_names[i], true);
-		write_log(MAIN->p_preferences()->debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
+		write_log(theApp.p_preferences()->debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			k_standard_function_names[i], result);
 	}
 }

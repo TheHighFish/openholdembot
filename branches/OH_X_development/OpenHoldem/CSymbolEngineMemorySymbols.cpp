@@ -71,7 +71,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     return atof(right_hand_value);
   }
   return CParseTreeNode::EvaluateIdentifier(right_hand_value, 
-    MAIN->p_preferences()->trace_enabled());
+    theApp.p_preferences()->trace_enabled());
 }
 
 void CSymbolEngineMemorySymbols::Increment(CString command) {

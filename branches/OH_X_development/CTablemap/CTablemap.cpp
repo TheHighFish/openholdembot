@@ -98,17 +98,17 @@ CString CTablemap::GetTMSymbol(CString name)
 const bool CTablemap::i$_insert(const STablemapImage s) 
 { 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] i$_insert\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] i$_insert\n");
 #endif
 	ENT 
 	uint32_t index = CreateI$Index(s.name,s.width,s.height,s.pixel);
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Index %i\n", index);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Index %i\n", index);
 #endif
 	std::pair<IMapI, bool> r=_i$.insert(IPair(index, s)); 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Image inserted\n");
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Success: %i\n", r.second);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Image inserted\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Success: %i\n", r.second);
 #endif
 	return r.second; 
 }
@@ -116,7 +116,7 @@ const bool CTablemap::i$_insert(const STablemapImage s)
 void CTablemap::ClearIMap()
 {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearIMap\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearIMap\n");
 #endif
 
 	IMap::iterator iter;
@@ -130,13 +130,13 @@ void CTablemap::ClearIMap()
 	// Remove the contents of the map.
 	_i$.clear();
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearIMap finished\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearIMap finished\n");
 #endif
 }
 
 void CTablemap::ClearTablemap() {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearTablemap\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] ClearTablemap\n");
 #endif
 
 	CSLock lock(m_critsec);
@@ -194,7 +194,7 @@ bool CTablemap::FontGroupInUse(int font_index) {
 
 int CTablemap::LoadTablemap(const CString _fname) {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
 
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
@@ -689,17 +689,17 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			}
 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Trying to insert image\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Trying to insert image\n");
 #endif
 			// Add the new i$ record to the internal array
 			if (!i$_insert(hold_image))
 			{
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Looking up image\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Looking up image\n");
 #endif
 				IMapCI i_iter = _i$.find(CreateI$Index(hold_image.name, hold_image.width, hold_image.height, hold_image.pixel));
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Looked up image\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Looked up image\n");
 #endif
 				if (i_iter != _i$.end())
 				{
@@ -751,7 +751,7 @@ void CTablemap::WriteSectionHeader(CArchive& ar, CString header)
 int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] SaveTablemap\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] SaveTablemap\n");
 #endif
 
 	CString		s = "", t = "", text = "";
@@ -871,7 +871,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
 #endif	
 
 	CString					e = "", s = "";
@@ -1048,7 +1048,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] CalculateHashValue\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] CalculateHashValue\n");
 #endif
 
 	uint32_t pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
@@ -1094,10 +1094,10 @@ uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type)
 uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels)
 {
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] CreateI$Index\n");
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Name %s\n", name);
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Width %i\n", width);
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Height %i\n", height);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] CreateI$Index\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Name %s\n", name);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Width %i\n", width);
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Height %i\n", height);
 #endif
 
 	assert(width <= MAX_HASH_WIDTH);
@@ -1105,37 +1105,37 @@ uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int
 
 	uint32_t *uints = new uint32_t[MAX_HASH_WIDTH*MAX_HASH_HEIGHT + name.GetLength()];
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Buffer created %i\n",
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Buffer created %i\n",
 		uints);
 #endif
 
 	int c = 0;
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Putting the name into the buffer\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Putting the name into the buffer\n");
 #endif
 	// Put the ascii value of each letter into a uint32_t
 	for (int i=0; i<name.GetLength(); i++)
 		uints[c++] = name[i];
 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Putting the pixels into the buffer\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Putting the pixels into the buffer\n");
 #endif
 	// Now the pixels
 	for (int i=0; i<(int) (height * width); i++)
 		uints[c++] = pixels[i];
 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Calculating the hash value\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Calculating the hash value\n");
 #endif
 	uint32_t index = hashword(&uints[0], height * width + name.GetLength(), 0x71e9ff36);
 
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Releasing the buffer %i\n",
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Releasing the buffer %i\n",
 		uints);
 #endif
 	delete []uints;
 #ifdef OPENHOLDEM_PROGRAM
-	write_log(MAIN->p_preferences()->debug_tablemap_loader(), "[CTablemap] Buffer released successfully\n");
+	write_log(theApp.p_preferences()->debug_tablemap_loader(), "[CTablemap] Buffer released successfully\n");
 #endif
 
 	return index;

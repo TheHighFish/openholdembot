@@ -79,7 +79,7 @@ void CGameState::CaptureState() {
 	// Common cards
 	for (int i=0; i<k_number_of_community_cards; i++)	{
     int common_card = p_table_state->_common_cards[i].GetValue();
-    write_log(MAIN->p_preferences()->debug_dll_extension(), 
+    write_log(theApp.p_preferences()->debug_dll_extension(), 
       "[CGameState] Common card %i = %i\n", i, common_card);
 		_state[_state_index&0xff].m_cards[i] = common_card;
 	}
@@ -104,7 +104,7 @@ void CGameState::CaptureState() {
 		for (int j=0; j<k_number_of_cards_per_player; j++) {
       Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValue();
-      write_log(MAIN->p_preferences()->debug_dll_extension(),
+      write_log(theApp.p_preferences()->debug_dll_extension(),
         "[CGameState] Plazer card [%i][%i] = %i\n", i, j, card);
 			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
 		}
@@ -119,28 +119,28 @@ void CGameState::CaptureState() {
 }
 
 void CGameState::DumpState(void) {
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] m_ndx: %d\n", _state_index);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _title: %s\n", _state[(_state_index)&0xff].m_title);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", 
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] m_ndx: %d\n", _state_index);
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _title: %s\n", _state[(_state_index)&0xff].m_title);
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", 
     _state[(_state_index)&0xff].m_pot[0], _state[(_state_index)&0xff].m_pot[1],
 		_state[(_state_index)&0xff].m_pot[2], _state[(_state_index)&0xff].m_pot[3], 
     _state[(_state_index)&0xff].m_pot[4], _state[(_state_index)&0xff].m_pot[5], 
     _state[(_state_index)&0xff].m_pot[6], _state[(_state_index)&0xff].m_pot[7],
 		_state[(_state_index)&0xff].m_pot[8], _state[(_state_index)&0xff].m_pot[9]);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _cards: %d %d %d %d %d\n", 
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _cards: %d %d %d %d %d\n", 
     _state[(_state_index)&0xff].m_cards[0], _state[(_state_index)&0xff].m_cards[1],
 		_state[(_state_index)&0xff].m_cards[2], _state[(_state_index)&0xff].m_cards[3], 
     _state[(_state_index)&0xff].m_cards[4]);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _is_playing: %d\n", _state[(_state_index)&0xff].m_is_playing);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _is_posting: %d\n", _state[(_state_index)&0xff].m_is_posting);
-	write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _state[(_state_index)&0xff].m_dealer_chair);
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _is_playing: %d\n", _state[(_state_index)&0xff].m_is_playing);
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _is_posting: %d\n", _state[(_state_index)&0xff].m_is_posting);
+	write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _state[(_state_index)&0xff].m_dealer_chair);
 	for (int i=0; i<k_max_number_of_players; i++) {
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _state[(_state_index)&0xff].m_player[i].m_name);
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _balance:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_balance);
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_currentbet);
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _cards:%d/%d  ", _state[(_state_index)&0xff].m_player[i].m_cards[0],
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _state[(_state_index)&0xff].m_player[i].m_name);
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _balance:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_balance);
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_currentbet);
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _cards:%d/%d  ", _state[(_state_index)&0xff].m_player[i].m_cards[0],
 			_state[(_state_index)&0xff].m_player[i].m_cards[1]);
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _name_known:%d  ", _state[(_state_index)&0xff].m_player[i].m_name_known);
-		write_log(MAIN->p_preferences()->debug_alltherest(), "[CGameState] _balance_known:%d\n", _state[(_state_index)&0xff].m_player[i].m_balance_known);
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _name_known:%d  ", _state[(_state_index)&0xff].m_player[i].m_name_known);
+		write_log(theApp.p_preferences()->debug_alltherest(), "[CGameState] _balance_known:%d\n", _state[(_state_index)&0xff].m_player[i].m_balance_known);
 	}
 }

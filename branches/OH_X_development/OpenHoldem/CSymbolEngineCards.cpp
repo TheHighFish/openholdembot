@@ -64,7 +64,7 @@ void CSymbolEngineCards::ResetOnHandreset()
 	// hand tests
 	for (int i=0; i<k_number_of_cards_per_player; i++)
 	{
-		write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
+		write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
 		_$$pc[i] = CARD_UNDEFINED;
 		_$$pr[i] = 0;
 		_$$ps[i] = 0;
@@ -172,7 +172,7 @@ int CSymbolEngineCards::GetNumberOfCardsForSuit(
 	CardMask suittestCards;
 	CardMask_AND(suittestCards, cards, card_mask_of_suit);
 	int n = StdDeck_numCards(suittestCards);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] found %i cards of the same suit\n", n);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] found %i cards of the same suit\n", n);
 	return n;
 }
 
@@ -183,7 +183,7 @@ int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_s
 	n_diamonds = GetNumberOfCardsForSuit(cards, diamondsCards);
 	n_hearts   = GetNumberOfCardsForSuit(cards, heartsCards);
 	n_spades   = GetNumberOfCardsForSuit(cards, spadesCards);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
 		n_clubs, n_diamonds, n_hearts, n_spades);
 	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades))
 	{
@@ -238,7 +238,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
     Card card = p_table_state->User()->_hole_cards[i];
 		if (card.IsKnownCard())
 		{
-			write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
+			write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
 				card);
       CardMask_SET(plCards, card.GetValue());
 		}
@@ -251,7 +251,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 		Card card = p_table_state->_common_cards[i];
 		if (card.IsKnownCard())
 		{
-			write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
+			write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
         card.GetValue());
       CardMask_SET(comCards, card.GetValue());
       CardMask_SET(plCards, card.GetValue());
@@ -546,11 +546,11 @@ void CSymbolEngineCards::CalculateHandTests()
 			AssertRange(rank, 0, k_rank_ace);
 			AssertRange(suit, 0, OH_SUIT_SPADES);
 
-			write_log(MAIN->p_preferences()->debug_symbolengine(), 
+			write_log(theApp.p_preferences()->debug_symbolengine(), 
         "[CSymbolEngineCards] Card = %i\n", card.GetValue());
-			write_log(MAIN->p_preferences()->debug_symbolengine(), 
+			write_log(theApp.p_preferences()->debug_symbolengine(), 
 				"[CSymbolEngineCards] Rank = %i\n", rank);
-			write_log(MAIN->p_preferences()->debug_symbolengine(), 
+			write_log(theApp.p_preferences()->debug_symbolengine(), 
 				"[CSymbolEngineCards] Suit = %i\n", suit);
 
 			_$$pc[i] = (rank<<4) | suit;								  
@@ -588,7 +588,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
 	int				dummy = 0;
 
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
@@ -623,7 +623,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 
 	if (SYM->p_symbol_engine_userchair()->userchair_confirmed())
 	{
-		write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
+		write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
 		for (int i=0; i<k_number_of_cards_per_deck; i++)
 		{
@@ -657,7 +657,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
 	AssertRange(_ncardsknown,   0, k_number_of_cards_per_deck);
 	AssertRange(_ncardsunknown, 0, k_number_of_cards_per_deck);
 	AssertRange(_nouts,         0, k_number_of_cards_per_deck);

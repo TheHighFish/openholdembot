@@ -52,20 +52,20 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	m_EnableTrace.SetCheck(MAIN->p_preferences()->trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableDLLLogging.SetCheck(MAIN->p_preferences()->dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableTrace.SetCheck(theApp.p_preferences()->trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	m_EnableDLLLogging.SetCheck(theApp.p_preferences()->dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
 
   // Always mark basic logging and error logging as enabled
-	// m_EnableBasicInfo.SetCheck(MAIN->p_preferences()->basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-  // m_EnableErrorLogging.SetCheck(MAIN->p_preferences()->error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+	// m_EnableBasicInfo.SetCheck(theApp.p_preferences()->basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
+  // m_EnableErrorLogging.SetCheck(theApp.p_preferences()->error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
   m_EnableBasicInfo.SetCheck(BST_CHECKED);
   m_EnableErrorLogging.SetCheck(BST_CHECKED);
 
-	text.Format("%d", MAIN->p_preferences()->log_max_logsize());
-	text.Format("%d", MAIN->p_preferences()->log_max_logsize());
+	text.Format("%d", theApp.p_preferences()->log_max_logsize());
+	text.Format("%d", theApp.p_preferences()->log_max_logsize());
 	m_MaximumLogSize.SetWindowText(text);
 	m_MaximumLogSize_Spin.SetRange(0, 999);
-	m_MaximumLogSize_Spin.SetPos(MAIN->p_preferences()->log_max_logsize());
+	m_MaximumLogSize_Spin.SetPos(theApp.p_preferences()->log_max_logsize());
 	m_MaximumLogSize_Spin.SetBuddy(&m_MaximumLogSize);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -76,17 +76,17 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 void CDlgSAPrefs11::OnOK() {
 	CString			text = "";
 
-	MAIN->p_preferences()->SetValue(k_prefs_trace_enabled, m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
-	MAIN->p_preferences()->SetValue(k_prefs_dll_logging_enabled, m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
+	theApp.p_preferences()->SetValue(k_prefs_trace_enabled, m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
+	theApp.p_preferences()->SetValue(k_prefs_dll_logging_enabled, m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
 
   // Always mark basic logging and error logging as enabled
-  // MAIN->p_preferences()->SetValue(k_prefs_basic_logging_enabled, m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
-	// MAIN->p_preferences()->SetValue(k_prefs_error_logging_enabled, m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
-  MAIN->p_preferences()->SetValue(k_prefs_basic_logging_enabled, true);
-	MAIN->p_preferences()->SetValue(k_prefs_error_logging_enabled, true);
+  // theApp.p_preferences()->SetValue(k_prefs_basic_logging_enabled, m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
+	// theApp.p_preferences()->SetValue(k_prefs_error_logging_enabled, m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
+  theApp.p_preferences()->SetValue(k_prefs_basic_logging_enabled, true);
+	theApp.p_preferences()->SetValue(k_prefs_error_logging_enabled, true);
 
 	m_MaximumLogSize.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
+	theApp.p_preferences()->SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }

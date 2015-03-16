@@ -54,8 +54,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_gui_start_minimized_Button.SetCheck(MAIN->p_preferences()->gui_start_minimized());
-	m_disable_msgbox.SetCheck(MAIN->p_preferences()->disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
+	_gui_start_minimized_Button.SetCheck(theApp.p_preferences()->gui_start_minimized());
+	m_disable_msgbox.SetCheck(theApp.p_preferences()->disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -63,8 +63,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 
 void CDlgSAPrefs15::OnOK()
 {
-	MAIN->p_preferences()->SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == true);
-	MAIN->p_preferences()->SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
+	theApp.p_preferences()->SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == true);
+	theApp.p_preferences()->SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

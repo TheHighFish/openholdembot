@@ -93,7 +93,7 @@ void CSymbolEngineOpenPPL::InitMemorySymbols() {
   // is desired.
   SYM->p_function_collection()->Evaluate(
     kOpenPPLIniFunctionsForHistorySymbols,
-    MAIN->p_preferences()->trace_enabled());
+    theApp.p_preferences()->trace_enabled());
 }
 
 void CSymbolEngineOpenPPL::ResetOnHeartbeat() {

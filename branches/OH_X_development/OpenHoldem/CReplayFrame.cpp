@@ -48,7 +48,7 @@ CReplayFrame::~CReplayFrame(void) {
   // As we create a new CReplayFrame for each frame
   // we simply have to increment the global counter once we are finished.
 	++_next_replay_frame;
-  if (_next_replay_frame >= MAIN->p_preferences()->replay_max_frames()) {
+  if (_next_replay_frame >= theApp.p_preferences()->replay_max_frames()) {
     // Once we reach the maximum overwrite old frames
     // in cyclic order, starting again from 0.
     _next_replay_frame = 0;
@@ -67,7 +67,7 @@ void CReplayFrame::CreateReplayFrame(void){
 		&total_bytes_on_disk,	
 		&free_bytes_total_on_disk);
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) {
-		write_log(MAIN->p_preferences()->debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
+		write_log(theApp.p_preferences()->debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		OH_MessageBox_Error_Warning("Not enough disk space to create replay-frame.");
     return;
 	}
@@ -82,7 +82,7 @@ void CReplayFrame::CreateReplayFrame(void){
   // Create HTML file
 	CString path = CFilenames::ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0) {
-		write_log(MAIN->p_preferences()->debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
+		write_log(theApp.p_preferences()->debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
@@ -347,7 +347,7 @@ CString CReplayFrame::GetPotsAsHTML() {
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
 	CString path = CFilenames::ReplaySessionDirectory();
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
-    write_log(MAIN->p_preferences()->debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
+    write_log(theApp.p_preferences()->debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 	}
 }
@@ -362,10 +362,10 @@ void CReplayFrame::CreateBitMapFile() {
 CString CReplayFrame::GetLinksToPrevAndNextFile() {
 	CString links, text;
 	text.Format("<a href=\"frame%06d.htm\">PREV</a>\n",
-		_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : MAIN->p_preferences()->replay_max_frames());
+		_next_replay_frame-1 >= 0 ? _next_replay_frame-1 : theApp.p_preferences()->replay_max_frames());
 	links += text;
 	text.Format("<a href=\"frame%06d.htm\">NEXT</a>\n",
-		_next_replay_frame+1 < MAIN->p_preferences()->replay_max_frames() ? _next_replay_frame+1 : 0);
+		_next_replay_frame+1 < theApp.p_preferences()->replay_max_frames() ? _next_replay_frame+1 : 0);
 	links += text;
 	return links;
 }

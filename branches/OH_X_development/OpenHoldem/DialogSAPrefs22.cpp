@@ -54,11 +54,11 @@ BOOL CDlgSAPrefs22::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (MAIN->p_preferences()->popup_blocker() == k_popup_minimize)
+	if (theApp.p_preferences()->popup_blocker() == k_popup_minimize)
 	{
 		_popup_minimize.SetCheck(true);
 	}
-	else if (MAIN->p_preferences()->popup_blocker() == k_popup_kill)
+	else if (theApp.p_preferences()->popup_blocker() == k_popup_kill)
 	{
 		_popup_kill.SetCheck(true);
 	}
@@ -76,15 +76,15 @@ void CDlgSAPrefs22::OnOK()
 {
 	if (bool(_popup_minimize.GetCheck()) == true)
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_minimize);
+		theApp.p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_minimize);
 	}
 	else if (bool(_popup_kill.GetCheck()) == true)
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_kill);
+		theApp.p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_kill);
 	}
 	else // _popup_disabled.GetCheck() == true
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_disabled);
+		theApp.p_preferences()->SetValue(k_prefs_popup_blocker, k_popup_disabled);
 	}
 
 	CSAPrefsSubDlg::OnOK();

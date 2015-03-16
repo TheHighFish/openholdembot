@@ -38,7 +38,7 @@ bool COcclusionCheck::UserChairKnown()
 	}
 	else
 	{
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserChairKnown: false\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserChairKnown: false\n");
 		return false;
 	}
 }
@@ -53,7 +53,7 @@ bool COcclusionCheck::UserBalanceNonZero()
 	}
 	else
 	{
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserBalanceNonZero: false\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserBalanceNonZero: false\n");
 		return false;
 	}
 }
@@ -63,7 +63,7 @@ bool COcclusionCheck::UserNameKnown()
 	int Userchair = SYM->p_symbol_engine_userchair()->userchair();
 	if ((Userchair < 0) || (Userchair > 9))
 	{
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
 		return false;
 	}
   else if (UserChairKnown() && (p_table_state->User()->_name != ""))
@@ -72,7 +72,7 @@ bool COcclusionCheck::UserNameKnown()
 	}
 	else
 	{
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false\n");
 		return false;
 	}
 }
@@ -87,7 +87,7 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 			return true;
 		}
 	}
-	write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] AnyOpponentNameKnown: false\n");
+	write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] AnyOpponentNameKnown: false\n");
 	return false;
 }
 
@@ -101,7 +101,7 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 			return true;
 		}
 	}
-	write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] AnyApponentBalanceNonZero: false\n");
+	write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] AnyApponentBalanceNonZero: false\n");
 	return false;
 }
 
@@ -116,42 +116,42 @@ bool COcclusionCheck::UserBalanceOccluded()
 		// Something went completely wrong.
 		// For sure the balance is not known;
 		// We treat the table as "occluded".
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user chair not known. Assuming occlusion\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user chair not known. Assuming occlusion\n");
 		return true;
 	}
 	else if (UserBalanceNonZero())
 	{
 		// Balance known (non-zero).
 		// Probably not occluded.
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user balance non-zero. Assuming all is ok\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user balance non-zero. Assuming all is ok\n");
 		return false;
 	}
 	else if (UserNameKnown())
 	{
 		// Username known, but balance zero.
 		// Username (and probably balance) not occluded.
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user name known. Assuming all is ok\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user name known. Assuming all is ok\n");
 		return false;
 	}
 	else if (AnyOpponentNameKnown())
 	{
 		// Other name(s) known, but username not.
 		// Username (and probably balance) occluded.
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user name and balance not known, but opponents. Assuming occlusion\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "COcclusionCheck: user name and balance not known, but opponents. Assuming occlusion\n");
 		return true;
 	}
 	else if(AnyApponentBalanceNonZero())
 	{
 		// No names known, at least one other balance known (non-zero).
 		// TM does probably not support names, no occlusion.
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] TM does probably not support names, other balances known. Assuming no occulsion\n.");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] TM does probably not support names, other balances known. Assuming no occulsion\n.");
 		return false;
 	}
 	else
 	{
 		// No names known, no other balances known or all zero.
 		// Probably full table occluded.
-		write_log(MAIN->p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] No names and balances known at all. Assuming occlusion.\n");
+		write_log(theApp.p_preferences()->debug_occlusionchecker(), "[COcclusionCheck] No names and balances known at all. Assuming occlusion.\n");
 		return true;
 	}
 }

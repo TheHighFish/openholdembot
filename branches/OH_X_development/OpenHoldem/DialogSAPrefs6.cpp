@@ -59,11 +59,11 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_ip.SetWindowText(MAIN->p_preferences()->pt_ip_addr().GetString());
-	m_pt_port.SetWindowText(MAIN->p_preferences()->pt_port().GetString());
-	m_pt_user.SetWindowText(MAIN->p_preferences()->pt_user().GetString());
-	m_pt_pass.SetWindowText(MAIN->p_preferences()->pt_pass().GetString());
-	m_pt_dbname.SetWindowText(MAIN->p_preferences()->pt_dbname().GetString());
+	m_pt_ip.SetWindowText(theApp.p_preferences()->pt_ip_addr().GetString());
+	m_pt_port.SetWindowText(theApp.p_preferences()->pt_port().GetString());
+	m_pt_user.SetWindowText(theApp.p_preferences()->pt_user().GetString());
+	m_pt_pass.SetWindowText(theApp.p_preferences()->pt_pass().GetString());
+	m_pt_dbname.SetWindowText(theApp.p_preferences()->pt_dbname().GetString());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -74,19 +74,19 @@ void CDlgSAPrefs6::OnOK()
 	CString			text = "";
 
 	m_pt_ip.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_pt_ip_addr, text);
+	theApp.p_preferences()->SetValue(k_prefs_pt_ip_addr, text);
 
 	m_pt_port.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_pt_port, text);
+	theApp.p_preferences()->SetValue(k_prefs_pt_port, text);
 
 	m_pt_user.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_pt_user, text);
+	theApp.p_preferences()->SetValue(k_prefs_pt_user, text);
 
 	m_pt_pass.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_pt_pass, text);
+	theApp.p_preferences()->SetValue(k_prefs_pt_pass, text);
 
 	m_pt_dbname.GetWindowText(text);
-	MAIN->p_preferences()->SetValue(k_prefs_pt_dbname, text);
+	theApp.p_preferences()->SetValue(k_prefs_pt_dbname, text);
 
 	CSAPrefsSubDlg::OnOK();
 }
@@ -102,7 +102,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest() {
 
 	if (dbname.IsEmpty()) {
 		// http://www.postgresql.org/docs/8.1/static/libpq.html
-		write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB Name not set ! Default : It will be set to '%s'\n", user);
+		write_log(theApp.p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB Name not set ! Default : It will be set to '%s'\n", user);
 		OH_MessageBox_Interactive("PostgreSQL DB Name not set !\nBy Default : the same as the Username",
 					   "Warning", MB_OK);
 	}
@@ -122,18 +122,18 @@ void CDlgSAPrefs6::OnBnClickedPtTest() {
 	PMainframe()->set_wait_cursor(false);
 
 	if (PQstatus(pgconn) == CONNECTION_OK) {
-		write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
+		write_log(theApp.p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
 		if (PQisthreadsafe()) {
-			write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is thread safe.\n\n");
+			write_log(theApp.p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is thread safe.\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
 		} else {
-			write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
+			write_log(theApp.p_preferences()->debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
 			OH_MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
 		PQfinish(pgconn);
 	} else {
-		write_log(MAIN->p_preferences()->debug_pokertracker(), "[PokerTracker] Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
+		write_log(theApp.p_preferences()->debug_pokertracker(), "[PokerTracker] Test: ERROR opening PostgreSQL DB: %s\n\n", PQerrorMessage(pgconn));
 		e = "ERROR opening PostgreSQL DB:\n";
 		e += PQerrorMessage(pgconn);
 		e += "\nConn string:";

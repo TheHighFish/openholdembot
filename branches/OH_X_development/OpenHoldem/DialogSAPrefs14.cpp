@@ -57,11 +57,11 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (MAIN->p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
+	if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
 	{
 		_autoconnector_connect_never.SetCheck(true);
 	}
-	else if (MAIN->p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
+	else if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
 	{
 		_autoconnector_connect_once.SetCheck(true);
 	}
@@ -70,7 +70,7 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 		_autoconnector_connect_permanent.SetCheck(true);
 	}
 
-	_autoconnector_close_when_table_disappears.SetCheck(MAIN->p_preferences()->autoconnector_close_when_table_disappears());
+	_autoconnector_close_when_table_disappears.SetCheck(theApp.p_preferences()->autoconnector_close_when_table_disappears());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -81,17 +81,17 @@ void CDlgSAPrefs14::OnOK()
 {
 	if (bool(_autoconnector_connect_never.GetCheck()) == true)
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
+		theApp.p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
 	}
 	else if (bool(_autoconnector_connect_once.GetCheck()) == true)
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Once);
+		theApp.p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Once);
 	}
 	else // _autoconnector_connect_permanent.GetCheck() == true
 	{
-		MAIN->p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
+		theApp.p_preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}
 
-	MAIN->p_preferences()->SetValue(k_prefs_autoconnector_close_when_table_disappears, _autoconnector_close_when_table_disappears.GetCheck());
+	theApp.p_preferences()->SetValue(k_prefs_autoconnector_close_when_table_disappears, _autoconnector_close_when_table_disappears.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }

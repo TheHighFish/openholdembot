@@ -39,7 +39,7 @@ CString COpenHoldemTitle::GetTitle()
 	{
 		return user_defined_title;
 	}
-	if (MAIN->p_preferences()->simple_window_title())
+	if (theApp.p_preferences()->simple_window_title())
 	{
 		return simple_title;
 	}

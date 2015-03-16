@@ -128,10 +128,10 @@ void CSymbolEnginePokerval::CalcPokerValues()
     p_table_state->User()->_hole_cards[0].GetValue(), 
     p_table_state->User()->_hole_cards[1].GetValue());
 
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] nCards = %i\n", nCards);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] nCards = %i\n", nCards);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
 
@@ -190,8 +190,8 @@ void CSymbolEnginePokerval::CalcPokerValues()
 void CSymbolEnginePokerval::CalculateHandType()
 {
 	_hand_type = HandVal_HANDTYPE(handval);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
 
 	if  (isstraightflush() 
 		&& StdDeck_RANK(HandVal_TOP_CARD(handval)) == Rank_ACE)
@@ -401,12 +401,12 @@ void CSymbolEnginePokerval::CalculateRankBits()
 		 (1<<((_pokerval>>0)&0xf)) : 0);
 	_srankbitspoker += ((_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
 
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitsplayer  = %i\n", _rankbitsplayer);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitscommon  = %i\n", _rankbitscommon);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitspoker   = %i\n", _rankbitspoker);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitsplayer = %i\n", _srankbitsplayer);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitscommon = %i\n", _srankbitscommon);
-	write_log(MAIN->p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitspoker  = %i\n", _srankbitspoker);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitsplayer  = %i\n", _rankbitsplayer);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitscommon  = %i\n", _rankbitscommon);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitspoker   = %i\n", _rankbitspoker);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitsplayer = %i\n", _srankbitsplayer);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitscommon = %i\n", _srankbitscommon);
+	write_log(theApp.p_preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitspoker  = %i\n", _srankbitspoker);
 
 	AssertRange(_rankbitsplayer,  0, k_rankbits_all_cards_111_111_111_111_110);
 	AssertRange(_rankbitscommon,  0, k_rankbits_all_cards_111_111_111_111_110); 

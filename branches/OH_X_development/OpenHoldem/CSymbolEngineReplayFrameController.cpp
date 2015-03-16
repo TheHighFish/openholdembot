@@ -59,31 +59,31 @@ void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
 void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
   if (HBT->p_lazyscraper()->IsIdenticalScrape()) {
     // There is no benefit in duplicate frames, so we abort
-    write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");
+    write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");
     return;
   }
-  if ((MAIN->p_preferences()->replay_record() == kShootReplyFramesOnEveryChangeWhilePlaying)	
+  if ((theApp.p_preferences()->replay_record() == kShootReplyFramesOnEveryChangeWhilePlaying)	
       && p_table_state->User()->HasKnownCards()) {
-        write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on change while in hand)\n");
+        write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on change while in hand)\n");
     ShootReplayFrameIfNotYetDone();
     return;
   }
-  if (MAIN->p_preferences()->replay_record() == kShootReplyFramesOnEveryChange) {
-    write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on every change in table-state)\n");
+  if (theApp.p_preferences()->replay_record() == kShootReplyFramesOnEveryChange) {
+    write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on every change in table-state)\n");
     ShootReplayFrameIfNotYetDone();
     return;
   }
-	if ((MAIN->p_preferences()->replay_record() == kShootReplyFramesOnMyTurn)			
+	if ((theApp.p_preferences()->replay_record() == kShootReplyFramesOnMyTurn)			
 		  && SYM->p_symbol_engine_autoplayer()->ismyturn() 
       && p_autoplayer->autoplayer_engaged()
-		  && p_stableframescounter->NumberOfStableFrames() == MAIN->p_preferences()->frame_delay()) {
+		  && p_stableframescounter->NumberOfStableFrames() == theApp.p_preferences()->frame_delay()) {
     // If it's my turn and we have enough stable frames
     // then we will usually act and shoot a replay-frame on this heartbeat.
     // Shooting exactly once in case of no action is ensured by
-    // "p_stableframescounter->NumberOfStableFrames() == MAIN->p_preferences()->frame_delay()".
+    // "p_stableframescounter->NumberOfStableFrames() == theApp.p_preferences()->frame_delay()".
     // As NumberOfStableFrames() updates OnHeartbeat we have to put that code here
     // and can~t make use of OnMyTurn();
-    write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on my turn and time to act)\n");
+    write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on my turn and time to act)\n");
 		ShootReplayFrameIfNotYetDone();
     return;
 	}
@@ -96,10 +96,10 @@ void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
 void CSymbolEngineReplayFrameController::ShootReplayFrameIfNotYetDone() {
 	// Don't shoot replay-frames twice per heartbeat
 	if (_replay_recored_this_turn)	{
-		write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Not shooting a replay-frame, because we already shot one this heartbeat\n");
+		write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Not shooting a replay-frame, because we already shot one this heartbeat\n");
 		return;
 	}
-	write_log(MAIN->p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Going to shooting a replay-frame\n");
+	write_log(theApp.p_preferences()->debug_replayframes(), "[CSymbolEngineReplayFrameController] Going to shooting a replay-frame\n");
 	CReplayFrame crf;
 	crf.CreateReplayFrame();
 }

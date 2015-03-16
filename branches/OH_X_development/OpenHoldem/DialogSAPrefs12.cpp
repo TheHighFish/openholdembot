@@ -50,10 +50,10 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs12 message handlers
 BOOL CDlgSAPrefs12::OnInitDialog()
 {	
-	CheckDlgButton(IDC_CHECK_VALIDATOR_ENABLED, MAIN->p_preferences()->validator_enabled() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, MAIN->p_preferences()->validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, MAIN->p_preferences()->validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
-	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, MAIN->p_preferences()->validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_ENABLED, theApp.p_preferences()->validator_enabled() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES, theApp.p_preferences()->validator_use_heuristic_rules() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_STOP_ON_ERROR, theApp.p_preferences()->validator_stop_on_error() ? MF_CHECKED : MF_UNCHECKED);
+	CheckDlgButton(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR, theApp.p_preferences()->validator_shoot_replayframe_on_error() ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -61,10 +61,10 @@ BOOL CDlgSAPrefs12::OnInitDialog()
 
 void CDlgSAPrefs12::OnOK()
 {
-	MAIN->p_preferences()->SetValue(k_prefs_validator_enabled, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_ENABLED));
-	MAIN->p_preferences()->SetValue(k_prefs_validator_use_heuristic_rules, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
-	MAIN->p_preferences()->SetValue(k_prefs_validator_stop_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
-	MAIN->p_preferences()->SetValue(k_prefs_validator_shoot_replayframe_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
+	theApp.p_preferences()->SetValue(k_prefs_validator_enabled, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_ENABLED));
+	theApp.p_preferences()->SetValue(k_prefs_validator_use_heuristic_rules, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_USE_HEURISTIC_RULES));
+	theApp.p_preferences()->SetValue(k_prefs_validator_stop_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_STOP_ON_ERROR));
+	theApp.p_preferences()->SetValue(k_prefs_validator_shoot_replayframe_on_error, IsDlgButtonChecked(IDC_CHECK_VALIDATOR_SHOOT_REPLAYFRAME_ON_ERROR));
 
 	CSAPrefsSubDlg::OnOK();
 }
