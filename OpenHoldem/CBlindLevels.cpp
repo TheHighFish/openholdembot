@@ -232,7 +232,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindLevels] Perfect match found\n");
   return true;
 }
@@ -251,7 +251,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
     success = true;
   } 
   if (success) {
-    write_log(MAIN->p_preferences()->debug_table_limits(), 
+    write_log(theApp.p_preferences()->debug_table_limits(), 
       "[CBlindLevels] Partial match found\n");
     return true;
   }
@@ -262,12 +262,12 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
 // Output: guessed levels
 // Return: true if success, otherwise false
 bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double *bbet) {
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindLevels] Trying to find best matching blind-level for %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
   // Complete fail first: nothing to guess
   if ((*sblind <= 0) && (*bblind <= 0) && (*bbet <= 0)) {
-    write_log(MAIN->p_preferences()->debug_table_limits(), 
+    write_log(theApp.p_preferences()->debug_table_limits(), 
       "[CBlindLevels] No match because of bad input\n");
     return false;
   }
@@ -277,7 +277,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
-      write_log(MAIN->p_preferences()->debug_table_limits(), 
+      write_log(theApp.p_preferences()->debug_table_limits(), 
         "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
         *sblind, *bblind, *bbet);
       return true; 
@@ -288,7 +288,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
-      write_log(MAIN->p_preferences()->debug_table_limits(), 
+      write_log(theApp.p_preferences()->debug_table_limits(), 
         "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
         *sblind, *bblind, *bbet);
       return true; 
@@ -297,7 +297,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
   // Nothing found
   // Keep everything as is.
   // Then another module can take these values and guess
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
       "[CBlindLevels] No match. Another module shall guess,\n");
   return false;
 }
@@ -310,7 +310,7 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
       && (kBlindLevels[kLastBlindLevel][1] > 0)
       && (guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
       && (guessed_blind <= kBlindLevels[kLastBlindLevel][1])) {
-    write_log(MAIN->p_preferences()->debug_table_limits(), 
+    write_log(theApp.p_preferences()->debug_table_limits(), 
       "[CBlindLevels] Best match for %.2f -> %.2f\n",
       guessed_blind, kBlindLevels[kLastBlindLevel][1]);
     return kBlindLevels[kLastBlindLevel][1];
@@ -319,7 +319,7 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
   for (int i=kLastBlindLevel; i>=0; ++i) {
     if ((kBlindLevels[i] > 0)
         && (guessed_blind <= kBlindLevels[i][0])) {
-      write_log(MAIN->p_preferences()->debug_table_limits(), 
+      write_log(theApp.p_preferences()->debug_table_limits(), 
         "[CBlindLevels] Best match for %.2f -> %.2f\n",
         guessed_blind, kBlindLevels[i][0]);
       return kBlindLevels[i][0];

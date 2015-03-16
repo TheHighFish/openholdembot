@@ -856,7 +856,7 @@ void CTransform::CalcHexmash(const int left, const int right, const int top, con
 	unsigned int	hexval = 0;
 	char			t[20] = {0};
 #ifdef OPENHOLDEM_PROGRAM
-  write_log(MAIN->p_preferences()->debug_alltherest(),
+  write_log(theApp.p_preferences()->debug_alltherest(),
     "[CTransform] CalcHexmash(%i, %i, %i, %i)\n",
     left, right, top, bottom);
 #endif
@@ -1171,18 +1171,18 @@ void CTransform::ParseStringBSL(const CString text,
                 }
         }
 #ifdef OPENHOLDEM_PROGRAM
-    write_log(MAIN->p_preferences()->debug_scraper(),
+    write_log(theApp.p_preferences()->debug_scraper(),
       "[CTransform] parsed title string\n");
-    write_log(MAIN->p_preferences()->debug_scraper(),
+    write_log(theApp.p_preferences()->debug_scraper(),
       "[CTransform] text = %s, format = %s\n",
       text, format);
-    write_log(MAIN->p_preferences()->debug_scraper(),
+    write_log(theApp.p_preferences()->debug_scraper(),
       "[CTransform] handnumber = %s, sblind = %f, bblind = %f\n",
       *handnumber,  *sblind, *bblind);
-    write_log(MAIN->p_preferences()->debug_scraper(),
+    write_log(theApp.p_preferences()->debug_scraper(),
       "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
       *bbet, *ante,  *limit, *sb_bb, *bb_BB);
-    write_log(MAIN->p_preferences()->debug_scraper(),
+    write_log(theApp.p_preferences()->debug_scraper(),
       "[CTransform] buyin = %d\n",
       *buyin);
 #endif

@@ -268,7 +268,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		if (_card_common_last[i] != card_value || update_all) 
 		{
 			_card_common_last[i] = card_value;
-			write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
+			write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
         i, p_card->ToString());
 			DrawCard(p_card,
 					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
@@ -278,7 +278,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	}
   // Draw collection of player info
 	for (int i=0; i<p_tablemap->nchairs(); i++) 	{
-		write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
+		write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
 		if (_seated_last[i] != p_table_state->_players[i].seated() 
@@ -312,7 +312,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 
 		if (update_it || update_all) {
-			write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
+			write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
 			if (p_table_state->_players[i].seated()) 	{
 				DrawSeatedActiveCircle(i);
@@ -336,9 +336,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			DrawDealerButton(i);
 		}
 	}
-	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
+	write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
-	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
+	write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) {
@@ -980,7 +980,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 	GetClientRect(&_client_rect);
 	// Draw player cards (first)
   Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
-	write_log(MAIN->p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
+	write_log(theApp.p_preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
     chair, player_card_0->ToString());
   int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
   int pos_x_left   = pos_x_right - CARDSIZEX;

@@ -270,7 +270,7 @@ int CScrapedActionInterface::NumberOfVisibleButtons()
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
-	write_log(MAIN->p_preferences()->debug_scraper(), "[CScrapedActionInterface] NumberOfVisibleButtons() found %d buttons\n",
+	write_log(theApp.p_preferences()->debug_scraper(), "[CScrapedActionInterface] NumberOfVisibleButtons() found %d buttons\n",
 		number_of_visible_buttons);
 	return number_of_visible_buttons;
 }

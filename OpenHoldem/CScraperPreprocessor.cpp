@@ -141,7 +141,7 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 	}
 	*monetary_string = result;
 #ifdef OPENHOLDEM_PROGRAM 
-	write_log(MAIN->p_preferences()->debug_scraper_preprocessor(), "Monetary string after preprocessing: %s\n", result);
+	write_log(theApp.p_preferences()->debug_scraper_preprocessor(), "Monetary string after preprocessing: %s\n", result);
 #endif OPENHOLDEM_PROGRAM 
 }
 

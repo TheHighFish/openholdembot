@@ -119,7 +119,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters) && ! big_blind_found) {
 			double bet = p_table_state->_players[chair_to_consider]._bet;
 			if (bet > 0) {
-        write_log(MAIN->p_preferences()->debug_symbolengine(),
+        write_log(theApp.p_preferences()->debug_symbolengine(),
           "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is a blind poster\n",
           chair_to_consider);
 				number_of_blind_posters_found++;
@@ -142,7 +142,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		// because there can be no quick folds after him.
 		else if (p_table_state->_players[chair_to_consider].HasAnyCards()) {
       // Player with cards found
-      write_log(MAIN->p_preferences()->debug_symbolengine(),
+      write_log(theApp.p_preferences()->debug_symbolengine(),
         "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i holds cards, therefore dealt\n",
         chair_to_consider);
 			this_player_got_dealt = true;
@@ -153,7 +153,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
         // Not yet anybody with cards outside the blinds found
         // Consider active players as dealt with fast folds.
 			  if (p_table_state->_players[chair_to_consider].active()) {
-          write_log(MAIN->p_preferences()->debug_symbolengine(),
+          write_log(theApp.p_preferences()->debug_symbolengine(),
             "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
             chair_to_consider);
 				  this_player_got_dealt = true;    
@@ -165,7 +165,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 			AssertRange(_playersdealtbits, 0, k_bits_all_ten_players_1_111_111_111);
 		}
 	}
-  write_log(MAIN->p_preferences()->debug_symbolengine(),
+  write_log(theApp.p_preferences()->debug_symbolengine(),
     // _playersdealtbits once as decimal, once as 4-digit hexadecimal
     "[CSymbolEngineActiveDealtPlaying] playersdealtbits = %i = %#4x\n",
     _playersdealtbits, _playersdealtbits);

@@ -53,9 +53,9 @@ void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet) {
   if (CompletePartiallyKnownBlinds(sblind, bblind, bbet)) {
     return;
   }
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Complete failure\n");
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Assuming lowest level: 0.01 / 0.02 / 0.04\n");
   *sblind = 0.01;
   *bblind = 0.02;
@@ -65,7 +65,7 @@ void CBlindGuesser::Guess(double *sblind, double *bblind, double *bbet) {
 bool CBlindGuesser::CompletePartiallyKnownBlinds(double *sblind, 
                                                  double *bblind, 
                                                  double *bbet) {
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] CompletePartiallyKnownBlinds %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
   // Not on the list, potentially still ok.
@@ -97,11 +97,11 @@ bool CBlindGuesser::CompletePartiallyKnownBlinds(double *sblind,
     *bblind = 2 * *sblind;
     *bbet   = 2 * *bblind;
   } else {
-    write_log(MAIN->p_preferences()->debug_table_limits(), 
+    write_log(theApp.p_preferences()->debug_table_limits(), 
       "[CBlindGuesser] Can't complete blinds because of bad input\n");
     return false;
   }
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Blinds completed to %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
   return true;
@@ -112,7 +112,7 @@ bool CBlindGuesser::SBlindBBlindCombinationReasonable(double sblind, double bbli
   if (bblind <= 0.00) return false;
   if (sblind < 0.40 * bblind) return false;
   if (sblind > 0.50 * bblind) return false;
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] SBlindBBlindCombinationReasonable(%.2f, %.2f)\n",
     sblind, bblind);
   return true;
@@ -123,7 +123,7 @@ bool CBlindGuesser::SBlindBBetCombinationReasonable(double sblind, double bbet) 
   if (bbet   <= 0.00) return false;
   if (sblind < 0.20 * bbet) return false;
   if (sblind > 0.25 * bbet) return false;
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] SBlindBBetCombinationReasonable(%.2f, %.2f)\n",
     sblind, bbet);
   return true;
@@ -134,7 +134,7 @@ bool CBlindGuesser::BBlindBBetCombinationReasonable(double bblind, double bbet) 
   if (bbet   <= 0.00) return false;
   if (bblind < 0.40 * bbet) return false;
   if (bblind > 0.50 * bbet) return false;
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] BBlindBBetCombinationReasonable(%.2f, %.2f)\n",
     bblind, bbet);
   return true;
@@ -147,7 +147,7 @@ double CBlindGuesser::ReasonableLookingHalfBlindValue(double known_value) {
   // Turn it into something reasonable
   // and use smaller or equal, because sometimes "half" is just 40%
   double result = _blind_levels.GetNextSmallerOrEqualBlindOnList(half_amount);
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] About half of %.2f is %.2f\n",
     known_value, result);
   return result;
@@ -222,10 +222,10 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     // Assume the first bet is "normal" and therefore small-blind
     *sblind = first_bet_after_dealer;
   }
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data guessed from bets: %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data needs to be completed\n");
   // Still to do (by the caller):
   // verify and complete these values
@@ -240,7 +240,7 @@ void CBlindGuesser::GetFirstBlindDataFromScraper(double *sblind,
   *sblind = p_table_state->_s_limit_info.sblind(is_fixed_limit);
   *bblind = p_table_state->_s_limit_info.bblind(is_fixed_limit);
   *bbet   = p_table_state->_s_limit_info.bbet(is_fixed_limit);
-  write_log(MAIN->p_preferences()->debug_table_limits(), 
+  write_log(theApp.p_preferences()->debug_table_limits(), 
     "[CBlindGuesser] Data from scraper (ttlimits, c0limits): %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
 }

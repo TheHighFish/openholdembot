@@ -20,7 +20,7 @@
 #include "Windows.h"
 
 void LogMemoryUsage(char *message) {
-  if (!MAIN->p_preferences()->debug_memory_usage()) return;
+  if (!theApp.p_preferences()->debug_memory_usage()) return;
   write_log(true, "[MemoryLogging] %s\n", message);
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms683180%28v=vs.85%29.aspx
   DWORD process_ID = GetCurrentProcessId();

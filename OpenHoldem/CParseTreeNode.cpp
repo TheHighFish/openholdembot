@@ -134,13 +134,13 @@ void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
 }
 
 double CParseTreeNode::Evaluate(bool log /* = false */){
-  write_log(MAIN->p_preferences()->debug_formula(), 
+  write_log(theApp.p_preferences()->debug_formula(), 
     "[CParseTreeNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	// Most common types first: numbers and identifiers
 	if (_node_type == kTokenNumber)	{
-		write_log(MAIN->p_preferences()->debug_formula(), 
+		write_log(theApp.p_preferences()->debug_formula(), 
       "[CParseTreeNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
@@ -150,7 +150,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     assert(_third_sibbling  == NULL);
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
-		write_log(MAIN->p_preferences()->debug_formula(), 
+		write_log(theApp.p_preferences()->debug_formula(), 
       "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
     // In case of f$-functions the line changed inbetween,
     // so we have to set it to the current location (again)
@@ -171,7 +171,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
     double final_betsize_in_bblinds = SYM->p_symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(MAIN->p_preferences()->debug_formula(), 
+    write_log(theApp.p_preferences()->debug_formula(), 
       "[CParseTreeNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
       SYM->p_symbol_engine_chip_amounts()->ncallbets(),
@@ -189,7 +189,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 			* pot_size_after_call_in_big_blinds;
     double final_betsize_in_bblinds = SYM->p_symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(MAIN->p_preferences()->debug_formula(), 
+    write_log(theApp.p_preferences()->debug_formula(), 
       "[CParseTreeNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
       raise_by_percentage,
       pot_size_after_call_in_big_blinds,

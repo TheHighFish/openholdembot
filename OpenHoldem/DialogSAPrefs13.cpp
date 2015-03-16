@@ -54,9 +54,9 @@ BOOL CDlgSAPrefs13::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_class_name_edit.SetWindowText(MAIN->p_preferences()->window_class_name());
-	_class_mutex_edit.SetWindowText(MAIN->p_preferences()->mutex_name());
-	bool use_simple_title = MAIN->p_preferences()->simple_window_title();
+	_class_name_edit.SetWindowText(theApp.p_preferences()->window_class_name());
+	_class_mutex_edit.SetWindowText(theApp.p_preferences()->mutex_name());
+	bool use_simple_title = theApp.p_preferences()->simple_window_title();
 	CheckDlgButton(IDC_SIMPLE_TITLE, use_simple_title ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -68,10 +68,10 @@ void CDlgSAPrefs13::OnOK()
 	CString temp;
 
 	_class_name_edit.GetWindowText(temp);
-	MAIN->p_preferences()->SetValue(k_prefs_window_class_name, temp);
+	theApp.p_preferences()->SetValue(k_prefs_window_class_name, temp);
 	_class_mutex_edit.GetWindowText(temp);
-	MAIN->p_preferences()->SetValue(k_prefs_mutex_name, temp);
-	MAIN->p_preferences()->SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
+	theApp.p_preferences()->SetValue(k_prefs_mutex_name, temp);
+	theApp.p_preferences()->SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
 
 	//R!!!!!GUI->p_openholdem_title()->UpdateTitle();
 	CSAPrefsSubDlg::OnOK();

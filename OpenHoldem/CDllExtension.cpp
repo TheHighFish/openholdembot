@@ -55,17 +55,17 @@ void CDllExtension::Load(const char * path){
 	// try to load specific path if passed in as a parameter
 	if (strlen(path) > 0) {
 		dll_path = path;
-		write_log(MAIN->p_preferences()->debug_dll_extension(),
+		write_log(theApp.p_preferences()->debug_dll_extension(),
 			"[CDLLExtension] setting path (1) to %s\n", dll_path);
 	}	else {
 		// Nothing passed in, so we try the DLL of the formula
-		// and the DLL from MAIN->p_preferences()->
+		// and the DLL from theApp.p_preferences()->
 		dll_path = SYM->p_function_collection()->DLLPath();
-		write_log(MAIN->p_preferences()->debug_dll_extension(),
+		write_log(theApp.p_preferences()->debug_dll_extension(),
 			"[CDLLExtension] setting path (2) to %s\n", dll_path);
 		if (dll_path == "") {
-			dll_path = MAIN->p_preferences()->dll_name().GetString();
-			write_log(MAIN->p_preferences()->debug_dll_extension(),
+			dll_path = theApp.p_preferences()->dll_name().GetString();
+			write_log(theApp.p_preferences()->debug_dll_extension(),
 				"[CDLLExtension] setting path (3) to %s\n", dll_path);
 		}
 	}
@@ -150,7 +150,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
   double result = k_undefined;
 	p_engine_container->EvaluateSymbol(name, 
     &result, 
-    MAIN->p_preferences()->dll_logging_enabled());
+    theApp.p_preferences()->dll_logging_enabled());
 	iserr = false;
 	return result;
 }
@@ -192,7 +192,7 @@ extern "C" __declspec(dllexport) void __stdcall WriteLogFromDll(char* fmt, ...)
 	va_list args;
 
 	va_start(args, fmt);
-	write_log_vl(MAIN->p_preferences()->dll_logging_enabled(), fmt, args);
+	write_log_vl(theApp.p_preferences()->dll_logging_enabled(), fmt, args);
 	va_end(args);
 }
 

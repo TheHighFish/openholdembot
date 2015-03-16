@@ -35,15 +35,15 @@ void CConfigurationCheck::CheckEverything() {
 	CheckForSwapMouseBtns();
 
 	// OpenHoldem may or may not work, if these are not right.
-	if (MAIN->p_preferences()->configurationcheck_input_settings()) {
+	if (theApp.p_preferences()->configurationcheck_input_settings()) {
 		CheckInputSettings();
 	}
 
-	if (MAIN->p_preferences()->configurationcheck_theme_settings()) {
+	if (theApp.p_preferences()->configurationcheck_theme_settings()) {
 		CheckForClassicalTheme();
 	}
 
-	if (MAIN->p_preferences()->configurationcheck_font_settings())	{
+	if (theApp.p_preferences()->configurationcheck_font_settings())	{
 		CheckForFontSmoothing();
 	}
   // !!! Might be reused for MSVCRT 2010
