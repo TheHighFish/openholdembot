@@ -16,6 +16,8 @@ BUG FIXES:
   was executed when the auto-connector-thread was still running.
   This race-condition has now been fixed.
   [Moby]
+- Fix to prevent allin betsizes rounding.
+  [FqFq]
 - FCKRA buttons were wrongly displayed in autoplayer trace.
   [fqfq]
 - i86 buttons states were updated slowly, causing multiple clicks.
