@@ -419,12 +419,6 @@ const char* const k_tablemap_errors_and_parse_errors_explained[10] = {
 #define MAX_SCRAPEDELAY		5000
 #define MIN_SCRAPEDELAY		 100
 
-// WH SUIT Defs
-#define OH_SUIT_CLUBS		1
-#define OH_SUIT_DIAMONDS	2
-#define OH_SUIT_HEARTS		3
-#define OH_SUIT_SPADES		4
-
 // Chipstacks
 #define MAX_CHIPS_PER_STACK	20
 #define MAX_CHIP_STACKS		10

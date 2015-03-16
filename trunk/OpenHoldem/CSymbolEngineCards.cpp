@@ -185,25 +185,18 @@ int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_s
 	n_spades   = GetNumberOfCardsForSuit(cards, spadesCards);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
 		n_clubs, n_diamonds, n_hearts, n_spades);
-	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades))
-	{
+	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades)) {
 		*max_cards_of_same_suit = n_clubs;
-		return OH_SUIT_CLUBS;
-	}
-	else if ((n_diamonds >= n_hearts) && (n_diamonds >= n_spades))
-	{
+		return Suit_CLUBS;
+	}	else if ((n_diamonds >= n_hearts) && (n_diamonds >= n_spades)) {
 		*max_cards_of_same_suit = n_diamonds;
-		return OH_SUIT_DIAMONDS;
-	}
-	else if (n_hearts >= n_spades)
-	{
+		return Suit_DIAMONDS;
+	}	else if (n_hearts >= n_spades) {
 		*max_cards_of_same_suit = n_hearts;
-		return OH_SUIT_HEARTS;
-	}
-	else
-	{
+		return Suit_HEARTS;
+	}	else {
 		*max_cards_of_same_suit = n_spades;
-		return OH_SUIT_SPADES;
+		return Suit_SPADES;
 	}
 }
 
@@ -530,7 +523,6 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 }
 
 int GetRankFromCard(int scraper_card);
-int GetSuitFromCard(int scraper_card);
 
 void CSymbolEngineCards::CalculateHandTests()
 {
@@ -544,7 +536,7 @@ void CSymbolEngineCards::CalculateHandTests()
 			int suit = card.GetSuit();
 
 			AssertRange(rank, 0, k_rank_ace);
-			AssertRange(suit, 0, OH_SUIT_SPADES);
+			AssertRange(suit, 0, Suit_SPADES);
 
 			write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineCards] Card = %i\n", card.GetValue());
@@ -741,22 +733,6 @@ int GetRankFromCard(int scraper_card)
 {
 	// Hand-eval library uses 0 (smallest positive) for 2
 	return StdDeck_RANK(scraper_card) + 2;
-}
-
-int GetSuitFromCard(int scraper_card)
-{
-	switch StdDeck_SUIT(scraper_card)
-	{
-		case StdDeck_Suit_CLUBS:  
-			return OH_SUIT_CLUBS;
-		case StdDeck_Suit_DIAMONDS: 
-			return OH_SUIT_DIAMONDS;
-		case StdDeck_Suit_HEARTS: 
-			return OH_SUIT_HEARTS;
-		case StdDeck_Suit_SPADES: 
-			return OH_SUIT_SPADES;
-	}
-	return k_undefined;
 }
 
 bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
