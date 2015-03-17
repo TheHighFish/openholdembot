@@ -165,7 +165,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		pt_group_basic
 	},
 #endif
-// TESTED !
+
 #if PT4_QUERY_SUPPORT__NB_HANDS
 	/* PT4 query to get number of hands in the database */
 	{
@@ -184,7 +184,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		pt_group_basic
 	},
 #endif
-// TESTED !
+
 #if PT4_QUERY_SUPPORT__VPIP
 	/* PT4 query to get vpip */
 	{
@@ -489,10 +489,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker saw river",
 		// query
-		"SELECT (case when (count(*) = 0) \
-		         then -1 \
-				 else cast(sum(case when flg_r_saw then 1 else 0 end) as real) / count(*) \
-				 end) as result \
+		"SELECT  (case when (sum((case when (s.flg_t_saw) then 1 else 0 end)) = 0) then -1 \
+                 else cast(sum(case when s.flg_r_saw then 1 else 0 end) as real) / \
+                 sum((case when (s.flg_t_saw) then 1 else 0 end))end) as result\
+
 		FROM   player as P, %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
 			   S.id_gametype = %GAMETYPE% AND \
@@ -589,8 +589,11 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker pre-flop called raise",
 		// query
-		"SELECT (case when count(*) = 0 then -1 else \
-		        cast(sum(case when not flg_p_fold AND cnt_p_raise = 0 then 1 else 0 end) as real) / count(*) end) as result \
+		"SELECT  (case when sum(case when s.flg_p_3bet_def_opp or s.flg_p_4bet_def_opp or s.amt_p_2bet_facing > 0 then 1 else 0 end) = 0 then -1 else \
+         cast(sum(case when ((s.amt_p_2bet_facing > 0 AND NOT(s.flg_p_limp) AND NOT s.flg_p_3bet_def_opp AND NOT flg_p_4bet_def_opp AND cnt_p_call>0) or \
+         (s.enum_p_3bet_action='C') or (s.enum_p_4bet_action='C')) then 1 else 0 end) as real)\
+         / sum(case when s.flg_p_3bet_def_opp or s.flg_p_4bet_def_opp or s.amt_p_2bet_facing > 0 then 1 else 0 end) \
+end) as result \
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
 		 	    S.flg_p_face_raise AND \
@@ -727,15 +730,16 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker Preflop 4B",
 		// query
-		"SELECT (cast (sum(case when (flg_p_4bet=TRUE) then 1 else 0 end) as real)/ \
-			cast (sum(case when (flg_p_4bet_opp=TRUE) then 1 else 0 end) as real)) as result \
+		"SELECT (case when sum(case when flg_p_4bet_opp then 1 else 0 end)=0 then -1 else \
+                 cast (sum(case when flg_p_4bet then 1 else 0 end) as real)/ \
+                 cast (sum(case when flg_p_4bet_opp=TRUE then 1 else 0 end) as real)end ) as result \
         FROM   player as P, %TYPE%_hand_player_statistics as S \
         WHERE  S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
             P.id_site = %SITEID% AND \
             P.player_name LIKE '%SCREENNAME%'",
 		// stat_group
-		pt_group_positional
+		pt_group_advanced
 	},
 #endif
 #if PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B
@@ -746,8 +750,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker Preflop fold to 4B",
 		// query
-		"SELECT (cast (sum(case when (enum_p_4bet_action='F') then 1 else 0 end) as real)/ \
-			cast (sum(case when (flg_p_4bet_def_opp=TRUE) then 1 else 0 end) as real)) as result \
+		"SELECT (case when sum(case when flg_p_4bet_opp then 1 else 0 end)=0 then -1 else \
+                 cast (sum(case when (enum_p_4bet_action='F') then 1 else 0 end) as real)/ \
+                 cast (sum(case when flg_p_4bet_def_opp then 1 else 0 end) as real) end ) as result \
         FROM   player as P, %TYPE%_hand_player_statistics as S \
         WHERE  S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
@@ -805,10 +810,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker raise flop cbet",
 		// query
-		"select (case when (count(*)!=0) then \
-		cast(sum(case when S.enum_f_cbet_action = 'R' then 1 else 0 end) as real) / \
-		cast(sum(case when S.flg_f_cbet_def_opp = 't' then 1 else 0 end) as real) \
-		else (-1) end) as result \
+		"select (case when sum(case when S.flg_f_cbet_def_opp = 't' then 1 else 0 end)=0 then -1 else \
+                cast(sum(case when S.enum_f_cbet_action = 'R' then 1 else 0 end) as real) / \
+                cast(sum(case when S.flg_f_cbet_def_opp  then 1 else 0 end) as real) \
+                end) as result \
 		FROM   player as P,  %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
 			   S.id_gametype = %GAMETYPE% AND \
@@ -845,8 +850,11 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker flop check-raise",
 		// query
-		"SELECT (cast (sum(case when (flg_f_check_raise=TRUE) then 1 else 0 end) as real)/ \
-			cast (sum (case when ((flg_f_check=TRUE) AND ((cnt_f_raise>0) OR (cnt_f_call>0) OR (flg_f_fold=TRUE))) then 1 else 0 end) as real)) as result \
+		"SELECT (case when sum (case when (flg_f_check=TRUE AND (cnt_f_raise>0 OR cnt_f_call>0 OR flg_f_fold)) \
+		        then 1 else 0 end)=0 then -1 else\
+                cast (sum(case when (flg_f_check_raise) then 1 else 0 end) as real)/ \
+                cast (sum (case when (flg_f_check AND (cnt_f_raise>0 OR cnt_f_call>0 OR flg_f_fold)) \
+				then 1 else 0 end) as real)end)as result \
 		FROM   player as P, %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -863,18 +871,23 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker donk flop",
 		// query
-		"select (case when  (count(*)!=0)  then \
-			(cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND \
-			((HSum.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or (HSum.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as real)/   \
-			 cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND (S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND \
-			((HSum.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or (HSum.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as real)) \
-			 else (0) end) as result \
-			FROM  player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary as HSum\
+		"SELECT (case when  sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) \
+		        AND (S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND \
+                ((s.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or \
+				(s.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end)=0 then -1 else \
+				(cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) \
+				AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND \
+				((s.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or \
+				(s.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as real)/ \
+				cast(sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) AND \
+				(S.flg_f_open_opp) AND NOT(S.flg_f_cbet_opp) AND \
+                ((s.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or \
+				(s.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) as real)) end) as result \
+		FROM  player as P, %TYPE%_hand_player_statistics as S, %TYPE%_hand_summary as HSum\
 		WHERE S.id_player = P.id_player AND \
-			HSum.id_hand = S.id_hand AND \
-			S.id_gametype = %GAMETYPE% AND \
-			P.player_name like '%SCREENNAME%' AND \
-			P.id_site=%SITEID%",
+		      S.id_gametype = %GAMETYPE% AND \
+			  P.player_name like '%SCREENNAME%' AND \
+			  P.id_site=%SITEID%",
 		// stat_group
 		pt_group_advanced
 	},
@@ -887,10 +900,10 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker turn cbet",
 		// query
-		"select (case when   (sum(case when flg_t_cbet_opp then 1 else 0 end) != 0)  then \
+		"select (case when (sum(case when flg_t_cbet_opp then 1 else 0 end) = 0) then -1 else \
          cast(sum(case when S.flg_t_cbet = 't' then 1 else 0 end) as real) / \
-		 cast(sum(case when S.flg_t_cbet_opp = 't' then 1 else 0 end) as real) \
-		 else (0) end) as result \
+         cast(sum(case when S.flg_t_cbet_opp = 't' then 1 else 0 end) as real) \
+         end) as result\
 		 FROM player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -947,10 +960,11 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker turn Check-Raise",
 		// query
-		"select (case when  (count(*)!=0)  then \
-			 cast(sum(case when S.flg_t_check_raise = 't' then 1 else 0 end) as real) / \
-			cast(sum(case when (S.flg_t_check= 't' AND (S.cnt_t_raise>0 OR S.cnt_t_call>0 OR S.flg_t_fold= 't')) then 1 else 0 end) as real) \
-			else (0) end) as result \
+		"SELECT (case when sum (case when (flg_t_check=TRUE AND (cnt_t_raise>0 OR cnt_t_call>0 \
+		        OR flg_t_fold)) then 1 else 0 end)=0 then -1 else \
+                cast (sum(case when (flg_t_check_raise) then 1 else 0 end) as real)/ \
+		        cast (sum (case when (flg_t_check AND (cnt_t_raise>0 OR cnt_t_call>0 OR flg_t_fold)) \
+		        then 1 else 0 end) as real) end) as result\
 		FROM player as P, %TYPE%_hand_player_statistics as S \
 		WHERE S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -968,10 +982,11 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker turn Check-Call",
 		// query
-		"select (case when  (count(*)!=0)  then \
-			cast(sum(case when (S.flg_t_check AND S.cnt_t_call>0) then 1 else 0 end) as real) / \
-			cast(sum(case when (S.flg_t_check= 't' AND (S.cnt_t_raise>0 OR S.cnt_t_call>0 OR S.flg_t_fold= 't')) then 1 else 0 end) as real) \
-			else (0) end) as result \
+		"SELECT (case when (sum(case when (S.flg_t_check= 't' AND (S.cnt_t_raise>0 OR S.cnt_t_call>0 \
+		OR S.flg_t_fold= 't')) then 1 else 0 end)=0 )   then -1 else\
+		cast(sum(case when (S.flg_t_check AND S.cnt_t_call>0) then 1 else 0 end) as real) / \
+		cast(sum(case when (S.flg_t_check= 't' AND (S.cnt_t_raise>0 OR S.cnt_t_call>0 OR S.flg_t_fold= 't'))\
+		then 1 else 0 end) as real) end) as result \
 		FROM player as P, %TYPE%_hand_player_statistics as S \
 		WHERE S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -1029,9 +1044,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker river bet",
 		// query
-		"SELECT (case when sum(case when flg_r_cbet_def_opp then 1 else 0 end) = 0 then -1 else \
-		        cast(sum(case when enum_r_cbet_action = 'F' then 1 else 0 end) as real) \
-				/ sum(case when flg_r_cbet_def_opp then 1 else 0 end) end) as result \
+		"SELECT (case when sum(case when (flg_r_bet or flg_r_checked) then 1 else 0 end) = 0 then -1 else \
+		        cast(sum(case when flg_r_bet then 1 else 0 end) as real) \
+				/ sum(case when (flg_r_bet or flg_r_checked) then 1 else 0 end) end) as result \
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
