@@ -16,6 +16,7 @@
 
 #include "..\CCritSec\CCritSec.h"
 #include "NumericalFunctions.h"
+#include "OpenHoldem.h"
 #include "StringFunctions.h"
 
 // global preferences constants
