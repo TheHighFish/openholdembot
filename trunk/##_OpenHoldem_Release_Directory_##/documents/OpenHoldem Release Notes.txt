@@ -1,6 +1,9 @@
 v7.7.1 2015-03.xx
 ==================
 MAINTENANCE:
+- PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
+  Added div/0 condition to all stats. All stats now return 0 when     undefined
+  [Wavelen]
 - Changing myturnbits from FCRAK to FCKRA.
   [THF]
 
