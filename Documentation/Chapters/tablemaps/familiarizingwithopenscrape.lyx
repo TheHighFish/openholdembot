@@ -177,8 +177,16 @@ Duplicate Region: This option will allow you to easily duplicate Regions.
  More on Regions later.
 \end_layout
 
+\begin_layout Itemize
+Clone Regions: This option will clone all regions oif player 0 at once and
+ even distribute them to reasonable positions at the table.
+ All you have to do afterwards is fine-tuning the positions a little bit.
+ Prerequisite: the balance-regions of the other players must be defined
+ in able to determine the positions for the cloned regions.
+\end_layout
+
 \begin_layout Subsection
-View Menu !!!!!
+View Menu 
 \end_layout
 
 \begin_layout Standard
@@ -193,7 +201,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename images/OS_ViewMenu.png
+	filename images/Menu_View.JPG
 
 \end_inset
 
@@ -210,8 +218,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-The View menu has the standard Windows Toolbar/Status Bar options, plus
- the following specific OpenScrape options:
+The View menu has following OpenScrape options:
 \end_layout
 
 \begin_layout Itemize
@@ -222,9 +229,8 @@ Connect To Window: This option duplicates the “Green Circle Button” on the
 \end_layout
 
 \begin_layout Itemize
-Show Region Boxes: Allows you to toggle whether or not Region boxes are
- displayed on top of the poker table image in the main window.
- 
+Previous Frame: if connected to OHReplay this option will switch to the
+ previous replay-frame
 \end_layout
 
 \begin_layout Itemize
@@ -232,6 +238,11 @@ Refresh: This option duplicates the Black and White Arrow button on the
  toolbar, and will copy to current casino table image to the OpenScrape
  main window.
  
+\end_layout
+
+\begin_layout Itemize
+Next Frame: if connected to OHReplay this option will switch to the next
+ replay-frame
 \end_layout
 
 \begin_layout Itemize
@@ -247,35 +258,12 @@ Current size: Displays the client size of the window that OpenScrape is
 \end_layout
 
 \begin_layout Subsection
-Tools Menu
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
 Main Toolbar 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_MainTollbar.png
+	filename images/OS_Toolbar.JPG
 
 \end_inset
 
@@ -301,10 +289,6 @@ Save Table Map
 
 \begin_layout Itemize
 Connect to window 
-\end_layout
-
-\begin_layout Itemize
-Toggle Region box display on or off 
 \end_layout
 
 \begin_layout Itemize
@@ -356,7 +340,7 @@ Table Map: Buttons/fields The Table Map Editor window has a plethora of
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_TmEditorWindow.png
+	filename images/OS_Editor.JPG
 
 \end_inset
 

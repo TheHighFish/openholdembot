@@ -171,33 +171,12 @@ autoplayer-button can't be enabled
 \begin_layout Standard
 
 \emph on
-Reason: 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-
-\emph on
-Userchair
-\end_layout
-
-\end_inset
-
-Userchair not recognized.
+Reason: No good input.
 \end_layout
 
 \begin_layout Standard
-The autoplayer can only be enabled after OpenHoldem has recognized your
- chair.
- To do so OpenHoldem must see:
-\end_layout
-
-\begin_layout Itemize
-your cards
-\end_layout
-
-\begin_layout Itemize
-some 
+The autoplayer will immediatelly be enabled after connection to a table,
+ but it can only act if the scraper recognizes your cards and some 
 \begin_inset Index idx
 status open
 
@@ -207,9 +186,7 @@ buttons
 
 \end_inset
 
-buttons, so OpenHoldem really knows it is your turn and not a gamestate
- with cards shown for your opponents (i.e.
- at showdown).
+buttons.
 \end_layout
 
 \begin_layout Section
@@ -219,9 +196,7 @@ OH does not play (II)
 \begin_layout Standard
 
 \emph on
-Reason:
-\emph default
- no stable input (
+Reason: no stable input (
 \begin_inset Quotes eld
 \end_inset
 
@@ -556,7 +531,7 @@ heart-beat-cycle starts, OH will scrape the exact same game-state another
  
 \end_layout
 
-\begin_layout Remark
+\begin_layout Remark*
 This problem has been improved by marking frames as unstable when OpenHoldem
  acts, so OpenHoldem has to wait for a certain number of stable frames again.
  However the problem may still appear, if your scraper- and bring-delay
@@ -597,8 +572,9 @@ players
 So always remember: Bots are very stupid and very volatile beings.
 \end_layout
 
-\begin_layout Standard
-(This can no longer happen as we execute the
+\begin_layout Remark*
+This can no longer happen as we execute the hopper functions only once every
+ 3 seconds.
 \end_layout
 
 \begin_layout Section
@@ -637,6 +613,11 @@ first
  
 \end_layout
 
+\begin_layout Remark*
+This gets now prevented as OpenHoldem checks if multiple maps with the same
+ sitename exist.
+\end_layout
+
 \begin_layout Section
 OpenScrape does recognize something, but OH does not (II)
 \end_layout
@@ -655,6 +636,10 @@ Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem
  If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem
  does not do so, then you have most probably forgotten to define pXseated
  or uXseated.
+\end_layout
+
+\begin_layout Remark*
+This gets now prevented, as OpenHoldem cgecks for complete tablemnaps.
 \end_layout
 
 \begin_layout Section
@@ -760,7 +745,7 @@ This error may also occur when debug messages attempt to write to a file
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Remark*
 Please note that this issue has been improved as OpenHoldem 4.x now gets
  linked to the DLL at load-time the normal way and does no longer send any
  function-pointers at run-time as WinHoldem did.
@@ -776,7 +761,7 @@ OpenHoldem does not load my DLL (I).
 \emph on
 Reason:
 \emph default
- Missing or incorrect lilbraries.
+ Missing or incorrect llbraries.
 \end_layout
 
 \begin_layout Standard
@@ -984,6 +969,12 @@ Some symbols only require the current gamestate to be calculated (e.g.
  e.g.
  by temporary occlusion.
  You should avoid occlusion by any means.
+\end_layout
+
+\begin_layout Remark*
+Rhis problem has now practically disappeared, as OpenHoldem supports nine
+ different handreset-methods, but will only accept a hand-reset if multiple
+ methods fire at the same time.
 \end_layout
 
 \begin_layout Section
@@ -1205,6 +1196,14 @@ This way mis-scrapes will not be able to defeat your fine strategy.
  The same problem might occur in all functions that might act on unstable
  frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout,
  f$leave, f$rebuy and f$chat.
+\end_layout
+
+\begin_layout Remark*
+This failzre gets now prevented too, as OpenHoldem will will only execute
+ f$prefold if both cards are known.
+ However: as you can see lots of things could go wrong if you are careless.
+ Therefore it is always a good idea to keep these potential pitfalls in
+ mind and prefer a conservative style of coding your bot.
 \end_layout
 
 \end_body

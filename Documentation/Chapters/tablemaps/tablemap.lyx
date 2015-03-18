@@ -127,5 +127,171 @@ status open
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+.osdb2
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// OpenScrape 5.0.1
+\end_layout
+
+\begin_layout Plain Layout
+
+// 2014-07-04 16:36:34 
+\end_layout
+
+\begin_layout Plain Layout
+
+// 32 bits per pixel
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// 
+\end_layout
+
+\begin_layout Plain Layout
+
+// sizes 
+\end_layout
+
+\begin_layout Plain Layout
+
+//
+\end_layout
+
+\begin_layout Plain Layout
+
+z$clientsize       574  335
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// 
+\end_layout
+
+\begin_layout Plain Layout
+
+// strings 
+\end_layout
+
+\begin_layout Plain Layout
+
+//
+\end_layout
+
+\begin_layout Plain Layout
+
+s$nchairs                   10 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$network                   pokerstars 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$sitename                  openholdem 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$swagconfirmationmethod    Click Bet 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$swagdeletionmethod        Nothing 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$swagtextmethod            3 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$t0type                    fuzzy 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$titletext                 Poker 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$ttlimits                  ^*- ^L - blinds ^s/^b 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$ttlimits0                 ^*- ^L - blinds ^s/^b - ante ^a 
+\end_layout
+
+\begin_layout Plain Layout
+
+s$ttlimits1                 ^*- ^L tourney - blinds ^s/^b - ante ^a
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// 
+\end_layout
+
+\begin_layout Plain Layout
+
+// regions 
+\end_layout
+
+\begin_layout Plain Layout
+
+//
+\end_layout
+
+\begin_layout Plain Layout
+
+r$c0cardface0        193 144 224 185        0    0 H0 
+\end_layout
+
+\begin_layout Plain Layout
+
+r$c0cardface0nocard  213 170 213 170   b6b6b6   10 C 
+\end_layout
+
+\begin_layout Plain Layout
+
+r$c0cardface1        232 144 263 185        0    0 H0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

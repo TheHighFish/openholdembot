@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-12-26"/>
+<meta name="create-date" content="2015-03-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -41,25 +41,16 @@ Usually the problem is the window-size caused by incorrect system-settings; <a c
 <a class="toc" name="toc-Section-2"></a>OH does not play (I) and the <a class="IndexReference" name="entry-autoplayer-0" href="#index-autoplayer">↓</a>autoplayer-button can’t be enabled
 </h2>
 <div class="Unindented">
-<i>Reason: <a class="IndexReference" name="entry-Userchair-0" href="#index-Userchair">↓</a>Userchair not recognized.</i>
+<i>Reason: No good input.</i>
 </div>
 <div class="Indented">
-The autoplayer can only be enabled after OpenHoldem has recognized your chair. To do so OpenHoldem must see:
+The autoplayer will immediatelly be enabled after connection to a table, but it can only act if the scraper recognizes your cards and some <a class="IndexReference" name="entry-buttons-0" href="#index-buttons">↓</a>buttons.
 </div>
-<ul>
-<li>
-your cards
-</li>
-<li>
-some <a class="IndexReference" name="entry-buttons-0" href="#index-buttons">↓</a>buttons, so OpenHoldem really knows it is your turn and not a gamestate with cards shown for your opponents (i.e. at showdown).
-</li>
-
-</ul>
 <h2 class="Section">
 <a class="toc" name="toc-Section-3"></a>OH does not play (II)
 </h2>
 <div class="Unindented">
-<i>Reason:</i> no stable input (&ldquo;balance-stability&rdquo; and &ldquo;card-stability&rdquo;)
+<i>Reason: no stable input (&ldquo;balance-stability&rdquo; and &ldquo;card-stability&rdquo;)</i>
 </div>
 <div class="Indented">
 One safety-measure to avoid incorrect plays is the option to wait for &ldquo;balance-stability&rdquo;. Without reasonable input you can be sure to become a victim of the gigo-principle (garbage in - garbage out). The example below shows a FullTilt mini-table, where the regions for player-names and balances partially overlap. 
@@ -177,7 +168,7 @@ To work properly OpenHoldem must have recognized the userchair. Also some symbol
 <div class="Indented">
 The <a class="IndexReference" name="entry-Bring-delay-0" href="#index-Bring-delay">↓</a>bring-delay should be somewhat smaller than the <a class="IndexReference" name="entry-Scraper-delay-0" href="#index-Scraper-delay">↓</a>scraper-delay. Otherwise it can happen that OH acts but bring doesn’t display a new image in time. So when the next <a class="IndexReference" name="entry-Heartbeat-cycle-0" href="#index-Heartbeat-cycle">↓</a>heart-beat-cycle starts, OH will scrape the exact same game-state another time and act another time. 
 </div>
-<div class="Remark">
+<div class="Remark*">
 This problem has been improved by marking frames as unstable when OpenHoldem acts, so OpenHoldem has to wait for a certain number of stable frames again. However the problem may still appear, if your scraper- and bring-delay do mismatch or if you don’t wait for stable frames.
 </div>
 <h2 class="Section">
@@ -192,8 +183,8 @@ The Table Map probably does not correctly determine the state of the sitin- or s
 <div class="Indented">
 So always remember: Bots are very stupid and very volatile beings.
 </div>
-<div class="Indented">
-(This can no longer happen as we execute the
+<div class="Remark*">
+This can no longer happen as we execute the hopper functions only once every 3 seconds.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-8"></a>OpenScrape does recognize something, but OH does not (I)
@@ -204,6 +195,9 @@ So always remember: Bots are very stupid and very volatile beings.
 <div class="Indented">
 A very common &ldquo;bug&rdquo;-report: some beginner has just fixed his first map and complains that OpenScrape recognizes the bets, the fonts of the player names or whatever; but OpenHoldem fails to do so. The reason is quite simple: he usually has multiple versions of the map in his scraper-folder and has simply loaded the wrong map. If you have the auto-connector enabled, OpenHoldem will load the &ldquo;first&rdquo; map that fits. 
 </div>
+<div class="Remark*">
+This gets now prevented as OpenHoldem checks if multiple maps with the same sitename exist.
+</div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-9"></a>OpenScrape does recognize something, but OH does not (II)
 </h2>
@@ -212,6 +206,9 @@ A very common &ldquo;bug&rdquo;-report: some beginner has just fixed his first m
 </div>
 <div class="Indented">
 Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem does implement some reasonable optimizations. It will only scrape names, bets and balances of a certain chair, if that chair is occupied. If OpenScrape and your tablemap are able to scrape those regions but OpenHoldem does not do so, then you have most probably forgotten to define pXseated or uXseated.
+</div>
+<div class="Remark*">
+This gets now prevented, as OpenHoldem cgecks for complete tablemnaps.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-10"></a>OH does work locally, but not remotely with bring
@@ -240,14 +237,14 @@ BigBlind is a global variable that gets initialized immediately when the DLL get
 <div class="Indented">
 This error may also occur when debug messages attempt to write to a file that has not yet been opened for writing, or if Perl modules are not loaded in the correct order. 
 </div>
-<div class="Indented">
+<div class="Remark*">
 Please note that this issue has been improved as OpenHoldem 4.x now gets linked to the DLL at load-time the normal way and does no longer send any function-pointers at run-time as WinHoldem did. But things like that can still happen to Perl-users.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-12"></a>OpenHoldem does not load my DLL (I).
 </h2>
 <div class="Unindented">
-<i>Reason:</i> Missing or incorrect lilbraries.
+<i>Reason:</i> Missing or incorrect llbraries.
 </div>
 <div class="Indented">
 Most DLLs use external functionalitzy and therefore depend on supporting libraries. Most often this is msvcrt (MicroSoft Visual Studio C++ RunTime Library). Also the correct version is important. OpenHoldem requires currently Visual Studio 2010 Professional, but Perl needs 2005.
@@ -315,6 +312,9 @@ If you get a freeplay, it might be that your check-button (or a check/fold-butto
 <div class="Indented">
 Some symbols only require the current gamestate to be calculated (e.g. dealerchair, balance, nbetstocall). Others (like didcallround1, nbetsround3 etc.) require a complete game-history and will reset at the beginning of a new hand. If they all are zero (or -1), you have probably caused an incorrect hand-reset, e.g. by temporary occlusion. You should avoid occlusion by any means.
 </div>
+<div class="Remark*">
+Rhis problem has now practically disappeared, as OpenHoldem supports nine different handreset-methods, but will only accept a hand-reset if multiple methods fire at the same time.
+</div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-18"></a>
 </h2>
@@ -375,10 +375,13 @@ This code basically says: &ldquo;do prefold, if is is preflop and I don’t have
 <div class="Indented">
 This way mis-scrapes will not be able to defeat your fine strategy. Instead a mis-scrape will only keep f$prefold false and delay the folding of trash. The same problem might occur in all functions that might act on unstable frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout, f$leave, f$rebuy and f$chat.
 </div>
+<div class="Remark*">
+This failzre gets now prevented too, as OpenHoldem will will only execute f$prefold if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
+</div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-26T17:35:15.078000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T03:46:49.234000</span>
 </div>
 </div>
 </body>
