@@ -531,7 +531,7 @@ heart-beat-cycle starts, OH will scrape the exact same game-state another
  
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Remark
 This problem has been improved by marking frames as unstable when OpenHoldem
  acts, so OpenHoldem has to wait for a certain number of stable frames again.
  However the problem may still appear, if your scraper- and bring-delay
@@ -572,7 +572,7 @@ players
 So always remember: Bots are very stupid and very volatile beings.
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Remark
 This can no longer happen as we execute the hopper functions only once every
  3 seconds.
 \end_layout
@@ -638,8 +638,8 @@ Scraping is the most time-consuming part of the heartbeat-cycle, so OpenHoldem
  or uXseated.
 \end_layout
 
-\begin_layout Remark*
-This gets now prevented, as OpenHoldem cgecks for complete tablemnaps.
+\begin_layout Remark
+This gets now prevented, as OpenHoldem checks for complete tablemnaps.
 \end_layout
 
 \begin_layout Section
@@ -745,7 +745,7 @@ This error may also occur when debug messages attempt to write to a file
  
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Remark
 Please note that this issue has been improved as OpenHoldem 4.x now gets
  linked to the DLL at load-time the normal way and does no longer send any
  function-pointers at run-time as WinHoldem did.
@@ -971,7 +971,7 @@ Some symbols only require the current gamestate to be calculated (e.g.
  You should avoid occlusion by any means.
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Remark
 Rhis problem has now practically disappeared, as OpenHoldem supports nine
  different handreset-methods, but will only accept a hand-reset if multiple
  methods fire at the same time.
@@ -1198,7 +1198,7 @@ This way mis-scrapes will not be able to defeat your fine strategy.
  f$leave, f$rebuy and f$chat.
 \end_layout
 
-\begin_layout Remark*
+\begin_layout Claim
 This failzre gets now prevented too, as OpenHoldem will will only execute
  f$prefold if both cards are known.
  However: as you can see lots of things could go wrong if you are careless.

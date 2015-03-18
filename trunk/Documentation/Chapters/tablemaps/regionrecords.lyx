@@ -149,7 +149,16 @@ The majority of the right side of the Table Map Editor window is used to
 \end_layout
 
 \begin_layout Standard
-Figure 4.5-11 OpenScrape Rectangle Group Box !!!
+\begin_inset Graphics
+	filename images/OS_Editor_region_rectangle.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
@@ -170,10 +179,14 @@ To use the rectangle drawing tool, click once on this control:
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_RectangleDrawTool.png
+	filename images/OS_editor_draw_tool.JPG
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 
@@ -198,7 +211,7 @@ A zoomed view of the region is displayed in the box at the bottom right
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_NudgeGroupBox.png
+	filename images/OS_editort_nudge_buttons.JPG
 
 \end_inset
 
@@ -250,7 +263,7 @@ Control + Shift + Arrow keys – Resize the region by 5 pixels
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_RegionRecordParameters.png
+	filename images/OS_editor_region_record_parameters.JPG
 
 \end_inset
 
@@ -282,7 +295,7 @@ As a helpful reference, the “Avg Color” fields are populated with the calcul
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_TransformResultPreview.png
+	filename images/OS_editor_result.JPG
 
 \end_inset
 
@@ -303,7 +316,7 @@ This field provides an instant preview of the results of combining the current
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename images/OS_PixelSeparationDisplay.png
+	filename images/OS_editor_pixel_separation.JPG
 
 \end_inset
 
@@ -343,15 +356,8 @@ The Edit menu of on the Main window contains a “Duplicate Region” entry,
  which is intended to allow the quick creation of related region records.
  First, select a region record from the tree display on the Table Map Editor
  window, then select Edit/Duplicate Region from the Main window.
- This action will display this window:
-\end_layout
-
-\begin_layout Standard
-Figure 4.5-17 OpenScrape Duplicate Region window
-\end_layout
-
-\begin_layout Standard
-In this case, the p0balance region was selected.
+ This action will display this window: In this case, the p0balance region
+ was selected.
  You are given the option to duplicate the selected region record to other
  region records of the same type.
  In this case, all of the unpopulated pXbalance and uXbalance region records

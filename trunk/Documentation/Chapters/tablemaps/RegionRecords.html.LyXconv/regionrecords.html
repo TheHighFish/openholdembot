@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-03-01"/>
+<meta name="create-date" content="2015-03-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -38,7 +38,8 @@ Note: Regions can also be selected by left clicking within the region’s flashi
 The majority of the right side of the Table Map Editor window is used to manipulate the parameters of the region record. 
 </div>
 <div class="Indented">
-Figure 4.5-11 OpenScrape Rectangle Group Box !!!
+<img class="embedded" src="images/OS_Editor_region_rectangle.png" alt="figure images/OS_Editor_region_rectangle.png" style="max-width: 200px; max-height: 104px;"/>
+
 </div>
 <div class="Indented">
 Starting at the top, there is a rectangle group box. This group box allows you to define the extents (left, right, top, bottom) of the region record’s bounding rectangle. The bounds are inclusive – in other words, a rectangle defined as left=0, right=5, top=0 and bottom=6 will be 6 pixels wide and 7 pixels high. The rectangle settings can be direct entered into the controls, you can use the spinners next to the controls, or you can use the rectangle drawing tool to quickly draw the rectangle on the poker table. 
@@ -47,7 +48,7 @@ Starting at the top, there is a rectangle group box. This group box allows you t
 To use the rectangle drawing tool, click once on this control:
 </div>
 <div class="Indented">
-<img class="embedded" src="images/OS_RectangleDrawTool.png" alt="figure images/OS_RectangleDrawTool.png"/>
+<img class="embedded" src="images/OS_editor_draw_tool.png" alt="figure images/OS_editor_draw_tool.png" style="max-width: 320px; max-height: 103px;"/>
 
 </div>
 <div class="Indented">
@@ -57,7 +58,7 @@ To use the rectangle drawing tool, click once on this control:
 A zoomed view of the region is displayed in the box at the bottom right of the Table Map Editor window. The Table Map Editor window can be enlarged, if needed, to show the entire region. Use the Zoom Level control to adjust the zoom level in this display.
 </div>
 <div class="Indented">
-<img class="embedded" src="images/OS_NudgeGroupBox.png" alt="figure images/OS_NudgeGroupBox.png"/>
+<img class="embedded" src="images/OS_editort_nudge_buttons.png" alt="figure images/OS_editort_nudge_buttons.png" style="max-width: 159px; max-height: 103px;"/>
 
 </div>
 <div class="Indented">
@@ -88,7 +89,7 @@ Control + Shift + Arrow keys – Resize the region by 5 pixels
 
 </ul>
 <div class="Unindented">
-<img class="embedded" src="images/OS_RegionRecordParameters.png" alt="figure images/OS_RegionRecordParameters.png"/>
+<img class="embedded" src="images/OS_editor_region_record_parameters.png" alt="figure images/OS_editor_region_record_parameters.png" style="max-width: 325px; max-height: 65px;"/>
 
 </div>
 <div class="Indented">
@@ -98,14 +99,14 @@ The next set of controls allows you to set the remainder of the parameters on a 
 As a helpful reference, the “Avg Color” fields are populated with the calculated average color of all pixels in the region. This is useful for finding RGB color cube centers and for text transform separations. 
 </div>
 <div class="Indented">
-<img class="embedded" src="images/OS_TransformResultPreview.png" alt="figure images/OS_TransformResultPreview.png"/>
+<img class="embedded" src="images/OS_editor_result.png" alt="figure images/OS_editor_result.png" style="max-width: 201px; max-height: 35px;"/>
 
 </div>
 <div class="Indented">
 This field provides an instant preview of the results of combining the current pixels in the region with the current transform for that region. If this is a Text transform, the actual transformed ASCII text is displayed. If this is a Color transform, True or False is displayed, depending if the region’s average color is inside or outside of the defined RGB color cube. If this is a Hash transform, the value of the matching Hash record is displayed. If this is an Image transform, the value of the matching Image record is displayed.
 </div>
 <div class="Indented">
-<img class="embedded" src="images/OS_PixelSeparationDisplay.png" alt="figure images/OS_PixelSeparationDisplay.png"/>
+<img class="embedded" src="images/OS_editor_pixel_separation.png" alt="figure images/OS_editor_pixel_separation.png" style="max-width: 373px; max-height: 360px;"/>
 
 </div>
 <div class="Indented">
@@ -115,13 +116,7 @@ If your region is defined to have a Text transform, then the Pixel Separation wi
 Note: Remember that the whole purpose of a region definition, with a given type of transformation, is to tell the screen scraper what the pixels mean that are displayed on the screen within that region. The return value of the transformation is provided to the OpenHoldem game state engine which then uses those values to establish the game state and to provide various information that your bot logic needs to make action decisions. A human can easily look at the balance for seat #2 and see that it is $950.12. For a computer it is harder – we need to specify the rectangle that bounds this balance region, define it as a text transform, choose a color that lets the screen scraper identify foreground from background pixels, and then collect each of the individual font characters (more on this below) so that the screen scraper engine can look up the actual ASCII text for these pixels.
 </div>
 <div class="Indented">
-The Edit menu of on the Main window contains a “Duplicate Region” entry, which is intended to allow the quick creation of related region records. First, select a region record from the tree display on the Table Map Editor window, then select Edit/Duplicate Region from the Main window. This action will display this window:
-</div>
-<div class="Indented">
-Figure 4.5-17 OpenScrape Duplicate Region window
-</div>
-<div class="Indented">
-In this case, the p0balance region was selected. You are given the option to duplicate the selected region record to other region records of the same type. In this case, all of the unpopulated pXbalance and uXbalance region records are candidates. You can select one or more than one destination record here (using the standard Windows Ctrl and Shift multi-select capability) to copy the selected region to. When you click the OK button, the new region records will be created for you, and you can then move them where needed and adjust them appropriately.
+The Edit menu of on the Main window contains a “Duplicate Region” entry, which is intended to allow the quick creation of related region records. First, select a region record from the tree display on the Table Map Editor window, then select Edit/Duplicate Region from the Main window. This action will display this window: In this case, the p0balance region was selected. You are given the option to duplicate the selected region record to other region records of the same type. In this case, all of the unpopulated pXbalance and uXbalance region records are candidates. You can select one or more than one destination record here (using the standard Windows Ctrl and Shift multi-select capability) to copy the selected region to. When you click the OK button, the new region records will be created for you, and you can then move them where needed and adjust them appropriately.
 </div>
 <h3 class="Subsection">
 <a class="toc" name="toc-Subsection-4"></a>Technical Reference
@@ -683,7 +678,7 @@ These regions are alternatives to the p0seated-p9seated regions, and are used fo
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-01T22:20:02.781000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T15:16:18.578000</span>
 </div>
 </div>
 </body>
