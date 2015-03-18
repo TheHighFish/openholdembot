@@ -1,123 +1,76 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
-  "http://www.w3.org/TR/html4/loose.dtd">  
-<html > 
-<head><title></title> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
-<!-- html --> 
-<meta name="src" content="imagerecords.tex"> 
-<meta name="date" content="2013-12-26 05:00:00"> 
-<link rel="stylesheet" type="text/css" href="imagerecords.css"> 
-</head><body 
->
-   <h3 class="sectionHead"><a 
- id="x1-1000"></a>Image Records </h3>
-   <h4 class="subsectionHead"><a 
- id="x1-2000"></a>Description</h4>
-<!--l. 33--><p class="noindent" >Image records serve multiple purposes. The first purpose is for regions that use the Image
-transform. When a region requires this type of lookup, the screen scraper engine will first
-look for an exact pixel-for-pixel image match in the Image records, and if no match is
-found, will then look for the closest match (with the 65% tolerance, as described
-in the Region Records {Technical Reference} section). The second purpose
-of the Image records is to serve as a reference from which Hash records are
-created (see the {Hash Records} section). Note: Image transforms are very CPU
-intensive, as they require 2 passes through the Image records, the first to try to find
-an exact match, and the second to find a closest match. Each pass requires a
-comparison of every single pixel in the region. For large regions, this is a lot
-of comparisons. The time required to do Image transform lookups is directly
-proportional to the number of Image records present, and the size of the requesting
-Region record. It almost always makes more sense to use the Hash transform
-to do image matching, as the Hash lookup algorithm is orders of magnitude
-faster.
-   <h4 class="subsectionHead"><a 
- id="x1-3000"></a>Manipulating image records using OpenScrape</h4>
-<!--l. 54--><p class="noindent" ><img 
-src="imagerecords0x.png" alt="PIC" class="graphics" width="127.47624pt" height="13.04874pt" ><!--tex4ht:graphics  
-name="imagerecords0x.png" src="0E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_CreateImage.eps"  
--->
-<!--l. 56--><p class="indent" >   The &#8220;Create Image&#8221; button on the Table Map Editor window is used to create new
-Image records. This button is only available if a region record has previously been
-selected.
-<!--l. 60--><p class="indent" >   When the &#8220;Create Image&#8221; button is clicked, the following window will appear:
-<!--l. 63--><p class="indent" >   <img 
-src="imagerecords1x.png" alt="PIC" class="graphics" width="72.26999pt" height="42.15749pt" ><!--tex4ht:graphics  
-name="imagerecords1x.png" src="1E__OH_SVN_trunk_Documentation_Chapters_tablemaps_images_OS_NewImage.eps"  
--->
-<!--l. 65--><p class="indent" >   The only required piece of information on this window is the name of the Image
-record, however, the name you choose is crucially important, as this name is
-what is returned to the game state engine directly for an Image transform,
-and is what is populated on the Hash record when you create a hash from this
-image.
-<!--l. 71--><p class="indent" >   The name is dependent on what the image is used for, but for example, if
-this is an image of the ace of clubs, you would want to name it &#8220;Ac&#8221;. If this
-is an image of a dealer button, you would want to name it &#8220;dealer&#8221;. (See the
-Region Records section, {Technical Reference}, for valid return values for each
-region)
-   <h4 class="subsectionHead"><a 
- id="x1-4000"></a>Technical Reference </h4>
-<!--l. 81--><p class="noindent" >In the Table Map (.tm) file, these records will be preceded with the characters "i$".
-Image records have the following format:
-<!--l. 85--><p class="indent" >   <span 
-class="eccc-1000"><span 
-class="small-caps">I</span>$&#x003C;<span 
-class="small-caps">N</span><span 
-class="small-caps">A</span><span 
-class="small-caps">M</span><span 
-class="small-caps">E</span>&#x003E; <span 
-class="small-caps">W</span><span 
-class="small-caps">I</span><span 
-class="small-caps">D</span><span 
-class="small-caps">T</span><span 
-class="small-caps">H</span> <span 
-class="small-caps">H</span><span 
-class="small-caps">E</span><span 
-class="small-caps">I</span><span 
-class="small-caps">G</span><span 
-class="small-caps">H</span><span 
-class="small-caps">T</span></span>
-<!--l. 87--><p class="indent" >   <span 
-class="eccc-1000"><span 
-class="small-caps">S</span><span 
-class="small-caps">C</span><span 
-class="small-caps">A</span><span 
-class="small-caps">N</span><span 
-class="small-caps">L</span><span 
-class="small-caps">I</span><span 
-class="small-caps">N</span><span 
-class="small-caps">E</span>0</span>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-03-18"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>Image Records 
+</h2>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-1"></a>Description
+</h3>
+<div class="Unindented">
+Image records serve multiple purposes. The first purpose is for regions that use the Image transform. When a region requires this type of lookup, the screen scraper engine will first look for an exact pixel-for-pixel image match in the Image records, and if no match is found, will then look for the closest match (with the 65% tolerance, as described in the Region Records {Technical Reference} section). The second purpose of the Image records is to serve as a reference from which Hash records are created (see the {Hash Records} section). Note: Image transforms are very CPU intensive, as they require 2 passes through the Image records, the first to try to find an exact match, and the second to find a closest match. Each pass requires a comparison of every single pixel in the region. For large regions, this is a lot of comparisons. The time required to do Image transform lookups is directly proportional to the number of Image records present, and the size of the requesting Region record. It almost always makes more sense to use the Hash transform to do image matching, as the Hash lookup algorithm is orders of magnitude faster.
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-2"></a>Manipulating image records using OpenScrape
+</h3>
+<div class="Unindented">
+<img class="embedded" src="images/OS_editor_create_image_record.png" alt="figure images/OS_editor_create_image_record.png" style="max-width: 320px; max-height: 35px;"/>
 
-<!--l. 89--><p class="indent" >   <span 
-class="eccc-1000"><span 
-class="small-caps">S</span><span 
-class="small-caps">C</span><span 
-class="small-caps">A</span><span 
-class="small-caps">N</span><span 
-class="small-caps">L</span><span 
-class="small-caps">I</span><span 
-class="small-caps">N</span><span 
-class="small-caps">E</span>1</span>
-<!--l. 91--><p class="indent" >   <span 
-class="eccc-1000">...</span>
-<!--l. 93--><p class="indent" >   <span 
-class="eccc-1000"><span 
-class="small-caps">S</span><span 
-class="small-caps">C</span><span 
-class="small-caps">A</span><span 
-class="small-caps">N</span><span 
-class="small-caps">L</span><span 
-class="small-caps">I</span><span 
-class="small-caps">N</span><span 
-class="small-caps">E</span>N</span>
-<!--l. 95--><p class="indent" >   &#x003C;name&#x003E; is the description of the image, and is the value returned to the screen
-scraper engine or is the name given to an associated Hash record &#x003C;width&#x003E; and
-&#x003C;height&#x003E; are integer values that give the size of the image &#x003C;scanline0&#x003E; - &#x003C;scanlineN&#x003E;
-contain the raw 32bit hexadecimal values for each pixel. Each pixel is in the form
-BBGGRRAA. There is no whitespace between pixel values. Each scanline is terminated
-with a standard Microsoft Windows line ending (carriage return/line feed). The number
-of scanline records is equal to the height of the image. The text length of a scanline
-record is width*8.  
-</body></html> 
+</div>
+<div class="Indented">
+The “Create Image” button on the Table Map Editor window is used to create new Image records. This button is only available if a region record has previously been selected.
+</div>
+<div class="Indented">
+When the “Create Image” button is clicked, the following window will appear:
+</div>
+<div class="Indented">
+<img class="embedded" src="images/OS_editor_new_image.png" alt="figure images/OS_editor_new_image.png" style="max-width: 182px; max-height: 106px;"/>
 
+</div>
+<div class="Indented">
+The only required piece of information on this window is the name of the Image record, however, the name you choose is crucially important, as this name is what is returned to the game state engine directly for an Image transform, and is what is populated on the Hash record when you create a hash from this image.
+</div>
+<div class="Indented">
+The name is dependent on what the image is used for, but for example, if this is an image of the ace of clubs, you would want to name it “Ac”. If this is an image of a dealer button, you would want to name it “dealer”. (See the Region Records section, {Technical Reference}, for valid return values for each region)
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-3"></a>Technical Reference 
+</h3>
+<div class="Unindented">
+In the Table Map (.tm) file, these records will be preceded with the characters "i$". Image records have the following format:
+</div>
+<div class="Indented">
+<span class="versalitas">i$&lt;name&gt; width height </span>
+</div>
+<div class="Indented">
+<span class="versalitas">scanline0 </span>
+</div>
+<div class="Indented">
+<span class="versalitas">scanline1 </span>
+</div>
+<div class="Indented">
+<span class="versalitas">... </span>
+</div>
+<div class="Indented">
+<span class="versalitas">scanlineN</span>
+</div>
+<div class="Indented">
+&lt;name&gt; is the description of the image, and is the value returned to the screen scraper engine or is the name given to an associated Hash record &lt;width&gt; and &lt;height&gt; are integer values that give the size of the image &lt;scanline0&gt; - &lt;scanlineN&gt; contain the raw 32bit hexadecimal values for each pixel. Each pixel is in the form BBGGRRAA. There is no whitespace between pixel values. Each scanline is terminated with a standard Microsoft Windows line ending (carriage return/line feed). The number of scanline records is equal to the height of the image. The text length of a scanline record is width*8. 
+</div>
 
-
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T21:07:21.734000</span>
+</div>
+</div>
+</body>
+</html>
