@@ -492,7 +492,6 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"SELECT  (case when (sum((case when (s.flg_t_saw) then 1 else 0 end)) = 0) then -1 \
                  else cast(sum(case when s.flg_r_saw then 1 else 0 end) as real) / \
                  sum((case when (s.flg_t_saw) then 1 else 0 end))end) as result\
-
 		FROM   player as P, %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
 			   S.id_gametype = %GAMETYPE% AND \
