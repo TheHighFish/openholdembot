@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-01-10"/>
+<meta name="create-date" content="2015-03-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -38,7 +38,7 @@ The File menu contains the standard Windows options to open and save Table Map f
 <div class="Unindented">
 <div class="float">
 <div class="figure">
-<img class="embedded" src="images/Menu_Edit.png" alt="figure images/Menu_Edit.png" style="max-width: 398px; max-height: 300px;"/>
+<img class="embedded" src="images/Menu_Edit.png" alt="figure images/Menu_Edit.png" style="max-width: 399px; max-height: 299px;"/>
 
 </div>
 
@@ -55,15 +55,18 @@ Update Hashes: This option will recalculate all the Hash records in the current 
 <li>
 Duplicate Region: This option will allow you to easily duplicate Regions. For example, once you have the player 1 card locations defined, you might want to copy those to players 2-10 to make things easier on yourself. More on Regions later.
 </li>
+<li>
+Clone Regions: This option will clone all regions oif player 0 at once and even distribute them to reasonable positions at the table. All you have to do afterwards is fine-tuning the positions a little bit. Prerequisite: the balance-regions of the other players must be defined in able to determine the positions for the cloned regions.
+</li>
 
 </ul>
 <h3 class="Subsection">
-<a class="toc" name="toc-Subsection-3"></a>View Menu !!!!!
+<a class="toc" name="toc-Subsection-3"></a>View Menu 
 </h3>
 <div class="Unindented">
 <div class="float">
 <div class="figure">
-<img class="embedded" src="images/OS_ViewMenu.png" alt="figure images/OS_ViewMenu.png"/>
+<img class="embedded" src="images/Menu_View.png" alt="figure images/Menu_View.png" style="max-width: 398px; max-height: 297px;"/>
 
 </div>
 
@@ -71,17 +74,20 @@ Duplicate Region: This option will allow you to easily duplicate Regions. For ex
 
 </div>
 <div class="Indented">
-The View menu has the standard Windows Toolbar/Status Bar options, plus the following specific OpenScrape options:
+The View menu has following OpenScrape options:
 </div>
 <ul>
 <li>
 Connect To Window: This option duplicates the “Green Circle Button” on the toolbar, and will bring up a dialog to allow you to select which window OpenScrape will copy an image from. 
 </li>
 <li>
-Show Region Boxes: Allows you to toggle whether or not Region boxes are displayed on top of the poker table image in the main window. 
+Previous Frame: if connected to OHReplay this option will switch to the previous replay-frame
 </li>
 <li>
 Refresh: This option duplicates the Black and White Arrow button on the toolbar, and will copy to current casino table image to the OpenScrape main window. 
+</li>
+<li>
+Next Frame: if connected to OHReplay this option will switch to the next replay-frame
 </li>
 <li>
 Group Regions/Ungroup Regions: These options allow for customization of how Region records are displayed in the Table Map Editor window. 
@@ -92,22 +98,10 @@ Current size: Displays the client size of the window that OpenScrape is currentl
 
 </ul>
 <h3 class="Subsection">
-<a class="toc" name="toc-Subsection-4"></a>Tools Menu
+<a class="toc" name="toc-Subsection-4"></a>Main Toolbar 
 </h3>
 <div class="Unindented">
-<div class="float">
-<div class="figure">
-
-</div>
-
-</div>
-
-</div>
-<h3 class="Subsection">
-<a class="toc" name="toc-Subsection-5"></a>Main Toolbar 
-</h3>
-<div class="Unindented">
-<img class="embedded" src="images/OS_MainTollbar.png" alt="figure images/OS_MainTollbar.png"/>
+<img class="embedded" src="images/OS_Toolbar.png" alt="figure images/OS_Toolbar.png" style="max-width: 217px; max-height: 30px;"/>
 
 </div>
 <div class="Indented">
@@ -125,9 +119,6 @@ Save Table Map
 </li>
 <li>
 Connect to window 
-</li>
-<li>
-Toggle Region box display on or off 
 </li>
 <li>
 Previous frame if connected to OHReplay
@@ -168,7 +159,7 @@ Control + U – Update Hashes
 Table Map: Buttons/fields The Table Map Editor window has a plethora of information on it, and various fields and controls will become enabled or disabled, depending on the type of map record selected.
 </div>
 <div class="Indented">
-<img class="embedded" src="images/OS_TmEditorWindow.png" alt="figure images/OS_TmEditorWindow.png"/>
+<img class="embedded" src="images/OS_Editor.png" alt="figure images/OS_Editor.png" style="max-width: 601px; max-height: 597px;"/>
 
 </div>
 <div class="Indented">
@@ -184,7 +175,7 @@ Below the tree display is a drop down to select the zoom level of the image that
 Below the Zoom Level are various drop downs that are used to serve as checklists for capturing fonts and card images. Capturing fonts and card images will be discussed later.
 </div>
 <h3 class="Subsection">
-<a class="toc" name="toc-Subsection-6"></a>Creating and editing regions
+<a class="toc" name="toc-Subsection-5"></a>Creating and editing regions
 </h3>
 <div class="Unindented">
 On the top right of this window are a large group of controls, there is a “Rectangle” group, a “Nudge” group, and “Transform”, “Radius”, “Color”, “Avg Color” , and “Result” fields. These controls are used mainly for setting the parameters of Region records, and are only enabled when a Region record is selected in the record tree display on the left side of the window. The meaning of these fields will be described in the “Region” record section below. Some of these fields may display other relevant information, depending on the record type selected in the display tree. In addition to the arrow buttons a selected region can be moved and resized with hotkeys:
@@ -210,7 +201,7 @@ The box below the Hash, Font and Image buttons is used to display “pixel separ
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-10T18:06:00.234000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T04:31:38.718000</span>
 </div>
 </div>
 </body>

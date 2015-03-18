@@ -279,82 +279,6 @@ Load Specific File
 \end_layout
 
 \begin_layout Subsection*
-Perl
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/menu_Perl.JPG
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The Perl menu is not a standard Windows menu item, but rather is used to
- load Perl files containing bot logic for use by the OpenHoldem decision
- and action engine.
-  See the Perl section for more information.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Load Formula
-\emph default
-: This option will load the Perl file specified in Preferences, or in the
- Formula file
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Reload Formula
-\emph default
-: This option will re-load the Perl file specified in Preferences, or in
- the Formula file
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Load Specific Formula
-\emph default
-: This option will present a standard File Open window to allow you to select
- a specific Perl file that you want to load.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Check Synta
-\emph default
-: This option will execute your Perl interpreters function to check the
- syntax of your Perl script.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Edit Main Formula
-\emph default
-: This option will launch the editor specified in preferences and load it
- with your main Perl formula file.
-\end_layout
-
-\begin_layout Subsection*
 Problem Solver
 \end_layout
 
@@ -472,10 +396,6 @@ About this Program
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Graphics

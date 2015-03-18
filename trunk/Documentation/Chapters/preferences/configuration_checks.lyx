@@ -166,6 +166,10 @@ Mimimum colour depth of 24 bits.
 \end_layout
 
 \begin_layout Subsubsection
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Subsubsection
 Checks triggered automatically (Perl usage)
 \end_layout
 
@@ -181,6 +185,11 @@ er.
 
 \begin_layout Itemize
 Perl directory being part of the systems PATH-variable.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
