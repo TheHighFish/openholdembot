@@ -543,10 +543,6 @@
 				<param name="Local" value="Chapters\automation\Scout.html.LyXconv\Scout.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Connecting to a Table">
-				<param name="Local" value="Chapters\automation\ConnectingByHwnd.html.LyXconv\ConnectingByHwnd.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Avoid Race Conditions">
 				<param name="Local" value="Chapters\automation\AvoidRaceConditions.html.LyXconv\AvoidRaceConditions.html">
 				</OBJECT>
