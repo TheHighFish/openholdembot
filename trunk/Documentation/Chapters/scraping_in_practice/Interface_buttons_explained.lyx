@@ -85,6 +85,15 @@ The holdem scraper has the concept of interface region(s), that can be clicked
 \end_layout
 
 \begin_layout Standard
+\begin_inset Graphics
+	filename images_interface_buttons/iX_action_buttons.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="2">
 <features rotate="0" tabularvalignment="middle">
@@ -148,7 +157,7 @@ iXlabel
 \begin_inset Text
 
 \begin_layout Plain Layout
-Type of the button, e.g.fold call rais
+Type of the button, e.g.fold / call / rais
 \end_layout
 
 \end_inset
@@ -268,11 +277,7 @@ swag
 \end_layout
 
 \begin_layout Itemize
-allin 
-\end_layout
-
-\begin_layout Itemize
-all-in 
+allin (or all-in)
 \end_layout
 
 \begin_layout Itemize
@@ -280,51 +285,19 @@ prefold
 \end_layout
 
 \begin_layout Itemize
-autopost 
+autopost (or auto-post / autoblind / auto-blind / postblind / post-blind)
 \end_layout
 
 \begin_layout Itemize
-auto-post 
+sitin (or sit-in )
 \end_layout
 
 \begin_layout Itemize
-autoblind 
+sitout (or sit-out )
 \end_layout
 
 \begin_layout Itemize
-auto-blind 
-\end_layout
-
-\begin_layout Itemize
-postblind 
-\end_layout
-
-\begin_layout Itemize
-post-blind 
-\end_layout
-
-\begin_layout Itemize
-sitin 
-\end_layout
-
-\begin_layout Itemize
-sit-in 
-\end_layout
-
-\begin_layout Itemize
-sitout 
-\end_layout
-
-\begin_layout Itemize
-sit-out 
-\end_layout
-
-\begin_layout Itemize
-leave
-\end_layout
-
-\begin_layout Itemize
-exit
+leave (or exit)
 \end_layout
 
 \begin_layout Standard
@@ -357,42 +330,63 @@ Sitin/Sitout particular behaviour
 \end_layout
 
 \begin_layout Standard
-These are somewhat inverted and can cause confusion, better to explain with
- an example: If you scrape the sitout button and name label as "sitout"
- and state as "true" when sitout button is visible, you will obtain the
- opposite behaviour.
- This is a Winholdem legacy, and derives from the first sites supported,
- like Full Tilt.
- As you know, Full Tilt has not exactly a sitout button, but more a check
- box.
- this means that: - label sitout + state unchecked (false), means you're
- sitting in, and you need to click if you want to sitout - label sitout
- + state checked (true), means you're sitting out and you need to click
- if you want to sit in again.
- I remember this causing me many headaches when I started, (and it still
- confuses beginners).
- However, this behaviour is inherited by all the other sites, even those
- with standard sitin/sitout buttons.
- Ongame is the classic example, with standard sitout button when you're
- sitting in, and sitin button when you're sitting out.
- So you think, ok, let's create a button with label sitout, state is true
- when sitting in, then a sitin button, state is true when sitting out...
- WRONG! You always need to have: 
-\end_layout
+\begin_inset Graphics
+	filename images_interface_buttons/sitout_fulltilt.JPG
 
-\begin_layout Itemize
-(label-->sitout and state-->false) or (label-->sitin and state-->true) when
- sitting in 
-\end_layout
+\end_inset
 
-\begin_layout Itemize
-(label-->sitin and state-->false) or (label-->sitout and state-->true) when
- sitting out 
+
 \end_layout
 
 \begin_layout Standard
-This is the only way to make it work.
- Think of these buttons as check-boxes.
+Traditionally since the early days of FullTilt some special interface-buttons
+ are check-boxes: sitin / sitout / prefold / autopost blinds.
+ These buttons work slightly differently than the normal action buttons.
+ Here a button-state of 
+\begin_inset Quotes eld
+\end_inset
+
+yes
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+true
+\begin_inset Quotes erd
+\end_inset
+
+ means the button is checked, whereas 
+\begin_inset Quotes eld
+\end_inset
+
+no
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+false
+\begin_inset Quotes erd
+\end_inset
+
+ means it is unchecked and can be clicked.
+ This is a Winholdem legacy, and derives from the first sites supported,
+ which used check-boxes as most sites still do today.
+ Therefore the bevaiour is inversted (compared to normal action-buttons)
+ and these buttons will be seen as clickable if their state is 
+\begin_inset Quotes eld
+\end_inset
+
+off
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -400,14 +394,32 @@ The spam buttons
 \end_layout
 
 \begin_layout Standard
-i86-i860-i861-.....-i869 regions are reserved for anti-spam buttons.
+\begin_inset Graphics
+	filename images_interface_buttons/i86_spam_button.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+OpenHoldem provides some special buttons for spam handling i86 and if you
+ need more i860...i869..
  For spam we intend all the popups that can occlude your table.
  Some sites advertise tournaments about to start, other ask for confirmation
  when you leave the table, etc.
  OH can manage these popups and close them as long as they appear inside
  the poker table in a consistent position.
- There's no label region to scrape here, just state and button.
- The autoplayer will click them automatically as soon as they become visdible.
+ There's no label region to scrape here, as type of the button is 
+\begin_inset Quotes eld
+\end_inset
+
+spam
+\begin_inset Quotes erd
+\end_inset
+
+ by default; just state and button matter.
+ The autoplayer will click them automatically as soon as they become visible.
 \end_layout
 
 \begin_layout Enumerate
@@ -435,33 +447,184 @@ The swag interface
 \end_layout
 
 \begin_layout Standard
-This is a particular interface button, where OH won't just click a button,
- but highlight some text-->delete it-->type a new text-->click the button
- (or send enter).
- So, you need to do some work on this.
- First thing first, try manually on the poker site which sequence of actions
- allow a successfull swag.
- Remember that in OH you can adjust swag settings for: 
-\end_layout
+\begin_inset Graphics
+	filename images_interface_buttons/i3edit.JPG
 
-\begin_layout Enumerate
-highlighting the text (double click or click/drag) 
-\end_layout
+\end_inset
 
-\begin_layout Enumerate
-deleting (backspace/delete) 
-\end_layout
 
-\begin_layout Enumerate
-acting (clicking raise button or sending enter) 
 \end_layout
 
 \begin_layout Standard
-As soon as you identify which sequence works, you need to specify the usual
- i3state, i3button, i3label (optional if you use i3 region, like I always
- do, but if you want it, it has to return swag or allin).
- You also need to add an i3edit region, placed where you have to click to
- perform action #1 above (highlighting).
+If we play NoLimit or PotLimit games we need a way to enter betsizes.
+ This is called 
+\begin_inset Quotes eld
+\end_inset
+
+swagging
+\begin_inset Quotes erd
+\end_inset
+
+ (WinHoldems abbreviation for 
+\series bold
+
+\begin_inset Quotes eld
+\end_inset
+
+s
+\series default
+tated 
+\series bold
+wag
+\series default
+er
+\begin_inset Quotes erd
+\end_inset
+
+).
+ To make swag work you need to configure several things:
+\end_layout
+
+\begin_layout Itemize
+first you need an input-box, which is 
+\emph on
+i3edit
+\emph default
+, that specifies the region where the autoplayer should enter the betsize
+\end_layout
+
+\begin_layout Itemize
+before we can enter the text into i3edit we should delete the old one or
+ the defaut one.
+ To do this properly we have to define how to select and how to delete this
+ text.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+swagselectionmethod
+\emph default
+, the supported methods for selection are: 
+\emph on
+Click Drag
+\emph default
+ / 
+\emph on
+Dbl Click
+\emph default
+ / 
+\emph on
+Nothing
+\emph default
+ / 
+\emph on
+Sgl Click
+\emph default
+ / 
+\emph on
+Triple Click
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+swagdeletionmethod
+\emph default
+, the supported methods for deletion are: 
+\emph on
+Delete
+\emph default
+ / 
+\emph on
+Backspace
+\emph default
+ / 
+\emph on
+Nothing
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+once the i3edit-field got cleared the autoplayer can enter the new bet and
+ confirm it.
+ To confirm the bet 2 methods are supported (
+\emph on
+swagconfirmationmethod
+\emph default
+):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+Enter
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Click Bet
+\emph default
+, which usually clicks the i3-button, which usually is 
+\begin_inset Quotes eld
+\end_inset
+
+raise
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+This is basically how swagging works.
+ Every casino is a little bit different.
+ You have to play around a bit and identify which sequence works, then you
+ can specify the usual i3edit, i3state, i3button, i3label and the methods
+ for selection / deletion / confirmation.
+ And that's it -- nearly.
+\end_layout
+
+\begin_layout Section*
+Interpreting the swagged amount
+\end_layout
+
+\begin_layout Standard
+Let’s assume the following situation: you sit in the big blind and had to
+ pay $10.
+ Everybody folds to the button who raises to $30.
+ Now it is your turn again and you decide to enter “90” into the raise-box.
+ What does this mean? Well, it depends on the casino.
+ 
+\end_layout
+
+\begin_layout Itemize
+at some casinos $90 will be your final betsize (swagtextmethod = 3).
+ The swagged amount will be identical to OpenHoldems f$betsize function
+ or to the RaiseTo-amount of OpenPPL.
+\end_layout
+
+\begin_layout Itemize
+other casinos will add $90 to the $10 you already posted, so the final betsize
+ will be $100.(swagtextmethod = 2) 
+\end_layout
+
+\begin_layout Itemize
+and finally some other casinos will add these $90 to the $30 of the last
+ raiser, so the final betsize will be $120 (swagtextmethod = 1, RaiseBy
+ in OpenPPL) 
+\end_layout
+
+\begin_layout Standard
+Again you have to play a bit with your casino and have to find out how it
+ works, so that you can tell the autoplayer how it is expected to execute
+ your desired action.
+ But that's it finally -- we promise!
 \end_layout
 
 \end_body
