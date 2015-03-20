@@ -457,7 +457,7 @@ Chip scraping
 <div class="Indented">
 <div class="float">
 <div class="figure">
-<img class="embedded" src="images_how_to_create_a_map/25_chip_scraping.jpg" alt="figure images_how_to_create_a_map/25_chip_scraping.jpg" style="max-width: 799px; max-height: 664px;"/>
+<img class="embedded" src="images_how_to_create_a_map/25_chip_scraping.png" alt="figure images_how_to_create_a_map/25_chip_scraping.png" style="max-width: 792px; max-height: 579px;"/>
 
 </div>
 
@@ -517,84 +517,199 @@ The chip should be collected as an image. The name of the picture must have a "$
 
 </div>
 <div class="Indented">
-Hash Points
+We will use hash points for recognizing chips, but not hash0 which is already in use, but this time hash1 to avoid potential hash-conflicts, even if they are very unlikely. We create these hash points with the "Graphical Hash Point Editor"Ö
+</div>
+<ol>
+<li>
+click <i>Hash Points </i>
+</li>
+<li>
+click <i>Edit </i>
+</li>
+<li>
+select the hash type
+</li>
+<li>
+select one chip image 
+</li>
+<li>
+zoom to 16x
+</li>
+
+</ol>
+<div class="Unindented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/30_hash_point_editor.jpg" alt="figure images_how_to_create_a_map/30_hash_point_editor.jpg" style="max-width: 726px; max-height: 755px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-To use any other kind of hash, excluding "hash0" must create new hash points. To this we must use the "Hash Point Graphical Editor"
+As you can see we created two new hash points of type "hash1" for this chip. Please note, that both points are at the side panel of the chip, which is always visible, even if the stack consists of multiple chips. We want OpenHoldem to be able to count them properly.
 </div>
 <div class="Indented">
-1 - click Hash Points 2 - click edit 3 - select the hash 4 - select one chip image 5 - zoom to 16x
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/31_hash_points_created.jpg" alt="figure images_how_to_create_a_map/31_hash_points_created.jpg" style="max-width: 726px; max-height: 753px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-click where it marked with arrows
+As it turned out both the $1 chip and the $1000 chip show the same white pixel at the formerly chosen hash-points (marked by arrows) This causes a hash collision and forces us to fine-tune the location of the points so that all chips can be properly recognized.
 </div>
 <div class="Indented">
-see created two new hash points to the "hash1" click "OK"
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/32_hash_point_error_b.jpg" alt="figure images_how_to_create_a_map/32_hash_point_error_b.jpg" style="max-width: 569px; max-height: 329px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-I was forced to change the position of the hash point, the chip of One Dollar was causing error.
+Next we have to care about the location of additional chip stacks. As you can see they can grow in different directions for different playewrs.
 </div>
 <div class="Indented">
-Re: How do I make a map PostPosted: Sat Dec 06, 2008 7:27 pm Offline Posts Too Much User avatar
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/33_direction_of_additional_chip_stacks.jpg" alt="figure images_how_to_create_a_map/33_direction_of_additional_chip_stacks.jpg" style="max-width: 803px; max-height: 666px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-Joined: Wed Jan 02, 2008 5:04 am Posts: 1311 Location: Portugal direction of increased chip
+This determines the placement of our chip regions. pXchip00 is always the first chip, pXchip01 is always on top of that and pXchip10 is the bottom chip of the second chip stack. OpenHoldem is then able to detect all other chip-stacks and all additional chips on top automatically.
 </div>
 <div class="Indented">
-order of alignment
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/34_direction_of_additional_chip_stacks_explained.jpg" alt="figure images_how_to_create_a_map/34_direction_of_additional_chip_stacks_explained.jpg" style="max-width: 803px; max-height: 663px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-pXchip00 is the first, pXchip01 always on top and pXchip10 always in the direction of increase
+Here you cann see the pXchipYZ aligned in OpenScrape.
 </div>
 <div class="Indented">
-pXchipXX aligned
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/35_chips_aligned_at_white_OS.jpg" alt="figure images_how_to_create_a_map/35_chips_aligned_at_white_OS.jpg" style="max-width: 806px; max-height: 665px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-Connecting the table
+Now we have a nearly working tablemap. It recognizes cards and bets. Names are optional and only necessary for PokerTracker and other kinds of opponent modelling. The balances are also necessary, they can be done with font-scraping, which will be discussed in another chapter. We are nearly finished now, but to make use of this fine map we have to tell OpenHoldem how to recognize to a table. This happens by table-size and title-string (and in some rare cases by optional table-points, if different game-types (6max / 10max) can’t be played with the same map.
 </div>
 <div class="Indented">
-to connect a table need only 2 things - clientsize - titletext
+So first we have to define the symbol <i>clientsize. </i>The necessary value gets provided by OpenScrape.
 </div>
 <div class="Indented">
-clientsize
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/36_clientsize.jpg" alt="figure images_how_to_create_a_map/36_clientsize.jpg" style="max-width: 594px; max-height: 663px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-OpenScrape provides the size of table, create the "clientsize" and define the size
+Next we have to define a titletext. It should be unique for each casino (at least if other casinos have the same table size), but it should match all game-types that are supported by our map. Our map supports NL, FL and PL, which share the string "Holdem", so we choose this one as a tilte identifier.
 </div>
 <div class="Indented">
-titletext
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/37_casino_titles.jpg" alt="figure images_how_to_create_a_map/37_casino_titles.jpg" style="max-width: 374px; max-height: 71px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-here we see 3 title NL, FL, PL Always look for a string that is in every title the strig "Holdem" is equal in all
+The <i>titletext </i>is a symbol-record that can be defined easily with the tablemap editor.
 </div>
 <div class="Indented">
-we add the string "Holdem"
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/38_defining_titlestring.jpg" alt="figure images_how_to_create_a_map/38_defining_titlestring.jpg" style="max-width: 591px; max-height: 476px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-to verify that the "bets" work properly we need to add the number of players
+We also have to tell the scraper how many chairs the tablemap supports.
 </div>
 <div class="Indented">
-Re: How do I make a map
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/39_defining_nchairs.jpg" alt="figure images_how_to_create_a_map/39_defining_nchairs.jpg" style="max-width: 592px; max-height: 492px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-Common Pots
+As you can see in the title OpenHoldem is connected to the table (and the map would work if we also defined which chair is seated).
 </div>
 <div class="Indented">
-for the "common pots" are used these 3 symbols c0potXchip00, c0potXchip01 and c0potXchip10.
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/40_connected.jpg" alt="figure images_how_to_create_a_map/40_connected.jpg" style="max-width: 803px; max-height: 900px;"/>
+
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-most sites has 3 pots
+Now we also need common pots (this includes side-pots). They work similar to bets and chip-stacks. Here c0potXchip00, c0potXchip01 and c0potXchip10. 
 </div>
 <div class="Indented">
-This site has 5 pots
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/41_common_pots.jpg" alt="figure images_how_to_create_a_map/41_common_pots.jpg" style="max-width: 801px; max-height: 663px;"/>
+.
+</div>
+
+</div>
+
 </div>
 <div class="Indented">
-*the fifth pot does not appear in the picture, only show the location
+Most sites have three 3 pots, but Ultimatebet has five potshas 5 pots (the fifth pot does not appear in the situation below, but we show its location)
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images_how_to_create_a_map/42_common_pots_again.jpg" alt="figure images_how_to_create_a_map/42_common_pots_again.jpg" style="max-width: 807px; max-height: 665px;"/>
+
+</div>
+
+</div>
+
 </div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-20T12:20:45.046000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-20T15:44:02.328000</span>
 </div>
 </div>
 </body>

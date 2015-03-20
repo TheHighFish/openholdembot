@@ -1063,11 +1063,19 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename images_how_to_create_a_map/25_chip_scraping.jpg
+	filename images_how_to_create_a_map/25_chip_scraping.png
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -1199,112 +1207,486 @@ status open
 \end_layout
 
 \begin_layout Standard
-Hash Points
+We will use hash points for recognizing chips, but not hash0 which is already
+ in use, but this time hash1 to avoid potential hash-conflicts, even if
+ they are very unlikely.
+ We create these hash points with the "Graphical Hash Point Editor"Ö
+\end_layout
+
+\begin_layout Enumerate
+click 
+\emph on
+Hash Points 
+\end_layout
+
+\begin_layout Enumerate
+click 
+\emph on
+Edit 
+\end_layout
+
+\begin_layout Enumerate
+select the hash type
+\end_layout
+
+\begin_layout Enumerate
+select one chip image 
+\end_layout
+
+\begin_layout Enumerate
+zoom to 16x
 \end_layout
 
 \begin_layout Standard
-To use any other kind of hash, excluding "hash0" must create new hash points.
- To this we must use the "Hash Point Graphical Editor"
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/30_hash_point_editor.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-1 - click Hash Points 2 - click edit 3 - select the hash 4 - select one
- chip image 5 - zoom to 16x
+As you can see we created two new hash points of type "hash1" for this chip.
+ Please note, that both points are at the side panel of the chip, which
+ is always visible, even if the stack consists of multiple chips.
+ We want OpenHoldem to be able to count them properly.
 \end_layout
 
 \begin_layout Standard
-click where it marked with arrows
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/31_hash_points_created.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-see created two new hash points to the "hash1" click "OK"
+As it turned out both the $1 chip and the $1000 chip show the same white
+ pixel at the formerly chosen hash-points (marked by arrows) This causes
+ a hash collision and forces us to fine-tune the location of the points
+ so that all chips can be properly recognized.
 \end_layout
 
 \begin_layout Standard
-I was forced to change the position of the hash point, the chip of One Dollar
- was causing error.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/32_hash_point_error_b.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Re: How do I make a map PostPosted: Sat Dec 06, 2008 7:27 pm Offline Posts
- Too Much User avatar
+Next we have to care about the location of additional chip stacks.
+ As you can see they can grow in different directions for different playewrs.
 \end_layout
 
 \begin_layout Standard
-Joined: Wed Jan 02, 2008 5:04 am Posts: 1311 Location: Portugal direction
- of increased chip
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/33_direction_of_additional_chip_stacks.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-order of alignment
+This determines the placement of our chip regions.
+ pXchip00 is always the first chip, pXchip01 is always on top of that and
+ pXchip10 is the bottom chip of the second chip stack.
+ OpenHoldem is then able to detect all other chip-stacks and all additional
+ chips on top automatically.
 \end_layout
 
 \begin_layout Standard
-pXchip00 is the first, pXchip01 always on top and pXchip10 always in the
- direction of increase
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/34_direction_of_additional_chip_stacks_explained.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-pXchipXX aligned
+Here you cann see the pXchipYZ aligned in OpenScrape.
 \end_layout
 
 \begin_layout Standard
-Connecting the table
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/35_chips_aligned_at_white_OS.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-to connect a table need only 2 things - clientsize - titletext
+Now we have a nearly working tablemap.
+ It recognizes cards and bets.
+ Names are optional and only necessary for PokerTracker and other kinds
+ of opponent modelling.
+ The balances are also necessary, they can be done with font-scraping, which
+ will be discussed in another chapter.
+ We are nearly finished now, but to make use of this fine map we have to
+ tell OpenHoldem how to recognize to a table.
+ This happens by table-size and title-string (and in some rare cases by
+ optional table-points, if different game-types (6max / 10max) can't be
+ played with the same map.
 \end_layout
 
 \begin_layout Standard
-clientsize
+So first we have to define the symbol 
+\emph on
+clientsize.
+ 
+\emph default
+The necessary value gets provided by OpenScrape.
 \end_layout
 
 \begin_layout Standard
-OpenScrape provides the size of table, create the "clientsize" and define
- the size
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/36_clientsize.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-titletext
+Next we have to define a titletext.
+ It should be unique for each casino (at least if other casinos have the
+ same table size), but it should match all game-types that are supported
+ by our map.
+ Our map supports NL, FL and PL, which share the string "Holdem", so we
+ choose this one as a tilte identifier.
 \end_layout
 
 \begin_layout Standard
-here we see 3 title NL, FL, PL Always look for a string that is in every
- title the strig "Holdem" is equal in all
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/37_casino_titles.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-we add the string "Holdem"
+The 
+\emph on
+titletext 
+\emph default
+is a symbol-record that can be defined easily with the tablemap editor.
 \end_layout
 
 \begin_layout Standard
-to verify that the "bets" work properly we need to add the number of players
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/38_defining_titlestring.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Re: How do I make a map
+We also have to tell the scraper how many chairs the tablemap supports.
 \end_layout
 
 \begin_layout Standard
-Common Pots
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/39_defining_nchairs.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-for the "common pots" are used these 3 symbols c0potXchip00, c0potXchip01
- and c0potXchip10.
+As you can see in the title OpenHoldem is connected to the table (and the
+ map would work if we also defined which chair is seated).
 \end_layout
 
 \begin_layout Standard
-most sites has 3 pots
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/40_connected.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-This site has 5 pots
+Now we also need common pots (this includes side-pots).
+ They work similar to bets and chip-stacks.
+ Here c0potXchip00, c0potXchip01 and c0potXchip10.
+ 
 \end_layout
 
 \begin_layout Standard
-*the fifth pot does not appear in the picture, only show the location
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/41_common_pots.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Most sites have three 3 pots, but Ultimatebet has five potshas 5 pots (the
+ fifth pot does not appear in the situation below, but we show its location)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/42_common_pots_again.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
