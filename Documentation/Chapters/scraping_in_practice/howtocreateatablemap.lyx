@@ -1,52 +1,81 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass amsbook
 \use_default_options true
 \begin_modules
 theorems-ams
+eqs-within-sections
+figs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
-\use_amsmath 1
-\use_esint 1
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
 \cite_engine basic
+\cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth -2
 \tocdepth -2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
 
 \begin_layout Chapter
-\begin_inset Index
+\begin_inset Index idx
 status open
 
 \begin_layout Plain Layout
@@ -75,51 +104,15 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=6547
 \end_inset
 
 .
+ 
 \end_layout
 
 \begin_layout Standard
-Here I will show you how I make a map from start to finish, do not know
- if is the right way but so is what I do.
-\end_layout
-
-\begin_layout Standard
-checking the version
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/VersionDialog.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Version Dialog
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-changing the settings(always disable useless things like Animation)
+Here I will show you how I make a map from start to finish.
+ I do not know if this is the right way, but this is what I do.
+ At first we check the version to avoid any surürises if the casino updates.
+ These casino updates rarely affect the table-display, but sometimes they
+ do and throw the scraper off.
 \end_layout
 
 \begin_layout Standard
@@ -130,19 +123,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/PreferencesDialog.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Preferences Dialog
-\end_layout
+	filename images_how_to_create_a_map/01_version.jpg
 
 \end_inset
 
@@ -155,7 +136,10 @@ Preferences Dialog
 \end_layout
 
 \begin_layout Standard
-choosing the type of table
+Then we choose proper settings amd disable useless features like avatars
+ and animations that could affect scraping.
+ I also enable other features that ease scraping, especially the four-colour-dec
+k.
 \end_layout
 
 \begin_layout Standard
@@ -166,26 +150,10 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/TableviewDialog.jpg
+	filename images_how_to_create_a_map/02_settings.jpg
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Dialog Tableview
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -195,7 +163,7 @@ Dialog Tableview
 \end_layout
 
 \begin_layout Standard
-table after the settings
+Then we choose a nice table-view, the simpler the better.
 \end_layout
 
 \begin_layout Standard
@@ -206,7 +174,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table01.jpg
+	filename images_how_to_create_a_map/03_table_view_selection.jpg
 
 \end_inset
 
@@ -214,11 +182,27 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is how our poker table looks with our preferred settings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
 \begin_layout Plain Layout
-Table with changed settings
-\end_layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/04_table_with_settings.jpg
 
 \end_inset
 
@@ -231,17 +215,32 @@ Table with changed settings
 \end_layout
 
 \begin_layout Standard
-A quickly checked, I can see some things that have to do
+Checking this table display, we notice some good things and also some possible
+ problems to care about:
 \end_layout
 
-\begin_layout Standard
-- fonts are two colors, I have to use pXname
-\backslash
-uXname to the names and pXbalance
-\backslash
-uXbalance for the balance - dealer is large and well positioned - the cards
- can be hash, Image or Fonts Fuzzy, but I will use hash easier and faster
- - possible oclusion in pXcardback
+\begin_layout Itemize
+fonts are two colors, we have to use pXname / uXname for the names and pXbalance
+ / uXbalance for the balance.
+ In similar cases we might consider to use the background-colour in combination
+ with a negative radius to accept both foreground-colours at once, but here
+ we have two different background-colours, therefore this alternative approach
+ can hardly be used.
+\end_layout
+
+\begin_layout Itemize
+the dealer button is large and well positioned 
+\end_layout
+
+\begin_layout Itemize
+the cards are always exactly the same.
+ Therefore we can use hashes, images or fuzzy fonts, but I will use hashes,
+ as they are the most easy ones and the fastest.
+ 
+\end_layout
+
+\begin_layout Itemize
+it might happen, that large chip-stacks occlude opponents card-backs.
 \end_layout
 
 \begin_layout Subsection
@@ -249,17 +248,43 @@ Scraping Cards
 \end_layout
 
 \begin_layout Standard
-there are 3 methods to collect cards
+There are three methods to collect cards
+\end_layout
+
+\begin_layout Itemize
+using hashes, i.e.
+ using the image to compute a number and then doing a quick search for a
+ match.
+ This is the most simple method, but it requires that each card gets displayed
+ exactly identically, at all times and at all possible places.
+ We will ise hashes here, as Full-Tilt is a bot-friendly casino from a scraping
+ point of view.
+\end_layout
+
+\begin_layout Itemize
+using images.
+ This approach is similar to the one above, but it requires more resources.
+ This approach will be discussed in another chapter of this manual.
+\end_layout
+
+\begin_layout Itemize
+using fuzzy fonts.
+ This is 
+\begin_inset Quotes eld
+\end_inset
+
+true screen-reading
+\begin_inset Quotes erd
+\end_inset
+
+, somewhat more complicated, but it is possible to recognize cards that
+ get displayed each time a little bit differently.
+ Again we will discuss this method in another chapter.
 \end_layout
 
 \begin_layout Standard
-scraping cards using hash scraping cards using fuzzy scraping cards using
- Image(URL)
-\end_layout
-
-\begin_layout Standard
-In this example we are using "hash" to check the other methods, visit the
- links above.
+So let's start with the card-scraping.
+ We have 5 common-cards and 2 hole-cards in the situation below.
 \end_layout
 
 \begin_layout Standard
@@ -270,18 +295,40 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table02.jpg
+	filename images_how_to_create_a_map/05_starting_card_scraping.jpg
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As you can see I pre-created 5 regions for the common cards, but in order
+ to be able to define their size and position we have to care about my hole-card
+s.
+ One of them is partially occluded and we would like to recognize all cards
+ with the same hashes, therefore this card defines the size of our scraping
+ region.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+width  381 - 368 = 13
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
 
-\begin_layout Plain Layout
-x!!!
+height 431 - 395 = 36 
 \end_layout
 
 \end_inset
@@ -289,23 +336,11 @@ x!!!
 
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
-see I created 5 regions for the common cards, but to know the exact size
- of the region I'm using my card.
-\end_layout
-
-\begin_layout Standard
-height 431 - 395 = 36 width 381 - 368 = 13
-\end_layout
-
-\begin_layout Standard
-see that the arrow 3 in one hand I hold the line in the black but up 1 space
- left, so I will use to align the common cards
+Please have a look at the region marked by arrow 3.The left border of the
+ region matches the border of the card, but at the top is a free distance
+ of one pixel.
+ That's how we will align the regions for the common cards too.
 \end_layout
 
 \begin_layout Standard
@@ -316,19 +351,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/table03.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-x!!!
-\end_layout
+	filename images_how_to_create_a_map/06_defining_size_of_regions_for_common_cards.jpg
 
 \end_inset
 
@@ -345,15 +368,12 @@ x!!!
 \end_layout
 
 \begin_layout Standard
-What do I do now is take the measures that have 36x13 and put in each region.
-\end_layout
-
-\begin_layout Standard
-All regions will appear in the upper left corner, see the blue arrow
-\end_layout
-
-\begin_layout Standard
-now is so click and drag to the right place
+Next step: we take the size of the card-scraping region (13x36) and apply
+ it to the common cards.
+ All regions now appear with the correct size.
+ but in the upper left corner (0, 0), as the position is still undefined
+ (please see the blue arrow).
+ Now we select these regions and click-drag them to the right places
 \end_layout
 
 \begin_layout Standard
@@ -364,19 +384,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table04.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-x!!!
-\end_layout
+	filename images_how_to_create_a_map/07_common_cards_aligned.jpg
 
 \end_inset
 
@@ -389,7 +397,8 @@ x!!!
 \end_layout
 
 \begin_layout Standard
-Always make sure that we stay the same alignment for the cards
+Now the common-cards are done.
+ Always make sure that we use the same alignment for all cards.
 \end_layout
 
 \begin_layout Standard
@@ -400,19 +409,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Alignment01.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/08_common_cards_aligned_on_white_background.jpg
 
 \end_inset
 
@@ -429,20 +426,11 @@ status open
 \end_layout
 
 \begin_layout Standard
-checking alignment
-\end_layout
-
-\begin_layout Standard
-all regions should have the same height.
-\end_layout
-
-\begin_layout Standard
-the space between one region and another should be equal.
-\end_layout
-
-\begin_layout Standard
-when the fourth card is not aligned, examples Ipoker, CakePoker should use
- fuzzy
+Now we check the alignment of the common cards.
+ All regions should have the same height.
+ The space between two regions should be equal.
+ If the position of the fourth card can change (Ipoker, CakePoker) we should
+ use fuzzy fonts.
 \end_layout
 
 \begin_layout Standard
@@ -453,19 +441,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Alignment02.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/09_checking_alignment_of_common_cards.jpg
 
 \end_inset
 
@@ -482,8 +458,18 @@ status open
 \end_layout
 
 \begin_layout Standard
-after I have aligned the common cards, I will create and align the cards
- from each player.
+After I have aligned the common cards I will create and align the cards
+ for all players.
+ Once this got done, I will seek a play money table, the most loose one
+ I can get.
+ This is one of the secrets of quick TM creation; I already managed to get
+ 20 cards at once.
+ So now I will create the regions p0cardface0 / p0cardface1.
+ In OpenSrape I already created the region for the first player (player0).
+ You can see that I chose the correct size of 13x36 and also chose hash0
+ transform.
+ Now I save the tablemap and close OpenScrape to clone these regions with
+ an editor..
 \end_layout
 
 \begin_layout Standard
@@ -494,26 +480,10 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Player0.jpg
+	filename images_how_to_create_a_map/10_card_for_player0.jpg
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -523,26 +493,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-After I have done it, I will seek a table of play money very loose.
-\end_layout
-
-\begin_layout Standard
-this is one of the secrets to make a TM very quick, I already managed to
- get 20 cards at once.
-\end_layout
-
-\begin_layout Standard
-Now I will create the regions pXcardface0/pXcardface1
-\end_layout
-
-\begin_layout Standard
-in OpenSrape I create the region for the first player, see that I put the
- size 36x13 and transform hash0, save and close the OpenSrape
-\end_layout
-
-\begin_layout Standard
-here I opened the file in a text editor, here is the 2 regions that created
- the first player
+Here I opened the file in a text editor.
+ You can see the two regions that we created for the first player.
 \end_layout
 
 \begin_layout Standard
@@ -553,19 +505,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor01.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/11_p0cardfaceY_in_editor.jpg
 
 \end_inset
 
@@ -582,7 +522,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-what I do is copy the region's first player and paste several times,
+Now I copy and paste the region's of the first player several times...
 \end_layout
 
 \begin_layout Standard
@@ -593,19 +533,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor02.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/12_p0cardfaceY_in_editor_semi_cloned.jpg
 
 \end_inset
 
@@ -622,7 +550,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-Now it's just changing the numbers of the Player
+...and rename the cloned ones, so that we get cardfaces for all 9 players (p0...p8).
 \end_layout
 
 \begin_layout Standard
@@ -633,19 +561,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor03.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/13_p0cardfaceY_in_editor_cloned.jpg
 
 \end_inset
 
@@ -662,69 +578,18 @@ status open
 \end_layout
 
 \begin_layout Standard
-here all the regions of players ready to drag and drop 
+(On a side-note: cloning regions became more easy in the mean-time.
+ Just create all regions for player0 and the balance-regions for all other
+ players, plus the first common cards.
+ Then click Menu → Edit → Clone Regions and all other regions will be created
+ and even aligned to reasonable places.
+ All you have to do is a little bit of fine-tuning the positions.)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/RegionsReadyToBeAligned.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Be careful
-\end_layout
-
-\begin_layout Standard
-a gift from Ultimatebet
-\end_layout
-
-\begin_layout Standard
-Today the client has been updated.
-\end_layout
-
-\begin_layout Standard
-but it was only updates internal nothing to be concerned about
-\end_layout
-
-\begin_layout Standard
-Always be aware of this
-\end_layout
-
-\begin_layout Standard
-(Drag e Drop) Select the region you want to move, in the example "p7cardface0"
- the region will be flashing in yellow press the "Shift" put the mouse pointer
- over the region and click and hold the region
+In the next screenshot you see all cloned regions in OpenScrape, ready for
+ positioning by drag and drop.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -735,19 +600,39 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table05.jpg
+	filename images_how_to_create_a_map/14_clone_regions_ready_for_positioning.jpg
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Be careful!
+\emph default
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
 
 \begin_layout Plain Layout
 
 \end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/15_new_version.jpg
 
 \end_inset
 
@@ -764,7 +649,23 @@ status open
 \end_layout
 
 \begin_layout Standard
-see the cards marked with arrows, not used to be collected
+Today we received a gift from Ultimatebet.
+ Their client has been updated, but it was only an update of internal functions,
+ nothing that affected the user-interface.
+ This is mostly the case with casino updates and one of the benefits of
+ scraping: updates might happen often, but the interface changes rarely
+ and mostly only slightly.
+ But always be aware of updates.
+\end_layout
+
+\begin_layout Standard
+Now let's continue with the good work: drag and drop.
+ Select the region you want to move, in the example "p7cardface0".
+ The region will be flashing in yellow.
+ Press the "Shift" key, put the mouse pointer over the region, click and
+ move the region to the desired place.
+ placing conventions: player0 sits at 1-o-clocl-position, the other players
+ are seated clockwise..
 \end_layout
 
 \begin_layout Standard
@@ -775,19 +676,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table06.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/16_starting_drag_and_drop.jpg
 
 \end_inset
 
@@ -804,7 +693,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-see all regions is aligned
+Do you notice the cards marked with arrows? They are not aligned properly.
+ You can check this if you select them while they show cards.
 \end_layout
 
 \begin_layout Standard
@@ -815,7 +705,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/RegionsAligned.jpg
+	filename images_how_to_create_a_map/17_checking_alignment.jpg
 
 \end_inset
 
@@ -823,14 +713,6 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Rest of images!!!!!
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -840,12 +722,120 @@ Rest of images!!!!!
 \end_layout
 
 \begin_layout Standard
-giving back alignment
+We have to fine-tune these regions, so that all are aligned properly.
 \end_layout
 
 \begin_layout Standard
-pay close attention, because if one region is misaligned, all their work
- of collecting cards will be wrong
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="5">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/18_checking_alignment_with_card_faces.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/18_checking_alignment_with_card_faces_b.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/18_checking_alignment_with_card_faces_c.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/18_checking_alignment_with_card_faces_d.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/18_checking_alignment_with_card_faces_e.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Checking alignment again.
+ Pay close attention; if one region is misaligned, all data collected from
+ this region will be wrong.
 \end_layout
 
 \begin_layout Standard
@@ -856,19 +846,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table07.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Openscrape showing aligned regions
-\end_layout
+	filename images_how_to_create_a_map/19_OS_with_aligned_cards.jpg
 
 \end_inset
 
@@ -881,12 +859,59 @@ Openscrape showing aligned regions
 \end_layout
 
 \begin_layout Standard
-collecting a card 1- select the region 2- click "Create Image" 3 - put name
- 4 - click "OK"
+Now we start collecting cards 
+\end_layout
+
+\begin_layout Enumerate
+select the region 
+\end_layout
+
+\begin_layout Enumerate
+click "Create Image" 
+\end_layout
+
+\begin_layout Enumerate
+choose a good name like 
+\begin_inset Quotes eld
+\end_inset
+
+8s
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+click "OK"
 \end_layout
 
 \begin_layout Standard
-Creat Hash - step 1
+Repeat this process until all cards are collected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/20_collecting_cards.jpg
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Creating hashes -- step 1
 \end_layout
 
 \begin_layout Enumerate
@@ -913,19 +938,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table08.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/21_creating_hashes.jpg
 
 \end_inset
 
@@ -942,15 +955,15 @@ status open
 \end_layout
 
 \begin_layout Standard
-Creat Hash - step 2
+Creating hashes -- step 2
 \end_layout
 
 \begin_layout Enumerate
-click menu "Edit" 
+Click Menu → Edit
 \end_layout
 
 \begin_layout Enumerate
-click " Update Hashes
+Click Update Hashes
 \end_layout
 
 \begin_layout Standard
@@ -961,19 +974,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table09.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/22_updating_hashes.jpg
 
 \end_inset
 
@@ -1001,19 +1002,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table10.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-test12345#fdfdsfdsfsdgg
-\end_layout
+	filename images_how_to_create_a_map/23_OS_recognizing_8s.jpg
 
 \end_inset
 
@@ -1030,22 +1019,20 @@ test12345#fdfdsfdsfsdgg
 \end_layout
 
 \begin_layout Standard
-My next step is to create the regions "pXbet", but the picture below shows
- an occlusion of "bets" between the players2 and player3.
-\end_layout
-
-\begin_layout Standard
-Scraping the bet-amounts??? is the preferred solution, as it is easy and
- doesn't utilize the CPU much.
- Scraping bet-amounts??? is not applicable in our case, as the numbers can
- be occluded by the chip-stacks.
+As the next step we would like to create the regions "pXbet", but the picture
+ below shows an occlusion of "bets" by chip-stacks.
+ Scraping the bet-amount is the preferred solution, as it is easy and doesn't
+ utilize the CPU much.
+ Unfortunately the occlusions prevents scraping the bet-amounts directly
+ in our case.
  Therefore we have to use the alternative "chip scraping", i.e.
  recognizing and counting chip-stacks.
-\end_layout
-
-\begin_layout Standard
-We will use the regions pXchip00, pXchip01 and pXchip10 for players, and
- c0potXchip00, c0potXchip01, c0potXchip10 for pots.
+ We will use the regions pXchip00, pXchip01 and pXchip10 for players, i.e.
+ the bottom chip of the left-most stack, the 2nd-chip in the same stack
+ and the bottom-chip in the 2nd stack.
+ All other chgip positions are then welldefined.
+ The common pots work similar: c0potXchip00, c0potXchip01, c0potXchip10
+ for pots.
 \end_layout
 
 \begin_layout Standard
@@ -1056,7 +1043,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table11.jpg
+	filename images_how_to_create_a_map/24_bets_occluded_by_chips.jpg
 
 \end_inset
 
@@ -1064,7 +1051,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -1100,7 +1087,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -1144,7 +1131,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -1185,7 +1172,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
@@ -1226,7 +1213,7 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
