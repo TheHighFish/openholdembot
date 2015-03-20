@@ -20,7 +20,7 @@
 This tutorial has been contributed by Ares® at <a class="FlexURL" href="http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=6547">http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=6547</a>. 
 </div>
 <div class="Indented">
-Here I will show you how I make a map from start to finish. I do not know if this is the right way, but this is what I do. At first we check the version to avoid any surürises if the casino updates. These casino updates rarely affect the table-display, but sometimes they do and throw the scraper off.
+Here I will show you how I make a map from start to finish. We will concentrate on cards-scraping and the sometimes used chip-scraping here. The more easy text-scraping, which usually gets chosen for scraping the bets will be explained in another chapter of this manual.At first we check the version to avoid any surprises if the casino updates. These casino updates rarely affect the table-display, but sometimes they do and throw the scraper off.
 </div>
 <div class="Indented">
 <div class="float">
@@ -76,7 +76,7 @@ Checking this table display, we notice some good things and also some possible p
 </div>
 <ul>
 <li>
-fonts are two colors, we have to use pXname / uXname for the names and pXbalance / uXbalance for the balance. In similar cases we might consider to use the background-colour in combination with a negative radius to accept both foreground-colours at once, but here we have two different background-colours, therefore this alternative approach can hardly be used.
+fonts are two colours, we have to use pXname / uXname for the names and pXbalance / uXbalance for the balance. In similar cases we might consider to use the background-colour in combination with a negative radius to accept both foreground-colours at once, but here we have two different background-colours, therefore this alternative approach can hardly be used.
 </li>
 <li>
 the dealer button is large and well positioned 
@@ -93,7 +93,7 @@ it might happen, that large chip-stacks occlude opponents card-backs.
 <a class="toc" name="toc-Subsection-1"></a>Scraping Cards
 </h3>
 <div class="Unindented">
-There are three methods to collect cards
+There are three methods for collecting cards
 </div>
 <ul>
 <li>
@@ -103,12 +103,12 @@ using hashes, i.e. using the image to compute a number and then doing a quick se
 using images. This approach is similar to the one above, but it requires more resources. This approach will be discussed in another chapter of this manual.
 </li>
 <li>
-using fuzzy fonts. This is &ldquo;true screen-reading&rdquo;, somewhat more complicated, but it is possible to recognize cards that get displayed each time a little bit differently. Again we will discuss this method in another chapter.
+using fuzzy fonts. This is &ldquo;true screen-reading&rdquo;, somewhat more complicated, but it is possible to recognize cards that get displayed each time a little bit differently. As already mentioned in the introduction we will discuss this method in another chapter too.
 </li>
 
 </ul>
 <div class="Unindented">
-So let’s start with the card-scraping. We have 5 common-cards and 2 hole-cards in the situation below.
+So let’s start with the card-scraping. We have five common-cards and two hole-cards in the situation below.
 </div>
 <div class="Indented">
 <div class="float">
@@ -121,7 +121,7 @@ So let’s start with the card-scraping. We have 5 common-cards and 2 hole-cards
 
 </div>
 <div class="Indented">
-As you can see I pre-created 5 regions for the common cards, but in order to be able to define their size and position we have to care about my hole-cards. One of them is partially occluded and we would like to recognize all cards with the same hashes, therefore this card defines the size of our scraping region.
+As you can see I pre-created five regions for the common cards, but in order to be able to define their size and position we have to care about my hole-cards. One of them is partially occluded and we would like to recognize all cards with the same hashes, therefore this card defines the size of our scraping region.
 </div>
 <div class="Indented">
 <div class="listing">
@@ -132,7 +132,7 @@ height 431 - 395 = 36
 
 </div>
 <div class="Indented">
-Please have a look at the region marked by arrow 3.The left border of the region matches the border of the card, but at the top is a free distance of one pixel. That’s how we will align the regions for the common cards too.
+Please have a look at the region marked by arrow 3.The left border of the region matches the border of the card, but at the top is a free distance of one pixel. That’s how we will align the regions for all other cards too.
 </div>
 <div class="Indented">
 <div class="float">
@@ -184,7 +184,7 @@ Now we check the alignment of the common cards. All regions should have the same
 
 </div>
 <div class="Indented">
-After I have aligned the common cards I will create and align the cards for all players. Once this got done, I will seek a play money table, the most loose one I can get. This is one of the secrets of quick TM creation; I already managed to get 20 cards at once. So now I will create the regions p0cardface0 / p0cardface1. In OpenSrape I already created the region for the first player (player0). You can see that I chose the correct size of 13x36 and also chose hash0 transform. Now I save the tablemap and close OpenScrape to clone these regions with an editor..
+After I have aligned the common cards I will create and align the cards for all players. Once this got done, I will seek a play money table, the most loose one I can get. This is one of the secrets of quick TM creation; I already managed to get 20 cards at once. So now I will create the regions p0cardface0 / p0cardface1. In OpenSrape I already created the region for the first player (player0). You can see that I chose the correct size of 13x36 and also chose hash0 transform. Now I save the tablemap and close OpenScrape to clone these regions with an external editor..
 </div>
 <div class="Indented">
 <div class="float">
@@ -197,7 +197,7 @@ After I have aligned the common cards I will create and align the cards for all 
 
 </div>
 <div class="Indented">
-Here I opened the file in a text editor. You can see the two regions that we created for the first player.
+Here I opened the file in a text editor (notepad++ from <a class="FlexURL" href="notepad-plus-plus.org">notepad-plus-plus.org</a>). You can see the two regions that we created for the first player.
 </div>
 <div class="Indented">
 <div class="float">
@@ -439,7 +439,7 @@ Now OpenScrape already recognizes the card "8s"
 
 </div>
 <div class="Indented">
-As the next step we would like to create the regions "pXbet", but the picture below shows an occlusion of "bets" by chip-stacks. Scraping the bet-amount is the preferred solution, as it is easy and doesn’t utilize the CPU much. Unfortunately the occlusions prevents scraping the bet-amounts directly in our case. Therefore we have to use the alternative "chip scraping", i.e. recognizing and counting chip-stacks. We will use the regions pXchip00, pXchip01 and pXchip10 for players, i.e. the bottom chip of the left-most stack, the 2nd-chip in the same stack and the bottom-chip in the 2nd stack. All other chgip positions are then welldefined. The common pots work similar: c0potXchip00, c0potXchip01, c0potXchip10 for pots.
+As the next step we would like to create the regions "pXbet", but the picture below shows an occlusion of "bets" by chip-stacks. Scraping the bet-amount is the preferred solution, as it is easy and doesn’t utilize the CPU much. Unfortunately the occlusions prevents scraping the bet-amounts directly in our case. Therefore we have to use the alternative method "chip scraping", i.e. recognizing and counting chip-stacks. We will use the regions pXchip00, pXchip01 and pXchip10 for players, i.e. the bottom chip of the left-most stack, the 2nd-chip in the same stack and the bottom-chip in the 2nd stack. All other chip positions are then welldefined. The common pots work similar: c0potXchip00, c0potXchip01, c0potXchip10 for pot X.
 </div>
 <div class="Indented">
 <div class="float">
@@ -478,7 +478,7 @@ The timer of player8 covers the chip-stack partially. Therefore I will reduce th
 
 </div>
 <div class="Indented">
-Then I open the TM in a text editor and pre-create the new regions, just like i did with the cards before.
+Then I open the TM in a text editor and pre-create the new regions, just like I did with the cards before.
 </div>
 <div class="Indented">
 <div class="float">
@@ -491,7 +491,7 @@ Then I open the TM in a text editor and pre-create the new regions, just like i 
 
 </div>
 <div class="Indented">
-The best place to align the pXchipXX regions is in blinds, because here we get to see often single chips.
+The best place to align the pXchipXX regions is in the blinds, because there we get to see often single chips.
 </div>
 <div class="Indented">
 <div class="float">
@@ -517,7 +517,7 @@ The chip should be collected as an image. The name of the picture must have a "$
 
 </div>
 <div class="Indented">
-We will use hash points for recognizing chips, but not hash0 which is already in use, but this time hash1 to avoid potential hash-conflicts, even if they are very unlikely. We create these hash points with the "Graphical Hash Point Editor"Ö
+We will use hash points for recognizing chips, but not hash0 which is already in use, but this time hash1 to avoid potential hash-conflicts, even if they are very unlikely. We create these hash points with the "Graphical Hash Point Editor"
 </div>
 <ol>
 <li>
@@ -600,7 +600,7 @@ This determines the placement of our chip regions. pXchip00 is always the first 
 
 </div>
 <div class="Indented">
-Here you cann see the pXchipYZ aligned in OpenScrape.
+Here you can see the pXchipYZ aligned in OpenScrape.
 </div>
 <div class="Indented">
 <div class="float">
@@ -613,7 +613,7 @@ Here you cann see the pXchipYZ aligned in OpenScrape.
 
 </div>
 <div class="Indented">
-Now we have a nearly working tablemap. It recognizes cards and bets. Names are optional and only necessary for PokerTracker and other kinds of opponent modelling. The balances are also necessary, they can be done with font-scraping, which will be discussed in another chapter. We are nearly finished now, but to make use of this fine map we have to tell OpenHoldem how to recognize to a table. This happens by table-size and title-string (and in some rare cases by optional table-points, if different game-types (6max / 10max) can’t be played with the same map.
+Now we have a nearly working tablemap. It recognizes cards and bets. Names are optional and only necessary for PokerTracker and other kinds of opponent modelling. The balances are also necessary, they can be done with font-scraping, which will be discussed in another chapter. We are nearly finished now, but to make use of this fine map we have to tell OpenHoldem how to connect to a table. This happens by table-size and title-string (and in some rare cases by optional table-points, if different game-types (6max / 10max) can’t be played with the same map).
 </div>
 <div class="Indented">
 So first we have to define the symbol <i>clientsize. </i>The necessary value gets provided by OpenScrape.
@@ -629,7 +629,7 @@ So first we have to define the symbol <i>clientsize. </i>The necessary value get
 
 </div>
 <div class="Indented">
-Next we have to define a titletext. It should be unique for each casino (at least if other casinos have the same table size), but it should match all game-types that are supported by our map. Our map supports NL, FL and PL, which share the string "Holdem", so we choose this one as a tilte identifier.
+Next we have to define a titletext. It should be unique for each casino (at least if other casinos have the same table size), but it should match all game-types that are supported by our map. Our map supports NL, FL and PL, which share the string "Holdem", so we choose this one as a title identifier.
 </div>
 <div class="Indented">
 <div class="float">
@@ -694,7 +694,7 @@ Now we also need common pots (this includes side-pots). They work similar to bet
 
 </div>
 <div class="Indented">
-Most sites have three 3 pots, but Ultimatebet has five potshas 5 pots (the fifth pot does not appear in the situation below, but we show its location)
+Most sites have three pots, but Ultimatebet has five pots (the fifth pot does not appear in the situation below, but we show its location)
 </div>
 <div class="Indented">
 <div class="float">
@@ -706,10 +706,13 @@ Most sites have three 3 pots, but Ultimatebet has five potshas 5 pots (the fifth
 </div>
 
 </div>
+<div class="Indented">
+That’s it — basically.
+</div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-20T15:44:02.328000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-20T20:58:01.156000</span>
 </div>
 </div>
 </body>

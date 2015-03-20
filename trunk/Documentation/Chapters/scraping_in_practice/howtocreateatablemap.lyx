@@ -109,8 +109,11 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=6547
 
 \begin_layout Standard
 Here I will show you how I make a map from start to finish.
- I do not know if this is the right way, but this is what I do.
- At first we check the version to avoid any surürises if the casino updates.
+ We will concentrate on cards-scraping and the sometimes used chip-scraping
+ here.
+ The more easy text-scraping, which usually gets chosen for scraping the
+ bets will be explained in another chapter of this manual.At first we check
+ the version to avoid any surprises if the casino updates.
  These casino updates rarely affect the table-display, but sometimes they
  do and throw the scraper off.
 \end_layout
@@ -220,8 +223,8 @@ Checking this table display, we notice some good things and also some possible
 \end_layout
 
 \begin_layout Itemize
-fonts are two colors, we have to use pXname / uXname for the names and pXbalance
- / uXbalance for the balance.
+fonts are two colours, we have to use pXname / uXname for the names and
+ pXbalance / uXbalance for the balance.
  In similar cases we might consider to use the background-colour in combination
  with a negative radius to accept both foreground-colours at once, but here
  we have two different background-colours, therefore this alternative approach
@@ -248,7 +251,7 @@ Scraping Cards
 \end_layout
 
 \begin_layout Standard
-There are three methods to collect cards
+There are three methods for collecting cards
 \end_layout
 
 \begin_layout Itemize
@@ -279,12 +282,13 @@ true screen-reading
 
 , somewhat more complicated, but it is possible to recognize cards that
  get displayed each time a little bit differently.
- Again we will discuss this method in another chapter.
+ As already mentioned in the introduction we will discuss this method in
+ another chapter too.
 \end_layout
 
 \begin_layout Standard
 So let's start with the card-scraping.
- We have 5 common-cards and 2 hole-cards in the situation below.
+ We have five common-cards and two hole-cards in the situation below.
 \end_layout
 
 \begin_layout Standard
@@ -308,7 +312,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-As you can see I pre-created 5 regions for the common cards, but in order
+As you can see I pre-created five regions for the common cards, but in order
  to be able to define their size and position we have to care about my hole-card
 s.
  One of them is partially occluded and we would like to recognize all cards
@@ -340,7 +344,7 @@ height 431 - 395 = 36
 Please have a look at the region marked by arrow 3.The left border of the
  region matches the border of the card, but at the top is a free distance
  of one pixel.
- That's how we will align the regions for the common cards too.
+ That's how we will align the regions for all other cards too.
 \end_layout
 
 \begin_layout Standard
@@ -469,7 +473,7 @@ After I have aligned the common cards I will create and align the cards
  You can see that I chose the correct size of 13x36 and also chose hash0
  transform.
  Now I save the tablemap and close OpenScrape to clone these regions with
- an editor..
+ an external editor..
 \end_layout
 
 \begin_layout Standard
@@ -493,7 +497,18 @@ status open
 \end_layout
 
 \begin_layout Standard
-Here I opened the file in a text editor.
+Here I opened the file in a text editor (notepad++ from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+notepad-plus-plus.org
+\end_layout
+
+\end_inset
+
+).
  You can see the two regions that we created for the first player.
 \end_layout
 
@@ -1021,14 +1036,14 @@ As the next step we would like to create the regions "pXbet", but the picture
  utilize the CPU much.
  Unfortunately the occlusions prevents scraping the bet-amounts directly
  in our case.
- Therefore we have to use the alternative "chip scraping", i.e.
+ Therefore we have to use the alternative method "chip scraping", i.e.
  recognizing and counting chip-stacks.
  We will use the regions pXchip00, pXchip01 and pXchip10 for players, i.e.
  the bottom chip of the left-most stack, the 2nd-chip in the same stack
  and the bottom-chip in the 2nd stack.
- All other chgip positions are then welldefined.
+ All other chip positions are then welldefined.
  The common pots work similar: c0potXchip00, c0potXchip01, c0potXchip10
- for pots.
+ for pot X.
 \end_layout
 
 \begin_layout Standard
@@ -1116,7 +1131,7 @@ status open
 
 \begin_layout Standard
 Then I open the TM in a text editor and pre-create the new regions, just
- like i did with the cards before.
+ like I did with the cards before.
 \end_layout
 
 \begin_layout Standard
@@ -1148,7 +1163,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-The best place to align the pXchipXX regions is in blinds, because here
+The best place to align the pXchipXX regions is in the blinds, because there
  we get to see often single chips.
 \end_layout
 
@@ -1210,7 +1225,7 @@ status open
 We will use hash points for recognizing chips, but not hash0 which is already
  in use, but this time hash1 to avoid potential hash-conflicts, even if
  they are very unlikely.
- We create these hash points with the "Graphical Hash Point Editor"Ö
+ We create these hash points with the "Graphical Hash Point Editor"
 \end_layout
 
 \begin_layout Enumerate
@@ -1401,7 +1416,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-Here you cann see the pXchipYZ aligned in OpenScrape.
+Here you can see the pXchipYZ aligned in OpenScrape.
 \end_layout
 
 \begin_layout Standard
@@ -1440,10 +1455,10 @@ Now we have a nearly working tablemap.
  The balances are also necessary, they can be done with font-scraping, which
  will be discussed in another chapter.
  We are nearly finished now, but to make use of this fine map we have to
- tell OpenHoldem how to recognize to a table.
+ tell OpenHoldem how to connect to a table.
  This happens by table-size and title-string (and in some rare cases by
  optional table-points, if different game-types (6max / 10max) can't be
- played with the same map.
+ played with the same map).
 \end_layout
 
 \begin_layout Standard
@@ -1489,7 +1504,7 @@ Next we have to define a titletext.
  same table size), but it should match all game-types that are supported
  by our map.
  Our map supports NL, FL and PL, which share the string "Holdem", so we
- choose this one as a tilte identifier.
+ choose this one as a title identifier.
 \end_layout
 
 \begin_layout Standard
@@ -1657,8 +1672,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-Most sites have three 3 pots, but Ultimatebet has five potshas 5 pots (the
- fifth pot does not appear in the situation below, but we show its location)
+Most sites have three pots, but Ultimatebet has five pots (the fifth pot
+ does not appear in the situation below, but we show its location)
 \end_layout
 
 \begin_layout Standard
@@ -1687,6 +1702,10 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+That's it -- basically.
 \end_layout
 
 \end_body
