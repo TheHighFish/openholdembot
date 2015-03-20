@@ -1009,10 +1009,6 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -1042,6 +1038,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+, 
 \begin_inset Graphics
 	filename images_how_to_create_a_map/24_bets_occluded_by_chips.jpg
 
@@ -1050,25 +1047,13 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+\begin_layout Standard
+Chip scraping
 \end_layout
 
 \begin_layout Standard
@@ -1079,26 +1064,10 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table12.jpg
+	filename images_how_to_create_a_map/25_chip_scraping.jpg
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -1108,11 +1077,9 @@ status open
 \end_layout
 
 \begin_layout Standard
-the timer of this Player8 covering the chip, I will reduce the size to 7x22
-\end_layout
-
-\begin_layout Standard
-open the TM in a text editor and create the new regions
+The timer of player8 covers the chip-stack partially.
+ Therefore I will reduce the size of the scraped region to 22x7.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1123,19 +1090,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Editor04.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/26_chips_occluded_by_timer.jpg
 
 \end_inset
 
@@ -1152,8 +1107,41 @@ status open
 \end_layout
 
 \begin_layout Standard
-The best place to align the pXchipXX is in blinds, because you get to see
- here usually single chips
+Then I open the TM in a text editor and pre-create the new regions, just
+ like i did with the cards before.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images_how_to_create_a_map/27_chips_precreated_in_TM.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The best place to align the pXchipXX regions is in blinds, because here
+ we get to see often single chips.
 \end_layout
 
 \begin_layout Standard
@@ -1164,19 +1152,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table13.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/28_chip_scraping_blinds.jpg
 
 \end_inset
 
@@ -1193,8 +1169,9 @@ status open
 \end_layout
 
 \begin_layout Standard
-- chip should be collected as a image - the name of the picture must have
- a "$" at the beginning (examples: $0.01, $0.25, $1, $5, $100000)
+The chip should be collected as an image.
+ The name of the picture must have a "$" at the beginning (examples: $0.01,
+ $0.25, $1, $5, $100000)
 \end_layout
 
 \begin_layout Standard
@@ -1205,19 +1182,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename E:/Dokumente und Einstellungen/Development/Desktop/OH_SVN/trunk/Documentation/Images/Scraping_In_Practise/Table14.jpg
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\end_layout
+	filename images_how_to_create_a_map/29_named_chips.jpg
 
 \end_inset
 
