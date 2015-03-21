@@ -550,9 +550,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker 3bet preflop",
 		// query
-		"SELECT (case when sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end) = 0 then -1 else \
-		        cast(sum(case when(s.enum_p_3bet_action='F' AND s.flg_p_first_raise) then  1 else  0 end) as real) \
-                / (sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end)) end) as result \
+		"SELECT (case when sum(case when flg_p_3bet_opp then 1 else 0 end) = 0 then -1 else \
+                                cast(sum(case when flg_p_3bet then 1 else 0 end) as real) \
+                                / sum(case when flg_p_3bet_opp then 1 else 0 end) end) as result \
 		FROM  	player as P, %TYPE%_hand_player_statistics as S \
 		WHERE 	S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -570,9 +570,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker folded while facing 3bet preflop",
 		// query
-		"SELECT (case when sum(case when flg_p_3bet_def_opp then 1 else 0 end) = 0 then -1 else \
-		        cast(sum(case when enum_p_3bet_action = 'F' then 1 else 0 end) as real) \
-				/ sum(case when flg_p_3bet_def_opp then 1 else 0 end) end) as result \
+		"SELECT (case when sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end) = 0 then -1 else \
+		        cast(sum(case when(s.enum_p_3bet_action='F' AND s.flg_p_first_raise) then  1 else  0 end) as real) \
+                / (sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end)) end) as result \
 		 FROM   player as P, %TYPE%_hand_player_statistics as S \
 		 WHERE  S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
