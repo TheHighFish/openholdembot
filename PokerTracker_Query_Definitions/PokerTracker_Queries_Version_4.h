@@ -44,6 +44,7 @@
 #define PT4_QUERY_SUPPORT__3B_VS_STEAL            (TRUE)
 #define PT4_QUERY_SUPPORT__BB_3B_VS_STEAL         (TRUE)
 #define PT4_QUERY_SUPPORT__SB_3B_VS_STEAL         (TRUE)
+#define PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL     (TRUE)
 #define PT4_QUERY_SUPPORT__PREFLOP_4B             (TRUE)
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B     (TRUE)
 //FLOP
@@ -94,6 +95,7 @@ const int k_number_of_pokertracker_stats =  //PREFLOP GENERAL STATS
 											(PT4_QUERY_SUPPORT__3B_VS_STEAL ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__BB_3B_VS_STEAL ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__SB_3B_VS_STEAL ? 1 : 0) + 
+											(PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__PREFLOP_4B ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B ? 1 : 0) + 
 											//FLOP
@@ -548,9 +550,9 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		// description_for_editor
 		"Poker Tracker 3bet preflop",
 		// query
-		"SELECT (case when sum(case when flg_p_3bet_opp then 1 else 0 end) = 0 then -1 else \
-				cast(sum(case when flg_p_3bet then 1 else 0 end) as real) \
-				/ sum(case when flg_p_3bet_opp then 1 else 0 end) end) as result \
+		"SELECT (case when sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end) = 0 then -1 else \
+		        cast(sum(case when(s.enum_p_3bet_action='F' AND s.flg_p_first_raise) then  1 else  0 end) as real) \
+                / (sum(case when(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) then  1 else  0 end)) end) as result \
 		FROM  	player as P, %TYPE%_hand_player_statistics as S \
 		WHERE 	S.id_player = P.id_player AND \
 				S.id_gametype = %GAMETYPE% AND \
@@ -712,6 +714,26 @@ end) as result \
 		// query
 		"SELECT (cast (sum(case when ((flg_blind_s=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) as real)/ \
 			 cast (sum(case when ((flg_blind_s=TRUE) AND (flg_blind_def_opp=TRUE)) then 1 else 0 end) as real)) as result \
+		FROM   player as P, %TYPE%_hand_player_statistics as S \
+		WHERE  S.id_player = P.id_player AND \
+			S.id_gametype = %GAMETYPE% AND \
+            P.id_site = %SITEID% AND \
+            P.player_name LIKE '%SCREENNAME%'",
+		// stat_group
+		pt_group_positional
+	},
+#endif
+	#if PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL
+	/* PT4 query to get Fold to Resteal */
+	{
+		// name
+		"fold_vs_resteal",
+		// description_for_editor
+		"Poker Tracker Fold to 3bet after Stealing",
+		// query
+		"SELECT (case when (sum((case when(s.flg_steal_att AND s.flg_p_3bet_def_opp ) then  1 else  0 end)) = 0)then -1 \
+            	else cast(sum(case when(s.flg_steal_att AND s.flg_p_3bet_def_opp AND s.enum_p_3bet_action='F') then  1 else  0 end)As Real) / \
+	            (sum((case when(s.flg_steal_att AND s.flg_p_3bet_def_opp ) then  1 else  0 end)))end) as result\
 		FROM   player as P, %TYPE%_hand_player_statistics as S \
 		WHERE  S.id_player = P.id_player AND \
 			S.id_gametype = %GAMETYPE% AND \
