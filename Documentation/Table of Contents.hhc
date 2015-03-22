@@ -322,7 +322,7 @@
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Scraping in Practice">
-			<param name="Local" value="Chapters\scraping_in_practice\scraping_in_practice.html.LyXconv\scraping_in_practice.html">
+			<param name="Local" value="Chapters\scraping_in_practice\scraping_in_practice_title.html.LyXconv\scraping_in_practice_title.html">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
@@ -357,7 +357,7 @@
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraping &quot;10&quot; as T">
-				<param name="Local" value="Chapters\35\Scraping_10_As_T.html.LyXconv\scraping_10_as_t.html">
+				<param name="Local" value="Chapters\expert_tricks\scraping_10_as_ten.html.LyXconv\scraping_10_as_ten.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Scraping Cents and Dollars">
