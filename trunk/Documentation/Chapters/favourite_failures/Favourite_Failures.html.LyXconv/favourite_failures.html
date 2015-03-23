@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-03-18"/>
+<meta name="create-date" content="2015-03-22"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,7 +14,20 @@
 <a class="toc" name="toc-Chapter-1"></a>Favourite Failures
 </h1>
 <div class="Unindented">
-This chapter will teach you about the most common beginners mistakes. They range from quite subtle and hard to diagnose to pure idiotism. They all have been reported at least several times; solving these problems over and over again has cost the forum-regulars quite some time and nerves. But the good news is: these issues are easy to avoid once you are aware of them.
+This chapter will teach you about the most common beginners mistakes. They all have been reported at least several times; solving these &ldquo;problems&rdquo; over and over again has cost hundreds of newbies (and especially the forum-regulars!) quite some time and nerves. But the good news is: these issues are easy to avoid once you are aware of them. And the even better news: writing this manual took some time (due to all these newbies); in the mean-time we managed to prevent these beginner mistakes and to auto-detect most of the rest. There even is a new feature called &ldquo;Problem Solver&rdquo; that will assist you up to the point where OpenHoldem is able to act.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="menu_problem_solver.png" alt="figure menu_problem_solver.png" style="max-width: 366px; max-height: 268px;"/>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+But it won’t hurt if you be aware of these potential pitfalls.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-1"></a>OH does not connect to the table (I)
@@ -44,7 +57,7 @@ Usually the problem is the window-size caused by incorrect system-settings; <a c
 <i>Reason: No good input.</i>
 </div>
 <div class="Indented">
-The autoplayer will immediatelly be enabled after connection to a table, but it can only act if the scraper recognizes your cards and some <a class="IndexReference" name="entry-buttons-0" href="#index-buttons">↓</a>buttons.
+The autoplayer of all more recent versions (4.x+) will immediatelly be enabled after connection to a table, but it can only act if the scraper recognizes your cards and some <a class="IndexReference" name="entry-buttons-0" href="#index-buttons">↓</a>buttons.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-3"></a>OH does not play (II)
@@ -57,10 +70,10 @@ One safety-measure to avoid incorrect plays is the option to wait for &ldquo;bal
 </div>
 <div class="Indented">
 <div class="float">
-<a class="Label" name="Figure-1.1"> </a><div class="figure">
+<a class="Label" name="Figure-1.2"> </a><div class="figure">
 <img class="embedded" src="Images/balance_stability.jpg" alt="figure Images/balance_stability.jpg" style="max-width: 326px; max-height: 180px;"/>
 <div class="caption">
-Figure 1.1 Unreliable input at FullTilt mini-tables
+Figure 1.2 Unreliable input at FullTilt mini-tables
 </div>
 
 </div>
@@ -136,10 +149,10 @@ You can check the values for these symbols in the <a class="IndexReference" name
 </div>
 <div class="Indented">
 <div class="float">
-<a class="Label" name="Figure-1.2"> </a><div class="figure">
+<a class="Label" name="Figure-1.3"> </a><div class="figure">
 <img class="embedded" src="Images/debug_tab.png" alt="figure Images/debug_tab.png" style="max-width: 581px; max-height: 739px;"/>
 <div class="caption">
-Figure 1.2 Debug-tab
+Figure 1.3 Debug-tab
 </div>
 
 </div>
@@ -313,7 +326,7 @@ If you get a freeplay, it might be that your check-button (or a check/fold-butto
 Some symbols only require the current gamestate to be calculated (e.g. dealerchair, balance, nbetstocall). Others (like didcallround1, nbetsround3 etc.) require a complete game-history and will reset at the beginning of a new hand. If they all are zero (or -1), you have probably caused an incorrect hand-reset, e.g. by temporary occlusion. You should avoid occlusion by any means.
 </div>
 <div class="Remark">
-Rhis problem has now practically disappeared, as OpenHoldem supports nine different handreset-methods, but will only accept a hand-reset if multiple methods fire at the same time.
+This problem has now practically disappeared, since OpenHoldem supports nine different handreset-methods, but only accepts a hand-reset if multiple methods fire at the same time.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-18"></a>
@@ -376,12 +389,12 @@ This code basically says: &ldquo;do prefold, if is is preflop and I don’t have
 This way mis-scrapes will not be able to defeat your fine strategy. Instead a mis-scrape will only keep f$prefold false and delay the folding of trash. The same problem might occur in all functions that might act on unstable frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout, f$leave, f$rebuy and f$chat.
 </div>
 <div class="Claim">
-This failzre gets now prevented too, as OpenHoldem will will only execute f$prefold if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
+This failure gets now prevented too, as OpenHoldem will will only execute f$prefold if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
 </div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T13:50:48.125000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-22T21:33:34.968000</span>
 </div>
 </div>
 </body>

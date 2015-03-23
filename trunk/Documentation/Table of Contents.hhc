@@ -21,7 +21,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Introduction">
-			<param name="Local" value="Chapters\introduction\Introduction.html.LyXconv\Introduction.html">
+			<param name="Local" value="Chapters\titlepages_for_main_parts\introduction.html.LyXconv\introduction.html">
 			<param name="URL" value="Chapters\introduction\Introduction.html.LyXconv\introduction.html">
 			</OBJECT>
 		<UL>
@@ -211,6 +211,7 @@
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Formula Editor">
+			<param name="Local" value="Chapters\FormulaEditor\formula_editor_title.html.LyXconv\formula_editor_title.html">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">

@@ -495,7 +495,7 @@ i3edit
 
 \begin_layout Itemize
 before we can enter the text into i3edit we should delete the old one or
- the defaut one.
+ the default one.
  To do this properly we have to define how to select and how to delete this
  text.
  
@@ -550,7 +550,7 @@ Nothing
 \begin_layout Itemize
 once the i3edit-field got cleared the autoplayer can enter the new bet and
  confirm it.
- To confirm the bet 2 methods are supported (
+ To confirm the bet two methods are supported (
 \emph on
 swagconfirmationmethod
 \emph default
@@ -569,7 +569,7 @@ Enter
 \emph on
 Click Bet
 \emph default
-, which usually clicks the i3-button, which usually is 
+, which clicks the i3-button, which usually is the same as 
 \begin_inset Quotes eld
 \end_inset
 
