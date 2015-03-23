@@ -74,8 +74,12 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Part*
-The Software
+\begin_layout Chapter*
+Formula Editor
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body

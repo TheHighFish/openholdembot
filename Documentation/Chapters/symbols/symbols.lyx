@@ -126,10 +126,6 @@ Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
  for more information.
 \end_layout
 
-\begin_layout Section*
-???
-\end_layout
-
 \begin_layout Section
 General
 \end_layout
@@ -242,7 +238,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-iattached_hwnd
+attached_hwnd
 \end_layout
 
 \end_inset
@@ -267,7 +263,7 @@ Provided for DLL- and Perl-devlopers who can now directly access the poker-table
 \begin_inset Text
 
 \begin_layout Plain Layout
-sfinaltable
+isfinaltable
 \end_layout
 
 \end_inset
@@ -9051,9 +9047,9 @@ Memory Symbols
 \begin_layout Standard
 The purpose of these symbols is to provide storage for values in order to
  reuse them at some later time.
- They once got invented as a substitute??? for left-hand-side-expressions
- (assignments of variables), that did not exist in the WinHoldem-scripting-langu
-age, but in reality, this is a bit a kludge???.
+ They once got invented as a substitute for left-hand-side-expressions (assignme
+nts of variables), that did not exist in the WinHoldem-scripting-language,
+ but in reality, this is a bit a kludge???.
  A much better choice for LHS expressions is Perl or via the user-DLL extension.
  Please see the {Memory Symbols} section for more information.
 \end_layout
@@ -9593,10 +9589,6 @@ A single card value is stored in a single 8-bit byte.
  The card rank is stored in the hi-order 4 bit nibble (bits 7-4).
  The card suit is stored in the lo-order 4 bit nibble (bits 3-0).
  The valid values for card rank are 1-14 as follows: 
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Standard
