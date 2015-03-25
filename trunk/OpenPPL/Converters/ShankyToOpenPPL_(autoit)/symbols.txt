@@ -1,6 +1,9 @@
 AcePresentOnFlop,AcePresentOnFlop
 AmountToCall,AmountToCall
 Bets,Bets
+BetMax,BetMax
+BetMin,BetMin
+BetHalfPot,BetHalfPot
 BetPot,BetPot
 BetSize,BetSize
 BigBlindSize,BigBlindSize
