@@ -26,7 +26,7 @@
 
 HotKeySet("{ESC}", "Terminate")
 
-Dim $version = "1.10"
+Dim $version = "1.11"
 
 Dim $PPL = ""
 Dim $OpenPPL = ""
@@ -911,7 +911,6 @@ Func CleanUp()
 		EndIf
 	Next
 	
-	
 	; remove any spaces before all ')'
 	For $i = 0 to $NumberOfLines Step + 1
 		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " )") Then
@@ -937,6 +936,13 @@ Func CleanUp()
 	For $i = 0 to $NumberOfLines Step + 1
 		If StringLeft($source[$i], 2) <> "//" And StringLeft($source[$i], 5) = " WHEN" And StringLeft($source[$i], 6) <> " WHEN " Then
 			$source[$i] = StringReplace($source[$i], " WHEN", " WHEN ")
+		EndIf
+	Next
+	
+	; fix any OpponentCalledOnFlop that got replaced with OpponentBotCalledOnFlop
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "OpponentBotCalledOnFlop") Then
+			$source[$i] = StringReplace($source[$i], "OpponentBotCalledOnFlop", "OpponentCalledOnFlop", 0)
 		EndIf
 	Next
 	
