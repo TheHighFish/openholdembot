@@ -375,8 +375,8 @@ http://en.wikipedia.org/wiki/Levenshtein_distance
 \end_inset
 
 ).
- Note that Levenshtein distances that exceed one-half the length of the
- name as stored in Poker Tracker are discarded as invalid.
+ Note that Levenshtein distances that exceed a certain level (currently
+ 20% of the length of the name) are discarded as invalid.
 \end_layout
 
 \end_body
