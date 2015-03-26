@@ -123,7 +123,12 @@ it is usually very reliable
 \end_layout
 
 \begin_layout Itemize
-it can be accessed easily with the Windows API (GetWindowText)
+it can be accessed easily with the Windows API (GetWindowText) and does
+ not require any scraping.
+\end_layout
+
+\begin_layout Standard
+Therefore OpenHoldem provides a way to interpret the titletext:
 \end_layout
 
 \begin_layout Standard
