@@ -350,6 +350,10 @@
 				<param name="Name" value="Interface-Buttons explained">
 				<param name="Local" value="Chapters\scraping_in_practice\Interface_buttons_explained.html.LyXconv\Interface_buttons_explained.html">
 				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Interpreting Titletext">
+				<param name="Local" value="Chapters\scraping_in_practice\Interpreting_Titletext.html.LyXconv\Interpreting_Titletext.html">
+				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Expert Tricks">
