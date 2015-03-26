@@ -65,7 +65,6 @@ void InstantiateAllSingletons() {
   write_log(theApp.p_preferences()->debug_alltherest(), "[Singletons] Going to create CTableState\n");
   assert(!p_table_state);
   p_table_state = new CTableState;
-  write_log(theApp.p_preferences()->debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
   write_log(theApp.p_preferences()->debug_alltherest(), "[Singletons] Going to create CAutoplayerFunctions\n");
   assert(!p_autoplayer_functions);
   p_autoplayer_functions = new CAutoplayerFunctions;
@@ -106,6 +105,7 @@ void InstantiateAllSingletons() {
   write_log(theApp.p_preferences()->debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
+  p_engine_container->CreateSymbolEngines();
   write_log(theApp.p_preferences()->debug_alltherest(), "[Singletons] Going to create CRebuyManagement\n");
   assert(!p_rebuymanagement); 
   p_rebuymanagement = new CRebuyManagement;

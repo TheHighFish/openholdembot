@@ -92,7 +92,8 @@ BOOL COpenHoldemApp::InitInstance() {
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls); 
   // Create logs-directoy if necessary
-  CreateDirectory(CFilenames::LogsDirectory(), NULL);
+  //!!!!!Not here, but when log gets opened
+  //!!!!!CreateDirectory(CFilenames::LogsDirectory(), NULL);
 	// Since OH 4.0.0 we always use an ini-file,
 	// the one and only in our OH-directory,
 	// no matter how it is named.
@@ -122,13 +123,13 @@ BOOL COpenHoldemApp::InitInstance() {
 		return FALSE;
 	AfxEnableControlContainer();
 
+  // Classes
+  _p_preferences = new CPreferences;
+	p_sessioncounter = new CSessionCounter;
+  // Preferences
 	free((void*)m_pszProfileName);
 	m_pszProfileName = _strdup(CFilenames::IniFilePath().GetString());
 	theApp.p_preferences()->LoadPreferences();
-	
-	// Classes
-	p_sessioncounter = new CSessionCounter;
-  _p_preferences = new CPreferences;
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).

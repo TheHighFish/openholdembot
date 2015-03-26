@@ -113,6 +113,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
       write_log(theApp.p_preferences()->debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_autoplayer_trace->Add(name, 0);
+      // !!!!! query, nbot set
       GUI->p_white_info_box()->SetCustomLogMessage(name);
     }
     *result = 0;

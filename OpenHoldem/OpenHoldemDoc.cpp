@@ -72,7 +72,7 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 	// Default bot
 	SYM->p_function_collection()->SetEmptyDefaultBot();
 	SetModifiedFlag(false);
-	GUI->p_openholdem_title()->UpdateTitle();
+	//!!!!!GUI->p_openholdem_title()->UpdateTitle();
 
   // Try to (re)load dll
 	p_dll_extension->Load("");

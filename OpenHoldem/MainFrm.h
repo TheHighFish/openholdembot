@@ -97,18 +97,15 @@ class CMainFrame : public CFrameWnd {
 	afx_msg void OnHelp();
 	afx_msg void OnHelpOpenPPL();
 	afx_msg void OnHelpForums();
-
  public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
 	void	OpenHelpFile(CString windows_help_file_chm);
 	CString	_exec_filename;
-
  public:
 	// public accessors
 	const bool wait_cursor() { return _wait_cursor; }
-
  public:
 	void DisableButtonsOnConnect();
 	void EnableButtonsOnDisconnect();
@@ -144,9 +141,7 @@ class CMainFrame : public CFrameWnd {
 private:
 	// private functions and variables - not available via accessors or mutators
 	int CreateStatusBar(void);
-
 	RECT			_prev_att_rect, _prev_wrect;
-
 	CCritSec		m_critsec;
 };
 
