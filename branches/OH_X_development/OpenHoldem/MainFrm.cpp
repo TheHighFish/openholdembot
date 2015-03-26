@@ -42,6 +42,7 @@
 #include "..\CTransform\CTransform.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
+#include "CWhiteInfoBox.h"
 #include "DialogFormulaScintilla.h"
 #include "DialogSAPrefs2.h"
 #include "DialogSAPrefs3.h"
@@ -170,14 +171,6 @@ CMainFrame::CMainFrame() {
   _p_table_positioner = new CTablePositioner;
   _p_validator = new CValidator;
   _p_version_info = new CVersionInfo;
-  // GUI objects
-  _p_debug_tab = new CDebugTab;
-  _p_formulaScintillaDlg = new CDlgFormulaScintilla;
-  _p_ScraperOutputDlg = new CDlgScraperOutput;
-  //!!!!!_p_openholdem_statusbar = new COpenHoldemStatusbar;
-  _p_openholdem_title = new COpenHoldemTitle;
-  //!!!_p_flags_toolbar = new CFlagsToolbar;
-  //!!!_p_white_info_box = new CWhiteInfoBox;
 }
 
 CMainFrame::~CMainFrame() {
@@ -199,13 +192,18 @@ CMainFrame::~CMainFrame() {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CString			t = "";
 	lpCreateStruct->dwExStyle |= WS_MINIMIZE;
-	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined)
+	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined) {
 		return -1;
-	// Tool bar
-	_p_flags_toolbar = new CFlagsToolbar(this);
-	// Status bar
+  }
+  // GUI objects
 	_p_openholdem_statusbar = new COpenHoldemStatusbar(this);
-	// Start timer that checks if we should enable buttons
+  _p_debug_tab = new CDebugTab;
+  _p_formulaScintillaDlg = new CDlgFormulaScintilla;
+  _p_ScraperOutputDlg = new CDlgScraperOutput;
+  _p_openholdem_title = new COpenHoldemTitle;
+  _p_flags_toolbar = new CFlagsToolbar(this);
+  _p_white_info_box = new CWhiteInfoBox;
+  // Start timer that checks if we should enable buttons
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
 	// Start timer that updates status bar
 	SetTimer(UPDATE_STATUS_BAR_TIMER, 500, 0);

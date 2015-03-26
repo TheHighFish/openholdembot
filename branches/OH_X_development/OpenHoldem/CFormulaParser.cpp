@@ -40,9 +40,11 @@ CString _function_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing = false;
+  _p_parser_symbol_table = new CParserSymbolTable;
 }
 
 CFormulaParser::~CFormulaParser() {
+  delete _p_parser_symbol_table;
 }
 
 void CFormulaParser::InitNewParse() {

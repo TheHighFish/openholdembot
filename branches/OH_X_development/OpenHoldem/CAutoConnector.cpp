@@ -47,25 +47,22 @@ CArray <STableList, STableList>		g_tlist;
 CAutoConnector::CAutoConnector()
 {
 	write_log(theApp.p_preferences()->debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
-
-	CString MutexName = theApp.p_preferences()->mutex_name() + "AutoConnector";
+  CString MutexName = theApp.p_preferences()->mutex_name() + "AutoConnector";
 	_autoconnector_mutex = new CMutex(false, MutexName);
-
-	p_sharedmem->MarkPokerWindowAsUnAttached();
+  p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
+  _p_tablemap_loader = new CTableMapLoader;
 }
 
 
-CAutoConnector::~CAutoConnector()
-{
+CAutoConnector::~CAutoConnector() {
+  delete _p_tablemap_loader;
 	// Releasing the mutex in case we hold it.
 	// If we don't hold it, Unlock() will "fail" silently.
 	write_log(theApp.p_preferences()->debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	_autoconnector_mutex->Unlock();
-	if (_autoconnector_mutex != NULL)
-	{
-
-		write_log(theApp.p_preferences()->debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
+	if (_autoconnector_mutex != NULL)	{
+    write_log(theApp.p_preferences()->debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}

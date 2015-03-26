@@ -71,6 +71,11 @@ class CEngineContainer {
   CEngineContainer();
   ~CEngineContainer();
  public:
+  // Must be called after object creation.
+  // We can~t do this in the constructor,
+  // as it implicitly uses pointert to itself.
+  void CreateSymbolEngines();
+ public:
   // both to be called by the auto-connector
   // future: to be create / destroyed on connection
   void ResetOnConnection();
@@ -81,7 +86,7 @@ class CEngineContainer {
   CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
  public:
   // Accessors for symbol engines
-   CSymbolEngineActiveDealtPlaying* p_symbol_engine_active_dealt_playing()    { return _p_symbol_engine_active_dealt_playing; }
+  CSymbolEngineActiveDealtPlaying* p_symbol_engine_active_dealt_playing()    { return _p_symbol_engine_active_dealt_playing; }
   CSymbolEngineAutoplayer*         p_symbol_engine_autoplayer()               { return _p_symbol_engine_autoplayer; }
   CSymbolEngineBlinds*             p_symbol_engine_blinds()                   { return _p_symbol_engine_blinds; }
   CSymbolEngineCards*              p_symbol_engine_cards()                    { return _p_symbol_engine_cards; }
@@ -128,7 +133,6 @@ class CEngineContainer {
  private:
   void CreateSpecialSymbolEngines();
   void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
-  void CreateSymbolEngines();
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:

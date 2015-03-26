@@ -70,13 +70,7 @@
 CEngineContainer *p_engine_container = NULL;
 
 CEngineContainer::CEngineContainer() {
-  write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
-  CreateSymbolEngines();
-  // First initialization is the same as on a new connection
-  ResetOnConnection();
-  // But we want to initialize later again on every connection
-  _reset_on_connection_executed = false;
-  write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
+  write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer()\n");  
 }
 
 CEngineContainer::~CEngineContainer() {
@@ -88,6 +82,7 @@ void CEngineContainer::CreateSpecialSymbolEngines() {
   // e.g. to detect a hand-reset.
   // So they work slightly different and also get their own initialization.
   p_betround_calculator = new CBetroundCalculator();	
+  _p_handreset_detector = new CHandresetDetector;
 }
 
 void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
@@ -240,6 +235,13 @@ void CEngineContainer::CreateSymbolEngines() {
   _p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(_p_handhistory_writer);
   write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] All symbol engines created\n");
+  
+  // First initialization is the same as on a new connection
+  ResetOnConnection();
+  // But we want to initialize later again on every connection
+  _reset_on_connection_executed = false;
+  write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
+
 }
 
 void CEngineContainer::DestroyAllSymbolEngines()
@@ -255,9 +257,9 @@ void CEngineContainer::DestroyAllSymbolEngines()
 	write_log(theApp.p_preferences()->debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
-void CEngineContainer::DestroyAllSpecialSymbolEngines()
-{;
+void CEngineContainer::DestroyAllSpecialSymbolEngines() {
 	delete p_betround_calculator;
+  delete _p_handreset_detector;
 }
 
 void CEngineContainer::EvaluateAll() {

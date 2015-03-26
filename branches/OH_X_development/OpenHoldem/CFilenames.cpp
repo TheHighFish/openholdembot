@@ -29,7 +29,7 @@ CFilenames::~CFilenames() {
 void CFilenames::Log(CString name, CString value) {
   CString message;
   message.Format("[CFilenames] %s = %s\n", name, value);
-  write_log(theApp.p_preferences()->debug_filenames(), (char*)message.GetString());
+  //!!!!!write_log(theApp.p_preferences()->debug_filenames(), (char*)message.GetString());
 }
 
 CString CFilenames::OpenHoldemDirectory() {
