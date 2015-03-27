@@ -16,8 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineCards: public CVirtualSymbolEngine
-{
+class CSymbolEngineCards: public CVirtualSymbolEngine {
 public:
 	CSymbolEngineCards();
 	~CSymbolEngineCards();
@@ -34,52 +33,39 @@ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
 	//POCKET TESTS
-	bool ispair()			{ return _ispair; }
-	bool issuited()			{ return _issuited; }		
-	bool isconnector()		{ return _isconnector; }
+	bool ispair()			 { return _ispair; }
+	bool issuited()		 { return _issuited; }		
+	bool isconnector() { return _isconnector; }
 public:
 	bool IsHand(const char *name);
-
 public:
 	//COMMON CARDS
 	int ncommoncardsknown()		{ return _ncommoncardsknown; }
-
 	//(UN)KNOWN CARDS
-	int nouts()					{ return _nouts; }
+	int nouts()				  	{ return _nouts; }
 	int ncardsknown()			{ return _ncardsknown; }
-	int ncardsunknown()			{ return _ncardsunknown; }
-	int ncardsbetter()			{ return _ncardsbetter; }
-
+	int ncardsunknown()		{ return _ncardsunknown; }
+	int ncardsbetter()		{ return _ncardsbetter; }
 	//FLUSHES SETS STRAIGHTS
 	int nsuited()					{ return _nsuited; }
-	int nsuitedcommon()				{ return _nsuitedcommon; }
+	int nsuitedcommon()		{ return _nsuitedcommon; }
 	int tsuit()						{ return _tsuit; }
-	int tsuitcommon()				{ return _tsuitcommon; }
+	int tsuitcommon()			{ return _tsuitcommon; }
 	int nranked()					{ return _nranked; }
-	int nrankedcommon()				{ return _nrankedcommon; }
+	int nrankedcommon()		{ return _nrankedcommon; }
 	int trank()						{ return _trank; }
-	int trankcommon()				{ return _trankcommon; }
-	int nstraight()					{ return _nstraight; }
-	int nstraightcommon()			{ return _nstraightcommon; }
-	int nstraightfill()				{ return _nstraightfill; }
-	int nstraightfillcommon()		{ return _nstraightfillcommon; }
+	int trankcommon()			{ return _trankcommon; }
+	int nstraight()				{ return _nstraight; }
+	int nstraightcommon()	{ return _nstraightcommon; }
+	int nstraightfill()		{ return _nstraightfill; }
+	int nstraightfillcommon()	  { return _nstraightfillcommon; }
 	int nstraightflush()				{ return _nstraightflush; }
-	int nstraightflushcommon()		{ return _nstraightflushcommon; }
-	int nstraightflushfill()			{ return _nstraightflushfill; }
+	int nstraightflushcommon()	{ return _nstraightflushcommon; }
+	int nstraightflushfill()		{ return _nstraightflushfill; }
 	int nstraightflushfillcommon()	{ return _nstraightflushfillcommon; }
-
-	//HAND TESTS
-	int $$pc(int index)		{ return _$$pc[index]; }
-	int $$pr(int index)		{ return _$$pr[index]; }
-	int $$ps(int index)		{ return _$$ps[index]; }
-	int $$cc(int index)		{ return _$$cc[index]; }
-	int $$cr(int index)		{ return _$$cr[index]; }
-	int $$cs(int index)		{ return _$$cs[index]; }
-
 private:
 	void CalcPocketTests();
 	void CalcFlushesStraightsSets();
-	void CalculateHandTests();
 	void CalculateCommonCards();
 	void CalcUnknownCards();
 private:
@@ -91,22 +77,18 @@ private:
 	bool _ispair;
 	bool _issuited;
 	bool _isconnector;
-
 	//COMMON CARDS
 	int _ncommoncardsknown;
-
 	//(UN)KNOWN CARDS
 	int _nouts;
 	int _ncardsknown;
 	int _ncardsunknown;
 	int _ncardsbetter;
-
 	//NHANDS
 	int _nhands;
 	int _nhandshi;
 	int _nhandslo;
 	int _nhandsti;
-
 	//FLUSHES SETS STRAIGHTS
 	int _nsuited;
 	int _nsuitedcommon;
@@ -124,15 +106,6 @@ private:
 	int _nstraightflushcommon;
 	int _nstraightflushfill;
 	int _nstraightflushfillcommon;
-
-	//HAND TESTS
-	int _$$pc[k_number_of_cards_per_player];
-	int _$$pr[k_number_of_cards_per_player];
-	int _$$ps[k_number_of_cards_per_player];
-	int _$$cc[k_number_of_community_cards];
-	int _$$cr[k_number_of_community_cards];
-	int _$$cs[k_number_of_community_cards];
-
 private:
 	 // Card masks
 	CardMask heartsCards, diamondsCards, clubsCards, spadesCards;

@@ -29,8 +29,7 @@
 
 CSymbolEngineCards *p_symbol_engine_cards = NULL;
 
-CSymbolEngineCards::CSymbolEngineCards()
-{
+CSymbolEngineCards::CSymbolEngineCards() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -46,57 +45,35 @@ CSymbolEngineCards::CSymbolEngineCards()
 	CardMaskCreateCMAllCardsOfOfSuit(&clubsCards,    Suit_CLUBS);
 }
 
-CSymbolEngineCards::~CSymbolEngineCards()
-{}
+CSymbolEngineCards::~CSymbolEngineCards() {
+}
 
-void CSymbolEngineCards::InitOnStartup()
-{
+void CSymbolEngineCards::InitOnStartup() {
 	ResetOnConnection();
 }
 
-void CSymbolEngineCards::ResetOnConnection()
-{
+void CSymbolEngineCards::ResetOnConnection() {
 	ResetOnHandreset();
 }
 
-void CSymbolEngineCards::ResetOnHandreset()
-{
-	// hand tests
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Resetting $$pcX, $$psX, $$prX\n");
-		_$$pc[i] = CARD_UNDEFINED;
-		_$$pr[i] = 0;
-		_$$ps[i] = 0;
-	}
-
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		_$$cc[i] = CARD_UNDEFINED;
-		_$$cs[i] = 0;
-		_$$cr[i] = 0;
-	}
+void CSymbolEngineCards::ResetOnHandreset() {
 	// pocket tests
-	_ispair = 0;
-	_issuited = 0;
-	_isconnector = 0;
-
+	_ispair = false;
+	_issuited = false;
+	_isconnector = false;
 	// common cards
 	_nouts = 0;
 	_ncommoncardsknown = 0;
 	_ncommoncardsknown = 0;
-
 	// (un)known cards
 	_ncardsknown = 0;
 	_ncardsunknown = 0;
 	_ncardsbetter = 0;
-
 	// nhands
 	_nhands = 0;
 	_nhandshi = 0;
 	_nhandslo = 0;
 	_nhandsti = 0;
-
 	// flushes straights sets
 	_nsuited = 0;
 	_nsuitedcommon = 0;
@@ -116,23 +93,20 @@ void CSymbolEngineCards::ResetOnHandreset()
 	_nstraightflushfillcommon = k_cards_needed_for_flush;
 }
 
-void CSymbolEngineCards::ResetOnNewRound()
-{}
+void CSymbolEngineCards::ResetOnNewRound() {
+}
 
 void CSymbolEngineCards::ResetOnMyTurn() {
 }
 
-void CSymbolEngineCards::ResetOnHeartbeat()
-{
+void CSymbolEngineCards::ResetOnHeartbeat() {
 	CalcPocketTests();
 	CalculateCommonCards();
-	CalculateHandTests();
 	CalcFlushesStraightsSets();
 	CalcUnknownCards();
 }
 
-void CSymbolEngineCards::CalcPocketTests()
-{
+void CSymbolEngineCards::CalcPocketTests() {
 	_ispair      = false;
 	_issuited    = false;
 	_isconnector = false;
@@ -522,47 +496,6 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	}
 }
 
-int GetRankFromCard(int scraper_card);
-
-void CSymbolEngineCards::CalculateHandTests()
-{
-	// Player cards
-	for (int i=0; i<k_number_of_cards_per_player; i++)
-	{
-    Card card = p_table_state->User()->_hole_cards[i];
-		if (card.IsKnownCard())
-		{
-      int rank = card.GetOpenHoldemRank();
-			int suit = card.GetSuit();
-
-			AssertRange(rank, 0, k_rank_ace);
-			AssertRange(suit, 0, Suit_SPADES);
-
-			write_log(preferences.debug_symbolengine(), 
-        "[CSymbolEngineCards] Card = %i\n", card.GetValue());
-			write_log(preferences.debug_symbolengine(), 
-				"[CSymbolEngineCards] Rank = %i\n", rank);
-			write_log(preferences.debug_symbolengine(), 
-				"[CSymbolEngineCards] Suit = %i\n", suit);
-
-			_$$pc[i] = (rank<<4) | suit;								  
-			_$$pr[i] = rank;						
-			_$$ps[i] = suit;	
-		}
-	}
-	// Common cards
-	for (int i=0; i<k_number_of_community_cards; i++)
-	{
-		Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())
-		{
-      _$$cc[i] = card.GetValue();
-      _$$cr[i] = card.GetOpenHoldemRank();
-      _$$cs[i] = card.GetSuit();
-		}
-	}
-}
-
 void CSymbolEngineCards::CalculateCommonCards() {
 	_ncommoncardsknown = 0;
 	for (int i=0; i<k_number_of_community_cards; i++)	{
@@ -571,7 +504,6 @@ void CSymbolEngineCards::CalculateCommonCards() {
 		}
 	}
 }
-
 
 void CSymbolEngineCards::CalcUnknownCards()
 {
@@ -729,47 +661,25 @@ bool CSymbolEngineCards::IsHand(const char *name) {
   return true;
 }
 
-int GetRankFromCard(int scraper_card)
-{
-	// Hand-eval library uses 0 (smallest positive) for 2
-	return StdDeck_RANK(scraper_card) + 2;
-}
-
 bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "$", 1)==0)
-	{
-		if (memcmp(name, "$$pc", 4)==0)
-		{
-			*result = $$pc(name[4]-'0');
-		}
-		else if (memcmp(name, "$$pr", 4)==0)
-		{
-			*result = $$pr(name[4]-'0');
-		}
-		else if (memcmp(name, "$$ps", 4)==0)  
-		{
-			*result = $$ps(name[4]-'0');
-		}
-		else if (memcmp(name, "$$cc", 4)==0)  
-		{
-			*result = $$cc(name[4]-'0');
-		}
-		else if (memcmp(name, "$$cr", 4)==0)  
-		{
-			*result = $$cr(name[4]-'0');
-		}
-		else if (memcmp(name, "$$cs", 4)==0)  
-		{
-			*result = $$cs(name[4]-'0');
-		}
-		else if (memcmp(name, "$", 1)==0)  	
-		{
+	if (memcmp(name, "$", 1)==0) {
+		if (memcmp(name, "$$pc", 4)==0)	{
+      *result = p_table_state->User()->_hole_cards[name[4]-'0'].GetValue();
+		}	else if (memcmp(name, "$$pr", 4)==0) {
+			*result = p_table_state->User()->_hole_cards[name[4]-'0'].GetOpenHoldemRank();
+		}	else if (memcmp(name, "$$ps", 4)==0) {
+			*result = p_table_state->User()->_hole_cards[name[4]-'0'].GetSuit();
+		} else if (memcmp(name, "$$cc", 4)==0) {
+      *result = p_table_state->_common_cards[name[4]-'0'].GetValue();
+		}	else if (memcmp(name, "$$cr", 4)==0) {
+      *result = p_table_state->_common_cards[name[4]-'0'].GetOpenHoldemRank();
+		}	else if (memcmp(name, "$$cs", 4)==0) {
+			*result = p_table_state->_common_cards[name[4]-'0'].GetSuit();
+		}	else if (memcmp(name, "$", 1)==0) {
 			*result = IsHand(name);
-		}
-		else
-		{
+		}	else {
 			// Invalid symbol
 			return false;
 		}
