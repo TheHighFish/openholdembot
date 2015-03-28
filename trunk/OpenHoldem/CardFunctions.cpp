@@ -18,10 +18,8 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
-int RankCharacterToRankNumber(char rank)
-{
-	switch (rank)
-	{
+int RankCharacterToRankNumber(char rank) {
+	switch (rank) {
 		case '2': return 2;
 		case '3': return 3;
 		case '4': return 4;
@@ -49,21 +47,19 @@ int RankCharacterToRankNumber(char rank)
 	}
 }
 
-int SuitCharacterToSuitNumber(char suit)
-{
-	switch (suit)
-	{
+int SuitCharacterToSuitNumber(char suit) {
+	switch (suit)	{
 		case 'c': 
-		case 'C': return 0;
+		case 'C': return Suit_CLUBS;
 		case 'd':
-		case 'D': return 1;
+		case 'D': return Suit_DIAMONDS;
 		case 'h':
-		case 'H': return 2;
+		case 'H': return Suit_HEARTS;
 		case 's':
-		case 'S': return 3;
+		case 'S': return Suit_SPADES;
 		default: // Fail silently
 			assert(false);
-			return -1;
+			return k_undefined;
 	}
 }
 
@@ -78,25 +74,21 @@ int RankAndSuitToCardNumber(int rank, int suit) {
 	return StdDeck_MAKE_CARD(std_deck_rank, suit);
 }
 
-int CardStringToCardNumber(char* single_card)
-{
+int CardStringToCardNumber(char* single_card) {
 	assert(strlen(single_card) == 2);
 	int rank = RankCharacterToRankNumber(single_card[0]);
 	int suit = SuitCharacterToSuitNumber(single_card[1]);
 	return RankAndSuitToCardNumber(rank, suit);
 }
 
-int CardStringToRankbits(char* one_or_more_cards_cases_and_suits_dont_matter)
-{
+int CardStringToRankbits(char* one_or_more_cards_cases_and_suits_dont_matter) {
 	int rankbits = 0;
 	int length = strlen(one_or_more_cards_cases_and_suits_dont_matter);
-	for (int i = 0; i<length; i++)
-	{
+	for (int i = 0; i<length; i++) {
 		char next_character = one_or_more_cards_cases_and_suits_dont_matter[i];
 		int rank = RankCharacterToRankNumber(next_character);
 		SetBit(&rankbits, rank);
-		if (next_character == 'a' || next_character == 'A')
-		{
+		if (next_character == 'a' || next_character == 'A')	{
 			SetBit(&rankbits, k_rank_ace_low);
 		}	
 	}
@@ -131,8 +123,7 @@ bool IsRankString(CString rank) {
 bool IsCardInCollection(int card, int col_card_0, int col_card_1,
 						int opt_col_card_2, 
 						int opt_col_card_3, 
-						int opt_col_card_4)
-{
+						int opt_col_card_4) {
 	return ((card == col_card_0) ||  (card == col_card_1)
 		|| (card == opt_col_card_2) || (card == opt_col_card_3)
 		|| (card == opt_col_card_4));
