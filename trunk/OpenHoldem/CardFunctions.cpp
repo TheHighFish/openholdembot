@@ -67,17 +67,15 @@ int SuitCharacterToSuitNumber(char suit)
 	}
 }
 
-int RankAndSuitToCardNumber(int rank, int suit)
-{
-	// !! Completely bad unnamed constands
-	// * std_deck
-	// * WH-constants 1..4
-	// * DLL-constants 0..3 (need to define names somewhere)
+int RankAndSuitToCardNumber(int rank, int suit) {
+	// Expects OpenHoldem ranks
 	assert(rank >= k_rank_ace_low);
 	assert(rank <= k_rank_ace);  
 	assert(suit >= 0);
 	assert(suit < 4);  
-	return ((rank << 4) + suit);
+  int std_deck_rank = rank - 2;
+  assert(std_deck_rank >= 0);
+	return StdDeck_MAKE_CARD(std_deck_rank, suit);
 }
 
 int CardStringToCardNumber(char* single_card)
