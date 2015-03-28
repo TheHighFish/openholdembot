@@ -6,6 +6,10 @@ MAINTENANCE:
   [Wavelen]
 - Changing myturnbits from FCRAK to FCKRA.
   [THF]
+- Fix for hand$-symbols with specific suits
+  that were broken due to multiple different cardf representations
+  (see below).
+  [THF]
 
 MAINTENANCE:
 - Getting rid of multiple internal card representations.
