@@ -223,7 +223,7 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
     rank_0, rank_1, opt_rank_2, opt_rank_3, opt_rank_4);
 
   if (rank_0 <= 0 || rank_1 <= 0) {
-    // No hole/cards, probablz parsing at start-up
+    // No hole-cards, probably parsing at start-up
     return result;
   }
 	ranks[0] = rank_0;
