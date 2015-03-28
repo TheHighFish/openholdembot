@@ -1,10 +1,21 @@
-v7.7.1 2015-03.xx
+v7.7.2 2015-03.xx
 ==================
 MAINTENANCE:
 - PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
   Added div/0 condition to all stats. All stats now return 0 when     undefined
   [Wavelen]
 - Changing myturnbits from FCRAK to FCKRA.
+  [THF]
+
+MAINTENANCE:
+- Getting rid of multiple internal card representations.
+  Now the suits are like in the poker-eval-library
+  (plus -1 for undefined):
+    * -1 = no card / cardback
+    *  0 = hearts
+    *  1 = diamonds
+    *  2 = clubs
+    *  3 = spades
   [THF]
 
 v7.7.1 2015-03.16
