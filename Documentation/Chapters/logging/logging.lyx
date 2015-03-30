@@ -119,7 +119,7 @@ Basic Info
 OpenHolldem will on every autoplayer action create a section with some basic
  info about the table-state, the decision taken and the action executed.
  You might wonder about the latter one, but action executed can differ from
- decision taken for example if certain buttons and therefore actions aew
+ decision taken, for example if certain buttons and therefore actions are
  not available..
 \end_layout
 
@@ -235,12 +235,12 @@ status open
 \end_layout
 
 \begin_layout Section*
-Autoplayer Trace 
+Autoplayer Trace !!!
 \end_layout
 
 \begin_layout Standard
 This is an example of the log entries that are added to the standard log
- if the Autoplayer Trace option is enabled in {Preferences}.!!!!!
+ if the Autoplayer Trace option is enabled in Preferences.
 \end_layout
 
 \begin_layout Standard

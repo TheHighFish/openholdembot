@@ -87,16 +87,36 @@ Hand list
 Hand Lists 
 \end_layout
 
-\begin_layout Standard
-Hand List Editor
-\end_layout
-
-\begin_layout Standard
-Figure 5.16-44 
-\end_layout
-
-\begin_layout Section
+\begin_layout Section*
 OpenHoldem Hand List Editor
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename H:/Dokumente und Einstellungen/Development_2/Desktop/Documentation/Chapters/FormulaEditor/images/handlist_editor_matrix.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -131,13 +151,13 @@ When the “OK” button is clicked, the starting hand selections you have made
  are saved to the Hand List you selected.
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph*
 Using Hand Lists 
 \end_layout
 
 \begin_layout Standard
 Hand lists are used by the following calculated symbols, and can be referenced
- in OH-Script code, or by Perl or DLL-based logic.
+ in OH-Script code, or DLL-based logic.
 \end_layout
 
 \begin_layout Standard
@@ -171,7 +191,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-islistXYZ
+listXYZ
 \end_layout
 
 \end_inset

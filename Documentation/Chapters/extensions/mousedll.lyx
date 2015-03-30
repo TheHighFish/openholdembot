@@ -370,9 +370,5 @@ a POINT to return the cursor to, after the action has been taken; if POINT.x
 
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
 \end_body
 \end_document
