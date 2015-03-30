@@ -461,7 +461,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	bool			result = false;
 	CLevDistance	myLD;
 	int				siteid = 0;
-	double			Levenshtein_distance_matching_factor = 0.2;
+	double			Levenshtein_distance_matching_factor = 0.3;
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	siteid = pt_lookup.GetSiteId();
