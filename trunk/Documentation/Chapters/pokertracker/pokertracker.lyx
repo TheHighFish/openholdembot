@@ -376,7 +376,7 @@ http://en.wikipedia.org/wiki/Levenshtein_distance
 
 ).
  Note that Levenshtein distances that exceed a certain level (currently
- 20% of the length of the name) are discarded as invalid.
+ 30% of the length of the name) are discarded as invalid.
 \end_layout
 
 \end_body
