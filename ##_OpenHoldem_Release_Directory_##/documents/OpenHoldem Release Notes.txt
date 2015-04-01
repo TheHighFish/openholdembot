@@ -8,7 +8,7 @@ BUG FIXES:
 - Fix for hand$-symbols with specific suits
   that were broken due to multiple different card representations
   (see below).
-  Thanks to Relhbz for reporting.
+  Thanks to Relhby for reporting.
   [THF]
 
 MAINTENANCE:
@@ -20,7 +20,7 @@ MAINTENANCE:
     *  1 = diamonds
     *  2 = clubs
     *  3 = spades
-  Thanks to Poker_Dog and ZooBoz for good advice and helping with the fix.
+  Thanks to Poker_Dog and ZooBoy for good advice and helping with the fix.
   [THF]
 - PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
   Added div/0 condition to all stats. All stats now return 0 when     undefined
