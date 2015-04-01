@@ -1,9 +1,14 @@
-v7.7.2 2015-03.xx
+v7.7.2 2015-04.01
 ==================
 BUG FIXES:
+- The option "close OH when table disappears"
+  didn't work due to a side-effect of a recent fix.
+  Thanks to BadHabit for reporting.
+  [THF]
 - Fix for hand$-symbols with specific suits
-  that were broken due to multiple different cardf representations
+  that were broken due to multiple different card representations
   (see below).
+  Thanks to Relhbz for reporting.
   [THF]
 
 MAINTENANCE:
@@ -15,6 +20,7 @@ MAINTENANCE:
     *  1 = diamonds
     *  2 = clubs
     *  3 = spades
+  Thanks to Poker_Dog and ZooBoz for good advice and helping with the fix.
   [THF]
 - PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
   Added div/0 condition to all stats. All stats now return 0 when     undefined
