@@ -1,0 +1,1662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0062)http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967 -->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-gb" xml:lang="en-gb"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta http-equiv="content-language" content="en-gb">
+<meta http-equiv="content-style-type" content="text/css">
+<meta http-equiv="imagetoolbar" content="no">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>maxinmontreal.com • View topic - using prwin1326</title>
+
+
+
+<link rel="stylesheet" href="./maxinmontreal.com • View topic - using prwin1326_files/stylesheet.css" type="text/css">
+
+<script type="text/javascript">
+// <![CDATA[
+
+
+function popup(url, width, height, name)
+{
+	if (!name)
+	{
+		name = '_popup';
+	}
+
+	window.open(url.replace(/&amp;/g, '&'), name, 'height=' + height + ',resizable=yes,scrollbars=yes,width=' + width);
+	return false;
+}
+
+function jumpto()
+{
+	var page = prompt('Enter the page number you wish to go to:', '1');
+	var per_page = '';
+	var base_url = '';
+
+	if (page !== null && !isNaN(page) && page == Math.floor(page) && page > 0)
+	{
+		if (base_url.indexOf('?') == -1)
+		{
+			document.location.href = base_url + '?start=' + ((page - 1) * per_page);
+		}
+		else
+		{
+			document.location.href = base_url.replace(/&amp;/g, '&') + '&start=' + ((page - 1) * per_page);
+		}
+	}
+}
+
+/**
+* Find a member
+*/
+function find_username(url)
+{
+	popup(url, 760, 570, '_usersearch');
+	return false;
+}
+
+/**
+* Mark/unmark checklist
+* id = ID of parent container, name = name prefix, state = state [true/false]
+*/
+function marklist(id, name, state)
+{
+	var parent = document.getElementById(id);
+	if (!parent)
+	{
+		eval('parent = document.' + id);
+	}
+
+	if (!parent)
+	{
+		return;
+	}
+
+	var rb = parent.getElementsByTagName('input');
+	
+	for (var r = 0; r < rb.length; r++)
+	{
+		if (rb[r].name.substr(0, name.length) == name)
+		{
+			rb[r].checked = state;
+		}
+	}
+}
+
+
+
+	/**
+	* Play quicktime file by determining it's width/height
+	* from the displayed rectangle area
+	*
+	* Only defined if there is a file block present.
+	*/
+	function play_qt_file(obj)
+	{
+		var rectangle = obj.GetRectangle();
+
+		if (rectangle)
+		{
+			rectangle = rectangle.split(',')
+			var x1 = parseInt(rectangle[0]);
+			var x2 = parseInt(rectangle[2]);
+			var y1 = parseInt(rectangle[1]);
+			var y2 = parseInt(rectangle[3]);
+
+			var width = (x1 < 0) ? (x1 * -1) + x2 : x2 - x1;
+			var height = (y1 < 0) ? (y1 * -1) + y2 : y2 - y1;
+		}
+		else
+		{
+			var width = 200;
+			var height = 0;
+		}
+
+		obj.width = width;
+		obj.height = height + 16;
+
+		obj.SetControllerVisible(true);
+
+		obj.Play();
+	}
+
+
+// ]]>
+</script>
+</head>
+<body class="ltr">
+
+<a name="top"></a>
+
+<div id="wrapheader">
+
+	<div id="logodesc">
+		<table width="100%" cellspacing="0">
+		<tbody><tr>
+			<td><a href="http://www.maxinmontreal.com/forums/index.php"><img src="./maxinmontreal.com • View topic - using prwin1326_files/site_logo.gif" width="170" height="94" alt="" title=""></a></td>
+			<td width="100%" align="center"><h1>maxinmontreal.com</h1><span class="gen">Helping you cash out more!</span></td>
+		</tr>
+		</tbody></table>
+	</div>
+
+	<div id="menubar">
+		<table width="100%" cellspacing="0">
+		<tbody><tr>
+			<td class="genmed">
+				<a href="http://www.maxinmontreal.com/forums/ucp.php?mode=logout&sid=593fd31ba91ac9b14236bbd6dfc71dae"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mini_login.gif" width="12" height="13" alt="*"> Logout [ Nz0 ]</a>&nbsp;
+			</td>
+			<td class="genmed" align="right">
+				<a href="http://www.maxinmontreal.com/forums/faq.php"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mini_faq.gif" width="12" height="13" alt="*"> FAQ</a>
+				&nbsp; &nbsp;<a href="http://www.maxinmontreal.com/forums/search.php"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mini_search.gif" width="12" height="13" alt="*"> Search</a>&nbsp; &nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mini_members.gif" width="12" height="13" alt="*"> Members</a>&nbsp; &nbsp;<a href="http://www.maxinmontreal.com/forums/ucp.php"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mini_profile.gif" width="12" height="13" alt="*"> User Control Panel</a>
+			</td>
+		</tr>
+		</tbody></table>
+	</div>
+
+	<div id="datebar">
+		<table width="100%" cellspacing="0">
+		<tbody><tr>
+			<td class="gensmall">Last visit was: Thu May 09, 2013 12:58 pm</td>
+			<td class="gensmall" align="right">It is currently Thu May 09, 2013 3:52 pm<br></td>
+		</tr>
+		</tbody></table>
+	</div>
+
+</div>
+
+<div id="wrapcentre">
+
+	
+	<p class="searchbar">
+		<span style="float: left;"><a href="http://www.maxinmontreal.com/forums/search.php?search_id=unanswered">View unanswered posts</a> | <a href="http://www.maxinmontreal.com/forums/search.php?search_id=active_topics">View active topics</a></span>
+		
+		<span style="float: right;"><a href="http://www.maxinmontreal.com/forums/search.php?search_id=unreadposts">View unread posts</a> | <a href="http://www.maxinmontreal.com/forums/search.php?search_id=newposts">View new posts</a> | <a href="http://www.maxinmontreal.com/forums/search.php?search_id=egosearch">View your posts</a></span>
+		
+	</p>
+	
+
+	<br style="clear: both;">
+
+	<table class="tablebg" width="100%" cellspacing="1" cellpadding="0" style="margin-top: 5px;">
+	<tbody><tr>
+		<td class="row1">
+			<p class="breadcrumbs"><a href="http://www.maxinmontreal.com/forums/index.php">Board index</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=183">OpenHoldem</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=184">Programming the Bot Logic</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=174">C++</a></p>
+			<p class="datetime">All times are UTC - 5 hours [ <abbr title="Daylight Saving Time">DST</abbr> ]</p>
+		</td>
+	</tr>
+	</tbody></table>
+
+	<br>
+
+<div id="pageheader">
+	<h2><a class="titles" href="./maxinmontreal.com • View topic - using prwin1326_files/maxinmontreal.com • View topic - using prwin1326.htm">using prwin1326</a></h2>
+
+
+	<p class="moderators">Moderators: <a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=1198" style="color: #000000;" class="username-coloured">OpenHoldem</a>, <a style="color:#993366;" href="http://www.maxinmontreal.com/forums/memberlist.php?mode=group&g=3322">OpenMods</a></p>
+
+</div>
+
+<br clear="all"><br>
+
+<div id="pagecontent">
+
+	<table width="100%" cellspacing="1">
+	<tbody><tr>
+		<td align="left" valign="middle" nowrap="nowrap">
+		<a href="http://www.maxinmontreal.com/forums/posting.php?mode=post&f=174"><img src="./maxinmontreal.com • View topic - using prwin1326_files/button_topic_new.gif" alt="Post new topic" title="Post new topic"></a>&nbsp;<a href="http://www.maxinmontreal.com/forums/posting.php?mode=reply&f=174&t=6967"><img src="./maxinmontreal.com • View topic - using prwin1326_files/button_topic_reply.gif" alt="Reply to topic" title="Reply to topic"></a>
+		</td>
+		
+			<td class="nav" valign="middle" nowrap="nowrap">&nbsp;Page <strong>1</strong> of <strong>1</strong><br></td>
+			<td class="gensmall" nowrap="nowrap">&nbsp;[ 16 posts ]&nbsp;</td>
+			<td class="gensmall" width="100%" align="right" nowrap="nowrap"></td>
+		
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr>
+		<td class="cat">
+			<table width="100%" cellspacing="0">
+			<tbody><tr>
+				<td class="nav" nowrap="nowrap">&nbsp;
+				<a href="http://www.maxinmontreal.com/forums/viewtopic.php?uid=31680&f=174&t=6967&watch=topic&start=0&hash=fa7862d7" title="Subscribe topic">Subscribe topic</a> | <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967&bookmark=1&hash=fa7862d7" title="Bookmark topic">Bookmark topic</a> | <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967&view=print" title="Print view">Print view</a> | <a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=email&t=6967" title="E-mail friend">E-mail friend</a>
+				</td>
+				<td class="nav" align="right" nowrap="nowrap"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967&view=previous">Previous topic</a> | <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967&view=next">Next topic</a>&nbsp;</td>
+			</tr>
+			</tbody></table>
+		</td>
+	</tr>
+
+	</tbody></table>
+
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	
+		<tbody><tr>
+			<th>Author</th>
+			<th>Message</th>
+		</tr>
+	<tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p47421"></a>
+				<b class="postauthor" style="color: #000099">VaDe</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p47421">using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=47421#p47421"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Feb 06, 2009 5:44 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file.php" width="100" height="100" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Wed Nov 26, 2008 7:47 am<br><b>Posts:</b> 430
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">Included in the attachment is a "library" for prwin1326, it includes functions to set hands, manage weights, log prw1326 lists... now i will not go into details to much simply take a look at the example below:<br><br>This is the main part of the code for this example:<br><br><div class="codetitle"><b>Code:</b></div><div class="codecontent">double process_state(holdem_state* pstate)<br>{<br>&nbsp; &nbsp;if(pstate!=NULL)<br>&nbsp; &nbsp; &nbsp; m_holdem_state[ (++m_ndx)&amp;0xff ] = *pstate;<br><br>&nbsp; &nbsp;///////////////////////////////////////////////////// <br>&nbsp; &nbsp;//ACTIVATING PRW<br>&nbsp; &nbsp;/////////////////////////////////////////////////////<br>&nbsp; &nbsp;prw1326-&gt;preflop = 1326;<br>&nbsp; &nbsp;prw1326-&gt;useme = 1326;<br><br>&nbsp; &nbsp;///////////////////////////////////////////////////// <br>&nbsp; &nbsp;//PRW EXAMPLE<br>&nbsp; &nbsp;/////////////////////////////////////////////////////<br>&nbsp; &nbsp;int betround = (int)gws("betround");<br>&nbsp; &nbsp;int userchair = (int)gws("userchair");<br>&nbsp; &nbsp;int handnumber = (int)gws("handnumber");<br>&nbsp; &nbsp;int ismyturn = (int)gws("ismyturn");<br><br>&nbsp; &nbsp;if(ismyturn)<br>&nbsp; &nbsp;{<br>&nbsp; &nbsp;&nbsp; &nbsp;//list managment preflop<br>&nbsp; &nbsp;&nbsp; &nbsp;if(betround == 1 &amp;&amp; round_trigger != betround)<br>&nbsp; &nbsp;&nbsp; &nbsp;{<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//chair 0 -&gt; VIP 50% PFR 10%<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_set_preflop_list(0, 0.5, 0.1, 1024);<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//chair 1 -&gt; VIP 20% PFR 10%<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_set_preflop_list(1, 0.2, 0.1, 1024);<br><br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//log preflop handranges<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_log_handlist(handnumber, userchair, betround, 0);<br><br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;round_trigger = betround;<br>&nbsp; &nbsp;&nbsp; &nbsp;}<br>&nbsp; &nbsp;&nbsp; &nbsp;//list managment flop<br>&nbsp; &nbsp;&nbsp; &nbsp;if(betround == 2 &amp;&amp; round_trigger != betround)<br>&nbsp; &nbsp;&nbsp; &nbsp;{<br><br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//chair 0 -&gt; remove all pocket pairs<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;for(int i=0;i&lt;13;i++)<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_remove_pp(0, i, 1024);<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//chair 1 -&gt; remove all suited aces<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;for(int i=0;i&lt;13;i++)<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_remove_s(1, 12, i, 1024);<br><br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//log flop handranges<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;prw_log_handlist(handnumber, userchair, betround, 1);<br><br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;round_trigger = betround;<br>&nbsp; &nbsp;&nbsp; &nbsp;}<br>&nbsp; &nbsp;}<br><br>&nbsp; &nbsp;return 0;<br>}<br></div><br><br>All this piece of code does is:<br><br>i) set up hand range for chair 0 which include 50% of the best hands and exclude 10% of the best hands, same for chair 1 with 20% and 10%<br>ii) on the flop it removes pocket pairs out of chair 0's range and suited aces out of chair 1's range<br>iii) creates a log file preflop<br>iv) creates a log file on the flop<br><br>the log files are saved in "C:/prwlog/handnumber/" folder, this is how the log files look like, once they have been converted with gnuplot into images:<br><br><img src="./maxinmontreal.com • View topic - using prwin1326_files/suitlog_chair0_round1_logparam0_suitlog_0.jpg" alt="Image"><br><br>this is a log of all 1326 hands, on the top left are the suited hands on the bottom right are the unsuited hands...<br><br><img src="./maxinmontreal.com • View topic - using prwin1326_files/suitlog_chair0_round1_logparam0_suitlog_1.jpg" alt="Image"><br><img src="./maxinmontreal.com • View topic - using prwin1326_files/suitlog_chair0_round1_logparam0_suitlog_2.jpg" alt="Image"><br><br>these 2 are 2 out of 10 more logs seperated by all suit combinations...<br><br>now to obtain these log pics you need gnuplot, as the dll saves a gnuplot script in the log folder which needs to be executed to create those images... its pretty simple:<br><br>i) download gnuplot: <!-- m --><a class="postlink" href="http://www.gnuplot.info/">http://www.gnuplot.info/</a><!-- m --><br>ii) install and run gnuplot<br>iii) open the log folder "C:/prwlog/handnumber/gnuscript/" there, if you ran this dll (vs 2 opponents ideally in chair 0 &amp; 1), you should find 2 files which have the name "gnuscript-0" (preflop log) and "gnuscript-1" (flop log) you can simple drag them other gnuplot or simply select "file -&gt; open" and browse to their location...<br>iv) if you execute them it may take a while till the "jpgs" are created in the directory because these are height projections of 3d plots and depending on your CPU this can take some minutes...<br><br>you can also set the resolution lower if it takes to long...<br><br>look for this line in "prw_log.h":<br><br><div class="codetitle"><b>Code:</b></div><div class="codecontent">gnuplot_obj &lt;&lt; "set dgrid3d 500,500,1" &lt;&lt; endl;<br></div><br><br>replace the 500,500 values with lower one <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":)" title="Smile"><br><br>gl&amp; hf</div>
+
+					
+						<br clear="all"><br>
+
+						<table class="tablebg" width="100%" cellspacing="1">
+						<tbody><tr>
+							<td class="row3"><b class="genmed">Attachments: </b></td>
+						</tr>
+						
+							<tr>
+								<td class="row2">
+			<span class="gensmall"><b>File comment:</b> source code</span><br>
+		
+			<span class="genmed">
+				<img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_topic_attach.gif" width="14" height="18" alt="" title=""> 
+				<a href="http://www.maxinmontreal.com/forums/download/file.php?id=2338">DOMAIv1.0.rar</a> [7.91 KiB]
+			</span><br>
+			<span class="gensmall">Downloaded 276 times</span>
+		
+
+		<br>
+	</td>
+							</tr>
+						
+							<tr>
+								<td class="row1">
+			<span class="gensmall"><b>File comment:</b> compiled dll</span><br>
+		
+			<span class="genmed">
+				<img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_topic_attach.gif" width="14" height="18" alt="" title=""> 
+				<a href="http://www.maxinmontreal.com/forums/download/file.php?id=2337">Release.rar</a> [88.07 KiB]
+			</span><br>
+			<span class="gensmall">Downloaded 187 times</span>
+		
+
+		<br>
+	</td>
+							</tr>
+						
+						</tbody></table>
+					
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=47421"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=4795"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=47421"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p47430"></a>
+				<b class="postauthor">flashg66</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p47430">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=47430#p47430"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Feb 06, 2009 11:35 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">This is awesome!  My logfile was getting very cumbersome to read <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":)" title="Smile">  Thanks.</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=47430"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;&nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=47430"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p47431"></a>
+				<b class="postauthor">Lonestar</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p47431">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=47431#p47431"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Feb 06, 2009 11:48 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody"><div class="quotetitle">flashg66 wrote:</div><div class="quotecontent">This is awesome!  My logfile was getting very cumbersome to read <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":)" title="Smile">  Thanks.</div><br>QFT! Just awesome. This will save me days of work! ... And I like your coding style. Very clean and effective.<br><br>Thank you for sharing this!</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=47431"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;&nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=47431"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p47435"></a>
+				<b class="postauthor" style="color: #000099">VaDe</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p47435">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=47435#p47435"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Feb 06, 2009 12:24 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file.php" width="100" height="100" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Wed Nov 26, 2008 7:47 am<br><b>Posts:</b> 430
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":)" title="Smile"><br><br>smth i forgot to mention, i don't use gws("cmd$recalc") anythere in this code, as this is supposed to work with every OH version (recalc only available with 2.0 or simply modify your OH ver with the appropriate lines)...<br><br>however if you guys really want that prwin uses the most recent lists you set up you need to force it to recalculate with that command or it will still be the prwin value you got from some old lists...<br><br>the one thing i really dislike about this implementation is that it is dependend on prwin1326... if i would have to code this again i would do it differently, simply using own lists and pass these lists when i'm done to prw, it would be a lot better as it would not be depended on prw1326 evaluator only (actually pretty easy to change this, but i simply don't want to waste any time on it atm...)<br><br>plz report if you stumble across any bugs...</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=47435"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=4795"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=47435"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p55238"></a>
+				<b class="postauthor">wolly</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p55238">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=55238#p55238"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sun Jul 05, 2009 4:46 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">Hey Sharky<br><br>Just want to thank you and everybody else on this nice forum 1million times  <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_biggrin.gif" alt=":-D" title="Very Happy">  <br><br>With out your tutorial i don't think i could ever have completed a working dll bot. I didn't actual use much of your code, but it showed me the way to create my own bot. So many thanks <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":-)" title="Smile"><br><br>And for every new dll coders at this forum, I will recommend reading Sharky's tutorial very closely, course it shows you many of the things you will stumble upon, while creating your first dll...</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=55238"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;&nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=55238"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p56307"></a>
+				<b class="postauthor" style="color: #000099">kaspar0v</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p56307">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=56307#p56307"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Jul 31, 2009 10:41 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file(1).php" width="100" height="99" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Fri Jul 18, 2008 4:19 am<br><b>Posts:</b> 207<br><b>Location:</b> Pays-Bas
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody"><div class="codetitle"><b>Code:</b></div><div class="codecontent">&nbsp; &nbsp;prw1326-&gt;preflop = 1326;<br>&nbsp; &nbsp;prw1326-&gt;useme = 1326;</div><br><br>when compiling the dll together with your prwin1326 files I get these error's in my debug tab:<br><div class="codetitle"><b>Code:</b></div><div class="codecontent">1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(37) : error C2143: syntax error : missing ';' before '-&gt;'<br>1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(37) : error C4430: missing type specifier - int assumed. Note: C++ does not support default-int<br>1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(37) : error C2040: 'prw1326' : 'int' differs in levels of indirection from 'pp13'<br>1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(38) : error C2143: syntax error : missing ';' before '-&gt;'<br>1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(38) : error C4430: missing type specifier - int assumed. Note: C++ does not support default-int<br>1&gt;c:\users\kasper\desktop\poker\poker bots\bots\nieuw project\modules\main\oh-dll.cpp(38) : error C2040: 'prw1326' : 'int' differs in levels of indirection from 'pp13'</div><br><br>is the code placed in the wrong spot or something?</div>
+
+					
+						<div class="postbody"><br>_________________<br><span style="color: #008040">"take some more tea," the March Hare said to Alice, very earnestly.<br>"I've had nothing yet," Alice replied, in an offended tone, "so I can't take more."<br>"You mean you can't take less,"said the Hatter: "it's very easy to take more than nothing."</span><br>    <span style="font-weight: bold">Lewis Carroll (Charles Lutwidge Dodgson) 1832-1898</span><br>    from <span style="font-style: italic">Alice's Adventures in Wonderland</span></div>
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=56307"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=3994"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=56307"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p56308"></a>
+				<b class="postauthor" style="color: #000099">kaspar0v</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p56308">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=56308#p56308"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Fri Jul 31, 2009 11:22 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file(1).php" width="100" height="99" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Fri Jul 18, 2008 4:19 am<br><b>Posts:</b> 207<br><b>Location:</b> Pays-Bas
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">yep, wrong section again. sorry for bothering!</div>
+
+					
+						<div class="postbody"><br>_________________<br><span style="color: #008040">"take some more tea," the March Hare said to Alice, very earnestly.<br>"I've had nothing yet," Alice replied, in an offended tone, "so I can't take more."<br>"You mean you can't take less,"said the Hatter: "it's very easy to take more than nothing."</span><br>    <span style="font-weight: bold">Lewis Carroll (Charles Lutwidge Dodgson) 1832-1898</span><br>    from <span style="font-style: italic">Alice's Adventures in Wonderland</span></div>
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=56308"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=3994"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=56308"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p59508"></a>
+				<b class="postauthor">hYpn0tiZe</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p59508">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=59508#p59508"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sat Oct 03, 2009 3:31 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">lol, it's got a bug which actually did cost me some nerves <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_mrgreen.gif" alt=":mrgreen:" title="Mr. Green"> <br><div class="quotetitle"><b>Quote:</b></div><div class="quotecontent">void prw_add_list_element(int listnum, int r1, int r2, int s1, int s2, int weight)<br>{<br>	/*<br>		adds hand to prw list<br>	*/<br>	int c1 = r1+s1;<br>	int c2 = r2+s2;<br>	int lim = prw1326-&gt;chair[listnum].limit;<br><br>	if(c1 &gt; c2)<br>	{<br>		prw1326-&gt;chair[listnum].ranklo[lim]=c1;<br>		prw1326-&gt;chair[listnum].rankhi[lim]=c2;<br>	}<br>	else<br>	{<br>		prw1326-&gt;chair[listnum].ranklo[lim]=c2;<br>		prw1326-&gt;chair[listnum].rankhi[lim]=c1;<br>	}<br><br>	<span style="font-weight: bold">prw1326-&gt;chair[listnum].weight[lim];</span><br>	prw1326-&gt;chair[listnum].limit++;<br>}</div><br>i think, it should be <span style="font-style: italic">something</span> like prw1326-&gt;chair[listnum].weight[lim] = weight;  <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_redface.gif" alt=":oops:" title="Embarassed"><br>furthermore. i'd rather check (r1 &lt; r2) than (c1 &gt; c2) [with the same conclusional bodies]. but i am not 100% sure on this one so please approve. my reason (example) for thinking it's a bug: 3s2h results into c1==40 &amp;&amp; c2 == 0, so c1 gets the ranklo, although 3 is the higher ranked card.<br><br>ah, got another one in the preflop-ranging function:<br><div class="quotetitle"><b>Quote:</b></div><div class="quotecontent">	//93o<br>	if(include &gt; 1174 &amp;&amp; 1175 &gt; exclude){prw_add_os(listnum, 7, 1, weight);}<br>	//63o<br>	if(include &gt; 1186 &amp;&amp; 1187 &gt; exclude){<span style="font-weight: bold">prw_add_os(listnum, 7, 1, weight)</span>;}</div><br>6 is added again as a 9, so prw_add_os(listnum, 7, 1, weight) of 63o should be prw_add_os(listnum, 4, 1, weight)</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=59508"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;&nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=59508"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p59558"></a>
+				<b class="postauthor" style="color: #000099">VaDe</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p59558">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=59558#p59558"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sun Oct 04, 2009 6:09 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file.php" width="100" height="100" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Wed Nov 26, 2008 7:47 am<br><b>Posts:</b> 430
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">True, that should be <br><br><div class="codetitle"><b>Code:</b></div><div class="codecontent">prw1326-&gt;chair[listnum].weight[lim] = weight;<br></div><br><br>seems like uploaded a version which still had some bugs.<br>Don't really know if it has an effect, because I reseted/weighted elemets differently anyway, that should rather have been an optional parameter in this function, this is probably why it's messed up <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_sad.gif" alt=":(" title="Sad"><br><br>Don't remember how it was with suits and ranks using prw1326, also can't find the article in the wiki, if memory serves me right<br><br>suits 0, 13, 26, 39<br>ranks 0-12<br><br>So yes it should check for r1 &gt; r2.<br><br>The problem is this code is very old and this seems to be a version which still had bugs <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_sad.gif" alt=":(" title="Sad"></div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=59558"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=4795"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=59558"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p59568"></a>
+				<b class="postauthor" style="color: #CC3399">cheburaator</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p59568">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=59568#p59568"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sun Oct 04, 2009 8:08 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Dear Sir or Madam. We need more info on problem reports. Screenshots, tablemaps, debug-tab. Thank you!</td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Mon May 25, 2009 4:46 am<br><b>Posts:</b> 30
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody"><div class="quotetitle">sharky wrote:</div><div class="quotecontent">The problem is this code is very old</div><br><br>Is it really a problem? <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_wink.gif" alt=":wink:" title="Wink">  <img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_smile.gif" alt=":)" title="Smile"></div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=59568"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=7500"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=59568"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p59575"></a>
+				<b class="postauthor" style="color: #000099">VaDe</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p59575">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=59575#p59575"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sun Oct 04, 2009 9:21 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Usual Suspect</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file.php" width="100" height="100" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Wed Nov 26, 2008 7:47 am<br><b>Posts:</b> 430
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">What I meant is, the code to me now looks like someone else coded it<br>It's more than 8 months since I have seen it.<br>I use a totally different custom library now.<br>So can't really explain much of the thinking process behind the lines of code.<br>But these two seem to be obvious bugs.</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=59575"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=4795"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=59575"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p82806"></a>
+				<b class="postauthor" style="color: #993366">kyo</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p82806">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=82806#p82806"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Wed Feb 02, 2011 4:35 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_online.gif" alt="Online" title="Online"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">RoboStars Security Guard</td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Fri Oct 09, 2009 8:33 am<br><b>Posts:</b> 1314
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">I have a question about item 1 in the list<br><br><ul>i) set up hand range for chair 0 which include 50% of the best hands and exclude 10% of the best hands, same for chair 1 with 20% and 10%<br>ii) on the flop it removes pocket pairs out of chair 0's range and suited aces out of chair 1's range<br>iii) creates a log file preflop<br>iv) creates a log file on the flop<br></ul><br><div class="codetitle"><b>Code:</b></div><div class="codecontent">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;//chair 0 -&gt; VIP 50% PFR 10%<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;prw_set_preflop_list(0, 0.5, 0.1, 1024);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;//chair 1 -&gt; VIP 20% PFR 10%<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;prw_set_preflop_list(1, 0.2, 0.1, 1024);<br></div><br><br>From the code we can see that chair 0 is assigned a list which represents his vpip range of 50. His PFR is 10%<br><br>item 1 says: which include 50% of the best hands and exclude 10% of the best hands<br><br>Why are the 10% of his best hands filtered out ? Don't really understand. When chair 0 raises preflop then you want to do something like:<br><br><div class="codetitle"><b>Code:</b></div><div class="codecontent">prw_set_preflop_list(0, 0.1, 0, 1024);<br></div><br><br>does that sound logical to you guys?<br><br>Thanks in advance for any help here, cheers</div>
+
+					
+						<div class="postbody"><br>_________________<br><span style="font-style: italic">“To give anything less than your best is to sacrifice the gift.”</span></div>
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=82806"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=9889"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=82806"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p82812"></a>
+				<b class="postauthor" style="color: #990000">TheHighFish</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p82812">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=82812#p82812"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Thu Feb 03, 2011 12:45 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Genius</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file(2).php" width="96" height="96" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Sat Mar 20, 2010 7:09 am<br><b>Posts:</b> 7224
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">Probably the player didn't raise and VaDe wanted to assign the players limping range?</div>
+
+					
+						<div class="postbody"><br>_________________<br>In the sweat of thy face shalt thou eat bread.<br><br><br><br><span style="font-weight: bold">On holiday till sunday.</span></div>
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=82812"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=12728"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=82812"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p94978"></a>
+				<b class="postauthor" style="color: #CC3399">Raykoid666</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p94978">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=94978#p94978"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sat Dec 10, 2011 8:31 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Dear Sir or Madam. We need more info on problem reports. Screenshots, tablemaps, debug-tab. Thank you!</td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Sat Nov 26, 2011 8:23 am<br><b>Posts:</b> 21
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">Okay here is a weird little bug...<br><br>using this code, OH crashes with an integer division by zero error. I compiled OH in debug mode so I could see where it's going wrong and OH itself crashes on this line<br><br>randfix=(RAND_MAX/p_symbols-&gt;prw1326()-&gt;chair[i].limit) * p_symbols-&gt;prw1326()-&gt;chair[i].limit;<br><br>in the CIteratorThread.cpp file<br><br>Debugging tells me though that chair[3].limit = 306 (it crashes when i=3)<br><br>this is really weird and I have no idea what's going wrong here so anyone got any clues?</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=94978"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=23807"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=94978"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row1">
+
+			<td align="center" valign="middle">
+				<a name="p95008"></a>
+				<b class="postauthor" style="color: #990000">TheHighFish</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p95008">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=95008#p95008"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Sun Dec 11, 2011 2:04 pm&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Genius</td>
+				</tr>
+			
+				<tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/file(2).php" width="96" height="96" alt="User avatar"></td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Sat Mar 20, 2010 7:09 am<br><b>Posts:</b> 7224
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody">Screenshots of your call-stack in VS?</div>
+
+					
+						<div class="postbody"><br>_________________<br>In the sweat of thy face shalt thou eat bread.<br><br><br><br><span style="font-weight: bold">On holiday till sunday.</span></div>
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=95008"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row1">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=12728"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=95008"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr class="row2">
+
+			<td align="center" valign="middle">
+				<a name="p95085"></a>
+				<b class="postauthor" style="color: #CC3399">Raykoid666</b>
+			</td>
+			<td width="100%" height="25">
+				<table width="100%" cellspacing="0">
+				<tbody><tr>
+				
+					<td class="gensmall" width="100%"><div style="float: left;">&nbsp;<b>Post subject:</b> <a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#p95085">Re: using prwin1326</a></div><div style="float: right;"><a href="http://www.maxinmontreal.com/forums/viewtopic.php?p=95085#p95085"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_target.gif" width="12" height="9" alt="Post" title="Post"></a><b>Posted:</b> Tue Dec 13, 2011 7:09 am&nbsp;</div></td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td valign="top" class="profile">
+				<table cellspacing="4" align="center" width="150">
+			
+				<tbody><tr>
+					<td><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_offline.gif" alt="Offline" title="Offline"></td>
+				</tr>
+			
+				<tr>
+					<td class="postdetails">Dear Sir or Madam. We need more info on problem reports. Screenshots, tablemaps, debug-tab. Thank you!</td>
+				</tr>
+			
+				</tbody></table>
+
+				<span class="postdetails">
+					<br><b>Joined:</b> Sat Nov 26, 2011 8:23 am<br><b>Posts:</b> 21
+				</span>
+
+			</td>
+			<td valign="top">
+				<table width="100%" cellspacing="5">
+				<tbody><tr>
+					<td>
+					
+
+						<div class="postbody"><div class="quotetitle">TheHighFish wrote:</div><div class="quotecontent">Screenshots of your call-stack in VS?</div><br><br>I fixed it already by not initialising my seats pre-flop. I don't quite know where it went wrong but everything works like a charm now</div>
+
+					<br clear="all"><br>
+
+						<table width="100%" cellspacing="0">
+						<tbody><tr valign="middle">
+							<td class="gensmall" align="right">
+							<a href="http://www.maxinmontreal.com/forums/report.php?f=174&p=95085"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_report.gif" alt="Report this post" title="Report this post"></a> 
+							</td>
+						</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				</tbody></table>
+			</td>
+		</tr>
+
+		<tr class="row2">
+
+			<td class="profile"><strong><a href="http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=6967#wrapheader">Top</a></strong></td>
+			<td><div class="gensmall" style="float: left;">&nbsp;<a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=23807"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_user_profile.gif" alt="Profile" title="Profile"></a> &nbsp;</div> <div class="gensmall" style="float: right;"><a href="http://www.maxinmontreal.com/forums/posting.php?mode=quote&f=174&p=95085"><img src="./maxinmontreal.com • View topic - using prwin1326_files/icon_post_quote.gif" alt="Reply with quote" title="Reply with quote"></a> &nbsp;</div></td>
+	
+		</tr>
+
+	<tr>
+		<td class="spacer" colspan="2" height="1"><img src="./maxinmontreal.com • View topic - using prwin1326_files/spacer.gif" alt="" width="1" height="1"></td>
+	</tr>
+	</tbody></table>
+
+	<table width="100%" cellspacing="1" class="tablebg">
+	<tbody><tr align="center">
+		<td class="cat"><form name="viewtopic" method="post" action="./maxinmontreal.com • View topic - using prwin1326_files/maxinmontreal.com • View topic - using prwin1326.htm"><span class="gensmall">Display posts from previous:</span> <select name="st" id="st"><option value="0" selected="selected">All posts</option><option value="1">1 day</option><option value="7">7 days</option><option value="14">2 weeks</option><option value="30">1 month</option><option value="90">3 months</option><option value="180">6 months</option><option value="365">1 year</option></select>&nbsp;<span class="gensmall">Sort by</span> <select name="sk" id="sk"><option value="a">Author</option><option value="t" selected="selected">Post time</option><option value="s">Subject</option></select> <select name="sd" id="sd"><option value="a" selected="selected">Ascending</option><option value="d">Descending</option></select>&nbsp;<input class="btnlite" type="submit" value="Go" name="sort"></form></td>
+	</tr>
+	</tbody></table>
+	
+
+	<table width="100%" cellspacing="1">
+	<tbody><tr>
+		<td align="left" valign="middle" nowrap="nowrap">
+		<a href="http://www.maxinmontreal.com/forums/posting.php?mode=post&f=174"><img src="./maxinmontreal.com • View topic - using prwin1326_files/button_topic_new.gif" alt="Post new topic" title="Post new topic"></a>&nbsp;<a href="http://www.maxinmontreal.com/forums/posting.php?mode=reply&f=174&t=6967"><img src="./maxinmontreal.com • View topic - using prwin1326_files/button_topic_reply.gif" alt="Reply to topic" title="Reply to topic"></a>
+		</td>
+		
+			<td class="nav" valign="middle" nowrap="nowrap">&nbsp;Page <strong>1</strong> of <strong>1</strong><br></td>
+			<td class="gensmall" nowrap="nowrap">&nbsp;[ 16 posts ]&nbsp;</td>
+			<td class="gensmall" width="100%" align="right" nowrap="nowrap"></td>
+		
+	</tr>
+	</tbody></table>
+
+</div>
+
+<div id="pagefooter"></div>
+
+<br clear="all">
+<form method="post" action="http://www.maxinmontreal.com/forums/posting.php?mode=reply&f=174&t=6967">
+
+	<table class="tablebg" width="100%" cellspacing="1">
+		<tbody><tr>
+			<th align="center" colspan="2">Quick Reply</th>
+		</tr>
+		<tr>
+			<td class="row1" width="22%"><b class="genmed">Subject:</b></td>
+			<td class="row2" width="78%"><input class="post" style="width:450px" type="text" name="subject" size="45" maxlength="64" tabindex="2" value="Re: using prwin1326"></td>
+		</tr>
+		<tr>
+			<td class="row1" width="22%"><b class="genmed">Message:</b></td>
+			<td class="row2" valign="top" align="left" width="78%"><textarea name="message" rows="7" cols="76" tabindex="3" style="width: 700px; height: 130px; min-width: 98%; max-width: 98%;"></textarea> </td>
+		</tr>
+		<tr>
+			<td class="cat" colspan="2" align="center">
+				<input class="btnmain" type="submit" accesskey="s" tabindex="6" name="post" value="Submit">&nbsp;
+				<input class="btnlite" type="submit" accesskey="f" tabindex="7" name="full_editor" value="Full Editor">
+
+				<input type="hidden" name="creation_time" value="1368129126">
+<input type="hidden" name="form_token" value="f9e9e82d076437507c8950dffee0a6fbe39d291c">
+
+				<input type="hidden" name="topic_cur_post_id" value="95085">
+<input type="hidden" name="lastclick" value="1368129126">
+<input type="hidden" name="topic_id" value="6967">
+<input type="hidden" name="forum_id" value="174">
+<input type="hidden" name="attach_sig" value="1">
+
+			</td>
+		</tr>
+	</tbody></table>
+	
+</form>
+<br clear="all"><table class="tablebg" width="100%" cellspacing="1" cellpadding="0" style="margin-top: 5px;">
+	<tbody><tr>
+		<td class="row1">
+			<p class="breadcrumbs"><a href="http://www.maxinmontreal.com/forums/index.php">Board index</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=183">OpenHoldem</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=184">Programming the Bot Logic</a> » <a href="http://www.maxinmontreal.com/forums/viewforum.php?f=174">C++</a></p>
+			<p class="datetime">All times are UTC - 5 hours [ <abbr title="Daylight Saving Time">DST</abbr> ]</p>
+		</td>
+	</tr>
+	</tbody></table>
+	<br clear="all">
+
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tbody><tr>
+		<td class="cat"><h4>Who is online</h4></td>
+	</tr>
+	<tr>
+		<td class="row1"><p class="gensmall">Users browsing this forum: <a href="http://www.maxinmontreal.com/forums/memberlist.php?mode=viewprofile&u=31680" style="color: #CC3399;" class="username-coloured">Nz0</a> and 0 guests</p></td>
+	</tr>
+	</tbody></table>
+
+
+<br clear="all">
+
+<table width="100%" cellspacing="1">
+<tbody><tr>
+	<td width="40%" valign="top" nowrap="nowrap" align="left"></td>
+	<td align="right" valign="top" nowrap="nowrap"><span class="gensmall">You <strong>can</strong> post new topics in this forum<br>You <strong>can</strong> reply to topics in this forum<br>You <strong>can</strong> edit your posts in this forum<br>You <strong>can</strong> delete your posts in this forum<br>You <strong>can</strong> post attachments in this forum<br></span></td>
+</tr>
+</tbody></table>
+
+<br clear="all">
+
+<table width="100%" cellspacing="0">
+<tbody><tr>
+	<td><form method="get" name="search" action="http://www.maxinmontreal.com/forums/search.php"><span class="gensmall">Search for:</span> <input class="post" type="text" name="keywords" size="20"> <input class="btnlite" type="submit" value="Go"><input type="hidden" name="t" value="6967">
+<input type="hidden" name="sf" value="msgonly">
+</form></td>
+	<td align="right">
+	<form method="post" name="jumpbox" action="http://www.maxinmontreal.com/forums/viewforum.php" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+
+	<table cellspacing="0" cellpadding="0" border="0">
+	<tbody><tr>
+		<td nowrap="nowrap"><span class="gensmall">Jump to:</span>&nbsp;<select name="f" onchange="if(this.options[this.selectedIndex].value != -1){ document.forms[&#39;jumpbox&#39;].submit() }">
+
+		
+			<option value="-1">Select a forum</option>
+		<option value="-1">------------------</option>
+			<option value="183">OpenHoldem</option>
+		
+			<option value="113">&nbsp; &nbsp;OpenHoldem Stickies</option>
+		
+			<option value="236">&nbsp; &nbsp;&nbsp; &nbsp;Archive</option>
+		
+			<option value="120">&nbsp; &nbsp;OpenHoldem 101</option>
+		
+			<option value="110">&nbsp; &nbsp;OpenHoldem Discussion</option>
+		
+			<option value="184">&nbsp; &nbsp;Programming the Bot Logic</option>
+		
+			<option value="259">&nbsp; &nbsp;&nbsp; &nbsp;OpenPPL</option>
+		
+			<option value="260">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Demobots</option>
+		
+			<option value="234">&nbsp; &nbsp;&nbsp; &nbsp;OH-script</option>
+		
+			<option value="235">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Demobots</option>
+		
+			<option value="174" selected="selected">&nbsp; &nbsp;&nbsp; &nbsp;C++</option>
+		
+			<option value="258">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Programming Extensions</option>
+		
+			<option value="173">&nbsp; &nbsp;&nbsp; &nbsp;Perl</option>
+		
+			<option value="255">&nbsp; &nbsp;&nbsp; &nbsp;Pokerbotting Strategy</option>
+		
+			<option value="117">&nbsp; &nbsp;OpenHoldem Table Maps</option>
+		
+			<option value="175">&nbsp; &nbsp;OpenHoldem Autoit/AutoHotKey</option>
+		
+			<option value="217">&nbsp; &nbsp;Bugs and  Problems</option>
+		
+			<option value="111">&nbsp; &nbsp;&nbsp; &nbsp;OpenHoldem Confirmed Bugs</option>
+		
+			<option value="214">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Won't Fix</option>
+		
+			<option value="124">&nbsp; &nbsp;&nbsp; &nbsp;OpenHoldem Squashed Bugs</option>
+		
+			<option value="156">&nbsp; &nbsp;&nbsp; &nbsp;OpenHoldem Problems</option>
+		
+			<option value="257">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Solved, not a bug, userbug, duplicate reports, etc. ;-)</option>
+		
+			<option value="215">&nbsp; &nbsp;Suggestions and Development</option>
+		
+			<option value="112">&nbsp; &nbsp;&nbsp; &nbsp;OpenHoldem Suggestions</option>
+		
+			<option value="270">&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Done / Solved / Low priority / etc.</option>
+		
+			<option value="189">&nbsp; &nbsp;&nbsp; &nbsp;OpenHoldem TM Validator</option>
+		
+			<option value="188">General Forums</option>
+		
+			<option value="237">&nbsp; &nbsp;Starting tips &amp; tricks</option>
+		
+			<option value="253">&nbsp; &nbsp;&nbsp; &nbsp;Looking for country-men?</option>
+		
+			<option value="171">&nbsp; &nbsp;Anything Goes</option>
+		
+			<option value="122">&nbsp; &nbsp;Web Site Suggestions</option>
+		
+			<option value="178">&nbsp; &nbsp;For Sale</option>
+		
+			<option value="233">&nbsp; &nbsp;&nbsp; &nbsp;Archive</option>
+		
+			<option value="263">Forex Trading</option>
+		
+			<option value="210">&nbsp; &nbsp;Trading AI</option>
+		
+			<option value="179">&nbsp; &nbsp;&nbsp; &nbsp;Forex Botting</option>
+		
+			<option value="262">&nbsp; &nbsp;Forex trading bot</option>
+		
+			<option value="249">BitCoin CryptoCurrency</option>
+		
+			<option value="252">&nbsp; &nbsp;Buying &amp; Selling</option>
+		
+
+		</select>&nbsp;<input class="btnlite" type="submit" value="Go"></td>
+	</tr>
+	</tbody></table>
+
+	</form>
+</td>
+</tr>
+</tbody></table>
+
+
+</div>
+
+<div id="wrapfooter">
+	
+	<span class="copyright">Powered by <a href="http://www.phpbb.com/">phpBB</a>® Forum Software © phpBB Group
+	</span>
+</div>
+
+
+</body></html>

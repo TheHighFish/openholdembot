@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-02-22"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="Chapter-">
+<a class="toc" name="toc-Chapter--1"></a>BettingAction Symbols
+</h1>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Name
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Meaning
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Limitations / Remarks
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+AllOpponentsLeftSittingOut
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True, if all remaining opponents are sitting out. This symbol is especially meant for use in tournaments
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Bets
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of bets made this betting round, can only be 0 or 1 since the 2nd bet is a raise
+</td>
+<td align="left" valign="top" style="width: 30%;">
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+None<br/>
+Calculation depends on game-history (multiple frames) .<br/>
+Contrary to Standard PPL Bets is always 1 preflop.
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BigBlindSittingOut
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True, if the big blind is sitting out. This symbol is especially meant for use in tournaments
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCalledBeforeFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if we called preflop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCalledOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if we called on the flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCalledOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if we called on the turn
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Turn and River only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCalledOnRiver
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if we called on the river
+</td>
+<td align="left" valign="top" style="width: 30%;">
+River only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotIsLastRaiser
+</td>
+<td align="left" valign="top" style="width: 40%;">
+We have the betting / raising initiative
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotRaisedBeforeFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+We raised Preflop, can also be used on the Preflop and will be true if we bet or raised
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotRaisedOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+We bet or raised on the Flop, can also be used on the Flop and will be true if we bet or raised
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotRaisedOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+We bet or raised on the Turn, can also be used on the turn and will be true if we bet or raised
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Turn and River only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsActionsOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Number of actions where we put money in the pot on the Flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+All-ins are not counted obviously (as the game would be over anyway)
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsActionsOnThisRound
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Number of actions this betting round where we put money in the pot
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+All-ins are not counted obviously (as the game would be over anyway)
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsActionsOnThisRoundIncludingChecks
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Number of checks + number of actions where we put money in the pot
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+All-ins are not counted obviously (as then the game would be over anyway)
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsActionsPreflop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Number of actions where we put money in the pot Preflop, all-ins are not counted
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCheckedPreflop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if bot checked Preflop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCheckedOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if bot checked on Flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCheckedOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if bot checked on Turn
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotCheckedOnRiver
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True if bot checked on River
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsLastAction
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Bot’s last action, can be one of the following: none, beep, raise, bet, call, or check
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+BotsLastPreflopAction
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Bot’s last action Preflop, can be one of the following: none, beep, raise, bet, call, or check
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+
+</td>
+<td align="left" valign="top" style="width: 40%;">
+
+</td>
+<td align="left" valign="top" style="width: 30%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+
+</td>
+<td align="left" valign="top" style="width: 40%;">
+
+</td>
+<td align="left" valign="top" style="width: 30%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Calls
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of calls by opponents on this betting round
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+CallsSinceLastRaise
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of calls by all opponents since the last raise by an opponent on the current betting round
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Checks
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of checks made by opponents this betting round
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Folds
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of folds this betting round
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+MissingSmallBlind
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True, if there is no small blind in this hand, e.g. the player who would have been SB did bust in the previous hand.
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NoBettingOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+No bets/raises were made on the Flop, may also be used on the Flop and will be true if there were no bets/raises
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NoBettingOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+No bets/raises were made on the Turn, may also be used on the Turn and will be true if there were no bets/raises
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NoVillainBetOrRaisedOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+No villan bet or raised on Flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NoVillainBetOrRaisedOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+No villan bet or raised on Turn
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NumberOfOpponentsAllin
+</td>
+<td align="left" valign="top" style="width: 40%;">
+Number of opponents who raised or called allin. Range: 0..9.
+</td>
+<td align="left" valign="top" style="width: 30%;">
+If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NumberOfRaisesBeforeFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of raises before the Flop made by opponents
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NumberOfRaisesOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of raises on the Flop made by opponents
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+NumberOfRaisesOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of raises on the Turn made by opponents
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Turn and river only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+OpponentCalledOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent called on Flop, and did not raise or bet
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+OpponentCalledOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent called on Turn, and did not raise or bet
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Turn and river only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+OpponentIsAllin
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent is all in, there may still be other players in the hand
+</td>
+<td align="left" valign="top" style="width: 30%;">
+If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+Raises
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of raises made by opponents this betting round
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+RaisesBeforeFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent raised before Flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+RaisesOnFlop
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent raised on Flop
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Postflop only<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+RaisesOnTurn
+</td>
+<td align="left" valign="top" style="width: 40%;">
+An opponent raised on Turn
+</td>
+<td align="left" valign="top" style="width: 30%;">
+Turn and River only<div class="Remark*">
+Calculation depends on game-history (multiple frames) 
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+RaisesSinceLastPlay
+</td>
+<td align="left" valign="top" style="width: 40%;">
+The number of raises since our last action
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+SmallBlindSittingOut
+</td>
+<td align="left" valign="top" style="width: 40%;">
+True, if the big small is sitting out. This symbol is especially meant for use in tournaments
+</td>
+<td align="left" valign="top" style="width: 30%;">
+None
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Indented">
+Please note: some of these symbols depend on game history and on counters that get updated once per orbit, i.e when it is our turn to act. They are well-defined only when it is our turn and undefined otherwise.
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-02-22T20:17:02.281000</span>
+</div>
+</div>
+</body>
+</html>
