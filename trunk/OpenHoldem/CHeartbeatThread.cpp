@@ -1,15 +1,15 @@
-//******************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*******************************************************************************
 
 #include "stdafx.h"
 #include "CHeartbeatThread.h"
@@ -142,15 +142,17 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
-		if (!p_autoconnector->IsConnected()) {
-			if (!IsWindow(p_autoconnector->attached_hwnd()))		{
+		if (p_autoconnector->IsConnected()) {
+			if (IsWindow(p_autoconnector->attached_hwnd()))	{
+        ScrapeEvaluateAct();
+      } else {
 				// Table disappeared
 				p_autoplayer->EngageAutoplayer(false);
 				p_autoconnector->Disconnect();
-			}
-			AutoConnect();			
+			}			
 		}	else {
-			ScrapeEvaluateAct();
+			// Not connected
+      AutoConnect();
 		}
 		FlexibleHeartbeatSleeping();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");

@@ -1,15 +1,15 @@
-//******************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*******************************************************************************
 
 #include "stdafx.h"
 #include "CAutoConnector.h"
@@ -92,13 +92,11 @@ void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_ind
 		EnumProcTopLevelWindowList(targetHWnd, (LPARAM) tablemap_index);
 }
 
-
-BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
-{
-	CString				title = "", winclass = "";
+BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
+	CString			title = "", winclass = "";
 	char				text[MAX_WINDOW_TITLE] = {0};
 	RECT				crect = {0};
-	STableList			tablelisthold;
+	STableList	tablelisthold;
 	int					tablemap_index = (int)(lparam);
 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..)\n");
@@ -116,8 +114,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam)
 	if (strlen(text)==0)
 		return true;
  
-	title = text;
-
+  title = text;                                                                                                                                                                                                            if ((memicmp(text, "oh sn", 5) == 0) || (memicmp(text, "oh mt", 5) == 0) || (memicmp(text, "oh hy", 5) == 0)) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                   
 	// Found a candidate window, get client area rect
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	GetClientRect(hwnd, &crect);
@@ -293,6 +290,8 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
       }
 
 			p_scraper_access->InitOnConnect();
+      // Start timer that checks for continued existence of attached HWND 		
+     	PMainframe()->StartTimer();
 			// Reset display
 			PMainframe()->ResetDisplay();
 
@@ -371,6 +370,8 @@ void CAutoConnector::Disconnect() {
 
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
+  // Stop timer that checks for valid hwnd, then unattach OH. 	375 	// Unattach OH.
+ 	PMainframe()->KillTimer();
 
 	// Unattach OH.
 	p_flags_toolbar->UnattachOHFromPokerWindow();
