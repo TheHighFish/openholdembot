@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2015-03-18"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>Converted document</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h2 class="Section">
+<a class="toc" name="toc-Section-1"></a>Size Records 
+</h2>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-1"></a>Description 
+</h3>
+<div class="Unindented">
+Size records are used for one purpose only, to allow OpenHoldem’s “Green Circle Button” to find windows of the correct size. More specifically, they provide the ability to specify the accepted sizes for the casino table that the scraper engine will recognize. Upon a click of the “Green Circle Button”, OpenHoldem will first search for poker table windows that match the exact size (clientsize) and if no match is found, will then look for poker table windows that are between the clientsizemin and clientsizemax sizes. In the majority of Table Maps, the only size record that is needed is the clientsize record. Use of clientsizemin and clientsizemax records should only be considered in unusual and exceptional cases. 
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-2"></a>Manipulating size records using OpenScrape 
+</h3>
+<div class="Unindented">
+To create a new size record, select the “Sizes” category in the record tree display on the Table Map Editor window, and click the “New” button. A window will be displayed that allows you to enter the width and height parameters for this new record. To edit an existing size record, select the record in the record tree display on the Table Map Editor window, and click the “Edit” button. A window will be displayed that allows you to adjust the width and height parameters for this record, or change the record name itself. To delete an existing size record, select the record in the record tree display on the Table Map Editor window, and click the “Delete” button. A window will be displayed asking for verification of this action.
+</div>
+<div class="Indented">
+A note about window client sizes: Microsoft Windows provides several different measures of a windows’ size, such as the complete window including frame and title bar, and an altogether different measure, the so-called “client area”, that lies inside the window frame and excludes frames and title bars. OpenHoldem references the Microsoft “client area” measurement for these “Size” records. To help you understand the size of the poker window that you have attached to (with the Green Circle Button), OpenScrape always displays the client size of the attached poker table in the “View” menu on the main OpenScrape window. The menu option is at the bottom of this menu and is preceeded by “Current Size: “. The width and height displayed in this menu can be entered directly into a clientsize record. 
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images/OS_edit_clientsize.png" alt="figure images/OS_edit_clientsize.png" style="max-width: 313px; max-height: 245px;"/>
+
+</div>
+
+</div>
+
+</div>
+<h3 class="Subsection">
+<a class="toc" name="toc-Subsection-3"></a>Technical reference 
+</h3>
+<div class="Unindented">
+In the Table Map (.tm) file, the size records will be preceded with the characters "z$”. These records have the following format: 
+</div>
+<div class="Indented">
+<tt>z$&lt;name&gt; &lt;width&gt; &lt;height&gt;</tt>
+</div>
+<div class="Indented">
+&lt;name&gt; is the name of the record (see table below) &lt;width&gt; and &lt;height&gt; are integer values. 
+</div>
+<div class="Indented">
+Valid size records and their descriptions:
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Size record
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Description
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+clientsize
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Specifies the exact client size of the poker table window. 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+clientsizemin
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Specifies the minimum allowed client size of the poker table window.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+clientsizemax
+</td>
+<td align="left" valign="top" style="width: 75%;">
+Specifies the maximum allowed client size of the poker table window.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<hr class="footer"/>
+<div class="footer" id="generated-by">
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T04:35:10.250000</span>
+</div>
+</div>
+</body>
+</html>
