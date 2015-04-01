@@ -1,11 +1,6 @@
 v7.7.2 2015-03.xx
 ==================
-MAINTENANCE:
-- PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
-  Added div/0 condition to all stats. All stats now return 0 when     undefined
-  [Wavelen]
-- Changing myturnbits from FCRAK to FCKRA.
-  [THF]
+BUG FIXES:
 - Fix for hand$-symbols with specific suits
   that were broken due to multiple different cardf representations
   (see below).
@@ -21,6 +16,12 @@ MAINTENANCE:
     *  2 = clubs
     *  3 = spades
   [THF]
+- PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
+  Added div/0 condition to all stats. All stats now return 0 when     undefined
+  [Wavelen]
+- Changing myturnbits from FCRAK to FCKRA.
+  [THF]
+
 
 v7.7.1 2015-03.16
 ==================

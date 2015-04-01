@@ -175,16 +175,16 @@ RaiseMax
 2
 
 ##ConstSuitClubs##
-1
-
-##ConstSuitDiamonds##
 2
 
+##ConstSuitDiamonds##
+1
+
 ##ConstSuitHearts##
-3
+0
 
 ##ConstSuitSpades##
-4
+3
 
 //*****************************************************************************
 //

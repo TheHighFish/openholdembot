@@ -1,15 +1,15 @@
-//******************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+//*******************************************************************************
 
 // MainFrm.cpp : implementation of the CMainFrame class
 //
@@ -449,7 +449,13 @@ void CMainFrame::OnFileOpen()
 void CMainFrame::OnTimer(UINT nIDEvent) {
 	RECT			att_rect = {0}, wrect = {0};
 
-	if (nIDEvent == ENABLE_BUTTONS_TIMER) {
+  if (nIDEvent == HWND_CHECK_TIMER) {
+ 	  if (!IsWindow(p_autoconnector->attached_hwnd())) { 		
+ 	    // Table disappeared 		
+ 	    p_autoplayer->EngageAutoplayer(false); 		
+ 	    p_autoconnector->Disconnect(); 		 		
+    }
+ 	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
@@ -574,6 +580,14 @@ void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
 
+void CMainFrame::StartTimer() { 		
+ 	// Start timer that checks for continued existence of attached HWND 		
+ 	SetTimer(HWND_CHECK_TIMER, 200, 0); 		
+}
+
+void CMainFrame::KillTimer() { 		
+ 	CFrameWnd::KillTimer(HWND_CHECK_TIMER); 		
+}
 
 void CMainFrame::ResetDisplay()
 {

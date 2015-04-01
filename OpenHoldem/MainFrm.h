@@ -67,6 +67,10 @@ public:
 	afx_msg void OnHelpForums();
 
 public:
+  void StartTimer();
+  void KillTimer();
+
+public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
