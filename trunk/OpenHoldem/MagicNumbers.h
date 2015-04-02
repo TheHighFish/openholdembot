@@ -57,7 +57,7 @@ const int k_betround_river	  	= 4;
 
 // Players
 const int k_max_number_of_players         = 10;
-const int k_max_length_of_playername      = 30;
+const int k_max_length_of_playername      = 32;
 const int k_usual_number_of_blind_posters =  2;
 const int k_first_chair                   =  0;
 const int k_last_chair                    = (k_max_number_of_players - 1);
