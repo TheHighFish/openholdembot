@@ -23,7 +23,9 @@ MAINTENANCE:
   Thanks to Poker_Dog and ZooBoy for good advice and helping with the fix.
   [THF]
 - PT4 Queries Call_Preflop_Raise/Donk Flop/River Bet/River Seen fixed.
-  Added div/0 condition to all stats. All stats now return 0 when     undefined
+  Added stat "fold_vs_resteal". 
+  "preflop_fold_to_3bet" now counts only times where player folded to 3 bet    after open raising
+  Added div/0 condition to all stats. All stats now return -1 when       undefined
   [Wavelen]
 - Changing myturnbits from FCRAK to FCKRA.
   [THF]
