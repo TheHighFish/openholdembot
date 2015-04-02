@@ -316,33 +316,52 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 //Short Algorithm to query the DB for the best name. returns true if best name is populated.
 bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 {
-	char		likename[2 * k_max_length_of_playername + 2];
-  // Attention: likename is 2 times as large as a player-name,
-  // plus 2 for % at the beginning and \0 at the end.
-  // !! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
-	memset(likename, 0, 2 * k_max_length_of_playername + 2);
-	
+
 	bool result = QueryName(oh_scraped_name, oh_scraped_name, best_name);
 
 	if (!result) {
-		likename[0]='%';
-		int character_position = 0;
-		for (int character_position=0; character_position<(int) strlen(oh_scraped_name); character_position++)
+		/*  Escalation #1: Exact name not found in DB*/
+		/*  Try query with "%" in substitution of ".". So "n.me" becomes "n%me". */
+		char pointlessname[k_max_length_of_playername + 1];
+		memset(pointlessname, 0, k_max_length_of_playername+1);
 		int len = (int)strlen(oh_scraped_name);
+		for (int character_position=0; character_position<len; character_position++)
+		{
+			if (oh_scraped_name[character_position]=='.') {
+				pointlessname[character_position]='%';
+				} 
+			else {
+				pointlessname[character_position]=oh_scraped_name[character_position];
+				}
+		}
+		pointlessname[len]='\0';
+		result = QueryName(pointlessname, oh_scraped_name, best_name);
+	}
 
+	if (!result) {
+		/*  Escalation #2:
+		/*  Try query with "%n%a%m%e%" . */
+		char likename[2 * k_max_length_of_playername + 2];
+		// Attention: likename is 2 times as large as a player-name,
+		// plus 2 for % at the beginning and \0 at the end.
+		// !! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
+		memset(likename, 0, 2 * k_max_length_of_playername + 2);
+		int len = (int)strlen(oh_scraped_name);
+		likename[0]='%';
+		for (int character_position=0; character_position<len; character_position++)
 		{
 			likename[character_position*2+1]=oh_scraped_name[character_position];
 			likename[character_position*2+2]='%';
 		}
 
-		likename[(character_position)*2 + 1]='\0';
+		likename[len*2 + 1]='\0';
 		result = QueryName(likename, oh_scraped_name, best_name);
 	}
 
 	if (!result)
 	{
-		/*  Escalation #2: "%n%a%m%e%" not found in DB*/
-		/*  Try query with "%" to get all names */
+		/*  Escalation #3: "%n%a%m%e%" not found in DB*/
+		/*  Try query "%" to get all names. */
 		result = QueryName("%", oh_scraped_name, best_name);
 	}
 	return result;
@@ -498,14 +517,20 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		result = false;
 	}
 
-	// If we get one tuple, all is good - return the one name
+	// If we get one tuple, we still check for Levenshtein distance if the name is short.
+	// If the name is long it is probably displayed truncated so Levenshtein distance would be too high.
 	if (PQntuples(res) == 1)
 	{
-		lev_dist = myLD.LD(scraped_name, PQgetvalue(res, 0, 0));
-
-		if (lev_dist<=(int)strlen(PQgetvalue(res, 0, 0))*Levenshtein_distance_matching_factor )
+		char *found_name = PQgetvalue(res, 0, 0);
+		lev_dist = myLD.LD(scraped_name, found_name);
+		if ( strlen(found_name) >= 14
+			 || lev_dist <= (int)strlen(found_name) * Levenshtein_distance_matching_factor )
 		{
-	     	strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, 0, 0));
+			strncpy_s(best_name, k_max_length_of_playername, found_name, _TRUNCATE);
+			// Max length names are possibly truncated so we replace the last character by %.
+			if (strlen(best_name)==(k_max_length_of_playername-1)) {
+				best_name[(k_max_length_of_playername-2)] = '%';
+			}
 			result = true;
 		}
 		else {
@@ -515,7 +540,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 
 	// We got more than one tuple, figure the Levenshtein distance for all of them
 	// and return the best
-	else if ((PQntuples(res) > 1))
+	else if (PQntuples(res) > 1)
 	{
 		bestLD = 999;
 		for (int i=0; i<PQntuples(res); i++)
@@ -530,7 +555,11 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		}
 		if (bestLD != 999)
 		{
-			strcpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, bestLDindex, 0));
+			strncpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, bestLDindex, 0), _TRUNCATE);
+			// Max length names are possibly truncated so we replace the last character by %.
+			if (strlen(best_name)==(k_max_length_of_playername-1)) {
+				best_name[(k_max_length_of_playername-2)] = '%';
+			}
 			result = true;
 		}
 		else
