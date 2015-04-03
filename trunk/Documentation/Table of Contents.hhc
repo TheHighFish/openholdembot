@@ -369,6 +369,10 @@
 				<param name="Local" value="Chapters\scraping_in_practice\Scraping_dollars_and_cents.html.LyXconv\Scraping_dollars_and_cents.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Scraping non-standard Titles">
+				<param name="Local" value="Chapters\expert_tricks\scraping_non_standard_titles.html.LyXconv\scraping_non_standard_titles.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Defining the Game-Type">
 				<param name="Local" value="Chapters\scraping_in_practice\Setting The Game-Type to NoLimit.html.LyXconv\Setting_The_Game-Type_to_NoLimit.html">
 				</OBJECT>
