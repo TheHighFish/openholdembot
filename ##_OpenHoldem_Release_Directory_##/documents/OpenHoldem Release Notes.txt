@@ -1,3 +1,18 @@
+v7.7.3 2015-04.xx
+==================
+NEW STUFF:
+- WARNING: All  PT percents stats are now giving a result between 0 and 100 instead of 0 and 1.
+	Please remember to multiply by 100 your pt values.
+- Added: AFq (Aggression frequency) PT stats:  "flop_afq" "turn_afq" "river_afq" "total_afq"
+
+MAINTENANCE:
+- Renaming many PT stats. Please see:
+	http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
+	
+BUG FIXES:
+- Various PT queries fixes.
+ [fqfq]
+ 
 v7.7.2 2015-04.01
 ==================
 BUG FIXES:
