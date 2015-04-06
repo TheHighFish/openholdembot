@@ -234,7 +234,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker VP$IP",
 		// query
 		"SELECT (case	when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_vpip then 1 else 0 end) \
 						 as ActionCount, \
@@ -259,7 +259,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker pre-flop raise ",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when cnt_p_raise > 0 then 1 else 0 end) \
 						 as ActionCount, \
@@ -284,7 +284,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker pre-flop raise first in",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when(s.flg_p_first_raise AND s.flg_p_open_opp) then  1 else  0 end) \
 						 as ActionCount, \
@@ -309,7 +309,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker went to showdown",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_showdown then 1 else 0 end) \
 						 as ActionCount, \
@@ -334,7 +334,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker won $ at showdown",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum (case when (s.flg_showdown AND s.flg_won_hand) then  1 else  0 end) \
 						 as ActionCount, \
@@ -359,7 +359,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker attempt to steal blinds",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_steal_att then 1 else 0 end) \
 						 as ActionCount, \
@@ -384,7 +384,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded big blind to steal",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_bb_steal_fold then 1 else 0 end) \
 						 as ActionCount, \
@@ -409,7 +409,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded small blind to steal",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_sb_steal_fold then 1 else 0 end) \
 						 as ActionCount, \
@@ -434,7 +434,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker 3bet vs. steal",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (flg_blind_def_opp AND flg_p_3bet) then 1 else 0 end) \
 						 as ActionCount, \
@@ -459,7 +459,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker BB 3bet vs. steal",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when ((flg_blind_b=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) \
 						 as ActionCount, \
@@ -484,7 +484,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker SB 3bet vs. steal",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when ((flg_blind_s=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) \
 						 as ActionCount, \
@@ -509,7 +509,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker pre-flop called raise",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when ((s.amt_p_2bet_facing > 0 AND NOT(s.flg_p_limp) AND NOT s.flg_p_3bet_def_opp AND NOT flg_p_4bet_def_opp AND cnt_p_call>0) or \
 						(s.enum_p_3bet_action='C') or (s.enum_p_4bet_action='C')) then 1 else 0 end) \
@@ -536,7 +536,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker 3bet preflop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_p_3bet then 1 else 0 end) \
 						 as ActionCount, \
@@ -561,7 +561,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing 3bet preflop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when(s.enum_p_3bet_action='F' AND s.flg_p_first_raise) then  1 else  0 end) \
 						 as ActionCount, \
@@ -586,7 +586,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker Fold to 3bet after Stealing",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when(s.flg_steal_att AND s.flg_p_3bet_def_opp AND s.enum_p_3bet_action='F') then  1 else  0 end) \
 						 as ActionCount, \
@@ -611,7 +611,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker Preflop 4B",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_p_4bet then 1 else 0 end) \
 						 as ActionCount, \
@@ -636,7 +636,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker Preflop fold to 4bet",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (enum_p_4bet_action='F') then 1 else 0 end) \
 						 as ActionCount, \
@@ -765,7 +765,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker flop aggression frequency",
 		// query
 		"SELECT (case when (AggressionCount + PassiveCount) = 0 then -1 \
-				else 100 * cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
+				else cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
 				end) as result \
 		 FROM (SELECT	sum(cnt_f_raise) + sum(case when flg_f_bet then 1 else 0 end) \
 						 as AggressionCount, \
@@ -790,7 +790,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker turn aggression frequency",
 		// query
 		"SELECT (case when (AggressionCount + PassiveCount) = 0 then -1 \
-				else 100 * cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
+				else cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
 				end) as result \
 		 FROM (SELECT	sum(cnt_t_raise) + sum(case when flg_t_bet then 1 else 0 end) \
 						 as AggressionCount, \
@@ -815,7 +815,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker river aggression frequency",
 		// query
 		"SELECT (case when (AggressionCount + PassiveCount) = 0 then -1 \
-				else 100 * cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
+				else cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
 				end) as result \
 		 FROM (SELECT	sum(cnt_r_raise) + sum(case when flg_r_bet then 1 else 0 end) \
 						 as AggressionCount, \
@@ -840,7 +840,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker total aggression frequency excluding preflop",
 		// query:  (raises + bets) / (calls + folds + raises + bets)
 		"SELECT (case when (AggressionCount + PassiveCount) = 0 then -1 \
-				else 100 * cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
+				else cast(AggressionCount as real) / (AggressionCount + PassiveCount) \
 				end) as result \
 		 FROM (SELECT	  sum(cnt_f_raise) + sum(case when flg_f_bet then 1 else 0 end) \
 						+ sum(cnt_t_raise) + sum(case when flg_t_bet then 1 else 0 end) \
@@ -869,7 +869,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker saw flop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_f_saw then 1 else 0 end) \
 						 as ActionCount, \
@@ -894,7 +894,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker saw turn",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when s.flg_t_saw then 1 else 0 end) \
 						 as ActionCount, \
@@ -919,7 +919,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker saw river",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when s.flg_r_saw then 1 else 0 end) \
 						 as ActionCount, \
@@ -944,7 +944,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker cbet",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_f_cbet then 1 else 0 end) \
 						 as ActionCount, \
@@ -969,7 +969,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing cbet flop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_f_cbet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -994,7 +994,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker raise flop cbet",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when S.enum_f_cbet_action = 'R' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1018,7 +1018,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker turn cbet",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when S.flg_t_cbet = 't' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1042,7 +1042,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing cbet turn",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_t_cbet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1067,7 +1067,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing cbet river",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_r_cbet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1092,7 +1092,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing 3bet total without preflop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_f_3bet_action = 'F' or enum_t_3bet_action ='F' or enum_r_3bet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1117,7 +1117,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing 3bet flop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_f_3bet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1142,7 +1142,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker flop check-raise",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (flg_f_check_raise) then 1 else 0 end) \
 						 as ActionCount, \
@@ -1166,7 +1166,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker donk flop",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (S.flg_p_face_raise AND NOT(S.flg_p_3bet OR S.flg_p_4bet) \
 						AND S.flg_f_bet AND NOT(S.flg_f_cbet_opp) AND \
@@ -1198,7 +1198,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing 3bet turn",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_t_3bet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1223,7 +1223,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker turn Check-Raise",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (flg_t_check_raise) then 1 else 0 end) \
 						 as ActionCount, \
@@ -1248,7 +1248,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker turn Check-Call",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when (S.flg_t_check AND S.cnt_t_call>0) then 1 else 0 end) \
 						 as ActionCount, \
@@ -1273,7 +1273,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker folded while facing 3bet river",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when enum_r_3bet_action = 'F' then 1 else 0 end) \
 						 as ActionCount, \
@@ -1298,7 +1298,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 		"Poker Tracker river bet",
 		// query
 		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else 100 * cast(ActionCount as real) / ActionOpportunities \
+				 else cast(ActionCount as real) / ActionOpportunities \
 				 end) as result \
 		 FROM	(SELECT	sum(case when flg_r_bet then 1 else 0 end) \
 						 as ActionCount, \
