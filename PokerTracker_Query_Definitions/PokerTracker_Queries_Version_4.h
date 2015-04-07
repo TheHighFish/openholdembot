@@ -34,7 +34,7 @@
 #define PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE			(TRUE)	// "preflop_called_raise"
 #define PT4_QUERY_SUPPORT__PREFLOP_3B					(TRUE)	// "3bet"
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B			(TRUE)	// "fold_to_3bet"
-#define PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL			(TRUE)	// "fold_vs_resteal"
+#define PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL			(TRUE)	// "fold_to_resteal"
 #define PT4_QUERY_SUPPORT__PREFLOP_4B					(TRUE)	// "4bet"
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B			(TRUE)	// "fold_to_4bet"
 
@@ -581,7 +581,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	/* PT4 query to get Fold to Resteal */
 	{
 		// name
-		"fold_vs_resteal",
+		"fold_to_resteal",
 		// description_for_editor
 		"Poker Tracker Fold to 3bet after Stealing",
 		// query
