@@ -423,10 +423,6 @@
 				<param name="Local" value="Chapters\handlists\Handlists.html.LyXconv\Handlists.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Memory Symbols">
-				<param name="Local" value="Chapters\memory_symbols\Memory_Symbols.html.LyXconv\Memory_Symbols.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Logging">
 				<param name="Local" value="Chapters\logging\Logging.html.LyXconv\Logging.html">
 				</OBJECT>
@@ -449,12 +445,16 @@
 				<param name="Local" value="Chapters\oh_script_explained\icm_explained.html.LyXconv\icm_explained.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Rankbits">
-				<param name="Local" value="Chapters\oh_script_explained\rankbits_explained.html.LyXconv\rankbits_explained.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Pokerval explained">
 				<param name="Local" value="Chapters\oh_script_explained\pokerval_explained.html.LyXconv\pokerval_explained.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Memory Symbols">
+				<param name="Local" value="Chapters\memory_symbols\Memory_Symbols.html.LyXconv\Memory_Symbols.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Rankbits">
+				<param name="Local" value="Chapters\oh_script_explained\rankbits_explained.html.LyXconv\rankbits_explained.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -574,6 +574,14 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Your worst Enemy">
+				<param name="Local" value="Chapters\stealth\Your_worst_enemy.html.LyXconv\Your_worst_enemy.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Grand Plam">
+				<param name="Local" value="Chapters\stealth\the_grand_plan.html.LyXconv\the_grand_plan.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Stealth">
 				<param name="Local" value="Chapters\stealth\Stealth.html.LyXconv\Stealth.html">
 				</OBJECT>
@@ -612,10 +620,6 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Rootkits">
 				<param name="Local" value="Chapters\stealth\Rootkits.html.LyXconv\Rootkits.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="The Truth about Stealth">
-				<param name="Local" value="Chapters\stealth\The_Truth_about_Stealth.html.LyXconv\The_Truth_about_Stealth.html">
 				</OBJECT>
 		</UL>
 	</UL>
