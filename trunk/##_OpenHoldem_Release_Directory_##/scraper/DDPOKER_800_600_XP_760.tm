@@ -1,8 +1,8 @@
 .osdb2
 
-// OpenScrape 7.6.0
+// OpenScrape 7.7.0
 
-// 2015-02-27 20:42:48
+// 2015-04-09 16:01:14
 // 32 bits per pixel
 
 //
@@ -15,9 +15,7 @@ z$clientsize       800  600
 // strings
 //
 
-s$c0limits                  ^L
-s$c0limits0                 $^s
-s$c0limits1                 $^b
+s$c0limits                  ^s/^b
 s$nchairs                   10
 s$network                   ddpoker
 s$potmethod                 2
@@ -52,9 +50,7 @@ r$c0cardface3suit    572 225 587 242 ffffffff  220 T3
 r$c0cardface4nocard  630 273 631 274 ffffffff   -1 C
 r$c0cardface4rank    628 205 643 223 ffffffff  220 T3
 r$c0cardface4suit    628 225 643 242 ffffffff  220 T3
-r$c0limits            36 119  47 129 ffffffff  280 T2
-r$c0limits0           49 138  96 149 ff00ffff    0 T2
-r$c0limits1           98 138 145 149 ff00ffff    0 T2
+r$c0limits            51 137 147 150 ffffffff  280 T2
 r$c0pot0             335 284 418 292 ff0b0977 -280 T2
 r$i0button           345 461 405 485        0    0 N
 r$i0label            359 467 390 478   424242    0 H0
@@ -276,6 +272,7 @@ t2$4 18 28 48 88 1ff 8
 t2$$ 1c4 222 7ff 222 11c
 t2$L 1c a 49 49 39
 t2$5 1e1 121 121 112 10c
+t2$/ 3 1c 1e0 600
 t2$N 3ff 1 1 1 1 1
 t2$9 61 91 109 109 92 7c
 t2$0 7c 82 101 101 82 7c
