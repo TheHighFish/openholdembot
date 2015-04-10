@@ -8,6 +8,10 @@ MAINTENANCE:
   and the hopper needs to be only a simple table-opener,
   so we decided to remove that features.
   [THF]
+- The autoconnector-option got removed,as it is no longer possible 
+  to control the connection with a hopperor with the legendary 
+  green button. The autoconnector therefore became the unchangeable default.
+  [THF]
 
 v7.7.0 2015-03.05
 ==================

@@ -297,9 +297,6 @@
     <ClCompile Include="DialogSAPrefs13.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
-    <ClCompile Include="DialogSAPrefs14.cpp">
-      <Filter>Source Files\GUI\prefs_dlg</Filter>
-    </ClCompile>
     <ClCompile Include="DialogSAPrefs15.cpp">
       <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
@@ -719,6 +716,9 @@
     </ClCompile>
     <ClCompile Include="CSymbolEngineMTTInfo.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs14.cpp">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1195,9 +1195,6 @@
     <ClInclude Include="DialogSAPrefs13.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
-    <ClInclude Include="DialogSAPrefs14.h">
-      <Filter>Header Files\GUI\prefs_dlg</Filter>
-    </ClInclude>
     <ClInclude Include="DialogSAPrefs15.h">
       <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
@@ -1536,6 +1533,9 @@
     </ClInclude>
     <ClInclude Include="WebSafeColours.h">
       <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs14.h">
+      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

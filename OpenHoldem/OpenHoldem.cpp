@@ -267,13 +267,6 @@ void COpenHoldemApp::FinishInitialization() {
   // Iterator thread
   p_iterator_thread = new CIteratorThread();
   assert(p_iterator_thread != NULL);
-
-    // autoconnect on start, if preferred
-	write_log(theApp.p_preferences()->debug_openholdem(), "[OpenHoldem] Going to connect\n");
-	if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
-	{
-		p_autoconnector->Connect(NULL);
-	}
 }
 
 int COpenHoldemApp::ExitInstance() {

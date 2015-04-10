@@ -19,23 +19,13 @@
 #include "OpenHoldem.h"
 #include "StringFunctions.h"
 
-// global preferences constants
-enum
-{
-	k_AutoConnector_Connect_Never		= 0,
-	k_AutoConnector_Connect_Once		= 1,
-	k_AutoConnector_Connect_Permanent	= 2,
-};
-
-enum
-{
+enum {
 	k_lazy_scraping_always = 0,
 	k_lazy_scraping_myturn = 1,
 	k_lazy_scraping_cards  = 2,
 };
 
-enum
-{
+enum {
 	k_popup_disabled = 0,
 	k_popup_minimize = 1,
 	k_popup_kill     = 2,
@@ -105,7 +95,6 @@ enum
 	k_prefs_validator_use_heuristic_rules,
 	k_prefs_validator_shoot_replayframe_on_error,
   k_prefs_validator_enabled, 
-	k_prefs_autoconnector_close_when_table_disappears,
 	k_prefs_gui_start_minimized, 
 	k_prefs_rebuy_condition_no_cards,
 	k_prefs_rebuy_condition_change_in_handnumber,
@@ -137,7 +126,6 @@ enum
 	k_prefs_scraper_dy,
 	k_prefs_main_x,
 	k_prefs_main_y,
-	k_prefs_autoconnector_when_to_connect,
 	k_prefs_rebuy_minimum_time_to_next_try,
 	k_prefs_lazy_scraping_when_to_scrape,
 	k_prefs_table_positioner_options,
@@ -286,9 +274,6 @@ public:
 	const bool validator_stop_on_error() { return prefs_numerical_values[k_prefs_validator_stop_on_error]; }
 	const bool validator_use_heuristic_rules() { return prefs_numerical_values[k_prefs_validator_use_heuristic_rules]; }
 	const bool validator_shoot_replayframe_on_error() { return prefs_numerical_values[k_prefs_validator_shoot_replayframe_on_error]; }
-	// Auto-connector
-	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
-	const bool autoconnector_close_when_table_disappears() { return prefs_numerical_values[k_prefs_autoconnector_close_when_table_disappears]; }
 	// GUI
 	const bool gui_start_minimized() { return prefs_numerical_values[k_prefs_gui_start_minimized]; }
 	// Rebuy

@@ -216,12 +216,10 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 
 void CHeartbeatThread::AutoConnect() {
 	assert(!p_autoconnector->IsConnected());
-	if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
-		if (p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */) {
-			write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
-			p_autoconnector->Connect(NULL);
-		}	else {
-			write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
-		}
+	if (p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */) {
+		write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
+		p_autoconnector->Connect(NULL);
+	}	else {
+		write_log(theApp.p_preferences()->debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
 	}
 }
