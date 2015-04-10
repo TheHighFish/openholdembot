@@ -158,36 +158,10 @@ void CAutoConnector::WriteLogTableReset()
 		MAIN->p_version_info()->GetVersionInfo());
 }
 
-void CAutoConnector::FailedToConnectBecauseNoWindowInList()
-{
+void CAutoConnector::FailedToConnectBecauseNoWindowInList() {
 	p_sharedmem->RememberTimeOfLastFailedAttemptToConnect();
-
-	int cySize = GetSystemMetrics(SM_CYSIZE);
-	int cyMenuSize = GetSystemMetrics(SM_CYMENU);
-
-	if (theApp.p_preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
-	{
-		if (cySize != 18 || cyMenuSize != 19)
-		{
-			OH_MessageBox_Error_Warning(
-				"Cannot find table.\n\n"
-				"It appears that your settings are not configured according to OpenHoldem specifications.\n"
-				"You must ensure that XP themes are not used (Use Windows Classic style) and\n"
-				"font size is set to normal.\n\n"
-				"For more info, read the manual and visit the user forums.", 
-				"Cannot find table");
-		}
-		else
-		{
-			OH_MessageBox_Error_Warning(
-				"No valid tables found\n\n"
-				"There seems to be no unserved table open\n"
-				"or your table does not match the size and titlestring\n"
-				"defined in your tablemaps.\n"
-				"For more info, read the manual and visit the user forums.",
-				"Cannot find table");
-		}
-	}
+  // !!! Message on one-time-connection removed
+  // Probably the rest needs to get rewritten for 10.x too.
 	GoIntoPopupBlockingMode();
 }
 
@@ -407,11 +381,6 @@ void CAutoConnector::Disconnect() {
 		GUI->p_ScraperOutputDlg()->Reset();
 	}
 	WriteLogTableReset();
-
-	// Close OH, when table disappears and leaving enabled in theApp.p_preferences()->
-	if (theApp.p_preferences()->autoconnector_close_when_table_disappears()) {
-		PostQuitMessage(0);
-	}
 	write_log(theApp.p_preferences()->debug_autoconnector(), "[CAutoConnector] Disconnect done\n");
 }
 
