@@ -662,9 +662,9 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
       return 0.0;
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
 		}
-		else if (text.MakeLower().Find("out")!=-1) {
+		else if (text.MakeLower().Find("out")!=-1 || text.MakeLower().Find("inactive")!=-1) {
 			p_table_state->_players[chair]._active = false;
-			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT\n", name);
+			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT/INACTIVE\n", name);
       return k_undefined;
 		}	else {
 			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
