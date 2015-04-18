@@ -37,7 +37,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 60;
+const int k_number_of_tournament_identifiers = 61;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -89,6 +89,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"sit & go",
 	"sit 'n go",
 	"sit'n go",
+  "sit n go",
 	" sng",
 	"sng ",
 	"(sng",
