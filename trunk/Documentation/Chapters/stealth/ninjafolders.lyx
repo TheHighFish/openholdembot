@@ -172,17 +172,6 @@ If you need/want to create a special "ninja" account then do that first
  according to the restrictions above.
  If the account already exists then make sure it meets the requirements
  above.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Part of 2)
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Enumerate
@@ -318,17 +307,7 @@ If you have the resources and you want the best possible solution then you
  drive.
  You should consume all 4 primary partitions on your stealth drive by creating
  4 primary partitions of roughly equal size.
- Each partition should be formatted with 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-NTFS
-\end_layout
-
-\end_inset
-
-NTFS only (not FAT or FAT32).
+ Each partition should be formatted with NTFS only (not FAT or FAT32).
  
 \end_layout
 
