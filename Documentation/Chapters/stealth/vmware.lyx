@@ -84,14 +84,18 @@ VMWare
 
 \end_inset
 
-VMWare
+Virtualization
 \end_layout
 
 \begin_layout Standard
 This is a guide to show you how to get OpenHoldem running securely on a
  single computer using the VMware Server application as a second, "virtual"
  computer.
- Original post by Tammelinn: 
+ Original post by 
+\noun on
+Tammelin
+\noun default
+n: 
 \begin_inset Flex URL
 status open
 
@@ -106,20 +110,29 @@ http://forum.winholdem.net/wbb/viewtopic.php?t=11894
 \end_layout
 
 \begin_layout Standard
-The guide assumes no special knowledge, but you will need some basic computer
- skills.
- You will need to know how to install software, how to rename files, how
- to navigate folders and so on.
- 
-\end_layout
-
-\begin_layout Standard
 I am also assuming that you are using the same operating system as me.
  If you are using Windows XP Media Centre Edition or Windows XP Professional,
  you can use this guide.
  If you are using some other brand of Windows (including Vista), the guide
  might not be reliable.
  I have only tested these instructions with XP.
+ Most steps also apply to other virtualization software like (
+\begin_inset CommandInset href
+LatexCommand href
+name "VirtualBox"
+target "https://www.virtualbox.org/"
+
+\end_inset
+
+), which is a free and equally good alternative, but this guide concentrates
+ on VmWare, which was state of the art when these instructions got written.
+\end_layout
+
+\begin_layout Standard
+The guide assumes no special knowledge, but you will need some basic computer
+ skills.
+ You will need to know how to install software, how to rename files, how
+ to navigate folders and so on.
  
 \end_layout
 
