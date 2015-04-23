@@ -48,9 +48,18 @@
 				<param name="Local" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
 				<param name="URL" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
 				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="License: GPL v3">
+			</OBJECT>
+		<UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="License: GPL v3">
 				<param name="Local" value="Chapters\introduction\GPL_v3.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Frequently Asked Questions about the GNU Licenses">
+				<param name="Local" value="Chapters\introduction\Frequently_Asked_Questions_about_the_GNU_Licenses_-_GNU_Project_-_Free_Software_Foundation.htm">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
