@@ -11,17 +11,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="keyboarddll.cpp">
+    <ClCompile Include="Keyboard_DLL_VmWare_Unity_Mode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="keyboarddll.def">
+    <None Include="Keyboard_DLL_VmWare_Unity_Mode.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="keyboarddll.h">
+    <ClInclude Include="Keyboard_DLL_VmWare_Unity_Mode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

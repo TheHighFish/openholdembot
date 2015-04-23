@@ -37,7 +37,7 @@
 #include <windows.h>
 #include <math.h>
 #include <atlstr.h>
-#include "keyboarddll.h"
+#include "Keyboard_DLL_VmWare_Unity_Mode.h"
 
 const int Shift   = 1;
 const int Control = 2;
