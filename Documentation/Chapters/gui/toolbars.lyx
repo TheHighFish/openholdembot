@@ -127,7 +127,40 @@ Edit current formula
 \end_layout
 
 \begin_layout Itemize
-Enable validator
+Enable validator.
+ The validator is a tool that analyzes built-in symbols to detect inconsistent
+ game-states that are mostly caused by bad tablemaps or bad settings.
+ It helps you to test your tablemap before you take it to the real-money
+ tables.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/validator.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -147,18 +180,6 @@ status open
 
 If the autoplayer already acted this log-message will appear slightly after
  the interesting decision.
-\end_layout
-
-\begin_layout Itemize
-Show/hide table display
-\end_layout
-
-\begin_layout Itemize
-Attach OpenHoldem window to the top of the table.
-\end_layout
-
-\begin_layout Itemize
-Attach OpenHoldem window to the bottom of the table.
 \end_layout
 
 \begin_layout Itemize
