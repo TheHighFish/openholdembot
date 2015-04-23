@@ -3480,7 +3480,7 @@ InSmallBlind ? 1 :
 || ((nplayersdealt == 2) && (dealposition == 2))
 
 ##BigBlind##
-MissingSmallBlind ? False :   
+MissingBigBlind ? False :   
    (MissingSmallBlind && (dealposition == 1))
    ((nplayersdealt != 2) && (dealposition == 2))
 || ((nplayersdealt == 2) && (dealposition == 1))
