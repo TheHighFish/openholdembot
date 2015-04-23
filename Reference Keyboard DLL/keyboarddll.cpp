@@ -179,13 +179,11 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
 	ZeroMemory(&input[input_count],sizeof(INPUT));
 	input[input_count].type = INPUT_KEYBOARD;
 	input[input_count].ki.wVk = vkey;
-	input[input_count].ki.wScan = MapVirtualKey(vkey, 0);
 	input_count++;
 
 	ZeroMemory(&input[input_count],sizeof(INPUT));
 	input[input_count].type = INPUT_KEYBOARD;
 	input[input_count].ki.wVk = vkey;
-	input[input_count].ki.wScan = MapVirtualKey(vkey, 0);
 	input[input_count].ki.dwFlags = KEYEVENTF_KEYUP;
 	input_count++;
 
