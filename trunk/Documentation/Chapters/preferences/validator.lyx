@@ -227,5 +227,33 @@ It is never a bad idea to use the validator some time for testing new tablemaps.
  Give it a try, but be prepared -- the validator is a little bitch!
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename H:/Dokumente und Einstellungen/Development_2/Desktop/Documentation/Chapters/gui/images/validator.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
