@@ -3480,9 +3480,11 @@ InSmallBlind ? 1 :
 || ((nplayersdealt == 2) && (dealposition == 2))
 
 ##BigBlind##
-MissingBigBlind ? False :   
+// Missing small blind, big blind is the first dealt player
    (MissingSmallBlind && (dealposition == 1))
-   ((nplayersdealt != 2) && (dealposition == 2))
+// 3 or more handed, normal blinds
+|| ((nplayersdealt != 2) && (dealposition == 2))
+// Headsup, reversed blinds
 || ((nplayersdealt == 2) && (dealposition == 1))
 
 ##Button##
