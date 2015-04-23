@@ -146,10 +146,39 @@ MicroGaming: occasional bans
 \end_layout
 
 \begin_layout Enumerate
-CakePoker: supported by Shanky and bot-friendly.
+CakePoker: supported by Shanky and quite bot-friendly.
  Disallows PokerTracker support to protect both fish and bots.
  However they ban OpenHoldem botters who play naked, maybe because these
  bots are fewer and more sophisticated.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/egor_site_X.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
