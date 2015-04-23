@@ -10,11 +10,14 @@ NEW STUFF:
 MAINTENANCE:
 - Renaming many PT stats. Please see:
 	http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
- [fqfq]
+  [fqfq]
  
 BUG FIXES:
 - Various PT queries fixes.
- [fqfq]
+  [fqfq]
+- InBigBlind didn~t handle the special case of a missing small blind.
+  Thanks to OpenGeek for reporting.
+  [THF]
  
 v7.7.2 2015-04.01
 ==================
