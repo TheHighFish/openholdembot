@@ -640,6 +640,7 @@ raischair == 9 ? currentbet9 :
 HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 
 ##PlayersRaisingOrColdCallingTheLastRaise##
+// Counting the last raiser + all cold callers
 (LastRaiserCurrentBet == 0) ? 0 :
   (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
 + (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
