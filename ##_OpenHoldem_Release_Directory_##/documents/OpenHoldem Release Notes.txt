@@ -2,20 +2,21 @@ v7.7.3 2015-04.xx
 ==================
 NEW STUFF:
 - Added: Aggression frequency PT stats:  "flop_afq" "turn_afq" "river_afq" "total_afq"
- [fqfq]
+  [fqfq]
 - Keyboard DLL now compatible to VmWare Unity Mode.
   Thanks to BadHabit for the patch.
   [Termitapalahermita]
  
 MAINTENANCE:
 - Renaming many PT stats. Please see:
-	http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
   [fqfq]
  
 BUG FIXES:
 - Various PT queries fixes.
   [fqfq]
-- InBigBlind didn~t handle the special case of a missing small blind.
+- InBigBlind and InSmallBlind didn't handle the special case 
+  of a missing small blind.
   Thanks to OpenGeek for reporting.
   [THF]
  
