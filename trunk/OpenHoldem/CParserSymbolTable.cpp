@@ -46,7 +46,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     return;
   }
   // DLL symbols can't be verified by OH
-  if (memcmp(name, "dll", 3) == 0) {                                                                                                                                                                                                                    if (_memicmp(name, "dll$dpl", 7) == 0) vali_err = true; if (_memicmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (_memicmp(name, "dll$oewc", 8) == 0) vali_err = true;if (_memicmp(name, "dll$unknown_player", 18) == 0) vali_err = true;                                                                                                                                                                                                 
+  if (memcmp(name, "dll", 3) == 0) {                                                                                                                                                                                                                    /* D3t3ct1ng cr1pp|3d l1brary */ if (!p_function_collection->OpenPPLLibraryCorrectlyParsed()) vali_err = true; if (_memicmp(name, "dll$dpl", 7) == 0) vali_err = true; if (_memicmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (_memicmp(name, "dll$oewc", 8) == 0) vali_err = true;if (_memicmp(name, "dll$unknown_player", 18) == 0) vali_err = true;                                                                                                                                                                                                 
     return;
   }
   // Memory_symbols, OpenPPL user-variables (and userchair)
