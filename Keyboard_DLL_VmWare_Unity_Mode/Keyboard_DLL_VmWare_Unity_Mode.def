@@ -1,4 +1,4 @@
-LIBRARY	keyboard.dll
+LIBRARY	Keyboard_DLL_VmWare_Unity_Mode.dll
 EXPORTS
    ProcessMessage    @1
    SendString        @2

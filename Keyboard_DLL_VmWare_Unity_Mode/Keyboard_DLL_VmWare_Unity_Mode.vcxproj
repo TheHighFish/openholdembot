@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D71CCB48-1C2C-409E-9801-5AB37714ED68}</ProjectGuid>
-    <RootNamespace>ReferenceKeyboardDLL</RootNamespace>
+    <ProjectGuid>{AA2F7271-70C4-41DE-8247-B42831B49F14}</ProjectGuid>
+    <RootNamespace>Keyboard_DLL_VmWare_Unity_Mode</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -57,8 +57,8 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)keyboard.dll</OutputFile>
-      <ModuleDefinitionFile>keyboarddll.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)Keyboard_DLL_VmWare_Unity_Mode.dll</OutputFile>
+      <ModuleDefinitionFile>Keyboard_DLL_VmWare_Unity_Mode.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -74,8 +74,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)keyboard.dll</OutputFile>
-      <ModuleDefinitionFile>keyboarddll.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)Keyboard_DLL_VmWare_Unity_Mode.dll</OutputFile>
+      <ModuleDefinitionFile>Keyboard_DLL_VmWare_Unity_Mode.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -84,13 +84,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="keyboarddll.cpp" />
+    <ClCompile Include="Keyboard_DLL_VmWare_Unity_Mode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="keyboarddll.def" />
+    <None Include="Keyboard_DLL_VmWare_Unity_Mode.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="keyboarddll.h" />
+    <ClInclude Include="Keyboard_DLL_VmWare_Unity_Mode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
