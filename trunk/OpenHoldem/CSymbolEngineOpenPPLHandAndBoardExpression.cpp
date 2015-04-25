@@ -23,8 +23,7 @@
 
 CSymbolEngineOpenPPLHandAndBoardExpression *p_symbol_engine_open_ppl_hand_and_board_expression = NULL;
 
-const int prime_coded_card_ranks[k_rank_ace+1] =
-{
+const int prime_coded_card_ranks[k_rank_ace+1] = {
 	1,	// rank = 0, unused, exists due to C++-definition
 	1,	// rank = 1 = Ace-low, unused (here)
 	2,  // rank = 2
@@ -42,8 +41,7 @@ const int prime_coded_card_ranks[k_rank_ace+1] =
 	41, // rank = Ace-high
 };
 
-CSymbolEngineOpenPPLHandAndBoardExpression::CSymbolEngineOpenPPLHandAndBoardExpression()
-{
+CSymbolEngineOpenPPLHandAndBoardExpression::CSymbolEngineOpenPPLHandAndBoardExpression() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -113,6 +111,9 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		return false;
 	}
 
+  write_log(preferences.debug_hand_and_baord_expressions(), 
+    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded available ranks> %i\n",
+    prime_coded_available_ranks);
 	bool is_suited_expression = false;
 	assert(is_hand_expression || is_board_expression);
 
@@ -127,6 +128,9 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 	// We do this at the very beginning, as this is a very quick test
 	// and most real-world-use-cases will be false, so we get a fast exit.
 	int prime_coded_search_expression = PrimeCodedRanks(hand_or_board_expression);
+  write_log(preferences.debug_hand_and_baord_expressions(), 
+    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded searched ranks> %i\n",
+    prime_coded_available_ranks);
 	if ((prime_coded_available_ranks % prime_coded_search_expression) != 0)	{
 		// Division without reminder not possible.
 		// Therefore different primes in the search-expression
@@ -148,8 +152,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		if (is_hand_expression)	{
 			// Suited hand-expression
 			// Ranks already checked, there are only 2, this simplifies things
-			if (!p_symbol_engine_cards->issuited())
-			{
+			if (!p_symbol_engine_cards->issuited()) {
         write_log(preferences.debug_hand_and_baord_expressions(), 
 			    "[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because off-suited hole-cards\n");
 				// No suited ranks available
@@ -222,10 +225,6 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
     "[CSymbolEngineOpenPPLHandAndBoardExpression] Given ranks = %i, %i, %i, %i, %i\n",
     rank_0, rank_1, opt_rank_2, opt_rank_3, opt_rank_4);
 
-  if (rank_0 <= 0 || rank_1 <= 0) {
-    // No hole-cards, probably parsing at start-up
-    return result;
-  }
 	ranks[0] = rank_0;
 	ranks[1] = rank_1;
 	ranks[2] = opt_rank_2;
@@ -233,16 +232,22 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	ranks[4] = opt_rank_4;
 
 	for (int i=0; i<k_number_of_community_cards; i++) {
-		assert(ranks[i] >= 0);
-		assert(ranks[i] <= k_rank_ace);
+    int rank = ranks[i];
+		assert((rank >= 0) || (rank == k_undefined));
+		assert(rank <= k_rank_ace);
     write_log(preferences.debug_hand_and_baord_expressions(),
       "[CSymbolEngineOpenPPLHandAndBoardExpression] card %i rank = %i\n",
-      i, ranks[i]);
-		result *= prime_coded_card_ranks[ranks[i]];
+      i, rank);
+    if (rank >= 1) {
+      result *= prime_coded_card_ranks[rank];
+    } else {
+      // Undefined card 
+      // Ignore (which is a multiplication with 1)
+    }
 	}
   write_log(preferences.debug_hand_and_baord_expressions(),
-    "[CSymbolEngineOpenPPLHandAndBoardExpression] $$cr2 = %i\n",
-    p_table_state->_common_cards[2].GetOpenHoldemRank());
+    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded ranks = %i\n",
+    result);
 	return result;
 }
 

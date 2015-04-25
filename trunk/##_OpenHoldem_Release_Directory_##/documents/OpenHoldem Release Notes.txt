@@ -20,6 +20,9 @@ BUG FIXES:
   of a missing small blind.
   Thanks to OpenGeek for reporting.
   [THF]
+- Some board$-expressions like board$222 did not work.
+  Thanks to Chillit for reporting.
+  [THF]
  
 v7.7.2 2015-04.01
 ==================
