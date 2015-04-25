@@ -276,8 +276,8 @@ void COpenHoldemApp::FinishInitialization() {
 int COpenHoldemApp::ExitInstance() {
   StopThreads();
 	DeleteAllSingletons();
-	stop_log();
 	Scintilla_ReleaseResources();
+  stop_log();
 	return CWinApp::ExitInstance();
 }
 

@@ -205,8 +205,14 @@ void DeleteAllSingletons() {
   // Correct order should be guaranteed, because of
   //   "At the time ExitInstance is called, the main window no longer exists"
   //   (http://computer-programming-forum.com/82-mfc/7ad0828fdb127d7b.htm)
-  // AnyWay: we make sure with an assertion
-  assert(all_threads_stopped);
+  // AnyWay: we make sure...
+  if (!all_threads_stopped) {
+    // Explicit check to check potential pronlems 
+    // that don't happen in debug-mode.
+    write_log(preferences.debug_alltherest(), 
+      "[Singletons] ERROR: threads not stopped.\n");
+    assert(all_threads_stopped);
+  }
   // Global instances.
   // Releasing in reverse order should be good,
   // but we have to be careful, as sometimes we do some work in the destructors,
@@ -274,6 +280,7 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_string_match)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 25\n");
   DELETE_AND_CLEAR(p_filenames)
+  write_log(preferences.debug_alltherest(), "[Singletons] All singletons successfully deleted\n");
 }
   
   
