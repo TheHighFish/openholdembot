@@ -107,7 +107,7 @@ The OpenHoldem project team does not provide official Table Maps for any
  The reason for this is that there are thousands of casinos out there, and
  tens- or hundreds- of thousands of map combinations when you consider the
  different game flavors.
- Adding to that is the fact that casinos regularly update their client software
+ Adding to that is the fact that casinos sometimes update their client software
  and make minor or comprehensive changes to the pixels as they are displayed
  on the screen.
  These changes most often require changes to the table map as well.
@@ -163,7 +163,7 @@ http://www.maxinmontreal.com/forums/viewforum.php?f=117
 \end_layout
 
 \begin_layout Itemize
-explain as good as possible what you problem is.
+explain as good as possible what your problem is.
 \end_layout
 
 \begin_layout Itemize
