@@ -38,6 +38,7 @@
 #include "CStableFramesCounter.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
@@ -98,7 +99,11 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
     scrape_delay *= 2; 
   } else if (!p_table_state->User()->HasKnownCards()) {
     // Folded
-    if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
+    if (p_symbol_engine_isrush->isrush()) {
+      // New hand starts soon
+      // Don't change delay
+    }
+    else if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
       // Multiway, not participating.
       // Hand will continue for some time.
       scrape_delay *= 2;

@@ -7,6 +7,9 @@ NEW STUFF:
   Thanks to BadHabit for the patch, 
   Termitapalahermita an Relhby for help and advice.
   [THF]
+- New symbol isrush, especially meant to control flexible
+  heartbeat delays between fold and new game.
+  [THF]
  
 MAINTENANCE:
 - Renaming many PT stats. Please see:

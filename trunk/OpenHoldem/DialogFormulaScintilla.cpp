@@ -1999,6 +1999,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
   AddSymbol(parent, "ismtt", "true if a multi-table tournament is detected");
   AddSymbol(parent, "issng", "true if a single-table tournament is detected");
   AddSymbol(parent, "isfinaltable", "true if you are playing the finaltable of an MTT and the tables can be visually distinguished.");
+  AddSymbol(parent, "isrush", "true if the game is rush / zoom.");
 	
   mainParent = parent = AddSymbolTitle("MTT Info", NULL, hCatItem);
 	AddSymbol(parent, "mtt_number_entrants", "number of entrants in the tournament");
