@@ -44,6 +44,7 @@
 #include "CSymbolEngineICM.h"
 #include "CSymbolEngineIniFunctions.h"
 #include "CSymbolEngineIsOmaha.h"
+#include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineMTTInfo.h"
@@ -201,6 +202,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMTTInfo"
   p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
   AddSymbolEngine(p_symbol_engine_mtt_info);
+  // CSymbolEngineIsRush
+  p_symbol_engine_isrush = new CSymbolEngineIsRush;
+  AddSymbolEngine(p_symbol_engine_isrush);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.

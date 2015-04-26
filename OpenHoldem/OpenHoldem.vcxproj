@@ -210,6 +210,7 @@
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
+    <ClCompile Include="CSymbolengineIsRush.cpp" />
     <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
@@ -480,6 +481,7 @@
     <ClInclude Include="CSymbolengineColourCodes.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
+    <ClInclude Include="CSymbolEngineIsRush.h" />
     <ClInclude Include="CSymbolengineMTTInfo.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />

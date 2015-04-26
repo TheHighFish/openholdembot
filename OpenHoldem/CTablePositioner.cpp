@@ -32,25 +32,21 @@ CTablePositioner::~CTablePositioner()
 {}
 
 // To be called once after connection
-void CTablePositioner::PositionMyWindow()
-{		
+void CTablePositioner::PositionMyWindow() {		
 	// Build list of poker tables (child windows)
 	// Use the shared memory (auto-connector) for that. 
 	HWNDs_of_child_windows	= p_sharedmem->GetDenseListOfConnectedPokerWindows();
 	_number_of_tables		= p_sharedmem->SizeOfDenseListOfAttachedPokerWindows();
 
-	if (_number_of_tables <= 0)
-	{
+	if (_number_of_tables <= 0)	{
 		// Do nothing if there are 0 tables connected.
 		// Actually an empty list of tables consists of only NULLs,
 		// but if MicroSofts table-arranging functions see a NULL
 		// they will arrange all windows at the desktop.
 		// That's not what we want.
-		MessageBox(0, "No tables", "blocker", 0);
 		return;
 	}
-	if (preferences.table_positioner_options() == k_position_tables_tiled)
-	{
+	if (preferences.table_positioner_options() == k_position_tables_tiled) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);
 		PositionMyWindow(HWNDs_of_child_windows);
 		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
@@ -66,9 +62,7 @@ void CTablePositioner::PositionMyWindow()
 			_number_of_tables,
 			HWNDs_of_child_windows);
 		*/
-	}
-	else if (preferences.table_positioner_options() == k_position_tables_cascaded)
-	{
+	}	else if (preferences.table_positioner_options() == k_position_tables_cascaded) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to cascade %d windows...\n", _number_of_tables);
 		// Cascading windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
 		CascadeWindows(
@@ -77,19 +71,15 @@ void CTablePositioner::PositionMyWindow()
 			NULL,				// Target area; NULL = parent window, here desktop
 			_number_of_tables,
 			HWNDs_of_child_windows);
-	}
-	else
-	{
+	}	else {
 		// preferences.table_positioner_options() == k_position_tables_never
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");
 	}
 }
 
-void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
-{
+void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 	assert(p_autoconnector != NULL);
-	if (!p_autoconnector->IsConnected())
-	{
+	if (!p_autoconnector->IsConnected()) 	{
 		// This should not happen, as this function gets only called after connection
 		// But it does not hurt to avoid trouble with p_autoconnector->attached_hwnd()
 		return;
@@ -106,8 +96,7 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Connected to window %i\n", p_autoconnector->attached_hwnd());
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Table size: %ix%i\n", _table_size_x, _table_size_y);
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Desktop size: %ix%i\n", _desktop_rectangle.right, _desktop_rectangle.bottom); 
-	if (_number_of_tables == 1)
-	{
+	if (_number_of_tables == 1)	{
 		// No other tables at the moment, 
 		// so we don't really have to care about overlaps.
 		// Moving this table to the top-left (0, 0) however,
@@ -122,20 +111,16 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	// and then try to dock at the left or top of known windows.
 	// Main advantage: we have to search in 2 direction only
 	// if the desktop gets empty again.
-	if (TryBottomRightPosition())
-	{
+	if (TryBottomRightPosition())	{
 		return;
 	}
-	for (int i=0; i<_number_of_tables; i++)
-	{
+	for (int i=0; i<_number_of_tables; i++)	{
 		HWND HWND_of_potential_neighbour_table = list_of_tables[i];
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Trying neighbour-table %i\n", HWND_of_potential_neighbour_table);
-		if (TryLeftSideOfTable(HWND_of_potential_neighbour_table))
-		{
+		if (TryLeftSideOfTable(HWND_of_potential_neighbour_table)) {
 			return;
 		}
-		if (TryTopSideOfTable(HWND_of_potential_neighbour_table))
-		{
+		if (TryTopSideOfTable(HWND_of_potential_neighbour_table))	{
 			return;
 		}
 	}
@@ -145,8 +130,7 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables)
 	MoveToTopLeft();
 }
 
-bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table)
-{
+bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table) {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Neighbours position: %i, %i, %i, %i\n", 
@@ -158,18 +142,16 @@ bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table
 	return TryPosition(my_left_x, my_top_y);
 }
 
-bool CTablePositioner::TryTopSideOfTable(HWND HWND_of_potential_neighbour_table)
-{
+bool CTablePositioner::TryTopSideOfTable(HWND HWND_of_potential_neighbour_table) {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
-	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryTopSideOfTable() Trying bottom side of neighbour\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryTopSideOfTable() Trying top side of neighbour\n");
 	int my_left_x = position_of_potential_neigbour_table.left;
-	int my_top_y  = position_of_potential_neigbour_table.bottom - _table_size_y;
+	int my_top_y  = position_of_potential_neigbour_table.top - _table_size_y;
 	return TryPosition(my_left_x, my_top_y);
 }
 
-bool CTablePositioner::TryBottomRightPosition()
-{
+bool CTablePositioner::TryBottomRightPosition() {
 	int left_x = _desktop_rectangle.right  - _table_size_x + 1;
 	int top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryBottomRightPosition()\n");
@@ -207,18 +189,17 @@ bool CTablePositioner::TryPosition(int left_x, int top_y)
 	return true;
 }
 
-bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x, 
-	int top_y, HWND table_to_check_for_overlapping)
-{
+bool CTablePositioner::PotentialNewPositionOverlapsTable(
+    int left_x, 
+	  int top_y, 
+    HWND table_to_check_for_overlapping) {
 	// Sanity check for real tables in the list
-	if (!IsWindow(table_to_check_for_overlapping))
-	{
+	if (!IsWindow(table_to_check_for_overlapping)) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() Not a window, therefore no overlap\n");
 		return false;
 	}
 	// Make sure, we don't exceed the desktop
-	if ((left_x < 0) || (top_y < 0))
-	{
+	if ((left_x < 0) || (top_y < 0)) {
 		// No good position
 		// Treat it as overlap
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() Out of desktop. No valid position\n");
@@ -238,8 +219,7 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 	GetWindowRect(table_to_check_for_overlapping,
 		&position_of_table_to_check_for_overlapping);
 	if ((left_x > position_of_table_to_check_for_overlapping.right)
-		|| (top_y > position_of_table_to_check_for_overlapping.bottom))
-	{
+		  || (top_y > position_of_table_to_check_for_overlapping.bottom))	{
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() No overlap. Potential good position\n");
 		// No overlap
 		return false;
@@ -247,8 +227,7 @@ bool CTablePositioner::PotentialNewPositionOverlapsTable(int left_x,
 	// No overlap so far
 	// Continue with right_x and bottom_y
 	if ((right_x < position_of_table_to_check_for_overlapping.left)
-		|| (bottom_y < position_of_table_to_check_for_overlapping.top))
-	{
+		  || (bottom_y < position_of_table_to_check_for_overlapping.top)) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PotentialNewPositionOverlapsTable() No overlap. Potential good position\n");
 		// No overlap
 		return false;
