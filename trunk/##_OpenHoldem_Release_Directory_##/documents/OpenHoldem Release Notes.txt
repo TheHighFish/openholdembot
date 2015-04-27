@@ -15,6 +15,9 @@ MAINTENANCE:
 - Renaming many PT stats. Please see:
   http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
   [fqfq]
+- Updated some validator-rules for the changed card-representations.
+  Thanks to Goran123 for reporeting and providing lots of screenshots.
+  [THF]
  
 BUG FIXES:
 - Various PT queries fixes.

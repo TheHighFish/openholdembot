@@ -34,7 +34,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1404")
     HEURISTIC_RULE (false)
     REASONING ("If there's a game going on (check for common cards, if I'm not at the table), then there must be at least 2 players playing.")
-    PRECONDITION ((gws("$$cc0") != CARD_UNKNOWN) && (gws("$$cc0") != CARDBACK))
+    PRECONDITION ((gws("$$cc0") != CARD_UNDEFINED) && (gws("$$cc0") != CARD_BACK))
     POSTCONDITION (gws("nplayersplaying") >= 2)
     SYMBOLS_POSSIBLY_AFFECTED ("$$cc0, nplayersplaying")
 END_TESTCASE
@@ -44,7 +44,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1405")
     HEURISTIC_RULE (false)
     REASONING ("If I hold cards, there must be at least 1 opponent playing.")
-    PRECONDITION ((gws("$$pc0") != CARD_UNKNOWN) && (gws("$$pc0") != CARDBACK) && (gws("$$pc1") != CARD_UNKNOWN) && (gws("$$pc1") != CARDBACK))
+    PRECONDITION ((gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_BACK) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_BACK))
     POSTCONDITION (gws("nopponentsplaying") >= 1)
     SYMBOLS_POSSIBLY_AFFECTED ("$$pc0, $$pc1, nopponentsplaying")
 END_TESTCASE
