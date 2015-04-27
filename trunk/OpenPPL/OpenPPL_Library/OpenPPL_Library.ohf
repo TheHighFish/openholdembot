@@ -3477,7 +3477,7 @@ InSmallBlind ? 1 :
 
 ##SmallBlind##
 // Small blind missing, therefore we can't be small blind
-MissingSmallBlind ? false :
+MissingSmallBlind ? False :
 // 3 or more handed, normal blinds
    ((nplayersdealt != 2) && (dealposition == 1))
 // Headsup, reversed blinds
