@@ -31,6 +31,7 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
+#include "CLineCounter.h"
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
 #include "CParserSymbolTable.h"

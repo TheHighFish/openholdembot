@@ -15,6 +15,7 @@
 #include "CParseErrors.h"
 
 #include "CFormulaParser.h"
+#include "CLineCounter.h"
 #include "CTokenizer.h"
 #include "OH_MessageBox.h"
 
@@ -29,8 +30,8 @@ void CParseErrors::Error(CString short_message) {
 		"Error: ", short_message, 
 		"============================================================\n"
 		"Function: ", CFormulaParser::CurrentFunctionName(), "\n"
-		"Line absolute: ", CTokenizer::LineAbsolute(), "\n",
-		"Line relative: ", CTokenizer::LineRelative(), "\n",
+		"Line absolute: ", line_counter.AbsoluteLine(), "\n",
+    "Line relative: ", line_counter.RelativeLineInsideCurrentlyParsedFunction(), "\n",
 		"============================================================\n",
 		ErroneousCodeSnippet(), "\n",
 		"============================================================\n");
