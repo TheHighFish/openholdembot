@@ -42,14 +42,10 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
-  write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
   p_function_collection->ClearCache();
-  write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
-    write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
     CalculateOpenPPLBackupActions();
-    write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
     return;
   }
   // Otherwiese: OH-script
