@@ -523,7 +523,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	{
 		char *found_name = PQgetvalue(res, 0, 0);
 		lev_dist = myLD.LD(scraped_name, found_name);
-		if ( strlen(found_name) >= 14
+		if (	strlen(found_name) >= k_min_name_length_to_skip_lev_dist
 			 || lev_dist <= (int)strlen(found_name) * Levenshtein_distance_matching_factor )
 		{
 			strncpy_s(best_name, k_max_length_of_playername, found_name, _TRUNCATE);
@@ -775,7 +775,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		iterEnd = clock();
 		iterDurationMS = (int) ((double)(iterEnd - iterStart));
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
-		if (iterDurationMS <= 10000)
+		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) )
 		{
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
 			if (LightSleep(10000 - iterDurationMS, pParent)) 
