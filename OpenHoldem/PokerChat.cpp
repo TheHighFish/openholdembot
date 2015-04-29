@@ -70,7 +70,11 @@ char _message_table[][max_length_of_simple_messages] =
 	"hello\0",
 	"bye\0",
 	":)\0",
-	":(\0"
+	":(\0",
+	"\\o/\0",
+	"/o\\\0",
+	"&é#\"@\0",
+
 };
 
 
