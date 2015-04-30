@@ -23,6 +23,7 @@
 #include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEngineIsRush.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
@@ -37,6 +38,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	assert(p_symbol_engine_active_dealt_playing != NULL);
+	assert(p_symbol_engine_isrush != NULL);
 }
 
 CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker() {
@@ -52,7 +54,10 @@ void CSymbolEnginePokerTracker::ResetOnConnection() {
 	p_pokertracker_thread->StartThread();
 }
 
-void CSymbolEnginePokerTracker::ResetOnHandreset() {
+void CSymbolEnginePokerTracker::ResetOnHandreset() 
+{
+	if (p_symbol_engine_isrush->isrush())
+		ClearAllStats();
 }
 
 void CSymbolEnginePokerTracker::ResetOnNewRound()
