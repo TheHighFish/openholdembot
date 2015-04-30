@@ -19,6 +19,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTime.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
@@ -36,6 +37,7 @@ CSymbolEngineIsRush::CSymbolEngineIsRush() {
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_time != NULL);
   assert(p_symbol_engine_istournament != NULL);
+  assert(p_symbol_engine_active_dealt_playing !=NULL);
 }
 
 CSymbolEngineIsRush::~CSymbolEngineIsRush() {
@@ -74,6 +76,12 @@ bool CSymbolEngineIsRush::isrush() {
     // Not a cash-game, therefore not rush
     write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] Tournament, therefore not rush / zoom\n");
+    return false;
+  }
+  else if (p_symbol_engine_active_dealt_playing->nopponentsdealt()<2){
+	  // Game may be HU 
+    write_log(preferences.debug_symbolengine(),
+      "[CSymbolEngineIsRush] One Opponent, game may or may not be rush / zoom\n");
     return false;
   }
   assert(handresets > 0);
