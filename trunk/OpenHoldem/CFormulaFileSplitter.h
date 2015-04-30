@@ -31,8 +31,6 @@ class CFormulaFileSplitter {
  public:
   CString GetFunctionHeader()   { return _function_header; }
   CString GetFunctionText()     { return _function_text; }
- public:
-  int starting_line_of_current_function() { return _starting_line_of_current_function; }
  private:
   bool IsFunctionHeader(CString line_of_code);
  private:
@@ -41,8 +39,6 @@ class CFormulaFileSplitter {
   CString _next_line;
  private:
   bool _first_function_processed;
-  int _total_line_processed;
-  int _starting_line_of_current_function;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H
