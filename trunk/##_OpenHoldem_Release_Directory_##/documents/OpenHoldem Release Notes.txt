@@ -33,6 +33,7 @@ BUG FIXES:
   Thanks to Chillit for reporting.
   [THF]
 - Absolute lines in the log-file were broken.
+  The parser used the line of the following function.
   Thanks to OpenGeek for reporting.
   [THF]
 - PT thread sleep ~2weeks fix.
