@@ -29,6 +29,11 @@ class CLineCounter {
  private:
   int _absolute_line;
   int _starting_line_of_function;
+  // We parse the file function after function.
+  // By the time we need the starting line
+  // we alreadz found the header of the next function.
+  // Therefore we have to keep both.
+  int _starting_line_of_next_function;
   int _relative_line;
 };
 

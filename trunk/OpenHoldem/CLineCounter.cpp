@@ -25,18 +25,20 @@ CLineCounter::~CLineCounter() {
 
 void CLineCounter::ResetOnNewSourceFile() {
   _absolute_line = 1;
-  _starting_line_of_function = k_undefined;
-  _relative_line = k_undefined;
+  _starting_line_of_function = 1;
+  _starting_line_of_next_function = 1;
+  _relative_line = 1;
 }
 
 void CLineCounter::OnLineBreak() {
   ++_absolute_line;
-  ++_starting_line_of_function;
   ++_relative_line;
 }
 
 void CLineCounter::OnNextFunction() {
-  _starting_line_of_function = _absolute_line;
-  _relative_line = 0;
+  _starting_line_of_function = /*_starting_line_of_next_function;
+  _starting_line_of_next_function =*/ _absolute_line;
+  //assert(_starting_line_of_function < _starting_line_of_next_function);
+  _relative_line = 1;
 
 }

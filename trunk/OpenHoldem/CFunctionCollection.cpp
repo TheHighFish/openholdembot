@@ -311,7 +311,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "(call == 0) "; 
   } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical) {
     function_text = 
-      "// f$fold should alwazs evaluate to true per default\n"
+      "// f$fold should always evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 ";
   } else if (function_name.Compare(k_standard_function_names[k_hopper_function_rebuy]) == k_CString_identical) {
