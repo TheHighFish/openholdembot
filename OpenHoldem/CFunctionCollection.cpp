@@ -492,7 +492,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     // We need to create name and text on the heap, can't point to the stack
     CString *my_text = new CString(content);
     CString *my_name = new CString(name);
-    function = new CFunction(my_name, my_text, k_undefined_zero);
+    function = new CFunction(my_name, my_text, kNoAbsoluteLineNumberExists);
     Add(function);
   } else {
     function->SetText(content);

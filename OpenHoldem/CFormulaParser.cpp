@@ -282,7 +282,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     COHScriptList *new_list = new COHScriptList(&_function_name, 
-        &function_text, _formula_file_splitter.starting_line_of_current_function());
+      &function_text, line_counter.StartingLineOfCurrentlyParsedFunction());
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
@@ -307,7 +307,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
-	  &function_text, _formula_file_splitter.starting_line_of_current_function());
+	  &function_text, line_counter.StartingLineOfCurrentlyParsedFunction());
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence

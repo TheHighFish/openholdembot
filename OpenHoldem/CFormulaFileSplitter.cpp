@@ -44,8 +44,6 @@ CFormulaFileSplitter::~CFormulaFileSplitter() {
 
 void CFormulaFileSplitter::InitNewParse() {
   _first_function_processed = false; 
-  _total_line_processed = 0;
-  _starting_line_of_current_function = 0;
 }
 
 // Returns the next function (including header),
@@ -65,7 +63,6 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
     catch (CException *e) {
 	    // break;
     }
-    ++_total_line_processed;
     // Avoid problems with "empty" lines before first function header
     // that contain spaces.
     _next_line.TrimRight();
@@ -78,7 +75,6 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       // Only continue, if we found the first one
       //
       // In case of break: keep that function-header for the next query
-      _starting_line_of_current_function = _total_line_processed;
       break;
 	  }
     if (_function_header.IsEmpty() || (_function_header.Find('#') < 0)) {
