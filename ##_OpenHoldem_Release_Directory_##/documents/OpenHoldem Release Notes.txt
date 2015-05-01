@@ -2,6 +2,7 @@ v7.7.3 2015-04.xx
 ==================
 NEW STUFF:
 - Added: Aggression frequency PT stats:  "flop_afq" "turn_afq" "river_afq" "total_afq"
+  and "flop_float" (PT's stat name for: bet IP flop vs missed cbet)
   Thanks to kata for the constructive suggestion.
   [fqfq]
 - A new Keyboard DLL for VmWare Unity Mode.
@@ -36,7 +37,7 @@ BUG FIXES:
   The parser used the line of the following function.
   Thanks to OpenGeek for reporting.
   [THF]
-- PT thread sleep ~2weeks fix.
+- PT thread sleeping times.
   [fqfq]
  
 v7.7.2 2015-04.01
