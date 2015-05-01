@@ -746,9 +746,9 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		double players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
-			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
+		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
+			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0);
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
 				
 		if (players < 2)
 		{
@@ -793,16 +793,17 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	return 0;
 }
 
-/*Sleeps but wakes up on stop thread event
+/*Sleeps but wakes up on stop thread event every 250ms.
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
 int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 {
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
-	if ( sleepTime > 0)
+
+	if (sleepTime > 0)
 	{
-		int iterations = 20;
-		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
-		for (int i = 0; i < iterations; i++)
+		unsigned int sleepSlice = 250 ; // ms
+		unsigned int slicesNumber = sleepTime / sleepSlice ;
+		for (int i = 1; i <= slicesNumber; i++)
 		{
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
@@ -811,14 +812,12 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 				return 1;
 			}
 		}
+		Sleep(sleepTime%sleepSlice);
 	}
-	else
+	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
 	{
-		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-		{
-			write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-			return 1;
-		}
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
+		return 1;
 	}
 	return 0;
 }
