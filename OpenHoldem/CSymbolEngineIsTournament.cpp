@@ -157,11 +157,14 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_casino != NULL);
-	assert(p_symbol_engine_mtt_info != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
+  // We also use MTT-info. but this info is constant,
+  // so ordering does not matter and we want the rarely 
+  // used MTT-engine to be one of the last in the list.
+  // assert(p_symbol_engine_mtt_info != NULL);
 }
 
 CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {

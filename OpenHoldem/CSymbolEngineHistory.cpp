@@ -216,7 +216,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
 	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
-			return _hist_sym[i][round-1];
+			return _hist_sym[i][round];
 		}
 	}
 	return k_undefined_zero;
