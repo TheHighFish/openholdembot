@@ -9,6 +9,10 @@ NEW STUFF:
   Thanks to BadHabit for the patch, 
   Termitapalahermita an Relhby for help and advice.
   [THF]
+- isrush now returns false for HU 
+  [Wavelen]
+- PT stats now update faster for rush/zoom tables and get reset on new hand
+  [Wavelen]
 - New symbol isrush, especially meant to control flexible
   heartbeat delays between fold and new game.
   [THF]
