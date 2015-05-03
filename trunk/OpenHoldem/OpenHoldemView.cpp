@@ -39,7 +39,7 @@
 #include "OpenHoldemDoc.h"
 
 // Table layouts
-int		cc[k_number_of_community_cards][2] = 
+int		cc[kNumberOfCommunityCards][2] = 
 { 
 	{-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	
 	{-(CARDSIZEX*1 + 3*1 + CARDSIZEX/2), -(CARDSIZEY/2)},
@@ -50,7 +50,7 @@ int		cc[k_number_of_community_cards][2] =
 
 // Player locations as a percentage of width/height
 // [nplayers][chairnum][x/y]
-double	pc[k_max_number_of_players+1][k_max_number_of_players][k_number_of_cards_per_player] = {
+double	pc[k_max_number_of_players+1][k_max_number_of_players][kNumberOfCardsPerPlayer] = {
   // 0 chairs
 	{ {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	
   // 1 chair
@@ -132,7 +132,7 @@ COpenHoldemView::COpenHoldemView() {
 	_sblind_last = _bblind_last = _lim_last = _ante_last = _pot_last = 0.;
 	_iterator_thread_progress_last = 0;
 	
-	for (int i = 0; i<k_number_of_community_cards; i++)
+	for (int i = 0; i<kNumberOfCommunityCards; i++)
 		_card_common_last[i] = CARD_UNDEFINED;
 
 	for (int i = 0; i<k_max_number_of_players ; i++)
@@ -142,7 +142,7 @@ COpenHoldemView::COpenHoldemView() {
     _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
-		for (int j=0; j<k_number_of_cards_per_player; j++)
+		for (int j=0; j<kNumberOfCardsPerPlayer; j++)
 		{
 			_card_player_last[i][j] = CARD_NOCARD;
 		}
@@ -260,7 +260,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	DrawButtonIndicators();
 
 	// Draw common cards
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
     Card *p_card = &p_table_state->_common_cards[i];
     int card_value = p_table_state->_common_cards[i].GetValue();
@@ -455,7 +455,7 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 	// Background color
 	pDC->SetBkColor(COLOR_GRAY);
 
-	if (button_num == k_undefined) 
+	if (button_num == kUndefined) 
 	{
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
@@ -760,8 +760,8 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 
 	if (p_scraper_access->IsPlayerSeated(chair) 
 		|| p_scraper_access->IsPlayerActive(chair)) 
-		/*|| (p_tablemap->r$pXseated_index[chair] == k_undefined && p_tablemap->r$uXseated_index[chair] == k_undefined &&
-		|| p_tablemap->r$pXactive_index[chair] == k_undefined && p_tablemap->r$uXactive_index[chair] == k_undefined)*/  
+		/*|| (p_tablemap->r$pXseated_index[chair] == kUndefined && p_tablemap->r$uXseated_index[chair] == kUndefined &&
+		|| p_tablemap->r$pXactive_index[chair] == kUndefined && p_tablemap->r$uXactive_index[chair] == kUndefined)*/  
 	{
 
 		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);

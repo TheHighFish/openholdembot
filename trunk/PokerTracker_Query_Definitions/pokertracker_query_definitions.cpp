@@ -139,7 +139,7 @@ int GetIndex(CString symbol_name) {
 			return i;
 		}
 	}
-	return k_undefined;
+	return kUndefined;
 }
 
 POKERTRACKER_DLL_API double	PT_DLL_GetStat(CString symbol_name, int chair) {
@@ -147,8 +147,8 @@ POKERTRACKER_DLL_API double	PT_DLL_GetStat(CString symbol_name, int chair) {
 	symbol_name = PureSymbolName(symbol_name);
 	AssertRange(chair, k_first_chair, k_last_chair);
 	int stats_index = GetIndex(symbol_name);
-	if (stats_index == k_undefined) {
-		return k_undefined;
+	if (stats_index == kUndefined) {
+		return kUndefined;
 	}
 	return stats[stats_index][chair];
 }
@@ -166,7 +166,7 @@ POKERTRACKER_DLL_API bool PT_DLL_IsValidSymbol(CString symbol_name) {
 POKERTRACKER_DLL_API void PT_DLL_ClearPlayerStats(int chair) {
 	AssertRange(chair, k_first_chair, k_last_chair);
 	for (int i=0; i<k_number_of_pokertracker_stats; ++i) {
-		PT_DLL_SetStat(i, chair, k_undefined);
+		PT_DLL_SetStat(i, chair, kUndefined);
 	}
 }
 

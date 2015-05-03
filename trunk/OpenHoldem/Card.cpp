@@ -53,7 +53,7 @@ int Card::GetOpenHoldemRank() {
   if (IsKnownCard()) {
     return (GetStdDeckRank() + 2);
   } else {
-    return k_undefined;
+    return kUndefined;
   }
 }
 
@@ -63,7 +63,7 @@ int Card::GetStdDeckRank() {
   if (IsKnownCard()) {
     return StdDeck_RANK(_value);
   } else {
-    return k_undefined;
+    return kUndefined;
   }
 }
 
@@ -71,7 +71,7 @@ int Card::GetSuit() {
   if (IsKnownCard()) {
     return StdDeck_SUIT(_value);
   } else {
-    return k_undefined;
+    return kUndefined;
   }
 }
 

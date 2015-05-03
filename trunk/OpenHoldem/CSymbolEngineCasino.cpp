@@ -122,7 +122,7 @@ bool CSymbolEngineCasino::EvaluateSymbol(const char *name, double *result, bool 
   else if (memcmp(name, "sitename$", 9)==0)	*result = SitenameContainsCasinoIdentifier(&name[9]);
   else if (memcmp(name, "network$", 8)==0)	*result = p_tablemap->network().Find(&name[8])!=-1;
   else {
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
   return true;

@@ -61,7 +61,7 @@ void CHandHistoryDealPhase::ResetOnMyTurn() {
 
 void CHandHistoryDealPhase::ResetOnHeartbeat() {
   if (_job_done) return;
-  if (BETROUND > k_betround_preflop) {
+  if (BETROUND > kBetroundPreflop) {
     // Can only happen when we join a table
     // in the middle of a hand
     _job_done = true;

@@ -24,13 +24,13 @@ void CPlayer::Reset() {
   _name = "";
   _balance = 0.0;
   _bet = 0.0;
-  for (int i=0; i<k_number_of_cards_per_player; ++i) {
+  for (int i=0; i<kNumberOfCardsPerPlayer; ++i) {
     _hole_cards[i].ClearValue();
   }
   _seated = false;
   _active = false;
   _dealer = false;
-  _colourcode = k_undefined_zero;
+  _colourcode = kUndefinedZero;
 }
 
 bool CPlayer::HasAnyCards() {

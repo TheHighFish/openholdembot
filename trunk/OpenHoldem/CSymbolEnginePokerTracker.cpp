@@ -23,7 +23,6 @@
 #include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineRaisersCallers.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbolEngineIsRush.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
 #include "StringFunctions.h"
@@ -38,7 +37,6 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_symbol_engine_isrush != NULL);
 }
 
 CSymbolEnginePokerTracker::~CSymbolEnginePokerTracker() {
@@ -54,10 +52,7 @@ void CSymbolEnginePokerTracker::ResetOnConnection() {
 	p_pokertracker_thread->StartThread();
 }
 
-void CSymbolEnginePokerTracker::ResetOnHandreset() 
-{
-	if (p_symbol_engine_isrush->isrush())
-		ClearAllStats();
+void CSymbolEnginePokerTracker::ResetOnHandreset() {
 }
 
 void CSymbolEnginePokerTracker::ResetOnNewRound()
@@ -161,14 +156,14 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
-		*result = k_undefined;
+		*result = kUndefined;
 		return true;
 	}
 	if (!PT_DLL_IsValidSymbol(CString(s)))
 	{
 		// Invalid PokerTracker symbol
 		WarnAboutInvalidPTSymbol(s);
-		*result = k_undefined;
+		*result = kUndefined;
 		return true;
 	}
 	int chair = 0;
@@ -186,7 +181,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
 				"Can't use PokerTracker symbols.");
 		}
-		*result = k_undefined;
+		*result = kUndefined;
 		return true;
 	}
 
@@ -241,14 +236,14 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
       error_message.Format("Invalid PokerTracker Symbol: &s",
         symbol);
       OH_MessageBox_Formula_Error(error_message, "ERROR");
-		  *result = k_undefined;
+		  *result = kUndefined;
       return false;
     }
 		chair = atoi(last_character);
 	}
   // Catch undefined chair (e.g. pt_r_-symbol without raisee)
   if (chair < 0) {
-    *result = k_undefined;
+    *result = kUndefined;
     return true;
   }
 	AssertRange(chair, k_first_chair, k_last_chair);

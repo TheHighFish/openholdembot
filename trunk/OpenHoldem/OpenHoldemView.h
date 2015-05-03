@@ -50,8 +50,8 @@ class COpenHoldemView : public CView {
 	CString	_handnumber_last;
 	double	_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
 	int	    _iterator_thread_progress_last;
-	int	    _card_common_last[k_number_of_community_cards];
-	int	    _card_player_last[k_max_number_of_players][k_number_of_cards_per_player];
+	int	    _card_common_last[kNumberOfCommunityCards];
+	int	    _card_player_last[k_max_number_of_players][kNumberOfCardsPerPlayer];
 	bool		_seated_last[k_max_number_of_players];
 	bool	  _active_last[k_max_number_of_players];
 	CString	_playername_last[k_max_number_of_players];

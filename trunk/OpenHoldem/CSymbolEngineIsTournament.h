@@ -46,7 +46,7 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
   bool IsSNG();
   bool IsDON();
  private:
-	// Internally we have an extra state, k_undefined (-1).  But that's
+	// Internally we have an extra state, kUndefined (-1).  But that's
 	// not exposed in the API as it's used internally to avoid locking
 	// the istournament decision too quickly.
   // The other valous are true (1) and false (0).

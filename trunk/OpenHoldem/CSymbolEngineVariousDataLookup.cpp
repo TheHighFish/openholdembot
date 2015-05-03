@@ -80,7 +80,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     if (p_dll_extension->IsLoaded()) {
 	    *result = (p_dll_extension->process_message()) ("query", name);
     } else {
-	    *result = k_undefined_zero;
+	    *result = kUndefinedZero;
     }
   }
   // Various symbols below
@@ -121,7 +121,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
   } else {
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
   return true;

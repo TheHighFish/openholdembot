@@ -369,7 +369,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
                                       bool log /* = false */) {
   write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
   if (IsOutdatedSymbol(name)) {
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
   for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
@@ -406,7 +406,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
     // Though we check the syntax, this can still happen
     // by gws-calls from a DLL, etc.
     WarnAboutUnknownSymbol(name);
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
 }

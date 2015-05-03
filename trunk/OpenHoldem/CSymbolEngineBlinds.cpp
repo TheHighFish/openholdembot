@@ -81,8 +81,8 @@ void CSymbolEngineBlinds::ResetOnHeartbeat()
 
 void CSymbolEngineBlinds::CalculateBlinds()
 {
-	int sbchair = k_undefined;
-	int bbchair = k_undefined;
+	int sbchair = kUndefined;
+	int bbchair = kUndefined;
 
 	// Heads-Up
 	if (p_symbol_engine_active_dealt_playing->playersdealtbits() == 2 && (p_symbol_engine_active_dealt_playing->nplayersdealt() & (1<<DEALER_CHAIR)))
@@ -116,13 +116,13 @@ void CSymbolEngineBlinds::CalculateBlinds()
 			double p_bet = p_table_state->_players[chair]._bet;
 
 			// search SB
-			if (sbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->sblind() && p_bet > 0) 
+			if (sbchair == kUndefined && p_bet <= p_symbol_engine_tablelimits->sblind() && p_bet > 0) 
 			{
 				sbchair = chair;
 				_playersblindbits |= k_exponents[sbchair];		
 			}
 			// search BB
-			if (bbchair == k_undefined && p_bet <= p_symbol_engine_tablelimits->bblind() && p_bet > p_symbol_engine_tablelimits->sblind() && chair != sbchair)
+			if (bbchair == kUndefined && p_bet <= p_symbol_engine_tablelimits->bblind() && p_bet > p_symbol_engine_tablelimits->sblind() && chair != sbchair)
 			{
 				bbchair = chair;	
 				_bblindbits = k_exponents[bbchair];
@@ -134,7 +134,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 		// SB not found correction.
 		// Will only apply if we are the bb + missed action(s). most common case. 
 		// Restrictions : 3 or less players were dealt or last bb is active
-		if (sbchair == k_undefined && (p_symbol_engine_active_dealt_playing->playersdealtbits() < 3 || (bbchair == USER_CHAIR && p_symbol_engine_positions->nchairsdealtright() == 1)))
+		if (sbchair == kUndefined && (p_symbol_engine_active_dealt_playing->playersdealtbits() < 3 || (bbchair == USER_CHAIR && p_symbol_engine_positions->nchairsdealtright() == 1)))
 		{
 			for (int i=DEALER_CHAIR+1; i<DEALER_CHAIR+p_tablemap->nchairs(); i++)
 			{
@@ -142,7 +142,7 @@ void CSymbolEngineBlinds::CalculateBlinds()
 				double p_bet = p_table_state->_players[chair]._bet;
 
 				// 1st caller/raiser after dealer is sb
-				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == k_undefined && chair != bbchair)
+				if (p_bet >= p_symbol_engine_tablelimits->bblind() && sbchair == kUndefined && chair != bbchair)
 				{
 					sbchair = chair;
 					_playersblindbits |= k_exponents[sbchair];

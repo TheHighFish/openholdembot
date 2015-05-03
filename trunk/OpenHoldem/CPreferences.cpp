@@ -171,7 +171,7 @@ void CPreferences::LoadPreferences()
 
 
 void CPreferences::CheckForOutdatedICMConfig() {
-  if (prefs_numerical_values[k_prefs_icm_prize1] != k_undefined_zero) {
+  if (prefs_numerical_values[k_prefs_icm_prize1] != kUndefinedZero) {
     OH_MessageBox_Error_Warning(
       "Outdated ICM-configuration\n"
       "\n"
@@ -237,7 +237,7 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
 
 	// Doubles
-	prefs_numerical_values[k_prefs_icm_prize1] = k_undefined_zero;
+	prefs_numerical_values[k_prefs_icm_prize1] = kUndefinedZero;
 	
 	// CString
 	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";

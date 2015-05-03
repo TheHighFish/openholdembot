@@ -45,8 +45,8 @@ void CSymbolEngineChipAmounts::ResetOnConnection()
 {
 	ResetOnHandreset();
 
-	_maxbalance = k_undefined_zero;
-	_balanceatstartofsession = k_undefined_zero;
+	_maxbalance = kUndefinedZero;
+	_balanceatstartofsession = kUndefinedZero;
 }
 
 void CSymbolEngineChipAmounts::ResetOnHandreset() {
@@ -329,7 +329,7 @@ CString CSymbolEngineChipAmounts::SymbolsProvided() {
     "currentbet call nbetstocall nbetstorais "
     "ncurrentbets ncallbets nraisbets ";
   list += RangeOfSymbols("balance%i", k_first_chair, k_last_chair);
-  list += RangeOfSymbols("balance_rank%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("balance_rank%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("currentbet%i", k_first_chair, k_last_chair);
   list += RangeOfSymbols("stack%i", k_first_chair, k_last_chair);
   return list;

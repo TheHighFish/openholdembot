@@ -201,7 +201,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     // User-variables are a special case of elementary actions
     // Therefore need to be handled first.
     SetUserVariable(_terminal_name);
-		return k_undefined_zero;
+		return kUndefinedZero;
   } else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
   }
@@ -214,7 +214,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 		return EvaluateTernaryExpression(log);
 	}
 	assert(false);
-	return k_undefined;
+	return kUndefined;
 }
 
 CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
@@ -258,7 +258,7 @@ double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
     case kTokenBracketOpen_3:          return value_of_first_sibbling;
     default: 
 	  assert(false);
-	  return k_undefined;
+	  return kUndefined;
   }
 }
 
@@ -302,14 +302,14 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 	  case kTokenOperatorDivision: 
 		  if (value_of_second_sibbling == 0) {
 			  OH_MessageBox_Error_Warning("Division by zero.");
-			  return k_undefined;
+			  return kUndefined;
 		  } else {
 			  return value_of_first_sibbling / value_of_second_sibbling;
 		  }
 	  case kTokenOperatorModulo: 
       if (value_of_second_sibbling == 0) {
 			  OH_MessageBox_Error_Warning("Division by zero.");
-			  return k_undefined;
+			  return kUndefined;
 		  } else {
 			  return (unsigned long)value_of_first_sibbling 
 				  % (unsigned long)value_of_second_sibbling;
@@ -350,7 +350,7 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 		  return value_of_first_sibbling * value_of_second_sibbling * 0.01;
 	  default: assert(false);
 	}
-	return k_undefined;
+	return kUndefined;
 }
 
 double CParseTreeNode::EvaluateTernaryExpression(bool log) {
@@ -388,7 +388,7 @@ double CParseTreeNode::EvaluateSibbling(
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {
-    return k_undefined_zero;
+    return kUndefinedZero;
   }
   double result = first_second_or_third_sibbling->Evaluate(log);
   return result;

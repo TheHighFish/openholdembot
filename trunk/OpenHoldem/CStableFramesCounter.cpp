@@ -24,8 +24,8 @@ CStableFramesCounter *p_stableframescounter = NULL;
 
 CStableFramesCounter::CStableFramesCounter() {
 	// Initialize private variables
-	memset(&_card_common_last[0],		 0, sizeof(_card_common_last[0])*k_number_of_community_cards);
-	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*k_number_of_cards_per_player*k_max_number_of_players);
+	memset(&_card_common_last[0],		 0, sizeof(_card_common_last[0])*kNumberOfCommunityCards);
+	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*kNumberOfCardsPerPlayer*k_max_number_of_players);
 	memset(&_dealer_last[0],         0, sizeof(_dealer_last[0])*k_max_number_of_players);
 	memset(&_playerbalance_last[0],  0, sizeof(_playerbalance_last[0])*k_max_number_of_players);
 	memset(&_playerbet_last[0],      0, sizeof(_playerbet_last[0])*k_max_number_of_players);
@@ -52,7 +52,7 @@ void CStableFramesCounter::SaveCurrentState() {
 	*/
   _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
 
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
   }
 
@@ -95,7 +95,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
 		same_scrape = false;
   }
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
 		if(!same_scrape) break;
 
     if (p_table_state->_common_cards[i].GetValue() != _card_common_last[i]) {

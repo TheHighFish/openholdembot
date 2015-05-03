@@ -88,7 +88,7 @@ void CSymbolEngineHistory::ResetOnConnection() {
 void CSymbolEngineHistory::ResetOnHandreset() {
   _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
-	for (int i=0; i<(k_number_of_betrounds+1); ++i) {
+	for (int i=0; i<(kNumberOfBetrounds+1); ++i) {
 		_nplayersround[i] = 0;
 		_nbetsround[i] = 0;
 		for (int j=0; j<=k_autoplayer_function_fold; ++j)	{
@@ -216,10 +216,10 @@ void CSymbolEngineHistory::CalculateHistory() {
 double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
 	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
-			return _hist_sym[i][round];
+			return _hist_sym[i][round-1];
 		}
 	}
-	return k_undefined_zero;
+	return kUndefinedZero;
 }
 
 bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
@@ -295,7 +295,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 bool CSymbolEngineHistory::DidAct() {
   // Extra pre-caution for preflop, in case of failed hand-reset,
   // including another extra fail-safe for unknown big-blind
-  if ((BETROUND == k_betround_preflop)
+  if ((BETROUND == kBetroundPreflop)
       && p_symbol_engine_userchair->userchair_confirmed()
       && ((p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) < p_symbol_engine_tablelimits->bblind())
         || (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) == 0))) {
@@ -318,16 +318,16 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 CString CSymbolEngineHistory::SymbolsProvided() {
   CString list = "didchec didcall didrais didswag didfold didalli "
     "nplayersround nbetsround prevaction ";
-  list += RangeOfSymbols("didchecround%i",  k_betround_preflop, k_betround_river);  
-  list += RangeOfSymbols("didcallround%i",  k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("didraisround%i",  k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("didswaground%i",  k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("nplayersround%i", k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("nbetsround%i",    k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("didchecround%i",  kBetroundPreflop, kBetroundRiver);  
+  list += RangeOfSymbols("didcallround%i",  kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("didraisround%i",  kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("didswaground%i",  kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("nplayersround%i", kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("nbetsround%i",    kBetroundPreflop, kBetroundRiver);
   for (int i=0; i<k_hist_sym_count; ++i) {
     CString new_history_symbol;
     new_history_symbol.Format("hi_%s%%i", k_hist_sym_strings[i]);
-    list += RangeOfSymbols(new_history_symbol, k_betround_preflop, k_betround_river);
+    list += RangeOfSymbols(new_history_symbol, kBetroundPreflop, kBetroundRiver);
   }
   return list;
 }

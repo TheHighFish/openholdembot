@@ -40,7 +40,7 @@ void CSymbolEngineDealerchair::InitOnStartup()
 
 void CSymbolEngineDealerchair::ResetOnConnection()
 {
-	_dealerchair = k_undefined;
+	_dealerchair = kUndefined;
 }
 
 void CSymbolEngineDealerchair::ResetOnHandreset()

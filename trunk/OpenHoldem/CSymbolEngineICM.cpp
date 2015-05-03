@@ -245,7 +245,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
   // Fast exit on other symbols
   int	sym_userchair = p_symbol_engine_userchair->userchair();
   if (memcmp(name, "icm", 3) != 0) return false;
-	if (sym_userchair == k_undefined) {
+	if (sym_userchair == kUndefined) {
 		*result = 0.0;
     return true;
 	}
@@ -422,8 +422,8 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			//assume only one particular caller
 			int oppChair = GetChairFromDealPos(name + 11);
-			if (oppChair == k_undefined || oppChair == sym_userchair) {
-				*result = k_undefined;
+			if (oppChair == kUndefined || oppChair == sym_userchair) {
+				*result = kUndefined;
 				return true;
 			}
 			if (oppChair >= 0)
@@ -506,8 +506,8 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			//assume only one particular caller
 			int oppChair = GetChairFromDealPos(name + 12);
-			if (oppChair == k_undefined || oppChair == sym_userchair) {
-				*result = k_undefined;
+			if (oppChair == kUndefined || oppChair == sym_userchair) {
+				*result = kUndefined;
 				return true;
 			}
 			if (oppChair >= 0)
@@ -526,8 +526,8 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	{
 		//assume only one particular caller
 		int oppChair = GetChairFromDealPos(name + 11);
-		if (oppChair == k_undefined || oppChair == sym_userchair) {
-			*result = k_undefined;
+		if (oppChair == kUndefined || oppChair == sym_userchair) {
+			*result = kUndefined;
 			return true;
 		}
 		if (oppChair >= 0)

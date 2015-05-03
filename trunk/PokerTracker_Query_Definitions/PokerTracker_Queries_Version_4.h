@@ -73,7 +73,6 @@
 #define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B				(FALSE)	// "flop_fold_to_3bet"   // 3b is a reraise, we should have a "flop_fold_to_raise" stat first.
 #define PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE				(TRUE)	// "flop_checkraise"
 #define PT4_QUERY_SUPPORT__FLOP_DONKBET					(TRUE)	// "flop_donkbet"
-#define PT4_QUERY_SUPPORT__FLOP_FLOAT     				(TRUE)	// "flop_float" (PT's stat for: bet IP flop vs missed cbet)
 
 // TURN Other stats
 #define PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B				(FALSE)	// "turn_fold_to_3bet" // 3b is a reraise, we should have a "turn_fold_to_raise" stat first.
@@ -144,8 +143,7 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 											(PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__FLOP_DONKBET ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_FLOAT ? 1 : 0) +
-
+											
 											//  Turn Other stats
 											(PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B ? 1 : 0) + 
 											(PT4_QUERY_SUPPORT__TURN_CHECK_RAISE ? 1 : 0) + 
@@ -153,7 +151,7 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 
 											//  River Other stats
 											(PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0) ;
+											(PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0);
 
 
 // PokerTracker support
@@ -1180,38 +1178,6 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 						((HSum.cnt_players > 2 and S.val_p_raise_aggressor_pos < S.position) or \
 						(HSum.cnt_players = 2 and S.flg_blind_b))) then 1 else 0 end) \
 						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_summary as HSum, %TYPE%_hand_player_statistics as S \
-				 WHERE	S.id_player = P.id_player AND \
-						S.id_gametype = %GAMETYPE% AND \
-						HSum.id_hand = S.id_hand AND \
-						P.id_site = %SITEID% AND \
-						P.player_name LIKE '%SCREENNAME%') foo",
-		// stat_group
-		pt_group_advanced
-	},
-#endif
-
-#if PT4_QUERY_SUPPORT__FLOP_FLOAT
-	/* PT4  query to get flop float */
-	{
-		// name
-		"flop_float",
-		// description_for_editor
-		"Poker Tracker flop float",
-		// query
-		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else cast(ActionCount as real) / ActionOpportunities \
-				 end) as result \
-				 FROM	(SELECT	sum(case when ((cnt_p_call>0) AND S.flg_p_face_raise AND S.flg_f_bet \
-								AND char_length(HSum.str_aggressors_p) = 2 \
-								AND ((HSum.cnt_players > 2 AND S.val_p_raise_aggressor_pos > S.position) \
-									OR (HSum.cnt_players = 2 AND S.flg_f_has_position))) then 1 else 0 end) \
-								 as ActionCount, \
-								sum(case when ((cnt_p_call>0) AND S.flg_p_face_raise AND S.flg_f_open_opp \
-								AND char_length(HSum.str_aggressors_p)=2 \
-								AND((HSum.cnt_players>2 AND S.val_p_raise_aggressor_pos > S.position) \
-									OR(HSum.cnt_players=2 AND S.flg_f_has_position))) then 1 else 0 end) \
-								 as ActionOpportunities \
 				 FROM	player as P, %TYPE%_hand_summary as HSum, %TYPE%_hand_player_statistics as S \
 				 WHERE	S.id_player = P.id_player AND \
 						S.id_gametype = %GAMETYPE% AND \

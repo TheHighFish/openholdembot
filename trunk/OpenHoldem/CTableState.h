@@ -42,7 +42,7 @@ class CTableState {
  public:
   char		   _title[MAX_WINDOW_TITLE];
   char		   _title_last[MAX_WINDOW_TITLE]; 
-  Card       _common_cards[k_number_of_community_cards];
+  Card       _common_cards[kNumberOfCommunityCards];
   double	   _pot[k_max_number_of_pots];
   CPlayer    _players[kNumberOfPlayerEntries];
 };

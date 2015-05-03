@@ -115,8 +115,8 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		}
 		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
 	}
-	AssertRange(_betpositionrais,  k_undefined, k_max_number_of_players);
-	AssertRange(_dealpositionrais, k_undefined, k_max_number_of_players);
+	AssertRange(_betpositionrais,  kUndefined, k_max_number_of_players);
+	AssertRange(_dealpositionrais, kUndefined, k_max_number_of_players);
 }
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
@@ -147,9 +147,9 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 			_callposition++;
 		}
 	}
-	AssertRange(_betposition,  k_undefined, k_max_number_of_players);
-	AssertRange(_dealposition, k_undefined, k_max_number_of_players);
-	AssertRange(_callposition, k_undefined, k_max_number_of_players);
+	AssertRange(_betposition,  kUndefined, k_max_number_of_players);
+	AssertRange(_dealposition, kUndefined, k_max_number_of_players);
+	AssertRange(_callposition, kUndefined, k_max_number_of_players);
 }
 
 bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

@@ -101,7 +101,7 @@ bool CFunctionCollection::CheckForMisspelledOpenPPLMainFunction(CString name) {
     // Can't be misspelled
     return false;
   }
-  for (int i=k_betround_preflop; i<k_betround_river; ++i) {
+  for (int i=kBetroundPreflop; i<kBetroundRiver; ++i) {
     if (name_lowercases == k_OpenPPL_function_names[i]) {
       CParseErrors::Error("Misspelled OpenPPL main-function?\n"
         "f$preflop, f$flop, f$turn and f$river are expected to be all lower-cases.\n");
@@ -194,7 +194,7 @@ COHScriptObject *CFunctionCollection::LookUp(CString name) {
 
 double CFunctionCollection::Evaluate(CString function_name, bool log /* = false */) {
   CSLock lock(m_critsec);
-  double result = k_undefined;
+  double result = kUndefined;
   EvaluateSymbol(function_name, &result, log);
   return result;
 }
@@ -261,7 +261,7 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("dll"));
   // OpenPPL-functions
   if (IsOpenPPLProfile()) {
-    for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+    for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
       CString function_name = k_OpenPPL_function_names[i];
       CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
     }
@@ -311,7 +311,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "(call == 0) "; 
   } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical) {
     function_text = 
-      "// f$fold should always evaluate to true per default\n"
+      "// f$fold should alwazs evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 ";
   } else if (function_name.Compare(k_standard_function_names[k_hopper_function_rebuy]) == k_CString_identical) {
@@ -421,7 +421,7 @@ void CFunctionCollection::Save(CArchive &ar)
     next_object = GetNext();
   }
   // OpenPPL-functions
-  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+  for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
     assert(k_OpenPPL_function_names[i] != "");
     SaveObject(ar, LookUp(k_OpenPPL_function_names[i]));
   }
@@ -492,7 +492,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     // We need to create name and text on the heap, can't point to the stack
     CString *my_text = new CString(content);
     CString *my_name = new CString(name);
-    function = new CFunction(my_name, my_text, kNoAbsoluteLineNumberExists);
+    function = new CFunction(my_name, my_text, kUndefinedZero);
     Add(function);
   } else {
     function->SetText(content);
@@ -521,8 +521,8 @@ bool CFunctionCollection::ParseAll() {
 bool CFunctionCollection::IsOpenPPLProfile() {
   // A profile is OpenPPL if at least f$preflop exists
   // and f$preflop is not empty
-  if (!Exists(k_OpenPPL_function_names[k_betround_preflop])) return false;
-  COHScriptObject *p_preflop = LookUp(k_OpenPPL_function_names[k_betround_preflop]);
+  if (!Exists(k_OpenPPL_function_names[kBetroundPreflop])) return false;
+  COHScriptObject *p_preflop = LookUp(k_OpenPPL_function_names[kBetroundPreflop]);
   assert(p_preflop != NULL);
   CString function_text = p_preflop->function_text();
   // Counting nearly empty functions as empty (default: 1 space)
@@ -564,7 +564,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
       // Function does not exist
-      *result = k_undefined_zero;
+      *result = kUndefinedZero;
       if (log) {
         write_log(preferences.debug_auto_trace(),
           "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);

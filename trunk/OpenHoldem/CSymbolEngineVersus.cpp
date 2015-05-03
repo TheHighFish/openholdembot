@@ -38,7 +38,7 @@ CSymbolEngineVersus::CSymbolEngineVersus() {
   assert(p_symbol_engine_userchair != NULL);
   // Check versus.bin
   _sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
-	if (_versus_fh == k_undefined) {
+	if (_versus_fh == kUndefined) {
 		// We do no longer warn directly, 
 		// but only when versus symbols get used without the file.
 		_versus_bin_not_loaded = true;
@@ -104,8 +104,8 @@ bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
 }
 
 void CSymbolEngineVersus::ClearWinTieLosData() {
-  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
-	  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+  for (int i=0; i<(kNumberOfCardsPerDeck - 1); i++) 	{
+	  for (int j=i+1; j<kNumberOfCardsPerDeck; j++) {
       _n_win_against_hand[i][j] = 0;
       _n_tie_against_hand[i][j] = 0;
       _n_los_against_hand[i][j] = 0;
@@ -114,7 +114,7 @@ void CSymbolEngineVersus::ClearWinTieLosData() {
 }
 
 bool CSymbolEngineVersus::GetCounts() {
-	if (_versus_fh == k_undefined) return false;
+	if (_versus_fh == kUndefined) return false;
 
 	CardMask		plCards, oppCards, deadCards, comCardsScrape, comCardsEnum, comCardsAll, usedCards;
 	unsigned int	wintemp = 0, tietemp = 0, lostemp = 0;
@@ -128,10 +128,10 @@ bool CSymbolEngineVersus::GetCounts() {
 	int betround = p_betround_calculator->betround();
 	int sym_userchair = p_symbol_engine_userchair->userchair();
 
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
     card_player[i] = p_table_state->_players[sym_userchair]._hole_cards[i].GetValue();
   }
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     card_common[i] = p_table_state->_common_cards[i].GetValue();
   }
   // Get the lock
@@ -154,7 +154,7 @@ bool CSymbolEngineVersus::GetCounts() {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// PREFLOP
-	if (betround == k_betround_preflop) {
+	if (betround == kBetroundPreflop) {
     if (card_player[0] >= card_player[1]) {
 		  SwapInts(&card_player[0], &card_player[1]);
     }
@@ -166,13 +166,13 @@ bool CSymbolEngineVersus::GetCounts() {
 	  offset *= sizeof(byte);
 
 	  // seek to right position in file
-	  if ((pos = _lseek(_versus_fh, offset, SEEK_SET)) == long(k_undefined)) {
+	  if ((pos = _lseek(_versus_fh, offset, SEEK_SET)) == long(kUndefined)) {
 		  return false;
 	  }
 
 	  wintemp = lostemp = 0;
-	  for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) 	{
-		  for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+	  for (int i=0; i<(kNumberOfCardsPerDeck - 1); i++) 	{
+		  for (int j=i+1; j<kNumberOfCardsPerDeck; j++) {
 			  if (i!=card_player[0] && i!=card_player[1] && j!=card_player[0] && j!=card_player[1]) {
 				  _read(_versus_fh, &byte, sizeof(byte));
 				  memcpy(&wintemp, &byte[0], sizeof(unsigned int));
@@ -218,18 +218,18 @@ bool CSymbolEngineVersus::GetCounts() {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// FLOP, TURN, RIVER
-	else if (betround >= k_betround_flop) 
+	else if (betround >= kBetroundFlop) 
 	{
       CardMask		playerEvalCardsNow, oppEvalCardsNow;
 	   HandVal		player_hv_now = 0, opp_hv_now = 0; 
          
 		// Common cards
 		CardMask_RESET(comCardsScrape);
-		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[0]);
-		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[1]);
-		if (betround >= k_betround_flop)  CardMask_SET(comCardsScrape, card_common[2]);
-		if (betround >= k_betround_turn)  CardMask_SET(comCardsScrape, card_common[3]);
-		if (betround >= k_betround_river) CardMask_SET(comCardsScrape, card_common[4]);
+		if (betround >= kBetroundFlop)  CardMask_SET(comCardsScrape, card_common[0]);
+		if (betround >= kBetroundFlop)  CardMask_SET(comCardsScrape, card_common[1]);
+		if (betround >= kBetroundFlop)  CardMask_SET(comCardsScrape, card_common[2]);
+		if (betround >= kBetroundTurn)  CardMask_SET(comCardsScrape, card_common[3]);
+		if (betround >= kBetroundRiver) CardMask_SET(comCardsScrape, card_common[4]);
 
 		// player cards
 		CardMask_RESET(plCards);
@@ -244,9 +244,9 @@ bool CSymbolEngineVersus::GetCounts() {
 		player_hv_now = Hand_EVAL_N(playerEvalCardsNow, betround+3);
 	   
 		// Enumerate through all possible opponent hands (excludes already used cards)
-		for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
+		for (int i=0; i<(kNumberOfCardsPerDeck-1); i++)
 		{
-			for (int j=i+1; j<k_number_of_cards_per_deck; j++)
+			for (int j=i+1; j<kNumberOfCardsPerDeck; j++)
 			{
 				if (!CardMask_CARD_IS_SET(usedCards, i) && !CardMask_CARD_IS_SET(usedCards, j))
 				{
@@ -258,10 +258,10 @@ bool CSymbolEngineVersus::GetCounts() {
 					CardMask_OR(deadCards, usedCards, oppCards);
 					wintemp = tietemp = lostemp = 0;
 
-					if (betround==k_betround_flop || betround==k_betround_turn)
+					if (betround==kBetroundFlop || betround==kBetroundTurn)
 					{
-						ENUMERATE_N_CARDS_D(comCardsEnum, betround==k_betround_flop ? 2 : 
-							betround==k_betround_turn ? 1 : 0, deadCards,
+						ENUMERATE_N_CARDS_D(comCardsEnum, betround==kBetroundFlop ? 2 : 
+							betround==kBetroundTurn ? 1 : 0, deadCards,
 						{
 							CardMask_OR(comCardsAll, comCardsScrape, comCardsEnum);
 							DoCalc(plCards, oppCards, comCardsAll, &wintemp, &tietemp, &lostemp);
@@ -365,7 +365,7 @@ bool CSymbolEngineVersus::GetCounts() {
 	   _vsprtielo = (double) nlotie / ((double)  nlowin + (double) nlotie + (double) nlolos);
 	   _vsprloslo = (double) nlolos / ((double)  nlowin + (double) nlotie + (double) nlolos);
    }
-	if (betround >= k_betround_flop) 
+	if (betround >= kBetroundFlop) 
 	{
       if(_nhandshinow>0)
       {
@@ -405,14 +405,14 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
   int list_name_lenght = symbol.GetLength() - 9;
   if (list_name_lenght <= 0) {
     ErrorInvalidSymbol(name);
-    *result = k_undefined_zero;
+    *result = kUndefinedZero;
   }
   CString list_name = symbol.Mid(3, list_name_lenght);
   COHScriptList *hand_list = (COHScriptList*)p_function_collection->LookUp(list_name);
   if (hand_list == NULL) {
     // List not found
     // Symbol valid anyway
-    *result = k_undefined_zero;
+    *result = kUndefinedZero;
     return true;
   }
   GetCounts(); // !! not here
@@ -423,8 +423,8 @@ bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double 
     "[CVersus] EvaluateVersusHandListSymbol enumeration...\n");
   if (p_table_state->User()->HasKnownCards()) {
     // Versus makes only sense if we have known cards
-    for (int i=0; i<(k_number_of_cards_per_deck - 1); i++) {
-      for (int j=i+1; j<k_number_of_cards_per_deck; j++) {
+    for (int i=0; i<(kNumberOfCardsPerDeck - 1); i++) {
+      for (int j=i+1; j<kNumberOfCardsPerDeck; j++) {
         // StdDeck-ranks 0..12
         int c0rank = StdDeck_RANK(i);
 		    int c1rank = StdDeck_RANK(j);
@@ -490,12 +490,12 @@ bool CSymbolEngineVersus::EvaluateVersusMultiplexSymbol(const char *name, double
   if ((postfix != "$prwin") 
       && (postfix != "$prlos")
       && (postfix != "$prtie")) {
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
   int infix_length = csname.GetLength() - 13 - 6;
   if (infix_length <= 0) {
-    *result = k_undefined;
+    *result = kUndefined;
     return false;
   }
   CString infix = csname.Mid(13, infix_length);
@@ -517,7 +517,7 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
     return false;
   }
   if (!CheckForLoadedVersusBin()) {
-		*result = k_undefined_zero;
+		*result = kUndefinedZero;
     // We couldn't really evaluate this symbol,
     // but we have to return true to stop further evaluation
     // and to avoid further error-messages.
@@ -583,11 +583,11 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
       "\n"
       "Example: vs$listTop30$prwin",
       "Error");
-    *result = k_undefined_zero;
+    *result = kUndefinedZero;
     return false;
   }
   ErrorInvalidSymbol(name);
-  *result = k_undefined_zero;
+  *result = kUndefinedZero;
   return false; 
 }
 

@@ -29,8 +29,8 @@ enum LimitType { NoLimit, PotLimit, FixedLimit };
 struct SScraperState
 {
 	char				title[512];
-	unsigned int		card_common[k_number_of_community_cards];
-	unsigned int		card_player[k_max_number_of_players][k_number_of_cards_per_player];
+	unsigned int		card_common[kNumberOfCommunityCards];
+	unsigned int		card_player[k_max_number_of_players][kNumberOfCardsPerPlayer];
 	bool				dealer[k_max_number_of_players];
 	bool			    sitting_out[k_max_number_of_players];
 	CString				seated[k_max_number_of_players];

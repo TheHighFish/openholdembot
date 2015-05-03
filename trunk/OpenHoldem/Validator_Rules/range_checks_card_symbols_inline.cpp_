@@ -77,7 +77,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$pr0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$pr0") >= -1) && (gws("$$pr0") <= 14) || (gws("$$pr0") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$pr0") >= 1) && (gws("$$pr0") <= 14) || (gws("$$pr0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0")
 END_TESTCASE
 
@@ -87,7 +87,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$pr1")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$pr1") >= -1) && (gws("$$pr1") <= 14) || (gws("$$pr1") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$pr1") >= 1) && (gws("$$pr1") <= 14) || (gws("$$pr1") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr1")
 END_TESTCASE
 
@@ -97,7 +97,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$cr0")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr0") >= -1) && (gws("$$cr0") <= 14) || (gws("$$cr0") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$cr0") >= 1) && (gws("$$cr0") <= 14) || (gws("$$cr0") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr0")
 END_TESTCASE
 
@@ -117,7 +117,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$cr2")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr2") >= -1) && (gws("$$cr2") <= 14) || (gws("$$cr2") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$cr2") >= 1) && (gws("$$cr2") <= 14) || (gws("$$cr2") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr2")
 END_TESTCASE
 
@@ -127,7 +127,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$cs3")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr3") >= -1) && (gws("$$cr3") <= 14) || (gws("$$cr3") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$cr3") >= 1) && (gws("$$cr3") <= 14) || (gws("$$cr3") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr3")
 END_TESTCASE
 
@@ -137,6 +137,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol $$cr4")
     PRECONDITION (true)
-    POSTCONDITION ((gws("$$cr4") >= -1) && (gws("$$cr4") <= 14) || (gws("$$cr4") == UNDEFINED_ZERO))
+    POSTCONDITION ((gws("$$cr4") >= 1) && (gws("$$cr4") <= 14) || (gws("$$cr4") == UNDEFINED_ZERO))
     SYMBOLS_POSSIBLY_AFFECTED ("$$cr4")
 END_TESTCASE

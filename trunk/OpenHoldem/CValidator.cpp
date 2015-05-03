@@ -25,6 +25,7 @@
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineVersus.h"
+#include "CTableState.h"
 #include "FloatingPoint_Comparisions.h"
 #include "OH_MessageBox.h"
 
@@ -96,7 +97,7 @@ void CValidator::ValidateSingleRule() {
 			the_ErrorMessage += "REASONING: "
 				+ CString(_reasoning)
 				+ "\n\n"
-			    + "SYMBOLS AFFECTED: " 
+			  + "SYMBOLS AFFECTED: " 
 				+ Symbols_And_Values(_symbols_possibly_affected)
 				+ "\n\n"
 				+ "(The validator is a tool to help you finding errors in your tablemap.)\n"; 
@@ -113,7 +114,7 @@ void CValidator::ValidateSingleRule() {
 // gws function to access the symbols by name
 //
 double CValidator::gws(const char *the_Symbol) {
-  double result = k_undefined;
+  double result = kUndefined;
   p_engine_container->EvaluateSymbol(the_Symbol, &result);
   return result;
 }
@@ -189,7 +190,7 @@ double CValidator::gws(const char *the_Symbol) {
 
 void CValidator::ValidateIt() {
   // Some silent extra-validation,  to detect problems early in debug-mode
-	if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (6543 - 21*p_symbol_engine_handrank->handrank169())) && (p_symbol_engine_time->elapsedauto() < 20) && (p_symbol_engine_random->random() < 0.003141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
+  if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (7654 - 321 * p_table_state->_common_cards[1].GetStdDeckRank())) && (p_symbol_engine_time->elapsedauto() < 10) && (p_symbol_engine_random->random() < 0.003141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
 		// Full validation needed
 		ValidateGameState();
 	}

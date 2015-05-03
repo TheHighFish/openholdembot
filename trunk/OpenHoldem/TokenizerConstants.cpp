@@ -273,9 +273,9 @@ CString TokenString(int token) {
 
 const int kOperatorPriority[kNumberOfTokens] = {
   // kTokenEndOfFile
-  k_undefined,
+  kUndefined,
   // kTokenEndOfFunction,
-  k_undefined,
+  kUndefined,
   // kTokenOperatorPlus,    
   11,
   // kTokenOperatorMinus,              
@@ -333,7 +333,7 @@ const int kOperatorPriority[kNumberOfTokens] = {
   // kTokenOperatorConditionalIf,      
   1,
   // kTokenOperatorConditionalThen,    
-  k_undefined,
+  kUndefined,
   // kTokenOperatorConditionalWhen,    
   1,    // Like conditional if
   // kTokenBracketOpen_1, 
@@ -345,19 +345,19 @@ const int kOperatorPriority[kNumberOfTokens] = {
   // kTokenBracketOpen_3,              
   0,
   // kTokenBracketClose_1,            
-  k_undefined,
+  kUndefined,
   // kTokenBracketClose_2,            
-  k_undefined,
+  kUndefined,
   // kTokenBracketClose_3,           
-  k_undefined,
+  kUndefined,
   // kTokenIdentifier,
-  k_undefined,
+  kUndefined,
   // kTokenNumber,
-  k_undefined,
+  kUndefined,
   // kTokenCards,
-  k_undefined,
+  kUndefined,
   // kTokenDoubleShebang,
-  k_undefined,
+  kUndefined,
 };
 
 int GetOperatorPriority(int token) {

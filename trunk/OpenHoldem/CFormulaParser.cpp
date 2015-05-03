@@ -20,7 +20,6 @@
 #include "CFilenames.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
-#include "CLineCounter.h"
 #include "COHScriptList.h"
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
@@ -282,7 +281,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     COHScriptList *new_list = new COHScriptList(&_function_name, 
-      &function_text, line_counter.StartingLineOfCurrentlyParsedFunction());
+        &function_text, _formula_file_splitter.starting_line_of_current_function());
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
@@ -307,7 +306,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
-	  &function_text, line_counter.StartingLineOfCurrentlyParsedFunction());
+	  &function_text, _formula_file_splitter.starting_line_of_current_function());
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence
@@ -354,7 +353,7 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   if ((token_ID == kTokenEndOfFile) 
       || (token_ID == kTokenEndOfFunction)) {
     // Empty function; evaluating to zero
-        TPParseTreeNode terminal_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+        TPParseTreeNode terminal_node = new CParseTreeNode(_tokenizer.LineRelative());
     terminal_node->MakeConstant(0);
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Terminal node %i\n", terminal_node);
@@ -409,7 +408,7 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
       }
     }
 		TPParseTreeNode second_expression = ParseExpression();
-    TPParseTreeNode binary_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+		TPParseTreeNode binary_node = new CParseTreeNode(_tokenizer.LineRelative());
 		binary_node->MakeBinaryOperator(token_ID, 
 			expression, second_expression);
 		write_log(preferences.debug_parser(), 
@@ -421,7 +420,7 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 		TPParseTreeNode else_expression;
 		ParseConditionalPartialThenElseExpressions(
 			&then_expression, &else_expression);
-		TPParseTreeNode ternary_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+		TPParseTreeNode ternary_node = new CParseTreeNode(_tokenizer.LineRelative());
 		ternary_node->MakeTernaryOperator(token_ID,
 			expression, then_expression, else_expression);
 		write_log(preferences.debug_parser(), 
@@ -442,7 +441,7 @@ TPParseTreeNode CFormulaParser::ParseBracketExpression() {
 	assert(TokenIsBracketOpen(opening_bracket));
 	TPParseTreeNode expression = ParseExpression();
 	ExpectMatchingBracketClose(opening_bracket);
-	TPParseTreeNode bracket_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode bracket_node = new CParseTreeNode(_tokenizer.LineRelative());
 	// Brackets get an unary node in the tree
 	// This will lead to a simple way to handle precedence of operators.
 	bracket_node->MakeUnaryOperator(opening_bracket, expression);
@@ -456,7 +455,7 @@ TPParseTreeNode CFormulaParser::ParseUnaryExpression()
 	int unary_operator = _tokenizer.GetToken();
 	assert(TokenIsUnary(unary_operator));
 	TPParseTreeNode expression = ParseExpression();
-	TPParseTreeNode unary_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode unary_node = new CParseTreeNode(_tokenizer.LineRelative());
 	unary_node->MakeUnaryOperator(unary_operator, expression);
 	write_log(preferences.debug_parser(), 
 			"[FormulaParser] Unary node %i\n", unary_node);
@@ -467,7 +466,7 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {
   // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
-	TPParseTreeNode terminal_node = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode terminal_node = new CParseTreeNode(_tokenizer.LineRelative());
 	if (terminal == kTokenIdentifier) {
 		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
 	}	else if (terminal == kTokenNumber) {
@@ -531,7 +530,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   while (token_ID == kTokenOperatorConditionalWhen) {
     token_ID = _tokenizer.GetToken();
     TPParseTreeNode condition = ParseExpression();
-    TPParseTreeNode when_condition = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+    TPParseTreeNode when_condition = new CParseTreeNode(_tokenizer.LineRelative());
     when_condition->MakeWhenCondition(condition);
     // Remember first when-condition
     if (first_when_condition_of_sequence == NULL) {
@@ -598,7 +597,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
       "   * memory-increment-command (me_inc_flopsseen)\n");
 		return NULL;
 	}
-	TPParseTreeNode action = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	action->MakeUserVariableDefinition(identifier);
   // Not expecting any Force here
   return action;
@@ -632,7 +631,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
     // Not expecting keyword Force here
   } else {
 		// Predefined action, like Check or Fold
-    action = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+    action = new CParseTreeNode(_tokenizer.LineRelative());
 		action->MakeAction(token_ID);
     ExpectKeywordForce(token_ID);
 	}
@@ -673,7 +672,7 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseToExpression() { 
   // RaiseTo N Force
 	// Keyword RaiseTo got already consumed
-	TPParseTreeNode action = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	TPParseTreeNode expression;
 	int _token_ID = _tokenizer.LookAhead();
 	if ((_token_ID == kTokenNumber)
@@ -695,7 +694,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseByExpression() {
 	//   RAISE <PercentagedPot>% FORCE
 	//
 	// Keyword RAISE got already consumed
-	TPParseTreeNode action = new CParseTreeNode(line_counter.RelativeLineInsideCurrentlyParsedFunction());
+	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
 	TPParseTreeNode expression;
 	int _token_ID = _tokenizer.LookAhead();
 	if ((_token_ID == kTokenNumber)

@@ -42,7 +42,7 @@ void CSymbolEngineUserchair::InitOnStartup()
 
 void CSymbolEngineUserchair::ResetOnConnection()
 {
-	_userchair = k_undefined;
+	_userchair = kUndefined;
 }
 
 void CSymbolEngineUserchair::ResetOnHandreset()
@@ -66,7 +66,7 @@ void CSymbolEngineUserchair::ResetOnHeartbeat()
 bool CSymbolEngineUserchair::IsNotShowdown() {
   int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
   if (num_buttons_enabled >= k_min_buttons_needed_for_my_turn) return true;
-  if (p_betround_calculator->betround() < k_betround_river) return true;
+  if (p_betround_calculator->betround() < kBetroundRiver) return true;
   return false;
 }
 

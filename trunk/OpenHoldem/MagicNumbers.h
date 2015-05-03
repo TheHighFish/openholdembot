@@ -29,9 +29,9 @@ const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
 
 // Undefined (-1)
-const int k_not_found      = -1;
-const int k_undefined      = -1;
-const int k_undefined_zero =  0;
+const int kNotFound      = -1;
+const int kUndefined     = -1;
+const int kUndefinedZero =  0;
 const int kNoAbsoluteLineNumberExists = 1;
 
 // Cards
@@ -48,12 +48,12 @@ const int k_CString_identical = 0;
 // Some data-structures use an additional value for the current round.
 // This is IMO (THF) superfluous and  dangerous, but lots of work
 // and even more dangerous to change.
-const int k_number_of_betrounds = 4;
-const int k_betround_current	  = 0;
-const int k_betround_preflop	  = 1;
-const int k_betround_flop		    = 2;
-const int k_betround_turn	    	= 3;
-const int k_betround_river	  	= 4;
+const int kNumberOfBetrounds = 4;
+const int kBetroundCurrent	 = 0;
+const int kBetroundPreflop	 = 1;
+const int kBetroundFlop		   = 2;
+const int kBetroundTurn	     = 3;
+const int kBetroundRiver	   = 4;
 
 // Players
 const int k_max_number_of_players         = 10;
@@ -68,12 +68,12 @@ const int k_min_chair_number = 0;
 const int k_max_chair_number = k_max_number_of_players - 1;
 
 // Number of cards
-const int k_number_of_community_cards    =   5;
-const int k_index_of_last_community_card = k_number_of_community_cards - 1;
-const int k_number_of_flop_cards         =   3;  
-const int k_number_of_cards_per_player   =   2;
-const int k_number_of_cards_per_deck     =  52;
-const int k_number_of_starting_hands     = 169;
+const int kNumberOfCommunityCards   =   5;
+const int kIndexOfLastCommunityCard = kNumberOfCommunityCards - 1;
+const int kNumberOfFlopCards        =   3;  
+const int kNumberOfCardsPerPlayer   =   2;
+const int kNumberOfCardsPerDeck     =  52;
+const int kNumberOfStartingHands    = 169;
 
 // poker constants
 // The type has to be unsigned int, 
@@ -331,7 +331,7 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 };
 
 const int k_max_length_of_OpenPPL_function_names = 9 + 1;
-const char k_OpenPPL_function_names[k_number_of_betrounds + 1][k_max_length_of_OpenPPL_function_names] = {
+const char k_OpenPPL_function_names[kNumberOfBetrounds + 1][k_max_length_of_OpenPPL_function_names] = {
   "",       // 0 unused
   "f$preflop",
   "f$flop",

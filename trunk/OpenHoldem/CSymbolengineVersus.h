@@ -68,13 +68,13 @@ private:
   // Number of winning/tieing/losing outcomes of my current hand 
   // at the current board against a concrete holding.
   // Precomputed against all possible opponents card combinations.
-  int _n_win_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
-  int _n_tie_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
-  int _n_los_against_hand[k_number_of_cards_per_deck][k_number_of_cards_per_deck];
+  int _n_win_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
+  int _n_tie_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
+  int _n_los_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
  private:
   
-  int card_player[k_number_of_cards_per_player];
-  int card_common[k_number_of_community_cards];
+  int card_player[kNumberOfCardsPerPlayer];
+  int card_common[kNumberOfCommunityCards];
 };
 
 extern CSymbolEngineVersus *p_symbol_engine_versus;

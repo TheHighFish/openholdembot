@@ -37,29 +37,29 @@ class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine {
  public:
 	int raischair()	{ return _raischair; }
 	int raisbits(int betround) {
-		if ((betround >= k_betround_preflop)
-			  && (betround <= k_betround_river)) {
+		if ((betround >= kBetroundPreflop)
+			  && (betround <= kBetroundRiver)) {
 			return _raisbits[betround];
 		}	else {
-			return k_undefined;
+			return kUndefined;
 		}
 	}
  public:
 	int foldbits(int betround) {
-		if ((betround >= k_betround_preflop)
-			  && (betround <= k_betround_river)) {
+		if ((betround >= kBetroundPreflop)
+			  && (betround <= kBetroundRiver)) {
 			return _foldbits[betround];
 		}	else {
-			return k_undefined;
+			return kUndefined;
 		}
 	}
  public:
 	int callbits(int betround) {
-		if ((betround >= k_betround_preflop)
-			  && (betround <= k_betround_river)) {
+		if ((betround >= kBetroundPreflop)
+			  && (betround <= kBetroundRiver)) {
 			return _callbits[betround];
 		}	else		{
-			return k_undefined;
+			return kUndefined;
 		}
 	}
  public:
@@ -93,10 +93,10 @@ class CSymbolEngineRaisersCallers: public CVirtualSymbolEngine {
  private:
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
-	int _raisbits[k_number_of_betrounds + 1];
-	int _foldbits[k_number_of_betrounds + 1];
-	int _callbits[k_number_of_betrounds + 1]; 
-  int _lastraised[k_number_of_betrounds + 1]; 
+	int _raisbits[kNumberOfBetrounds + 1];
+	int _foldbits[kNumberOfBetrounds + 1];
+	int _callbits[kNumberOfBetrounds + 1]; 
+  int _lastraised[kNumberOfBetrounds + 1]; 
 };
 
 extern CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers;

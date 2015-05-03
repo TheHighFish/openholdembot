@@ -29,8 +29,8 @@ CBetroundCalculator::CBetroundCalculator()
 	// (it gets used for symbol lookups).
 	// So it should have a meaningful value,
 	// even before we connect to a table.
-	_betround = k_betround_preflop;
-	_betround_previous_heartbeat = k_undefined;
+	_betround = kBetroundPreflop;
+	_betround_previous_heartbeat = kUndefined;
 }
 
 CBetroundCalculator::~CBetroundCalculator()
@@ -48,17 +48,17 @@ void CBetroundCalculator::OnNewHeartbeat()
 	// So we can hardly do it with a symbol-engine and do it here
 	if (!p_scraper->IsCommonAnimation()) {
     if (p_table_state->_common_cards[4].IsKnownCard()) {
-			_betround = k_betround_river;
+			_betround = kBetroundRiver;
 		}
 		else if (p_table_state->_common_cards[3].IsKnownCard()) {
-			_betround = k_betround_turn;
+			_betround = kBetroundTurn;
 		}
 		else if (p_table_state->_common_cards[2].IsKnownCard() 
 			  && p_table_state->_common_cards[1].IsKnownCard() 
 			  && p_table_state->_common_cards[0].IsKnownCard()) {
-			_betround = k_betround_flop;
+			_betround = kBetroundFlop;
 		}	else {
-			_betround = k_betround_preflop;
+			_betround = kBetroundPreflop;
 		}
 	}
 	else {
@@ -66,9 +66,9 @@ void CBetroundCalculator::OnNewHeartbeat()
 		// so lets not try to determine the betround,
 		// but if it's a new hand then lets default to pre-flop
 		write_log(preferences.debug_alltherest(), "[CBetroundCalculator] Animation going on\n");
-		if (_betround_previous_heartbeat == k_undefined)
+		if (_betround_previous_heartbeat == kUndefined)
 		{
-			_betround = k_betround_preflop;
+			_betround = kBetroundPreflop;
 		}
 	}
 	write_log(preferences.debug_alltherest(), "[CBetroundCalculator] _betround = %i\n",

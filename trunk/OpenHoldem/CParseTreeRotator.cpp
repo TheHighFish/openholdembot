@@ -185,7 +185,7 @@ bool CParseTreeRotator::NeedsLeftRotation(TPParseTreeNode parse_tree_node) {
     return false;
   }
   int sibblings_priority = GetOperatorPriority(sibblings_type);
-  if (sibblings_priority == k_undefined) {
+  if (sibblings_priority == kUndefined) {
     // Something that is not an operator
     return false;
   }

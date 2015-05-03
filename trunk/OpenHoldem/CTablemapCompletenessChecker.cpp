@@ -157,10 +157,10 @@ void CTablemapCompletenessChecker::VerifyMap() {
   }
   CheckBetsOrChips();
   // Community cards
-  for (int i=0; i<k_number_of_community_cards; ++i) {
+  for (int i=0; i<kNumberOfCommunityCards; ++i) {
     CheckCardFaces("c0cardface", i, "");
   }
-  int last_communitz_card = k_number_of_community_cards - 1;
+  int last_communitz_card = kNumberOfCommunityCards - 1;
   CheckSetOfItems("c0cardface", last_communitz_card, "nocard", true);
   CheckMainPot();
   // Action buttons

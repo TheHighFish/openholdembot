@@ -53,7 +53,7 @@ void CSymbolEnginePokerval::ResetOnConnection()
 
 void CSymbolEnginePokerval::ResetOnHandreset()
 {
-	for (int i=0; i<k_number_of_betrounds; i++)
+	for (int i=0; i<kNumberOfBetrounds; i++)
 	{
 		_phandval[i] = 0;
 		_chandval[i] = 0;
@@ -101,7 +101,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	// pokerval
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<k_number_of_cards_per_player; i++)
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
 	{
 		if (p_table_state->User()->HasKnownCards())
 		{
@@ -110,7 +110,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 		}
 	}
 
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		// common cards
     Card card = p_table_state->_common_cards[i];
@@ -135,7 +135,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 
 	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
 
-	if (BETROUND > k_betround_preflop
+	if (BETROUND > kBetroundPreflop
 		&& _phandval[BETROUND-1] > _phandval[BETROUND-2])
 	{
 		_ishandup = true;														
@@ -147,7 +147,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	// pokervalplayer
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<k_number_of_cards_per_player; i++)
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
 	{
 		// player cards
 		if (p_table_state->User()->HasKnownCards()) {
@@ -164,7 +164,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	// pokervalcommon
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		// common cards
     Card card = p_table_state->_common_cards[i];
@@ -179,7 +179,7 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	_pokervalcommon = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
 
 		_chandval[BETROUND-1] = _pokervalcommon & 0xff000000; 
-		if (BETROUND > k_betround_preflop 
+		if (BETROUND > kBetroundPreflop 
 			&& _chandval[BETROUND-1] > _chandval[BETROUND-2])
 		{
 			_ishandupcommon = true;
@@ -327,7 +327,7 @@ void CSymbolEnginePokerval::CalculateRankBits()
   int tsuit = p_symbol_engine_cards->tsuit();
 	
 	// player cards
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		if (p_table_state->User()->HasKnownCards()) {
       int card = p_table_state->User()->_hole_cards[i].GetValue();
 			CardMask_SET(plCards, card);
@@ -336,7 +336,7 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	}
 
 	// common cards
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     Card card = p_table_state->_common_cards[i];
     if (card.IsKnownCard())
 		{
@@ -459,7 +459,7 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	CardMask_RESET(comCards);
 
 	// common cards
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
     Card card = p_table_state->_common_cards[i];
     if (card.IsKnownCard())
@@ -567,7 +567,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 
 
 		CardMask_RESET(Cards);
-		for (int i=0; i<k_number_of_cards_per_player; i++)
+		for (int i=0; i<kNumberOfCardsPerPlayer; i++)
 		{
 			if (p_table_state->User()->HasKnownCards())
 			{
@@ -575,7 +575,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 			}
 		}
 
-		for (int i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<kNumberOfCommunityCards; i++)
 		{
       Card card = p_table_state->_common_cards[i];
       if (card.IsKnownCard()) {
@@ -625,7 +625,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		pv += (HandVal_TOP_CARD(hv)+2-3)<<4;
 		pv += (HandVal_TOP_CARD(hv)+2-4)<<0;
 
-		for (int i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<kNumberOfCommunityCards; i++)
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);
@@ -782,7 +782,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		pv += (HandVal_TOP_CARD(hv)+2-2)<<8;
 		pv += (HandVal_TOP_CARD(hv)+2-3)<<4;
 		pv += (HandVal_TOP_CARD(hv)+2-4)<<0;
-		for (int i=0; i<k_number_of_community_cards; i++)
+		for (int i=0; i<kNumberOfCommunityCards; i++)
 		{
 			j = StdDeck_RANK(card0);	//Matrix 2008-06-28
 			k = StdDeck_RANK(card1);

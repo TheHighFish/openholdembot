@@ -53,13 +53,13 @@ void CSymbolEngineChairs::ResetOnHandreset() {
 }
 
 void CSymbolEngineChairs::ResetOnNewRound() {
-  _opponent_headsup_chair = k_undefined;
-  _smallblind_chair = k_undefined;
-  _bigblind_chair = k_undefined;
-  _cutoff_chair = k_undefined;
-  _firstcaller_chair = k_undefined;
-  _lastcaller_chair = k_undefined;
-  _firstraiser_chair = k_undefined;
+  _opponent_headsup_chair = kUndefined;
+  _smallblind_chair = kUndefined;
+  _bigblind_chair = kUndefined;
+  _cutoff_chair = kUndefined;
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
+  _firstraiser_chair = kUndefined;
 }
 
 void CSymbolEngineChairs::ResetOnMyTurn() {
@@ -79,7 +79,7 @@ void CSymbolEngineChairs::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineChairs::CalculateOpponentHeadsupChair(){
-  _opponent_headsup_chair = k_undefined;
+  _opponent_headsup_chair = kUndefined;
 	if (p_symbol_engine_active_dealt_playing->nopponentsplaying() > 1) return;
 	for (int i = 0; i < k_max_number_of_players; ++i)	{
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->opponentsplayingbits(), i)) {
@@ -103,10 +103,10 @@ void CSymbolEngineChairs::CalculateCutOffChair() {
 }
 
 void CSymbolEngineChairs::CalculateCallerChairs() {
-  _firstcaller_chair = k_undefined;
-  _lastcaller_chair = k_undefined;
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
   double last_raisers_bet = p_table_state->User()->_bet;
-  if ((p_betround_calculator->betround() == k_betround_preflop) 
+  if ((p_betround_calculator->betround() == kBetroundPreflop) 
       && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
     // Avoid problems with so-called "blind-raisers"
     last_raisers_bet = p_symbol_engine_tablelimits->bblind();
@@ -117,7 +117,7 @@ void CSymbolEngineChairs::CalculateCallerChairs() {
     if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
       // We have a caller, at least the temporary last one
       _lastcaller_chair = next_chair;
-      if (_firstcaller_chair == k_undefined) {
+      if (_firstcaller_chair == kUndefined) {
         // We found the first caller
         _firstcaller_chair = next_chair;
       } 
@@ -129,7 +129,7 @@ void CSymbolEngineChairs::CalculateCallerChairs() {
 }
 
 void CSymbolEngineChairs::CalculateFirstRaiserChair() {
-  _firstraiser_chair = k_undefined;
+  _firstraiser_chair = kUndefined;
   double users_bet = p_table_state->User()->_bet;
   for (int i=1; i<_nchairs; ++i) {
     int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
@@ -147,7 +147,7 @@ int CSymbolEngineChairs::GetChairByDealposition(int dealposition) {
       return i;
     }
   }
-  return k_undefined;
+  return kUndefined;
 }
 
 bool CSymbolEngineChairs::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

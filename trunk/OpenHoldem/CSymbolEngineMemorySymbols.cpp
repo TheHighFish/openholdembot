@@ -93,14 +93,14 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
   if (memcmp(name, "me_", 3) == 0) {
     if (memcmp(name, "me_st_", 6) == 0) {  
       Store(name);
-      *result = k_undefined_zero;
+      *result = kUndefinedZero;
       return true;
     } else if (memcmp(name, "me_re_", 6) == 0) {
       *result = Recall(name);
       return true;
     } else if (memcmp(name, "me_inc_", 7) == 0) {
       Increment(name);
-      *result = k_undefined_zero;
+      *result = kUndefinedZero;
       return true;
     } else {
     // Looks like a memory-command, but is invalid

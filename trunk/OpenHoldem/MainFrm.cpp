@@ -180,7 +180,7 @@ CMainFrame::~CMainFrame()
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	CString			t = "";
 	lpCreateStruct->dwExStyle |= WS_MINIMIZE;
-	if (CFrameWnd::OnCreate(lpCreateStruct) == k_undefined)
+	if (CFrameWnd::OnCreate(lpCreateStruct) == kUndefined)
 		return -1;
 	// Tool bar
 	p_flags_toolbar = new CFlagsToolbar(this);

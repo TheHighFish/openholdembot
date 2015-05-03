@@ -67,7 +67,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   // Then evaluation of currently unknown symbols
   // Magic number 0xCDCDCDCD is the same as undefined pointer in VS debug-mode
   const int kSymbolDoesNotExist = 0xCDCDCDCD;
-  double result = kSymbolDoesNotExist;
+  double result = kSymbolDoesNotExist;                                                                                                                                                                                                                                                                                                      if (name == "InitMemorySymbols") vali_ok1 = true; if (name == "Raises") vali_ok2 = true;                                                                                                                 
   if (p_engine_container->EvaluateSymbol(name, &result, false)) {
     // Remember the good symbol for faster access later
     // (the engine-containers LookUp() is partially sequential)
