@@ -512,7 +512,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
       case 0: 
         if (p_function_collection->IsOpenPPLProfile()) {
           // OpenPPL-functions
-          for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+          for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
             AddFunctionToTree(parent, k_OpenPPL_function_names[i]);
           }
         } else {
@@ -759,14 +759,14 @@ void CDlgFormulaScintilla::ReEnableLineNumbersUglyWorkaroundForHugeShankyMonkeyS
 }
 
 void CDlgFormulaScintilla::SelectFunctionTab(CScintillaWnd *pCurScin) {
-	int iSel = k_not_found;
+	int iSel = kNotFound;
 	for (int iWnd=0; iWnd<m_ScinArray.GetSize(); iWnd++) 	{
 		if (m_ScinArray[iWnd]._pWnd == pCurScin) {
 			iSel = iWnd;
 			break;
 		}
 	}
-	if (iSel != k_not_found) {
+	if (iSel != kNotFound) {
 		m_FunctionTab.SetCurSel(iSel);
     ReEnableLineNumbersUglyWorkaroundForHugeShankyMonkeyStyleFormulas();    
 	}
@@ -905,7 +905,7 @@ void CDlgFormulaScintilla::OnNew() {
   CString s = m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem());
 
   if (s == "Hand Lists" 
-	  || (s.Find("list") != k_not_found && s.Left(2) != "f$")){
+	  || (s.Find("list") != kNotFound && s.Left(2) != "f$")){
     newdlg.is_function = false;
   } else {  
     newdlg.is_function = true;
@@ -1779,7 +1779,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	bool bFormulaVisible = true;
 	bool bTreeHeadingSelected = false;
 	bool bTreeValidLeafSelected = false;
-	int  iWhichTypeSelected = k_undefined; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
+	int  iWhichTypeSelected = kUndefined; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
 	bool bFindInfo = false;
 	bool bDebugActive = false;
 	bool bNotesOrDllActive = false;

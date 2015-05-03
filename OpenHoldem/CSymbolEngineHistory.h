@@ -44,7 +44,7 @@ public:
 	
 	bool DidActThisHand()
 	{
-		return DidAct(k_betround_preflop);
+		return DidAct(kBetroundPreflop);
 	}
 public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
@@ -71,18 +71,18 @@ private:
 private:
 	// Element 0 is unused
 	// Elements 1..4 are for the 4 betrounds
-	int _nplayersround[k_number_of_betrounds + 1];		
-	int _botslastaction[k_number_of_betrounds + 1];		
-	double _nbetsround[k_number_of_betrounds + 1];
+	int _nplayersround[kNumberOfBetrounds + 1];		
+	int _botslastaction[kNumberOfBetrounds + 1];		
+	double _nbetsround[kNumberOfBetrounds + 1];
 	// Autoplayer-actions for the 4 bet-rounds
 	// First dimension: betround; element 0 is unused again.
 	// Second dimension: only some actions are really used,
 	//   but it does not hurt to have a simple and extensible interface.
 	//   "betpot" gets treated as swag, etc.
-	int _autoplayer_actions[k_number_of_betrounds + 1][k_autoplayer_function_fold];
+	int _autoplayer_actions[kNumberOfBetrounds + 1][k_autoplayer_function_fold];
  private:
   // Remebering symbol values of former streets
-	double _hist_sym[k_hist_sym_count][k_number_of_betrounds+1];
+	double _hist_sym[k_hist_sym_count][kNumberOfBetrounds+1];
 };
 
 extern CSymbolEngineHistory *p_symbol_engine_history;

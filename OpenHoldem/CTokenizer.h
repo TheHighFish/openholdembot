@@ -38,6 +38,8 @@ class CTokenizer {
   // Cross your fingers that it works. ;-)
   void PushBackAdditionalPercentageOperator() { _additional_percentage_operator_pushed_back = true; }
  public:
+	static int LineAbsolute();
+	static int LineRelative();
 	static char* RemainingInput();
  public:
   void InitNewParse();

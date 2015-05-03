@@ -395,7 +395,7 @@ void CScraper::ScrapeColourCodes() {
     if (EvaluateRegion(region, &result)) {
       p_table_state->_players[i]._colourcode = atoi(result);
     } else {
-      p_table_state->_players[i]._colourcode = k_undefined_zero;
+      p_table_state->_players[i]._colourcode = kUndefinedZero;
     }
   }
 }
@@ -567,7 +567,7 @@ int CScraper::ScrapeCard(CString name) {
 void CScraper::ScrapePlayerCards(int chair) {
 	CString card_name;
 	int card = CARD_UNDEFINED;
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		card_name.Format("p%dcardface%d", chair, i);
 		if ((i > 0) 
       && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
@@ -582,7 +582,7 @@ void CScraper::ScrapePlayerCards(int chair) {
 
 void CScraper::ScrapeCommonCards() {
 	CString card_name;
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		card_name.Format("c0cardface%d", i);
 		int card = ScrapeCard(card_name);
@@ -595,7 +595,7 @@ bool CScraper::IsCommonAnimation(void) {
 	int	flop_card_count = 0;
 
 	// Count all the flop cards
-	for (int i=0; i<k_number_of_flop_cards; i++) {
+	for (int i=0; i<kNumberOfFlopCards; i++) {
     if (p_table_state->_common_cards[i].IsKnownCard()) {
 			flop_card_count++;
 		}
@@ -603,20 +603,20 @@ bool CScraper::IsCommonAnimation(void) {
 
 	// If there are some flop cards present,
 	// but not all 3 then there is an animation going on
-	if (flop_card_count > 0 && flop_card_count < k_number_of_flop_cards) {
+	if (flop_card_count > 0 && flop_card_count < kNumberOfFlopCards) {
 		return true;
 	}
 	// If the turn card is present,
 	// but not all 3 flop cards are present then there is an animation going on
 	else if (p_table_state->_common_cards[3].IsKnownCard()
-      && flop_card_count != k_number_of_flop_cards) {
+      && flop_card_count != kNumberOfFlopCards) {
 		return true;
 	}
 	// If the river card is present,
 	// but the turn card isn't
 	// OR not all 3 flop cards are present then there is an animation going on
 	else if (p_table_state->_common_cards[4].IsKnownCard() 
-      && (!p_table_state->_common_cards[3].IsKnownCard() || flop_card_count != k_number_of_flop_cards)) {
+      && (!p_table_state->_common_cards[3].IsKnownCard() || flop_card_count != kNumberOfFlopCards)) {
 		return true;
 	}
 	return false;
@@ -667,7 +667,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->_players[chair]._active = false;
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT/INACTIVE/AWAY\n", name);
-      return k_undefined;
+      return kUndefined;
 		}	else {
 			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
 			if (text!="" && p_string_match->IsNumeric(text)) {
@@ -678,7 +678,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
       }
 		}
 	}
-  return k_undefined;
+  return kUndefined;
 }
 
 void CScraper::ScrapeBalance(int chair) {
@@ -742,7 +742,7 @@ void CScraper::ScrapeBet(int chair) {
 
 void CScraper::ScrapeAllPlayerCards() {
 	for (int i=0; i<k_max_number_of_players; i++){
-		for (int j=0; j<k_number_of_cards_per_player; j++) {
+		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
 			p_table_state->_players[i]._hole_cards[j].ClearValue();
 		}
 	}
@@ -881,14 +881,14 @@ void CScraper::ScrapeLimits() {
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
-	double l_sblind = k_undefined;
-  double l_bblind = k_undefined; 
-  double l_bbet   = k_undefined; 
-  double l_ante   = k_undefined;
-  double l_sb_bb  = k_undefined;
-  double l_bb_BB  = k_undefined;
-  double l_buyin  = k_undefined;
-	int    l_limit  = k_undefined;
+	double l_sblind = kUndefined;
+  double l_bblind = kUndefined; 
+  double l_bbet   = kUndefined; 
+  double l_ante   = kUndefined;
+  double l_sb_bb  = kUndefined;
+  double l_bb_BB  = kUndefined;
+  double l_buyin  = kUndefined;
+	int    l_limit  = kUndefined;
 	// These are scraped from specific regions earlier in this
 	// function.  Use the values we scraped (if any) to seed
 	// the l_ locals so that we don't blindly overwrite the
@@ -937,51 +937,70 @@ void CScraper::ScrapeLimits() {
     // * a region r$c0limits to define where to scrape the limis 
     // * a symbol s$c0limits to define how to interpret the scrape text,
     //   similar to s$ttlimits
-    // Since OH 7.3.3 we do no longer support c0limitsX
-    // because it never got correctly implemented 
-    // and therefore seems to be not needed. 
-		if (EvaluateRegion("c0limits", &text))	{
+    // First c0limits
+    CString c0limitsX = "c0limits";
+		if (EvaluateRegion(c0limitsX, &text))	{
       write_log(preferences.debug_scraper(), 
-        "[CScraper] r$c0limit evalutes to %s\n", text);
+        "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
 			if (text != "")	{
-			  s_iter = p_tablemap->s$()->find("c0limits");
+			  s_iter = p_tablemap->s$()->find(c0limitsX);
         CString how_to_interpret_c0limit = s_iter->second.text;
         write_log(preferences.debug_scraper(), 
-          "[CScraper] s$c0limit is %s\n", how_to_interpret_c0limit);
+          "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
 				trans.ParseStringBSL(
 					text, how_to_interpret_c0limit, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
         write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-      l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+          l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 			}
 		}
+    // Then c0limitsX
+    for (int i=0; i<9; ++i) {
+      c0limitsX.Format("c0limits%i", i);
+		  if (EvaluateRegion(c0limitsX, &text))	{
+        write_log(preferences.debug_scraper(), 
+          "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
+			  if (text != "")	{
+			    s_iter = p_tablemap->s$()->find(c0limitsX);
+          CString how_to_interpret_c0limit = s_iter->second.text;
+          write_log(preferences.debug_scraper(), 
+            "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				  trans.ParseStringBSL(
+					  text, how_to_interpret_c0limit, NULL,
+					  &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+          write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+            l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+			  }
+		  }
+    }
     // save what we just scanned through
     if (l_handnumber != "") {
 			p_table_state->_s_limit_info._handnumber = l_handnumber;
     }
-    if (l_sblind != k_undefined) {
+    if (l_sblind != kUndefined) {
 			p_table_state->_s_limit_info._sblind = l_sblind;
     }
-    if (l_bblind != k_undefined) {
+    if (l_bblind != kUndefined) {
 			p_table_state->_s_limit_info._bblind = l_bblind;
     }
-    if (l_bbet != k_undefined) {
+    if (l_bbet != kUndefined) {
 			p_table_state->_s_limit_info._bbet = l_bbet;
     }
-    if (l_ante != k_undefined) {
+    if (l_ante != kUndefined) {
 			p_table_state->_s_limit_info._ante = l_ante;
     }
-    if (l_limit != k_undefined) {
+    if (l_limit != kUndefined) {
 			p_table_state->_s_limit_info._limit = l_limit;
     }
-    if (l_sb_bb != k_undefined) {
+    if (l_sb_bb != kUndefined) {
 			p_table_state->_s_limit_info._sb_bb = l_sb_bb;
     }
-    if (l_bb_BB != k_undefined) {
+    if (l_bb_BB != kUndefined) {
 			p_table_state->_s_limit_info._bb_BB = l_bb_BB;
     }
-    if (l_buyin != k_undefined) {
+    if (l_buyin != kUndefined) {
 			p_table_state->_s_limit_info._buyin = l_buyin;
     }
     // r$c0smallblind

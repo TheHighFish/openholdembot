@@ -48,18 +48,18 @@ public:
 	}
 
 	double stacks_at_hand_start(const int chair) { 
-		assert((chair >= 0) || (chair == k_undefined));
+		assert((chair >= 0) || (chair == kUndefined));
 		assert(chair < k_max_number_of_players);
-		if (chair == k_undefined)	{
+		if (chair == kUndefined)	{
 			return 0;
 		}
 		return _stacks_at_hand_start[chair]; 
 	}
 
 	double currentbet(int player)	{
-		assert((player >= 0) || (player == k_undefined));
+		assert((player >= 0) || (player == kUndefined));
 		assert(player < k_max_number_of_players);
-		if (player == k_undefined) {
+		if (player == kUndefined) {
 			return 0;
 		}
 		return _currentbet[player];

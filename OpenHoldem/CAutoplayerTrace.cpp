@@ -206,17 +206,17 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   }
   // common cards
   comcards = "";
-  if (betround >= k_betround_flop) {
-    for (int i=0; i<k_number_of_flop_cards; i++) {
+  if (betround >= kBetroundFlop) {
+    for (int i=0; i<kNumberOfFlopCards; i++) {
       if (p_table_state->_common_cards[i].IsKnownCard()) {
         comcards.Append(p_table_state->_common_cards[i].ToString());
       }
     }
   }
-  if (betround >= k_betround_turn) {
+  if (betround >= kBetroundTurn) {
     comcards.Append(p_table_state->_common_cards[3].ToString());
   }
-  if (betround >= k_betround_river) {
+  if (betround >= kBetroundRiver) {
     comcards.Append(p_table_state->_common_cards[4].ToString());
   }
   comcards.Append("..........");

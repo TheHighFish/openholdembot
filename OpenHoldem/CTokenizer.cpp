@@ -16,12 +16,13 @@
 
 #include "assert.h"
 #include "CardFunctions.h"
-#include "CLineCounter.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
 
 // Global vars to be used by static accessors
+int line_absolute = 1;
+int line_relative = 1;
 const int kMaxSizeOfToken = 256;
 char last_token_string[kMaxSizeOfToken];
 char* input_buffer;
@@ -41,19 +42,19 @@ CTokenizer::~CTokenizer() {
 }
 
 void CTokenizer::InitNewParse() {
-  line_counter.ResetOnNewSourceFile();
+  line_absolute = 1;
 	InitVars();
 }
 
 void CTokenizer::InitVars() {
   // Gets called once for every function
   // Therefore we don't reset line_absolute here
-  line_counter.OnNextFunction();
+  line_relative = 1;
   _token_start_pointer = 0;
   _token_end_pointer = 0;
   _last_token_pushed_back = false;
   _additional_percentage_operator_pushed_back = false;
-  _last_token = k_undefined;
+  _last_token = kUndefined;
   _inside_OpenPPL_function = false;
 }
 
@@ -251,7 +252,8 @@ StartOfScanForNextToken:
     // [\r][\n]Line break
     if ((CURRENT_CHARACTER() == '\n')
 	      || (CURRENT_CHARACTER() == '\r')) {
-      line_counter.OnLineBreak();
+      line_absolute++;
+      line_relative++;
     }
     SKIP_NEXT_CHARACTER
   }
@@ -401,7 +403,7 @@ NegativeNumber:
 	}
 	// [\0] End of string = end of function
 	else if (CURRENT_CHARACTER() == '\0') {
-    line_counter.OnLineBreak();
+		line_absolute++; 
 		return kTokenEndOfFunction;
 	}
   // Do not advance the input pointer,
@@ -437,29 +439,46 @@ void CTokenizer::SkipToEndOfLine()
 	}
 	// And skip the end of line too
 	SKIP_NEXT_CHARACTER
-  line_counter.OnLineBreak();
+  line_absolute++;
+  line_relative++;
 }
 
-void CTokenizer::SkipToEndOfMultiLineComment() {
+void CTokenizer::SkipToEndOfMultiLineComment()
+{
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
-		  && (CURRENT_CHARACTER() != '\0'))	{
+		&& (CURRENT_CHARACTER() != '\0'))
+	{
     if (CURRENT_CHARACTER() == '\n') {
-      line_counter.OnLineBreak();
+      line_absolute++;
+      line_relative++;
     }
 		SKIP_NEXT_CHARACTER
 	}
-	if (CURRENT_CHARACTER() == '\0') {
+	if (CURRENT_CHARACTER() == '\0')
+	{
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
       "/*\n"
       "  Every multi-line comment needs to be terminated\n"
       "  by a star and a slash.\n"
       "*/\n");
 		SKIP_NEXT_CHARACTER
-	}	else {
+	}
+	else
+	{
 		// Skip the remaining "*/"
 		SKIP_NEXT_CHARACTER
 		SKIP_NEXT_CHARACTER
 	}
+}
+
+int CTokenizer::LineAbsolute()
+{
+	return line_absolute;
+}
+
+int CTokenizer::LineRelative()
+{
+	return line_relative;
 }
 
 void CTokenizer::CheckTokenForOpenPPLAction(int *token) {

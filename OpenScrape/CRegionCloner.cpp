@@ -263,8 +263,8 @@ void CRegionCloner::CloneCommonCards()
 	{
 		return;
 	}
-	CalculateLinearRegions(region_to_be_cloned, k_number_of_community_cards);
-	for (int i=0; i<k_number_of_community_cards; i++)
+	CalculateLinearRegions(region_to_be_cloned, kNumberOfCommunityCards);
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{	
 		STablemapRegion new_region;
 		ApplyNextLinearRegionPosition(&new_region, i);

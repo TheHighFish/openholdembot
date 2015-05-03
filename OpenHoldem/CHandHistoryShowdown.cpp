@@ -73,7 +73,7 @@ bool AllPlayersActed() {
 }
 
 void CHandHistoryShowdown::ResetOnHeartbeat() {
-  if (p_betround_calculator->betround() == k_betround_river) {
+  if (p_betround_calculator->betround() == kBetroundRiver) {
     _river_seen = true;
   }
   if (!_river_seen) return;

@@ -59,7 +59,7 @@ int SuitCharacterToSuitNumber(char suit) {
 		case 'S': return Suit_SPADES;
 		default: // Fail silently
 			assert(false);
-			return k_undefined;
+			return kUndefined;
 	}
 }
 

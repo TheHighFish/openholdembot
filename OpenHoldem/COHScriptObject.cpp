@@ -49,7 +49,7 @@ bool COHScriptObject::EvaluatesToBinaryNumber() {
 }
 
 bool COHScriptObject::IsMainOpenPPLFunction(CString name) {
-  for (int i=k_betround_preflop; i<=k_betround_river; ++i) {
+  for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
     if (name == k_OpenPPL_function_names[i]) {
       return true;
     }

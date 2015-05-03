@@ -20,7 +20,6 @@
 
 const int k_advanced_stat_update_every    =    5;
 const int k_min_hands_for_slower_updates  = 1000;
-const int k_min_name_length_to_skip_lev_dist  = 10;
 
 struct SPlayerData 
 {

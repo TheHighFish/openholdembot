@@ -56,12 +56,9 @@ enum
  	simple_chat_hi,
  	simple_chat_hello,
  	simple_chat_bye,
-	simple_chat_happy,  //  Message: ":)"	18
-	simple_chat_sad,	//  Message: ":("	19
-	simple_chat_win,	//  Message: "\o/"	20
-	simple_chat_lose,	//  Message: "/o\"	21
-	simple_chat_test,	//  Message: "&é#"@" 22
-	last_chat_message = simple_chat_test
+	simple_chat_happy,  //  Message: ":)"
+	simple_chat_sad,	//  Message: ":("
+	last_chat_message = simple_chat_sad
 };
 
 

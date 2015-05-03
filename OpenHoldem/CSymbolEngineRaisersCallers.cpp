@@ -34,7 +34,7 @@
 CSymbolEngineRaisersCallers *p_symbol_engine_raisers_callers = NULL;
 
 // Some symbols are only well-defined if it is my turn
-#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = k_undefined; }
+#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = kUndefined; }
 
 CSymbolEngineRaisersCallers::CSymbolEngineRaisersCallers() {
 	// The values of some symbol-engines depend on other engines.
@@ -63,13 +63,13 @@ void CSymbolEngineRaisersCallers::ResetOnConnection() {
 
 void CSymbolEngineRaisersCallers::ResetOnHandreset() {
 	// callbits, raisbits, etc.
-	for (int i=k_betround_preflop; i<=k_betround_river; i++) {
+	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
 		_raisbits[i] = 0;
 		_foldbits[i] = 0;
-    _lastraised[i] = k_undefined;
+    _lastraised[i] = kUndefined;
 	}
-	_raischair = k_undefined;
+	_raischair = kUndefined;
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
 	_nopponentstruelyraising = 0;
@@ -94,7 +94,7 @@ void CSymbolEngineRaisersCallers::ResetOnHeartbeat() {
 double CSymbolEngineRaisersCallers::LastOrbitsLastRaisersBet() {
 	// Not yet acted: 0
 	if (!p_symbol_engine_history->DidAct()) {
-    if (p_betround_calculator->betround() == k_betround_preflop) {
+    if (p_betround_calculator->betround() == kBetroundPreflop) {
       // Preflop:
       // Start with big blind and forget about former blind raisers
       return p_symbol_engine_tablelimits->bblind();
@@ -147,7 +147,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisersCallers] chair %d is not raising\n", chair);
       continue;
-    } else if ((p_betround_calculator->betround() == k_betround_preflop)
+    } else if ((p_betround_calculator->betround() == kBetroundPreflop)
 				&& (current_players_bet <= p_symbol_engine_tablelimits->bblind())) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisersCallers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
@@ -162,7 +162,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		assert(chair != USER_CHAIR);
 		++_nopponentstruelyraising;
 	}
-	AssertRange(_raischair, k_undefined, k_last_chair);
+	AssertRange(_raischair, kUndefined, k_last_chair);
   _lastraised[BETROUND] = _raischair;
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
@@ -289,23 +289,23 @@ void CSymbolEngineRaisersCallers::CalculateFoldBits()
 	new_foldbits &= p_symbol_engine_active_dealt_playing->playersdealtbits();
 
 	// remove players, who folded in earlier betting-rounds.
-	if (BETROUND >= k_betround_flop)
+	if (BETROUND >= kBetroundFlop)
 	{
-		new_foldbits &= (~_foldbits[k_betround_preflop]);
+		new_foldbits &= (~_foldbits[kBetroundPreflop]);
 	}
-	if (BETROUND >= k_betround_turn)
+	if (BETROUND >= kBetroundTurn)
 	{
-		new_foldbits &= (~_foldbits[k_betround_flop]);
+		new_foldbits &= (~_foldbits[kBetroundFlop]);
 	}
-	if (BETROUND >= k_betround_river)   
+	if (BETROUND >= kBetroundRiver)   
 	{
-		new_foldbits &= (~_foldbits[k_betround_turn]);
+		new_foldbits &= (~_foldbits[kBetroundTurn]);
 	}
 	_foldbits[BETROUND] = new_foldbits;
 }
 
 int CSymbolEngineRaisersCallers::LastRaised(const int round) {
-  AssertRange(round, k_betround_preflop, k_betround_river);
+  AssertRange(round, kBetroundPreflop, kBetroundRiver);
   return _lastraised[round];
 }
 
@@ -359,9 +359,9 @@ CString CSymbolEngineRaisersCallers::SymbolsProvided() {
   CString list = "nopponentschecking nopponentscalling "
     "nopponentstruelyraising nopponentsbetting nopponentsfolded "
     "nplayerscallshort raischair ";
-  list += RangeOfSymbols("raisbits%i", k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("callbits%i", k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("foldbits%i", k_betround_preflop, k_betround_river);
-  list += RangeOfSymbols("lastraised%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("raisbits%i", kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("callbits%i", kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("foldbits%i", kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("lastraised%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }

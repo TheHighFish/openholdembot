@@ -159,9 +159,9 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
                                                         double *bblind, 
                                                         double *bbet) {
   // Everything is unknown, init to zero
-  *sblind = k_undefined_zero;
-  *bblind = k_undefined_zero;
-  *bbet   = k_undefined_zero;
+  *sblind = kUndefinedZero;
+  *bblind = kUndefinedZero;
+  *bbet   = kUndefinedZero;
   // Search first two bets...
   double first_bet_after_dealer  = 0.0;
   double second_bet_after_dealer = 0.0;
@@ -174,7 +174,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // (because of stable frames).
   int dealer = p_symbol_engine_dealerchair->dealerchair();  
   // Exit on undefined or wrong dealer (last hand)
-  if ((dealer == k_undefined) || !p_table_state->_players[dealer]._dealer) return;
+  if ((dealer == kUndefined) || !p_table_state->_players[dealer]._dealer) return;
 
   int first_chair = dealer + 1;
   int last_chair  = dealer + p_tablemap->nchairs();

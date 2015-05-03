@@ -44,7 +44,7 @@ void CSymbolEngineRandom::ResetOnConnection()
 void CSymbolEngineRandom::ResetOnHandreset()
 {
 	_randomhand      = Random_0_1();
-	_randomheartbeat = k_undefined;
+	_randomheartbeat = kUndefined;
 
 	ResetOnNewRound();
 }

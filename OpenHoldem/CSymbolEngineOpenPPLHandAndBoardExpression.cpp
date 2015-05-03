@@ -219,7 +219,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	int rank_1, int opt_rank_2, int opt_rank_3, int opt_rank_4) {
 	int result = 1;
-	int ranks[k_number_of_community_cards];
+	int ranks[kNumberOfCommunityCards];
 
   write_log(preferences.debug_hand_and_baord_expressions(),
     "[CSymbolEngineOpenPPLHandAndBoardExpression] Given ranks = %i, %i, %i, %i, %i\n",
@@ -231,9 +231,9 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	ranks[3] = opt_rank_3;
 	ranks[4] = opt_rank_4;
 
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     int rank = ranks[i];
-		assert((rank >= 0) || (rank == k_undefined));
+		assert((rank >= 0) || (rank == kUndefined));
 		assert(rank <= k_rank_ace);
     write_log(preferences.debug_hand_and_baord_expressions(),
       "[CSymbolEngineOpenPPLHandAndBoardExpression] card %i rank = %i\n",

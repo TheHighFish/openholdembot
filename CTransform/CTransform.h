@@ -58,7 +58,7 @@ class CTransform
   // bool *found_bbet=NULL, bool *found_ante=NULL, bool *found_limit=NULL,
   // bool *found_sb_bb=NULL, bool *found_bb_BB=NULL
   // to get a cleanner interface and cleaner code.
-  // The other in-out-parameters must be initialized with k_undefined now
+  // The other in-out-parameters must be initialized with kUndefined now
   // (or with the empty string). This value represents the same information.
   void CTransform::ParseStringBSL(const CString text,
                                   const CString format,

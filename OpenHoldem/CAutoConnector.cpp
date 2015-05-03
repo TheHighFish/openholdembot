@@ -247,7 +247,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 		FailedToConnectBecauseNoWindowInList();
 	}	else 	{
 		SelectedItem = SelectTableMapAndWindow(N);
-		if (SelectedItem == k_undefined) {
+		if (SelectedItem == kUndefined) {
 			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
 		}	else {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);

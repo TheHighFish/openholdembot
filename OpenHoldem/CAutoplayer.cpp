@@ -290,7 +290,7 @@ bool CAutoplayer::ExecuteBeep() {
 }
 
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
-	int executed_secondary_function = k_undefined;
+	int executed_secondary_function = kUndefined;
 	if (!AnySecondaryFormulaTrue())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
@@ -348,7 +348,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 			}
 		}
 	}
-	if (executed_secondary_function != k_undefined) {
+	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
 		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
 	}

@@ -157,14 +157,11 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_casino != NULL);
+	assert(p_symbol_engine_mtt_info != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_raisers_callers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
-  // We also use MTT-info. but this info is constant,
-  // so ordering does not matter and we want the rarely 
-  // used MTT-engine to be one of the last in the list.
-  // assert(p_symbol_engine_mtt_info != NULL);
 }
 
 CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {
@@ -175,7 +172,7 @@ void CSymbolEngineIsTournament::InitOnStartup() {
 }
 
 void CSymbolEngineIsTournament::ResetOnConnection() {
-	_istournament    = k_undefined;
+	_istournament    = kUndefined;
 	_decision_locked = false;
 }
 
@@ -190,7 +187,7 @@ void CSymbolEngineIsTournament::ResetOnMyTurn() {
 }
 
 void CSymbolEngineIsTournament::ResetOnHeartbeat() {
-  if (_istournament == k_undefined) {
+  if (_istournament == kUndefined) {
     // Beginning pf session and not yet sure.
     // Temporary maximum effort on every heartbeat
     TryToDetectTournament();
@@ -256,7 +253,7 @@ bool CSymbolEngineIsTournament::TitleStringContainsIdentifier(
 }
 
 void CSymbolEngineIsTournament::TryToDetectTournament() {
-	if (_istournament != k_undefined) {
+	if (_istournament != kUndefined) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = %s\n", Bool2CString(_istournament));
   } else {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Currently istournament = unknown\n");
@@ -277,7 +274,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	// and stick to our decision, whatever it is (probably cash-game).
 	// Also checking for (elapsedauto < elapsed). i.e. at least one action
 	// since connection, as handsplayed does not reset if we play multiple games.
-	if ((_istournament != k_undefined)
+	if ((_istournament != kUndefined)
 		  && (p_handreset_detector->hands_played() > 2)
 		  && (p_symbol_engine_time->elapsedauto() < p_symbol_engine_time->elapsed())) {
 		write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Enough hands played; locking current value\n");

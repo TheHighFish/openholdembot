@@ -32,7 +32,7 @@ CFunction::CFunction(
   _function_text = ((new_function_text != NULL) ? *new_function_text : "");
   _starting_line_of_function = absolute_line;
   _is_result_cached = false;
-  _cached_result = k_undefined_zero;
+  _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;
 }
 
@@ -64,7 +64,7 @@ double CFunction::Evaluate(bool log /* = false */) {
 	OH_MessageBox_Error_Warning(error_message);
 	p_autoplayer->EngageAutoplayer(false);
 	++recursion_depth;
-	return k_undefined_zero;
+	return kUndefinedZero;
   }
   // Result already cached
   if (_is_result_cached) {

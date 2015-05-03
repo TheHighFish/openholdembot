@@ -36,7 +36,7 @@ CHandresetDetector::CHandresetDetector() {
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
 	playercards[0] = CARD_UNDEFINED;
 	playercards[1] = CARD_UNDEFINED;
-	dealerchair = k_undefined;
+	dealerchair = kUndefined;
 	handnumber = "";
 	_is_handreset_on_this_heartbeat = false;
   _hands_played = 0;
@@ -251,7 +251,7 @@ void CHandresetDetector::GetNewSymbolValues() {
   _community_cards = p_scraper_access->NumberOfCommonCards();
   _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
   _bblind = p_symbol_engine_tablelimits->bblind();
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->_players[userchair]._hole_cards[i].GetValue();
 		} else {
@@ -272,7 +272,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_nopponentsplaying = _nopponentsplaying;
   _last_bblind = _bblind;
   _small_blind_existed_last_hand = SmallBlindExists();
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		last_playercards[i] = playercards[i];
 	}
 }

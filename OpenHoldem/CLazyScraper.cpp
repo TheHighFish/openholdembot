@@ -20,7 +20,6 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineHistory.h"
-#include "CSymbolEngineTime.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineUserchair.h"
@@ -186,7 +185,7 @@ bool CLazyScraper::NeedAllPlayerNames() {
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
 	// * new players after our turn can't affect the current hand
-	return (p_symbol_engine_time->elapsedhand() <= 3) ;
+	return (!p_symbol_engine_history->DidActThisHand());
 }
 
 bool CLazyScraper::NeedUnknownPlayerNames() {
@@ -202,8 +201,8 @@ bool CLazyScraper::NeedCommunityCards() {
 
 void CLazyScraper::ScrapeUnknownPlayerNames() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		if (	p_scraper_access->IsPlayerSeated(i) 
-			&&	!p_scraper_access->IsGoodPlayername(i)) {
+		if (p_scraper_access->IsPlayerSeated(i) 
+			  && (p_table_state->_players[i]._name == "")) {
 			p_scraper->ScrapeName(i);
 		}
 	}

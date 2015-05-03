@@ -200,7 +200,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	
 	// player cards
 	CardMask_RESET(plCards);
-	for (int i=0; i<k_number_of_cards_per_player; i++)
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
 	{
     Card card = p_table_state->User()->_hole_cards[i];
 		if (card.IsKnownCard())
@@ -213,7 +213,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// common cards
 	CardMask_RESET(comCards);
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		Card card = p_table_state->_common_cards[i];
 		if (card.IsKnownCard())
@@ -498,7 +498,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 void CSymbolEngineCards::CalculateCommonCards() {
 	_ncommoncardsknown = 0;
-	for (int i=0; i<k_number_of_community_cards; i++)	{
+	for (int i=0; i<kNumberOfCommunityCards; i++)	{
     if (p_table_state->_common_cards[i].IsKnownCard())		{
 			_ncommoncardsknown++;							
 		}
@@ -516,7 +516,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
-	for (int i=0; i<k_number_of_cards_per_player; i++)
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
 	{
 		// player cards
     Card card = p_table_state->User()->_hole_cards[i];
@@ -526,7 +526,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			nstdCards++;
 		}
 	}
-	for (int i=0; i<k_number_of_community_cards; i++)
+	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		// common cards
 		Card card = p_table_state->_common_cards[i];
@@ -539,7 +539,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	}
 
 	_ncardsknown = nstdCards;	
-	_ncardsunknown = k_number_of_cards_per_deck - _ncardsknown;
+	_ncardsunknown = kNumberOfCardsPerDeck - _ncardsknown;
 
 	handval_std = Hand_EVAL_N(stdCards, nstdCards);
 	_nouts = 0;
@@ -549,7 +549,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	{
 		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
-		for (int i=0; i<k_number_of_cards_per_deck; i++)
+		for (int i=0; i<kNumberOfCardsPerDeck; i++)
 		{
       if (i!=p_table_state->User()->_hole_cards[0].GetValue()  
 				  && i!=p_table_state->User()->_hole_cards[1].GetValue() 
@@ -566,7 +566,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 				handval_common_plus1 = Hand_EVAL_N(commonCards, ncommonCards+1);
 				CardMask_UNSET(commonCards, i);
 
-				if (BETROUND < k_betround_river 
+				if (BETROUND < kBetroundRiver 
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_std) 
 					&& p_symbol_engine_pokerval->CalculatePokerval(handval_std_plus1, nstdCards+1, &dummy, CARD_NOCARD, CARD_NOCARD) > p_symbol_engine_pokerval->pokerval()
 					&& HandVal_HANDTYPE(handval_std_plus1) > HandVal_HANDTYPE(handval_common_plus1))
@@ -582,10 +582,10 @@ void CSymbolEngineCards::CalcUnknownCards()
 		}
 	}
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
-	AssertRange(_ncardsknown,   0, k_number_of_cards_per_deck);
-	AssertRange(_ncardsunknown, 0, k_number_of_cards_per_deck);
-	AssertRange(_nouts,         0, k_number_of_cards_per_deck);
-	AssertRange(_ncardsbetter,  0, k_number_of_cards_per_deck);
+	AssertRange(_ncardsknown,   0, kNumberOfCardsPerDeck);
+	AssertRange(_ncardsunknown, 0, kNumberOfCardsPerDeck);
+	AssertRange(_nouts,         0, kNumberOfCardsPerDeck);
+	AssertRange(_ncardsbetter,  0, kNumberOfCardsPerDeck);
 }
 
 bool CSymbolEngineCards::IsHand(const char *name) {
@@ -868,11 +868,11 @@ CString CSymbolEngineCards::SymbolsProvided() {
     "nranked nrankedcommon "
     "trank trankcommon "
     "ncommoncardsknown nouts ";
-  list += RangeOfSymbols("$$pc%i", 0, k_number_of_cards_per_player-1);
-  list += RangeOfSymbols("$$pr%i", 0, k_number_of_cards_per_player-1);
-  list += RangeOfSymbols("$$ps%i", 0, k_number_of_cards_per_player-1);
-  list += RangeOfSymbols("$$cc%i", 0, k_number_of_community_cards-1);
-  list += RangeOfSymbols("$$cr%i", 0, k_number_of_community_cards-1);
-  list += RangeOfSymbols("$$cs%i", 0, k_number_of_community_cards-1);
+  list += RangeOfSymbols("$$pc%i", 0, kNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$pr%i", 0, kNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$ps%i", 0, kNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$cc%i", 0, kNumberOfCommunityCards-1);
+  list += RangeOfSymbols("$$cr%i", 0, kNumberOfCommunityCards-1);
+  list += RangeOfSymbols("$$cs%i", 0, kNumberOfCommunityCards-1);
   return list;
 }

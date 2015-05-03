@@ -32,7 +32,7 @@ class CPlayer {
   CString _name;
   double  _balance;
   double  _bet;
-  Card    _hole_cards[k_number_of_cards_per_player];
+  Card    _hole_cards[kNumberOfCardsPerPlayer];
   int     _colourcode;
 public:
   bool _seated;

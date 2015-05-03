@@ -77,7 +77,7 @@ void CGameState::CaptureState() {
 		_state[_state_index&0xff].m_pot[i] = p_table_state->_pot[i];
   }
 	// Common cards
-	for (int i=0; i<k_number_of_community_cards; i++)	{
+	for (int i=0; i<kNumberOfCommunityCards; i++)	{
     int common_card = p_table_state->_common_cards[i].GetValue();
     write_log(preferences.debug_dll_extension(), 
       "[CGameState] Common card %i = %i\n", i, common_card);
@@ -101,7 +101,7 @@ void CGameState::CaptureState() {
 		_state[_state_index&0xff].m_player[i].m_currentbet = p_symbol_engine_chip_amounts->currentbet(i);
 
 		// player cards
-		for (int j=0; j<k_number_of_cards_per_player; j++) {
+		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
       Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValue();
       write_log(preferences.debug_dll_extension(),

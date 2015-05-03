@@ -27,7 +27,7 @@ class CDebugTab: public COHScriptObject{
  public:
   // f$debug is not a normal function
   // We always return zero when evaluated.
-  double Evaluate()   { return k_undefined_zero; }
+  double Evaluate()   { return kUndefinedZero; }
   // To be used by the formula-editor
   CString EvaluateAll(); 
   CString function_text();

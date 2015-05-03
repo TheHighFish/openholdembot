@@ -259,7 +259,7 @@ const int CSymbolEnginePokerAction::PostflopPos() {
 }
 
 const bool CSymbolEnginePokerAction::FirstIntoPot() {
-  if (p_betround_calculator->betround() == k_betround_preflop) 	{
+  if (p_betround_calculator->betround() == kBetroundPreflop) 	{
 		return (p_symbol_engine_chip_amounts->potplayer() <= p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind()); 
 	}	else {
 		return (p_symbol_engine_chip_amounts->potplayer() == 0);

@@ -86,7 +86,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	// player cards
 	CardMask_RESET(plCards);
 	nplCards = 0;
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
     Card card = p_table_state->User()->_hole_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(plCards, card.GetValue());
@@ -97,7 +97,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	// common cards
 	CardMask_RESET(comCards);
 	ncomCards = 0;
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     Card card = p_table_state->_common_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(comCards, card.GetValue());
@@ -111,9 +111,9 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_player, 
 		nplCards+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 
-	for (int i=0; i<(k_number_of_cards_per_deck-1); i++)
+	for (int i=0; i<(kNumberOfCardsPerDeck-1); i++)
 	{
-		for (int j=(i+1); j<k_number_of_cards_per_deck; j++)
+		for (int j=(i+1); j<kNumberOfCardsPerDeck; j++)
 		{
 			if (!CardMask_CARD_IS_SET(plCards, i) 
 				&& !CardMask_CARD_IS_SET(plCards, j) 
@@ -128,7 +128,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 				CardMask_OR(opponentEvalCards, oppCards, comCards);
 				hv_opponent = Hand_EVAL_N(opponentEvalCards, 2+ncomCards);
 				opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_opponent,
-					(k_number_of_cards_per_player + ncomCards), 
+					(kNumberOfCardsPerPlayer + ncomCards), 
 					&dummy, CARD_NOCARD, CARD_NOCARD);
 
 				if (pl_pokval > opp_pokval)

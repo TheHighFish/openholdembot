@@ -16,9 +16,7 @@
 #include "CPreferences.h"
 
 CMyMutex::CMyMutex() : _mutex(false, preferences.mutex_name()) {
-    // We want a long timeout to let OHs instances act in FIFO order.
-	// But we can't wait forever because events can happen. Popups, table timeout... 
-	if (_mutex.Lock(5000)) {
+	if (_mutex.Lock(4000)) {
 	  _locked = TRUE;
   }	else {
 	  _locked = FALSE;

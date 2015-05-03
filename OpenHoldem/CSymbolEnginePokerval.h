@@ -131,8 +131,8 @@ private:
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs
-	HandVal	_phandval[k_number_of_betrounds];
-	HandVal	_chandval[k_number_of_betrounds];	 
+	HandVal	_phandval[kNumberOfBetrounds];
+	HandVal	_chandval[kNumberOfBetrounds];	 
 private:
 	int nCards;
 	HandVal	handval; 

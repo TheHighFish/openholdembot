@@ -23,10 +23,10 @@ double Chair$(const char *name)
 {
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_table_state->_players[i]._name.Find(&name[0]) != k_not_found)
+		if (p_table_state->_players[i]._name.Find(&name[0]) != kNotFound)
 			return i;
 	}
-	return k_undefined;
+	return kUndefined;
 }
 
 double Chairbit$(const char *name)

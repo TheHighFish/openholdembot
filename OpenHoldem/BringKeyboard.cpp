@@ -66,7 +66,7 @@ void CheckBringKeyboard(void) {
 	}
 
 	// Get state of keyboard menu item
-	if (keybd_item_pos == k_undefined) {
+	if (keybd_item_pos == kUndefined) {
 		return;
   }
 	mii.cbSize = sizeof(MENUITEMINFO);

@@ -85,7 +85,7 @@ void CSymbolEngineTableStats::ShiftOldestDataAway() {
 
 void CSymbolEngineTableStats::UpdateData() {
   switch (BETROUND) {
-    case k_betround_preflop:
+    case kBetroundPreflop:
       dealt_players[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nplayersdealt();
       bets_preflop[kIndexCurrentHand] = p_symbol_engine_chip_amounts->ncallbets();
       if (p_symbol_engine_chip_amounts->ncallbets() > 1) {
@@ -94,17 +94,17 @@ void CSymbolEngineTableStats::UpdateData() {
         raised_preflop[kIndexCurrentHand] = 1;
       }
       break;
-    case k_betround_flop:
+    case kBetroundFlop:
       if (seen_flop[kIndexCurrentHand] == 0) {
         seen_flop[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
       }
       break;
-    case k_betround_turn:
+    case kBetroundTurn:
       if (seen_turn[kIndexCurrentHand] == 0) {
         seen_turn[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
       }
       break;
-    case k_betround_river:
+    case kBetroundRiver:
       if (seen_river[kIndexCurrentHand] == 0) {
         seen_river[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
       }
@@ -140,14 +140,14 @@ int CSymbolEngineTableStats::NumberOfHandsStored() {
 
 double CSymbolEngineTableStats::FlopTurnRiverPct(int betround) {
   switch (BETROUND) {
-    case k_betround_flop:
+    case kBetroundFlop:
       return SumUp(seen_flop) / SumUp(dealt_players);
-    case k_betround_turn:
+    case kBetroundTurn:
       return SumUp(seen_turn) / SumUp(dealt_players);
-    case k_betround_river:
+    case kBetroundRiver:
       return SumUp(seen_river) / SumUp(dealt_players);
     default: 
-      return k_undefined_zero;
+      return kUndefinedZero;
   }
 }
 
@@ -162,15 +162,15 @@ double CSymbolEngineTableStats::TablePfr() {
 
 bool CSymbolEngineTableStats::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   if (memcmp(name, "floppct", 7)==0 && strlen(name)==7) {  				
-    *result = FlopTurnRiverPct(k_betround_flop);
+    *result = FlopTurnRiverPct(kBetroundFlop);
     return true;
   }
   if (memcmp(name, "turnpct", 7)==0 && strlen(name)==7) {  	
-    *result = FlopTurnRiverPct(k_betround_turn);
+    *result = FlopTurnRiverPct(kBetroundTurn);
     return true;
   }
   if (memcmp(name, "riverpct", 8)==0 && strlen(name)==8) {  	
-    *result = FlopTurnRiverPct(k_betround_river);
+    *result = FlopTurnRiverPct(kBetroundRiver);
     return true;
   }
   if (memcmp(name, "avgbetspf", 9)==0 && strlen(name)==9) {  

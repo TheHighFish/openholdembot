@@ -34,7 +34,7 @@ char	startup_path[MAX_PATH];
 #define COLOR_YELLOW	RGB(255,255,0)
 
 // Table layouts
-int		cc[k_number_of_community_cards][2] = 
+int		cc[kNumberOfCommunityCards][2] = 
 	{ {-(CARDSIZEX*2 + 3*2 + CARDSIZEX/2), -(CARDSIZEY/2)},	// absolutes
 	  {-(CARDSIZEX*1 + 3*1 + CARDSIZEX/2), -(CARDSIZEY/2)}, 
 	  {-(CARDSIZEX*0 + 3*0 + CARDSIZEX/2), -(CARDSIZEY/2)}, 
@@ -555,7 +555,7 @@ END_MESSAGE_MAP()
 // CManualModeDlg message handlers
 void CManualModeDlg::clear_scrape_areas(void) 
 {
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{ 
 		card[CC0+i] = CARD_NOCARD;
 	}
@@ -738,7 +738,7 @@ void CManualModeDlg::OnPaint()
 			shift = 10;
 
 		// Draw common cards
-		for (int i=0; i<k_number_of_community_cards; i++) 
+		for (int i=0; i<kNumberOfCommunityCards; i++) 
 		{
 			draw_card(card[CC0+i], cr.right/2 + cc[i][0] , cr.bottom/2 + cc[i][1], shift);
 		}
@@ -1993,7 +1993,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// see if we clicked on a common card
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
 		if (p.x >= cr.right/2 + cc[i][0] && 
 			p.x <= cr.right/2 + cc[i][0] + CARDSIZEX &&
@@ -2803,7 +2803,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 {
 	int		ncommoncards = 0;
 
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
 		if (card[CC0+i]!=CARD_NOCARD && card[CC0+i]!=CARD_BACK) 
 		{
@@ -2866,7 +2866,7 @@ int CManualModeDlg::get_br(void)
 	int		br;
 	int		ncommoncards = 0;
 
-	for (int i=0; i<k_number_of_community_cards; i++) 
+	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
 		if (card[CC0+i]!=CARD_NOCARD && card[CC0+i]!=CARD_BACK) 
 		{

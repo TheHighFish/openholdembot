@@ -147,7 +147,7 @@ extern "C" __declspec(dllexport) double __stdcall GetSymbolFromDll(const int cha
 		iserr = false;
 		return 0;
 	}
-  double result = k_undefined;
+  double result = kUndefined;
 	p_engine_container->EvaluateSymbol(name, 
     &result, 
     preferences.dll_logging_enabled());

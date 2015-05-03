@@ -42,10 +42,14 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
+  write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
   p_function_collection->ClearCache();
+  write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
+    write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
     CalculateOpenPPLBackupActions();
+    write_log(true, "f$alli = %.3f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin));
     return;
   }
   // Otherwiese: OH-script
@@ -78,7 +82,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   p_symbol_engine_open_ppl->InitMemorySymbols();
   // Now do the main evaluation
   int betround = p_betround_calculator->betround();
-	if (betround < k_betround_preflop || betround > k_betround_river) {
+	if (betround < kBetroundPreflop || betround > kBetroundRiver) {
     write_log(preferences.debug_formula(), 
       "[CAutoplayerFunctions] Betround out of range. Can't calculate OpenPPL-decision\n");
     return;
@@ -159,7 +163,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
   } else {
     // This can onlz be undefined == 0.0
-    assert(decision == k_undefined_zero);
+    assert(decision == kUndefinedZero);
     write_log(preferences.debug_symbolengine_open_ppl(),
       "[CAutoplayerFunctions] OpenPPL-decision undefined. Defaulting to check/fold.\n");
     p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_check, true);

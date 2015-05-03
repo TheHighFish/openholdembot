@@ -80,9 +80,9 @@ char *prwin_handrank_table_169[k_number_of_starting_hands] =
 // by both class functions and static iterator-functions
 // and because the former "solution" of passing class pointers 
 // to static iterator-functions was no real option either. ;-(
-int				deck[k_number_of_cards_per_deck];
+int				deck[kNumberOfCardsPerDeck];
 CardMask		usedCards,temp_usedCards;
-unsigned int	ocard[MAX_OPPONENTS*k_number_of_cards_per_player];
+unsigned int	ocard[MAX_OPPONENTS*kNumberOfCardsPerPlayer];
 CardMask		addlcomCards;
 CardMask		evalCards = {0}, opp_evalCards = {0};
 int				_willplay, _wontplay, _mustplay, _topclip;
@@ -293,7 +293,7 @@ void CIteratorThread::ResetGlobalVariables() {
 	CardMask_RESET(addlcomCards);
 	CardMask_RESET(evalCards);
 	CardMask_RESET(opp_evalCards);
-	for (int i=0; i<k_number_of_cards_per_deck; i++) {
+	for (int i=0; i<kNumberOfCardsPerDeck; i++) {
 		deck[i] = 0;
 	}
 	for (int i=0; i<MAX_OPPONENTS; i++) {
@@ -321,18 +321,18 @@ void CIteratorThread::InitIteratorLoop() {
 	_win = _tie = _los = 0;
 
   int userchair = p_symbol_engine_userchair->userchair();
-  if (userchair == k_undefined) return;
+  if (userchair == kUndefined) return;
 
 	// setup masks
   AssertRange(userchair, 0, k_max_chair_number);
-	for (int i=0; i<k_number_of_cards_per_player; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
     Card card = p_table_state->User()->_hole_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(_plCards, card.GetValue());
 			_nplCards++;
 		}
 	}
-	for (int i=0; i<k_number_of_community_cards; i++) {
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
     Card card = p_table_state->_common_cards[i];
     if (card.IsKnownCard()) {
       CardMask_SET(_comCards, card.GetValue());
@@ -349,7 +349,7 @@ void CIteratorThread::InitIteratorLoop() {
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
 		  && _prw1326.usecallback==1326 
-		  && (p_betround_calculator->betround()!= k_betround_preflop
+		  && (p_betround_calculator->betround()!= kBetroundPreflop
 			  || _prw1326.preflop==1326) ){
 		_prw1326.prw_callback(); //Matrix 2008-05-09
 	}
@@ -501,7 +501,7 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 	write_log(preferences.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
 	// swap alogorithm
 	// weighted prwin not implemented for this case
-	int numberOfCards = k_number_of_cards_per_deck;
+	int numberOfCards = kNumberOfCardsPerDeck;
 	for (int i=0; i<numberOfCards; i++)
 	{
 		deck[i] = i;
@@ -520,11 +520,11 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 	// opponent cards
 	int x = 0;
 	for (int i=0; 
-		i<nopponents*k_number_of_cards_per_player; 
+		i<nopponents*kNumberOfCardsPerPlayer; 
 		i++)
 	{
 		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
-			&& (x < k_number_of_cards_per_deck)) 
+			&& (x < kNumberOfCardsPerDeck)) 
 		{
 			x++;
 		}
@@ -533,10 +533,10 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++)
 	{
 		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
-			&& (x < k_number_of_cards_per_deck)) 
+			&& (x < kNumberOfCardsPerDeck)) 
 		{
 			x++;
 		}
@@ -555,7 +555,7 @@ int CIteratorThread::GetRandomCard()
 	while (true)
 	{
 		int card = rand() & k_low_6_bits;
-		if ((card < k_number_of_cards_per_deck)
+		if ((card < kNumberOfCardsPerDeck)
 			&& !CardMask_CARD_IS_SET(usedCards, card))
 		{
 			// We found a good card
@@ -576,15 +576,15 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
     nopponents = 1;
 	}
 	for (int i=0; 
-		i<nopponents*k_number_of_cards_per_player; 
-		i+=k_number_of_cards_per_player)
+		i<nopponents*kNumberOfCardsPerPlayer; 
+		i+=kNumberOfCardsPerPlayer)
 	{
 		temp_usedCards=usedCards;
 		do
 		{
 			usedCards = temp_usedCards; //reset the card mask to clear settings from failed card assignments
 
-			for (int j=0; j<k_number_of_cards_per_player; j++)
+			for (int j=0; j<kNumberOfCardsPerPlayer; j++)
 			{
 				card = GetRandomCard();
 				CardMask_SET(usedCards, card);
@@ -619,7 +619,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 	}
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++)
 	{
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);
@@ -718,7 +718,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(k_number_of_community_cards - _ncomCards); i++)
+	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++)
 	{
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);
@@ -729,6 +729,6 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 bool CIteratorThread::UseEnhancedPrWin()
 {
 	return (_prw1326.useme==1326 
-		&& (p_betround_calculator->betround() >= k_betround_flop 
+		&& (p_betround_calculator->betround() >= kBetroundFlop 
 			|| _prw1326.preflop==1326));
 }

@@ -255,14 +255,14 @@ double CSymbolEngineTableLimits::buyin() {
   if (p_table_state->_s_limit_info.buyin() > 0) {
     return p_table_state->_s_limit_info.buyin();
   }
-  return k_undefined_zero;
+  return kUndefinedZero;
 }
 
 double CSymbolEngineTableLimits::bet(int betround) {
-	assert(betround >= k_betround_preflop);
-	assert(betround <= k_betround_river);
+	assert(betround >= kBetroundPreflop);
+	assert(betround <= kBetroundRiver);
   assert(p_symbol_engine_gametype != NULL);
-  if (p_symbol_engine_gametype->isfl() && (betround >= k_betround_turn)) {
+  if (p_symbol_engine_gametype->isfl() && (betround >= kBetroundTurn)) {
     return bigbet();
   }
 	return bblind();
@@ -306,6 +306,6 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 
 CString CSymbolEngineTableLimits::SymbolsProvided() {
   CString list = "bet bblind sblind ante buyin ";
-  list += RangeOfSymbols("bet%i", k_betround_preflop, k_betround_river);
+  list += RangeOfSymbols("bet%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }
