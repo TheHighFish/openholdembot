@@ -240,9 +240,46 @@ finally we have to tell OpenHoldem how to interpret this text and create
 
 \begin_layout Standard
 That's all to make it work.
- And if thedata is spread all over the table there are even more regions
- that you can use, like c0limit0..
- c0limits9, c0sblind, c0bblind, c0bbet, c0ante and some more.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/c0limits.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally in some very rare cases it could be that that positions and the
+ texts for the blind-levels change, especially if you want to create a map
+ that supports multiple game-types like in the image above.
+ That's no problem at all, you can introduce some more regions r$c0limits0..r$c0li
+mit9 and corresponding symbols s$c0limitsX to scrape the info from the table.
+ And if the data is spread all over the table you can scrape each snippet
+ of information individually with c0sblind, c0bblind, c0bbet, c0ante and
+ some more.
 \end_layout
 
 \end_body
