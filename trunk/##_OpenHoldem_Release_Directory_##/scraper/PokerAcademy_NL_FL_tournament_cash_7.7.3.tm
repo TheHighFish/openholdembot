@@ -1,8 +1,8 @@
 .osdb2
 
-// OpenScrape 7.6.0
+// OpenScrape 7.7.0
 
-// 2015-03-02 15:52:23
+// 2015-05-04 11:18:16
 // 32 bits per pixel
 
 //
@@ -16,24 +16,33 @@ z$clientsize       1018  693
 //
 
 s$allinconfirmationmethod   1
+s$c0limits                  ^*:^s/^b
+s$c0limits0                 ^*es:$^s/$^b^*
+s$c0limits1                 ^*te:$^a
 s$nchairs                   10
-s$network                   pokerstars
+s$network                   partypoker
 s$potmethod                 2
-s$sitename                  pokeracademy_pro_nl_fr
+s$sitename                  pokeracademy
 s$swagconfirmationmethod    Click Bet
 s$swagdeletionmethod        Nothing
 s$swagtextmethod            1
 s$t0type                    fuzzy
 s$t1type                    fuzzy
 s$t2type                    fuzzy
+s$t3type                    0.0
 s$titletext                 Academy
-s$ttlimits                  ^*- ^b/^B ^L
+s$ttlimits                  ^*
 
 //
 // regions
 //
 
-r$CHAR               554  84 560 100 ffffffff  340 T0
+r$CHAR               523  26 528  40 ff8cbeff  255 T3
+r$betpot_1_1_button  729 631 759 643        0    0 N
+r$betpot_1_1label    726 642 726 642    f1921    0 H0
+r$betpot_1_1state    729 642 729 642    f1921   -1 C
+r$betpot_2_1_button  690 631 721 643        0    0 N
+r$betpot_2_1state    691 643 691 643    d141b   -1 C
 r$c0cardface0        282 300 295 331 ff8cbeff    0 H0
 r$c0cardface0nocard  281 362 281 364   dadada   -1 C
 r$c0cardface1        337 300 350 331   ffffff    0 H0
@@ -44,6 +53,9 @@ r$c0cardface3        447 300 460 331   ffffff    0 H0
 r$c0cardface3nocard  446 362 446 364   dadada   -1 C
 r$c0cardface4        502 300 515 331   ffffff    0 H0
 r$c0cardface4nocard  501 362 501 364   dadada   -1 C
+r$c0limits           679  29 799  39 ff3f8cd0  160 T3
+r$c0limits0          579  29 694  39 ff3f8cd0  160 T3
+r$c0limits1          498  29 584  39 ff3f8cd0  160 T3
 r$c0pot0             118 320 184 335 ff00ffff  340 T1
 r$i0button           158 653 278 675 ff1313c1    0 N
 r$i0label            203 657 234 669 ff1b1b5d  274 T0
@@ -338,6 +350,7 @@ t1$7 100 107 11f 178 1e0 180
 t1$7 1c0 100 107 118 160 180
 t1$$ 1c4 262 7ff 232 11c
 t1$P 1ff 1ff 108 108 108 1f8 f0
+t1$. 3 3
 t1$$ 388 444 1fff 444 238
 t1$1 60 c0 1ff 1ff
 t1$: 63 63
@@ -364,6 +377,43 @@ t2$0 3e 41 41 41 41 3e
 t2$6 7e e1 121 221 221 1e
 t2$3 82 101 111 111 111 ee
 t2$9 f0 109 109 10a 10c f0
+t3$. 1
+t3$s 12 29 29 25 12
+t3$a 16 29 29 2a 1f
+t3$d 1e 21 21 12 ff
+t3$o 1e 21 21 21 1e
+t3$e 1e 29 29 29 1a
+t3$1 20 40 ff
+t3$f 20 7f a0
+t3$t 20 ff 21
+t3$: 21
+t3$v 30 c 3 c 30
+t3$5 32 d1 91 91 8e
+t3$/ 3 3c c0
+t3$G 3c 42 81 81 89 4a c
+t3$A 3 c 74 84 74 c 3
+t3$r 3f 10 20
+t3$m 3f 10 20 3f 10 20 1f
+t3$n 3f 20 20 20 1f
+t3$2 41 83 85 89 71
+t3$3 42 81 91 91 6e
+t3$S 62 91 91 89 89 46
+t3$8 6e 91 91 91 6e
+t3$, 7
+t3$g 79 85 85 49 fe
+t3$0 7e 81 81 81 7e
+t3$6 7e 91 91 91 4e
+t3$7 80 87 98 e0 80
+t3$i bf
+t3$4 c 34 44 ff 4
+t3$$ c4 122 1ff 122 9c
+t3$l ff
+t3$h ff 10 20 20 1f
+t3$L ff 1 1 1 1
+t3$b ff 12 21 21 1e
+t3$N ff 40 30 c 2 ff
+t3$k ff 8 16 21
+t3$R ff 90 90 98 96 61
 
 //
 // points
@@ -416,6 +466,7 @@ h0$5h                 4dfd8684
 h0$Jc                 4dfdea66
 h0$Qs                 4e19770b
 h0$Jcb                4e732eaf
+h0$betpot_1_1         5193acf5
 h0$8sb                545cc560
 h0$6h                 56f6de22
 h0$Jh                 57afd749
@@ -602,6 +653,8 @@ ffffff00ffffff00ffb7b700ff1d1d00ff000000ff000000ff000000ff090900ff757500fff0f000
 fefffe00ffffff00fff5f500ff969600ff1a1a00ff000000ff080800ff5c5c00ffdddd00ffffff00ffffff00
 fdfdfd00fdfdfd00fdfefe00feefef00fe858500ff0f1000ff464600ffd9d900ffffff00ffffff00ffffff00
 fbfcfc00fbfcfb00fcfcfc00fdfcfc00fdefef00fe808000fed6d600fefeff00ffffff00ffffff00ffffff00
+i$betpot_1_1       1   1  
+1f226500
 i$8c               11  22 
 ffffff00ffffff00fdfefd00daeadc0095c199008abb8e007eb38400b0d1b400eff6f000ffffff00ffffff00
 ffffff00ffffff00d2e5d5004c97530092c09600d6e7d700bad7bd0046924d0089ba8e00f5f9f500ffffff00
