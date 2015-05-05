@@ -2,15 +2,22 @@ v7.7.3 2015-05.xx
 ==================
 NEW STUFF:
 - Added: Aggression frequency PT stats:  "flop_afq" "turn_afq" "river_afq" "total_afq"
+  and "flop_float" (PT's stat name for: bet IP flop vs missed cbet)
+  Thanks to kata for the constructive suggestion.
   [fqfq]
 - A new Keyboard DLL for VmWare Unity Mode.
   Thanks to BadHabit for the patch, 
   Termitapalahermita an Relhby for help and advice.
   [THF]
+- PT stats now update faster for rush/zoom tables 
+  and get reset on new hand
+  [Wavelen]
 - New symbol isrush, especially meant to control flexible
   heartbeat delays between fold and new game.
-  [THF]
-- Implementing s$c0limitsX and r$c0limitsX for cazsinos
+  [THF, Wavelen]
+- New chat messages, #20,#21 : \o/ ,  /o\
+  [fqfq]
+- Implementing s$c0limitsX and r$c0limitsX for casinos
   that need more then one regions to scrape the blinds from the table
   (changing position and/or text).
   Thanks to Ares for reporting such a casino.
@@ -18,8 +25,12 @@ NEW STUFF:
  
 MAINTENANCE:
 - Renaming many PT stats. Please see:
-  http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p128623
+  http://www.maxinmontreal.com/forums/viewtopic.php?f=302&t=18353&p=128623#p12862
   [fqfq]
+- Updated some validator-rules for the changed card-representations.
+  Thanks to Goran123 for reporeting and providing lots of screenshots.
+  [THF]
+
  
 BUG FIXES:
 - Various PT queries fixes.
@@ -34,6 +45,12 @@ BUG FIXES:
 - The lookup for some history-symbols didn't work.
   Thanks to Djoca for showing us some validator errors.
   [THF]
+- Absolute lines in the log-file were broken.
+  The parser used the line of the following function.
+  Thanks to OpenGeek for reporting.
+  [THF]
+- PT thread sleeping times.
+  [fqfq]
  
 v7.7.2 2015-04.01
 ==================
