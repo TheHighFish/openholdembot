@@ -30,6 +30,7 @@
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEngineIsRush.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 
@@ -523,7 +524,7 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	{
 		char *found_name = PQgetvalue(res, 0, 0);
 		lev_dist = myLD.LD(scraped_name, found_name);
-		if ( strlen(found_name) >= 14
+		if (	strlen(found_name) >= k_min_name_length_to_skip_lev_dist
 			 || lev_dist <= (int)strlen(found_name) * Levenshtein_distance_matching_factor )
 		{
 			strncpy_s(best_name, k_max_length_of_playername, found_name, _TRUNCATE);
@@ -745,9 +746,9 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 			pParent->Connect();
 		}
 	
-		double players = p_symbol_engine_active_dealt_playing->nopponentsplaying() 
-			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0); 
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", players);
+		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
+			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0);
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
 				
 		if (players < 2)
 		{
@@ -758,7 +759,11 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 		// Avoiding division by zero and setting sleep time
 		AdaptValueToMinMaxRange(&players, 1, k_max_number_of_players);
-		int sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+		int sleep_time;
+		if (p_symbol_engine_isrush->isrush()) {
+			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
+		else {
+			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleep_time);
 		LightSleep(sleep_time, pParent);
 		
@@ -775,7 +780,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		iterEnd = clock();
 		iterDurationMS = (int) ((double)(iterEnd - iterStart));
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
-		if (iterDurationMS <= 10000)
+		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) )
 		{
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
 			if (LightSleep(10000 - iterDurationMS, pParent)) 
@@ -788,16 +793,17 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 	return 0;
 }
 
-/*Sleeps but wakes up on stop thread event
+/*Sleeps but wakes up on stop thread event every 250ms.
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
 int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 {
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
-	if ( sleepTime > 0)
+
+	if (sleepTime > 0)
 	{
-		int iterations = 20;
-		int sleepSlice = (int) ((double)sleepTime / (double)iterations);
-		for (int i = 0; i < iterations; i++)
+		unsigned int sleepSlice = 250 ; // ms
+		unsigned int slicesNumber = sleepTime / sleepSlice ;
+		for (int i = 1; i <= slicesNumber; i++)
 		{
 			Sleep(sleepSlice);
 			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
@@ -806,14 +812,12 @@ int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
 				return 1;
 			}
 		}
+		Sleep(sleepTime%sleepSlice);
 	}
-	else
+	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
 	{
-		if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-		{
-			write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-			return 1;
-		}
+		write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
+		return 1;
 	}
 	return 0;
 }
