@@ -54,7 +54,7 @@ sprw1326	_prw1326;	//prwin 1326 data structure Matrix 2008-04-29
 // reflects incidence of cards people actually play to flop.
 // left in this form for ease of developer modification.
 // converted at startup to the tables actually used by prwin calculation
-char *prwin_handrank_table_169[k_number_of_starting_hands] =
+char *prwin_handrank_table_169[kNumberOfStartingHands] =
 {
 	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
 	"JTs","QJs","QTs","99 ","ATs","KTs","88 ","T9s","AK ","J9s",
