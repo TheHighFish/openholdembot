@@ -26,11 +26,11 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsOmaha.h"
+#include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "CSymbolEngineIsRush.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 
