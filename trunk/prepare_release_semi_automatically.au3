@@ -10,7 +10,7 @@
 
 Local $pre_created_release_dir = "##_OpenHoldem_Release_Directory_##"
 Local $new_openholdem_dir      = "OpenHoldem_7.x.y"
-Local $new_vmware?keyboard?dir = $new_openholdem_dir & "Keyboard_DLL_VmWare_Unity_Mode"
+Local $new_vmware_keyboard_dir = $new_openholdem_dir & "Keyboard_DLL_VmWare_Unity_Mode"
 Local $binary_dir              = "Release"
 Local $binary_optimized_dir    = "Release - Optimized"
 Local $openppl_dir             = "OpenPPL"
