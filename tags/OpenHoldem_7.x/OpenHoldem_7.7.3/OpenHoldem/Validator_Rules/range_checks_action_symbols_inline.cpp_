@@ -1,0 +1,121 @@
+//
+// Action symbols
+//
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0256")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols lastraisedx (x=1-4)")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("lastraised1") >= -1) && (gws("lastraised1") <= 9) && (gws("lastraised2") >= -1) && (gws("lastraised2") <= 9) && (gws("lastraised3") >= -1) && (gws("lastraised3") <= 9) && (gws("lastraised4") >= -1) && (gws("lastraised4") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("lastraised1, lastraised2, lastraised3, lastraised4")
+END_TESTCASE
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0257")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols raisbitsx (x=1-4) ")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("raisbits1") >= 0) && (gws("raisbits1") <= 1023) && (gws("raisbits2") >= 0) && (gws("raisbits2") <= 1023) && (gws("raisbits3") >= 0) && (gws("raisbits3") <= 1023) && (gws("raisbits4") >= 0) && (gws("raisbits4") <= 1023) )
+    SYMBOLS_POSSIBLY_AFFECTED ("raisbits1, raisbits2, raisbits3, raisbits4")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0258")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols callbitsx (x=1-4) ")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("callbits1") >= 0) && (gws("callbits1") <= 1023) && (gws("callbits2") >= 0) && (gws("callbits2") <= 1023) && (gws("callbits3") >= 0) && (gws("callbits3") <= 1023) && (gws("callbits4") >= 0) && (gws("callbits4") <= 1023) )
+    SYMBOLS_POSSIBLY_AFFECTED ("callbits1, callbits2, callbits3, callbits4")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0259")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols foldbitsx (x=1-4) ")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("foldbits1") >= 0) && (gws("foldbits1") <= 1023) && (gws("foldbits2") >= 0) && (gws("foldbits2") <= 1023) && (gws("foldbits3") >= 0) && (gws("foldbits3") <= 1023) && (gws("foldbits4") >= 0) && (gws("foldbits4") <= 1023) )
+    SYMBOLS_POSSIBLY_AFFECTED ("foldbits1, foldbits2, foldbits3, foldbits4")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0261")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol raischair")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("raischair") >= -1) && (gws("raischair") <= 9))
+    SYMBOLS_POSSIBLY_AFFECTED ("raischair")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0262")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol ac_agchair_after")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_agchair_after") == true ) || (gws("ac_agchair_after") == false))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_agchair_after")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0263")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol ac_preflop_pos")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_preflop_pos") >= 0) && (gws("ac_preflop_pos") <= 6))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_preflop_pos")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0264")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol ac_prefloprais_pos")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_prefloprais_pos") >= 0) && (gws("ac_prefloprais_pos") <= 6))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_prefloprais_pos")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0265")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol ac_postflop_pos")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_postflop_pos") >= 0) && (gws("ac_postflop_pos") <= 5))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_postflop_pos")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0267")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbol ac_first_into_pot")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_first_into_pot") == true) || (gws("ac_first_into_pot") == false))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_first_into_pot")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0268")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols ac_betposx (x=0-9)")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_betpos0") >= 0) && (gws("ac_betpos0") <= gws("nplayersdealt")) && (gws("ac_betpos1") >= 0) && (gws("ac_betpos1") <= gws("nplayersdealt")) && (gws("ac_betpos2") >= 0) && (gws("ac_betpos2") <= gws("nplayersdealt")) && (gws("ac_betpos3") >= 0) && (gws("ac_betpos3") <= gws("nplayersdealt")) && (gws("ac_betpos4") >= 0) && (gws("ac_betpos4") <= gws("nplayersdealt")) && (gws("ac_betpos5") >= 0) && (gws("ac_betpos5") <= gws("nplayersdealt")) && (gws("ac_betpos6") >= 0) && (gws("ac_betpos6") <= gws("nplayersdealt")) && (gws("ac_betpos7") >= 0) && (gws("ac_betpos7") <= gws("nplayersdealt")) && (gws("ac_betpos8") >= 0) && (gws("ac_betpos8") <= gws("nplayersdealt")) && (gws("ac_betpos9") >= 0) && (gws("ac_betpos9") <= gws("nplayersdealt")))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_betpos0, ac_betpos1, ac_betpos2, ac_betpos3, ac_betpos4, ac_betpos5, ac_betpos6, ac_betpos7, ac_betpos8, ac_betpos9, nplayersdealt")
+END_TESTCASE
+
+
+BEGIN_TESTCASE
+    TESTCASE_ID ("0269")
+    HEURISTIC_RULE (false)
+    REASONING ("Range check for symbols ac_dealposx (x=0-9)")
+    PRECONDITION (true)
+    POSTCONDITION ((gws("ac_dealpos0") >= 0) && (gws("ac_dealpos0") <= gws("nplayersdealt")) && (gws("ac_dealpos1") >= 0) && (gws("ac_dealpos1") <= gws("nplayersdealt")) && (gws("ac_dealpos2") >= 0) && (gws("ac_dealpos2") <= gws("nplayersdealt")) && (gws("ac_dealpos3") >= 0) && (gws("ac_dealpos3") <= gws("nplayersdealt")) && (gws("ac_dealpos4") >= 0) && (gws("ac_dealpos4") <= gws("nplayersdealt")) && (gws("ac_dealpos5") >= 0) && (gws("ac_dealpos5") <= gws("nplayersdealt")) && (gws("ac_dealpos6") >= 0) && (gws("ac_dealpos6") <= gws("nplayersdealt")) && (gws("ac_dealpos7") >= 0) && (gws("ac_dealpos7") <= gws("nplayersdealt")) && (gws("ac_dealpos8") >= 0) && (gws("ac_dealpos8") <= gws("nplayersdealt")) && (gws("ac_dealpos9") >= 0) && (gws("ac_dealpos9") <= gws("nplayersdealt")))
+    SYMBOLS_POSSIBLY_AFFECTED ("ac_dealpos0, ac_dealpos1, ac_dealpos2, ac_dealpos3, ac_dealpos4, ac_dealpos5, ac_dealpos6, ac_dealpos7, ac_dealpos8, ac_dealpos9, nplayersdealt")
+END_TESTCASE
