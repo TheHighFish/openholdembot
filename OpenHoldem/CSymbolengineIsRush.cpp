@@ -17,6 +17,7 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTime.h"
 #include "CTableState.h"
@@ -31,10 +32,11 @@ CSymbolEngineIsRush *p_symbol_engine_isrush = NULL;
 const int kMaxAverageDurationOfHandreset = 4;
 
 CSymbolEngineIsRush::CSymbolEngineIsRush() {
-	// The values of some symbol-engines depend on other engines.
-	// As the engines get later called in the order of initialization
-	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_time != NULL);
+  // The values of some symbol-engines depend on other engines.
+  // As the engines get later called in the order of initialization
+  // we assure correct ordering by checking if they are initialized.
+  assert(p_symbol_engine_active_dealt_playing !=NULL);
+  assert(p_symbol_engine_time != NULL);
   assert(p_symbol_engine_istournament != NULL);
 }
 
@@ -75,6 +77,12 @@ bool CSymbolEngineIsRush::isrush() {
     write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] Tournament, therefore not rush / zoom\n");
     return false;
+  }
+  else if (p_symbol_engine_active_dealt_playing->nopponentsdealt()<2){
+    // Game may be HU
+    write_log(preferences.debug_symbolengine(),
+      "[CSymbolEngineIsRush] One dealt opponent, game may or may not be rush / zoom\n");
+      return false;
   }
   assert(handresets > 0);
   write_log(preferences.debug_symbolengine(),
