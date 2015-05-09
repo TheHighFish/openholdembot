@@ -74,7 +74,7 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Section
+\begin_layout Chapter
 Finding a 
 \begin_inset Index idx
 status open
@@ -135,9 +135,10 @@ http://www.maxinmontreal.com/forums/viewforum.php?f=280
 
 \end_inset
 
-) that contains user-contributed maps.
- These maps are likely to be more or less out of date, and would require
- some validation to ensure they are 100% correct.
+) that contains several dozen user-contributed maps.
+ Some of these maps might be out of date or require special system settings.
+ So they at least require some validation to ensure they are 100% correct
+ before you can take them to the tables.
  Consider these maps to be a starting point for learning how maps are constructe
 d and how they work.
  
@@ -181,6 +182,83 @@ provide some replay-frames for critical situations.
 
 \begin_layout Standard
 Helping can be a bit tough if you have to ask all day for missing information.
+\end_layout
+
+\begin_layout Section
+Offline simulators
+\end_layout
+
+\begin_layout Standard
+Although we can't provide and maintain tablemaps for all casinos out there
+ OpenHoldem comes with a set of tablemaps for some offline simulators.
+ They are an easy starting point for every newbie and a good tool for experience
+d users to develop and test bot-logic offline.
+ OpenHoldem ManualMode seems wo work out of the box at every system, but
+ some of the others need special settings: e.g.
+ window size or screen resolution.
+ Please see the 
+\noun on
+Readme
+\noun default
+ files for details.
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+DDPoker
+\noun default
+, which is freeware and can be downloaded at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.ddpoker.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+OpenHoldem ManualMode
+\noun default
+, which is part of the OpenHoldem package
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+PokerAcademy
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+PokerSnowie
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+PokerTH
+\noun default
+, which is open-source and can be downloaded at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+www.pokerth.net/
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

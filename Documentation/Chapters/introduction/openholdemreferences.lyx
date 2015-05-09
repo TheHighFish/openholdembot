@@ -113,7 +113,23 @@ https://sites.google.com/site/openholdempokerbot/downloads/
 \end_layout
 
 \begin_layout Itemize
-Source code download:  
+Source code: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/OpenHoldem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Old source code (OpenHoldem 1.0 ...
+ 7.7.3):  
 \begin_inset Flex URL
 status collapsed
 
@@ -143,28 +159,13 @@ http://www.maxinmontreal.com/forums/viewtopic.php?f=113&t=3542
 \end_layout
 
 \begin_layout Itemize
-Source license, GPL v3:  
+License, GPL v3:  
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
 http://www.gnu.org/copyleft/gpl.html 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Issue tracker:  
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://code.google.com/p/openholdembot/issues 
 \end_layout
 
 \end_inset
@@ -402,18 +403,17 @@ http://www.rohitab.com/discuss/topic/21740-md5-hashing/
 
 \end_layout
 
-\begin_layout Subsection
-Commercial projects used in OpenHoldem
+\begin_layout Subsection*
+Image sources
 \end_layout
 
 \begin_layout Itemize
-ActiveState Perl (ActiveState Perl is free for personal use); 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://www.activestate.com/
+http://40.media.tumblr.com/tumblr_lo17fqFYal1qj5qvfo1_500.jpg
 \end_layout
 
 \end_inset

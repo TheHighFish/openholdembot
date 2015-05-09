@@ -208,16 +208,6 @@ mouse.dll,
 status open
 
 \begin_layout Plain Layout
-perl.dll
-\end_layout
-
-\end_inset
-
-perl_callback.dll, 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
 scraper.dll
 \end_layout
 
@@ -239,7 +229,7 @@ Files with .pdb extensions --- these files contain the debug symbols that
  are required if you want to diagnose crashes or simply trace execution
  in a debugger.
  These files are usually not distributed with the executables as most end-users
- don't need them and the people who want to debug OpenHoldem are usuakky
+ don't need them and the people who want to debug OpenHoldem are usually
  able to create debug-executables on their own.
  
 \end_layout
