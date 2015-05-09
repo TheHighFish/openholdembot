@@ -3,7 +3,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If I'm not aggressor, but an aggressor truly exists and nobody did act this round , then he must be the aggressor of the previous round and has to act behind me.")
     PRECONDITION ((gws("raischair") != gws("userchair")) && (gws("raischair") >= 0) && (gws("ncallbets") == 0))
-    POSTCONDITION ((gws("betround") > 1) && gws("ac_agchair_after"))
+    POSTCONDITION ((gws("betround") > 1) && gws("ac_agchair_after")) 
     SYMBOLS_POSSIBLY_AFFECTED ("raischair , userchair, ncallbets, betround, ac_agchair_after")
 END_TESTCASE
  
