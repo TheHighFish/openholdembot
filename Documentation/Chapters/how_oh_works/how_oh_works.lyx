@@ -253,7 +253,7 @@ Scraper
 \end_inset
 
 scraper engine to scrape and interpret the current pixels on the poker window
- based on the parameters in the loaded Table Map {Creating a Table Map}.
+ based on the parameters in the loaded Table Map.
 \end_layout
 
 \end_inset
@@ -305,7 +305,7 @@ Calculate symbols
 \begin_inset Text
 
 \begin_layout Plain Layout
-Calculate all OpenHoldem symbols {Calculated Symbols}.
+Calculate all OpenHoldem symbols.
 \end_layout
 
 \end_inset
@@ -335,9 +335,9 @@ Replay frames
 \begin_inset Text
 
 \begin_layout Plain Layout
-If a replay frame {Replay Frames} is requested in preferences {Preferences},
- OpenHoldem will store an image file and a HTML-file in the scraper-directory
- for a future settion-review with OHReplay
+If a replay frame is requested in preferences , OpenHoldem will store an
+ image file and a HTML-file in the scraper-directory for a future settion-review
+ with OHReplay
 \end_layout
 
 \end_inset
@@ -367,8 +367,9 @@ Validator
 
 \end_inset
 
-is enabled in preferences {Preferences}, then validate the current game
- state.
+ validator is enabled in preferences , then it will check the current game
+ state for inconsistencies that are usually caused by mis-scrapes or bad
+ tablemaps.
 \end_layout
 
 \end_inset
@@ -398,7 +399,7 @@ User DLL
 
 \end_inset
 
-User DLL {User DLL} is loaded, then send the current game state to it.
+User DLL is loaded, then send the current game state to it.
 \end_layout
 
 \end_inset
@@ -458,8 +459,8 @@ Scrape delay
 
 \end_inset
 
-Scrape Delay period of time as specified in preferences {Preferences}, then
- start the next cycle.
+Scrape Delay period of time as specified in preferences, then start the
+ next cycle.
 \end_layout
 
 \end_inset
@@ -635,27 +636,6 @@ Explanation
 \begin_inset Text
 
 \begin_layout Plain Layout
-Handle f$sitin, f$sitout and f$leave and f$close
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action
- depending on their return values.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 Handle 
 \begin_inset Index idx
 status open
@@ -685,7 +665,28 @@ popup
 
 \end_inset
 
-popups/spam .
+popups that occlude the table.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Handle f$sitin, f$sitout and f$leave and f$close
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action
+ depending on their return values.
 \end_layout
 
 \end_inset
@@ -808,7 +809,7 @@ Isfinalanswer
 
 \begin_layout Plain Layout
 Determine the value of the isfinalanswer symbol --- if the Iterator has
- finished, at least one action button is visible, we are “playing”, the
+ finished, at least two action buttons are visible, we are “playing”, the
  number of sequential stable frames have been seen and the time value in
  
 \begin_inset Index idx
@@ -953,18 +954,12 @@ Per default f$check and f$fold evaluate to true, so if all questions were
  
 \end_layout
 
-\begin_layout Standard
-Every bot needs such a formula file, even if it is programmed in 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Perl
+\begin_layout Section*
+The DLL-extension
 \end_layout
 
-\end_inset
-
-Perl or 
+\begin_layout Standard
+Every bot needs such a formula file, even if it is programmed in 
 \begin_inset Index idx
 status open
 
@@ -985,11 +980,11 @@ C++
 \end_inset
 
 C++.
- There are no standalone Perl- or C++-bots; Perl and C++ are only programming
- extensions that make it possible to extend the functionality of OpenHoldem
- by providing additional symbols (constants and parameter-less functions).
+ There are no standalone C++-bots; the user-DLL is just a programming extensions
+ that make it possible to extend the functionality of OpenHoldem by providing
+ additional symbols (constants and parameter-less functions).
  The very minimum is a small OH-script that redirects every primary function
- to a Perl- or C++-function.
+ to a DLL-function.
 \end_layout
 
 \begin_layout Standard
@@ -1032,12 +1027,12 @@ dll$alli
 
 \begin_layout Plain Layout
 
-##f$swag##
+##f$betsize##
 \end_layout
 
 \begin_layout Plain Layout
 
-dll$swag
+dll$betsize
 \end_layout
 
 \begin_layout Plain Layout
@@ -1051,7 +1046,7 @@ dll$swag
 
 \begin_layout Plain Layout
 
-pl_rais
+dll$rais
 \end_layout
 
 \begin_layout Plain Layout
@@ -1065,7 +1060,7 @@ pl_rais
 
 \begin_layout Plain Layout
 
-pl_call
+dll$call
 \end_layout
 
 \end_inset
@@ -1079,7 +1074,7 @@ In practice formulas can become arbitary complex, but those are the basic
  We will deal with the details of bot-programming in the chapter about OH-script.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section*
 Parse-Time and Run-Time Errors 
 \end_layout
 
@@ -1099,7 +1094,7 @@ Additionally, several classes of run-time errors will be detected, including
  control the recursion depth.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section*
 \begin_inset Index idx
 status open
 

@@ -193,7 +193,7 @@ Although we can't provide and maintain tablemaps for all casinos out there
  OpenHoldem comes with a set of tablemaps for some offline simulators.
  They are an easy starting point for every newbie and a good tool for experience
 d users to develop and test bot-logic offline.
- OpenHoldem ManualMode seems wo work out of the box at every system, but
+ OpenHoldem ManualMode seems to work out of the box at every system, but
  some of the others need special settings: e.g.
  window size or screen resolution.
  Please see the 
@@ -208,7 +208,7 @@ Readme
 \noun on
 DDPoker
 \noun default
-, which is freeware and can be downloaded at 
+, which is freeware and can be downloaded from 
 \begin_inset Flex URL
 status open
 
@@ -247,7 +247,7 @@ PokerSnowie
 \noun on
 PokerTH
 \noun default
-, which is open-source and can be downloaded at 
+, which is open-source and can be downloaded from 
 \begin_inset Flex URL
 status open
 
@@ -258,7 +258,7 @@ www.pokerth.net/
 
 \end_inset
 
-
+ 
 \end_layout
 
 \end_body

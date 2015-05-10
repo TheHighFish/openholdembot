@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-01-05"/>
+<meta name="create-date" content="2015-05-10"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -59,7 +59,7 @@ Explanation
 Scrape window
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Ask the screen <a class="IndexReference" name="entry-Scraper-0" href="#index-Scraper">↓</a>scraper engine to scrape and interpret the current pixels on the poker window based on the parameters in the loaded Table Map {Creating a Table Map}.
+Ask the screen <a class="IndexReference" name="entry-Scraper-0" href="#index-Scraper">↓</a>scraper engine to scrape and interpret the current pixels on the poker window based on the parameters in the loaded Table Map.
 </td>
 
 </tr>
@@ -77,7 +77,7 @@ OpenHoldems built-in scraper preprocessor will then preprocess some textual inpu
 Calculate symbols
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Calculate all OpenHoldem symbols {Calculated Symbols}.
+Calculate all OpenHoldem symbols.
 </td>
 
 </tr>
@@ -86,7 +86,7 @@ Calculate all OpenHoldem symbols {Calculated Symbols}.
 Create <a class="IndexReference" name="entry-Replay-frames-0" href="#index-Replay-frames">↓</a> replay frame
 </td>
 <td align="left" valign="top" style="width: 75%;">
-If a replay frame {Replay Frames} is requested in preferences {Preferences}, OpenHoldem will store an image file and a HTML-file in the scraper-directory for a future settion-review with OHReplay
+If a replay frame is requested in preferences , OpenHoldem will store an image file and a HTML-file in the scraper-directory for a future settion-review with OHReplay
 </td>
 
 </tr>
@@ -95,7 +95,7 @@ If a replay frame {Replay Frames} is requested in preferences {Preferences}, Ope
 Validate game state
 </td>
 <td align="left" valign="top" style="width: 75%;">
-If the <a class="IndexReference" name="entry-Validator-0" href="#index-Validator">↓</a>is enabled in preferences {Preferences}, then validate the current game state.
+If the <a class="IndexReference" name="entry-Validator-0" href="#index-Validator">↓</a> validator is enabled in preferences , then it will check the current game state for inconsistencies that are usually caused by mis-scrapes or bad tablemaps.
 </td>
 
 </tr>
@@ -104,7 +104,7 @@ If the <a class="IndexReference" name="entry-Validator-0" href="#index-Validator
 Send state to user dll
 </td>
 <td align="left" valign="top" style="width: 75%;">
-If a <a class="IndexReference" name="entry-User-DLL-0" href="#index-User-DLL">↓</a>User DLL {User DLL} is loaded, then send the current game state to it.
+If a <a class="IndexReference" name="entry-User-DLL-0" href="#index-User-DLL">↓</a>User DLL is loaded, then send the current game state to it.
 </td>
 
 </tr>
@@ -122,7 +122,7 @@ If the <a class="IndexReference" name="entry-Autoplayer-0" href="#index-Autoplay
 Wait
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Sleep for the <a class="IndexReference" name="entry-Scrape-delay-0" href="#index-Scrape-delay">↓</a>Scrape Delay period of time as specified in preferences {Preferences}, then start the next cycle.
+Sleep for the <a class="IndexReference" name="entry-Scrape-delay-0" href="#index-Scrape-delay">↓</a>Scrape Delay period of time as specified in preferences, then start the next cycle.
 </td>
 
 </tr>
@@ -179,19 +179,19 @@ Explanation
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-Handle f$sitin, f$sitout and f$leave and f$close
+Handle <a class="IndexReference" name="entry-spam-0" href="#index-spam">↓</a>spam
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action depending on their return values.
+Evaluate any i86 regions, and dismiss any <a class="IndexReference" name="entry-popup-0" href="#index-popup">↓</a>popups that occlude the table.
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-Handle <a class="IndexReference" name="entry-spam-0" href="#index-spam">↓</a>spam
+Handle f$sitin, f$sitout and f$leave and f$close
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Evaluate any i86 regions, and dismiss any <a class="IndexReference" name="entry-popup-0" href="#index-popup">↓</a>popups/spam .
+Evaluate the f$sitin, f$sitout, f$leave and f$close functions and take action depending on their return values.
 </td>
 
 </tr>
@@ -227,7 +227,7 @@ If f$chat evaluates to non-zero and safety constraints have been met, then enter
 <a class="IndexReference" name="entry-isfinalanswer-0" href="#index-isfinalanswer">↓</a>Isfinalanswer
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Determine the value of the isfinalanswer symbol — if the Iterator has finished, at least one action button is visible, we are “playing”, the number of sequential stable frames have been seen and the time value in <a class="IndexReference" name="entry-f$delay-0" href="#index-f$delay">↓</a>f$delay has passed, then isfinalanswer is true.
+Determine the value of the isfinalanswer symbol — if the Iterator has finished, at least two action buttons are visible, we are “playing”, the number of sequential stable frames have been seen and the time value in <a class="IndexReference" name="entry-f$delay-0" href="#index-f$delay">↓</a>f$delay has passed, then isfinalanswer is true.
 </td>
 
 </tr>
@@ -277,8 +277,11 @@ Every bot needs some poker-specific logic to decide how to act. OpenHoldem provi
 <div class="Unindented">
 Per default f$check and f$fold evaluate to true, so if all questions were answered with 0 or false, your hand-will be check-folded. 
 </div>
-<div class="Indented">
-Every bot needs such a formula file, even if it is programmed in <a class="IndexReference" name="entry-Perl-0" href="#index-Perl">↓</a>Perl or <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a><a class="IndexReference" name="entry-C++-0" href="#index-C++">↓</a>C++. There are no standalone Perl- or C++-bots; Perl and C++ are only programming extensions that make it possible to extend the functionality of OpenHoldem by providing additional symbols (constants and parameter-less functions). The very minimum is a small OH-script that redirects every primary function to a Perl- or C++-function.
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>The DLL-extension
+</h2>
+<div class="Unindented">
+Every bot needs such a formula file, even if it is programmed in <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a><a class="IndexReference" name="entry-C++-0" href="#index-C++">↓</a>C++. There are no standalone C++-bots; the user-DLL is just a programming extensions that make it possible to extend the functionality of OpenHoldem by providing additional symbols (constants and parameter-less functions). The very minimum is a small OH-script that redirects every primary function to a DLL-function.
 </div>
 <div class="Indented">
 <div class="listing">
@@ -289,14 +292,14 @@ Every bot needs such a formula file, even if it is programmed in <a class="Index
 ##f$alli##
 dll$alli
 ​
-##f$swag##
-dll$swag
+##f$betsize##
+dll$betsize
 ​
 ##f$rais##
-pl_rais
+dll$rais
 ​
 ##f$call##
-pl_call
+dll$call
 </pre>
 </div>
 
@@ -304,18 +307,18 @@ pl_call
 <div class="Indented">
 In practice formulas can become arbitary complex, but those are the basic principles you will need to understand. We will deal with the details of bot-programming in the chapter about OH-script.
 </div>
-<h3 class="Subsection">
-<a class="toc" name="toc-Subsection-2"></a>Parse-Time and Run-Time Errors 
-</h3>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--2"></a>Parse-Time and Run-Time Errors 
+</h2>
 <div class="Unindented">
 The OpenHoldem scripting language will detect various error conditions for you and warn you of these conditions. Each time a formula is loaded, it is “parsed” for correctness – if there are any syntactical errors upon this parse, then a message box will be displayed that alerts you to the location of this error.
 </div>
 <div class="Indented">
 Additionally, several classes of run-time errors will be detected, including divide-by-zero and infinite recursion. Note that the OH-Script language does not support recursion in any form, due to the absence of the assignment operator and function parameters to control the recursion depth.
 </div>
-<h3 class="Subsection">
-<a class="toc" name="toc-Subsection-3"></a><a class="IndexReference" name="entry-Default-bot-0" href="#index-Default-bot">↓</a>Default Bot
-</h3>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--3"></a><a class="IndexReference" name="entry-Default-bot-0" href="#index-Default-bot">↓</a>Default Bot
+</h2>
 <div class="Unindented">
 OpenHoldem does not contain a default bot. For some time we included <a class="IndexReference" name="entry-Playbot-0" href="#index-Playbot">↓</a>Playbot by Matrix just for demonstration purposes. It was a very early case-study about prwin-based bots, meant for Fixed Limit Texas Hold’em. Prwin-based bots (short for &ldquo;probability of win&rdquo;) try to code the decision with very few and small mathematical formulae, unlike scenario-based bots that code hundreds or thousands of different situations. However the golden times of fixed limit are over and most people want to develop their own bots anyway. Due to the existence of countless demo-bots and the rise of OpenPPL we decided that a default bot-logic is no longer necessary.
 </div>
@@ -334,7 +337,7 @@ WHEN hand$KK and Raises = 0 and calls = 0 RaiseTo 3 FPRCE
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-05T20:29:46.328000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-05-10T12:10:07.163000</span>
 </div>
 </div>
 </body>
