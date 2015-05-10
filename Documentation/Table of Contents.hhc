@@ -312,6 +312,10 @@
 				<param name="Local" value="Chapters\scraping_in_practice\Seated_active_playing.html.LyXconv\Seated_active_playing.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Starting a new Map">
+				<param name="Local" value="Chapters\scraping_in_practice\Starting_a_new_map.html.LyXconv\Starting_a_new_map.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Getting started">
 				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
 				</OBJECT>
@@ -600,7 +604,7 @@
 				<param name="Local" value="Chapters\stealth\colour_coded_pokersites.html.LyXconv\colour_coded_pokersites.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="The Grand Plam">
+				<param name="Name" value="The Grand Plan">
 				<param name="Local" value="Chapters\stealth\the_grand_plan.html.LyXconv\the_grand_plan.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
