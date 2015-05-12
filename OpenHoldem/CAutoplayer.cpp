@@ -335,10 +335,11 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 			}
 	}
 	// Otherwise: handle the simple simple button-click
-	// k_standard_function_sitin,
-	// k_standard_function_sitout,
-	// k_standard_function_leave,
-	// k_standard_function_autopost,
+	// k_hopper_function_sitin,
+	// k_hopper_function_sitout,
+	// k_hopper_function_leave,
+  // k_hopper_function_rematch,
+	// k_hopper_function_autopost,
 	else 
     for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{

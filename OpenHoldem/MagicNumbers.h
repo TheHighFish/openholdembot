@@ -117,8 +117,9 @@ const int k_button_check	= 14;
 const int k_button_sitin	= 20;
 const int k_button_sitout	= 21;
 const int k_button_leave	= 22;
-const int k_button_prefold	= 23;
-const int k_button_autopost	= 24;
+const int k_button_rematch  = 23;
+const int k_button_prefold	= 24;
+const int k_button_autopost	= 25;
 const int k_button_i86		= 86;
 const int k_button_undefined = -1;
 
@@ -224,6 +225,7 @@ enum StandardFunctionConstants
 	k_hopper_function_sitin,
 	k_hopper_function_sitout,
 	k_hopper_function_leave,
+  k_hopper_function_rematch,
 	k_hopper_function_autopost,
 	k_hopper_function_close,
 	k_hopper_function_rebuy,
@@ -296,6 +298,7 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 	"f$sitin",
 	"f$sitout",
 	"f$leave",
+  "f$rematch",
 	"f$autopost",
 	"f$close",
 	"f$rebuy",

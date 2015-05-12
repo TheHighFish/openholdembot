@@ -397,6 +397,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
 				leave_drawn = true;
 			}
+      // !!! To do: rematch
 			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);

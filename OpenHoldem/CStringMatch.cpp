@@ -162,11 +162,19 @@ const bool CStringMatch::IsStringSitout(CString s)
 
 const bool CStringMatch::IsStringLeave(CString s)
 {
-	// Check for bad parameters
+  // Check for bad parameters
 	if (!s || s == "")
 		return false;
 
 	return (s.MakeLower().Left(5) == "leave");
+}
+
+const bool CStringMatch::IsStringRematch(CString s) {
+  // Check for bad parameters
+	if (!s || s == "")
+		return false;
+
+	return (s.MakeLower().Left(5) == "rematch");
 }
 
 const bool CStringMatch::IsStringPrefold(CString s)

@@ -31,6 +31,7 @@ public:
 	const bool IsStringSitin(const CString s);
 	const bool IsStringSitout(const CString s);
 	const bool IsStringLeave(const CString s);
+  const bool IsStringRematch(const CString s);
 	const bool IsStringPrefold(const CString s);
 	const bool IsStringSeated(const CString s);
 	const bool IsStringActive(const CString s);

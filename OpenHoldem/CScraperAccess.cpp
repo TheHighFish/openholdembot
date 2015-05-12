@@ -93,6 +93,10 @@ int CScraperAccess::SearchForButtonNumber(int button_code)
 		case k_button_leave:
 			StringMatch = &CStringMatch::IsStringLeave;
 			break;
+    // REMATCH
+		case k_button_rematch:
+			StringMatch = &CStringMatch::IsStringRematch;
+			break;
 		// PRE-FOLD
 		case k_button_prefold:
 			StringMatch = &CStringMatch::IsStringPrefold;
@@ -211,6 +215,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	_sitin_button_number	  = SearchForButtonNumber(k_button_sitin);
 	_sitout_button_number   = SearchForButtonNumber(k_button_sitout);
 	_leave_button_number	  = SearchForButtonNumber(k_button_leave);
+  _rematch_button_number	= SearchForButtonNumber(k_button_rematch);
 	_autopost_button_number	= SearchForButtonNumber(k_button_autopost);
   // NAMES
 	button_names[k_autoplayer_function_allin]		= GetButtonName(_allin_button_number);
@@ -222,6 +227,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	button_names[k_hopper_function_sitin]		  = GetButtonName(_sitin_button_number);
 	button_names[k_hopper_function_sitout]		= GetButtonName(_sitout_button_number);
 	button_names[k_hopper_function_leave]		  = GetButtonName(_leave_button_number);
+  button_names[k_hopper_function_rematch]		= GetButtonName(_rematch_button_number);
 	button_names[k_hopper_function_autopost]	= GetButtonName(_autopost_button_number);
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
@@ -251,6 +257,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	visible_buttons[k_hopper_function_sitin]		= GetButtonVisible(_sitin_button_number);
 	visible_buttons[k_hopper_function_sitout]		= GetButtonVisible(_sitout_button_number);
 	visible_buttons[k_hopper_function_leave]		= GetButtonVisible(_leave_button_number);
+  visible_buttons[k_hopper_function_rematch]	= GetButtonVisible(_rematch_button_number);
 	visible_buttons[k_hopper_function_autopost]	= GetButtonVisible(_autopost_button_number);
 	// visible betpot buttons
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
