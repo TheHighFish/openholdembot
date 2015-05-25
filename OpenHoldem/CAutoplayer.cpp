@@ -352,7 +352,9 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
 		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
+		return true;
 	}
+	action_sequence_needs_to_be_finished = false;
 	return false;
 }
 
@@ -465,7 +467,7 @@ void CAutoplayer::DoAutoplayer(void) {
   if (TimeToHandleSecondaryFormulas())	{
 	  p_autoplayer_functions->CalcSecondaryFormulas();	  
     if (ExecuteSecondaryFormulasIfNecessary())	{
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondarz formulas executed\n");
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondary formulas executed\n");
       goto AutoPlayerCleanupAndFinalization;
     } else {
       write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
