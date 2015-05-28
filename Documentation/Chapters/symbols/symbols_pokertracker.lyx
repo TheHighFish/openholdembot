@@ -145,24 +145,6 @@ and
  They work for the current orbit only.
 \end_layout
 
-\begin_layout Itemize
-by 
-\emph on
-chair number
-\emph default
-, e.g 
-\emph on
-pt_icon0
-\emph default
-..
-\emph on
-pt_icon9
-\emph default
-: this is more complex and less convenient than both methods above, but
- you get the ability to build any advanced stat on your own as long as you
- are able to identify the chair of your villain.
-\end_layout
-
 \begin_layout Section*
 Summary 
 \end_layout
@@ -233,10 +215,6 @@ _dealer
 _user
 \end_layout
 
-\begin_layout Itemize
-the chair number between 0 and 9
-\end_layout
-
 \end_deeper
 \begin_layout Section*
 General
@@ -248,7 +226,7 @@ stats
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="11" columns="2">
+<lyxtabular version="3" rows="9" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -267,26 +245,6 @@ Symbol
 
 \begin_layout Plain Layout
 Meaning
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-icon
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker auto-rate icon code
 \end_layout
 
 \end_inset
@@ -417,7 +375,7 @@ Poker Tracker total aggression
 \begin_inset Text
 
 \begin_layout Plain Layout
-aggr_factor_without_preflop
+total_af 
 \end_layout
 
 \end_inset
@@ -433,31 +391,11 @@ Poker Tracker total aggression excluding preflop
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-fold_to_3bet
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker total folded while facing 3bet excluding preflop
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-4bet
+postflop_fold_to_3bet 
 \end_layout
 
 \end_inset
@@ -466,7 +404,7 @@ Poker Tracker total folded while facing 3bet excluding preflop
 \begin_inset Text
 
 \begin_layout Plain Layout
-Poker Tracker Overall 4B
+Poker Tracker total folded while facing 3bet excluding preflop
 \end_layout
 
 \end_inset
@@ -538,7 +476,7 @@ Poker Tracker preflop aggression factor
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_rfi
+rfi
 \end_layout
 
 \end_inset
@@ -558,7 +496,7 @@ Poker Tracker pre-flop raise first in
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_3bet
+3bet
 \end_layout
 
 \end_inset
@@ -578,7 +516,7 @@ Poker Tracker 3bet preflop
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_fold_to_3bet
+fold_to_3bet
 \end_layout
 
 \end_inset
@@ -618,7 +556,7 @@ Poker Tracker pre-flop called raise
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_attempt_steal
+steal_attempt
 \end_layout
 
 \end_inset
@@ -638,7 +576,7 @@ Poker Tracker attempt to steal blinds
 \begin_inset Text
 
 \begin_layout Plain Layout
-big_blind_fold_to_steal
+bb_fold_to_steal 
 \end_layout
 
 \end_inset
@@ -658,7 +596,7 @@ Poker Tracker folded big blind to steal
 \begin_inset Text
 
 \begin_layout Plain Layout
-small_blind_fold_to_steal
+sb_fold_to_steal
 \end_layout
 
 \end_inset
@@ -678,7 +616,7 @@ Poker Tracker folded small blind to steal
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_3bet_vs_steal
+3bet_vs_steal
 \end_layout
 
 \end_inset
@@ -699,7 +637,7 @@ Poker Tracker 3bet vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-big_blind_3bet_vs_steal
+bb_3bet_vs_steal
 \end_layout
 
 \end_inset
@@ -720,7 +658,7 @@ Poker Tracker BB 3bet vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-small_blind_3bet_vs_steal
+sb_3bet_vs_steal
 \end_layout
 
 \end_inset
@@ -741,7 +679,7 @@ Poker Tracker SB 3bet vs.
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_4bet
+4bet
 \end_layout
 
 \end_inset
@@ -761,7 +699,7 @@ Poker Tracker Preflop 4B
 \begin_inset Text
 
 \begin_layout Plain Layout
-preflop_fold_to_4bet
+fold_to_4bet
 \end_layout
 
 \end_inset
@@ -781,7 +719,7 @@ Poker Tracker Preflop fold to 4B
 \begin_inset Text
 
 \begin_layout Plain Layout
-fold_vs_resteal
+fold_to_resteal
 \end_layout
 
 \end_inset
@@ -813,7 +751,7 @@ stats
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="2">
+<lyxtabular version="3" rows="10" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -862,7 +800,7 @@ Poker Tracker saw flop
 \begin_inset Text
 
 \begin_layout Plain Layout
-flop_aggr_factor
+flop_af
 \end_layout
 
 \end_inset
@@ -942,26 +880,6 @@ Poker Tracker raise flop cbet
 \begin_inset Text
 
 \begin_layout Plain Layout
-flop_fold_to_3bet
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker folded while facing 3bet flop
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 flop_checkraise
 \end_layout
 
@@ -978,7 +896,7 @@ Poker Tracker flop check-raise
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -987,11 +905,51 @@ flop_donkbet
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Poker Tracker donk bet flop
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+flop_afq 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Flop Aggression frequency 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+flop_float
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bet IP flop vs missed cbet 
 \end_layout
 
 \end_inset
@@ -1063,7 +1021,7 @@ Poker Tracker saw turn
 \begin_inset Text
 
 \begin_layout Plain Layout
-turn_aggr_factor
+turn_af
 \end_layout
 
 \end_inset
@@ -1123,26 +1081,6 @@ Poker Tracker folded while facing cbet turn
 \begin_inset Text
 
 \begin_layout Plain Layout
-turn_fold_to_3bet
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker folded while facing 3bet turn
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 turn_checkraise
 \end_layout
 
@@ -1159,7 +1097,7 @@ Poker Tracker turn Check-Raise
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1168,11 +1106,31 @@ turn_checkcall
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Poker Tracker turn Check-Call
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turn_afq 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turn Aggression frequency
 \end_layout
 
 \end_inset
@@ -1244,7 +1202,7 @@ Poker Tracker saw river
 \begin_inset Text
 
 \begin_layout Plain Layout
-river_aggr_factor
+river_af
 \end_layout
 
 \end_inset
@@ -1254,26 +1212,6 @@ river_aggr_factor
 
 \begin_layout Plain Layout
 Poker Tracker river aggression factor
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-river_fold_to_3bet
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Poker Tracker folded while facing 3bet river
 \end_layout
 
 \end_inset
@@ -1300,7 +1238,7 @@ Poker Tracker folded while facing cbet river
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1309,11 +1247,31 @@ river_bet
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Poker Tracker river bet
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+river_afq
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+River Aggression frequency
 \end_layout
 
 \end_inset
