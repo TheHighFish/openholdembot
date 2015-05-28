@@ -641,7 +641,7 @@ HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
-(LastRaiserCurrentBet == 0) ? 0 :
+(LastRaiserCurrentBet <= 0) ? 0 :
   (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
 + (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
 + (currentbet2 == LastRaiserCurrentBet ? 1 : 0)
@@ -654,7 +654,7 @@ HINT_There_Is_No_Raiser_Therefore_No_CurrentBet
 + (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
 
 ##CallsSinceLastRaise##
-!PlayersRaisingOrColdCallingTheLastRaise ? HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise :
+(PlayersRaisingOrColdCallingTheLastRaise <= 0) ? HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise :
 ismyturn ? (PlayersRaisingOrColdCallingTheLastRaise - 1) :
 ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
