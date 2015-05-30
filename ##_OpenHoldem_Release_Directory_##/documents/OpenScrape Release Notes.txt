@@ -1,3 +1,9 @@
+v7.7.4 2015-06-xx
+==================
+NEW stuff:
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+
 v7.6.0 2015-02.26
 ==================
 NEW stuff:

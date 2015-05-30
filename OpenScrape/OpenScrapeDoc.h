@@ -17,9 +17,9 @@
 #pragma once
 #include "../CTransform/CTransform.h"
 
-int	const num_z$strings = 3;
+int	const num_z$strings = 4;
 char * const z$strings[num_z$strings] = 
-    { "clientsize", "clientsizemin", "clientsizemax" };
+    { "clientsize", "clientsizemin", "clientsizemax", "targetsize" };
 
 int	const num_s$strings = 64;
 char * const s$strings[num_s$strings] = 
