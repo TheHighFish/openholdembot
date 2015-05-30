@@ -158,9 +158,9 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	}
 	
 	// Get clientsize info through TM-access-class
-	p_tablemap_access->SetClientSize("clientsize", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeY);
-	p_tablemap_access->SetClientSize("clientsizemin", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
-	p_tablemap_access->SetClientSize("clientsizemax", tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
+	p_tablemap_access->SetClientSize("clientsize", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeY);
+	p_tablemap_access->SetClientSize("clientsizemin", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
+	p_tablemap_access->SetClientSize("clientsizemax", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
 
 	// Extract title text information
 	p_tablemap_access->SetTitleText("titletext", tablemap_connection_data[_number_of_tablemaps_loaded].TitleText);

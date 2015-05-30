@@ -108,7 +108,7 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 	return false;
 }
 
-bool CTablemapAccess::SetClientSize(CString size_name, int &width, int &height)
+bool CTablemapAccess::SetClientSize(CString size_name, int *width, int *height)
 {
 	/*
 		z$ : Extract client size
@@ -120,8 +120,8 @@ bool CTablemapAccess::SetClientSize(CString size_name, int &width, int &height)
 
 	if (z_iter != p_tablemap->z$()->end())
 	{
-		width = z_iter->second.width;
-		height = z_iter->second.height;
+		*width = z_iter->second.width;
+		*height = z_iter->second.height;
 
 		return true;
 	}

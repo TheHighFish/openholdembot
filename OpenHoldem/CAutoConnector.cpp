@@ -299,6 +299,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
       WriteLogTableReset();
 
+      p_table_positioner->ResizeToTargetSize();
 			p_table_positioner->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
 		}

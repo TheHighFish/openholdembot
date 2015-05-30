@@ -17,6 +17,7 @@
 #include "CAutoConnector.h"
 #include "CPreferences.h"
 #include "CSharedMem.h"
+#include "../CTablemap/CTableMapAccess.h"
 #include "MagicNumbers.h"
 #include "WinDef.h"
 #include "Winuser.h"
@@ -292,4 +293,29 @@ void CTablePositioner::AlwaysKeepPositionIfEnabled()
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() restoring old position\n");
 		MoveWindowToItsPosition();
 	}
+}
+
+void CTablePositioner::ResizeToTargetSize() {
+  int width;
+  int height;
+  p_tablemap_access->SetClientSize("targetsize", &width, &height);
+  if (width <= 0 || height <= 0) {
+    write_log(preferences.debug_table_positioner(), "[CTablePositioner] target size <= 0\n");
+    return;
+  }
+  ResizeTable(width, height);
+}
+
+void CTablePositioner::ResizeTable(int new_width, int new_height) {
+  assert(new_width > 0);
+  assert(new_height > 0);
+  RECT old_position;
+  GetWindowRect(p_autoconnector->attached_hwnd(), &old_position);
+  write_log(preferences.debug_table_positioner(), 
+    "[CTablePositioner] Resizing window to %i, %i. Keeping old position\n",
+    new_width, new_height);
+  MoveWindow(p_autoconnector->attached_hwnd(), 
+    old_position.left, old_position.top, 
+		new_width, new_height, 
+		true);	// true = Redraw the table.
 }

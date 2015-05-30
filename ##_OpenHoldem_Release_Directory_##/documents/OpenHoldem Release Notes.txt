@@ -1,8 +1,10 @@
-v7.7.4 2015-05.xx
+v7.7.4 2015-06.xx
 ==================
 NEW STUFF:
 - New hopper function f$rematch.
   Thanks to Nik0 for the suggestion.
+  [THF]
+- Support for z$targetsize to resize the table after connection.
   [THF]
   
 BUG FIXES:
