@@ -124,12 +124,15 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // for better performance amd to avoid driving users crazy.
   if (p_sessioncounter->session_id() > 0) return;
   // Absoluely mandatory
-  CheckItem("clientsize");
   CheckItem("nchairs");
   CheckItem("network");
   CheckItem("sitename"); 
   CheckItem("titletext");
   CheckItem("ttlimits");
+  // Necessary for connection> either clientsize or min/max
+  if (!p_tablemap->ItemExists("clientsizemin") || !p_tablemap->ItemExists("clientsizemax")) {
+    CheckItem("clientsize");
+  }
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   int last_chair = nchairs - 1;
@@ -221,6 +224,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   //   * potmethod
   //   * buttonclickmethod
   //   * betpotmethod
+  //   * targetsize
   // and some others  
   //
   // r$c0istournament no longer supported, works automatically
