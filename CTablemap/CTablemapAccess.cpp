@@ -108,24 +108,19 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 	return false;
 }
 
-bool CTablemapAccess::SetClientSize(CString size_name, int *width, int *height)
-{
+bool CTablemapAccess::SetClientSize(CString size_name, int *width, int *height) {
 	/*
 		z$ : Extract client size
 		required by Autoconnector
 	*/
-
-	width = 0; height = 0;
-	ZMapCI z_iter = p_tablemap->z$()->find(size_name);
-
-	if (z_iter != p_tablemap->z$()->end())
-	{
+  ZMapCI z_iter = p_tablemap->z$()->find(size_name);
+  if (z_iter != p_tablemap->z$()->end()) {
 		*width = z_iter->second.width;
 		*height = z_iter->second.height;
-
-		return true;
+    return true;
 	}
-
+  *width = 0; 
+  *height = 0;
 	return false;
 }
 
