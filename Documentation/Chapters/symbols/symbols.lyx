@@ -209,7 +209,7 @@ Casino and Poker Table
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="2">
+<lyxtabular version="3" rows="5" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -253,27 +253,6 @@ Window handle of the poker table
 \begin_layout Plain Layout
 Provided for DLL- and Perl-devlopers who can now directly access the poker-table
  if needed
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-isfinaltable
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-true, if you are sitting at the final table of a multi-table tournament.
- Needs to be supported by the table-map.
 \end_layout
 
 \end_inset
@@ -492,7 +471,7 @@ isnl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 0)
+(lim == 0) No Limit
 \end_layout
 
 \end_inset
@@ -512,7 +491,7 @@ ispl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 1)
+(lim == 1) Pot Limi
 \end_layout
 
 \end_inset
@@ -532,7 +511,7 @@ isfl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 2)
+(lim == 2) Fixed Limit
 \end_layout
 
 \end_inset
@@ -1029,7 +1008,7 @@ handrankp
 \begin_inset Text
 
 \begin_layout Plain Layout
-2652 / (1+f$prwin_number_of_opponents) ???
+2652 / (1+f$prwin_number_of_opponents) 
 \end_layout
 
 \end_inset
@@ -1162,7 +1141,7 @@ raischair
 \begin_inset Text
 
 \begin_layout Plain Layout
-raising chair number (0-9)
+raising chair number (0-9), for current or for previous betround
 \end_layout
 
 \end_inset
@@ -1278,7 +1257,7 @@ firstcaller_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the first caller (0-9), current orbit only
+the chair of the first caller in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -1307,7 +1286,7 @@ lastcaller_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the last caller (0-9), current orbit only
+the chair of the last caller in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -1336,7 +1315,7 @@ firstraiser_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the first raiser (0-9), current orbit only
+the chair of the first raiser in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -2499,7 +2478,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-islistXYZ
+listXYZ
 \end_layout
 
 \end_inset
@@ -2988,7 +2967,11 @@ $CCc
 \begin_inset Text
 
 \begin_layout Plain Layout
-references a hand symbol - see the {Hand Symbols} section below for details
+references a hand symbol - see the 
+\emph on
+Hand Symbols
+\emph default
+ section below for details
 \end_layout
 
 \end_inset
@@ -2999,7 +2982,7 @@ references a hand symbol - see the {Hand Symbols} section below for details
 \begin_inset Text
 
 \begin_layout Plain Layout
-$$AB# 
+$$CCc
 \end_layout
 
 \end_inset
@@ -3008,7 +2991,11 @@ $$AB#
 \begin_inset Text
 
 \begin_layout Plain Layout
-references a card symbol - see the {Card Symbols} section below for details
+references a card symbol - see the 
+\emph on
+Card Symbol
+\emph default
+s section below for details
 \end_layout
 
 \end_inset
@@ -3268,7 +3255,120 @@ Hand and Board-Expressions
 \end_layout
 
 \begin_layout Standard
-!!!???
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="30text%">
+<column alignment="left" valignment="top" width="60text%">
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hand$XYZ
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true, if your hand contains XYZ.
+ The expression may contain 1 or 2 cards, optionally concrete suits or optionall
+y the postfix 
+\begin_inset Quotes eld
+\end_inset
+
+Suited
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+board$XYZ
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true, The expression may contain 1 up to 5 cards, optionally concrete suits
+ or optionally the postfix 
+\begin_inset Quotes eld
+\end_inset
+
+Suited
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Hand and board expressions got implemented for OpenPPL, but of course they
+ can be also used for OH-script.
+ Especially board-expressions are in most cases more intuitive than rankbits(com
+mon).
+ Some examples for hand and board-expressions (OpenPPL)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN hand$AA RaiseMax FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$AKSuited RaisePot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// We love playing hearts...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$Ah Call FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// ...but fear the devil
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN board$666 Fold FORCE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -4289,7 +4389,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename H:/Dokumente und Einstellungen/Development_2/Desktop/Documentation/Chapters/gui/images/flags_toolbar.JPG
+	filename ../gui/images/flags_toolbar.JPG
 
 \end_inset
 

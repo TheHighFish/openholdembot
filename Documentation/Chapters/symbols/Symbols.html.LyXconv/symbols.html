@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-04-26"/>
+<meta name="create-date" content="2015-06-01"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -82,15 +82,6 @@ Window handle of the poker table<br/>
 Provided for DLL- and Perl-devlopers who can now directly access the poker-table if needed
 </div>
 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-isfinaltable
-</td>
-<td align="left" valign="top" style="width: 65%;">
-true, if you are sitting at the final table of a multi-table tournament. Needs to be supported by the table-map.
 </td>
 
 </tr>
@@ -189,7 +180,7 @@ the current table limit 0=NL 1=PL 2=FL
 isnl
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 0)
+(lim == 0) No Limit
 </td>
 
 </tr>
@@ -198,7 +189,7 @@ isnl
 ispl
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 1)
+(lim == 1) Pot Limi
 </td>
 
 </tr>
@@ -207,7 +198,7 @@ ispl
 isfl 
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 2)
+(lim == 2) Fixed Limit
 </td>
 
 </tr>
@@ -442,7 +433,7 @@ your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)
 handrankp
 </td>
 <td align="left" valign="top" style="width: 65%;">
-2652 / (1+f$prwin_number_of_opponents) ???
+2652 / (1+f$prwin_number_of_opponents) 
 </td>
 
 </tr>
@@ -499,7 +490,7 @@ dealer chair number (0-9)
 raischair
 </td>
 <td align="left" valign="top">
-raising chair number (0-9)
+raising chair number (0-9), for current or for previous betround
 </td>
 <td align="left" valign="top">
 Valid only at our turn.
@@ -547,7 +538,7 @@ the chair of the cut-off (0-9)
 firstcaller_chair
 </td>
 <td align="left" valign="top">
-the chair of the first caller (0-9), current orbit only
+the chair of the first caller in front of you (0-9), current orbit only
 </td>
 <td align="left" valign="top">
 Valid only at our turn.
@@ -559,7 +550,7 @@ Valid only at our turn.
 lastcaller_chair
 </td>
 <td align="left" valign="top">
-the chair of the last caller (0-9), current orbit only
+the chair of the last caller in front of you (0-9), current orbit only
 </td>
 <td align="left" valign="top">
 Valid only at our turn.
@@ -571,7 +562,7 @@ Valid only at our turn.
 firstraiser_chair
 </td>
 <td align="left" valign="top">
-the chair of the first raiser (0-9), current orbit only
+the chair of the first raiser in front of you (0-9), current orbit only
 </td>
 <td align="left" valign="top">
 Valid only at our turn.
@@ -1101,7 +1092,7 @@ Meaning
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-islistXYZ
+listXYZ
 </td>
 <td align="left" valign="top" style="width: 65%;">
 <div class="PlainVisible">
@@ -1326,16 +1317,16 @@ Meaning
 $CCc
 </td>
 <td align="left" valign="top" style="width: 65%;">
-references a hand symbol - see the {Hand Symbols} section below for details
+references a hand symbol - see the <i>Hand Symbols</i> section below for details
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-$$AB# 
+$$CCc
 </td>
 <td align="left" valign="top" style="width: 65%;">
-references a card symbol - see the {Card Symbols} section below for details
+references a card symbol - see the <i>Card Symbol</i>s section below for details
 </td>
 
 </tr>
@@ -1455,7 +1446,40 @@ true when you have a royal flush
 <a class="toc" name="toc-Section--1"></a>Hand and Board-Expressions
 </h2>
 <div class="Unindented">
-!!!???
+<table>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+hand$XYZ
+</td>
+<td align="left" valign="top" style="width: 60%;">
+true, if your hand contains XYZ. The expression may contain 1 or 2 cards, optionally concrete suits or optionally the postfix &ldquo;Suited&rdquo;.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+board$XYZ
+</td>
+<td align="left" valign="top" style="width: 60%;">
+true, The expression may contain 1 up to 5 cards, optionally concrete suits or optionally the postfix &ldquo;Suited&rdquo;.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Indented">
+Hand and board expressions got implemented for OpenPPL, but of course they can be also used for OH-script. Especially board-expressions are in most cases more intuitive than rankbits(common). Some examples for hand and board-expressions (OpenPPL)<div class="listing">
+<pre class="listing">WHEN hand$AA RaiseMax FORCE
+WHEN hand$AKSuited RaisePot FORCE
+// We love playing hearts...
+WHEN hand$Ah Call FORCE
+// ...but fear the devil
+WHEN board$666 Fold FORCE
+</pre>
+</div>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-16"></a>Pocket Tests 
@@ -1911,7 +1935,7 @@ flag button bits 19-0 - 1=pressed 0=notpressed
 <div class="Indented">
 <div class="float">
 <div class="figure">
-<img class="embedded" src="flags_toolbar.png" alt="figure flags_toolbar.png" style="max-width: 692px; max-height: 46px;"/>
+<img class="embedded" src="gui/images/flags_toolbar.png" alt="figure gui/images/flags_toolbar.png" style="max-width: 692px; max-height: 46px;"/>
 
 </div>
 
@@ -4468,7 +4492,7 @@ Spades
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-04-26T14:24:49.859000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-06-01T11:14:45</span>
 </div>
 </div>
 </body>
