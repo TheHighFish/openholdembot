@@ -416,5 +416,5 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result,
 }
 
 CString CSymbolEngineIsTournament::SymbolsProvided() {
-  return "istournament ";
+  return "istournament issng ismtt isdon ";
 }
