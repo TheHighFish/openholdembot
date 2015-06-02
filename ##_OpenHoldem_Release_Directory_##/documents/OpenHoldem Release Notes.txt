@@ -8,6 +8,9 @@ NEW STUFF:
   [THF]
   
 BUG FIXES:
+- The lookup for the new symbols iasng, ismtt, isdon didn't work.
+  Thanks to Poker_Dog for reporting.
+  [THF]
 
 v7.7.3 2015-05.05
 ==================

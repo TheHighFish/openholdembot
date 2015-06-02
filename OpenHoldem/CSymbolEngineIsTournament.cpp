@@ -395,6 +395,22 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result,
 		// Valid symbol
 		return true;
 	}
+  if (memcmp(name, "issng", 5)==0 && strlen(name)==5) {
+		*result = IsSNG();
+		// Valid symbol
+		return true;
+	}
+  if (memcmp(name, "ismtt", 5)==0 && strlen(name)==5) {
+		*result = IsMTT();
+		// Valid symbol
+		return true;
+	}
+  if (memcmp(name, "isdon", 5)==0 && strlen(name)==5) {
+		*result = IsDON();
+		// Valid symbol
+		return true;
+	}
+
 	// Symbol of a different symbol-engine
 	return false;
 }
