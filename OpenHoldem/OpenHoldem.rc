@@ -378,11 +378,13 @@ BEGIN
     EDITTEXT        IDC_SWAGDELAY3,139,84,28,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,84,11,14
     CONTROL         "Engage autoplayer upon connection",IDC_AUTOPLAYER_UPON_CONNECTION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,113,199,10
-	  CONTROL         "Advance replay frames during replay",IDC_USE_AUTO_REPLAY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,173,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,113,132,10
+    CONTROL         "Restore mouse position and window focus after action",IDC_RESTORE_POSITION_AND_FOCUS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,187,10
+    CONTROL         "Advance replay frames during replay",IDC_USE_AUTO_REPLAY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,145,134,10
     CONTROL         "Use 'comma' instead of 'dot' for fractional betsizes",IDC_SWAGUSECOMMA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,145,173,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,161,173,10
 END
 
 IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155

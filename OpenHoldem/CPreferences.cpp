@@ -78,6 +78,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_hand_and_baord_expressions",
   "debug_tokenizer",
 	"engage_autoplayer",
+	"restore_position_and_focus",
 	"use_auto_replay",
 	"swag_use_comma",
 	"replay_record",
@@ -202,6 +203,7 @@ void CPreferences::InitDefaults(void)
 	// Initialization of data that requires special values
 	// Bools
 	prefs_numerical_values[k_prefs_engage_autoplayer] = true;
+	prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
 	prefs_numerical_values[k_prefs_use_auto_replay] = true;
 	prefs_numerical_values[k_prefs_trace_enabled] = true;
 	prefs_numerical_values[k_prefs_basic_logging_enabled] = true;
