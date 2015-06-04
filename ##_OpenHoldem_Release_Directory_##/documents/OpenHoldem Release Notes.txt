@@ -6,6 +6,8 @@ NEW STUFF:
   [THF]
 - Support for z$targetsize to resize the table after connection.
   [THF]
+- New preference to restore mouse position and window focus. (default=false)
+  [poker_dog]
   
 BUG FIXES:
 - The lookup for the new symbols iasng, ismtt, isdon didn't work.
@@ -2438,7 +2440,7 @@ MAINTENANCE:
   can not be guaranteed. [THF]
 - Removing currentbetX cap for FL games. [Strikles]
 - Whenever OpenHoldem finds an unknown symbols it tries noe
-  to prepend a prefix "f§OpenPPL_" and then evaluates again.
+  to prepend a prefix "fÂ§OpenPPL_" and then evaluates again.
   This way is more robust for OpenPPL-users, especially
   for OpenPPL-symbols in memory-expressions. [THF] 
   
@@ -3191,7 +3193,7 @@ NEW STUFF:
   (OpenHoldem)
   
 - Added additional validation of numeric fields.  To be considered numeric, a scraped region must not
-  only contain only these characters "$0123456789,.¢ckm", but must 1. have 0 or 1 decimal points, and 
+  only contain only these characters "$0123456789,.Â¢ckm", but must 1. have 0 or 1 decimal points, and 
   2. If a decimal point is present, then there must be exactly 2 numbers following it. (OpenHoldem)
 
 - User defined functions are now recognized by the Formula Dialog so that they are now colored (Spew)
@@ -3690,13 +3692,13 @@ BUG FIXES:
 - PokerPro: when connected to a poker pro server, m_holdem_state[m_ndx].m_title would always
   be blank.  (Thanks to Bozo for the bug find and Spew for the code fix).
 
-- Parsing of money fields was inconsistently applied. Some money fields recognized the "¢", "k"
+- Parsing of money fields was inconsistently applied. Some money fields recognized the "Â¢", "k"
   and "m" suffixes, and some did not, for example.  That function has been unified and all
   money fields should behave consistently now.  (Thanks, MrRuder)
   - the dollar sign ($) leader is discarded
   - commas are discarded
   - the remaining text is then fed through atof() to generate an internal double
-  - the cent symbol (¢) or the letter (c) trailer causes the number to be divided by 100
+  - the cent symbol (Â¢) or the letter (c) trailer causes the number to be divided by 100
   - the thousand (k) trailer causes the number to be multiplied by 1000
   - the million (m) trailer causes the number to be multiplied by 1000000 
   
