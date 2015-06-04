@@ -14,6 +14,8 @@
 #include "stdafx.h"
 #include "CPlayer.h"
 
+#include "CSymbolEngineTableLimits.h"
+
 CPlayer::CPlayer() {
 }
 
@@ -68,4 +70,13 @@ void CPlayer::CheckPlayerCardsForConsistency() {
     _hole_cards[0].SetValue(CARD_BACK);
     _hole_cards[1].SetValue(CARD_BACK);
   } 
+}
+
+bool CPlayer::IsAllin() {
+  return (_seated && _active && HasAnyCards() && (_balance == 0));
+}
+
+bool CPlayer::PostingBothBlinds() {
+  return (_seated && _active && HasAnyCards() 
+    && IsApproximatellyEqual(_bet, p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind()));
 }

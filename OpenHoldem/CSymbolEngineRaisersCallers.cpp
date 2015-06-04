@@ -153,6 +153,12 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
         "[CSymbolEngineRaisersCallers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
       continue;
     }
+    else if ((p_betround_calculator->betround() == kBetroundPreflop)
+      && p_table_state->_players[chair].PostingBothBlinds()) {
+      write_log(preferences.debug_symbolengine(), 
+        "[CSymbolEngineRaisersCallers] chair %d is posting both blinds at once. To be ignored.\n", chair);
+      continue;
+    }
 		highest_bet = current_players_bet;
     write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] Opponent %i raising to %s\n",
 			chair, Number2CString(highest_bet));

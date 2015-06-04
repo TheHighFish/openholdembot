@@ -232,13 +232,19 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
   assert(_ncallbets >= 0.0);
 }
 
-double CSymbolEngineChipAmounts::Largestbet()
-{
+double CSymbolEngineChipAmounts::Largestbet() {
 	double largest_bet = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		if (_currentbet[i] > largest_bet) 
-		{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+    if (p_table_state->_players[i].PostingBothBlinds()) {
+      // Does not count as largest bet
+      // and there must be a regular big blind,
+      // so we can safely skip
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineChipAmounts] LargestBet() ignoring player %i, who posts both blinds\n",
+        i);
+      continue;
+    }
+		if (_currentbet[i] > largest_bet) {
 			largest_bet = _currentbet[i];
 		}
 	}
@@ -332,5 +338,5 @@ CString CSymbolEngineChipAmounts::SymbolsProvided() {
   list += RangeOfSymbols("balance_rank%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("currentbet%i", k_first_chair, k_last_chair);
   list += RangeOfSymbols("stack%i", k_first_chair, k_last_chair);
-  return list;
+  return list;tore
 }

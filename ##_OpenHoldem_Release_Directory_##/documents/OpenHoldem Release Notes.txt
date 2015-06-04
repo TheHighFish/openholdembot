@@ -15,6 +15,12 @@ BUG FIXES:
   [fqfq]
 - BigBlind was wrongly true when in UTG and small blind was missing.
   [fqfq]
+- There are very rare cases where a new player has to post both blinds at some casinos,
+  but this does not count as a raise. The symbols nopponentstruelyraising,
+  call, nbetstocall, ncallbets, nbetstorais, nraisbets and all derived symbols
+  (Raises, AmountTocall, ...) have been adapted to consider this case.
+  Thanks to Chillit for reporting.
+  [THF]
 
 v7.7.3 2015-05.05
 ==================
