@@ -6,7 +6,7 @@ NEW STUFF:
   [THF]
 - Support for z$targetsize to resize the table after connection.
   [THF]
-- New preference to restore mouse position and window focus. (default=false)
+- New preference to restore mouse position and window focus after action. (default=false)
   [poker_dog]
   
 BUG FIXES:
