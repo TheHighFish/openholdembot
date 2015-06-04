@@ -25,13 +25,11 @@
 //
 // We chose the first solution for its simplicity
 
-
-class CSharedMem
-{
-public:
+class CSharedMem {
+ public:
 	CSharedMem();
 	~CSharedMem();
-public:
+ public:
 	// public accessors and mutators
 	bool PokerWindowAttached(HWND Window);
 	bool AnyWindowAttached();
@@ -43,11 +41,19 @@ public:
 	HWND *GetDenseListOfConnectedPokerWindows();
 	int  SizeOfDenseListOfAttachedPokerWindows();
 	bool IsAnyOpenHoldemProcess(int PID);
-private:
+ public:
+  // For table positioner
+  // It is most easz if everzbodz shares his position
+  void StoreTablePosition(int left, int top, int right, int bottom);
+  bool OverlapsAnyTable(int left, int top, int right, int bottom);
+  // My position
+  int TablePositionLeft();
+  int TablePositionTop();
+ private:
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
 	#define ENT CSLock lock(m_critsec);
-private:
+ private:
 	CCritSec	m_critsec;
 };
 
