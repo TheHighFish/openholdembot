@@ -285,7 +285,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
 			stacks[i] = p_table_state->_players[i]._balance;
-			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
+			sym_currentbet[i] = p_table_state->_players[i]._bet;
 		}
 	}
 

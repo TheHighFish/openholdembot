@@ -356,8 +356,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to swag allin\n");
-  int userchair = p_symbol_engine_userchair->userchair();
-	double betsize_for_allin = p_symbol_engine_chip_amounts->currentbet(userchair)
+	double betsize_for_allin = p_table_state->User()->_bet
 	  + p_table_state->User()->_balance; 
   return EnterBetsize(betsize_for_allin);
 }

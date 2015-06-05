@@ -201,7 +201,7 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
 	double sum_of_all_cips = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		sum_of_all_cips += p_table_state->_players[i]._balance;
-		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
+		sum_of_all_cips += p_table_state->_players[i]._bet;
 	}
 	if (sum_of_all_cips != int(sum_of_all_cips)) {
 		// Franctional number.
@@ -231,7 +231,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	}
 	int players_with_antes = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double players_bet = p_table_state->_players[i]._bet;
 		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
 		}

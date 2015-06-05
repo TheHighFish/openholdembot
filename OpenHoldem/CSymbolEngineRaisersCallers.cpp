@@ -130,7 +130,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(chair);
+		double current_players_bet = p_table_state->_players[chair]._bet;
     write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisersCallers] chair %d bet %.2f\n",
       chair, current_players_bet);
@@ -230,7 +230,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
   assert(p_tablemap->nchairs() <= k_max_number_of_players);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double current_players_bet = p_table_state->_players[i]._bet;
 		if (current_players_bet < RaisersBet()
       && p_table_state->_players[i].HasAnyCards())
 		{
@@ -271,7 +271,7 @@ double CSymbolEngineRaisersCallers::RaisersBet()
 	double result = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double current_players_bet = p_table_state->_players[i]._bet;
 		if (current_players_bet > result
       && p_table_state->_players[i].HasAnyCards())
 		{

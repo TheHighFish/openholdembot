@@ -18,6 +18,7 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 
 class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
@@ -56,20 +57,11 @@ public:
 		return _stacks_at_hand_start[chair]; 
 	}
 
-	double currentbet(int player)	{
-		assert((player >= 0) || (player == kUndefined));
-		assert(player < k_max_number_of_players);
-		if (player == kUndefined) {
-			return 0;
-		}
-		return _currentbet[player];
-	}
-
 	double ncurrentbets()	{
 		if (p_symbol_engine_tablelimits->bet() == 0)		{
 			return 0;
 		}
-		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
+		return (p_table_state->User()->_bet / p_symbol_engine_tablelimits->bet());
 	}
  public:
 	double pot()		    	{ return _pot; }
@@ -92,7 +84,6 @@ public:
 	void SetBalanceAtStartOfSessionConditionally();
  private:
 	void CalculateStacks();
-	void CalculateCurrentbets();
 	void CalculatePots();
 	void CalculateAmountsToCallToRaise();
 	void CalculateBetsToCallToRaise();
@@ -101,8 +92,7 @@ public:
  private:			
 	double _maxbalance;
 	double _balanceatstartofsession;
-	double _stack[k_max_number_of_players];
-	double _currentbet[k_max_number_of_players];	
+	double _stack[k_max_number_of_players];	
  private:
 	// Used in ICM calculator - ICM needs stacks at beginning of hand
 	double _stacks_at_hand_start[k_max_number_of_players];	
