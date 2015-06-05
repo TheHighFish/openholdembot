@@ -30,7 +30,6 @@ class CTablePositioner {
 	bool TryTopSideOfTable(HWND HWND_of_potential_neighbour_table);
 	bool TryBottomRightPosition();
 	bool TryPosition(int left_x, int top_y);
-	bool PotentialNewPositionOverlapsTable(int left_x, int top_y, HWND table_to_check_for_overlapping);
 	void MoveToTopLeft();
 	void MoveWindowToItsPosition();
  private:
