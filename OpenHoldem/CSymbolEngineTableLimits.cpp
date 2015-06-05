@@ -108,7 +108,13 @@ void CSymbolEngineTableLimits::ResetOnHeartbeat() {
       &tablelimit_best_guess.bblind,
       &tablelimit_best_guess.bbet);
     if (p_table_state->_s_limit_info.ante() > 0) {
-      _ante = p_table_state->_s_limit_info.ante();
+      if (p_table_state->_s_limit_info.ante() < sblind()) {
+        write_log(preferences.debug_table_limits(), 
+          "[CSymbolEngineTableLimits] ERROR: ante larger than small blind\n");
+        _ante = kUndefinedZero;
+      } else {
+        _ante = p_table_state->_s_limit_info.ante();
+      }
     }
     AutoLockBlinds();
   }
