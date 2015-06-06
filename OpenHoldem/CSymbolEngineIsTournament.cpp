@@ -213,8 +213,9 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
 		// Probably not a tournament.
 		return false;
 	}
-	if ((int(sum_of_all_cips) % p_tablemap->nchairs()) != 0) 	{
-		// Not a multiplicity of the players originally seated (nchairs).
+	if (p_symbol_engine_active_dealt_playing->nplayersactive() > 0 &&
+		(int(sum_of_all_cips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0) 	{
+		// Not a multiplicity of the players that are active
 		// Probably not a tournament.
 		return false;
 	}
