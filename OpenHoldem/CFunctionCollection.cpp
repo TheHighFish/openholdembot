@@ -330,6 +330,11 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
+  } else if (function_name.Compare(k_standard_function_names[k_init_on_startup]) == k_CString_identical) {
+    function_text = 
+      "// Ini-functions are meant for\n"    
+      "//   * Initialization of memory-symbols at well-defined times\n"
+      "//   * Triggering calculations, e.g. in a DLL\n";
   } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
     function_text = 
       "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
