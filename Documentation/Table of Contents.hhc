@@ -562,6 +562,10 @@
 				<param name="URL" value="Chapters\automation\Automation.html.LyXconv\Automation.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Planning a hopper">
+				<param name="Local" value="Chapters\automation\Planning_a_hopper.html.LyXconv\Planning_a_hopper.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="AutoIT - the Language of Choice">
 				<param name="Local" value="Chapters\automation\AutoIT.html.LyXconv\AutoIT.html">
 				</OBJECT>
