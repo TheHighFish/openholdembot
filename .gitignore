@@ -4,15 +4,18 @@
 *.obj
 *.ilk
 *.pfb
-*.odb
+*.pdb
 *.exp
 *.lyx~
+*.lyx#
 *.user
 *.log
 *.tlog
 *.suo
 *.pch
 *.manifest
+*.lastbuildstate
 Debug
 Release
+Documentation/OpenHoldem_Manual.chm
 
