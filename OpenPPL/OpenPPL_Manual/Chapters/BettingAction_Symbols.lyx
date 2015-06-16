@@ -168,15 +168,19 @@ The number of bets made this betting round, can only be 0 or 1 since the
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
-\end_layout
-
-\begin_layout Plain Layout
-Calculation depends on game-history (multiple frames) .
-\end_layout
-
-\begin_layout Plain Layout
 Contrary to Standard PPL Bets is always 1 preflop.
+\end_layout
+
+\begin_layout Plain Layout
+Only valid at my turn with autoplayer engaged (see 
+\begin_inset Quotes eld
+\end_inset
+
+Raises
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -833,11 +837,15 @@ The number of calls by opponents on this betting round
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
-\end_layout
+Only valid at my turn with autoplayer engaged (see 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Remark*
-Calculation depends on game-history (multiple frames) 
+Raises
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -896,11 +904,15 @@ The number of checks made by opponents this betting round
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
-\end_layout
+Only valid at my turn with autoplayer engaged (see 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Remark*
-Calculation depends on game-history (multiple frames) 
+Raises
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -1312,11 +1324,24 @@ The number of raises made by opponents this betting round
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
-\end_layout
+Only valid at my turn with autoplayer engaged.
+ The calculation depends on game-history (multiple frames) and needs to
+ be done exactly once per orbit, very shortly before the autoplayer acts.
+ The symbol is undefined before and becomes undefined immediatelly thereafter
+ again.
+ For other times when it is not the players turn (f$prefold) use 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Remark*
-Calculation depends on game-history (multiple frames) 
+easy
+\begin_inset Quotes erd
+\end_inset
+
+ symbols without that restriction like 
+\emph on
+AmountToCall
+\emph default
+.
 \end_layout
 
 \end_inset
