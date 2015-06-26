@@ -6,7 +6,7 @@ NEW STUFF:
   [THF]
 - Support for z$targetsize to resize the table after connection.
   [THF]
-- New preference to restore mouse position and window focus after action. (default=false)
+- New preference to restore mouse position and window focus after action (default=false).
   [poker_dog]
   
 BUG FIXES:
@@ -23,6 +23,11 @@ BUG FIXES:
   (Raises, AmountTocall, ...) have been adapted to consider this case.
   Thanks to Chillit for reporting.
   [THF]
+  
+MAINTENANCE:
+- Improve3d betsize adjustment.
+  Thanks to Tabo_ger for reporting a special case.
+  [FqFq, THF]
 
 v7.7.3 2015-05.05
 ==================

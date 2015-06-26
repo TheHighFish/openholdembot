@@ -147,11 +147,20 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is allin.\n");
     return amount_to_raise_to;
   }
-  // Don't round very smal betsizes.
+  // Don't round very small betsizes.
   // There might be aa reason for it in very small pots.
   if (amount_to_raise_to < (2.0 * p_symbol_engine_tablelimits->bblind())) {
     write_log(preferences.debug_betsize_adjustment(),
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because too small betsize\n");
+    return amount_to_raise_to;
+  }
+  if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind())) {
+    // Don't round betsizes that are alreadz a multiple of big-blind.
+    // This case deserves specdial attention, because big-blind
+    // might be not a multiple of smallblind, e.g $2/$5
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=18592
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is a multiple of big-blind\n");
     return amount_to_raise_to;
   }
   // Otherwise: eo0und to beautiful numbers without caring about our stack/
