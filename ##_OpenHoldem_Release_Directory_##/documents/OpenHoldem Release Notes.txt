@@ -23,6 +23,9 @@ BUG FIXES:
   (Raises, AmountTocall, ...) have been adapted to consider this case.
   Thanks to Chillit for reporting.
   [THF]
+- nplayersdealt: the "smart" logic to guess some active players as dealt could fail on garbage input.
+  Now we do simple calculations first. Thanks to for reporting.
+  [THF]
   
 MAINTENANCE:
 - Improve3d betsize adjustment.

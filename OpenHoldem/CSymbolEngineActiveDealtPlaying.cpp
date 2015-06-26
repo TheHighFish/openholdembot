@@ -115,6 +115,12 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
+    // Players with cards are always "dealt",
+    // independent of the rest of following complicated logic,
+    // which might fail, especiallz in case of GIGO.
+    if (p_table_state->_players[chair_to_consider].HasAnyCards()) {
+      this_player_got_dealt = true;
+    }
 		// First we search the blinds only, 
 		// i.e. players with a positive bet.
 		// We don't consider players who are only "active",
