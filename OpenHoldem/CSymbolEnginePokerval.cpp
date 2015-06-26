@@ -21,8 +21,8 @@
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CSymbolEngineCards.h"
-#include "CTableState.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 #include "..\CTransform\CTransform.h"
 #include "inlines/eval.h"
 #include "MagicNumbers.h"
@@ -30,8 +30,7 @@
 
 CSymbolEnginePokerval *p_symbol_engine_pokerval = NULL;
 
-CSymbolEnginePokerval::CSymbolEnginePokerval()
-{
+CSymbolEnginePokerval::CSymbolEnginePokerval() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -40,88 +39,75 @@ CSymbolEnginePokerval::CSymbolEnginePokerval()
 	assert(p_symbol_engine_userchair != NULL);
 }
 
-CSymbolEnginePokerval::~CSymbolEnginePokerval()
-{}
+CSymbolEnginePokerval::~CSymbolEnginePokerval() {
+}
 
-void CSymbolEnginePokerval::InitOnStartup()
-{}
+void CSymbolEnginePokerval::InitOnStartup() {
+}
 
-void CSymbolEnginePokerval::ResetOnConnection()
-{
+void CSymbolEnginePokerval::ResetOnConnection() {
 	ResetOnHandreset();
 }
 
-void CSymbolEnginePokerval::ResetOnHandreset()
-{
-	for (int i=0; i<kNumberOfBetrounds; i++)
-	{
-		_phandval[i] = 0;
-		_chandval[i] = 0;
+void CSymbolEnginePokerval::ResetOnHandreset() {
+	for (int i=0; i<kNumberOfBetrounds; i++) {
+		_phandval[i] = kUndefinedZero;
+		_chandval[i] = kUndefinedZero;
 	}
-	nCards  = 0;
-	handval = 0;
+	nCards  = kUndefinedZero;
+	handval = kUndefinedZero;
 }
 
-void CSymbolEnginePokerval::ResetOnNewRound()
-{}
+void CSymbolEnginePokerval::ResetOnNewRound() {
+}
 
 void CSymbolEnginePokerval::ResetOnMyTurn() {
 }
 
-void CSymbolEnginePokerval::ResetOnHeartbeat()
-{
-	_ishistraight = false;
-	_hand_type = 0;
-	_isroyalflush = false;
-	_ishandup = false;
-	_ishandupcommon = false;
-	_ishipair = 0;
-	_islopair = 0;
-	_ismidpair = 0;
-	_ishistraight = 0;
-	_ishiflush = 0;
-	_rankbitsplayer = 0;
-	_rankbitscommon = 0;
-	_rankbitspoker = 0;
-	_srankbitsplayer = 0;
-	_srankbitscommon = 0;
-	_srankbitspoker = 0;
+void CSymbolEnginePokerval::ResetOnHeartbeat() {
+  _hand_type       = kUndefinedZero;
+	_ishistraight    = false;
+	_isroyalflush    = false;
+	_ishandup        = false;
+	_ishandupcommon  = false;
+	_ishipair        = false;
+	_islopair        = false;
+	_ismidpair       = false;
+	_ishistraight    = false;
+	_ishiflush       = false;
+	_rankbitsplayer  = kUndefinedZero;
+	_rankbitscommon  = kUndefinedZero;
+	_rankbitspoker   = kUndefinedZero;
+	_srankbitsplayer = kUndefinedZero;
+	_srankbitscommon = kUndefinedZero;
+	_srankbitspoker  = kUndefinedZero;
 
 	CalculateRankBits();
 	CalcPokerValues();
 }
 
-
-void CSymbolEnginePokerval::CalcPokerValues()
-{
-	CardMask		Cards = {0};
-	int				dummy = 0;
-
+void CSymbolEnginePokerval::CalcPokerValues() {
+	CardMask Cards = {0};
+	
 	///////////////////////////////////////////////////////////////////
 	// pokerval
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
-	{
-		if (p_table_state->User()->HasKnownCards())
-		{
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
+		if (p_table_state->User()->HasKnownCards())	{
       CardMask_SET(Cards, p_table_state->User()->_hole_cards[i].GetValue());
 			nCards++;
 		}
 	}
-
-	for (int i=0; i<kNumberOfCommunityCards; i++)
-	{
+  for (int i=0; i<kNumberOfCommunityCards; i++)	{
 		// common cards
     Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())
-		{
+    if (card.IsKnownCard())	{
       CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
 	}
-
-	handval = Hand_EVAL_N(Cards, nCards);
+  handval = Hand_EVAL_N(Cards, nCards);
 
 	_pcbits = 0;
 	_pokerval = CalculatePokerval(handval, nCards, &_pcbits,				
@@ -134,21 +120,17 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
-
-	if (BETROUND > kBetroundPreflop
-		&& _phandval[BETROUND-1] > _phandval[BETROUND-2])
-	{
+  if (BETROUND > kBetroundPreflop
+		&& _phandval[BETROUND-1] > _phandval[BETROUND-2]) {
 		_ishandup = true;														
 	}
-
-	CalculateHandType(); 
+  CalculateHandType(); 
 
 	///////////////////////////////////////////////////////////////////
 	// pokervalplayer
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
-	{
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
 		// player cards
 		if (p_table_state->User()->HasKnownCards()) {
 			CardMask_SET(Cards, p_table_state->User()->_hole_cards[i].GetValue());
@@ -157,19 +139,17 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	}
 	handval = Hand_EVAL_N(Cards, nCards);
 
+  int	dummy = 0;
 	_pokervalplayer = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 
-
-	///////////////////////////////////////////////////////////////////
+  	///////////////////////////////////////////////////////////////////
 	// pokervalcommon
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCommunityCards; i++)
-	{
+	for (int i=0; i<kNumberOfCommunityCards; i++) {
 		// common cards
     Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())
-		{
+    if (card.IsKnownCard())	{
       CardMask_SET(Cards, card.GetValue());
 			nCards++;
 		}
@@ -177,15 +157,12 @@ void CSymbolEnginePokerval::CalcPokerValues()
 	handval = Hand_EVAL_N(Cards, nCards);
 
 	_pokervalcommon = CalculatePokerval(handval, nCards, &dummy, CARD_NOCARD, CARD_NOCARD); 
-
-		_chandval[BETROUND-1] = _pokervalcommon & 0xff000000; 
-		if (BETROUND > kBetroundPreflop 
-			&& _chandval[BETROUND-1] > _chandval[BETROUND-2])
-		{
-			_ishandupcommon = true;
-		}
+  _chandval[BETROUND-1] = _pokervalcommon & 0xff000000; 
+	if (BETROUND > kBetroundPreflop 
+			&& _chandval[BETROUND-1] > _chandval[BETROUND-2])	{
+		_ishandupcommon = true;
+	}
 }
-
 
 void CSymbolEnginePokerval::CalculateHandType()
 {
@@ -258,73 +235,41 @@ void CSymbolEnginePokerval::CalculateHandType()
 	}
 }
 
-CString CSymbolEnginePokerval::HandType()
-{
-	if (ishicard())
-	{ 
-		return "hcard"; 
-	}
-	else if (isonepair())
-	{ 
-		return "1pair"; 
-	}
-	else if (istwopair())
-	{ 
-		return "2pair"; 
-	}
-	else if (isthreeofakind())
-	{ 
-		return "3kind"; 
-	}
-	else if (isstraight())
-	{ 
-		return "strai"; 
-	}
-	else if (isflush())
-	{ 
-		return "flush"; 
-	}
-	else if (isfullhouse())
-	{ 
-		return "fullh"; 
-	}
-	else if (isfourofakind())
-	{ 
-		return "4kind"; 
-	}
-	else if (isstraightflush())
-	{ 
-		return "strfl"; 
-	}
-	else if (isroyalflush())
-	{ 
-		return "royfl"; 
-	}
-	else
-	{
-		assert(false);
-		return "err";
-	}
+CString CSymbolEnginePokerval::HandType() {
+	if (ishicard())	            return "hcard"; 
+  else if (isonepair())	      return "1pair"; 
+  else if (istwopair())	      return "2pair"; 
+  else if (isthreeofakind())  return "3kind"; 
+  else if (isstraight())      return "strai"; 
+  else if (isflush())         return "flush"; 
+  else if (isfullhouse())     return "fullh"; 
+  else if (isfourofakind())   return "4kind";
+	else if (isstraightflush()) return "strfl"; 
+  else if (isroyalflush())    return "royfl"; 
+  // No hand
+	assert(false);
+	return "err";
 }
 
-void CSymbolEnginePokerval::CalculateRankBits()
-{
-	int				_rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;
-	CardMask		plCards = {0}, comCards = {0}, plcomCards = {0};
+void CSymbolEnginePokerval::CalculateRankBits() {
+	int	     _rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;
+	CardMask plCards = {0}, comCards = {0}, plcomCards = {0};
 
 	CardMask_RESET(plCards);
 	CardMask_RESET(comCards);
 	CardMask_RESET(plcomCards);
 
-	_rankbitsplayer  = 0;
-	_rankbitscommon  = 0;
-	_rankbitspoker   = 0;
-	_srankbitsplayer = 0;
-	_srankbitscommon = 0;
-	_srankbitspoker  = 0;
+	_rankbitsplayer  = kUndefinedZero;
+	_rankbitscommon  = kUndefinedZero;
+	_rankbitspoker   = kUndefinedZero;
+	_srankbitsplayer = kUndefinedZero;
+	_srankbitscommon = kUndefinedZero;
+	_srankbitspoker  = kUndefinedZero;
 
-	int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
-  int tsuit = p_symbol_engine_cards->tsuit();
+	int tsuit = p_symbol_engine_cards->tsuit();
+  int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
+  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
+  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
 	
 	// player cards
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
@@ -338,23 +283,18 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	// common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
     Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())
-		{
+    if (card.IsKnownCard())	{
       CardMask_SET(comCards, card.GetValue());
 			CardMask_SET(plcomCards, card.GetValue());
 		}
 	}
 
-	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
-	{
-		for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)
-		{
-			if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, suit)))
-			{
+	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++) {
+		for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)	{
+			if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, suit))) {
 				SetRankBit(&_rankbitsplayer, _rank);
 			}
-			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, suit)))
-			{
+			if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, suit)))	{
 				SetRankBit(&_rankbitscommon, _rank);
 			}
 		}
@@ -365,21 +305,17 @@ void CSymbolEnginePokerval::CalculateRankBits()
 		| (1<<((_pokerval>>4)&0xf)) 
 		| (1<<((_pokerval>>0)&0xf)); 
 	// Take care about ace (low bit)
-	_rankbitspoker = _rankbitspoker + ((_rankbitspoker&0x4000) ? (1<<1) : 0); 
+	_rankbitspoker |= ((_rankbitspoker&0x4000) ? (1<<1) : 0); 
 
-	for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)
-	{
-		if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, plcomsuit)))
-		{
+	for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)	{
+		if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, plcomsuit)))	{
 			SetRankBit(&_srankbitsplayer, _rank);
 		}
-		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, comsuit)))
-		{
+		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, comsuit))) {
 			SetRankBit(&_srankbitscommon, _rank);
 		}
 	}
-
-	_srankbitspoker =														
+  _srankbitspoker =														
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, plcomsuit)) ?
 			 (1<<((_pokerval>>16)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, plcomsuit)) ?
@@ -390,14 +326,15 @@ void CSymbolEnginePokerval::CalculateRankBits()
 			 (1<<((_pokerval>>4)&0xf)) : 0) |
 			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, plcomsuit)) ?
 		 (1<<((_pokerval>>0)&0xf)) : 0);
-	_srankbitspoker += ((_srankbitspoker&0x4000) ? (1<<1) : 0); //ace	
+  // Take care about ace (low bit)
+	_srankbitspoker |= ((_srankbitspoker&0x4000) ? (1<<1) : 0); 
 
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitsplayer  = %i\n", _rankbitsplayer);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitscommon  = %i\n", _rankbitscommon);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] rankbitspoker   = %i\n", _rankbitspoker);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitsplayer = %i\n", _srankbitsplayer);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitscommon = %i\n", _srankbitscommon);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] srankbitspoker  = %i\n", _srankbitspoker);
+  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitsplayer  = %i\n", _rankbitsplayer);
+  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitscommon  = %i\n", _rankbitscommon);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitspoker   = %i\n", _rankbitspoker);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitsplayer = %i\n", _srankbitsplayer);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitscommon = %i\n", _srankbitscommon);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitspoker  = %i\n", _srankbitspoker);
 
 	AssertRange(_rankbitsplayer,  0, k_rankbits_all_cards_111_111_111_111_110);
 	AssertRange(_rankbitscommon,  0, k_rankbits_all_cards_111_111_111_111_110); 
@@ -407,27 +344,16 @@ void CSymbolEnginePokerval::CalculateRankBits()
 	AssertRange(_srankbitspoker,  0, k_rankbits_all_cards_111_111_111_111_110); 	
 }
 
-
-int CSymbolEnginePokerval::GetRankHi(int rankbits)
-{
-	for (int i=k_rank_ace; i>=2; i--)
-	{
-		if (IsBitSet(rankbits, i))
-		{
-			return i;
-		}
+int CSymbolEnginePokerval::GetRankHi(int rankbits) {
+	for (int i=k_rank_ace; i>=2; i--)	{
+		if (IsBitSet(rankbits, i)) return i;
 	}
 	return 0;
 }
 
-int CSymbolEnginePokerval::GetRankLo(int rankbits)
-{
-	for (int i=2; i<=k_rank_ace; i++)
-	{
-		if (IsBitSet(rankbits, i))
-		{
-			return i;
-		}
+int CSymbolEnginePokerval::GetRankLo(int rankbits) {
+	for (int i=2; i<=k_rank_ace; i++)	{
+		if (IsBitSet(rankbits, i)) return i;
 	}
 	return 0;
 }
@@ -564,7 +490,6 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_QUEEN, Suit_CLUBS));
 		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_KING, Suit_CLUBS));
 		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
-
 
 		CardMask_RESET(Cards);
 		for (int i=0; i<kNumberOfCardsPerPlayer; i++)

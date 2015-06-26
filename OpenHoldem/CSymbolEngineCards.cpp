@@ -150,8 +150,7 @@ int CSymbolEngineCards::GetNumberOfCardsForSuit(
 	return n;
 }
 
-int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_suit)
-{
+int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_suit) {
 	int n_clubs, n_diamonds, n_hearts, n_spades;
 	n_clubs    = GetNumberOfCardsForSuit(cards, clubsCards);
 	n_diamonds = GetNumberOfCardsForSuit(cards, diamondsCards);
@@ -200,11 +199,9 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	
 	// player cards
 	CardMask_RESET(plCards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
-	{
+	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
     Card card = p_table_state->User()->_hole_cards[i];
-		if (card.IsKnownCard())
-		{
+		if (card.IsKnownCard())	{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
 				card);
       CardMask_SET(plCards, card.GetValue());
@@ -213,11 +210,9 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 
 	// common cards
 	CardMask_RESET(comCards);
-	for (int i=0; i<kNumberOfCommunityCards; i++)
-	{
+	for (int i=0; i<kNumberOfCommunityCards; i++)	{
 		Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())
-		{
+		if (card.IsKnownCard())		{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
         card.GetValue());
       CardMask_SET(comCards, card.GetValue());
