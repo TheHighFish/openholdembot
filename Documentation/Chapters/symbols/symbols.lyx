@@ -6446,7 +6446,7 @@ Versus
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="32" columns="2">
+<lyxtabular version="3" rows="35" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -6906,6 +6906,73 @@ vs$listX$prtie
 
 \begin_layout Plain Layout
 Probability (0.000 - 1.000) of a tie versus hand list X
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prwin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of winnning versus the list specified by function
+ X.
+ The function X (e.g.
+ f$raisersrange) must return an intereger number, e.g.
+ 0..100 and then versus will take the corresponging list (list0..list100).
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prlos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of chopping versus the list specified by function
+ X.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prtie
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of losing versus the list specified by function
+ X.
 \end_layout
 
 \end_inset
