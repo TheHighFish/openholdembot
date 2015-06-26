@@ -68,7 +68,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("All cards have to be unique. Partial rule for $$cc4")
     PRECONDITION ((gws("$$cc4") != CARD_UNDEFINED) && (gws("$$cc4") != CARD_BACK) && (gws("$$cc4") != CARD_NOCARD))
-    POSTCONDITION ((gws("$$cc4") != gws("$$pc0")) && (gws("$$cc4") != gws("$$pc4")) && (gws("$$cc4") != gws("$$cc0")) && (gws("$$cc4") != gws("$$cc1")) && (gws("$$cc4") != gws("$$cc2")) && (gws("$$cc4") != gws("$$cc3")))
+    POSTCONDITION ((gws("$$cc4") != gws("$$pc0")) && (gws("$$cc4") != gws("$$pc1")) && (gws("$$cc4") != gws("$$cc0")) && (gws("$$cc4") != gws("$$cc1")) && (gws("$$cc4") != gws("$$cc2")) && (gws("$$cc4") != gws("$$cc3")))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pc0, $$pc1, $$cc0, $$cc1, $$cc2, $$cc3, $$cc4")
 END_TESTCASE
 
