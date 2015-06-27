@@ -23,8 +23,8 @@ BUG FIXES:
   (Raises, AmountTocall, ...) have been adapted to consider this case.
   Thanks to Chillit for reporting.
   [THF]
-- nplayersdealt: the "smart" logic to guess some active players as dealt could fail on garbage input.
-  Now we do simple calculations first. Thanks to for reporting.
+- nplayersdealt: the "smart" logic to guess some active players without cards as dealt could fail on garbage input.
+  Now we do simple calculations first. Thanks to Shank_17 for reporting.
   [THF]
   
 MAINTENANCE:
