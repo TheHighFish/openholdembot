@@ -154,26 +154,26 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because too small betsize\n");
     return amount_to_raise_to;
   }
-  if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind())) {
+  double result;
+  if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind())) {
     // Don't round betsizes that are alreadz a multiple of big-blind.
     // This case deserves specdial attention, because big-blind
     // might be not a multiple of smallblind, e.g $2/$5
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=18592
     write_log(preferences.debug_betsize_adjustment(),
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is a multiple of big-blind\n");
-    return amount_to_raise_to;
-  }
-  // Otherwise: eo0und to beautiful numbers without caring about our stack/
-  // This adjustment will happen later.
-  double result;
-  // sblind / nnlind
-  if (amount_to_raise_to < (10 * p_symbol_engine_tablelimits->sblind())) {
+    // But don~t return anzthing here.
+    // Continue with rounding gor large numbers (later)
+  } else if (amount_to_raise_to < (10 * p_symbol_engine_tablelimits->sblind())) {
+    // Small numbers
+    // Round to multiples of SB
     result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind());
   } else {
+    // "Large" numbers
+    // Round to multiples of BB
     result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
   }
- 
-  // whole numbers (larg mu,bers)
+  // whole numbers (larg numbers)
   if (result > 25000) {
     result = Rounding(result, 1000);
   } else if (result > 2500) {
@@ -184,7 +184,7 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
     result = Rounding(result, 1);
   }  
   // Whole numbers (small),
-  // but onlz if we want to bet more than 0.90.
+  // but only if we want to bet more than 0.90.
   // Avoid rounding to 0.
   else if ((result > 0.90) && (abs(result - int(result) < 0.10))) {
     result = Rounding(result, 1);
