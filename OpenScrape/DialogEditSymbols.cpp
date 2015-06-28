@@ -16,6 +16,7 @@
 //
 
 #include "stdafx.h"
+#include "..\OpenHoldem\CScraperPreprocessor.h"
 #include "DialogEditSymbols.h"
 #include "OpenScrapeDoc.h"
 
@@ -57,7 +58,6 @@ BOOL CDlgEditSymbols::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int			i;
 	CString		text;
 
 	CDialog::OnInitDialog();
@@ -93,12 +93,14 @@ CString	results;
 void CDlgEditSymbols::OnBnClickedParsebutton()
 {
 	CString text, format;
-	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
+	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
 	CTransform			trans;
 
 	m_Titletext.GetWindowText(text);
 	m_Value.GetWindowText(format);
 	
+  CScraperPreprocessor scrper_preprocessor;
+  scrper_preprocessor.PreprocessTitleString(&text);
 	trans.ParseStringBSL(text, format, &results);
 
 	m_ParseResults.SetWindowText(results.GetString());
