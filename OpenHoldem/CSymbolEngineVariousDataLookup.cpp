@@ -132,7 +132,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // e.g. "dll$, pl_chair$, ....
   CString list = "dll$ pl_ vs$ msgbox$ log$ "
     "betround fmax f flagbits "
-    "session version "
+    "session version islobby "
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;

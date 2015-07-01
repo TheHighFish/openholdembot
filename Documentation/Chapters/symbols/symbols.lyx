@@ -333,7 +333,7 @@ Limits
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="15" columns="2">
+<lyxtabular version="3" rows="16" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -522,28 +522,6 @@ isfl
 \begin_inset Text
 
 \begin_layout Plain Layout
-istournament
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-true if a tournament table is detected.
- This feature works automatically, based on title-strings of the poker-table,
- blind-levels, sum of chips at the table, etc.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 isdon
 \end_layout
 
@@ -619,6 +597,28 @@ All tournaments that can't be recognized neither as MTT nor as DON will
 \begin_inset Text
 
 \begin_layout Plain Layout
+istournament
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if any type of tournament table is detected.
+ This feature works automatically, based on title-strings of the poker-table,
+ blind-levels, sum of chips at the table, etc.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 isfinaltable
 \end_layout
 
@@ -630,6 +630,28 @@ isfinaltable
 \begin_layout Plain Layout
 true if you play the final table of a MTT, depending on the tablemap region
  r$c0isfinaltable
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islobby
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if OpenHoldem is connected to a lobby window (for window placement
+ and shutdown).
+ Depends on the TM-symbol s$islobby
 \end_layout
 
 \end_inset
