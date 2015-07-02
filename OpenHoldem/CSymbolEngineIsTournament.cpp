@@ -316,7 +316,12 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
 	  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
 	  _istournament    = false;
-		_decision_locked = true;
+		// We don't lock the decision here,
+    // as the blind-values at some crap-casinos need to be scraped
+    // and might be unreliable for the first hand.
+    // Locking will happen automatically after N hands
+    // with more reliable info.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18266&p=130775#p130772
 		return;
   }
   // If it is ManualMode, then we detect it by title-string "tourney".

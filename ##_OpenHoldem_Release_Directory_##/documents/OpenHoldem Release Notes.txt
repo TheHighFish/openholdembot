@@ -31,6 +31,8 @@ MAINTENANCE:
 - Improve3d betsize adjustment.
   Thanks to Tabo_ger for reporting a special case.
   [FqFq, THF]
+- Improved decision locking for istournament.
+  [Relhby]
 
 v7.7.3 2015-05.05
 ==================
