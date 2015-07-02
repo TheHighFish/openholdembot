@@ -120,7 +120,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
-  } else {
+  } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
+    *result
+  } 
+  else {
     *result = kUndefined;
     return false;
   }
