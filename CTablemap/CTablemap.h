@@ -155,6 +155,7 @@ public:
 	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
 	const bool balancenumbersonly()	   { return GetTMSymbol("balancenumbersonly", false); }
+  const bool islobby()               { return GetTMSymbol("islobby", false); }
 	const CString sitename()		       { return GetTMSymbol("sitename"); } 
 	const CString titletext()	       	 { return GetTMSymbol("titletext"); } 
 	const CString network()			       { return GetTMSymbol("network"); } 

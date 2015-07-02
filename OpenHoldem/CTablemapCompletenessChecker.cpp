@@ -123,16 +123,19 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // Only session 0 verifies the tablemaps
   // for better performance amd to avoid driving users crazy.
   if (p_sessioncounter->session_id() > 0) return;
-  // Absoluely mandatory
-  CheckItem("nchairs");
-  CheckItem("network");
-  CheckItem("sitename"); 
+  // Absoluely mandatory for connection
   CheckItem("titletext");
-  CheckItem("ttlimits");
-  // Necessary for connection> either clientsize or min/max
+  // Necessary for connection: either clientsize or min/max
   if (!p_tablemap->ItemExists("clientsizemin") || !p_tablemap->ItemExists("clientsizemax")) {
     CheckItem("clientsize");
   }
+  // All the rest is only needed for tables, but not for the lobby
+  if (p_tablemap->islobby()) return;
+  // Basic info, needed by every table
+  CheckItem("nchairs");
+  CheckItem("network");
+  CheckItem("sitename"); 
+  CheckItem("ttlimits");
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   int last_chair = nchairs - 1;
