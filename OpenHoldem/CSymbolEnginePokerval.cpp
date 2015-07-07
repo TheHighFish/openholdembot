@@ -80,6 +80,7 @@ void CSymbolEnginePokerval::ResetOnHeartbeat() {
 	_rankbitspoker   = kUndefinedZero;
 	_srankbitsplayer = kUndefinedZero;
 	_srankbitscommon = kUndefinedZero;
+	_srankbitscommonp = kUndefinedZero;
 	_srankbitspoker  = kUndefinedZero;
 
 	CalculateRankBits();
@@ -252,21 +253,22 @@ CString CSymbolEnginePokerval::HandType() {
 }
 
 void CSymbolEnginePokerval::CalculateRankBits() {
-	int	     _rank = 0, suit = 0, plcomsuit = 0, comsuit = 0;
+	int	     _rank = 0, suit = 0 ;
 	CardMask plCards = {0}, comCards = {0}, plcomCards = {0};
 
 	CardMask_RESET(plCards);
 	CardMask_RESET(comCards);
 	CardMask_RESET(plcomCards);
 
-	_rankbitsplayer  = kUndefinedZero;
-	_rankbitscommon  = kUndefinedZero;
-	_rankbitspoker   = kUndefinedZero;
-	_srankbitsplayer = kUndefinedZero;
-	_srankbitscommon = kUndefinedZero;
-	_srankbitspoker  = kUndefinedZero;
+	_rankbitsplayer   = kUndefinedZero;
+	_rankbitscommon   = kUndefinedZero;
+	_rankbitspoker    = kUndefinedZero;
+	_srankbitsplayer  = kUndefinedZero;
+	_srankbitscommon  = kUndefinedZero;
+	_srankbitscommonp = kUndefinedZero;
+	_srankbitspoker	  = kUndefinedZero;
 
-	int tsuit = p_symbol_engine_cards->tsuit();
+  int tsuit = p_symbol_engine_cards->tsuit();
   int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
@@ -308,23 +310,26 @@ void CSymbolEnginePokerval::CalculateRankBits() {
 	_rankbitspoker |= ((_rankbitspoker&0x4000) ? (1<<1) : 0); 
 
 	for (_rank=StdDeck_Rank_LAST; _rank>=StdDeck_Rank_FIRST; _rank--)	{
-		if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, plcomsuit)))	{
+		if (CardMask_CARD_IS_SET(plCards, StdDeck_MAKE_CARD(_rank, tsuit)))	{
 			SetRankBit(&_srankbitsplayer, _rank);
 		}
-		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, comsuit))) {
+		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, tsuitcommon))) {
 			SetRankBit(&_srankbitscommon, _rank);
+		}
+		if (CardMask_CARD_IS_SET(comCards, StdDeck_MAKE_CARD(_rank, tsuit))) {
+			SetRankBit(&_srankbitscommonp, _rank);
 		}
 	}
   _srankbitspoker =														
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, plcomsuit)) ?
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>16)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>16)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, plcomsuit)) ?
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>12)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>12)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>8)&0xf)-2, plcomsuit)) ?
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>8)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>8)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>4)&0xf)-2, plcomsuit)) ?
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>4)&0xf)-2, tsuit)) ?
 			 (1<<((_pokerval>>4)&0xf)) : 0) |
-			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, plcomsuit)) ?
+			(CardMask_CARD_IS_SET(plcomCards, StdDeck_MAKE_CARD(((_pokerval>>0)&0xf)-2, tsuit)) ?
 		 (1<<((_pokerval>>0)&0xf)) : 0);
   // Take care about ace (low bit)
 	_srankbitspoker |= ((_srankbitspoker&0x4000) ? (1<<1) : 0); 
