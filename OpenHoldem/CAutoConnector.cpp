@@ -55,17 +55,13 @@ CAutoConnector::CAutoConnector()
 	set_attached_hwnd(NULL);
 }
 
-
-CAutoConnector::~CAutoConnector()
-{
+CAutoConnector::~CAutoConnector() {
 	// Releasing the mutex in case we hold it.
 	// If we don't hold it, Unlock() will "fail" silently.
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	_autoconnector_mutex->Unlock();
-	if (_autoconnector_mutex != NULL)
-	{
-
-		write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
+	if (_autoconnector_mutex != NULL)	{
+    write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
@@ -74,7 +70,6 @@ CAutoConnector::~CAutoConnector()
 	set_attached_hwnd(NULL);
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
 }
-
 
 bool CAutoConnector::IsConnected()
 {

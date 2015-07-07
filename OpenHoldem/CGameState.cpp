@@ -73,7 +73,7 @@ void CGameState::CaptureState() {
 	_state[_state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
 		_state[_state_index&0xff].m_pot[i] = p_table_state->_pot[i];
   }
 	// Common cards
@@ -94,7 +94,7 @@ void CGameState::CaptureState() {
 	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
 
 	// loop through all 10 player chairs
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     // player name, balance, currentbet
     strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i]._name.GetString(), _TRUNCATE);
     _state[_state_index&0xff].m_player[i].m_balance = p_table_state->_players[i]._balance;
@@ -134,7 +134,7 @@ void CGameState::DumpState(void) {
 	write_log(preferences.debug_alltherest(), "[CGameState] _is_playing: %d\n", _state[(_state_index)&0xff].m_is_playing);
 	write_log(preferences.debug_alltherest(), "[CGameState] _is_posting: %d\n", _state[(_state_index)&0xff].m_is_posting);
 	write_log(preferences.debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _state[(_state_index)&0xff].m_dealer_chair);
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
 		write_log(preferences.debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _state[(_state_index)&0xff].m_player[i].m_name);
 		write_log(preferences.debug_alltherest(), "[CGameState] _balance:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_balance);
 		write_log(preferences.debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_currentbet);

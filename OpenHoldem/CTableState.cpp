@@ -38,7 +38,7 @@ void CTableState::Reset() {
   for (int i=0; i<kNumberOfPlayerEntries; ++i) {
     _players[i].Reset();
   }
-  for (int i=0; i<k_max_number_of_pots; ++i) {
+  for (int i=0; i<kMaxNumberOfPots; ++i) {
     _pot[i] = 0.0;
   }
   _title[0] = '\0';
@@ -53,6 +53,6 @@ CPlayer *CTableState::User() {
     return &_players[kFakeEntryForUnknownUserchair];
   }
   int userchair = p_symbol_engine_userchair->userchair();
-  AssertRange(userchair, 0, k_last_chair);
+  AssertRange(userchair, 0, kLastChair);
   return &_players[userchair];
 }

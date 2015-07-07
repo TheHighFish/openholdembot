@@ -133,7 +133,7 @@ void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_n
   // but this causes cubic effort, as all sub-trees
   // get rotated recursively again.
   // As all subtrees are already correctly ordered
-  // we onlz need one (or more) left-rotations
+  // we only need one (or more) left-rotations
   // of this node again.
   //          + 
   //         / \

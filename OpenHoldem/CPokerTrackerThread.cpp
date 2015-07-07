@@ -36,7 +36,7 @@
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 
-SPlayerData _player_data[k_max_number_of_players];
+SPlayerData _player_data[kMaxNumberOfPlayers];
 
 
 CString CPokerTrackerThread::CreateConnectionString(
@@ -205,14 +205,14 @@ bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
    it did not found such name.*/
 bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername]; 
-	char		best_name[k_max_length_of_playername];
+	char		oh_scraped_name[kMaxLengthOfPlayername]; 
+	char		best_name[kMaxLengthOfPlayername];
 
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	
-	memset(oh_scraped_name, 0, k_max_length_of_playername);
-	memset(best_name, 0, k_max_length_of_playername);
+	memset(oh_scraped_name, 0, kMaxLengthOfPlayername);
+	memset(best_name, 0, kMaxLengthOfPlayername);
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() chair = %i\n", chair);
 	
@@ -222,9 +222,9 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 		return false;
 	}
 
-	if (strlen(p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name) <= k_max_length_of_playername)
+	if (strlen(p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name) <= kMaxLengthOfPlayername)
 	{
-		strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+		strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
 	}
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
@@ -261,20 +261,20 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 /* Returns true, if the name looks ok, but differs from the last one. */
 bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername]; 
-	char		best_name[k_max_length_of_playername];
+	char		oh_scraped_name[kMaxLengthOfPlayername]; 
+	char		best_name[kMaxLengthOfPlayername];
 
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	
-	memset(oh_scraped_name, 0, k_max_length_of_playername);
-	memset(best_name, 0, k_max_length_of_playername);
+	memset(oh_scraped_name, 0, kMaxLengthOfPlayername);
+	memset(best_name, 0, kMaxLengthOfPlayername);
 	
 	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
 	{
 		return false;
 	}
-	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
 
 	if (NameLooksLikeBadScrape(oh_scraped_name))
 	{
@@ -297,14 +297,14 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 {
 	_player_data[chr].found = found;
 	bool logResult = false;
-	if (0 != memcmp(_player_data[chr].pt_name, pt_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].pt_name, pt_name, kMaxLengthOfPlayername) )
 	{
-		memcpy(_player_data[chr].pt_name, pt_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].pt_name, pt_name, kMaxLengthOfPlayername);
 		logResult = true;
 	}
-	if (0 != memcmp(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].scraped_name, scraped_name, kMaxLengthOfPlayername) )
 	{
-		memcpy(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].scraped_name, scraped_name, kMaxLengthOfPlayername);
 		logResult = true;
 	}
 	if (logResult)
@@ -323,8 +323,8 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	if (!result) {
 		/*  Escalation #1: Exact name not found in DB*/
 		/*  Try query with "%" in substitution of ".". So "n.me" becomes "n%me". */
-		char pointlessname[k_max_length_of_playername + 1];
-		memset(pointlessname, 0, k_max_length_of_playername+1);
+		char pointlessname[kMaxLengthOfPlayername + 1];
+		memset(pointlessname, 0, kMaxLengthOfPlayername+1);
 		int len = (int)strlen(oh_scraped_name);
 		for (int character_position=0; character_position<len; character_position++)
 		{
@@ -342,11 +342,11 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	if (!result) {
 		/*  Escalation #2:
 		/*  Try query with "%n%a%m%e%" . */
-		char likename[2 * k_max_length_of_playername + 2];
+		char likename[2 * kMaxLengthOfPlayername + 2];
 		// Attention: likename is 2 times as large as a player-name,
 		// plus 2 for % at the beginning and \0 at the end.
 		// !! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
-		memset(likename, 0, 2 * k_max_length_of_playername + 2);
+		memset(likename, 0, 2 * kMaxLengthOfPlayername + 2);
 		int len = (int)strlen(oh_scraped_name);
 		likename[0]='%';
 		for (int character_position=0; character_position<len; character_position++)
@@ -385,8 +385,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return kUndefined;
 
-	assert(m_chr >= k_first_chair);
-	assert(m_chr <= k_last_chair);
+	assert(m_chr >= kFirstChair);
+	assert(m_chr <= kLastChair);
 	assert(stat >= 0);
 	assert(stat < PT_DLL_GetNumberOfStats());
 
@@ -527,10 +527,10 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		if (	strlen(found_name) >= k_min_name_length_to_skip_lev_dist
 			 || lev_dist <= (int)strlen(found_name) * Levenshtein_distance_matching_factor )
 		{
-			strncpy_s(best_name, k_max_length_of_playername, found_name, _TRUNCATE);
+			strncpy_s(best_name, kMaxLengthOfPlayername, found_name, _TRUNCATE);
 			// Max length names are possibly truncated so we replace the last character by %.
-			if (strlen(best_name)==(k_max_length_of_playername-1)) {
-				best_name[(k_max_length_of_playername-2)] = '%';
+			if (strlen(best_name)==(kMaxLengthOfPlayername-1)) {
+				best_name[(kMaxLengthOfPlayername-2)] = '%';
 			}
 			result = true;
 		}
@@ -556,10 +556,10 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		}
 		if (bestLD != 999)
 		{
-			strncpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, bestLDindex, 0), _TRUNCATE);
+			strncpy_s(best_name, kMaxLengthOfPlayername, PQgetvalue(res, bestLDindex, 0), _TRUNCATE);
 			// Max length names are possibly truncated so we replace the last character by %.
-			if (strlen(best_name)==(k_max_length_of_playername-1)) {
-				best_name[(k_max_length_of_playername-2)] = '%';
+			if (strlen(best_name)==(kMaxLengthOfPlayername-1)) {
+				best_name[(kMaxLengthOfPlayername-2)] = '%';
 			}
 			result = true;
 		}
@@ -758,7 +758,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 		}
 
 		// Avoiding division by zero and setting sleep time
-		AdaptValueToMinMaxRange(&players, 1, k_max_number_of_players);
+		AdaptValueToMinMaxRange(&players, 1, kMaxNumberOfPlayers);
 		int sleep_time;
 		if (p_symbol_engine_isrush->isrush()) {
 			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}

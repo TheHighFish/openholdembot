@@ -330,7 +330,7 @@ CString CReplayFrame::GetPotsAsHTML() {
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
-	for (int i=1; i<k_max_number_of_pots; i++) {
+	for (int i=1; i<kMaxNumberOfPots; i++) {
 		if (p_table_state->_pot[i]) {
 			pots += "  <tr>\n";
 			text.Format("    <td>%d</td><td>%11.2f</td>\n", i,p_table_state->_pot[i]);

@@ -52,7 +52,6 @@ class CSharedMem {
  private:
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
-	#define ENT CSLock lock(m_critsec);
  private:
 	CCritSec	m_critsec;
 };

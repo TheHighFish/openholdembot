@@ -324,7 +324,7 @@ void CIteratorThread::InitIteratorLoop() {
   if (userchair == kUndefined) return;
 
 	// setup masks
-  AssertRange(userchair, 0, k_max_chair_number);
+  AssertRange(userchair, 0, kMaxChairNumber);
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
     Card card = p_table_state->User()->_hole_cards[i];
     if (card.IsKnownCard()) {
@@ -472,7 +472,7 @@ void CIteratorThread::CloneVanillaChairToAllOtherChairs()
 {
 	// finally copy the vanilla to all user chairs so that someone who just turns on prw1326
 	// experimentally does not cause a crash
-	for(int i=0; i<k_max_number_of_players; i++)
+	for(int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		_prw1326.chair[i]=_prw1326.vanilla_chair;
 	}
@@ -646,7 +646,7 @@ void CIteratorThread::EnhancedDealingAlgorithm()
 	int bblindbits = p_symbol_engine_blinds->bblindbits();
 
 	// loop through active opponents
-	for(int i=0; i<k_max_number_of_players; i++) 
+	for(int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (i == userchair)
 			continue; //skip our own chair!

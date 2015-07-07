@@ -300,53 +300,53 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   // Formula not found.
   // Add the standard one.
   CString function_text;
-  if (function_name.Compare(k_standard_function_names[k_autoplayer_function_betsize]) == k_CString_identical) {
+  if (function_name.Compare(k_standard_function_names[k_autoplayer_function_betsize]) == kBetroundRiver) {
     function_text = 
       "// Betsize in dollars, raise-to semantics.\n"
       "// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.\n"
       "// Please define your tablemaps \"swagtextmethod\" to configure this feature.\n";
-  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical) {    
+  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == kBetroundRiver) {    
     function_text = 
       "// Check whenever it is free to call\n"
       "(call == 0) "; 
-  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == kBetroundRiver) {
     function_text = 
       "// f$fold should alwazs evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 ";
-  } else if (function_name.Compare(k_standard_function_names[k_hopper_function_rebuy]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_hopper_function_rebuy]) == kBetroundRiver) {
     function_text = 
       "// f$rebuy should evaluate to the target-amount in dollars.\n"
       "// This value will be passed to the rebuy-script as a parameter.\n"
       "0\n";
-  } else if (function_name.Compare(k_standard_function_names[k_standard_function_delay]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_delay]) == kBetroundRiver) {
     function_text = 
       "// Autoplayer-delay in milli-seconds\n"
       "0\n";
-  } else if (function_name.Compare(k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) == kBetroundRiver) {
     function_text = 
       "// Allin if betsize is more than X% of our total balance (including currentbet).\n"
       "// This affects f$betsize and all f$betpot_X_Y_ functions.\n" 
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
-  } else if (function_name.Compare(k_standard_function_names[k_init_on_startup]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_init_on_startup]) == kBetroundRiver) {
     function_text = 
       "// Ini-functions are meant for\n"    
       "//   * Initialization of memory-symbols at well-defined times\n"
       "//   * Triggering calculations, e.g. in a DLL\n";
-  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == kBetroundRiver) {
     function_text = 
       "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
       "// Works even with \"no opponents\".\n"
       "nopponentsplaying + 1 ";
-  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == kBetroundRiver) {
     function_text = 
       "// \"Reasonable\" default to get PrWin running for beginners.\n"
       "// Large enough to get usable results,\n"
       "// small enough to save CPU-time.\n"
       "1000 ";
-  } else if (function_name.Compare(k_standard_function_names[k_icm_prize1]) == k_CString_identical) {
+  } else if (function_name.Compare(k_standard_function_names[k_icm_prize1]) == kBetroundRiver) {
     function_text = 
       "// f$icm_prizeX functions are used to configure the payout-structure in tournaments.\n"
       "// The sum of all f$icm_prizeX functions should be 1.00 (= 100%).\n"

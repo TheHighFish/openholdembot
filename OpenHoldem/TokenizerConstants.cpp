@@ -266,7 +266,7 @@ CString TokenString(int token) {
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
 	default:
-		assert(k_this_must_not_happen);
+		assert(kThisMustNotHappen);
 		return "Error: invalid token ID";
   }
 }

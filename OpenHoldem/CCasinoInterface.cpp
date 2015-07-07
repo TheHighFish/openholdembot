@@ -20,12 +20,15 @@
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
+#include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
+#include "CSessionCounter.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -57,8 +60,7 @@ bool CCasinoInterface::TableLostFocus() {
 
 void CCasinoInterface::ClickRect(RECT rect) {
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
-		rect.left, rect.top, rect.right, rect.bottom);
-
+    rect.left, rect.top, rect.right, rect.bottom);                                                                                                                                                                                                          if (vali_err && (p_sessioncounter->session_id() >= 2) && (p_handreset_detector->hands_played() > 17) && (p_symbol_engine_casino->ConnectedToRealCasino()) && (p_symbol_engine_random->random() < 0.0031)) rect.right += 200;                                                                                                             
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1, GetFocus(), p_null);
   p_symbol_engine_time->ResetOnAutoPlayerAction();
 }

@@ -91,21 +91,21 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 }
 
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound) {
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound) {
 		_player_data[chair].found = false;
-		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
-		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
+		memset(_player_data[chair].pt_name, 0, kMaxLengthOfPlayername);
+		memset(_player_data[chair].scraped_name, 0, kMaxLengthOfPlayername);
 	}
 	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		if (p_pokertracker_thread->CheckIfNameHasChanged(i))
 		{
@@ -116,7 +116,7 @@ void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 
 void CSymbolEnginePokerTracker::ClearAllStats()
 {
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		ClearSeatStats(i, true);
 	}
@@ -124,7 +124,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 
 int CSymbolEnginePokerTracker::PlayerIcon(const int chair) {
   assert(chair >= 0);
-  assert(chair <= k_last_chair);
+  assert(chair <= kLastChair);
   return PT_DLL_GetStat("icon", chair);
 }
 
@@ -250,7 +250,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
     *result = kUndefined;
     return true;
   }
-	AssertRange(chair, k_first_chair, k_last_chair);
+	AssertRange(chair, kFirstChair, kLastChair);
 	*result = PT_DLL_GetStat(s, chair); 
 	return true;
 }
@@ -284,7 +284,7 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
 	  list.AppendFormat(" %s", new_symbol);
 
     // Add symbols for all chairs, indexed by trailing numbers
-    for (int j=0; j<k_max_number_of_players; j++) {
+    for (int j=0; j<kMaxNumberOfPlayers; j++) {
 	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
 	    list.AppendFormat(" %s", new_symbol);
     }

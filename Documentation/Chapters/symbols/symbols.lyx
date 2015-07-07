@@ -4855,7 +4855,7 @@ tsuit
 \begin_inset Text
 
 \begin_layout Plain Layout
-specific card suit for nsuited (1-4) 
+specific card suit for nsuited (0-3) 
 \end_layout
 
 \end_inset
@@ -4875,7 +4875,7 @@ tsuitcommon
 \begin_inset Text
 
 \begin_layout Plain Layout
-specific card suit for nsuitedcommon (1-4)
+specific card suit for nsuitedcommon (0-3)
 \end_layout
 
 \end_inset

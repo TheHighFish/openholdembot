@@ -94,8 +94,8 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 			}
 		}
 	}
-	AssertRange(_nchairsdealtright, 0, (k_max_number_of_players - 1));
-	AssertRange(_nchairsdealtleft,  0, (k_max_number_of_players - 1));
+	AssertRange(_nchairsdealtright, 0, (kMaxNumberOfPlayers - 1));
+	AssertRange(_nchairsdealtleft,  0, (kMaxNumberOfPlayers - 1));
 }
 
 void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
@@ -115,8 +115,8 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		}
 		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
 	}
-	AssertRange(_betpositionrais,  kUndefined, k_max_number_of_players);
-	AssertRange(_dealpositionrais, kUndefined, k_max_number_of_players);
+	AssertRange(_betpositionrais,  kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_dealpositionrais, kUndefined, kMaxNumberOfPlayers);
 }
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
@@ -147,9 +147,9 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 			_callposition++;
 		}
 	}
-	AssertRange(_betposition,  kUndefined, k_max_number_of_players);
-	AssertRange(_dealposition, kUndefined, k_max_number_of_players);
-	AssertRange(_callposition, kUndefined, k_max_number_of_players);
+	AssertRange(_betposition,  kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_dealposition, kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_callposition, kUndefined, kMaxNumberOfPlayers);
 }
 
 bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

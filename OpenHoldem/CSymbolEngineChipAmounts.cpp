@@ -50,7 +50,7 @@ void CSymbolEngineChipAmounts::ResetOnConnection()
 }
 
 void CSymbolEngineChipAmounts::ResetOnHandreset() {
-	for (int i=0; i<k_max_number_of_players; i++)	{
+	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
 		_stack[i]      = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
@@ -124,7 +124,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	{
 		assert(_stack[i] >= 0);									
 	}
-	for (int i=p_tablemap->nchairs(); i<k_max_number_of_players; i++)
+	for (int i=p_tablemap->nchairs(); i<kMaxNumberOfPlayers; i++)
 	{
 		_stack[i] = 0;
 	}
@@ -146,13 +146,13 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 	}
 	else if(p_tablemap->potmethod() == 3) {
 		_pot = p_table_state->_pot[0];
-		for (int i=1; i<k_max_number_of_pots; i++) {
+		for (int i=1; i<kMaxNumberOfPots; i++) {
 			_pot = max(_pot, p_table_state->_pot[i]);
 		}
 		_potcommon = _pot - _potplayer;
 	} else { // potmethod() == 1
 		_potcommon = 0;
-		for (int i=0; i<k_max_number_of_pots; i++) {
+		for (int i=0; i<kMaxNumberOfPots; i++) {
 			_potcommon += p_table_state->_pot[i];
 		}
 		_pot = _potcommon + _potplayer;
@@ -179,7 +179,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
   write_log(preferences.debug_symbolengine(),
     "[CSymbolEngineChipAmounts] call = %.2f\n", _call);
   // In case we are covered consider only the effective amount to call,
-  // but onlz if our balance is reasonable.
+  // but only if our balance is reasonable.
   double balance = p_table_state->User()->_balance;
   if ((_call > balance) && (balance > 0)) {
     _call = balance;
@@ -242,14 +242,14 @@ double CSymbolEngineChipAmounts::Largestbet() {
 
 double CSymbolEngineChipAmounts::SortedBalance(const int rank) {
   assert(rank >= 0);
-  assert(rank < k_max_number_of_players);
-	double	stacks[k_max_number_of_players];
-  for (int i=0; i<k_max_number_of_players; ++i) {
+  assert(rank < kMaxNumberOfPlayers);
+	double	stacks[kMaxNumberOfPlayers];
+  for (int i=0; i<kMaxNumberOfPlayers; ++i) {
     stacks[i] = p_table_state->_players[i]._bet + p_table_state->_players[i]._balance;
   }
 	// bubble sort stacks // !! duplicate code?
-	for (int i=0; i<(k_max_number_of_players-1); ++i)	{
-		for (int n=i+1; n<k_max_number_of_players; ++n)	{
+	for (int i=0; i<(kMaxNumberOfPlayers-1); ++i)	{
+		for (int n=i+1; n<kMaxNumberOfPlayers; ++n)	{
 			if (stacks[i] < stacks[n]) {
 				SwapDoubles(&stacks[i], &stacks[n]);
 			}
@@ -326,9 +326,9 @@ CString CSymbolEngineChipAmounts::SymbolsProvided() {
     "balance balanceatstartofsession maxbalance "
     "currentbet call nbetstocall nbetstorais "
     "ncurrentbets ncallbets nraisbets ";
-  list += RangeOfSymbols("balance%i", k_first_chair, k_last_chair);
+  list += RangeOfSymbols("balance%i", kFirstChair, kLastChair);
   list += RangeOfSymbols("balance_rank%i", kBetroundPreflop, kBetroundRiver);
-  list += RangeOfSymbols("currentbet%i", k_first_chair, k_last_chair);
-  list += RangeOfSymbols("stack%i", k_first_chair, k_last_chair);
+  list += RangeOfSymbols("currentbet%i", kFirstChair, kLastChair);
+  list += RangeOfSymbols("stack%i", kFirstChair, kLastChair);
   return list;
 }

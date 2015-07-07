@@ -537,7 +537,7 @@ void CParseTreeNode::SetUserVariable(CString name) {
       &temp_result, true);
   }
   else {
-    assert(k_this_must_not_happen);
+    assert(kThisMustNotHappen);
   }
 }
 

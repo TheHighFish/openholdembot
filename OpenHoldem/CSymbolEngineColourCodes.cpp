@@ -73,12 +73,12 @@ bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, 
 }
 
 CString CSymbolEngineColourCodes::SymbolsProvided() {
-  return RangeOfSymbols("colourcode%i", k_first_chair, k_last_chair);
+  return RangeOfSymbols("colourcode%i", kFirstChair, kLastChair);
 }
 
 int CSymbolEngineColourCodes::ColourCodeToDisplay(const int chair) {
   assert(chair >= 0);
-  assert(chair <= k_last_chair);
+  assert(chair <= kLastChair);
   // Scraped colour-code 
   // Coloour-code for PT-Icon removed in rev. 4283,
   // as PT4 does no longer support the auto-rate-icon

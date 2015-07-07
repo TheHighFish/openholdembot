@@ -330,11 +330,11 @@ void COpenHoldemApp::LoadLastRecentlyUsedFileList() {
 	ASSERT(m_pRecentFileList == NULL);
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
-	if (k_number_of_last_recently_used_files_in_file_menu > 0) 
+	if (kNumberOfLastRecentlyUsedFilesInFileMenu > 0) 
 	{
 		// create file MRU since nMaxMRU not zero
 		m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, 
-			k_number_of_last_recently_used_files_in_file_menu);
+			kNumberOfLastRecentlyUsedFilesInFileMenu);
 		m_pRecentFileList->ReadList();
 	}
 	// 0 by default means not set

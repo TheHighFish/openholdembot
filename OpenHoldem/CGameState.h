@@ -37,7 +37,7 @@ class CGameState {
 	const int state_index() { return _state_index; }
  private:
 	// private variables - use public accessors and public mutators to address these
-	SHoldemState  _state[k_number_of_holdem_states_for_DLL];
+	SHoldemState  _state[kNumberOfHoldemStatesForDLL];
   unsigned char	_state_index;
  private:
 	// private functions and variables - not available via accessors or mutators

@@ -221,7 +221,7 @@ const bool CStringMatch::IsStringActive(CString s)
   if (s.Left(4) == "true" || s.Left(6) == "active") {
     return true;
   }
-  assert(k_this_must_not_happen);
+  assert(kThisMustNotHappen);
   return false;
 }
 

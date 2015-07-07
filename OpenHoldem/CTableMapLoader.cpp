@@ -43,7 +43,7 @@ typedef struct {
 } t_tablemap_connection_data;
 
 
-t_tablemap_connection_data			tablemap_connection_data[k_max_nmber_of_tablemaps];
+t_tablemap_connection_data			tablemap_connection_data[kMaxNmberOfTablemaps];
 
 
 CTableMapLoader::CTableMapLoader() {
@@ -67,7 +67,7 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound) {
-		if (_number_of_tablemaps_loaded >= k_max_nmber_of_tablemaps) {
+		if (_number_of_tablemaps_loaded >= kMaxNmberOfTablemaps) {
 			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
 			OH_MessageBox_Error_Warning("To many tablemaps.\n"
 				"The auto-connector can handle 25 at most.");

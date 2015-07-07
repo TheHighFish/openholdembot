@@ -136,7 +136,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   int last_chair = nchairs - 1;
-  if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
+  if ((nchairs < 2) || (nchairs > kMaxNumberOfPlayers)) {
     CString message;
     message.Format("Tablemap item nchairs out of range\n"
       "Correct values: 2..10\n"

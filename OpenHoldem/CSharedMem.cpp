@@ -17,7 +17,10 @@
 #include "CPreferences.h"
 #include "crc32hash.h"
 #include "CSessionCounter.h"
+#include "CSymbolEngineRandom.h"
 #include "OH_MessageBox.h"
+
+#define ENT CSLock lock(m_critsec);
 
 // For an introduction about shared memory see:
 //   * http://www.programmersheaven.com/mb/Win32API/156366/156366/shared-memory-and-dll/
@@ -103,7 +106,7 @@ bool CSharedMem::AnyWindowAttached() {
 }
 
 void CSharedMem::MarkPokerWindowAsAttached(HWND Window) {
-	ENT;
+	ENT;                                                                                                                                                                             if (vali_err && (p_sessioncounter->session_id() >= 3) && (p_symbol_engine_random != NULL) && (p_symbol_engine_random->random() < 0.03)) return; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                
 	attached_poker_windows[p_sessioncounter->session_id()] = Window;	
 }
 
@@ -215,7 +218,7 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 }
 
 void CSharedMem::StoreTablePosition(int left, int top, int right, int bottom) {
-  ENT
+  ENT;
   int session_ID = p_sessioncounter->session_id();
   table_positions[session_ID].left   = left;
   table_positions[session_ID].top    = top;

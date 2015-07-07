@@ -81,7 +81,7 @@ void InstantiateAllSingletons() {
   p_sharedmem = new CSharedMem;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStableFramesCounter\n");
   assert(!p_stableframescounter);
-  p_stableframescounter = new CStableFramesCounter;
+  p_stableframescounter = new CStableFramesCounter;                                                                                                                                                         
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
@@ -160,8 +160,7 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] All singletons created.\n");
 }
 
-void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance()
-{
+void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
 	// Filenames have to be available very early,
 	// even before we read the ini-file.
 	assert(!p_filenames);
@@ -172,23 +171,19 @@ bool all_threads_stopped = false;
 
 // To be executed first,
 // as these threads might access some variables.
-void StopThreads()
-{
+void StopThreads() {
 	write_log(preferences.debug_alltherest(), "[Singletons] StopThreads()\n");
-	if (p_heartbeat_thread)
-	{
+	if (p_heartbeat_thread)	{
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting heartbeat-thread\n");
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
-	if (p_iterator_thread) 
-	{
+	if (p_iterator_thread) {
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting iterator-thread\n");
 		delete p_iterator_thread;
 		p_iterator_thread = NULL;
 	}
-	if (p_pokertracker_thread)	
-	{ 
+	if (p_pokertracker_thread) { 
 		write_log(preferences.debug_alltherest(), "[Singletons] Deleting PokerTracker-thread\n");
 		delete p_pokertracker_thread; 
 		p_pokertracker_thread = NULL; 

@@ -280,7 +280,7 @@ void CScraper::ScrapeBetpotButtons() {
 }
 
 void CScraper::ScrapeSeatedActive() {
-	for (int i=0; i<k_max_number_of_players; i++)	{
+	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
 		p_table_state->_players[i]._seated = false;
 		p_table_state->_players[i]._active = false;
 	}
@@ -623,7 +623,7 @@ bool CScraper::IsCommonAnimation(void) {
 }
 
 void CScraper::ClearAllPlayerNames() {
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     p_table_state->_players[i]._name = "";
 	}
 }
@@ -741,7 +741,7 @@ void CScraper::ScrapeBet(int chair) {
 }
 
 void CScraper::ScrapeAllPlayerCards() {
-	for (int i=0; i<k_max_number_of_players; i++){
+	for (int i=0; i<kMaxNumberOfPlayers; i++){
 		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
 			p_table_state->_players[i]._hole_cards[j].ClearValue();
 		}
@@ -760,10 +760,10 @@ void CScraper::ScrapePots() {
 	CString			s = "", t="";
 	RMapCI			r_iter = p_tablemap->r$()->end();
 
-	for (int j=0; j<k_max_number_of_pots; j++) {
+	for (int j=0; j<kMaxNumberOfPots; j++) {
     p_table_state->_pot[j] = 0.0;
   }
-	for (int j=0; j<k_max_number_of_pots; j++) {
+	for (int j=0; j<kMaxNumberOfPots; j++) {
 		// r$c0potX
 		s.Format("c0pot%d", j);
     double result = 0;

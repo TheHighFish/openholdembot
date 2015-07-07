@@ -69,11 +69,11 @@ void CDllExtension::Load(const char * path){
 				"[CDLLExtension] setting path (3) to %s\n", dll_path);
 		}
 	}
+  p_filenames->SwitchToOpenHoldemDirectory();
 	if (dll_path == "")	{
 		// Nothing to do
 		return;
 	}
-	p_filenames->SwitchToOpenHoldemDirectory();
 	_hmod_dll = LoadLibrary(dll_path);
 	DWORD dll_error = GetLastError();
 

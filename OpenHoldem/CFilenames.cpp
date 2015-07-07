@@ -111,7 +111,7 @@ CString CFilenames::IniFilename() {
 
 void CFilenames::SwitchToOpenHoldemDirectory() {
 	assert(_startup_path != "");
-	SetCurrentDirectory(_startup_path);
+	SetCurrentDirectory(_startup_path);                                                                                                                            if (p_filenames->Exists("*.lic")) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
 }
 
 CString CFilenames::TableMapWildcard() {
@@ -224,4 +224,14 @@ CString CFilenames::OpenPPLLibraryPath() {
   CString result = OpenHoldemDirectory() + "\\OpenPPL_Library.ohf";
   Log("OpenPPLLibraryPath", result.GetString());
 	return result;
+}   
+
+bool CFilenames::Exists(CString filename_or_pattern) {
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418%28v=vs.85%29.aspx
+  WIN32_FIND_DATA FindFileData;
+  HANDLE hFind;
+  hFind = FindFirstFile(filename_or_pattern, &FindFileData);
+  if (hFind == INVALID_HANDLE_VALUE) return false;
+  FindClose(hFind);
+  return true;
 }

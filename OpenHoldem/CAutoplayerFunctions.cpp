@@ -123,7 +123,7 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
       action_name = "Fold";
       break;
     default:
-      assert (k_this_must_not_happen);
+      assert (kThisMustNotHappen);
   }
   double open_ppl_action_code = p_function_collection->Evaluate(action_name);
   write_log(preferences.debug_symbolengine_open_ppl(),
@@ -162,7 +162,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_check);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
   } else {
-    // This can onlz be undefined == 0.0
+    // This can only be undefined == 0.0
     assert(decision == kUndefinedZero);
     write_log(preferences.debug_symbolengine_open_ppl(),
       "[CAutoplayerFunctions] OpenPPL-decision undefined. Defaulting to check/fold.\n");

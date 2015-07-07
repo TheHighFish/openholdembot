@@ -24,15 +24,15 @@ const int k_min_name_length_to_skip_lev_dist  = 10;
 
 struct SPlayerData 
 {
-	char			scraped_name[k_max_length_of_playername];
-	char			pt_name[k_max_length_of_playername];
+	char			scraped_name[kMaxLengthOfPlayername];
+	char			pt_name[kMaxLengthOfPlayername];
 	bool			found;
 	// Stats are now in the DLL
 	//double			stat[k_max_number_of_supported_pokertracker_stats];
 	int				skipped_updates;           
 };
 
-extern SPlayerData _player_data[k_max_number_of_players];
+extern SPlayerData _player_data[kMaxNumberOfPlayers];
 
 
 class CPokerTrackerThread 

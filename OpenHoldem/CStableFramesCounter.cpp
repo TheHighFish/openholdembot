@@ -25,10 +25,10 @@ CStableFramesCounter *p_stableframescounter = NULL;
 CStableFramesCounter::CStableFramesCounter() {
 	// Initialize private variables
 	memset(&_card_common_last[0],		 0, sizeof(_card_common_last[0])*kNumberOfCommunityCards);
-	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*kNumberOfCardsPerPlayer*k_max_number_of_players);
-	memset(&_dealer_last[0],         0, sizeof(_dealer_last[0])*k_max_number_of_players);
-	memset(&_playerbalance_last[0],  0, sizeof(_playerbalance_last[0])*k_max_number_of_players);
-	memset(&_playerbet_last[0],      0, sizeof(_playerbet_last[0])*k_max_number_of_players);
+	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*kNumberOfCardsPerPlayer*kMaxNumberOfPlayers);
+	memset(&_dealer_last[0],         0, sizeof(_dealer_last[0])*kMaxNumberOfPlayers);
+	memset(&_playerbalance_last[0],  0, sizeof(_playerbalance_last[0])*kMaxNumberOfPlayers);
+	memset(&_playerbet_last[0],      0, sizeof(_playerbet_last[0])*kMaxNumberOfPlayers);
 	_myturnbitslast = 0;
 	Reset();
 }
@@ -56,7 +56,7 @@ void CStableFramesCounter::SaveCurrentState() {
     _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
   }
 
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     _card_player_last[i][0]	= p_table_state->_players[i]._hole_cards[0].GetValue();
 		_card_player_last[i][1]	= p_table_state->_players[i]._hole_cards[1].GetValue();
 		_dealer_last[i]         = p_table_state->_players[i]._dealer;
@@ -104,7 +104,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 		}
 	}
 
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
 		if(!same_scrape) break;
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);

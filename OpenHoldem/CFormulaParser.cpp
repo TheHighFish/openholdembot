@@ -475,7 +475,7 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {
 		double value = StringToNumber(number);
 		terminal_node->MakeConstant(value);
 	}	else {
-		assert(k_this_must_not_happen);
+		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
 	}
 	write_log(preferences.debug_parser(), 

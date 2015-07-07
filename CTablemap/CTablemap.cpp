@@ -294,8 +294,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			continue;
 
 		// Skip version lines
-		if (strLineType == VER_WINSCRAPE ||
-				strLineType == VER_OPENHOLDEM_1 ||
+		if (strLineType == VER_OPENHOLDEM_1 ||
 				strLineType == VER_OPENHOLDEM_2 ||
 				strLineType == VER_OPENSCRAPE_1 ||
 				strLineType == VER_OPENSCRAPE_2) 

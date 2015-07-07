@@ -1080,21 +1080,21 @@ void CTransform::ParseStringBSL(const CString text,
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_NL;
+                                        *limit = kGametypeNL;
                                 }
         place_in_text += 8;
                         }       else if (text.Mid(place_in_text,7).MakeLower() == "nolimit") {
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,7) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_NL;
+                                        *limit = kGametypeNL;
                                 }
         place_in_text += 7;
                         }       else if (text.Mid(place_in_text,2).MakeLower() == "nl") {
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_NL;
+                                        *limit = kGametypeNL;
                                 }
         place_in_text += 2;
                         }       else if (text.Mid(place_in_text,9).MakeLower() == "pot limit"
@@ -1102,21 +1102,21 @@ void CTransform::ParseStringBSL(const CString text,
                                 assert (results_for_openscrape != NULL);  
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,9) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_PL;
+                                        *limit = kGametypePL;
                                 }
         place_in_text += 9;
                         }       else if (text.Mid(place_in_text,8).MakeLower() == "potlimit") {
                                 assert (results_for_openscrape != NULL);  
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,8) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_PL;
+                                        *limit = kGametypePL;
                                 }
         place_in_text += 8;
                         }       else if (text.Mid(place_in_text,2).MakeLower() == "pl") {
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_PL;
+                                        *limit = kGametypePL;
                                 }
                                 place_in_text += 2;
                         }       else if (text.Mid(place_in_text,11).MakeLower() == "fixed limit"
@@ -1124,28 +1124,28 @@ void CTransform::ParseStringBSL(const CString text,
                                 assert (results_for_openscrape != NULL);  
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,11) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_FL;
+                                        *limit = kGametypeFL;
                                 }
         place_in_text += 11;
                         }       else if (text.Mid(place_in_text,10).MakeLower() == "fixedlimit") {
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,10) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_FL;
+                                        *limit = kGametypeFL;
                                 }
                                 place_in_text += 10;
                         }       else if (text.Mid(place_in_text,2).MakeLower() == "fl") {
                                 assert (results_for_openscrape != NULL);  
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,2) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_FL;
+                                        *limit = kGametypeFL;
                                 }
         place_in_text += 2;
                         }       else if (text.Mid(place_in_text,5).MakeLower() == "limit") {
                                 assert (results_for_openscrape != NULL);
                                 results_for_openscrape->Append("^L (limit type)\t= " + text.Mid(place_in_text,5) + "\r\n");
         if (limit!=NULL && *limit==kUndefined) {
-                                        *limit = k_gametype_FL;
+                                        *limit = kGametypeFL;
                                 }
         place_in_text += 5;
                         }

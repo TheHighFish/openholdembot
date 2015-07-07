@@ -35,9 +35,9 @@ class CSymbolEngineGameType: public CVirtualSymbolEngine {
   CString SymbolsProvided();
  public:
 	int gametype()	{ return _gametype; }	// former p_symbol_engine_various_data_lookup->sym()->lim
-	bool isnl()			{ return (gametype() == k_gametype_NL); }
-	bool ispl()			{ return (gametype() == k_gametype_PL); }
-	bool isfl()			{ return (gametype() == k_gametype_FL); }
+	bool isnl()			{ return (gametype() == kGametypeNL); }
+	bool ispl()			{ return (gametype() == kGametypePL); }
+	bool isfl()			{ return (gametype() == kGametypeFL); }
  public:
 	CString GetGameTypeAsString();
 	// private data members

@@ -79,7 +79,7 @@ void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat() {
 void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 {
 	_playersactivebits  = 0;
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		if (p_scraper_access->IsPlayerActive(i))
 		{
@@ -90,7 +90,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 
 void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
-	for (int i=0; i<k_max_number_of_players; ++i)	{
+	for (int i=0; i<kMaxNumberOfPlayers; ++i)	{
     if (p_table_state->_players[i].HasAnyCards()) {
 			_playersplayingbits |= (1<<i);			
 		}
@@ -99,7 +99,7 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 
 void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 	_playersseatedbits = 0;
-	for (int i=0; i<k_max_number_of_players; i++)	{
+	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
 		if (p_table_state->_players[i]._seated)	{
 			_playersseatedbits |= 1<<i;			
 		}
@@ -125,7 +125,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		// i.e. players with a positive bet.
 		// We don't consider players who are only "active",
 		// i.e. players who sat out but came back.
-		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters) && ! big_blind_found) {
+		if ((number_of_blind_posters_found < kUsualNumberOfBlindPosters) && ! big_blind_found) {
 			double bet = p_table_state->_players[chair_to_consider]._bet;
 			if (bet > 0) {
         write_log(preferences.debug_symbolengine(),
@@ -134,7 +134,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 				number_of_blind_posters_found++;
 				this_player_got_dealt = true;
 			}
-			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == k_usual_number_of_blind_posters)) {
+			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == kUsualNumberOfBlindPosters)) {
 				// big blind might be allin for less than 1 bb
 				// or small blind might be missing.
 				// But we catch both cases, as long as not both happen

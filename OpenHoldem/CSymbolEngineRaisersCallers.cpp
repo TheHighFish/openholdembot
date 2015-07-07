@@ -168,7 +168,7 @@ void CSymbolEngineRaisersCallers::CalculateRaisers() {
 		assert(chair != USER_CHAIR);
 		++_nopponentstruelyraising;
 	}
-	AssertRange(_raischair, kUndefined, k_last_chair);
+	AssertRange(_raischair, kUndefined, kLastChair);
   _lastraised[BETROUND] = _raischair;
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisersCallers] raischair: %i\n", _raischair);
@@ -200,7 +200,7 @@ void CSymbolEngineRaisersCallers::CalculateCallers() {
 		}
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
-	AssertRange(_nopponentscalling,   0, k_max_number_of_players);
+	AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
 }
 
 int CSymbolEngineRaisersCallers::FirstPossibleRaiser() {
@@ -227,7 +227,7 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 	_nopponentsfolded   = 0;
 	_nopponentschecking = 0;
 
-  assert(p_tablemap->nchairs() <= k_max_number_of_players);
+  assert(p_tablemap->nchairs() <= kMaxNumberOfPlayers);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
 		double current_players_bet = p_table_state->_players[i]._bet;
@@ -256,12 +256,12 @@ void CSymbolEngineRaisersCallers::CalculateNOpponentsCheckingBettingFolded()
 			_nopponentschecking++;
 		}
 	}
-	AssertRange(_nplayerscallshort,  0, k_max_number_of_opponents_at_full_ring_table);
-	// Using k_max_number_of_players instead of k_max_number_of_opponents_at_full_ring_table below,
+	AssertRange(_nplayerscallshort,  0, kMaxNumberOfOpponentsAtFullRingTable);
+	// Using kMaxNumberOfPlayers instead of kMaxNumberOfOpponentsAtFullRingTable below,
 	// as it might be that the user is not seated or user-chair not recognized
-	AssertRange(_nopponentsbetting,  0, k_max_number_of_players);
-	AssertRange(_nopponentsfolded,   0, k_max_number_of_players);
-	AssertRange(_nopponentschecking, 0, k_max_number_of_players);
+	AssertRange(_nopponentsbetting,  0, kMaxNumberOfPlayers);
+	AssertRange(_nopponentsfolded,   0, kMaxNumberOfPlayers);
+	AssertRange(_nopponentschecking, 0, kMaxNumberOfPlayers);
 }
 
 double CSymbolEngineRaisersCallers::RaisersBet()

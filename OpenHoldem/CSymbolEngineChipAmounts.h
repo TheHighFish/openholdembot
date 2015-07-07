@@ -44,13 +44,13 @@ public:
 public:
 	double stack(int nth_best) {
 		assert(nth_best >= 0);
-		assert(nth_best < k_max_number_of_players);
+		assert(nth_best < kMaxNumberOfPlayers);
 		return _stack[nth_best];
 	}
 
 	double stacks_at_hand_start(const int chair) { 
 		assert((chair >= 0) || (chair == kUndefined));
-		assert(chair < k_max_number_of_players);
+		assert(chair < kMaxNumberOfPlayers);
 		if (chair == kUndefined)	{
 			return 0;
 		}
@@ -92,10 +92,10 @@ public:
  private:			
 	double _maxbalance;
 	double _balanceatstartofsession;
-	double _stack[k_max_number_of_players];	
+	double _stack[kMaxNumberOfPlayers];	
  private:
 	// Used in ICM calculator - ICM needs stacks at beginning of hand
-	double _stacks_at_hand_start[k_max_number_of_players];	
+	double _stacks_at_hand_start[kMaxNumberOfPlayers];	
 	double _pot;
 	double _potcommon;
 	double _potplayer;

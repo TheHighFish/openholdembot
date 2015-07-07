@@ -81,7 +81,7 @@ void CSymbolEngineChairs::ResetOnHeartbeat() {
 void CSymbolEngineChairs::CalculateOpponentHeadsupChair(){
   _opponent_headsup_chair = kUndefined;
 	if (p_symbol_engine_active_dealt_playing->nopponentsplaying() > 1) return;
-	for (int i = 0; i < k_max_number_of_players; ++i)	{
+	for (int i = 0; i < kMaxNumberOfPlayers; ++i)	{
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->opponentsplayingbits(), i)) {
       _opponent_headsup_chair = i;
       return;
