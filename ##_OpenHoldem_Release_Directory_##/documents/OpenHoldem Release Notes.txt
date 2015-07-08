@@ -1,4 +1,4 @@
-v7.7.5 2015-07.08
+v7.7.5 2015-07-08
 ==================
 NEW STUFF:
 - New hopper function f$rematch.
