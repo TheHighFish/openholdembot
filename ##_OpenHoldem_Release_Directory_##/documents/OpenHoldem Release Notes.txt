@@ -26,9 +26,11 @@ BUG FIXES:
 - nplayersdealt: the "smart" logic to guess some active players without cards as dealt could fail on garbage input.
   Now we do simple calculations first. Thanks to Shank_17 for reporting.
   [THF]
+- Fixed srankbitscommon that affected OOPL-symbols HaveNutFlush(Draw) etc.
+  [FqFq]  
   
 MAINTENANCE:
-- Improve3d betsize adjustment.
+- Improved betsize adjustment.
   Thanks to Tabo_ger for reporting a special case.
   [FqFq, THF]
 - Improved decision locking for istournament.
