@@ -160,6 +160,7 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
     // This case deserves specdial attention, because big-blind
     // might be not a multiple of smallblind, e.g $2/$5
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=18592
+    result = amount_to_raise_to;
     write_log(preferences.debug_betsize_adjustment(),
       "[SwagAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is a multiple of big-blind\n");
     // But don~t return anzthing here.
