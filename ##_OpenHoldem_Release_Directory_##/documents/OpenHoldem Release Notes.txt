@@ -1,3 +1,9 @@
+v7.7.6 2015-07-09
+==================
+BUG FIXES:
+- Improved betsize adjustment did not work when the betsize was already a multiple of the big blind.
+  [poker_dog]
+
 v7.7.5 2015-07-08
 ==================
 NEW STUFF:
