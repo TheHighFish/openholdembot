@@ -513,7 +513,7 @@ bool CAutoplayer::DoSwag(void) {
     }
 		int success = p_casino_interface->EnterBetsize(betsize);
 		if (success) {
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f entered\n",
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;

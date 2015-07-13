@@ -275,8 +275,8 @@ void CCasinoInterface::DeleteSwagText()
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text deletion; calling keyboard.dll to press 'backspace'\n");
 		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
 	}
-	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING)
-	{}
+	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING) {
+  }
 }
 
 bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
@@ -288,26 +288,21 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSwag...\n");
 
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
-	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)
-	{
+	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)	{
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (no edit field or no i3button).\n");
 		return false;
 	}
-
-	SelectSwagText();
-
-	// First sleep(), THEN check for stolen focus, then act
+  SelectSwagText();
+  // First sleep(), THEN check for stolen focus, then act
 	//  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
-
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
+  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
 	Sleep(preferences.swag_delay_1()); 
 	// Check for stolen , and thus misswag
 	if (TableLostFocus()) {
 		lost_focus = true;
   }
 	DeleteSwagText();
-
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
+  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
 	Sleep(preferences.swag_delay_2());
 	// Check for stolen focus, and thus misswag
 	if (TableLostFocus()) {
@@ -316,6 +311,9 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	// SWAG AMOUNT ENTRY
 	double swag_adjusted = AdjustedBetsize(total_betsize_in_dollars);
 	swag_amt = Number2CString(swag_adjusted);
+  // Also adapt f$betsize for correct logging later-on
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18648
+  p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, swag_adjusted);
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount (not adjusted): %.2f\n", total_betsize_in_dollars);
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Swag amount; calling keyboard.dll to swag (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);

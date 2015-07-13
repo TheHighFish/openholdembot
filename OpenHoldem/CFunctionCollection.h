@@ -26,6 +26,7 @@
 class CFunctionCollection: public CVirtualSymbolEngine {
   friend class CFormulaParser;
   friend class CAutoplayerFunctions;
+  friend class CCasinoInterface;
  public:
   CFunctionCollection();
   ~CFunctionCollection();
