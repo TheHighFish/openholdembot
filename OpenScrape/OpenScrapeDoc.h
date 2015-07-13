@@ -31,11 +31,11 @@ char * const s$strings[num_s$strings] =
 	  "ttlimits7", "ttlimits8", "ttlimits9", 
 	  "c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
 	  "c0limits8", "c0limits9", 
-	  "sitename", "network", "nchairs", "chairconfig", "swagtextmethod", "potmethod",  
+	  "sitename", "network", "nchairs", "swagtextmethod", "potmethod",  
 	  "defaultlabels", "t0type", "t1type", "t2type", "t3type", 
 	  "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod", "buttonclickmethod", 
 	  "allinconfirmationmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
-	  "chipscrapemethod"};
+	  "chipscrapemethod", "cardscrapemethod"};
 
 int	const num_r$strings = 400;
 
