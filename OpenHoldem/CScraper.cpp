@@ -520,19 +520,33 @@ int CScraper::ScrapeNoCard(CString base_name){
 //   * ranks and suits
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
-  // First: in case of player cards try to scrape card-backs
-  // This hasd to be the very first one,
+  int result = CARD_UNDEFINED;
+  if (p_tablemap->cardscrapemethod() == 1) {
+    // Some casinos display additional cardbacks, 
+    // even if a player has card-faces
+    // For these casinos we have to scrape the faces first
+    // http!!!
+    // This order of scraping (faces, backs, nocard)
+    // always works, but has suboptimal performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) return result;
+  }
+  // In case of player cards always try to scrape card-backs
+  // becfore trying to scrape NO_CARD,
   // because some casinos use different locations for cardbacks and cards
-  // which would cause problems for the nocard-regioms
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17960
-  int result = ScrapeCardback(name);
+  result = ScrapeCardback(name);
   if (result == CARD_BACK) return CARD_BACK;
   // Then try to scrape "no card"
   result = ScrapeNoCard(name);
   if (result == CARD_NOCARD) return CARD_NOCARD;
-	// Then scrape "normal" cards (cardfaces) according to the specification
-	result = ScrapeCardface(name);
-  if (result != CARD_UNDEFINED) return result;
+	if (p_tablemap->cardscrapemethod() != 1) {
+    // If not already done so scrape card-faces
+    // This order of scraping (backs, nocard, faces)
+    // works for most casinos and has a very good performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) return result;
+  }
 	// Otherwise: try to scrape suits and ranks individually
   result = ScrapeCardByRankAndSuit(name);
   if (result != CARD_UNDEFINED) return result;
