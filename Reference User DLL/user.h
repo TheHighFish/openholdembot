@@ -54,7 +54,6 @@ USERDLL_API double process_message( const char* message, const void* param );
 double process_state(holdem_state* pstate);
 double process_query(const char* pquery);
 
-
 // ToDo by THF: move all this (and more) to an extra header,
 // care about initialization
 
@@ -66,9 +65,7 @@ extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 extern "C" __declspec(dllimport) char*  __stdcall GetHandnumberFromDll();
 
-
-double getsym(const char* name)	
-{ 
+double getsym(const char* name)	{ 
 	bool error_flag;
 	return GetSymbolFromDll(0, name, error_flag);
 }

@@ -47,9 +47,7 @@ holdem_state	m_holdem_state[256];
 unsigned char	m_ndx;
 ////////////////////////////////////
 
-
-double process_query( const char* pquery ) 
-{
+double process_query( const char* pquery ) {
 	if (pquery==NULL)
 		return 0;
 
@@ -71,27 +69,21 @@ double process_query( const char* pquery )
 	return 0;
 }
 
-double process_state( holdem_state* pstate ) 
-{
-	if (pstate!=NULL) {	m_holdem_state[ (++m_ndx)&0xff ] = *pstate; }
-
-	_cprintf("state: %d\n", m_ndx&0xff);
-
-	return 0;
-}
-
 /////////////////////////////////////////////////////
 // user.dll entry point
 /////////////////////////////////////////////////////
-USERDLL_API double process_message (const char* pmessage, const void* param) 
-{
+USERDLL_API double process_message (const char* pmessage, const void* param) {
 	if (pmessage==NULL) { return 0; }
 	if (param==NULL) { return 0; }
 
-	if (strcmp(pmessage,"state")==0) 
-	{ 
+	if (strcmp(pmessage,"state")==0) { 
 		holdem_state *state = (holdem_state*) param;
-
+    // Evaluate the sequence of holdem-states
+    // in your DLL-symbol-queries if needed.
+    // Don't call anz OPPL-symbols here,
+    // they are not properly initialized at this point of time.
+    // Don't do any difficult computations here!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
 #ifdef OPT_DEMO_OUTPUT
 		CString s; 
 		s.Format("<%s>\nPOTS: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\nCOMMON: %d %d %d %d %d\n%d %d %d\n<%s> %d %.2f %d", 
@@ -103,12 +95,9 @@ USERDLL_API double process_message (const char* pmessage, const void* param)
 			state->m_player[4].m_name, state->m_player[4].m_name_known, state->m_player[4].m_balance, state->m_player[4].m_balance_known);
 		MessageBox(NULL, s, "state", MB_OK);
 #endif OPT_DEMO_OUTPUT
-
-		return process_state( (holdem_state*)param ); 
 	}
 
-	if (strcmp(pmessage,"query")==0) 
-	{ 
+	if (strcmp(pmessage,"query")==0) { 
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, (LPCSTR) param, "query", MB_OK);
 #endif OPT_DEMO_OUTPUT
@@ -116,15 +105,13 @@ USERDLL_API double process_message (const char* pmessage, const void* param)
 		return process_query( (const char*)param ); 
 	}
 
-	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "load")==0) 
-	{ 
+	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "load")==0) { 
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT
 	}
 
-	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "unload")==0) 
-	{ 
+	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "unload")==0) { 
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT
@@ -134,10 +121,8 @@ USERDLL_API double process_message (const char* pmessage, const void* param)
 }
 /////////////////////////////////////////////////////
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) 
-{
-    switch (ul_reason_for_call)	
-	{
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+  switch (ul_reason_for_call)	{
 		case DLL_PROCESS_ATTACH:
 			AllocConsole();
 			break;
@@ -149,5 +134,5 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 			FreeConsole();
 			break;
     }
-    return TRUE;
+  return TRUE;
 }
