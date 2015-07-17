@@ -54,6 +54,7 @@ double MaximumPossibleBetsizeBecauseOfBalance() {
 	if (maximum_betsize <= 0) {
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
     write_log(k_always_log_errors, "[SwagAdjustment] Invalid balance and bet. Sum <= 0.\n");
+    maximum_betsize = kUndefinedZero;
   }
 	write_log(preferences.debug_betsize_adjustment(), "[SwagAdjustment] MaximumPossibleBetsizeBecauseOfBalance %.2f\n",
 		maximum_betsize);
@@ -169,30 +170,45 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
     // Small numbers
     // Round to multiples of SB
     result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind());
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of SB %.2f\n", result);
   } else {
     // "Large" numbers
     // Round to multiples of BB
     result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of BB %.2f\n", result);
   }
   // whole numbers (larg numbers)
   if (result > 25000) {
     result = Rounding(result, 1000);
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of $1000 %.2f\n", result);
   } else if (result > 2500) {
     result = Rounding(result, 100);
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of $100 %.2f\n", result);
   } else if (result > 250) {
     result = Rounding(result, 10);
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of $10 %.2f\n", result);
   } else if (result > 20) {
     result = Rounding(result, 1);
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding to multiples of $1 %.2f\n", result);
   }  
   // Whole numbers (small),
   // but only if we want to bet more than 0.90.
   // Avoid rounding to 0.
   else if ((result > 0.90) && (abs(result - int(result) < 0.10))) {
     result = Rounding(result, 1);
+    write_log(preferences.debug_betsize_adjustment(),
+      "[SwagAdjustment] Rounding a little bit to nearest $1 %.2f\n", result);
   }
   write_log(preferences.debug_betsize_adjustment(),
     "[SwagAdjustment] RoundToBeautifulBetsize: %.2f rounded to %.2f\n",
     amount_to_raise_to, result);
+  assert(result > 0);
   return result;
 }
 
