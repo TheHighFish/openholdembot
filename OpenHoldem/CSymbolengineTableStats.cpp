@@ -139,7 +139,7 @@ int CSymbolEngineTableStats::NumberOfHandsStored() {
 }
 
 double CSymbolEngineTableStats::FlopTurnRiverPct(int betround) {
-  switch (BETROUND) {
+  switch (betround) {
     case kBetroundFlop:
       return SumUp(seen_flop) / SumUp(dealt_players);
     case kBetroundTurn:
@@ -150,7 +150,6 @@ double CSymbolEngineTableStats::FlopTurnRiverPct(int betround) {
       return kUndefinedZero;
   }
 }
-
 
 double CSymbolEngineTableStats::AvgBetsPf() {
 	return SumUp(bets_preflop) / NumberOfHandsStored();
