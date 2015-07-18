@@ -51,7 +51,6 @@ struct holdem_state {
 typedef double (*process_message_t)(const char* message, const void* param );
 USERDLL_API double process_message( const char* message, const void* param );
 
-double process_state(holdem_state* pstate);
 double process_query(const char* pquery);
 
 // ToDo by THF: move all this (and more) to an extra header,

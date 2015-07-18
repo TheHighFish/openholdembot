@@ -38,8 +38,7 @@ CDllExtension::~CDllExtension() {
 }
 
 void CDllExtension::PassStateToDll(const SHoldemState *pstate) {
-	if (_hmod_dll==NULL) return;
-	(_process_message) ("state", pstate);
+	//!!!!!!
 }
 
 void CDllExtension::Load(const char * path) {
