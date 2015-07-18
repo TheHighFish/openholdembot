@@ -69,4 +69,12 @@ extern "C" __declspec(dllexport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllexport) char*  __stdcall GetHandnumberFromDll();
 extern "C" __declspec(dllexport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 
+// Exported variables, imported by the DLL,
+// avoiding the message-mess of WinHoldem,
+// no longer sending any state-messages
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
+
+extern "C" __declspec(dllexport) SHoldemState  state[kNumberOfHoldemStatesForDLL];
+extern "C" __declspec(dllexport) unsigned char state_index;
+
 #endif INC_CDLLEXTENSION_H 

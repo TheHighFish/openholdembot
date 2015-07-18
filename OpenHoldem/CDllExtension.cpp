@@ -30,6 +30,13 @@
 
 CDllExtension		*p_dll_extension = NULL;
 
+// Exported variables, imported by the DLL,
+// avoiding the message-mess of WinHoldem,
+// no longer sending any state-messages
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
+SHoldemState  state[kNumberOfHoldemStatesForDLL];
+unsigned char state_index;
+
 CDllExtension::CDllExtension() {
 	_hmod_dll = NULL;
 }

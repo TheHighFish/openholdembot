@@ -205,7 +205,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// DLL - always send state
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
-	p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
+	//!!!!!p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer

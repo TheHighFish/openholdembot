@@ -64,6 +64,15 @@ extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
 extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
 extern "C" __declspec(dllimport) char*  __stdcall GetHandnumberFromDll();
 
+// Imported variables, exported by OpenHoldem
+// avoiding the message-mess of WinHoldem,
+// no longer sending any state-messages
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
+
+//!!!!!
+//extern "C" __declspec(dllimport) SHoldemState  state[kNumberOfHoldemStatesForDLL];
+//extern "C" __declspec(dllimport) unsigned char state_index;
+
 double getsym(const char* name)	{ 
 	bool error_flag;
 	return GetSymbolFromDll(0, name, error_flag);
