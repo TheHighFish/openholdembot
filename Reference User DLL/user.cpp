@@ -9,13 +9,13 @@
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
-// Required OpenHoldem version: 4.2.4
+// Required OpenHoldem version: 7.7.6
 //
 //******************************************************************************
 
 // Needs to be defined here, before #include "user.h"
-// to generate export-definitions and not inport-definitions
-#define USERDLL_EXPORTS
+// to generate proper export- and inport-definitions
+#define USER_DLL
 
 // #define OPT_DEMO_OUTPUT if you are a beginner 
 // who wants to see some message-boxes with output of game-states, etc.
@@ -33,73 +33,56 @@
 #include <atlstr.h>
 #endif OPT_DEMO_OUTPUT
 
-/////////////////////////////////////
-//card macros
-#define RANK(c)			(((c)>>4)&0x0f)
-#define SUIT(c)			(((c)>>0)&0x0f)
-#define ISCARDBACK(c)	((c)==0xff)
-#define ISUNKNOWN(c)	((c)==0)
-/////////////////////////////////////
+// Card macro
+#define RANK(c)       (((c)>>4)&0x0f)
+#define SUIT(c)       (((c)>>0)&0x0f)
+#define ISCARDBACK(c) ((c)==0xff)
+#define ISUNKNOWN(c)  ((c)==0)
 
-////////////////////////////////////
-//consecutive states
-holdem_state	m_holdem_state[256];
-unsigned char	m_ndx;
-////////////////////////////////////
-
+// process_query()
+//   Handling the lookup of dll$symbols
 double process_query( const char* pquery ) {
 	if (pquery==NULL)
 		return 0;
-
-	if (strncmp(pquery,"dll$test",8)==0)
-		return getsym("random");
-
-	if (strncmp(pquery,"dll$spend",9)==0)
-		return getsym("f$spend");
-
-	if (strncmp(pquery,"dll$recurse",11)==0)
-		return getsym("dll$mynumber");
-
-	if (strncmp(pquery,"dll$mynumber",12)==0)
+	if (strncmp(pquery,"dll$test",8)==0) {
+		return GetSymbol("random");
+  }
+	if (strncmp(pquery,"dll$spend",9)==0) {
+		return GetSymbol("f$spend");
+  }
+	if (strncmp(pquery,"dll$recurse",11)==0) {
+		return GetSymbol("dll$mynumber");
+  }
+	if (strncmp(pquery,"dll$mynumber",12)==0) {
 		return 12345.67;
-
-	if (strncmp(pquery,"dll$complex",11)==0)
-		return getsym("f$spend/25 * 1.1");
-
+  }
 	return 0;
 }
 
-/////////////////////////////////////////////////////
-// user.dll entry point
-/////////////////////////////////////////////////////
-USERDLL_API double process_message (const char* pmessage, const void* param) {
-	if (pmessage==NULL) { return 0; }
-	if (param==NULL) { return 0; }
+// OnLoad and OnUnload()
+//   called once and at the beginning of a session
+//   when the DLL gets loaded / unloaded
+//   Do initilization / finalization here.
 
-	if (strcmp(pmessage,"query")==0) { 
-#ifdef OPT_DEMO_OUTPUT
-		MessageBox(NULL, (LPCSTR) param, "query", MB_OK);
-#endif OPT_DEMO_OUTPUT
-
-		return process_query( (const char*)param ); 
-	}
-
-	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "load")==0) { 
+void OnLoad() {
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT
-	}
+}
 
-	if (strcmp(pmessage,"event")==0 && strcmp((const char *) param, "unload")==0) { 
+void OnUnload() {
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT
-	}
-
-	return 0;
 }
-/////////////////////////////////////////////////////
 
+// DLL entry point
+//   Technically required, but don't do anything here.
+//   Initializations belong into the OnLoad() function,
+//   where they get executed at run-time.
+//   Doing things here at load-time is a bad idea,
+//   as some functionalitz might not be properly initialized   
+//   (including error/handling).
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call)	{
 		case DLL_PROCESS_ATTACH:
