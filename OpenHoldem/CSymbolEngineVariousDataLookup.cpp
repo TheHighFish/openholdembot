@@ -78,7 +78,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   if (memcmp(name, "dll$", 4) == 0) {
     assert(p_dll_extension != NULL);
     if (p_dll_extension->IsLoaded()) {
-	    *result = (p_dll_extension->process_message()) ("query", name);
+	    *result = ProcessQuery(name);
     } else {
 	    *result = kUndefinedZero;
     }

@@ -67,6 +67,8 @@ struct holdem_state {
 // Functions implemented and exported by the DLL,
 // imported by OpenHoldem
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery);
+DLL_IMPLEMENTS void __stdcall DLLOnLoad();
+DLL_IMPLEMENTS void __stdcall DLLOnLoad();
 
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL
@@ -81,8 +83,8 @@ EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
 // avoiding the message-mess of WinHoldem,
 // no longer sending any state-messages
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
-EXE_IMPLEMENTS holdem_state  state[kNumberOfHoldemStatesForDLL];
-EXE_IMPLEMENTS int state_index;
+EXE_IMPLEMENTS extern holdem_state  state[kNumberOfHoldemStatesForDLL];
+EXE_IMPLEMENTS extern int state_index;
 
 #endif // _INC_USER_H
 

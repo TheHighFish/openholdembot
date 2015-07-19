@@ -24,6 +24,9 @@
 //   http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=11724
 //   (Same problem like the singletons in OpenHoldem.cpp)
 
+// Constants that are used in the DLL-interface
+// are defined there: user.h
+
 // Used for bit-calculations: 2^N
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
@@ -147,9 +150,6 @@ const int kNumberOfLastRecentlyUsedFilesInFileMenu = 4;
 
 // Number of (side)pots
 const int kMaxNumberOfPots = 10;
-
-// DLL
-const int kNumberOfHoldemStatesForDLL = 256;
 
 // Flags
 const int kNumberOfFlags = 20;

@@ -64,13 +64,13 @@ double process_query( const char* pquery ) {
 //   when the DLL gets loaded / unloaded
 //   Do initilization / finalization here.
 
-void OnLoad() {
+DLL_IMPLEMENTS void __stdcall DLLOnLoad() {
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT
 }
 
-void OnUnload() {
+DLL_IMPLEMENTS void __stdcall DLLOnUnLoad() {
 #ifdef OPT_DEMO_OUTPUT
 		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
 #endif OPT_DEMO_OUTPUT

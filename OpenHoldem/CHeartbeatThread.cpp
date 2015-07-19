@@ -203,11 +203,6 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	p_validator->ValidateGameState();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// DLL - always send state
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
-	//!!!!!p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
-
-	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
