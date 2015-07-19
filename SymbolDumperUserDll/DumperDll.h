@@ -62,12 +62,12 @@ double process_query(const char* pquery);
 #ifdef WIN32
 #ifndef OH_2
 // Functions exported by OpenHoldem
-extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
-extern "C" __declspec(dllimport) void   __stdcall SendChatMessageFomDll(const char *msg);
-extern "C" __declspec(dllimport) void*  __stdcall GetPhl1kFromDll();
-extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
-extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
-extern "C" __declspec(dllimport) char*  __stdcall GetHandnumberFromDll();
+extern "C" __declspec(dllimport) double __stdcall GetSymbol(const char* name);
+extern "C" __declspec(dllimport) void   __stdcall SendChatMessage(const char *msg);
+extern "C" __declspec(dllimport) void*  __stdcall GetPhl1k();
+extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326();
+extern "C" __declspec(dllimport) void   __stdcall WriteLog(char* fmt, ...);
+extern "C" __declspec(dllimport) char*  __stdcall GetHandnumber();
 #endif
 #endif
 
