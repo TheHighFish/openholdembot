@@ -34,8 +34,8 @@ CDllExtension		*p_dll_extension = NULL;
 // avoiding the message-mess of WinHoldem,
 // no longer sending any state-messages
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
-EXE_IMPLEMENTS extern holdem_state  state[kNumberOfHoldemStatesForDLL];
-EXE_IMPLEMENTS extern int state_index;
+holdem_state  state[kNumberOfHoldemStatesForDLL];
+int state_index;
 
 CDllExtension::CDllExtension() {
 	_hmod_dll = NULL;
@@ -91,7 +91,7 @@ void CDllExtension::Load(const char * path) {
 
 void CDllExtension::Unload(void) {
 	if (_hmod_dll==NULL) return;
-  DLLOnLoad();
+  DLLOnUnLoad();
   assert(p_iterator_thread != NULL);
 	p_iterator_thread->set_prw1326_useme(0);
 	if (FreeLibrary(_hmod_dll)) {
@@ -103,7 +103,7 @@ bool CDllExtension::IsLoaded() {
 	return _hmod_dll != NULL;
 }
 
-EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
+/*EXE_IMPLEMENTS*/ double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
 	CString	str = "";
 	str.Format("%s", name_of_single_symbol__not_expression);
 	if (strcmp (str, "cmd$recalc") == 0) {

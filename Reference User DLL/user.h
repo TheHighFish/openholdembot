@@ -22,11 +22,11 @@
 // Import and export directives
 // for use by this DLL and by OpenHoldem
 #ifdef USER_DLL
-#define DLL_IMPLEMENTS __declspec(dllexport)
-#define EXE_IMPLEMENTS __declspec(dllimport)
+#define DLL_IMPLEMENTS extern "C" __declspec(dllexport)
+#define EXE_IMPLEMENTS extern "C" __declspec(dllimport)
 #else
-#define DLL_IMPLEMENTS __declspec(dllimport)
-#define EXE_IMPLEMENTS __declspec(dllexport)
+#define DLL_IMPLEMENTS extern "C" __declspec(dllimport)
+#define EXE_IMPLEMENTS extern "C" __declspec(dllexport)
 #endif
 
 // Number of saved table-states
@@ -68,7 +68,7 @@ struct holdem_state {
 // imported by OpenHoldem
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery);
 DLL_IMPLEMENTS void __stdcall DLLOnLoad();
-DLL_IMPLEMENTS void __stdcall DLLOnLoad();
+DLL_IMPLEMENTS void __stdcall DLLOnUnLoad();
 
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL

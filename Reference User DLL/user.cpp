@@ -39,9 +39,9 @@
 #define ISCARDBACK(c) ((c)==0xff)
 #define ISUNKNOWN(c)  ((c)==0)
 
-// process_query()
+// ProcessQuery()
 //   Handling the lookup of dll$symbols
-double process_query( const char* pquery ) {
+DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	if (pquery==NULL)
 		return 0;
 	if (strncmp(pquery,"dll$test",8)==0) {
