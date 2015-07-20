@@ -9,68 +9,100 @@
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
+// DO NOT CHANGE ANYTHING IN THIS FILE!
+//   
+// This Header defines an interface
+// Functions and data-tzpes must exactly match.
+//
 //******************************************************************************
 
-#ifndef _user_h_
-#define _user_h_
+#ifndef _INC_USER_H
+#define _INC_USER_H
 
-#ifdef USERDLL_EXPORTS
-#define USERDLL_API __declspec(dllexport)
+// Import and export directives
+// for use by this DLL and by OpenHoldem
+#ifdef USER_DLL
+#define DLL_IMPLEMENTS extern "C" __declspec(dllexport)
+#define EXE_IMPLEMENTS extern "C" __declspec(dllimport)
 #else
-#define USERDLL_API __declspec(dllimport)
+#define DLL_IMPLEMENTS extern "C" __declspec(dllimport)
+#define EXE_IMPLEMENTS extern "C" __declspec(dllexport)
 #endif
 
-struct holdem_player {
-    char            m_name[16]          ;	//player name if known
-    double          m_balance           ;	//player balance 
-    double          m_currentbet        ;	//player current bet
-    unsigned char   m_cards[2]          ;	//player cards
+// Number of saved table-states
+// This number must not be changed, as we do a "& 0xFF"
+// at various places to normalize the index.
+const int kNumberOfHoldemStatesForDLL = 256;
 
-    unsigned char   m_name_known    : 1 ;	//0=no 1=yes
-    unsigned char   m_balance_known : 1 ;	//0=no 1=yes
-    unsigned char   m_fillerbits    : 6 ;	//filler bits
-    unsigned char   m_fillerbyte        ;	//filler bytes
+// SHoldemePlayer
+// used for sequence of 256 consequive table-states
+struct holdem_player {
+    char            m_name[16]          ;       //player name if known
+    double          m_balance           ;       //player balance 
+    double          m_currentbet        ;       //player current bet
+    unsigned char   m_cards[2]          ;       //player cards
+
+    unsigned char   m_name_known    : 1 ;       //0=no 1=yes
+    unsigned char   m_balance_known : 1 ;       //0=no 1=yes
+    unsigned char   m_fillerbits    : 6 ;       //filler bits
+    unsigned char   m_fillerbyte        ;       //filler bytes
 };
 
 struct holdem_state {
-    char            m_title[64]         ;	//table title
-    double          m_pot[10]           ;	//total in each pot
+    char            m_title[64]         ;       //table title
+    double          m_pot[10]           ;       //total in each pot
 
-    unsigned char   m_cards[5]          ;	//common cards
+    unsigned char   m_cards[5]          ;       //common cards
 
-    unsigned char   m_is_playing    : 1 ;	//0=sitting-out, 1=sitting-in
-    unsigned char   m_is_posting    : 1 ;	//0=autopost-off, 1=autopost-on
-    unsigned char   m_fillerbits    : 6 ;	//filler bits
+    unsigned char   m_is_playing    : 1 ;       //0=sitting-out, 1=sitting-in
+    unsigned char   m_is_posting    : 1 ;       //0=autopost-off, 1=autopost-on
+    unsigned char   m_fillerbits    : 6 ;       //filler bits
 
-    unsigned char   m_fillerbyte        ;	//filler byte
-    unsigned char   m_dealer_chair      ;	//0-9
+    unsigned char   m_fillerbyte        ;       //filler byte
+    unsigned char   m_dealer_chair      ;       //0-9
 
-    holdem_player   m_player[10]        ;	//player records
+    holdem_player   m_player[10]        ;       //player records
 };
 
-typedef double (*process_message_t)(const char* message, const void* param );
-USERDLL_API double process_message( const char* message, const void* param );
+// Functions implemented and exported by the DLL,
+// imported by OpenHoldem
+DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery);
+DLL_IMPLEMENTS void __stdcall DLLOnLoad();
+DLL_IMPLEMENTS void __stdcall DLLOnUnLoad();
 
-double process_state(holdem_state* pstate);
-double process_query(const char* pquery);
+// Functions implemented and exported by OpenHoldem,
+// imported by the DLL
+EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression);
+EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
+EXE_IMPLEMENTS void*  __stdcall GetPhl1k();
+EXE_IMPLEMENTS void*  __stdcall GetPrw1326();
+EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
+EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
 
+// Variables exported by OpenHoldem
+// avoiding the message-mess of WinHoldem,
+// no longer sending any state-messages
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
+EXE_IMPLEMENTS extern holdem_state  state[kNumberOfHoldemStatesForDLL];
+EXE_IMPLEMENTS extern int state_index;
 
-// ToDo by THF: move all this (and more) to an extra header,
-// care about initialization
+#endif // _INC_USER_H
 
-// Functions exported by OpenHoldem
-extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool& iserr);
-extern "C" __declspec(dllimport) void   __stdcall SendChatMessageFomDll(const char *msg);
-extern "C" __declspec(dllimport) void*  __stdcall GetPhl1kFromDll();
-extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326FromDll();
-extern "C" __declspec(dllimport) void   __stdcall WriteLogFromDll(char* fmt, ...);
-extern "C" __declspec(dllimport) char*  __stdcall GetHandnumberFromDll();
+/*
+struct holdem_player {
+  char   _name[16];          
+  double _balance;          
+  double _currentbet;        
+  int    _cards[2];            
+};
 
-
-double getsym(const char* name)	
-{ 
-	bool error_flag;
-	return GetSymbolFromDll(0, name, error_flag);
-}
-
-#endif
+struct holdem_state {
+  char   _title[64]; 
+  double _pot[10];           
+  int    _cards[5];          
+  bool   _is_playing;    
+  bool   _is_posting;    
+  int    _dealer_chair;      
+  holdem_player _player[10];        
+};
+*/

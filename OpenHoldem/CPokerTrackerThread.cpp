@@ -18,6 +18,7 @@
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
+#include "CDllExtension.h"
 #include "CGameState.h"
 #include "CLevDistance.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
@@ -201,6 +202,8 @@ bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
 	return true;
 }
 
+#define LAST_STATE state[(state_index-1)&0xff]
+
 /* Returns true if found an appropriate name in the DB for chr, or false if 
    it did not found such name.*/
 bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
@@ -216,15 +219,13 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() chair = %i\n", chair);
 	
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
-	{
+	if (LAST_STATE.m_player[chair].m_name_known == 0)	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() No name known for this chair\n");
 		return false;
 	}
 
-	if (strlen(p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name) <= kMaxLengthOfPlayername)
-	{
-		strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	if (strlen(LAST_STATE.m_player[chair].m_name) <= kMaxLengthOfPlayername) 	{
+		strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, LAST_STATE.m_player[chair].m_name);
 	}
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
@@ -270,21 +271,13 @@ bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 	memset(oh_scraped_name, 0, kMaxLengthOfPlayername);
 	memset(best_name, 0, kMaxLengthOfPlayername);
 	
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
-	{
-		return false;
-	}
-	strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	if (LAST_STATE.m_player[chair].m_name_known == 0) return false;
+	strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, LAST_STATE.m_player[chair].m_name);
 
-	if (NameLooksLikeBadScrape(oh_scraped_name))
-	{
-		return false;
-	}
-
+	if (NameLooksLikeBadScrape(oh_scraped_name))return false;
 	// We already have the name, and it has not changed since we last checked, so do nothing
 	if (_player_data[chair].found 
-		&& 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name))
-	{
+		  && 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name)) {
 		return false;
 	}
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Name changed for chair [%d] [%s] -> [%s]\n",

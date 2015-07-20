@@ -24,6 +24,7 @@
 #include "assert.h"
 #include "CAutoConnector.h"
 #include "CBetroundCalculator.h"
+#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -46,7 +47,7 @@
 CGameState			*p_game_state = NULL;
 
 CGameState::CGameState() {
-	_state_index = 0;
+	state_index = 0;
 }
 
 CGameState::~CGameState() {
@@ -69,36 +70,36 @@ void CGameState::CaptureState() {
 	char title[MAX_WINDOW_TITLE];
 	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
 
-	strncpy_s(_state[_state_index&0xff].m_title, 64, title, _TRUNCATE);
-	_state[_state_index&0xff].m_title[63] = '\0';
+	strncpy_s(state[state_index&0xff].m_title, 64, title, _TRUNCATE);
+	state[state_index&0xff].m_title[63] = '\0';
 
 	// Pot information
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
-		_state[_state_index&0xff].m_pot[i] = p_table_state->_pot[i];
+		state[state_index&0xff].m_pot[i] = p_table_state->_pot[i];
   }
 	// Common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
     int common_card = p_table_state->_common_cards[i].GetValue();
     write_log(preferences.debug_dll_extension(), 
       "[CGameState] Common card %i = %i\n", i, common_card);
-		_state[_state_index&0xff].m_cards[i] = common_card;
+		state[state_index&0xff].m_cards[i] = common_card;
 	}
 
 	// playing, posting, dealerchair
 	int sym_dealerchair = p_symbol_engine_dealerchair->dealerchair();
 	bool sym_isautopost = p_symbol_engine_autoplayer->isautopost();
-	_state[_state_index&0xff].m_is_playing = playing;
-	_state[_state_index&0xff].m_is_posting = sym_isautopost;
-	_state[_state_index&0xff].m_fillerbits = 0;
-	_state[_state_index&0xff].m_fillerbyte = 0;
-	_state[_state_index&0xff].m_dealer_chair = sym_dealerchair;
+	state[state_index&0xff].m_is_playing = playing;
+	state[state_index&0xff].m_is_posting = sym_isautopost;
+	state[state_index&0xff].m_fillerbits = 0;
+	state[state_index&0xff].m_fillerbyte = 0;
+	state[state_index&0xff].m_dealer_chair = sym_dealerchair;
 
 	// loop through all 10 player chairs
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     // player name, balance, currentbet
-    strncpy_s(_state[_state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i]._name.GetString(), _TRUNCATE);
-    _state[_state_index&0xff].m_player[i].m_balance = p_table_state->_players[i]._balance;
-		_state[_state_index&0xff].m_player[i].m_currentbet = p_table_state->_players[i]._bet;
+    strncpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i]._name.GetString(), _TRUNCATE);
+    state[state_index&0xff].m_player[i].m_balance = p_table_state->_players[i]._balance;
+		state[state_index&0xff].m_player[i].m_currentbet = p_table_state->_players[i]._bet;
 
 		// player cards
 		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
@@ -106,41 +107,41 @@ void CGameState::CaptureState() {
       int card = player_card.GetValue();
       write_log(preferences.debug_dll_extension(),
         "[CGameState] Plazer card [%i][%i] = %i\n", i, j, card);
-			_state[_state_index&0xff].m_player[i].m_cards[j] = card;
+			state[state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 
 		// player name known, balance known
-		_state[_state_index&0xff].m_player[i].m_name_known = p_scraper_access->IsGoodPlayername(i);
-		_state[_state_index&0xff].m_player[i].m_balance_known = true;
-		_state[_state_index&0xff].m_player[i].m_fillerbits = 0;
-		_state[_state_index&0xff].m_player[i].m_fillerbyte = 0;
+		state[state_index&0xff].m_player[i].m_name_known = p_scraper_access->IsGoodPlayername(i);
+		state[state_index&0xff].m_player[i].m_balance_known = true;
+		state[state_index&0xff].m_player[i].m_fillerbits = 0;
+		state[state_index&0xff].m_player[i].m_fillerbyte = 0;
 	}
-  _state_index++;
+  state_index++;
 }
 
 void CGameState::DumpState(void) {
-	write_log(preferences.debug_alltherest(), "[CGameState] m_ndx: %d\n", _state_index);
-	write_log(preferences.debug_alltherest(), "[CGameState] _title: %s\n", _state[(_state_index)&0xff].m_title);
+	write_log(preferences.debug_alltherest(), "[CGameState] m_ndx: %d\n", state_index);
+	write_log(preferences.debug_alltherest(), "[CGameState] _title: %s\n", state[(state_index)&0xff].m_title);
 	write_log(preferences.debug_alltherest(), "[CGameState] _pot: %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n", 
-    _state[(_state_index)&0xff].m_pot[0], _state[(_state_index)&0xff].m_pot[1],
-		_state[(_state_index)&0xff].m_pot[2], _state[(_state_index)&0xff].m_pot[3], 
-    _state[(_state_index)&0xff].m_pot[4], _state[(_state_index)&0xff].m_pot[5], 
-    _state[(_state_index)&0xff].m_pot[6], _state[(_state_index)&0xff].m_pot[7],
-		_state[(_state_index)&0xff].m_pot[8], _state[(_state_index)&0xff].m_pot[9]);
+    state[(state_index)&0xff].m_pot[0], state[(state_index)&0xff].m_pot[1],
+		state[(state_index)&0xff].m_pot[2], state[(state_index)&0xff].m_pot[3], 
+    state[(state_index)&0xff].m_pot[4], state[(state_index)&0xff].m_pot[5], 
+    state[(state_index)&0xff].m_pot[6], state[(state_index)&0xff].m_pot[7],
+		state[(state_index)&0xff].m_pot[8], state[(state_index)&0xff].m_pot[9]);
 	write_log(preferences.debug_alltherest(), "[CGameState] _cards: %d %d %d %d %d\n", 
-    _state[(_state_index)&0xff].m_cards[0], _state[(_state_index)&0xff].m_cards[1],
-		_state[(_state_index)&0xff].m_cards[2], _state[(_state_index)&0xff].m_cards[3], 
-    _state[(_state_index)&0xff].m_cards[4]);
-	write_log(preferences.debug_alltherest(), "[CGameState] _is_playing: %d\n", _state[(_state_index)&0xff].m_is_playing);
-	write_log(preferences.debug_alltherest(), "[CGameState] _is_posting: %d\n", _state[(_state_index)&0xff].m_is_posting);
-	write_log(preferences.debug_alltherest(), "[CGameState] _dealer_chair: %d\n", _state[(_state_index)&0xff].m_dealer_chair);
+    state[(state_index)&0xff].m_cards[0], state[(state_index)&0xff].m_cards[1],
+		state[(state_index)&0xff].m_cards[2], state[(state_index)&0xff].m_cards[3], 
+    state[(state_index)&0xff].m_cards[4]);
+	write_log(preferences.debug_alltherest(), "[CGameState] _is_playing: %d\n", state[(state_index)&0xff].m_is_playing);
+	write_log(preferences.debug_alltherest(), "[CGameState] _is_posting: %d\n", state[(state_index)&0xff].m_is_posting);
+	write_log(preferences.debug_alltherest(), "[CGameState] _dealer_chair: %d\n", state[(state_index)&0xff].m_dealer_chair);
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
-		write_log(preferences.debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, _state[(_state_index)&0xff].m_player[i].m_name);
-		write_log(preferences.debug_alltherest(), "[CGameState] _balance:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_balance);
-		write_log(preferences.debug_alltherest(), "[CGameState] _currentbet:%.2f  ", _state[(_state_index)&0xff].m_player[i].m_currentbet);
-		write_log(preferences.debug_alltherest(), "[CGameState] _cards:%d/%d  ", _state[(_state_index)&0xff].m_player[i].m_cards[0],
-			_state[(_state_index)&0xff].m_player[i].m_cards[1]);
-		write_log(preferences.debug_alltherest(), "[CGameState] _name_known:%d  ", _state[(_state_index)&0xff].m_player[i].m_name_known);
-		write_log(preferences.debug_alltherest(), "[CGameState] _balance_known:%d\n", _state[(_state_index)&0xff].m_player[i].m_balance_known);
+		write_log(preferences.debug_alltherest(), "[CGameState] _player[%d].m_name:%s  ", i, state[(state_index)&0xff].m_player[i].m_name);
+		write_log(preferences.debug_alltherest(), "[CGameState] _balance:%.2f  ", state[(state_index)&0xff].m_player[i].m_balance);
+		write_log(preferences.debug_alltherest(), "[CGameState] _currentbet:%.2f  ", state[(state_index)&0xff].m_player[i].m_currentbet);
+		write_log(preferences.debug_alltherest(), "[CGameState] _cards:%d/%d  ", state[(state_index)&0xff].m_player[i].m_cards[0],
+			state[(state_index)&0xff].m_player[i].m_cards[1]);
+		write_log(preferences.debug_alltherest(), "[CGameState] _name_known:%d  ", state[(state_index)&0xff].m_player[i].m_name_known);
+		write_log(preferences.debug_alltherest(), "[CGameState] _balance_known:%d\n", state[(state_index)&0xff].m_player[i].m_balance_known);
 	}
 }
