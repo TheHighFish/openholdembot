@@ -35,25 +35,6 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();;
  public:
-	int raischair()	{ return _raischair; }
-	int raisbits(int betround) {
-		if ((betround >= kBetroundPreflop)
-			  && (betround <= kBetroundRiver)) {
-			return _raisbits[betround];
-		}	else {
-			return kUndefined;
-		}
-	}
- public:
-	int foldbits(int betround) {
-		if ((betround >= kBetroundPreflop)
-			  && (betround <= kBetroundRiver)) {
-			return _foldbits[betround];
-		}	else {
-			return kUndefined;
-		}
-	}
- public:
 	int callbits(int betround) {
 		if ((betround >= kBetroundPreflop)
 			  && (betround <= kBetroundRiver)) {
@@ -63,40 +44,15 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
 		}
 	}
  public:
-	int nplayerscallshort()			{ return _nplayerscallshort; }
-	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
-	int nopponentsbetting()			{ return _nopponentsbetting; }
-	int nopponentsfolded()			{ return _nopponentsfolded; }
 	int nopponentscalling()			{ return _nopponentscalling; }
-	int nopponentschecking()		{ return _nopponentschecking; }
  private:
-	void CalculateRaisers();
 	void CalculateCallers();
-	void CalculateFoldBits();
-	void CalculateNOpponentsCheckingBettingFolded();
  private:
-	int FirstPossibleRaiser();
-	int LastPossibleRaiser();
- private:
-	double RaisersBet();
-	double LastOrbitsLastRaisersBet();
- private:
-  int LastRaised(const int round);
- private:
-	int _raischair;
-	int _nplayerscallshort;
-	int _nopponentsbetting;
-	int _nopponentstruelyraising;
-	int _nopponentsfolded;
 	int _nopponentscalling;
-	int _nopponentschecking;
  private:
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
-	int _raisbits[kNumberOfBetrounds + 1];
-	int _foldbits[kNumberOfBetrounds + 1];
 	int _callbits[kNumberOfBetrounds + 1]; 
-  int _lastraised[kNumberOfBetrounds + 1]; 
 };
 
 extern CSymbolEngineCallers *p_symbol_engine_callers;
