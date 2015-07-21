@@ -205,6 +205,7 @@
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CScrapedActionInterface.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
+    <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
@@ -214,6 +215,7 @@
     <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
+    <ClCompile Include="CSymbolEngineRaisers.cpp" />
     <ClCompile Include="CSymbolengineTableStats.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
@@ -315,7 +317,6 @@
     <ClCompile Include="CSymbolEnginePokerval.cpp" />
     <ClCompile Include="CSymbolEnginePositions.cpp" />
     <ClCompile Include="CSymbolEnginePrwin.cpp" />
-    <ClCompile Include="CSymbolEngineRaisersCallers.cpp" />
     <ClCompile Include="CSymbolEngineRandom.cpp" />
     <ClCompile Include="CSymbolEngineReplayFrameController.cpp" />
     <ClCompile Include="CSymbolEngineTableLimits.cpp" />
@@ -479,6 +480,7 @@
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CScrapedActionInterface.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
+    <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
@@ -488,6 +490,7 @@
     <ClInclude Include="CSymbolengineMTTInfo.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
+    <ClInclude Include="CSymbolEngineRaisers.h" />
     <ClInclude Include="CSymbolengineTableStats.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
@@ -567,7 +570,6 @@
     <ClInclude Include="CSymbolEnginePokerval.h" />
     <ClInclude Include="CSymbolEnginePositions.h" />
     <ClInclude Include="CSymbolEnginePrwin.h" />
-    <ClInclude Include="CSymbolEngineRaisersCallers.h" />
     <ClInclude Include="CSymbolEngineRandom.h" />
     <ClInclude Include="CSymbolEngineReplayFrameController.h" />
     <ClInclude Include="CSymbolEngineTableLimits.h" />

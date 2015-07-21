@@ -22,7 +22,7 @@
 #include "CSymbolEngineChairs.h"
 #include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineIsRush.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
@@ -193,7 +193,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	assert(StringAIsPrefixOfStringB("pt_", s));
 	// PokerTracker symbols for the raise-chair
 	if (s.Right(10) == "_raischair") {
-		chair = p_symbol_engine_raisers_callers->raischair();
+		chair = p_symbol_engine_raisers->raischair();
 	}
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup") {

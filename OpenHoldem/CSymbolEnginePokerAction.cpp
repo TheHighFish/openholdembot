@@ -20,7 +20,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 
 CSymbolEnginePokerAction *p_symbol_engine_poker_action = NULL;
 
@@ -32,7 +32,7 @@ CSymbolEnginePokerAction::CSymbolEnginePokerAction() {
   assert(p_symbol_engine_chip_amounts != NULL);
   assert(p_symbol_engine_dealerchair != NULL);
   assert(p_symbol_engine_positions != NULL);
-  assert(p_symbol_engine_raisers_callers != NULL);
+  assert(p_symbol_engine_raisers != NULL);
 }
 
 CSymbolEnginePokerAction::~CSymbolEnginePokerAction() {
@@ -312,9 +312,9 @@ const bool CSymbolEnginePokerAction::AgchairAfter() {
 	{
 		return false;
 	}
-	if (p_symbol_engine_raisers_callers->raischair() >=0 )
+	if (p_symbol_engine_raisers->raischair() >=0 )
 	{
-		return (BetPosition(p_symbol_engine_raisers_callers->raischair()) > p_symbol_engine_positions->betposition());
+		return (BetPosition(p_symbol_engine_raisers->raischair()) > p_symbol_engine_positions->betposition());
 	}
 	else
 	{
