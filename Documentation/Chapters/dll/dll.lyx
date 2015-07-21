@@ -135,14 +135,14 @@ status open
 
 \begin_layout Plain Layout
 
-extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const
- int chair, const char* name, bool& iserr); 
+extern "C" __declspec(dllimport) double __stdcall GetSymbol(const char*
+ name); 
 \end_layout
 
 \begin_layout Plain Layout
 
-extern "C" __declspec(dllimport) void __stdcall SendChatMessageFomDll(const
- char *msg); 
+extern "C" __declspec(dllimport) void __stdcall SendChatMessage(const char
+ *msg); 
 \end_layout
 
 \begin_layout Plain Layout
@@ -152,13 +152,13 @@ extern "C" __declspec(dllimport) void* __stdcall GetPhl1kFromDll();
 
 \begin_layout Plain Layout
 
-extern "C" __declspec(dllimport) void* __stdcall GetPrw1326FromDll(); 
+extern "C" __declspec(dllimport) void* __stdcall GetPrw1326(); 
 \end_layout
 
 \begin_layout Plain Layout
 
-extern "C" __declspec(dllimport) void __stdcall WriteLogFromDll(char* fmt,
- ...); extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll();
+extern "C" __declspec(dllimport) void __stdcall WriteLog(char* fmt, ...); extern
+ "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll();
 \end_layout
 
 \end_inset
@@ -191,33 +191,6 @@ Again linking happens at load-time, so the DLL-interface is ready for cooperatio
 n right from the start.
  Contrary to WinHoldem and early versions of OpenHoldem no function-pointer
  get exchanged at run-time, so a very error-prone mechanism could get removed.
-\end_layout
-
-\begin_layout Standard
-OpenHoldem will send or request information from the DLL when needed, and
- it is up to the DLL’s author to process these requests.
- The exported library function process_message is used for this interface
- and has the following prototype:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-USERDLL_API double process_message (const char* pmessage, const void* param);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The various messages that can be passed in the “pmessage” parameter are
- as follows: pmessage meaning and parameters state 
 \end_layout
 
 \begin_layout Subsubsection
