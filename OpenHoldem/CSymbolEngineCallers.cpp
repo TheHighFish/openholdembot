@@ -78,7 +78,6 @@ void CSymbolEngineCallers::ResetOnNewRound() {
 
 void CSymbolEngineCallers::ResetOnMyTurn() {
 	CalculateCallers();
-  CalculateCallerChairs();
 }
 
 void CSymbolEngineCallers::ResetOnHeartbeat() {
@@ -89,54 +88,36 @@ void CSymbolEngineCallers::CalculateCallers() {
 	//
 	// nopponentscalling is "difficult" to calculate 
   // and has to work only when it is our turn.
-  // Then we can simply start searching after the userchair
+  // Then we can simply start searching after the userchair 
+  // (or dealer on first action preflop)
 	// and do a circular search for callers.
   _nopponentscalling = 0;
-  int first_bettor = p_symbol_engine_userchair->userchair();
-	double current_bet = p_table_state->_players[first_bettor]._bet;
-	for (int i=first_bettor+1; 
-		  i<=first_bettor+p_tablemap->nchairs()-1; 
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
+	double current_bet = FirstPossibleRaisersBet();
+	for (int i=FirstPossibleCaller(); 
+		  (i%_nchairs)!=USER_CHAIR; 
 		  ++i) {
-		int chair = i%p_tablemap->nchairs();
+		int chair = i % _nchairs;
     	// Exact match required. Players being allin don't count as callers.
 		if ((p_table_state->_players[chair]._bet == current_bet) 
         && (current_bet > 0)) {
 			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
-			_nopponentscalling++;
+      ++_nopponentscalling;
+      // We have a caller, at least the temporary last one
+      _lastcaller_chair = chair;
+      if (_firstcaller_chair == kUndefined) {
+        // We found the first caller
+        _firstcaller_chair = chair;
+      }
 		}
 		else if (p_table_state->_players[chair]._bet > current_bet) {
 			current_bet = p_table_state->_players[chair]._bet;
 		}
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
-	AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
-}
-
-void CSymbolEngineCallers::CalculateCallerChairs() {
-  _firstcaller_chair = kUndefined;
-  _lastcaller_chair = kUndefined;
-  double last_raisers_bet = p_table_state->User()->_bet;
-  if ((p_betround_calculator->betround() == kBetroundPreflop) 
-      && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
-    // Avoid problems with so-called "blind-raisers"
-    last_raisers_bet = p_symbol_engine_tablelimits->bblind();
-  }
-  for (int i=1; i<_nchairs; ++i) {
-    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
-    double next_bet = p_table_state->_players[next_chair]._bet;
-    if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
-      // We have a caller, at least the temporary last one
-      _lastcaller_chair = next_chair;
-      if (_firstcaller_chair == kUndefined) {
-        // We found the first caller
-        _firstcaller_chair = next_chair;
-      } 
-    } else if (next_bet > last_raisers_bet) {
-      // New raiser found (necessary for potential new last_caller)
-      last_raisers_bet = next_bet; 
-    }
-  }
+  AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
 }
 
 int CSymbolEngineCallers::FirstPossibleCaller() {
