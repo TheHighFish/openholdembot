@@ -44,6 +44,7 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
   assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
+  assert(p_symbol_engine_history != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	// Also using p_symbol_engine_history one time,
@@ -136,6 +137,33 @@ void CSymbolEngineCallers::CalculateCallerChairs() {
       last_raisers_bet = next_bet; 
     }
   }
+}
+
+int CSymbolEngineCallers::FirstPossibleCaller() {
+  // First action preflop> the guy behind the dealer
+  if ((p_betround_calculator->betround() == kBetroundPreflop)
+      && !p_symbol_engine_history->DidAct()) {
+    return ((DEALER_CHAIR + 1) % _nchairs);
+  }
+  // Otherwise> the guy behind hero,
+  // searching a complete orbit from hero to hero.
+  return 0;
+}
+
+int CSymbolEngineCallers::LastPossibleCaller() {
+  // The guy before the user
+  return ((USER_CHAIR + _nchairs - 1) % _nchairs);
+}
+
+double CSymbolEngineCallers::FirstPossibleRaisersBet() {
+  double users_bet = p_table_state->User()->_bet;
+  if (users_bet >= p_symbol_engine_tablelimits->bblind()) {
+    return users_bet;
+  }
+  // Othewrwise> return something that is
+  //   * greater than 0 to avoid counting checkers as callers
+  //   * is smaller than BB to avoid counting the BB or a min-bettor as caller
+  return (0.9 * p_symbol_engine_tablelimits->bblind());
 }
 
 bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

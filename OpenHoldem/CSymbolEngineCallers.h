@@ -52,6 +52,10 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
   // Both first and last caller at once
   void CalculateCallerChairs();
  private:
+  int FirstPossibleCaller();
+  int LastPossibleCaller();
+  double FirstPossibleRaisersBet();
+ private:
 	int _nopponentscalling;
   int _firstcaller_chair;
   int _lastcaller_chair;
