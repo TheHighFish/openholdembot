@@ -44,15 +44,23 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
 		}
 	}
  public:
-	int nopponentscalling()			{ return _nopponentscalling; }
+	int nopponentscalling()   { return _nopponentscalling; }
+  int lastcaller_chair()    { return _lastcaller_chair;  }
+  int firstcaller_chair()   { return _firstcaller_chair; }
  private:
 	void CalculateCallers();
+  // Both first and last caller at once
+  void CalculateCallerChairs();
  private:
 	int _nopponentscalling;
+  int _firstcaller_chair;
+  int _lastcaller_chair;
  private:
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
 	int _callbits[kNumberOfBetrounds + 1]; 
+ private:
+  int _nchairs;
 };
 
 extern CSymbolEngineCallers *p_symbol_engine_callers;

@@ -58,6 +58,7 @@ void CSymbolEngineCallers::InitOnStartup() {
 }
 
 void CSymbolEngineCallers::ResetOnConnection() {
+  _nchairs = p_tablemap->nchairs();
 	ResetOnHandreset();
 }
 
@@ -70,10 +71,13 @@ void CSymbolEngineCallers::ResetOnHandreset() {
 }
 
 void CSymbolEngineCallers::ResetOnNewRound() {
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
 }
 
 void CSymbolEngineCallers::ResetOnMyTurn() {
 	CalculateCallers();
+  CalculateCallerChairs();
 }
 
 void CSymbolEngineCallers::ResetOnHeartbeat() {
@@ -108,6 +112,32 @@ void CSymbolEngineCallers::CalculateCallers() {
 	AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
 }
 
+void CSymbolEngineCallers::CalculateCallerChairs() {
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
+  double last_raisers_bet = p_table_state->User()->_bet;
+  if ((p_betround_calculator->betround() == kBetroundPreflop) 
+      && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
+    // Avoid problems with so-called "blind-raisers"
+    last_raisers_bet = p_symbol_engine_tablelimits->bblind();
+  }
+  for (int i=1; i<_nchairs; ++i) {
+    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
+    double next_bet = p_table_state->_players[next_chair]._bet;
+    if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
+      // We have a caller, at least the temporary last one
+      _lastcaller_chair = next_chair;
+      if (_firstcaller_chair == kUndefined) {
+        // We found the first caller
+        _firstcaller_chair = next_chair;
+      } 
+    } else if (next_bet > last_raisers_bet) {
+      // New raiser found (necessary for potential new last_caller)
+      last_raisers_bet = next_bet; 
+    }
+  }
+}
+
 bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17) {
@@ -118,13 +148,19 @@ bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = callbits(name[8]-'0');
     return true;
-  }	
+  } else if (memcmp(name, "firstcaller_chair", 17)==0) {
+		*result = _firstcaller_chair;
+		return true;
+	} else if (memcmp(name, "lastcaller_chair", 16)==0) {
+		*result = _lastcaller_chair;
+		return true;
+  }
 	// Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineCallers::SymbolsProvided() {
-  CString list = "nopponentscalling ";
+  CString list = "nopponentscalling firstcaller_chair lastcaller_chair ";
   list += RangeOfSymbols("callbits%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }
