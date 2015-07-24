@@ -19,7 +19,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineDealerchair.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "NumericalFunctions.h"
@@ -113,7 +113,7 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
     if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
 			_dealpositionrais++;
 		}
-		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
+		if (next_chair == p_symbol_engine_raisers->raischair()) break;	
 	}
 	AssertRange(_betpositionrais,  kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_dealpositionrais, kUndefined, kMaxNumberOfPlayers);
@@ -140,7 +140,7 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 		}
 	}
 
-	int raischair = p_symbol_engine_raisers_callers->raischair();
+	int raischair = p_symbol_engine_raisers->raischair();
 	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); i++) 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair)) 	{
