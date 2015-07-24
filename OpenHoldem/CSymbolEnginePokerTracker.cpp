@@ -19,10 +19,11 @@
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
+#include "CSymbolEngineCallers.h"
 #include "CSymbolEngineChairs.h"
 #include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineIsRush.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
@@ -193,7 +194,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	assert(StringAIsPrefixOfStringB("pt_", s));
 	// PokerTracker symbols for the raise-chair
 	if (s.Right(10) == "_raischair") {
-		chair = p_symbol_engine_raisers_callers->raischair();
+		chair = p_symbol_engine_raisers->raischair();
 	}
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup") {
@@ -213,11 +214,11 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	}
   // PokerTracker symbols for the firstcaller chair
 	else if (s.Right(12) == "_firstcaller") {
-    chair = p_symbol_engine_chairs->firstcaller_chair();
+    chair = p_symbol_engine_callers->firstcaller_chair();
 	}
   // PokerTracker symbols for the lastcaller chair
 	else if (s.Right(11) == "_lastcaller") {
-    chair = p_symbol_engine_chairs->lastcaller_chair();
+    chair = p_symbol_engine_callers->lastcaller_chair();
 	}
   // PokerTracker symbols for the firstraiser chair
 	else if (s.Right(12) == "_firstraiser") {

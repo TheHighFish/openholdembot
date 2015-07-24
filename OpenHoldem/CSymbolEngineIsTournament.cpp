@@ -24,7 +24,7 @@
 #include "CSymbolEngineCasino.h"
 #include "CSymbolengineMTTInfo.h"
 #include "CSymbolEngineChipAmounts.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -226,7 +226,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	// Antes are present, if all players are betting 
 	// and at least 3 have a bet smaller than SB 
 	// (remember: this is for the first few hands only).
-	if ((p_symbol_engine_raisers_callers->nopponentsbetting() + 1)
+	if ((p_symbol_engine_raisers->nopponentsbetting() + 1)
 		  < p_symbol_engine_active_dealt_playing->nplayersseated()) {
 		return false;
 	}

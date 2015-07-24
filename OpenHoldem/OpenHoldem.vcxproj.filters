@@ -450,9 +450,6 @@
     <ClCompile Include="CSymbolEnginePrwin.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
-    <ClCompile Include="CSymbolEngineRaisersCallers.cpp">
-      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolEngineRandom.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
@@ -733,6 +730,12 @@
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
     <ClCompile Include="CSymbolengineIsRush.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineCallers.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
+    <ClCompile Include="CSymbolEngineRaisers.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1177,9 +1180,6 @@
     <ClInclude Include="CSymbolEnginePrwin.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
-    <ClInclude Include="CSymbolEngineRaisersCallers.h">
-      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
-    </ClInclude>
     <ClInclude Include="CSymbolEngineRandom.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
@@ -1562,6 +1562,12 @@
       <Filter>Header Files\CTransform</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolEngineIsRush.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineCallers.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolEngineRaisers.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
