@@ -95,11 +95,12 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Connected to window %i\n", p_autoconnector->attached_hwnd());
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Table size: %ix%i\n", _table_size_x, _table_size_y);
 	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Desktop size: %ix%i\n", _desktop_rectangle.right, _desktop_rectangle.bottom); 
-	if (_number_of_tables == 1)	{
+  if (p_tablemap->islobby()) {
+	  assert(_number_of_tables == 1);	
 		// No other tables at the moment, 
 		// so we don't really have to care about overlaps.
 		// Moving this table to the top-left (0, 0) however,
-		// as the first "table" might be the lobby
+		// as the first "table" usually is the lobby
 		// and mouse-movements at the lobby are more reliable
 		// if relative lobby-coordinates are equal to absolute screen-coordinates
 		// and we don't have to care if the right window is active.

@@ -120,7 +120,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
-  } else {
+  } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
+    *result = p_tablemap->islobby();
+  } 
+  else {
     *result = kUndefined;
     return false;
   }
@@ -132,7 +135,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // e.g. "dll$, pl_chair$, ....
   CString list = "dll$ pl_ vs$ msgbox$ log$ "
     "betround fmax f flagbits "
-    "session version "
+    "session version islobby "
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;
