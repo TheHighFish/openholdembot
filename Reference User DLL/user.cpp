@@ -86,14 +86,18 @@ DLL_IMPLEMENTS void __stdcall DLLOnUnLoad() {
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call)	{
 		case DLL_PROCESS_ATTACH:
+#ifdef OPT_DEMO_OUTPUT
 			AllocConsole();
+#endif OPT_DEMO_OUTPUT
 			break;
 		case DLL_THREAD_ATTACH:
 			break;
 		case DLL_THREAD_DETACH:
 			break;
 		case DLL_PROCESS_DETACH:
+#ifdef OPT_DEMO_OUTPUT
 			FreeConsole();
+#endif OPT_DEMO_OUTPUT
 			break;
     }
   return TRUE;
