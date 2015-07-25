@@ -1,8 +1,15 @@
-v7.7.6 2015-07-09
+v7.7.6 2015-07-24
 ==================
 BUG FIXES:
 - Improved betsize adjustment did not work when the betsize was already a multiple of the big blind.
+  Thanks to Ngels and Salem for reporting.
   [poker_dog]
+- FirstCallerchair did not work properly.
+  Thanks to Fqfq for reporting and helping with the fix.
+  [THF]
+- The lookup for some table-stats considered only the current betround.
+  Thanks to Relhby for the patch.
+  [THF]
 
 v7.7.5 2015-07-08
 ==================

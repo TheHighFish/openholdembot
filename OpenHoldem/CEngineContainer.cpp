@@ -31,6 +31,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineCallers.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
@@ -56,7 +57,7 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTableStats.h"
@@ -151,9 +152,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineICM
   p_symbol_engine_icm = new CSymbolEngineICM();
   AddSymbolEngine(p_symbol_engine_icm);
-  // CSymbolEngineRaisersCallers
-  p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
-  AddSymbolEngine(p_symbol_engine_raisers_callers);
+  // CSymbolEngineRaisers
+  p_symbol_engine_raisers = new CSymbolEngineRaisers();
+  AddSymbolEngine(p_symbol_engine_raisers);
+  // CSymbolEngineCallers
+  p_symbol_engine_callers = new CSymbolEngineCallers();
+  AddSymbolEngine(p_symbol_engine_callers);
   // CSymbolEnginePokerTracker
   p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
   AddSymbolEngine(p_symbol_engine_pokertracker);
