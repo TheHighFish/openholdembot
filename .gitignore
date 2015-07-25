@@ -11,11 +11,11 @@
 *.user
 *.log
 *.tlog
-*.suo
 *.pch
 *.manifest
 *.lastbuildstate
 Debug
 Release
+Release - Optimized
 Documentation/OpenHoldem_Manual.chm
 
