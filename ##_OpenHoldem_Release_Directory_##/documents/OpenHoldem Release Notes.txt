@@ -1,3 +1,16 @@
+v7.7.7 2015-08-xx
+==================
+BUG FIXES:
+
+MAINTENANCE:
+- Swagging got removed.
+  The following tablemap-symbols got renamed:
+    * swagselectionmethod -> betsizeselectionmethod
+    * swagdeletionmethodmethod -> betsizedeletionmethodmethod
+    * swagconfirmationmethod -> betsizeconfirmationmethod
+    * swagtextmethod -> betsizeinterpretationmethod
+  [THF]
+
 v7.7.6 2015-07-24
 ==================
 BUG FIXES:
@@ -9,6 +22,11 @@ BUG FIXES:
   [THF]
 - The lookup for some table-stats considered only the current betround.
   Thanks to Relhby for the patch.
+  [THF]
+  
+MAINTENANCE:
+- Changed DLL interface.
+  For details see http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18675
   [THF]
 
 v7.7.5 2015-07-08
