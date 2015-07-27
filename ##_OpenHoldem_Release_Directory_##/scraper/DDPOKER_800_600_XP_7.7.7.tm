@@ -22,9 +22,9 @@ s$nchairs                   10
 s$network                   ddpoker
 s$potmethod                 2
 s$sitename                  ddpoker
-s$swagconfirmationmethod    Enter
-s$swagdeletionmethod        Delete
-s$swagtextmethod            2
+s$betsizeconfirmationmethod    Enter
+s$betsizedeletionmethod        Delete
+s$betsizeinterpretationmethod  2
 s$t0type                    0
 s$t1type                    0
 s$t2type                    0
