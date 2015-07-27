@@ -67,7 +67,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
     }
     ++_total_line_processed;
     // Avoid problems with "empty" lines before first function header
-    // that contain spaces.
+    // that  contain spaces.
     _next_line.TrimRight();
 #ifdef DEBUG_FORMULA_FILESPLITTER
     //printf("[CFormulaFileSplitter] next line: %s\n", _next_line);

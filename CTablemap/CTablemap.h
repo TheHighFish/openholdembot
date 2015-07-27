@@ -144,12 +144,12 @@ public:
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
 									                return (n>=2 && n<=10) ? n : 10; }
 	inline int LastChair()			       { return (nchairs() - 1); }
-	const int swagtextmethod()		     { return GetTMSymbol("swagtextmethod", 0); }
+	const int swagtextmethod()		     { return GetTMSymbol("betsizeinterpretationmethod", 0); }
 	const int potmethod()			         { return GetTMSymbol("potmethod", 0); }
 	const int allinconfirmationmethod(){ return GetTMSymbol("allinconfirmationmethod", 0); }
-	const int swagselectionmethod()    { return GetTMSymbol("swagselectionmethod", TEXTSEL_DOUBLECLICK); }
-	const int swagdeletionmethod()	   { return GetTMSymbol("swagdeletionmethod", TEXTDEL_DELETE); }
-	const int swagconfirmationmethod() { return GetTMSymbol("swagconfirmationmethod", BETCONF_ENTER); }
+	const int swagselectionmethod()    { return GetTMSymbol("betsizeselectionmethod", TEXTSEL_DOUBLECLICK); }
+	const int swagdeletionmethod()	   { return GetTMSymbol("betsizedeletionmethod", TEXTDEL_DELETE); }
+	const int swagconfirmationmethod() { return GetTMSymbol("betsizeconfirmationmethod", BETCONF_ENTER); }
 	const int buttonclickmethod()	     { return GetTMSymbol("buttonclickmethod", BUTTON_SINGLECLICK); }
 	const int betpotmethod()		       { return GetTMSymbol("betpotmethod", BETPOT_DEFAULT); }
 	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }

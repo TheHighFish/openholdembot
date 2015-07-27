@@ -126,7 +126,7 @@ double MaximumBetsizeForGameType() {
       "[SwagAdjustment] MaximumBetsizeForPotLimit: %.2f\n", maximum_betsize);
 	}	else if (p_symbol_engine_gametype->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
-			"[SwagAdjustment] Game-type is Fixed Limit. No \"swagging\" supported.\n");
+			"[SwagAdjustment] Game-type is Fixed Limit. No betsizing supported.\n");
 		maximum_betsize = 0;
 	}	else {
 		int userchair = p_symbol_engine_userchair->userchair();
