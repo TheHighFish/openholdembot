@@ -603,15 +603,7 @@ It may happen, that a certain action is not available, e.g.
 betsize invalid (too less or too much (PotLimit or more than your balance)):
  betsize gets automatically adapted.
  This happens also to actions like RaisePot and RaiseHalfPot, that get executed
- with the f$betsize-function (formerly known as 
-\begin_inset Quotes eld
-\end_inset
-
-f$swag
-\begin_inset Quotes erd
-\end_inset
-
-).
+ with the f$betsize-function.
 \end_layout
 
 \begin_layout Itemize

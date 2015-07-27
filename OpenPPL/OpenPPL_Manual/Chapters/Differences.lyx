@@ -951,18 +951,19 @@ Well, it depends on the casino.
 \end_layout
 
 \begin_layout Itemize
-at some casinos $90 will be your final betsize (RaiseTo, swagtextmethod
- = 3)
+at some casinos $90 will be your final betsize (RaiseTo, betsizeinterpretationme
+thod = 3)
 \end_layout
 
 \begin_layout Itemize
 other casinos will add $90 to the $10 you already posted, so the final betsize
- will be $100.(swagtextmethod = 2)
+ will be $100 (betsizeinterpretationmethod = 2).
 \end_layout
 
 \begin_layout Itemize
 and finally some other casinos will add these $90 to the $30 of the last
- raiser, so the final betsize will be $120 (RaiseBy, swagtextmethod = 1)
+ raiser, so the final betsize will be $120 (RaiseBy, betsizeinterpretationmethod
+  = 1)
 \end_layout
 
 \begin_layout Standard
@@ -1001,9 +1002,9 @@ However we don't like undefined behaviour and we don't want to keep multiple
  versions of our bots for different casinos either.
  Therefore we introduced 2 new commands: RaiseTo and RaiseBy.
  This way you can clearly specify what behaviour you want.
- You only have to specify the correct swagtextmethod in your tablemap to
- telll OpenHoldem how your casino behaves and OpenHoldem will care about
- all the rest.automatically.
+ You only have to specify the correct betsizeinterpretationmethod  in your
+ tablemap to telll OpenHoldem how your casino behaves and OpenHoldem will
+ care about all the rest.automatically.
 \end_layout
 
 \begin_layout Standard
