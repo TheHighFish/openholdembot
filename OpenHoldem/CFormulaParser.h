@@ -47,6 +47,7 @@ class CFormulaParser {
   void ParseFile(CArchive & formula_file);
  private:
   bool VerifyFunctionHeader(CString function_header);
+  bool VerifyFunctionNamingConventions(CString name);
   void ExpectMatchingBracketClose(int opening_bracket);
   bool ExpectConditionalThen();
   bool ExpectKeywordForce(int last_important_roken_ID);

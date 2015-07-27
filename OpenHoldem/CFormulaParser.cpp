@@ -178,7 +178,28 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
       "Expecting a ##f$function## here.\n");
     return false;
   }
-  return true;
+  return VerifyFunctionNamingConventions(_function_name);
+}
+
+bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
+  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+    // User-defined bot-logic
+    // Must be a f$-symbol
+    if (name.Left(2) == "f$") return true;
+  } else {
+    // OpenPPL-library
+    // Must start with upper cases
+    if (isupper(name[0])) return true;
+  }
+  CString message;
+  message.Format("Invalid function name: %s\n"
+    "Naming conventions:\n"
+    "  * Uppercases: OpenPPL-library\n"
+    "  * f$symbols: user-defined functions\n"
+    "  * lowercases: built-in OpenHoldem symbols\n",
+    name);
+  CParseErrors::Error(message);
+  return false;
 }
 
 bool CFormulaParser::ExpectConditionalThen() {
