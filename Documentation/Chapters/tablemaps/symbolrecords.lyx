@@ -625,7 +625,7 @@ raise
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagtextmethod 
+betsizeinterpretationmethod 
 \end_layout
 
 \end_inset
@@ -635,7 +635,7 @@ swagtextmethod
 
 \begin_layout Plain Layout
 Used by the Autoplayer to determine how to enter the f$betsize amount into
- the swag entry box on the casino window.
+ the betsize entry box on the casino window.
  This is necessary, as bets and raises get interpreted differently by different
  casinos.
  
@@ -756,7 +756,7 @@ The possible values for these symbols are "fuzzy", "plain", or a specific
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagselectionmethod 
+betsizeselectionmethod 
 \end_layout
 
 \end_inset
@@ -770,25 +770,25 @@ New Symbol in version 2.0; previously, this was a global preference set from
 \end_layout
 
 \begin_layout Plain Layout
-This symbol instructs the Autoplayer how to take the first action in a SWAG
+This symbol instructs the Autoplayer how to take the first action in a betsize
  sequence.
- A SWAG sequence always consists of: 
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
@@ -798,28 +798,28 @@ Valid values for this Symbol are available in a drop down control and are:
 \end_layout
 
 \begin_layout Itemize
-"Sgl Click" – Single left click on the SWAG box to select the existing text
- 
+"Sgl Click" – Single left click on the betsize box to select the existing
+ text 
 \end_layout
 
 \begin_layout Itemize
-"Dbl Click" – Double left click on the SWAG box to select the existing text
- 
+"Dbl Click" – Double left click on the betsize box to select the existing
+ text 
 \end_layout
 
 \begin_layout Itemize
-Triple Click' – Triple left click on the SWAG box to select the existing
+Triple Click' – Triple left click on the betsize box to select the existing
  text
 \end_layout
 
 \begin_layout Itemize
-"Click Drag" – Left click on the leftmost pixel of the SWAG box, drag to
- the rightmost pixel of the SWAG box, and then release the left mouse button
- to select the existing text 
+"Click Drag" – Left click on the leftmost pixel of the betsize box, drag
+ to the rightmost pixel of the betsize box, and then release the left mouse
+ button to select the existing text 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the text selection step of the SWAG action 
+"Nothing" – Skip the text selection step of the betsize action 
 \end_layout
 
 \begin_layout Plain Layout
@@ -834,7 +834,7 @@ Default: None, must be explicitly specified
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagdeletionmethod
+betsizedeletionmethod
 \end_layout
 
 \end_inset
@@ -846,44 +846,44 @@ swagdeletionmethod
 New Symbol in version 2.0; previously, this was a global preference set from
  the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the second action in a
- SWAG sequence.
- A SWAG sequence always consists of: 
+ betsize sequence.
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
 \begin_layout Plain Layout
-Valid values for this Symbol are available in a drop down control and are:
+Valid values for this symbol are available in a drop down control and are:
  
 \end_layout
 
 \begin_layout Itemize
-"Delete" – Press the “Delete” key to delete the selected text in the SWAG
+"Delete" – Press the “Delete” key to delete the selected text in the betsize
  box 
 \end_layout
 
 \begin_layout Itemize
 "Backspace" – Press the “Backspace” key to delete the selected text in the
- SWAG box 
+ betsize box 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the text deletion step of the SWAG action 
+"Nothing" – Skip the text deletion step of the betsize action 
 \end_layout
 
 \begin_layout Plain Layout
@@ -898,7 +898,7 @@ Default: None, must be explicitly specified
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagconfirmationmethod
+betsizeconfirmationmethod
 \end_layout
 
 \end_inset
@@ -910,24 +910,24 @@ swagconfirmationmethod
 New Symbol in version 2.0; previously, this was a global preference set from
  the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the fourth action in a
- SWAG sequence.
- A SWAG sequence always consists of: 
+ betsize sequence.
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
@@ -937,15 +937,15 @@ Valid values for this Symbol are available in a drop down control and are:
 \end_layout
 
 \begin_layout Itemize
-"Enter" – Press the “Enter” key to confirm the SWAG bet entry 
+"Enter" – Press the “Enter” key to confirm the betsize bet entry 
 \end_layout
 
 \begin_layout Itemize
-"Click Bet" – Click the “Bet” button to confirm the SWAG bet entry 
+"Click Bet" – Click the “Bet” button to confirm the betsize bet entry 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the bet confirmation step of the SWAG action
+"Nothing" – Skip the bet confirmation step of the betsize action
 \end_layout
 
 \begin_layout Plain Layout
@@ -1145,7 +1145,6 @@ Scraperdll
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-
 \begin_inset Text
 
 \begin_layout Plain Layout

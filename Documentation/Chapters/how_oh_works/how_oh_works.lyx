@@ -496,7 +496,7 @@ f$alli
 \end_inset
 
 f$alli function evaluates to non-zero, and an all-in control is present
- (slider/Swag box/allin-button), then move all-in .
+ (slider/betsize box/allin-button), then move all-in .
 \end_layout
 
 \begin_layout Enumerate

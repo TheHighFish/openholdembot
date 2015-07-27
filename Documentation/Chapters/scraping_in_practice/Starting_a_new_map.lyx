@@ -160,8 +160,9 @@ r$iXbutton, r$iXlabel and r$iXstate.
 \end_layout
 
 \begin_layout Itemize
-r$i3edit, s$swagconfirmationmethod, s$swagdeletionmethod, s$swagselectionmethod
- and s$swagtextmethod if you want to create a no-limit or pot-limit-map.
+r$i3edit, s$betsizeconfirmationmethod, s$betsizedeletionmethod, s$betsizeselecti
+onmethod and s$betsizeinterpretationmethod if you want to create a no-limit
+ or pot-limit-map.
 \end_layout
 
 \begin_layout Standard
