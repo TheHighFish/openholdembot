@@ -147,21 +147,20 @@ bool CFunctionCollection::Exists(CString name) {
 void CFunctionCollection::VerifyExistence(CString name) {
   if (Exists(name)) return;
   // Error: function does not exist
-  CString similar_name = GetSimilarNameWithDifferentCases(name);
-  if (similar_name != "") {
-    CString message;
-    message.Format("%s%s%s%s%s",
-      "Function used but never defined: ",
-      name, 
-      "\nDid you mean ",
-      similar_name,
-      " instead?");
-    OH_MessageBox_Interactive(message, "Error", 0);
-    return;
-  } 
-  // Else: general error-message
   CString message;
-  message.Format("Function used but never defined\n%s", name);
+  message.Format("Function used but never defined> %s\n\n", name);
+  CString similar_name = GetSimilarNameWithDifferentCases(name);
+  name = name.MakeLower();
+  if (similar_name != "") {
+     message += "Did you mean ";
+     message += similar_name;
+     message += " instead?";
+  } else if (name.Left(5) == "hand$" || name.Left(6) == "board$" || name.Left(4) == "user") {
+    message += "hand$ and board$ expressions and user-variables\n";
+    message += "are built-in and must be lower-cases.";
+  } else {
+    // Else: general error-message
+  }
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
