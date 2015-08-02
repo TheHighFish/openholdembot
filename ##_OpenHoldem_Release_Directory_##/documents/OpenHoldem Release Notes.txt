@@ -1,6 +1,10 @@
 v7.7.7 2015-08-xx
 ==================
 BUG FIXES:
+- z$targetsize didn't work properly due to conversion from clientsize 
+  to total window size. This has now been fixed.
+  Thanks to Ngels for reporting.
+  [THF]
 
 MAINTENANCE:
 - Swagging got removed.

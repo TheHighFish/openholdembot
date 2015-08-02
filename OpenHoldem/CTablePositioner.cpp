@@ -238,20 +238,39 @@ void CTablePositioner::ResizeToTargetSize() {
     write_log(preferences.debug_table_positioner(), "[CTablePositioner] target size <= 0\n");
     return;
   }
-  ResizeTable(width, height);
+  ResizeToClientSize(width, height);
 }
 
-void CTablePositioner::ResizeTable(int new_width, int new_height) {
+void CTablePositioner::ResizeToClientSize(int new_width, int new_height) {
   assert(new_width > 0);
   assert(new_height > 0);
+  RECT old_client_size;
+  GetClientRect(p_autoconnector->attached_hwnd(), &old_client_size);
+  int old_width  = old_client_size.right - old_client_size.left;
+  int old_height = old_client_size.bottom - old_client_size.top;
+  write_log(preferences.debug_table_positioner(), "[CTablePositioner] current client size: %i, %i\n",
+    old_width, old_height);
+  write_log(preferences.debug_table_positioner(), "[CTablePositioner] target client size: %i, %i\n",
+    new_width, new_height);
+  if (old_width == new_width && old_height == new_height) return;
   RECT old_position;
   GetWindowRect(p_autoconnector->attached_hwnd(), &old_position);
+  int new_total_width = old_position.right - old_position.left
+    + new_width- old_width;
+  int new_total_height = old_position.bottom - old_position.top
+    + new_height - old_height;
+  ResizeToTotalSize(new_total_width, new_total_height);
+}
+
+void CTablePositioner::ResizeToTotalSize(int new_width, int new_height) {
   write_log(preferences.debug_table_positioner(), 
-    "[CTablePositioner] Resizing window to %i, %i. Keeping old position\n",
+    "[CTablePositioner] Resizing window to total size %i, %i. Keeping old position\n",
     new_width, new_height);
+  RECT old_position;
+  GetWindowRect(p_autoconnector->attached_hwnd(), &old_position);
   MoveWindow(p_autoconnector->attached_hwnd(), 
-    old_position.left, old_position.top, 
-		new_width, new_height, 
+    old_position.left, old_position.top,
+    new_width, new_height,
 		true);	// true = Redraw the table.
   // Update shared mem
   int right = old_position.left + new_width - 1;

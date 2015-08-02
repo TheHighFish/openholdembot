@@ -33,7 +33,8 @@ class CTablePositioner {
 	void MoveToTopLeft();
 	void MoveWindowToItsPosition();
  private:
-  void ResizeTable(int new_width, int new_height);
+  void ResizeToClientSize(int new_width, int new_height);
+  void ResizeToTotalSize(int new_width, int new_height);
  private:
 	int _number_of_tables;
 	HWND *HWNDs_of_child_windows;

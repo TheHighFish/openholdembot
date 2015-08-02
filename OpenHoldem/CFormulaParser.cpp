@@ -186,6 +186,10 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
     // User-defined bot-logic
     // Must be a f$-symbol
     if (name.Left(2) == "f$") return true;
+    // Special cases: notes, dll and date
+    if (name == "notes") return true;
+    if (name == "dll") return true;
+    if (name.Left(2) == "20") return true;
   } else {
     // OpenPPL-library
     // Must start with upper cases
