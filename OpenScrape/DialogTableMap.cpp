@@ -258,7 +258,7 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Hash1");
 	m_Transform.AddString("Hash2");
 	m_Transform.AddString("Hash3");
-  m_Transform.AddString("WebCode");
+  	m_Transform.AddString("WebColour");
 	m_Transform.AddString("None");
 	m_Transform.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
 
