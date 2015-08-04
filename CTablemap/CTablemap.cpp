@@ -867,13 +867,23 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	return SUCCESS;	
 }
 
+void CTablemap::ErrorHashCollision(CString name1, CString name2) {
+  CString message;
+  message.Format("%s%s%s%s%s%s%s",
+    "Hash collision:\n\n", 
+		name1, " and ", name2, "\n\n",
+    "This looks like a naming conflict.\n",
+    "Please remove or rename the duplicate items.\n");
+  OH_MessageBox_Error_Warning(message, "Hash collision");
+}
+
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
 #endif	
 
-	CString					e = "", s = "";
+	CString					s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
 	bool					all_i$_found = false, this_i$_found = false;
@@ -1002,10 +1012,8 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					{
 						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
 						{
-							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
-								i_iter->second.name.GetString(), 
+							ErrorHashCollision(i_iter->second.name.GetString(), 
 								new_hashes[i].GetAt(j).name.GetString()); 
-							OH_MessageBox_Error_Warning(e, "Hash collision");
 							return ERR_HASH_COLL;
 						}
 					}
@@ -1028,6 +1036,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		{
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
+        CString e;
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
 				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
 			}

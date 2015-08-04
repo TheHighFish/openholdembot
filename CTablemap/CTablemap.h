@@ -202,6 +202,7 @@ private:
 	void WarnAboutGeneralTableMapError(int error_code, int line);
 	int GetTMSymbol(CString name, int default);
 	CString GetTMSymbol(CString name);
+  void ErrorHashCollision(CString name1, CString name2);
 private:
 	// private variables - use public accessors and public mutators to address these
 	bool		_valid;

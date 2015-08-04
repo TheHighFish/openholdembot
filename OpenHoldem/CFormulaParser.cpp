@@ -208,8 +208,7 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
 
 bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
-	if (token_ID != kTokenOperatorConditionalElse)
-	{
+	if (token_ID != kTokenOperatorConditionalElse)	{
 		CParseErrors::Error("Malformed conditional expression. \":\" expected,\n"
       "but this could also be a missing operator or wrong bracket.\n");
 		return false;
@@ -217,24 +216,20 @@ bool CFormulaParser::ExpectConditionalThen() {
 	return true;
 }
 
-void CFormulaParser::CheckForExtraTokensAfterEndOfFunction()
-{
+void CFormulaParser::CheckForExtraTokensAfterEndOfFunction(){
 	int token_ID = _tokenizer.GetToken();
 	if ((token_ID != kTokenEndOfFile)
-		&& (token_ID != kTokenEndOfFunction))
-	{
+		  && (token_ID != kTokenEndOfFunction))	{
 		CParseErrors::Error("Unexpected token(s) after end of function.\n");
 	}
 	// Nothing more to do here, not even returning a result.
 	// We are finished and just warn about the extra input.
 }
 
-void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
-{
+void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 	assert(TokenIsBracketOpen(opening_bracket));
 	int expected_bracket_close = _tokenizer.GetToken();
-	switch (opening_bracket)
-	{
+	switch (opening_bracket) {
 	case kTokenBracketOpen_1:
 		if (expected_bracket_close == kTokenBracketClose_1) return;
 	case kTokenBracketOpen_2:
@@ -293,7 +288,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   }
   TPParseTreeNode function_body = NULL;
   if (COHScriptObject::IsFunction(_function_name) 
-    || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+      || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
@@ -310,22 +305,19 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
-  }
-  else if (_function_name.MakeLower() == "dll") {
+  } else if (_function_name.MakeLower() == "dll") {
     // ##DLL##
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing ##DLL##\n");
     // Nothing more to do
     // We extract the DLL later
-  }
-  else if (_function_name.MakeLower() == "notes") {
+  } else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Found ##Notes##. Nothing to parse\n");
     // Don't do anything.
     // This is just a special type of global comment.
-  }
-  else {
+  } else {
     CParseErrors::Error("Found unknown function type.\n"
       "Did you forget \"f$\"?\n");
     return;
@@ -341,15 +333,12 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
 #endif
 }
 
-void CFormulaParser::ParseListBody(COHScriptList *list)
-{
+void CFormulaParser::ParseListBody(COHScriptList *list) {
 	int token_ID = _tokenizer.GetToken();
-	while (token_ID != kTokenEndOfFunction)
-	{
+	while (token_ID != kTokenEndOfFunction)	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
-			|| (token_ID == kTokenNumber)       // Low pairs 99..22
-			|| (token_ID == kTokenCards)) // Low unpaired cards like 65s, 92o
-		{
+			  || (token_ID == kTokenNumber)       // Low pairs 99..22
+			  || (token_ID == kTokenCards))       // Low unpaired cards like 65s, 92o	{
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
 			if (!list->Set(_token)) {
@@ -357,9 +346,7 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
         // Avoid too many errors on bad lists
         return;
       }
-		}
-		else
-		{
+		}	else {
 			CParseErrors::Error("Unexpected token inside list.\n"
         "This does not look like valid hole-cards.\n"
         "Allowed are\n:"
