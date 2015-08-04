@@ -209,7 +209,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
     chair = p_symbol_engine_chairs->bigblind_chair();
 	}
   // PokerTracker symbols for the cutoff chair
-	else if (s.Right(7) == "_cutoff ") {
+	else if (s.Right(7) == "_cutoff") {
     chair = p_symbol_engine_chairs->cutoff_chair();
 	}
   // PokerTracker symbols for the firstcaller chair
