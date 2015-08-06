@@ -84,17 +84,29 @@
 ##RaiseMin##
 Raise
 
-##RaiseHalfPot##
+##RaiseFourthPot##
 -1000003
 
-##RaisePot##
+##RaiseThirdPot##
 -1000004
 
-##RaiseMax##
+##RaiseHalfPot##
 -1000005
 
-##Call##
+##RaiseTwoThirdPot##
 -1000006
+
+##RaiseThreeFourthPot##
+-10000037
+
+##RaisePot##
+-1000008
+
+##RaiseMax##
+-1000009
+
+##Call##
+-1000010
 
 ##Play##
 Call
@@ -105,8 +117,20 @@ Raise
 ##BetMin##
 Bet
 
+##BetFourthPot##
+RaiseFourthPot
+
+##BetThirdPot##
+RaiseThirdPot
+
 ##BetHalfPot##
 RaiseHalfPot
+
+##BetTwoThirdPot##
+RaiseTwoThirdPot
+
+##BetThreeFourthPot##
+RaiseThreeFourthPot
 
 ##BetPot##
 RaisePot
@@ -118,10 +142,10 @@ RaiseMax
 RaiseMax
 
 ##None##
--1000007
+-1000011
 
 ##Raise##
--1000008
+-1000012
 
 // Sitout and close no longer supported by OpenPPL 7.x
 // Because we have separate functions for that.
