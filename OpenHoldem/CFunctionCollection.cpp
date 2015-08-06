@@ -116,22 +116,23 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CString name = new_function->name();
   if (name == "") {
     write_log(preferences.debug_formula(), 
-	  "[CFunctionCollection] Invalid empty name\n");
+	    "[CFunctionCollection] Invalid empty name\n");
     return;
   }
   if (Exists(name)) {
     write_log(preferences.debug_formula(), 
-	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
+	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
-    // Warning already generated
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Ignoring bad function %s\n", name);
     return;
   }
 
   write_log(preferences.debug_formula(), 
-	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
+	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
 }
 
@@ -227,6 +228,8 @@ CString CFunctionCollection::DLLPath() {
 }
 
 void CFunctionCollection::SetEmptyDefaultBot() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] SetEmptyDefaultBot()\n");
   CSLock lock(m_critsec);
   DeleteAll(false, true);
   _title = "NoName";
@@ -242,6 +245,8 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 }
 
 void CFunctionCollection::ExecuteSelftest() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] Executing self-test\n");
   CString name = kSelftestName;
   CString function_text = kSelftestFunction;
   CFunction *p_function = new CFunction(&name, 
@@ -253,6 +258,8 @@ void CFunctionCollection::ExecuteSelftest() {
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] CheckForDefaultFormulaEntries(\n");
   CSLock lock(m_critsec);
   // Header comment
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
@@ -294,7 +301,9 @@ void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double v
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name) {
   if (Exists(function_name)) {
-	 return;
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Function already exists : %s\n", function_name);
+	  return;
   }
   // Formula not found.
   // Add the standard one.
@@ -357,6 +366,8 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     // The editor does somehow not work for completely empty formulas.
     function_text = " "; 
   }
+  write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Adding default function: %s\n", function_name);
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
@@ -391,8 +402,7 @@ void CFunctionCollection::ClearCache() {
   }
 }
 
-void CFunctionCollection::Save(CArchive &ar)
-{
+void CFunctionCollection::Save(CArchive &ar) {
   CSLock lock(m_critsec);
   // First write the date
   char nowtime[26] = {0};
@@ -483,6 +493,8 @@ void CFunctionCollection::Delete(CString name) {
     std::map<CString, COHScriptObject*>::iterator it; 
     it = _function_map.find(name);
     if (it != _function_map.end()) {
+      write_log(preferences.debug_formula(), 
+        "[CFunctionCollection] Deleting %s\n", name);
       _function_map.erase(it);
     }
   }
@@ -499,6 +511,8 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     function = new CFunction(my_name, my_text, kUndefinedZero);
     Add(function);
   } else {
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Setting function text for %s\n");
     function->SetText(content);
   }
 }
@@ -508,6 +522,8 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();
