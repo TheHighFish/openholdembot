@@ -3358,7 +3358,7 @@ ERROR_Betround_Out_Of_Range
 OpponentsLeft
 
 ##OpponentsAtTable##
-nopponentsdealt
+nopponentsseated
 
 ##NumberOfOpponentsAllin##
 (Opponents>1 || (Opponents==1 && AmountToCall<StackSize))? Opponents_SumAllinBits:
