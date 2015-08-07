@@ -203,12 +203,24 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Allin -> BetPot
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_allin, k_autoplayer_function_betpot_1_1);
-  // BetPot -> 1/2 BetPot
+  // BetPot -> 3/4 BetPot
   CalculateSingleOpenPPLBackupAction(
-    k_autoplayer_function_betpot_1_1, k_autoplayer_function_betpot_1_2);
-  // 1/2 BetPot -> Raise
+    k_autoplayer_function_betpot_1_1, k_autoplayer_function_betpot_3_4);
+  // 3/4 BetPot -> 2/3 BetPot
   CalculateSingleOpenPPLBackupAction(
-    k_autoplayer_function_betpot_1_2, k_autoplayer_function_raise);
+    k_autoplayer_function_betpot_3_4, k_autoplayer_function_betpot_2_3);
+  // 2/3 BetPot -> 1/2 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_2_3, k_autoplayer_function_betpot_1_2);
+  // 1/2 BetPot -> 1/3 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_2, k_autoplayer_function_betpot_1_3);
+  // 1/3 BetPot -> 1/4 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_3, k_autoplayer_function_betpot_1_4);
+  // 1/4 BetPot -> Raise
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_4, k_autoplayer_function_raise);
   // Also: f$betsize -> Raise
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_betsize, k_autoplayer_function_raise);

@@ -37,7 +37,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_isrush != NULL); 
-	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 }

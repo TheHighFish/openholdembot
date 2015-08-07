@@ -512,7 +512,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     Add(function);
   } else {
     write_log(preferences.debug_formula(), 
-      "[CFunctionCollection] Setting function text for %s\n");
+      "[CFunctionCollection] Setting function text for %s\n", name);
     function->SetText(content);
   }
 }

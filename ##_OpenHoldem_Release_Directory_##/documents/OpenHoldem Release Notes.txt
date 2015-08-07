@@ -1,9 +1,12 @@
 v7.7.7 2015-08-xx
 ==================
 BUG FIXES:
-- z$targetsize didn't work properly due to conversion from clientsize 
+- z$targetsize didn't work properly due to conversions from clientsize 
   to total window size. This has now been fixed.
   Thanks to Ngels for reporting.
+  [THF]
+- Some rarely used OpenPPL-actions like RaiseFourthPot didn't work.
+  Thanks to NewBot for reporting.
   [THF]
 
 MAINTENANCE:

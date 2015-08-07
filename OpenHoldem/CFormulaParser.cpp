@@ -338,7 +338,7 @@ void CFormulaParser::ParseListBody(COHScriptList *list) {
 	while (token_ID != kTokenEndOfFunction)	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
 			  || (token_ID == kTokenNumber)       // Low pairs 99..22
-			  || (token_ID == kTokenCards))       // Low unpaired cards like 65s, 92o	{
+			  || (token_ID == kTokenCards)) {     // Low unpaired cards like 65s, 92o	
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
 			if (!list->Set(_token)) {
@@ -375,7 +375,7 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   // OpenPPL-function
     TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
     write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
+	    "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
     BackPatchOpenEndedWhenConditionSequence(open_ended_when_condition);
     return open_ended_when_condition;
   } else {	

@@ -164,7 +164,7 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
 inline bool TokenIsBracketOpen(int token) {
   return ((token == kTokenBracketOpen_1)
     || (token == kTokenBracketOpen_2)
-	|| (token == kTokenBracketOpen_3));
+	  || (token == kTokenBracketOpen_3));
 }
 
 bool TokenIsUnary(int token);

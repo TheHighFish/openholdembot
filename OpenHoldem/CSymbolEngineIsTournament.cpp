@@ -159,7 +159,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	assert(p_symbol_engine_casino != NULL);
 	assert(p_symbol_engine_mtt_info != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
-	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
 }
