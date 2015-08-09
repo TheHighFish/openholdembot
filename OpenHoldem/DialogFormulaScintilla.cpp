@@ -511,6 +511,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
     switch(j) {
       case 0: 
         if (p_function_collection->IsOpenPPLProfile()) {
+          AddFunctionToTree(parent, k_standard_function_names[k_autoplayer_function_beep]);
           // OpenPPL-functions
           for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
             AddFunctionToTree(parent, k_OpenPPL_function_names[i]);
