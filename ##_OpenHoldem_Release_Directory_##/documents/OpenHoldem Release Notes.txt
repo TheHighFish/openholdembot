@@ -8,7 +8,11 @@ BUG FIXES:
 - Some rarely used OpenPPL-actions like RaiseFourthPot didn't work.
   Thanks to NewBot for reporting.
   [THF]
-
+- The detection of plazers who post both blinds at once (since 7.7.5)
+  could affect the detection of raisers for low blind limits.
+  Thanks to DevBot for reporting and for finding the source of the problem.
+  [THF]
+  
 MAINTENANCE:
 - Swagging got removed.
   The following tablemap-symbols got renamed:
