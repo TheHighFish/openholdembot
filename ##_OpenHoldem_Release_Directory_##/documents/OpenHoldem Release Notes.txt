@@ -8,9 +8,14 @@ BUG FIXES:
 - Some rarely used OpenPPL-actions like RaiseFourthPot didn't work.
   Thanks to NewBot for reporting.
   [THF]
-- The detection of plazers who post both blinds at once (since 7.7.5)
+- The detection of players who post both blinds at once (since 7.7.5)
   could affect the detection of raisers for low blind limits.
   Thanks to DevBot for reporting and for finding the source of the problem.
+  [THF]
+- Absolute lines in the log-file still were wrong,
+  because at the time when we requested the starting-line of a function
+  we had already recognized the header of the next one.
+  Thanks to OpenGeek for reporting.
   [THF]
   
 MAINTENANCE:

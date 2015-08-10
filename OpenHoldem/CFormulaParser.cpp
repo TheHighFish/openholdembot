@@ -98,6 +98,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {
+    int starting_line = _formula_file_splitter.starting_line_of_current_function();
     _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
     CString function_header = _formula_file_splitter.GetFunctionHeader(); 
     if (function_header.GetLength() <= 0) {
@@ -109,7 +110,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
       // Skip this function
       continue;
     }
-    ParseSingleFormula(_formula_file_splitter.GetFunctionText());
+    ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
   }
 ExitLoop:
   FinishParse();
@@ -241,9 +242,11 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
     "(or bracket of another type).\n"); 
 }
 
-void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
+void CFormulaParser::ParseSingleFormula(CString name, 
+                                        CString function_text,
+                                        int starting_line) {
   _function_name = name;
-  ParseSingleFormula(function_text);
+  ParseSingleFormula(function_text, starting_line);
 }
 
 bool CFormulaParser::IsValidFunctionName(CString name) {
@@ -258,7 +261,7 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
   return true; 
 }
 
-void CFormulaParser::ParseSingleFormula(CString function_text) {
+void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
   _tokenizer.SetInput(function_text);
   // Check for empty function
   int token_ID = _tokenizer.GetToken();
@@ -301,7 +304,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     COHScriptList *new_list = new COHScriptList(&_function_name, 
-        &function_text, _formula_file_splitter.starting_line_of_current_function());
+        &function_text, starting_line);
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
@@ -323,7 +326,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
-	  &function_text, _formula_file_splitter.starting_line_of_current_function());
+	  &function_text, starting_line);
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence

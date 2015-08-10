@@ -37,8 +37,12 @@ class CFormulaParser {
   // * then load the formula file with user-defined bot-logic
   void ParseFormulaFileWithUserDefinedBotLogic(CArchive & formula_file);
  public:
-  void ParseSingleFormula(CString name, CString function_text);
-  void ParseSingleFormula(CString function_text);
+  // it is important to get the line-number first and pass it to the functions below.
+  // First splitting the function-text would read up to the next function-header
+  // and then get the starting line wrong.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
+  void ParseSingleFormula(CString name, CString function_text, int starting_line);
+  void ParseSingleFormula(CString function_text, int starting_line);
   void ParseOpenPPLLibraryIfNeeded();
  public:
   static CString CurrentFunctionName();
