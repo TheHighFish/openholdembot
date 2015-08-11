@@ -15,12 +15,10 @@
 #include "CSymbolEngineColourCodes.h"
 
 #include "CBetroundCalculator.h"
-#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
-#include "CSymbolEnginePokerTracker.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
@@ -30,7 +28,8 @@ CSymbolEngineColourCodes::CSymbolEngineColourCodes() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_pokertracker != NULL);
+  //
+	// This engine does not use any other engines.
 }
 
 CSymbolEngineColourCodes::~CSymbolEngineColourCodes() {

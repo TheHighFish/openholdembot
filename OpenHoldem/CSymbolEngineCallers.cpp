@@ -44,7 +44,6 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
   assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_history != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	// Also using p_symbol_engine_history one time,

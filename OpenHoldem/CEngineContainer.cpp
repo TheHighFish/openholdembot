@@ -116,6 +116,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineEventLogging
   p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
   AddSymbolEngine(p_symbol_engine_event_logging);
+  // CSymbolEngineColourCodes
+  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
+  AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineTableLimits
   p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
   AddSymbolEngine(p_symbol_engine_tablelimits);
@@ -158,9 +161,6 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCallers
   p_symbol_engine_callers = new CSymbolEngineCallers();
   AddSymbolEngine(p_symbol_engine_callers);
-  // CSymbolEnginePokerTracker
-  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
-  AddSymbolEngine(p_symbol_engine_pokertracker);
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
@@ -200,15 +200,15 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMemorySymbols
   p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
   AddSymbolEngine(p_symbol_engine_memory_symbols);
-  // CSymbolEngineColourCodes
-  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
-  AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineMTTInfo"
   p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
   AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsRush
   p_symbol_engine_isrush = new CSymbolEngineIsRush;
   AddSymbolEngine(p_symbol_engine_isrush);
+  // CSymbolEnginePokerTracker
+  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
+  AddSymbolEngine(p_symbol_engine_pokertracker);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
