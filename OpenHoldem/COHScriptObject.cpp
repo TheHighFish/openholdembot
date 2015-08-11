@@ -21,7 +21,7 @@ COHScriptObject::COHScriptObject()
 {
 	_name = "";
 	_function_text = "";
-    _starting_line_of_function = 0;
+  _starting_line_of_function = 0;
 }
 
 COHScriptObject::COHScriptObject(
@@ -146,7 +146,8 @@ int COHScriptObject::EditorGroupingCategory() {
 }
 
 void COHScriptObject::Parse() {
-  p_formula_parser->ParseSingleFormula(_name, function_text());
+  p_formula_parser->ParseSingleFormula(_name, 
+    function_text(), _starting_line_of_function);
 };
 
 CString COHScriptObject::Serialize() {
