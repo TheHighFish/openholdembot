@@ -1,4 +1,4 @@
-v7.7.7 2015-08-xx
+v7.7.7 2015-08-11
 ==================
 BUG FIXES:
 - z$targetsize didn't work properly due to conversions from clientsize 
