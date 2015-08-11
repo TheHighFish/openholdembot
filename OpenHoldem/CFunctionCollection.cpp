@@ -312,7 +312,8 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     function_text = 
       "// Betsize in dollars, raise-to semantics.\n"
       "// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.\n"
-      "// Please define your tablemaps \"swagtextmethod\" to configure this feature.\n";
+      "// Please define your tablemaps \"betsizeinterpretationmethod\"\n"
+      "// to configure this feature.\n";
   } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == kBetroundRiver) {    
     function_text = 
       "// Check whenever it is free to call\n"

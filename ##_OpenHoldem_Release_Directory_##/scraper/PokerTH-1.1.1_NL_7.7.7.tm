@@ -22,10 +22,10 @@ s$nchairs                   10
 s$network                   pokerth
 s$potmethod                 1
 s$sitename                  pokerth
-s$swagconfirmationmethod    Click Bet
-s$swagdeletionmethod        Delete
-s$swagselectionmethod       Dbl Click
-s$swagtextmethod            1
+s$betsizeconfirmationmethod    Click Bet
+s$betsizedeletionmethod        Delete
+s$betsizeselectionmethod       Dbl Click
+s$betsizeinterpretationmethod  1
 s$t0type                    0.0
 s$t1type                    fuzzy
 s$t2type                    0.0

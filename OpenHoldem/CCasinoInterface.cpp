@@ -148,7 +148,7 @@ bool CCasinoInterface::UseSliderForAllin() {
 			ClickButton(confirmation_button);
 		}
 	}	else {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (invalid swagconfirmationmethod).\n");
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (invalid betsizeconfirmationmethod).\n");
 		return false;
 	}
 
@@ -258,7 +258,7 @@ void CCasinoInterface::SelectSwagText()
 	}
 	else
 	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (invalid swagselectionmethod).\n");
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeselectionmethod).\n");
 		return;
 	}
 }
@@ -285,11 +285,11 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	POINT			point_null = {-1, -1};
 	CString		swag_amt;
 
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSwag...\n");
+	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoBetsize...\n");
 
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
 	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (no edit field or no i3button).\n");
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no edit field or no i3button).\n");
 		return false;
 	}
   SelectSwagText();
@@ -342,14 +342,14 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 			}
 		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)	{
 		} else {
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag early (invalid swagconfirmationmethod).\n");
+			write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
 			return false;
 		}
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), true);
 	}
 	int betround = p_betround_calculator->betround();
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSwag, 'didswag' now: %d\n", 
+	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize, 'didswag' now: %d\n", 
 		p_symbol_engine_history->didswag(betround));
 	return (!lost_focus);
 }

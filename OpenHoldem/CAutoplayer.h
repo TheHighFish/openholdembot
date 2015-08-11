@@ -53,7 +53,7 @@ private:
 	bool HandleInterfacebuttonsI86(); 
 	void PrepareActionSequence();
 	void FinishActionSequenceIfNecessary();
-	bool DoSwag();
+	bool DoBetsize();
 	bool DoPrefold();
 	bool DoChat();
 

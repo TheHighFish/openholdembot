@@ -28,8 +28,11 @@ class CTablemapCompletenessChecker {
   void CheckBetsOrChips();
   void CheckMainPot();
  private:
+  void CheckForDeprecatedItems();
+ private:
   void ErrorMissingItem(CString item);
   void ErrorDeprecatedItem(CString item);
+  void ErrorSwagRenamed();
   bool IsNoLimitMap();
  private:
   bool _error_flag;

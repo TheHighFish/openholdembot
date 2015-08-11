@@ -22,10 +22,10 @@ s$nchairs                   6
 s$network                   party
 s$potmethod                 3
 s$sitename                  pokersnowie_cash
-s$swagconfirmationmethod    Click Bet
-s$swagdeletionmethod        Delete
-s$swagselectionmethod       Click Drag
-s$swagtextmethod            3
+s$betsizeconfirmationmethod    Click Bet
+s$betsizedeletionmethod        Delete
+s$betsizeselectionmethod       Click Drag
+s$betsizeinterpretationmethod            3
 s$t0type                    0.25
 s$t2type                    0
 s$titletext                 NL

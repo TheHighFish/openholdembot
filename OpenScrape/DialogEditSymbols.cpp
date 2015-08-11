@@ -148,7 +148,7 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 	m_Name.GetWindowText(s);
 	m_Value.GetWindowText(v);
 
-	if (s == "swagselectionmethod")
+	if (s == "betsizeselectionmethod")
 	{
 		if (v != "Sgl Click" 
 			&& v!= "Dbl Click" 
@@ -156,22 +156,22 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 			&& v!= "Click Drag"
 			&& v!= "Nothing")
 			MessageBox(
-				"Valid values for swagselectionmethod are:\n"
+				"Valid values for betsizeselectionmethod are:\n"
 				"'Sgl Click', 'Dbl Click', 'Triple Click', 'Click Drag' and 'Nothing'.",
 				"Invalid value", MB_OK);
 	}
-	else if (s == "swagdeletionmethod")
+	else if (s == "betsizedeletionmethod")
 	{
 		if (v!="Delete" && v!="Backspace")
-			MessageBox("Valid values for swagdeletionmethod are:\n"
+			MessageBox("Valid values for betsizedeletionmethod are:\n"
 			           "'Delete' and 'Backspace'",
 					   "Invalid value", MB_OK);	
 	}
 
-	else if (s=="swagconfirmationmethod")
+	else if (s=="betsizeconfirmationmethod")
 	{
 		if (v!="Enter" && v!="Click Bet")
-			MessageBox("Valid values for swagconfirmationmethod are:\n"
+			MessageBox("Valid values for betsizeconfirmationmethod are:\n"
 			           "'Enter' and 'Click Bet'",
 					   "Invalid value", MB_OK);	
 	}
@@ -188,7 +188,7 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 void CDlgEditSymbols::SetDefaultValues()
 {
 	m_Value.Clear();
-	if (name.MakeLower() == "swagselectionmethod")
+	if (name.MakeLower() == "betsizeselectionmethod")
 	{
 		m_Value.AddString("Sgl Click");
 		m_Value.AddString("Dbl Click");
@@ -197,14 +197,14 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Nothing");
 	}
 	
-	else if (name.MakeLower() == "swagdeletionmethod")
+	else if (name.MakeLower() == "betsizedeletionmethod")
 	{
 		m_Value.AddString("Delete");
 		m_Value.AddString("Backspace");
 		m_Value.AddString("Nothing");
 	}
 
-	else if (name.MakeLower() == "swagconfirmationmethod")
+	else if (name.MakeLower() == "betsizeconfirmationmethod")
 	{
 		m_Value.AddString("Enter");
 		m_Value.AddString("Click Bet");

@@ -251,7 +251,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	{
 		return true;
 	}
-	if (DoSwag())
+	if (DoBetsize())
 	{
 		return true;
 	}
@@ -497,7 +497,7 @@ void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
-bool CAutoplayer::DoSwag(void) { 
+bool CAutoplayer::DoBetsize(void) { 
   double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
 	if (betsize > 0) 	{
     if (!_already_executing_allin_adjustment) {

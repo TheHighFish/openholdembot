@@ -25,9 +25,9 @@ s$nchairs                   10
 s$network                   partypoker
 s$potmethod                 2
 s$sitename                  pokeracademy
-s$swagconfirmationmethod    Click Bet
-s$swagdeletionmethod        Nothing
-s$swagtextmethod            1
+s$betsizeconfirmationmethod    Click Bet
+s$betsizedeletionmethod        Nothing
+s$betsizeinterpretationmethod  1
 s$t0type                    fuzzy
 s$t1type                    fuzzy
 s$t2type                    fuzzy
