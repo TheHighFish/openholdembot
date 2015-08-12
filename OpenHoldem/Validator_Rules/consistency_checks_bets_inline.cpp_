@@ -1,10 +1,10 @@
 BEGIN_TESTCASE
     TESTCASE_ID ("1200")
     HEURISTIC_RULE (false)
-    REASONING ("If I did raise or call or swag, I must have a non-zero bet in front of me.")
-    PRECONDITION (gws("didrais") || gws("didcall") || gws("didswag"))
+    REASONING ("If I did raise or call or betsize, I must have a non-zero bet in front of me.")
+    PRECONDITION (gws("didrais") || gws("didcall") || gws("didbetsize"))
     POSTCONDITION (gws("currentbet") > 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didswag, currentbet")
+    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didbetsize, currentbet")
 END_TESTCASE
 
 
@@ -12,9 +12,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1201")
     HEURISTIC_RULE (false)
     REASONING ("If some players are betting, but I did not yet act and am not in the blinds, then there must be a positive amount to call.")
-    PRECONDITION ((gws("nopponentsbetting") > 0) && (gws("dealposition") > 2) && !(gws("didrais") || gws("didcall") || gws("didswag")))
+    PRECONDITION ((gws("nopponentsbetting") > 0) && (gws("dealposition") > 2) && !(gws("didrais") || gws("didcall") || gws("didbetsize")))
     POSTCONDITION (gws("ncallbets") > 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsbetting, dealposition, didrais, didcall, didswag, ncallbets")
+    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsbetting, dealposition, didrais, didcall, didbetsize, ncallbets")
 END_TESTCASE
 
 
@@ -32,9 +32,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1203")
     HEURISTIC_RULE (false)
     REASONING ("If it is preflop and I did not yet act and am not a blind (and it's not the first hand, in case I posted the blind elsewhere), then I can't have a bet in front of me.")
-    PRECONDITION ((gws("betround") == 1) && (gws("handsplayed") > 1) && (gws("dealposition") > 2) && (!(gws("didrais") || gws("didcall") || gws("didswag"))))
+    PRECONDITION ((gws("betround") == 1) && (gws("handsplayed") > 1) && (gws("dealposition") > 2) && (!(gws("didrais") || gws("didcall") || gws("didbetsize"))))
     POSTCONDITION (gws("currentbet") == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didswag, currentbet")
+    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didbetsize, currentbet")
 END_TESTCASE
 
 
@@ -42,9 +42,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1204")
     HEURISTIC_RULE (false)
     REASONING ("If it is postflop and I did not yet act, then I can't have a bet in front of me.")
-    PRECONDITION ((gws("betround") > 1) && (!(gws("didrais") || gws("didcall") || gws("didswag"))))
+    PRECONDITION ((gws("betround") > 1) && (!(gws("didrais") || gws("didcall") || gws("didbetsize"))))
     POSTCONDITION (gws("currentbet") == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didswag, currentbet")
+    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didcall, didbetsize, currentbet")
 END_TESTCASE
 
   
@@ -154,7 +154,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1215")
     HEURISTIC_RULE (false)
     REASONING ("If everybody did act once (read: I did act twice), everybody playing must have a positive bet in front of him or he must be allin and have a stack of 0. Partial rule for player 0.")
-    PRECONDITION (((gws("didchec") + gws("didcall") + gws("didrais") + gws("didswag")) >= 2) && (TODO))
+    PRECONDITION (((gws("didchec") + gws("didcall") + gws("didrais") + gws("didbetsize")) >= 2) && (TODO))
     POSTCONDITION ()
     SYMBOLS_POSSIBLY_AFFECTED ("")
 END_TESTCASE

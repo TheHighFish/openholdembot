@@ -22,9 +22,9 @@ BEGIN_TESTCASE
     TESTCASE_ID ("1802")
     HEURISTIC_RULE (false)
     REASONING ("If I did raise and not call and my bet is the highest one (not neccessary unique highest), then I am the aggresor.")
-    PRECONDITION ((gws("didrais") || gws("didswag")) && (gws("currentbet") >= gws("currentbet0")) && (gws("currentbet") >= gws("currentbet1")) && (gws("currentbet") >= gws("currentbet2")) && (gws("currentbet") >= gws("currentbet3")) && (gws("currentbet") >= gws("currentbet4")) && (gws("currentbet") >= gws("currentbet5")) && (gws("currentbet") >= gws("currentbet6")) && (gws("currentbet") >= gws("currentbet7")) && (gws("currentbet") >= gws("currentbet8")) && (gws("currentbet") >= gws("currentbet9")))
+    PRECONDITION ((gws("didrais") || gws("didbetsize")) && (gws("currentbet") >= gws("currentbet0")) && (gws("currentbet") >= gws("currentbet1")) && (gws("currentbet") >= gws("currentbet2")) && (gws("currentbet") >= gws("currentbet3")) && (gws("currentbet") >= gws("currentbet4")) && (gws("currentbet") >= gws("currentbet5")) && (gws("currentbet") >= gws("currentbet6")) && (gws("currentbet") >= gws("currentbet7")) && (gws("currentbet") >= gws("currentbet8")) && (gws("currentbet") >= gws("currentbet9")))
     POSTCONDITION (gws("raischair") == gws("userchair"))
-    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didswag, currentbet, currentbet0, currentbet1, currentbet2, currentbet3, currentbet4, currentbet5, currentbet6, currentbet7, currentbet8, currentbet9, raischair, userchair")
+    SYMBOLS_POSSIBLY_AFFECTED ("didrais, didbetsize, currentbet, currentbet0, currentbet1, currentbet2, currentbet3, currentbet4, currentbet5, currentbet6, currentbet7, currentbet8, currentbet9, raischair, userchair")
 END_TESTCASE
  
  
