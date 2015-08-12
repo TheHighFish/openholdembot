@@ -95,7 +95,7 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
     // can be reached in 2 ways:
     //   * by the previous sequence of when-conditions (implicit continue)
     //   * by the false-edge of the previous open-ended when-condition
-    // If we naivelz roate every sibbling of a sequence of open-ended
+    // If we naively roate every sibbling of a sequence of open-ended
     // when conditions, then every addition of an OEWC doubles the effort.
     // Therefore we have to skip the edge to the next OEWC.
     Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);

@@ -183,7 +183,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     double players_bet = p_table_state->_players[normalized_chair]._bet;
     if (players_bet <= 0) continue;
     if (first_bet_after_dealer <= 0) {
-      // Probablz SB found
+      // Probably SB found
       first_bet_after_dealer = players_bet;
       // Also check if the verz first player after dealer is betting,
       // which for sure excludes a missing small blind

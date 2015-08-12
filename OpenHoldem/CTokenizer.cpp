@@ -61,7 +61,7 @@ void CTokenizer::InitVars() {
 char CTokenizer::CURRENT_CHARACTER() {     
   char next_char = input_buffer[_token_end_pointer];
   if ((next_char < 0) || (next_char > 0xFF)) {
-    // Invalid character, usuallz unicode, copy-pasted from a web-page,
+    // Invalid character, usually unicode, copy-pasted from a web-page,
     // and or non-ASCII-characters in a comment.
     // No longer throwing an error, trying to handle it gracefully.
     //
