@@ -231,7 +231,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 			*result = didcall(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didrais", 7)==0 && strlen(name)==7) {
 			*result = didrais(p_betround_calculator->betround());
-		}	else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7) {
+		}	else if (memcmp(name, "didbetsize", 10)==0 && strlen(name)==10) {
 			*result = didswag(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didfold", 7)==0 && strlen(name)==7) {
 			*result = didfold(p_betround_calculator->betround());
@@ -243,7 +243,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 			*result = didcall(name[12]-'0');
 		}	else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	{
 			*result = didrais(name[12]-'0');
-		}	else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)	{
+		}	else if (memcmp(name, "didbetsizeround", 15)==0 && strlen(name)==16)	{
 			*result = didswag(name[12]-'0');
 		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==7) {
 			*result = didfold(name[12]-'0');
@@ -301,7 +301,7 @@ bool CSymbolEngineHistory::DidAct() {
         || (p_table_state->User()->_bet == 0))) {
     return false;
   }
-  // Otherwise: return "normal" value, depending on didswag, didrais, ...
+  // Otherwise: return "normal" value, depending on didbetsize, didrais, ...
 	return DidAct(BETROUND);
 }
 
@@ -316,12 +316,12 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 }
 
 CString CSymbolEngineHistory::SymbolsProvided() {
-  CString list = "didchec didcall didrais didswag didfold didalli "
+  CString list = "didchec didcall didrais didbetsize didfold didalli "
     "nplayersround nbetsround prevaction ";
   list += RangeOfSymbols("didchecround%i",  kBetroundPreflop, kBetroundRiver);  
   list += RangeOfSymbols("didcallround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("didraisround%i",  kBetroundPreflop, kBetroundRiver);
-  list += RangeOfSymbols("didswaground%i",  kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("didbetsizeround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nplayersround%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nbetsround%i",    kBetroundPreflop, kBetroundRiver);
   for (int i=0; i<k_hist_sym_count; ++i) {

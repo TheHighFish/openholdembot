@@ -76,7 +76,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   //   * exactly once per my turn
   //   * when we have stable frames (isfinal-answer == true)
   //   * shortly before the main OpenPPL-evaluations
-  // Unfortunatellz doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
+  // Unfortunately doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
   // did not work as expected.
   assert(p_symbol_engine_autoplayer->isfinalanswer());
   p_symbol_engine_open_ppl->InitMemorySymbols();

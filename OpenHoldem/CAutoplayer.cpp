@@ -505,7 +505,7 @@ bool CAutoplayer::DoBetsize(void) {
       // swag -> adjusted allin -> swag allin -> adjusted allin ...
       if (ChangeBetsizeToAllin(betsize)) {
         _already_executing_allin_adjustment = true;
-        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting swag to allin.\n");
+        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting betsize to allin.\n");
         bool success = DoAllin();
         _already_executing_allin_adjustment = false;
         return success;
@@ -522,7 +522,7 @@ bool CAutoplayer::DoBetsize(void) {
       betsize);
     return false;
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't f$betsize, because f$betsize evaluates to 0.\n");
 	return false;
 }
 

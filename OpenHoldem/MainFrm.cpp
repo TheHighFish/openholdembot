@@ -230,7 +230,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.lpszClass = preferences.window_class_name();
 
 	// Restore window location and size
-  // -32 to avoid placement directlz under the taskbar,
+  // -32 to avoid placement directly under the taskbar,
   // so that at least a little bit is visible
   // if the values in the ini-file are out of range.
 	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON - 32);

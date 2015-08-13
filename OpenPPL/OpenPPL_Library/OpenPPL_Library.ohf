@@ -431,7 +431,7 @@ False
 //
 // Some OpenHoldem-symbols are awfully ill-named,
 // thanks to Ray E. Bornert who invented WinHoldem.
-// rais, swag, $$pr0, etc.
+// rais, betsize, $$pr0, etc.
 // We provide meaningful names here to make this library more readable.
 //
 //*****************************************************************************
@@ -493,7 +493,7 @@ me_re_MemBets
 // (There are however no problems, if somebody else raises,
 // because we always get stable frames at out turn.)
 // So we also check for our last action and the amount to call.
-// (-1 = fold 0 = check 1 = call 2 = raise e3 = swag 4 = allin)
+// (-1 = fold 0 = check 1 = call 2 = raise e3 = betsize 4 = allin)
 (((prevaction ==  2) || (prevaction == 3)) && (AmountToCall == 0)) ? userchair :
 raischair
 
@@ -507,38 +507,38 @@ raischair
 ##BotRaisedBeforeFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 || didraisround1 
-|| didswaground1
+|| didbetsizeround1
 
 ##BotRaisedOnFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 || didraisround2 
-|| didswaground2
+|| didbetsizeround2
 
 ##BotRaisedOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 || didraisround3 
-|| didswaground3
+|| didbetsizeround3
 
 ##BotsActionsOnFlop##
   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Checks are not counted
 + didcallround2 
 + didraisround2 
-+ didswaground2
++ didbetsizeround2
 
 ##BotsActionsOnThisRound##
   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Checks are not counted
 + didcall 
 + didrais 
-+ didswag
++ didbetsize
 
 ##BotsActionsOnThisRoundIncludingChecks##
   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Folds and allins are not relevant, as then the hand is over for us.
 + didchec 
 + didcall 
-+ didswag 
++ didbetsize 
 + didrais
 
 ##BotsActionsPreflop##
@@ -547,7 +547,7 @@ raischair
 // and we can't check preflop without posting a blind out of order (first hand only).
 + didcallround1 
 + didraisround1 
-+ didswaground1
++ didbetsizeround1
 
 ##PrevActionWasAllin##
    (prevaction == 4) // Allin
@@ -808,14 +808,14 @@ me_re_MemMissingSmallBlind
 
 ##OpponentCalledOnFlop##
    (betround > ConstBetRoundFlop)
-&& ((didraisround2 + didswaground2) == 1)
+&& ((didraisround2 + didbetsizeround2) == 1)
 && !didchecround2
 && !didcallround2
 && NoVillainBetOrRaisedOnFlop
 
 ##OpponentCalledOnTurn##
    (betround > ConstBetRoundTurn)
-&& ((didraisround3 + didswaground3) == 1)
+&& ((didraisround3 + didbetsizeround3) == 1)
 && !didchecround3
 && !didcallround3
 && NoVillainBetOrRaisedOnTurn

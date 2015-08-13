@@ -117,7 +117,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		bool this_player_got_dealt = false;
     // Players with cards are always "dealt",
     // independent of the rest of following complicated logic,
-    // which might fail, especiallz in case of GIGO.
+    // which might fail, especially in case of GIGO.
     if (p_table_state->_players[chair_to_consider].HasAnyCards()) {
       this_player_got_dealt = true;
     }
