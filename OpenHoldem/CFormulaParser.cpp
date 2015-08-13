@@ -185,8 +185,9 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
 bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
   if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
     // User-defined bot-logic
-    // Must be a f$-symbol
+    // Must be a f$-symbol or a list
     if (name.Left(2) == "f$") return true;
+    if (name.Left(4) == "list") return true;
     // Special cases: notes, dll and date
     if (name == "notes") return true;
     if (name == "dll") return true;
@@ -200,8 +201,9 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
   message.Format("Invalid function name: %s\n"
     "Naming conventions:\n"
     "  * Uppercases: OpenPPL-library\n"
+    "  * lowercases: built-in OpenHoldem symbols\n"
     "  * f$symbols: user-defined functions\n"
-    "  * lowercases: built-in OpenHoldem symbols\n",
+    "  * listXYZ: user-defined lists\n",
     name);
   CParseErrors::Error(message);
   return false;
