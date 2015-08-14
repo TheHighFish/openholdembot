@@ -29,8 +29,8 @@ MsgBox(0, "Next Step", "Change the version of OpenHoldem. (Search the OpenHoldem
 MsgBox(0, "Next Step", "Choose the correct build option. Usually optimized for OH, but debug if there are some known problems left. Release for the rest (as end-users usually miss debug-DLLs)." )
 MsgBox(0, "Next Step", "Rebuild everything")
 MsgBox(0, "Next Step", "Test ""everything"", at least briefly that OH ""works"".")
-MsgBox(0, "Next Step", "Commit everything to GoogleCode")
-MsgBox(0, "Next Step", "Tag the release on googlecode: TurtoiseSVN -> Branch/Tag and then create a tag for svn/tags/OpenHoldem_7.x.y. Comment: ""Tagging OpenHoldem 7.x.y for release"".")
+MsgBox(0, "Next Step", "Push everything to GitHub")
+MsgBox(0, "Next Step", "Tag the release on GitHub. Comment: ""Tagging OpenHoldem 7.x.y for release"".")
 
 DirRemove($new_openholdem_dir, 1)
 DirCopy($pre_created_release_dir, $new_openholdem_dir)
