@@ -106,7 +106,7 @@ void CGameState::CaptureState() {
       Card player_card = p_table_state->_players[i]._hole_cards[j];
       int card = player_card.GetValue();
       write_log(preferences.debug_dll_extension(),
-        "[CGameState] Plazer card [%i][%i] = %i\n", i, j, card);
+        "[CGameState] Player card [%i][%i] = %i\n", i, j, card);
 			state[state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 

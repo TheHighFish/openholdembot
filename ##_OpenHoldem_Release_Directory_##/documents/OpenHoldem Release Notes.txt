@@ -1,3 +1,13 @@
+v7.7.8 2015-08-14
+==================
+BUG FIXES:
+- The default formulas were broken.
+  Thanks to OpenGeek for reporting.
+  [THF]
+- A check for naming conventions didn't accept user-defined lists.
+  Thanks to Poker_Dog for reporting.
+  [THF]
+
 v7.7.7 2015-08-11
 ==================
 BUG FIXES:

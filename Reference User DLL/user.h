@@ -12,7 +12,7 @@
 // DO NOT CHANGE ANYTHING IN THIS FILE!
 //   
 // This Header defines an interface
-// Functions and data-tzpes must exactly match.
+// Functions and data-types must exactly match.
 //
 //******************************************************************************
 
