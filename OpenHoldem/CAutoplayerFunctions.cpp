@@ -230,7 +230,7 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Call -> Check
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_call, k_autoplayer_function_check);
-  // Call -> Fold
+  // Check -> Fold
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_check, k_autoplayer_function_fold);
 }

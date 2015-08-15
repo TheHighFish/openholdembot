@@ -29,6 +29,7 @@ class CTablemapCompletenessChecker {
   void CheckMainPot();
  private:
   void CheckForDeprecatedItems();
+  void VerifyTablePoints();
  private:
   void ErrorMissingItem(CString item);
   void ErrorDeprecatedItem(CString item);

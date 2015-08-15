@@ -135,6 +135,22 @@ void CTablemapCompletenessChecker::CheckMainPot() {
   }
 }
 
+void CTablemapCompletenessChecker::VerifyTablePoints() {
+  // Tablepoints work only for fixed table sizes
+  if (p_tablemap->ItemExists("clientsizemin") || p_tablemap->ItemExists("clientsizemax")) {
+    for (int i=0; i<k_max_number_of_buttons; ++i) {
+      CString table_point;
+      table_point.Format("tablepoint%i", i);
+      if (p_tablemap->ItemExists(table_point)) {
+        CString message = "Tablepoints work only with fixed clientsize,\n"
+          "not with clientsizemin and clientsizemax.\n";
+        OH_MessageBox_Interactive(message, "Error", 0);
+        break;
+      }
+    }
+  }
+}
+
 void CTablemapCompletenessChecker::VerifyMap() {
   // Only session 0 verifies the tablemaps
   // for better performance amd to avoid driving users crazy.
@@ -230,7 +246,8 @@ void CTablemapCompletenessChecker::VerifyMap() {
       CheckItem("t", i, "type");
     }
   }
-    // Optional uX-regions
+  VerifyTablePoints();
+  // Optional uX-regions
   CheckSetOfItems("u", last_chair, "name",    false);
   CheckSetOfItems("u", last_chair, "seated",  false);
   CheckSetOfItems("u", last_chair, "active",  false);
