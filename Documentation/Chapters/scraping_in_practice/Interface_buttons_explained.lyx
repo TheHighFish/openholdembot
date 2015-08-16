@@ -273,7 +273,7 @@ raise
 \end_layout
 
 \begin_layout Itemize
-betsize (
+betsize (and 
 \begin_inset Quotes eld
 \end_inset
 
@@ -281,7 +281,7 @@ swag
 \begin_inset Quotes erd
 \end_inset
 
- too for backward compatibility)
+ for backward compatibility)
 \end_layout
 
 \begin_layout Itemize
@@ -598,7 +598,7 @@ raise
 
 \end_deeper
 \begin_layout Standard
-This is basically how swagging works.
+This is basically how NL-betsizing works.
  Every casino is a little bit different.
  You have to play around a bit and identify which sequence works, then you
  can specify the usual i3edit, i3state, i3button, i3label and the methods

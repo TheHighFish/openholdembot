@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-12-31"/>
+<meta name="create-date" content="2015-08-15"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -23,7 +23,7 @@ Many newbies will automatically assume the latter case. Whenever you encounter a
 <a class="toc" name="toc-Section--1"></a>Basic Info
 </h2>
 <div class="Unindented">
-OpenHolldem will on every autoplayer action create a section with some basic info about the table-state, the decision taken and the action executed. You might wonder about the latter one, but action executed can differ from decision taken for example if certain buttons and therefore actions aew not available..
+OpenHolldem will on every autoplayer action create a section with some basic info about the table-state, the decision taken and the action executed. You might wonder about the latter one, but action executed can differ from decision taken, for example if certain buttons and therefore actions are not available..
 </div>
 <div class="Indented">
 <div class="listing">
@@ -52,10 +52,10 @@ OpenHolldem will on every autoplayer action create a section with some basic inf
 
 </div>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--2"></a>Autoplayer Trace 
+<a class="toc" name="toc-Section--2"></a>Autoplayer Trace !!!
 </h2>
 <div class="Unindented">
-This is an example of the log entries that are added to the standard log if the Autoplayer Trace option is enabled in {Preferences}.!!!!!
+This is an example of the log entries that are added to the standard log if the Autoplayer Trace option is enabled in Preferences.
 </div>
 <div class="Indented">
 <div class="listing">
@@ -113,7 +113,7 @@ Furtermore OpenHoldem logs all errors and warnings, i.e.:
 all shown error-messages
 </li>
 <li>
-all message-boxes that got suppressed by your option settings 
+all message-boxes that got suppressed by your preferences 
 </li>
 <li>
 some more errors and warnings where an error-dialog would not be appropriate.
@@ -124,44 +124,55 @@ some more errors and warnings where an error-dialog would not be appropriate.
 <a class="toc" name="toc-Section--5"></a>Debug Messages
 </h2>
 <div class="Unindented">
-Debug messages are mainly meant for developers and for experienced users who want to get more info about the way how OpenHoldem works internally. These messages can be turned on with the Debugging-tab of the Preferences dialog. They are very useful for finding and fixing bugs but usually not needed for most end-users. Below a short example about blind-detection and blind-locking (for stability):
+Debug messages are mainly meant for developers and for experienced users who want to get more info about the way how OpenHoldem works internally. These messages can be turned on with the Debugging-tab of the Preferences dialog. They are very useful for finding and fixing bugs, but they are usually not needed for most end-users. Below an example about blind-detection, blind-locking (for stability) and detecting hand-resets.
 </div>
 <div class="Indented">
 <div class="listing">
-<pre class="listing">2014-12-31 21:58:19 - [CSymbolEngineTableLimits] CalcTableLimits() 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed() true, because not locked
-2014-12-31 21:58:19 - [CBlindGuesser] Data from scraper (ttlimits, c0limits): 5.00 / 10.00 / -1.00
-2014-12-31 21:58:19 - [CBlindLevels] Trying to find best matching blind-level for 5.00 / 10.00 / -1.00 
-2014-12-31 21:58:19 - [CBlindLevels] Perfect match found
-2014-12-31 21:58:19 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlinds() 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand: false
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCurrentHand() 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Locked blinds at 5.00 / 10.00 / 20.00
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] RememberBlindsForCashgames() 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Saving blinds for hand 0
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCashgamesAfterNHands()
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_complete_session: false
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] istournament: false 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Not yet enough hands to lock blinds permanent.
+<pre class="listing">2015-08-15 16:00:24 - [CHandresetDetector] Setting handnumber to [] 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by dealerchair: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by cards: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by handnumber: true 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by community cards: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by potsize: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by nopponentsplaying: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by increasing balance: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by changing blind level: false 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by new small blind: true 
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing this heartbeat: 0b001000001 
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing last 3 heartbeat2: 0b1000001 
+2015-08-15 16:00:24 - [CHandresetDetector] Number of methods firing last 3 heartbeat2: 2 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset found 
+2015-08-15 16:00:24 - [CHandresetDetector] Setting last dealerchair to [-1] 
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] CalcTableLimits() 
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed() true, because not locked 
+2015-08-15 16:00:24 - [CBlindGuesser] Data from scraper (ttlimits, c0limits): 5.00 / 10.00 / 0.00 
+2015-08-15 16:00:24 - [CBlindLevels] Trying to find best matching blind-level for 5.00 / 10.00 / 0.00 
+2015-08-15 16:00:24 - [CBlindLevels] Perfect match found 
+2015-08-15 16:00:24 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00 
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand: false
 </pre>
 </div>
 
 </div>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--6"></a>Logging for DLL and Perl
+<a class="toc" name="toc-Section--6"></a>Logging for DLL
 </h2>
 <div class="Unindented">
-Usually OpenHoldem will stop going into more detail when it reaches a DLL or Perl symbol, because DLL-functions and C-functions are a black-box for OpenHoldem. However it is possible to enable DLL-logging (also for Perl), then OpenHoldem will continue like in the axample above if the DLL-function calls back to OH-script. Furthermore it is possible to log any user-defined messages from the DLL to the standard OpenHoldem-log with a function from the DLL-interface:
+Usually OpenHoldem will stop going into more detail when it reaches a DLL symbol, because DLL-functions and C-functions are a black-box for OpenHoldem. However it is possible to enable DLL-logging, then OpenHoldem will continue like in the axample above if the DLL-function calls back to OH-script. Furthermore it is possible to log any user-defined messages from the DLL to the standard OpenHoldem-log with a function from the DLL-interface:
 </div>
 <div class="Indented">
-!!!!!
+<div class="listing">
+<pre class="listing">EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
+</pre>
+</div>
+
 </div>
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-31T22:49:54.453000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-08-15T22:49:05.171000</span>
 </div>
 </div>
 </body>

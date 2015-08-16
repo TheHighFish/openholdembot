@@ -469,7 +469,7 @@ all shown error-messages
 \end_layout
 
 \begin_layout Itemize
-all message-boxes that got suppressed by your option settings 
+all message-boxes that got suppressed by your preferences 
 \end_layout
 
 \begin_layout Itemize
@@ -485,9 +485,10 @@ Debug messages are mainly meant for developers and for experienced users
  who want to get more info about the way how OpenHoldem works internally.
  These messages can be turned on with the Debugging-tab of the Preferences
  dialog.
- They are very useful for finding and fixing bugs but usually not needed
- for most end-users.
- Below a short example about blind-detection and blind-locking (for stability):
+ They are very useful for finding and fixing bugs, but they are usually
+ not needed for most end-users.
+ Below an example about blind-detection, blind-locking (for stability) and
+ detecting hand-resets.
 \end_layout
 
 \begin_layout Standard
@@ -497,99 +498,138 @@ status open
 
 \begin_layout Plain Layout
 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] CalcTableLimits() 
+2015-08-15 16:00:24 - [CHandresetDetector] Setting handnumber to [] 
 \end_layout
 
 \begin_layout Plain Layout
 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed()
- true, because not locked
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CBlindGuesser] Data from scraper (ttlimits, c0limits):
- 5.00 / 10.00 / -1.00
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CBlindLevels] Trying to find best matching blind-level
- for 5.00 / 10.00 / -1.00 
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CBlindLevels] Perfect match found
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by dealerchair: false
  
 \end_layout
 
 \begin_layout Plain Layout
 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by cards: false 
 \end_layout
 
 \begin_layout Plain Layout
 
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand:
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by handnumber: true
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by community cards:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by potsize: false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by nopponentsplaying:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by increasing balance:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by changing blind level:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by new small blind:
+ true 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing this heartbeat:
+ 0b001000001 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing last 3 heartbeat2:
+ 0b1000001 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Number of methods firing last
+ 3 heartbeat2: 2 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset found 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Setting last dealerchair to [-1]
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] CalcTableLimits() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed()
+ true, because not locked 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindGuesser] Data from scraper (ttlimits, c0limits):
+ 5.00 / 10.00 / 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Trying to find best matching blind-level
+ for 5.00 / 10.00 / 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Perfect match found 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand:
  false
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCurrentHand()
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Locked blinds at 5.00 /
- 10.00 / 20.00
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] RememberBlindsForCashgames()
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Saving blinds for hand
- 0
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] AutoLockBlindsForCashgamesAfter
-NHands()
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] blinds_locked_for_complete_sess
-ion: false
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] istournament: false 
-\end_layout
-
-\begin_layout Plain Layout
-
-2014-12-31 21:58:19 - [CSymbolEngineTableLimits] Not yet enough hands to
- lock blinds permanent.
 \end_layout
 
 \end_inset
@@ -598,22 +638,31 @@ ion: false
 \end_layout
 
 \begin_layout Section*
-Logging for DLL and Perl
+Logging for DLL
 \end_layout
 
 \begin_layout Standard
 Usually OpenHoldem will stop going into more detail when it reaches a DLL
- or Perl symbol, because DLL-functions and C-functions are a black-box for
- OpenHoldem.
- However it is possible to enable DLL-logging (also for Perl), then OpenHoldem
- will continue like in the axample above if the DLL-function calls back
- to OH-script.
+ symbol, because DLL-functions and C-functions are a black-box for OpenHoldem.
+ However it is possible to enable DLL-logging, then OpenHoldem will continue
+ like in the axample above if the DLL-function calls back to OH-script.
  Furthermore it is possible to log any user-defined messages from the DLL
  to the standard OpenHoldem-log with a function from the DLL-interface:
 \end_layout
 
 \begin_layout Standard
-!!!!!
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
