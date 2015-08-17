@@ -130,7 +130,7 @@ Buyin with the desired amount (once the table is open)
 \end_layout
 
 \begin_layout Itemize
-Chose an empty seat
+Choose an empty seat
 \end_layout
 
 \begin_layout Itemize
@@ -155,11 +155,16 @@ Close the lobby
 \end_layout
 
 \begin_layout Itemize
-Close all instances of OpenHoldem (if desireed)
+Close all instances of OpenHoldem (if desired)
 \end_layout
 
 \begin_layout Subsection*
 Tasks that can be done by OpenHoldem
+\end_layout
+
+\begin_layout Itemize
+Automatically start new instances of OpenHoldem for popup-blocking and for
+ the next table (since OpenHoldem 8.0.1)
 \end_layout
 
 \begin_layout Itemize
@@ -244,6 +249,10 @@ Click the [x] in the title-bar to close the poker-table if f$close is true
 
 \begin_layout Itemize
 Disconnect if the table disappears and be ready for the next table
+\end_layout
+
+\begin_layout Itemize
+Shutdown OpenHoldem, using the f$terminate-function (since OpenHoldem 8.0.1)
 \end_layout
 
 \begin_layout Subsection*
