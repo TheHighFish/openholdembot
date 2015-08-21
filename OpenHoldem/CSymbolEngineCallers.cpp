@@ -154,7 +154,7 @@ bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool
 		return true;
 	}	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
-		*result = callbits(name[8]-'0');
+		*result = callbits(RightDigitCharacterToNumber(name));
     return true;
   } else if (memcmp(name, "firstcaller_chair", 17)==0) {
 		*result = _firstcaller_chair;

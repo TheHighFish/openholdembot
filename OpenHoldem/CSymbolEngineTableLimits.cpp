@@ -287,7 +287,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const char *name, double *result, 
 		}	else if (memcmp(name, "bet", 3)==0 && strlen(name)==4) {
       char betround = name[3];
       if ((betround >= '1') && (betround <= '4')) {
-			  *result = bet(name[3]-'0');
+			  *result = bet(RightDigitCharacterToNumber(name));
         return true;
       }
 		}

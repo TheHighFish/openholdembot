@@ -61,9 +61,7 @@ bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, 
 	}
   if ((memcmp(name, "colourcode", 10) == 0) && (strlen(name) == 11)) {
     // colourcode0..colourcode9
-    char c_index = name[10];
-    if ((c_index < '0') || (c_index > '9')) return false;
-    int index = c_index - '0';
+    int index = RightDigitCharacterToNumber(name);
     *result = p_table_state->_players[index]._colourcode;
     return true;
   }

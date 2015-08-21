@@ -289,7 +289,7 @@ int CTransform::HTypeTransform(RMapCI region, const HDC hdc, CString *text)
 
 	width = region->second.right - region->second.left + 1;
 	height = region->second.bottom - region->second.top + 1;
-	hash_type = region->second.transform[1] - '0';
+	hash_type = RightDigitCharacterToNumber(region->second.transform);
 	
 	if (p_tablemap->h$(hash_type)->empty())
 		return ERR_NO_HASH_MATCH;

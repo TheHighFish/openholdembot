@@ -238,17 +238,17 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 		}	else if (memcmp(name, "didalli", 7)==0 && strlen(name)==7) {
 			*result = didalli(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	{
-			*result = didchec(name[12]-'0');
+			*result = didchec(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	{
-			*result = didcall(name[12]-'0');
+			*result = didcall(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	{
-			*result = didrais(name[12]-'0');
+			*result = didrais(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didbetsizeround", 15)==0 && strlen(name)==16)	{
-			*result = didswag(name[15]-'0');
+			*result = didswag(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==13) {
-			*result = didfold(name[12]-'0');
+			*result = didfold(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==13) {
-			*result = didalli(name[12]-'0');
+			*result = didalli(RightDigitCharacterToNumber(name));
     }	else {
 			// Invalid symbol
 			return false;
@@ -260,7 +260,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
       // For current betting round
 			*result = nplayersround(p_betround_calculator->betround());
 		}	else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14) {
-			*result = nplayersround(name[13]-'0');
+			*result = nplayersround(RightDigitCharacterToNumber(name));
 		}	else {
 			// Invalid symbol
 			return false;
@@ -272,10 +272,10 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==10)	{
 		*result = nbetsround(p_betround_calculator->betround());
 	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)	{
-		*result = nbetsround(name[10]-'0');
+		*result = nbetsround(RightDigitCharacterToNumber(name));
 	}  else if (memcmp(name, "hi_", 3)==0) {
     // History symbols
-    int	round = name[strlen(name)-1]-'0';
+    int	round = RightDigitCharacterToNumber(name, 1);
     char *pure_name = (char*)name + 3;
     char pure_name_without_betround[256];
     int length = strlen(pure_name);

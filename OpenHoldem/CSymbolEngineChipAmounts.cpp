@@ -278,11 +278,11 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 		if (memcmp(name, "balance", 7)==0 && strlen(name)==7)	{
 			*result = p_table_state->User()->_balance; 
 		}	else if (memcmp(name, "balance", 7)==0 && strlen(name)==8) {
-			*result = p_table_state->_players[name[7]-'0']._balance;
+			*result = p_table_state->_players[RightDigitCharacterToNumber(name)]._balance;
 		}	else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==23) {
 			*result = balanceatstartofsession();
 		} else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13) {
-      *result = SortedBalance(name[12]-'0');
+      *result = SortedBalance(RightDigitCharacterToNumber(name));
     }	else {
 			// Invalid symbol
 			return false;
@@ -293,14 +293,11 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	if (memcmp(name, "maxbalance", 10)==0 && strlen(name)==10) {
 		*result = maxbalance();
 	}	else if (memcmp(name, "stack", 5)==0 && strlen(name)==6) {
-		*result = stack(name[5]-'0');
+		*result = stack(RightDigitCharacterToNumber(name));
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==10)	{
 		*result = p_table_state->User()->_bet;
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==11)	{
-    assert(name[10] >= '0');
-    assert(name[10] <= '9');
-    int chair = name[10]-'0';
-		*result = p_table_state->_players[chair]._bet;
+		*result = p_table_state->_players[RightDigitCharacterToNumber(name)]._bet;
 	}	else if (memcmp(name, "call", 4)==0 && strlen(name)==4)	{
 		*result = call();
 	}	else if (memcmp(name, "nbetstocall", 11)==0 && strlen(name)==11) {

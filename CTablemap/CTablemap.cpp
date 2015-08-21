@@ -495,7 +495,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
 			t = strLineType[3];
 			hold_font.ch = t[0];
-			font_group = strLineType[1] - '0';
+			font_group = RightDigitCharacterToNumber(strLineType);
 
 			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
 			{
@@ -589,7 +589,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			int hash_group = strLineType[1] - '0';
+			int hash_group = RightDigitCharacterToNumber(strLineType);
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");

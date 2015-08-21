@@ -21,6 +21,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisers.h"
+#include "StringFunctions.h"
 
 CSymbolEnginePokerAction *p_symbol_engine_poker_action = NULL;
 
@@ -348,11 +349,11 @@ bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, 
     return true;
   }
 	if (memcmp(name,"ac_betpos", 9) == 0)	{
-    *result = BetPosition(name[9]-'0');
+    *result = BetPosition(RightDigitCharacterToNumber(name));
     return true;
   }
 	if (memcmp(name,"ac_dealpos", 10) == 0) {
-    *result = DealPosition(name[10]-'0');
+    *result = DealPosition(RightDigitCharacterToNumber(name));
     return true;
   }
   // Invalid symbol

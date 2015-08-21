@@ -595,7 +595,7 @@ bool CSymbolEngineCards::IsHand(const char *name) {
 	// passed in symbol query
 	for (int i=1; i<(int) strlen(name); ++i) {
     if (name[i] >= '2' && name[i] <= '9') {
-			cardrank[cardcnt++] =  name[i] - '0';
+			cardrank[cardcnt++] = DigitCharacterToNumber(name[i]);
     } else if (name[i]=='T' || name[i]=='t') {
 			cardrank[cardcnt++] = 10;
     } else if (name[i]=='J' || name[i]=='j') {
@@ -661,17 +661,17 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "$", 1)==0) {
 		if (memcmp(name, "$$pc", 4)==0)	{
-      *result = p_table_state->User()->_hole_cards[name[4]-'0'].GetValue();
+      *result = p_table_state->User()->_hole_cards[RightDigitCharacterToNumber(name)].GetValue();
 		}	else if (memcmp(name, "$$pr", 4)==0) {
-			*result = p_table_state->User()->_hole_cards[name[4]-'0'].GetOpenHoldemRank();
+			*result = p_table_state->User()->_hole_cards[RightDigitCharacterToNumber(name)].GetOpenHoldemRank();
 		}	else if (memcmp(name, "$$ps", 4)==0) {
-			*result = p_table_state->User()->_hole_cards[name[4]-'0'].GetSuit();
+			*result = p_table_state->User()->_hole_cards[RightDigitCharacterToNumber(name)].GetSuit();
 		} else if (memcmp(name, "$$cc", 4)==0) {
-      *result = p_table_state->_common_cards[name[4]-'0'].GetValue();
+      *result = p_table_state->_common_cards[RightDigitCharacterToNumber(name)].GetValue();
 		}	else if (memcmp(name, "$$cr", 4)==0) {
-      *result = p_table_state->_common_cards[name[4]-'0'].GetOpenHoldemRank();
+      *result = p_table_state->_common_cards[RightDigitCharacterToNumber(name)].GetOpenHoldemRank();
 		}	else if (memcmp(name, "$$cs", 4)==0) {
-			*result = p_table_state->_common_cards[name[4]-'0'].GetSuit();
+			*result = p_table_state->_common_cards[RightDigitCharacterToNumber(name)].GetSuit();
 		}	else if (memcmp(name, "$", 1)==0) {
 			*result = IsHand(name);
 		}	else {

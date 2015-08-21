@@ -28,4 +28,14 @@ CString IntToBinaryString(int number, int min_digits = 1);
 CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);
 CString CStringRemoveRight(CString string, int number_of_characters_to_remove);
 
+// For index calculation in symbol lookups like "didcallround2"
+// without having to do -'0' everywhere and without having to hard-code
+// the length of the symbol (common failure on renaming).
+// Former bad code:
+//   else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	{
+//		 *result = didcall(name[12]-'0');
+int  DigitCharacterToNumber(char digit);
+char RightCharacter(CString string, int index_from_right = 0);
+int  RightDigitCharacterToNumber(CString string, int index_from_right = 0);
+
 #endif INC_STRINGFUNCTIONS_H

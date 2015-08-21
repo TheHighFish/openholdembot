@@ -310,12 +310,12 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 		*result = raischair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
-		*result = raisbits(name[8]-'0');
+		*result = raisbits(RightDigitCharacterToNumber(name));
 	}	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9) {
     RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
-		*result = foldbits(name[8]-'0');
+		*result = foldbits(RightDigitCharacterToNumber(name));
 	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
-    *result = LastRaised(name[10]-'0');
+    *result = LastRaised(RightDigitCharacterToNumber(name));
   }	else {
 		// Symbol of a different symbol-engine
 		return false;

@@ -387,10 +387,9 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			//assume callers are n smallest stacks
 			bool callers[kMaxNumberOfPlayers] = {0};
-			int ncallers = min(name[11]-'0', sym_nopponentsplaying);
-
-
-			for (int i = 0; i < ncallers; i++)
+			int ncallers = min(RightDigitCharacterToNumber(name), sym_nopponentsplaying);
+      
+      for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
 				double smalleststack = DBL_MAX;
@@ -443,7 +442,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		if (isdigit(name[12]))
 		{
 			//assume callers are n biggest stacks
-			int ncallers = min(name[12]-'0', sym_nopponentsplaying);
+			int ncallers = min(RightDigitCharacterToNumber(name), sym_nopponentsplaying);
 
 			if (ncallers > 0)
 			{

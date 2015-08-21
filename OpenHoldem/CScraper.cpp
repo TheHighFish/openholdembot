@@ -1119,7 +1119,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter) {
 			horizcount++;
 	}
 
-	hash_type = r_start->second.transform[1] - '0';
+	hash_type = RightDigitCharacterToNumber(r_start->second.transform);
 
 	// Bitblt the attached windows bitmap into a HDC
 	HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
