@@ -1,3 +1,9 @@
+tmp devbot info move fristraiser_chair symbol
+==================================================
+- move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
+- delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
+- update CSymbolEnginePokerTracker.cpp 
+
 v7.7.8 2015-08-XX
 ==================
 BUG FIXES:
