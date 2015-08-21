@@ -1,3 +1,10 @@
+v7.7.8 2015-08-XX
+==================
+BUG FIXES:
+- The lookup for the symbols didbetsizeroundX was broken.
+  Thanks to Ngels for reporting.
+  [THF]
+
 v7.7.8 2015-08-14
 ==================
 BUG FIXES:
@@ -6,6 +13,11 @@ BUG FIXES:
   [THF]
 - A check for naming conventions didn't accept user-defined lists.
   Thanks to Poker_Dog for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Renamed the symbols didswag and didswagroundX 
+  to didbetsize and didbetsizeroundX.
   [THF]
 
 v7.7.7 2015-08-11
