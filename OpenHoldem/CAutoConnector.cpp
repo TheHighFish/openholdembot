@@ -237,7 +237,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	
 	// Put global candidate table list in table select dialog variables
 	N = (int) g_tlist.GetSize();
-  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates> %i\n", N);
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates: %i\n", N);
 	if (N == 0) {
 		FailedToConnectBecauseNoWindowInList();
 	}	else 	{

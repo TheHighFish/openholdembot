@@ -244,10 +244,10 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 		}	else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	{
 			*result = didrais(name[12]-'0');
 		}	else if (memcmp(name, "didbetsizeround", 15)==0 && strlen(name)==16)	{
-			*result = didswag(name[12]-'0');
-		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==7) {
+			*result = didswag(name[15]-'0');
+		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==13) {
 			*result = didfold(name[12]-'0');
-		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==7) {
+		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==13) {
 			*result = didalli(name[12]-'0');
     }	else {
 			// Invalid symbol
