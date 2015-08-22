@@ -5,6 +5,13 @@ BUG FIXES:
   Thanks to Ngels for reporting.
   [THF]
 
+MAINTENANCE:
+- move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
+- delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
+- update CSymbolEnginePokerTracker.cpp 
+  [DevBot]
+
+
 v7.7.8 2015-08-14
 ==================
 BUG FIXES:
