@@ -495,10 +495,9 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
 			t = strLineType[3];
 			hold_font.ch = t[0];
-			font_group = RightDigitCharacterToNumber(strLineType);
+			font_group = DigitCharacterToNumber(strLineType[1]);
 
-			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
-			{
+			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap) {
 				OH_MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
@@ -536,8 +535,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			token = strLineType[1];
-			int hashpoint_group = atol(token);
+			int hashpoint_group = DigitCharacterToNumber(strLineType[1]);
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 
@@ -589,7 +587,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			int hash_group = RightDigitCharacterToNumber(strLineType);
+			int hash_group = DigitCharacterToNumber(strLineType[1]);
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");

@@ -115,19 +115,15 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	GetClientRect(hwnd, &crect);
 
 	// See if it matches the currently loaded table map
-	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title))
-	{
+	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title)) {
 		// Filter out served tables already here,
 		// otherwise the other list used in the dialog
 		// to select windows manually will cause us lots of headaches,
 		// as the lists will be of different size 
 		// and the indexes will not match.
-		if (p_sharedmem->PokerWindowAttached(hwnd))
-		{
+		if (p_sharedmem->PokerWindowAttached(hwnd))	{
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
-		}
-		else
-		{
+		}	else {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
 			tablelisthold.title = title;
@@ -139,8 +135,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 			g_tlist.Add(tablelisthold);
 		}
 	}
-
-	return true;  // keep processing through entire list of windows
+  return true;  // keep processing through entire list of windows
 }
 
 void CAutoConnector::WriteLogTableReset()

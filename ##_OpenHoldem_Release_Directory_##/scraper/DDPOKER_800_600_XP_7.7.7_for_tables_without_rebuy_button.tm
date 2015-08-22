@@ -181,7 +181,6 @@ r$p9cardface1nocard  467  60 468  60 ffffffff   -5 C
 r$p9dealer           527 132 527 133 ff000000    4 C
 r$p9name             469  32 529  44 ffffffff    1 T0
 r$p9seated           499  36 503  53   1a16ad  -10 C
-r$tablepoint0        788 460 788 460   7b7b7b    1 C
 r$u0name             576  32 642  44 ff00ffff    1 T0
 r$u1name             685  94 751 106 ff00ffff    1 T0
 r$u2name             690 364 750 376 ff00ffff    1 T0

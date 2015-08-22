@@ -1,4 +1,4 @@
-v7.7.8 2015-08-XX
+v7.7.9 2015-08-22
 ==================
 BUG FIXES:
 - The lookup for the symbols didbetsizeroundX was broken.
