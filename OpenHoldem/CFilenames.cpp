@@ -221,7 +221,7 @@ CString CFilenames::VersusPath() {
 }
 
 CString CFilenames::OpenPPLLibraryPath() {
-  CString result = OpenHoldemDirectory() + "\\OpenPPL_Library.ohf";
+  CString result = OpenHoldemDirectory() + "\OpenPPL_Library.ohf";
   Log("OpenPPLLibraryPath", result.GetString());
 	return result;
 }   
