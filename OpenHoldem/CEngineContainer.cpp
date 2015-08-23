@@ -261,7 +261,7 @@ void CEngineContainer::DestroyAllSymbolEngines()
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines()
-{;
+{
 	delete p_betround_calculator;
 }
 
