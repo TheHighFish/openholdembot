@@ -86,7 +86,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   CFile openPPL_file(openPPL_path, 
     CFile::modeRead | CFile::shareDenyWrite);
   write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Going to load OpenPPL-library\n");
+	    "[FormulaParser] Going to load and parse OpenPPL-library\n");
   CArchive openPPL_archive(&openPPL_file, CArchive::load); 
   ParseFile(openPPL_archive);
   p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
