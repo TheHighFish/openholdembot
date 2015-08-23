@@ -37,6 +37,7 @@ END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() {
+	write_log(preferences.debug_openholdem(), "[COpenHoldemDoc] Going to call  p_function_collection->DeleteAll\n");
 	p_function_collection->DeleteAll(false, true);
 }
 
