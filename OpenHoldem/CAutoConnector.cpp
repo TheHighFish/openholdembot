@@ -250,7 +250,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			CString tablemap_to_load = g_tlist[SelectedItem].path.GetString();
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
 			p_tablemap->LoadTablemap(tablemap_to_load);
-			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap loaded\n");
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap successfully loaded\n");
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();

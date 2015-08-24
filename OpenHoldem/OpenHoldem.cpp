@@ -195,6 +195,9 @@ BOOL COpenHoldemApp::InitInstance() {
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 
+	 //Document template and doc/view
+         //https://msdn.microsoft.com/en-us/library/hts9a4xz.aspx
+	 // https://msdn.microsoft.com/en-us/library/d1e9fe7d.aspx
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
