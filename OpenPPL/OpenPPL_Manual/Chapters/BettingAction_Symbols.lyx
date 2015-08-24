@@ -1140,7 +1140,8 @@ NumberOfRaisesBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises before the Flop made by opponents
+The number of raises before the Flop made by opponents.
+ 
 \end_layout
 
 \end_inset
@@ -1169,7 +1170,8 @@ NumberOfRaisesOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises on the Flop made by opponents
+The number of raises on the Flop made by opponents.
+ Bets don't count.
 \end_layout
 
 \end_inset
@@ -1198,7 +1200,8 @@ NumberOfRaisesOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises on the Turn made by opponents
+The number of raises on the Turn made by opponents.
+ Bets don't count.
 \end_layout
 
 \end_inset
@@ -1315,7 +1318,8 @@ Raises
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises made by opponents this betting round
+The number of raises made by opponents this betting round.
+ Bets don't count.
 \end_layout
 
 \end_inset
@@ -1361,7 +1365,7 @@ RaisesBeforeFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised before Flop
+The number of raises by opponents before flop
 \end_layout
 
 \end_inset
@@ -1394,7 +1398,8 @@ RaisesOnFlop
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised on Flop
+The number of raises by opponents on flop.
+ Bets don't count.
 \end_layout
 
 \end_inset
@@ -1427,7 +1432,8 @@ RaisesOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-An opponent raised on Turn
+The number of raises by opponentson turn.
+ Bets don't count.
 \end_layout
 
 \end_inset
@@ -1460,7 +1466,8 @@ RaisesSinceLastPlay
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of raises since our last action
+The number of raises since our last action.
+ Bets don't count.
 \end_layout
 
 \end_inset
