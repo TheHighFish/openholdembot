@@ -1501,7 +1501,7 @@ rankhicommon
 ((rankbitscommon >> 1) &0x7f) == 0x5d ? 1 : 0
 
 ##ExactlyOneStraightPossibleOnFlop##
-   [StraightPossibleOnFlop && AcePresentOnFlop && ((LowestFlopCard >= 10) || (TopFlopCard <= 5))]
+   [StraightPossibleOnFlop && AcePresentOnFlop]
 || [StraightPossibleOnFlop && (TopFlopCard - LowestFlopCard == 4)]
 
 ##FlopCardPairedOnTurn##
