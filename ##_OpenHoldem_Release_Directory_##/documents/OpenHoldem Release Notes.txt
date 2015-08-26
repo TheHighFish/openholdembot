@@ -4,7 +4,9 @@ BUG FIXES:
 - The lookup for the symbols didbetsizeroundX was broken.
   Thanks to Ngels for reporting.
   [THF]
-
+- OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
+  [fqfq]
+  
 MAINTENANCE:
 - move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
 - delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
