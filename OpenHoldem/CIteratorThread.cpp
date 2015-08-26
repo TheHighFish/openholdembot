@@ -361,7 +361,7 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 
 	//Initialise the handrank tables used by prwin
 	vndx=0; //used to provide an offset into the vanilla table
-	for (int i=0; i<169; i++)
+	for (int i=0; i<kNumberOfStartingHands; i++)
 	{
 		//normal weighted prwin table
 		ptr = prwin_handrank_table_169[i];
