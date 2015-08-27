@@ -12,7 +12,8 @@ MAINTENANCE:
 - delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
 - update CSymbolEnginePokerTracker.cpp 
   [DevBot]
-
+- Changed weighted-prwin hand rankings to Sklansky-Chubukov's.
+  [fqfq]
 
 v7.7.8 2015-08-14
 ==================
