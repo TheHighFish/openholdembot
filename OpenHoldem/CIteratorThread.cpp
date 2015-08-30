@@ -51,28 +51,28 @@ sprw1326	_prw1326;	//prwin 1326 data structure Matrix 2008-04-29
 
 
 // handrank table used to prime weighted prwin lookup table.
-// reflects incidence of cards people actually play to flop.
+// This is the Sklansky-Chubukov hand rankings.
 // left in this form for ease of developer modification.
 // converted at startup to the tables actually used by prwin calculation
 char *prwin_handrank_table_169[kNumberOfStartingHands] =
 {
-	"AA ","KK ","QQ ","AKs","JJ ","AQs","KQs","TT ","AJs","KJs",
-	"JTs","QJs","QTs","99 ","ATs","KTs","88 ","T9s","AK ","J9s",
-	"77 ","98s","Q9s","66 ","A9s","K9s","T8s","55 ","A5s","54s",
-	"44 ","A8s","87s","33 ","65s","22 ","AQ ","A4s","J8s","A3s",
-	"76s","97s","A7s","KQ ","A2s","Q8s","86s","K8s","A6s","75s",
-	"T7s","53s","64s","K7s","AJ ","KJ ","43s","QJ ","96s","JT ",
-	"J7s","K6s","K5s","QT ","85s","Q7s","KT ","AT ","K4s","K3s",
-	"K2s","74s","T6s","52s","Q6s","63s","Q5s","Q4s","42s","Q3s",
-	"95s","J6s","J5s","32s","Q2s","T9 ","J4s","84s","T5s","J3s",
-	"T4s","73s","J2s","J9 ","T3s","T2s","62s","94s","93s","92s",
-	"83s","Q9 ","A9 ","98 ","82s","T8 ","K9 ","72s","54 ","87 ",
-	"A8 ","A5 ","65 ","A4 ","76 ","J8 ","97 ","A3 ","A7 ","A2 ",
-	"86 ","A6 ","Q8 ","75 ","53 ","K8 ","T7 ","64 ","K7 ","43 ",
-	"96 ","K6 ","J7 ","85 ","K5 ","Q7 ","K4 ","K3 ","74 ","52 ",
-	"T6 ","Q6 ","K2 ","Q5 ","42 ","63 ","Q4 ","95 ","Q3 ","J6 ",
-	"J5 ","32 ","Q2 ","J4 ","T5 ","84 ","J3 ","J2 ","T4 ","73 ",
-	"T3 ","T2 ","94 ","62 ","93 ","92 ","83 ","82 ","72 "
+	"AA ","KK ","AKs","QQ ","AK ","JJ ","AQs","TT ","AQ ","99 ",
+	"AJs","88 ","ATs","AJ ","77 ","66 ","AT ","A9s","55 ","A8s",
+	"KQs","44 ","A9 ","A7s","KJs","A5s","A8 ","A6s","A4s","33 ",
+	"KTs","A7 ","A3s","KQ ","A2s","A5 ","A6 ","A4 ","KJ ","QJs",
+	"A3 ","22 ","K9s","A2 ","KT ","QTs","K8s","K7s","JTs","K9 ",
+	"K6s","QJ ","Q9s","K5s","K8 ","K4s","QT ","K7 ","K3s","K2s",
+	"Q8s","K6 ","J9s","K5 ","Q9 ","JT ","K4 ","Q7s","T9s","Q6s",
+	"K3 ","J8s","Q5s","K2 ","Q8 ","Q4s","J9 ","Q3s","T8s","J7s",
+	"Q7 ","Q2s","Q6 ","98s","Q5 ","J8 ","T9 ","J6s","T7s","J5s",
+	"Q4 ","J4s","J7 ","Q3 ","97s","T8 ","J3s","T6s","Q2 ","J2s",
+	"87s","J6 ","98 ","T7 ","96s","J5 ","T5s","T4s","86s","J4 ",
+	"T6 ","97 ","T3s","76s","95s","J3 ","T2s","87 ","85s","96 ",
+	"T5 ","J2 ","75s","94s","T4 ","65s","86 ","93s","84s","95 ",
+	"T3 ","76 ","92s","74s","54s","T2 ","85 ","64s","83s","94 ",
+	"75 ","82s","73s","93 ","65 ","53s","63s","84 ","92 ","43s",
+	"74 ","72s","54 ","64 ","52s","62s","83 ","42s","82 ","73 ",
+	"53 ","63 ","32s","43 ","72 ","52 ","62 ","42 ","32 "
 };
 
 // Make some variables global
