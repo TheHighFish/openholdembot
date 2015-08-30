@@ -286,7 +286,16 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	CString		swag_amt;
 
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoBetsize...\n");
-
+  // In some cases only call and fold are possible.
+  // Then a betsize should be skipped.
+  // We detect this situation by missing min-raise button.
+  // No backup-action here:
+  // OH-script doesn't provide that and OPPL eill do that automatically.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18125
+  if (!p_scraper_access->available_buttons[k_autoplayer_function_raise]) {
+    write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no (min-)raise possible).\n");
+		return false;
+  }
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
 	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)	{
 		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no edit field or no i3button).\n");

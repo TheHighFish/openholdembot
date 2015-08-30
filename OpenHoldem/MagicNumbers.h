@@ -338,6 +338,13 @@ const char k_OpenPPL_function_names[kNumberOfBetrounds + 1][k_max_length_of_Open
   "f$river"
 };
 
+// Special symbol for empty expressions. Its evaluation adds something 
+// meaningful to the log when the end of an open-ended when-condition 
+// gets reached during evaluation.
+// Needs to be lower-cases because it is built-in.
+const CString kEmptyExpression_False_Zero_WhenOthersFoldForce =
+  "empty_expression__false__zero__when_others_fold_force";
+  
 enum table_positioner_options {
 	k_position_tables_never,
 	k_position_tables_tiled,

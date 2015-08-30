@@ -1,12 +1,22 @@
+v7.8.0 2015-09-xx
+==================
+BUG FIXES:
+- OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
+  [fqfq]
+
+MAINTENANCE:
+- Skipping betsize if in call/fold and fold/allin situations,
+  i.e. if no min-raise-button is present.
+  Thanks to Fptrader for the suggestion and his patch.
+  [THF]
+  
 v7.7.9 2015-08-22
 ==================
 BUG FIXES:
 - The lookup for the symbols didbetsizeroundX was broken.
   Thanks to Ngels for reporting.
   [THF]
-- OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
-  [fqfq]
-  
+
 MAINTENANCE:
 - move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
 - delete CSymbolEngineChairs::CalculateFirstRaiserChair() 

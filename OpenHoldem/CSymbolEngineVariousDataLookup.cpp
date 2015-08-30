@@ -124,8 +124,13 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = int(p_autoconnector->attached_hwnd());
   } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
     *result = p_tablemap->islobby();
-  } 
-  else {
+  } else if ((memcmp(name, kEmptyExpression_False_Zero_WhenOthersFoldForce, strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))==0) 
+      && (strlen(name)==strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))) {
+    *result = kUndefinedZero;
+  } else {
+    // Special symbol for empty expressions. Its evaluation adds something 
+    // meaningful to the log when the end of an open-ended when-condition 
+    // gets reached during evaluation.
     *result = kUndefined;
     return false;
   }
