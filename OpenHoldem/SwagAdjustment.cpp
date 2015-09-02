@@ -200,7 +200,7 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   // Whole numbers (small),
   // but only if we want to bet more than 0.90.
   // Avoid rounding to 0.
-  else if ((result > 0.90) && (abs(result - int(result) < 0.10))) {
+  else if ((result > 0.90) && (abs(result - int(result)) < 0.10)) {
     result = Rounding(result, 1);
     write_log(preferences.debug_betsize_adjustment(),
       "[BetsizeAdjustment] Rounding a little bit to nearest $1 %.2f\n", result);

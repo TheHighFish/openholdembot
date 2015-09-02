@@ -85,7 +85,7 @@ void CHandHistoryShowdown::ResetOnHeartbeat() {
   // * cards could be highlightes (not recogniyed)
   // * the river could be check (impossible to distinguish from no action)
   if (!(AnyOpponentsCardsVisible() || AllPlayersActed())) return;
-  _job_done == true;
+  _job_done = true;
 }
 
 bool CHandHistoryShowdown::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
