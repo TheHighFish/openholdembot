@@ -1,6 +1,5 @@
 *.exe
 *.dll
-*.lib
 *.obj
 *.ilk
 *.pfb
