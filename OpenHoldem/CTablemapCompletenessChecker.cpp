@@ -151,6 +151,28 @@ void CTablemapCompletenessChecker::VerifyTablePoints() {
   }
 }
 
+void CTablemapCompletenessChecker::VerifySingleC0limitsItem(CString name) {
+  // Each optional r$c0limitsX-region must have 
+  // a corresponding s£c0limitsX-symbol,
+  // otherwise OpenHoldem can crash on evaluation
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+  if (!p_tablemap->ItemExists(c0limitsX)) return;
+  SMapCI sit = p_tablemap->s$()->find(name); 
+  if (sit == p_tablemap->s$()->end()) {
+    CString missing_item = "s$" + name;
+    ErrorMissingItem(missing_item);
+  }
+}
+
+void CTablemapCompletenessChecker::VerifyC0limits() {
+  VerifySingleC0limitsItem("c0limits");
+  for (int i=0; i<9; ++i) {
+    CString c0limitsX;
+    c0limitsX.Format("c0limits%i", i);
+    VerifySingleC0limitsItem(c0limitsX);
+  }
+}
+
 void CTablemapCompletenessChecker::VerifyMap() {
   // Only session 0 verifies the tablemaps
   // for better performance amd to avoid driving users crazy.
@@ -247,6 +269,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
     }
   }
   VerifyTablePoints();
+  VerifyC0limits();
   // Optional uX-regions
   CheckSetOfItems("u", last_chair, "name",    false);
   CheckSetOfItems("u", last_chair, "seated",  false);

@@ -944,15 +944,22 @@ void CScraper::ScrapeLimits() {
         "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
 			if (text != "")	{
 			  s_iter = p_tablemap->s$()->find(c0limitsX);
-        CString how_to_interpret_c0limit = s_iter->second.text;
-        write_log(preferences.debug_scraper(), 
-          "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
-				trans.ParseStringBSL(
-					text, how_to_interpret_c0limit, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-        write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-          l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+        if (s_iter == p_tablemap->s$()->end()) {
+          // Missing s$c0limits could crash OpenHoldem in the past
+          // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+          // but CTablemapCompletenessChecker now also takes care
+          write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+        } else {
+          CString how_to_interpret_c0limit = s_iter->second.text;
+          write_log(preferences.debug_scraper(), 
+            "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				  trans.ParseStringBSL(
+					  text, how_to_interpret_c0limit, NULL,
+					  &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+          write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+            l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+        }
 			}
 		}
     // Then c0limitsX
@@ -963,15 +970,22 @@ void CScraper::ScrapeLimits() {
           "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
 			  if (text != "")	{
 			    s_iter = p_tablemap->s$()->find(c0limitsX);
+          if (s_iter == p_tablemap->s$()->end()) {
+            // Missing s$c0limits could crash OpenHoldem in the past
+            // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+            // but CTablemapCompletenessChecker now also takes care
+            write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+          } else {
           CString how_to_interpret_c0limit = s_iter->second.text;
-          write_log(preferences.debug_scraper(), 
-            "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
-				  trans.ParseStringBSL(
-					  text, how_to_interpret_c0limit, NULL,
-					  &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-          write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-            l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+            write_log(preferences.debug_scraper(), 
+              "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				    trans.ParseStringBSL(
+					    text, how_to_interpret_c0limit, NULL,
+					    &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+              &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+            write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+              l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+          }
 			  }
 		  }
     }

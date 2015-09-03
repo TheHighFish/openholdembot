@@ -30,6 +30,8 @@ class CTablemapCompletenessChecker {
  private:
   void CheckForDeprecatedItems();
   void VerifyTablePoints();
+  void VerifyC0limits();
+  void VerifySingleC0limitsItem(CString name);
  private:
   void ErrorMissingItem(CString item);
   void ErrorDeprecatedItem(CString item);
