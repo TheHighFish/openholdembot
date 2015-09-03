@@ -1402,9 +1402,7 @@ me_re_MaxOpponentStackSize
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##EffectiveMaxStacksizeOfActiveOpponents##
-(bblind > 0) ? 
-(balance<=MaxStacksizeOfActiveOpponents? balance/bblind: MaxStacksizeOfActiveOpponents) :
-ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+(StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
 
 ##MaxStillToActStackSize##
 userchair == BigBlindChair        ? 0 :

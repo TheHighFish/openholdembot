@@ -7,6 +7,8 @@ BUG FIXES:
   (that defines how to interpret the scraped text) could crash OpenHoldem.
   Thanks to FpTrader for reporting and for suggesting a solution.
   [THF]
+- Fix for EffectiveMaxStacksizeOfActiveOpponents.
+  [Johnny]
 
 MAINTENANCE:
 - Skipping betsize in call/fold and fold/allin situations,
