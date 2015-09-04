@@ -18,6 +18,7 @@
 CMyMutex::CMyMutex() : _mutex(false, preferences.mutex_name()) {
   // We want a long timeout to let OHs instances act in FIFO order.
 	// But we can't wait forever because events can happen. Popups, table timeout... 
+  // FIFO order is actually not guaranteed, but seems to work bz chance in Win XP:
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=18860
 	if (_mutex.Lock(5000)) {
 	  _locked = TRUE;
