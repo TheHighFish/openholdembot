@@ -170,6 +170,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCasino.h
   p_symbol_engine_casino = new CSymbolEngineCasino;
   AddSymbolEngine(p_symbol_engine_casino);
+  // CSymbolEngineMTTInfo"
+  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
+  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);
@@ -200,9 +203,6 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMemorySymbols
   p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
   AddSymbolEngine(p_symbol_engine_memory_symbols);
-  // CSymbolEngineMTTInfo"
-  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
-  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsRush
   p_symbol_engine_isrush = new CSymbolEngineIsRush;
   AddSymbolEngine(p_symbol_engine_isrush);
