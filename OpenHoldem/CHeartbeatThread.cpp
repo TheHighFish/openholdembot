@@ -21,6 +21,8 @@
 #include "CBetroundCalculator.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineIsTournament.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
 #include "CEngineContainer.h"
@@ -88,47 +90,101 @@ void CHeartbeatThread::StartThread() {
 }
 
 void CHeartbeatThread::FlexibleHeartbeatSleeping() {
-	double scrape_delay = preferences.scrape_delay();
+	double heartbeat_delay = preferences.scrape_delay();
   if (!p_autoconnector->IsConnected()) {
-    // Keep scrape_delay as is
+    // Keep heartbeat_delay as is
     // We want fast auto-connects 
     // and the auto-connector is extremely optimized.
   }	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
-    // Not yet seated
+    // Not (yet) seated
     // Probably not much critical work to be done.
-    scrape_delay *= 2; 
-  } else if (!p_table_state->User()->HasKnownCards()) {
+    if (p_handreset_detector->hands_played() > 1) { 
+      if (p_symbol_engine_time->elapsedauto() > 90) {
+        // Tournament finished or cash-game stood-up, extremely non-critical
+        // We continue with very low priority just to handle f$close, etc.
+        heartbeat_delay *= 5;
+      } else {
+        // Tournament finished or cash-game stood-up (probably),
+        // but last hand ended only recently.
+        // Be more conservative
+        heartbeat_delay *= 2;
+      }
+    } else { // if (p_handreset_detector->hands_played() <= 1) {
+      // Game not yet started
+      if (p_symbol_engine_istournament->istournament()) {
+        // Tournament
+        // Might take some time to fill up, non-critical
+        heartbeat_delay *= 3;
+      } else { 
+        // Cash-game without confirmed user-chair
+        // Might start soon
+        heartbeat_delay *= 2;
+      }
+    }
+  } else if (p_table_state->User()->HasKnownCards()) {
+    // We hold cards -- the CRITICAL case
+    // Handle it early in case of any bad information or bad logic
+    // that might mix things up
+    if (p_scraper_access->NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+		  // Playing and my turn
+		  // Stable frames expected
+		  // Shorter reaction times desired
+      heartbeat_delay *= 0.5; 
+	  } else {
+      // Playing, but not my turn
+      if (p_symbol_engine_time->elapsedauto() < p_symbol_engine_active_dealt_playing->nopponentsplaying()) {
+        // Short after autoplayer-action
+        // Will take some time until it is our turn again.
+        // Slow down a little bit.
+        heartbeat_delay *= 1.5;
+      } else if ((p_table_state->User()->_bet > 0) && (p_symbol_engine_raisers->nopponentschecking() >= 1)) {
+        // At least one opponent has to decide about raise / call / fold
+        // Slow down a little bit.
+        heartbeat_delay *= 1.5;
+      }
+      // Else: keep default value
+    }
+  } else if (p_symbol_engine_isrush->isrush()) {
     // Folded
-    if (p_symbol_engine_isrush->isrush()) {
-      // New hand starts soon
-      // Don't change delay
-    }
-    else if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
-      // Multiway, not participating.
-      // Hand will continue for some time.
-      scrape_delay *= 2;
+    // New hand starts soon
+    // Don't change delay
+  } else if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 3) {
+    // Folded
+    // Multiway, not participating.
+    // Hand will continue for some time.
+    heartbeat_delay *= 2;
+  } else if (p_symbol_engine_active_dealt_playing->nopponentsplaying() >= 2) {
+    // Folded
+    // Headsup, not participating.
+    if (BETROUND <= kBetroundTurn) {
+      // Not yet river
+      // Hand will continue for some time
+      heartbeat_delay *= 2;
+    } else if (p_symbol_engine_raisers->nopponentschecking() >= 2) {
+      // At least 2 players did not yet act
+      // Hand will continue for some time    }
+      heartbeat_delay *= 2;
     } else {
-      // Headsup, not participating.
       // Hand might be over soon.
-      scrape_delay *= 1.5;
+      heartbeat_delay *= 1.5;
     }
-  } else if (p_scraper_access->NumberOfVisibleButtons() > 0) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) == 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
-		// Playing and my turn
-		// Stable frames expected
-		// Shorter reaction times desired
-    scrape_delay *= 0.5; 
-	} else {
-    // Playing, but not my turn
-    if (p_symbol_engine_time->elapsedauto() < p_symbol_engine_active_dealt_playing->nopponentsplaying()) {
-      // Short after autoplyer-action
-      // Will take some time until it is our turn again.
-      // Slow down a little bit.
-      scrape_delay *= 1.33;
-    }
-    // Else: keep default value
+  } else if (p_symbol_engine_active_dealt_playing->nopponentsseated() == 0) {
+    // Userchair known, but no opponents seated
+    // Might take some time until game continues
+    // Quite non-critical
+    heartbeat_delay *= 4;
+  } else if (p_symbol_engine_active_dealt_playing->nopponentsactive() == 0) {
+    // Userchair known, opponent(s) seated but sitting out
+    // Game might pause a bit, but opponent could sit in again
+    // No action expected, but slightly more critical than the case above.
+    heartbeat_delay *= 3;
+  } else {
+    // User seated, seated and active non-playing opponents
+    // New hand (hand-reset) expected
+    // Critical phase, don~t change anything
   }
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", scrape_delay);
-  Sleep(scrape_delay);
+	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Sleeping %d ms.\n", heartbeat_delay);
+  Sleep(heartbeat_delay);
 }
 
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
