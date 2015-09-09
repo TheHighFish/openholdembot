@@ -8,7 +8,14 @@ BUG FIXES:
   Thanks to FpTrader for reporting and for suggesting a solution.
   [THF]
 - Fix for EffectiveMaxStacksizeOfActiveOpponents.
+  Thanks to OpenGeek for reporting.
   [Johnny]
+- OpenHoldem could freeze on connection due to a nearly endless loop.
+  Thanks to Poker_Dog for reporting and to Moby for identifying the problem.
+  [THF]
+- The symbol callbitsX was wrong in the blinds.
+  Thanks to Gratiszzzz and Vladus for reporting, Jockel for some replay-frames and Devbot for the help.
+  [THF]
 
 MAINTENANCE:
 - Skipping betsize in call/fold and fold/allin situations,
