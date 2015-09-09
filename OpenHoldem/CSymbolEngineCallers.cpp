@@ -24,6 +24,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
@@ -44,6 +45,7 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
   assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_dealerchair != NULL);
+  assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	// Also using p_symbol_engine_history one time,
@@ -93,14 +95,17 @@ void CSymbolEngineCallers::CalculateCallers() {
   _nopponentscalling = 0;
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
+  // Avoiding problems with unknown userchair (but "buttons" seen on connections)
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18822&start=30#p132759
+  if (!p_symbol_engine_userchair->userchair_confirmed()) return;
 	double current_bet = FirstPossibleRaisersBet();
-	for (int i=FirstPossibleCaller(); 
-		  (i%_nchairs)!=USER_CHAIR; 
-		  ++i) {
-		int chair = i % _nchairs;
+	for (int i=0; i<_nchairs; ++i) {
+		int chair = (FirstPossibleCaller() + i) % _nchairs;
     	// Exact match required. Players being allin don't count as callers.
 		if ((p_table_state->_players[chair]._bet == current_bet) 
         && (current_bet > 0)) {
+      // Can't be the user if it is our turn
+      assert(chair != USER_CHAIR);
 			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
       ++_nopponentscalling;
@@ -120,14 +125,12 @@ void CSymbolEngineCallers::CalculateCallers() {
 }
 
 int CSymbolEngineCallers::FirstPossibleCaller() {
-  // First action preflop> the guy behind the dealer
-  if ((p_betround_calculator->betround() == kBetroundPreflop)
-      && !p_symbol_engine_history->DidAct()) {
-    return ((DEALER_CHAIR + 1) % _nchairs);
-  }
-  // Otherwise> the guy behind hero,
-  // searching a complete orbit from hero to hero.
-  return 0;
+  int first_possible_caller = p_symbol_engine_raisers->FirstPossibleRaiser();
+  // Can't be the user (logically)
+  // Must not be the user (technically)
+  // as we compare against the users bet later.
+  assert(first_possible_caller != USER_CHAIR);
+  return first_possible_caller;
 }
 
 int CSymbolEngineCallers::LastPossibleCaller() {

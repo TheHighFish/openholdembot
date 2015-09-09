@@ -156,7 +156,7 @@ void CTablemapCompletenessChecker::VerifySingleC0limitsItem(CString name) {
   // a corresponding s£c0limitsX-symbol,
   // otherwise OpenHoldem can crash on evaluation
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
-  if (!p_tablemap->ItemExists(c0limitsX)) return;
+  if (!p_tablemap->ItemExists(name)) return;
   SMapCI sit = p_tablemap->s$()->find(name); 
   if (sit == p_tablemap->s$()->end()) {
     CString missing_item = "s$" + name;

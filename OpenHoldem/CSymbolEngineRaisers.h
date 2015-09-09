@@ -19,6 +19,7 @@
 #include "NumericalFunctions.h"
 
 class CSymbolEngineRaisers: public CVirtualSymbolEngine {
+ friend class CSymbolEngineCallers;
  public:
 	CSymbolEngineRaisers();
 	~CSymbolEngineRaisers();
@@ -60,14 +61,14 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	int nopponentsbetting()			{ return _nopponentsbetting; }
 	int nopponentsfolded()			{ return _nopponentsfolded; }
 	int nopponentschecking()		{ return _nopponentschecking; }
-
+ protected:
+  // Also used by CSymbolEngineCallers
+	int FirstPossibleRaiser();
+	int LastPossibleRaiser();
  private:
 	void CalculateRaisers();
 	void CalculateFoldBits();
 	void CalculateNOpponentsCheckingBettingFolded();
- private:
-	int FirstPossibleRaiser();
-	int LastPossibleRaiser();
  private:
 	double RaisersBet();
 	double LastOrbitsLastRaisersBet();
