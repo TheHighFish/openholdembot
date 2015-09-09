@@ -3,7 +3,7 @@ v7.8.0 2015-09-10
 BUG FIXES:
 - OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
   [fqfq]
-- An incomplete tablemap with a r$c0limits-region but without the corresponing s$c0limits-symbol
+- An incomplete tablemap with a r$c0limits-region but without the corresponding s$c0limits-symbol
   (that defines how to interpret the scraped text) could crash OpenHoldem.
   Thanks to FpTrader for reporting and for suggesting a solution.
   [THF]
