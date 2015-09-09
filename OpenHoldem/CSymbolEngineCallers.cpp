@@ -105,7 +105,7 @@ void CSymbolEngineCallers::CalculateCallers() {
 		if ((p_table_state->_players[chair]._bet == current_bet) 
         && (current_bet > 0)) {
       // Can't be the user if it is our turn
-      assert(chair != USER_CHAIR);
+      if (chair == USER_CHAIR) continue;
 			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
 			_callbits[BETROUND] = new_callbits;
       ++_nopponentscalling;

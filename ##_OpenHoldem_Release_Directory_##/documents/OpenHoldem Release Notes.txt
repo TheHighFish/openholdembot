@@ -1,4 +1,4 @@
-v7.8.0 2015-09-xx
+v7.8.0 2015-09-10
 ==================
 BUG FIXES:
 - OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
