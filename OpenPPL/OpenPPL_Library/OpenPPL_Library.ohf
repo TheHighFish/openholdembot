@@ -820,6 +820,66 @@ me_re_MemMissingSmallBlind
 && !didcallround3
 && NoVillainBetOrRaisedOnTurn
 
+##Stack0##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance0 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack1##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance1 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack2##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance2 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack3##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance3 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack4##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance4 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack5##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance5 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack6##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance6 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack7##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance7 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack8##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance8 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack9##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance9 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
 ##OpponentStacksizeHeadsUp##
 [bblind==0] ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
 [nopponentsplaying == NumberOfOpponentsAllin] ? HINT_All_Opponents_Allin :
@@ -828,25 +888,25 @@ me_re_MemMissingSmallBlind
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915&start=30&p=124798&view=show#p124798
 [nopponentsplaying < 1] ? ERROR_Game_Is_Not_HeadsUp :
 [(playersplayingbits & 0b0000000001) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=0 && balance0>0] ? balance0/bblind:
+  && userchair!=0 && balance0>0] ? Stack0:
 [(playersplayingbits & 0b0000000010) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=1 && balance1>0] ? balance1/bblind:
+  && userchair!=1 && balance1>0] ? Stack1:
 [(playersplayingbits & 0b0000000100) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=2 && balance2>0] ? balance2/bblind:
+  && userchair!=2 && balance2>0] ? Stack2:
 [(playersplayingbits & 0b0000001000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=3 && balance3>0] ? balance3/bblind:
+  && userchair!=3 && balance3>0] ? Stack3:
 [(playersplayingbits & 0b0000010000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=4 && balance4>0] ? balance4/bblind:
+  && userchair!=4 && balance4>0] ? Stack4:
 [(playersplayingbits & 0b0000100000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=5 && balance5>0] ? balance5/bblind:
+  && userchair!=5 && balance5>0] ? Stack5:
 [(playersplayingbits & 0b0001000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=6 && balance6>0] ? balance6/bblind:
+  && userchair!=6 && balance6>0] ? Stack6:
 [(playersplayingbits & 0b0010000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=7 && balance7>0] ? balance7/bblind:
+  && userchair!=7 && balance7>0] ? Stack7:
 [(playersplayingbits & 0b0100000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=8 && balance8>0] ? balance8/bblind:
+  && userchair!=8 && balance8>0] ? Stack8:
 [(playersplayingbits & 0b1000000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=9 && balance9>0] ? balance9/bblind:
+  && userchair!=9 && balance9>0] ? Stack9:
 ERROR_Game_Is_Not_HeadsUp
 
 
