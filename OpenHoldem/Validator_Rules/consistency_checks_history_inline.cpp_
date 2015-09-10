@@ -43,7 +43,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didfoldroundX for the current betround must be identical to didfold. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didfoldround1") == gws("didfold1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didfoldround1") == gws("didfoldround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didfold, didfoldround1")
 END_TESTCASE
 
@@ -53,7 +53,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didfoldroundX for the current betround must be identical to didfold. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didfoldround2") == gws("didfold1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didfoldround2") == gws("didfoldround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didfold, didfoldround2")
 END_TESTCASE
 
@@ -63,7 +63,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didfoldroundX for the current betround must be identical to didfold. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didfoldround3") == gws("didfold1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didfoldround3") == gws("didfoldround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didfold, didfoldround3")
 END_TESTCASE
 
@@ -73,7 +73,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didfoldroundX for the current betround must be identical to didfold. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didfoldround4") == gws("didfold1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didfoldround4") == gws("didfoldround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didfold, didfoldround4")
 END_TESTCASE
 
@@ -83,7 +83,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didchecroundX for the current betround must be identical to didchec. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didchecround1") == gws("didchec1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didchecround1") == gws("didchecround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didchec, didchecround1")
 END_TESTCASE
 
@@ -93,7 +93,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didchecroundX for the current betround must be identical to didchec. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didchecround2") == gws("didchec1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didchecround2") == gws("didchecround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didchec, didchecround2")
 END_TESTCASE
 
@@ -103,7 +103,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didchecroundX for the current betround must be identical to didchec. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didchecround3") == gws("didchec1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didchecround3") == gws("didchecround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didchec, didchecround3")
 END_TESTCASE
 
@@ -113,7 +113,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didchecroundX for the current betround must be identical to didchec. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didchecround4") == gws("didchec1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didchecround4") == gws("didchecround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didchec, didchecround4")
 END_TESTCASE
 
@@ -123,7 +123,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didcallroundX for the current betround must be identical to didcall. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didcallround1") == gws("didcall1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didcallround1") == gws("didcallround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didcall, didcallround1")
 END_TESTCASE
 
@@ -133,7 +133,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didcallroundX for the current betround must be identical to didcall. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didcallround2") == gws("didcall1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didcallround2") == gws("didcallround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didcall, didcallround2")
 END_TESTCASE
 
@@ -143,7 +143,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didcallroundX for the current betround must be identical to didcall. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didcallround3") == gws("didcall1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didcallround3") == gws("didcallround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didcall, didcallround3")
 END_TESTCASE
 
@@ -153,7 +153,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didcallroundX for the current betround must be identical to didcall. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didcallround4") == gws("didcall1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didcallround4") == gws("didcallround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didcall, didcallround4")
 END_TESTCASE
 
@@ -163,7 +163,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didraisroundX for the current betround must be identical to didrais. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didraisround1") == gws("didrais1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didraisround1") == gws("didraisround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didrais, didraisround1")
 END_TESTCASE
 
@@ -173,7 +173,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didraisroundX for the current betround must be identical to didrais. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didraisround2") == gws("didrais1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didraisround2") == gws("didraisround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didrais, didraisround2")
 END_TESTCASE
 
@@ -183,7 +183,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didraisroundX for the current betround must be identical to didrais. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didraisround3") == gws("didrais1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didraisround3") == gws("didraisround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didrais, didraisround3")
 END_TESTCASE
 
@@ -193,7 +193,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didraisroundX for the current betround must be identical to didrais. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didraisround4") == gws("didrais1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didraisround4") == gws("didraisround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didrais, didraisround4")
 END_TESTCASE
 
@@ -203,7 +203,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didbetsizeroundX for the current betround must be identical to didbetsize. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didbetsizeround1") == gws("didbetsize1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didbetsizeround1") == gws("didbetsizeround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didbetsize, didbetsizeround1")
 END_TESTCASE
 
@@ -213,7 +213,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didbetsizeroundX for the current betround must be identical to didbetsize. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didbetsizeround2") == gws("didbetsize1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didbetsizeround2") == gws("didbetsizeround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didbetsize, didbetsizeround2")
 END_TESTCASE
 
@@ -223,7 +223,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didbetsizeroundX for the current betround must be identical to didbetsize. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didbetsizeround3") == gws("didbetsize1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didbetsizeround3") == gws("didbetsizeround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didbetsize, didbetsizeround3")
 END_TESTCASE
 
@@ -233,7 +233,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didbetsizeroundX for the current betround must be identical to didbetsize. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didbetsizeround4") == gws("didbetsize1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didbetsizeround4") == gws("didbetsizeround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didbetsize, didbetsizeround4")
 END_TESTCASE
 
@@ -243,7 +243,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didalliroundX for the current betround must be identical to didalli. Partial rule for preflop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 1) && (gws("didalliround1") == gws("didalli1")))
+    POSTCONDITION ((gws("betround") == 1) && (gws("didalliround1") == gws("didalliround1")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didalli, didalliround1")
 END_TESTCASE
 
@@ -253,7 +253,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didalliroundX for the current betround must be identical to didalli. Partial rule for flop.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 2) && (gws("didalliround2") == gws("didalli1")))
+    POSTCONDITION ((gws("betround") == 2) && (gws("didalliround2") == gws("didalliround2")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didalli, didalliround2")
 END_TESTCASE
 
@@ -263,7 +263,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didalliroundX for the current betround must be identical to didalli. Partial rule for turn.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 3) && (gws("didalliround3") == gws("didalli1")))
+    POSTCONDITION ((gws("betround") == 3) && (gws("didalliround3") == gws("didalliround3")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didalli, didalliround3")
 END_TESTCASE
 
@@ -273,6 +273,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("The value of didalliroundX for the current betround must be identical to didalli. Partial rule for river.")
     PRECONDITION (true)
-    POSTCONDITION ((gws("betround") == 4) && (gws("didalliround4") == gws("didalli1")))
+    POSTCONDITION ((gws("betround") == 4) && (gws("didalliround4") == gws("didalliround4")))
     SYMBOLS_POSSIBLY_AFFECTED ("betround, didalli, didalliround4")
 END_TESTCASE
