@@ -112,7 +112,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 	}
 
   write_log(preferences.debug_hand_and_baord_expressions(), 
-    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded available ranks> %i\n",
+    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded available ranks: %i\n",
     prime_coded_available_ranks);
 	bool is_suited_expression = false;
 	assert(is_hand_expression || is_board_expression);
@@ -129,7 +129,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 	// and most real-world-use-cases will be false, so we get a fast exit.
 	int prime_coded_search_expression = PrimeCodedRanks(hand_or_board_expression);
   write_log(preferences.debug_hand_and_baord_expressions(), 
-    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded searched ranks> %i\n",
+    "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded searched ranks: %i\n",
     prime_coded_available_ranks);
 	if ((prime_coded_available_ranks % prime_coded_search_expression) != 0)	{
 		// Division without reminder not possible.

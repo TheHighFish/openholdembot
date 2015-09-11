@@ -180,9 +180,29 @@ void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
     k_standard_function_names[potential_action], 
     action_value);
   if (action_value) {
+    write_log(preferences.debug_formula(), 
+      "[CAutoplayerFunctions] Backup action added: %s -> %s\n",
+      k_standard_function_names[potential_action], 
+      k_standard_function_names[potential_backup]);
     p_function_collection->SetAutoplayerFunctionValue(
       potential_backup, true);
   }
+}
+
+bool CAutoplayerFunctions::IsFoldAllinSituation() {
+  // Determine this situation by button-states
+  // and not by easily misscraped bets and balances.
+  // Fold and allin-button must be visible.
+  // Raise. call and check must not.
+  CString fckra = p_symbol_engine_autoplayer->GetFCKRAString();
+  write_log(preferences.debug_formula(), 
+    "[CAutoplayerFunctions] Buttons seen: %s\n", fckra);
+  if (fckra == "F...A") {
+    write_log(preferences.debug_formula(), 
+      "[CAutoplayerFunctions] Fold / allin situation\n");
+    return true;
+  }
+  return false;
 }
 
 void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
@@ -230,6 +250,11 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Call -> Check
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_call, k_autoplayer_function_check);
+  // Call -> Allin, in case we only can fold / (call) allin
+  if (IsFoldAllinSituation()) {
+    CalculateSingleOpenPPLBackupAction(
+      k_autoplayer_function_call, k_autoplayer_function_allin);
+  }
   // Check -> Fold
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_check, k_autoplayer_function_fold);

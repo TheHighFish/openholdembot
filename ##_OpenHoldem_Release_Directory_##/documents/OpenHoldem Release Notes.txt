@@ -1,3 +1,14 @@
+v7.8.1 2015-09-xx
+==================
+NEW STUFF:
+- New OpenPPL backup-action call->allin if we can only fold / (call) allin.
+  We detect this situation the reliable way with button-states (exactly "F...A")
+  and not with easily mis-scraped bets and balances.
+  This backup action (the first time not the conservative way)
+  became necessary, as a good portion of end-users were unwilling / unable
+  to handle this "special" case in their bot-logic.
+  [THF]
+
 v7.8.0 2015-09-10
 ==================
 BUG FIXES:
