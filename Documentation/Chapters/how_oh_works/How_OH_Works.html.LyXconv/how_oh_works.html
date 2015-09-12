@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-08-16"/>
+<meta name="create-date" content="2015-09-12"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,29 +14,8 @@
 <a class="toc" name="toc-Chapter-1"></a>How OpenHoldem Operates
 </h1>
 <h2 class="Section">
-<a class="toc" name="toc-Section-1"></a><a class="IndexReference" name="entry-Connecting-0" href="#index-Connecting">↓</a>Connecting to a table
+<a class="toc" name="toc-Section-1"></a>
 </h2>
-<div class="Unindented">
-As soon as you start OpenHoldem it will read all tablemaps in your scraper-folder and parse them for the information that is necessary to connect to a table. The auto-connector will then have a look for new tables that are not yet served by other instances once per heartbeat and connect if it finds a new one. This all happens automagically, however an explanation of what happens behind the scenes is useful if you have problems connecting to your target poker window. The following steps are taken to identify which windows on your screen are valid poker tables.
-</div>
-<ol>
-<li>
-A list of all visible top level windows that have a non-blank caption is collected
-</li>
-<li>
-Each window in this list is compared against each Table Map that you have placed in your <a class="IndexReference" name="entry-Scraper-directory-0" href="#index-Scraper-directory">↓</a>“scraper” directory. For each step that follows, if a non-match is detected, OpenHoldem will then immediately move on to the next window/Table Map.
-</li>
-<li>
-The size of the client portion of the window is compared to the clientsize records in the Table Map. The window is considered a match if the <a class="IndexReference" name="entry-Table-Map-0" href="#index-Table-Map">↓</a>Table Map indicates the correct size as given by the record <a class="IndexReference" name="entry-Clientsize-0" href="#index-Clientsize">↓</a>clientsize, or if the size is within the size limits given by clientsizemin and clientsizemax.
-</li>
-<li>
-The window’s title text is compared to the keyword text filters provided by <a class="IndexReference" name="entry-Titletext-0" href="#index-Titletext">↓</a>titletext records in the Table Map. The window is considered a match if the free-form text in any of the titletext records is found in the window’s title. Additionally, if any !titletext records are present in the Table Map, then a window is considered a non-match if the free-form text in any of the !titletext records is found in the window’s title. 
-</li>
-<li>
-If OpenHoldem finds a matching pair of tablemap and table it will look in the shared memory data-structures if the table gets already served. If this is not the case OpenHoldem will connect to that table. The connected table will then be moced to a free slot if the table-positioner is enabled and the autoplazer will start playing.
-</li>
-
-</ol>
 <h2 class="Section">
 <a class="toc" name="toc-Section-2"></a>The <a class="IndexReference" name="entry-Heartbeat-cycle-0" href="#index-Heartbeat-cycle">↓</a>Heartbeat Cycle 
 </h2>
@@ -155,91 +134,7 @@ Else if the f$fold function is true and the Fold button is present, then click t
 
 </ol>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--1"></a>Hopper functions
-</h2>
-<div class="Unindented">
-Once every four seconds OpenHoldem will evaluate and execute some hopper-functions.
-</div>
-<div class="Indented">
-<table>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-Function
-</td>
-<td align="left" valign="top" style="width: 75%;">
-Explanation
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$sitin
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the sitin-button (i.e. the button with label &ldquo;sitin&rdquo;) if f$sitin evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$sitout
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the sitout-button if f$sitout evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$leave
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the leave-button if f$leave evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$rematch
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the rematch-button if f$rematch evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$autopost
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the autopost-button if f$autopost evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$close
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will click the [x] in the titlebar if f$close evaluates to true.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-f$rebuy
-</td>
-<td align="left" valign="top" style="width: 75%;">
-OpenHoldem will execute a user-defined rebuy-script if f$rebuy evaluates to a positive target-amount (in dollars) and safety constraints have been met. For the details please see the chapters about automation and about the preferences dialog for rebuys.
-</td>
-
-</tr>
-
-</table>
-
-</div>
-<h2 class="Section-">
-<a class="toc" name="toc-Section--2"></a>Other Functions
+<a class="toc" name="toc-Section--1"></a>Other Functions
 </h2>
 <div class="Unindented">
 Besides autoplayer-functions and hopper functions there is some more functionality that gets executes during the heartbeat-cycle,
@@ -311,7 +206,7 @@ Every bot needs some poker-specific logic to decide how to act. OpenHoldem provi
 Per default f$check and f$fold evaluate to true, so if all questions were answered with 0 or false, your hand-will be check-folded. 
 </div>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--3"></a>The DLL-extension
+<a class="toc" name="toc-Section--2"></a>The DLL-extension
 </h2>
 <div class="Unindented">
 Every bot needs such a formula file, even if it is programmed in <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a><a class="IndexReference" name="entry-C++-0" href="#index-C++">↓</a>C++. There are no standalone C++-bots; the user-DLL is just a programming extensions that make it possible to extend the functionality of OpenHoldem by providing additional symbols (constants and parameter-less functions). The very minimum is a small OH-script that redirects every primary function to a DLL-function.
@@ -341,7 +236,7 @@ dll$call
 In practice formulas can become arbitary complex, but those are the basic principles you will need to understand. We will deal with the details of bot-programming in the chapter about OH-script.
 </div>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--4"></a>Parse-Time and Run-Time Errors 
+<a class="toc" name="toc-Section--3"></a>Parse-Time and Run-Time Errors 
 </h2>
 <div class="Unindented">
 The OpenHoldem scripting language will detect various error conditions for you and warn you of these conditions. Each time a formula is loaded, it is “parsed” for correctness – if there are any syntactical errors upon this parse, then a message box will be displayed that alerts you to the location of this error.
@@ -350,7 +245,7 @@ The OpenHoldem scripting language will detect various error conditions for you a
 Additionally, several classes of run-time errors will be detected, including divide-by-zero and infinite recursion. Note that the OH-Script language does not support recursion in any form, due to the absence of the assignment operator and function parameters to control the recursion depth.
 </div>
 <h2 class="Section-">
-<a class="toc" name="toc-Section--5"></a><a class="IndexReference" name="entry-Default-bot-0" href="#index-Default-bot">↓</a>Default Bot
+<a class="toc" name="toc-Section--4"></a><a class="IndexReference" name="entry-Default-bot-0" href="#index-Default-bot">↓</a>Default Bot
 </h2>
 <div class="Unindented">
 OpenHoldem does not contain a default bot. For some time we included <a class="IndexReference" name="entry-Playbot-0" href="#index-Playbot">↓</a>Playbot by Matrix just for demonstration purposes. It was a very early case-study about prwin-based bots, meant for Fixed Limit Texas Hold’em. Prwin-based bots (short for &ldquo;probability of win&rdquo;) try to code the decision with very few and small mathematical formulae, unlike scenario-based bots that code hundreds or thousands of different situations. However the golden times of fixed limit are over and most people want to develop their own bots anyway. Due to the existence of countless demo-bots and the rise of OpenPPL we decided that a default bot-logic is no longer necessary.
@@ -370,7 +265,7 @@ WHEN hand$KK and Raises = 0 and Calls = 0 RaiseTo 3 FPRCE
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-08-16T21:46:01.031000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-09-12T06:23:09.546000</span>
 </div>
 </div>
 </body>

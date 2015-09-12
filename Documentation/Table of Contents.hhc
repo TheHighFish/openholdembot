@@ -112,6 +112,18 @@
 				<param name="Local" value="Chapters\how_oh_works\How_OH_Works.html.LyXconv\how_oh_works.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Connecting to a Table">
+				<param name="Local" value="Chapters\how_oh_works\connecting_to_a_table.html.LyXconv\connecting_to_a_table.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Backup Actions">
+				<param name="Local" value="Chapters\how_oh_works\backup_actions.html.LyXconv\backup_actions.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hopper Functions">
+				<param name="Local" value="Chapters\how_oh_works\hopper_functions.html.LyXconv\hopper_functions.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Favourite Failures">
 				<param name="Local" value="Chapters\favourite_failures\Favourite_Failures.html.LyXconv\favourite_failures.html">
 				</OBJECT>
