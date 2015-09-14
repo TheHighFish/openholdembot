@@ -136,14 +136,14 @@ scraper
 \end_layout
 
 \begin_layout Enumerate
-The size of the client portion of the window is compared to the clientsize
- records in the tablemap.
- The window is considered a match if the tablemap indicates the correct
- size as given by the record 
+The size of the client portion of the window is compared to the 
 \emph on
 clientsize
 \emph default
-, or if the size is within the size limits given by 
+ records in the tablemap.
+ The window is considered a match if the tablemap indicates the correct
+ size as given by the record clientsize, or if the size is within the size
+ limits given by 
 \emph on
 clientsizemin
 \emph default
@@ -228,7 +228,7 @@ s$titletext                 PartyPoker
 \end_layout
 
 \begin_layout Enumerate
-Opionally OpenHoldem will also compare tablepoints.
+Optionally OpenHoldem will also compare tablepoints.
  These tablepoints are useful to distinguish very similar tables that require
  different tablemaps, for example 10-chair and 6-chair-tables.
  They can be distinguished by placing a tablepoint at one of the chairs
@@ -240,8 +240,8 @@ If OpenHoldem finds a matching pair of tablemap and table it will look in
  the shared memory data-structures if the table gets already served by another
  bot.
  If this is not the case OpenHoldem will connect to that table.
- The connected table will then be moced to a free slot if the table-positioner
- is enabled, resized if a targetsize is specified and the autoplazer will
+ The connected table will then be moved to a free slot if the table-positioner
+ is enabled, resized if a targetsize is specified and the autoplayer will
  start playing.
 \end_layout
 

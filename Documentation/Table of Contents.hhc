@@ -108,12 +108,12 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="How OpenHoldem Works">
-				<param name="Local" value="Chapters\how_oh_works\How_OH_Works.html.LyXconv\how_oh_works.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Connecting to a Table">
 				<param name="Local" value="Chapters\how_oh_works\connecting_to_a_table.html.LyXconv\connecting_to_a_table.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Heartbeat-Cycle">
+				<param name="Local" value="Chapters\how_oh_works\heartbeat_cycle.html.LyXconv\heartbeat_cycle.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Backup Actions">
