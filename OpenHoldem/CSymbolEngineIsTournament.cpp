@@ -78,7 +78,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"qualificatif",		// french for "qualifier"
 	"qualification",
 	"qualifier",
-  "r/a",            // rebuz and add-on 
+  "r/a",            // rebuy and add-on 
 	"rebuy",
   "satellite",
   " semifinal",
@@ -86,7 +86,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"shootout ",
 	"sit and go",
 	"sit&go",
-	"sit & go",
+	"sit & go"y
 	"sit 'n go",
 	"sit'n go",
   "sit n go",
