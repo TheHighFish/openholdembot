@@ -86,7 +86,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"shootout ",
 	"sit and go",
 	"sit&go",
-	"sit & go"y
+	"sit & go",
 	"sit 'n go",
 	"sit'n go",
   "sit n go",
