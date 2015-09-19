@@ -131,8 +131,8 @@ screen scraper
  engine to scrape and interpret the current pixels on the poker window based
  on the parameters in the loaded tablemap.
  The scraper will look for example if a chair is occupied, if the player
- is seated, what the players betsize is and so on.
- It then will hqand over this information to the game-state-engine.
+ is sittong out, what the players betsize is and so on.
+ It then will hand over this information to the game-state-engine.
 \end_layout
 
 \end_inset
@@ -193,7 +193,31 @@ If a
 replay frame
 \emph default
  is requested in preferences , OpenHoldem will store an image file and a
- HTML-file in the scraper-directory for a future settion-review with OHReplay
+ HTML-file in the replay-directory for a future settion-review with OHReplay
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Calculate symbols
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Calculate the built-in OpenHoldem 
+\emph on
+symbols
+\emph default
+ that can be accessed by the user-defined poker-logic.
 \end_layout
 
 \end_inset
@@ -219,30 +243,6 @@ validator
 \emph default
  is enabled in preferences , then it will check the current game state for
  inconsistencies that are usually caused by mis-scrapes or bad tablemaps.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Calculate symbols
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Calculate the built-in OpenHoldem 
-\emph on
-symbols
-\emph default
- that can be accessed by the user-defined poker-logic.
 \end_layout
 
 \end_inset
@@ -324,7 +324,7 @@ Handle spam
 \uwave off
 \noun off
 \color none
-Evaluate any i86 regions, and dismiss any popuppopups that occlude the table.
+Evaluate any i86 regions, and dismiss any popups that occlude the table.
 \end_layout
 
 \end_inset
@@ -346,9 +346,44 @@ Autoplay
 \begin_layout Plain Layout
 If the autoplayer is engaged, then OpenHoldem will act: press buttons, enter
  betsizes, move the slider.
- The autoplayer works -- as the name suggests -- automatically, but the
- necessary actions differ a bit for esch casino, therefore the autoplayer
- can be customized with the tablemap.
+ The autoplayer will try to execute the most aggressive actions first, then
+ continue with less agressive ones, i.e.
+ in the following order:
+\end_layout
+
+\begin_layout Itemize
+f$alli
+\end_layout
+
+\begin_layout Itemize
+f$betpot_2_1 ..
+ f$betpot_1_4
+\end_layout
+
+\begin_layout Itemize
+f$betsize
+\end_layout
+
+\begin_layout Itemize
+f$rais
+\end_layout
+
+\begin_layout Itemize
+f$call
+\end_layout
+
+\begin_layout Itemize
+f$check
+\end_layout
+
+\begin_layout Itemize
+f$fold
+\end_layout
+
+\begin_layout Plain Layout
+The autoplayer works -- as the name suggests -- automatically, but the necessary
+ actions differ a bit for esch casino, therefore the autoplayer can be customize
+d with the tablemap.
  For example you can tell how an old betsize should be selected before a
  new one can be entered:
 \end_layout
@@ -389,8 +424,16 @@ Wait
 \begin_inset Text
 
 \begin_layout Plain Layout
-Sleep for the Scrape Delay period of time as specified in preferences, then
- start the next cycle.
+Sleep for some time, then start the next cycle.
+ The heartbeat-sleeping-time can be specified in the preferences and defaults
+ to 750
+\begin_inset space ~
+\end_inset
+
+ms.
+ However the heartbeat delay is somewhat flexible: we scrape faster if it
+ is our turn to act for faster reaction times and we sleep longer when we
+ have no cards (folded) or if we are not seated at all to optimize CPU-usage.
 \end_layout
 
 \end_inset

@@ -85,7 +85,11 @@ In some situations it might be not possible to execute the users preferred
 \begin_inset space ~
 \end_inset
 
-pot, but the casino does not provide a button for that action.
+pot, but the casino does not provide a button for 3/4
+\begin_inset space ~
+\end_inset
+
+pot.
  Then he usually wants to execute a similar action, in this case betpot
  ot bet 2/3
 \begin_inset space ~
@@ -224,7 +228,7 @@ calling allin
 \emph default
 : in some cases it might be that an opponent puts us allin and only calling
  and folding are possible.
- But our hero looked at his fine sets of aces and decided to 
+ But our hero looked at his fine set of aces and decided to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -234,7 +238,7 @@ bet 2/3 pot for value
 
 .
  OpenHoldem ended up folding.
- What has happened? Well, some casinos don't display a call button in this
+ What did happen? Well, some casinos don't display a call button in this
  case, but only allin and fold.
  The conservative sequence of backup-actions therefore will finally (and
  successfully) try to fold.

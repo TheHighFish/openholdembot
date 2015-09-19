@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-09-12"/>
+<meta name="create-date" content="2015-09-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -32,7 +32,7 @@ Explanation
 Scrape window
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Ask the <i>screen scraper</i> engine to scrape and interpret the current pixels on the poker window based on the parameters in the loaded tablemap. The scraper will look for example if a chair is occupied, if the player is seated, what the players betsize is and so on. It then will hqand over this information to the game-state-engine.
+Ask the <i>screen scraper</i> engine to scrape and interpret the current pixels on the poker window based on the parameters in the loaded tablemap. The scraper will look for example if a chair is occupied, if the player is sittong out, what the players betsize is and so on. It then will hand over this information to the game-state-engine.
 </td>
 
 </tr>
@@ -50,16 +50,7 @@ OpenHoldems built-in <i>scraper preprocessor</i> will then preprocess some textu
 Create replay frames
 </td>
 <td align="left" valign="top" style="width: 75%;">
-If a <i>replay frame</i> is requested in preferences , OpenHoldem will store an image file and a HTML-file in the scraper-directory for a future settion-review with OHReplay
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-Validate game state
-</td>
-<td align="left" valign="top" style="width: 75%;">
-If the <i>validator</i> is enabled in preferences , then it will check the current game state for inconsistencies that are usually caused by mis-scrapes or bad tablemaps.
+If a <i>replay frame</i> is requested in preferences , OpenHoldem will store an image file and a HTML-file in the replay-directory for a future settion-review with OHReplay
 </td>
 
 </tr>
@@ -69,6 +60,15 @@ Calculate symbols
 </td>
 <td align="left" valign="top" style="width: 75%;">
 Calculate the built-in OpenHoldem <i>symbols</i> that can be accessed by the user-defined poker-logic.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+Validate game state
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If the <i>validator</i> is enabled in preferences , then it will check the current game state for inconsistencies that are usually caused by mis-scrapes or bad tablemaps.
 </td>
 
 </tr>
@@ -98,11 +98,47 @@ This user-defined bot-logic usually resides in a plain-text file with the extens
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
+\strikeout off\uuline off\uwave offHandle spam	
+</td>
+<td align="left" valign="top" style="width: 75%;">
+\strikeout off\uuline off\uwave offEvaluate any i86 regions, and dismiss any popups that occlude the table.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
 Autoplay
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
-If the autoplayer is engaged, then OpenHoldem will act: press buttons, enter betsizes, move the slider. The autoplayer works — as the name suggests — automatically, but the necessary actions differ a bit for esch casino, therefore the autoplayer can be customized with the tablemap. For example you can tell how an old betsize should be selected before a new one can be entered:
+If the autoplayer is engaged, then OpenHoldem will act: press buttons, enter betsizes, move the slider. The autoplayer will try to execute the most aggressive actions first, then continue with less agressive ones, i.e. in the following order:
+</div>
+<ul>
+<li>
+f$alli
+</li>
+<li>
+f$betpot_2_1 .. f$betpot_1_4
+</li>
+<li>
+f$betsize
+</li>
+<li>
+f$rais
+</li>
+<li>
+f$call
+</li>
+<li>
+f$check
+</li>
+<li>
+f$fold
+</li>
+
+</ul>
+<div class="PlainVisible">
+The autoplayer works — as the name suggests — automatically, but the necessary actions differ a bit for esch casino, therefore the autoplayer can be customized with the tablemap. For example you can tell how an old betsize should be selected before a new one can be entered:
 </div>
 <div class="PlainVisible">
 <div class="listing">
@@ -126,7 +162,7 @@ We will deal with that in the chapter about tablemaps.
 Wait
 </td>
 <td align="left" valign="top" style="width: 75%;">
-Sleep for the Scrape Delay period of time as specified in preferences, then start the next cycle.
+Sleep for some time, then start the next cycle. The heartbeat-sleeping-time can be specified in the preferences and defaults to 750 ms. However the heartbeat delay is somewhat flexible: we scrape faster if it is our turn to act for faster reaction times and we sleep longer when we have no cards (folded) or if we are not seated at all to optimize CPU-usage.
 </td>
 
 </tr>
@@ -137,7 +173,7 @@ Sleep for the Scrape Delay period of time as specified in preferences, then star
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-09-12T15:22:00.046000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-09-18T22:46:31.968000</span>
 </div>
 </div>
 </body>

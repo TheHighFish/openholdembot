@@ -78,7 +78,316 @@ figs-within-sections
 Log-Files
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+Sometimes the bot will take an unexpected decision, more rarely for bots
+ in production, but for sure regularly for bots in development.
+ The reason can be mis-scrapes (Table Map or improper system settings);
+ it can be bad bot-logic; it can even be a bug in OpenHoldem.
+\end_layout
+
+\begin_layout Standard
+Many newbies will automatically assume the latter case.
+ Whenever you encounter a strange behaviour it is a good decision to make
+ use of OpenHoldems logging capabilities.
+ OpenHoldem will generate a log file as it operates, less detailed logs
+ for production, more detailed logs for debugging.
+ The verbosity of the log can be set in with the Preferences tabs 
+\emph on
+Logging
+\emph default
+ and 
+\emph on
+Debugging
+\emph default
+.
+ The log file can be found at 
+\emph on
+OpenHoldem
+\backslash
+logs
+\backslash
+oh_NN.log
+\emph default
+ where NN is the session-ID.
+\end_layout
+
+\begin_layout Subsection*
+Basic Info
+\end_layout
+
+\begin_layout Standard
+On every autoplayer action OpenHolldem will create a section with some basic
+ info about the table-state, the decision taken and the action executed.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Autoplayer Trace
+\end_layout
+
+\begin_layout Subsection*
+OpenPPL
+\end_layout
+
+\begin_layout Standard
+OpenPPL works very similar to OH-script.
+ Basic info and the autoplayer-trace are the same.
+\end_layout
+
+\begin_layout Standard
+Most OpenPPL-symbols get calculated on the fly when you need them.
+ But some symbols require special initialization, exactly once per orbit:
+ counters like 
+\begin_inset Quotes eld
+\end_inset
+
+Raises
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Calls
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After everything got initialized OpenHoldem will evaluate the main OpenPPL-funct
+ion for the current betround: f$preflop, f$flop, f$turn or f$river.
+ This function contains the user-defined bot-logic and is the next location
+\end_layout
+
+\begin_layout Standard
+After the decision got calculated OpenHoldem translates it to OH-script
+ autoplayer-actions (plural because of backup-actions) and thereafter the
+ autoplayer works the normal way.
+ That's why you can see some OH-script autoplayer-functions at the end of
+ the autoplayer-trace, each one with a pre-computed (
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+[cached]
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+) value.
+\end_layout
+
+\begin_layout Subsection*
+Errors and Warnings
+\end_layout
+
+\begin_layout Standard
+Furtermore OpenHoldem logs all errors and warnings, i.e.:
+\end_layout
+
+\begin_layout Itemize
+all shown error-messages
+\end_layout
+
+\begin_layout Itemize
+all message-boxes that got suppressed by your preferences 
+\end_layout
+
+\begin_layout Itemize
+some more errors and warnings where an error-dialog would not be appropriate.
+\end_layout
+
+\begin_layout Subsection*
+Debug Messages
+\end_layout
+
+\begin_layout Standard
+Debug messages are mainly meant for developers and for experienced users
+ who want to get more info about the way how OpenHoldem works internally.
+ These messages can be turned on with the Debugging-tab of the Preferences
+ dialog.
+ They are very useful for finding and fixing bugs, but they are usually
+ not needed for most end-users.
+ Below an example about blind-detection, blind-locking (for stability) and
+ detecting hand-resets.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Setting handnumber to [] 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by dealerchair: false
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by cards: false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by handnumber: true
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by community cards:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by potsize: false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by nopponentsplaying:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by increasing balance:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by changing blind level:
+ false 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset by new small blind:
+ true 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing this heartbeat:
+ 0b001000001 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Methods firing last 3 heartbeat2:
+ 0b1000001 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Number of methods firing last
+ 3 heartbeat2: 2 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Handreset found 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CHandresetDetector] Setting last dealerchair to [-1]
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] CalcTableLimits() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] ResetOnHeartbeat() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] TableLimitsNeedToBeComputed()
+ true, because not locked 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindGuesser] Data from scraper (ttlimits, c0limits):
+ 5.00 / 10.00 / 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Trying to find best matching blind-level
+ for 5.00 / 10.00 / 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Perfect match found 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CBlindLevels] Blinds recognized as 5.00 / 10.00 / 20.00
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] AutoLockBlinds() 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-08-15 16:00:24 - [CSymbolEngineTableLimits] blinds_locked_for_current_hand:
+ false
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Logging for DLL
+\end_layout
+
+\begin_layout Standard
+Usually OpenHoldem will stop going into more detail when it reaches a DLL
+ symbol, because DLL-functions and C-functions are a black-box for OpenHoldem.
+ However it is possible to enable DLL-logging, then OpenHoldem will continue
+ like in the axample above if the DLL-function calls back to OH-script.
+ Furthermore it is possible to log any user-defined messages from the DLL
+ to the standard OpenHoldem-log with a function from the DLL-interface:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
+\end_layout
+
+\end_inset
+
 
 \end_layout
 

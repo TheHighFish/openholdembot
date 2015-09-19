@@ -132,7 +132,7 @@ scraper
 \emph default
  directory.
  For each step that follows, if a non-match is detected, OpenHoldem will
- then immediately negative move on to the next window / tablemap.
+ then immediately move on to the next window / tablemap.
 \end_layout
 
 \begin_layout Enumerate

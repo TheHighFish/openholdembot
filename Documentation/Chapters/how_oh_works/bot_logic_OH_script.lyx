@@ -185,10 +185,6 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/autoplayer_functions_formula_editor.JPG
 
@@ -383,6 +379,34 @@ Additionally, several classes of run-time errors will be detected, including
  control the recursion depth.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/run_time_error.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection*
 Default Bot
 \end_layout
@@ -393,7 +417,11 @@ OpenHoldem does not contain a default bot.
 \emph on
 Playbot
 \emph default
- by Matrix just for demonstration purposes.
+ by 
+\noun on
+Matrix
+\noun default
+ just for demonstration purposes.
  It was a very early case-study about prwin-based bots, meant for Fixed
  Limit Texas Hold'em.
  Prwin-based bots (short for 
