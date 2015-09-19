@@ -346,9 +346,11 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "//   * Triggering calculations, e.g. in a DLL\n";
   } else if (function_name == k_standard_function_names[k_prwin_number_of_opponents]) {
     function_text = 
-      "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
-      "// Works even with \"no opponents\".\n"
-      "nopponentsplaying + 1 ";
+      "// \"Reasonable\" default to get standard PrWin running for beginners.\n"
+      "// Adding one extra opponent has two advantages:\n"
+      "//   * works even with mis-scraped \"no opponents\"\n"
+      "//   * adjusts over-optimistic standard PrWin (random ranges).\n"
+      "nopponentsplaying + 1 \n";
   } else if (function_name == k_standard_function_names[k_prwin_number_of_iterations]) {
     function_text = 
       "// \"Reasonable\" default to get PrWin running for beginners.\n"

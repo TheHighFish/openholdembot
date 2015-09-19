@@ -316,7 +316,7 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
   }
   // Then all small blinds downwards
   for (int i=kLastBlindLevel; i>=0; ++i) {
-    if ((kBlindLevels[i] > 0)
+    if ((kBlindLevels[i][0] > 0)
         && (guessed_blind <= kBlindLevels[i][0])) {
       write_log(preferences.debug_table_limits(), 
         "[CBlindLevels] Best match for %.2f -> %.2f\n",

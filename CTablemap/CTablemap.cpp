@@ -27,6 +27,7 @@
 
 #ifdef OPENSCRAPE_PROGRAM
 #include "../OpenScrape/debug.h"
+#include "../OpenHoldem/StringFunctions.h"
 #endif
 
 CTablemap			*p_tablemap = NULL;
