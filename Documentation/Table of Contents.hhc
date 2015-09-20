@@ -464,10 +464,6 @@
 				<param name="Name" value="Hand Lists">
 				<param name="Local" value="Chapters\handlists\Handlists.html.LyXconv\Handlists.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Logging">
-				<param name="Local" value="Chapters\logging\Logging.html.LyXconv\Logging.html">
-				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="OH-Script explained">

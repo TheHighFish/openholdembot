@@ -121,6 +121,114 @@ On every autoplayer action OpenHolldem will create a section with some basic
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Version: 7.8.0 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Chairs: 9 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Userchair: 4 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Holecards: 7d9c 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Community: ..........
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Handrank: 2 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Hand: hcard 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - My balance: 2135.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - My currentbet: 80.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - To call: 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:17:35 - Pot: 280.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Big blind: 80.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Big bet (FL): 160.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - f$betsize: 0.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Formulas: FCK..
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Buttons: F.KRA 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Best action: f$call 
+\end_layout
+
+\begin_layout Plain Layout
+
+2015-09-10 08:18:19 - Action taken: f$check
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As you can see in this example the bot-logic decided to call, but there
+ was no bet to call and no call button either.
+ So OpenHoldem finally checked (backup-action).
+\end_layout
+
 \begin_layout Subsection*
 Autoplayer Trace
 \end_layout
@@ -180,6 +288,46 @@ After the decision got calculated OpenHoldem translates it to OH-script
 \end_inset
 
 ) value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$betsize = 880.000 [cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+f$rais = 1.000 [cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+f$call = 1.000 [cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+f$check = 1.000 [cached]
+\end_layout
+
+\begin_layout Plain Layout
+
+f$allin_on_betsize_balance_ratio = 0.000 [Line 5/1864]
+\end_layout
+
+\begin_layout Plain Layout
+
+f$fold = 1.000 [cached]
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
