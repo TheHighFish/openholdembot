@@ -1187,19 +1187,16 @@ void CTransform::ParseStringBSL(const CString text,
 #endif
 }
 
-double CTransform::StringToMoney(const CString inStr)
-{
-	const char			*str = inStr.GetString();
-	CStringArray		possibleValues;
-	CArray<int, int>	possibleValuesMultiplier;
-	CString				activeValue = "";
-	int					iValueWithCurrencySymbol = -1;
-	bool				currencySymbol = false;
+double CTransform::StringToMoney(const CString inStr) {
+	const char			 *str = inStr.GetString();
+	CStringArray		 possibleValues;
+	CArray<int, int> possibleValuesMultiplier;
+	CString				   activeValue = "";
+	int					     iValueWithCurrencySymbol = -1;
+	bool				     currencySymbol = false;
 
-	while (*str) 
-	{
-		switch (*str) 
-		{
+	while (*str) {
+		switch (*str) {
 			case '0':
 			case '1':
 			case '2':
@@ -1218,8 +1215,7 @@ double CTransform::StringToMoney(const CString inStr)
 			case '$':
 			case '€':
 			case '£':
-				if (activeValue.GetLength() > 0) 
-				{
+				if (activeValue.GetLength() > 0) {
 					possibleValues.Add(activeValue);
 					possibleValuesMultiplier.Add(1);
 					activeValue.Empty();
@@ -1227,50 +1223,55 @@ double CTransform::StringToMoney(const CString inStr)
 				currencySymbol = true;
 				break;
 			default:
-				if (activeValue.GetLength() > 0) 
-				{
+				if (activeValue.GetLength() > 0) {
 					int index = (int) possibleValues.Add(activeValue);
-					if (currencySymbol)
+					if (currencySymbol) {
 						iValueWithCurrencySymbol = index;
-					if (*str == '¢' || *str == 'c')
+          }
+          // Support for multiplier-symbols in bets and balances
+          // k = $1.000
+          // m = $1.000.000
+          // c = $0.01
+          // Both uppere and lower cases
+          // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18939
+					if (*str == '¢' || *str == 'c' || *str == 'C') {
 						possibleValuesMultiplier.Add(-100);
-					else if (*str == 'k')
+          }	else if (*str == 'k' || *str == 'K') {
 						possibleValuesMultiplier.Add(1000);
-					else if (*str == 'm')
+          }	else if (*str == 'm' || *str == 'M') {
 						possibleValuesMultiplier.Add(1000000);
-					else
+          }	else {
 						possibleValuesMultiplier.Add(1);
+          }
 					activeValue.Empty();
 				}
 				break;
 		}
-		str++;
+		++str;
 	}
-
-	if (activeValue.GetLength() > 0) 
-	{
+  if (activeValue.GetLength() > 0) {
 		int index = (int) possibleValues.Add(activeValue);
 		possibleValuesMultiplier.Add(1);
-		if (currencySymbol)
+		if (currencySymbol) {
 			iValueWithCurrencySymbol = index;
+    }
 	}
-
-	double number = 0.0;
-
-	int iValueToUse = -1;
-	if (possibleValues.GetSize() == 1)
+  double number = 0.0;
+  int iValueToUse = -1;
+	if (possibleValues.GetSize() == 1) {
 		iValueToUse = 0;
-	else if (iValueWithCurrencySymbol >= 0)
-		iValueToUse = iValueWithCurrencySymbol;
-	else if (possibleValues.GetSize() > 1)
+  }	else if (iValueWithCurrencySymbol >= 0) {
+    iValueToUse = iValueWithCurrencySymbol;
+  }	else if (possibleValues.GetSize() > 1) {
 		iValueToUse = 0;
+  }
 	if (iValueToUse >= 0) {
 		number = atof(possibleValues[iValueToUse].GetString());
-		if (possibleValuesMultiplier[iValueToUse] < 0)
+		if (possibleValuesMultiplier[iValueToUse] < 0) {
 			number /= -possibleValuesMultiplier[iValueToUse];
-		else
+    }	else {
 			number *= possibleValuesMultiplier[iValueToUse];
+    }
 	}
-
-	return number;
+  return number;
 }
