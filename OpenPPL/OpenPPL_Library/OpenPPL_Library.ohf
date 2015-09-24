@@ -465,9 +465,9 @@ $$cr4
 
 ##InitBets##
 // No bet in front of us to call
-((currentbet == 0) && (AmountToCall == 0)) ? me_st_MemBets_0 :
+((currentbet == 0) AND (AmountToCall == 0)) ? me_st_MemBets_0 :
 // A bet to call and we didn't act before or we checked
-((currentbet == 0) && (AmountToCall > 0)) ? me_st_MemBets_1 :
+((currentbet == 0) AND (AmountToCall > 0)) ? me_st_MemBets_1 :
 // Otherwise: we did already bet ourself or call a bet.
 // So don't change anything
 HINT_Nothing_To_Do_But_All_OK
@@ -494,30 +494,30 @@ me_re_MemBets
 // because we always get stable frames at out turn.)
 // So we also check for our last action and the amount to call.
 // (-1 = fold 0 = check 1 = call 2 = raise e3 = betsize 4 = allin)
-(((prevaction ==  2) || (prevaction == 3)) && (AmountToCall == 0)) ? userchair :
+(((prevaction ==  2) OR (prevaction == 3)) AND (AmountToCall == 0)) ? userchair :
 raischair
 
 ##LastAggressorActsAfterUs##		
    ac_agchair_after 
-&& !BotIsLastRaiser
+AND NOT BotIsLastRaiser
 
 ##BotIsLastRaiser##
 (AggressorChair==userchair)
 
 ##BotRaisedBeforeFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didraisround1 
-|| didbetsizeround1
+OR didraisround1 
+OR didbetsizeround1
 
 ##BotRaisedOnFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didraisround2 
-|| didbetsizeround2
+OR didraisround2 
+OR didbetsizeround2
 
 ##BotRaisedOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didraisround3 
-|| didbetsizeround3
+OR didraisround3 
+OR didbetsizeround3
 
 ##BotsActionsOnFlop##
   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
@@ -551,11 +551,11 @@ raischair
 
 ##PrevActionWasAllin##
    (prevaction == 4) // Allin
-|| (prevaction == 5) // Jamming the slider
+OR (prevaction == 5) // Jamming the slider
 
 ##BotsLastAction##
 // Just to be extra safe...
-[(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
+[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
 // Caring about a possible check, when a fold could not have happened
 [me_re_MemBotsLastAction == Fold] ? Check :
 // Computing BotsLastAction from prevation
@@ -569,21 +569,21 @@ raischair
 // k_prevaction_jam = 5
 //
 // Successful allin
-(PrevActionWasAllin && (balance == 0)) ? RaiseMax :
+(PrevActionWasAllin AND (balance == 0)) ? RaiseMax :
 // Failed allin
-(PrevActionWasAllin && (balance >= 0)) ? Raise :
+(PrevActionWasAllin AND (balance >= 0)) ? Raise :
 // Raising (FL and NL)
-((prevaction == 2) || (prevaction == 3)) ? Raise :
+((prevaction == 2) OR (prevaction == 3)) ? Raise :
 // calling
 (prevaction == 1) ? Call :
 // Checking postflop
-((prevaction == 0) && (betround > 1) && (currentbet == 0)) ? Check :
+((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) ? Check :
 // Checking preflop
-((prevaction == 0) && (betround == 1) && (currentbet <= bblind)) ? Check :
+((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) ? Check :
 // "Checking" when it was a call
 // Actually OH does auto-adapt prevaction after such actions
 // but we try to be extra safe
-((prevaction == 0) && (betround == 1) && (currentbet > bblind)) ? Call :
+((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) ? Call :
 // Folding (might be used in sitour formulas)
 (prevaction == -1) ? Fold :
 // No autoplayer-actions, but human being at ManualMode
@@ -596,11 +596,11 @@ ERROR_IncorrectBotsLastAction
 // Don't use BotsLastAction on the first orbit,
 // because that variable has to be the last one to be initialized
 // and is therefore undefined.
-[(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ? 
+[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ? 
     me_st_MemBotsLastPreflopAction_None :
-[(betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks > 0)] ? 
+[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks > 0)] ? 
     me_st_MemBotsLastPreflopAction_BotsLastAction : 
-[(betround == ConstBetRoundFlop) && (BotsActionsOnThisRoundIncludingChecks == 0)] ?
+[(betround == ConstBetRoundFlop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ?
     me_st_MemBotsLastPreflopAction_BotsLastAction : 0  
 
 ##BotsLastPreflopAction##
@@ -608,35 +608,35 @@ me_re_MemBotsLastPreflopAction
 
 ##BotCalledBeforeFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didcallround1
+OR didcallround1
 
 ##BotCalledOnFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didcallround2
+OR didcallround2
 
 ##BotCalledOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didcallround3
+OR didcallround3
 
 ##BotCalledOnRiver##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didcallround4
+OR didcallround4
 
 ##BotCheckedPreflop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didchecround1
+OR didchecround1
 
 ##BotCheckedOnFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didchecround2
+OR didchecround2
 
 ##BotCheckedOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didchecround3
+OR didchecround3
 
 ##BotCheckedOnRiver##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
-|| didchecround4
+OR didchecround4
 
 ##AddNopponentscalling##
 Calls + nopponentscalling
@@ -757,16 +757,16 @@ ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
 // all positions and finally lots of other things...
 (nopponentsfolded > 0) ? True :
 // Then check for active players with a zero bet
-[(playersplayingbits & 0b0000000001) && (currentbet0 == 0)] ? False :
-[(playersplayingbits & 0b0000000010) && (currentbet1 == 0)] ? False :
-[(playersplayingbits & 0b0000000100) && (currentbet2 == 0)] ? False :
-[(playersplayingbits & 0b0000001000) && (currentbet3 == 0)] ? False :
-[(playersplayingbits & 0b0000010000) && (currentbet4 == 0)] ? False :
-[(playersplayingbits & 0b0000100000) && (currentbet5 == 0)] ? False :
-[(playersplayingbits & 0b0001000000) && (currentbet6 == 0)] ? False :
-[(playersplayingbits & 0b0010000000) && (currentbet7 == 0)] ? False :
-[(playersplayingbits & 0b0100000000) && (currentbet8 == 0)] ? False :
-[(playersplayingbits & 0b1000000000) && (currentbet9 == 0)] ? False :
+[(playersplayingbits & 0b0000000001) AND (currentbet0 == 0)] ? False :
+[(playersplayingbits & 0b0000000010) AND (currentbet1 == 0)] ? False :
+[(playersplayingbits & 0b0000000100) AND (currentbet2 == 0)] ? False :
+[(playersplayingbits & 0b0000001000) AND (currentbet3 == 0)] ? False :
+[(playersplayingbits & 0b0000010000) AND (currentbet4 == 0)] ? False :
+[(playersplayingbits & 0b0000100000) AND (currentbet5 == 0)] ? False :
+[(playersplayingbits & 0b0001000000) AND (currentbet6 == 0)] ? False :
+[(playersplayingbits & 0b0010000000) AND (currentbet7 == 0)] ? False :
+[(playersplayingbits & 0b0100000000) AND (currentbet8 == 0)] ? False :
+[(playersplayingbits & 0b1000000000) AND (currentbet9 == 0)] ? False :
 True
 
 ##CalculateMissingSmallBlind##
@@ -775,19 +775,19 @@ True
 (CurrentbetOfDealPosition1Chair == sblind) ? False :
 // If we are NOT the Second player to be dealt and see a bet 
 // of 1 big blind left to the dealer, then it is the big blind (SB missing)
-[(dealposition != 2) && (CurrentbetOfDealPosition1Chair == bblind)] ? True :
+[(dealposition != 2) AND (CurrentbetOfDealPosition1Chair == bblind)] ? True :
 // Problematic is only the case when I am in "big blind" (Second player to be dealt)
 // * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
 // * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
 // * if bet = 1 big blind and players behind me still to act, then SB is missing
-[(dealposition == 2) && (CurrentbetOfDealPosition1Chair > bblind)] ? False :
+[(dealposition == 2) AND (CurrentbetOfDealPosition1Chair > bblind)] ? False :
 // Case 2 and 3: precondition: bet = 1 big blind
-[(dealposition == 2) && PlayersBehindDealPosition2ChairDidAct] ? False :
-[(dealposition == 2) && !PlayersBehindDealPosition2ChairDidAct] ? True :
+[(dealposition == 2) AND PlayersBehindDealPosition2ChairDidAct] ? False :
+[(dealposition == 2) AND NOT PlayersBehindDealPosition2ChairDidAct] ? True :
 ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##InitMissingSmallBlind##
-[(betround == ConstBetRoundPreflop) &&  (BotsActionsOnThisRoundIncludingChecks == 0)] ? 
+[(betround == ConstBetRoundPreflop) AND  (BotsActionsOnThisRoundIncludingChecks == 0)] ? 
 me_st_MemMissingSmallBlind_CalculateMissingSmallBlind :
 HINT_Nothing_To_Do_But_All_OK
 
@@ -807,18 +807,18 @@ me_re_MemMissingSmallBlind
 ((raisbits3 & ~(1<<userchair)) == 0)
 
 ##OpponentCalledOnFlop##
-   (betround > ConstBetRoundFlop)
-&& ((didraisround2 + didbetsizeround2) == 1)
-&& !didchecround2
-&& !didcallround2
-&& NoVillainBetOrRaisedOnFlop
+    (betround > ConstBetRoundFlop)
+AND ((didraisround2 + didbetsizeround2) == 1)
+AND NOT didchecround2
+AND NOT didcallround2
+AND NoVillainBetOrRaisedOnFlop
 
 ##OpponentCalledOnTurn##
-   (betround > ConstBetRoundTurn)
-&& ((didraisround3 + didbetsizeround3) == 1)
-&& !didchecround3
-&& !didcallround3
-&& NoVillainBetOrRaisedOnTurn
+    (betround > ConstBetRoundTurn)
+AND ((didraisround3 + didbetsizeround3) == 1)
+AND NOT didchecround3
+AND NOT didcallround3
+AND NoVillainBetOrRaisedOnTurn
 
 ##Stack0##
 // Stacks are Shanky-style in big-blinds
@@ -887,26 +887,26 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 // Even "no opponents" can happen: 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915&start=30&p=124798&view=show#p124798
 [nopponentsplaying < 1] ? ERROR_Game_Is_Not_HeadsUp :
-[(playersplayingbits & 0b0000000001) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=0 && balance0>0] ? Stack0:
-[(playersplayingbits & 0b0000000010) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=1 && balance1>0] ? Stack1:
-[(playersplayingbits & 0b0000000100) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=2 && balance2>0] ? Stack2:
-[(playersplayingbits & 0b0000001000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=3 && balance3>0] ? Stack3:
-[(playersplayingbits & 0b0000010000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=4 && balance4>0] ? Stack4:
-[(playersplayingbits & 0b0000100000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=5 && balance5>0] ? Stack5:
-[(playersplayingbits & 0b0001000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=6 && balance6>0] ? Stack6:
-[(playersplayingbits & 0b0010000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=7 && balance7>0] ? Stack7:
-[(playersplayingbits & 0b0100000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=8 && balance8>0] ? Stack8:
-[(playersplayingbits & 0b1000000000) && (nopponentsplaying-NumberOfOpponentsAllin==1) 
-  && userchair!=9 && balance9>0] ? Stack9:
+[(playersplayingbits & 0b0000000001) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=0 AND balance0>0] ? Stack0:
+[(playersplayingbits & 0b0000000010) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=1 AND balance1>0] ? Stack1:
+[(playersplayingbits & 0b0000000100) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=2 AND balance2>0] ? Stack2:
+[(playersplayingbits & 0b0000001000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=3 AND balance3>0] ? Stack3:
+[(playersplayingbits & 0b0000010000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=4 AND balance4>0] ? Stack4:
+[(playersplayingbits & 0b0000100000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=5 AND balance5>0] ? Stack5:
+[(playersplayingbits & 0b0001000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=6 AND balance6>0] ? Stack6:
+[(playersplayingbits & 0b0010000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=7 AND balance7>0] ? Stack7:
+[(playersplayingbits & 0b0100000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=8 AND balance8>0] ? Stack8:
+[(playersplayingbits & 0b1000000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=9 AND balance9>0] ? Stack9:
 ERROR_Game_Is_Not_HeadsUp
 
 
@@ -940,17 +940,17 @@ HINT_Nothing_To_Do_But_All_OK
 me_st_MemRaises_Calculate_Raises
 
 ##Raises##
-(!ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
+(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 // Raises might have been -1 if there were additional blind-posters,
 // because nopponentsraising was wrong in that case for old versions
 // But this gets now handled perfectly by nopponentstruelyraising.
 // But we keep the sanity-checks anyway.
-[(me_re_MemRaises < 0) && (betround == ConstBetRoundPreflop) && (ncallbets == 1)] ? 
+[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets == 1)] ? 
   (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
-[(me_re_MemRaises < 0) && (betround == ConstBetRoundPreflop) && (ncallbets > 1)]  ? 
+[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets > 1)]  ? 
   (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 1) :
 // Should not happen postflop, but a sanity-check can't harm.
-[(me_re_MemRaises < 0) && (betround >= ConstBetRoundFlop)] ? 
+[(me_re_MemRaises < 0) AND (betround >= ConstBetRoundFlop)] ? 
   (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
 // Otherwise: probably everything ok
 me_re_MemRaises
@@ -970,31 +970,31 @@ me_re_MemRaises
 ##AntesPresent##
 // First orbit preflop only,
 // as this function tries to guess the antes from the bets.
-   [(currentbet0 > 0) && (currentbet0 < sblind) && (balance0 > 0)]
-|| [(currentbet1 > 0) && (currentbet1 < sblind) && (balance1 > 0)]
-|| [(currentbet2 > 0) && (currentbet2 < sblind) && (balance2 > 0)]
-|| [(currentbet3 > 0) && (currentbet3 < sblind) && (balance3 > 0)]
-|| [(currentbet4 > 0) && (currentbet4 < sblind) && (balance4 > 0)]
-|| [(currentbet5 > 0) && (currentbet5 < sblind) && (balance5 > 0)]
-|| [(currentbet6 > 0) && (currentbet6 < sblind) && (balance6 > 0)]
-|| [(currentbet7 > 0) && (currentbet7 < sblind) && (balance7 > 0)]
-|| [(currentbet8 > 0) && (currentbet8 < sblind) && (balance8 > 0)]
-|| [(currentbet9 > 0) && (currentbet9 < sblind) && (balance9 > 0)]
+   [(currentbet0 > 0) AND (currentbet0 < sblind) AND (balance0 > 0)]
+OR [(currentbet1 > 0) AND (currentbet1 < sblind) AND (balance1 > 0)]
+OR [(currentbet2 > 0) AND (currentbet2 < sblind) AND (balance2 > 0)]
+OR [(currentbet3 > 0) AND (currentbet3 < sblind) AND (balance3 > 0)]
+OR [(currentbet4 > 0) AND (currentbet4 < sblind) AND (balance4 > 0)]
+OR [(currentbet5 > 0) AND (currentbet5 < sblind) AND (balance5 > 0)]
+OR [(currentbet6 > 0) AND (currentbet6 < sblind) AND (balance6 > 0)]
+OR [(currentbet7 > 0) AND (currentbet7 < sblind) AND (balance7 > 0)]
+OR [(currentbet8 > 0) AND (currentbet8 < sblind) AND (balance8 > 0)]
+OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
 
 ##NumberOfOpponentsLimpingPreflop##
 // First orbit preflop only
 // Does not count the user
 // Does not count the big-blind, who can't limp
-  [(currentbet0 == bblind) && (userchair != 0) && (BigBlindChair != 0) ? 1 : 0]
-+ [(currentbet1 == bblind) && (userchair != 1) && (BigBlindChair != 1) ? 1 : 0]
-+ [(currentbet2 == bblind) && (userchair != 2) && (BigBlindChair != 2) ? 1 : 0]
-+ [(currentbet3 == bblind) && (userchair != 3) && (BigBlindChair != 3) ? 1 : 0]
-+ [(currentbet4 == bblind) && (userchair != 4) && (BigBlindChair != 4) ? 1 : 0]
-+ [(currentbet5 == bblind) && (userchair != 5) && (BigBlindChair != 5) ? 1 : 0]
-+ [(currentbet6 == bblind) && (userchair != 6) && (BigBlindChair != 6) ? 1 : 0]
-+ [(currentbet7 == bblind) && (userchair != 7) && (BigBlindChair != 7) ? 1 : 0]
-+ [(currentbet8 == bblind) && (userchair != 8) && (BigBlindChair != 8) ? 1 : 0]
-+ [(currentbet9 == bblind) && (userchair != 9) && (BigBlindChair != 9) ? 1 : 0]
+  [(currentbet0 == bblind) AND (userchair != 0) AND (BigBlindChair != 0) ? 1 : 0]
++ [(currentbet1 == bblind) AND (userchair != 1) AND (BigBlindChair != 1) ? 1 : 0]
++ [(currentbet2 == bblind) AND (userchair != 2) AND (BigBlindChair != 2) ? 1 : 0]
++ [(currentbet3 == bblind) AND (userchair != 3) AND (BigBlindChair != 3) ? 1 : 0]
++ [(currentbet4 == bblind) AND (userchair != 4) AND (BigBlindChair != 4) ? 1 : 0]
++ [(currentbet5 == bblind) AND (userchair != 5) AND (BigBlindChair != 5) ? 1 : 0]
++ [(currentbet6 == bblind) AND (userchair != 6) AND (BigBlindChair != 6) ? 1 : 0]
++ [(currentbet7 == bblind) AND (userchair != 7) AND (BigBlindChair != 7) ? 1 : 0]
++ [(currentbet8 == bblind) AND (userchair != 8) AND (BigBlindChair != 8) ? 1 : 0]
++ [(currentbet9 == bblind) AND (userchair != 9) AND (BigBlindChair != 9) ? 1 : 0]
 
 ##RaisesBeforeOurFirstAction##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
@@ -1003,8 +1003,8 @@ nopponentstruelyraising
 
 ##RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.
-[didchec && (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
-[didchec && (nopponentstruelyraising == 0)] ? 0 :
+[didchec AND (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
+[didchec AND (nopponentstruelyraising == 0)] ? 0 :
 // Otherwise: either we were the first bettor
 // or there was a bet and maybe raises in front of us,
 // so all technical "raises" behind us are true raises
@@ -1015,7 +1015,7 @@ nopponentstruelyraising
 nopponentstruelyraising
 
 ##RaisesSinceLastPlay##
-(!ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
+(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 (BotsActionsOnThisRoundIncludingChecks == 0) ? RaisesBeforeOurFirstAction :
 (BotsActionsOnThisRoundIncludingChecks == 1) ? RaisesSinceLastPlayOnOurSecondAction :
 (BotsActionsOnThisRoundIncludingChecks >= 2) ? RaisesSinceLastPlayAfterOurSecondAction :
@@ -1393,7 +1393,7 @@ ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 (bblind > 0) ? ((currentbet + balance) / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##InitStartingStackSize##
-((handsplayed == 0 || StartingStackSize == 0) && (betround == ConstBetRoundPreflop)) ?
+((handsplayed == 0 OR StartingStackSize == 0) AND (betround == ConstBetRoundPreflop)) ?
   me_st_MemStartingStackSize_CalculateStartingStackSize : HINT_Nothing_To_Do_But_All_OK
 
 ##StartingStackSize##
@@ -1404,7 +1404,7 @@ me_re_MemStartingStackSize
 (bblind > 0) ? (currentbet + balance) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##InitStartingChips##
-((handsplayed == 0 || StartingChips == 0) && (betround == ConstBetRoundPreflop)) ?
+((handsplayed == 0 OR StartingChips == 0) AND (betround == ConstBetRoundPreflop)) ?
   me_st_MemStartingChips_CalculateStartingChips : HINT_Nothing_To_Do_But_All_OK
 
 ##StartingChips##
@@ -1420,7 +1420,7 @@ me_re_MemStartingChips
 // My balance and opponents bet miss-scraped
 // For NL and Pl assume a min-raise which must be about as much as my bet
 // The ability to check got already excluded
-(isnl || ispl) ? currentbet : 1
+(isnl OR ispl) ? currentbet : 1
 
 ##DollarsToCallForMisScrapedUserBalance##
 // My balance miss-scraped as 0
@@ -1436,11 +1436,11 @@ isfl ? 1 : currentbet
 // Effective DollarsToCall could go wrong, if our balance got miss-scraped
 // (Our balance must be always > 0 if it is our turn)
 // Therefore we create multiple functions for multiple cases of bad input.
-(ismyturn && balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
+(ismyturn AND balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
 // Preflop and I already did act, but nothing to call
-((betround == ConstBetRoundPreflop) && (currentbet > 0.01) && (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+((betround == ConstBetRoundPreflop) AND (currentbet > 0.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
 // Postflop and I already did act, but nothing to call
-((betround > ConstBetRoundPreflop) && (currentbet > 0) && (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
+((betround > ConstBetRoundPreflop) AND (currentbet > 0) AND (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
 // The normal case (including correct and incorrect abilities to check)
 (call <= balance) ? call : balance
 
@@ -1504,10 +1504,10 @@ HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 StackSize + TotalInvestedThisRound
 
 ##TotalInvested##
-(betround == ConstBetRoundPreflop && nbetsround  > 0) ? ncurrentbets :
-(betround == ConstBetRoundFlop    && nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
-(betround == ConstBetRoundTurn    && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
-(betround == ConstBetRoundRiver   && nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
+(betround == ConstBetRoundPreflop AND nbetsround  > 0) ? ncurrentbets :
+(betround == ConstBetRoundFlop    AND nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
+(betround == ConstBetRoundTurn    AND nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
+(betround == ConstBetRoundRiver   AND nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
 ERROR_Betround_Out_Of_Range
 
 ##TotalInvestedThisRound##
@@ -1540,76 +1540,76 @@ ncurrentbets
 -1
 
 ##AcePresentOnFlop##
-(FirstFlopCard == ConstCardAce) || (SecondFlopCard == ConstCardAce) || (ThirdFlopCard == ConstCardAce)
+(FirstFlopCard == ConstCardAce) OR (SecondFlopCard == ConstCardAce) OR (ThirdFlopCard == ConstCardAce)
 
 ##AcePresentOnTurn##
-AcePresentOnFlop || (TurnCard == ConstCardAce)
+AcePresentOnFlop OR (TurnCard == ConstCardAce)
 
 ##BestBoardCard##
 rankhicommon
 
 ##DoubleGutShotOnBoard##
-((rankbitscommon >> 8) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 7) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 6) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 5) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 4) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 3) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 2) &0x7f) == 0x5d ? 1 :
-((rankbitscommon >> 1) &0x7f) == 0x5d ? 1 : 0
+((rankbitscommon >> 8) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 7) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 6) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 5) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 4) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 3) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 2) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 1) & 0x7f) == 0x5d ? 1 : 0
 
 ##ExactlyOneStraightPossibleOnFlop##
-   [StraightPossibleOnFlop && AcePresentOnFlop]
-|| [StraightPossibleOnFlop && (TopFlopCard - LowestFlopCard == 4)]
+   [StraightPossibleOnFlop AND AcePresentOnFlop]
+OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
 
 ##FlopCardPairedOnTurn##
    FirstFlopCard == TurnCard
-|| SecondFlopCard == TurnCard
-|| ThirdFlopCard == TurnCard
+OR SecondFlopCard == TurnCard
+OR ThirdFlopCard == TurnCard
 
 ##FlushPossible##
 (nsuitedcommon >= 3)
 
 ##FlushOnBoard##
-($$cs0 == $$cs1 && $$cs0 == $$cs2 && $$cs0 == $$cs3 && $$cs0 == $$cs4)
+($$cs0 == $$cs1 AND $$cs0 == $$cs2 AND $$cs0 == $$cs3 AND $$cs0 == $$cs4)
 
 ##FlushPossibleOnFlop##
-($$cs0 == $$cs1 && $$cs0 == $$cs2)
+($$cs0 == $$cs1 AND $$cs0 == $$cs2)
 
 ##FlushPossibleOnTurn##
-[  ($$cs0 == $$cs1 && $$cs0 == $$cs2)
-|| ($$cs0 == $$cs1 && $$cs0 == $$cs3)
-|| ($$cs0 == $$cs2 && $$cs0 == $$cs3)
-|| ($$cs1 == $$cs2 && $$cs1 == $$cs3) ]
+[  ($$cs0 == $$cs1 AND $$cs0 == $$cs2)
+OR ($$cs0 == $$cs1 AND $$cs0 == $$cs3)
+OR ($$cs0 == $$cs2 AND $$cs0 == $$cs3)
+OR ($$cs1 == $$cs2 AND $$cs1 == $$cs3) ]
 
 ##FourCardsToWheelOnBoard##
 `(rankbitscommon & 0b0000000000111110) >= 4
 
 ##FourOfOneSuitOnTurn##
-(($$cs0 == $$cs1) && ($$cs2 == $$cs3) && ($$cs0 == $$cs3))
+(($$cs0 == $$cs1) AND ($$cs2 == $$cs3) AND ($$cs0 == $$cs3))
 
 ##FullHouseOnBoard##
 (pokervalcommon & fullhouse)
 
 ##HighestRankOnFlop##
-[(FirstFlopCard >= SecondFlopCard) && (FirstFlopCard >= ThirdFlopCard)] ? FirstFlopCard :
-[(SecondFlopCard >= FirstFlopCard) && (SecondFlopCard >= ThirdFlopCard)] ? SecondFlopCard :
-[(ThirdFlopCard >= FirstFlopCard) && (ThirdFlopCard >= SecondFlopCard)] ? ThirdFlopCard :
+[(FirstFlopCard >= SecondFlopCard) AND (FirstFlopCard >= ThirdFlopCard)] ? FirstFlopCard :
+[(SecondFlopCard >= FirstFlopCard) AND (SecondFlopCard >= ThirdFlopCard)] ? SecondFlopCard :
+[(ThirdFlopCard >= FirstFlopCard) AND (ThirdFlopCard >= SecondFlopCard)] ? ThirdFlopCard :
 -1
 
 ##KingPresentOnFlop##
    (FirstFlopCard == ConstCardKing)
-|| (SecondFlopCard == ConstCardKing)
-|| (ThirdFlopCard == ConstCardKing)
+OR (SecondFlopCard == ConstCardKing)
+OR (ThirdFlopCard == ConstCardKing)
 
 ##LowCardsOnBoard##
 `RankBitsCommonLowCardsOnly
 
 ##MoreThanOneStraightPossibleOnFlop##
-StraightPossibleOnFlop && !ExactlyOneStraightPossibleOnFlop
+StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
 
 ##MoreThanOneStraightPossibleOnRiver##
-(betround == ConstBetRoundRiver && (NumberOfStraightsPossibleOnRiver > 1))
+(betround == ConstBetRoundRiver AND (NumberOfStraightsPossibleOnRiver > 1))
 
 ##RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
@@ -1619,34 +1619,34 @@ rankbitscommon
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 && (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 && (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
+  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
 
 ##NumberOfStraightsPossibleOnRiver##
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 && (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 && (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
+  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
 
 ##MoreThanOneOneCardStraightPossible##
-DoubleGutShotOnBoard || OpenEndedStraightDrawOnBoard
+DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
 
 ##MoreThanOneStraightPossibleOnTurn##
 (NumberOfStraightsPossibleOnTurn > 1)
@@ -1709,14 +1709,14 @@ DoubleGutShotOnBoard || OpenEndedStraightDrawOnBoard
 (NumberOfOneCardStraightsPossibleOnTurn >= 1)
 
 ##Only1OneCardStraightPossible##
-OneCardStraightPossible && !MoreThanOneOneCardStraightPossible
+OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 
 ##OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 && (`((rankbitscommon >> 10) & 0x1f) < 4) && (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
+(nstraightcommon == 4 AND (`((rankbitscommon >> 10) & 0x1f) < 4) AND (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##OpenEndedStraightDrawPossibleOnFlop##
-[(TopFlopCard - SecondTopFlopCard <= 3) && (TopFlopCard - SecondTopFlopCard > 0) && (TopFlopCard != ConstCardAce)]
-|| [(SecondTopFlopCard - LowestFlopCard <= 3) && (SecondTopFlopCard - LowestFlopCard >0) && (LowestFlopCard >= ConstCardTwo)]
+[(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard - SecondTopFlopCard > 0) AND (TopFlopCard != ConstCardAce)]
+OR [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard - LowestFlopCard >0) AND (LowestFlopCard >= ConstCardTwo)]
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
@@ -1733,12 +1733,12 @@ OneCardStraightPossible && !MoreThanOneOneCardStraightPossible
 (nrankedcommon >= 2)
 
 ##PairOnFlop##
-(FirstFlopCard == SecondFlopCard || SecondFlopCard == ThirdFlopCard || FirstFlopCard == ThirdFlopCard)
+(FirstFlopCard == SecondFlopCard OR SecondFlopCard == ThirdFlopCard OR FirstFlopCard == ThirdFlopCard)
 
 ##LowestFlopCard##
-FirstFlopCard  <= SecondFlopCard && FirstFlopCard  <=  ThirdFlopCard  ? FirstFlopCard :
-SecondFlopCard <= FirstFlopCard  && SecondFlopCard <=  ThirdFlopCard  ? SecondFlopCard :
-ThirdFlopCard  <= FirstFlopCard  && ThirdFlopCard  <=  SecondFlopCard ? ThirdFlopCard : 
+FirstFlopCard  <= SecondFlopCard AND FirstFlopCard  <=  ThirdFlopCard  ? FirstFlopCard :
+SecondFlopCard <= FirstFlopCard  AND SecondFlopCard <=  ThirdFlopCard  ? SecondFlopCard :
+ThirdFlopCard  <= FirstFlopCard  AND ThirdFlopCard  <=  SecondFlopCard ? ThirdFlopCard : 
 -1
 
 ##LowestFlopCardPairedOnTurn##
@@ -1746,55 +1746,55 @@ ThirdFlopCard  <= FirstFlopCard  && ThirdFlopCard  <=  SecondFlopCard ? ThirdFlo
 
 ##OnlyOneStraightPossible##
 StraightPossible
-&& ![MoreThanOneStraightPossibleOnFlop
-  || MoreThanOneStraightPossibleOnTurn
-  || MoreThanOneStraightPossibleOnRiver]
+AND NOT [MoreThanOneStraightPossibleOnFlop
+  OR MoreThanOneStraightPossibleOnTurn
+  OR MoreThanOneStraightPossibleOnRiver]
 
 ##PairOnTurn##
    PairOnFlop
-|| TopFlopCardPairedOnTurn
-|| SecondTopFlopCardPairedOnTurn
-|| LowestFlopCardPairedOnTurn
+OR TopFlopCardPairedOnTurn
+OR SecondTopFlopCardPairedOnTurn
+OR LowestFlopCardPairedOnTurn
 
 ##QuadsOnBoard##
 (nrankedcommon == 4)
 
 ##QueenPresentOnFlop##
    (FirstFlopCard==ConstCardQueen)
-|| (SecondFlopCard==ConstCardQueen)
-|| (ThirdFlopCard==ConstCardQueen)
+OR (SecondFlopCard==ConstCardQueen)
+OR (ThirdFlopCard==ConstCardQueen)
 
 ##RankBitsCommonLowCardsOnly##
 // Bits 8..ace(low), last bit is unused
 (rankbitscommon & 0b111111110)
 
 ##RiverCardIsOvercardToBoard##
-[  RiverCard > FirstFlopCard
-&& RiverCard > SecondFlopCard
-&& RiverCard > ThirdFlopCard
-&& RiverCard > TurnCard ]
+[   RiverCard > FirstFlopCard
+AND RiverCard > SecondFlopCard
+AND RiverCard > ThirdFlopCard
+AND RiverCard > TurnCard ]
 
 ##SecondTopFlopCard##
 PairOnFlop ? SecondTopFlopCard_PairOnFlop :
-!PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
+NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 -1
 
 ##SecondTopFlopCard_UnpairedFlop##
-!PairOnFlop && FirstFlopCard  >= SecondFlopCard && FirstFlopCard  >= ThirdFlopCard  && SecondFlopCard >= ThirdFlopCard  ? SecondFlopCard :
-!PairOnFlop && FirstFlopCard  >= SecondFlopCard && FirstFlopCard  >= ThirdFlopCard  && SecondFlopCard <= ThirdFlopCard  ? ThirdFlopCard  :
-!PairOnFlop && SecondFlopCard >= FirstFlopCard  && SecondFlopCard >= ThirdFlopCard  && FirstFlopCard  >= ThirdFlopCard  ? FirstFlopCard  :
-!PairOnFlop && SecondFlopCard >= FirstFlopCard  && SecondFlopCard >= ThirdFlopCard  && FirstFlopCard  <= ThirdFlopCard  ? ThirdFlopCard  :
-!PairOnFlop && ThirdFlopCard  >= FirstFlopCard  && ThirdFlopCard  >= SecondFlopCard && FirstFlopCard  >= SecondFlopCard ? FirstFlopCard  :
-!PairOnFlop && ThirdFlopCard  >= FirstFlopCard  && ThirdFlopCard  >= SecondFlopCard && FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
+NOT PairOnFlop AND FirstFlopCard  >= SecondFlopCard AND FirstFlopCard  >= ThirdFlopCard  AND SecondFlopCard >= ThirdFlopCard  ? SecondFlopCard :
+NOT PairOnFlop AND FirstFlopCard  >= SecondFlopCard AND FirstFlopCard  >= ThirdFlopCard  AND SecondFlopCard <= ThirdFlopCard  ? ThirdFlopCard  :
+NOT PairOnFlop AND SecondFlopCard >= FirstFlopCard  AND SecondFlopCard >= ThirdFlopCard  AND FirstFlopCard  >= ThirdFlopCard  ? FirstFlopCard  :
+NOT PairOnFlop AND SecondFlopCard >= FirstFlopCard  AND SecondFlopCard >= ThirdFlopCard  AND FirstFlopCard  <= ThirdFlopCard  ? ThirdFlopCard  :
+NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  >= SecondFlopCard ? FirstFlopCard  :
+NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
 -1
 
 ##SecondTopFlopCard_PairOnFlop##
-PairOnFlop && FirstFlopCard  == SecondFlopCard && FirstFlopCard  > ThirdFlopCard  ? ThirdFlopCard :
-PairOnFlop && FirstFlopCard  == SecondFlopCard && FirstFlopCard  < ThirdFlopCard  ? FirstFlopCard :
-PairOnFlop && FirstFlopCard  == ThirdFlopCard && FirstFlopCard  > SecondFlopCard  ? SecondFlopCard :
-PairOnFlop && FirstFlopCard  == ThirdFlopCard && FirstFlopCard  < SecondFlopCard  ? FirstFlopCard :
-PairOnFlop && SecondFlopCard  == ThirdFlopCard && SecondFlopCard  > FirstFlopCard  ? FirstFlopCard :
-PairOnFlop && SecondFlopCard  == ThirdFlopCard && SecondFlopCard  < FirstFlopCard  ? SecondFlopCard :
+PairOnFlop AND FirstFlopCard  == SecondFlopCard AND FirstFlopCard  > ThirdFlopCard  ? ThirdFlopCard :
+PairOnFlop AND FirstFlopCard  == SecondFlopCard AND FirstFlopCard  < ThirdFlopCard  ? FirstFlopCard :
+PairOnFlop AND FirstFlopCard  == ThirdFlopCard AND FirstFlopCard  > SecondFlopCard  ? SecondFlopCard :
+PairOnFlop AND FirstFlopCard  == ThirdFlopCard AND FirstFlopCard  < SecondFlopCard  ? FirstFlopCard :
+PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  > FirstFlopCard  ? FirstFlopCard :
+PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  < FirstFlopCard  ? SecondFlopCard :
 -1
 
 // Shanky is a bit inconsistent with the naming
@@ -1833,19 +1833,19 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 
 ##SuitsOnFlop##
 (betround < ConstBetRoundFlop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
-[ ($$cs0 == $$cs1 && $$cs1 == $$cs2) ? 1 :
- (($$cs0 == $$cs1 && $$cs1 != $$cs2) || ($$cs0 == $$cs2 && $$cs0 != $$cs1) || ($$cs0 != $$cs1 && $$cs1 == $$cs2)) ? 2 :
-  ($$cs0 != $$cs1 && $$cs1 != $$cs2 && $$cs0 != $$cs2) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
+[ ($$cs0 == $$cs1 AND $$cs1 == $$cs2) ? 1 :
+ (($$cs0 == $$cs1 AND $$cs1 != $$cs2) OR ($$cs0 == $$cs2 AND $$cs0 != $$cs1) OR ($$cs0 != $$cs1 AND $$cs1 == $$cs2)) ? 2 :
+  ($$cs0 != $$cs1 AND $$cs1 != $$cs2 AND $$cs0 != $$cs2) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
 
 ##SuitsOnRiver##
 (betround < ConstBetRoundRiver) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnTurn
-  + ((($$cs4 != $$cs0) && ($$cs4 != $$cs1) && ($$cs4 != $$cs2) && ($$cs4 != $$cs3)) ? 1 : 0)]
+  + ((($$cs4 != $$cs0) AND ($$cs4 != $$cs1) AND ($$cs4 != $$cs2) AND ($$cs4 != $$cs3)) ? 1 : 0)]
   
 ##SuitsOnTurn##
 (betround < ConstBetRoundTurn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnFlop 
-  + ((($$cs3 != $$cs0) && ($$cs3 != $$cs1) && ($$cs3 != $$cs2)) ? 1 : 0)]
+  + ((($$cs3 != $$cs0) AND ($$cs3 != $$cs1) AND ($$cs3 != $$cs2)) ? 1 : 0)]
   
 ##StraightFlushPossible##
 `((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
@@ -1904,9 +1904,9 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 nstraightcommon >= 3
 
 ##TopFlopCard##
-FirstFlopCard >= SecondFlopCard && FirstFlopCard >= ThirdFlopCard ? FirstFlopCard :
-SecondFlopCard >= FirstFlopCard && SecondFlopCard >= ThirdFlopCard ? SecondFlopCard :
-ThirdFlopCard >= FirstFlopCard && ThirdFlopCard >= SecondFlopCard ? ThirdFlopCard :
+FirstFlopCard >= SecondFlopCard AND FirstFlopCard >= ThirdFlopCard ? FirstFlopCard :
+SecondFlopCard >= FirstFlopCard AND SecondFlopCard >= ThirdFlopCard ? SecondFlopCard :
+ThirdFlopCard >= FirstFlopCard AND ThirdFlopCard >= SecondFlopCard ? ThirdFlopCard :
 ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##TopFlopCardPairedOnRiver##
@@ -1919,37 +1919,37 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 (nrankedcommon >= 3)
 
 ##TripsOnBoardOnTurn##
-   (FirstFlopCard == SecondFlopCard && SecondFlopCard == ThirdFlopCard)
-|| (FirstFlopCard == SecondFlopCard && SecondFlopCard == TurnCard)
-|| (FirstFlopCard == ThirdFlopCard && ThirdFlopCard == TurnCard)
-|| (SecondFlopCard == ThirdFlopCard && ThirdFlopCard == TurnCard)
+   (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard)
+OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard)
+OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
+OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
 
 ##TurnCardIsOvercardToBoard##
-[  TurnCard > FirstFlopCard
-&& TurnCard > SecondFlopCard
-&& TurnCard > ThirdFlopCard ]
+[   TurnCard > FirstFlopCard
+AND TurnCard > SecondFlopCard
+AND TurnCard > ThirdFlopCard ]
 
 ##TurnCardPaired##
 (TurnCard == RiverCard)
 
 ##TwoOfOneSuitPresentOnFlop##
-(($$cs0 == $$cs1) || ($$cs0 == $$cs2) || ($$cs1 == $$cs2))
+(($$cs0 == $$cs1) OR ($$cs0 == $$cs2) OR ($$cs1 == $$cs2))
 
 ##TwoPairOnBoard##
-(pokervalcommon & twopair) || (pokervalcommon & fullhouse)
+(pokervalcommon & twopair) OR (pokervalcommon & fullhouse)
 
 ##TwoPairOnBoardOnTurn##
-   (betround>ConstBetRoundFlop && $$cr0==$$cr1 && $$cr2==$$cr3 && $$cr0!=$$cr2)
-|| (betround>ConstBetRoundFlop && $$cr0==$$cr2 && $$cr1==$$cr3 && $$cr0!=$$cr1)
-|| (betround>ConstBetRoundFlop && $$cr0==$$cr3 && $$cr1==$$cr2 && $$cr0!=$$cr1)
+   (betround>ConstBetRoundFlop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
+OR (betround>ConstBetRoundFlop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
+OR (betround>ConstBetRoundFlop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
 
 ##UncoordinatedFlop##
-!PairOnFlop
+NOT PairOnFlop
 // No possible flush: guaranteed by the next condition...
 // three different suits
-&& (SuitsOnFlop == 3)
-&& !StraightPossibleOnFlop
-&& !OpenEndedStraightDrawPossibleOnFlop
+AND (SuitsOnFlop == 3)
+AND NOT StraightPossibleOnFlop
+AND NOT OpenEndedStraightDrawPossibleOnFlop
 
 ##WheelPossible##
 (`(rankbitscommon & 0b111110) >= 3)
@@ -1961,88 +1961,88 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 //*****************************************************************************
 
 ##HadOverPairOnFlop##
-[  ispair
-&& RankOfFirstHoleCard > FirstFlopCard
-&& RankOfFirstHoleCard > SecondFlopCard
-&& RankOfFirstHoleCard > ThirdFlopCard ]
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard ]
 
 ##HadOverPairOnTurn##
-[  ispair
-&& RankOfFirstHoleCard > FirstFlopCard
-&& RankOfFirstHoleCard > SecondFlopCard
-&& RankOfFirstHoleCard > ThirdFlopCard 
-&& RankOfFirstHoleCard > TurnCard 
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard 
+AND RankOfFirstHoleCard > TurnCard 
 ]
 
 ##HadSecondOverPairOnFlop##
-   ispair
-&& rankhiplayer < TopFlopCard
-&& rankhiplayer > SecondTopFlopCard
+    ispair
+AND rankhiplayer < TopFlopCard
+AND rankhiplayer > SecondTopFlopCard
 
 ##HadSecondOverPairOnTurn##
-HadSecondOverPairOnFlop && (($$cr3==TopFlopCard)|| ($$cr3<TopFlopCard))
+HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
 
 ##HadPairOnFlop##
    ispair 
-|| RankOfFirstHoleCard  == FirstFlopCard 
-|| RankOfFirstHoleCard  == SecondFlopCard 
-|| RankOfFirstHoleCard  == ThirdFlopCard  
-|| RankOfSecondHoleCard == FirstFlopCard 
-|| RankOfSecondHoleCard == SecondFlopCard  
-|| RankOfSecondHoleCard == ThirdFlopCard
+OR RankOfFirstHoleCard  == FirstFlopCard 
+OR RankOfFirstHoleCard  == SecondFlopCard 
+OR RankOfFirstHoleCard  == ThirdFlopCard  
+OR RankOfSecondHoleCard == FirstFlopCard 
+OR RankOfSecondHoleCard == SecondFlopCard  
+OR RankOfSecondHoleCard == ThirdFlopCard
 
 ##HadPairOnTurn##
    HadPairOnFlop 
-|| FlopCardPairedOnTurn 
-|| RankOfFirstHoleCard == TurnCard 
-|| RankOfSecondHoleCard == TurnCard
+OR FlopCardPairedOnTurn 
+OR RankOfFirstHoleCard == TurnCard 
+OR RankOfSecondHoleCard == TurnCard
 
 ##HadSetOnFlop##
-PairInHand && (RankOfFirstHoleCard==$$cr0 || RankOfFirstHoleCard==$$cr1 || RankOfFirstHoleCard==$$cr2) 
+PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
 
 ##HadSetOnTurn##
-HadSetOnFlop || (PairInHand && RankOfFirstHoleCard==$$cr3) 
+HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3) 
 
 ##HadTopPairOnFlop##
-[(RankOfFirstHoleCard == HighestRankOnFlop) || (RankOfSecondHoleCard == HighestRankOnFlop)]
+[(RankOfFirstHoleCard == HighestRankOnFlop) OR (RankOfSecondHoleCard == HighestRankOnFlop)]
 
 ##HadSecondTopPairOnFlop##
-[(RankOfFirstHoleCard == SecondTopFlopCard) || (RankOfSecondHoleCard == SecondTopFlopCard)]
+[(RankOfFirstHoleCard == SecondTopFlopCard) OR (RankOfSecondHoleCard == SecondTopFlopCard)]
 
 
 ##HighestRankOnTurn##
 ((TurnCard > HighestRankOnFlop) ? TurnCard : HighestRankOnFlop)
 
 ##HadTopPairOnTurn##
-[ RankOfFirstHoleCard==HighestRankOnTurn || RankOfSecondHoleCard==HighestRankOnTurn ]
+[ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
 
 ##HadTwoPairOnFlop##
-   (RankOfFirstHoleCard == FirstFlopCard || RankOfFirstHoleCard == SecondFlopCard || RankOfFirstHoleCard == ThirdFlopCard)
-&& (RankOfSecondHoleCard == SecondFlopCard || RankOfSecondHoleCard == SecondFlopCard || RankOfSecondHoleCard == ThirdFlopCard)
-&& !ispair
+    (RankOfFirstHoleCard == FirstFlopCard OR RankOfFirstHoleCard == SecondFlopCard OR RankOfFirstHoleCard == ThirdFlopCard)
+AND (RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == ThirdFlopCard)
+AND NOT ispair
 
 ##HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
 
 ##HaveSecondBestKickerOrBetter##
-HaveSecondBestKicker || HaveBestKickerOrBetter
+HaveSecondBestKicker OR HaveBestKickerOrBetter
 
 ##HaveSecondBestOverPair##
-   ($KK
-&& FirstFlopCard < ConstCardKing
-&& SecondFlopCard < ConstCardKing
-&& ThirdFlopCard < ConstCardKing
-&& TurnCard < ConstCardKing
-&& RiverCard < ConstCardKing)
+    ($KK
+AND FirstFlopCard < ConstCardKing
+AND SecondFlopCard < ConstCardKing
+AND ThirdFlopCard < ConstCardKing
+AND TurnCard < ConstCardKing
+AND RiverCard < ConstCardKing)
 
 ##HaveSecondBestOverPairOrBetter##
-(HaveSecondBestOverPair || HaveBestOverPairOrBetter)
+(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
 
 ##HaveSecondNutFlush##
-[HaveFlush && (NumberOfUnknownSuitedOvercards == 1)]
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 1)]
 
 ##HaveSecondNutFlushDraw##
-HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 1)
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 1)
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
 `(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
@@ -2171,16 +2171,16 @@ ERROR_Board_Dont_Have_Any_Straight__Do_Not_Call_This_Function
 
 ##HaveSecondNutStraight##
 HaveStraight
-&& (HighCardOfSecondBestPossibleStraight == HighCardOfOurStraight)
+AND (HighCardOfSecondBestPossibleStraight == HighCardOfOurStraight)
 
 ##HaveSecondOverPair##
-ispair && (RankOfFirstHoleCard < BestBoardCard) && (RankOfFirstHoleCard > SecondBestBoardCard)
+ispair AND (RankOfFirstHoleCard < BestBoardCard) AND (RankOfFirstHoleCard > SecondBestBoardCard)
 
 ##HaveSecondTopPair##
-RankOfFirstHoleCard == SecondBestBoardCard || RankOfSecondHoleCard == SecondBestBoardCard
+RankOfFirstHoleCard == SecondBestBoardCard OR RankOfSecondHoleCard == SecondBestBoardCard
 
 ##HaveSecondTopSet##
-ispair && RankOfFirstHoleCard == SecondBestBoardCard
+ispair AND RankOfFirstHoleCard == SecondBestBoardCard
 
 ##TopBitOfRankBitsCommon##
 (1 << rankhicommon)
@@ -2213,15 +2213,15 @@ RankBitsCommonWithoutTopThreeBits & ~FourthTopBitOfRankBitsCommon
 (NumberOfBetterKickers == 2)
 
 ##HaveThirdBestKickerOrBetter##
-HaveThirdBestKicker || HaveSecondBestKickerOrBetter
+HaveThirdBestKicker OR HaveSecondBestKickerOrBetter
 
 ##HaveThirdBestOverPair##
-   $QQ
-&& FirstFlopCard < ConstCardQueen
-&& SecondFlopCard < ConstCardQueen
-&& ThirdFlopCard < ConstCardQueen
-&& TurnCard < ConstCardQueen
-&& RiverCard < ConstCardQueen
+    $QQ
+AND FirstFlopCard < ConstCardQueen
+AND SecondFlopCard < ConstCardQueen
+AND ThirdFlopCard < ConstCardQueen
+AND TurnCard < ConstCardQueen
+AND RiverCard < ConstCardQueen
 
 ##ThirdBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
@@ -2244,37 +2244,37 @@ HaveThirdBestKicker || HaveSecondBestKickerOrBetter
 -1
 
 ##HaveThirdBestOverPairOrBetter##
-(HaveThirdBestOverPair ||  HaveSecondBestOverPairOrBetter)
+(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
 
 ##HaveThirdNutFlush##
-[HaveFlush && (NumberOfUnknownSuitedOvercards == 2)]
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 2)]
 
 ##HaveThirdNutFlushDraw##
-HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 2)
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 2)
 
 ##HaveThirdOverPair##
-ispair && (RankOfFirstHoleCard < SecondBestBoardCard) && (RankOfFirstHoleCard > ThirdBestBoardCard)
+ispair AND (RankOfFirstHoleCard < SecondBestBoardCard) AND (RankOfFirstHoleCard > ThirdBestBoardCard)
 
 ##HaveThirdTopPair##
-RankOfFirstHoleCard == ThirdBestBoardCard || RankOfSecondHoleCard == ThirdBestBoardCard
+RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard
 
 ##ThirdTopPairRank##
-(RankOfFirstHoleCard == ThirdBestBoardCard || RankOfSecondHoleCard == ThirdBestBoardCard) ? ThirdBestBoardCard :0
+(RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard) ? ThirdBestBoardCard :0
 
 ##HaveFifthTopPair##
-RankOfFirstHoleCard == FifthBestBoardCard || RankOfSecondHoleCard == FifthBestBoardCard 
+RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard 
 
 ##FifthTopPairRank##
-(RankOfFirstHoleCard == FifthBestBoardCard || RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
+(RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
 
 ##HaveThirdTopSet##
-ispair && RankOfFirstHoleCard == ThirdBestBoardCard
+ispair AND RankOfFirstHoleCard == ThirdBestBoardCard
 
 ##HaveFourthNutFlush##
-[HaveFlush && (NumberOfUnknownSuitedOvercards == 3)]
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 3)]
 
 ##HaveFourthNutFlushDraw##
-HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 3)
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 3)
 
 ##FourthBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
@@ -2297,22 +2297,22 @@ HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 3)
 -1
 
 ##HaveFourthOverPair##
-ispair && (RankOfFirstHoleCard < ThirdBestBoardCard) && (RankOfFirstHoleCard > FourthBestBoardCard)
+ispair AND (RankOfFirstHoleCard < ThirdBestBoardCard) AND (RankOfFirstHoleCard > FourthBestBoardCard)
 
 ##HaveFourthTopPair##
-RankOfFirstHoleCard == FourthBestBoardCard || RankOfSecondHoleCard == FourthBestBoardCard
+RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard
 
 ##ForthTopPairRank##
-(RankOfFirstHoleCard == FourthBestBoardCard || RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
+(RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
 
 ##HaveFourthTopSet##
-ispair && RankOfFirstHoleCard == FourthBestBoardCard
+ispair AND RankOfFirstHoleCard == FourthBestBoardCard
 
 ##HaveFifthNutFlush##
-[HaveFlush && (NumberOfUnknownSuitedOvercards == 4)]
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 4)]
 
 ##HaveFifthNutFlushDraw##
-HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 4)
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
 
 ##FifthBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
@@ -2335,68 +2335,68 @@ HaveFlushDraw && (NumberOfUnknownSuitedOvercards == 4)
 -1
 
 ##HaveFifthOverPair##
-ispair && (RankOfFirstHoleCard < FourthBestBoardCard) && (RankOfFirstHoleCard > FifthBestBoardCard)
+ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
 
 ##HaveAnyKindOfInsideStraightDraw##
 // Note: This does also count straightdraws at the board,
 // where we don't contribute any card. Special care should be taken
 // in HaveInsideStraightDraw
-	(nstraightfill <= 1)
-&& !HaveStraight 
+	 (nstraightfill <= 1)
+AND NOT HaveStraight 
 
 ##HaveBackdoorFlushDrawContributingTwoCards##
-   (betround == ConstBetRoundFlop)
-&& (nsuited >= 3)
-&& ($$ps0 == tsuit)
-&& ($$ps1 == tsuit)
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND ($$ps0 == tsuit)
+AND ($$ps1 == tsuit)
 
 ##HaveBackdoorNutFlushDraw##
-   (betround == ConstBetRoundFlop)
-&& (nsuited >= 3)
-&& (nsuited > nsuitedcommon) 
-&& (NumberOfUnknownSuitedOvercards == 0)
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 0)
 
 ##HaveBackdoorSecondNutFlushDraw##
-   (betround == ConstBetRoundFlop)
-&& (nsuited >= 3)
-&& (nsuited > nsuitedcommon) 
-&& (NumberOfUnknownSuitedOvercards == 1)
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 1)
 
 ##HaveBackdoorThirdNutFlushDraw##
-   (betround == ConstBetRoundFlop)
-&& (nsuited >= 3)
-&& (nsuited > nsuitedcommon) 
-&& (NumberOfUnknownSuitedOvercards == 2)
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 2)
 
 ##HaveBackdoorFlushDraw##
    HaveBackdoorFlushDrawContributingTwoCards
-|| HaveBackdoorNutFlushDraw
-|| HaveBackdoorSecondNutFlushDraw
+OR HaveBackdoorNutFlushDraw
+OR HaveBackdoorSecondNutFlushDraw
 
 ##HaveBestKicker##
 (NumberOfBetterKickers == 0)
 
 ##HaveBestKickerOrBetter##
-(HaveBestKicker || HavePair  || HaveOverPairOrBetter)
+(HaveBestKicker OR HavePair  OR HaveOverPairOrBetter)
 
 ##HaveBestOverPair##
    ($AA
-&& FirstFlopCard < ConstCardAce
-&& SecondFlopCard < ConstCardAce
-&& ThirdFlopCard < ConstCardAce
-&& TurnCard < ConstCardAce
-&& RiverCard < ConstCardAce)
+AND FirstFlopCard < ConstCardAce
+AND SecondFlopCard < ConstCardAce
+AND ThirdFlopCard < ConstCardAce
+AND TurnCard < ConstCardAce
+AND RiverCard < ConstCardAce)
 
 ##HaveBestOverPairOrBetter##
   (HaveBestOverPair
-|| HaveTwoPair
-|| HaveSet
-|| HaveTrips
-|| HaveStraight
-|| HaveFlush
-|| HaveFullHouse
-|| HaveQuads
-|| HaveStraightFlush)
+OR HaveTwoPair
+OR HaveSet
+OR HaveTrips
+OR HaveStraight
+OR HaveFlush
+OR HaveFullHouse
+OR HaveQuads
+OR HaveStraightFlush)
 
 ##LowestBitOfRankBitsCommon##
 (1<<ranklocommon)
@@ -2425,34 +2425,34 @@ ranklocommon
 -1
 
 ##HaveBottomPair##
-[ isonepair && (rankhiplayer == ranklocommon || rankloplayer == ranklocommon) ]
+[ isonepair AND (rankhiplayer == ranklocommon OR rankloplayer == ranklocommon) ]
 
 ##HaveBottomSet##
-((nrankedcommon == 1) && ispair && isthreeofakind && (rankhiplayer == ranklocommon))
+((nrankedcommon == 1) AND ispair AND isthreeofakind AND (rankhiplayer == ranklocommon))
 
 ##HaveBottomTrips##
-($$pr0 == RankOfBottomPairOnBoard || $$pr1 == RankOfBottomPairOnBoard)
+($$pr0 == RankOfBottomPairOnBoard OR $$pr1 == RankOfBottomPairOnBoard)
 
 ##HaveBottomTwoPair##
-   (RankOfFirstHoleCard == LowestBoardCard && RankOfSecondHoleCard == SecondLowestBoardCard)
-|| (RankOfFirstHoleCard == SecondLowestBoardCard && RankOfSecondHoleCard == LowestBoardCard)
+   (RankOfFirstHoleCard == LowestBoardCard AND RankOfSecondHoleCard == SecondLowestBoardCard)
+OR (RankOfFirstHoleCard == SecondLowestBoardCard AND RankOfSecondHoleCard == LowestBoardCard)
 
 ##HaveDoubleGutshotDraw##
    `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
-|| `((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
-|| `((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
-|| `((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
-|| `((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
-|| `((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
-|| `((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
-|| `((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
-|| `((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
-|| `((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
-|| `((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
-|| `((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
-|| `((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
-|| `((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
-|| `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
+OR `((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
+OR `((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
+OR `((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
+OR `((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
+OR `((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
+OR `((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
+OR `((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
+OR `((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
+OR `((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
+OR `((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
+OR `((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
+OR `((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
+OR `((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
+OR `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
 
 ##HaveFlush##
 (nsuited >= 5)
@@ -2462,40 +2462,40 @@ ranklocommon
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
 // 
 // Good one, contributing 2 cards
-  (((nsuited == 4) && (nsuitedcommon == 2))
+  (((nsuited == 4) AND (nsuitedcommon == 2))
 // Best one
-|| HaveNutFlushDraw
+OR HaveNutFlushDraw
 // Contributing only single card:
 //  * Headsup: at least Third-best
 //  * 3-handed: at least Second-best
 //  * 4-handed: only nut-flush
-|| ((nsuited >= 4) && (nsuitedcommon >2) && (NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
+OR ((nsuited >= 4) AND (nsuitedcommon >2) AND (NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
 
 ##HaveFullHouse##
-isfullhouse || HaveQuads
+isfullhouse OR HaveQuads
 
 ##HaveNothing##
-!HavePair && !(Overcards == 2) && !HaveBestOverPairOrBetter && !HaveBackdoorFlushDraw && !HaveStraightDraw && !HaveInsideStraightDraw && !HaveFlushDraw
-// && !HaveBackdoorStraightDraw
+NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
+// AND NOT HaveBackdoorStraightDraw
 
 
 ##HaveNutFlush##
     HaveNutStraightFlush
-|| [HaveFlush && (NumberOfUnknownSuitedOvercards == 0)]
+OR [HaveFlush AND (NumberOfUnknownSuitedOvercards == 0)]
 
 ##HaveNutFlushCard##
 (NumberOfUnknownSuitedOvercards == 0)
 
 ##HaveNutFlushDraw##
     HaveNutStraightFlush
-|| [(nsuited >= 4) && (NumberOfUnknownSuitedOvercards == 0)]
+OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
 
 
 ##HaveNutStraight##
-[ishistraight || HaveNutStraightFlush]
+[ishistraight OR HaveNutStraightFlush]
 
 ##MyKicker##
-(isfourofakind || istwopair) ? pokerval & 0x0F :
+(isfourofakind OR istwopair) ? pokerval & 0x0F :
 isthreeofakind ? (pokerval >> 4) & 0x0F :
 isonepair ? (pokerval >> 8) & 0x0F :
 ERROR_You_Dont_Have_Any_Kicker
@@ -2770,56 +2770,56 @@ HINT_Such_A_Straight_Does_Not_Exist
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##GetBestPossibleStraightIfAceHitsTheBoard##
-   (BestPossibleStraightForUsIfAceHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfAceHitsTheBoard >= BestPossibleStraightForVillainIfAceHitsTheBoard)
+    (BestPossibleStraightForUsIfAceHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfAceHitsTheBoard >= BestPossibleStraightForVillainIfAceHitsTheBoard)
 
 ##GetBestPossibleStraightIfKingHitsTheBoard##
-   (BestPossibleStraightForUsIfKingHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfKingHitsTheBoard >= BestPossibleStraightForVillainIfKingHitsTheBoard)
+    (BestPossibleStraightForUsIfKingHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfKingHitsTheBoard >= BestPossibleStraightForVillainIfKingHitsTheBoard)
 
 ##GetBestPossibleStraightIfQueenHitsTheBoard##
-   (BestPossibleStraightForUsIfQueenHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfQueenHitsTheBoard >= BestPossibleStraightForVillainIfQueenHitsTheBoard)
+    (BestPossibleStraightForUsIfQueenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfQueenHitsTheBoard >= BestPossibleStraightForVillainIfQueenHitsTheBoard)
 
 ##GetBestPossibleStraightIfJackHitsTheBoard##
-   (BestPossibleStraightForUsIfJackHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfJackHitsTheBoard >= BestPossibleStraightForVillainIfJackHitsTheBoard)
+    (BestPossibleStraightForUsIfJackHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfJackHitsTheBoard >= BestPossibleStraightForVillainIfJackHitsTheBoard)
 
 ##GetBestPossibleStraightIfTenHitsTheBoard##
-   (BestPossibleStraightForUsIfTenHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfTenHitsTheBoard >= BestPossibleStraightForVillainIfTenHitsTheBoard)
+    (BestPossibleStraightForUsIfTenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTenHitsTheBoard >= BestPossibleStraightForVillainIfTenHitsTheBoard)
 
 ##GetBestPossibleStraightIfNineHitsTheBoard##
-   (BestPossibleStraightForUsIfNineHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfNineHitsTheBoard >= BestPossibleStraightForVillainIfNineHitsTheBoard)
+    (BestPossibleStraightForUsIfNineHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfNineHitsTheBoard >= BestPossibleStraightForVillainIfNineHitsTheBoard)
 
 ##GetBestPossibleStraightIfEightHitsTheBoard##
-   (BestPossibleStraightForUsIfEightHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfEightHitsTheBoard >= BestPossibleStraightForVillainIfEightHitsTheBoard)
+    (BestPossibleStraightForUsIfEightHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfEightHitsTheBoard >= BestPossibleStraightForVillainIfEightHitsTheBoard)
 
 ##GetBestPossibleStraightIfSevenHitsTheBoard##
-   (BestPossibleStraightForUsIfSevenHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfSevenHitsTheBoard >= BestPossibleStraightForVillainIfSevenHitsTheBoard)
+    (BestPossibleStraightForUsIfSevenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSevenHitsTheBoard >= BestPossibleStraightForVillainIfSevenHitsTheBoard)
 
 ##GetBestPossibleStraightIfSixHitsTheBoard##
-   (BestPossibleStraightForUsIfSixHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfSixHitsTheBoard >= BestPossibleStraightForVillainIfSixHitsTheBoard)
+    (BestPossibleStraightForUsIfSixHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSixHitsTheBoard >= BestPossibleStraightForVillainIfSixHitsTheBoard)
 
 ##GetBestPossibleStraightIfFiveHitsTheBoard##
-   (BestPossibleStraightForUsIfFiveHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfFiveHitsTheBoard >= BestPossibleStraightForVillainIfFiveHitsTheBoard)
+    (BestPossibleStraightForUsIfFiveHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFiveHitsTheBoard >= BestPossibleStraightForVillainIfFiveHitsTheBoard)
 
 ##GetBestPossibleStraightIfFourHitsTheBoard##
-   (BestPossibleStraightForUsIfFourHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfFourHitsTheBoard >= BestPossibleStraightForVillainIfFourHitsTheBoard)
+    (BestPossibleStraightForUsIfFourHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFourHitsTheBoard >= BestPossibleStraightForVillainIfFourHitsTheBoard)
 
 ##GetBestPossibleStraightIfThreeHitsTheBoard##
-   (BestPossibleStraightForUsIfThreeHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfThreeHitsTheBoard >= BestPossibleStraightForVillainIfThreeHitsTheBoard)
+    (BestPossibleStraightForUsIfThreeHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfThreeHitsTheBoard >= BestPossibleStraightForVillainIfThreeHitsTheBoard)
 
 ##GetBestPossibleStraightIfTwoHitsTheBoard##
-   (BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
-&& (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillainIfTwoHitsTheBoard)
+    (BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillainIfTwoHitsTheBoard)
 
 ##NumberOfCardranksThatGiveUsTheBestPossibleStraight##
   GetBestPossibleStraightIfAceHitsTheBoard
@@ -2837,12 +2837,12 @@ HINT_Such_A_Straight_Does_Not_Exist
 + GetBestPossibleStraightIfTwoHitsTheBoard
 
 ##HaveNutStraightDraw##
-	( (nsuitedcommon < 2) && (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) )
-&& !HaveStraight
+ 	 ( (nsuitedcommon < 2) AND (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) )
+AND NOT HaveStraight
 
 ##HaveInsideNutStraightDraw##
-	(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
-&& !HaveStraight
+   (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+AND NOT HaveStraight
 
 ##HaveInsideStraightDraw##
 HaveAnyKindOfInsideStraightDraw
@@ -2859,131 +2859,131 @@ HaveAnyKindOfInsideStraightDraw
 // Therefore a SF must be possible with the 5 cards above my flush-card
 // and at least 3 of these 5 cards must be at the board.
 isroyalflush ? False :
-!isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
+NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
 (`((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
 
 ##HaveNutStraightFlush##
 // nhandshi seems to be wrong for bottom straightflushes without an easy fix:
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17571
 // Therefore we do no longer use it here.
-isstraightflush && !HigherStraightFlushPossible
+isstraightflush AND NOT HigherStraightFlushPossible
 
 ##HaveOpenEndedStraightDraw##
 [  ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
-|| ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
-|| ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
-|| ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
-|| ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
-|| ((rankbits >> 5) & 0b111100) == 0b111100 // T987
-|| ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
-|| ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
-|| ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
-] && !HaveStraight
+OR ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
+OR ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
+OR ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
+OR ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
+OR ((rankbits >> 5) & 0b111100) == 0b111100 // T987
+OR ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
+OR ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
+OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
+] AND NOT HaveStraight
 
 ##HaveQuads##
-[ isfourofakind && (nrankedcommon < 4) ]
+[ isfourofakind AND (nrankedcommon < 4) ]
 
 ##HaveOverPair##
-ispair && (rankhiplayer > rankhicommon)
+ispair AND (rankhiplayer > rankhicommon)
 
 ##HaveOverPairOrBetter##
-HaveOverPair || HaveBestOverPairOrBetter
+HaveOverPair OR HaveBestOverPairOrBetter
 
 ##HavePair##
 [  RankOfFirstHoleCard==RankOfSecondHoleCard
-|| RankOfFirstHoleCard==FirstFlopCard 
-|| RankOfFirstHoleCard==SecondFlopCard 
-|| RankOfFirstHoleCard==ThirdFlopCard 
-|| RankOfFirstHoleCard==TurnCard 
-|| RankOfFirstHoleCard==RiverCard
-|| RankOfSecondHoleCard==FirstFlopCard 
-|| RankOfSecondHoleCard==SecondFlopCard 
-|| RankOfSecondHoleCard==ThirdFlopCard 
-|| RankOfSecondHoleCard==TurnCard 
-|| RankOfSecondHoleCard==RiverCard ]
+OR RankOfFirstHoleCard==FirstFlopCard 
+OR RankOfFirstHoleCard==SecondFlopCard 
+OR RankOfFirstHoleCard==ThirdFlopCard 
+OR RankOfFirstHoleCard==TurnCard 
+OR RankOfFirstHoleCard==RiverCard
+OR RankOfSecondHoleCard==FirstFlopCard 
+OR RankOfSecondHoleCard==SecondFlopCard 
+OR RankOfSecondHoleCard==ThirdFlopCard 
+OR RankOfSecondHoleCard==TurnCard 
+OR RankOfSecondHoleCard==RiverCard ]
 
 ##HavePocketPair##
 ispair
 
 ##HaveRunnerRunnerFlushAtRiver##
-(betround == ConstBetRoundRiver && HaveFlush && nsuitedcommon==3 && SuitsOnFlop!=3 && $$cs3==$$cs4) ? 1:0
+(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND $$cs3==$$cs4) ? 1:0
 
 ##HaveSet##
 [  ispair
-&& (  (RankOfFirstHoleCard == FirstFlopCard) 
-   || (RankOfFirstHoleCard == SecondFlopCard) 
-   || (RankOfFirstHoleCard == ThirdFlopCard) 
-   || (RankOfFirstHoleCard == TurnCard) 
-   || (RankOfFirstHoleCard == RiverCard)) ]
+AND (  (RankOfFirstHoleCard == FirstFlopCard) 
+    OR (RankOfFirstHoleCard == SecondFlopCard) 
+    OR (RankOfFirstHoleCard == ThirdFlopCard) 
+    OR (RankOfFirstHoleCard == TurnCard) 
+    OR (RankOfFirstHoleCard == RiverCard)) ]
 
 ##HaveTopTrips##
-(!ispair && ($$pr0 == RankOfTopPairOnBoard || $$pr1 == RankOfTopPairOnBoard))
+(NOT ispair AND ($$pr0 == RankOfTopPairOnBoard OR $$pr1 == RankOfTopPairOnBoard))
 
 ##HaveTrips##
-!ispair
-&&   [(pokerval & threeofakind) && !(pokervalcommon & threeofakind)
-  || ((pokerval & fullhouse)    && `(pcbits & 0b11100) == 1)
-  ||  (pokerval & fourofakind)  && !(pokervalcommon & fourofakind)]
+NOT ispair
+AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
+   OR ((pokerval & fullhouse)    AND `(pcbits & 0b11100) == 1)
+   OR  (pokerval & fourofakind)  AND NOT (pokervalcommon & fourofakind)]
 
 ##TripsRank##
-HaveTrips && HaveTopPair    ? TopPairRank:
-HaveTrips && HaveSecondTopPair ? SecondTopPairRank:
-HaveTrips && HaveThirdTopPair ? ThirdTopPairRank:
-HaveTrips && HaveFourthTopPair ? ForthTopPairRank:
-HaveTrips && HaveFifthTopPair ? FifthTopPairRank: 0
+HaveTrips AND HaveTopPair    ? TopPairRank:
+HaveTrips AND HaveSecondTopPair ? SecondTopPairRank:
+HaveTrips AND HaveThirdTopPair ? ThirdTopPairRank:
+HaveTrips AND HaveFourthTopPair ? ForthTopPairRank:
+HaveTrips AND HaveFifthTopPair ? FifthTopPairRank: 0
 
 ##TripsKickerRank##
-HaveTrips && TripsRank==RankOfFirstHoleCard ? RankOfSecondHoleCard:
-HaveTrips && TripsRank==RankOfSecondHoleCard ? RankOfFirstHoleCard: 0
+HaveTrips AND TripsRank==RankOfFirstHoleCard ? RankOfSecondHoleCard:
+HaveTrips AND TripsRank==RankOfSecondHoleCard ? RankOfFirstHoleCard: 0
 
 ##HaveStraight##
 (nstraightfill == 0)
 
 ##HaveStraightDraw##
-   (HaveOpenEndedStraightDraw || HaveDoubleGutshotDraw)
-&& !HaveStraight 
+   (HaveOpenEndedStraightDraw OR HaveDoubleGutshotDraw)
+AND NOT HaveStraight 
 
 ##HaveStraightFlush##
-(isstraightflush || isroyalflush)
+(isstraightflush OR isroyalflush)
 
 ##CommonCard0Paired##
-(FirstFlopCard == SecondFlopCard || FirstFlopCard == ThirdFlopCard || FirstFlopCard == TurnCard || FirstFlopCard == RiverCard)
+(FirstFlopCard == SecondFlopCard OR FirstFlopCard == ThirdFlopCard OR FirstFlopCard == TurnCard OR FirstFlopCard == RiverCard)
 
 ##CommonCard1Paired##
-(SecondFlopCard == FirstFlopCard || SecondFlopCard == ThirdFlopCard || SecondFlopCard == TurnCard || SecondFlopCard == RiverCard)
+(SecondFlopCard == FirstFlopCard OR SecondFlopCard == ThirdFlopCard OR SecondFlopCard == TurnCard OR SecondFlopCard == RiverCard)
 
 ##CommonCard2Paired##
-(ThirdFlopCard == FirstFlopCard || ThirdFlopCard == SecondFlopCard || ThirdFlopCard == TurnCard || ThirdFlopCard == RiverCard)
+(ThirdFlopCard == FirstFlopCard OR ThirdFlopCard == SecondFlopCard OR ThirdFlopCard == TurnCard OR ThirdFlopCard == RiverCard)
 
 ##CommonCard3Paired##
-(TurnCard == FirstFlopCard || TurnCard == SecondFlopCard || TurnCard == ThirdFlopCard || TurnCard == RiverCard)
+(TurnCard == FirstFlopCard OR TurnCard == SecondFlopCard OR TurnCard == ThirdFlopCard OR TurnCard == RiverCard)
 
 ##CommonCard4Paired##
-(RiverCard == FirstFlopCard || RiverCard == SecondFlopCard || RiverCard == ThirdFlopCard || FirstFlopCard == TurnCard)
+(RiverCard == FirstFlopCard OR RiverCard == SecondFlopCard OR RiverCard == ThirdFlopCard OR FirstFlopCard == TurnCard)
 
 ##RankBitsCommonWithoutCommonRank0Pair##
-[CommonCard0Paired && (FirstFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
-[CommonCard0Paired && (FirstFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
+[CommonCard0Paired AND (FirstFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
+[CommonCard0Paired AND (FirstFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
 rankbitscommon
 
 ##RankBitsCommonWithoutCommonRank1Pair##
-[CommonCard0Paired && (SecondFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
-[CommonCard0Paired && (SecondFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
+[CommonCard0Paired AND (SecondFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
+[CommonCard0Paired AND (SecondFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
 rankbitscommon
 
 ##RankBitsCommonWithoutCommonRank2Pair##
-[CommonCard0Paired && (ThirdFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
-[CommonCard0Paired && (ThirdFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
+[CommonCard0Paired AND (ThirdFlopCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
+[CommonCard0Paired AND (ThirdFlopCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
 rankbitscommon
 
 ##RankBitsCommonWithoutCommonRank3Pair##
-[CommonCard0Paired && (TurnCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
-[CommonCard0Paired && (TurnCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
+[CommonCard0Paired AND (TurnCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
+[CommonCard0Paired AND (TurnCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
 rankbitscommon
 
 ##RankBitsCommonWithoutCommonRank4Pair##
-[CommonCard0Paired && (RiverCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
-[CommonCard0Paired && (RiverCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
+[CommonCard0Paired AND (RiverCard != ConstCardAce)] ? rankbitscommon & (~2**FirstFlopCard) :
+[CommonCard0Paired AND (RiverCard == ConstCardAce)] ? rankbitscommon & (~0b100000000000010) :
 rankbitscommon
 
 ##RankBitsCommonWithoutPairs##
@@ -3009,32 +3009,32 @@ rankbitscommon
 (RankBitsCommonWithoutPairs >> ConstCardTwo)   & 1 ? ConstCardTwo   : 0
 
 ##HaveTopNonBoardPairedPair##
-   [(betround >= ConstBetRoundFlop) && (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
-|| [(betround >= ConstBetRoundFlop) && (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
+   [(betround >= ConstBetRoundFlop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
+OR [(betround >= ConstBetRoundFlop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
 
 ##HaveTopPair##
-[ RankOfFirstHoleCard==rankhicommon || RankOfSecondHoleCard==rankhicommon ]
+[ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
 
 ##TopPairRank##
-HaveTopPair && $$pr0==rankhicommon ? $$pr0:
-HaveTopPair && $$pr1==rankhicommon ? $$pr1:
+HaveTopPair AND $$pr0==rankhicommon ? $$pr0:
+HaveTopPair AND $$pr1==rankhicommon ? $$pr1:
 0
 
 ##TopPairKickerRank##
-HaveTopPair && $$pr0==rankhicommon ? $$pr1:
-HaveTopPair && $$pr1==rankhicommon ? $$pr0:
+HaveTopPair AND $$pr0==rankhicommon ? $$pr1:
+HaveTopPair AND $$pr1==rankhicommon ? $$pr0:
 0
 
 ##SecondTopPairRank##
-HaveSecondTopPair && RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
-HaveSecondTopPair && RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
+HaveSecondTopPair AND RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
+HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
 0
 
 ##HaveTopSet##
-(ispair && (rankhiplayer == rankhicommon))
+(ispair AND (rankhiplayer == rankhicommon))
 
 ##HaveTopTwoPair##
-(HaveTopPair && HaveSecondTopPair)
+(HaveTopPair AND HaveSecondTopPair)
 
 ##RankbitsCommonWithoutAceLow##
 // Don't count ace twice in HaveTwoPair
@@ -3047,11 +3047,11 @@ rankbitscommon & 0b111111111111100
 `(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
 
 ##HaveUnderPair##
-[ ispair && rankhiplayer<ranklocommon ]
+[ ispair AND rankhiplayer<ranklocommon ]
 
 ##HaveUnderStraight##
 HaveStraight
-&& (pcbits == 0b00011 || pcbits == 0b00001)
+AND (pcbits == 0b00011 OR pcbits == 0b00001)
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
@@ -3097,51 +3097,51 @@ HaveStraight
 
 ##NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard##
 // 1 for each overcard on board to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
-  [[(rankbitscommon & 0x100000000000000) && (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) && (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) && (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) && (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) && (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) && (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) && (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) && (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) && (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) && (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) && (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) && (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) && (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
+  [[(rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
++ [[(rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
++ [[(rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
++ [[(rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
++ [[(rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
++ [[(rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
 // 1 for each board-card that is not the pair on board and higher than the other pair (board-user),
 // as there ar higher FHs possible (same set, higher pair)
-+ [[(rankbitscommon & 0x100000000000000) && (RankOfPairOfFullHouse < ConstCardAce  ) && (RankOfSetOfFullHouse != ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) && (RankOfPairOfFullHouse < ConstCardKing ) && (RankOfSetOfFullHouse != ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) && (RankOfPairOfFullHouse < ConstCardQueen) && (RankOfSetOfFullHouse != ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) && (RankOfPairOfFullHouse < ConstCardJack ) && (RankOfSetOfFullHouse != ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) && (RankOfPairOfFullHouse < ConstCardTen  ) && (RankOfSetOfFullHouse != ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) && (RankOfPairOfFullHouse < ConstCardNine ) && (RankOfSetOfFullHouse != ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) && (RankOfPairOfFullHouse < ConstCardEight) && (RankOfSetOfFullHouse != ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) && (RankOfPairOfFullHouse < ConstCardSeven) && (RankOfSetOfFullHouse != ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) && (RankOfPairOfFullHouse < ConstCardSix  ) && (RankOfSetOfFullHouse != ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) && (RankOfPairOfFullHouse < ConstCardFive ) && (RankOfSetOfFullHouse != ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) && (RankOfPairOfFullHouse < ConstCardFour ) && (RankOfSetOfFullHouse != ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) && (RankOfPairOfFullHouse < ConstCardThree) && (RankOfSetOfFullHouse != ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) && (RankOfPairOfFullHouse < ConstCardTwo  ) && (RankOfSetOfFullHouse != ConstCardTwo  )] ? 1 : 0]
++ [[(rankbitscommon & 0x100000000000000) AND (RankOfPairOfFullHouse < ConstCardAce  ) AND (RankOfSetOfFullHouse != ConstCardAce  )] ? 1 : 0]
++ [[(rankbitscommon & 0x010000000000000) AND (RankOfPairOfFullHouse < ConstCardKing ) AND (RankOfSetOfFullHouse != ConstCardKing )] ? 1 : 0]
++ [[(rankbitscommon & 0x001000000000000) AND (RankOfPairOfFullHouse < ConstCardQueen) AND (RankOfSetOfFullHouse != ConstCardQueen)] ? 1 : 0]
++ [[(rankbitscommon & 0x000100000000000) AND (RankOfPairOfFullHouse < ConstCardJack ) AND (RankOfSetOfFullHouse != ConstCardJack )] ? 1 : 0]
++ [[(rankbitscommon & 0x000010000000000) AND (RankOfPairOfFullHouse < ConstCardTen  ) AND (RankOfSetOfFullHouse != ConstCardTen  )] ? 1 : 0]
++ [[(rankbitscommon & 0x000001000000000) AND (RankOfPairOfFullHouse < ConstCardNine ) AND (RankOfSetOfFullHouse != ConstCardNine )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000100000000) AND (RankOfPairOfFullHouse < ConstCardEight) AND (RankOfSetOfFullHouse != ConstCardEight)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000010000000) AND (RankOfPairOfFullHouse < ConstCardSeven) AND (RankOfSetOfFullHouse != ConstCardSeven)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000001000000) AND (RankOfPairOfFullHouse < ConstCardSix  ) AND (RankOfSetOfFullHouse != ConstCardSix  )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000100000) AND (RankOfPairOfFullHouse < ConstCardFive ) AND (RankOfSetOfFullHouse != ConstCardFive )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000010000) AND (RankOfPairOfFullHouse < ConstCardFour ) AND (RankOfSetOfFullHouse != ConstCardFour )] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000001000) AND (RankOfPairOfFullHouse < ConstCardThree) AND (RankOfSetOfFullHouse != ConstCardThree)] ? 1 : 0]
++ [[(rankbitscommon & 0x000000000000100) AND (RankOfPairOfFullHouse < ConstCardTwo  ) AND (RankOfSetOfFullHouse != ConstCardTwo  )] ? 1 : 0]
 // + 1 for our hand
 + 1
 
 ##OvercardsOnBoardToRankOfSetOfFullHouse##
-  (rankbitscommon & 0x100000000000000) && (RankOfSetOfFullHouse < ConstCardAce  )
-+ (rankbitscommon & 0x010000000000000) && (RankOfSetOfFullHouse < ConstCardKing )
-+ (rankbitscommon & 0x001000000000000) && (RankOfSetOfFullHouse < ConstCardQueen)
-+ (rankbitscommon & 0x000100000000000) && (RankOfSetOfFullHouse < ConstCardJack )
-+ (rankbitscommon & 0x000010000000000) && (RankOfSetOfFullHouse < ConstCardTen  )
-+ (rankbitscommon & 0x000001000000000) && (RankOfSetOfFullHouse < ConstCardNine )
-+ (rankbitscommon & 0x000000100000000) && (RankOfSetOfFullHouse < ConstCardEight)
-+ (rankbitscommon & 0x000000010000000) && (RankOfSetOfFullHouse < ConstCardSeven)
-+ (rankbitscommon & 0x000000001000000) && (RankOfSetOfFullHouse < ConstCardSix  )
-+ (rankbitscommon & 0x000000000100000) && (RankOfSetOfFullHouse < ConstCardFive )
-+ (rankbitscommon & 0x000000000010000) && (RankOfSetOfFullHouse < ConstCardFour )
-+ (rankbitscommon & 0x000000000001000) && (RankOfSetOfFullHouse < ConstCardThree)
-+ (rankbitscommon & 0x000000000000100) && (RankOfSetOfFullHouse < ConstCardTwo  )
+  (rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )
++ (rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )
++ (rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)
++ (rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )
++ (rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )
++ (rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )
++ (rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)
++ (rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)
++ (rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )
++ (rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )
++ (rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )
++ (rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)
++ (rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )
 
 ##NFH4OAK_TwoPairsOnBoard_WeHitBottomSet##
 // 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
@@ -3269,22 +3269,22 @@ HINT_There_Is_No_Pair_On_The_Board
 // There are 7 cases:
 //
 // 1) we pair both board-cards, so we have quads and nobody can have better quads
-[(rankhiplayer == BestBoardCard) && (rankloplayer == SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
+[(rankhiplayer == BestBoardCard) AND (rankloplayer == SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
 //
 // 2) we pair the set on board, which is higher than the pair, so we get the best quads
-[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard > SecondBestBoardCard)] ? 1: 1/*NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
+[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? 1: 1/*NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
-[((rankhiplayer == RankOfSetOnBoard) || (rankloplayer == RankOfSetOnBoard)) && (RankOfSetOnBoard < SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
+[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard < SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
-[(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) && (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
+[(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairHighPairOnBoard :
 //
 // 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
-[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) || (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) && (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
+[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard :
 //
 // 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
-[ispair && (rankhiplayer != BestBoardCard) && (rankhiplayer != SecondBestBoardCard) && (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
+[ispair AND (rankhiplayer != BestBoardCard) AND (rankhiplayer != SecondBestBoardCard) AND (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NFH4OAK_FullHouseOnBoard_WeHaveOverPairToPair :
 //
 // 7) we don't have an OverPair to the pair and therefore play the board (probably again 2 cases)
 NFH4OAK_FullHouseOnBoard_WePlayTheBoard
@@ -3296,19 +3296,19 @@ trankcommon
 
 
 ##RankOfSpareCardWhenTwoPairOnBoard##
-TwoPairOnBoard && !FullHouseOnBoard ?
+TwoPairOnBoard AND NOT FullHouseOnBoard ?
 [    
-			 ($$cr0!=RankOfTopPairOnBoard && $$cr0!=RankOfBottomPairOnBoard ? $$cr0:0)
-			|($$cr1!=RankOfTopPairOnBoard && $$cr1!=RankOfBottomPairOnBoard ? $$cr1:0)
-			|($$cr2!=RankOfTopPairOnBoard && $$cr2!=RankOfBottomPairOnBoard ? $$cr2:0)
-			|($$cr3!=RankOfTopPairOnBoard && $$cr3!=RankOfBottomPairOnBoard ? $$cr3:0)
-			|($$cr4!=RankOfTopPairOnBoard && $$cr4!=RankOfBottomPairOnBoard ? $$cr4:0)
+			 ($$cr0!=RankOfTopPairOnBoard AND $$cr0!=RankOfBottomPairOnBoard ? $$cr0:0)
+			|($$cr1!=RankOfTopPairOnBoard AND $$cr1!=RankOfBottomPairOnBoard ? $$cr1:0)
+			|($$cr2!=RankOfTopPairOnBoard AND $$cr2!=RankOfBottomPairOnBoard ? $$cr2:0)
+			|($$cr3!=RankOfTopPairOnBoard AND $$cr3!=RankOfBottomPairOnBoard ? $$cr3:0)
+			|($$cr4!=RankOfTopPairOnBoard AND $$cr4!=RankOfBottomPairOnBoard ? $$cr4:0)
 ]:
 0
 
 ##NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
 // Case 1: we have the quads: the nuts
-(rankhiplayer == RankOfSetOnBoard) || (rankloplayer ==RankOfSetOnBoard) ? 1 :
+(rankhiplayer == RankOfSetOnBoard) OR (rankloplayer ==RankOfSetOnBoard) ? 1 :
 // Otherwise: we have a fullhouse with either a pocket-pair or pair a board-card.
 // Case 2: Pocket-pair
 ispair ?
@@ -3323,7 +3323,7 @@ ispair ?
 [
     // Same logic applies as above:
     // Case 3A: Our higher card hits the board
-    (rankhiplayer == BestBoardCard) || (rankhiplayer == SecondBestBoardCard) || (rankhiplayer == ThirdBestBoardCard) ?
+    (rankhiplayer == BestBoardCard) OR (rankhiplayer == SecondBestBoardCard) OR (rankhiplayer == ThirdBestBoardCard) ?
     [
         (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer) :
         // Otherwise: set is lower, so there is 1 additional card, that loses for us
@@ -3341,28 +3341,28 @@ ispair ?
 // 5 basic cases
 //
 // 1) we complete the higher pair to quads
-[ispair && rankhiplayer == RankOfTopPairOnBoard] ? NFH4OAK_TwoPairsOnBoard_WeHitTopQuads :
+[ispair AND rankhiplayer == RankOfTopPairOnBoard] ? NFH4OAK_TwoPairsOnBoard_WeHitTopQuads :
 //
 // 2) we complete the lower pair to quads
-[ispair && rankhiplayer == RankOfBottomPairOnBoard] ? NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads :
+[ispair AND rankhiplayer == RankOfBottomPairOnBoard] ? NFH4OAK_TwoPairsOnBoard_WeHitBottomQuads :
 //
 // 3) we pair both pairs: no quads possible, but:
 //   * maybe 1 higher FH, if anybody pairs the higher pair and the last board-card, if it is higher than the low pair
 //   * maybe 2 higher FHs, as above, if anybody pairs the completes the left board-card to higher trips
-[(rankhiplayer == RankOfTopPairOnBoard) && (rankloplayer == RankOfBottomPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WePairBothPairs :
+[(rankhiplayer == RankOfTopPairOnBoard) AND (rankloplayer == RankOfBottomPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WePairBothPairs :
 //
 // 4) we pair the higher board-card; probably several cases
-[(rankhiplayer == RankOfTopPairOnBoard) || (rankloplayer == RankOfTopPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WeHitTopSet :
+[(rankhiplayer == RankOfTopPairOnBoard) OR (rankloplayer == RankOfTopPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WeHitTopSet :
 //
 // 5) we pair the lower board card; probably several cases
-[(rankhiplayer == RankOfBottomPairOnBoard) || (rankloplayer == RankOfBottomPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WeHitBottomSet :
+[(rankhiplayer == RankOfBottomPairOnBoard) OR (rankloplayer == RankOfBottomPairOnBoard)] ? NFH4OAK_TwoPairsOnBoard_WeHitBottomSet :
 //
 HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard##
 // Precondition: we have FH or quads, there is a pair on board.
-[ispair && (rankhiplayer == trankcommon)] ? NFH4OAK_PairOnBoard_WeHitQuads :
-[ispair && (pokerval & fullhouse)] ? NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
+[ispair AND (rankhiplayer == trankcommon)] ? NFH4OAK_PairOnBoard_WeHitQuads :
+[ispair AND (pokerval & fullhouse)] ? NFH4OAK_PairOnBoard_WeHitASetWithPocketPair :
 [pokerval & fullhouse] ? NFH4OAK_PairOnBoard_WeHitThePairAndAnotherCard :
 HINT_We_Dont_Have_A_FullHouse_At_All
 
@@ -3376,15 +3376,15 @@ PairOnBoard      ? NutFullHouseOrFourOfAKind_PairOnBoard :
 HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##Overcards##
-((RankOfFirstHoleCard > rankhicommon)  && (RankOfSecondHoleCard > rankhicommon))  ? 2 :
-((RankOfFirstHoleCard > rankhicommon)  || (RankOfSecondHoleCard > rankhicommon))  ? 1 :
-((RankOfFirstHoleCard <= rankhicommon) && (RankOfSecondHoleCard <= rankhicommon)) ? 0 : 0
+((RankOfFirstHoleCard > rankhicommon)  AND (RankOfSecondHoleCard > rankhicommon))  ? 2 :
+((RankOfFirstHoleCard > rankhicommon)  OR (RankOfSecondHoleCard > rankhicommon))  ? 1 :
+((RankOfFirstHoleCard <= rankhicommon) AND (RankOfSecondHoleCard <= rankhicommon)) ? 0 : 0
 
 ##PairInHand##
 ispair
 
 ##RunnerRunnerFlushPossibleAtRiver##
-(betround == ConstBetRoundRiver && nsuitedcommon==3 && SuitsOnFlop!=3 && $$cs3==$$cs4) ? 1:0
+(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND $$cs3==$$cs4) ? 1:0
 
 ##SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :
@@ -3443,8 +3443,8 @@ OpponentsLeft
 nopponentsseated
 
 ##NumberOfOpponentsAllin##
-(Opponents>1 || (Opponents==1 && AmountToCall<StackSize))? Opponents_SumAllinBits:
-(Opponents==1 && AmountToCall==StackSize)? 1:
+(Opponents>1 OR (Opponents==1 AND AmountToCall<StackSize))? Opponents_SumAllinBits:
+(Opponents==1 AND AmountToCall==StackSize)? 1:
 0
   
   
@@ -3471,19 +3471,19 @@ NumberOfOpponentsAllin > 0
 + ((Opponents_AllinBits & (1 << 9)) ? 1 : 0)
 
 ##Opponents_AllinBits##
-[(betround == ConstBetRoundPreflop) && !Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
+[(betround == ConstBetRoundPreflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
 // Player must be playing, his balance must be 0 and he must have a positive bet.
 [0
-|(((opponentsplayingbits & (1 << 0)) && (currentbet0 > 0) && (balance0 == 0)) ? 1 << 0 : 0)
-|(((opponentsplayingbits & (1 << 1)) && (currentbet1 > 0) && (balance1 == 0)) ? 1 << 1 : 0)
-|(((opponentsplayingbits & (1 << 2)) && (currentbet2 > 0) && (balance2 == 0)) ? 1 << 2 : 0)
-|(((opponentsplayingbits & (1 << 3)) && (currentbet3 > 0) && (balance3 == 0)) ? 1 << 3 : 0)
-|(((opponentsplayingbits & (1 << 4)) && (currentbet4 > 0) && (balance4 == 0)) ? 1 << 4 : 0)
-|(((opponentsplayingbits & (1 << 5)) && (currentbet5 > 0) && (balance5 == 0)) ? 1 << 5 : 0)
-|(((opponentsplayingbits & (1 << 6)) && (currentbet6 > 0) && (balance6 == 0)) ? 1 << 6 : 0)
-|(((opponentsplayingbits & (1 << 7)) && (currentbet7 > 0) && (balance7 == 0)) ? 1 << 7 : 0)
-|(((opponentsplayingbits & (1 << 8)) && (currentbet8 > 0) && (balance8 == 0)) ? 1 << 8 : 0)
-|(((opponentsplayingbits & (1 << 9)) && (currentbet9 > 0) && (balance9 == 0)) ? 1 << 9 : 0)
+|(((opponentsplayingbits & (1 << 0)) AND (currentbet0 > 0) AND (balance0 == 0)) ? 1 << 0 : 0)
+|(((opponentsplayingbits & (1 << 1)) AND (currentbet1 > 0) AND (balance1 == 0)) ? 1 << 1 : 0)
+|(((opponentsplayingbits & (1 << 2)) AND (currentbet2 > 0) AND (balance2 == 0)) ? 1 << 2 : 0)
+|(((opponentsplayingbits & (1 << 3)) AND (currentbet3 > 0) AND (balance3 == 0)) ? 1 << 3 : 0)
+|(((opponentsplayingbits & (1 << 4)) AND (currentbet4 > 0) AND (balance4 == 0)) ? 1 << 4 : 0)
+|(((opponentsplayingbits & (1 << 5)) AND (currentbet5 > 0) AND (balance5 == 0)) ? 1 << 5 : 0)
+|(((opponentsplayingbits & (1 << 6)) AND (currentbet6 > 0) AND (balance6 == 0)) ? 1 << 6 : 0)
+|(((opponentsplayingbits & (1 << 7)) AND (currentbet7 > 0) AND (balance7 == 0)) ? 1 << 7 : 0)
+|(((opponentsplayingbits & (1 << 8)) AND (currentbet8 > 0) AND (balance8 == 0)) ? 1 << 8 : 0)
+|(((opponentsplayingbits & (1 << 9)) AND (currentbet9 > 0) AND (balance9 == 0)) ? 1 << 9 : 0)
 ]
 :
 // Player must be playing, his balance must be 0
@@ -3491,16 +3491,16 @@ NumberOfOpponentsAllin > 0
 // because the player could be gone allin in a previous betting round
 // or he plays at a casino where his chips get immediatelly moved to the main pot. 
 [0
-|(((opponentsplayingbits & (1 << 0)) && balance0 == 0) ? 1 << 0 : 0)
-|(((opponentsplayingbits & (1 << 1)) && balance1 == 0) ? 1 << 1 : 0)
-|(((opponentsplayingbits & (1 << 2)) && balance2 == 0) ? 1 << 2 : 0)
-|(((opponentsplayingbits & (1 << 3)) && balance3 == 0) ? 1 << 3 : 0)
-|(((opponentsplayingbits & (1 << 4)) && balance4 == 0) ? 1 << 4 : 0)
-|(((opponentsplayingbits & (1 << 5)) && balance5 == 0) ? 1 << 5 : 0)
-|(((opponentsplayingbits & (1 << 6)) && balance6 == 0) ? 1 << 6 : 0)
-|(((opponentsplayingbits & (1 << 7)) && balance7 == 0) ? 1 << 7 : 0)
-|(((opponentsplayingbits & (1 << 8)) && balance8 == 0) ? 1 << 8 : 0)
-|(((opponentsplayingbits & (1 << 9)) && balance9 == 0) ? 1 << 9 : 0)
+|(((opponentsplayingbits & (1 << 0)) AND balance0 == 0) ? 1 << 0 : 0)
+|(((opponentsplayingbits & (1 << 1)) AND balance1 == 0) ? 1 << 1 : 0)
+|(((opponentsplayingbits & (1 << 2)) AND balance2 == 0) ? 1 << 2 : 0)
+|(((opponentsplayingbits & (1 << 3)) AND balance3 == 0) ? 1 << 3 : 0)
+|(((opponentsplayingbits & (1 << 4)) AND balance4 == 0) ? 1 << 4 : 0)
+|(((opponentsplayingbits & (1 << 5)) AND balance5 == 0) ? 1 << 5 : 0)
+|(((opponentsplayingbits & (1 << 6)) AND balance6 == 0) ? 1 << 6 : 0)
+|(((opponentsplayingbits & (1 << 7)) AND balance7 == 0) ? 1 << 7 : 0)
+|(((opponentsplayingbits & (1 << 8)) AND balance8 == 0) ? 1 << 8 : 0)
+|(((opponentsplayingbits & (1 << 9)) AND balance9 == 0) ? 1 << 9 : 0)
 ]
 
 ##OpponentsLeft##
@@ -3518,16 +3518,16 @@ nopponentsplaying
 (nplayersround4 - 1)
 
 ##OpponentsWithLowerStack##
-  (((balance0 + currentbet0) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0001) ? 1:0)
-+ (((balance1 + currentbet1) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0002) ? 1:0)
-+ (((balance2 + currentbet2) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0004) ? 1:0)
-+ (((balance3 + currentbet3) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0008) ? 1:0)
-+ (((balance4 + currentbet4) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0010) ? 1:0)
-+ (((balance5 + currentbet5) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0020) ? 1:0)
-+ (((balance6 + currentbet6) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0040) ? 1:0)
-+ (((balance7 + currentbet7) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0080) ? 1:0)
-+ (((balance8 + currentbet8) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0100) ? 1:0)
-+ (((balance9 + currentbet9) < MaximumPossibleBetsizeIndollars) && (playersseatedbits & 0x0200) ? 1:0)
+  (((balance0 + currentbet0) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0001) ? 1:0)
++ (((balance1 + currentbet1) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0002) ? 1:0)
++ (((balance2 + currentbet2) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0004) ? 1:0)
++ (((balance3 + currentbet3) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0008) ? 1:0)
++ (((balance4 + currentbet4) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0010) ? 1:0)
++ (((balance5 + currentbet5) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0020) ? 1:0)
++ (((balance6 + currentbet6) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0040) ? 1:0)
++ (((balance7 + currentbet7) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0080) ? 1:0)
++ (((balance8 + currentbet8) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0100) ? 1:0)
++ (((balance9 + currentbet9) < MaximumPossibleBetsizeIndollars) AND (playersseatedbits & 0x0200) ? 1:0)
 
 ##StillToActPreflop##
 // Precondition: first action, but this gets checked in StillToAct
@@ -3543,8 +3543,8 @@ InSmallBlind ? 1 :
 
 ##StillToAct##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? HINT_StillToAct_Is_Only_Valid_On_First_Orbit :
-((betround == ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
-((betround != ConstBetRoundPreflop) && (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
+((betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
+((betround != ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
 0
 
 //*****************************************************************************
@@ -3563,17 +3563,17 @@ InSmallBlind ? 1 :
 // Small blind missing, therefore we can't be small blind
 MissingSmallBlind ? False :
 // 3 or more handed, normal blinds
-   ((nplayersdealt != 2) && (dealposition == 1))
+   ((nplayersdealt != 2) AND (dealposition == 1))
 // Headsup, reversed blinds
-|| ((nplayersdealt == 2) && (dealposition == 2))
+OR ((nplayersdealt == 2) AND (dealposition == 2))
 
 ##BigBlind##
 // Missing small blind, big blind is the first dealt player
 MissingSmallBlind ? (dealposition == 1) :
 // 3 or more handed, normal blinds
-   ((nplayersdealt != 2) && (dealposition == 2))
+   ((nplayersdealt != 2) AND (dealposition == 2))
 // Headsup, reversed blinds
-|| ((nplayersdealt == 2) && (dealposition == 1))
+OR ((nplayersdealt == 2) AND (dealposition == 1))
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.
@@ -3583,25 +3583,25 @@ MissingSmallBlind ? (dealposition == 1) :
 (dealposition == nplayersdealt)
 
 ##CutOff##
-[(dealposition == nplayersdealt - 1) && !InTheBlinds]
+[(dealposition == nplayersdealt - 1) AND NOT InTheBlinds]
 
 ##MiddlePosition3##
-[(dealposition == nplayersdealt - 2) && !InTheBlinds]
+[(dealposition == nplayersdealt - 2) AND NOT InTheBlinds]
 
 ##MiddlePosition2##
-[(dealposition == nplayersdealt - 3) && !InTheBlinds]
+[(dealposition == nplayersdealt - 3) AND NOT InTheBlinds]
 
 ##MiddlePosition1##
-[(dealposition == nplayersdealt - 4) && !InTheBlinds]
+[(dealposition == nplayersdealt - 4) AND NOT InTheBlinds]
 
 ##EarlyPosition3##
-[(dealposition == nplayersdealt - 5) && !InTheBlinds]
+[(dealposition == nplayersdealt - 5) AND NOT InTheBlinds]
 
 ##EarlyPosition2##
-[(dealposition == nplayersdealt - 6) && !InTheBlinds]
+[(dealposition == nplayersdealt - 6) AND NOT InTheBlinds]
 
 ##EarlyPosition1##
-[(dealposition == nplayersdealt - 7) && !InTheBlinds]
+[(dealposition == nplayersdealt - 7) AND NOT InTheBlinds]
 
 ##UTG##
 // Under the gun - first to act preflop, 
@@ -3622,25 +3622,25 @@ BigBlind
 InTheBlinds
 
 ##InTheBlinds##
-(InSmallBlind || InBigBlind)
+(InSmallBlind OR InBigBlind)
 
 ##EarlyPosition##
 InEarlyPosition
 
 ##InEarlyPosition##
-(InEarlyPosition1 || InEarlyPosition2 || InEarlyPosition3)
+(InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3)
 
 ##MiddlePosition##
 InMiddlePosition
 
 ##InMiddlePosition##
-(InMiddlePosition1 || InMiddlePosition2 || InMiddlePosition3)
+(InMiddlePosition1 OR InMiddlePosition2 OR InMiddlePosition3)
 
 ##LatePosition##
 InLatePosition
 
 ##InLatePosition##
-(InCutOff || InButton)
+(InCutOff OR InButton)
 
 ##InButton##
 Button
@@ -3887,12 +3887,12 @@ HINT_There_Are_No_True_Raisers
 [(raisbits1 >> ButtonChair) & 1 == 1]
 
 ##SmallBlindRaising##
-   [(raisbits1 >> SmallBlindChair) & 1 == 1]
-&& [SmallBlindCurrentBet >= 1.01]
+    [(raisbits1 >> SmallBlindChair) & 1 == 1]
+AND [SmallBlindCurrentBet >= 1.01]
 
 ##BigBlindRaising##
-   [(raisbits1 >> BigBlindChair) & 1 == 1]
-&& [BigBlindCurrentBet >= 1.01]
+    [(raisbits1 >> BigBlindChair) & 1 == 1]
+AND [BigBlindCurrentBet >= 1.01]
 
 ##FirstCallerPosition##
 // We have to search starting from early positions,
@@ -3939,7 +3939,7 @@ HINT_No_LastCaller
 
 ##LastRaiserPosition##
 // Handling the case of blind-raisers only first
-[(betround == ConstBetRoundPreflop) && (ncallbets <= 1)] ? HINT_There_Are_No_True_Raisers :
+[(betround == ConstBetRoundPreflop) AND (ncallbets <= 1)] ? HINT_There_Are_No_True_Raisers :
 // Big blind = 0
 BigBlindRaising ? 0 :
 // Small blind = 1
@@ -3992,46 +3992,44 @@ Middle
 // And incorrect delay-settings might also lead to multiple actions
 // on identical frames (OH acts faster as casino/bring can update)
 // So we check for isfinalanswer and a changed gamestate.
-[isfinalanswer && GameStateChanged]
+[isfinalanswer AND GameStateChanged]
 
 ##GameStateChanged##
 // Change in dealerchair => new hand
    (dealerchair != me_re_MemOldGameStateDealerChair)
 // Change in currentbet => we did act 
 // and the autoplayer executed successfully   
-|| (currentbet  != me_re_MemOldGameStateCurrentBet)
+OR (currentbet  != me_re_MemOldGameStateCurrentBet)
 // Change in potsize: somebody else behind us acted, 
 // so we checked or folded successfully
-|| (pot			!= me_re_MemOldGameStatePotSize)
+OR (pot			    != me_re_MemOldGameStatePotSize)
 // Change in betround, if everybody checked 
 // and potsize is the same
-|| (betround    != me_re_MemOldGameStateBetround)
+OR (betround    != me_re_MemOldGameStateBetround)
 
 ##RememberCurrentGameState##
    (me_st_MemOldGameStateDealerChair_dealerchair * 0)
-|| (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
-|| (me_st_MemOldGameStatePotSize_pot             * 0)
-|| (me_st_MemOldGameStateBetround_betround       * 0)
+OR (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
+OR (me_st_MemOldGameStatePotSize_pot             * 0)
+OR (me_st_MemOldGameStateBetround_betround       * 0)
 
 ##InitMemorySymbols##
 (TimeToInitMemorySymbols == False) ? 0 :
-// We can't use addition here to call the functions in correct sequential order,
-// because OH doesn't add the operands in order:
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=14525&start=0
-   [InitMissingSmallBlind * 0]
-|| [InitBets * 0]
-|| [InitChecks * 0]
-|| [InitCalls * 0]
-|| [InitRaises * 0]
-|| [InitBotsLastPreflopAction * 0]
-|| [InitRaisesBeforeFlop * 0]
-|| [InitRaisesOnFlop * 0]
-|| [InitRaisesOnTurn * 0]
-|| [InitMaxOpponentStackSize * 0]
-|| [InitMinOpponentStackSize * 0]
-|| [InitStartingStackSize * 0]
-|| [InitStartingChips * 0]
-|| [RememberCurrentGameState * 0]
+// We can't use AND and OR here because of short circuiting.
+    [InitMissingSmallBlind * 0]
+XOR [InitBets * 0]
+XOR [InitChecks * 0]
+XOR [InitCalls * 0]
+XOR [InitRaises * 0]
+XOR [InitBotsLastPreflopAction * 0]
+XOR [InitRaisesBeforeFlop * 0]
+XOR [InitRaisesOnFlop * 0]
+XOR [InitRaisesOnTurn * 0]
+XOR [InitMaxOpponentStackSize * 0]
+XOR [InitMinOpponentStackSize * 0]
+XOR [InitStartingStackSize * 0]
+XOR [InitStartingChips * 0]
+XOR [RememberCurrentGameState * 0]
 
 //*****************************************************************************
 //
@@ -4041,7 +4039,7 @@ Middle
 
 ##HaveBackdoorStraightDraw##
 	(-1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D)
-&& !HaveStraight 
+AND NOT HaveStraight 
 
 //*****************************************************************************
 //
