@@ -4008,28 +4008,33 @@ OR (pot			    != me_re_MemOldGameStatePotSize)
 OR (betround    != me_re_MemOldGameStateBetround)
 
 ##RememberCurrentGameState##
-   (me_st_MemOldGameStateDealerChair_dealerchair * 0)
-OR (me_st_MemOldGameStateCurrentBet_currentbet   * 0)
-OR (me_st_MemOldGameStatePotSize_pot             * 0)
-OR (me_st_MemOldGameStateBetround_betround       * 0)
+// We can't use AND and OR here because of short circuiting.
+// We must use an operator that evaluates both sites.
+// The final result is meaningless.
+    me_st_MemOldGameStateDealerChair_dealerchair
+XOR me_st_MemOldGameStateCurrentBet_currentbet
+XOR me_st_MemOldGameStatePotSize_pot
+XOR me_st_MemOldGameStateBetround_betround
 
 ##InitMemorySymbols##
 (TimeToInitMemorySymbols == False) ? 0 :
 // We can't use AND and OR here because of short circuiting.
-    [InitMissingSmallBlind * 0]
-XOR [InitBets * 0]
-XOR [InitChecks * 0]
-XOR [InitCalls * 0]
-XOR [InitRaises * 0]
-XOR [InitBotsLastPreflopAction * 0]
-XOR [InitRaisesBeforeFlop * 0]
-XOR [InitRaisesOnFlop * 0]
-XOR [InitRaisesOnTurn * 0]
-XOR [InitMaxOpponentStackSize * 0]
-XOR [InitMinOpponentStackSize * 0]
-XOR [InitStartingStackSize * 0]
-XOR [InitStartingChips * 0]
-XOR [RememberCurrentGameState * 0]
+// We must use an operator that evaluates both sites.
+// The final result is meaningless.
+    InitMissingSmallBlind 
+XOR InitBets
+XOR InitChecks
+XOR InitCalls
+XOR InitRaises
+XOR InitBotsLastPreflopAction
+XOR InitRaisesBeforeFlop
+XOR InitRaisesOnFlop
+XOR InitRaisesOnTurn
+XOR InitMaxOpponentStackSize
+XOR InitMinOpponentStackSize
+XOR InitStartingStackSize
+XOR InitStartingChips
+XOR RememberCurrentGameState
 
 //*****************************************************************************
 //
