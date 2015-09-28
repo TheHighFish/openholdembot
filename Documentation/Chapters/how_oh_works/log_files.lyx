@@ -91,7 +91,7 @@ Many newbies will automatically assume the latter case.
  use of OpenHoldems logging capabilities.
  OpenHoldem will generate a log file as it operates, less detailed logs
  for production, more detailed logs for debugging.
- The verbosity of the log can be set in with the Preferences tabs 
+ The verbosity of the log can be set in the Preferences tabs 
 \emph on
 Logging
 \emph default
@@ -233,6 +233,127 @@ As you can see in this example the bot-logic decided to call, but there
 Autoplayer Trace
 \end_layout
 
+\begin_layout Standard
+If you want to go into detail the most useful part of the log is clearly
+ the autoplayer-trace.
+ It helps ypu to investigateö the entire evaluation that caused a decision.
+ Let's assume we have a f$alli-function that looks like that: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$alli##
+\end_layout
+
+\begin_layout Plain Layout
+
+   f$HaveUnbeatableMonster
+\end_layout
+
+\begin_layout Plain Layout
+
+OR f$HaveSuperDuperDraw
+\end_layout
+
+\begin_layout Plain Layout
+
+OR f$PoorHeroIsPotCommitted
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On evaluation of f$alli OpenHoldem will look up the three user-defined functions
+ (f$HaveUnbeatableMonster, ...), evaluate them and combine their return-values
+ to a final result.
+ This leads to a simplified call-tree:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/log_simple_call_tree.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each function that is one level indented got called by the next function
+ above that is one level less indented.
+ Things would be easy (or a night-mare) if all code was in one oversized
+ function and all called symbols were black boxes.
+ However one of the advantages of OH-script and OpenPPL is that you can
+ structure your code and create functions on your own.
+ Indeed OpenPPL provides several hundred poker-logical functions that work
+ out of the box.
+ They are all available as plain text, so that you can have a look at their
+ code and OpenHoldem can log their evaluation in detail.
+ Let's assume your user-defined function f$HaveUnbeatableMonster is an easy
+ one and just considers the winning percentage (the built-in symbol prwin),
+ f$HaveSuperDuperDraw uses the OpenPPL-symbols HaveStraightDraw and HaveFlushDra
+w, whereas f$PoorHeroIsPotCommitted uses Balance and Pot.
+ Then the autoplayer-trace could look like that:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/log_detailed_call_tree.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So the implementation and the evaluation of each symbol use some other symbols
+ that are one level deeper indented in the autoplayer-trace.
+ In practice the autoplayer-trace will get even moire detailed.
+ For example even a simple symbol like Balance might need the user-chair,
+ the size of the big-blind and some more.
+ But the principle is always the same and with a little bit experience the
+ logs become easy to read.
+\end_layout
+
 \begin_layout Subsection*
 OpenPPL
 \end_layout
@@ -242,10 +363,15 @@ OpenPPL works very similar to OH-script.
  Basic info and the autoplayer-trace are the same.
 \end_layout
 
+\begin_layout Subsubsection*
+Initializations
+\end_layout
+
 \begin_layout Standard
 Most OpenPPL-symbols get calculated on the fly when you need them.
- But some symbols require special initialization, exactly once per orbit:
- counters like 
+ But some symbols require special initialization, exactly once per orbit
+ when it is our turn and the scraper saw enough stable frames.
+ This is the case mainly for counters like 
 \begin_inset Quotes eld
 \end_inset
 
@@ -253,7 +379,7 @@ Raises
 \begin_inset Quotes erd
 \end_inset
 
- and 
+, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -261,17 +387,297 @@ Calls
 \begin_inset Quotes erd
 \end_inset
 
+ and some more.
+\begin_inset listings
+inline false
+status open
 
+\begin_layout Plain Layout
+
+InitMemorySymbols = 0.000 [Line 18/3976]
+\end_layout
+
+\begin_layout Plain Layout
+
+  TimeToInitMemorySymbols = 1.000 [Line 8/3921]
+\end_layout
+
+\begin_layout Plain Layout
+
+    isfinalanswer = 1.000
+\end_layout
+
+\begin_layout Plain Layout
+
+    GameStateChanged = 1.000 [Line 2/3928]
+\end_layout
+
+\begin_layout Plain Layout
+
+      dealerchair = 4.000
+\end_layout
+
+\begin_layout Plain Layout
+
+      me_re_MemOldGameStateDealerChair = 3.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  False = 0.000 [Line 1/230]
+\end_layout
+
+\begin_layout Plain Layout
+
+  InitMissingSmallBlind = 0.000 [Line 2/772]
+\end_layout
+
+\begin_layout Plain Layout
+
+    betround = 1.000
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConstBetRoundPreflop = 1.000 [Line 1/199]
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You will see these initializations on top of the autoplayer-trace, i.e.
+ below the summary, but above f$preflop.
+\end_layout
+
+\begin_layout Subsubsection*
+Main evaluations
 \end_layout
 
 \begin_layout Standard
 After everything got initialized OpenHoldem will evaluate the main OpenPPL-funct
 ion for the current betround: f$preflop, f$flop, f$turn or f$river.
- This function contains the user-defined bot-logic and is the next location
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$preflop = 11.000 [Line 93/2726]
+\end_layout
+
+\begin_layout Plain Layout
+
+  StackSize = 26.688 [Line 1/1422]
+\end_layout
+
+\begin_layout Plain Layout
+
+  StackSize = 26.688 [cached]
+\end_layout
+
+\begin_layout Plain Layout
+
+  BigBlindSize = 80.000 [Line 1/1373]
+\end_layout
+
+\begin_layout Plain Layout
+
+    bet1 = 80.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  BigBlindSize = 80.000 [cached]
+\end_layout
+
+\begin_layout Plain Layout
+
+  listGp1 = 1.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  listGp2 = 0.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  listGp3 = 0.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  user_EarlyZone = 1.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  Raises = 1.000 [cached]
+\end_layout
+
+\begin_layout Plain Layout
+
+  Calls = 0.000 [Line 1/630]
+\end_layout
+
+\begin_layout Plain Layout
+
+    me_re_MemCalls = 0.000
+\end_layout
+
+\begin_layout Plain Layout
+
+  Calls = 0.000 [cached]
+\end_layout
+
+\begin_layout Plain Layout
+
+  BotsLastAction = -1000007.000 [Line 2/573]
+\end_layout
+
+\begin_layout Plain Layout
+
+    None = -1000007.000 [cached]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Return Values
 \end_layout
 
 \begin_layout Standard
-After the decision got calculated OpenHoldem translates it to OH-script
+You might wonder, what the numbers mean:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$preflop = 11.000
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+BotsLastAction = -1000007.000 [Line 2/573]
+\end_layout
+
+\begin_layout Plain Layout
+
+    None = -1000007.000
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The evaluator-engine needs to handle three different type of final actions:
+\end_layout
+
+\begin_layout Itemize
+betsizes (in big-blinds), encoded as positive numbers, so f$preflop = 11.000
+ in the example above means RaiseTo 11 (big blinds).
+\end_layout
+
+\begin_layout Itemize
+percentaged potsized bets, encoded as small negative numbers.
+ -0.666 means bet 2/3
+\begin_inset space ~
+\end_inset
+
+pot.
+\end_layout
+
+\begin_layout Itemize
+fixed actions, encoded as large negative numbers.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##Beep## 
+\end_layout
+
+\begin_layout Plain Layout
+
+-1000000
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##Fold##
+\end_layout
+
+\begin_layout Plain Layout
+
+-1000001
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise##
+\end_layout
+
+\begin_layout Plain Layout
+
+-1000002
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+##RaiseMin##
+\end_layout
+
+\begin_layout Plain Layout
+
+Raise
+\end_layout
+
+\end_inset
+
+Altogether 25 named action-constants -- too much to mention them here.
+ But they are in the OpenPPL-library which is a plain-text-file.
+ Feel welcome to have a look -- there are many interesting things to discover.
+\end_layout
+
+\begin_layout Subsubsection*
+Autoplayer Actions
+\end_layout
+
+\begin_layout Standard
+After the OpenPPL-decision got calculated OpenHoldem translates it to OH-script
  autoplayer-actions (plural because of backup-actions) and thereafter the
  autoplayer works the normal way.
  That's why you can see some OH-script autoplayer-functions at the end of
@@ -288,6 +694,17 @@ After the decision got calculated OpenHoldem translates it to OH-script
 \end_inset
 
 ) value.
+ Please be aware that OpenHoldem -- contrary to OpenPPL -- doesn't use big-blind
+s for its calculations but dollars.
+ So 
+\begin_inset Quotes eld
+\end_inset
+
+RaiseTo 11
+\begin_inset Quotes erd
+\end_inset
+
+ in the example above leads to a f$betsize of $880.
 \end_layout
 
 \begin_layout Standard
@@ -335,7 +752,8 @@ Errors and Warnings
 \end_layout
 
 \begin_layout Standard
-Furtermore OpenHoldem logs all errors and warnings, i.e.:
+Besides of the autoplayer-trace OpenHoldem logs all errors and warnings,
+ i.e.:
 \end_layout
 
 \begin_layout Itemize
@@ -537,6 +955,18 @@ EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Now if your head hurts be assured: things are half as hard once you have
+ gained a little bit experience.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+The log-file knows the truth.
+ True experts know the log-file.
 \end_layout
 
 \end_body
