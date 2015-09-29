@@ -113,6 +113,10 @@
 			<param name="Local" value="Chapters\Differences.html.LyXconv\Differences.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tweaking Profiles">
+			<param name="Local" value="Chapters\Tweaking_Profiles.html.LyXconv\Tweaking_Profiles.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Debugging Your Code">
 			<param name="Local" value="Chapters\Debugging_Your_Code.html.LyXconv\Debugging_Your_Code.html">
 			</OBJECT>
