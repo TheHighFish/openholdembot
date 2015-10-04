@@ -633,40 +633,50 @@
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Single System Configuration">
-				<param name="Local" value="Chapters\stealth\SingleSystemConfiguration.html.LyXconv\SingleSystemConfiguration.html">
 				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Single System Configuration">
+					<param name="Local" value="Chapters\stealth\SingleSystemConfiguration.html.LyXconv\SingleSystemConfiguration.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Casino Software">
+					<param name="Local" value="Chapters\stealth\CasinoSoftware.html.LyXconv\CasinoSoftware.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Ninja Setup">
+					<param name="Local" value="Chapters\stealth\NinjaFolders.html.LyXconv\NinjaFolders.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Stealth Preferences">
+					<param name="Local" value="Chapters\stealth\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Ini-Files and Registry">
+					<param name="Local" value="Chapters\stealth\Registry.html.LyXconv\Registry.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Rootkits">
+					<param name="Local" value="Chapters\stealth\Rootkits.html.LyXconv\Rootkits.html">
+					</OBJECT>
+			</UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Dual System Configuration">
-				<param name="Local" value="Chapters\stealth\DualSystemConfiguration.html.LyXconv\DualSystemConfiguration.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Ini-Files and Registry">
-				<param name="Local" value="Chapters\stealth\Registry.html.LyXconv\Registry.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Obscure Preferences">
-				<param name="Local" value="Chapters\stealth\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Bring">
-				<param name="Local" value="Chapters\stealth\Bring.html.LyXconv\Bring.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Ninja Folders">
-				<param name="Local" value="Chapters\stealth\NinjaFolders.html.LyXconv\NinjaFolders.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Casino Software">
-				<param name="Local" value="Chapters\stealth\CasinoSoftware.html.LyXconv\CasinoSoftware.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Virtualization">
-				<param name="Local" value="Chapters\stealth\VmWare.html.LyXconv\VmWare.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Rootkits">
-				<param name="Local" value="Chapters\stealth\Rootkits.html.LyXconv\Rootkits.html">
-				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Dual System Configuration">
+					<param name="Local" value="Chapters\stealth\DualSystemConfiguration.html.LyXconv\DualSystemConfiguration.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Virtualization">
+					<param name="Local" value="Chapters\stealth\VmWare.html.LyXconv\VmWare.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Bring">
+					<param name="Local" value="Chapters\stealth\Bring.html.LyXconv\Bring.html">
+					</OBJECT>
+			</UL>
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">

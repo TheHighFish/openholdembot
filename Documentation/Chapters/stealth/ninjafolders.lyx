@@ -84,11 +84,11 @@ Ninja
 
 \end_inset
 
-Ninja Folders
+Ninja Setup
 \end_layout
 
 \begin_layout Standard
-Original post here: 
+(Constructed from Tammelins posts here: 
 \begin_inset Flex URL
 status collapsed
 
@@ -100,6 +100,18 @@ http://forum.winholdem.net/wbb/viewtopic.php?t=4749
 \end_inset
 
 .
+ and here 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://forum.winholdem.net/wbb/viewtopic.php?t=11894 
+\end_layout
+
+\end_inset
+
+.)
 \end_layout
 
 \begin_layout Standard
@@ -110,13 +122,26 @@ This article explains the basic steps for creating a windows folder that
 
 \begin_layout Standard
 The general goal is to create a folder that is owned by a single windows
- user account such that no other user account may access the folder - not
- even the system or the admin account.
- 
+ user account (
+\begin_inset Quotes eld
+\end_inset
+
+Ninja
+\begin_inset Quotes erd
+\end_inset
+
+) such that no other user account may access the folder -- not even the
+ system or the admin account.
+ Other users (including casinos that demand running as administrator) will
+ also be unable to view the processes started by the Ninja-account.
+ Therefore a Ninja-setup provides the same stealth like a rootkit, but it
+ does not require any additional -- and potentially compromising -- software.
+ The Ninja-setup achieves this level of stealth just with default Windows
+ security-functionality.
 \end_layout
 
 \begin_layout Section*
-Prerequisites: 
+Prerequisites
 \end_layout
 
 \begin_layout Enumerate
@@ -138,217 +163,32 @@ It is assumed that the reader understands how to create/modify a user account
 \end_layout
 
 \begin_layout Section*
-Configuration Steps
-\end_layout
-
-\begin_layout Enumerate
-Login to your admin account 
-\end_layout
-
-\begin_layout Enumerate
-Create/decide target account (from admin account).
- This account will own the hyper-safe folder.
- For the purpose of this example, the account name "ninja" will be used.
- The "ninja" account must meet the following requirements: 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-it cannot be the Administrator account 
-\end_layout
-
-\begin_layout Enumerate
-it cannot be part of the Administrator group 
-\end_layout
-
-\begin_layout Enumerate
-it cannot be part of any group except the default users group.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-If you need/want to create a special "ninja" account then do that first
- according to the restrictions above.
- If the account already exists then make sure it meets the requirements
- above.
-\end_layout
-
-\begin_layout Enumerate
-Create the target folder (from admin account).
- Your goal here is to create/decide the target folder.
- In an ideal world you would create a top level folder on an empty local
- (non-shared/not-networked) hard drive where "ninja" has full control over
- that disk.
- If this is not possible then the next best thing is a top level folder
- on a non-shared drive.
- If this is not possible then you must select a location where "ninja" will
- have access to the parent folder so that it can access its private folder.
-\end_layout
-
-\begin_layout Enumerate
-Permissions (from admin account) 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Select the properties for the folder and select the security tab add "ninja"
- to the access list and grant "ninja" full control.
- Remove all other users/groups from the access list, which will effectively
- shut out the entire world.
- There should be exactly one account in the access list and that account
- should be “<host>/ninja" 
-\end_layout
-
-\begin_layout Enumerate
-Uncheck/unselect "Allow inheritable permissions from parent to propagate
- to this object".
- The reason for this is that you want this folder and it's permissions to
- be the root node for all children below it.
- If you do not do this then permissions defined for the parent above your
- root folder will filter down to your folder and the children in your folder
- and you do not want that.
- Note that you cannot give ownership of objects in NTFS, you can only "take"
- ownership with the account you're currently using.
- You will take ownership of the folder later when you login to the "ninja"
- account.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Logout of the admin account 
-\end_layout
-
-\begin_layout Enumerate
-Login to your "ninja" account 
-\end_layout
-
-\begin_layout Enumerate
-Ownership (from ninja account) 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Select the properties for your "safe" folder and verify that "ninja" is
- the only account in the access list.
- 
-\end_layout
-
-\begin_layout Enumerate
-Click the advanced button and goto the owner tab and select the "ninja"
- account.
- 
-\end_layout
-
-\begin_layout Enumerate
-Check "Replace owner ..." and click "Apply".
- You should now be the full owner of your "safe" folder and everything below
- it.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Permissions (from ninja account) 
-\end_layout
-
-\begin_deeper
-\begin_layout Enumerate
-Click the permissions tab and check "Reset permissions on all child objects
- ...".
- 
-\end_layout
-
-\begin_layout Enumerate
-Uncheck "Allow inheritable permissions from parent ..." (note this should already
- be unchecked since you did that from the admin account), then click apply.
- This will go quickly if the folder is empty.
- It can take seconds or minutes or more depending on the children folder
- tree below you.
- 
-\end_layout
-
-\end_deeper
-\begin_layout Enumerate
-Verify.
- Create a test child folder inside your "safe" folder, view the properites
- and verify that "ninja" is the owner with full control and that no other
- account has access.
- If this is not the case then you missed a step above (probably the "Allow
- inheritable permissions ..." in step 4).
-\end_layout
-
-\begin_layout Enumerate
-Logout of the "ninja" account 
-\end_layout
-
-\begin_layout Enumerate
-Login to the admin account 
-\end_layout
-
-\begin_layout Enumerate
-Verify.
- Try to access the "safe" folder.
- You should not be able to access the contents of the folder nor modify
- the folder properties/permissions.
- As an admin you can still take ownership of the folder but until then the
- admin access is denied.
-\end_layout
-
-\begin_layout Section*
-Other thoughts
+User Accounts
 \end_layout
 
 \begin_layout Standard
-If you have the resources and you want the best possible solution then you
- should dedicate an entire physical hard drive to your stealth department.
- That drive should not be the bootable system drive, but should be a secondary
- drive.
- You should consume all 4 primary partitions on your stealth drive by creating
- 4 primary partitions of roughly equal size.
- Each partition should be formatted with NTFS only (not FAT or FAT32).
- 
+First we create two user-accounts with limited permissions, one for the
+ casino and the other one for the stealthed poker-bot (
+\begin_inset Quotes eld
+\end_inset
+
+Ninja
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
-\begin_layout Standard
-You should then make the "ninja" account the owner of all 4 partitions and
- the sole account with access.
- There should be no other accounts listed in the access list.
- The drives should not be networked or shared.
- If you do this you will notice that your admin account cannot even read
- the device label and that the 4 hard drives will be seen only as "local-drive".
- All access from any accounts other than "ninja" will be denied.
-\end_layout
-
-\begin_layout Standard
-The benefit of this setup is that once you construct a hard drive like this
- you don't have to worry about permissions ever again in the context of
- that drive - you know that anything you do on that drive must be done from
- the "ninja" account and that any folder/files created on that drive are
- entirely safe.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Subsection
-Step 7 - Set up user accounts on virtual computer 
-\end_layout
-
-\begin_layout Plain Layout
+\begin_layout Enumerate
 Click "Start - Control Panel - User Accounts".
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 You had already set up one user while installing Windows.
  This user already has admin privileges.
  We'll call it the "admin" user.
  We need to give this user a password.
- It can be the same password you used in step 4.
  Click on the user, then click on "create a password".
  Enter the password into the boxes and click on "create password".
  The next window asks you if you want to make your files and folders private.
@@ -357,21 +197,26 @@ You had already set up one user while installing Windows.
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 Now we'll set up two new users with fewer privileges.
  You will be logged in as the second user whenever you connect to a casino.
  We'll call this the "casino" user.
  The third user will be created to hide things from the casino.
- We'll call this the "stealth" user.
+ We'll call this the 
+\begin_inset Quotes eld
+\end_inset
+
+Ninja
+\begin_inset Quotes erd
+\end_inset
+
+ user.
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 Choose names and passwords for these users, and write them all down now.
  
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="2">
 <features rotate="0" tabularvalignment="middle">
@@ -450,7 +295,7 @@ _________________________
 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 The casino user will have restricted privileges initially.
  Click "create a new account", enter the name of the casino user and click
  "next".
@@ -460,24 +305,191 @@ The casino user will have restricted privileges initially.
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 The stealth user will have restricted privileges permanently.
  Click "create a new account" and set up the stealth user in the same way
  you set up the casino user.
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 Click "create a new account".
  Choose a name and then click on "limited account".
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Enumerate
 That completes this step.
  If there is a "guest" user shown, you can ignore it.
  Close the "user accounts" window.
  
+\end_layout
+
+\begin_layout Section*
+File System
+\end_layout
+
+\begin_layout Enumerate
+Create the target folder (from admin account).
+ In an ideal world you would create a top level folder on an empty local
+ (non-shared/not-networked) hard drive where "Ninja" has full control over
+ that disk.
+ If this is not possible then the next best thing is a top level folder
+ on a non-shared drive.
+ If this is not possible then you must select a location where "Ninja" will
+ have access to the parent folder so that it can access its private folder.
+\end_layout
+
+\begin_layout Enumerate
+Permissions (from admin account) 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Select the properties for the folder and select the security tab add "Ninja"
+ to the access list and grant "Ninja" full control.
+ Remove all other users/groups from the access list, including the administrator
+(s), which will effectively shut out the entire world.
+ There should be exactly one account in the access list and that account
+ should be “<host>/Ninja" 
+\end_layout
+
+\begin_layout Enumerate
+Uncheck/unselect "Allow inheritable permissions from parent to propagate
+ to this object".
+ The reason for this is that you want this folder and it's permissions to
+ be the root node for all children below it.
+ If you do not do this then permissions defined for the parent above your
+ root folder will filter down to your folder and the children in your folder
+ and you do not want that.
+ Note that you cannot give ownership of objects in NTFS, you can only "take"
+ ownership with the account you're currently using.
+ You will take ownership of the folder later when you login to the "Ninja"
+ account.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Logout of the admin account 
+\end_layout
+
+\begin_layout Enumerate
+Login to your "Ninja" account 
+\end_layout
+
+\begin_layout Enumerate
+Ownership (from Ninja account) 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Select the properties for your "safe" folder and verify that "Ninja" is
+ the only account in the access list.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Click the advanced button and goto the owner tab and select the "Ninja"
+ account.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Check "Replace owner ..." and click "Apply".
+ You should now be the full owner of your "safe" folder and everything below
+ it.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Permissions (from Ninja account) 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Click the permissions tab and check "Reset permissions on all child objects
+ ...".
+ 
+\end_layout
+
+\begin_layout Enumerate
+Uncheck "Allow inheritable permissions from parent ..." (note this should already
+ be unchecked since you did that from the admin account), then click apply.
+ This will go quickly if the folder is empty.
+ It can take seconds or minutes or more depending on the children folder
+ tree below you.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Verify.
+ Create a test child folder inside your "safe" folder, view the properites
+ and verify that "Ninja" is the owner with full control and that no other
+ account has access.
+ If this is not the case then you missed a step above (probably the "Allow
+ inheritable permissions ...").
+\end_layout
+
+\begin_layout Enumerate
+Logout of the "Ninja" account 
+\end_layout
+
+\begin_layout Enumerate
+Login to the admin account 
+\end_layout
+
+\begin_layout Enumerate
+Verify.
+ Try to access the "safe" folder.
+ You should not be able to access the contents of the folder nor modify
+ the folder properties/permissions.
+ As an admin you can still take ownership of the folder but until then the
+ admin access is denied.
+\end_layout
+
+\begin_layout Section*
+Other thoughts
+\end_layout
+
+\begin_layout Standard
+If you have the resources and you want the best possible solution then you
+ should dedicate an entire physical hard drive to your stealth department.
+ That drive should not be the bootable system drive, but should be a secondary
+ drive.
+ You should consume all 4 primary partitions on your stealth drive by creating
+ 4 primary partitions of roughly equal size.
+ Each partition should be formatted with NTFS only (not FAT or FAT32).
+ 
+\end_layout
+
+\begin_layout Standard
+You should then make the "Ninja" account the owner of all 4 partitions and
+ the sole account with access.
+ There should be no other accounts listed in the access list.
+ The drives should not be networked or shared.
+ If you do this you will notice that your admin account cannot even read
+ the device label and that the 4 hard drives will be seen only as "local-drive".
+ All access from any accounts other than "Ninja" will be denied.
+\end_layout
+
+\begin_layout Standard
+The benefit of this setup is that once you construct a hard drive like this
+ you don't have to worry about permissions ever again in the context of
+ that drive - you know that anything you do on that drive must be done from
+ the "Ninja" account and that any folder/files created on that drive are
+ entirely safe.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Subsection
+Step 7 - Set up user accounts on virtual computer 
 \end_layout
 
 \begin_layout Subsection
@@ -650,6 +662,48 @@ criminal
 \begin_layout Plain Layout
 This setup is not 100% secure, but it is probably secure enough.
  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Enumerate
+Login to your admin account 
+\end_layout
+
+\begin_layout Enumerate
+Create/decide target account (from admin account).
+ This account will own the hyper-safe folder.
+ For the purpose of this example, the account name "Ninja" will be used.
+ The "Ninja" account must meet the following requirements: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+it must not be the Administrator account 
+\end_layout
+
+\begin_layout Enumerate
+it must not be part of the Administrator group 
+\end_layout
+
+\begin_layout Enumerate
+it must not be part of any group except the default users group.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If you need/want to create a special "Ninja" account then do that first
+ according to the restrictions above.
+ If the account already exists then make sure it meets the requirements
+ above.
 \end_layout
 
 \end_inset
