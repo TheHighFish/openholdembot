@@ -79,7 +79,7 @@ How the Interface-Buttons work
 \end_layout
 
 \begin_layout Standard
-The holdem scraper has the concept of interface region(s), that can be clicked
+The holdem scraper has the concept of interface regions, that can be clicked
  by the autoplayer to interact with the casino.
  Such an interface region consists of three components:
 \end_layout
@@ -136,7 +136,7 @@ iXstate
 
 \begin_layout Plain Layout
 Visibility of the button.
- If the button is visible it can be clicked by the autoiplayer.
+ If the button is visible it can be clicked by the autoplayer.
  If not then the action will be skipped or a backup-action will be chosen.
 \end_layout
 

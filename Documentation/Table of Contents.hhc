@@ -5,15 +5,12 @@
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
 <OBJECT type="text/site properties">
-	<param name="Foreground" value="0xc0c0c0">
+	<param name="Background" value="0x0">
+	<param name="Foreground" value="0xffffff">
 	<param name="Window Styles" value="0x800025">
 	<param name="ImageType" value="Folder">
 </OBJECT>
 <UL>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="OpenHoldem - The Manual">
-		<param name="Local" value="Chapters\titlepage\titlepage.html.LyXconv\titlepage.html">
-		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction">
 		<param name="Local" value="Chapters\titlepages_for_main_parts\introduction.html.LyXconv\introduction.html">

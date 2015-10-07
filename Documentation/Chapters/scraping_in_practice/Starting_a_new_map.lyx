@@ -119,7 +119,7 @@ s$nchairs next.
 \begin_layout Itemize
 r$pXseated for all chairs 0..n-1 or at least for chair 0 if you make use of
  the region-cloner thereafter.
- This is usually an ease hash returning true/false like the following three
+ This is usually an easy hash returning true/false like the following three
  items.
 \end_layout
 
