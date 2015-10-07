@@ -923,14 +923,19 @@ HINT_Nothing_To_Do_But_All_OK
 HINT_Nothing_To_Do_But_All_OK
 
 ##NumberOfRaisesBeforeFlop##
-(betround > ConstBetRoundPreflop) ? me_re_MemRaisesBeforeFlop : 0
+WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundPreflop) RETURN me_re_MemRaisesBeforeFlop FORCE
+WHEN Others RETURN 0 FORCE
 
 ##NumberOfRaisesOnFlop##
-(betround > ConstBetRoundFlop) ? me_re_MemRaisesOnFlop : 
-HINT_Nothing_To_Do_But_All_OK
+WHEN (betround == ConstBetRoundFlop) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundFlop) RETURN me_re_MemRaisesOnFlop FORCE
+WHEN Others RETURN 0 FORCE
 
 ##NumberOfRaisesOnTurn##
-(betround > ConstBetRoundTurn) ? me_re_MemRaisesOnTurn : 0
+WHEN (betround == ConstBetRoundTurn) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
+WHEN Others RETURN 0 FORCE
 
 ##Calculate_Raises##
 (me_re_MemRaises + RaisesSinceLastPlay)
