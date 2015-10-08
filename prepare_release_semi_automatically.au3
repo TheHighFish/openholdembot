@@ -16,6 +16,7 @@ Local $binary_optimized_dir    = "Release - Optimized"
 Local $openppl_dir             = "OpenPPL"
 Local $openppl_library_dir     = $openppl_dir & "\OpenPPL_Library"
 Local $openppl_manual_dir      = $openppl_dir & "\OpenPPL_Manual"
+Local $openholdem_manual_dir   = "Documentation\OpenHoldem_Manual_ready_for_release"
 Local $pokertracker_docu_dir   = "Documentation\Chapters\symbols"
 Local $release_notes           = $pre_created_release_dir & "\documents\OpenHoldem Release Notes.txt"
 
@@ -63,6 +64,7 @@ FileDelete($new_openholdem_dir & "\*.pdb")
 CopyNeededFile($openppl_library_dir, $new_openholdem_dir, "OpenPPL_Library.ohf")
 ; Add OpenPPL_Manual.chm and symbol_pokertracker.pdf
 CopyNeededFile($openppl_manual_dir, $new_openholdem_dir, "OpenPPL_Manual.chm")
+CopyNeededFile($openholdem_manual_dir, $new_openholdem_dir, "OpenHoldem_Manual.chm")
 CopyNeededFile($pokertracker_docu_dir, $new_openholdem_dir, "symbols_pokertracker.pdf")
 ; Remove replay-direcoty (if existent), logs and other private data
 DirRemove($new_openholdem_dir & "\Replay")
