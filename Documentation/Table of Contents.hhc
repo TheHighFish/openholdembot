@@ -14,6 +14,7 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction">
 		<param name="Local" value="Chapters\titlepages_for_main_parts\introduction.html.LyXconv\introduction.html">
+		<param name="URL" value="Chapters\titlepage\TitlePage.htm">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
