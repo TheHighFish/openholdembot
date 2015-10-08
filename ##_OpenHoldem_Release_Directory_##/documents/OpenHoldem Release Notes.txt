@@ -1,6 +1,19 @@
-v7.8.1 2015-09-xx
+v9.0.0 2015-10-08
 ==================
 NEW STUFF:
+- Perfect stealth for PokerStars.
+  The new stealth method is based on a rootkit that installs itseld into a ninjad ramdrive.
+  It hides the OpenHodem-GUI, the file-system, processes, window-titles, everything.
+  In addition OpenHoldem executes now human-like mouse-movements
+  based on the Alpher–Bethe–Gamow-theorem.
+  To make use of this new stealth method:
+    * first press Ctrl + Shift + H (hide)
+    * then start your favourite casino
+  To unhide OpenHoldem:
+    * open the DOS-console and enter the magic word "mutabor".
+  The finer details will be explain in the forum if needed.
+  Finally we would like to thank our stealth experts Folder and Gecko for the help.
+  [OpenHoldem, Singlemalt]
 - New OpenPPL backup-action call->allin if we can only fold / (call) allin.
   We detect this situation the reliable way with button-states (exactly "F...A")
   and not with easily mis-scraped bets and balances.
