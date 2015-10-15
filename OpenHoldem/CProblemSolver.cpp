@@ -93,8 +93,9 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"\n"
 			" To connect to a table three conditions must be met:\n"
 			"    - You need a tablemap for that casino and game-type.\n"
-			"    - The tablesize must be right.\n"
-			"    - The titlestring must match.\n"
+			"    - The z$clientsize must be right.\n"
+      "         OpenScrape -> Menu -> View\n"
+			"    - The s$titletext must match.\n"
 			"If OpenHoldem does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
 	}
