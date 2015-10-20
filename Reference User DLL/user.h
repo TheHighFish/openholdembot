@@ -41,7 +41,6 @@ struct holdem_player {
     double          m_balance           ;       //player balance 
     double          m_currentbet        ;       //player current bet
     unsigned char   m_cards[2]          ;       //player cards
-
     unsigned char   m_name_known    : 1 ;       //0=no 1=yes
     unsigned char   m_balance_known : 1 ;       //0=no 1=yes
     unsigned char   m_fillerbits    : 6 ;       //filler bits
@@ -51,16 +50,12 @@ struct holdem_player {
 struct holdem_state {
     char            m_title[64]         ;       //table title
     double          m_pot[10]           ;       //total in each pot
-
     unsigned char   m_cards[5]          ;       //common cards
-
     unsigned char   m_is_playing    : 1 ;       //0=sitting-out, 1=sitting-in
     unsigned char   m_is_posting    : 1 ;       //0=autopost-off, 1=autopost-on
     unsigned char   m_fillerbits    : 6 ;       //filler bits
-
     unsigned char   m_fillerbyte        ;       //filler byte
     unsigned char   m_dealer_chair      ;       //0-9
-
     holdem_player   m_player[10]        ;       //player records
 };
 
@@ -87,22 +82,3 @@ EXE_IMPLEMENTS extern holdem_state  state[kNumberOfHoldemStatesForDLL];
 EXE_IMPLEMENTS extern int state_index;
 
 #endif // _INC_USER_H
-
-/*
-struct holdem_player {
-  char   _name[16];          
-  double _balance;          
-  double _currentbet;        
-  int    _cards[2];            
-};
-
-struct holdem_state {
-  char   _title[64]; 
-  double _pot[10];           
-  int    _cards[5];          
-  bool   _is_playing;    
-  bool   _is_posting;    
-  int    _dealer_chair;      
-  holdem_player _player[10];        
-};
-*/
