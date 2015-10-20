@@ -441,8 +441,8 @@ WHEN
 \end_inset
 
 , FORCE and operators like OR etc.
- For keywords, 3 different format are allowed: all upper-case, all lower-case,
- or a reasonable mix.
+ For keywords, three different formats are allowed: all upper-case, all
+ lower-case, or a reasonable mix.
 \begin_inset listings
 inline false
 status open
@@ -476,7 +476,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (pt_vpip0 < 10) Fold FORCE
+WHEN (pt_vpip0 < 0.10) Fold FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -517,7 +517,7 @@ False Friends
 
 \begin_layout Standard
 Again: case-sensitivity matters.
- There are some (only 3) symbols with the 
+ There are some (only three) symbols with the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1002,7 +1002,7 @@ However we don't like undefined behaviour and we don't want to keep multiple
  versions of our bots for different casinos either.
  Therefore we introduced 2 new commands: RaiseTo and RaiseBy.
  This way you can clearly specify what behaviour you want.
- You only have to specify the correct betsizeinterpretationmethod  in your
+ You only have to specify the correct betsizeinterpretationmethod in your
  tablemap to telll OpenHoldem how your casino behaves and OpenHoldem will
  care about all the rest.automatically.
 \end_layout
