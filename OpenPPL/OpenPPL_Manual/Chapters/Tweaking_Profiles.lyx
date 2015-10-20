@@ -228,5 +228,30 @@ This code first terminates the last open-ended when-condition and then folds
  end as zero / false / fold and take the action accordingly.
 \end_layout
 
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$flop = 0.000 [Line 27/73]
+\end_layout
+
+\begin_layout Plain Layout
+
+   ...
+\end_layout
+
+\begin_layout Plain Layout
+
+   empty_expression__false__zero__when_others_fold_force = 0.000
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

@@ -672,6 +672,104 @@ Altogether 25 named action-constants -- too much to mention them here.
  Feel welcome to have a look -- there are many interesting things to discover.
 \end_layout
 
+\begin_layout Subsubsection
+Undefined Actions and Return Values
+\end_layout
+
+\begin_layout Standard
+Whenever OpenHoldem reaches the end of a function it will evaluate a special
+ symbol 
+\begin_inset Quotes eld
+\end_inset
+
+empty_expression__false__zero__when_others_fold_force
+\begin_inset Quotes erd
+\end_inset
+
+.
+ So it will no longer continue silently with an 
+\begin_inset Quotes eld
+\end_inset
+
+undefined
+\begin_inset Quotes erd
+\end_inset
+
+ value like in the past.
+ Instead it will create a verbose log-file.
+ This symbol always evaluates to zero, which is also the encoding of 
+\begin_inset Quotes eld
+\end_inset
+
+False
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Fold
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+f$flop = 0.000 [Line 27/73]
+\end_layout
+
+\begin_layout Plain Layout
+
+   ...
+\end_layout
+
+\begin_layout Plain Layout
+
+   empty_expression__false__zero__when_others_fold_force = 0.000
+\end_layout
+
+\begin_layout Plain Layout
+
+f$check = 1.000 [cached] 
+\end_layout
+
+\begin_layout Plain Layout
+
+f$fold = 1.000 [cached]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So whenever you see this symbol in your log-files you know that your profile
+ does not handle the current situation.
+ This regularly happens for so-called 
+\begin_inset Quotes eld
+\end_inset
+
+tweaks
+\begin_inset Quotes erd
+\end_inset
+
+, i.e.
+ incomplete profiles, meant to be used on top of another one.
+ Folding a set of kings? No wonder, nothing to be tweaked, playing sets
+ of kings is easy.
+ In such cases you have to complete your profile.
+ Tweaking, completing and combining profiles is explained in the OpenPPL-manual.
+\end_layout
+
 \begin_layout Subsubsection*
 Autoplayer Actions
 \end_layout
