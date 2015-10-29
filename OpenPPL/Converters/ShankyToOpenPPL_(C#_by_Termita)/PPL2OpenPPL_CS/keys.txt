@@ -223,4 +223,16 @@ jSuited,jSuited
 qSuited,qSuited
 kSuited,kSuited
 aSuited,aSuited
+CalledBeforeFlop,BotCalledBeforeFlop
 CalledOnFlop,BotCalledOnFlop
+CalledOnTurn,BotCalledOnTurn
+CalledOnRiver,BotCalledOnRiver
+RaisedBeforeFlop,BotRaisedBeforeFlop
+RaisedOnFlop,BotRaisedOnFlop
+RaisedOnTurn,BotRaisedOnTurn
+CheckedPreflop,BotCheckedPreflop
+CheckedOnFlop,BotCheckedOnFlop
+CheckedOnTurn,BotCheckedOnTurn
+CheckedOnRiver,BotCheckedOnRiver
+IsLastRaiser,BotIsLastRaiser
+sitout,SitOut
