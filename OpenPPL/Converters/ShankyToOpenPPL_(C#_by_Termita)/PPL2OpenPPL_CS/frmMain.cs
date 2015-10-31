@@ -49,6 +49,7 @@ namespace PPL2OpenPPL_CS
                         File.Delete(outputFile);
                     lb.Items.Clear();
 
+                    outputLines = new Dictionary<int, string>();
                     string[] inputLines = File.ReadAllLines(inputFile);
                     loadTables();
 
@@ -279,7 +280,7 @@ namespace PPL2OpenPPL_CS
             line = res;
         }
 
-        Dictionary<int, string> outputLines = new Dictionary<int, string>();
+        Dictionary<int, string> outputLines;
         private void lineAdd(string line)
         {
             outputLines.Add(outputLines.Count, line);
