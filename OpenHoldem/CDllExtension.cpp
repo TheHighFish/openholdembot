@@ -110,7 +110,14 @@ bool CDllExtension::IsLoaded() {
 		// restart iterator thread
     p_iterator_thread->RestartPrWinComputations();
 		// Recompute versus tables
-		p_symbol_engine_versus->GetCounts ();
+		p_symbol_engine_versus->GetCounts();
+    // Busy waiting until recalculation got finished.
+    // Nothing better to do, as we already evaluate bot-logic,
+    // so we can't continue with another heartbeat or something else.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19012
+    while (!p_iterator_thread->IteratorThreadComplete()) {
+      Sleep(100);
+    }
 		return 0;
 	}
   double result = kUndefined;
