@@ -241,7 +241,6 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	_i3_edit_name    = "i3edit";
 	_i3_slider_name  = "i3slider";
 	_i3_handle_name  = "i3handle";
-	_i86_button_name = "i86button";
 	CString button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dbutton", i);
@@ -266,7 +265,6 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	}
 	// hardcoded 
 	i3_button_visible = GetButtonVisible(k_button_i3);
-	i86_button_visible = GetButtonVisible(k_button_i86);
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 	}
@@ -280,9 +278,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &p_casino_interface->i3_edit_region);
 	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &p_casino_interface->i3_slider_region);
 	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3handle", &p_casino_interface->i3_handle_region);
-	i86_button_defined		= p_tablemap_access->GetButtonRect("i86button", &p_casino_interface->i86_button);
 	i3_button_available		= i3_button_defined && i3_button_visible;
-	i86_button_available	= i86_button_defined && i86_button_visible;
 	// i86Xbutton
 	CString i86X_button_name = "";
 	for (int i = 0; i < k_max_number_of_i86X_buttons; i++) {

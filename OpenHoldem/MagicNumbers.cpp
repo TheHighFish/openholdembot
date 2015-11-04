@@ -45,9 +45,6 @@ int DefaultButtonNumber(int button_code)
 	if (button_code == k_button_i3)
 		return button_code;
 
-	if (button_code == k_button_i86)
-		return button_code;
-
 	if ((button_code >= k_button_i86 * k_max_number_of_i86X_buttons) && (button_code < k_button_i86*k_max_number_of_i86X_buttons + k_max_number_of_i86X_buttons))
 		return button_code;
 

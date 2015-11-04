@@ -60,10 +60,8 @@ char * const r$strings[num_r$strings] =
 		"i0label", "i1label", "i2label", "i3label", "i4label", "i5label", "i6label", "i7label", "i8label", "i9label", 
 		"i0state", "i1state", "i2state", "i3state", "i4state", "i5state", "i6state", "i7state", "i8state", "i9state", 
 		"i3handle", "i3slider",	"i3edit",
-		// 44
-		"i86button",
+		// 42
 		"i860button", "i861button", "i862button", "i863button", "i864button", "i865button", "i866button", "i867button", "i868button", "i869button", 
-		"i86state",
 		"i860state", "i861state", "i862state", "i863state", "i864state", "i865state", "i866state", "i867state", "i868state", "i869state", 
 		"p0active", "p1active", "p2active", "p3active", "p4active", "p5active", "p6active", "p7active", "p8active", "p9active", 
 		"p0balance", "p1balance", "p2balance", "p3balance", "p4balance", "p5balance", "p6balance", "p7balance", "p8balance", "p9balance", 

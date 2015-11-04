@@ -27,7 +27,6 @@ void CScrapedActionInterface::Reset() {
 		_button_label[i] = "";
     _i86X_button_state[i] = "false";
   }
-  _i86_button_state = "false";
   _button_label[0]  = "fold";
 	_button_label[1]  = "call";
 	_button_label[2]  = "raise";

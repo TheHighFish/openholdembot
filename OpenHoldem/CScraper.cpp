@@ -218,18 +218,11 @@ void CScraper::SetButtonState(CString *button_state, CString text) {
 
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
-	// Normal i86-button
-	if (EvaluateRegion("i86state", &result))
-	{
-		SetButtonState(&p_table_state->_SCI._i86_button_state, result);	
-	}
 	// i86X-buttons
 	CString button_name;
-	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
-	{
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
-		if (EvaluateRegion(button_name, &result))
-		{
+		if (EvaluateRegion(button_name, &result))	{
 			SetButtonState(&p_table_state->_SCI._i86X_button_state[i], result);	
 		}
 	}

@@ -207,23 +207,17 @@ bool CCasinoInterface::EnterChatMessage(CString &message) {
 	return true;
 }
 
-bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
-{
+bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number) {
 	assert(button_number >= 0);
 	assert(button_number < k_max_number_of_i86X_buttons);
-
-	if (p_scraper_access->i86X_button_available[button_number])
-	{
+  if (p_scraper_access->i86X_button_available[button_number])	{
 		CMyMutex	mutex;
-
-		if (!mutex.IsLocked())
-			return false;
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86 (%d) button and clicked it.\n", button_number);
+    if (!mutex.IsLocked()) return false;
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86X (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);
 		return true;
 	}
-
-	return false;
+  return false;
 }
 
 void CCasinoInterface::SelectSwagText()

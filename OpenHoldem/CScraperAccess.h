@@ -42,7 +42,6 @@ class CScraperAccess {
 	// visible
 	bool visible_buttons[k_number_of_standard_functions];
 	bool i3_button_visible;
-	bool i86_button_visible;
 	bool i86X_button_visible[k_max_number_of_i86X_buttons];
 	// defined
 	bool defined_buttons[k_number_of_standard_functions];
@@ -50,12 +49,10 @@ class CScraperAccess {
 	bool i3_edit_defined;
 	bool i3_slider_defined;
 	bool i3_handle_defined;
-	bool i86_button_defined;
 	bool i86X_button_defined[k_max_number_of_i86X_buttons];
 	// available, i.e. defined and visible
 	bool available_buttons[k_number_of_standard_functions];
 	bool i3_button_available;	
-	bool i86_button_available;
 	bool i86X_button_available[k_max_number_of_i86X_buttons];
  private:
 	// private functions
@@ -81,7 +78,6 @@ class CScraperAccess {
  private:
 	// button names
 	CString button_names[k_number_of_standard_functions];
-  CString _i86_button_name;
 	CString _i86X_button_name[k_max_number_of_i86X_buttons];
 	CString _i3_button_name;
 	// region names

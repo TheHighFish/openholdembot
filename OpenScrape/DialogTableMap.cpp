@@ -3415,9 +3415,6 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			if (regionName.Mid(0,1)=="p" || regionName.Mid(0,1)=="u" || regionName.Mid(0,1)=="c")
 				groupName = regionName.Mid(0,2);
 
-			else if (regionName.Mid(0,3)=="i86")
-				groupName = regionName.Mid(0,3);
-
 			else if (regionName.Mid(0,1)=="i")
 				groupName = regionName.Mid(0,2);
 
