@@ -80,7 +80,6 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"engage_autoplayer",
 	"restore_position_and_focus",
 	"use_auto_replay",
-	"betsize_use_comma",
 	"replay_record",
 	"log_basic_info",
 	"trace_enabled",

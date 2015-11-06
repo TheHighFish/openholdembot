@@ -51,7 +51,6 @@ void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOPLAYER_UPON_CONNECTION, m_Autoplayer_Upon_Connection);
 	DDX_Control(pDX, IDC_RESTORE_POSITION_AND_FOCUS, m_Restore_Position_And_Focus);
 	DDX_Control(pDX, IDC_USE_AUTO_REPLAY, m_Use_Auto_Replay);
-	DDX_Control(pDX, IDC_SWAGUSECOMMA, m_SwagUseComma);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs2, CSAPrefsSubDlg)
@@ -100,8 +99,7 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	m_Autoplayer_Upon_Connection.SetCheck(preferences.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
 	m_Restore_Position_And_Focus.SetCheck(preferences.restore_position_and_focus() ? BST_CHECKED : BST_UNCHECKED);
 	m_Use_Auto_Replay.SetCheck(preferences.use_auto_replay() ? BST_CHECKED : BST_UNCHECKED);
-	m_SwagUseComma.SetCheck(preferences.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
-
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -153,7 +151,6 @@ void CDlgSAPrefs2::OnOK()
 	preferences.SetValue(k_prefs_engage_autoplayer, m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
 	preferences.SetValue(k_prefs_restore_position_and_focus, m_Restore_Position_And_Focus.GetCheck()==BST_CHECKED ? true : false);
 	preferences.SetValue(k_prefs_use_auto_replay, m_Use_Auto_Replay.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_swag_use_comma, m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
 }

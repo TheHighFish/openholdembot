@@ -21,7 +21,7 @@ int	const num_z$strings = 4;
 char * const z$strings[num_z$strings] = 
     { "clientsize", "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 66;
+int	const num_s$strings = 67;
 char * const s$strings[num_s$strings] = 
     { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 	  "titletext7", "titletext8", "titletext9", 
@@ -35,6 +35,7 @@ char * const s$strings[num_s$strings] =
 	  "defaultlabels", "t0type", "t1type", "t2type", "t3type", 
 	  "betsizeselectionmethod", "betsizedeletionmethod", "betsizeconfirmationmethod", "betsizeinterpretationmethod",
     "buttonclickmethod", "allinconfirmationmethod", "balancenumbersonly", "scraperdll", 
+    "use_comma_instead_of_dot",
     "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby"};
 
 int	const num_r$strings = 400;
