@@ -347,7 +347,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) //!!Players???
 	{
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
@@ -397,7 +397,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
 				leave_drawn = true;
 			}
-      // !!! To do: rematch
+      // !! To do: rematch
 			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);

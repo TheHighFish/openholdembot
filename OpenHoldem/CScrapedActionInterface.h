@@ -39,9 +39,9 @@ class CScrapedActionInterface {
  protected:
 	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
 	CString	_button_state[k_max_number_of_buttons];
-public: //!!!!!
+ protected:
 	CString _button_label[k_max_number_of_buttons];
-protected:
+ protected:
 	CString	_betpot_button_state[k_max_betpot_buttons];
   bool		_handle_found_at_xy;
 	POINT		_handle_xy;

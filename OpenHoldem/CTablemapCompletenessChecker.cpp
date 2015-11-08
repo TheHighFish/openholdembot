@@ -60,6 +60,16 @@ void CTablemapCompletenessChecker::ErrorSwagRenamed() {
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
+void CTablemapCompletenessChecker::ErrorClientsizeReplaced() {
+  CString message = "z$clientsize got replaced in favour\n"
+    "of a more flexible and fail-safe approach.\n"
+    "It needs to be replaced by\n"
+    "  * z$clientsizemin\n"
+    "  * z$clientsizemax\n"
+    "  * z$targetsize\n";
+  OH_MessageBox_Interactive(message, "Error", 0);
+}
+
 void CTablemapCompletenessChecker::CheckItem(CString item) {
   if (!p_tablemap->ItemExists(item)) {
     ErrorMissingItem(item);
@@ -135,22 +145,6 @@ void CTablemapCompletenessChecker::CheckMainPot() {
   }
 }
 
-void CTablemapCompletenessChecker::VerifyTablePoints() {
-  // Tablepoints work only for fixed table sizes
-  if (p_tablemap->ItemExists("clientsizemin") || p_tablemap->ItemExists("clientsizemax")) {
-    for (int i=0; i<k_max_number_of_buttons; ++i) {
-      CString table_point;
-      table_point.Format("tablepoint%i", i);
-      if (p_tablemap->ItemExists(table_point)) {
-        CString message = "Tablepoints work only with fixed clientsize,\n"
-          "not with clientsizemin and clientsizemax.\n";
-        OH_MessageBox_Interactive(message, "Error", 0);
-        break;
-      }
-    }
-  }
-}
-
 void CTablemapCompletenessChecker::VerifySingleC0limitsItem(CString name) {
   // Each optional r$c0limitsX-region must have 
   // a corresponding s£c0limitsX-symbol,
@@ -182,10 +176,10 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckForDeprecatedItems();
   // Absoluely mandatory for connection
   CheckItem("titletext");
-  // Necessary for connection: either clientsize or min/max
-  if (!p_tablemap->ItemExists("clientsizemin") || !p_tablemap->ItemExists("clientsizemax")) {
-    CheckItem("clientsize");
-  }
+  // Necessary for connection: clientsizemin/max and y$targetsize (since 9.0.1)
+  CheckItem("clientsizemin");
+  CheckItem("clientsizemax");
+  CheckItem("targetsize");
   // All the rest is only needed for tables, but not for the lobby
   if (p_tablemap->islobby()) return;
   // Basic info, needed by every table
@@ -268,7 +262,6 @@ void CTablemapCompletenessChecker::VerifyMap() {
       CheckItem("t", i, "type");
     }
   }
-  VerifyTablePoints();
   VerifyC0limits();
   // Optional uX-regions
   CheckSetOfItems("u", last_chair, "name",    false);
@@ -315,5 +308,9 @@ void CTablemapCompletenessChecker::CheckForDeprecatedItems() {
   // allinmethod no longer supported, works automatically
   if (p_tablemap->ItemExists("allinmethod")) {
     ErrorDeprecatedItem("allinmethod");
+  }
+  // clientsize removed in favour of clientsizemin/max and targetzize
+  if (p_tablemap->ItemExists("clientsize")) {
+    ErrorClientsizeReplaced();
   }
 }

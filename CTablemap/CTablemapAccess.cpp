@@ -108,7 +108,7 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 	return false;
 }
 
-bool CTablemapAccess::SetClientSize(CString size_name, int *width, int *height) {
+bool CTablemapAccess::GetClientSize(CString size_name, int *width, int *height) {
 	/*
 		z$ : Extract client size
 		required by Autoconnector
@@ -144,12 +144,3 @@ unsigned int CTablemapAccess::GetClientSize(CString size_name, dim dimension)
 	return 0;
 }
 
-unsigned int CTablemapAccess::GetClientSizeX()
-{
-	return GetClientSize("clientsize", width);
-}
-
-unsigned int CTablemapAccess::GetClientSizeY()
-{
-	return GetClientSize("clientsize", height);
-}

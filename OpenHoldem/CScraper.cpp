@@ -105,9 +105,6 @@ bool CScraper::GetButtonState(int button_index) {
 			l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
 		}
 		return GetButtonState(l_button_state);
-	}	else if (button_index==86) {
-		l_button_state = p_table_state->_SCI._i86_button_state.MakeLower();
-		return GetButtonState(l_button_state);
 	}	else if (button_index>=860)	{
 		l_button_state = p_table_state->_SCI._i86X_button_state[button_index-860];
 		return GetButtonState(l_button_state);

@@ -30,7 +30,6 @@ CTableMapLoader *p_tablemap_loader = NULL;
 typedef struct {
 	CString	FilePath;
 	CString	SiteName;
-	int	    ClientSizeX, ClientSizeY;
 	int	    ClientSizeMinX, ClientSizeMinY;
 	int	    ClientSizeMaxX, ClientSizeMaxY;
 	CString	TitleText;
@@ -158,9 +157,8 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	}
 	
 	// Get clientsize info through TM-access-class
-	p_tablemap_access->SetClientSize("clientsize", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeY);
-	p_tablemap_access->SetClientSize("clientsizemin", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
-	p_tablemap_access->SetClientSize("clientsizemax", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
+	p_tablemap_access->GetClientSize("clientsizemin", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
+	p_tablemap_access->GetClientSize("clientsizemax", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
 
 	// Extract title text information
 	p_tablemap_access->SetTitleText("titletext", tablemap_connection_data[_number_of_tablemaps_loaded].TitleText);
@@ -207,26 +205,15 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map nr. %d\n", MapIndex);
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Window title: %s\n", title);
 	
-	// Check for exact match on client size
-	if (!((r.right == tablemap_connection_data[MapIndex].ClientSizeX)
-	  	&& (r.bottom == tablemap_connection_data[MapIndex].ClientSizeY)))	{
-		// Exact size didn't match.
-		// So check for client size that falls within min/max
-		if (!((tablemap_connection_data[MapIndex].ClientSizeMinX != 0) 
-			  && (tablemap_connection_data[MapIndex].ClientSizeMinY != 0) 
-			  && (tablemap_connection_data[MapIndex].ClientSizeMaxX != 0) 
-			  && (tablemap_connection_data[MapIndex].ClientSizeMaxY != 0) 
-			  && (r.right  >= tablemap_connection_data[MapIndex].ClientSizeMinX)
-			  && (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
-			  && (r.bottom >= tablemap_connection_data[MapIndex].ClientSizeMinY)
-			  && (r.bottom <= tablemap_connection_data[MapIndex].ClientSizeMaxY))) {
-			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] No good size: Expected (%dpx, %dpx), Got (%dpx, %dpx)\n",
-				tablemap_connection_data[MapIndex].ClientSizeX,
-				tablemap_connection_data[MapIndex].ClientSizeY,
-				r.right,
-				r.bottom);
-			return false;
-		}
+	// Check for client size that falls within min/max
+	if (!((r.right   >= tablemap_connection_data[MapIndex].ClientSizeMinX)
+			&& (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
+			&& (r.bottom >= tablemap_connection_data[MapIndex].ClientSizeMinY)
+			&& (r.bottom <= tablemap_connection_data[MapIndex].ClientSizeMaxY))) {
+		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] No good size: (%dpx, %dpx) out of clientsizemin/max\n",
+			r.right,
+			r.bottom);
+		return false;
 	}
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
   

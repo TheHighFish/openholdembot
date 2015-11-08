@@ -82,8 +82,8 @@ CRegionCloner::~CRegionCloner()
 
 bool CRegionCloner::TableSizeUndefined()
 {
-	return ((p_tablemap_access->GetClientSizeX() <= 0)
-		|| (p_tablemap_access->GetClientSizeY() <= 0));
+	return false; /* !!! To do ((p_tablemap_access->GetClientSizeX() <= 0)
+		|| (p_tablemap_access->GetClientSizeY() <= 0)); */
 }
 
 CString CRegionCloner::CreateName(CString prefix, int number, CString postfix)
@@ -97,8 +97,7 @@ CString CRegionCloner::CreateName(CString prefix, int number, CString postfix)
 	return CString(new_symbol_name);
 }
 
-void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int number_of_regions)
-{
+void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int number_of_regions) {
 	// Calculates the position for N regions,
 	// horizontally aligned and symmetrically to the middle of the table,
 	// with equal distance to each other.
@@ -106,14 +105,15 @@ void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int num
 	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
 
 	int width_of_region = first_region.right - first_region.left;
-	int space_for_remaining_regions = p_tablemap_access->GetClientSizeX()
+  int target_size_X, dummy;
+  p_tablemap_access->GetClientSize("targetsize", &target_size_X, &dummy);
+	int space_for_remaining_regions = target_size_X;
 		- first_region.left // distance to the left of first region
 		- first_region.left // distance to the right of last region
 		- width_of_region;
 	int delta_X_to_next_region = space_for_remaining_regions
 		/ (number_of_regions - 1);
-	for (int i=0; i<number_of_regions; i++)
-	{
+	for (int i=0; i<number_of_regions; i++)	{
 		// Align horizontally, don't change the first region
 		linear_region_positions[i].left = first_region.left
 			+ i * delta_X_to_next_region;
@@ -132,11 +132,15 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 	assert(number_of_regions >= 1);
 	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
 
+  int target_size_X;
+  int target_size_Y;
+  p_tablemap_access->GetClientSize("targetsize", &target_size_X, &target_size_Y);
+
 	int center_x_of_region = 0.5 * (first_region.left + first_region.right);
 	int center_y_of_region = 0.5 * (first_region.top + first_region.bottom);
 
-	int center_x_of_table  = 0.5 * p_tablemap_access->GetClientSizeX();
-	int center_y_of_table  = 0.5 * p_tablemap_access->GetClientSizeY();
+	int center_x_of_table  = 0.5 * target_size_X;
+	int center_y_of_table  = 0.5 * target_size_Y;
 
 	int delta_x_between_centers = center_x_of_table - center_x_of_region;
 	int delta_y_between_centers = center_y_of_table - center_y_of_region;

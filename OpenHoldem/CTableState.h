@@ -36,7 +36,7 @@ class CTableState {
  public:
    void Reset();
   CPlayer *User();
- public: //!!!!
+ public: 
   CLimitInfo _s_limit_info;
   CScrapedActionInterface _SCI;
  public:

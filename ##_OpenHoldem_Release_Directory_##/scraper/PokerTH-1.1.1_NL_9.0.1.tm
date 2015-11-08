@@ -11,7 +11,7 @@
 
 z$clientsizemin     600  400
 z$clientsizemax    2000 1600
-z$clientsize       1024  600
+z$targetsize       1024  600
 
 //
 // strings

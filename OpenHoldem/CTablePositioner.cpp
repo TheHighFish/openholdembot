@@ -233,7 +233,7 @@ void CTablePositioner::AlwaysKeepPositionIfEnabled() {
 void CTablePositioner::ResizeToTargetSize() {
   int width;
   int height;
-  p_tablemap_access->SetClientSize("targetsize", &width, &height);
+  p_tablemap_access->GetClientSize("targetsize", &width, &height);
   if (width <= 0 || height <= 0) {
     write_log(preferences.debug_table_positioner(), "[CTablePositioner] target size <= 0\n");
     return;
