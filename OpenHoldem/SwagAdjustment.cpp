@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "BetpotCalculations.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolengineGameType.h"
@@ -214,11 +215,20 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
 
 double AdjustedBetsize(double amount_to_raise_to) {
 	double original_amount_to_raise_to = amount_to_raise_to;
-  amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
+  bool rounding_enabled = p_function_collection->EvaluateAutoplayerFunction(
+    k_standard_function_betsize_enable_rounding);
+  write_log(preferences.debug_betsize_adjustment(),
+    "[BetsizeAdjustment] Rounding to beautiful numbers %s\n",
+    Bool2CString(rounding_enabled));
+  if (rounding_enabled) {
+    amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
+  }
 	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
-	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
+  if (rounding_enabled) {
+	  AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
+  }
 	AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));
 	return amount_to_raise_to; 
 }
