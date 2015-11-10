@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineChipAmounts.h"
 
+#include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -223,8 +224,9 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
 
 double CSymbolEngineChipAmounts::Largestbet() {
 	double largest_bet = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-    if (p_table_state->_players[i].PostingBothBlinds()) {
+	for (int i=0; i<p_tablemap->nchairs(); ++i)	{
+    if ((p_betround_calculator->betround() == kBetroundPreflop)
+        && (p_table_state->_players[i].PostingBothBlinds())) {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip

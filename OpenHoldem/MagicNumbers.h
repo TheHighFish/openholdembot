@@ -123,6 +123,7 @@ const int k_button_leave	= 22;
 const int k_button_rematch  = 23;
 const int k_button_prefold	= 24;
 const int k_button_autopost	= 25;
+const int k_button_i86      = 86;
 const int k_button_undefined = -1;
 
 const int k_double_click_delay = 100; // ms
