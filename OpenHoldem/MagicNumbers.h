@@ -120,6 +120,7 @@ const int k_button_check	= 14;
 const int k_button_sitin	= 20;
 const int k_button_sitout	= 21;
 const int k_button_leave	= 22;
+const int k_button_i86    = 86; 
 const int k_button_rematch  = 23;
 const int k_button_prefold	= 24;
 const int k_button_autopost	= 25;

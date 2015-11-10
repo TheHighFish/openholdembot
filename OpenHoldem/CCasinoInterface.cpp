@@ -329,7 +329,13 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
     lost_focus = true;
   }
   // BET CONFIRMATION ACTION
-	if (!lost_focus) {
+	if (lost_focus) {
+    // Print a very verbose warning in the log
+    // Experience tell that beginenrs (and veterans) need that.
+    write_log(k_always_log_errors, "[CasinoInterface] WARNING! Betsizing failed because of lost focus.\n");
+    write_log(k_always_log_errors, "[CasinoInterface] Another window popped up and receives mouse and keyboard input.\n");
+    write_log(k_always_log_errors, "[CasinoInterface] This might be caused by bad casino, bad hopper or by user-interaction.\n");
+  } else {
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) 	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);

@@ -161,7 +161,9 @@ void CSymbolEngineChipAmounts::CalculatePots() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17984#p125241
   if (IsSmaller(_potcommon, 0)) {
 	  // This can happen for potmethod = 2 and incorrectly scraped (occluded) main-pot
-	  write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR: negative potcommon. Probably miss-scraped main-pot. Adapting to 0.0\n");
+	  write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR! negative potcommon.\n"); 
+    write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Probably miss-scraped main-pot or wrong potmethod.");
+    write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Adapting to 0.0\n");
 	  _potcommon = 0;
   }
 }
