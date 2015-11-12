@@ -214,14 +214,17 @@ public:
 	const int chat_random_delay() { return prefs_numerical_values[k_prefs_chat_random_delay]; }
 	
 	// Logging and debugging
+  // Most options always enabled for beginners
+  // who are "smart" enough to disable logging,
+  // but then cry because the log does not show any info.
 	const bool disable_msgbox() { return prefs_numerical_values[k_prefs_disable_msgbox]; }
 	const int log_max_logsize() { return prefs_numerical_values[k_prefs_log_max_logsize]; }
 
-	const bool log_basic_info()				{ return prefs_numerical_values[k_prefs_log_basic_info]; }
-	const bool trace_enabled()				{ return prefs_numerical_values[k_prefs_trace_enabled]; }
-	const bool basic_logging_enabled()		{ return prefs_numerical_values[k_prefs_basic_logging_enabled]; }
-	const bool error_logging_enabled()		{ return prefs_numerical_values[k_prefs_error_logging_enabled]; }
-	const bool dll_logging_enabled()		{ return prefs_numerical_values[k_prefs_dll_logging_enabled]; }
+  const bool log_basic_info()         { return true; } //prefs_numerical_values[k_prefs_log_basic_info]; }
+	const bool trace_enabled()          { return true; } //prefs_numerical_values[k_prefs_trace_enabled]; }
+	const bool basic_logging_enabled()  { return true; } //prefs_numerical_values[k_prefs_basic_logging_enabled]; }
+	const bool error_logging_enabled()  { return true; } //prefs_numerical_values[k_prefs_error_logging_enabled]; }
+	const bool dll_logging_enabled()    { return true; } //prefs_numerical_values[k_prefs_dll_logging_enabled]; }
 
 	// Debugging
 	const bool	debug_autoconnector() { return prefs_numerical_values[k_prefs_debug_autoconnector]; }
