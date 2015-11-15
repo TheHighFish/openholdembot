@@ -297,7 +297,6 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
-    <ClCompile Include="CGameState.cpp" />
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
     <ClCompile Include="CSymbolEngineAutoplayer.cpp" />
     <ClCompile Include="CSymbolEngineBlinds.cpp" />
@@ -547,7 +546,6 @@
     <ClInclude Include="..\StructsDefines\structs_defines.h" />
     <ClInclude Include="CBetroundCalculator.h" />
     <ClInclude Include="CEngineContainer.h" />
-    <ClInclude Include="CGameState.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />

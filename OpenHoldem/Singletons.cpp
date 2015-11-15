@@ -26,7 +26,6 @@
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormulaParser.h"
-#include "CGameState.h"
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -115,9 +114,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDllExtension\n");
   assert(!p_dll_extension);
   p_dll_extension = new CDllExtension;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CGameState\n");
-  assert(!p_game_state);
-  p_game_state = new CGameState;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
@@ -234,7 +230,6 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 05\n");
-  DELETE_AND_CLEAR(p_game_state)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 06\n");
   DELETE_AND_CLEAR(p_dll_extension)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 07\n");

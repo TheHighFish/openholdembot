@@ -684,9 +684,6 @@
     <ClCompile Include="CDllExtension.cpp">
       <Filter>Source Files\Programming the Bot\DLL</Filter>
     </ClCompile>
-    <ClCompile Include="CGameState.cpp">
-      <Filter>Source Files\Programming the Bot\DLL</Filter>
-    </ClCompile>
     <ClCompile Include="CHandHistoryDealPhase.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
     </ClCompile>
@@ -1517,9 +1514,6 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CDllExtension.h">
-      <Filter>Header Files\Programming the Bot\DLL</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameState.h">
       <Filter>Header Files\Programming the Bot\DLL</Filter>
     </ClInclude>
     <ClInclude Include="CHandHistoryDealPhase.h">

@@ -24,7 +24,6 @@
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTime.h"
 #include "CEngineContainer.h"
-#include "CGameState.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
@@ -192,10 +191,6 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	if (m_ScraperOutputDlg) {
 		m_ScraperOutputDlg->UpdateDisplay();
 	}
-  ////////////////////////////////////////////////////////////////////////////////////////////
-	// Save state
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
-	p_game_state->CaptureState();
   
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator
