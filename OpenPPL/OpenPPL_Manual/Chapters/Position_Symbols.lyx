@@ -662,10 +662,18 @@ InUTG
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if you are UTG (left to the big blind), independent of the number
- of players at the table.
+True, if you are 
+\emph on
+under the gun
+\emph default
+ (left to the big blind), independent of the number of players at the table.
  This symbols is escpecially useful to sitout after the last hand of a session
- (before the next blind).
+ (before the next blind), but should not be used for positional play.
+ Better use symbols like 
+\emph on
+InEarlyPosition1
+\emph default
+ for selection of your starting hands.
 \end_layout
 
 \end_inset
