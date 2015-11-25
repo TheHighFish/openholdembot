@@ -31,6 +31,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineCallers.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
@@ -56,7 +57,7 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTableStats.h"
@@ -115,6 +116,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineEventLogging
   p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
   AddSymbolEngine(p_symbol_engine_event_logging);
+  // CSymbolEngineColourCodes
+  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
+  AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineTableLimits
   p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
   AddSymbolEngine(p_symbol_engine_tablelimits);
@@ -151,12 +155,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineICM
   p_symbol_engine_icm = new CSymbolEngineICM();
   AddSymbolEngine(p_symbol_engine_icm);
-  // CSymbolEngineRaisersCallers
-  p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
-  AddSymbolEngine(p_symbol_engine_raisers_callers);
-  // CSymbolEnginePokerTracker
-  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
-  AddSymbolEngine(p_symbol_engine_pokertracker);
+  // CSymbolEngineRaisers
+  p_symbol_engine_raisers = new CSymbolEngineRaisers();
+  AddSymbolEngine(p_symbol_engine_raisers);
+  // CSymbolEngineCallers
+  p_symbol_engine_callers = new CSymbolEngineCallers();
+  AddSymbolEngine(p_symbol_engine_callers);
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
@@ -166,6 +170,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCasino.h
   p_symbol_engine_casino = new CSymbolEngineCasino;
   AddSymbolEngine(p_symbol_engine_casino);
+  // CSymbolEngineMTTInfo"
+  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
+  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);
@@ -196,15 +203,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMemorySymbols
   p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
   AddSymbolEngine(p_symbol_engine_memory_symbols);
-  // CSymbolEngineColourCodes
-  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
-  AddSymbolEngine(p_symbol_engine_colourcodes);
-  // CSymbolEngineMTTInfo"
-  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
-  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsRush
   p_symbol_engine_isrush = new CSymbolEngineIsRush;
   AddSymbolEngine(p_symbol_engine_isrush);
+  // CSymbolEnginePokerTracker
+  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
+  AddSymbolEngine(p_symbol_engine_pokertracker);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
@@ -257,7 +261,7 @@ void CEngineContainer::DestroyAllSymbolEngines()
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines()
-{;
+{
 	delete p_betround_calculator;
 }
 

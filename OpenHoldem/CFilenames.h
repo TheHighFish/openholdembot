@@ -36,6 +36,7 @@ class CFilenames {
   CString OpenPPLLibraryPath();
  public:
 	void SwitchToOpenHoldemDirectory();
+  bool Exists(CString filename_or_pattern);
  private:
 	CString IniFilename();
   void Log(CString name, CString value);

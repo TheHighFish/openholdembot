@@ -15,12 +15,10 @@
 #include "CSymbolEngineColourCodes.h"
 
 #include "CBetroundCalculator.h"
-#include "CPokerTrackerThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
-#include "CSymbolEnginePokerTracker.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
@@ -30,7 +28,8 @@ CSymbolEngineColourCodes::CSymbolEngineColourCodes() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_pokertracker != NULL);
+  //
+	// This engine does not use any other engines.
 }
 
 CSymbolEngineColourCodes::~CSymbolEngineColourCodes() {
@@ -62,9 +61,7 @@ bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, 
 	}
   if ((memcmp(name, "colourcode", 10) == 0) && (strlen(name) == 11)) {
     // colourcode0..colourcode9
-    char c_index = name[10];
-    if ((c_index < '0') || (c_index > '9')) return false;
-    int index = c_index - '0';
+    int index = RightDigitCharacterToNumber(name);
     *result = p_table_state->_players[index]._colourcode;
     return true;
   }
@@ -73,12 +70,12 @@ bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, 
 }
 
 CString CSymbolEngineColourCodes::SymbolsProvided() {
-  return RangeOfSymbols("colourcode%i", k_first_chair, k_last_chair);
+  return RangeOfSymbols("colourcode%i", kFirstChair, kLastChair);
 }
 
 int CSymbolEngineColourCodes::ColourCodeToDisplay(const int chair) {
   assert(chair >= 0);
-  assert(chair <= k_last_chair);
+  assert(chair <= kLastChair);
   // Scraped colour-code 
   // Coloour-code for PT-Icon removed in rev. 4283,
   // as PT4 does no longer support the auto-rate-icon

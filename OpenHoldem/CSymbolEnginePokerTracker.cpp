@@ -19,10 +19,11 @@
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
+#include "CSymbolEngineCallers.h"
 #include "CSymbolEngineChairs.h"
 #include "CSymbolengineDealerchair.h"
 #include "CSymbolEngineIsRush.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
@@ -36,7 +37,7 @@ CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_isrush != NULL); 
-	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_userchair != NULL);
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 }
@@ -91,21 +92,21 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 }
 
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound) {
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound) {
 		_player_data[chair].found = false;
-		memset(_player_data[chair].pt_name, 0, k_max_length_of_playername);
-		memset(_player_data[chair].scraped_name, 0, k_max_length_of_playername);
+		memset(_player_data[chair].pt_name, 0, kMaxLengthOfPlayername);
+		memset(_player_data[chair].scraped_name, 0, kMaxLengthOfPlayername);
 	}
 	_player_data[chair].skipped_updates = k_advanced_stat_update_every;
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		if (p_pokertracker_thread->CheckIfNameHasChanged(i))
 		{
@@ -116,7 +117,7 @@ void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
 
 void CSymbolEnginePokerTracker::ClearAllStats()
 {
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		ClearSeatStats(i, true);
 	}
@@ -124,7 +125,7 @@ void CSymbolEnginePokerTracker::ClearAllStats()
 
 int CSymbolEnginePokerTracker::PlayerIcon(const int chair) {
   assert(chair >= 0);
-  assert(chair <= k_last_chair);
+  assert(chair <= kLastChair);
   return PT_DLL_GetStat("icon", chair);
 }
 
@@ -193,7 +194,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
 	assert(StringAIsPrefixOfStringB("pt_", s));
 	// PokerTracker symbols for the raise-chair
 	if (s.Right(10) == "_raischair") {
-		chair = p_symbol_engine_raisers_callers->raischair();
+		chair = p_symbol_engine_raisers->raischair();
 	}
 	// PokerTracker symbols for the opponent headsup chair
 	else if (s.Right(8) == "_headsup") {
@@ -208,20 +209,20 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
     chair = p_symbol_engine_chairs->bigblind_chair();
 	}
   // PokerTracker symbols for the cutoff chair
-	else if (s.Right(7) == "_cutoff ") {
+	else if (s.Right(7) == "_cutoff") {
     chair = p_symbol_engine_chairs->cutoff_chair();
 	}
   // PokerTracker symbols for the firstcaller chair
 	else if (s.Right(12) == "_firstcaller") {
-    chair = p_symbol_engine_chairs->firstcaller_chair();
+    chair = p_symbol_engine_callers->firstcaller_chair();
 	}
   // PokerTracker symbols for the lastcaller chair
 	else if (s.Right(11) == "_lastcaller") {
-    chair = p_symbol_engine_chairs->lastcaller_chair();
+    chair = p_symbol_engine_callers->lastcaller_chair();
 	}
   // PokerTracker symbols for the firstraiser chair
 	else if (s.Right(12) == "_firstraiser") {
-    chair = p_symbol_engine_chairs->firstraiser_chair();
+		chair = p_symbol_engine_raisers->firstraiser_chair();
 	}
   // PokerTracker symbols for the dealerchair chair
 	else if (s.Right(7) == "_dealer") {
@@ -250,7 +251,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const char *name, double *result,
     *result = kUndefined;
     return true;
   }
-	AssertRange(chair, k_first_chair, k_last_chair);
+	AssertRange(chair, kFirstChair, kLastChair);
 	*result = PT_DLL_GetStat(s, chair); 
 	return true;
 }
@@ -284,11 +285,10 @@ CString CSymbolEnginePokerTracker::SymbolsProvided() {
 	  list.AppendFormat(" %s", new_symbol);
 
     // Add symbols for all chairs, indexed by trailing numbers
-    for (int j=0; j<k_max_number_of_players; j++) {
+    for (int j=0; j<kMaxNumberOfPlayers; j++) {
 	    new_symbol.Format("pt_%s%i", basic_symbol_name, j); 
 	    list.AppendFormat(" %s", new_symbol);
     }
   }
   return list;
 }
-

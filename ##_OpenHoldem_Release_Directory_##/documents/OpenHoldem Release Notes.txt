@@ -1,3 +1,167 @@
+v9.0.0 2015-10-08
+==================
+NEW STUFF:
+- Perfect stealth for PokerStars.
+  The new stealth method is based on a rootkit that installs itseld into a ninjad ramdrive.
+  It hides the OpenHodem-GUI, the file-system, processes, window-titles, everything.
+  In addition OpenHoldem executes now human-like mouse-movements
+  based on the Alpherâ€“Betheâ€“Gamow-theorem.
+  To make use of this new stealth method:
+    * first press Ctrl + Shift + H (hide)
+    * then start your favourite casino
+  To unhide OpenHoldem:
+    * open the DOS-console and enter the magic word "mutabor".
+  The finer details will be explain in the forum if needed.
+  Finally we would like to thank our stealth experts Folder and Gecko for the help.
+  [OpenHoldem, Singlemalt]
+- New OpenPPL backup-action call->allin if we can only fold / (call) allin.
+  We detect this situation the reliable way with button-states (exactly "F...A")
+  and not with easily mis-scraped bets and balances.
+  This backup action (the first time not the conservative way)
+  became necessary, as a good portion of end-users were unwilling / unable
+  to handle this "special" case in their bot-logic.
+  [THF]
+
+v7.8.0 2015-09-10
+==================
+BUG FIXES:
+- OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
+  [fqfq]
+- An incomplete tablemap with a r$c0limits-region but without the corresponding s$c0limits-symbol
+  (that defines how to interpret the scraped text) could crash OpenHoldem.
+  Thanks to FpTrader for reporting and for suggesting a solution.
+  [THF]
+- Fix for EffectiveMaxStacksizeOfActiveOpponents.
+  Thanks to OpenGeek for reporting.
+  [Johnny]
+- OpenHoldem could freeze on connection due to a nearly endless loop.
+  Thanks to Poker_Dog for reporting and to Moby for identifying the problem.
+  [THF]
+- The symbol callbitsX was wrong in the blinds.
+  Thanks to Gratiszzzz and Vladus for reporting, Jockel for some replay-frames and Devbot for the help.
+  [THF]
+
+MAINTENANCE:
+- Skipping betsize in call/fold and fold/allin situations,
+  i.e. if no min-raise-button is present.
+  Thanks to FpTrader for the suggestion and his patch.
+  [THF]
+  
+v7.7.9 2015-08-22
+==================
+BUG FIXES:
+- The lookup for the symbols didbetsizeroundX was broken.
+  Thanks to Ngels for reporting.
+  [THF]
+
+MAINTENANCE:
+- move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
+- delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
+- update CSymbolEnginePokerTracker.cpp 
+  [DevBot]
+- Changed weighted-prwin hand rankings to Sklansky-Chubukov's.
+  [fqfq]
+
+v7.7.8 2015-08-14
+==================
+BUG FIXES:
+- The default formulas were broken.
+  Thanks to OpenGeek for reporting.
+  [THF]
+- A check for naming conventions didn't accept user-defined lists.
+  Thanks to Poker_Dog for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Renamed the symbols didswag and didswagroundX 
+  to didbetsize and didbetsizeroundX.
+  [THF]
+
+v7.7.7 2015-08-11
+==================
+BUG FIXES:
+- z$targetsize didn't work properly due to conversions from clientsize 
+  to total window size. This has now been fixed.
+  Thanks to Ngels for reporting.
+  [THF]
+- Some rarely used OpenPPL-actions like RaiseFourthPot didn't work.
+  Thanks to NewBot for reporting.
+  [THF]
+- The detection of players who post both blinds at once (since 7.7.5)
+  could affect the detection of raisers for low blind limits.
+  Thanks to DevBot for reporting and for finding the source of the problem.
+  [THF]
+- Absolute lines in the log-file still were wrong,
+  because at the time when we requested the starting-line of a function
+  we had already recognized the header of the next one.
+  Thanks to OpenGeek for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Swagging got removed.
+  The following tablemap-symbols got renamed:
+    * swagselectionmethod -> betsizeselectionmethod
+    * swagdeletionmethodmethod -> betsizedeletionmethodmethod
+    * swagconfirmationmethod -> betsizeconfirmationmethod
+    * swagtextmethod -> betsizeinterpretationmethod
+  [THF]
+
+v7.7.6 2015-07-24
+==================
+BUG FIXES:
+- Improved betsize adjustment did not work when the betsize was already a multiple of the big blind.
+  Thanks to Ngels and Salem for reporting.
+  [poker_dog]
+- FirstCallerchair did not work properly.
+  Thanks to Fqfq for reporting and helping with the fix.
+  [THF]
+- The lookup for some table-stats considered only the current betround.
+  Thanks to Relhby for the patch.
+  [THF]
+  
+MAINTENANCE:
+- Changed DLL interface.
+  For details see http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18675
+  [THF]
+
+v7.7.5 2015-07-08
+==================
+NEW STUFF:
+- New hopper function f$rematch.
+  Thanks to Nik0 for the suggestion.
+  [THF]
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+- New preference to restore mouse position and window focus after action (default=false).
+  [poker_dog]
+  
+BUG FIXES:
+- The lookup for the new symbols iasng, ismtt, isdon didn't work.
+  Thanks to Poker_Dog for reporting.
+  [THF]
+- Secondary formulas (prefold) prevented primary actions in rare occasions.
+  [fqfq]
+- BigBlind was wrongly true when in UTG and small blind was missing.
+  [fqfq]
+- There are very rare cases where a new player has to post both blinds at some casinos,
+  but this does not count as a raise. The symbols nopponentstruelyraising,
+  call, nbetstocall, ncallbets, nbetstorais, nraisbets and all derived symbols
+  (Raises, AmountTocall, ...) have been adapted to consider this case.
+  Thanks to Chillit for reporting.
+  [THF]
+- nplayersdealt: the "smart" logic to guess some active players without cards as dealt could fail on garbage input.
+  Now we do simple calculations first. Thanks to Shank_17 for reporting.
+  [THF]
+- Fixed srankbitscommon that affected OOPL-symbols HaveNutFlush(Draw) etc.
+  [FqFq]  
+  
+MAINTENANCE:
+- Improved betsize adjustment.
+  Thanks to Tabo_ger for reporting a special case.
+  [FqFq, THF]
+- Improved decision locking for istournament.
+  [Relhby]
+
 v7.7.3 2015-05.05
 ==================
 NEW STUFF:
@@ -2420,7 +2584,7 @@ MAINTENANCE:
   can not be guaranteed. [THF]
 - Removing currentbetX cap for FL games. [Strikles]
 - Whenever OpenHoldem finds an unknown symbols it tries noe
-  to prepend a prefix "f§OpenPPL_" and then evaluates again.
+  to prepend a prefix "fÂ§OpenPPL_" and then evaluates again.
   This way is more robust for OpenPPL-users, especially
   for OpenPPL-symbols in memory-expressions. [THF] 
   
@@ -3173,7 +3337,7 @@ NEW STUFF:
   (OpenHoldem)
   
 - Added additional validation of numeric fields.  To be considered numeric, a scraped region must not
-  only contain only these characters "$0123456789,.¢ckm", but must 1. have 0 or 1 decimal points, and 
+  only contain only these characters "$0123456789,.Â¢ckm", but must 1. have 0 or 1 decimal points, and 
   2. If a decimal point is present, then there must be exactly 2 numbers following it. (OpenHoldem)
 
 - User defined functions are now recognized by the Formula Dialog so that they are now colored (Spew)
@@ -3672,13 +3836,13 @@ BUG FIXES:
 - PokerPro: when connected to a poker pro server, m_holdem_state[m_ndx].m_title would always
   be blank.  (Thanks to Bozo for the bug find and Spew for the code fix).
 
-- Parsing of money fields was inconsistently applied. Some money fields recognized the "¢", "k"
+- Parsing of money fields was inconsistently applied. Some money fields recognized the "Â¢", "k"
   and "m" suffixes, and some did not, for example.  That function has been unified and all
   money fields should behave consistently now.  (Thanks, MrRuder)
   - the dollar sign ($) leader is discarded
   - commas are discarded
   - the remaining text is then fed through atof() to generate an internal double
-  - the cent symbol (¢) or the letter (c) trailer causes the number to be divided by 100
+  - the cent symbol (Â¢) or the letter (c) trailer causes the number to be divided by 100
   - the thousand (k) trailer causes the number to be multiplied by 1000
   - the million (m) trailer causes the number to be multiplied by 1000000 
   

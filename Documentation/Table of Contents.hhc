@@ -5,18 +5,16 @@
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
 <OBJECT type="text/site properties">
-	<param name="Foreground" value="0xc0c0c0">
+	<param name="Background" value="0x0">
+	<param name="Foreground" value="0xffffff">
 	<param name="Window Styles" value="0x800025">
 	<param name="ImageType" value="Folder">
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="OpenHoldem - The Manual">
-		<param name="Local" value="Chapters\titlepage\titlepage.html.LyXconv\titlepage.html">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction">
 		<param name="Local" value="Chapters\titlepages_for_main_parts\introduction.html.LyXconv\introduction.html">
+		<param name="URL" value="Chapters\titlepage\TitlePage.htm">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -108,8 +106,32 @@
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="How OpenHoldem Works">
-				<param name="Local" value="Chapters\how_oh_works\How_OH_Works.html.LyXconv\how_oh_works.html">
+				<param name="Name" value="Connecting to a Table">
+				<param name="Local" value="Chapters\how_oh_works\connecting_to_a_table.html.LyXconv\connecting_to_a_table.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Heartbeat-Cycle">
+				<param name="Local" value="Chapters\how_oh_works\heartbeat_cycle.html.LyXconv\heartbeat_cycle.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Bot-Logic (OH-Script)">
+				<param name="Local" value="Chapters\how_oh_works\bot_logic_OH_script.html.LyXconv\bot_logic_OH_script.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Bot-Logic (OpenPPL)">
+				<param name="Local" value="Chapters\how_oh_works\bot_logic_OpenPPL.html.LyXconv\bot_logic_OpenPPL.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Backup Actions">
+				<param name="Local" value="Chapters\how_oh_works\backup_actions.html.LyXconv\backup_actions.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hopper Functions">
+				<param name="Local" value="Chapters\how_oh_works\hopper_functions.html.LyXconv\hopper_functions.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Log-Files">
+				<param name="Local" value="Chapters\how_oh_works\log_files.html.LyXconv\log_files.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Favourite Failures">
@@ -312,6 +334,10 @@
 				<param name="Local" value="Chapters\scraping_in_practice\Seated_active_playing.html.LyXconv\Seated_active_playing.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Starting a new Map">
+				<param name="Local" value="Chapters\scraping_in_practice\Starting_a_new_map.html.LyXconv\Starting_a_new_map.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Getting started">
 				<param name="Local" value="Chapters\scraping_in_practice\getting_started.html.LyXconv\getting_started.html">
 				</OBJECT>
@@ -436,10 +462,6 @@
 				<param name="Name" value="Hand Lists">
 				<param name="Local" value="Chapters\handlists\Handlists.html.LyXconv\Handlists.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Logging">
-				<param name="Local" value="Chapters\logging\Logging.html.LyXconv\Logging.html">
-				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="OH-Script explained">
@@ -558,6 +580,10 @@
 				<param name="URL" value="Chapters\automation\Automation.html.LyXconv\Automation.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Planning a hopper">
+				<param name="Local" value="Chapters\automation\Planning_a_hopper.html.LyXconv\Planning_a_hopper.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="AutoIT - the Language of Choice">
 				<param name="Local" value="Chapters\automation\AutoIT.html.LyXconv\AutoIT.html">
 				</OBJECT>
@@ -600,45 +626,55 @@
 				<param name="Local" value="Chapters\stealth\colour_coded_pokersites.html.LyXconv\colour_coded_pokersites.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="The Grand Plam">
+				<param name="Name" value="The Grand Plan">
 				<param name="Local" value="Chapters\stealth\the_grand_plan.html.LyXconv\the_grand_plan.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Single System Configuration">
-				<param name="Local" value="Chapters\stealth\SingleSystemConfiguration.html.LyXconv\SingleSystemConfiguration.html">
 				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Single System Configuration">
+					<param name="Local" value="Chapters\stealth\SingleSystemConfiguration.html.LyXconv\SingleSystemConfiguration.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Casino Software">
+					<param name="Local" value="Chapters\stealth\CasinoSoftware.html.LyXconv\CasinoSoftware.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Ninja Setup">
+					<param name="Local" value="Chapters\stealth\NinjaFolders.html.LyXconv\NinjaFolders.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Stealth Preferences">
+					<param name="Local" value="Chapters\stealth\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Ini-Files and Registry">
+					<param name="Local" value="Chapters\stealth\Registry.html.LyXconv\Registry.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Rootkits">
+					<param name="Local" value="Chapters\stealth\Rootkits.html.LyXconv\Rootkits.html">
+					</OBJECT>
+			</UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Dual System Configuration">
-				<param name="Local" value="Chapters\stealth\DualSystemConfiguration.html.LyXconv\DualSystemConfiguration.html">
 				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Ini-Files and Registry">
-				<param name="Local" value="Chapters\stealth\Registry.html.LyXconv\Registry.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Obscure Preferences">
-				<param name="Local" value="Chapters\stealth\ObscurePreferences.html.LyXconv\ObscurePreferences.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Bring">
-				<param name="Local" value="Chapters\stealth\Bring.html.LyXconv\Bring.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Ninja Folders">
-				<param name="Local" value="Chapters\stealth\NinjaFolders.html.LyXconv\NinjaFolders.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Casino Software">
-				<param name="Local" value="Chapters\stealth\CasinoSoftware.html.LyXconv\CasinoSoftware.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Virtualization">
-				<param name="Local" value="Chapters\stealth\VmWare.html.LyXconv\VmWare.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Rootkits">
-				<param name="Local" value="Chapters\stealth\Rootkits.html.LyXconv\Rootkits.html">
-				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Dual System Configuration">
+					<param name="Local" value="Chapters\stealth\DualSystemConfiguration.html.LyXconv\DualSystemConfiguration.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Virtualization">
+					<param name="Local" value="Chapters\stealth\VmWare.html.LyXconv\VmWare.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Bring">
+					<param name="Local" value="Chapters\stealth\Bring.html.LyXconv\Bring.html">
+					</OBJECT>
+			</UL>
 		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -646,12 +682,12 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Contributing to the Manual">
-			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.html.LyXconv\contributing_to_the_manual.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Outdated Features and known Incompatibilities">
 			<param name="Local" value="Chapters\outdated_featurees_and_incompatibilities\incompatibilities.html.LyXconv\incompatibilities.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Contributing to the Manual">
+			<param name="Local" value="Chapters\contributing_to_the_manual\contributing_to_the_manual.html.LyXconv\contributing_to_the_manual.html">
 			</OBJECT>
 	</UL>
 </UL>

@@ -24,7 +24,7 @@
 #include "CSymbolEngineCasino.h"
 #include "CSymbolengineMTTInfo.h"
 #include "CSymbolEngineChipAmounts.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -78,7 +78,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"qualificatif",		// french for "qualifier"
 	"qualification",
 	"qualifier",
-  "r/a",            // rebuz and add-on 
+  "r/a",            // rebuy and add-on 
 	"rebuy",
   "satellite",
   " semifinal",
@@ -159,7 +159,7 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	assert(p_symbol_engine_casino != NULL);
 	assert(p_symbol_engine_mtt_info != NULL);
 	assert(p_symbol_engine_chip_amounts != NULL);
-	assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
 }
@@ -195,43 +195,44 @@ void CSymbolEngineIsTournament::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
-	// "Beautiful" numbers => tournament
-	// This condition does unfortunatelly only work for the first and final table in an MTT,
-	// not necessarily for other late tables (fractional bets, uneven sums).
-	double sum_of_all_cips = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		sum_of_all_cips += p_table_state->_players[i]._balance;
-		sum_of_all_cips += p_symbol_engine_chip_amounts->currentbet(i);
-	}
-	if (sum_of_all_cips != int(sum_of_all_cips)) {
-		// Franctional number.
-		// Looks like a cash-game.
-		return false;
-	}
-	if ((int(sum_of_all_cips) % 100) != 0) {
-		// Not a multiplicity of 100.
-		// Probably not a tournament.
-		return false;
-	}
-	if ((int(sum_of_all_cips) % p_tablemap->nchairs()) != 0) 	{
-		// Not a multiplicity of the players originally seated (nchairs).
-		// Probably not a tournament.
-		return false;
-	}
-	return true;
+   // "Beautiful" numbers => tournament
+   // This condition does unfortunatelly only work for the first and final table in an MTT,
+   // not necessarily for other late tables (fractional bets, uneven sums).
+   double sum_of_all_chips = 0.0;
+   for (int i=0; i<p_tablemap->nchairs(); i++) {
+	   if (p_table_state->_players[i]._active==true) {
+		   sum_of_all_chips += p_table_state->_players[i]._balance;
+		   sum_of_all_chips += p_table_state->_players[i]._bet;}
+   }
+   if (sum_of_all_chips != int(sum_of_all_chips)) {
+      // Franctional number.
+      // Looks like a cash-game.
+      return false;
+   }
+   if ((int(sum_of_all_chips) % 100) != 0) {
+      // Not a multiplicity of 100.
+      // Probably not a tournament.
+      return false;
+   }
+   if ((int(sum_of_all_chips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0)    { 
+      // Not a multiplicity of the active players.
+      // Probably not a tournament.
+      return false;
+   }
+   return true;
 }
 
 bool CSymbolEngineIsTournament::AntesPresent() {
 	// Antes are present, if all players are betting 
 	// and at least 3 have a bet smaller than SB 
 	// (remember: this is for the first few hands only).
-	if ((p_symbol_engine_raisers_callers->nopponentsbetting() + 1)
+	if ((p_symbol_engine_raisers->nopponentsbetting() + 1)
 		  < p_symbol_engine_active_dealt_playing->nplayersseated()) {
 		return false;
 	}
 	int players_with_antes = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		double players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+		double players_bet = p_table_state->_players[i]._bet;
 		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
 		}
@@ -315,7 +316,12 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 	if ((bigblind > 0) && (bigblind < k_lowest_bigblind_ever_seen_in_tournament)) {
 	  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Blinds \"too low\"; this is a cash-game\n");
 	  _istournament    = false;
-		_decision_locked = true;
+		// We don't lock the decision here,
+    // as the blind-values at some crap-casinos need to be scraped
+    // and might be unreliable for the first hand.
+    // Locking will happen automatically after N hands
+    // with more reliable info.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18266&p=130775#p130772
 		return;
   }
   // If it is ManualMode, then we detect it by title-string "tourney".
@@ -395,10 +401,26 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result,
 		// Valid symbol
 		return true;
 	}
+  if (memcmp(name, "issng", 5)==0 && strlen(name)==5) {
+		*result = IsSNG();
+		// Valid symbol
+		return true;
+	}
+  if (memcmp(name, "ismtt", 5)==0 && strlen(name)==5) {
+		*result = IsMTT();
+		// Valid symbol
+		return true;
+	}
+  if (memcmp(name, "isdon", 5)==0 && strlen(name)==5) {
+		*result = IsDON();
+		// Valid symbol
+		return true;
+	}
+
 	// Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineIsTournament::SymbolsProvided() {
-  return "istournament ";
+  return "istournament issng ismtt isdon ";
 }

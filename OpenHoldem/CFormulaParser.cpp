@@ -86,7 +86,7 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   CFile openPPL_file(openPPL_path, 
     CFile::modeRead | CFile::shareDenyWrite);
   write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Going to load OpenPPL-library\n");
+	    "[FormulaParser] Going to load and parse OpenPPL-library\n");
   CArchive openPPL_archive(&openPPL_file, CArchive::load); 
   ParseFile(openPPL_archive);
   p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
@@ -98,6 +98,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {
+    int starting_line = _formula_file_splitter.starting_line_of_current_function();
     _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
     CString function_header = _formula_file_splitter.GetFunctionHeader(); 
     if (function_header.GetLength() <= 0) {
@@ -109,7 +110,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
       // Skip this function
       continue;
     }
-    ParseSingleFormula(_formula_file_splitter.GetFunctionText());
+    ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
   }
 ExitLoop:
   FinishParse();
@@ -178,13 +179,39 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
       "Expecting a ##f$function## here.\n");
     return false;
   }
-  return true;
+  return VerifyFunctionNamingConventions(_function_name);
+}
+
+bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
+  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+    // User-defined bot-logic
+    // Must be a f$-symbol or a list
+    if (name.Left(2) == "f$") return true;
+    if (name.Left(4) == "list") return true;
+    // Special cases: notes, dll and date
+    if (name == "notes") return true;
+    if (name == "dll") return true;
+    if (name.Left(2) == "20") return true;
+  } else {
+    // OpenPPL-library
+    // Must start with upper cases
+    if (isupper(name[0])) return true;
+  }
+  CString message;
+  message.Format("Invalid function name: %s\n"
+    "Naming conventions:\n"
+    "  * Uppercases: OpenPPL-library\n"
+    "  * lowercases: built-in OpenHoldem symbols\n"
+    "  * f$symbols: user-defined functions\n"
+    "  * listXYZ: user-defined lists\n",
+    name);
+  CParseErrors::Error(message);
+  return false;
 }
 
 bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
-	if (token_ID != kTokenOperatorConditionalElse)
-	{
+	if (token_ID != kTokenOperatorConditionalElse)	{
 		CParseErrors::Error("Malformed conditional expression. \":\" expected,\n"
       "but this could also be a missing operator or wrong bracket.\n");
 		return false;
@@ -192,24 +219,20 @@ bool CFormulaParser::ExpectConditionalThen() {
 	return true;
 }
 
-void CFormulaParser::CheckForExtraTokensAfterEndOfFunction()
-{
+void CFormulaParser::CheckForExtraTokensAfterEndOfFunction(){
 	int token_ID = _tokenizer.GetToken();
 	if ((token_ID != kTokenEndOfFile)
-		&& (token_ID != kTokenEndOfFunction))
-	{
+		  && (token_ID != kTokenEndOfFunction))	{
 		CParseErrors::Error("Unexpected token(s) after end of function.\n");
 	}
 	// Nothing more to do here, not even returning a result.
 	// We are finished and just warn about the extra input.
 }
 
-void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
-{
+void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 	assert(TokenIsBracketOpen(opening_bracket));
 	int expected_bracket_close = _tokenizer.GetToken();
-	switch (opening_bracket)
-	{
+	switch (opening_bracket) {
 	case kTokenBracketOpen_1:
 		if (expected_bracket_close == kTokenBracketClose_1) return;
 	case kTokenBracketOpen_2:
@@ -221,9 +244,11 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket)
     "(or bracket of another type).\n"); 
 }
 
-void CFormulaParser::ParseSingleFormula(CString name, CString function_text) {
+void CFormulaParser::ParseSingleFormula(CString name, 
+                                        CString function_text,
+                                        int starting_line) {
   _function_name = name;
-  ParseSingleFormula(function_text);
+  ParseSingleFormula(function_text, starting_line);
 }
 
 bool CFormulaParser::IsValidFunctionName(CString name) {
@@ -238,7 +263,7 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
   return true; 
 }
 
-void CFormulaParser::ParseSingleFormula(CString function_text) {
+void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
   _tokenizer.SetInput(function_text);
   // Check for empty function
   int token_ID = _tokenizer.GetToken();
@@ -268,7 +293,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
   }
   TPParseTreeNode function_body = NULL;
   if (COHScriptObject::IsFunction(_function_name) 
-    || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+      || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
@@ -281,32 +306,29 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     COHScriptList *new_list = new COHScriptList(&_function_name, 
-        &function_text, _formula_file_splitter.starting_line_of_current_function());
+        &function_text, starting_line);
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
-  }
-  else if (_function_name.MakeLower() == "dll") {
+  } else if (_function_name.MakeLower() == "dll") {
     // ##DLL##
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing ##DLL##\n");
     // Nothing more to do
     // We extract the DLL later
-  }
-  else if (_function_name.MakeLower() == "notes") {
+  } else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Found ##Notes##. Nothing to parse\n");
     // Don't do anything.
     // This is just a special type of global comment.
-  }
-  else {
+  } else {
     CParseErrors::Error("Found unknown function type.\n"
       "Did you forget \"f$\"?\n");
     return;
   }
   CFunction *p_new_function = new CFunction(&_function_name, 
-	  &function_text, _formula_file_splitter.starting_line_of_current_function());
+	  &function_text, starting_line);
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence
@@ -316,15 +338,12 @@ void CFormulaParser::ParseSingleFormula(CString function_text) {
 #endif
 }
 
-void CFormulaParser::ParseListBody(COHScriptList *list)
-{
+void CFormulaParser::ParseListBody(COHScriptList *list) {
 	int token_ID = _tokenizer.GetToken();
-	while (token_ID != kTokenEndOfFunction)
-	{
+	while (token_ID != kTokenEndOfFunction)	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
-			|| (token_ID == kTokenNumber)       // Low pairs 99..22
-			|| (token_ID == kTokenCards)) // Low unpaired cards like 65s, 92o
-		{
+			  || (token_ID == kTokenNumber)       // Low pairs 99..22
+			  || (token_ID == kTokenCards)) {     // Low unpaired cards like 65s, 92o	
 			_token = _tokenizer.GetTokenString();
 			// More token-validation happens inside the setter
 			if (!list->Set(_token)) {
@@ -332,9 +351,7 @@ void CFormulaParser::ParseListBody(COHScriptList *list)
         // Avoid too many errors on bad lists
         return;
       }
-		}
-		else
-		{
+		}	else {
 			CParseErrors::Error("Unexpected token inside list.\n"
         "This does not look like valid hole-cards.\n"
         "Allowed are\n:"
@@ -363,7 +380,7 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   // OpenPPL-function
     TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
     write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
+	    "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
     BackPatchOpenEndedWhenConditionSequence(open_ended_when_condition);
     return open_ended_when_condition;
   } else {	
@@ -475,7 +492,7 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {
 		double value = StringToNumber(number);
 		terminal_node->MakeConstant(value);
 	}	else {
-		assert(k_this_must_not_happen);
+		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
 	}
 	write_log(preferences.debug_parser(), 

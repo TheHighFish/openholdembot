@@ -55,17 +55,13 @@ CAutoConnector::CAutoConnector()
 	set_attached_hwnd(NULL);
 }
 
-
-CAutoConnector::~CAutoConnector()
-{
+CAutoConnector::~CAutoConnector() {
 	// Releasing the mutex in case we hold it.
 	// If we don't hold it, Unlock() will "fail" silently.
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector()\n");
 	_autoconnector_mutex->Unlock();
-	if (_autoconnector_mutex != NULL)
-	{
-
-		write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
+	if (_autoconnector_mutex != NULL)	{
+    write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Deleting auto-connector-mutex\n");
 		delete _autoconnector_mutex;
 		_autoconnector_mutex = NULL;
 	}
@@ -74,7 +70,6 @@ CAutoConnector::~CAutoConnector()
 	set_attached_hwnd(NULL);
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
 }
-
 
 bool CAutoConnector::IsConnected()
 {
@@ -120,19 +115,15 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	GetClientRect(hwnd, &crect);
 
 	// See if it matches the currently loaded table map
-	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title))
-	{
+	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title)) {
 		// Filter out served tables already here,
 		// otherwise the other list used in the dialog
 		// to select windows manually will cause us lots of headaches,
 		// as the lists will be of different size 
 		// and the indexes will not match.
-		if (p_sharedmem->PokerWindowAttached(hwnd))
-		{
+		if (p_sharedmem->PokerWindowAttached(hwnd))	{
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
-		}
-		else
-		{
+		}	else {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
 			tablelisthold.title = title;
@@ -144,8 +135,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 			g_tlist.Add(tablelisthold);
 		}
 	}
-
-	return true;  // keep processing through entire list of windows
+  return true;  // keep processing through entire list of windows
 }
 
 void CAutoConnector::WriteLogTableReset()
@@ -242,7 +232,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	
 	// Put global candidate table list in table select dialog variables
 	N = (int) g_tlist.GetSize();
-  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates> %i\n", N);
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates: %i\n", N);
 	if (N == 0) {
 		FailedToConnectBecauseNoWindowInList();
 	}	else 	{
@@ -260,7 +250,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			CString tablemap_to_load = g_tlist[SelectedItem].path.GetString();
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
 			p_tablemap->LoadTablemap(tablemap_to_load);
-			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap loaded\n");
+			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap successfully loaded\n");
 
 			// Create bitmaps
 			p_scraper->CreateBitmaps();
@@ -299,6 +289,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
       WriteLogTableReset();
 
+      p_table_positioner->ResizeToTargetSize();
 			p_table_positioner->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
 		}

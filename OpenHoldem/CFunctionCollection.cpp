@@ -116,22 +116,23 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CString name = new_function->name();
   if (name == "") {
     write_log(preferences.debug_formula(), 
-	  "[CFunctionCollection] Invalid empty name\n");
+	    "[CFunctionCollection] Invalid empty name\n");
     return;
   }
   if (Exists(name)) {
     write_log(preferences.debug_formula(), 
-	  "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
+	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
-    // Warning already generated
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Ignoring bad function %s\n", name);
     return;
   }
 
   write_log(preferences.debug_formula(), 
-	"[CFunctionCollection] Adding %s -> %i\n", name, new_function);
+	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
 }
 
@@ -147,21 +148,20 @@ bool CFunctionCollection::Exists(CString name) {
 void CFunctionCollection::VerifyExistence(CString name) {
   if (Exists(name)) return;
   // Error: function does not exist
-  CString similar_name = GetSimilarNameWithDifferentCases(name);
-  if (similar_name != "") {
-    CString message;
-    message.Format("%s%s%s%s%s",
-      "Function used but never defined: ",
-      name, 
-      "\nDid you mean ",
-      similar_name,
-      " instead?");
-    OH_MessageBox_Interactive(message, "Error", 0);
-    return;
-  } 
-  // Else: general error-message
   CString message;
-  message.Format("Function used but never defined\n%s", name);
+  message.Format("Function used but never defined> %s\n\n", name);
+  CString similar_name = GetSimilarNameWithDifferentCases(name);
+  name = name.MakeLower();
+  if (similar_name != "") {
+     message += "Did you mean ";
+     message += similar_name;
+     message += " instead?";
+  } else if (name.Left(5) == "hand$" || name.Left(6) == "board$" || name.Left(4) == "user") {
+    message += "hand$ and board$ expressions and user-variables\n";
+    message += "are built-in and must be lower-cases.";
+  } else {
+    // Else: general error-message
+  }
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
@@ -228,6 +228,8 @@ CString CFunctionCollection::DLLPath() {
 }
 
 void CFunctionCollection::SetEmptyDefaultBot() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] SetEmptyDefaultBot()\n");
   CSLock lock(m_critsec);
   DeleteAll(false, true);
   _title = "NoName";
@@ -243,6 +245,8 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 }
 
 void CFunctionCollection::ExecuteSelftest() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] Executing self-test\n");
   CString name = kSelftestName;
   CString function_text = kSelftestFunction;
   CFunction *p_function = new CFunction(&name, 
@@ -254,6 +258,8 @@ void CFunctionCollection::ExecuteSelftest() {
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] CheckForDefaultFormulaEntries(\n");
   CSLock lock(m_critsec);
   // Header comment
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("notes"));
@@ -295,53 +301,63 @@ void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double v
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name) {
   if (Exists(function_name)) {
-	 return;
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Function already exists : %s\n", function_name);
+	  return;
   }
   // Formula not found.
   // Add the standard one.
   CString function_text;
-  if (function_name.Compare(k_standard_function_names[k_autoplayer_function_betsize]) == k_CString_identical) {
+  if (function_name == k_standard_function_names[k_autoplayer_function_betsize]) {
     function_text = 
       "// Betsize in dollars, raise-to semantics.\n"
       "// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.\n"
-      "// Please define your tablemaps \"swagtextmethod\" to configure this feature.\n";
-  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_check]) == k_CString_identical) {    
+      "// Please define your tablemaps \"betsizeinterpretationmethod\"\n"
+      "// to configure this feature.\n";
+  } else if (function_name == k_standard_function_names[k_autoplayer_function_check]) {    
     function_text = 
       "// Check whenever it is free to call\n"
       "(call == 0) "; 
-  } else if (function_name.Compare(k_standard_function_names[k_autoplayer_function_fold]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_autoplayer_function_fold]) {
     function_text = 
-      "// f$fold should alwazs evaluate to true per default\n"
+      "// f$fold should always evaluate to true per default\n"
       "// for auto-check-folding instead of time-outs.\n"
       "1 ";
-  } else if (function_name.Compare(k_standard_function_names[k_hopper_function_rebuy]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_hopper_function_rebuy]) {
     function_text = 
       "// f$rebuy should evaluate to the target-amount in dollars.\n"
       "// This value will be passed to the rebuy-script as a parameter.\n"
       "0\n";
-  } else if (function_name.Compare(k_standard_function_names[k_standard_function_delay]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_standard_function_delay]) {
     function_text = 
       "// Autoplayer-delay in milli-seconds\n"
       "0\n";
-  } else if (function_name.Compare(k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_standard_function_allin_on_betsize_balance_ratio]) {
     function_text = 
       "// Allin if betsize is more than X% of our total balance (including currentbet).\n"
       "// This affects f$betsize and all f$betpot_X_Y_ functions.\n" 
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
-  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_opponents]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_init_on_startup]) {
     function_text = 
-      "// \"Reasonable\" default to get standard PrWin running for beginners,\n"
-      "// Works even with \"no opponents\".\n"
-      "nopponentsplaying + 1 ";
-  } else if (function_name.Compare(k_standard_function_names[k_prwin_number_of_iterations]) == k_CString_identical) {
+      "// Ini-functions are meant for\n"    
+      "//   * Initialization of memory-symbols at well-defined times\n"
+      "//   * Triggering calculations, e.g. in a DLL\n";
+  } else if (function_name == k_standard_function_names[k_prwin_number_of_opponents]) {
+    function_text = 
+      "// \"Reasonable\" default to get standard PrWin running for beginners.\n"
+      "// Adding one extra opponent has two advantages:\n"
+      "//   * works even with mis-scraped \"no opponents\"\n"
+      "//   * adjusts over-optimistic standard PrWin (random ranges).\n"
+      "nopponentsplaying + 1 \n";
+  } else if (function_name == k_standard_function_names[k_prwin_number_of_iterations]) {
     function_text = 
       "// \"Reasonable\" default to get PrWin running for beginners.\n"
       "// Large enough to get usable results,\n"
       "// small enough to save CPU-time.\n"
       "1000 ";
-  } else if (function_name.Compare(k_standard_function_names[k_icm_prize1]) == k_CString_identical) {
+  } else if (function_name == k_standard_function_names[k_icm_prize1]) {
     function_text = 
       "// f$icm_prizeX functions are used to configure the payout-structure in tournaments.\n"
       "// The sum of all f$icm_prizeX functions should be 1.00 (= 100%).\n"
@@ -353,6 +369,8 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     // The editor does somehow not work for completely empty formulas.
     function_text = " "; 
   }
+  write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Adding default function: %s\n", function_name);
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
@@ -387,8 +405,7 @@ void CFunctionCollection::ClearCache() {
   }
 }
 
-void CFunctionCollection::Save(CArchive &ar)
-{
+void CFunctionCollection::Save(CArchive &ar) {
   CSLock lock(m_critsec);
   // First write the date
   char nowtime[26] = {0};
@@ -479,6 +496,8 @@ void CFunctionCollection::Delete(CString name) {
     std::map<CString, COHScriptObject*>::iterator it; 
     it = _function_map.find(name);
     if (it != _function_map.end()) {
+      write_log(preferences.debug_formula(), 
+        "[CFunctionCollection] Deleting %s\n", name);
       _function_map.erase(it);
     }
   }
@@ -495,6 +514,8 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     function = new CFunction(my_name, my_text, kUndefinedZero);
     Add(function);
   } else {
+    write_log(preferences.debug_formula(), 
+      "[CFunctionCollection] Setting function text for %s\n", name);
     function->SetText(content);
   }
 }
@@ -504,6 +525,8 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
+  write_log(preferences.debug_formula(), 
+    "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();

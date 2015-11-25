@@ -16,6 +16,7 @@ Local $binary_optimized_dir    = "Release - Optimized"
 Local $openppl_dir             = "OpenPPL"
 Local $openppl_library_dir     = $openppl_dir & "\OpenPPL_Library"
 Local $openppl_manual_dir      = $openppl_dir & "\OpenPPL_Manual"
+Local $openholdem_manual_dir   = "Documentation\OpenHoldem_Manual_ready_for_release"
 Local $pokertracker_docu_dir   = "Documentation\Chapters\symbols"
 Local $release_notes           = $pre_created_release_dir & "\documents\OpenHoldem Release Notes.txt"
 
@@ -29,16 +30,16 @@ MsgBox(0, "Next Step", "Change the version of OpenHoldem. (Search the OpenHoldem
 MsgBox(0, "Next Step", "Choose the correct build option. Usually optimized for OH, but debug if there are some known problems left. Release for the rest (as end-users usually miss debug-DLLs)." )
 MsgBox(0, "Next Step", "Rebuild everything")
 MsgBox(0, "Next Step", "Test ""everything"", at least briefly that OH ""works"".")
-MsgBox(0, "Next Step", "Commit everything to GoogleCode")
-MsgBox(0, "Next Step", "Tag the release on googlecode: TurtoiseSVN -> Branch/Tag and then create a tag for svn/tags/OpenHoldem_7.x.y. Comment: ""Tagging OpenHoldem 7.x.y for release"".")
+MsgBox(0, "Next Step", "Push everything to GitHub")
+MsgBox(0, "Next Step", "Tag the release on GitHub. Comment: ""Tagging OpenHoldem 7.x.y for release"".")
 
 DirRemove($new_openholdem_dir, 1)
 DirCopy($pre_created_release_dir, $new_openholdem_dir)
 ; Copy all executables to the new directory plus their LIBs to support linking
 CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.exe")
+CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "ManualMode.exe")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "OHReplay.exe")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "OpenHoldem.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking
 CopyNeededFile($binary_dir, $new_openholdem_dir, "DumperDll.dll")
@@ -63,6 +64,7 @@ FileDelete($new_openholdem_dir & "\*.pdb")
 CopyNeededFile($openppl_library_dir, $new_openholdem_dir, "OpenPPL_Library.ohf")
 ; Add OpenPPL_Manual.chm and symbol_pokertracker.pdf
 CopyNeededFile($openppl_manual_dir, $new_openholdem_dir, "OpenPPL_Manual.chm")
+CopyNeededFile($openholdem_manual_dir, $new_openholdem_dir, "OpenHoldem_Manual.chm")
 CopyNeededFile($pokertracker_docu_dir, $new_openholdem_dir, "symbols_pokertracker.pdf")
 ; Remove replay-direcoty (if existent), logs and other private data
 DirRemove($new_openholdem_dir & "\Replay")

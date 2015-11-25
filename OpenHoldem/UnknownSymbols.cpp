@@ -174,6 +174,10 @@ char *outdated_symbol_originaldealposition =
   "because there was no longer any need for it\n"
   "after making dealposition persistent.\n";
 
+char *outdated_symbols_didswag =
+  "The symbols \"didswag\" and \"didswagroundN\" got renamed\n"
+  "to \"didbetsize\" and \"didbetsizeroundN\".\n";
+
 char *outdated_symbol_ac_aggressor =
   "The symbol \"originaldealposition\" got removed from the code base\n"
   "because it provided the same functionality as \"raischair\".\n";
@@ -350,6 +354,10 @@ bool IsOutdatedSymbol(CString symbol) {
     case 's': 
       if ((symbol == "swagdelay") || (symbol == "swagtextmethod")) {
 	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      return true;
+      }
+      if (symbol.Left(7) == "didswag") {
+	      OH_MessageBox_Formula_Error(outdated_symbols_didswag, title_outdated_symbol);
 	      return true;
       }
     case 'N':

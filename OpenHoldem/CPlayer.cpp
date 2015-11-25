@@ -14,6 +14,8 @@
 #include "stdafx.h"
 #include "CPlayer.h"
 
+#include "CSymbolEngineTableLimits.h"
+
 CPlayer::CPlayer() {
 }
 
@@ -68,4 +70,17 @@ void CPlayer::CheckPlayerCardsForConsistency() {
     _hole_cards[0].SetValue(CARD_BACK);
     _hole_cards[1].SetValue(CARD_BACK);
   } 
+}
+
+bool CPlayer::IsAllin() {
+  return (_seated && _active && HasAnyCards() && (_balance == 0));
+}
+
+bool CPlayer::PostingBothBlinds() {
+  // We have to calculate in cents here, as IsApproximatellyEqual uses rounding internally.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18743
+  double bet_in_cents = 100 * _bet;
+  double both_blinds_in_cents = 100 * (p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind());
+  return (_seated && _active && HasAnyCards() 
+    && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
 }

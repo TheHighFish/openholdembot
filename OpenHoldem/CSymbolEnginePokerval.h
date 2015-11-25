@@ -71,7 +71,7 @@ public:
 	int rankbitsplayer()	{ return _rankbitsplayer; }
 	int rankbitscommon()	{ return _rankbitscommon; }
 	int rankbitspoker()		{ return _rankbitspoker; }
-	int srankbits()			{ return _srankbitsplayer | _srankbitscommon; }
+	int srankbits()			{ return _srankbitsplayer | _srankbitscommonp; }
 	int srankbitsplayer()	{ return _srankbitsplayer; }
 	int srankbitscommon()	{ return _srankbitscommon; }
 	int srankbitspoker()	{ return _srankbitspoker; }
@@ -128,6 +128,7 @@ private:
 private:
 	int _srankbitsplayer;
 	int _srankbitscommon;
+	int _srankbitscommonp;
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs

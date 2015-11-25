@@ -91,6 +91,7 @@ enum
   k_prefs_debug_hand_and_baord_expressions,
   k_prefs_debug_tokenizer,
 	k_prefs_engage_autoplayer,
+	k_prefs_restore_position_and_focus,
 	k_prefs_use_auto_replay,
 	k_prefs_swag_use_comma,
 	k_prefs_replay_record,
@@ -190,6 +191,7 @@ public:
 	const int swag_delay_2() { return prefs_numerical_values[k_prefs_swag_delay_2]; }
 	const int swag_delay_3() { return prefs_numerical_values[k_prefs_swag_delay_3]; }
 	const bool engage_autoplayer() { return prefs_numerical_values[k_prefs_engage_autoplayer]; }
+	const bool restore_position_and_focus() { return prefs_numerical_values[k_prefs_restore_position_and_focus]; }
 	const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
 	const bool swag_use_comma() { return prefs_numerical_values[k_prefs_swag_use_comma]; }
 

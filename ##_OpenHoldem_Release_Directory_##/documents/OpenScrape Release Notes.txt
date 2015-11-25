@@ -1,3 +1,11 @@
+v7.7.5 2015-07-08
+==================
+NEW stuff:
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+- Handling numbers with commas in the title-string.
+  [THF]
+
 v7.6.0 2015-02.26
 ==================
 NEW stuff:

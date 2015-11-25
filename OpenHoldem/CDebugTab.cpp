@@ -62,6 +62,8 @@ void CDebugTab::Clear() {
   write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
+    delete _expressions[i];
+    _expressions[i] = NULL;
   }
   write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");
   _number_of_expressions = 0;

@@ -50,7 +50,7 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [nplayers][chairnum][x/y]
-double	pc[k_max_number_of_players+1][k_max_number_of_players][kNumberOfCardsPerPlayer] = {
+double	pc[kMaxNumberOfPlayers+1][kMaxNumberOfPlayers][kNumberOfCardsPerPlayer] = {
   // 0 chairs
 	{ {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	
   // 1 chair
@@ -135,7 +135,7 @@ COpenHoldemView::COpenHoldemView() {
 	for (int i = 0; i<kNumberOfCommunityCards; i++)
 		_card_common_last[i] = CARD_UNDEFINED;
 
-	for (int i = 0; i<k_max_number_of_players ; i++)
+	for (int i = 0; i<kMaxNumberOfPlayers ; i++)
 	{
 		_seated_last[i] = false; 
     _active_last[i] = false;
@@ -347,7 +347,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		// Draw "on" buttons
 		if (p_scraper->GetButtonState(i)) 
@@ -397,6 +397,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
 				leave_drawn = true;
 			}
+      // !!! To do: rematch
 			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);

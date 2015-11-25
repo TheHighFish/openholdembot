@@ -1,0 +1,22 @@
+*.exe
+*.dll
+*.obj
+*.ilk
+*.pfb
+*.pdb
+*.exp
+*.lyx~
+*.lyx#
+*.user
+*.log
+*.tlog
+*.pch
+*.manifest
+*.lastbuildstate
+Debug
+Release
+Release - Optimized
+Documentation/OpenHoldem_Manual.chm
+Documentation/Chapters/titlepage/images/Temp
+Documentation/Chapters/titlepage/original_images
+

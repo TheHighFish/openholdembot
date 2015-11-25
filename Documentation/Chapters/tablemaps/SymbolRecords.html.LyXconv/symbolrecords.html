@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-03-18"/>
+<meta name="create-date" content="2015-07-27"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -261,15 +261,6 @@ The number of chairs that this Table Map supports. The value of this record is w
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-chairconfig
-</td>
-<td align="left" valign="top" style="width: 75%;">
-Legacy support of WinScrape’s symbol. OpenHoldem does not adjust its display layout based on the value of this symbol like WinHoldem, and thus this is not used in the OpenHoldem engine anywhere. 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
 allinconfirmationmethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
@@ -288,11 +279,11 @@ non-zero: first click &ldquo;max&rdquo; (or &ldquo;allin&rdquo;), then lick &ldq
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-swagtextmethod 
+betsizeinterpretationmethod 
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
-Used by the Autoplayer to determine how to enter the f$betsize amount into the swag entry box on the casino window. This is necessary, as bets and raises get interpreted differently by different casinos. 
+Used by the Autoplayer to determine how to enter the f$betsize amount into the betsize entry box on the casino window. This is necessary, as bets and raises get interpreted differently by different casinos. 
 </div>
 <ol>
 <li>
@@ -374,7 +365,7 @@ The possible values for these symbols are "fuzzy", "plain", or a specific tolera
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-swagselectionmethod 
+betsizeselectionmethod 
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
@@ -382,20 +373,20 @@ swagselectionmethod
 </div>
 <div class="PlainVisible">
 New Symbol in version 2.0; previously, this was a global preference set from the OpenHoldem preferences GUI.<br/>
-This symbol instructs the Autoplayer how to take the first action in a SWAG sequence. A SWAG sequence always consists of: 
+This symbol instructs the Autoplayer how to take the first action in a betsize sequence. A betsize sequence always consists of: 
 </div>
 <ol>
 <li>
-select the text in the SWAG box 
+select the text in the betsize box 
 </li>
 <li>
-delete the text in the SWAG box 
+delete the text in the betsize box 
 </li>
 <li>
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 </li>
 <li>
-confirm the SWAG bet amount. 
+confirm the betsize bet amount. 
 </li>
 
 </ol>
@@ -404,19 +395,19 @@ Valid values for this Symbol are available in a drop down control and are:
 </div>
 <ul>
 <li>
-"Sgl Click" – Single left click on the SWAG box to select the existing text 
+"Sgl Click" – Single left click on the betsize box to select the existing text 
 </li>
 <li>
-"Dbl Click" – Double left click on the SWAG box to select the existing text 
+"Dbl Click" – Double left click on the betsize box to select the existing text 
 </li>
 <li>
-Triple Click’ – Triple left click on the SWAG box to select the existing text
+Triple Click’ – Triple left click on the betsize box to select the existing text
 </li>
 <li>
-"Click Drag" – Left click on the leftmost pixel of the SWAG box, drag to the rightmost pixel of the SWAG box, and then release the left mouse button to select the existing text 
+"Click Drag" – Left click on the leftmost pixel of the betsize box, drag to the rightmost pixel of the betsize box, and then release the left mouse button to select the existing text 
 </li>
 <li>
-"Nothing" – Skip the text selection step of the SWAG action 
+"Nothing" – Skip the text selection step of the betsize action 
 </li>
 
 </ul>
@@ -429,39 +420,39 @@ Default: None, must be explicitly specified
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-swagdeletionmethod
+betsizedeletionmethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
-New Symbol in version 2.0; previously, this was a global preference set from the OpenHoldem preferences GUI. This symbol instructs the Autoplayer how to take the second action in a SWAG sequence. A SWAG sequence always consists of: 
+New Symbol in version 2.0; previously, this was a global preference set from the OpenHoldem preferences GUI. This symbol instructs the Autoplayer how to take the second action in a betsize sequence. A betsize sequence always consists of: 
 </div>
 <ol>
 <li>
-select the text in the SWAG box 
+select the text in the betsize box 
 </li>
 <li>
-delete the text in the SWAG box 
+delete the text in the betsize box 
 </li>
 <li>
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 </li>
 <li>
-confirm the SWAG bet amount. 
+confirm the betsize bet amount. 
 </li>
 
 </ol>
 <div class="PlainVisible">
-Valid values for this Symbol are available in a drop down control and are: 
+Valid values for this symbol are available in a drop down control and are: 
 </div>
 <ul>
 <li>
-"Delete" – Press the “Delete” key to delete the selected text in the SWAG box 
+"Delete" – Press the “Delete” key to delete the selected text in the betsize box 
 </li>
 <li>
-"Backspace" – Press the “Backspace” key to delete the selected text in the SWAG box 
+"Backspace" – Press the “Backspace” key to delete the selected text in the betsize box 
 </li>
 <li>
-"Nothing" – Skip the text deletion step of the SWAG action 
+"Nothing" – Skip the text deletion step of the betsize action 
 </li>
 
 </ul>
@@ -474,24 +465,24 @@ Default: None, must be explicitly specified
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-swagconfirmationmethod
+betsizeconfirmationmethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
-New Symbol in version 2.0; previously, this was a global preference set from the OpenHoldem preferences GUI. This symbol instructs the Autoplayer how to take the fourth action in a SWAG sequence. A SWAG sequence always consists of: 
+New Symbol in version 2.0; previously, this was a global preference set from the OpenHoldem preferences GUI. This symbol instructs the Autoplayer how to take the fourth action in a betsize sequence. A betsize sequence always consists of: 
 </div>
 <ol>
 <li>
-select the text in the SWAG box 
+select the text in the betsize box 
 </li>
 <li>
-delete the text in the SWAG box 
+delete the text in the betsize box 
 </li>
 <li>
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 </li>
 <li>
-confirm the SWAG bet amount. 
+confirm the betsize bet amount. 
 </li>
 
 </ol>
@@ -500,13 +491,13 @@ Valid values for this Symbol are available in a drop down control and are:
 </div>
 <ul>
 <li>
-"Enter" – Press the “Enter” key to confirm the SWAG bet entry 
+"Enter" – Press the “Enter” key to confirm the betsize bet entry 
 </li>
 <li>
-"Click Bet" – Click the “Bet” button to confirm the SWAG bet entry 
+"Click Bet" – Click the “Bet” button to confirm the betsize bet entry 
 </li>
 <li>
-"Nothing" – Skip the bet confirmation step of the SWAG action
+"Nothing" – Skip the bet confirmation step of the betsize action
 </li>
 
 </ul>
@@ -574,6 +565,24 @@ This Symbol instructs the screen scraper that all characters besides numbers (0-
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
+cardscrapemethod
+</td>
+<td align="left" valign="top" style="width: 75%;">
+<ul>
+<li>
+Default: scraping first cardbacks, then nocard, then cardfaces (or ranks + suits). Works for most casinos, optimal performance and also serves the case where cards and cardbacks are at different locations
+</li>
+<li>
+&ldquo;1&rdquo;: scraping first card-faces, then cardbacks, finally nocard. This method is necessary at casinos that display additional cardbacks also for players that hold face-cards.
+</li>
+
+</ul>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
 chipscrapemethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
@@ -590,6 +599,15 @@ This Symbol instructs OpenHoldem to load a user-supplied external scraper overri
 </td>
 
 </tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+islobby
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If this symbol exists and is non-zero OpenHoldem will know that it is connected to a lobby window (for table.positioning and shutdown-handling). The tablemap-completeness checker will be turned off and the OH-script-symbol islobby will become true.
+</td>
+
+</tr>
 
 </table>
 
@@ -597,7 +615,7 @@ This Symbol instructs OpenHoldem to load a user-supplied external scraper overri
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T15:39:13.937000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-07-27T16:50:05.203000</span>
 </div>
 </div>
 </body>

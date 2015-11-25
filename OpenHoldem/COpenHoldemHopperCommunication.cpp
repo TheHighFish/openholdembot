@@ -78,7 +78,7 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8005: OnSetFlagMessage\n");
 	int _flag_to_set = int(flag_to_set);
-	if ((_flag_to_set < 0) || (_flag_to_set >= k_number_of_flags))
+	if ((_flag_to_set < 0) || (_flag_to_set >= kNumberOfFlags))
 	{
 		return false;
 	}
@@ -91,7 +91,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8006: OnResetFlagMessage\n");
 	int _flag_to_reset = int(flag_to_reset);
-	if ((_flag_to_reset < 0) || (_flag_to_reset >= k_number_of_flags))
+	if ((_flag_to_reset < 0) || (_flag_to_reset >= kNumberOfFlags))
 	{
 		return false;
 	}

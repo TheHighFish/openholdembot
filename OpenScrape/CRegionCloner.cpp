@@ -205,7 +205,7 @@ void CRegionCloner::CalculateCircularRegionsForFirstCloneableObject() {
 		if (p_tablemap_access->GetTableMapRegion(
 			  circular_cloneable_regions[i][0], // name of region
 			  &region_to_be_cloned)) {
-			CalculateCircularRegions(region_to_be_cloned, k_max_number_of_players);
+			CalculateCircularRegions(region_to_be_cloned, kMaxNumberOfPlayers);
 			break;
 		}
 	}
@@ -307,7 +307,7 @@ void CRegionCloner::CloneCircularCloneableRegions() {
 		//CalculateDistanceToFirstCloneableRegion(region_to_be_cloned);
 
 		// Start with player 1 and keep player 0 as is
-		for (int p=1; p<k_max_number_of_players; p++)	{	
+		for (int p=1; p<kMaxNumberOfPlayers; p++)	{	
 			STablemapRegion new_region, existing_region;
 		  //	ApplyNextCircularRegionPosition(region_to_be_cloned, &new_region, p);
 

@@ -41,7 +41,7 @@ void CSymbolEngineGameType::InitOnStartup() {
 }
 
 void CSymbolEngineGameType::ResetOnConnection() {
-	_gametype = k_gametype_FL; 
+	_gametype = kGametypeFL; 
 }
 
 void CSymbolEngineGameType::ResetOnHandreset() {
@@ -56,9 +56,9 @@ void CSymbolEngineGameType::ResetOnMyTurn() {
 void CSymbolEngineGameType::ResetOnHeartbeat() {
   int scraped_limit = p_table_state->_s_limit_info.limit();
   switch (scraped_limit) {
-    case k_gametype_NL:
-    case k_gametype_PL:
-    case k_gametype_FL:
+    case kGametypeNL:
+    case kGametypePL:
+    case kGametypeFL:
       _gametype = scraped_limit;
       return;
   }
@@ -74,7 +74,7 @@ void CSymbolEngineGameType::ResetOnHeartbeat() {
   // already executed in heartbeat-thread.
   // Therefore we can access this info.
   if (p_scraper_access->allin_option_available) {
-    _gametype = k_gametype_NL;
+    _gametype = kGametypeNL;
 
   } else if (isfl()) {
     // FL or unknown ATM.

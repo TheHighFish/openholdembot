@@ -195,6 +195,9 @@ BOOL COpenHoldemApp::InitInstance() {
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
 
+	 //Document template and doc/view
+         //https://msdn.microsoft.com/en-us/library/hts9a4xz.aspx
+	 // https://msdn.microsoft.com/en-us/library/d1e9fe7d.aspx
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
@@ -330,11 +333,11 @@ void COpenHoldemApp::LoadLastRecentlyUsedFileList() {
 	ASSERT(m_pRecentFileList == NULL);
 
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
-	if (k_number_of_last_recently_used_files_in_file_menu > 0) 
+	if (kNumberOfLastRecentlyUsedFilesInFileMenu > 0) 
 	{
 		// create file MRU since nMaxMRU not zero
 		m_pRecentFileList = new CRecentFileList(0, _afxFileSection, _afxFileEntry, 
-			k_number_of_last_recently_used_files_in_file_menu);
+			kNumberOfLastRecentlyUsedFilesInFileMenu);
 		m_pRecentFileList->ReadList();
 	}
 	// 0 by default means not set

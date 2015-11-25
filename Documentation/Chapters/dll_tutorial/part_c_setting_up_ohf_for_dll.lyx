@@ -604,11 +604,11 @@ This is how a *.ohf file might look for this dll, ofourse I am always open
 \end_layout
 
 \begin_layout Subsubsection
-Code in ##f$swag## 
+Code in ##f$betsize## 
 \end_layout
 
 \begin_layout Itemize
-If our "decision" is 1 bblind or more we will swag the closest amount in
+If our "decision" is 1 bblind or more we will enter the closest amount in
  bblinds.
 \end_layout
 
@@ -617,7 +617,8 @@ Code in ##f$call##
 \end_layout
 
 \begin_layout Itemize
-If for some reason we can't swag and your "decision" is not 0 we call.
+If for some reason we can't enter the betsize and your "decision" is not
+ 0 we call.
  
 \end_layout
 

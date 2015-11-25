@@ -31,14 +31,6 @@ class CGameState {
 	CGameState();
 	~CGameState();
 	void CaptureState();
- public:
-	// public accessors
-	const SHoldemState * state(const int i) { if (i>=0 && i<=255) return &_state[i]; else return NULL; }
-	const int state_index() { return _state_index; }
- private:
-	// private variables - use public accessors and public mutators to address these
-	SHoldemState  _state[k_number_of_holdem_states_for_DLL];
-  unsigned char	_state_index;
  private:
 	// private functions and variables - not available via accessors or mutators
 	void DumpState(void);

@@ -30,17 +30,17 @@ struct SScraperState
 {
 	char				title[512];
 	unsigned int		card_common[kNumberOfCommunityCards];
-	unsigned int		card_player[k_max_number_of_players][kNumberOfCardsPerPlayer];
-	bool				dealer[k_max_number_of_players];
-	bool			    sitting_out[k_max_number_of_players];
-	CString				seated[k_max_number_of_players];
-	CString				active[k_max_number_of_players];
-	CString				name[k_max_number_of_players];
-	double				balance[k_max_number_of_players];
-	bool				name_good_scrape[k_max_number_of_players];
-	bool				balance_good_scrape[k_max_number_of_players];
-	double				bet[k_max_number_of_players];
-	double				pot[k_max_number_of_pots];
+	unsigned int		card_player[kMaxNumberOfPlayers][kNumberOfCardsPerPlayer];
+	bool				dealer[kMaxNumberOfPlayers];
+	bool			    sitting_out[kMaxNumberOfPlayers];
+	CString				seated[kMaxNumberOfPlayers];
+	CString				active[kMaxNumberOfPlayers];
+	CString				name[kMaxNumberOfPlayers];
+	double				balance[kMaxNumberOfPlayers];
+	bool				name_good_scrape[kMaxNumberOfPlayers];
+	bool				balance_good_scrape[kMaxNumberOfPlayers];
+	double				bet[kMaxNumberOfPlayers];
+	double				pot[kMaxNumberOfPots];
 	CString				button_state[k_max_number_of_buttons];
 	CString				i86X_button_state[k_max_number_of_buttons];
 	CString				i86_button_state;

@@ -165,8 +165,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 }
 
 void CHeartbeatThread::ScrapeEvaluateAct() {
-	bool iswait = false;
-
 	p_table_positioner->AlwaysKeepPositionIfEnabled();
 	// This critical section lets other threads know that the internal state is being updated
 	EnterCriticalSection(&pParent->cs_update_in_progress);
@@ -205,26 +203,13 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	p_validator->ValidateGameState();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
-	// DLL - always send state
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling PassStateToDll.\n");
-	p_dll_extension->PassStateToDll(p_game_state->state((p_game_state->state_index()-1)&0xff));
-
-	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer
-	if (p_dll_extension->IsLoaded() && p_symbol_engine_autoplayer->ismyturn())	{
-		iswait = (p_dll_extension->process_message()) ("query", "dll$iswait");
-	}	else {
-		iswait = false;
-	}
-
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %s\n", 
 		Bool2CString(p_symbol_engine_userchair->userchair_confirmed()));
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] iswait: %s\n", 
-		Bool2CString(iswait));
 	// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
-	if (p_autoplayer->autoplayer_engaged() && !iswait) {
+	if (p_autoplayer->autoplayer_engaged()) {
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 		p_autoplayer->DoAutoplayer();
 	}

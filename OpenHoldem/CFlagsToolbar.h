@@ -47,7 +47,7 @@ class CFlagsToolbar: public CWnd {
 	void AlignToolbars();
  private:
 	CMyToolBar m_MainToolBar;
-	bool       _flags[k_number_of_flags];
+	bool       _flags[kNumberOfFlags];
 	CFrameWnd  *_parent_window;
 	CCritSec   m_critsec;
 };

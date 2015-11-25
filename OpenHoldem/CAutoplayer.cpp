@@ -99,7 +99,7 @@ void CAutoplayer::FinishActionSequenceIfNecessary() {
     }
     // avoid multiple-clicks within a short frame of time
     p_stableframescounter->ResetOnAutoplayerAction();
-    if (p_symbol_engine_casino->ConnectedToOfflineSimulation()) {
+    if (p_symbol_engine_casino->ConnectedToOfflineSimulation() || preferences.restore_position_and_focus()) {
       // Restore mouse position and window focus
       // Only for simulations, not for real casinos (stealth).
 		  // Restoring the original state has to be done in reversed order
@@ -251,7 +251,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	{
 		return true;
 	}
-	if (DoSwag())
+	if (DoBetsize())
 	{
 		return true;
 	}
@@ -335,10 +335,11 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 			}
 	}
 	// Otherwise: handle the simple simple button-click
-	// k_standard_function_sitin,
-	// k_standard_function_sitout,
-	// k_standard_function_leave,
-	// k_standard_function_autopost,
+	// k_hopper_function_sitin,
+	// k_hopper_function_sitout,
+	// k_hopper_function_leave,
+  // k_hopper_function_rematch,
+	// k_hopper_function_autopost,
 	else 
     for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
@@ -351,7 +352,9 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
 		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
+		return true;
 	}
+	action_sequence_needs_to_be_finished = false;
 	return false;
 }
 
@@ -464,7 +467,7 @@ void CAutoplayer::DoAutoplayer(void) {
   if (TimeToHandleSecondaryFormulas())	{
 	  p_autoplayer_functions->CalcSecondaryFormulas();	  
     if (ExecuteSecondaryFormulasIfNecessary())	{
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondarz formulas executed\n");
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondary formulas executed\n");
       goto AutoPlayerCleanupAndFinalization;
     } else {
       write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
@@ -494,7 +497,7 @@ void CAutoplayer::DoAutoplayer(void) {
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
-bool CAutoplayer::DoSwag(void) { 
+bool CAutoplayer::DoBetsize() { 
   double betsize = p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize);
 	if (betsize > 0) 	{
     if (!_already_executing_allin_adjustment) {
@@ -502,7 +505,7 @@ bool CAutoplayer::DoSwag(void) {
       // swag -> adjusted allin -> swag allin -> adjusted allin ...
       if (ChangeBetsizeToAllin(betsize)) {
         _already_executing_allin_adjustment = true;
-        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting swag to allin.\n");
+        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting betsize to allin.\n");
         bool success = DoAllin();
         _already_executing_allin_adjustment = false;
         return success;
@@ -510,7 +513,7 @@ bool CAutoplayer::DoSwag(void) {
     }
 		int success = p_casino_interface->EnterBetsize(betsize);
 		if (success) {
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f entered\n",
+      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
@@ -519,7 +522,7 @@ bool CAutoplayer::DoSwag(void) {
       betsize);
     return false;
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't swag, because f$betsize evaluates to 0.\n");
+	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't f$betsize, because f$betsize evaluates to 0.\n");
 	return false;
 }
 

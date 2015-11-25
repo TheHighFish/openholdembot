@@ -16,6 +16,7 @@
 
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
+#include "CTableState.h"
 
 double BetPotFactor(int betpot_action_code) {
   assert(betpot_action_code >= k_autoplayer_function_betpot_2_1);
@@ -56,7 +57,7 @@ double BetsizeForBetpot(int betpot_action_code) {
     + p_symbol_engine_chip_amounts->call();
   double additional_money_into_pot = BetPotFactor(betpot_action_code) 
     * pot_after_i_call;
-  double final_betsize = p_symbol_engine_chip_amounts->currentbet(USER_CHAIR)
+  double final_betsize = p_table_state->User()->_bet
     + p_symbol_engine_chip_amounts->call()
     + additional_money_into_pot;
   assert(final_betsize > 0);

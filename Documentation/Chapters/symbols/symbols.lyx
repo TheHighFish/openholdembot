@@ -209,7 +209,7 @@ Casino and Poker Table
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="2">
+<lyxtabular version="3" rows="5" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -253,27 +253,6 @@ Window handle of the poker table
 \begin_layout Plain Layout
 Provided for DLL- and Perl-devlopers who can now directly access the poker-table
  if needed
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-isfinaltable
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-true, if you are sitting at the final table of a multi-table tournament.
- Needs to be supported by the table-map.
 \end_layout
 
 \end_inset
@@ -354,7 +333,7 @@ Limits
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="15" columns="2">
+<lyxtabular version="3" rows="16" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -492,7 +471,7 @@ isnl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 0)
+(lim == 0) No Limit
 \end_layout
 
 \end_inset
@@ -512,7 +491,7 @@ ispl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 1)
+(lim == 1) Pot Limi
 \end_layout
 
 \end_inset
@@ -532,29 +511,7 @@ isfl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 2)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-istournament
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-true if a tournament table is detected.
- This feature works automatically, based on title-strings of the poker-table,
- blind-levels, sum of chips at the table, etc.
+(lim == 2) Fixed Limit
 \end_layout
 
 \end_inset
@@ -640,6 +597,28 @@ All tournaments that can't be recognized neither as MTT nor as DON will
 \begin_inset Text
 
 \begin_layout Plain Layout
+istournament
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if any type of tournament table is detected.
+ This feature works automatically, based on title-strings of the poker-table,
+ blind-levels, sum of chips at the table, etc.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 isfinaltable
 \end_layout
 
@@ -651,6 +630,28 @@ isfinaltable
 \begin_layout Plain Layout
 true if you play the final table of a MTT, depending on the tablemap region
  r$c0isfinaltable
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islobby
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true if OpenHoldem is connected to a lobby window (for window placement
+ and shutdown).
+ Depends on the TM-symbol s$islobby
 \end_layout
 
 \end_inset
@@ -1029,7 +1030,7 @@ handrankp
 \begin_inset Text
 
 \begin_layout Plain Layout
-2652 / (1+f$prwin_number_of_opponents) ???
+2652 / (1+f$prwin_number_of_opponents) 
 \end_layout
 
 \end_inset
@@ -1162,7 +1163,7 @@ raischair
 \begin_inset Text
 
 \begin_layout Plain Layout
-raising chair number (0-9)
+raising chair number (0-9), for current or for previous betround
 \end_layout
 
 \end_inset
@@ -1278,7 +1279,7 @@ firstcaller_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the first caller (0-9), current orbit only
+the chair of the first caller in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -1307,7 +1308,7 @@ lastcaller_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the last caller (0-9), current orbit only
+the chair of the last caller in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -1336,7 +1337,7 @@ firstraiser_chair
 \begin_inset Text
 
 \begin_layout Plain Layout
-the chair of the first raiser (0-9), current orbit only
+the chair of the first raiser in front of you (0-9), current orbit only
 \end_layout
 
 \end_inset
@@ -2499,7 +2500,7 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-islistXYZ
+listXYZ
 \end_layout
 
 \end_inset
@@ -2988,7 +2989,11 @@ $CCc
 \begin_inset Text
 
 \begin_layout Plain Layout
-references a hand symbol - see the {Hand Symbols} section below for details
+references a hand symbol - see the 
+\emph on
+Hand Symbols
+\emph default
+ section below for details
 \end_layout
 
 \end_inset
@@ -2999,7 +3004,7 @@ references a hand symbol - see the {Hand Symbols} section below for details
 \begin_inset Text
 
 \begin_layout Plain Layout
-$$AB# 
+$$CCc
 \end_layout
 
 \end_inset
@@ -3008,7 +3013,11 @@ $$AB#
 \begin_inset Text
 
 \begin_layout Plain Layout
-references a card symbol - see the {Card Symbols} section below for details
+references a card symbol - see the 
+\emph on
+Card Symbol
+\emph default
+s section below for details
 \end_layout
 
 \end_inset
@@ -3268,7 +3277,120 @@ Hand and Board-Expressions
 \end_layout
 
 \begin_layout Standard
-!!!???
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="30text%">
+<column alignment="left" valignment="top" width="60text%">
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hand$XYZ
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true, if your hand contains XYZ.
+ The expression may contain 1 or 2 cards, optionally concrete suits or optionall
+y the postfix 
+\begin_inset Quotes eld
+\end_inset
+
+Suited
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+board$XYZ
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+true, The expression may contain 1 up to 5 cards, optionally concrete suits
+ or optionally the postfix 
+\begin_inset Quotes eld
+\end_inset
+
+Suited
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Hand and board expressions got implemented for OpenPPL, but of course they
+ can be also used for OH-script.
+ Especially board-expressions are in most cases more intuitive than rankbits(com
+mon).
+ Some examples for hand and board-expressions (OpenPPL)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+WHEN hand$AA RaiseMax FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$AKSuited RaisePot FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// We love playing hearts...
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN hand$Ah Call FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+// ...but fear the devil
+\end_layout
+
+\begin_layout Plain Layout
+
+WHEN board$666 Fold FORCE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -4289,7 +4411,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename H:/Dokumente und Einstellungen/Development_2/Desktop/Documentation/Chapters/gui/images/flags_toolbar.JPG
+	filename ../gui/images/flags_toolbar.JPG
 
 \end_inset
 
@@ -4755,7 +4877,7 @@ tsuit
 \begin_inset Text
 
 \begin_layout Plain Layout
-specific card suit for nsuited (1-4) 
+specific card suit for nsuited (0-3) 
 \end_layout
 
 \end_inset
@@ -4775,7 +4897,7 @@ tsuitcommon
 \begin_inset Text
 
 \begin_layout Plain Layout
-specific card suit for nsuitedcommon (1-4)
+specific card suit for nsuitedcommon (0-3)
 \end_layout
 
 \end_inset
@@ -6040,7 +6162,7 @@ record of previously attempted autoplayer action.
 \end_layout
 
 \begin_layout Description
-3 = swag 
+3 = betsize 
 \end_layout
 
 \begin_layout Description
@@ -6136,7 +6258,7 @@ the number of times the autoplayer has raised during the current round
 \begin_inset Text
 
 \begin_layout Plain Layout
-didswag
+didbetsize
 \end_layout
 
 \end_inset
@@ -6145,7 +6267,8 @@ didswag
 \begin_inset Text
 
 \begin_layout Plain Layout
-the number of times the autoplayer has swag'd during the current round 
+the number of times the autoplayer has betsized during the current round
+ 
 \end_layout
 
 \end_inset
@@ -6298,7 +6421,7 @@ true if userchair raised during round 1 - round 4
 \begin_inset Text
 
 \begin_layout Plain Layout
-didswaground1..idswaground4
+didbetsizeround1..didbetsizeround4
 \end_layout
 
 \end_inset
@@ -6307,7 +6430,7 @@ didswaground1..idswaground4
 \begin_inset Text
 
 \begin_layout Plain Layout
-true if userchair swag'd during round 1 - round 4
+true if userchair betsized during round 1 - round 4
 \end_layout
 
 \end_inset
@@ -6346,7 +6469,7 @@ Versus
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="32" columns="2">
+<lyxtabular version="3" rows="35" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -6806,6 +6929,73 @@ vs$listX$prtie
 
 \begin_layout Plain Layout
 Probability (0.000 - 1.000) of a tie versus hand list X
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prwin
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of winnning versus the list specified by function
+ X.
+ The function X (e.g.
+ f$raisersrange) must return an intereger number, e.g.
+ 0..100 and then versus will take the corresponging list (list0..list100).
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prlos
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of chopping versus the list specified by function
+ X.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+vs$multiplex$X$prtie
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Probability (0.000 - 1.000) of losing versus the list specified by function
+ X.
 \end_layout
 
 \end_inset

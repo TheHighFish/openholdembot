@@ -188,12 +188,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3
+WHEN Calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN AmountToCall <= 3 AND islist...
+    WHEN AmountToCall <= 3 AND list...
  RaiseTo 9 FORCE
 \end_layout
 
@@ -510,7 +510,8 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN AmountToCall / AmountToCall + PotSize > f$Outs / f$CardsLeft Call FORCE
+WHEN AmountToCall / (AmountToCall + PotSize) > f$Outs / f$CardsLeft Call
+ FORCE
 \end_layout
 
 \end_inset

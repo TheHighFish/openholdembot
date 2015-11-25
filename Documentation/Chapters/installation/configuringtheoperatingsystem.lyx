@@ -119,13 +119,11 @@ Display resolution
 \end_layout
 
 \begin_layout Standard
-You need enough display resolution to contain both the poker client window
- and OpenHoldem at its smallest size (i.e.
- table view off).
+You need enough display resolution to contain all poker client windows.
  In general, the minimum acceptable display resolution is 1024x768.
  The smaller resolutions 800x600 and 640x480 do not have enough real estate
  to show both the poker client and OpenHoldem without overlapping windows.
- (located in the same area as above)
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -171,6 +169,12 @@ Windows 2000 has only one window style.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename Images/config_Classic_VS_Normal.png
 
@@ -179,8 +183,13 @@ Windows 2000 has only one window style.
 
 \end_layout
 
-\begin_layout Standard
-Same window & size in Classic and XP theme.
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

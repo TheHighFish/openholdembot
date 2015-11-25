@@ -126,7 +126,7 @@ struct sprw1326
 	double		scratch;			// for future reference
 	int			bblimp;				// if non-zero no weighting will be applied if a chair has put nothing in the pot
 	sprw1326_chair	vanilla_chair;	// will be precalculated by OH at startup - convenience values
-	sprw1326_chair  chair[k_max_number_of_players];  // structures for each chair
+	sprw1326_chair  chair[kMaxNumberOfPlayers];  // structures for each chair
 };
 
 #endif /* INC_STRUCTS_DEFINES_H */

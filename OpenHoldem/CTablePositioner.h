@@ -14,26 +14,28 @@
 #ifndef INC_TABLE_POSITIONER_H
 #define INC_TABLE_POSITIONER_H
 
-class CTablePositioner
-{
-public:
+class CTablePositioner {
+ public:
 	CTablePositioner();
 	~CTablePositioner();
-public:
+ public:
 	// To be called once after connection
 	void PositionMyWindow();
 	// To be called once per heartbeat
 	void AlwaysKeepPositionIfEnabled();
-private:
+  void ResizeToTargetSize();
+ private:
 	void PositionMyWindow(HWND *list_of_tables);
 	bool TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table);
 	bool TryTopSideOfTable(HWND HWND_of_potential_neighbour_table);
 	bool TryBottomRightPosition();
 	bool TryPosition(int left_x, int top_y);
-	bool PotentialNewPositionOverlapsTable(int left_x, int top_y, HWND table_to_check_for_overlapping);
 	void MoveToTopLeft();
 	void MoveWindowToItsPosition();
-private:
+ private:
+  void ResizeToClientSize(int new_width, int new_height);
+  void ResizeToTotalSize(int new_width, int new_height);
+ private:
 	int _number_of_tables;
 	HWND *HWNDs_of_child_windows;
 	int _table_size_x;

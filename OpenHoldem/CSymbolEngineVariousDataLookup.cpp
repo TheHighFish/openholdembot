@@ -78,7 +78,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   if (memcmp(name, "dll$", 4) == 0) {
     assert(p_dll_extension != NULL);
     if (p_dll_extension->IsLoaded()) {
-	    *result = (p_dll_extension->process_message()) ("query", name);
+	    *result = ProcessQuery(name);
     } else {
 	    *result = kUndefinedZero;
     }
@@ -89,8 +89,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   //FLAGS
   else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = p_flags_toolbar->GetFlagMax();
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = p_flags_toolbar->GetFlag(name[1]-'0');
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * (name[1]-'0') + name[2] - '0');
+  // flags f0..f9
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = p_flags_toolbar->GetFlag(RightDigitCharacterToNumber(name));
+  // flags f10..f19
+  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * RightDigitCharacterToNumber(name, 1) + RightDigitCharacterToNumber(name, 0));
   else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = p_flags_toolbar->GetFlagBits();
   // GENERAL
   else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
@@ -120,7 +122,15 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = 0;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
+  } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
+    *result = p_tablemap->islobby();
+  } else if ((memcmp(name, kEmptyExpression_False_Zero_WhenOthersFoldForce, strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))==0) 
+      && (strlen(name)==strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))) {
+    *result = kUndefinedZero;
   } else {
+    // Special symbol for empty expressions. Its evaluation adds something 
+    // meaningful to the log when the end of an open-ended when-condition 
+    // gets reached during evaluation.
     *result = kUndefined;
     return false;
   }
@@ -132,7 +142,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // e.g. "dll$, pl_chair$, ....
   CString list = "dll$ pl_ vs$ msgbox$ log$ "
     "betround fmax f flagbits "
-    "session version "
+    "session version islobby "
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;

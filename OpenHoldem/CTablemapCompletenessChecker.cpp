@@ -39,8 +39,24 @@ void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
     "You can safely delete this item from the tablemap.\n"
     "Due to a simplification of OpenHoldem it is no longer required.\n"
     "The reasons and potential consequences are documented in the release-notes.\n"
+    "\n"
     "%s", 
     item, p_tablemap->filepath());
+  OH_MessageBox_Interactive(message, "Error", 0);
+}
+
+void CTablemapCompletenessChecker::ErrorSwagRenamed() {
+  CString message;
+  message.Format("\"Swagging\" has been removed from OpenHoldem\n"
+    "The following tablemap-symbols got renamed:\n"
+    "\n"
+    "  * swagselectionmethod -> betsizeselectionmethod\n"
+    "  * swagdeletionmethodmethod -> betsizedeletionmethodmethod\n"
+    "  * swagconfirmationmethod -> betsizeconfirmationmethod\n"
+    "  * swagtextmethod -> betsizeinterpretationmethod\n"
+    "\n"
+    "%s", 
+    p_tablemap->filepath());
   OH_MessageBox_Interactive(message, "Error", 0);
 }
 
@@ -77,9 +93,9 @@ bool CTablemapCompletenessChecker::IsNoLimitMap() {
   return (p_tablemap->ItemExists("i3edit")
     || p_tablemap->ItemExists("i3slider")
     || p_tablemap->ItemExists("betpotmethod")
-    || p_tablemap->ItemExists("swagdeletionmethod")
-    || p_tablemap->ItemExists("swagtextmethod")
-    || p_tablemap->ItemExists("swagconfirmationmethod"));
+    || p_tablemap->ItemExists("betsizedeletionmethod")
+    || p_tablemap->ItemExists("betsizeinterpretationmethod")
+    || p_tablemap->ItemExists("betsizeconfirmationmethod"));
 }
 
 void CTablemapCompletenessChecker::CheckBetsOrChips() {
@@ -119,21 +135,68 @@ void CTablemapCompletenessChecker::CheckMainPot() {
   }
 }
 
+void CTablemapCompletenessChecker::VerifyTablePoints() {
+  // Tablepoints work only for fixed table sizes
+  if (p_tablemap->ItemExists("clientsizemin") || p_tablemap->ItemExists("clientsizemax")) {
+    for (int i=0; i<k_max_number_of_buttons; ++i) {
+      CString table_point;
+      table_point.Format("tablepoint%i", i);
+      if (p_tablemap->ItemExists(table_point)) {
+        CString message = "Tablepoints work only with fixed clientsize,\n"
+          "not with clientsizemin and clientsizemax.\n";
+        OH_MessageBox_Interactive(message, "Error", 0);
+        break;
+      }
+    }
+  }
+}
+
+void CTablemapCompletenessChecker::VerifySingleC0limitsItem(CString name) {
+  // Each optional r$c0limitsX-region must have 
+  // a corresponding s£c0limitsX-symbol,
+  // otherwise OpenHoldem can crash on evaluation
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+  if (!p_tablemap->ItemExists(name)) return;
+  SMapCI sit = p_tablemap->s$()->find(name); 
+  if (sit == p_tablemap->s$()->end()) {
+    CString missing_item = "s$" + name;
+    ErrorMissingItem(missing_item);
+  }
+}
+
+void CTablemapCompletenessChecker::VerifyC0limits() {
+  VerifySingleC0limitsItem("c0limits");
+  for (int i=0; i<9; ++i) {
+    CString c0limitsX;
+    c0limitsX.Format("c0limits%i", i);
+    VerifySingleC0limitsItem(c0limitsX);
+  }
+}
+
 void CTablemapCompletenessChecker::VerifyMap() {
   // Only session 0 verifies the tablemaps
   // for better performance amd to avoid driving users crazy.
   if (p_sessioncounter->session_id() > 0) return;
-  // Absoluely mandatory
-  CheckItem("clientsize");
+  // First check for deprecated (and renamed( items.
+  // This avoids confusion if we cmplain about missing renamed symbols later
+  CheckForDeprecatedItems();
+  // Absoluely mandatory for connection
+  CheckItem("titletext");
+  // Necessary for connection: either clientsize or min/max
+  if (!p_tablemap->ItemExists("clientsizemin") || !p_tablemap->ItemExists("clientsizemax")) {
+    CheckItem("clientsize");
+  }
+  // All the rest is only needed for tables, but not for the lobby
+  if (p_tablemap->islobby()) return;
+  // Basic info, needed by every table
   CheckItem("nchairs");
   CheckItem("network");
   CheckItem("sitename"); 
-  CheckItem("titletext");
   CheckItem("ttlimits");
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();
   int last_chair = nchairs - 1;
-  if ((nchairs < 2) || (nchairs > k_max_number_of_players)) {
+  if ((nchairs < 2) || (nchairs > kMaxNumberOfPlayers)) {
     CString message;
     message.Format("Tablemap item nchairs out of range\n"
       "Correct values: 2..10\n"
@@ -186,11 +249,11 @@ void CTablemapCompletenessChecker::VerifyMap() {
   }
   // No Limit only
   if (IsNoLimitMap()) {
-    CheckItem("swagdeletionmethod");
-    CheckItem("swagtextmethod");
-    CheckItem("swagconfirmationmethod");
+    CheckItem("betsizedeletionmethod");
+    CheckItem("betsizeinterpretationmethod");
+    CheckItem("betsizeconfirmationmethod");
     CheckItem("i3edit");
-    // i3edit ("swagging") needs a swagconfirmation-button,
+    // i3edit ("betsizing") needs a betsizeconfirmation-button,
     // which might be something different than min-raise-button.
     CheckItem("i3button");
     CheckItem("i3state");
@@ -205,7 +268,9 @@ void CTablemapCompletenessChecker::VerifyMap() {
       CheckItem("t", i, "type");
     }
   }
-    // Optional uX-regions
+  VerifyTablePoints();
+  VerifyC0limits();
+  // Optional uX-regions
   CheckSetOfItems("u", last_chair, "name",    false);
   CheckSetOfItems("u", last_chair, "seated",  false);
   CheckSetOfItems("u", last_chair, "active",  false);
@@ -221,8 +286,11 @@ void CTablemapCompletenessChecker::VerifyMap() {
   //   * potmethod
   //   * buttonclickmethod
   //   * betpotmethod
+  //   * targetsize
   // and some others  
-  //
+}
+
+void CTablemapCompletenessChecker::CheckForDeprecatedItems() {
   // r$c0istournament no longer supported, works automatically
   if (p_tablemap->ItemExists("c0istournament")) {
     ErrorDeprecatedItem("c0istournament");
@@ -230,6 +298,13 @@ void CTablemapCompletenessChecker::VerifyMap() {
   // handresetmethod no longer supported, works automatically
   if (p_tablemap->ItemExists("handresetmethod")) {
     ErrorDeprecatedItem("handresetmethod");
+  }
+  // swag cofiguration symbols got renamed
+  if (p_tablemap->ItemExists("swagselectionmethod")
+      || p_tablemap->ItemExists("swagdeletionmethodmethod")
+      || p_tablemap->ItemExists("swagconfirmationmethod")
+      || p_tablemap->ItemExists("swagtextmethod")) {
+    ErrorSwagRenamed();
   }
   // activemethod no longer upported since OpenHoldem 7.3.1
   // since it was based on backward-compatibilitz for a bug

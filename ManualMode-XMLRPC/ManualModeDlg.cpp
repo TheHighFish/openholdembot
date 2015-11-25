@@ -44,7 +44,7 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [chairnum][x/y]
-double	pc[k_max_number_of_players][2] = 
+double	pc[kMaxNumberOfPlayers][2] = 
 	{ {.68,.11}, {.83,.21}, {.93,.47}, {.83,.73}, {.68,.83}, 
 	  {.32,.83}, {.17,.73}, {.07,.47}, {.17,.21}, {.32,.11} 
 	};
@@ -52,7 +52,7 @@ double	pc[k_max_number_of_players][2] =
 // Player bet locations relative to player locations above
 // numbers are in pixel units
 // [chairnum][x/y]
-int pcbet[k_max_number_of_players][2] = 
+int pcbet[kMaxNumberOfPlayers][2] = 
 	{ {-40,+53}, {-40,+37}, {-40,+0}, {-40,-20}, {-40,-40}, 
 	  {+40,-40}, {+40,-20}, {+40,+0}, {+40,+37}, {+40,+53} 
 	};
@@ -60,7 +60,7 @@ int pcbet[k_max_number_of_players][2] =
 // Dealer button locations relative to player locations above
 // numbers are in pixel units
 // [chairnum][x/y]
-int dbutn[k_max_number_of_players][2] = 
+int dbutn[kMaxNumberOfPlayers][2] = 
 	{ {-60,+70}, {-60,+54}, {-60,+17}, {-60,-37}, {-60,-57}, 
 	  {+60,-57}, {+60,-37}, {+60,+17}, {+60,+54}, {+60,+70} 
 	};
@@ -559,7 +559,7 @@ void CManualModeDlg::clear_scrape_areas(void)
 	{ 
 		card[CC0+i] = CARD_NOCARD;
 	}
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{ 
 		card[P0C0+i*2] = card[P0C1+i*2] = CARD_NOCARD; 
 		seated[i] = active[i] = dealer[i] = false;
@@ -744,7 +744,7 @@ void CManualModeDlg::OnPaint()
 		}
 
 		// Draw collection of player info
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			// Draw active circle
 			if (seated[i])
@@ -2007,7 +2007,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// See if we clicked on a player's name
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		// Figure placement of box
 		left = cr.right * pc[i][0] - 36;
@@ -2039,7 +2039,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// See if we clicked on a player's balance
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		t = "";
 		if (seated[i] || active[i]) 
@@ -2077,7 +2077,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// see if we clicked on a player's bet
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		t = "";
 		if (active[i]) 
@@ -2134,7 +2134,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// see if we clicked on a player's first card
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (p.x >= cr.right * pc[i][0] - CARDSIZEX - 2 && 
 			p.x <= cr.right * pc[i][0] - 2 &&
@@ -2148,7 +2148,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// see if we clicked on a player's second card
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (p.x >= cr.right * pc[i][0] + 1 && 
 			p.x <= cr.right * pc[i][0] + CARDSIZEX + 1 &&
@@ -2370,7 +2370,7 @@ void CManualModeDlg::OnSitInPlayer()
 
 void CManualModeDlg::OnDealerHere() 
 { 
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		dealer[i] = false;
 	}
@@ -2423,7 +2423,7 @@ void CManualModeDlg::OnBnClickedPminus()
 {
 	// Removing players counter-clockwise,
 	// starting with highest numbers
-	for (int i=(k_max_number_of_players - 1); i>=0; i--) 
+	for (int i=(kMaxNumberOfPlayers - 1); i>=0; i--) 
 	{
 		if (seated[i] == true) 
 		{
@@ -2437,7 +2437,7 @@ void CManualModeDlg::OnBnClickedPminus()
 
 void CManualModeDlg::OnBnClickedPplus() 
 {
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (seated[i] == false) 
 		{
@@ -2475,13 +2475,13 @@ void CManualModeDlg::OnBnClickedMacro()
 		{
 			for (int j=chair; j<=chair+9; j++) 
 			{
-				if (seated[j%k_max_number_of_players] == false) 
+				if (seated[j%kMaxNumberOfPlayers] == false) 
 				{
-					seated[j%k_max_number_of_players] = true;
-					active[j%k_max_number_of_players] = true;
-					card[P0C0+((j%k_max_number_of_players)*2)] = CARD_BACK; 
-					card[P0C1+((j%k_max_number_of_players)*2)] = CARD_BACK; 
-					chair = j%k_max_number_of_players;
+					seated[j%kMaxNumberOfPlayers] = true;
+					active[j%kMaxNumberOfPlayers] = true;
+					card[P0C0+((j%kMaxNumberOfPlayers)*2)] = CARD_BACK; 
+					card[P0C1+((j%kMaxNumberOfPlayers)*2)] = CARD_BACK; 
+					chair = j%kMaxNumberOfPlayers;
 					pl_card=0;
 					j = chair+10;
 				}
@@ -2490,23 +2490,23 @@ void CManualModeDlg::OnBnClickedMacro()
 
 		else if (macro_text.Mid(i,1) == "p") 
 		{
-			for (int j=(chair + k_max_number_of_players - 1); j>=chair; j--) 
+			for (int j=(chair + kMaxNumberOfPlayers - 1); j>=chair; j--) 
 			{
-				if (seated[j%k_max_number_of_players] == true) 
+				if (seated[j%kMaxNumberOfPlayers] == true) 
 				{
-					seated[j%k_max_number_of_players] = false;
-					active[j%k_max_number_of_players] = false;
-					if (card[P0C0+((j%k_max_number_of_players)*2)]!=CARD_NOCARD && card[P0C0+((j%k_max_number_of_players)*2)]!=CARD_BACK) 
+					seated[j%kMaxNumberOfPlayers] = false;
+					active[j%kMaxNumberOfPlayers] = false;
+					if (card[P0C0+((j%kMaxNumberOfPlayers)*2)]!=CARD_NOCARD && card[P0C0+((j%kMaxNumberOfPlayers)*2)]!=CARD_BACK) 
 					{
-						CardMask_UNSET(used_cards, card[P0C0+((j%k_max_number_of_players)*2)]);
+						CardMask_UNSET(used_cards, card[P0C0+((j%kMaxNumberOfPlayers)*2)]);
 					}
-					if (card[P0C1+((j%k_max_number_of_players)*2)]!=CARD_NOCARD && card[P0C1+((j%k_max_number_of_players)*2)]!=CARD_BACK) 
+					if (card[P0C1+((j%kMaxNumberOfPlayers)*2)]!=CARD_NOCARD && card[P0C1+((j%kMaxNumberOfPlayers)*2)]!=CARD_BACK) 
 					{
-						CardMask_UNSET(used_cards, card[P0C1+((j%k_max_number_of_players)*2)]);
+						CardMask_UNSET(used_cards, card[P0C1+((j%kMaxNumberOfPlayers)*2)]);
 					}
-					card[P0C0+((j%k_max_number_of_players)*2)] = CARD_NOCARD; 
-					card[P0C1+((j%k_max_number_of_players)*2)] = CARD_NOCARD; 
-					chair = j%k_max_number_of_players;
+					card[P0C0+((j%kMaxNumberOfPlayers)*2)] = CARD_NOCARD; 
+					card[P0C1+((j%kMaxNumberOfPlayers)*2)] = CARD_NOCARD; 
+					chair = j%kMaxNumberOfPlayers;
 					pl_card=0;
 					j = -1;
 				}
@@ -2515,7 +2515,7 @@ void CManualModeDlg::OnBnClickedMacro()
 
 		else if (macro_text.Mid(i,1) == "b") 
 		{
-			for (int j=0; j<k_max_number_of_players; j++) 
+			for (int j=0; j<kMaxNumberOfPlayers; j++) 
 			{
 				if (dealer[j]) 
 				{
@@ -2524,15 +2524,15 @@ void CManualModeDlg::OnBnClickedMacro()
 				}
 			}
 
-			for (int j=dealer_pos+1; j<=(dealer_pos + k_max_number_of_players); j++) 
+			for (int j=dealer_pos+1; j<=(dealer_pos + kMaxNumberOfPlayers); j++) 
 			{
-				if (seated[j%k_max_number_of_players] == true && active[j%k_max_number_of_players] == true) 
+				if (seated[j%kMaxNumberOfPlayers] == true && active[j%kMaxNumberOfPlayers] == true) 
 				{
-					playerbet[j%k_max_number_of_players]
+					playerbet[j%kMaxNumberOfPlayers]
 						= NumberToFormattedString(atof(sblind));
 
-					double new_balance = atof(playerbalance[j%k_max_number_of_players].GetString()) - atof(sblind);
-					playerbalance[j%k_max_number_of_players]
+					double new_balance = atof(playerbalance[j%kMaxNumberOfPlayers].GetString()) - atof(sblind);
+					playerbalance[j%kMaxNumberOfPlayers]
 						= NumberToFormattedString(new_balance);
 
 					j = dealer_pos+11;
@@ -2542,7 +2542,7 @@ void CManualModeDlg::OnBnClickedMacro()
 
 		else if (macro_text.Mid(i,1) == "B") 
 		{
-			for (int j=0; j<k_max_number_of_players; j++) 
+			for (int j=0; j<kMaxNumberOfPlayers; j++) 
 			{
 				if (dealer[j]) 
 				{
@@ -2552,16 +2552,16 @@ void CManualModeDlg::OnBnClickedMacro()
 			}
 
 			found_sblind = false;
-			for (int j=dealer_pos+1; j<=(dealer_pos + k_max_number_of_players); j++) 
+			for (int j=dealer_pos+1; j<=(dealer_pos + kMaxNumberOfPlayers); j++) 
 			{
-				if (seated[j%k_max_number_of_players] == true && active[j%k_max_number_of_players] == true)
+				if (seated[j%kMaxNumberOfPlayers] == true && active[j%kMaxNumberOfPlayers] == true)
 				{
 					if (found_sblind==true) 
 					{
-						playerbet[j%k_max_number_of_players] = NumberToFormattedString(atof(bblind));
+						playerbet[j%kMaxNumberOfPlayers] = NumberToFormattedString(atof(bblind));
 						
-						double new_balance = atof(playerbalance[j%k_max_number_of_players].GetString()) - atof(bblind);
-						playerbalance[j%k_max_number_of_players] = NumberToFormattedString(new_balance);
+						double new_balance = atof(playerbalance[j%kMaxNumberOfPlayers].GetString()) - atof(bblind);
+						playerbalance[j%kMaxNumberOfPlayers] = NumberToFormattedString(new_balance);
 						
 						j = dealer_pos+11;
 					}
@@ -2608,11 +2608,11 @@ void CManualModeDlg::OnBnClickedMacro()
 				// First two cards seen get set to player
 				if (cards_seen<2)
 				{
-					if (card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]!=CARD_NOCARD && card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]!=CARD_BACK) 
+					if (card[(P0C0+(pl_card%2))+((chair%kMaxNumberOfPlayers)*2)]!=CARD_NOCARD && card[(P0C0+(pl_card%2))+((chair%kMaxNumberOfPlayers)*2)]!=CARD_BACK) 
 					{
-						CardMask_UNSET(used_cards, card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)]);
+						CardMask_UNSET(used_cards, card[(P0C0+(pl_card%2))+((chair%kMaxNumberOfPlayers)*2)]);
 					}
-					card[(P0C0+(pl_card%2))+((chair%k_max_number_of_players)*2)] = c; 
+					card[(P0C0+(pl_card%2))+((chair%kMaxNumberOfPlayers)*2)] = c; 
 					CardMask_SET(used_cards, c);
 					pl_card++;
 					cards_seen++;
@@ -2634,7 +2634,7 @@ void CManualModeDlg::OnBnClickedMacro()
 
 		else if (macro_text.Mid(i,1).MakeLower() == "n") 
 		{
-			for (int j=0; j<k_max_number_of_players; j++) 
+			for (int j=0; j<kMaxNumberOfPlayers; j++) 
 			{
 				dealer[j] = false;
 			}
@@ -2680,14 +2680,14 @@ int CManualModeDlg::get_suit(char c)
 
 void CManualModeDlg::OnBnClickedDminus() 
 {
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (dealer[i] == true) 
 		{
 			dealer[i] = false;
 			if (--i < 0) 
 			{ 
-				i = k_max_number_of_players - 1; 
+				i = kMaxNumberOfPlayers - 1; 
 			}
 
 			dealer[i] = true;
@@ -2700,12 +2700,12 @@ void CManualModeDlg::OnBnClickedDminus()
 void CManualModeDlg::OnBnClickedDplus() 
 {
 	CString s;
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (dealer[i] == true) 
 		{
 			dealer[i] = false;
-			if (++i >= k_max_number_of_players)
+			if (++i >= kMaxNumberOfPlayers)
 			{ 
 				i = 0; 
 			}
@@ -2813,7 +2813,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 
 	if (ncommoncards_last == 0 && ncommoncards>0) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2821,7 +2821,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	}
 	else if (ncommoncards_last == 3 && ncommoncards>3) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2829,7 +2829,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	}
 	else if (ncommoncards_last == 4 && ncommoncards>4) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2844,7 +2844,7 @@ double CManualModeDlg::get_current_bet(void)
 {
 	double	curbet=0;
 
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (atof(playerbet[i]) > curbet) 
 		{

@@ -57,7 +57,7 @@ enum
  	simple_chat_hello,
  	simple_chat_bye,
 	simple_chat_happy,  //  Message: ":)"
-	simple_chat_sad,	//  Message: ":("
+	simple_chat_sad,	  //  Message: ":("
 	last_chat_message = simple_chat_sad
 };
 

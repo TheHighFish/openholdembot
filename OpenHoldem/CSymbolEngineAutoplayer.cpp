@@ -90,7 +90,10 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 				_myturnbits |= kMyTurnBitsCall;
 			}	else if (p_string_match->IsStringCheck(button_label))	{
 				_myturnbits |= kMyTurnBitsCheck;
-      }	else if (p_string_match->IsStringRaise(button_label) || button_label.MakeLower() == "swag")	{
+      }	else if (p_string_match->IsStringRaise(button_label) 
+          || button_label.MakeLower() == "betsize"
+          // Last occurence of swag for backward compatibility
+          || button_label.MakeLower() == "swag")	{
 				_myturnbits |= kMyTurnBitsRaise;
 			}	else if (p_string_match->IsStringAllin(button_label)) {
 				_myturnbits |= kMyTurnBitsAllin;

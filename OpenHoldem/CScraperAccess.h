@@ -75,6 +75,7 @@ class CScraperAccess {
 	int _sitin_button_number;
 	int _sitout_button_number;
 	int _leave_button_number;
+  int _rematch_button_number;
 	int _prefold_button_number;
 	int _autopost_button_number;
  private:

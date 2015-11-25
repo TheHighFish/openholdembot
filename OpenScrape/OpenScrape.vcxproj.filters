@@ -31,6 +31,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\OpenHoldem_Functions">
+      <UniqueIdentifier>{bcdce719-3a7e-4c93-9963-9daf6aa7e6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OpenHoldem_Functions">
+      <UniqueIdentifier>{f39d27af-707c-4d10-969f-6bfa818da3ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CRegionCloner.cpp">
@@ -79,9 +85,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenScrape.cpp">
@@ -134,6 +137,12 @@
     </ClCompile>
     <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp">
       <Filter>Source Files\CTransform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenHoldem\CScraperPreprocessor.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="..\OpenHoldem\WebSafeColours.h">
       <Filter>Header Files\CTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenHoldem\OH_MessageBox.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenHoldem\CScraperPreprocessor.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

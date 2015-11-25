@@ -280,7 +280,7 @@ void CScraper::ScrapeBetpotButtons() {
 }
 
 void CScraper::ScrapeSeatedActive() {
-	for (int i=0; i<k_max_number_of_players; i++)	{
+	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
 		p_table_state->_players[i]._seated = false;
 		p_table_state->_players[i]._active = false;
 	}
@@ -623,7 +623,7 @@ bool CScraper::IsCommonAnimation(void) {
 }
 
 void CScraper::ClearAllPlayerNames() {
-	for (int i=0; i<k_max_number_of_players; i++) {
+	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     p_table_state->_players[i]._name = "";
 	}
 }
@@ -741,7 +741,7 @@ void CScraper::ScrapeBet(int chair) {
 }
 
 void CScraper::ScrapeAllPlayerCards() {
-	for (int i=0; i<k_max_number_of_players; i++){
+	for (int i=0; i<kMaxNumberOfPlayers; i++){
 		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
 			p_table_state->_players[i]._hole_cards[j].ClearValue();
 		}
@@ -760,10 +760,10 @@ void CScraper::ScrapePots() {
 	CString			s = "", t="";
 	RMapCI			r_iter = p_tablemap->r$()->end();
 
-	for (int j=0; j<k_max_number_of_pots; j++) {
+	for (int j=0; j<kMaxNumberOfPots; j++) {
     p_table_state->_pot[j] = 0.0;
   }
-	for (int j=0; j<k_max_number_of_pots; j++) {
+	for (int j=0; j<kMaxNumberOfPots; j++) {
 		// r$c0potX
 		s.Format("c0pot%d", j);
     double result = 0;
@@ -944,15 +944,22 @@ void CScraper::ScrapeLimits() {
         "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
 			if (text != "")	{
 			  s_iter = p_tablemap->s$()->find(c0limitsX);
-        CString how_to_interpret_c0limit = s_iter->second.text;
-        write_log(preferences.debug_scraper(), 
-          "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
-				trans.ParseStringBSL(
-					text, how_to_interpret_c0limit, NULL,
-					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-          &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-        write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-          l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+        if (s_iter == p_tablemap->s$()->end()) {
+          // Missing s$c0limits could crash OpenHoldem in the past
+          // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+          // but CTablemapCompletenessChecker now also takes care
+          write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+        } else {
+          CString how_to_interpret_c0limit = s_iter->second.text;
+          write_log(preferences.debug_scraper(), 
+            "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				  trans.ParseStringBSL(
+					  text, how_to_interpret_c0limit, NULL,
+					  &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+          write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+            l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+        }
 			}
 		}
     // Then c0limitsX
@@ -963,15 +970,22 @@ void CScraper::ScrapeLimits() {
           "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
 			  if (text != "")	{
 			    s_iter = p_tablemap->s$()->find(c0limitsX);
+          if (s_iter == p_tablemap->s$()->end()) {
+            // Missing s$c0limits could crash OpenHoldem in the past
+            // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+            // but CTablemapCompletenessChecker now also takes care
+            write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+          } else {
           CString how_to_interpret_c0limit = s_iter->second.text;
-          write_log(preferences.debug_scraper(), 
-            "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
-				  trans.ParseStringBSL(
-					  text, how_to_interpret_c0limit, NULL,
-					  &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-            &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-          write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-            l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+            write_log(preferences.debug_scraper(), 
+              "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				    trans.ParseStringBSL(
+					    text, how_to_interpret_c0limit, NULL,
+					    &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+              &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+            write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+              l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+          }
 			  }
 		  }
     }
@@ -1119,7 +1133,7 @@ const double CScraper::DoChipScrape(RMapCI r_iter) {
 			horizcount++;
 	}
 
-	hash_type = r_start->second.transform[1] - '0';
+	hash_type = RightDigitCharacterToNumber(r_start->second.transform);
 
 	// Bitblt the attached windows bitmap into a HDC
 	HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);

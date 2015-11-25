@@ -26,8 +26,8 @@
 // One fake-entry for the case of unknown user-chair
 // This way we can avoid the handling of special cases
 // and the danger of NULL-pointers for the User()-function.
-const int kNumberOfPlayerEntries        = k_max_number_of_players + 1;
-const int kFakeEntryForUnknownUserchair = k_max_number_of_players;
+const int kNumberOfPlayerEntries        = kMaxNumberOfPlayers + 1;
+const int kFakeEntryForUnknownUserchair = kMaxNumberOfPlayers;
 
 class CTableState {
  public:
@@ -43,7 +43,7 @@ class CTableState {
   char		   _title[MAX_WINDOW_TITLE];
   char		   _title_last[MAX_WINDOW_TITLE]; 
   Card       _common_cards[kNumberOfCommunityCards];
-  double	   _pot[k_max_number_of_pots];
+  double	   _pot[kMaxNumberOfPots];
   CPlayer    _players[kNumberOfPlayerEntries];
 };
 

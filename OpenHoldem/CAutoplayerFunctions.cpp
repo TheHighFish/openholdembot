@@ -76,7 +76,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
   //   * exactly once per my turn
   //   * when we have stable frames (isfinal-answer == true)
   //   * shortly before the main OpenPPL-evaluations
-  // Unfortunatellz doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
+  // Unfortunately doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
   // did not work as expected.
   assert(p_symbol_engine_autoplayer->isfinalanswer());
   p_symbol_engine_open_ppl->InitMemorySymbols();
@@ -123,7 +123,7 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
       action_name = "Fold";
       break;
     default:
-      assert (k_this_must_not_happen);
+      assert (kThisMustNotHappen);
   }
   double open_ppl_action_code = p_function_collection->Evaluate(action_name);
   write_log(preferences.debug_symbolengine_open_ppl(),
@@ -162,7 +162,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_check);
     CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
   } else {
-    // This can onlz be undefined == 0.0
+    // This can only be undefined == 0.0
     assert(decision == kUndefinedZero);
     write_log(preferences.debug_symbolengine_open_ppl(),
       "[CAutoplayerFunctions] OpenPPL-decision undefined. Defaulting to check/fold.\n");
@@ -180,9 +180,29 @@ void CAutoplayerFunctions::CalculateSingleOpenPPLBackupAction(
     k_standard_function_names[potential_action], 
     action_value);
   if (action_value) {
+    write_log(preferences.debug_formula(), 
+      "[CAutoplayerFunctions] Backup action added: %s -> %s\n",
+      k_standard_function_names[potential_action], 
+      k_standard_function_names[potential_backup]);
     p_function_collection->SetAutoplayerFunctionValue(
       potential_backup, true);
   }
+}
+
+bool CAutoplayerFunctions::IsFoldAllinSituation() {
+  // Determine this situation by button-states
+  // and not by easily misscraped bets and balances.
+  // Fold and allin-button must be visible.
+  // Raise. call and check must not.
+  CString fckra = p_symbol_engine_autoplayer->GetFCKRAString();
+  write_log(preferences.debug_formula(), 
+    "[CAutoplayerFunctions] Buttons seen: %s\n", fckra);
+  if (fckra == "F...A") {
+    write_log(preferences.debug_formula(), 
+      "[CAutoplayerFunctions] Fold / allin situation\n");
+    return true;
+  }
+  return false;
 }
 
 void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
@@ -203,12 +223,24 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Allin -> BetPot
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_allin, k_autoplayer_function_betpot_1_1);
-  // BetPot -> 1/2 BetPot
+  // BetPot -> 3/4 BetPot
   CalculateSingleOpenPPLBackupAction(
-    k_autoplayer_function_betpot_1_1, k_autoplayer_function_betpot_1_2);
-  // 1/2 BetPot -> Raise
+    k_autoplayer_function_betpot_1_1, k_autoplayer_function_betpot_3_4);
+  // 3/4 BetPot -> 2/3 BetPot
   CalculateSingleOpenPPLBackupAction(
-    k_autoplayer_function_betpot_1_2, k_autoplayer_function_raise);
+    k_autoplayer_function_betpot_3_4, k_autoplayer_function_betpot_2_3);
+  // 2/3 BetPot -> 1/2 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_2_3, k_autoplayer_function_betpot_1_2);
+  // 1/2 BetPot -> 1/3 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_2, k_autoplayer_function_betpot_1_3);
+  // 1/3 BetPot -> 1/4 BetPot
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_3, k_autoplayer_function_betpot_1_4);
+  // 1/4 BetPot -> Raise
+  CalculateSingleOpenPPLBackupAction(
+    k_autoplayer_function_betpot_1_4, k_autoplayer_function_raise);
   // Also: f$betsize -> Raise
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_betsize, k_autoplayer_function_raise);
@@ -218,7 +250,12 @@ void CAutoplayerFunctions::CalculateOpenPPLBackupActions() {
   // Call -> Check
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_call, k_autoplayer_function_check);
-  // Call -> Fold
+  // Call -> Allin, in case we only can fold / (call) allin
+  if (IsFoldAllinSituation()) {
+    CalculateSingleOpenPPLBackupAction(
+      k_autoplayer_function_call, k_autoplayer_function_allin);
+  }
+  // Check -> Fold
   CalculateSingleOpenPPLBackupAction(
     k_autoplayer_function_check, k_autoplayer_function_fold);
 }
@@ -237,7 +274,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   assert(p_symbol_engine_chip_amounts != NULL);
   assert(p_symbol_engine_userchair != NULL);
   assert(p_symbol_engine_userchair->userchair_confirmed());
-  double betsize = p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) 
+  double betsize = p_table_state->User()->_bet 
     + p_symbol_engine_chip_amounts->call() 
     + (-1 * decision) * (p_symbol_engine_chip_amounts->pot() + p_symbol_engine_chip_amounts->call());
     write_log(preferences.debug_formula(), 

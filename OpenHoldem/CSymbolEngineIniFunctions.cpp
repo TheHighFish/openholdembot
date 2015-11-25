@@ -36,7 +36,7 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
@@ -71,7 +71,7 @@ CSymbolEngineIniFunctions::CSymbolEngineIniFunctions() {
   assert(p_symbol_engine_pokerval != NULL);
   assert(p_symbol_engine_positions != NULL);
   assert(p_symbol_engine_prwin != NULL);
-  assert(p_symbol_engine_raisers_callers != NULL);
+  assert(p_symbol_engine_raisers != NULL);
   assert(p_symbol_engine_random != NULL);
   assert(p_symbol_engine_time != NULL);
   assert(p_symbol_engine_userchair != NULL);

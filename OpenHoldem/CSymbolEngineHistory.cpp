@@ -200,7 +200,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
-			double current_players_bet = p_symbol_engine_chip_amounts->currentbet(i);
+			double current_players_bet = p_table_state->_players[i]._bet;
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
@@ -231,24 +231,24 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 			*result = didcall(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didrais", 7)==0 && strlen(name)==7) {
 			*result = didrais(p_betround_calculator->betround());
-		}	else if (memcmp(name, "didswag", 7)==0 && strlen(name)==7) {
+		}	else if (memcmp(name, "didbetsize", 10)==0 && strlen(name)==10) {
 			*result = didswag(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didfold", 7)==0 && strlen(name)==7) {
 			*result = didfold(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didalli", 7)==0 && strlen(name)==7) {
 			*result = didalli(p_betround_calculator->betround());
 		}	else if (memcmp(name, "didchecround", 12)==0 && strlen(name)==13)	{
-			*result = didchec(name[12]-'0');
+			*result = didchec(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didcallround", 12)==0 && strlen(name)==13)	{
-			*result = didcall(name[12]-'0');
+			*result = didcall(RightDigitCharacterToNumber(name));
 		}	else if (memcmp(name, "didraisround", 12)==0 && strlen(name)==13)	{
-			*result = didrais(name[12]-'0');
-		}	else if (memcmp(name, "didswaground", 12)==0 && strlen(name)==13)	{
-			*result = didswag(name[12]-'0');
-		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==7) {
-			*result = didfold(name[12]-'0');
-		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==7) {
-			*result = didalli(name[12]-'0');
+			*result = didrais(RightDigitCharacterToNumber(name));
+		}	else if (memcmp(name, "didbetsizeround", 15)==0 && strlen(name)==16)	{
+			*result = didswag(RightDigitCharacterToNumber(name));
+		}	else if (memcmp(name, "didfoldround", 12)==0 && strlen(name)==13) {
+			*result = didfold(RightDigitCharacterToNumber(name));
+		}	else if (memcmp(name, "didalliround", 12)==0 && strlen(name)==13) {
+			*result = didalli(RightDigitCharacterToNumber(name));
     }	else {
 			// Invalid symbol
 			return false;
@@ -260,7 +260,7 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
       // For current betting round
 			*result = nplayersround(p_betround_calculator->betround());
 		}	else if (memcmp(name, "nplayersround", 13)==0 && strlen(name)==14) {
-			*result = nplayersround(name[13]-'0');
+			*result = nplayersround(RightDigitCharacterToNumber(name));
 		}	else {
 			// Invalid symbol
 			return false;
@@ -272,10 +272,10 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==10)	{
 		*result = nbetsround(p_betround_calculator->betround());
 	}	else if (memcmp(name, "nbetsround", 10)==0 && strlen(name)==11)	{
-		*result = nbetsround(name[10]-'0');
+		*result = nbetsround(RightDigitCharacterToNumber(name));
 	}  else if (memcmp(name, "hi_", 3)==0) {
     // History symbols
-    int	round = name[strlen(name)-1]-'0';
+    int	round = RightDigitCharacterToNumber(name, 1);
     char *pure_name = (char*)name + 3;
     char pure_name_without_betround[256];
     int length = strlen(pure_name);
@@ -297,11 +297,11 @@ bool CSymbolEngineHistory::DidAct() {
   // including another extra fail-safe for unknown big-blind
   if ((BETROUND == kBetroundPreflop)
       && p_symbol_engine_userchair->userchair_confirmed()
-      && ((p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) < p_symbol_engine_tablelimits->bblind())
-        || (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) == 0))) {
+      && ((p_table_state->User()->_bet < p_symbol_engine_tablelimits->bblind())
+        || (p_table_state->User()->_bet == 0))) {
     return false;
   }
-  // Otherwise: return "normal" value, depending on didswag, didrais, ...
+  // Otherwise: return "normal" value, depending on didbetsize, didrais, ...
 	return DidAct(BETROUND);
 }
 
@@ -316,12 +316,12 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 }
 
 CString CSymbolEngineHistory::SymbolsProvided() {
-  CString list = "didchec didcall didrais didswag didfold didalli "
+  CString list = "didchec didcall didrais didbetsize didfold didalli "
     "nplayersround nbetsround prevaction ";
   list += RangeOfSymbols("didchecround%i",  kBetroundPreflop, kBetroundRiver);  
   list += RangeOfSymbols("didcallround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("didraisround%i",  kBetroundPreflop, kBetroundRiver);
-  list += RangeOfSymbols("didswaground%i",  kBetroundPreflop, kBetroundRiver);
+  list += RangeOfSymbols("didbetsizeround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nplayersround%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nbetsround%i",    kBetroundPreflop, kBetroundRiver);
   for (int i=0; i<k_hist_sym_count; ++i) {

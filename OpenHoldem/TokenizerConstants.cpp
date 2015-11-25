@@ -255,7 +255,12 @@ CString TokenString(int token) {
   case kTokenActionRaise: return "Raise";
   case kTokenActionRaiseTo: return "RaiseTo";
   case kTokenActionRaiseBy: return "RaiseBy";
+  // case kTokenActionRaiseMin: return "RaiseMin";
+  case kTokenActionRaiseFourthPot: return "RaiseFourthPot";
+  case kTokenActionRaiseThirdPot: return "RaiseThirdPot";
   case kTokenActionRaiseHalfPot: return "RaiseHalfPot";
+  case kTokenActionRaiseTwoThirdPot: return "RaiseTwoThirdPot";
+  case kTokenActionRaiseThreeFourthPot: return "RaiseThreeFourthPot";
   case kTokenActionRaisePot: return "RaisePot";
   case kTokenActionRaiseMax: return "RaiseMax";
   case kTokenActionReturn: return "Return";
@@ -266,8 +271,10 @@ CString TokenString(int token) {
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
 	default:
-		assert(k_this_must_not_happen);
-		return "Error: invalid token ID";
+		assert(kThisMustNotHappen);
+    CString error_message;
+    error_message.Format("Error: unexpected token ID in TokenString(%i)", token);
+		return error_message;
   }
 }
 
@@ -487,7 +494,7 @@ kTokenEndOfFile = 0,
 	kTokenOperatorBinaryXOr,          
 	kTokenOperatorBitShiftLeft,      
 	kTokenOperatorBitShiftRight,     
-    kTokenOperatorBitCount,
+  kTokenOperatorBitCount,
 	kTokenOperatorPercentage,         
 	kTokenOperatorConditionalIf,      
 	kTokenOperatorConditionalThen,    

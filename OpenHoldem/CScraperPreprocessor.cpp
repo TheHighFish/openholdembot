@@ -17,7 +17,7 @@
 
 #ifdef OPENHOLDEM_PROGRAM 
 // Preferences needed for logging, 
-// both onlz available for OpenHoldem
+// both only available for OpenHoldem
 #include "CPreferences.h"
 #endif OPENHOLDEM_PROGRAM
 

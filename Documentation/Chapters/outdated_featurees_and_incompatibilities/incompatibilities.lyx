@@ -95,9 +95,9 @@ Teaming
  and practical relevance.
  And now that OpenHoldem is far more advanced and WinHoldem is practically
  dead, backward-compatibility is no longer such an important issue.
- Recently the development team does revisit some features that look a bit
- mal-designed and tries to improve them carefully, trying to affect the
- end-user as little as possible.
+ Recently the development team revisits some features that look a bit mal-design
+ed and tries to improve them carefully, trying to affect the end-user as
+ little as possible.
  This chapter will tell you about such incompatibilities.
 \end_layout
 
@@ -118,6 +118,34 @@ OpenHoldem does not support any kind of collusion.
  There is no support for WinHoldems WinTellem-server and card-sharing either
  because such activities are simply illegal in every country of the world,
  and --- even more important --- because we consider them unfair too.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/winholdem_table.gif
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -149,7 +177,7 @@ Formula-File-Format
 The formula is saved in a single file instead of two.
  It uses the extension *.ohf instead of *.whf and *.whx.
  Old WH-formulae could be converted for some time, but as there was no longer
- any demand for that feature we were happy to simplify OpenHoldems code.
+ any demand for this feature we were happy to simplify OpenHoldems code.
  OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited
  using your favourite text-editor.
  or the built-in formula-editor.
@@ -343,19 +371,7 @@ the largest possible raise.
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-sraiprev	
+sraiprev
 \end_layout
 
 \end_inset
@@ -364,18 +380,6 @@ sraiprev
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
 the difference between the two largest unique wagers
 \end_layout
 
@@ -395,6 +399,120 @@ All these computations had to be done by the user at the formula level.
  and OpenHoldem cares about all the rest automatically (depending on the
  swagtextmethod specified in your tablemap, but that is all work that's
  left).
+ The supporting tablemap symbols got renamed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="40text%">
+<column alignment="left" valignment="top" width="40text%">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Former TM-symbol
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+New TM-symbol
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagselectionmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betsizeselectionmethod
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagdeletionmethodmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betsizedeletionmethodmethod
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagconfirmationmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betsizeconfirmationmethod
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+swagtextmethod
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betsizeinterpretationmethod
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -468,7 +586,7 @@ OpenHoldem is now half a dozen years old.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="65" columns="3">
+<lyxtabular version="3" rows="64" columns="3">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30line%">
 <column alignment="left" valignment="top" width="30line%">
@@ -741,39 +859,7 @@ swagdelay
 
 \begin_layout Plain Layout
 Autoplayer delay in milliseconds between swag keystrokes and button click
- as defined in Preferences (formerly TableMap); to be removed soon as there
- is no need for it at the formula level
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-allidelay
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Autoplayer delay in milliseconds between alli slider jam and button click
- as defined in Preferences (formerly TableMap); to be removed soon as there
- is no need for it at the formula level
+ as defined in Preferences (formerly TableMap)
 \end_layout
 
 \end_inset
@@ -794,7 +880,7 @@ Some tablemap symbols have been exposed to the scripting level without necessity
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagtextmethod
+allidelay
 \end_layout
 
 \end_inset
@@ -803,28 +889,13 @@ swagtextmethod
 \begin_inset Text
 
 \begin_layout Plain Layout
-the site interpretation for swag edit text (Table Map symbol) 
-\end_layout
-
-\begin_layout Enumerate
-f$srai 
-\end_layout
-
-\begin_layout Enumerate
-f$srai+call 
-\end_layout
-
-\begin_layout Enumerate
-f$srai+call+currentbet; 
-\end_layout
-
-\begin_layout Plain Layout
-Default: 3
+Autoplayer delay in milliseconds between alli slider jam and button click
+ as defined in Preferences (formerly TableMap); 
 \end_layout
 
 \end_inset
 </cell>
-<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell multirow="4" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1153,13 +1224,18 @@ there is no need for it at the formula level.
 \end_layout
 
 \begin_layout Itemize
-it may contain characters and therefore doesn't fit into a double.
+it may contain characters and therefore doesn't fit into a variable of type
+ double.
  
 \end_layout
 
 \begin_layout Itemize
 its length may exceed the precision of double.
- "Handnumber" gets now used only internally to trigger handresets.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+"Handnumber" gets now used only internally to trigger handresets.
 \end_layout
 
 \end_inset
@@ -1356,7 +1432,7 @@ defcon
 \begin_inset Text
 
 \begin_layout Plain Layout
-	defense level is typically used in the f$P formula, which defines the adapted
+defense level is typically used in the f$P formula, which defines the adapted
  number of opponents to be used in standard prwin.
  defcon therefore controls the optimism of the prwin-simulation.
  
@@ -1662,7 +1738,7 @@ isbring
 \begin_inset Text
 
 \begin_layout Plain Layout
-	true if OpenHoldem is attached to a Bring client window
+true if OpenHoldem is attached to a Bring client window
 \end_layout
 
 \end_inset
@@ -1755,7 +1831,7 @@ randomround1 ...
 \begin_inset Text
 
 \begin_layout Plain Layout
-random number between [0.000-1.000) for round 1 - 4.
+random number in the range [0.000..1.000) for round 1 - 4.
  Value is calculated only once in that round.
  
 \end_layout
@@ -1849,7 +1925,7 @@ seatposition
 \begin_inset Text
 
 \begin_layout Plain Layout
-	your seat position relative to the dealer
+your seat position relative to the dealer
 \end_layout
 
 \end_inset
@@ -1859,7 +1935,7 @@ seatposition
 
 \begin_layout Plain Layout
 Removing the symbol seatposition which counted both active and inactive
- players and was of no real use for practical play.
+ players and even empty chairs and was of no real use for practical play.
 \end_layout
 
 \end_inset
@@ -1908,7 +1984,7 @@ ncommoncardspresent
 \begin_inset Text
 
 \begin_layout Plain Layout
-	number of common cards present (normal or highlighted)
+number of common cards present (normal or highlighted)
 \end_layout
 
 \end_inset
@@ -1942,11 +2018,37 @@ ac_pf_bets
 <cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Plain Layout
-	1 for no callers or blinds only 2 for Called Pot - 1 bet to call 3 for
- Raised Back - 1 more bet to call because someone behind you raised after
- you've already bet/called/raised 4 for Raised Pot - 2 bets to call 5 for
- Reraised Pot - 3+ bets to call NOTE: Only valid when betround==1 
+\begin_layout Enumerate
+no callers or blinds only 
+\end_layout
+
+\begin_layout Enumerate
+called Pot -- 1 bet to call 
+\end_layout
+
+\begin_layout Enumerate
+raised Back -- 1 more bet to call because someone behind you raised after
+ you've already bet/called/raised 
+\end_layout
+
+\begin_layout Enumerate
+raised Pot -- 2 bets to call 
+\end_layout
+
+\begin_layout Enumerate
+reraised Pot -- 3+ bets to call 
+\end_layout
+
+\begin_layout Remark*
+Only valid when betround
+\begin_inset space ~
+\end_inset
+
+==
+\begin_inset space ~
+\end_inset
+
+1 
 \end_layout
 
 \end_inset
@@ -2487,55 +2589,6 @@ similar like the ron$symbols above, just for the user
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-TablePoints
-\end_layout
-
-\begin_layout Standard
-Tablepoints got removed, because nobody used them.
- They never got implemented correctly and nobody noticed it for 3 years.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="2">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="left" valignment="top" width="30line%">
-<column alignment="left" valignment="top" width="65line%">
-<row>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-tablepointNNN
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-These regions were used when the "Green Circle Button" was clicked on the
- OpenHoldem toolbar to "automagically" find a table to connect to.
- These regions must be one pixel wide by one pixel tall and must use a color
- transform.
- All tablepoint records must match the pixel colors on the casino window
- for it to be recognized on a connect.
- See {How the “Green Circle Button” finds tables} for more details.
- 
 \end_layout
 
 \end_inset

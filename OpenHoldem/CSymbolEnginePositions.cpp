@@ -19,7 +19,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineDealerchair.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "NumericalFunctions.h"
@@ -94,8 +94,8 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 			}
 		}
 	}
-	AssertRange(_nchairsdealtright, 0, (k_max_number_of_players - 1));
-	AssertRange(_nchairsdealtleft,  0, (k_max_number_of_players - 1));
+	AssertRange(_nchairsdealtright, 0, (kMaxNumberOfPlayers - 1));
+	AssertRange(_nchairsdealtleft,  0, (kMaxNumberOfPlayers - 1));
 }
 
 void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
@@ -113,10 +113,10 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
     if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
 			_dealpositionrais++;
 		}
-		if (next_chair == p_symbol_engine_raisers_callers->raischair()) break;	
+		if (next_chair == p_symbol_engine_raisers->raischair()) break;	
 	}
-	AssertRange(_betpositionrais,  kUndefined, k_max_number_of_players);
-	AssertRange(_dealpositionrais, kUndefined, k_max_number_of_players);
+	AssertRange(_betpositionrais,  kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_dealpositionrais, kUndefined, kMaxNumberOfPlayers);
 }
 
 void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
@@ -140,16 +140,16 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 		}
 	}
 
-	int raischair = p_symbol_engine_raisers_callers->raischair();
+	int raischair = p_symbol_engine_raisers->raischair();
 	for (int i=raischair+1; i<=raischair+p_tablemap->nchairs(); i++) 	{
 		int next_chair = i%p_tablemap->nchairs();
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->nplayersdealt(), next_chair)) 	{
 			_callposition++;
 		}
 	}
-	AssertRange(_betposition,  kUndefined, k_max_number_of_players);
-	AssertRange(_dealposition, kUndefined, k_max_number_of_players);
-	AssertRange(_callposition, kUndefined, k_max_number_of_players);
+	AssertRange(_betposition,  kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_dealposition, kUndefined, kMaxNumberOfPlayers);
+	AssertRange(_callposition, kUndefined, kMaxNumberOfPlayers);
 }
 
 bool CSymbolEnginePositions::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

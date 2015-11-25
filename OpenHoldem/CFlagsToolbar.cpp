@@ -37,7 +37,7 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 	bool to_be_enabled_or_not = p_autoplayer->autoplayer_engaged();
 	//p_flags_toolbar->
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		SetFlag(i, false);
 	}
@@ -77,7 +77,7 @@ void CFlagsToolbar::ResetButtonsOnAutoplayerOff() {
 bool CFlagsToolbar::GetFlag(int flag_number)
 {
 	ENT
-	if (flag_number>=0 && flag_number<k_number_of_flags) 
+	if (flag_number>=0 && flag_number<kNumberOfFlags) 
 	{
 		return _flags[flag_number]; 
 	}
@@ -90,7 +90,7 @@ bool CFlagsToolbar::GetFlag(int flag_number)
 int CFlagsToolbar::GetFlagMax()
 {
 	int flag_max = -1;
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		if (_flags[i])
 		{
@@ -103,7 +103,7 @@ int CFlagsToolbar::GetFlagMax()
 long int CFlagsToolbar::GetFlagBits()
 {
 	long int flag_bits = 0;
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		if (_flags[i])
 		{
@@ -122,7 +122,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 	// No further assertion and no error-message here, only a range-check,
 	// as this function might get called by external programs
 	// via window-messages.
-	if (flag_number>=0 && flag_number<k_number_of_flags) 
+	if (flag_number>=0 && flag_number<kNumberOfFlags) 
 	{
 		_flags[flag_number] = new_value; 
 		switch (flag_number)

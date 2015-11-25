@@ -388,7 +388,14 @@ double CParseTreeNode::EvaluateSibbling(
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {
-    return kUndefinedZero;
+    // When evaluating an empty tree we evaluate a special symbol
+    // kEmptyxpression_False_Zero_WhenOthersFoldForce
+    // for better readability of the log-file.
+    double null_value = EvaluateIdentifier(kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
+		write_log(preferences.debug_formula(), 
+      "[CParseTreeNode] Evaluating empty tree: false / zero / fold\n");
+    assert(null_value == kUndefinedZero);
+    return null_value;
   }
   double result = first_second_or_third_sibbling->Evaluate(log);
   return result;
@@ -537,7 +544,7 @@ void CParseTreeNode::SetUserVariable(CString name) {
       &temp_result, true);
   }
   else {
-    assert(k_this_must_not_happen);
+    assert(kThisMustNotHappen);
   }
 }
 

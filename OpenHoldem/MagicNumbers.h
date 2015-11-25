@@ -24,6 +24,9 @@
 //   http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=11724
 //   (Same problem like the singletons in OpenHoldem.cpp)
 
+// Constants that are used in the DLL-interface
+// are defined there: user.h
+
 // Used for bit-calculations: 2^N
 const int k_exponents[11] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
 const int k_bits_all_ten_players_1_111_111_111 = 0x03FF;
@@ -42,7 +45,7 @@ const int CARD_UNDEFINED = 0xfd;
 // CString compare results
 // http://msdn.microsoft.com/en-us/library/aa314313(v=vs.60).aspx
 // http://www.cplusplus.com/reference/cstring/strcmp/
-const int k_CString_identical = 0;
+const int kStringsEqual = 0;
 
 // Betting rounds
 // Some data-structures use an additional value for the current round.
@@ -56,16 +59,16 @@ const int kBetroundTurn	     = 3;
 const int kBetroundRiver	   = 4;
 
 // Players
-const int k_max_number_of_players         = 10;
-const int k_max_length_of_playername      = 32;
-const int k_usual_number_of_blind_posters =  2;
-const int k_first_chair                   =  0;
-const int k_last_chair                    = (k_max_number_of_players - 1);
-const int k_max_number_of_opponents_at_full_ring_table = (k_max_number_of_players - 1);
+const int kMaxNumberOfPlayers         = 10;
+const int kMaxLengthOfPlayername      = 32;
+const int kUsualNumberOfBlindPosters  =  2;
+const int kFirstChair                 =  0;
+const int kLastChair                  = (kMaxNumberOfPlayers - 1);
+const int kMaxNumberOfOpponentsAtFullRingTable = (kMaxNumberOfPlayers - 1);
 
 // Chairs
-const int k_min_chair_number = 0;
-const int k_max_chair_number = k_max_number_of_players - 1;
+const int kMinChairNumber = 0;
+const int kMaxChairNumber = kMaxNumberOfPlayers - 1;
 
 // Number of cards
 const int kNumberOfCommunityCards   =   5;
@@ -92,10 +95,10 @@ const unsigned int k_pokerval_straightflush = 0x80000000;
 const unsigned int k_pokerval_royalflush    = 0x800EDCBA;
 
 // Game type
-const int k_gametype_unknown = -1;
-const int k_gametype_NL      =  0;
-const int k_gametype_PL    	 =  1;
-const int k_gametype_FL      =  2;
+const int kGametypeUnknown = -1;
+const int kGametypeNL      =  0;
+const int kGametypePL    	 =  1;
+const int kGametypeFL      =  2;
 
 // Session IDS (max number of tables)
 static const int MAX_SESSION_IDS = 25;
@@ -117,8 +120,9 @@ const int k_button_check	= 14;
 const int k_button_sitin	= 20;
 const int k_button_sitout	= 21;
 const int k_button_leave	= 22;
-const int k_button_prefold	= 23;
-const int k_button_autopost	= 24;
+const int k_button_rematch  = 23;
+const int k_button_prefold	= 24;
+const int k_button_autopost	= 25;
 const int k_button_i86		= 86;
 const int k_button_undefined = -1;
 
@@ -133,7 +137,7 @@ const int k_max_number_of_hash_groups_in_tablemap = 4;
 const int k_max_number_of_titletexts = 10;
 
 // Auto-connector
-const int k_max_nmber_of_tablemaps = 25;
+const int kMaxNmberOfTablemaps = 25;
 
 // GUI
 // Width just like ManualMode
@@ -142,16 +146,13 @@ const int kMainSizeX = 580;
 const int kMainSizeY = 400;
 
 // File menu
-const int k_number_of_last_recently_used_files_in_file_menu = 4;
+const int kNumberOfLastRecentlyUsedFilesInFileMenu = 4;
 
 // Number of (side)pots
-const int k_max_number_of_pots = 10;
-
-// DLL
-const int k_number_of_holdem_states_for_DLL = 256;
+const int kMaxNumberOfPots = 10;
 
 // Flags
-const int k_number_of_flags = 20;
+const int kNumberOfFlags = 20;
 
 // Suits and ranks
 const int k_number_of_suits_per_deck  =  4;
@@ -166,7 +167,6 @@ const int k_rankbits_all_cards_111_111_111_111_110 = 0x7FFE;
 // straingts and flushes
 const int k_cards_needed_for_flush    =  5;
 const int k_cards_needed_for_straight =  5;
-
 
 // Regions for the region cloner of OpenScrape
 // may be used for players, pots, community-cards, etc.
@@ -199,12 +199,11 @@ const int F_OK = 0;
 const DWORD k_max_time_to_wait_for_thread_to_shutdown = 60000; // milli-seconds
 // "This must not happen."
 // It is better to have a named constant then to write "assert(false);".
-const bool k_this_must_not_happen = false;
+const bool kThisMustNotHappen = false;
 
 const int k_mutex_lock_time = 500;
 
-enum StandardFunctionConstants
-{
+enum StandardFunctionConstants {
 	// Primary autoplayer-functions
 	k_autoplayer_function_beep,
 	k_autoplayer_function_allin,
@@ -224,6 +223,7 @@ enum StandardFunctionConstants
 	k_hopper_function_sitin,
 	k_hopper_function_sitout,
 	k_hopper_function_leave,
+  k_hopper_function_rematch,
 	k_hopper_function_autopost,
 	k_hopper_function_close,
 	k_hopper_function_rebuy,
@@ -262,8 +262,7 @@ enum StandardFunctionConstants
 
 const int k_max_length_betpot_button_name = 17;
 
-const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] =
-{
+const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button_name] = {
 	"betpot_2_1",
 	"betpot_1_1",
 	"betpot_3_4",
@@ -275,8 +274,7 @@ const char k_betpot_button_name[k_max_betpot_buttons][k_max_length_betpot_button
 
 //  Standard function names
 const int k_max_length_of_standard_function_names = 32 + 1;
-const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] =
-{
+const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] = {
 	// Primary autoplayer-functions
 	"f$beep",
 	"f$alli",
@@ -296,6 +294,7 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
 	"f$sitin",
 	"f$sitout",
 	"f$leave",
+  "f$rematch",
 	"f$autopost",
 	"f$close",
 	"f$rebuy",
@@ -339,6 +338,13 @@ const char k_OpenPPL_function_names[kNumberOfBetrounds + 1][k_max_length_of_Open
   "f$river"
 };
 
+// Special symbol for empty expressions. Its evaluation adds something 
+// meaningful to the log when the end of an open-ended when-condition 
+// gets reached during evaluation.
+// Needs to be lower-cases because it is built-in.
+const CString kEmptyExpression_False_Zero_WhenOthersFoldForce =
+  "empty_expression__false__zero__when_others_fold_force";
+  
 enum table_positioner_options {
 	k_position_tables_never,
 	k_position_tables_tiled,
@@ -403,7 +409,6 @@ const char* const k_tablemap_errors_and_parse_errors_explained[10] = {
 #define	ERR_GOOD_SCRAPE_GENERAL		  1
 
 // Profile version codes
-#define VER_WINSCRAPE			".wsdb1"
 #define VER_OPENHOLDEM_1		".ohdb1"  // no longer valid, due to changing of hash keys for types 1-3
 #define VER_OPENHOLDEM_2		".ohdb2"  // legacy version, still supported, although openscrape table maps are preferred
 #define VER_OPENSCRAPE_1		".osdb1"
@@ -516,8 +521,7 @@ const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;
 // Old WinHoldem prevaction-constants
 // http://www.maxinmontreal.com/wiki/index.php5?title=OpenHoldem:EndUserDocumentation:Symbols#History
 // (-1=fold 0=chec 1=call 2=rais 3=swag 4=alli)
-enum ActionConstant 
-{
+enum ActionConstant {
 	k_prevaction_undefined = -2,
 	k_prevaction_fold      = -1,
 	k_prevaction_check     = 0,	// new in OpenHoldem
@@ -565,13 +569,11 @@ const int  kMaxLogSymbolsForWhiteBox = 1;
 const int kOneCharacterExtraForTerminatingNull = 1;
 
 // Statusbar
-static UINT basic_statusba_indicators[] =
-{
+static UINT basic_statusba_indicators[] = {
 	ID_INDICATOR_GENERAL_HINT // Do you need "Help -> Problem solver?"
 };
 
-static UINT indicators[] = 
-{
+static UINT indicators[] = {
   ID_INDICATOR_STATUS_ACTION,
 	ID_INDICATOR_STATUS_PLCARDS,
 	ID_INDICATOR_STATUS_COMCARDS,

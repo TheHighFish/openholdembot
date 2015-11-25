@@ -52,7 +52,7 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   // If our currentbet is "too large" or our balance "too low"
   // then we alreadz should be allin or something is wrong.
   // Act conservatively here
-  if (p_symbol_engine_chip_amounts->currentbet(USER_CHAIR) >= critical_betsize) {
+  if (p_table_state->User()->_bet >= critical_betsize) {
     write_log(preferences.debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled as we already should be allin if input was right.\n");
     return false;

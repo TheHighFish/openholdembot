@@ -27,6 +27,7 @@
 
 #ifdef OPENSCRAPE_PROGRAM
 #include "../OpenScrape/debug.h"
+#include "../OpenHoldem/StringFunctions.h"
 #endif
 
 CTablemap			*p_tablemap = NULL;
@@ -294,8 +295,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			continue;
 
 		// Skip version lines
-		if (strLineType == VER_WINSCRAPE ||
-				strLineType == VER_OPENHOLDEM_1 ||
+		if (strLineType == VER_OPENHOLDEM_1 ||
 				strLineType == VER_OPENHOLDEM_2 ||
 				strLineType == VER_OPENSCRAPE_1 ||
 				strLineType == VER_OPENSCRAPE_2) 
@@ -496,10 +496,9 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
 			t = strLineType[3];
 			hold_font.ch = t[0];
-			font_group = strLineType[1] - '0';
+			font_group = DigitCharacterToNumber(strLineType[1]);
 
-			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
-			{
+			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap) {
 				OH_MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
@@ -537,8 +536,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			token = strLineType[1];
-			int hashpoint_group = atol(token);
+			int hashpoint_group = DigitCharacterToNumber(strLineType[1]);
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 
@@ -590,7 +588,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			int hash_group = strLineType[1] - '0';
+			int hash_group = DigitCharacterToNumber(strLineType[1]);
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
@@ -868,13 +866,23 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	return SUCCESS;	
 }
 
+void CTablemap::ErrorHashCollision(CString name1, CString name2) {
+  CString message;
+  message.Format("%s%s%s%s%s%s%s",
+    "Hash collision:\n\n", 
+		name1, " and ", name2, "\n\n",
+    "This looks like a naming conflict.\n",
+    "Please remove or rename the duplicate items.\n");
+  OH_MessageBox_Error_Warning(message, "Hash collision");
+}
+
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
 #endif	
 
-	CString					e = "", s = "";
+	CString					s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
 	bool					all_i$_found = false, this_i$_found = false;
@@ -1003,10 +1011,8 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					{
 						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
 						{
-							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
-								i_iter->second.name.GetString(), 
+							ErrorHashCollision(i_iter->second.name.GetString(), 
 								new_hashes[i].GetAt(j).name.GetString()); 
-							OH_MessageBox_Error_Warning(e, "Hash collision");
 							return ERR_HASH_COLL;
 						}
 					}
@@ -1029,6 +1035,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		{
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
+        CString e;
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
 				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
 			}

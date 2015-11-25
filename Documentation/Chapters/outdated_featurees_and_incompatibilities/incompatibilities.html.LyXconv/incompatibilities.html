@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-01-22"/>
+<meta name="create-date" content="2015-07-27"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,13 +14,23 @@
 <a class="toc" name="toc-Chapter-1"></a>Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
 </h1>
 <div class="Unindented">
-The original main goal of the OpenHoldem development team was the attempt to create a WinHoldem-compatible botting-platform to support existing bots, DLLs and TableMaps. However there has been functionality such as &ldquo;Teaming&rdquo;, that always has been a tabu for the OpenHoldem development team. Other functionality did never get implemented due to lack of documentation and practical relevance. And now that OpenHoldem is far more advanced and WinHoldem is practically dead, backward-compatibility is no longer such an important issue. Recently the development team does revisit some features that look a bit mal-designed and tries to improve them carefully, trying to affect the end-user as little as possible. This chapter will tell you about such incompatibilities.
+The original main goal of the OpenHoldem development team was the attempt to create a WinHoldem-compatible botting-platform to support existing bots, DLLs and TableMaps. However there has been functionality such as &ldquo;Teaming&rdquo;, that always has been a tabu for the OpenHoldem development team. Other functionality did never get implemented due to lack of documentation and practical relevance. And now that OpenHoldem is far more advanced and WinHoldem is practically dead, backward-compatibility is no longer such an important issue. Recently the development team revisits some features that look a bit mal-designed and tries to improve them carefully, trying to affect the end-user as little as possible. This chapter will tell you about such incompatibilities.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-1"></a>No Collusion aka &ldquo;Teaming&rdquo;
 </h2>
 <div class="Unindented">
 OpenHoldem does not support any kind of collusion. There is no support for WinHoldems WinTellem-server and card-sharing either because such activities are simply illegal in every country of the world, and — even more important — because we consider them unfair too.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images/winholdem_table.png" alt="figure images/winholdem_table.png" style="max-width: 800px; max-height: 394px;"/>
+
+</div>
+
+</div>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-2"></a>TableMaps
@@ -32,7 +42,7 @@ Table Maps are in a different format due to hypothetical copyright-issues. For s
 <a class="toc" name="toc-Section-3"></a>Formula-File-Format
 </h2>
 <div class="Unindented">
-The formula is saved in a single file instead of two. It uses the extension *.ohf instead of *.whf and *.whx. Old WH-formulae could be converted for some time, but as there was no longer any demand for that feature we were happy to simplify OpenHoldems code. OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your favourite text-editor. or the built-in formula-editor.
+The formula is saved in a single file instead of two. It uses the extension *.ohf instead of *.whf and *.whx. Old WH-formulae could be converted for some time, but as there was no longer any demand for this feature we were happy to simplify OpenHoldems code. OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your favourite text-editor. or the built-in formula-editor.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-4"></a>ManualMode
@@ -116,10 +126,10 @@ the largest possible raise.
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 65%;">
-\strikeout off\uuline off\uwave offsraiprev	
+sraiprev
 </td>
 <td align="left" valign="top" style="width: 65%;">
-\strikeout off\uuline off\uwave offthe difference between the two largest unique wagers
+the difference between the two largest unique wagers
 </td>
 
 </tr>
@@ -128,7 +138,58 @@ the largest possible raise.
 
 </div>
 <div class="Indented">
-All these computations had to be done by the user at the formula level. With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize and OpenHoldem cares about all the rest automatically (depending on the swagtextmethod specified in your tablemap, but that is all work that’s left).
+All these computations had to be done by the user at the formula level. With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize and OpenHoldem cares about all the rest automatically (depending on the swagtextmethod specified in your tablemap, but that is all work that’s left). The supporting tablemap symbols got renamed.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+Former TM-symbol
+</td>
+<td align="left" valign="top" style="width: 40%;">
+New TM-symbol
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagselectionmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeselectionmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagdeletionmethodmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizedeletionmethodmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagconfirmationmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeconfirmationmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagtextmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeinterpretationmethod
+</td>
+
+</tr>
+
+</table>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-8"></a>Statistic-Symbols: &ldquo;risk of ruin&rdquo;
@@ -254,19 +315,7 @@ bits 9-0: 1=blind 0=notblind, you only
 swagdelay
 </td>
 <td align="left" valign="top" style="width: 30%;">
-Autoplayer delay in milliseconds between swag keystrokes and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level
-</td>
-<td align="left" valign="top" style="width: 35%;">
-
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 30%;">
-allidelay
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Autoplayer delay in milliseconds between alli slider jam and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level
+Autoplayer delay in milliseconds between swag keystrokes and button click as defined in Preferences (formerly TableMap)
 </td>
 <td align="left" valign="top" style="width: 35%;">
 Some tablemap symbols have been exposed to the scripting level without necessity. They got removed in OpenHoldem 2.2.0 and are now only accessible internally.
@@ -275,28 +324,10 @@ Some tablemap symbols have been exposed to the scripting level without necessity
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 30%;">
-swagtextmethod
+allidelay
 </td>
 <td align="left" valign="top" style="width: 30%;">
-<div class="PlainVisible">
-the site interpretation for swag edit text (Table Map symbol) 
-</div>
-<ol>
-<li>
-f$srai 
-</li>
-<li>
-f$srai+call 
-</li>
-<li>
-f$srai+call+currentbet; 
-</li>
-
-</ol>
-<div class="PlainVisible">
-Default: 3
-</div>
-
+Autoplayer delay in milliseconds between alli slider jam and button click as defined in Preferences (formerly TableMap); 
 </td>
 <td align="left" valign="top" style="width: 35%;">
 
@@ -437,18 +468,24 @@ handnumber
 the site hand number if available 
 </td>
 <td align="left" valign="top" style="width: 35%;">
-Removing formula symbol "handnumber" for various reasons from the formula level: <ul>
+<div class="PlainVisible">
+Removing formula symbol "handnumber" for various reasons from the formula level: 
+</div>
+<ul>
 <li>
 there is no need for it at the formula level. 
 </li>
 <li>
-it may contain characters and therefore doesn’t fit into a double. 
+it may contain characters and therefore doesn’t fit into a variable of type double. 
 </li>
 <li>
-its length may exceed the precision of double. "Handnumber" gets now used only internally to trigger handresets.
+its length may exceed the precision of double. 
 </li>
 
 </ul>
+<div class="PlainVisible">
+"Handnumber" gets now used only internally to trigger handresets.
+</div>
 
 </td>
 
@@ -537,7 +574,7 @@ defcon
 
 </div>
 <div class="PlainVisible">
-	defense level is typically used in the f$P formula, which defines the adapted number of opponents to be used in standard prwin. defcon therefore controls the optimism of the prwin-simulation. <br/>
+defense level is typically used in the f$P formula, which defines the adapted number of opponents to be used in standard prwin. defcon therefore controls the optimism of the prwin-simulation. <br/>
 0.000=maxoffense 1.000=maxdefense<br/>
 The Formula Editor parameters dialog uses values 0-10
 </div>
@@ -661,7 +698,7 @@ short for nopponentsdealt
 isbring 
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	true if OpenHoldem is attached to a Bring client window
+true if OpenHoldem is attached to a Bring client window
 </td>
 <td align="left" valign="top" style="width: 35%;">
 Removed, because there is no need for that info at the formula-level
@@ -697,7 +734,7 @@ Getting rid of the symbol handrank and the option symbols-&gt;Value of Handrank.
 randomround1 ... randomround4	
 </td>
 <td align="left" valign="top" style="width: 30%;">
-random number between [0.000-1.000) for round 1 - 4. Value is calculated only once in that round. 
+random number in the range [0.000..1.000) for round 1 - 4. Value is calculated only once in that round. 
 </td>
 <td align="left" valign="top" style="width: 35%;">
 Removed the symbols randomround1..randomround4 from the codebase, because we have randomround for the current betting round and additionally randomhand, randomheartbeat and random, which gets calculated each time new. This simplified the code and looks more clean.
@@ -733,10 +770,10 @@ callshort + bet * nplayersplaying
 seatposition
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	your seat position relative to the dealer
+your seat position relative to the dealer
 </td>
 <td align="left" valign="top" style="width: 35%;">
-Removing the symbol seatposition which counted both active and inactive players and was of no real use for practical play.
+Removing the symbol seatposition which counted both active and inactive players and even empty chairs and was of no real use for practical play.
 </td>
 
 </tr>
@@ -757,7 +794,7 @@ Removing the symbol elapsed1970 because there was no real use for it.
 ncommoncardspresent
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	number of common cards present (normal or highlighted)
+number of common cards present (normal or highlighted)
 </td>
 <td align="left" valign="top" style="width: 35%;">
 Removing the symbol "ncommoncardspresent", because it was never implemented correctly, but always had the same value as "ncommoncardsknown". Furthermore its value would only differ at some casinos and at showdown (highlighted cards / bad scrapes), but this point of time is pretty meaningless for both OH-script and OpenPPL, which evaluate mainly on the users turn, whereas DLLers still have access to all info. 
@@ -769,7 +806,28 @@ Removing the symbol "ncommoncardspresent", because it was never implemented corr
 ac_pf_bets
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	1 for no callers or blinds only 2 for Called Pot - 1 bet to call 3 for Raised Back - 1 more bet to call because someone behind you raised after you’ve already bet/called/raised 4 for Raised Pot - 2 bets to call 5 for Reraised Pot - 3+ bets to call NOTE: Only valid when betround==1 
+<ol>
+<li>
+no callers or blinds only 
+</li>
+<li>
+called Pot — 1 bet to call 
+</li>
+<li>
+raised Back — 1 more bet to call because someone behind you raised after you’ve already bet/called/raised 
+</li>
+<li>
+raised Pot — 2 bets to call 
+</li>
+<li>
+reraised Pot — 3+ bets to call 
+</li>
+
+</ol>
+<div class="Remark*">
+Only valid when betround == 1 
+</div>
+
 </td>
 <td align="left" valign="top" style="width: 35%;">
 Removed the symbols ac_pf_bets, because it was for fixed limit only, worked only on the first orbit preflop, because that task can be done with other symbols and finally we have the OpenPPL-library, so there is really no longer any need for that.
@@ -996,32 +1054,11 @@ similar like the ron$symbols above, just for the user
 </table>
 
 </div>
-<h2 class="Section">
-<a class="toc" name="toc-Section-10"></a>TablePoints
-</h2>
-<div class="Unindented">
-Tablepoints got removed, because nobody used them. They never got implemented correctly and nobody noticed it for 3 years.
-</div>
-<div class="Indented">
-<table>
-<tr>
-<td align="left" valign="top" style="width: 30%;">
-tablepointNNN
-</td>
-<td align="left" valign="top" style="width: 65%;">
-These regions were used when the "Green Circle Button" was clicked on the OpenHoldem toolbar to "automagically" find a table to connect to. These regions must be one pixel wide by one pixel tall and must use a color transform. All tablepoint records must match the pixel colors on the casino window for it to be recognized on a connect. See {How the “Green Circle Button” finds tables} for more details. 
-</td>
-
-</tr>
-
-</table>
-
-</div>
 <div class="Indented">
 	
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-11"></a>PrWin-functions
+<a class="toc" name="toc-Section-10"></a>PrWin-functions
 </h2>
 <div class="Unindented">
 Some supporting functions and symbols for the PrWin-simulations got renamed in OpenHoldem 4.0.0 to achieve more verbosity and better formula-grouping in the editor.
@@ -1098,7 +1135,7 @@ f$prwin_wontplay
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-22T01:51:06.153000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-07-27T16:24:21.656000</span>
 </div>
 </div>
 </body>

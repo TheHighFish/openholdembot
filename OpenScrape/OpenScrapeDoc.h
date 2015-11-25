@@ -17,11 +17,11 @@
 #pragma once
 #include "../CTransform/CTransform.h"
 
-int	const num_z$strings = 3;
+int	const num_z$strings = 4;
 char * const z$strings[num_z$strings] = 
-    { "clientsize", "clientsizemin", "clientsizemax" };
+    { "clientsize", "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 64;
+int	const num_s$strings = 66;
 char * const s$strings[num_s$strings] = 
     { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 	  "titletext7", "titletext8", "titletext9", 
@@ -31,11 +31,11 @@ char * const s$strings[num_s$strings] =
 	  "ttlimits7", "ttlimits8", "ttlimits9", 
 	  "c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
 	  "c0limits8", "c0limits9", 
-	  "sitename", "network", "nchairs", "chairconfig", "swagtextmethod", "potmethod",  
+	  "sitename", "network", "nchairs", "potmethod",  
 	  "defaultlabels", "t0type", "t1type", "t2type", "t3type", 
-	  "swagselectionmethod", "swagdeletionmethod", "swagconfirmationmethod", "buttonclickmethod", 
-	  "allinconfirmationmethod", "balancenumbersonly", "scraperdll", "scraperpreprocessordll",
-	  "chipscrapemethod"};
+	  "betsizeselectionmethod", "betsizedeletionmethod", "betsizeconfirmationmethod", "betsizeinterpretationmethod",
+    "buttonclickmethod", "allinconfirmationmethod", "balancenumbersonly", "scraperdll", 
+    "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby"};
 
 int	const num_r$strings = 400;
 
