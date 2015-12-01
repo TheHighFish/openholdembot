@@ -784,7 +784,8 @@ Position
 \begin_inset Text
 
 \begin_layout Plain Layout
-Our position relative to the other player.
+Our position relative to the other player, meant especially for postflop
+ play.
  There are 3 positions at the table: 
 \end_layout
 
@@ -814,7 +815,7 @@ Position = Last
 \end_layout
 
 \begin_layout Plain Layout
-Middle is everything, that is neither first nor last
+Middle is everything, that is neither first nor last.
 \end_layout
 
 \end_inset
