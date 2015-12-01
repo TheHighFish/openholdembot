@@ -89,11 +89,7 @@ Positions are always BU --- CO --- MP3 --- MP2 --- MP1 --- EP3 --- EP2 ---
  EP1 --- BB --- SB.
  If there are less than 10 players at the table, then some of the early
  positions will be missing (EP1 --- EP2, etc.).
- 
-\end_layout
-
-\begin_layout Standard
-Symbols like 
+ Symbols like 
 \begin_inset Quotes eld
 \end_inset
 
@@ -101,19 +97,11 @@ InButton
 \begin_inset Quotes erd
 \end_inset
 
- can be spelled in three different ways: 
+ can be spelled in two different ways: 
 \begin_inset Quotes eld
 \end_inset
 
 InButton
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-In Button
 \begin_inset Quotes erd
 \end_inset
 
@@ -126,6 +114,34 @@ Button
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/positions_at_the_table.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
