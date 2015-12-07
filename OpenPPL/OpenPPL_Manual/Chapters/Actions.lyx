@@ -233,12 +233,12 @@ Raise FORCE        // min-raise (fixed limit)
 
 \begin_layout Plain Layout
 
-MinBet FORCE
+BetMin FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-MinRaise FORCE
+RaiseMin FORCE
 \end_layout
 
 \begin_layout Plain Layout
