@@ -49,13 +49,14 @@ class CIteratorThread {
 	static void StandardDealingAlgorithm(int nopponents);
 	static void SwapDealingAlgorithmForMoreThan13Opponents(int nopponents);
 	static void StandardDealingAlgorithmForUpTo13Opponents(int nopponents);
-	static void EnhancedDealingAlgorithm();
+	static int EnhancedDealingAlgorithm();
 	static bool UseEnhancedPrWin();
-	static int  GetRandomCard();
+	static int  GetRandomCard();	
  private:
 	static void UpdateIteratorVarsForDisplay();
 	static void ResetIteratorVars();
 	static void ResetGlobalVariables();
+	static void CalculateTotalWeights();
  private:
 	void InitIteratorLoop();
 	void InitHandranktTableForPrwin();
@@ -69,6 +70,7 @@ class CIteratorThread {
  private:
   static int _iterations_calculated;
   static int _iterations_required;
+  static int _total_weight[kMaxNumberOfPlayers];
   static int _nopponents;;
  private:
   static double _prwin, _prtie, _prlos;
