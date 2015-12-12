@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-07-27"/>
+<meta name="create-date" content="2015-11-16"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -387,7 +387,7 @@ Specifies the rectangular region that can be used for entering a betsize.
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i86button, i860button - i869button
+i860button - i869button
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Similar to the i0button - i9button regions, however these regions are intended to be used to combat spam/popups that could occlude the poker window. If the corresponding state region returns true, the Autoplayer will try to click in this region to dismiss the spam/popup. 
@@ -396,10 +396,10 @@ Similar to the i0button - i9button regions, however these regions are intended t
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i86state, i860state - i869state
+i860state - i869state
 </td>
 <td align="left" valign="top" style="width: 85%;">
-The corresponding state regions for the i86button, i860button - i869button regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive. p0active - p9active Used to determine if a player is active (sitting in) or not (sitting out). Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
+The corresponding state regions for the i86button, i860button - i869button regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive. 
 </td>
 
 </tr>
@@ -468,10 +468,10 @@ mtt_smallest_stack
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-p0balance - p9balance
+p0active - p9active
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Used to identify a player’s balance. It only makes sense to use a text transform for these regions. 
+Used to determine if a player is active (sitting in) or not (sitting out). Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
 </td>
 
 </tr>
@@ -481,6 +481,15 @@ p0bet - p9bet
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Used to identify a player’s bet. It only makes sense to use a text transform for these regions. 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+p0balance - p9balance
+</td>
+<td align="left" valign="top" style="width: 85%;">
+Used to identify a player’s balance. It only makes sense to use a text transform for these regions. 
 </td>
 
 </tr>
@@ -604,7 +613,7 @@ Step 1 : Ensure that the poker site uses static landings for all of the chip st
 u0active - u9active
 </td>
 <td align="left" valign="top" style="width: 85%;">
-These are alternatives to the p0active-p9active regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. ubalance, u0balance - u9balance These are alternatives to the p0balance-p9balance regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions. 
+These are alternatives to the p0active-p9active regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. ubalance, 
 </td>
 
 </tr>
@@ -678,7 +687,7 @@ These regions are alternatives to the p0seated-p9seated regions, and are used fo
 
 <hr class="footer"/>
 <div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-07-27T16:44:18.937000</span>
+Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-11-16T20:41:08.113000</span>
 </div>
 </div>
 </body>

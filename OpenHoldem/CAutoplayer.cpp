@@ -264,7 +264,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
     if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
       write_log(k_always_log_errors, 
-        "[AutoPlayer] ERROR: Can't execute f$check because there is a bet to call\n");
+        "[AutoPlayer] WARNING! Can't execute f$check because there is a bet to call\n");
       continue;
     }
 		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
@@ -456,12 +456,12 @@ void CAutoplayer::DoAutoplayer(void) {
 		p_scraper_access->NumberOfVisibleButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
 		
-	// Care about I86 regions first, because they are usually used 
+	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
 	if (HandleInterfacebuttonsI86())	{
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
     action_sequence_needs_to_be_finished = true;
-	goto AutoPlayerCleanupAndFinalization;
+	  goto AutoPlayerCleanupAndFinalization;
   }
   // Care about sitin, sitout, leave, etc.
   if (TimeToHandleSecondaryFormulas())	{
@@ -492,7 +492,7 @@ void CAutoplayer::DoAutoplayer(void) {
 	}
   // Gotos are usually considered bad code.
   // Here it simplifies the control-flow.
-  AutoPlayerCleanupAndFinalization:  
+ AutoPlayerCleanupAndFinalization:  
 	FinishActionSequenceIfNecessary();
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
@@ -542,12 +542,9 @@ bool CAutoplayer::DoPrefold(void) {
 	return false;
 }
 
-bool CAutoplayer::HandleInterfacebuttonsI86(void) 
-{
-	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
-	{
-		if (p_casino_interface->ClickI86ButtonIfAvailable(i))
-		{
+bool CAutoplayer::HandleInterfacebuttonsI86(void) {
+	for (int i=0; i<k_max_number_of_i86X_buttons; ++i) {
+		if (p_casino_interface->ClickI86ButtonIfAvailable(i))	{
 			return true;
 		}
 	}

@@ -148,19 +148,62 @@ Always keep position
 \end_layout
 
 \begin_layout Standard
-The first table (or the lobby if you provide a 
+Recommended is 
 \begin_inset Quotes eld
 \end_inset
 
-tablemap
+tiled
 \begin_inset Quotes erd
 \end_inset
 
- for the lobby) will be moved to top-left of the screen, the second table
- will be moved to botto-right, and all further tables to the neighbourhood
- of the second one.
- Once the screen is full any additional tables will be moved to the lobby
- position, assuming that overlapping the lobby will do the least harm.
+ as this mode avoids any overlapping tables.
+ In this mode the tables will be placed as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/table_positioner_at_work.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The lobby gets moved to the top left of the screen (0, 0) where absolute
+ screen coordinates equal relative window coordinates.
+ This makes your hopper more robust in case other windows pop up (lost focus).
+ The lobby needs a minimalistic tablemap, just with clientsize(min/max)
+ for connection, titletext and s$islobby.
+\end_layout
+
+\begin_layout Itemize
+The tables start at bottom right, as far away from the lobby as possible,
+ thereafter the screen gets filled bidirectionally.
+\end_layout
+
+\begin_layout Itemize
+Once the screen is full any additional tables will get placed above the
+ lobby, assuming that overlapping the lobby will do the least harm.
 \end_layout
 
 \end_body

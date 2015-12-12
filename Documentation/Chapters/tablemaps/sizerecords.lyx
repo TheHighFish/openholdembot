@@ -87,13 +87,35 @@ Size records are used for one purpose only, to allow OpenHoldem’s auto-connect
  to find windows of the correct size.
  More specifically, they provide the ability to specify the accepted sizes
  for the casino table that the scraper engine will recognize.
- Upon connection OpenHoldem will first search for poker table windows that
- match the exact size (
-\emph on
-clientsize
-\emph default
-) and if no match is found, will then look for poker table windows that
- are between the 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/OH_clientsize.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Upon connection OpenHoldem will look for poker table windows that are between
+ the 
 \emph on
 clientsizemin
 \emph default
@@ -102,15 +124,12 @@ clientsizemin
 clientsizemax
 \emph default
  sizes.
- In the majority of Table Maps, the only size record that is needed is the
- clientsize record.
- Use of clientsizemin and clientsizemax records should be considered if
- the casino opens the tables with differing sizes.
- In this case you can define 
+ Thereafter it will use 
 \emph on
 targetsize
 \emph default
- to resize the table one time after connection to the preferred size.
+ to resize the table one time after connection to the preferred size (if
+ resizing is needed at all).
  
 \end_layout
 
@@ -207,7 +226,7 @@ Valid size records and their descriptions:
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
+<lyxtabular version="3" rows="4" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -226,27 +245,6 @@ Size record
 
 \begin_layout Plain Layout
 Description
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-clientsize
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Specifies the exact client size of the poker table window.
- 
 \end_layout
 
 \end_inset

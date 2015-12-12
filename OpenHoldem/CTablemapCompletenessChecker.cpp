@@ -279,7 +279,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckSetOfItems("u", last_chair, "dealer",  false);
   // Not checked, despite nice to have
   //   * betpot-buttons
-  //   * i86-buttons
+  //   * i86X-buttons
   //
   // Not necessary, as optional
   //   * r$c0isfinaltable

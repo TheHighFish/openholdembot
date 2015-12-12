@@ -148,7 +148,9 @@
 #define IDC_ICM_5                       1114
 #define IDC_CHECK2                      1115
 #define IDC_CHECK3                      1116
+#define IDC_SWAGUSECOMMA                1116
 #define IDC_CHECK4                      1117
+#define IDC_SWAGUSECOMMA2               1117
 #define IDC_CHECK5                      1118
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120

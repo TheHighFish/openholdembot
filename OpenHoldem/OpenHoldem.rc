@@ -164,7 +164,6 @@ BEGIN
         MENUITEM "&Load\tF3",                   ID_DLL_LOAD
         MENUITEM "Load &Specific File...\tF4",  ID_DLL_LOADSPECIFICFILE
     END
-  
     MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
@@ -234,7 +233,7 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "H",            ID_HELP_HELP,           VIRTKEY, CONTROL, SHIFT, NOINVERT
+    "H",            ID_HELP_HELP,           VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_F4,          ID_DLL_LOADSPECIFICFILE, VIRTKEY, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
@@ -384,6 +383,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,187,10
     CONTROL         "Advance replay frames during replay",IDC_USE_AUTO_REPLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,145,134,10
+    CONTROL         "Use 'comma' instead of 'dot' for fractional betsizes",IDC_SWAGUSECOMMA,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,161,173,10
 END
 
 IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
@@ -689,9 +690,9 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Basic Logging",IDC_STATIC,0,0,205,80
     CONTROL         "Basic Info",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,16,88,9
-    CONTROL         "Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,32,139,8
+    CONTROL         "Autoplayer Trace",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,32,139,8
     CONTROL         "Errors and Warnings",IDC_ENABLE_ERROR_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,48,105,8
-    CONTROL         "DLL Messages",IDC_ENABLE_DLL_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,64,105,8
+    CONTROL         "DLL Messages",IDC_ENABLE_DLL_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,6,64,105,8
     LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,90,116,8
     EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,88,31,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,88,11,14
@@ -1361,10 +1362,10 @@ END
 
 STRINGTABLE
 BEGIN
+    ID_MAIN_TOOLBAR_MANUALMODE "Start ManualMode"
     ID_MAIN_TOOLBAR_SHOOTFRAME "Shoot frame\nShoot frame"
     ID_VIEW_SHOOTREPLAYFRAME 
                             "Shoot an image of the current table-view for later inspection with OHReplay"
-    ID_MAIN_TOOLBAR_MANUALMODE "Start ManualMode"
 END
 
 #endif    // English (United States) resources

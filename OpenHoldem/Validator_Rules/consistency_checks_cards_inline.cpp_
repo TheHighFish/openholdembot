@@ -205,7 +205,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0421")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are of the same rank, I have a pocket pair.")
-    PRECONDITION ((gws("$$pr0") == gws("$$pr1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD))
+    PRECONDITION ((gws("$$pr0") == gws("$$pr1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_BACK) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD) && (gws("$$pc1") != CARD_BACK) )
     POSTCONDITION (gws("ispair"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
 END_TESTCASE
@@ -215,7 +215,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0422")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are not of the same rank, I don't have a pocket pair.")
-    PRECONDITION ((gws("$$pr0") != gws("$$pr1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_NOCARD))
+    PRECONDITION ((gws("$$pr0") != gws("$$pr1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD) && (gws("$$pc0") != CARD_BACK) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_NOCARD) && (gws("$$pc1") != CARD_BACK) )
     POSTCONDITION (!gws("ispair"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$pr0, $$pr1, ispair")
 END_TESTCASE
@@ -225,7 +225,7 @@ BEGIN_TESTCASE
     TESTCASE_ID ("0423")
     HEURISTIC_RULE (false)
     REASONING ("If both my cards are of the same suit, they are suited.")
-    PRECONDITION ((gws("$$ps0") == gws("$$ps1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_NOCARD))
+    PRECONDITION ((gws("$$ps0") == gws("$$ps1")) && (gws("$$pc0") != CARD_UNDEFINED) && (gws("$$pc0") != CARD_NOCARD) && (gws("$$pc0") != CARD_BACK) && (gws("$$pc1") != CARD_UNDEFINED) && (gws("$$pc1") != CARD_NOCARD) && (gws("$$pc1") != CARD_BACK) )
     POSTCONDITION (gws("issuited"))
     SYMBOLS_POSSIBLY_AFFECTED ("$$ps0, $$ps1, issuited")
 END_TESTCASE

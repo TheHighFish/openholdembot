@@ -107,10 +107,11 @@ bool CBlindGuesser::CompletePartiallyKnownBlinds(double *sblind,
 }
 
 bool CBlindGuesser::SBlindBBlindCombinationReasonable(double sblind, double bblind) {
+  // Reasonable are for example 10/10, 10/15, 10/20, 10&25 and 10&30
   if (sblind <= 0.00) return false;
   if (bblind <= 0.00) return false;
-  if (sblind < 0.40 * bblind) return false;
-  if (sblind > 0.50 * bblind) return false;
+  if (sblind < 0.33 * bblind) return false;
+  if (sblind > 1.00 * bblind) return false;
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] SBlindBBlindCombinationReasonable(%.2f, %.2f)\n",
     sblind, bblind);
@@ -120,8 +121,8 @@ bool CBlindGuesser::SBlindBBlindCombinationReasonable(double sblind, double bbli
 bool CBlindGuesser::SBlindBBetCombinationReasonable(double sblind, double bbet) {
   if (sblind <= 0.00) return false;
   if (bbet   <= 0.00) return false;
-  if (sblind < 0.20 * bbet) return false;
-  if (sblind > 0.25 * bbet) return false;
+  if (sblind < 0.16 * bbet) return false;
+  if (sblind > 0.50 * bbet) return false;
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] SBlindBBetCombinationReasonable(%.2f, %.2f)\n",
     sblind, bbet);
@@ -132,7 +133,7 @@ bool CBlindGuesser::BBlindBBetCombinationReasonable(double bblind, double bbet) 
   if (bblind <= 0.00) return false;
   if (bbet   <= 0.00) return false;
   if (bblind < 0.40 * bbet) return false;
-  if (bblind > 0.50 * bbet) return false;
+  if (bblind > 0.67 * bbet) return false;
   write_log(preferences.debug_table_limits(), 
     "[CBlindGuesser] BBlindBBetCombinationReasonable(%.2f, %.2f)\n",
     bblind, bbet);

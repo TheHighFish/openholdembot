@@ -658,7 +658,7 @@ Valid region records and their descriptions
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="47" columns="2">
+<lyxtabular version="3" rows="48" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="15text%">
 <column alignment="left" valignment="top" width="85text%">
@@ -1083,7 +1083,7 @@ Specifies the rectangular region that can be used for entering a betsize.
 \begin_inset Text
 
 \begin_layout Plain Layout
-i86button, i860button - i869button
+i860button - i869button
 \end_layout
 
 \end_inset
@@ -1107,7 +1107,7 @@ Similar to the i0button - i9button regions, however these regions are intended
 \begin_inset Text
 
 \begin_layout Plain Layout
-i86state, i860state - i869state
+i860state - i869state
 \end_layout
 
 \end_inset
@@ -1124,14 +1124,6 @@ The corresponding state regions for the i86button, i860button - i869button
  seen as available to be clicked.
  If any other result is returned, such as "false", then the button will
  be seen as not available to be clicked.
- Results are case-insensitive.
- p0active - p9active Used to determine if a player is active (sitting in)
- or not (sitting out).
- Any transform can be used equally well with this region.
- If the leftmost characters of the result from this region’s transform are
- either “true” or “active”, then the region is considered to be active.
- If any other result is returned, such as "false", "inactive", "out" or
- "away", then the chair is not considered to be active.
  Results are case-insensitive.
  
 \end_layout
@@ -1280,21 +1272,26 @@ mtt_smallest_stack
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-p0balance - p9balance
+p0active - p9active
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Used to identify a player's balance.
- It only makes sense to use a text transform for these regions.
+Used to determine if a player is active (sitting in) or not (sitting out).
+ Any transform can be used equally well with this region.
+ If the leftmost characters of the result from this region’s transform are
+ either “true” or “active”, then the region is considered to be active.
+ If any other result is returned, such as "false", "inactive", "out" or
+ "away", then the chair is not considered to be active.
+ Results are case-insensitive.
  
 \end_layout
 
@@ -1302,7 +1299,7 @@ Used to identify a player's balance.
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1311,11 +1308,33 @@ p0bet - p9bet
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Used to identify a player's bet.
+ It only makes sense to use a text transform for these regions.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0balance - p9balance
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify a player's balance.
  It only makes sense to use a text transform for these regions.
  
 \end_layout
@@ -1686,13 +1705,7 @@ These are alternatives to the p0active-p9active regions, and are used for
  If any other result is returned, such as "false", "inactive", "out" or
  "away", then the chair is not considered to be active.
  Results are case-insensitive.
- ubalance, u0balance - u9balance These are alternatives to the p0balance-p9balan
-ce regions, and are used for the player's seat.
- They are typically used when the player's seat changes appearance when
- it is the player's action, to avoid misscrapes due to change in color/size,
- whatever.
- It only makes sense to use a text transform for these regions.
- 
+ ubalance, 
 \end_layout
 
 \end_inset

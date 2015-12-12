@@ -15,7 +15,7 @@ namespace PPL2OpenPPL_CS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmPrincipal());
+            Application.Run(new frmMain());
         }
     }
 }

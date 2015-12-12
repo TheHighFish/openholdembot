@@ -61,7 +61,7 @@ CScraper::CScraper(void) {
 CScraper::~CScraper(void) {
 	p_table_state->Reset();
   if (_leaking_GDI_objects != 0 ) {
-    write_log(k_always_log_errors, "[CScraper] ERROR: leaking GDI objects: %i\n",
+    write_log(k_always_log_errors, "[CScraper] ERROR! Leaking GDI objects: %i\n",
       _leaking_GDI_objects);
     write_log(k_always_log_errors, "[CScraper] Please get in contact with the development team\n");
   }
@@ -104,9 +104,6 @@ bool CScraper::GetButtonState(int button_index) {
 			// Default
 			l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
 		}
-		return GetButtonState(l_button_state);
-	}	else if (button_index==86) {
-		l_button_state = p_table_state->_SCI._i86_button_state.MakeLower();
 		return GetButtonState(l_button_state);
 	}	else if (button_index>=860)	{
 		l_button_state = p_table_state->_SCI._i86X_button_state[button_index-860];
@@ -218,18 +215,11 @@ void CScraper::SetButtonState(CString *button_state, CString text) {
 
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
-	// Normal i86-button
-	if (EvaluateRegion("i86state", &result))
-	{
-		SetButtonState(&p_table_state->_SCI._i86_button_state, result);	
-	}
 	// i86X-buttons
 	CString button_name;
-	for (int i=0; i<k_max_number_of_i86X_buttons; i++)
-	{
+	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
-		if (EvaluateRegion(button_name, &result))
-		{
+		if (EvaluateRegion(button_name, &result))	{
 			SetButtonState(&p_table_state->_SCI._i86X_button_state[i], result);	
 		}
 	}
@@ -948,7 +938,7 @@ void CScraper::ScrapeLimits() {
           // Missing s$c0limits could crash OpenHoldem in the past
           // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
           // but CTablemapCompletenessChecker now also takes care
-          write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+          write_log(k_always_log_errors, "[CScraper] ERROR! Can't interpret r$c0limits due to missing s$c0limits\n");
         } else {
           CString how_to_interpret_c0limit = s_iter->second.text;
           write_log(preferences.debug_scraper(), 
@@ -974,7 +964,7 @@ void CScraper::ScrapeLimits() {
             // Missing s$c0limits could crash OpenHoldem in the past
             // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
             // but CTablemapCompletenessChecker now also takes care
-            write_log(k_always_log_errors, "[CScraper] ERROR: can't interpret r$c0limits due to missing s$c0limits\n");
+            write_log(k_always_log_errors, "[CScraper] ERROR! Can't interpret r$c0limits due to missing s$c0limits\n");
           } else {
           CString how_to_interpret_c0limit = s_iter->second.text;
             write_log(preferences.debug_scraper(), 

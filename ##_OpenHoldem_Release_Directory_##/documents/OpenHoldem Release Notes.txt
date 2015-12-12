@@ -1,3 +1,10 @@
+v9.0.1 2015-10-16
+==================
+MAINTENANCE:
+- Fine-tuning some validator rules.
+  Thanks to Trisem for reporting.
+  [THF]
+
 v9.0.0 2015-10-08
 ==================
 NEW STUFF:

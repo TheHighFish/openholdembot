@@ -207,23 +207,17 @@ bool CCasinoInterface::EnterChatMessage(CString &message) {
 	return true;
 }
 
-bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number)
-{
+bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number) {
 	assert(button_number >= 0);
 	assert(button_number < k_max_number_of_i86X_buttons);
-
-	if (p_scraper_access->i86X_button_available[button_number])
-	{
+  if (p_scraper_access->i86X_button_available[button_number])	{
 		CMyMutex	mutex;
-
-		if (!mutex.IsLocked())
-			return false;
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86 (%d) button and clicked it.\n", button_number);
+    if (!mutex.IsLocked()) return false;
+		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86X (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);
 		return true;
 	}
-
-	return false;
+  return false;
 }
 
 void CCasinoInterface::SelectSwagText()
@@ -326,8 +320,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] betsize (not adjusted): %.2f\n", total_betsize_in_dollars);
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] calling keyboard.dll to enter betsize (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
-	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, 
-    swag_amt, p_tablemap->use_comma_instead_of_dot(), NULL, point_null);
+	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, swag_amt, preferences.swag_use_comma(), NULL, point_null);
 
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_3());
 	Sleep(preferences.swag_delay_3());
@@ -336,7 +329,13 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
     lost_focus = true;
   }
   // BET CONFIRMATION ACTION
-	if (!lost_focus) {
+	if (lost_focus) {
+    // Print a very verbose warning in the log
+    // Experience tell that beginenrs (and veterans) need that.
+    write_log(k_always_log_errors, "[CasinoInterface] WARNING! Betsizing failed because of lost focus.\n");
+    write_log(k_always_log_errors, "[CasinoInterface] Another window popped up and receives mouse and keyboard input.\n");
+    write_log(k_always_log_errors, "[CasinoInterface] This might be caused by bad casino, bad hopper or by user-interaction.\n");
+  } else {
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) 	{
 			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);

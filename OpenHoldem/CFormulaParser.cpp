@@ -28,6 +28,7 @@
 #include "CPreferences.h"
 #include "CValidator.h"
 #include "NumericalFunctions.h"
+#include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
 
 #undef DEBUG_PARSER
@@ -78,8 +79,11 @@ void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
   assert(p_filenames != NULL);
   CString openPPL_path = p_filenames->OpenPPLLibraryPath();
   if (_access(openPPL_path, F_OK) != 0) {
-    write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Can not load OpenPPL-library. File not found.\n");
+    // Using a message-box instead of silent logging, as OpenPPL is mandatory 
+    // and we expect the user to supervise at least the first test.
+    CString message;
+    message.Format("Can not load \"%s\".\nFile not found.\n", openPPL_path);
+    OH_MessageBox_Error_Warning(message);
     p_function_collection->SetOpenPPLLibraryLoadingState(false);
     return;
   }

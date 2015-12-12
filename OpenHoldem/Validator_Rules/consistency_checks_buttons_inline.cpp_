@@ -1,8 +1,8 @@
 #define BUTTON_FOLD  kMyTurnBitsFold
 #define BUTTON_CALL  kMyTurnBitsCall
-#define BUTTON_RAISE kMyTurnBitsCheck
-#define BUTTON_ALLIN kMyTurnBitsRaise
-#define BUTTON_CHECK kMyTurnBitsAllin
+#define BUTTON_CHECK kMyTurnBitsCheck
+#define BUTTON_RAISE kMyTurnBitsRaise
+#define BUTTON_ALLIN kMyTurnBitsAllin
 
 // 0500 is heuristic, as some sites (e.g. Cake) show a call-button instead of check.
 BEGIN_TESTCASE
