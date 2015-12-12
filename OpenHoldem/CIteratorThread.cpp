@@ -221,14 +221,13 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 		  if (UseEnhancedPrWin())	{
 			  QueryPerformanceCounter(&t1);	// start timer		  
 			  enhanced_dealing_return = EnhancedDealingAlgorithm();
-			  if (enhanced_dealing_return < 0)
-			  {
-				_prwin = enhanced_dealing_return;
-				_prtie = enhanced_dealing_return;
-				_prlos = enhanced_dealing_return;
-				_iterations_calculated = _iterations_required;
-				write_log(preferences.debug_prwin(), "[PrWinThread] Chair's %i range consists of dead cards only.\n",enhanced_dealing_return);
-				break;
+			  if (enhanced_dealing_return < 0) {
+				  _prwin = enhanced_dealing_return;
+				  _prtie = enhanced_dealing_return;
+				  _prlos = enhanced_dealing_return;
+				  _iterations_calculated = _iterations_required;
+				  write_log(preferences.debug_prwin(), "[PrWinThread] Chair's %i range consists of dead cards only.\n",enhanced_dealing_return);
+				  break;
 			  }
 			  QueryPerformanceCounter(&t2); // stop timer
 			  elapsedTime = elapsedTime + (t2.QuadPart - t1.QuadPart) * 1000.0 / frequency.QuadPart; // compute the elapsed time in millisec
@@ -248,8 +247,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 		  // - for win/tie, we need to wait until we scan them all
 		  opp_pokvalmax = 0;
 		  hand_lost = false;
-		  for (int i=0; i<_nopponents; i++) 
-		  {
+		  for (int i=0; i<_nopponents; i++) {
 			  CardMask_RESET(opp_evalCards);
 			  CardMask_OR(opp_evalCards, pParent->_comCards, addlcomCards);
 			  CardMask_SET(opp_evalCards, ocard[i*2]);
@@ -258,15 +256,12 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 			  opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
 				write_log(preferences.debug_prwin(), "[PrWinThread] PlayerPV: %i OppPV: %i\n",
 				pl_pokval, opp_pokval);
-			  if (opp_pokval > pl_pokval) 
-			  {
+			  if (opp_pokval > pl_pokval) {
 				  write_log(preferences.debug_prwin(), "[PrWinThread] Lost\n");
 				  _los++;
 				  hand_lost = true;
 				  break;
-			  }	
-			  else 
-			  {
+			  }	else {
 				  if (opp_pokval > opp_pokvalmax)	
 				  {
 					  opp_pokvalmax = opp_pokval;
@@ -729,20 +724,15 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 		while(!random_weighted_hand_was_found)
 		{
 			int random_weight = rand() % chairWeight; //find random_weight which is between 0..chairWeight
-			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++)	//find random weighted hand
-			{
-				if (!deadHands[eachPossibleHand] && random_weight < _prw1326.chair[eachChair].weight[eachPossibleHand]) //random hand found.
-				{ 	
-					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].rankhi[eachPossibleHand] ) ||
-					   CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].ranklo[eachPossibleHand] )	
-						)
-					{
+			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++)	//find random weighted hand			{
+				if (!deadHands[eachPossibleHand] && random_weight < _prw1326.chair[eachChair].weight[eachPossibleHand]) { //random hand found.
+					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].rankhi[eachPossibleHand] ) 
+              || CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].ranklo[eachPossibleHand] )) {
 						//hand contains dead card
 						deadHands[eachPossibleHand] = true;
 						deadHandsCounter++;
 						chairWeight -= _prw1326.chair[eachChair].weight[eachPossibleHand];
-						if(deadHandsCounter == _prw1326.chair[eachChair].limit || chairWeight <= 0)
-						{
+						if(deadHandsCounter == _prw1326.chair[eachChair].limit || chairWeight <= 0)						{
 							//all range consists only of dead cards
 							//failed to satisfy the specified range, user possibly needs to expand the range of corresponding chair
 							if(eachChair == 0) return -10;
@@ -760,8 +750,7 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 					break;
 				}
 				//keep decreasing the random_weight until it becomes less then _prw1326.chair[eachPlayer].weight
-				if(!deadHands[eachPossibleHand])
-				{
+				if(!deadHands[eachPossibleHand]) {
 					random_weight -= _prw1326.chair[eachChair].weight[eachPossibleHand];
 				}
 			}//end of eachPossibleHand
@@ -770,18 +759,15 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++)
-	{
+	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++) 	{
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);
 		CardMask_SET(addlcomCards, card);
 	}
-
-	return 0; //success
+  return 0; //success
 }
 
-bool CIteratorThread::UseEnhancedPrWin()
-{
+bool CIteratorThread::UseEnhancedPrWin() {
 	return (_prw1326.useme==1326 
 		&& (p_betround_calculator->betround() >= kBetroundFlop 
 			|| _prw1326.preflop==1326));
