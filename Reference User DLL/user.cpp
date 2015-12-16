@@ -9,7 +9,7 @@
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
-// Required OpenHoldem version: 7.7.6
+// Required OpenHoldem version: 9.0.2
 //
 //******************************************************************************
 
@@ -23,7 +23,7 @@
 //   * as it is not really needed
 //   * as some DLL-users don't have MFC (atlstr.h) installed
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16232
-#undef OPT_DEMO_OUTPUT
+#define OPT_DEMO_OUTPUT
 
 #include "user.h"
 #include <conio.h>
@@ -39,12 +39,23 @@
 #define ISCARDBACK(c) ((c)==0xff)
 #define ISUNKNOWN(c)  ((c)==0)
 
+// Printing some data for demonstration purposes
+void PrintState() {
+  // This function only makes sense with a debug-console
+#ifdef OPT_DEMO_OUTPUT
+  printf("Title            : %s\n", GetTableTitle());
+  printf("Handnumber       : %s\n", GetHandnumber());
+  printf("Player in chair 0: %s\n", GetPlayerName(0));
+#endif
+}
+
 // ProcessQuery()
 //   Handling the lookup of dll$symbols
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	if (pquery==NULL)
 		return 0;
 	if (strncmp(pquery,"dll$test",8)==0) {
+    PrintState();
 		return GetSymbol("random");
   }
 	if (strncmp(pquery,"dll$spend",9)==0) {

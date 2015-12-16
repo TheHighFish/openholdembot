@@ -22,6 +22,7 @@
 #include "CPreferences.h"
 #include "CSymbolEnginePrWin.h"
 #include "CSymbolEngineVersus.h"
+#include "CTableState.h"
 #include "debug.h"
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
@@ -134,6 +135,19 @@ char* __stdcall GetHandnumber() {
 		k_max_length_of_handnumber, 
 		p_handreset_detector->GetHandNumber());
 	return handnumber_as_char_array;
+}
+
+char* __stdcall GetPlayerName(int chair) {
+  if ((chair < 0) || (chair >= kMaxNumberOfPlayers)) return "";
+  static char playername_as_char_array[kMaxLengthOfPlayername];
+  strcpy_s(playername_as_char_array, 
+		kMaxLengthOfPlayername, 
+		p_table_state->_players[chair]._name);
+  return playername_as_char_array;
+}
+
+char* __stdcall GetTableTitle() {
+  return p_table_state->_title;
 }
 
 void __stdcall WriteLog(char* fmt, ...) {

@@ -32,16 +32,18 @@
 // Functions implemented and exported by the DLL,
 // imported by OpenHoldem
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery);
-DLL_IMPLEMENTS void __stdcall DLLOnLoad();
-DLL_IMPLEMENTS void __stdcall DLLOnUnLoad();
+DLL_IMPLEMENTS void   __stdcall DLLOnLoad();
+DLL_IMPLEMENTS void   __stdcall DLLOnUnLoad();
 
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL
 EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression);
+EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
+EXE_IMPLEMENTS char*  __stdcall GetPlayerName(int chair);
+EXE_IMPLEMENTS char*  __stdcall GetTableTitle();
 EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
 EXE_IMPLEMENTS void*  __stdcall GetPrw1326();
 EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
-EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
 // !!!!! To do> table title and player names
 
 #endif // _INC_USER_H
