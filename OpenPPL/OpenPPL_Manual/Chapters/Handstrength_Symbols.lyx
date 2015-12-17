@@ -414,7 +414,7 @@ HaveSecondBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the second best overpair (KK with A on board) or a stronger hand
+We have the second best overpair (KK) or a stronger hand
 \end_layout
 
 \end_inset
@@ -595,7 +595,7 @@ HaveThirdBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the third best overpair or a better hand
+We have the third best overpair (QQ) or a better hand
 \end_layout
 
 \end_inset
@@ -655,7 +655,8 @@ HaveThirdOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Third highest overpair
+We have a hole pair which is between the 2nd highest board card and the
+ 3rd highest card rank on board
 \end_layout
 
 \end_inset
@@ -755,7 +756,8 @@ HaveFourthOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Fourth overpair
+We have a hole pair which is between the 3rd highest board card and the
+ 4tf highest card rank on board
 \end_layout
 
 \end_inset
@@ -855,7 +857,8 @@ HaveFifthOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Fifth overpair
+We have a hole pair which is between the 4th highest board card and the
+ 5th highest card rank on board
 \end_layout
 
 \end_inset
@@ -1028,7 +1031,7 @@ HaveBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best kicker or a better hand
+We have the best kickeBestOvr or a better hand
 \end_layout
 
 \end_inset
@@ -1048,7 +1051,7 @@ HaveBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-Have the best overpair or a better hand
+Have the best overpair (AA) or a better hand
 \end_layout
 
 \end_inset
