@@ -1,15 +1,24 @@
 v9.0.1 2015-10-16
 ==================
+BUG FIXES:
+- Several fixes to Enhanced PrWin at the DLL-Level.
+  [ZeeZooLaa]			
+
 MAINTENANCE:
 - Fine-tuning some validator rules.
   Thanks to Trisem for reporting.
   [THF]
+- The former autoplayer option "use comma instead of dot"
+  became now a tablemap-symbol s$use_comma_instead_of_dot
+  as this option is casino-specific.
+  [THF]
+
 
 v9.0.0 2015-10-08
 ==================
 NEW STUFF:
 - Perfect stealth for PokerStars.
-  The new stealth method is based on a rootkit that installs itseld into a ninjad ramdrive.
+  The new stealth method is based on a rootkit that installs itself into a ninjad ramdrive.
   It hides the OpenHodem-GUI, the file-system, processes, window-titles, everything.
   In addition OpenHoldem executes now human-like mouse-movements
   based on the Alpher–Bethe–Gamow-theorem.
@@ -18,7 +27,7 @@ NEW STUFF:
     * then start your favourite casino
   To unhide OpenHoldem:
     * open the DOS-console and enter the magic word "mutabor".
-  The finer details will be explain in the forum if needed.
+  The finer details will be explained in the forum if needed.
   Finally we would like to thank our stealth experts Folder and Gecko for the help.
   [OpenHoldem, Singlemalt]
 - New OpenPPL backup-action call->allin if we can only fold / (call) allin.
