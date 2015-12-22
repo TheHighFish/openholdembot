@@ -149,7 +149,7 @@ void CFunctionCollection::VerifyExistence(CString name) {
   if (Exists(name)) return;
   // Error: function does not exist
   CString message;
-  message.Format("Function used but never defined> %s\n\n", name);
+  message.Format("Function used but never defined: %s\n\n", name);
   CString similar_name = GetSimilarNameWithDifferentCases(name);
   name = name.MakeLower();
   if (similar_name != "") {
