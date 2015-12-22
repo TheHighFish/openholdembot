@@ -2,7 +2,10 @@ v9.0.1 2015-10-16
 ==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
-  [ZeeZooLaa]			
+  [ZeeZooLaa]		
+- The option "Preferences -> Debugging -> Betsize Adjustment" did  not get
+  saved correctly. Thanks to ZeeZooLaa for reporting.
+  [THF]
 
 MAINTENANCE:
 - Fine-tuning some validator rules.
