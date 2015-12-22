@@ -321,20 +321,20 @@ int CScraperAccess::NumberOfVisibleButtons()
 }
 
 bool CScraperAccess::IsPlayerActive(int player) {
-	bool result = p_table_state->_players[player]._active;
+	bool result = p_table_state->_players[player].active();
 	result = result && IsPlayerSeated(player);
 	return result;
 }
 
 bool CScraperAccess::IsPlayerSeated(int player)
 {
-	bool result = p_table_state->_players[player]._seated;
+	bool result = p_table_state->_players[player].seated();
 	return result;
 }
 
 bool CScraperAccess::IsGoodPlayername(int chair)
 {
-	CString playername = p_table_state->_players[chair]._name;
+	CString playername = p_table_state->_players[chair].name();
 	int length = playername.GetLength();
 	if (length == 0) 
 		return false;

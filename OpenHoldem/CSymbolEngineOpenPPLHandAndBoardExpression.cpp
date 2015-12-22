@@ -69,8 +69,8 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnMyTurn() {
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat() {
 	_prime_coded_hole_cards = PrimeCodedRanks(
-    p_table_state->User()->_hole_cards[0].GetOpenHoldemRank(),
-    p_table_state->User()->_hole_cards[1].GetOpenHoldemRank());
+    p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
+    p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());
 	_prime_coded_board_cards = PrimeCodedRanks(
     p_table_state->_common_cards[0].GetOpenHoldemRank(),
     p_table_state->_common_cards[1].GetOpenHoldemRank(),
@@ -188,8 +188,8 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 			// Check if card is on the board or in the hand
 			if (is_hand_expression) {
 				if (!IsCardInCollection(icard_with_specific_suit,
-					  p_table_state->User()->_hole_cards[0].GetValue(),
-            p_table_state->User()->_hole_cards[1].GetValue())) {
+					  p_table_state->User()->hole_cards(0)->GetValue(),
+            p_table_state->User()->hole_cards(1)->GetValue())) {
 					write_log(preferences.debug_hand_and_baord_expressions(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete hole cards do not fit\n");
 					*result = false;

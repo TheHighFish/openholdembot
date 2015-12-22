@@ -62,7 +62,7 @@ void CHandHistoryUncontested::ResetOnHeartbeat() {
     if (IsBitSet(p_symbol_engine_active_dealt_playing->playersactivebits(), i)) {
       CString message;
       message.Format("Player %s wins the pot uncontested\n",
-        p_table_state->_players[i]._name);
+        p_table_state->_players[i].name());
       p_handhistory_writer->AddMessage(message);
       _job_done = true;
       return;

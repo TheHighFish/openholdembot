@@ -23,16 +23,16 @@ CPlayer::~CPlayer() {
 }
 
 void CPlayer::Reset() {
-  _name = "";
-  _balance = 0.0;
-  _bet = 0.0;
+  set_name("");
+  set_balance(0.0);
+  set_bet(0.0);
   for (int i=0; i<kNumberOfCardsPerPlayer; ++i) {
     _hole_cards[i].ClearValue();
   }
-  _seated = false;
-  _active = false;
-  _dealer = false;
-  _colourcode = kUndefinedZero;
+  set_seated(false);
+  set_active(false);
+  set_dealer(false);
+  set_colourcode(kUndefinedZero);
 }
 
 bool CPlayer::HasAnyCards() {

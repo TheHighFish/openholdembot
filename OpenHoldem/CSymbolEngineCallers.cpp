@@ -102,7 +102,7 @@ void CSymbolEngineCallers::CalculateCallers() {
 	for (int i=0; i<_nchairs; ++i) {
 		int chair = (FirstPossibleCaller() + i) % _nchairs;
     	// Exact match required. Players being allin don't count as callers.
-		if ((p_table_state->_players[chair]._bet == current_bet) 
+		if ((p_table_state->_players[chair].bet() == current_bet) 
         && (current_bet > 0)) {
       // Can't be the user if it is our turn
       if (chair == USER_CHAIR) continue;
@@ -116,8 +116,8 @@ void CSymbolEngineCallers::CalculateCallers() {
         _firstcaller_chair = chair;
       }
 		}
-		else if (p_table_state->_players[chair]._bet > current_bet) {
-			current_bet = p_table_state->_players[chair]._bet;
+		else if (p_table_state->_players[chair].bet() > current_bet) {
+			current_bet = p_table_state->_players[chair].bet();
 		}
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
@@ -139,7 +139,7 @@ int CSymbolEngineCallers::LastPossibleCaller() {
 }
 
 double CSymbolEngineCallers::FirstPossibleRaisersBet() {
-  double users_bet = p_table_state->User()->_bet;
+  double users_bet = p_table_state->User()->bet();
   if (users_bet >= p_symbol_engine_tablelimits->bblind()) {
     return users_bet;
   }

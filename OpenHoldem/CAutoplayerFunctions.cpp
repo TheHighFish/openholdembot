@@ -274,7 +274,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   assert(p_symbol_engine_chip_amounts != NULL);
   assert(p_symbol_engine_userchair != NULL);
   assert(p_symbol_engine_userchair->userchair_confirmed());
-  double betsize = p_table_state->User()->_bet 
+  double betsize = p_table_state->User()->bet() 
     + p_symbol_engine_chip_amounts->call() 
     + (-1 * decision) * (p_symbol_engine_chip_amounts->pot() + p_symbol_engine_chip_amounts->call());
     write_log(preferences.debug_formula(), 

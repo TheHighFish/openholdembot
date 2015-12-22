@@ -280,40 +280,40 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
-		if (_seated_last[i] != p_table_state->_players[i]._seated 
-        || _active_last[i] != p_table_state->_players[i]._active) 	{
-			_seated_last[i] = p_table_state->_players[i]._seated;
-			_active_last[i] = p_table_state->_players[i]._active;
+		if (_seated_last[i] != p_table_state->_players[i].seated() 
+        || _active_last[i] != p_table_state->_players[i].active()) 	{
+			_seated_last[i] = p_table_state->_players[i].seated();
+			_active_last[i] = p_table_state->_players[i].active();
 			update_it = true;
 		}
-    if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
-        || _card_player_last[i][1] != p_table_state->_players[i]._hole_cards[1].GetValue()) 		{
-			_card_player_last[i][0] = p_table_state->_players[i]._hole_cards[0].GetValue();
-			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
+    if (_card_player_last[i][0] != p_table_state->_players[i].hole_cards(0)->GetValue()
+        || _card_player_last[i][1] != p_table_state->_players[i].hole_cards(1)->GetValue()) 		{
+			_card_player_last[i][0] = p_table_state->_players[i].hole_cards(0)->GetValue();
+			_card_player_last[i][1] = p_table_state->_players[i].hole_cards(1)->GetValue();
 			update_it = true;
 		}
-		if (_dealer_last[i] != p_table_state->_players[i]._dealer) {
-			_dealer_last[i] = p_table_state->_players[i]._dealer;
+		if (_dealer_last[i] != p_table_state->_players[i].dealer()) {
+			_dealer_last[i] = p_table_state->_players[i].dealer();
 			update_it = true;
 		}
-		if (_playername_last[i] != p_table_state->_players[i]._name) {
-			_playername_last[i] = p_table_state->_players[i]._name;
+		if (_playername_last[i] != p_table_state->_players[i].name()) {
+			_playername_last[i] = p_table_state->_players[i].name();
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) {
-			_playerbalance_last[i] = p_table_state->_players[i]._balance;
+		if (_playerbalance_last[i] != p_table_state->_players[i].balance()) {
+			_playerbalance_last[i] = p_table_state->_players[i].balance();
 			update_it = true;
 		}
-		if (_playerbet_last[i] != p_table_state->_players[i]._bet) 
+		if (_playerbet_last[i] != p_table_state->_players[i].bet()) 
 		{
-			_playerbet_last[i] = p_table_state->_players[i]._bet;
+			_playerbet_last[i] = p_table_state->_players[i].bet();
 			update_it = true;
 		}
 
 		if (update_it || update_all) {
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
-			if (p_table_state->_players[i]._seated) 	{
+			if (p_table_state->_players[i].seated()) 	{
 				DrawSeatedActiveCircle(i);
 				// Draw cards first, because we want the name 
 				// to occlude the cards and not the other way.
@@ -331,7 +331,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		// At some casinos the dealer can be at an empty seat.
 		// Therefore we draw the dealer-button anyway, inependent of "seated" and "active".
 		// Draw it at the very last, as we want to have it at the top of the cards.
-		if (p_table_state->_players[i]._dealer) {
+		if (p_table_state->_players[i].dealer()) {
 			DrawDealerButton(i);
 		}
 	}
@@ -775,8 +775,8 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 		textrect.top = 0;
 		textrect.right = 0;
 		textrect.bottom = 0;
-		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
-      p_table_state->_players[chair]._name.GetLength(), &textrect, DT_CALCRECT);
+		pDC->DrawText(p_table_state->_players[chair].name().GetString(), 
+      p_table_state->_players[chair].name().GetLength(), &textrect, DT_CALCRECT);
 
 		// Figure out placement of rectangle
 		drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
@@ -794,8 +794,8 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 		pDC->SetBkMode(OPAQUE);
 		pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
-      p_table_state->_players[chair]._name.GetLength(), &drawrect,
+		pDC->DrawText(p_table_state->_players[chair].name().GetString(), 
+      p_table_state->_players[chair].name().GetLength(), &drawrect,
 			DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 		name_rect_last[chair].left = drawrect.left;
 		name_rect_last[chair].top = drawrect.top;
@@ -851,10 +851,10 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Format Text
-		if (p_table_state->_players[chair]._active) 	{
-			t = Number2CString(p_table_state->_players[chair]._balance);
+		if (p_table_state->_players[chair].active()) 	{
+			t = Number2CString(p_table_state->_players[chair].balance());
 		}	else {
-			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
+			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair].balance()));
 		}
 	}	else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
@@ -928,9 +928,9 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
   // Format text
-	if (p_table_state->_players[chair]._bet != 0) 
+	if (p_table_state->_players[chair].bet() != 0) 
 	{
-		t = Number2CString(p_table_state->_players[chair]._bet);
+		t = Number2CString(p_table_state->_players[chair].bet());
 	}
 	else 	{
 		t = "";
@@ -982,7 +982,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 	// Get size of current client window
 	GetClientRect(&_client_rect);
 	// Draw player cards (first)
-  Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
+  Card *player_card_0 = p_table_state->_players[chair].hole_cards(0);
 	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
     chair, player_card_0->ToString());
   int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
@@ -991,7 +991,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
 	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
   // Draw player cards (second)
-  Card *player_card_1 = &p_table_state->_players[chair]._hole_cards[1];
+  Card *player_card_1 = p_table_state->_players[chair].hole_cards(1);
   pos_x_right = pos_x_right + CARDSIZEX - 9; 
   pos_x_left  = pos_x_right - CARDSIZEX;
 	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);

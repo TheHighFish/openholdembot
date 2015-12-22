@@ -200,7 +200,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
-			double current_players_bet = p_table_state->_players[i]._bet;
+			double current_players_bet = p_table_state->_players[i].bet();
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
@@ -297,8 +297,8 @@ bool CSymbolEngineHistory::DidAct() {
   // including another extra fail-safe for unknown big-blind
   if ((BETROUND == kBetroundPreflop)
       && p_symbol_engine_userchair->userchair_confirmed()
-      && ((p_table_state->User()->_bet < p_symbol_engine_tablelimits->bblind())
-        || (p_table_state->User()->_bet == 0))) {
+      && ((p_table_state->User()->bet() < p_symbol_engine_tablelimits->bblind())
+        || (p_table_state->User()->bet() == 0))) {
     return false;
   }
   // Otherwise: return "normal" value, depending on didbetsize, didrais, ...

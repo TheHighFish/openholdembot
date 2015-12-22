@@ -54,8 +54,8 @@ void CSymbolEngineChipAmounts::ResetOnHandreset() {
 		_stack[i]      = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
-		_stacks_at_hand_start[i] = p_table_state->_players[i]._balance 
-      + p_table_state->_players[i]._bet;
+		_stacks_at_hand_start[i] = p_table_state->_players[i].balance() 
+      + p_table_state->_players[i].bet();
 	}	
   _pot = 0;
 	_potplayer = 0;
@@ -83,14 +83,14 @@ void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineChipAmounts::SetMaxBalanceConditionally() { 
-  double user_balance = p_table_state->User()->_balance;
+  double user_balance = p_table_state->User()->balance();
 	if (user_balance > _maxbalance) {
 		_maxbalance = user_balance;
 	}
 }
 
 void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally() {
-  double user_balance = p_table_state->User()->_balance;
+  double user_balance = p_table_state->User()->balance();
 	if ((_balanceatstartofsession <= 0) && (user_balance > 0)) {
 		_balanceatstartofsession = user_balance;
 	}
@@ -103,7 +103,7 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	{
 		if (p_table_state->_players[i].HasAnyCards())
 		{
-      _stack[i] = p_table_state->_players[i]._balance;
+      _stack[i] = p_table_state->_players[i].balance();
 		}
 		else
 		{
@@ -135,8 +135,8 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 	_potplayer = 0;
 	_potcommon = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-    assert(p_table_state->_players[i]._bet >= 0.0);
-		_potplayer += p_table_state->_players[i]._bet;	
+    assert(p_table_state->_players[i].bet() >= 0.0);
+		_potplayer += p_table_state->_players[i].bet();	
 	}
   assert(_potplayer >= 0.0);
 	// pot, potcommon, based on value of potmethod
@@ -174,7 +174,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	double largest_bet = Largestbet();
 
 	if (p_symbol_engine_userchair->userchair_confirmed()) {
-		_call = largest_bet - p_table_state->User()->_bet;
+		_call = largest_bet - p_table_state->User()->bet();
 	} else {
 		_call = 0;
 	}
@@ -182,17 +182,17 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
     "[CSymbolEngineChipAmounts] call = %.2f\n", _call);
   // In case we are covered consider only the effective amount to call,
   // but only if our balance is reasonable.
-  double balance = p_table_state->User()->_balance;
+  double balance = p_table_state->User()->balance();
   if ((_call > balance) && (balance > 0)) {
     _call = balance;
   }
 	next_largest_bet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_table_state->_players[i]._bet != largest_bet 
-			&& p_table_state->_players[i]._bet > next_largest_bet)
+		if (p_table_state->_players[i].bet() != largest_bet 
+			&& p_table_state->_players[i].bet() > next_largest_bet)
 		{
-			next_largest_bet = p_table_state->_players[i]._bet;
+			next_largest_bet = p_table_state->_players[i].bet();
 		}
 	}
 	_sraiprev = largest_bet - next_largest_bet;			
@@ -208,7 +208,7 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
   double users_currentbet = 0;
 	if (p_symbol_engine_userchair->userchair_confirmed())	{
 		_nbetstocall = _call / bet;	
-    users_currentbet = p_table_state->User()->_bet;
+    users_currentbet = p_table_state->User()->bet();
 	} else {
     _nbetstocall = 0;
   }
@@ -235,8 +235,8 @@ double CSymbolEngineChipAmounts::Largestbet() {
         i);
       continue;
     }
-		if (p_table_state->_players[i]._bet > largest_bet) {
-			largest_bet = p_table_state->_players[i]._bet;
+		if (p_table_state->_players[i].bet() > largest_bet) {
+			largest_bet = p_table_state->_players[i].bet();
 		}
 	}
 	return largest_bet;
@@ -247,7 +247,7 @@ double CSymbolEngineChipAmounts::SortedBalance(const int rank) {
   assert(rank < kMaxNumberOfPlayers);
 	double	stacks[kMaxNumberOfPlayers];
   for (int i=0; i<kMaxNumberOfPlayers; ++i) {
-    stacks[i] = p_table_state->_players[i]._bet + p_table_state->_players[i]._balance;
+    stacks[i] = p_table_state->_players[i].bet() + p_table_state->_players[i].balance();
   }
 	// bubble sort stacks // !! duplicate code?
 	for (int i=0; i<(kMaxNumberOfPlayers-1); ++i)	{
@@ -278,9 +278,9 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 		return true;
 	}	else if (memcmp(name, "balance", 7)==0)	{
 		if (memcmp(name, "balance", 7)==0 && strlen(name)==7)	{
-			*result = p_table_state->User()->_balance; 
+			*result = p_table_state->User()->balance(); 
 		}	else if (memcmp(name, "balance", 7)==0 && strlen(name)==8) {
-			*result = p_table_state->_players[RightDigitCharacterToNumber(name)]._balance;
+			*result = p_table_state->_players[RightDigitCharacterToNumber(name)].balance();
 		}	else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==23) {
 			*result = balanceatstartofsession();
 		} else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13) {
@@ -297,9 +297,9 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	}	else if (memcmp(name, "stack", 5)==0 && strlen(name)==6) {
 		*result = stack(RightDigitCharacterToNumber(name));
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==10)	{
-		*result = p_table_state->User()->_bet;
+		*result = p_table_state->User()->bet();
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==11)	{
-		*result = p_table_state->_players[RightDigitCharacterToNumber(name)]._bet;
+		*result = p_table_state->_players[RightDigitCharacterToNumber(name)].bet();
 	}	else if (memcmp(name, "call", 4)==0 && strlen(name)==4)	{
 		*result = call();
 	}	else if (memcmp(name, "nbetstocall", 11)==0 && strlen(name)==11) {

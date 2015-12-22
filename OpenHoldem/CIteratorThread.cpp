@@ -386,9 +386,9 @@ void CIteratorThread::InitIteratorLoop() {
 	// setup masks
   AssertRange(userchair, 0, kMaxChairNumber);
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
-    Card card = p_table_state->User()->_hole_cards[i];
-    if (card.IsKnownCard()) {
-      CardMask_SET(_plCards, card.GetValue());
+    Card* card = p_table_state->User()->hole_cards(i);
+    if (card->IsKnownCard()) {
+      CardMask_SET(_plCards, card->GetValue());
 			_nplCards++;
 		}
 	}
@@ -689,8 +689,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 	}
 }
 
-int CIteratorThread::EnhancedDealingAlgorithm()
-{
+int CIteratorThread::EnhancedDealingAlgorithm() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Using ZeeZooLaa's enhanced prwin.\n");
 	unsigned int	card = 0, deadHandsCounter = 0;
 	int k = 0; //k is used as an index into ocard[]
@@ -699,13 +698,11 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 	int chairWeight;
 	bool deadHands[k_number_of_pocketcard_combinations_without_order];
 
-	for(int eachChair=0; eachChair < kMaxNumberOfPlayers; eachChair++) // loop through playing opponents
-	{
+	for(int eachChair=0; eachChair < kMaxNumberOfPlayers; eachChair++) { // loop through playing opponents
 		if (eachChair == userchair) continue; //skip our own chair!
 		if (!(playersplayingbits & (1<<eachChair))) continue; //skip inactive chairs 
 		chairWeight = _total_weight[eachChair];
-		if (_prw1326.chair[eachChair].ignore || chairWeight <= 0	)
-		{
+		if (_prw1326.chair[eachChair].ignore || chairWeight <= 0	)	{
 			card = GetRandomCard();
 			CardMask_SET(usedCards, card);
 			ocard[k++] = card;
@@ -721,10 +718,9 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 		deadHandsCounter = 0;
 
 		bool random_weighted_hand_was_found = false;
-		while(!random_weighted_hand_was_found)
-		{
+		while(!random_weighted_hand_was_found) {
 			int random_weight = rand() % chairWeight; //find random_weight which is between 0..chairWeight
-			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++)	//find random weighted hand			{
+			for (int eachPossibleHand=0; eachPossibleHand < _prw1326.chair[eachChair].limit; eachPossibleHand++) {	//find random weighted hand			
 				if (!deadHands[eachPossibleHand] && random_weight < _prw1326.chair[eachChair].weight[eachPossibleHand]) { //random hand found.
 					if(CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].rankhi[eachPossibleHand] ) 
               || CardMask_CARD_IS_SET(usedCards, _prw1326.chair[eachChair].ranklo[eachPossibleHand] )) {
@@ -732,7 +728,7 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 						deadHands[eachPossibleHand] = true;
 						deadHandsCounter++;
 						chairWeight -= _prw1326.chair[eachChair].weight[eachPossibleHand];
-						if(deadHandsCounter == _prw1326.chair[eachChair].limit || chairWeight <= 0)						{
+						if(deadHandsCounter == _prw1326.chair[eachChair].limit || chairWeight <= 0) {
 							//all range consists only of dead cards
 							//failed to satisfy the specified range, user possibly needs to expand the range of corresponding chair
 							if(eachChair == 0) return -10;
@@ -759,7 +755,7 @@ int CIteratorThread::EnhancedDealingAlgorithm()
 
 	// additional common cards
 	CardMask_RESET(addlcomCards);
-	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++) 	{
+	for (int i=0; i<(kNumberOfCommunityCards - _ncomCards); i++) {
 		card = GetRandomCard();
 		CardMask_SET(usedCards, card);
 		CardMask_SET(addlcomCards, card);

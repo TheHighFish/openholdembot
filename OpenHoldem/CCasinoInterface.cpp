@@ -365,8 +365,8 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
-	double betsize_for_allin = p_table_state->User()->_bet
-	  + p_table_state->User()->_balance; 
+	double betsize_for_allin = p_table_state->User()->bet()
+	  + p_table_state->User()->balance(); 
   return EnterBetsize(betsize_for_allin);
 }
 

@@ -57,11 +57,11 @@ void CStableFramesCounter::SaveCurrentState() {
   }
 
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
-    _card_player_last[i][0]	= p_table_state->_players[i]._hole_cards[0].GetValue();
-		_card_player_last[i][1]	= p_table_state->_players[i]._hole_cards[1].GetValue();
-		_dealer_last[i]         = p_table_state->_players[i]._dealer;
-		_playerbalance_last[i]  = p_table_state->_players[i]._balance;
-		_playerbet_last[i]      = p_table_state->_players[i]._bet;
+    _card_player_last[i][0]	= p_table_state->_players[i].hole_cards(0)->GetValue();
+		_card_player_last[i][1]	= p_table_state->_players[i].hole_cards(1)->GetValue();
+		_dealer_last[i]         = p_table_state->_players[i].dealer();
+		_playerbalance_last[i]  = p_table_state->_players[i].balance();
+		_playerbet_last[i]      = p_table_state->_players[i].bet();
 	}
 }
 
@@ -109,19 +109,19 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
 
-    if (p_table_state->_players[i]._hole_cards[0].GetValue() != _card_player_last[i][0])	 {
+    if (p_table_state->_players[i].hole_cards(0)->GetValue() != _card_player_last[i][0])	 {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
-		}	else if (p_table_state->_players[i]._hole_cards[1].GetValue() != _card_player_last[i][1])	{
+		}	else if (p_table_state->_players[i].hole_cards(1)->GetValue() != _card_player_last[i][1])	{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-cards don't match\n", i);
-		}	else if (p_table_state->_players[i]._dealer != _dealer_last[i]) {
+		}	else if (p_table_state->_players[i].dealer() != _dealer_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Dealer%d-position does not match\n", i);
-		}	else if (p_table_state->_players[i]._balance != _playerbalance_last[i])	{
+		}	else if (p_table_state->_players[i].balance() != _playerbalance_last[i])	{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-balance does not match\n", i);
-		}	else if (p_table_state->_players[i]._bet	 != _playerbet_last[i]) {
+		}	else if (p_table_state->_players[i].bet()	 != _playerbet_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-bet does not match\n", i);
 		}

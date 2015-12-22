@@ -100,7 +100,7 @@ void CHandHistoryWriter::WinsUncontested(int chair) {
 CString CHandHistoryWriter::PlayerName(int chair) {
   assert(chair >= 0);
   assert(chair <= kLastChair);
-  return p_table_state->_players[chair]._name;
+  return p_table_state->_players[chair].name();
 }
 
 // Should be called

@@ -87,9 +87,9 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	CardMask_RESET(plCards);
 	nplCards = 0;
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
-    Card card = p_table_state->User()->_hole_cards[i];
-    if (card.IsKnownCard()) {
-      CardMask_SET(plCards, card.GetValue());
+    Card* card = p_table_state->User()->hole_cards(i);
+    if (card->IsKnownCard()) {
+      CardMask_SET(plCards, card->GetValue());
 			nplCards++;
 		}
 	}
