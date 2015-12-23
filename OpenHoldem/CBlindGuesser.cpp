@@ -175,14 +175,14 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // (because of stable frames).
   int dealer = p_symbol_engine_dealerchair->dealerchair();  
   // Exit on undefined or wrong dealer (outdated, from last hand)
-  if ((dealer == kUndefined) || (p_table_state->_players[dealer].dealer() == false)) { 
+  if ((dealer == kUndefined) || (p_table_state->Player(dealer)->dealer() == false)) { 
     return;
   }
   int first_chair = dealer + 1;
   int last_chair  = dealer + p_tablemap->nchairs();
   for (int i=first_chair; i<=last_chair; ++i) {
     int normalized_chair = i % p_tablemap->nchairs();
-    double players_bet = p_table_state->_players[normalized_chair].bet();
+    double players_bet = p_table_state->Player(normalized_chair)->bet();
     if (players_bet <= 0) continue;
     if (first_bet_after_dealer <= 0) {
       // Probably SB found

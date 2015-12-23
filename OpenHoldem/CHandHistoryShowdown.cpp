@@ -58,7 +58,7 @@ bool AnyOpponentsCardsVisible() {
       // Not an opponent
       continue;
     }
-    if (p_table_state->_players[i].HasKnownCards()) {
+    if (p_table_state->Player(i)->HasKnownCards()) {
       return true;
     }
   }

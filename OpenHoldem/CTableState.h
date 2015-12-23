@@ -35,7 +35,12 @@ class CTableState {
   ~CTableState();
  public:
   void Reset();
+ public:
   CPlayer *User();
+  CPlayer *Player(int chair);
+  double	Pot(int sidepot_index);
+ public:
+  void set_pot(int sidepot_index, double new_value);
  public: //!!!!
   CLimitInfo _s_limit_info;
   CScrapedActionInterface _SCI;
@@ -43,8 +48,9 @@ class CTableState {
   char		_title[MAX_WINDOW_TITLE];
   char		_title_last[MAX_WINDOW_TITLE]; 
   Card    _common_cards[kNumberOfCommunityCards];
-  double	_pot[kMaxNumberOfPots];
+ private:
   CPlayer _players[kNumberOfPlayerEntries];
+  double	_pot[kMaxNumberOfPots];
 };
 
 extern CTableState *p_table_state;

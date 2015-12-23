@@ -130,7 +130,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
-		double current_players_bet = p_table_state->_players[chair].bet();
+		double current_players_bet = p_table_state->Player(chair)->bet();
     write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisers] chair %d bet %.2f\n",
       chair, current_players_bet);
@@ -139,7 +139,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		// * who are still playing, not counting people who bet/fold in later orbits
     // * either betting/raising postflop or truely raising preflop
     //   (not counting the infamous "blind raisers")
-    if (!p_table_state->_players[chair].HasAnyCards()) {
+    if (!p_table_state->Player(chair)->HasAnyCards()) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d has no cards.\n", chair);
       continue;
@@ -154,7 +154,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
       continue;
     }
     else if ((p_betround_calculator->betround() == kBetroundPreflop)
-      && p_table_state->_players[chair].PostingBothBlinds()) {
+      && p_table_state->Player(chair)->PostingBothBlinds()) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d is posting both blinds at once. To be ignored.\n", chair);
       continue;
@@ -205,9 +205,9 @@ void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded()
   assert(p_tablemap->nchairs() <= kMaxNumberOfPlayers);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_table_state->_players[i].bet();
+		double current_players_bet = p_table_state->Player(i)->bet();
 		if (current_players_bet < RaisersBet()
-      && p_table_state->_players[i].HasAnyCards())
+      && p_table_state->Player(i)->HasAnyCards())
 		{
 			_nplayerscallshort++;
 		}
@@ -223,10 +223,10 @@ void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded()
 		}
 		// Players might have been betting, but folded, so no else for the if
 		if ((p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<(i)))
-        && !p_table_state->_players[i].HasAnyCards())	{
+        && !p_table_state->Player(i)->HasAnyCards())	{
 			_nopponentsfolded++;					
 		}
-		if (p_table_state->_players[i].HasAnyCards() 
+		if (p_table_state->Player(i)->HasAnyCards() 
 			  && current_players_bet == 0) {
 			_nopponentschecking++;
 		}
@@ -239,17 +239,13 @@ void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded()
 	AssertRange(_nopponentschecking, 0, kMaxNumberOfPlayers);
 }
 
-double CSymbolEngineRaisers::RaisersBet()
-{
+double CSymbolEngineRaisers::RaisersBet() {
 	// The raisers bet is simply the largest bet at the table.
 	// So we don't have to know the raisers chair for that.
 	double result = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		double current_players_bet = p_table_state->_players[i].bet();
-		if (current_players_bet > result
-      && p_table_state->_players[i].HasAnyCards())
-		{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+		double current_players_bet = p_table_state->Player(i)->bet();
+		if (current_players_bet > result && p_table_state->Player(i)->HasAnyCards()) 	{
 			result = current_players_bet;
 		}
 	}
@@ -262,7 +258,7 @@ void CSymbolEngineRaisers::CalculateFoldBits()
 	int new_foldbits = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (!p_table_state->_players[i].HasAnyCards()) {
+		if (!p_table_state->Player(i)->HasAnyCards()) {
 			new_foldbits |= k_exponents[i];
 		}
 	}

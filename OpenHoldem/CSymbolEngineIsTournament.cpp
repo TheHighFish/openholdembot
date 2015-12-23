@@ -200,9 +200,9 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
    // not necessarily for other late tables (fractional bets, uneven sums).
    double sum_of_all_chips = 0.0;
    for (int i=0; i<p_tablemap->nchairs(); i++) {
-	   if (p_table_state->_players[i].active()==true) {
-		   sum_of_all_chips += p_table_state->_players[i].balance();
-		   sum_of_all_chips += p_table_state->_players[i].bet();}
+	   if (p_table_state->Player(i)->active()==true) {
+		   sum_of_all_chips += p_table_state->Player(i)->balance();
+		   sum_of_all_chips += p_table_state->Player(i)->bet();}
    }
    if (sum_of_all_chips != int(sum_of_all_chips)) {
       // Franctional number.
@@ -232,7 +232,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	}
 	int players_with_antes = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		double players_bet = p_table_state->_players[i].bet();
+		double players_bet = p_table_state->Player(i)->bet();
 		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
 		}

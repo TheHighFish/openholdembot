@@ -126,10 +126,8 @@ bool CSymbolEngineVersus::GetCounts() {
 	int				listnum = 0;
 	
 	int betround = p_betround_calculator->betround();
-	int sym_userchair = p_symbol_engine_userchair->userchair();
-
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
-    card_player[i] = p_table_state->_players[sym_userchair].hole_cards(i)->GetValue();
+    card_player[i] = p_table_state->User()->hole_cards(i)->GetValue();
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
     card_common[i] = p_table_state->_common_cards[i].GetValue();

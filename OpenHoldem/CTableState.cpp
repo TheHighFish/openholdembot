@@ -39,7 +39,7 @@ void CTableState::Reset() {
     _players[i].Reset();
   }
   for (int i=0; i<kMaxNumberOfPots; ++i) {
-    _pot[i] = 0.0;
+    set_pot(i, 0.0);
   }
   _title[0] = '\0';
   _title_last[0] = '\0';
@@ -55,4 +55,19 @@ CPlayer *CTableState::User() {
   int userchair = p_symbol_engine_userchair->userchair();
   AssertRange(userchair, 0, kLastChair);
   return &_players[userchair];
+}
+
+CPlayer *CTableState::Player(int chair) {
+  AssertRange(chair, 0, kLastChair);
+  return &_players[chair];
+}
+
+double CTableState::Pot(int sidepot_index) {
+  AssertRange(sidepot_index, 0, kLastPot);
+  return  _pot[sidepot_index];
+}
+
+void CTableState::set_pot(int sidepot_index, double new_value) {
+  AssertRange(sidepot_index, 0, kLastPot);
+  _pot[sidepot_index] = new_value;
 }

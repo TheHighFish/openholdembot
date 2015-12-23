@@ -54,8 +54,8 @@ void CSymbolEngineChipAmounts::ResetOnHandreset() {
 		_stack[i]      = 0;
 		_stacks_at_hand_start[i] = 0;
 		_stacks_at_hand_start[i] = 0;
-		_stacks_at_hand_start[i] = p_table_state->_players[i].balance() 
-      + p_table_state->_players[i].bet();
+		_stacks_at_hand_start[i] = p_table_state->Player(i)->balance() 
+      + p_table_state->Player(i)->bet();
 	}	
   _pot = 0;
 	_potplayer = 0;
@@ -101,9 +101,9 @@ void CSymbolEngineChipAmounts::CalculateStacks()
 	// simple bubble sort for 10 stack values
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_table_state->_players[i].HasAnyCards())
+		if (p_table_state->Player(i)->HasAnyCards())
 		{
-      _stack[i] = p_table_state->_players[i].balance();
+      _stack[i] = p_table_state->Player(i)->balance();
 		}
 		else
 		{
@@ -135,25 +135,25 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 	_potplayer = 0;
 	_potcommon = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-    assert(p_table_state->_players[i].bet() >= 0.0);
-		_potplayer += p_table_state->_players[i].bet();	
+    assert(p_table_state->Player(i)->bet() >= 0.0);
+		_potplayer += p_table_state->Player(i)->bet();	
 	}
   assert(_potplayer >= 0.0);
 	// pot, potcommon, based on value of potmethod
 	if (p_tablemap->potmethod() == 2)	{
-		_pot = p_table_state->_pot[0];
+		_pot = p_table_state->Pot(0);
 		_potcommon = _pot - _potplayer;
 	}
 	else if(p_tablemap->potmethod() == 3) {
-		_pot = p_table_state->_pot[0];
+		_pot = p_table_state->Pot(0);
 		for (int i=1; i<kMaxNumberOfPots; i++) {
-			_pot = max(_pot, p_table_state->_pot[i]);
+			_pot = max(_pot, p_table_state->Pot(i));
 		}
 		_potcommon = _pot - _potplayer;
 	} else { // potmethod() == 1
 		_potcommon = 0;
 		for (int i=0; i<kMaxNumberOfPots; i++) {
-			_potcommon += p_table_state->_pot[i];
+			_potcommon += p_table_state->Pot(i);
 		}
 		_pot = _potcommon + _potplayer;
 	}
@@ -189,10 +189,10 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
 	next_largest_bet = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		if (p_table_state->_players[i].bet() != largest_bet 
-			&& p_table_state->_players[i].bet() > next_largest_bet)
+		if (p_table_state->Player(i)->bet() != largest_bet 
+			&& p_table_state->Player(i)->bet() > next_largest_bet)
 		{
-			next_largest_bet = p_table_state->_players[i].bet();
+			next_largest_bet = p_table_state->Player(i)->bet();
 		}
 	}
 	_sraiprev = largest_bet - next_largest_bet;			
@@ -226,7 +226,7 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
 double CSymbolEngineChipAmounts::Largestbet() {
 	double largest_bet = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-    if (p_table_state->_players[i].PostingBothBlinds()) {
+    if (p_table_state->Player(i)->PostingBothBlinds()) {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip
@@ -235,8 +235,8 @@ double CSymbolEngineChipAmounts::Largestbet() {
         i);
       continue;
     }
-		if (p_table_state->_players[i].bet() > largest_bet) {
-			largest_bet = p_table_state->_players[i].bet();
+		if (p_table_state->Player(i)->bet() > largest_bet) {
+			largest_bet = p_table_state->Player(i)->bet();
 		}
 	}
 	return largest_bet;
@@ -247,7 +247,7 @@ double CSymbolEngineChipAmounts::SortedBalance(const int rank) {
   assert(rank < kMaxNumberOfPlayers);
 	double	stacks[kMaxNumberOfPlayers];
   for (int i=0; i<kMaxNumberOfPlayers; ++i) {
-    stacks[i] = p_table_state->_players[i].bet() + p_table_state->_players[i].balance();
+    stacks[i] = p_table_state->Player(i)->bet() + p_table_state->Player(i)->balance();
   }
 	// bubble sort stacks // !! duplicate code?
 	for (int i=0; i<(kMaxNumberOfPlayers-1); ++i)	{
@@ -280,7 +280,7 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 		if (memcmp(name, "balance", 7)==0 && strlen(name)==7)	{
 			*result = p_table_state->User()->balance(); 
 		}	else if (memcmp(name, "balance", 7)==0 && strlen(name)==8) {
-			*result = p_table_state->_players[RightDigitCharacterToNumber(name)].balance();
+			*result = p_table_state->Player(RightDigitCharacterToNumber(name))->balance();
 		}	else if (memcmp(name, "balanceatstartofsession", 23)==0 && strlen(name)==23) {
 			*result = balanceatstartofsession();
 		} else if (memcmp(name, "balance_rank", 12)==0 && strlen(name)==13) {
@@ -299,7 +299,7 @@ bool CSymbolEngineChipAmounts::EvaluateSymbol(const char *name, double *result, 
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==10)	{
 		*result = p_table_state->User()->bet();
 	}	else if (memcmp(name, "currentbet", 10)==0 && strlen(name)==11)	{
-		*result = p_table_state->_players[RightDigitCharacterToNumber(name)].bet();
+		*result = p_table_state->Player(RightDigitCharacterToNumber(name))->bet();
 	}	else if (memcmp(name, "call", 4)==0 && strlen(name)==4)	{
 		*result = call();
 	}	else if (memcmp(name, "nbetstocall", 11)==0 && strlen(name)==11) {

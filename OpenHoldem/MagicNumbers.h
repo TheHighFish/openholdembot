@@ -150,6 +150,7 @@ const int kNumberOfLastRecentlyUsedFilesInFileMenu = 4;
 
 // Number of (side)pots
 const int kMaxNumberOfPots = 10;
+const int kLastPot = kMaxNumberOfPots - 1;
 
 // Flags
 const int kNumberOfFlags = 20;

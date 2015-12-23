@@ -246,17 +246,17 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 		player_info += text;  
 		// Cards
 		text.Format("      <td>%s%s</td>\n",
-      GetCardHtml(p_table_state->_players[i].hole_cards(0)->GetValue()),
-      GetCardHtml(p_table_state->_players[i].hole_cards(1)->GetValue()));
+      GetCardHtml(p_table_state->Player(i)->hole_cards(0)->GetValue()),
+      GetCardHtml(p_table_state->Player(i)->hole_cards(1)->GetValue()));
 		player_info += text;  
 		// Bet
-		text.Format("      <td>%11.2f</td>\n", p_table_state->_players[i].bet());
+		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->bet());
 		player_info += text; 
 		// Balance
-		text.Format("      <td>%11.2f</td>\n", p_table_state->_players[i].balance());
+		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->balance());
 		player_info += text;  
 		// Name
-		text.Format("      <td>%-15s</td>\n", p_table_state->_players[i].name().GetString());
+		text.Format("      <td>%-15s</td>\n", p_table_state->Player(i)->name().GetString());
 		player_info += text;
 		player_info += "    </tr>\n";
 	}
@@ -326,14 +326,14 @@ CString CReplayFrame::GetPotsAsHTML() {
 	pots += "  <tr><th>#</th><th>pot</th></tr>\n";
 	pots += "  <tr>\n";
 	// Main pot
-	text.Format("    <td>0</td><td>%11.2f</td>\n", p_table_state->_pot[0]);
+	text.Format("    <td>0</td><td>%11.2f</td>\n", p_table_state->Pot(0));
 	pots += text;
 	pots += "  </tr>\n";
 	// Side pots
 	for (int i=1; i<kMaxNumberOfPots; i++) {
-		if (p_table_state->_pot[i]) {
+		if (p_table_state->Pot(i)) {
 			pots += "  <tr>\n";
-			text.Format("    <td>%d</td><td>%11.2f</td>\n", i,p_table_state->_pot[i]);
+			text.Format("    <td>%d</td><td>%11.2f</td>\n", i, p_table_state->Pot(i));
 			pots += text;
 			pots += "  </tr>\n";
 		}	else {

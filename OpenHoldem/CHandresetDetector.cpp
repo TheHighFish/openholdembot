@@ -224,7 +224,7 @@ bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
 
 bool CHandresetDetector::SmallBlindExists() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    double players_bet = p_table_state->_players[i].bet();
+    double players_bet = p_table_state->Player(i)->bet();
     if ((players_bet > 0) && (players_bet < _bblind)) {
       // Either SB or ante, first orbit preflop, hand-reset
       return true;
@@ -253,13 +253,13 @@ void CHandresetDetector::GetNewSymbolValues() {
   _bblind = p_symbol_engine_tablelimits->bblind();
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
-      playercards[i] = p_table_state->_players[userchair].hole_cards(i)->GetValue();
+      playercards[i] = p_table_state->User()->hole_cards(i)->GetValue();
 		} else {
 			playercards[i] = CARD_UNDEFINED;
 		}
 	}
   for (int i=0; i<kMaxNumberOfPlayers; ++i) {
-    _balance[i] = p_table_state->_players[i].balance();
+    _balance[i] = p_table_state->Player(i)->balance();
   }
 }
 

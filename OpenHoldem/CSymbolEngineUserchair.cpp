@@ -79,7 +79,7 @@ void CSymbolEngineUserchair::CalculateUserChair() {
 		// Looking for known cards and new chair
 		for (int i=0; i<p_tablemap->nchairs(); i++)
 		{
-			if (p_table_state->_players[i].HasKnownCards() && IsNotShowdown()) {
+			if (p_table_state->Player(i)->HasKnownCards() && IsNotShowdown()) {
 				_userchair = i;
 				write_log(preferences.debug_symbolengine(),
 					"[CSymbolEngineUserchair] CalculateUserChair() Setting userchair to %d\n",

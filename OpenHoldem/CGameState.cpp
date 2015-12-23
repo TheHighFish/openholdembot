@@ -75,7 +75,7 @@ void CGameState::CaptureState() {
 
 	// Pot information
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
-		state[state_index&0xff].m_pot[i] = p_table_state->_pot[i];
+		state[state_index&0xff].m_pot[i] = p_table_state->Pot(i);
   }
 	// Common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
@@ -97,13 +97,13 @@ void CGameState::CaptureState() {
 	// loop through all 10 player chairs
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     // player name, balance, currentbet
-    strncpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_table_state->_players[i].name().GetString(), _TRUNCATE);
-    state[state_index&0xff].m_player[i].m_balance = p_table_state->_players[i].balance();
-		state[state_index&0xff].m_player[i].m_currentbet = p_table_state->_players[i].bet();
+    strncpy_s(state[state_index&0xff].m_player[i].m_name, 16, p_table_state->Player(i)->name().GetString(), _TRUNCATE);
+    state[state_index&0xff].m_player[i].m_balance = p_table_state->Player(i)->balance();
+		state[state_index&0xff].m_player[i].m_currentbet = p_table_state->Player(i)->bet();
 
 		// player cards
 		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
-      Card* player_card = p_table_state->_players[i].hole_cards(j);
+      Card* player_card = p_table_state->Player(i)->hole_cards(j);
       int card = player_card->GetValue();
       write_log(preferences.debug_dll_extension(),
         "[CGameState] Player card [%i][%i] = %i\n", i, j, card);

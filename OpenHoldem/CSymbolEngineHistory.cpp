@@ -200,7 +200,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
-			double current_players_bet = p_table_state->_players[i].bet();
+			double current_players_bet = p_table_state->Player(i)->bet();
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}

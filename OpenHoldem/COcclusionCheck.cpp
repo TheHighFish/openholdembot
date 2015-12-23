@@ -77,7 +77,7 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
-    if ((i != Userchair) && (p_table_state->_players[i].name() != ""))
+    if ((i != Userchair) && (p_table_state->Player(i)->name() != ""))
 		{
 			return true;
 		}
@@ -91,7 +91,7 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != Userchair) && (p_table_state->_players[i].balance() > 0))
+		if ((i != Userchair) && (p_table_state->Player(i)->balance() > 0))
 		{
 			return true;
 		}
