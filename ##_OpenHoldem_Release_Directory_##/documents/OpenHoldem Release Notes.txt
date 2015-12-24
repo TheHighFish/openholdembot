@@ -6,6 +6,12 @@ BUG FIXES:
 - The option "Preferences -> Debugging -> Betsize Adjustment" did  not get
   saved correctly. Thanks to ZeeZooLaa for reporting.
   [THF]
+- Caring about special blind-posters who have to post both blinds at once
+  broke the detection of voluntary raisers postflop if the first bettor
+  raised to 1.5 bb.
+  This has now been fixed.
+  Thanks to Mossel for reportig.
+  [THF]  
 
 MAINTENANCE:
 - Fine-tuning some validator rules.
