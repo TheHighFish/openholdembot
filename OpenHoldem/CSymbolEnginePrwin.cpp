@@ -98,9 +98,9 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	CardMask_RESET(comCards);
 	ncomCards = 0;
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard()) {
-      CardMask_SET(comCards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard()) {
+      CardMask_SET(comCards, card->GetValue());
 			ncomCards++;
 		}
 	}

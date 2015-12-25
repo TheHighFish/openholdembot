@@ -210,12 +210,12 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	// common cards
 	CardMask_RESET(comCards);
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
-		Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())		{
+		Card *card = p_table_state->CommonCards(i);
+		if (card->IsKnownCard())		{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
-        card.GetValue());
-      CardMask_SET(comCards, card.GetValue());
-      CardMask_SET(plCards, card.GetValue());
+        card->GetValue());
+      CardMask_SET(comCards, card->GetValue());
+      CardMask_SET(plCards, card->GetValue());
 		}
 	}
 
@@ -493,7 +493,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 void CSymbolEngineCards::CalculateCommonCards() {
 	_ncommoncardsknown = 0;
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
-    if (p_table_state->_common_cards[i].IsKnownCard())		{
+    if (p_table_state->CommonCards(i)->IsKnownCard())		{
 			_ncommoncardsknown++;							
 		}
 	}
@@ -523,12 +523,12 @@ void CSymbolEngineCards::CalcUnknownCards()
 	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
 		// common cards
-		Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())
+		Card *card = p_table_state->CommonCards(i);
+		if (card->IsKnownCard())
 		{
-      CardMask_SET(stdCards, card.GetValue());
+      CardMask_SET(stdCards, card->GetValue());
 			nstdCards++;
-      CardMask_SET(commonCards, card.GetValue());
+      CardMask_SET(commonCards, card->GetValue());
 		}
 	}
 
@@ -545,11 +545,11 @@ void CSymbolEngineCards::CalcUnknownCards()
 		for (int i=0; i<kNumberOfCardsPerDeck; i++)	{
       if (i!=p_table_state->User()->hole_cards(0)->GetValue()  
 				  && i!=p_table_state->User()->hole_cards(1)->GetValue() 
-          && i!=p_table_state->_common_cards[0].GetValue()
-          && i!=p_table_state->_common_cards[1].GetValue()
-          && i!=p_table_state->_common_cards[2].GetValue()
-          && i!=p_table_state->_common_cards[3].GetValue()
-          && i!=p_table_state->_common_cards[4].GetValue()) {
+          && i!=p_table_state->CommonCards(0)->GetValue()
+          && i!=p_table_state->CommonCards(1)->GetValue()
+          && i!=p_table_state->CommonCards(2)->GetValue()
+          && i!=p_table_state->TurnCard()->GetValue()
+          && i!=p_table_state->RiverCard()->GetValue()) {
 				CardMask_SET(stdCards, i);
 				handval_std_plus1 = Hand_EVAL_N(stdCards, nstdCards+1);
 				CardMask_UNSET(stdCards, i);
@@ -665,11 +665,11 @@ bool CSymbolEngineCards::EvaluateSymbol(const char *name, double *result, bool l
 		}	else if (memcmp(name, "$$ps", 4)==0) {
 			*result = p_table_state->User()->hole_cards(right_most_digit)->GetSuit();
 		} else if (memcmp(name, "$$cc", 4)==0) {
-      *result = p_table_state->_common_cards[right_most_digit].GetValue();
+      *result = p_table_state->CommonCards(right_most_digit)->GetValue();
 		}	else if (memcmp(name, "$$cr", 4)==0) {
-      *result = p_table_state->_common_cards[right_most_digit].GetOpenHoldemRank();
+      *result = p_table_state->CommonCards(right_most_digit)->GetOpenHoldemRank();
 		}	else if (memcmp(name, "$$cs", 4)==0) {
-			*result = p_table_state->_common_cards[right_most_digit].GetSuit();
+			*result = p_table_state->CommonCards(right_most_digit)->GetSuit();
 		}	else if (memcmp(name, "$", 1)==0) {
 			*result = IsHand(name);
 		}	else {

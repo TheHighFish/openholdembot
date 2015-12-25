@@ -102,9 +102,9 @@ void CSymbolEnginePokerval::CalcPokerValues() {
 	}
   for (int i=0; i<kNumberOfCommunityCards; i++)	{
 		// common cards
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())	{
-      CardMask_SET(Cards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard())	{
+      CardMask_SET(Cards, card->GetValue());
 			nCards++;
 		}
 	}
@@ -149,9 +149,9 @@ void CSymbolEnginePokerval::CalcPokerValues() {
 	CardMask_RESET(Cards);
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
 		// common cards
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())	{
-      CardMask_SET(Cards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard())	{
+      CardMask_SET(Cards, card->GetValue());
 			nCards++;
 		}
 	}
@@ -284,10 +284,10 @@ void CSymbolEnginePokerval::CalculateRankBits() {
 
 	// common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())	{
-      CardMask_SET(comCards, card.GetValue());
-			CardMask_SET(plcomCards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard())	{
+      CardMask_SET(comCards, card->GetValue());
+			CardMask_SET(plcomCards, card->GetValue());
 		}
 	}
 
@@ -392,10 +392,10 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 	// common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++)
 	{
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard())
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard())
 		{
-      CardMask_SET(comCards, card.GetValue());
+      CardMask_SET(comCards, card->GetValue());
 		}
 	}
 	for (suit=StdDeck_Suit_FIRST; suit<=StdDeck_Suit_LAST; suit++)
@@ -426,10 +426,10 @@ bool CSymbolEnginePokerval::IsHigherStraightPossible(HandVal handval)
 
 int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1)
 {
-	double			pv = 0.;
+	double		pv = 0.;
 	int				i = 0, j = 0, k = 0, max = 0, c = 0, flush_suit = 0; //Matrix 2008-06-28
 	int				bits = 0;
-	CardMask		Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
+	CardMask	Cards = {0}, heartsCards = {0}, diamondsCards = {0}, clubsCards = {0}, spadesCards = {0}, suittestCards = {0};
 
 	// If we have name straight flush or flush, figure out the suit
 	flush_suit = -1;
@@ -507,9 +507,9 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 
 		for (int i=0; i<kNumberOfCommunityCards; i++)
 		{
-      Card card = p_table_state->_common_cards[i];
-      if (card.IsKnownCard()) {
-        CardMask_SET(Cards, card.GetValue());
+      Card *card = p_table_state->CommonCards(i);
+      if (card->IsKnownCard()) {
+        CardMask_SET(Cards, card->GetValue());
 			}
 		}
 

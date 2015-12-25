@@ -79,7 +79,7 @@ void CGameState::CaptureState() {
   }
 	// Common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
-    int common_card = p_table_state->_common_cards[i].GetValue();
+    int common_card = p_table_state->CommonCards(i)->GetValue();
     write_log(preferences.debug_dll_extension(), 
       "[CGameState] Common card %i = %i\n", i, common_card);
 		state[state_index&0xff].m_cards[i] = common_card;

@@ -86,12 +86,12 @@ void CReplayFrame::CreateReplayFrame(void){
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
-		fprintf(fp, "%s\n", p_table_state->_title);
+		fprintf(fp, "%s\n", p_table_state->TableTitle()->Title());
     fprintf(fp, "<br>\n");
 		// HTML header
 		fprintf(fp, "<html>\n");
 		fprintf(fp, "  <head>\n");
-		fprintf(fp, "    <title>%s</title>\n", p_table_state->_title);
+		fprintf(fp, "    <title>%s</title>\n", p_table_state->TableTitle()->Title());
 		fprintf(fp, "  </head>");
 		fprintf(fp, "<style>\n");
 		fprintf(fp, "td {text-align:right;}\n");
@@ -143,7 +143,7 @@ CString CReplayFrame::GeneralInfo() {
   result += "<table border=4 cellpadding=1 cellspacing=1>\n";
   // Table title
   result += "<tr><td>\n";
-	result += p_table_state->_title;
+	result += p_table_state->TableTitle()->Title();
   result += "</td></tr>\n";
 	// Session, 
   result += "<tr><td>\n";
@@ -307,11 +307,11 @@ CString CReplayFrame::GetCommonCardsAsHTML() {
 	common_cards += "<tr>\n";
 	// Common cards
 	text.Format("<td>%s%s%s%s%s</td>\n",
-    GetCardHtml(p_table_state->_common_cards[0].GetValue()),
-    GetCardHtml(p_table_state->_common_cards[1].GetValue()),
-    GetCardHtml(p_table_state->_common_cards[2].GetValue()),
-    GetCardHtml(p_table_state->_common_cards[3].GetValue()),
-    GetCardHtml(p_table_state->_common_cards[4].GetValue()));
+    GetCardHtml(p_table_state->CommonCards(0)->GetValue()),
+    GetCardHtml(p_table_state->CommonCards(1)->GetValue()),
+    GetCardHtml(p_table_state->CommonCards(2)->GetValue()),
+    GetCardHtml(p_table_state->TurnCard()->GetValue()),
+    GetCardHtml(p_table_state->RiverCard()->GetValue()));
 	common_cards += text;
 	// Table footer
 	common_cards += "</tr>\n";

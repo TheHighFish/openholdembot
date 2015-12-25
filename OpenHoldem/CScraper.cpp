@@ -568,11 +568,10 @@ void CScraper::ScrapePlayerCards(int chair) {
 
 void CScraper::ScrapeCommonCards() {
 	CString card_name;
-	for (int i=0; i<kNumberOfCommunityCards; i++)
-	{
+	for (int i=0; i<kNumberOfCommunityCards; i++)	{
 		card_name.Format("c0cardface%d", i);
 		int card = ScrapeCard(card_name);
-    p_table_state->_common_cards[i].SetValue(card);
+    p_table_state->CommonCards(i)->SetValue(card);
 	}
 }
 	
@@ -582,7 +581,7 @@ bool CScraper::IsCommonAnimation(void) {
 
 	// Count all the flop cards
 	for (int i=0; i<kNumberOfFlopCards; i++) {
-    if (p_table_state->_common_cards[i].IsKnownCard()) {
+    if (p_table_state->CommonCards(i)->IsKnownCard()) {
 			flop_card_count++;
 		}
 	}
@@ -594,15 +593,15 @@ bool CScraper::IsCommonAnimation(void) {
 	}
 	// If the turn card is present,
 	// but not all 3 flop cards are present then there is an animation going on
-	else if (p_table_state->_common_cards[3].IsKnownCard()
+	else if (p_table_state->TurnCard()->IsKnownCard()
       && flop_card_count != kNumberOfFlopCards) {
 		return true;
 	}
 	// If the river card is present,
 	// but the turn card isn't
 	// OR not all 3 flop cards are present then there is an animation going on
-	else if (p_table_state->_common_cards[4].IsKnownCard() 
-      && (!p_table_state->_common_cards[3].IsKnownCard() || flop_card_count != kNumberOfFlopCards)) {
+	else if (p_table_state->RiverCard()->IsKnownCard() 
+      && (!p_table_state->TurnCard()->IsKnownCard() || flop_card_count != kNumberOfFlopCards)) {
 		return true;
 	}
 	return false;
@@ -1273,16 +1272,13 @@ bool CScraper::IsIdenticalScrape() {
 	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
 	SelectObject(hdcCompatible, old_bitmap);
 
-	// get window title
-	p_table_state->_title[0] = '\0';
-	GetWindowText(p_autoconnector->attached_hwnd(), p_table_state->_title, MAX_WINDOW_TITLE-1);
-
+  p_table_state->TableTitle()->UpdateTitle();
+	
 	// If the bitmaps are the same, then return now
 	// !! How often does this happen?
 	// !! How costly is the comparison?
-	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) &&
-		strcmp(p_table_state->_title, p_table_state->_title_last)==0)
-	{
+	if (BitmapsAreEqual(_entire_window_last, _entire_window_cur) 
+      && !p_table_state->TableTitle()->TitleChangedSinceLastHeartbeat()) 	{
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
 		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
@@ -1290,10 +1286,6 @@ bool CScraper::IsIdenticalScrape() {
     __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
-
-	// Copy into "last" title
-	strcpy_s(p_table_state->_title_last, MAX_WINDOW_TITLE, p_table_state->_title);
-
 	// Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
 	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);

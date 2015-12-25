@@ -20,6 +20,7 @@
 #include "Card.h"
 #include "CPlayer.h"
 #include "CScrapedActionInterface.h"
+#include "CTableTitle.h"
 #include "MagicNumbers.h"
 #include "SLimitInfo.h"
 
@@ -39,18 +40,26 @@ class CTableState {
   CPlayer *User();
   CPlayer *Player(int chair);
   double	Pot(int sidepot_index);
+  Card    *CommonCards(int common_card_index);
+  Card    *TurnCard();
+  Card    *RiverCard();
+ public:
+  CTableTitle *TableTitle();
  public:
   void set_pot(int sidepot_index, double new_value);
- public: //!!!!
+ public:
+  // !!! To do: proper encapsulation
   CLimitInfo _s_limit_info;
   CScrapedActionInterface _SCI;
- public:
-  char		_title[MAX_WINDOW_TITLE];
-  char		_title_last[MAX_WINDOW_TITLE]; 
-  Card    _common_cards[kNumberOfCommunityCards];
  private:
   CPlayer _players[kNumberOfPlayerEntries];
   double	_pot[kMaxNumberOfPots];
+  Card    _common_cards[kNumberOfCommunityCards];
+ private:
+  CTableTitle _table_title;
+ private:
+  
+ private:
 };
 
 extern CTableState *p_table_state;

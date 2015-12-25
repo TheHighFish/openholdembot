@@ -47,15 +47,15 @@ void CBetroundCalculator::OnNewHeartbeat()
 	// to determine what symbols shall be calculated.
 	// So we can hardly do it with a symbol-engine and do it here
 	if (!p_scraper->IsCommonAnimation()) {
-    if (p_table_state->_common_cards[4].IsKnownCard()) {
+    if (p_table_state->RiverCard()->IsKnownCard()) {
 			_betround = kBetroundRiver;
 		}
-		else if (p_table_state->_common_cards[3].IsKnownCard()) {
+		else if (p_table_state->TurnCard()->IsKnownCard()) {
 			_betround = kBetroundTurn;
 		}
-		else if (p_table_state->_common_cards[2].IsKnownCard() 
-			  && p_table_state->_common_cards[1].IsKnownCard() 
-			  && p_table_state->_common_cards[0].IsKnownCard()) {
+		else if (p_table_state->CommonCards(2)->IsKnownCard() 
+			  && p_table_state->CommonCards(1)->IsKnownCard() 
+			  && p_table_state->CommonCards(0)->IsKnownCard()) {
 			_betround = kBetroundFlop;
 		}	else {
 			_betround = kBetroundPreflop;

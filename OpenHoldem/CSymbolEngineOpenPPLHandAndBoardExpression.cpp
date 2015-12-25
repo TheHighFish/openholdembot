@@ -72,11 +72,11 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat() {
     p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
     p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());
 	_prime_coded_board_cards = PrimeCodedRanks(
-    p_table_state->_common_cards[0].GetOpenHoldemRank(),
-    p_table_state->_common_cards[1].GetOpenHoldemRank(),
-    p_table_state->_common_cards[2].GetOpenHoldemRank(),
-    p_table_state->_common_cards[3].GetOpenHoldemRank(),
-    p_table_state->_common_cards[4].GetOpenHoldemRank());
+    p_table_state->CommonCards(0)->GetOpenHoldemRank(),
+    p_table_state->CommonCards(1)->GetOpenHoldemRank(),
+    p_table_state->CommonCards(2)->GetOpenHoldemRank(),
+    p_table_state->TurnCard()->GetOpenHoldemRank(),
+    p_table_state->RiverCard()->GetOpenHoldemRank());
   write_log(preferences.debug_hand_and_baord_expressions(), 
 		"[CSymbolEngineOpenPPLHandAndBoardExpression] _prime_coded_hole_cards = %i\n",
 		_prime_coded_hole_cards);
@@ -197,11 +197,11 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 				}
 			}	else {
 				if (!IsCardInCollection(icard_with_specific_suit,
-            p_table_state->_common_cards[0].GetValue(),
-            p_table_state->_common_cards[1].GetValue(),
-            p_table_state->_common_cards[2].GetValue(),
-            p_table_state->_common_cards[3].GetValue(),
-            p_table_state->_common_cards[4].GetValue())) 	{
+            p_table_state->CommonCards(0)->GetValue(),
+            p_table_state->CommonCards(1)->GetValue(),
+            p_table_state->CommonCards(2)->GetValue(),
+            p_table_state->TurnCard()->GetValue(),
+            p_table_state->RiverCard()->GetValue())) 	{
 					write_log(preferences.debug_hand_and_baord_expressions(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete board cards do not fit\n");
 					*result = false;

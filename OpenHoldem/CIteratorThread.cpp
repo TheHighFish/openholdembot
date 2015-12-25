@@ -386,16 +386,16 @@ void CIteratorThread::InitIteratorLoop() {
 	// setup masks
   AssertRange(userchair, 0, kMaxChairNumber);
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
-    Card* card = p_table_state->User()->hole_cards(i);
+    Card *card = p_table_state->User()->hole_cards(i);
     if (card->IsKnownCard()) {
       CardMask_SET(_plCards, card->GetValue());
 			_nplCards++;
 		}
 	}
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card card = p_table_state->_common_cards[i];
-    if (card.IsKnownCard()) {
-      CardMask_SET(_comCards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+    if (card->IsKnownCard()) {
+      CardMask_SET(_comCards, card->GetValue());
 			_ncomCards++;
 		}
 	}

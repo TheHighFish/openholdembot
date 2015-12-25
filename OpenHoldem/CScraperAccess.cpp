@@ -360,7 +360,7 @@ bool CScraperAccess::IsKnownCard(int card)
 int CScraperAccess::NumberOfCommonCards() {
   int number_of_common_cards = 0;
   for (int i=0; i<kNumberOfCommunityCards; ++i) {
-    if (IsKnownCard(p_table_state->_common_cards[i].GetValue())) {
+    if (IsKnownCard(p_table_state->CommonCards(i)->GetValue())) {
       ++number_of_common_cards;
     }
   }

@@ -262,8 +262,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	// Draw common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
-    Card *p_card = &p_table_state->_common_cards[i];
-    int card_value = p_table_state->_common_cards[i].GetValue();
+    Card *p_card = p_table_state->CommonCards(i);
+    int card_value = p_table_state->CommonCards(i)->GetValue();
 		if (_card_common_last[i] != card_value || update_all) 
 		{
 			_card_common_last[i] = card_value;
@@ -276,7 +276,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 	}
   // Draw collection of player info
-	for (int i=0; i<p_tablemap->nchairs(); i++) 	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)
+  {
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;

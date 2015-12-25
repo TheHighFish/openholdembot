@@ -130,7 +130,7 @@ bool CSymbolEngineVersus::GetCounts() {
     card_player[i] = p_table_state->User()->hole_cards(i)->GetValue();
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    card_common[i] = p_table_state->_common_cards[i].GetValue();
+    card_common[i] = p_table_state->CommonCards(i)->GetValue();
   }
   // Get the lock
 	CSLock lock(m_critsec);

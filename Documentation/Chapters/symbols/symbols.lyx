@@ -9374,7 +9374,9 @@ me_inc_
 \begin_inset Text
 
 \begin_layout Plain Layout
-Increments a memory_symbol
+Increments a memory_symbol by 1.
+ It is used mostly for keeping a running counter of events that happen one
+ at a time.
 \end_layout
 
 \end_inset

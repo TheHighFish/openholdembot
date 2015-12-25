@@ -208,16 +208,16 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   comcards = "";
   if (betround >= kBetroundFlop) {
     for (int i=0; i<kNumberOfFlopCards; i++) {
-      if (p_table_state->_common_cards[i].IsKnownCard()) {
-        comcards.Append(p_table_state->_common_cards[i].ToString());
+      if (p_table_state->CommonCards(i)->IsKnownCard()) {
+        comcards.Append(p_table_state->CommonCards(i)->ToString());
       }
     }
   }
   if (betround >= kBetroundTurn) {
-    comcards.Append(p_table_state->_common_cards[3].ToString());
+    comcards.Append(p_table_state->TurnCard()->ToString());
   }
   if (betround >= kBetroundRiver) {
-    comcards.Append(p_table_state->_common_cards[4].ToString());
+    comcards.Append(p_table_state->RiverCard()->ToString());
   }
   comcards.Append("..........");
   comcards = comcards.Left(10);

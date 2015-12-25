@@ -41,8 +41,7 @@ void CTableState::Reset() {
   for (int i=0; i<kMaxNumberOfPots; ++i) {
     set_pot(i, 0.0);
   }
-  _title[0] = '\0';
-  _title_last[0] = '\0';
+  TableTitle()->Clear();
 }
 
 CPlayer *CTableState::User() {
@@ -70,4 +69,21 @@ double CTableState::Pot(int sidepot_index) {
 void CTableState::set_pot(int sidepot_index, double new_value) {
   AssertRange(sidepot_index, 0, kLastPot);
   _pot[sidepot_index] = new_value;
+}
+
+Card *CTableState::CommonCards(int common_card_index) {
+  AssertRange(int common_card_index, 0, kIndexOfLastCommunityCard);
+  return &_common_cards[common_card_index];
+}
+
+Card *CTableState::TurnCard() {
+  return CommonCards(kIndexOfTurnCard);
+}
+
+Card *CTableState::RiverCard() {
+  return CommonCards(kIndexOfRiverCard);
+}
+
+CTableTitle *CTableState::TableTitle() {
+  return &_table_title;
 }

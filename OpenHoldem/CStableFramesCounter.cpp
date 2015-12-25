@@ -53,7 +53,7 @@ void CStableFramesCounter::SaveCurrentState() {
   _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
 
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    _card_common_last[i] = p_table_state->_common_cards[i].GetValue();
+    _card_common_last[i] = p_table_state->CommonCards(i)->GetValue();
   }
 
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
@@ -98,7 +98,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
 		if(!same_scrape) break;
 
-    if (p_table_state->_common_cards[i].GetValue() != _card_common_last[i]) {
+    if (p_table_state->CommonCards(i)->GetValue() != _card_common_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Community-cards don't match\n");
 		}

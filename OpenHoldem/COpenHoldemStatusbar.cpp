@@ -84,7 +84,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 			// This condition got already checked: "playing"
       Card* card = p_table_state->User()->hole_cards(i);
       // Assertion removeed, because the scraper runs in a different thread.
-			// assert(card.IsKnownCard()); 
+			// assert(card->IsKnownCard()); 
 		  _status_plcards.Append(card->ToString());
       CardMask_SET(Cards, card->GetValue());
 			nCards++;
@@ -106,10 +106,10 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 	// Common cards
 	_status_comcards = "";
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    Card card = p_table_state->_common_cards[i];
-		if (card.IsKnownCard())	{
-			_status_comcards.Append(card.ToString());
-			CardMask_SET(Cards, card.GetValue());
+    Card *card = p_table_state->CommonCards(i);
+		if (card->IsKnownCard())	{
+			_status_comcards.Append(card->ToString());
+			CardMask_SET(Cards, card->GetValue());
 			nCards++;
 		}
 	}

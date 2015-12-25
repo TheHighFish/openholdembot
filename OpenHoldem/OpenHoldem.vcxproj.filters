@@ -738,6 +738,9 @@
     <ClCompile Include="CSymbolEngineRaisers.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+    <ClCompile Include="CTableTitle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1569,6 +1572,9 @@
     </ClInclude>
     <ClInclude Include="CSymbolEngineRaisers.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="CTableTitle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
