@@ -194,6 +194,7 @@
     <ClCompile Include="CHandHistoryUncontested.cpp" />
     <ClCompile Include="CHandHistoryWriter.cpp" />
     <ClCompile Include="CHandresetDetector.cpp" />
+    <ClCompile Include="CHeartbeatDelay.cpp" />
     <ClCompile Include="CHeartbeatThread.cpp" />
     <ClCompile Include="CLevDistance.cpp" />
     <ClCompile Include="CLimitScraper.cpp" />
@@ -468,6 +469,7 @@
     <ClInclude Include="CHandHistoryUncontested.h" />
     <ClInclude Include="CHandHistoryWriter.h" />
     <ClInclude Include="CHandresetDetector.h" />
+    <ClInclude Include="CHeartbeatDelay.h" />
     <ClInclude Include="CHeartbeatThread.h" />
     <ClInclude Include="CLazyScraper.h" />
     <ClInclude Include="CLevDistance.h" />

@@ -35,8 +35,6 @@ private:
 	static UINT HeartbeatThreadFunction(LPVOID pParam);
 	static void ScrapeEvaluateAct();
 	static void AutoConnect();
-	static void FlexibleHeartbeatSleeping();
-
 private:
 	// private variables - use public accessors and public mutators to address these	
 	CCritSec	m_critsec;
