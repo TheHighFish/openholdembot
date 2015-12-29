@@ -822,7 +822,6 @@ void CMainFrame::SaveBmpPbits(void)
 	DeleteDC(hdcScreen);
 }
 
-// TODO!! Why here? Used by auto-connector
 CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
