@@ -457,6 +457,24 @@ $$cr3
 ##RiverCard##
 $$cr4
 
+##MadeHandThirdCardRank##
+// Useful for the determination of kickers
+// The last 20 bits of pokerval encode the ranks of our made hand
+// Four bits per card
+(pokerval >> 8) & 0x0F
+
+##MadeHandFourthCardRank##
+// Useful for the determination of kickers
+// The last 20 bits of pokerval encode the ranks of our made hand
+// Four bits per card
+(pokerval >> 4) & 0x0F
+
+##MadeHandFifthCardRank##
+// Useful for the determination of kickers
+// The last 20 bits of pokerval encode the ranks of our made hand
+// Four bits per card
+(pokerval >> 0) & 0x0F
+
 //*****************************************************************************
 //
 // OpenPPL - BettingAction Symbols
@@ -2307,7 +2325,7 @@ ispair AND (RankOfFirstHoleCard < ThirdBestBoardCard) AND (RankOfFirstHoleCard >
 ##HaveFourthTopPair##
 RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard
 
-##ForthTopPairRank##
+##FourthTopPairRank##
 (RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
 
 ##HaveFourthTopSet##
@@ -2436,11 +2454,12 @@ ranklocommon
 ((nrankedcommon == 1) AND ispair AND isthreeofakind AND (rankhiplayer == ranklocommon))
 
 ##HaveBottomTrips##
-($$pr0 == RankOfBottomPairOnBoard OR $$pr1 == RankOfBottomPairOnBoard)
+WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN True FORCE
+WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN True FORCE
 
 ##HaveBottomTwoPair##
-   (RankOfFirstHoleCard == LowestBoardCard AND RankOfSecondHoleCard == SecondLowestBoardCard)
-OR (RankOfFirstHoleCard == SecondLowestBoardCard AND RankOfSecondHoleCard == LowestBoardCard)
+WHEN (RankOfFirstHoleCard == LowestBoardCard       AND RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard == SecondLowestBoardCard AND RankOfSecondHoleCard == LowestBoardCard)       RETURN True FORCE
 
 ##HaveDoubleGutshotDraw##
    `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
@@ -2500,10 +2519,12 @@ OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
 [ishistraight OR HaveNutStraightFlush]
 
 ##MyKicker##
-(isfourofakind OR istwopair) ? pokerval & 0x0F :
-isthreeofakind ? (pokerval >> 4) & 0x0F :
-isonepair ? (pokerval >> 8) & 0x0F :
-ERROR_You_Dont_Have_Any_Kicker
+WHEN isfourofakind  RETURN MadeHandFifthCardRank  FORCE
+WHEN istwopair      RETURN MadeHandFifthCardRank  FORCE
+WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
+WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
+WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
+
 
 ##NumberOfBetterKickers##
 // Cards better than my kicker...
@@ -2922,7 +2943,7 @@ AND (  (RankOfFirstHoleCard == FirstFlopCard)
     OR (RankOfFirstHoleCard == RiverCard)) ]
 
 ##HaveTopTrips##
-(NOT ispair AND ($$pr0 == RankOfTopPairOnBoard OR $$pr1 == RankOfTopPairOnBoard))
+(NOT ispair AND (RankOfFirstHoleCard == RankOfTopPairOnBoard OR RankOfSecondHoleCard == RankOfTopPairOnBoard))
 
 ##HaveTrips##
 NOT ispair
@@ -2934,7 +2955,7 @@ AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
 HaveTrips AND HaveTopPair    ? TopPairRank:
 HaveTrips AND HaveSecondTopPair ? SecondTopPairRank:
 HaveTrips AND HaveThirdTopPair ? ThirdTopPairRank:
-HaveTrips AND HaveFourthTopPair ? ForthTopPairRank:
+HaveTrips AND HaveFourthTopPair ? FourthTopPairRank:
 HaveTrips AND HaveFifthTopPair ? FifthTopPairRank: 0
 
 ##TripsKickerRank##
@@ -3021,14 +3042,14 @@ OR [(betround >= ConstBetRoundFlop) AND (RankOfSecondHoleCard == HighestUnpaired
 [ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
 
 ##TopPairRank##
-HaveTopPair AND $$pr0==rankhicommon ? $$pr0:
-HaveTopPair AND $$pr1==rankhicommon ? $$pr1:
-0
+WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfFirstHoleCard  FORCE
+WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfSecondHoleCard FORCE
+WHEN Others RETURN 0 FORCE
 
 ##TopPairKickerRank##
-HaveTopPair AND $$pr0==rankhicommon ? $$pr1:
-HaveTopPair AND $$pr1==rankhicommon ? $$pr0:
-0
+WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfSecondHoleCard  FORCE
+WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfFirstHoleCard FORCE
+WHEN Others RETURN 0 FORCE
 
 ##SecondTopPairRank##
 HaveSecondTopPair AND RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
