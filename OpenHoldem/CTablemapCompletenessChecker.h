@@ -29,13 +29,13 @@ class CTablemapCompletenessChecker {
   void CheckMainPot();
  private:
   void CheckForDeprecatedItems();
-  void VerifyTablePoints();
   void VerifyC0limits();
   void VerifySingleC0limitsItem(CString name);
  private:
   void ErrorMissingItem(CString item);
   void ErrorDeprecatedItem(CString item);
   void ErrorSwagRenamed();
+  void ErrorClientsizeReplaced();
   bool IsNoLimitMap();
  private:
   bool _error_flag;
