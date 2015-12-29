@@ -1,4 +1,4 @@
-v9.0.1 2015-10-16
+v9.0.1 2015-12-29
 ==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
@@ -11,7 +11,15 @@ BUG FIXES:
   raised to 1.5 bb.
   This has now been fixed.
   Thanks to Mossel for reportig.
-  [THF]  
+  [THF]
+- Simpler error-handling in case scraping cards fails completely.  
+  For some time we tried to be smart and returned CARD_BACK for players,
+  as cardbacks are more easy to get wrong than NOCARD,
+  which is mostly a simple colour-transform (background),
+  but it seems this smart error-handling was the reason 
+  for some inexperienced people to see wrong deal-positions.
+  Thanks to ZeeZooLaa for asking about that code.
+  [THF]
 
 MAINTENANCE:
 - Fine-tuning some validator rules.
@@ -20,6 +28,10 @@ MAINTENANCE:
 - The former autoplayer option "use comma instead of dot"
   became now a tablemap-symbol s$use_comma_instead_of_dot
   as this option is casino-specific.
+  [THF]
+- z$clientsize got replaced in favour of the more flexible
+  z$clientsizemin, z$clientsizemax and z$targetsize.
+  Existing tablemaps might need sime slight adaptions.
   [THF]
 
 
@@ -36,7 +48,7 @@ NEW STUFF:
     * then start your favourite casino
   To unhide OpenHoldem:
     * open the DOS-console and enter the magic word "mutabor".
-  The finer details will be explained in the forum if needed.
+  The finer details will be explain in the forum if needed.
   Finally we would like to thank our stealth experts Folder and Gecko for the help.
   [OpenHoldem, Singlemalt]
 - New OpenPPL backup-action call->allin if we can only fold / (call) allin.
