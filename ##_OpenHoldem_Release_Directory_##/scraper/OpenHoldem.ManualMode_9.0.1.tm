@@ -9,7 +9,9 @@
 // sizes
 //
 
-z$clientsize       574  335
+z$clientsizemin    574  335
+z$clientsizemax    574  335
+z$targetsize       574  335
 
 //
 // strings
