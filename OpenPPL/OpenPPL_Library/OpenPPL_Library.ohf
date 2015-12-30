@@ -457,6 +457,21 @@ $$cr3
 ##RiverCard##
 $$cr4
 
+##FirstFlopSuit##
+$$cs0
+
+##SecondFlopSuit##
+$$cs1
+
+##ThirdFlopSuit##
+$$cs2
+
+##TurnSuit##
+$$cs3
+
+##RiverSuit##
+$$cs4
+
 ##MadeHandThirdCardRank##
 // Useful for the determination of kickers
 // The last 20 bits of pokerval encode the ranks of our made hand
@@ -1594,22 +1609,22 @@ OR ThirdFlopCard == TurnCard
 (nsuitedcommon >= 3)
 
 ##FlushOnBoard##
-($$cs0 == $$cs1 AND $$cs0 == $$cs2 AND $$cs0 == $$cs3 AND $$cs0 == $$cs4)
+(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit)
 
 ##FlushPossibleOnFlop##
-($$cs0 == $$cs1 AND $$cs0 == $$cs2)
+(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit)
 
 ##FlushPossibleOnTurn##
-[  ($$cs0 == $$cs1 AND $$cs0 == $$cs2)
-OR ($$cs0 == $$cs1 AND $$cs0 == $$cs3)
-OR ($$cs0 == $$cs2 AND $$cs0 == $$cs3)
-OR ($$cs1 == $$cs2 AND $$cs1 == $$cs3) ]
+[  (FirstFlopSuit  == SecondFlopSuit AND FirstFlopSuit  == ThirdFlopSuit)
+OR (FirstFlopSuit  == SecondFlopSuit AND FirstFlopSuit  == TurnSuit)
+OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
+OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) ]
 
 ##FourCardsToWheelOnBoard##
 `(rankbitscommon & 0b0000000000111110) >= 4
 
 ##FourOfOneSuitOnTurn##
-(($$cs0 == $$cs1) AND ($$cs2 == $$cs3) AND ($$cs0 == $$cs3))
+((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit))
 
 ##FullHouseOnBoard##
 (pokervalcommon & fullhouse)
@@ -1856,19 +1871,19 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 
 ##SuitsOnFlop##
 (betround < ConstBetRoundFlop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
-[ ($$cs0 == $$cs1 AND $$cs1 == $$cs2) ? 1 :
- (($$cs0 == $$cs1 AND $$cs1 != $$cs2) OR ($$cs0 == $$cs2 AND $$cs0 != $$cs1) OR ($$cs0 != $$cs1 AND $$cs1 == $$cs2)) ? 2 :
-  ($$cs0 != $$cs1 AND $$cs1 != $$cs2 AND $$cs0 != $$cs2) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
+[ (FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit) ? 1 :
+ ((FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit != SecondFlopSuit) OR (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit)) ? 2 :
+  (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit AND FirstFlopSuit != ThirdFlopSuit) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
 
 ##SuitsOnRiver##
 (betround < ConstBetRoundRiver) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnTurn
-  + ((($$cs4 != $$cs0) AND ($$cs4 != $$cs1) AND ($$cs4 != $$cs2) AND ($$cs4 != $$cs3)) ? 1 : 0)]
+  + (((RiverSuit != FirstFlopSuit) AND (RiverSuit != SecondFlopSuit) AND (RiverSuit != ThirdFlopSuit) AND (RiverSuit != TurnSuit)) ? 1 : 0)]
   
 ##SuitsOnTurn##
 (betround < ConstBetRoundTurn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnFlop 
-  + ((($$cs3 != $$cs0) AND ($$cs3 != $$cs1) AND ($$cs3 != $$cs2)) ? 1 : 0)]
+  + (((TurnSuit != FirstFlopSuit) AND (TurnSuit != SecondFlopSuit) AND (TurnSuit != ThirdFlopSuit)) ? 1 : 0)]
   
 ##StraightFlushPossible##
 `((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
@@ -1956,7 +1971,7 @@ AND TurnCard > ThirdFlopCard ]
 (TurnCard == RiverCard)
 
 ##TwoOfOneSuitPresentOnFlop##
-(($$cs0 == $$cs1) OR ($$cs0 == $$cs2) OR ($$cs1 == $$cs2))
+((FirstFlopSuit == SecondFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit) OR (SecondFlopSuit == ThirdFlopSuit))
 
 ##TwoPairOnBoard##
 (pokervalcommon & twopair) OR (pokervalcommon & fullhouse)
@@ -2932,7 +2947,7 @@ OR RankOfSecondHoleCard==RiverCard ]
 ispair
 
 ##HaveRunnerRunnerFlushAtRiver##
-(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND $$cs3==$$cs4) ? 1:0
+(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
 
 ##HaveSet##
 [  ispair
@@ -3410,7 +3425,7 @@ HINT_We_Dont_Have_A_FullHouse_At_All
 ispair
 
 ##RunnerRunnerFlushPossibleAtRiver##
-(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND $$cs3==$$cs4) ? 1:0
+(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
 
 ##SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :
