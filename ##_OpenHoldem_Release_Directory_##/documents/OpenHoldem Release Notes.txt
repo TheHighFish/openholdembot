@@ -23,6 +23,10 @@ BUG FIXES:
 - DDPoker rejects bets that are larger than opponents' max balance, disabling
   the raise button, thus user's primary functions get executed twice.
   [ZeeZooLaa]
+- OH no longer shoots replay frames when connected to OHReplay
+  [ZeeZooLaa]
+- OH no longer shoots replay frames when the autoplayer is turned off
+  [ZeeZooLaa]
 
 MAINTENANCE:
 - Fine-tuning some validator rules.
