@@ -34,7 +34,10 @@ class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine {
 	// Public accessors
 	void ShootReplayFrameIfNotYetDone();
  private:
-	bool _replay_recored_this_turn;
+	bool __replay_recored_this_turn;
+private:
+	void set_replay_recored_this_turn(bool p_b);
+	bool is_replay_recored_this_turn() const;
 };
 
 extern CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
