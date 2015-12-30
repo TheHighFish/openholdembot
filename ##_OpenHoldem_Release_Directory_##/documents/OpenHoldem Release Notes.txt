@@ -1,4 +1,4 @@
-v9.0.1 2015-12-29
+﻿v9.0.1 2015-12-29
 ==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
@@ -20,6 +20,9 @@ BUG FIXES:
   for some inexperienced people to see wrong deal-positions.
   Thanks to ZeeZooLaa for asking about that code.
   [THF]
+- DDPoker rejects bets that are larger than opponents' max balance, disabling
+  the raise button, thus user's primary functions get executed twice.
+  [ZeeZooLaa]
 
 MAINTENANCE:
 - Fine-tuning some validator rules.

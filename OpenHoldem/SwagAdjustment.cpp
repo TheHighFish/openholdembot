@@ -26,6 +26,7 @@
 #include "CTableState.h"
 #include "debug.h"
 #include "NumericalFunctions.h"
+#include "CSymbolEngineCasino.h"
 
 double MinimumBetsizeDueToPreviousRaise() {
 	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
@@ -212,6 +213,22 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   return result;
 }
 
+double MinimumBetsizeDueToMinOppStack()
+{
+	double minimums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_min_non_zero_stack();
+	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToMinOppStack: %.2f\n", minimums);
+	assert(minimums > 0);
+	return minimums;
+}
+
+double MaximumBetsizeDueToMaxOppStack()
+{
+	double maximums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_max_stack();
+	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MaximumBetsizeDueToMaxOppStack: %.2f\n", maximums);
+	assert(maximums > 0);
+	return maximums;
+}
+
 double AdjustedBetsize(double amount_to_raise_to) {
 	double original_amount_to_raise_to = amount_to_raise_to;
   amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
@@ -219,6 +236,10 @@ double AdjustedBetsize(double amount_to_raise_to) {
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
+	if(p_symbol_engine_casino->ConnectedToDDPoker()){
+		AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToMinOppStack(), amount_to_raise_to);
+		AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeDueToMaxOppStack());
+	}
 	AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));
 	return amount_to_raise_to; 
 }
