@@ -1,4 +1,4 @@
-﻿v9.0.1 2015-12-29
+﻿v9.0.1 2016-01-02
 ==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
@@ -21,7 +21,8 @@ BUG FIXES:
   Thanks to ZeeZooLaa for asking about that code.
   [THF]
 - DDPoker rejects bets that are larger than opponents' max balance, disabling
-  the raise button, thus user's primary functions get executed twice.
+  the raise button, thus user's primary functions got executed twice.
+  To fix this there is now some special betsize adjustment only for DDPoker.
   [ZeeZooLaa]
 - OH no longer shoots replay frames when connected to OHReplay
   [ZeeZooLaa]
@@ -38,10 +39,14 @@ MAINTENANCE:
   [THF]
 - z$clientsize got replaced in favour of the more flexible
   z$clientsizemin, z$clientsizemax and z$targetsize.
-  Existing tablemaps might need sime slight adaptions.
+  Existing tablemaps might need some slight adaptions.
   [THF]
-
-
+- Error-messages for invalid memoryßcommands.
+  [THF]
+- More error-logs for failed autoplayer-acions, especially loss of input-focus.
+  [THF]
+  
+  
 v9.0.0 2015-10-08
 ==================
 NEW STUFF:
