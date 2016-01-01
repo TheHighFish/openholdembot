@@ -38,6 +38,9 @@ class CSymbolEngineMemorySymbols: public CVirtualSymbolEngine {
  private:
   double EvaluateRightHandExpression(CString right_hand_value);
  private:
+  void ErrorInvalidMemoryStoreCommand(CString command);
+  void ErrorUnnamedMemorySymbol(CString command);
+ private:
   std::map<CString, double> _memory_symbols;
 };
 
