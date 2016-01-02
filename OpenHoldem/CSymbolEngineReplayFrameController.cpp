@@ -26,7 +26,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 #include "CSymbolEngineCasino.h"
-#include "CAutoConnector.h"
 
 CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller = NULL;
 
@@ -57,37 +56,40 @@ void CSymbolEngineReplayFrameController::ResetOnNewRound() {
 void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
 }
 
-void CSymbolEngineReplayFrameController::set_replay_recored_this_turn(bool p_b)
-{
+void CSymbolEngineReplayFrameController::set_replay_recored_this_turn(bool p_b) {
 	__replay_recored_this_turn = p_b;
 }
-bool CSymbolEngineReplayFrameController::is_replay_recored_this_turn() const
-{
-	return __replay_recored_this_turn ;
+
+bool CSymbolEngineReplayFrameController::is_replay_recored_this_turn() const {
+	return __replay_recored_this_turn;
 } 
 
 void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
 	if(p_symbol_engine_casino->ConnectedToOHReplay()){
-		return;	//no point in shooting frames when connected to OHReplay
+    // No point in shooting frames when connected to OHReplay
+    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as connected to OHReplay\n");
+		return;	
 	}
-	if(!p_autoconnector->IsConnected()){
-		return;	//no point in shooting frames if the autoplayer is turned off
+  if(!p_autoplayer->autoplayer_engaged()){
+    // No point in shooting frames if the autoplayer is turned off
+    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as autoplayer turned off\n");
+		return;	
 	}
 	if (p_lazyscraper->IsIdenticalScrape()) {
-	// There is no benefit in duplicate frames, so we abort
-	write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");
-	return;
+	  // There is no benefit in duplicate frames, so we abort
+	  write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");
+	  return;
 	}  
 	if ((preferences.replay_record() == kShootReplyFramesOnEveryChangeWhilePlaying)	
-		&& p_table_state->User()->HasKnownCards()) {
+		  && p_table_state->User()->HasKnownCards()) {
 		write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on change while in hand)\n");
-	ShootReplayFrameIfNotYetDone();
-	return;
+	  ShootReplayFrameIfNotYetDone();
+	  return;
 	}
 	if (preferences.replay_record() == kShootReplyFramesOnEveryChange) {
-	write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on every change in table-state)\n");
-	ShootReplayFrameIfNotYetDone();
-	return;
+	  write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required (on every change in table-state)\n");
+	  ShootReplayFrameIfNotYetDone();
+	  return;
 	}
 	if ((preferences.replay_record() == kShootReplyFramesOnMyTurn)			
 		  && p_symbol_engine_autoplayer->ismyturn() 
