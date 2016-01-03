@@ -1579,7 +1579,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
         "contain errors, will likely not act as you expect, and may cause you\n"
         "to lose money at the tables.\n\n"
         "Please only click 'Yes' if you really know what you are doing.",
-        "PARSE ERROR", 
+        "PARSE ERROR(s)", 
         MB_YESNO) != IDYES) {
       return;
     }
