@@ -279,7 +279,6 @@ void CTablemapCompletenessChecker::VerifyMap() {
   //   * potmethod
   //   * buttonclickmethod
   //   * betpotmethod
-  //   * targetsize
   // and some others  
 }
 

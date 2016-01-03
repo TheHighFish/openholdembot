@@ -142,16 +142,15 @@ void CDlgEditGrHashPoints::OnCbnSelchangeZoomLevel()
 	update_bitmap();
 }
 
-void CDlgEditGrHashPoints::update_bitmap()
-{
-	int					i, x, y, width, height, zoom, type;
-	CString				text;
+void CDlgEditGrHashPoints::update_bitmap() {
+	int					x, y, width, height, zoom, type;
+	CString			text;
 	CDC					*pDC;
 	HDC					hdcControl, hdcScreen, hdc_image;
-	HBITMAP				bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
+	HBITMAP			bitmap_image, old_bitmap_image, bitmap_control, old_bitmap_control;
 	BYTE				*pBits, alpha, red, green, blue;
-	IMapCI				sel_image = p_tablemap->i$()->end();
-	COLORREF			cr;
+	IMapCI			sel_image = p_tablemap->i$()->end();
+	COLORREF		cr;
 	
 	// Get pointer to selected image record
 	if (m_Sample_Image.GetCurSel() != LB_ERR)
@@ -272,7 +271,6 @@ void CDlgEditGrHashPoints::update_bitmap()
 
 void CDlgEditGrHashPoints::reset_list_box(int type)
 {
-	int			i;
 	CString		text;
 
 	m_Point_List.ResetContent();
@@ -316,8 +314,8 @@ void CDlgEditGrHashPoints::OnMouseMove(UINT nFlags, CPoint point)
 void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	RECT				bmp_rect;
-	CString				text;
-	int					type, i, zoom, x, y;
+	CString			text;
+	int					type, zoom, x, y;
 	STablemapHashPoint	temp_hash_point;
 
 	m_Sample_Bitmap.GetWindowRect(&bmp_rect);
@@ -381,8 +379,8 @@ void CDlgEditGrHashPoints::OnLButtonDown(UINT nFlags, CPoint point)
 void CDlgEditGrHashPoints::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	RECT				bmp_rect;
-	CString				text;
-	int					type, i, zoom, x, y, del_index;
+	CString			text;
+	int					type, zoom, x, y, del_index;
 
 	m_Sample_Bitmap.GetWindowRect(&bmp_rect);
 	ScreenToClient(&bmp_rect);

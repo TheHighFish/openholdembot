@@ -383,8 +383,6 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,187,10
     CONTROL         "Advance replay frames during replay",IDC_USE_AUTO_REPLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,145,134,10
-    CONTROL         "Use 'comma' instead of 'dot' for fractional betsizes",IDC_SWAGUSECOMMA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,161,173,10
 END
 
 IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155

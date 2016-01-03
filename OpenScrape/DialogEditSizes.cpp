@@ -49,9 +49,7 @@ END_MESSAGE_MAP()
 
 BOOL CDlgEditSizes::OnInitDialog()
 {
-	int			i;
 	CString		text;
-
 	CDialog::OnInitDialog();
 
 	SetWindowText(titletext.GetString());

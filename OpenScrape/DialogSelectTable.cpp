@@ -57,8 +57,7 @@ void CDlgSelectTable::OnBnClickedOk()
 
 BOOL CDlgSelectTable::OnInitDialog() 
 {
-	int		i, N;
-
+	int		 N;
 	CDialog::OnInitDialog();
 
 	selected_item = -1;
