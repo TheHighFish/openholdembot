@@ -741,6 +741,9 @@
     <ClCompile Include="CTableTitle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mtrand.cpp">
+      <Filter>Source Files\PrWin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1575,6 +1578,9 @@
     </ClInclude>
     <ClInclude Include="CTableTitle.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mtrand.h">
+      <Filter>Header Files\PrWin</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
