@@ -1,4 +1,4 @@
-v9.0.1 2016-01-02
+v9.0.1 2016-01-03
 ==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
@@ -29,7 +29,7 @@ BUG FIXES:
 - OH no longer shoots replay frames when the autoplayer is turned off
   [ZeeZooLaa]
 - The PokerTracker stats smallblind_3bet_versus_steal  and bigblind_3bet_versus_steal
-  returned different valus than PT. This has now been fixed.
+  returned different values than PT. This has now been fixed.
   Thanks to ChuckNeverMuck for reporting the problem and providing the patch
   and to FqFq for verification.
   [THF]
