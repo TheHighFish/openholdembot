@@ -210,7 +210,7 @@ double CSymbolEngineChipAmounts::Largestbet() {
 	double largest_bet = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); ++i)	{
     if ((p_betround_calculator->betround() == kBetroundPreflop)
-        && (p_table_state->Players(i)->PostingBothBlinds())) {
+        && (p_table_state->Player(i)->PostingBothBlinds())) {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip
