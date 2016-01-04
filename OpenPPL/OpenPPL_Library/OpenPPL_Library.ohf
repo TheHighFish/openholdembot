@@ -1065,6 +1065,11 @@ ERROR_BotsActionsOnThisRound_Out_Of_Range
 //
 //*****************************************************************************
 
+##Ante##
+// Ante in big blinds
+(bblind > 0) ? (ante / bblind) : 
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
 ##Chair0StartingStackSize##
 // Amount in bets (big blinds for preflop)
 (bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
@@ -1542,14 +1547,14 @@ HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 StackSize + TotalInvestedThisRound
 
 ##TotalInvested##
-(betround == ConstBetRoundPreflop AND nbetsround  > 0) ? ncurrentbets :
-(betround == ConstBetRoundFlop    AND nbetsround1 > 0) ? (nbetsround1 + ncurrentbets) :
-(betround == ConstBetRoundTurn    AND nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + ncurrentbets) :
-(betround == ConstBetRoundRiver   AND nbetsround1 > 0) ? (nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) :
+(betround == ConstBetRoundPreflop AND nbetsround  > 0) ? (ncurrentbets + Ante):
+(betround == ConstBetRoundFlop    AND nbetsround1 > 0) ? (nbetsround1  + ncurrentbets + Ante) :
+(betround == ConstBetRoundTurn    AND nbetsround1 > 0) ? (nbetsround1  + nbetsround2  + ncurrentbets + Ante) :
+(betround == ConstBetRoundRiver   AND nbetsround1 > 0) ? (nbetsround1  + nbetsround2  + nbetsround3  + ncurrentbets + Ante) :
 ERROR_Betround_Out_Of_Range
 
 ##TotalInvestedThisRound##
-ncurrentbets
+(betround == ConstBetRoundPreflop) ? (ncurrentbets + Ante) : ncurrentbets
 
 //*****************************************************************************
 //

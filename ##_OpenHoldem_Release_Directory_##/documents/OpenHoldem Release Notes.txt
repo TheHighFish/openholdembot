@@ -1,5 +1,18 @@
 v9.0.1 2016-01-03
 ==================
+NEW STUFF:
+- New secondary function f$betsize_enable_rounding to turn
+  rounding on/off (default is on) for the people who want to control 
+  their f$betsize to every cent and don't care about beautiful numbers.
+  [THF]
+
+BUG FIXES:
+- The OpenPPL symbols TotalInvested and TotalInvestedThisRound did not consider antes.
+  Thanks to ChuckNeverMuck for reporting and providing the improved code.
+  [THF]
+
+v9.0.1 2016-01-03
+==================
 BUG FIXES:
 - Several fixes to Enhanced PrWin at the DLL-Level.
   [ZeeZooLaa]		
