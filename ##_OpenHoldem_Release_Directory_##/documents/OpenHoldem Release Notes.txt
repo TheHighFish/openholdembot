@@ -33,6 +33,9 @@ BUG FIXES:
   Thanks to ChuckNeverMuck for reporting the problem and providing the patch
   and to FqFq for verification.
   [THF]
+- The OPPL-symbol StartingStacksize didn't consider antes.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
 
 MAINTENANCE:
 - Fine-tuning some validator rules.
