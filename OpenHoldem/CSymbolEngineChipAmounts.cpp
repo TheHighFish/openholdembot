@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineChipAmounts.h"
 
+#include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
@@ -24,8 +25,7 @@
 
 CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts = NULL;
 
-CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
-{
+CSymbolEngineChipAmounts::CSymbolEngineChipAmounts() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -36,16 +36,13 @@ CSymbolEngineChipAmounts::CSymbolEngineChipAmounts()
 CSymbolEngineChipAmounts::~CSymbolEngineChipAmounts()
 {}
 
-void CSymbolEngineChipAmounts::InitOnStartup()
-{
+void CSymbolEngineChipAmounts::InitOnStartup() {
 	ResetOnConnection();
 }
 
-void CSymbolEngineChipAmounts::ResetOnConnection()
-{
+void CSymbolEngineChipAmounts::ResetOnConnection() {
 	ResetOnHandreset();
-
-	_maxbalance = kUndefinedZero;
+  _maxbalance = kUndefinedZero;
 	_balanceatstartofsession = kUndefinedZero;
 }
 
@@ -96,36 +93,26 @@ void CSymbolEngineChipAmounts::SetBalanceAtStartOfSessionConditionally() {
 	}
 }
 
-void CSymbolEngineChipAmounts::CalculateStacks()
-{
+void CSymbolEngineChipAmounts::CalculateStacks() {
 	// simple bubble sort for 10 stack values
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
-		if (p_table_state->Player(i)->HasAnyCards())
-		{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+		if (p_table_state->Player(i)->HasAnyCards()) 	{
       _stack[i] = p_table_state->Player(i)->balance();
-		}
-		else
-		{
+		}	else {
 			_stack[i] = 0;
 		}
 	}
-	for (int i=0; i<p_tablemap->nchairs()-1; i++)
-	{
-		for (int j=i+1; j<p_tablemap->nchairs(); j++)
-		{
-			if (_stack[i] < _stack[j])
-			{
+	for (int i=0; i<p_tablemap->nchairs()-1; i++)	{
+		for (int j=i+1; j<p_tablemap->nchairs(); j++)	{
+			if (_stack[i] < _stack[j]) {
 				SwapDoubles(&_stack[i], &_stack[j]);
 			}
 		}
 	}
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		assert(_stack[i] >= 0);									
 	}
-	for (int i=p_tablemap->nchairs(); i<kMaxNumberOfPlayers; i++)
-	{
+	for (int i=p_tablemap->nchairs(); i<kMaxNumberOfPlayers; i++)	{
 		_stack[i] = 0;
 	}
 }
@@ -143,8 +130,7 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 	if (p_tablemap->potmethod() == 2)	{
 		_pot = p_table_state->Pot(0);
 		_potcommon = _pot - _potplayer;
-	}
-	else if(p_tablemap->potmethod() == 3) {
+	}	else if(p_tablemap->potmethod() == 3) {
 		_pot = p_table_state->Pot(0);
 		for (int i=1; i<kMaxNumberOfPots; i++) {
 			_pot = max(_pot, p_table_state->Pot(i));
@@ -168,8 +154,7 @@ void CSymbolEngineChipAmounts::CalculatePots() {
   }
 }
 
-void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() 
-{
+void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() {
 	int	next_largest_bet = 0;
 	double largest_bet = Largestbet();
 
@@ -187,11 +172,9 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise()
     _call = balance;
   }
 	next_largest_bet = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		if (p_table_state->Player(i)->bet() != largest_bet 
-			&& p_table_state->Player(i)->bet() > next_largest_bet)
-		{
+			  && p_table_state->Player(i)->bet() > next_largest_bet) 	{
 			next_largest_bet = p_table_state->Player(i)->bet();
 		}
 	}
@@ -225,8 +208,9 @@ void CSymbolEngineChipAmounts::CalculateBetsToCallToRaise() {
 
 double CSymbolEngineChipAmounts::Largestbet() {
 	double largest_bet = 0.0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-    if (p_table_state->Player(i)->PostingBothBlinds()) {
+	for (int i=0; i<p_tablemap->nchairs(); ++i)	{
+    if ((p_betround_calculator->betround() == kBetroundPreflop)
+        && (p_table_state->Players(i)->PostingBothBlinds())) {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip
