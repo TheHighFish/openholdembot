@@ -1,4 +1,4 @@
-v9.0.1 2016-01-03
+v9.0.1 2016-01-04
 ==================
 NEW STUFF:
 - New secondary function f$betsize_enable_rounding to turn
@@ -9,6 +9,9 @@ NEW STUFF:
 BUG FIXES:
 - The OpenPPL symbols TotalInvested and TotalInvestedThisRound did not consider antes.
   Thanks to ChuckNeverMuck for reporting and providing the improved code.
+  [THF]
+- After some refactoring name-scraping was broken in OH 9.0.1.
+  Thanks to Plutus for reporting.
   [THF]
 
 v9.0.1 2016-01-03

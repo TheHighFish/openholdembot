@@ -624,7 +624,7 @@ void CScraper::ScrapeName(int chair) {
 	EvaluateRegion(s, &result);	
 	write_log(preferences.debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
 	if (result != "")	{
-    p_table_state->Player(chair)->name() = result;
+    p_table_state->Player(chair)->set_name(result);
 		return;
 	}
 	// Player name pXname
@@ -632,7 +632,7 @@ void CScraper::ScrapeName(int chair) {
 	EvaluateRegion(s, &result);
 	write_log(preferences.debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
 	if (result != "") {
-		p_table_state->Player(chair)->name() = result;
+		p_table_state->Player(chair)->set_name(result);
     return;
 	}
 }
