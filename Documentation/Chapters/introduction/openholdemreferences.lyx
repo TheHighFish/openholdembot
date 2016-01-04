@@ -378,7 +378,7 @@ http://www.kernel.org/doc/Documentation/pcmcia/crc32hash.c
 \end_layout
 
 \begin_layout Itemize
-MD5-checksum for files by Shaheer Abdulrahiman & "Napalm"; 
+MD5-checksum for files by Shaheer Abdulrahiman and "Napalm"; 
 \begin_inset Flex URL
 status collapsed
 
@@ -396,6 +396,21 @@ status collapsed
 \begin_layout Plain Layout
 
 http://www.rohitab.com/discuss/topic/21740-md5-hashing/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Mersenne random algorithm by Makoto Matsumoto and Takuji Nishimura; 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://dmorse.github.io/simpatico/doc/html/mtrand_8h_source.html
 \end_layout
 
 \end_inset
