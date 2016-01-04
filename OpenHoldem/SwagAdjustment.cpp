@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "BetpotCalculations.h"
+#include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolengineGameType.h"
@@ -231,12 +232,25 @@ double MaximumBetsizeDueToMaxOppStack()
 
 double AdjustedBetsize(double amount_to_raise_to) {
 	double original_amount_to_raise_to = amount_to_raise_to;
-  amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
+  bool rounding_enabled = p_function_collection->EvaluateAutoplayerFunction(
+    k_standard_function_betsize_enable_rounding);
+  write_log(preferences.debug_betsize_adjustment(),
+    "[BetsizeAdjustment] Rounding to beautiful numbers %s\n",
+    Bool2CString(rounding_enabled));
+  // Rounding to beautiful numbers but only if enabled
+  if (rounding_enabled) {
+    amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
+  }
 	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
-	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
-	if(p_symbol_engine_casino->ConnectedToDDPoker()){
+  // Rounding to beautiful numbers (here full dollars) but only if enabled
+  if (rounding_enabled) {
+	  AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
+  }
+  // Special handling for DDPoker
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19185&hilit=ddpoker
+  if(p_symbol_engine_casino->ConnectedToDDPoker()){
 		AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToMinOppStack(), amount_to_raise_to);
 		AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeDueToMaxOppStack());
 	}
