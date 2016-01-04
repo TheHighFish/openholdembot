@@ -530,24 +530,24 @@ int CScraper::ScrapeCard(CString name) {
   result = ScrapeCardface(uname);
   if (result != CARD_UNDEFINED) return result;
 	// Nothing found
-  /*
   write_log(k_always_log_errors, 
     "[CScraper] WARNING ScrapeCard(%s) found nothing\n", name);
   write_log(k_always_log_errors, 
     "[CScraper] Not nocard, no cards and no cardbacks.\n");
   write_log(k_always_log_errors,
-    "[CScraper] Defaulting to cardbacks (players) / nocard (board)\n");
-  */
-  if (name[0] == 'p') {
-    // Currently we have a problem with cardbacks,
-    // but whatever we try to scrape is not NOCARD and not a card.
-    // So we assume card_backs.
-	  return CARD_BACK;
-  } else {
-    // Treat undefined community card as no card
-    assert(name[0] == 'c');
-    return CARD_NOCARD;
-  }
+    "[CScraper] Defaulting to nocard\n");
+  // For some time we tried to be smart and returned
+  //   * CARD_BACK for players
+  //   * CARD_NOCARD for board-cards
+  // in case of scraping-errors, as card-backs are more easy 
+  // to get wrong than nocard (usually a simple colour-transform 
+  // with background-colour and negative readius), 
+  // but it looks as if this "smart" error-handling 
+  // was the reason for wrong deal-positions for some beginners 
+  // with bad tablemaps.
+  // So we are back to simplicity.
+  // www!!!!!
+  return CARD_NOCARD;
 }
 
 void CScraper::ScrapePlayerCards(int chair) {

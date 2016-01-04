@@ -13,6 +13,18 @@ BUG FIXES:
 - After some refactoring name-scraping was broken in OH 9.0.1.
   Thanks to Plutus for reporting.
   [THF]
+- For some time we tried to be smart and returned
+    * CARD_BACK for players
+    * CARD_NOCARD for board-cards
+  in case of scraping-errors, as card-backs are more easy 
+  to get wrong than nocard (usually a simple colour-transform 
+  with background-colour and negative readius), 
+  but it looks as if this "smart" error-handling 
+  was the reason for wrong deal-positions for some beginners 
+  with bad tablemaps.
+  So we are back to simplicity.  
+  Thanks to ZeeZooLaa for asking.
+  [THF]
 
 v9.0.1 2016-01-03
 ==================
