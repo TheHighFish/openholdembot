@@ -10,7 +10,7 @@ BUG FIXES:
   broke the detection of voluntary raisers postflop if the first bettor
   raised to 1.5 bb.
   This has now been fixed.
-  Thanks to Mossel for reportig.
+  Thanks to Mossel for reporting.
   [THF]
 - Simpler error-handling in case scraping cards fails completely.  
   For some time we tried to be smart and returned CARD_BACK for players,
