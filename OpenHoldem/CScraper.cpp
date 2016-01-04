@@ -541,7 +541,7 @@ int CScraper::ScrapeCard(CString name) {
   //   * CARD_NOCARD for board-cards
   // in case of scraping-errors, as card-backs are more easy 
   // to get wrong than nocard (usually a simple colour-transform 
-  // with background-colour and negative readius), 
+  // with background-colour and negative radius), 
   // but it looks as if this "smart" error-handling 
   // was the reason for wrong deal-positions for some beginners 
   // with bad tablemaps.
