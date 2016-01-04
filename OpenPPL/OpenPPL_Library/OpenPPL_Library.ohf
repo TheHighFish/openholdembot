@@ -1067,52 +1067,52 @@ ERROR_BotsActionsOnThisRound_Out_Of_Range
 
 ##Chair0StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance0 + currentbet0) / bet) :
+(bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair1StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance1 + currentbet1) / bet) :
+(bet > 0) ? ((balance1 + currentbet1 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair2StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance2 + currentbet2) / bet) :
+(bet > 0) ? ((balance2 + currentbet2 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair3StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance3 + currentbet3) / bet) :
+(bet > 0) ? ((balance3 + currentbet3 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair4StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance4 + currentbet4) / bet) :
+(bet > 0) ? ((balance4 + currentbet4 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair5StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance5 + currentbet5) / bet) :
+(bet > 0) ? ((balance5 + currentbet5 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair6StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance6 + currentbet6) / bet) :
+(bet > 0) ? ((balance6 + currentbet6 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair7StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance7 + currentbet7) / bet) :
+(bet > 0) ? ((balance7 + currentbet7 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair8StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance8 + currentbet8) / bet) :
+(bet > 0) ? ((balance8 + currentbet8 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##Chair9StartingStackSize##
 // Amount in bets (big blinds for preflop)
-(bet > 0) ? ((balance9 + currentbet9) / bet) :
+(bet > 0) ? ((balance9 + currentbet9 + ante) / bet) :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##ButtonStartingStackSize##
