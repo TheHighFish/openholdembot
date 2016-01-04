@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CPlayer.h"
 
+#include "CBetroundCalculator.h"
 #include "CSymbolEngineTableLimits.h"
 
 CPlayer::CPlayer() {
@@ -79,6 +80,11 @@ bool CPlayer::IsAllin() {
 bool CPlayer::PostingBothBlinds() {
   // We have to calculate in cents here, as IsApproximatellyEqual uses rounding internally.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18743
+  if (p_betround_calculator->betround() > kBetroundPreflop) {
+    // No blind posters postflop
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19043
+    return false;
+  }
   double bet_in_cents = 100 * _bet;
   double both_blinds_in_cents = 100 * (p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind());
   return (_seated && _active && HasAnyCards() 
