@@ -210,6 +210,10 @@ RaiseMax
 ##ConstSuitSpades##
 3
 
+##ConstAllRanksWithoutAceLow##
+// AKQJT98765432a-
+0b0111111111111100
+
 //*****************************************************************************
 //
 // OpenPPL - Betting Round Constants
@@ -1312,37 +1316,46 @@ ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
 
 ##MaxStillToActStackSizeAfterSmallBlind##
 // Only one player behind SB, so it is easy
+// Per definition for first orbit preflop only.
 BigBlindStartingStackSize
 
 ##MaxStillToActStackSizeAfterButton##
+// Per definition for first orbit preflop only
 SmallBlindStartingStackSize > MaxStillToActStackSizeAfterSmallBlind ?
   SmallBlindStartingStackSize : MaxStillToActStackSizeAfterSmallBlind
 
 ##MaxStillToActStackSizeAfterCutOff##
+// Per definition for first orbit preflop only
 ButtonStartingStackSize > MaxStillToActStackSizeAfterButton ?
   ButtonStartingStackSize : MaxStillToActStackSizeAfterButton
 
 ##MaxStillToActStackSizeAfterMiddlePosition3##
+// Per definition for first orbit preflop only
 CutOffStartingStackSize > MaxStillToActStackSizeAfterCutOff?
   CutOffStartingStackSize : MaxStillToActStackSizeAfterCutOff
 
 ##MaxStillToActStackSizeAfterMiddlePosition2##
+// Per definition for first orbit preflop only
 MiddlePosition3StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition3 ?
   MiddlePosition3StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition3
 
 ##MaxStillToActStackSizeAfterMiddlePosition1##
+// Per definition for first orbit preflop only
 MiddlePosition2StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition2 ?
   MiddlePosition2StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition2
 
 ##MaxStillToActStackSizeAfterEarlyPosition3##
+// Per definition for first orbit preflop only
 MiddlePosition1StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition1 ?
   MiddlePosition1StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition1
 
 ##MaxStillToActStackSizeAfterEarlyPosition2##
+// Per definition for first orbit preflop only
 EarlyPosition3StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition3 ?
   EarlyPosition3StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition3
 
 ##MaxStillToActStackSizeAfterEarlyPosition1##
+// Per definition for first orbit preflop only
 EarlyPosition2StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition2 ?
   EarlyPosition2StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition2
 
@@ -1433,7 +1446,7 @@ ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 
 ##CalculateStartingStackSize##
 // Precondition: first hand, preflop
-(bblind > 0) ? ((currentbet + balance) / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+(bblind > 0) ? ((currentbet + balance + ante) / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##InitStartingStackSize##
 ((handsplayed == 0 OR StartingStackSize == 0) AND (betround == ConstBetRoundPreflop)) ?
@@ -1508,6 +1521,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 (StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
 
 ##MaxStillToActStackSize##
+// Per definition for first orbit preflop only
 userchair == BigBlindChair        ? 0 :
 userchair == SmallBlindChair      ? MaxStillToActStackSizeAfterSmallBlind      :
 userchair == ButtonChair          ? MaxStillToActStackSizeAfterButton          :
@@ -1863,7 +1877,11 @@ SecondTopFlopCardPairedOnTurn
 ##Srankavailable##
 // Available suited cards for other players,
 // possibly contributing to a flush or straight flush
-~(srankbitscommon | Srankbitshero)
+// The binary negation works on full prevision.
+// We have to discard everything above ace high
+// plus ace-low and the unused lowest bit.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19262
+(~(srankbitscommon | Srankbitshero)) & ConstAllRanksWithoutAceLow
 
 ##StraightFlushPossibleByOthers##
 (nstraightflushfillcommon <= 2)
@@ -3086,8 +3104,7 @@ HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecond
 // Don't count ace twice in HaveTwoPair
 // bit0 is unused
 // bit 2 is ace low
-//                 AKQJT98765432-- 
-rankbitscommon & 0b111111111111100
+rankbitscommon & ConstAllRanksWithoutAceLow
 
 ##HaveTwoPair##
 `(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2

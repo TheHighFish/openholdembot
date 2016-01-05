@@ -1,4 +1,4 @@
-v9.0.2 2016-01-04
+v9.0.2 2016-01-05
 ==================
 NEW STUFF:
 - New secondary function f$betsize_enable_rounding to turn
@@ -24,6 +24,9 @@ BUG FIXES:
   with bad tablemaps.
   So we are back to simplicity.  
   Thanks to ZeeZooLaa for asking.
+  [THF]
+- The technical OpenPPL symbol Srankavailable included also
+  suited cards above ace. Thanks to ZeeZooLaa for reporting.
   [THF]
 
 v9.0.1 2016-01-03
