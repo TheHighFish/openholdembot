@@ -214,13 +214,13 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   return result;
 }
 
-double MinimumBetsizeDueToMinOppStack()
-{
-	double minimums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_min_non_zero_stack();
-	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToMinOppStack: %.2f\n", minimums);
-	assert(minimums > 0);
-	return minimums;
-}
+//double MinimumBetsizeDueToMinOppStack()
+//{
+//	double minimums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_min_non_zero_stack();
+//	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToMinOppStack: %.2f\n", minimums);
+//	assert(minimums > 0);
+//	return minimums;
+//}
 
 double MaximumBetsizeDueToMaxOppStack()
 {
@@ -241,7 +241,15 @@ double AdjustedBetsize(double amount_to_raise_to) {
   if (rounding_enabled) {
     amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
   }
-	AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToPreviousRaise(), amount_to_raise_to);
+  double minimums;
+  if(p_symbol_engine_casino->ConnectedToDDPoker())
+  {
+	 minimums = min(MinimumBetsizeDueToPreviousRaise(), MaximumBetsizeDueToMaxOppStack() );
+  }else
+  {
+	 minimums = MinimumBetsizeDueToPreviousRaise();
+  }
+	AdaptValueToMinMaxRange(&amount_to_raise_to, minimums, amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
   // Rounding to beautiful numbers (here full dollars) but only if enabled
@@ -251,9 +259,8 @@ double AdjustedBetsize(double amount_to_raise_to) {
   // Special handling for DDPoker
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19185&hilit=ddpoker
   if(p_symbol_engine_casino->ConnectedToDDPoker()){
-		AdaptValueToMinMaxRange(&amount_to_raise_to, MinimumBetsizeDueToMinOppStack(), amount_to_raise_to);
 		AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeDueToMaxOppStack());
 	}
-	AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));
+  	AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));
 	return amount_to_raise_to; 
 }
