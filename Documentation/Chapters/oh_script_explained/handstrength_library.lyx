@@ -91,16 +91,17 @@ In the legendary golden age of Fixed Limit Hold'em Winngy, member of Lab
  Our member HTC added his outs-counter.
  Both are combined in a library, which can be downloaded from 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-x
+https://github.com/OpenHoldem/openholdembot/blob/master/mh_str_Handstrength_Libra
+ry/mh_str_Handstrength_Library.ohf
 \end_layout
 
 \end_inset
 
-!!!.To make use of these functions just include this library in your bot-logic.
+.To make use of these functions just include this library in your bot-logic.
 \end_layout
 
 \begin_layout Standard
