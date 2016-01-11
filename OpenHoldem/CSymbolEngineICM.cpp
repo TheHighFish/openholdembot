@@ -1,4 +1,4 @@
-d//*******************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
@@ -43,8 +43,6 @@ d//*****************************************************************************
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
 #include "CSymbolEnginePokerAction.h"
-
-
 
 CSymbolEngineICM *p_symbol_engine_icm = NULL;
 
@@ -117,67 +115,85 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
 	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
 	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
+	int nchairs = p_tablemap->nchairs();
 	int	chair = -1;
 
 		if (strcmp(name,"SB")==0)
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			if (sym_nplayersseated==2)
+			{
+				chair = sym_dealerchair;
+			}
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==1)
 					chair = i;
 			}
+		    }
 		}
 		else if (strcmp(name,"BB")==0)
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			if (sym_nplayersseated==2)
+			{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==1)
+					chair = i;
+			}
+		    }
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==2)
 					chair = i;
 			}
+			}
 		}
-		else if ((strcmp(name,"UTG")==0) && (sym_nplayersseated >=10))
-		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+		
+		else if ((strcmp(name,"UTG")==0) && (sym_nplayersseated >=10)){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-7))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG1")==0) && (sym_nplayersseated >=9))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-6))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG2")==0) && (sym_nplayersseated >=8))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-5))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG3")==0) && (sym_nplayersseated >=7))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-4))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG4")==0) && (sym_nplayersseated >=6))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-3))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG5")==0) && (sym_nplayersseated >=5))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-2))
 					chair = i;
 			}
 		}
 		else if ((strcmp(name,"UTG6")==0) && (sym_nplayersseated >=4))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-1))
 					chair = i;
 			}
@@ -188,12 +204,11 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 		}
 		else if ((strcmp(name,"CO")==0) && (sym_nplayersseated >=4))
 		{
-			for(int i =0; i<=kMaxNumberOfPlayers; i++){
+			for(int i =0; i<=nchairs; i++){
 				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-1))
 					chair = i;
 			}
-			}
-
+		}
 
 	return chair;
 
