@@ -1,3 +1,14 @@
+v9.0.3 2016-01-15
+==================
+BUG FIXES:
+- 
+- Syntax highlighting for ICM symbols.
+  [Plutus]
+- Validator rule 1800 was based on some incorrect reasoning.
+  This has now been fixed.
+  Thanks to Ppbcon for reporting.
+  [THF}
+
 v9.0.2 2016-01-05
 ==================
 NEW STUFF:
