@@ -28,7 +28,6 @@
 
 #include "stdafx.h"
 #include "CSymbolEngineICM.h"
-
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -43,6 +42,7 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
+#include "CSymbolEnginePokerAction.h"
 
 CSymbolEngineICM *p_symbol_engine_icm = NULL;
 
@@ -50,7 +50,7 @@ CSymbolEngineICM::CSymbolEngineICM() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_blinds != NULL);
   assert(p_symbol_engine_chip_amounts != NULL);
   assert(p_symbol_engine_dealerchair != NULL);
@@ -113,89 +113,109 @@ double P(int i, int n, double *s, int N)
 
 int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
-	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
 	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
 	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
-	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
-	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
-
-	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
-		eb_offset = 0;
-		
-	// if 2 players posted blinds, no sb_offset
-	if (sym_nplayersblind == 2)
-		sb_offset = 0;
-
-	else if (sym_nplayersblind < 2)
-	{
-		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
-		{
-			int next_chair = i%p_tablemap->nchairs();
-			double p_bet = p_table_state->Player(next_chair)->bet();
-
-			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
-				sb_offset = 0;
-		}
-	}
-
-	// If only 2 players active, we are HU.
-	if (sym_nplayersseated == 2 && eb_offset == 0)
-	{
-		sb_offset = 0;
-		hu_offset = 1;
-	}
-	// If empty button reset other possible offsets
-	if (eb_offset == 1)
-	{
-		sb_offset = 0;
-		hu_offset = 0;
-	}
-
-	if (sym_nplayersseated > 0)
-	{
-		int dealPos = -1;
+	int nchairs = p_tablemap->nchairs();
+	int	chair = -1;
 
 		if (strcmp(name,"SB")==0)
 		{
-			if (sb_offset == 0) dealPos = 1 - eb_offset - hu_offset;
+			if (sym_nplayersseated==2)
+			{
+				chair = sym_dealerchair;
+			}
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==1)
+					chair = i;
+			}
+		    }
 		}
 		else if (strcmp(name,"BB")==0)
-			dealPos = 2 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG")==0)
-			dealPos = 3 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG1")==0)
-			dealPos = 4 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG2")==0)
-			dealPos = 5 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG3")==0)
-			dealPos = 6 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG4")==0)
-			dealPos = 7 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG5")==0)
-			dealPos = 8 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG6")==0)
-			dealPos = 9 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"D")==0)
 		{
-			if (eb_offset == 0) dealPos = 0;
-		}
-		else if (strcmp(name,"CO")==0)
-			dealPos = sym_nplayersseated - 1 - eb_offset;
-
-		if (dealPos >= 0)
-		{
-			chair = sym_dealerchair;
-			while (dealPos >= ( eb_offset == 0 ? 1 : 0 ))
+			if (sym_nplayersseated==2)
 			{
-				chair = (chair + 1) % kMaxNumberOfPlayers;
-				if (IsBitSet(sym_playersseatedbits, chair))
-					dealPos--;
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==1)
+					chair = i;
+			}
+		    }
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==2)
+					chair = i;
+			}
 			}
 		}
-	}
+		
+		else if ((strcmp(name,"UTG")==0) && (sym_nplayersseated >=10)){
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-7))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG1")==0) && (sym_nplayersseated >=9))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-6))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG2")==0) && (sym_nplayersseated >=8))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-5))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG3")==0) && (sym_nplayersseated >=7))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-4))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG4")==0) && (sym_nplayersseated >=6))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-3))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG5")==0) && (sym_nplayersseated >=5))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-2))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG6")==0) && (sym_nplayersseated >=4))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-1))
+					chair = i;
+			}
+		}
+		else if (strcmp(name,"D")==0)
+		{
+                 chair = sym_dealerchair;
+		}
+		else if ((strcmp(name,"CO")==0) && (sym_nplayersseated >=4))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_symbol_engine_poker_action->DealPosition(i)==(sym_nplayersseated-1))
+					chair = i;
+			}
+		}
 
 	return chair;
-}
+
+	}
+
+
+
 
 double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
@@ -251,7 +271,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	}
 
   double		prizes[kMaxNumberOfPlayers] = {0};
-	double		stacks[kMaxNumberOfPlayers] = {0};
+  double		stacks[kMaxNumberOfPlayers] = {0};
 
   int number_of_icm_prizes = k_icm_prize9 - k_icm_prize1 + 1;
   double sum_of_prizes = 0.0;
@@ -272,10 +292,10 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
     return true;
   }
 
-	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
-	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
-	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
+	int		sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
+	int		sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+	int		sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
+	int		sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
 	double	sym_pot = p_symbol_engine_chip_amounts->pot();
 	double	sym_call = p_symbol_engine_chip_amounts->call();
 	double	sym_currentbet[kMaxNumberOfPlayers]={0};
@@ -558,13 +578,13 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
-  //RangeOfSymbols(CString format_string, int first, int last);
+  // RangeOfSymbols(CString format_string, int first, int last);
   CString result = "icm icm_fold icm_callwin icm_calllose icm_calltie ";
   // Winning against 0..9 opponents
   result += RangeOfSymbols("icm_alliwin%d", 0, 9);
   // Losing against 1..9 opponents
   result += RangeOfSymbols("icm_allilose%d", 0, 9);
-  // Wining allin against a particular opponent
+  // Winning allin against a particular opponent
   result += "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 "
     "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwinUTG4 icm_alliwinUTG5 "
     "icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
