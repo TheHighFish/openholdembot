@@ -24,7 +24,10 @@
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
 #include "CParserSymbolTable.h"
+#include "CParseTreeNode.h"
+#include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
+#include "CParseTreeTerminalNode.h"
 #include "CPreferences.h"
 #include "CValidator.h"
 #include "NumericalFunctions.h"
@@ -374,8 +377,8 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   if ((token_ID == kTokenEndOfFile) 
       || (token_ID == kTokenEndOfFunction)) {
     // Empty function; evaluating to zero
-        TPParseTreeNode terminal_node = new CParseTreeNode(_tokenizer.LineRelative());
-    terminal_node->MakeConstant(0);
+    TPParseTreeTerminalNode terminal_node = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+    terminal_node->MakeConstant(0); // !!!!!
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Terminal node %i\n", terminal_node);
     return terminal_node;
@@ -487,7 +490,7 @@ TPParseTreeNode CFormulaParser::ParseSimpleExpression() {
   // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
-	TPParseTreeNode terminal_node = new CParseTreeNode(_tokenizer.LineRelative());
+	TPParseTreeTerminalNode terminal_node = new CParseTreeTerminalNode(_tokenizer.LineRelative());
 	if (terminal == kTokenIdentifier) {
 		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
 	}	else if (terminal == kTokenNumber) {
@@ -600,7 +603,7 @@ TPParseTreeNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   return first_when_condition_of_sequence;
 }
 
-TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
+TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 	// User-variable to be set
   int token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
@@ -618,10 +621,10 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLUserVar() {
       "   * memory-increment-command (me_inc_flopsseen)\n");
 		return NULL;
 	}
-	TPParseTreeNode action = new CParseTreeNode(_tokenizer.LineRelative());
-	action->MakeUserVariableDefinition(identifier);
+	TPParseTreeTerminalNode user_variable = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+	user_variable->MakeUserVariableDefinition(identifier);
   // Not expecting any Force here
-  return action;
+  return user_variable;
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
@@ -632,31 +635,32 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction(){
 		// RETURN <Expression> FORCE
 		action = ParseExpression();
     ExpectKeywordForce(token_ID);
-	}
-	else if (token_ID == kTokenActionRaiseTo) { 
+    return action;
+	}	else if (token_ID == kTokenActionRaiseTo) { 
     // NL-betsizing
     //   RaiseTo N Force
 		action = ParseOpenPPLRaiseToExpression();
     ExpectKeywordForce(token_ID);
-	}
-  else if (token_ID == kTokenActionRaiseBy) {
+    return action;
+	} else if (token_ID == kTokenActionRaiseBy) {
     // NL-betsizing
 		// There are 2 possibilities
 		//   RaiseBy N Force
 		//   RaiseBy X% Force
 		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
-	}
-  else if (token_ID == kTokenActionUserVariableToBeSet) { 
-    action = ParseOpenPPLUserVar();
+    return action;
+	} else if (token_ID == kTokenActionUserVariableToBeSet) { 
+    TPParseTreeTerminalNode user_variable = ParseOpenPPLUserVar();
     // Not expecting keyword Force here
+    return user_variable;
   } else {
 		// Predefined action, like Check or Fold
-    action = new CParseTreeNode(_tokenizer.LineRelative());
-		action->MakeAction(token_ID);
+    TPParseTreeTerminalNode fixed_action = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+		fixed_action->MakeAction(token_ID);
     ExpectKeywordForce(token_ID);
+    return fixed_action;
 	}
-	return action;
 }
 
 bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {

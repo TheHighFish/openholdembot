@@ -744,6 +744,12 @@
     <ClCompile Include="mtrand.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
+    <ClCompile Include="CParseTreeOperatorNode.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNode.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1581,6 +1587,12 @@
     </ClInclude>
     <ClInclude Include="mtrand.h">
       <Filter>Header Files\PrWin</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeOperatorNode.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNode.h">
+      <Filter>Header Files\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

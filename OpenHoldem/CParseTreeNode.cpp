@@ -51,7 +51,6 @@ CParseTreeNode::~CParseTreeNode() {
     delete _third_sibbling;
     _third_sibbling = NULL;
   }
-
 }
 
 void CParseTreeNode::MakeConstant(double value)
@@ -124,14 +123,6 @@ void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
   // Action and next when-condition or next when-condition
   // and next open-ended when-condition are currently undefined
   // and need to get set later
-}
-
-void CParseTreeNode::MakeUserVariableDefinition(CString uservariable)
-{
-  assert((uservariable.Left(4).MakeLower() == "user")
-    || (uservariable.Left(3) == "me_"));
-	_node_type = kTokenActionUserVariableToBeSet;
-	_terminal_name = uservariable;
 }
 
 double CParseTreeNode::Evaluate(bool log /* = false */){
