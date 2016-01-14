@@ -578,13 +578,13 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
-  //RangeOfSymbols(CString format_string, int first, int last);
+  // RangeOfSymbols(CString format_string, int first, int last);
   CString result = "icm icm_fold icm_callwin icm_calllose icm_calltie ";
   // Winning against 0..9 opponents
   result += RangeOfSymbols("icm_alliwin%d", 0, 9);
   // Losing against 1..9 opponents
   result += RangeOfSymbols("icm_allilose%d", 0, 9);
-  // Wining allin against a particular opponent
+  // Winning allin against a particular opponent
   result += "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 "
     "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwinUTG4 icm_alliwinUTG5 "
     "icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
