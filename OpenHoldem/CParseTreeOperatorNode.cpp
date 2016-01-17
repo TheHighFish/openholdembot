@@ -30,16 +30,14 @@
 #include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeNode::CParseTreeNode(int relative_line_number) {
+CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) {
   _relative_line_number = relative_line_number;
   _first_sibbling  = NULL;
   _second_sibbling = NULL;
   _third_sibbling  = NULL;
-  _terminal_name   = "";
-  _constant_value  = 0.0;
 }
 
-CParseTreeNode::~CParseTreeNode() {
+CParseTreeOperatorNode::~CParseTreeOperatorNode() {
   delete _first_sibbling;
   _first_sibbling = NULL;
   delete _second_sibbling;
@@ -54,28 +52,13 @@ CParseTreeNode::~CParseTreeNode() {
 
 }
 
-void CParseTreeNode::MakeConstant(double value)
-{
-	_node_type = kTokenNumber;
-	_constant_value = value;
-}
-
-void CParseTreeNode::MakeIdentifier(CString name)
-{
-	_node_type = kTokenIdentifier;
-  assert(name != "");
-	_terminal_name = name;
-  assert(p_parser_symbol_table != NULL);
-  p_parser_symbol_table->VerifySymbol(name);
-}
-
-void CParseTreeNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
+void CParseTreeOperatorNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
 {
 	_node_type = node_type;
 	_first_sibbling = first_sibbling;
 }
 
-void CParseTreeNode::MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,
+void CParseTreeOperatorNode::MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,
 	TPParseTreeNode second_sibbling)
 {
 	_node_type = node_type;
@@ -83,7 +66,7 @@ void CParseTreeNode::MakeBinaryOperator(int node_type, TPParseTreeNode first_sib
 	_second_sibbling = second_sibbling;
 }
 
-void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
+void CParseTreeOperatorNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
 	TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling)
 {
 	_node_type = node_type;
@@ -93,32 +76,24 @@ void CParseTreeNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_si
 
 }
 
-void CParseTreeNode::MakeAction(int action_constant)
-{
-	assert(TokenIsOpenPPLAction(action_constant));
-  CString action_name = TokenString(action_constant);
-  assert(action_name != "");
-  MakeIdentifier(action_name);
-}
-
-void CParseTreeNode::MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
+void CParseTreeOperatorNode::MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
 	_node_type = kTokenActionRaiseToBigBlinds;
 	_first_sibbling = raise_by_amount_in_big_blinds;
 }
 
-void CParseTreeNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
+void CParseTreeOperatorNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
 	_node_type = kTokenActionRaiseByBigBlinds;
 	_first_sibbling = raise_by_amount_in_big_blinds;
 }
 
 // Values to be expected in the range (0..100] or more, not (0..1]
-void CParseTreeNode::MakeRaiseByPercentagedPotsizeAction(
+void CParseTreeOperatorNode::MakeRaiseByPercentagedPotsizeAction(
   	TPParseTreeNode raise_by_amount_percentage) {
 	_node_type = kTokenActionRaiseByPercentagedPotsize;
 	_first_sibbling = raise_by_amount_percentage;
 }
 
-void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
+void CParseTreeOperatorNode::MakeWhenCondition(TPParseTreeNode condition) {
   _node_type = kTokenOperatorConditionalWhen;
   _first_sibbling = condition;
   // Action and next when-condition or next when-condition
@@ -126,15 +101,15 @@ void CParseTreeNode::MakeWhenCondition(TPParseTreeNode condition) {
   // and need to get set later
 }
 
-double CParseTreeNode::Evaluate(bool log /* = false */){
+double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
-    "[CParseTreeNode] Evaluating node type %i %s\n", 
+    "[CParseTreeOperatorNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	// Most common types first: numbers and identifiers
 	if (_node_type == kTokenNumber)	{
 		write_log(preferences.debug_formula(), 
-      "[CParseTreeNode] Number evaluates to %6.3f\n",
+      "[CParseTreeOperatorNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
 	}	else if (_node_type == kTokenIdentifier) {
@@ -144,7 +119,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
 		write_log(preferences.debug_formula(), 
-      "[CParseTreeNode] Identifier evaluates to %6.3f\n", value);
+      "[CParseTreeOperatorNode] Identifier evaluates to %6.3f\n", value);
     // In case of f$-functions the line changed inbetween,
     // so we have to set it to the current location (again)
     // for the next log.
@@ -165,7 +140,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
-      "[CParseTreeNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
+      "[CParseTreeOperatorNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
       p_symbol_engine_chip_amounts->ncallbets(),
       final_betsize_in_bblinds);
@@ -183,7 +158,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
     double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
-      "[CParseTreeNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
+      "[CParseTreeOperatorNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
       raise_by_percentage,
       pot_size_after_call_in_big_blinds,
       raise_by_amount_in_bblinds,
@@ -209,7 +184,7 @@ double CParseTreeNode::Evaluate(bool log /* = false */){
 	return kUndefined;
 }
 
-CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
+CString CParseTreeOperatorNode::EvaluateToString(bool log /* = false */) {
   double numerical_result = Evaluate(log);
   CString result;
   if (IsInteger(numerical_result) && EvaluatesToBinaryNumber()) {
@@ -223,15 +198,7 @@ CString CParseTreeNode::EvaluateToString(bool log /* = false */) {
   return result;
 }
 
-double CParseTreeNode::EvaluateIdentifier(CString name, bool log) {
-	// EvaluateSymbol cares about ALL symbols, 
-	// including DLL and PokerTracker.
-	double result;
-	p_engine_container->EvaluateSymbol(name, &result, log);
-	return result;
-}
-
-double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
+double CParseTreeOperatorNode::EvaluateUnaryExpression(bool log_symbol) {
   // Paramater named "log_symbol" instead of "log"
   // due to naming conflict with mathematical function
   assert(_first_sibbling  != NULL);
@@ -254,7 +221,7 @@ double CParseTreeNode::EvaluateUnaryExpression(bool log_symbol) {
   }
 }
 
-double CParseTreeNode::EvaluateBinaryExpression(bool log) {
+double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
   assert(_first_sibbling  != NULL);
   assert(_second_sibbling != NULL);
   assert(_third_sibbling  == NULL);
@@ -345,7 +312,7 @@ double CParseTreeNode::EvaluateBinaryExpression(bool log) {
 	return kUndefined;
 }
 
-double CParseTreeNode::EvaluateTernaryExpression(bool log) {
+double CParseTreeOperatorNode::EvaluateTernaryExpression(bool log) {
 	// This function covers both OH-style ternary expressions
 	// and OpenPPL-style (open-ended) when-conditions.
 	// In case of (OE)WCs the parse-tree-generation assures
@@ -375,7 +342,7 @@ double CParseTreeNode::EvaluateTernaryExpression(bool log) {
 	return value_of_third_sibbling;
 }
 
-double CParseTreeNode::EvaluateSibbling(
+double CParseTreeOperatorNode::EvaluateSibbling(
   TPParseTreeNode first_second_or_third_sibbling, bool log) {
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
@@ -385,7 +352,7 @@ double CParseTreeNode::EvaluateSibbling(
     // for better readability of the log-file.
     double null_value = EvaluateIdentifier(kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
 		write_log(preferences.debug_formula(), 
-      "[CParseTreeNode] Evaluating empty tree: false / zero / fold\n");
+      "[CParseTreeOperatorNode] Evaluating empty tree: false / zero / fold\n");
     assert(null_value == kUndefinedZero);
     return null_value;
   }
@@ -393,7 +360,7 @@ double CParseTreeNode::EvaluateSibbling(
   return result;
 }
 
-TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {
+TPParseTreeNode CParseTreeOperatorNode::GetRightMostSibbling() {
   if (TokenIsTernary(_node_type)) {
     return _third_sibbling;
   } else if (TokenIsBinary(_node_type)) {
@@ -406,7 +373,7 @@ TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {
   }
 }
 
-TPParseTreeNode CParseTreeNode::GetLeftMostSibbling() {
+TPParseTreeNode CParseTreeOperatorNode::GetLeftMostSibbling() {
   if (TokenIsUnary(_node_type)
       || TokenIsBinary(_node_type)
       || TokenIsTernary(_node_type)) {
@@ -416,7 +383,7 @@ TPParseTreeNode CParseTreeNode::GetLeftMostSibbling() {
    return NULL;
 }
 
-void CParseTreeNode::SetRightMostSibbling(TPParseTreeNode sibbling){
+void CParseTreeOperatorNode::SetRightMostSibbling(TPParseTreeNode sibbling){
   if (TokenIsTernary(_node_type)) {
    _third_sibbling = sibbling;
   } else if (TokenIsBinary(_node_type)) {
@@ -427,17 +394,12 @@ void CParseTreeNode::SetRightMostSibbling(TPParseTreeNode sibbling){
   }
 }
 
-void CParseTreeNode::SetLeftMostSibbling(TPParseTreeNode sibbling){
+void CParseTreeOperatorNode::SetLeftMostSibbling(TPParseTreeNode sibbling){
   _first_sibbling = sibbling;
 }
 
-CString CParseTreeNode::Serialize()
-{
-  if (_node_type == kTokenIdentifier) {
-    return _terminal_name;
-  } else if (_node_type == kTokenNumber) {
-    return Number2CString(_constant_value);
-  } else if (TokenIsBracketOpen(_node_type)) {
+CString CParseTreeOperatorNode::Serialize() {
+  if (TokenIsBracketOpen(_node_type)) {
     return ("(" + _first_sibbling->Serialize() + ")");
   } else if (TokenIsUnary(_node_type)) {
     assert(_first_sibbling != NULL);
@@ -467,21 +429,21 @@ CString CParseTreeNode::Serialize()
       + (_third_sibbling? _third_sibbling->Serialize(): "");
   } else {
     // Unhandled note-type, probably new and therefore not yet handled
-    write_log(k_always_log_errors, "[CParseTreeNode] ERROR: Unhandled node-tzpe %i in serialiyation of parse-tree\n",
+    write_log(k_always_log_errors, "[CParseTreeOperatorNode] ERROR: Unhandled node-tzpe %i in serialiyation of parse-tree\n",
       _node_type);
     return "";
   }
 }
 
-bool CParseTreeNode::IsAnyKindOfWhenCondition() {
+bool CParseTreeOperatorNode::IsAnyKindOfWhenCondition() {
   return (_node_type == kTokenOperatorConditionalWhen);
 }
 
-bool CParseTreeNode::IsWhenConditionWithAction() {
+bool CParseTreeOperatorNode::IsWhenConditionWithAction() {
   return (IsAnyKindOfWhenCondition() && !IsOpenEndedWhenCondition());
 }
 
-bool CParseTreeNode::IsOpenEndedWhenCondition() {
+bool CParseTreeOperatorNode::IsOpenEndedWhenCondition() {
   if (!IsAnyKindOfWhenCondition()) return false;
   if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true; // ?????
   if ((_second_sibbling != NULL) 
@@ -491,43 +453,12 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
   return false;
 }
 
-bool CParseTreeNode::IsBinaryIdentifier() {
-  const int kNumberOfElementaryBinaryIdentifiers = 21;
-  static const char* kElementaryBinaryIdentifiers[kNumberOfElementaryBinaryIdentifiers] = {
-    "pcbits",              "playersactivebits",  "playersdealtbits",
-    "playersplayingbits",  "playersblindbits",   "opponentsseatedbits",
-    "opponentsactivebits", "opponentsdealtbits", "opponentsplayingbits",
-    "opponentsblindbits",  "flabitgs",           "rankbits",
-    "rankbitscommon",      "rankbitsplayer",     "rankbitspoker",
-    "srankbits",           "srankbitscommon",    "srankbitsplayer",
-    "srankbitspoker",      "myturnbits",         "pcbits"};
-  const int kNumberOfParameterizedBinaryIdentifiers = 4;
-  static const char* kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
-    "chairbit$", "raisbits", "callbits", "foldbits"};
-
-  if (_node_type != kTokenIdentifier) return false;
-  assert(_terminal_name != "");
-  // Check elementary binary identifiers first
-  for (int i=0; i<kNumberOfElementaryBinaryIdentifiers; ++i) {
-    if (_terminal_name == kElementaryBinaryIdentifiers[i]) return true;
-  }
-  // Then check parameterized binary symbols
-  for (int i=0; i<kNumberOfParameterizedBinaryIdentifiers; ++i) {
-    if (StringAIsPrefixOfStringB(kParameterizedBinaryIdentifiers[i],
-        _terminal_name)) {
-      return true;
-    }                                 
-  }
-  // Not a binary identifier
-  return false;
-}
-
-bool CParseTreeNode::SecondSibblingIsUserVariableToBeSet() {
+bool CParseTreeOperatorNode::SecondSibblingIsUserVariableToBeSet() {
   if (_second_sibbling == NULL) return false;
   return (_second_sibbling->_node_type == kTokenActionUserVariableToBeSet);
 }
 
-void CParseTreeNode::SetUserVariable(CString name) {
+void CParseTreeOperatorNode::SetUserVariable(CString name) {
   if (name.Left(4).MakeLower() == "user") {   
     p_symbol_engine_openppl_user_variables->Set(name);
   } else if (name.Left(3) == "me_") {
@@ -540,23 +471,17 @@ void CParseTreeNode::SetUserVariable(CString name) {
   }
 }
 
-bool CParseTreeNode::EvaluatesToBinaryNumber() {
+bool CParseTreeOperatorNode::EvaluatesToBinaryNumber() {
   if (TokenEvaluatesToBinaryNumber(_node_type)) {
     // Operation that evaluates to binary number,
     // e.g. bit-shift, logical and, etc.
     return true;
-  }
-  else if (TokenIsBracketOpen(_node_type)) {
+  } else if (TokenIsBracketOpen(_node_type)) {
     // Have a look at the sub-extreesopn
     TPParseTreeNode sub_expression = _first_sibbling;
     // There has to be an expresison inside the brackets
     assert (_first_sibbling != NULL);
     return _first_sibbling->EvaluatesToBinaryNumber();
-  }
-  else if (IsBinaryIdentifier()) return true;
-  else if ((_node_type == kTokenIdentifier)
-      && p_function_collection->EvaluatesToBinaryNumber(_terminal_name)) {
-    return true;
   }
   // Nothing binary
   return false;

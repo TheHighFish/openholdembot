@@ -19,6 +19,8 @@ class CParseTreeNode;
 typedef CParseTreeNode *TPParseTreeNode;
 
 class CParseTreeNode {
+  friend class CParseTreeOperatorNode;
+  friend class CParseTreeTerminalNode;
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:

@@ -16,7 +16,7 @@
 
 #include "CParseTreeNode.h"
 
-class CParseTreeOperatorNode: CParseTreeNode {
+class CParseTreeOperatorNode: public CParseTreeNode {
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
@@ -44,14 +44,13 @@ class CParseTreeOperatorNode: CParseTreeNode {
   // For debugging output
   CString Serialize();
  public:
+  double Evaluate(bool log /* = false */);
+  CString EvaluateToString(bool log /* = false */);
+ public:
   TPParseTreeNode GetRightMostSibbling();
   TPParseTreeNode GetLeftMostSibbling();
   void SetRightMostSibbling(TPParseTreeNode sibbling);
   void SetLeftMostSibbling(TPParseTreeNode sibbling);
- public:
-  // Might be called by CSymbolEngineMemorySymbols
-  // to evaluate right-hand-side expressions
-  static double EvaluateIdentifier(CString name, bool log);
  private:
   double EvaluateUnaryExpression(bool log_symbol);
   double EvaluateBinaryExpression(bool log);
@@ -65,10 +64,9 @@ class CParseTreeOperatorNode: CParseTreeNode {
   //bool IsBinaryIdentifier();
  private:
   bool SecondSibblingIsUserVariableToBeSet();
-  void SetUserVariable(CString name);
+  void SetUserVariable(CString name); //?????
  protected:
   int _node_type;
-  // In case of terminal node (identifier)
  protected:
   // Sibblings: pointers to the operands of expressions
   // First: always present, as long as non-terminal-node
