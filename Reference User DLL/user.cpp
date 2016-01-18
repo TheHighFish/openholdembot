@@ -33,11 +33,17 @@
 #include <atlstr.h>
 #endif OPT_DEMO_OUTPUT
 
+// Supporting macros
+#define HIGH_NIBBLE(c)	(((c)>>4)&0x0F)
+#define LOW_NIBBLE(c)	  ((c)&0x0F)
+
 // Card macro
-#define RANK(c)       (((c)>>4)&0x0f)
-#define SUIT(c)       (((c)>>0)&0x0f)
-#define ISCARDBACK(c) ((c)==0xff)
-#define ISUNKNOWN(c)  ((c)==0)
+#define RANK(c)         ( ISKNOWN(c) ? HIGH_NIBBLE(c) : 0 )
+#define SUIT(c)         ( ISKNOWN(c) ? LOW_NIBBLE(c) : 0 )
+#define ISCARDBACK(c)   ((c) == CARD_BACK)
+#define ISUNKNOWN(c)    ((c) == CARD_UNDEFINED)
+#define ISNOCARD(c)     ((c) == CARD_NOCARD)
+#define ISKNOWN(c)      (!ISCARDBACK(c) && !ISUNKNOWN(c) && !ISNOCARD(c))
 
 // ProcessQuery()
 //   Handling the lookup of dll$symbols
