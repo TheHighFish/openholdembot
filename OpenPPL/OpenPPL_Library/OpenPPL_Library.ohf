@@ -389,6 +389,9 @@ RaiseMax
 ##HINT_There_Is_No_Pair_On_The_Board##
 -1
 
+##HINT_There_Is_No_Set_On_The_Board##
+-1
+
 ##HINT_Nothing_To_Do_But_All_OK##
 0
 
@@ -3236,6 +3239,7 @@ AND (pcbits == 0b00011 OR pcbits == 0b00001)
 1
 
 ##NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard##
+// We hit top quads, therefore nuts on this board
 1
 
 ##NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard##
@@ -3245,6 +3249,7 @@ AND (pcbits == 0b00011 OR pcbits == 0b00001)
 2
 
 ##RankOfTopPairOnBoard##
+// Searching board pairs top down
 board$AA ? ConstCardAce :
 board$KK ? ConstCardKing :
 board$QQ ? ConstCardQueen :
@@ -3261,6 +3266,7 @@ board$22 ? ConstCardTwo :
 HINT_There_Is_No_Pair_On_The_Board
 
 ##RankOfBottomPairOnBoard##
+// Searching board pairs bottom up
 board$22 ? ConstCardTwo :
 board$33 ? ConstCardThree :
 board$44 ? ConstCardFour :
@@ -3275,6 +3281,11 @@ board$QQ ? ConstCardQueen :
 board$KK ? ConstCardKing :
 board$AA ? ConstCardAce :
 HINT_There_Is_No_Pair_On_The_Board
+
+##RankOfPairOnBoardWithFullHouseOnBoard##
+WHEN RankOfSetOnBoard = rankhicommon RETURN ranklocommon FORCE
+WHEN RankOfSetOnBoard = ranklocommon RETURN rankhicommon FORCE
+WHEN Others RETURN HINT_There_Is_No_Set_On_The_Board FORCE
 
 ##NFH4OAK_FullHouseOnBoard_WePairLowPairOnBoard##
 // One quads possible, so the bestcase is second nuts
@@ -3335,7 +3346,7 @@ HINT_There_Is_No_Pair_On_The_Board
 [(rankhiplayer == BestBoardCard) AND (rankloplayer == SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairBothBoardCards :
 //
 // 2) we pair the set on board, which is higher than the pair, so we get the best quads
-[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? 1: 1/*NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
+[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
 [((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard < SecondBestBoardCard)] ? NFH4OAK_FullHouseOnBoard_WePairLowSetOnBoard :
@@ -3351,7 +3362,7 @@ HINT_There_Is_No_Pair_On_The_Board
 //
 // 7) we don't have an OverPair to the pair and therefore play the board (probably again 2 cases)
 NFH4OAK_FullHouseOnBoard_WePlayTheBoard
-*/
+
 
 ##RankOfSetOnBoard##
 // Precondition: set on board
