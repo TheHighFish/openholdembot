@@ -3061,19 +3061,23 @@ rankbitscommon
 & RankBitsCommonWithoutCommonRank4Pair
 
 ##HighestUnpairedBoardCard##
-(RankBitsCommonWithoutPairs >> ConstCardAce)   & 1 ? ConstCardAce   :
-(RankBitsCommonWithoutPairs >> ConstCardKing)  & 1 ? ConstCardKing  :
-(RankBitsCommonWithoutPairs >> ConstCardQueen) & 1 ? ConstCardQueen :
-(RankBitsCommonWithoutPairs >> ConstCardJack)  & 1 ? ConstCardJack  :
-(RankBitsCommonWithoutPairs >> ConstCardTen)   & 1 ? ConstCardTen   :
-(RankBitsCommonWithoutPairs >> ConstCardNine)  & 1 ? ConstCardNine  :
-(RankBitsCommonWithoutPairs >> ConstCardEight) & 1 ? ConstCardEight :
-(RankBitsCommonWithoutPairs >> ConstCardSeven) & 1 ? ConstCardSeven :
-(RankBitsCommonWithoutPairs >> ConstCardSix)   & 1 ? ConstCardSix   :
-(RankBitsCommonWithoutPairs >> ConstCardFive)  & 1 ? ConstCardFive  :
-(RankBitsCommonWithoutPairs >> ConstCardFour)  & 1 ? ConstCardFour  :
-(RankBitsCommonWithoutPairs >> ConstCardThree) & 1 ? ConstCardThree :
-(RankBitsCommonWithoutPairs >> ConstCardTwo)   & 1 ? ConstCardTwo   : 0
+// Be careful!
+// Rankbits must not be shifted by card rank constants,
+// because the lowest bit (0) represents TWO = 2.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19315
+(RankBitsCommonWithoutPairs >> 12) & 1 ? ConstCardAce   :
+(RankBitsCommonWithoutPairs >> 11) & 1 ? ConstCardKing  :
+(RankBitsCommonWithoutPairs >> 10) & 1 ? ConstCardQueen :
+(RankBitsCommonWithoutPairs >>  9) & 1 ? ConstCardJack  :
+(RankBitsCommonWithoutPairs >>  8) & 1 ? ConstCardTen   :
+(RankBitsCommonWithoutPairs >>  7) & 1 ? ConstCardNine  :
+(RankBitsCommonWithoutPairs >>  6) & 1 ? ConstCardEight :
+(RankBitsCommonWithoutPairs >>  5) & 1 ? ConstCardSeven :
+(RankBitsCommonWithoutPairs >>  4) & 1 ? ConstCardSix   :
+(RankBitsCommonWithoutPairs >>  3) & 1 ? ConstCardFive  :
+(RankBitsCommonWithoutPairs >>  2) & 1 ? ConstCardFour  :
+(RankBitsCommonWithoutPairs >>  1) & 1 ? ConstCardThree :
+(RankBitsCommonWithoutPairs >>  0) & 1 ? ConstCardTwo   : 0
 
 ##HaveTopNonBoardPairedPair##
    [(betround >= ConstBetRoundFlop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
