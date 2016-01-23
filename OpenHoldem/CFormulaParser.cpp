@@ -749,7 +749,7 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function) {
   // Backpatching everything after a complete functiuon got parsed
   TPParseTreeOperatorNode last_open_ended_when_condition = NULL;
-  TPParseOperatorTreeNode current_when_condition = first_when_condition_of_a_function;
+  TPParseTreeOperatorNode current_when_condition = first_when_condition_of_a_function;
   while (current_when_condition != NULL) {
     if (current_when_condition->IsOpenEndedWhenCondition()) {
       // Setting the "Else"-part of the last open-ended when-condition
