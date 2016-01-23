@@ -1493,8 +1493,10 @@ isfl ? 1 : currentbet
 // (Our balance must be always > 0 if it is our turn)
 // Therefore we create multiple functions for multiple cases of bad input.
 (ismyturn AND balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
-// Preflop and I already did act, but nothing to call
-((betround == ConstBetRoundPreflop) AND (currentbet > 0.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+// Preflop and I already did act in a raised pot, but nothing to call
+((betround == ConstBetRoundPreflop) AND (currentbet >= 1.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+// Preflop and I am not big-blind and there is nothing to call
+((betround == ConstBetRoundPreflop) AND (currentbet < 1) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
 // Postflop and I already did act, but nothing to call
 ((betround > ConstBetRoundPreflop) AND (currentbet > 0) AND (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
 // The normal case (including correct and incorrect abilities to check)

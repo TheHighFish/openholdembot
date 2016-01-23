@@ -19,6 +19,7 @@
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
+#include "CParseTreeTerminalNode.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
@@ -106,32 +107,12 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
     "[CParseTreeOperatorNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Most common types first: numbers and identifiers
-	if (_node_type == kTokenNumber)	{
-		write_log(preferences.debug_formula(), 
-      "[CParseTreeOperatorNode] Number evaluates to %6.3f\n",
-			_constant_value);
-		return _constant_value;
-	}	else if (_node_type == kTokenIdentifier) {
-    assert(_first_sibbling  == NULL);
-    assert(_second_sibbling == NULL);
-    assert(_third_sibbling  == NULL);
-		assert(_terminal_name != "");
-		double value = EvaluateIdentifier(_terminal_name, log);
-		write_log(preferences.debug_formula(), 
-      "[CParseTreeOperatorNode] Identifier evaluates to %6.3f\n", value);
-    // In case of f$-functions the line changed inbetween,
-    // so we have to set it to the current location (again)
-    // for the next log.
-    p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-		return value;
-	}
-	// Actions second, which are also "unary".
+	// Actions first, which are "unary".
 	// We have to encode all possible outcomes in a single floating-point,
 	// therefore:
 	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
 	// * negative values mean: elementary actions
-	else if (_node_type == kTokenActionRaiseToBigBlinds)	{
+	if (_node_type == kTokenActionRaiseToBigBlinds)	{
     // RaiseTo N Force
 		return EvaluateSibbling(_first_sibbling, log);
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
@@ -164,11 +145,6 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
       raise_by_amount_in_bblinds,
       final_betsize_in_bblinds);
     return final_betsize_in_bblinds;
-  }	else if (_node_type == kTokenActionUserVariableToBeSet) {
-    // User-variables are a special case of elementary actions
-    // Therefore need to be handled first.
-    SetUserVariable(_terminal_name);
-		return kUndefinedZero;
   } else if (TokenIsElementaryAction(_node_type)) {
 		return (0 - _node_type);
   }
@@ -350,7 +326,7 @@ double CParseTreeOperatorNode::EvaluateSibbling(
     // When evaluating an empty tree we evaluate a special symbol
     // kEmptyxpression_False_Zero_WhenOthersFoldForce
     // for better readability of the log-file.
-    double null_value = EvaluateIdentifier(kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
+    double null_value = CParseTreeTerminalNode::EvaluateIdentifier(kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
 		write_log(preferences.debug_formula(), 
       "[CParseTreeOperatorNode] Evaluating empty tree: false / zero / fold\n");
     assert(null_value == kUndefinedZero);

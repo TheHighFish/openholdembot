@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineMemorySymbols.h"
 
-#include "CParseTreeNode.h"
+#include "CParseTreeTerminalNode.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
@@ -120,7 +120,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     right_hand_value.Replace('_', '.');
     result = atof(right_hand_value);
   } else {
-    result = CParseTreeNode::EvaluateIdentifier(right_hand_value, 
+    result = CParseTreeTerminalNode::EvaluateIdentifier(right_hand_value, 
       preferences.trace_enabled());
   }
   write_log(preferences.debug_memorysymbols(), 
