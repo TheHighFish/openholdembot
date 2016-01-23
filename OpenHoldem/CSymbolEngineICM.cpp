@@ -14,15 +14,12 @@
 /*
 	   Author	:	spud
 	   Date		:	2007-MAR-08
-
 	  Notation: P(i,n)=probability that player i finishes in nth place
 	  P(w|z)=probability that w occurs given that z occurs
 	  I=i's stack
 	  T=SUM[I]
-
 	  P(i,1)=I/T
 	  P(i,n)=SUM(j!=i)[P(j,1)*P(i,n|j,1)]
-
 	  ICM assumes that P(i,n|j,1) = (P(i,n-1) in a game where j has been removed)
 */
 
@@ -38,18 +35,18 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEnginePokerAction.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
-#include "CSymbolEnginePokerAction.h"
 
 CSymbolEngineICM *p_symbol_engine_icm = NULL;
 
 CSymbolEngineICM::CSymbolEngineICM() {
   // The values of some symbol-engines depend on other engines.
-	// As the engines get later called in the order of initialization
-	// we assure correct ordering by checking if they are initialized.
+  // As the engines get later called in the order of initialization
+  // we assure correct ordering by checking if they are initialized.
   assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_blinds != NULL);
   assert(p_symbol_engine_chip_amounts != NULL);
@@ -115,7 +112,7 @@ int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
 	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
 	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
-	int nchairs = p_tablemap->nchairs();
+	int nchairs =               p_tablemap->nchairs();
 	int	chair = -1;
 
 		if (strcmp(name,"SB")==0)
@@ -578,13 +575,13 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 }
 
 CString CSymbolEngineICM::SymbolsProvided() {
-  // RangeOfSymbols(CString format_string, int first, int last);
+  //RangeOfSymbols(CString format_string, int first, int last);
   CString result = "icm icm_fold icm_callwin icm_calllose icm_calltie ";
   // Winning against 0..9 opponents
   result += RangeOfSymbols("icm_alliwin%d", 0, 9);
   // Losing against 1..9 opponents
   result += RangeOfSymbols("icm_allilose%d", 0, 9);
-  // Winning allin against a particular opponent
+  // Wining allin against a particular opponent
   result += "icm_alliwinSB icm_alliwinBB icm_alliwinUTG icm_alliwinUTG1 "
     "icm_alliwinUTG2 icm_alliwinUTG3 icm_alliwinUTG4 icm_alliwinUTG5 "
     "icm_alliwinUTG6 icm_alliwinCO icm_alliwinD "
@@ -593,9 +590,8 @@ CString CSymbolEngineICM::SymbolsProvided() {
     "icm_allitieUTG2 icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 "
     "icm_allitieUTG6 icm_allitieCO icm_allitieD "
     // Losing allin against a particular opponent
-    "icm_allilosSB icm_allilosBB icm_allilosUTG icm_allilosUTG1 "
-    "icm_allilosUTG2 icm_allilosUTG3 icm_allilosUTG4 icm_allilosUTG5 "
-    "icm_allilosUTG6 icm_allilosCO icm_allilosD ";
+    "icm_alliloseSB icm_alliloseBB icm_alliloseUTG icm_alliloseUTG1 "
+    "icm_alliloseUTG2 icm_alliloseUTG3 icm_alliloseUTG4 icm_alliloseUTG5 "
+    "icm_alliloseUTG6 icm_alliloseCO icm_alliloseD ";
   return result;
 }
-
