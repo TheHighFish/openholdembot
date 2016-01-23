@@ -1,13 +1,31 @@
-v9.0.3 2016-01-15
+v9.0.3 2016-01-23
 ==================
 BUG FIXES:
-- 
+- The ICM-symbols for the small-blind could return bad values.
+  This has now been fixed.
+  [Plutus]
 - Syntax highlighting for ICM symbols.
   [Plutus]
+- The special betsize adaption for DDPoker confused min and max at some point.
+  This has now been fixed.
+  Thanks to Fl1 for reporting.
+  [ZeeZooLaa]
 - Validator rule 1800 was based on some incorrect reasoning.
   This has now been fixed.
   Thanks to Ppbcon for reporting.
   [THF}
+- The OpenPPL-symbol AmountToCall had some auto-correction that caused problems in big-blind.
+  This has now been fixed.
+  Thanks to AgEmAniaC for reporting and to Fqfq for helping with the fix.
+  [THF}
+- The OpenPPL-symbol HaveTopNonBoardPairedPair was broken.
+  Thanks to Todamach, Johnny, Poker_Dog and FqFq for helping with the fix.
+  [THF}
+- The OpenPPL-symbol NutFullHouseOrFourOfAKind did consider the various cases
+  of a full-house on board only partially.
+  Thanks to OpenGeek for reporting and to FqFq for helping with the fix.
+  [THF}
+  
 
 v9.0.2 2016-01-05
 ==================
