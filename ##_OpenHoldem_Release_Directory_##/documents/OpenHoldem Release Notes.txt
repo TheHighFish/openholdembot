@@ -3,6 +3,7 @@ v9.0.3 2016-01-23
 BUG FIXES:
 - The ICM-symbols for the small-blind could return bad values.
   This has now been fixed.
+  Thanks to Micro111 for reporting and to Poker_Dog and ZeeZooLaa for helping. 
   [Plutus]
 - Syntax highlighting for ICM symbols.
   [Plutus]
