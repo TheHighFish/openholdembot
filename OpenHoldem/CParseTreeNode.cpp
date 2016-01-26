@@ -80,3 +80,24 @@ bool CParseTreeNode::IsOpenEndedWhenCondition() {
   }
   return false;
 }
+
+// virtual 
+double CParseTreeNode::Evaluate(bool log /* = false */) {
+  return kUndefined;
+}
+
+
+// virtual 
+CString CParseTreeNode::EvaluateToString(bool /* log = false */) {
+  return "";
+}
+
+// virtual 
+bool CParseTreeNode::EvaluatesToBinaryNumber() {
+  return false;
+}
+
+// virtual 
+CString CParseTreeNode::Serialize() {
+  return "";
+}
