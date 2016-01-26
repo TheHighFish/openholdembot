@@ -30,8 +30,8 @@
 #include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeTerminalNode::CParseTreeTerminalNode(int relative_line_number) {
-  _relative_line_number = relative_line_number;
+CParseTreeTerminalNode::CParseTreeTerminalNode(int relative_line_number) : 
+    CParseTreeNode(relative_line_number) {
   _terminal_name   = "";
   _constant_value  = 0.0;
 }

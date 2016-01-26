@@ -748,8 +748,8 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenPPLRaiseByExpression() {
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function) {
   // Backpatching everything after a complete functiuon got parsed
-  TPParseTreeOperatorNode last_open_ended_when_condition = NULL;
-  TPParseTreeOperatorNode current_when_condition = first_when_condition_of_a_function;
+  TPParseTreeNode last_open_ended_when_condition = NULL;
+  TPParseTreeNode current_when_condition = first_when_condition_of_a_function;
   while (current_when_condition != NULL) {
     if (current_when_condition->IsOpenEndedWhenCondition()) {
       // Setting the "Else"-part of the last open-ended when-condition
@@ -769,7 +769,7 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
       // Normal when-condition with action (2nd sibbling).
       // The 3rd sibbling contains the "Else"-part,
       // i.e. next (maybe open-ended) when-condition
-      TPParseTreeOperatorNode right_most_sibbling = current_when_condition->GetRightMostSibbling();
+      TPParseTreeNode right_most_sibbling = current_when_condition->GetRightMostSibbling();
       assert(current_when_condition != right_most_sibbling);
       if ((right_most_sibbling == NULL)
           || !right_most_sibbling->IsAnyKindOfWhenCondition()) {

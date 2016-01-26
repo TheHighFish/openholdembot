@@ -50,8 +50,8 @@ class CParseTreeRotator {
  public:
   void Rotate(CFunction *function);
  protected:
-  void Rotate(TPParseTreeOperatorNode parse_tree_node,
-    TPParseTreeOperatorNode *pointer_to_parent_pointer_for_back_patching);
+  void Rotate(TPParseTreeNode parse_tree_node,
+    TPParseTreeNode *pointer_to_parent_pointer_for_back_patching);
  private:
   bool NeedsLeftRotation(TPParseTreeNode parse_tree_node);
   bool NeedsRightRotation(TPParseTreeNode parse_tree_node);

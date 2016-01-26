@@ -15,6 +15,8 @@
 #include "stdafx.h" 
 #include "CParseTreeNode.h"
 
+#include "TokenizerConstants.h"
+
 CParseTreeNode::CParseTreeNode(int relative_line_number) {
   _relative_line_number = relative_line_number;
   _node_type = kUndefined;
@@ -23,3 +25,58 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
 CParseTreeNode::~CParseTreeNode() {
 }
 
+TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {
+  if (TokenIsTernary(_node_type)) {
+    return _third_sibbling;
+  } else if (TokenIsBinary(_node_type)) {
+    return _second_sibbling;
+  } else if (TokenIsUnary(_node_type)) {
+    return _first_sibbling;
+  } else {
+    // Not an operator
+    return NULL;
+  }
+}
+
+TPParseTreeNode CParseTreeNode::GetLeftMostSibbling() {
+  if (TokenIsUnary(_node_type)
+      || TokenIsBinary(_node_type)
+      || TokenIsTernary(_node_type)) {
+    return _first_sibbling;
+  }
+  // Not an operator
+   return NULL;
+}
+
+void CParseTreeNode::SetRightMostSibbling(TPParseTreeNode sibbling){
+  if (TokenIsTernary(_node_type)) {
+   _third_sibbling = sibbling;
+  } else if (TokenIsBinary(_node_type)) {
+    _second_sibbling = sibbling;
+  } else {
+    // Default: first one is always present
+    _first_sibbling = sibbling;
+  }
+}
+
+void CParseTreeNode::SetLeftMostSibbling(TPParseTreeNode sibbling){
+  _first_sibbling = sibbling;
+}
+
+bool CParseTreeNode::IsAnyKindOfWhenCondition() {
+  return (_node_type == kTokenOperatorConditionalWhen);
+}
+
+bool CParseTreeNode::IsWhenConditionWithAction() {
+  return (IsAnyKindOfWhenCondition() && !IsOpenEndedWhenCondition());
+}
+
+bool CParseTreeNode::IsOpenEndedWhenCondition() {
+  if (!IsAnyKindOfWhenCondition()) return false;
+  if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true; // ?????
+  if ((_second_sibbling != NULL) 
+      && (_second_sibbling->_node_type == kTokenOperatorConditionalWhen)) {
+    return true;
+  }
+  return false;
+}

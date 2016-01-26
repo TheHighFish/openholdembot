@@ -19,7 +19,7 @@ class CParseTreeNode;
 
 typedef CParseTreeNode *TPParseTreeNode;
 
-class CParseTreeNode {
+virtual class CParseTreeNode {
   friend class CParseTreeOperatorNode;
   friend class CParseTreeTerminalNode;
   friend class CFormulaParser;
@@ -35,8 +35,37 @@ class CParseTreeNode {
   // For debugging output
   virtual CString Serialize();
  protected:
+  TPParseTreeNode GetRightMostSibbling();
+  TPParseTreeNode GetLeftMostSibbling();
+  void SetRightMostSibbling(TPParseTreeNode sibbling);
+  void SetLeftMostSibbling(TPParseTreeNode sibbling);
+ protected:
+  bool IsAnyKindOfWhenCondition();
+  bool IsWhenConditionWithAction();
+  bool IsOpenEndedWhenCondition();
+ protected:
   int _node_type;
-  // In case of terminal node (identifier)
+ protected:
+  // Strictly speaking not all nodes meed sibblings.
+  // Operator nodes need them, terminal nodes don't.
+  // However the parse-tree-rotator that cares about priority-ordering
+  // doesn't distinguish the various derived node-types.
+  // ATM we do it the "easy" way.
+  //
+  // Sibblings: pointers to the operands of expressions
+  // First: always present, as long as non-terminal-node
+  TPParseTreeNode _first_sibbling;	
+  // Second: for binary and ternary operators
+  // Holds the 2nd operand for binary expressions
+  // Holds the "then"-part of ternary-expressions
+  // Holds the "then"-part of WHEN-conditions
+  // Holds the continuation to the next when-condition after user-vartiables
+  TPParseTreeNode _second_sibbling;	
+  // Third: for ternary operators only
+  // Holds the "else"-part of ternary-expressions
+  // Holds the next when-condition in when-condition-sequences
+  TPParseTreeNode _third_sibbling;	
+
  private:
   // Line number relative to current function
   double _relative_line_number;

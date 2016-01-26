@@ -31,7 +31,8 @@
 #include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) {
+CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) : 
+    CParseTreeNode(relative_line_number)  {
   _relative_line_number = relative_line_number;
   _first_sibbling  = NULL;
   _second_sibbling = NULL;
@@ -336,44 +337,6 @@ double CParseTreeOperatorNode::EvaluateSibbling(
   return result;
 }
 
-TPParseTreeNode CParseTreeOperatorNode::GetRightMostSibbling() {
-  if (TokenIsTernary(_node_type)) {
-    return _third_sibbling;
-  } else if (TokenIsBinary(_node_type)) {
-    return _second_sibbling;
-  } else if (TokenIsUnary(_node_type)) {
-    return _first_sibbling;
-  } else {
-    // Not an operator
-    return NULL;
-  }
-}
-
-TPParseTreeNode CParseTreeOperatorNode::GetLeftMostSibbling() {
-  if (TokenIsUnary(_node_type)
-      || TokenIsBinary(_node_type)
-      || TokenIsTernary(_node_type)) {
-    return _first_sibbling;
-  }
-  // Not an operator
-   return NULL;
-}
-
-void CParseTreeOperatorNode::SetRightMostSibbling(TPParseTreeNode sibbling){
-  if (TokenIsTernary(_node_type)) {
-   _third_sibbling = sibbling;
-  } else if (TokenIsBinary(_node_type)) {
-    _second_sibbling = sibbling;
-  } else {
-    // Default: first one is always present
-    _first_sibbling = sibbling;
-  }
-}
-
-void CParseTreeOperatorNode::SetLeftMostSibbling(TPParseTreeNode sibbling){
-  _first_sibbling = sibbling;
-}
-
 CString CParseTreeOperatorNode::Serialize() {
   if (TokenIsBracketOpen(_node_type)) {
     return ("(" + _first_sibbling->Serialize() + ")");
@@ -409,24 +372,6 @@ CString CParseTreeOperatorNode::Serialize() {
       _node_type);
     return "";
   }
-}
-
-bool CParseTreeOperatorNode::IsAnyKindOfWhenCondition() {
-  return (_node_type == kTokenOperatorConditionalWhen);
-}
-
-bool CParseTreeOperatorNode::IsWhenConditionWithAction() {
-  return (IsAnyKindOfWhenCondition() && !IsOpenEndedWhenCondition());
-}
-
-bool CParseTreeOperatorNode::IsOpenEndedWhenCondition() {
-  if (!IsAnyKindOfWhenCondition()) return false;
-  if ((_second_sibbling == NULL) && (_third_sibbling == NULL)) return true; // ?????
-  if ((_second_sibbling != NULL) 
-      && (_second_sibbling->_node_type == kTokenOperatorConditionalWhen)) {
-    return true;
-  }
-  return false;
 }
 
 bool CParseTreeOperatorNode::SecondSibblingIsUserVariableToBeSet() {

@@ -46,20 +46,11 @@ class CParseTreeOperatorNode: public CParseTreeNode {
  public:
   double Evaluate(bool log /* = false */);
   CString EvaluateToString(bool log /* = false */);
- public:
-  TPParseTreeNode GetRightMostSibbling();
-  TPParseTreeNode GetLeftMostSibbling();
-  void SetRightMostSibbling(TPParseTreeNode sibbling);
-  void SetLeftMostSibbling(TPParseTreeNode sibbling);
  private:
   double EvaluateUnaryExpression(bool log_symbol);
   double EvaluateBinaryExpression(bool log);
   double EvaluateTernaryExpression(bool log);
   double EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling, bool log);
- private:
-  bool IsAnyKindOfWhenCondition();
-  bool IsWhenConditionWithAction();
-  bool IsOpenEndedWhenCondition();
  private:
   //bool IsBinaryIdentifier();
  private:
@@ -67,20 +58,6 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   void SetUserVariable(CString name); //?????
  protected:
   int _node_type;
- protected:
-  // Sibblings: pointers to the operands of expressions
-  // First: always present, as long as non-terminal-node
-  TPParseTreeNode _first_sibbling;	
-  // Second: for binary and ternary operators
-  // Holds the 2nd operand for binary expressions
-  // Holds the "then"-part of ternary-expressions
-  // Holds the "then"-part of WHEN-conditions
-  // Holds the continuation to the next when-condition after user-vartiables
-  TPParseTreeNode _second_sibbling;	
-  // Third: for ternary operators only
-  // Holds the "else"-part of ternary-expressions
-  // Holds the next when-condition in when-condition-sequences
-  TPParseTreeNode _third_sibbling;	
  private:
   //CString _terminal_name;
   // In case of terminal node (number)
