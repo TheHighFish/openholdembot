@@ -28,6 +28,8 @@
 #include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeIdentifier.h"
+#include "CParseTreeTerminalNodeNumber.h"
 #include "CPreferences.h"
 #include "CValidator.h"
 #include "NumericalFunctions.h"
@@ -377,8 +379,9 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   if ((token_ID == kTokenEndOfFile) 
       || (token_ID == kTokenEndOfFunction)) {
     // Empty function; evaluating to zero
-    TPParseTreeTerminalNode terminal_node = new CParseTreeTerminalNode(_tokenizer.LineRelative());
-    terminal_node->MakeConstant(0); // !!!!!
+    TPParseTreeTerminalNodeNumber terminal_node = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
+    // empty_expression__false__zero__when_others_fold_force
+    terminal_node->MakeConstant(0); 
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Terminal node %i\n", terminal_node);
     return terminal_node;
@@ -490,18 +493,25 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
   // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
-	TPParseTreeTerminalNode terminal_node = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
-		terminal_node->MakeIdentifier(_tokenizer.GetTokenString());
+    TPParseTreeTerminalNodeIdentifier terminal_node_identifer 
+      = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
+		terminal_node_identifer->MakeIdentifier(_tokenizer.GetTokenString());
+    terminal_node = terminal_node_identifer;
 	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
     // Deals with floating points, ints, hex and binary
 		double value = StringToNumber(number);
-		terminal_node->MakeConstant(value);
+    TPParseTreeTerminalNodeNumber terminal_node_number 
+      = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
+		terminal_node_number->MakeConstant(value);
+    terminal_node = terminal_node_number;
 	}	else {
 		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
 	}
+  assert(terminal_node != NULL);
 	write_log(preferences.debug_parser(), 
 		"[FormulaParser] Terminal node %i\n", terminal_node);
 	return terminal_node;
@@ -621,7 +631,8 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
       "   * memory-increment-command (me_inc_flopsseen)\n");
 		return NULL;
 	}
-	TPParseTreeTerminalNode user_variable = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+	TPParseTreeTerminalNodeIdentifier user_variable 
+    = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
 	user_variable->MakeUserVariableDefinition(identifier);
   // Not expecting any Force here
   return user_variable;
@@ -656,7 +667,8 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
     return user_variable;
   } else {
 		// Predefined action, like Check or Fold
-    TPParseTreeTerminalNode fixed_action = new CParseTreeTerminalNode(_tokenizer.LineRelative());
+    TPParseTreeTerminalNodeIdentifier fixed_action 
+      = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
 		fixed_action->MakeAction(token_ID);
     ExpectKeywordForce(token_ID);
     return fixed_action;
@@ -810,3 +822,4 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     p_debug_tab->AddExpression(expression_text, expression);
   }
 }
+

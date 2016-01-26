@@ -20,6 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeIdentifier.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
@@ -327,7 +328,8 @@ double CParseTreeOperatorNode::EvaluateSibbling(
     // When evaluating an empty tree we evaluate a special symbol
     // kEmptyxpression_False_Zero_WhenOthersFoldForce
     // for better readability of the log-file.
-    double null_value = CParseTreeTerminalNode::EvaluateIdentifier(kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
+    double null_value = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
+      kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
 		write_log(preferences.debug_formula(), 
       "[CParseTreeOperatorNode] Evaluating empty tree: false / zero / fold\n");
     assert(null_value == kUndefinedZero);

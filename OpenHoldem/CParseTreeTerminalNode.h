@@ -16,41 +16,12 @@
 
 #include "CParsetreeNode.h"
 
-class CParseTreeTerminalNode: public CParseTreeNode {
+virtual class CParseTreeTerminalNode: public CParseTreeNode {
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
   CParseTreeTerminalNode(int relative_line_number);
   ~CParseTreeTerminalNode();
- public:
-  void MakeConstant(double value);
-  void MakeIdentifier(CString name);
-  void MakeAction(int action_constant);
-  void MakeUserVariableDefinition(CString uservariable);
- public:
-  double Evaluate(bool log = false);
-  CString EvaluateToString(bool log = false);
-  bool EvaluatesToBinaryNumber();
- public:
-  // For debugging output
-  CString Serialize();
- public:
-  // Might be called by CSymbolEngineMemorySymbols
-  // to evaluate right-hand-side expressions
-  static double EvaluateIdentifier(CString name, bool log);
- private:
-  bool IsBinaryIdentifier();
- private:
-  void SetUserVariable(CString name);
- protected:
-  int _node_type;
-  // In case of terminal node (identifier)
- private:
-  CString _terminal_name;
-  // In case of terminal node (number)
-  double _constant_value;
-  // Line number relative to current function
-  double _relative_line_number;
 };
 
 typedef CParseTreeTerminalNode *TPParseTreeTerminalNode;

@@ -201,6 +201,8 @@
     <ClCompile Include="COcclusionCheck.cpp" />
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
@@ -480,6 +482,8 @@
     <ClInclude Include="COcclusionCheck.h" />
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
+    <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
+    <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />

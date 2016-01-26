@@ -65,7 +65,6 @@ virtual class CParseTreeNode {
   // Holds the "else"-part of ternary-expressions
   // Holds the next when-condition in when-condition-sequences
   TPParseTreeNode _third_sibbling;	
-
  private:
   // Line number relative to current function
   double _relative_line_number;
