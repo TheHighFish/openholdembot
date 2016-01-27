@@ -1,3 +1,15 @@
+v9.0.4 2016-01-28
+==================
+BUG FIXES:
+- Name-scraping of changing names was broken as the lazy-scraper was too lazy
+  and stpped scraping once it recognized names for the first time.
+  Thanks to Kiddpoker, Thisv8guyfor and Johnny reporting.
+  [THF]
+- The OpenPPL-library was messed up and contained ukd, buggy code.
+  Thanks to Poker_Dog for reporting.
+  
+
+
 v9.0.3 2016-01-23
 ==================
 BUG FIXES:
