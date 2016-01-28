@@ -609,7 +609,7 @@ bool CScraper::IsCommonAnimation(void) {
 
 void CScraper::ClearAllPlayerNames() {
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
-    p_table_state->Player(i)->name() = "";
+    p_table_state->Player(i)->set_name("");
 	}
 }
 
