@@ -5,7 +5,7 @@ BUG FIXES:
   code-replacements.
   Thanks to Kiddpoker, Thisv8guy and Johnny for reporting.
   [THF]
-- The OpenPPL-library was messed up and contained ukd, buggy code.
+- The OpenPPL-library was messed up and contained old, buggy code.
   Thanks to Poker_Dog for reporting.
 
 
@@ -36,7 +36,7 @@ BUG FIXES:
 - The OpenPPL-symbol NutFullHouseOrFourOfAKind did consider the various cases
   of a full-house on board only partially.
   Thanks to OpenGeek for reporting and to FqFq for helping with the fix.
-  [THF}
+  [THF]
   
 
 v9.0.2 2016-01-05
