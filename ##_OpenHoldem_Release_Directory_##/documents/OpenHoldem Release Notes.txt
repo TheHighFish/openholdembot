@@ -3,11 +3,10 @@ v9.0.4 2016-01-28
 BUG FIXES:
 - Name-scraping of changing names was broken after some semi-automatic
   code-replacements.
-  Thanks to Kiddpoker, Thisv8guyfor and Johnny reporting.
+  Thanks to Kiddpoker, Thisv8guy and Johnny for reporting.
   [THF]
 - The OpenPPL-library was messed up and contained ukd, buggy code.
   Thanks to Poker_Dog for reporting.
-  
 
 
 v9.0.3 2016-01-23

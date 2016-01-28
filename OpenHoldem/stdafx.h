@@ -58,10 +58,12 @@
 // Turn some warnings on, because we consider them helpful
 // http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
 // http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
+// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
+// https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 #pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
 #pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
-#pragma warning(error:4715)   // warning Ce715: not all control paths return a value	c:\documents and settings\administrator\desktop\trunk2\openholdem\cstringmatch.cpp	218
-
+#pragma warning(error:4715)   // warning C4715: not all control paths return a value	
+#pragma warning(error:4555)   // warning C4555: expression has no effect; expected expression with side-effect
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
@@ -91,8 +93,8 @@
 #include <string.h>
 
 // Version
-#define VERSION_NUMBER			9.03
-#define VERSION_TEXT				"9.0.3"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			9.04
+#define VERSION_TEXT				"9.0.4"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
