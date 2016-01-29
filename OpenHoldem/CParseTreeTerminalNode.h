@@ -16,7 +16,7 @@
 
 #include "CParsetreeNode.h"
 
-virtual class CParseTreeTerminalNode: public CParseTreeNode {
+class CParseTreeTerminalNode: public CParseTreeNode {
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:

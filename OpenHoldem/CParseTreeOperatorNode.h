@@ -23,8 +23,6 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   CParseTreeOperatorNode(int relative_line_number);
   ~CParseTreeOperatorNode();
  public:
-  //void MakeConstant(double value);
-  //void MakeIdentifier(CString name);
   void MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling);
   void MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,
     TPParseTreeNode second_sibbling);

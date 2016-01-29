@@ -744,9 +744,6 @@
     <ClCompile Include="mtrand.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
-    <ClCompile Include="CParseTreeOperatorNode.cpp">
-      <Filter>Source Files\Parser</Filter>
-    </ClCompile>
     <ClCompile Include="CParseTreeTerminalNode.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
@@ -754,6 +751,15 @@
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
     <ClCompile Include="CParseTreeTerminalNodeNumber.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CParseTreeOperatorNode.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1604,6 +1610,12 @@
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
     <ClInclude Include="CParseTreeTerminalNodeNumber.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeuserVariable.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CParseTreeTerminalNodeFixedAction.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
   </ItemGroup>

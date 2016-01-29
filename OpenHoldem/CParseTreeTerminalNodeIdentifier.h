@@ -20,16 +20,12 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
-  CParseTreeTerminalNodeIdentifier(int relative_line_number);
+  CParseTreeTerminalNodeIdentifier(int relative_line_number, CString name);
   ~CParseTreeTerminalNodeIdentifier();
  public:
   virtual double Evaluate(bool log = false);
   virtual CString EvaluateToString(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
- public:
-  void MakeIdentifier(CString name);
-  void MakeAction(int action_constant);
-  void MakeUserVariableDefinition(CString uservariable);
  public:
   // For debugging output
   CString Serialize();
@@ -44,7 +40,7 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
  protected:
   int _node_type;
   // In case of terminal node (identifier)
- private:
+ protected:
   CString _terminal_name;
   // Line number relative to current function
   double _relative_line_number; //!!!!!???? double wrong, not only here

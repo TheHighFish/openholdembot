@@ -19,7 +19,7 @@ class CParseTreeNode;
 
 typedef CParseTreeNode *TPParseTreeNode;
 
-virtual class CParseTreeNode {
+class CParseTreeNode {
   friend class CParseTreeOperatorNode;
   friend class CParseTreeTerminalNode;
   friend class CFormulaParser;

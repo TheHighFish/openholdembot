@@ -30,35 +30,16 @@
 #include "StringFunctions.h"
 #include "TokenizerConstants.h"
 
-CParseTreeTerminalNodeIdentifier::CParseTreeTerminalNodeIdentifier(int relative_line_number) : 
+CParseTreeTerminalNodeIdentifier::CParseTreeTerminalNodeIdentifier(
+    int relative_line_number, CString name) : 
     CParseTreeTerminalNode(relative_line_number) {
-  _terminal_name   = "";
-}
-
-CParseTreeTerminalNodeIdentifier::~CParseTreeTerminalNodeIdentifier() {
-}
-
-void CParseTreeTerminalNodeIdentifier::MakeIdentifier(CString name) {
-	_node_type = kTokenIdentifier;
-  assert(name != "");
-	_terminal_name = name;
+  _node_type = kTokenIdentifier;
+  _terminal_name   = name;
   assert(p_parser_symbol_table != NULL);
   p_parser_symbol_table->VerifySymbol(name);
 }
 
-// !!!!! Rename to fixed action
-void CParseTreeTerminalNodeIdentifier::MakeAction(int action_constant) {
-	assert(TokenIsOpenPPLAction(action_constant));
-  CString action_name = TokenString(action_constant);
-  assert(action_name != "");
-  MakeIdentifier(action_name);
-}
-
-void CParseTreeTerminalNodeIdentifier::MakeUserVariableDefinition(CString uservariable) {
-  assert((uservariable.Left(4).MakeLower() == "user")
-    || (uservariable.Left(3) == "me_"));
-	_node_type = kTokenActionUserVariableToBeSet;
-	_terminal_name = uservariable;
+CParseTreeTerminalNodeIdentifier::~CParseTreeTerminalNodeIdentifier() {
 }
 
 double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
@@ -81,19 +62,6 @@ double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
     p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 		return value;
 	}
-	// Actions second, which are also "unary".
-	// We have to encode all possible outcomes in a single floating-point,
-	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
-	// * negative values mean: elementary actions
-  else if (_node_type == kTokenActionUserVariableToBeSet) {
-    // User-variables are a special case of elementary actions
-    // Therefore need to be handled first.
-    SetUserVariable(_terminal_name);
-		return kUndefinedZero;
-  } else if (TokenIsElementaryAction(_node_type)) {
-		return (0 - _node_type);
-  }
 	// This must not happen for a terminal node
 	assert(false);
 	return kUndefined;

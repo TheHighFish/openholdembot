@@ -28,8 +28,10 @@
 #include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeFixedAction.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
 #include "CParseTreeTerminalNodeNumber.h"
+#include "CParseTreeTerminalNodeUserVariable.h"
 #include "CPreferences.h"
 #include "CValidator.h"
 #include "NumericalFunctions.h"
@@ -496,8 +498,9 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
     TPParseTreeTerminalNodeIdentifier terminal_node_identifer 
-      = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
-		terminal_node_identifer->MakeIdentifier(_tokenizer.GetTokenString());
+      = new CParseTreeTerminalNodeIdentifier(
+        _tokenizer.LineRelative(),
+        _tokenizer.GetTokenString());
     terminal_node = terminal_node_identifer;
 	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
@@ -632,8 +635,8 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 		return NULL;
 	}
 	TPParseTreeTerminalNodeIdentifier user_variable 
-    = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
-	user_variable->MakeUserVariableDefinition(identifier);
+    = new CParseTreeTerminalNodeIdentifier(
+      _tokenizer.LineRelative(), identifier);
   // Not expecting any Force here
   return user_variable;
 }
@@ -667,9 +670,9 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
     return user_variable;
   } else {
 		// Predefined action, like Check or Fold
-    TPParseTreeTerminalNodeIdentifier fixed_action 
-      = new CParseTreeTerminalNodeIdentifier(_tokenizer.LineRelative());
-		fixed_action->MakeAction(token_ID);
+    TPParseTreeTerminalNodeFixedAction fixed_action 
+      = new CParseTreeTerminalNodeFixedAction(_tokenizer.LineRelative(),
+        TokenString(token_ID));
     ExpectKeywordForce(token_ID);
     return fixed_action;
 	}
