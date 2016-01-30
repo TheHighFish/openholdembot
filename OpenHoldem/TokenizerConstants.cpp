@@ -197,10 +197,8 @@ bool TokenIsUnary(int token) {
 }
 
 bool TokenIsBinary(int token) {
-  assert(token >=0);
+  assert(token >= 0);
   assert(token < kNumberOfTokens);
-
-
   return kTokenIsBinary[token];
 }
 

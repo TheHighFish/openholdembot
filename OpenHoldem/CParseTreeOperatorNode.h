@@ -54,14 +54,6 @@ class CParseTreeOperatorNode: public CParseTreeNode {
  private:
   bool SecondSibblingIsUserVariableToBeSet();
   void SetUserVariable(CString name); //?????
- protected:
-  int _node_type;
- private:
-  //CString _terminal_name;
-  // In case of terminal node (number)
-  //double _constant_value;
-  // Line number relative to current function
-  //double _relative_line_number;
 };
 
 typedef CParseTreeOperatorNode *TPParseTreeOperatorNode;

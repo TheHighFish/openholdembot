@@ -22,6 +22,10 @@ typedef CParseTreeNode *TPParseTreeNode;
 class CParseTreeNode {
   friend class CParseTreeOperatorNode;
   friend class CParseTreeTerminalNode;
+  friend class CParseTreeTerminalNodeFixedAction;
+  friend class CParseTreeTerminalNodeIdentifier;
+  friend class CParseTreeTerminalNodeNumber;
+  friend class CParseTreeTerminalNodeUserVariable;
   friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
@@ -67,7 +71,7 @@ class CParseTreeNode {
   TPParseTreeNode _third_sibbling;	
  private:
   // Line number relative to current function
-  double _relative_line_number;
+  int _relative_line_number;
 };
 
 #endif INC_CPARSETREENODE_H

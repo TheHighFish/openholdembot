@@ -38,12 +38,8 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
  private:
   void SetUserVariable(CString name);
  protected:
-  int _node_type;
-  // In case of terminal node (identifier)
- protected:
   CString _terminal_name;
   // Line number relative to current function
-  double _relative_line_number; //!!!!!???? double wrong, not only here
 };
 
 typedef CParseTreeTerminalNodeIdentifier *TPParseTreeTerminalNodeIdentifier;

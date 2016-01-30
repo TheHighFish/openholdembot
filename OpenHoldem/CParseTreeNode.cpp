@@ -89,7 +89,6 @@ double CParseTreeNode::Evaluate(bool log /* = false */) {
   return kUndefined;
 }
 
-
 // virtual 
 CString CParseTreeNode::EvaluateToString(bool /* log = false */) {
   return "";

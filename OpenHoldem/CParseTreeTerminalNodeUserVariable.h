@@ -28,9 +28,6 @@ class CParseTreeTerminalNodeUserVariable: public CParseTreeTerminalNodeIdentifie
  public:
   // For debugging output
   CString Serialize();
- protected:
-  int _node_type; //!!!! not here
-  int _relative_line_number; //!!!!
 };
 
 typedef CParseTreeTerminalNodeUserVariable *TPParseTreeTerminalNodeUserVariable;

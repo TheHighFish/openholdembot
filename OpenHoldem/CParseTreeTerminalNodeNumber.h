@@ -33,14 +33,9 @@ class CParseTreeTerminalNodeNumber: public CParseTreeTerminalNode {
   CString Serialize();
  private:
   void SetUserVariable(CString name);
- protected:
-  int _node_type;
-  // In case of terminal node (identifier)
  private:
   // In case of terminal node (number)
   double _constant_value;
-  // Line number relative to current function
-  double _relative_line_number;
 };
 
 typedef CParseTreeTerminalNodeNumber *TPParseTreeTerminalNodeNumber;
