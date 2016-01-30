@@ -20,6 +20,9 @@
 CParseTreeNode::CParseTreeNode(int relative_line_number) {
   _relative_line_number = relative_line_number;
   _node_type = kUndefined;
+  _first_sibbling  = NULL;
+  _second_sibbling = NULL;
+  _third_sibbling  = NULL;
 }
 
 CParseTreeNode::~CParseTreeNode() {

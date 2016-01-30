@@ -34,10 +34,6 @@
 
 CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) : 
     CParseTreeNode(relative_line_number)  {
-  _relative_line_number = relative_line_number;
-  _first_sibbling  = NULL;
-  _second_sibbling = NULL;
-  _third_sibbling  = NULL;
 }
 
 CParseTreeOperatorNode::~CParseTreeOperatorNode() {
