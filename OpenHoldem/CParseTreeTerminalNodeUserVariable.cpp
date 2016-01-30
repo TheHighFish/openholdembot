@@ -31,9 +31,9 @@
 #include "TokenizerConstants.h"
 
 CParseTreeTerminalNodeUserVariable::CParseTreeTerminalNodeUserVariable(
-    int relative_line_number, CString name) : 
-    CParseTreeTerminalNodeIdentifier(relative_line_number, 
-      name) {
+  int relative_line_number, CString name) : 
+  CParseTreeTerminalNodeIdentifier(relative_line_number, 
+    name) {
 }
 
 CParseTreeTerminalNodeUserVariable::~CParseTreeTerminalNodeUserVariable() {

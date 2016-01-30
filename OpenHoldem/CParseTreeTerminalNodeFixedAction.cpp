@@ -31,9 +31,9 @@
 #include "TokenizerConstants.h"
 
 CParseTreeTerminalNodeFixedAction::CParseTreeTerminalNodeFixedAction(
-    int relative_line_number, CString name) : 
-    CParseTreeTerminalNodeIdentifier(relative_line_number, 
-      name) {
+  int relative_line_number, CString name) : 
+  CParseTreeTerminalNodeIdentifier(relative_line_number, 
+    name) {
 }
 
 CParseTreeTerminalNodeFixedAction::~CParseTreeTerminalNodeFixedAction() {

@@ -33,6 +33,7 @@
 CParseTreeTerminalNodeNumber::CParseTreeTerminalNodeNumber(int relative_line_number) : 
     CParseTreeTerminalNode(relative_line_number) {
   _constant_value  = 0.0;
+  _node_type = kTokenNumber;
 }
 
 CParseTreeTerminalNodeNumber::~CParseTreeTerminalNodeNumber() {
