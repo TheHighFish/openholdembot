@@ -182,7 +182,6 @@ double CParseTreeOperatorNode::EvaluateUnaryExpression(bool log_symbol) {
   assert(_first_sibbling  != NULL);
   assert(_second_sibbling == NULL);
   assert(_third_sibbling  == NULL);
-  assert(_terminal_name == "");
   double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log_symbol);
     switch (_node_type) {
     case kTokenOperatorUnaryMinus:     return (0 - value_of_first_sibbling);
@@ -203,7 +202,6 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
   assert(_first_sibbling  != NULL);
   assert(_second_sibbling != NULL);
   assert(_third_sibbling  == NULL);
-  assert(_terminal_name == "");
 	double value_of_first_sibbling  = EvaluateSibbling(_first_sibbling, log);
 	double value_of_second_sibbling = 0.0;
 	// Short circuiting
@@ -300,7 +298,6 @@ double CParseTreeOperatorNode::EvaluateTernaryExpression(bool log) {
   // Both second and thirs sibbling can be zero in case of an OEWC.
   // So no assertion here.
   // We handle this case gracefully in EvaluateSibbling().
-  assert(_terminal_name == "");
 	assert((_node_type == kTokenOperatorConditionalIf)
 		  || (_node_type == kTokenOperatorConditionalWhen));
 	double value_of_first_sibbling = EvaluateSibbling(_first_sibbling, log);
