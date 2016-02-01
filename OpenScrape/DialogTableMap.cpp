@@ -1470,15 +1470,11 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CDlgTableMap::OnBnClickedNew()
-{
+void CDlgTableMap::OnBnClickedNew() {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-
-	CString	sel_text, type_text;
+  CString	sel_text, type_text;
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
-
-	if (type_text == "Sizes")
-	{
+  if (type_text == "Sizes") {
 		// Prep dialog
 		CDlgEditSizes dlgsizes;
 		dlgsizes.titletext = "New Size record";
@@ -1488,41 +1484,31 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsizes.strings.RemoveAll();
 
 		ZMap::const_iterator z_iter;
-		for (int i=0; i<num_z$strings; i++)
-		{
+		for (int i=0; i<num_z$strings; i++) {
 			bool used_string = false;
-
-			for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
-				if (z_iter->second.name == z$strings[i])  
+      for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++) {
+				if (z_iter->second.name == z$strings[i]) { 
 					used_string=true;
-
-			if (!used_string)
+        }
+      }
+			if (!used_string) {
 				dlgsizes.strings.Add(z$strings[i]);
+      }
 		}
-
 		// Show dialog if there are any strings left to add
-		if (dlgsizes.strings.GetSize() == 0)
-		{
+		if (dlgsizes.strings.GetSize() == 0) {
 			MessageBox("All Size records are already present.");
-		}
-		else
-		{
-			if (dlgsizes.DoModal()==IDOK && dlgsizes.name!="")
-			{
-
+		}	else {
+			if (dlgsizes.DoModal()==IDOK && dlgsizes.name!="") {
 				// Add new record to internal structure
 				STablemapSize new_size;
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
-
-				// Insert the new record in the existing array of z$ records
-				if (!p_tablemap->z$_insert(new_size))
-				{
+        // Insert the new record in the existing array of z$ records
+				if (!p_tablemap->z$_insert(new_size))	{
 					MessageBox("Failed to create size record.", "Size creation error", MB_OK);
-				}
-				else
-				{
+				}	else {
 					// Add new record to tree
 					HTREEITEM new_hti = m_TableMapTree.InsertItem(dlgsizes.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
@@ -1533,10 +1519,7 @@ void CDlgTableMap::OnBnClickedNew()
 				}
 			}
 		}
-	}
-	
-	else if (type_text == "Symbols")
-	{
+	}	else if (type_text == "Symbols") {
 		// Prep dialog
 		CDlgEditSymbols dlgsymbols;
 		dlgsymbols.titletext = "New Symbol record";
@@ -1548,18 +1531,17 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsymbols.strings.RemoveAll();
 
 		SMap::const_iterator s_iter;
-		for (int i=0; i<num_s$strings; i++)
-		{
+		for (int i=0; i<num_s$strings; i++)	{
 			bool used_string = false;
-
-			for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++)
-				if (s$strings[i] == NULL || s_iter->second.name == s$strings[i])
+      for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++) {
+        if (s$strings[i] == NULL || s_iter->second.name == s$strings[i]) {
 					used_string=true;
-
-			if (!used_string)
+        }
+      }
+      if (!used_string) {
 				dlgsymbols.strings.Add(s$strings[i]);
+      }
 		}
-
 		// Show dialog if there are any strings left to add
 		if (dlgsymbols.strings.GetSize() == 0)
 		{
@@ -1592,23 +1574,25 @@ void CDlgTableMap::OnBnClickedNew()
 			}
 		}
 	}
-	
-	else if (type_text == "Regions")
-	{
+	else if (type_text == "Regions") {
 		// Prep dialog
 		CDlgEditRegion dlgregions;
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
     assert(r$strings[num_r$strings - 1] != NULL);
-		for (int i=0; i<num_r$strings; i++)
-		{
+		for (int i=0; i<num_r$strings; i++) {
+      // Ignore empty strings
+      // Sometimes num_r$strings is not up to date.
+      if (r$strings[i] == NULL) continue;
 			bool used_string = false;
 			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
         CString tablemap_string = r_iter->second.name;
         char *allowed_string = r$strings[i];
         assert(tablemap_string != "");
         assert(allowed_string != NULL);
+        if (tablemap_string == "") continue;
+        if (allowed_string == NULL) continue;
 				if (tablemap_string == allowed_string) {  
 					used_string = true;
           break;
@@ -1778,10 +1762,10 @@ void CDlgTableMap::OnBnClickedDelete()
 			item_deleted = true;
 	}
 	
-	else if (type_text == "Regions")
-	{
-		if (p_tablemap->r$_erase(sel_text))
-			item_deleted = true;
+	else if (type_text == "Regions") {
+		if (p_tablemap->r$_erase(sel_text)) {
+      item_deleted = true;
+    }
 	}
 	
 	else if (type_text == "Fonts")

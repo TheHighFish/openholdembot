@@ -38,7 +38,7 @@ char * const s$strings[num_s$strings] =
     "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby",
     "use_comma_instead_of_dot"};
 
-int	const num_r$strings = 400;
+int	const num_r$strings = 398;
 
 char * const r$strings[num_r$strings] =
 	{	"c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
