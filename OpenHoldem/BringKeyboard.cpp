@@ -33,12 +33,12 @@ void CheckBringKeyboard(void) {
 	int				e = SUCCESS;
 
 	if (!p_symbol_engine_casino->ConnectedToBring()) 	{
-		write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
+		 write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Not connected to bring, therefore no bring-keyboard to be enabled.\n");
 		return;
 	}
 
-	write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Connected to bring.\n");
-	write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
+	 write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Connected to bring.\n");
+	 write_log(preferences.debug_autoplayer(), "[BringKeyBoard] Enabling bring-keyboard if necessary.\n");
 
 	// Init locals
 	memset(&mii, 0, sizeof(MENUITEMINFO));
@@ -50,7 +50,7 @@ void CheckBringKeyboard(void) {
 	mii.fMask = MIIM_STRING;
 	mii.fType = MFT_STRING;
 	mii.dwTypeData = temp;
-	keybd_item_pos = -1;
+	keybd_item_pos = kUndefined;
 	for (int i=GetMenuItemCount(bringsysmenu)-1; i>=0; --i)	{
 		mii.cch = 256;
 	

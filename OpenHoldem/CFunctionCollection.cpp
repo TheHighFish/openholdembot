@@ -38,7 +38,7 @@ CFunctionCollection::~CFunctionCollection() {
 }
 
 void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
   if (!_openPPL_library_correctly_loaded) {
     open_ppl = true;
@@ -52,7 +52,7 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
       needs_deletion = true;
     }
     if (needs_deletion) {
-      write_log(preferences.debug_formula(), 
+       write_log(preferences.debug_formula(), 
         "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
       Delete(p_nextObject->name());
     }
@@ -115,23 +115,23 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
   CString name = new_function->name();
   if (name == "") {
-    write_log(preferences.debug_formula(), 
+     write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Invalid empty name\n");
     return;
   }
   if (Exists(name)) {
-    write_log(preferences.debug_formula(), 
+     write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     _function_map.erase(name);
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
-    write_log(preferences.debug_formula(), 
+     write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Ignoring bad function %s\n", name);
     return;
   }
 
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
 }
@@ -181,12 +181,12 @@ CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_n
 
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
   CSLock lock(m_critsec);
-  write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
+   write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name); 
   if (it == _function_map.end()) {
     // Function or list does not exist
-    write_log(preferences.debug_formula(), "[CFunctionCollection] Function does not exist\n");
+     write_log(preferences.debug_formula(), "[CFunctionCollection] Function does not exist\n");
     return NULL;
   }
   return it->second;
@@ -228,7 +228,7 @@ CString CFunctionCollection::DLLPath() {
 }
 
 void CFunctionCollection::SetEmptyDefaultBot() {
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] SetEmptyDefaultBot()\n");
   CSLock lock(m_critsec);
   DeleteAll(false, true);
@@ -245,7 +245,7 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 }
 
 void CFunctionCollection::ExecuteSelftest() {
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] Executing self-test\n");
   CString name = kSelftestName;
   CString function_text = kSelftestFunction;
@@ -258,7 +258,7 @@ void CFunctionCollection::ExecuteSelftest() {
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] CheckForDefaultFormulaEntries(\n");
   CSLock lock(m_critsec);
   // Header comment
@@ -301,7 +301,7 @@ void CFunctionCollection::SetAutoplayerFunctionValue(int function_code, double v
 
 void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString &function_name) {
   if (Exists(function_name)) {
-    write_log(preferences.debug_formula(), 
+     write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Function already exists : %s\n", function_name);
 	  return;
   }
@@ -378,7 +378,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     // The editor does somehow not work for completely empty formulas.
     function_text = " "; 
   }
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Adding default function: %s\n", function_name);
   CFunction *p_function = new CFunction(&function_name, 
     &function_text, kNoAbsoluteLineNumberExists); 
@@ -505,7 +505,7 @@ void CFunctionCollection::Delete(CString name) {
     std::map<CString, COHScriptObject*>::iterator it; 
     it = _function_map.find(name);
     if (it != _function_map.end()) {
-      write_log(preferences.debug_formula(), 
+       write_log(preferences.debug_formula(), 
         "[CFunctionCollection] Deleting %s\n", name);
       _function_map.erase(it);
     }
@@ -523,7 +523,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     function = new CFunction(my_name, my_text, kUndefinedZero);
     Add(function);
   } else {
-    write_log(preferences.debug_formula(), 
+     write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Setting function text for %s\n", name);
     function->SetText(content);
   }
@@ -534,7 +534,7 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
-  write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   CheckForDefaultFormulaEntries();
@@ -598,7 +598,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
       // Function does not exist
       *result = kUndefinedZero;
       if (log) {
-        write_log(preferences.debug_auto_trace(),
+         write_log(preferences.debug_auto_trace(),
           "[CFunctionCollection] %s -> 0.000 [does not exist]\n", name);
         p_autoplayer_trace->Add(name, *result);
       }

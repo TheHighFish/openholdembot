@@ -284,7 +284,7 @@ void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) {
   }
 }
 
-void write_log(bool debug_settings_for_this_message, char* fmt, ...) {
+void  write_log(bool debug_settings_for_this_message, char* fmt, ...) {
   char		buff[10000];
   va_list		ap;
   char		nowtime[26];

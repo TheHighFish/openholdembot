@@ -52,7 +52,7 @@ void CHandHistoryWriter::ResetOnConnection() {
 }
 
 void CHandHistoryWriter::ResetOnHandreset() {
-  //write_log(true, "######## Test ################\n");
+  // write_log(true, "######## Test ################\n");
   WriteHistory();
 }
 
@@ -110,7 +110,7 @@ void CHandHistoryWriter::WriteHistory() {
   return;
   write_log_separator(true, "Summary (might be not accurate)");
   for (int i=0; i<_lines_collected; ++i) {
-    write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); 
+     write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); 
   }
   write_log_separator(true, "");
   _lines_collected = 0;

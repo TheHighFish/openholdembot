@@ -70,7 +70,7 @@ bool CAutoplayerTrace::SymbolNeedsToBeLogged(CString name) {
 
 int CAutoplayerTrace::Add(CString symbol) {
   ENT
-  write_log(preferences.debug_auto_trace(),
+   write_log(preferences.debug_auto_trace(),
     "[CAutoplayerTrace] Add (%s, ...)\n", symbol);
   // This function for symbols without value is for functions only.
   // These functions are eitherpredefined (f$), userdefined (f$)
@@ -91,7 +91,7 @@ int CAutoplayerTrace::Add(CString symbol) {
 
 void CAutoplayerTrace::Add(CString symbol, double value) {
   ENT
-  write_log(preferences.debug_auto_trace(),
+   write_log(preferences.debug_auto_trace(),
     "[CAutoplayerTrace] Add (%s, %.3f)\n",
     symbol, value);
   if (!SymbolNeedsToBeLogged(symbol)) return;
@@ -237,24 +237,24 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
   write_log_separator(true, "Basic Info");
-  write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
-  write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
-  write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
-  write_log(k_always_log_basic_information, "  Holecards:     %s\n",    pcards.GetString());
-  write_log(k_always_log_basic_information, "  Community:     %s\n",    comcards.GetString());
-  write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
-  write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
-  write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->balance());
-  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_table_state->User()->bet()); 
-  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
-  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
-  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
-  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
-  write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
-  write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
-  write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
-  write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
-  write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
+   write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
+   write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
+   write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
+   write_log(k_always_log_basic_information, "  Holecards:     %s\n",    pcards.GetString());
+   write_log(k_always_log_basic_information, "  Community:     %s\n",    comcards.GetString());
+   write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
+   write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
+   write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->balance());
+   write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_table_state->User()->bet()); 
+   write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
+   write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
+   write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
+   write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
+   write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
+   write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
+   write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
+   write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
+   write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
   write_log_separator(true, "");
   // Also show "BestAction" in the statusbar.
   // This needs to be set exactly once to avoid multiple evaluations 
@@ -264,7 +264,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
 
 void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {
   write_log_separator(true, "Secondary Action");
-  write_log(k_always_log_basic_information, "  Action taken:  %s\n", action_taken);
+   write_log(k_always_log_basic_information, "  Action taken:  %s\n", action_taken);
   write_log_separator(true, "");
 }
 

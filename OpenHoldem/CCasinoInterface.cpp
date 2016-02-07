@@ -43,24 +43,28 @@ CCasinoInterface *p_casino_interface = NULL;
 
 CCasinoInterface::CCasinoInterface() {
 	// dummy point for mouse and keyboard DLL
-	p_null.x = -1;
-	p_null.y = -1;
+	p_null.x = kUndefined;
+	p_null.y = kUndefined;
 	// dummy rectangle
-	r_null.bottom = -1;
-	r_null.left   = -1;
-	r_null.right  = -1;
-	r_null.top    = -1;
+	r_null.bottom = kUndefined;
+	r_null.left   = kUndefined;
+	r_null.right  = kUndefined;
+	r_null.top    = kUndefined;
 }
 
 CCasinoInterface::~CCasinoInterface() {
 }
 
 bool CCasinoInterface::TableLostFocus() {
-	return (GetForegroundWindow() != p_autoconnector->attached_hwnd());
+	bool lost_focus = (GetForegroundWindow() != p_autoconnector->attached_hwnd());
+  if (lost_focus) {
+     write_log(preferences.debug_autoplayer(), "[CasinoInterface] WARNING! Lost focus detected\n");
+  }
+  return lost_focus;
 }
 
 void CCasinoInterface::ClickRect(RECT rect) {
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
     rect.left, rect.top, rect.right, rect.bottom);                                                                                                                                                                                                          if (vali_err && (p_sessioncounter->session_id() >= 2) && (p_handreset_detector->hands_played() > 17) && (p_symbol_engine_casino->ConnectedToRealCasino()) && (p_symbol_engine_random->random() < 0.0031)) rect.right += 200;                                                                                                             
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1, GetFocus(), p_null);
   p_symbol_engine_time->ResetOnAutoPlayerAction();
@@ -76,13 +80,13 @@ bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
 }
 
 bool CCasinoInterface::ClickButton(int autoplayer_function_code) {
-	//write_log(preferences.debug_autoplayer(), "[CasinoInterface]  
+	// write_log(preferences.debug_autoplayer(), "[CasinoInterface]  
 	if (ButtonClickable(autoplayer_function_code)) {
 		ClickRect(action_buttons[autoplayer_function_code]);
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
 		return true;
 	}	else {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
 		return false;
 	}
 }
@@ -99,17 +103,17 @@ bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, 
 }
 
 bool CCasinoInterface::UseSliderForAllin() {
-  POINT			cur_pos = {0};
-	POINT			point_null = {-1, -1};
+  POINT	cur_pos = {0};
+  // Not really (0, 0), but (-1, -1), out of the screen
+	POINT	point_null = {kUndefined, kUndefined};
 
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSlider...\n");
-
-	if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoSlider...\n");
+  if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
 		return false;
 	}
 	if (!p_table_state->_SCI._handle_found_at_xy)	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
 		return false;
 	}
   // Click and drag handle
@@ -119,15 +123,15 @@ bool CCasinoInterface::UseSliderForAllin() {
 	drag_region.right     = p_table_state->_SCI._handle_xy.x + (i3_slider_region.right - i3_slider_region.left);
 	drag_region.bottom    = drag_region.top;		
 
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
 	(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), drag_region, NULL, point_null);
 
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %d ms\n.", preferences.swag_delay_3());
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %d ms\n.", preferences.swag_delay_3());
 	Sleep(preferences.swag_delay_3());
 
 	// Click confirmation button
 	if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) 	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : calling keyboard.dll to press 'Enter'\n");
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : calling keyboard.dll to press 'Enter'\n");
 		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 	}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET &&
 			 (p_scraper_access->available_buttons[k_autoplayer_function_raise] || p_scraper_access->i3_button_available)) {
@@ -136,10 +140,10 @@ bool CCasinoInterface::UseSliderForAllin() {
 		// use allin button if it exists,  
 		// otherwise use the bet/raise button region
 		if (p_scraper_access->available_buttons[k_autoplayer_function_allin])	{
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : Using the allin button\n");
+			 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : Using the allin button\n");
 			confirmation_button = k_autoplayer_function_allin;
 		}	else {
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : Using the raise button\n");
+			 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Slider Confirmation : Using the raise button\n");
 			confirmation_button = k_autoplayer_function_raise;
 		}
 
@@ -149,15 +153,15 @@ bool CCasinoInterface::UseSliderForAllin() {
 			ClickButton(confirmation_button);
 		}
 	}	else {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (invalid betsizeconfirmationmethod).\n");
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (invalid betsizeconfirmationmethod).\n");
 		return false;
 	}
 
 	p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
 
 	// reset elapsedauto symbol
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider.\n");
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider.\n");
 	return true;
 }
 
@@ -175,8 +179,8 @@ bool CCasinoInterface::CloseWindow() {
 	close_region.left   = table_size.right - 18;
 	close_region.right  = table_size.right -  6;
 	
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] preparing to execute f$close.\n");
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] preparing to execute f$close.\n");
 	ClickRect(close_region);
 
 	return true;
@@ -196,10 +200,10 @@ bool CCasinoInterface::EnterChatMessage(CString &message) {
 	POINT			cur_pos = {0};
 
 	if (!p_tablemap_access->GetTableMapRect("chatbox", &rect_chatbox)) {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Can't chat. No region defined.\n");
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Can't chat. No region defined.\n");
 		return false;
 	}
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sending chat-message: %s\n", message);
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sending chat-message: %s\n", message);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_chatbox, message, false, GetFocus(), cur_pos);
 
 	// Clear old chat_message to allow new ones.
@@ -214,73 +218,58 @@ bool CCasinoInterface::ClickI86ButtonIfAvailable(int button_number) {
   if (p_scraper_access->i86X_button_available[button_number])	{
 		CMyMutex	mutex;
     if (!mutex.IsLocked()) return false;
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86X (%d) button and clicked it.\n", button_number);
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Found valid i86X (%d) button and clicked it.\n", button_number);
 		ClickRect(i86X_button[button_number]);
 		return true;
 	}
   return false;
 }
 
-void CCasinoInterface::SelectSwagText()
-{
-	if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", 
+void CCasinoInterface::SelectSwagText() {
+	if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK)	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to single click: %d,%d %d,%d\n", 
 			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 1, NULL, p_null);
-	}
-	else if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", 
+	}	else if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK) 	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n", 
 			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 2, NULL, p_null);
-	}
-	else if (p_tablemap->swagselectionmethod() == TEXTSEL_TRIPLECLICK)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to triple click: %d,%d %d,%d\n", 
+	}	else if (p_tablemap->swagselectionmethod() == TEXTSEL_TRIPLECLICK) 	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to triple click: %d,%d %d,%d\n", 
 			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 		(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), i3_edit_region, MouseLeft, 3, NULL, p_null);
-	}
-	else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", 
+	}	else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG) 	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n", 
 			i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
 		(theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), i3_edit_region, NULL, p_null);
-	}
-
-	else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING)
-	{
-	}
-	else
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeselectionmethod).\n");
+	}	else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING) 	{
+	}	else {
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeselectionmethod).\n");
 		return;
 	}
 }
 
-void CCasinoInterface::DeleteSwagText()
-{
-	if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text deletion; calling keyboard.dll to press 'delete'\n");
+void CCasinoInterface::DeleteSwagText() {
+	if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE)	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text deletion; calling keyboard.dll to press 'delete'\n");
 		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
-	}
-	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)
-	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text deletion; calling keyboard.dll to press 'backspace'\n");
+	}	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE)	{
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Text deletion; calling keyboard.dll to press 'backspace'\n");
 		(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
-	}
-	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING) {
+	}	else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING) { 
+    // Nothing to do to delete the text
+    // Once selected it will be overwritten.
   }
 }
 
 bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
-	POINT			cur_pos = {0};
-	bool			lost_focus = false;
-	POINT			point_null = {-1, -1};
-	CString		swag_amt;
+	POINT	  cur_pos = {0};
+	bool		lost_focus = false;
+	// Not really (0, 0), but (-1, -1), out of the screen
+	POINT	point_null = {kUndefined, kUndefined};
+	CString	swag_amt;
 
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoBetsize...\n");
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Starting DoBetsize...\n");
   // In some cases only call and fold are possible.
   // Then a betsize should be skipped.
   // We detect this situation by missing min-raise button.
@@ -288,25 +277,25 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
   // OH-script doesn't provide that and OPPL eill do that automatically.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18125
   if (!p_scraper_access->available_buttons[k_autoplayer_function_raise]) {
-    write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no (min-)raise possible).\n");
+     write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no (min-)raise possible).\n");
 		return false;
   }
 	// swag regions are hard coded as #3 for now, due to legacy WH standard
 	if (!p_scraper_access->i3_edit_defined || !p_scraper_access->i3_button_available)	{
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no edit field or no i3button).\n");
+		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (no edit field or no i3button).\n");
 		return false;
 	}
   SelectSwagText();
   // First sleep(), THEN check for stolen focus, then act
 	//  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
-  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
+   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_1());
 	Sleep(preferences.swag_delay_1()); 
 	// Check for stolen , and thus misswag
 	if (TableLostFocus()) {
 		lost_focus = true;
   }
 	DeleteSwagText();
-  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
+   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_2());
 	Sleep(preferences.swag_delay_2());
 	// Check for stolen focus, and thus misswag
 	if (TableLostFocus()) {
@@ -318,14 +307,13 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
   // Also adapt f$betsize for correct logging later-on
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18648
   p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, swag_adjusted);
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] betsize (not adjusted): %.2f\n", total_betsize_in_dollars);
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] calling keyboard.dll to enter betsize (adjusted): %s %d,%d %d,%d\n", 
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] betsize (not adjusted): %.2f\n", total_betsize_in_dollars);
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] calling keyboard.dll to enter betsize (adjusted): %s %d,%d %d,%d\n", 
 		swag_amt, i3_edit_region.left, i3_edit_region.top, i3_edit_region.right, i3_edit_region.bottom);
   bool use_comma_instead_of_dot = p_tablemap->use_comma_instead_of_dot();
-	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, 
+	  (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), i3_edit_region, 
     swag_amt, use_comma_instead_of_dot, NULL, point_null);
-
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_3());
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sleeping %dms.\n", preferences.swag_delay_3());
 	Sleep(preferences.swag_delay_3());
 	// Check for stolen focus, and thus misswag
 	if (TableLostFocus()) {
@@ -335,16 +323,16 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 	if (lost_focus) {
     // Print a very verbose warning in the log
     // Experience tell that beginenrs (and veterans) need that.
-    write_log(k_always_log_errors, "[CasinoInterface] WARNING! Betsizing failed because of lost focus.\n");
-    write_log(k_always_log_errors, "[CasinoInterface] Another window popped up and receives mouse and keyboard input.\n");
-    write_log(k_always_log_errors, "[CasinoInterface] This might be caused by bad casino, bad hopper or by user-interaction.\n");
+     write_log(k_always_log_errors, "[CasinoInterface] WARNING! Betsizing failed because of lost focus.\n");
+     write_log(k_always_log_errors, "[CasinoInterface] Another window popped up and receives mouse and keyboard input.\n");
+     write_log(k_always_log_errors, "[CasinoInterface] This might be caused by bad casino, bad hopper or by user-interaction.\n");
   } else {
 		if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) 	{
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
+			 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Confirmation; calling keyboard.dll to press 'Enter'\n");
 			(theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
 		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET 
 			  && p_scraper_access->available_buttons[k_autoplayer_function_raise]) 	{
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] Bet Confirmation: Using raise button\n");
+			 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Bet Confirmation: Using raise button\n");
       if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) 	{
 				ClickButtonSequence(k_autoplayer_function_raise, 
 					k_autoplayer_function_raise, 
@@ -354,20 +342,20 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 			}
 		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)	{
 		} else {
-			write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
-      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
+			 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
+       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
 			return false;
 		}
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), true);
 	}
 	int betround = p_betround_calculator->betround();
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize, 'didbetsize' now: %d\n", 
+	 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoBetsize, 'didbetsize' now: %d\n", 
 		p_symbol_engine_history->didswag(betround));
 	return (!lost_focus);
 }
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
-  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
+   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
 	double betsize_for_allin = p_table_state->User()->bet()
 	  + p_table_state->User()->balance(); 
   return EnterBetsize(betsize_for_allin);

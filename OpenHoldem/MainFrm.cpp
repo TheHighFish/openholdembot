@@ -289,26 +289,26 @@ void CMainFrame::OnEditViewLog()
 }
 
 void CMainFrame::OnEditTagLog() {
-	write_log(k_always_log_basic_information,
+	 write_log(k_always_log_basic_information,
 		"[*** ATTENTION ***] User tagged this situation for review\n");
 }
 
 // Menu -> Edit -> View Scraper Output
 void CMainFrame::OnScraperOutput() {
 	if (m_ScraperOutputDlg) {
-		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
-		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
+		 write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
+		 write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
 		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
+		 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
     CDlgScraperOutput::DestroyWindowSafely();
 		if (bWasShown) {
-			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
+			 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
 		}
 	}	else {
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
+		 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 	
 	OH_MessageBox_Interactive("Please note:\n"
@@ -320,15 +320,15 @@ void CMainFrame::OnScraperOutput() {
 	  "This is a feature, not a bug.\n",
 	  "Info", 0);
 
-	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
+	 write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
 	m_ScraperOutputDlg = new CDlgScraperOutput(this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
+	 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
 	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
+	 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
 	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
+	 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
+	 write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
 void CMainFrame::OnViewShootreplayframe() {

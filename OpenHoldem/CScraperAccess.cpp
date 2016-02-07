@@ -315,7 +315,7 @@ int CScraperAccess::NumberOfVisibleButtons()
 		+ (available_buttons[k_autoplayer_function_call]  ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_check] ? 1 : 0)
 		+ (available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
-	write_log(preferences.debug_scraper(), "[CScraperAccess] NumberOfVisibleButtons() found %d buttons\n",
+	 write_log(preferences.debug_scraper(), "[CScraperAccess] NumberOfVisibleButtons() found %d buttons\n",
 		number_of_visible_buttons);
 	return number_of_visible_buttons;
 }

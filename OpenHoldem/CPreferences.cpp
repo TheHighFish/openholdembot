@@ -274,7 +274,7 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, CString *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = value;
-	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",
 		registry_key, registry_value);
 }
 
@@ -284,7 +284,7 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = atof(value);
-	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",
 		registry_key, Number2CString(*registry_value));
 }
 
@@ -308,7 +308,7 @@ void CPreferences::SetValue(int index_of_variable, CString value)
 	AssertRange(index_of_variable, 0, k_prefs_last_CString_value);
 	prefs_CString_values[index_of_variable] = value;
 	WriteReg(k_registry_keys_for_CStrings[index_of_variable], value);
-	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",
 		k_registry_keys_for_CStrings[index_of_variable], value);
 }
 
@@ -325,6 +325,6 @@ void CPreferences::SetValue(int index_of_variable, double value)
 	{
 		WriteReg(k_registry_keys_for_numerical_values[index_of_variable], value);
 	}
-	write_log(debug_preferences(), "[CPreferences] %s = %s\n",
+	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",
 		k_registry_keys_for_numerical_values[index_of_variable], Number2CString(value));
 }

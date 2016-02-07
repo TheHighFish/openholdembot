@@ -45,7 +45,7 @@ void CSymbolEngineEventLogging::ResetOnHandreset()
 
   char title[512] = "--- No title specified ---";
 	GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
-	write_log(k_always_log_basic_information, 
+	 write_log(k_always_log_basic_information, 
 		"\n"
 		"==============================================\n"
 		"%s"					// Version info already contains a newline 

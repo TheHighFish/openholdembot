@@ -46,7 +46,6 @@
 
 CAutoplayer	*p_autoplayer = NULL;
 
-
 CAutoplayer::CAutoplayer(void) {
 	// Autoplayer is not enabled at startup.
 	// We can't call EngageAutoplayer() here,
@@ -111,7 +110,7 @@ void CAutoplayer::FinishActionSequenceIfNecessary() {
 }
 
 bool CAutoplayer::TimeToHandleSecondaryFormulas() {
-	// Disabled (N-1) out of N heartbeats (3 out of 3 seconds)
+	// Disabled (N-1) out of N heartbeats (3 out of 4 seconds)
 	// to avoid multiple fast clicking on the sitin / sitout-button.
 	// Contrary to the old f$play-function we use a heartbeat-counter
 	// for that logic, as with a small scrape-delay it was
@@ -126,10 +125,10 @@ bool CAutoplayer::TimeToHandleSecondaryFormulas() {
 	if  (hearbeats_to_pause < 1) {
  		hearbeats_to_pause = 1;
  	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() heartbeats to pause: %i\n",
 		hearbeats_to_pause);
 	bool act_this_heartbeat = ((p_heartbeat_thread->heartbeat_counter() % hearbeats_to_pause) == 0);
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() act_this_heartbeat: %s\n",
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] TimeToHandleSecondaryFormulas() act_this_heartbeat: %s\n",
 		Bool2CString(act_this_heartbeat));
 	return act_this_heartbeat;
 }
@@ -139,10 +138,10 @@ bool CAutoplayer::DoBetPot(void) {
 	// Start with 2 * potsize, continue with lower betsizes, finally 1/4 pot
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; i++) {
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i)) 	{
-			write_log(preferences.debug_autoplayer(), 
+			 write_log(preferences.debug_autoplayer(), 
         "[AutoPlayer] Function %s true.\n", k_standard_function_names[i]);
       if (ChangeBetPotActionToAllin(i)) {
-        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting bhetpot_X_Y to allin.\n");
+         write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting bhetpot_X_Y to allin.\n");
         return DoAllin();
       }
 			if (p_tablemap->betpotmethod() == BETPOT_RAISE)	{
@@ -154,9 +153,9 @@ bool CAutoplayer::DoBetPot(void) {
       if (!success) {
         // Backup action> try yo swag betpot_X_Y
         double betpot_amount = BetsizeForBetpot(i);
-        write_log(preferences.debug_autoplayer(), 
+         write_log(preferences.debug_autoplayer(), 
           "[AutoPlayer] Betpot with buttons failed\n");
-        write_log(preferences.debug_autoplayer(), 
+         write_log(preferences.debug_autoplayer(), 
           "[AutoPlayer] Trying to swag %.2f instead\n", betpot_amount);
         success = p_casino_interface->EnterBetsize(betpot_amount);
       }
@@ -179,21 +178,21 @@ bool CAutoplayer::AnyPrimaryFormulaTrue() {
 		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
 		if (i == k_autoplayer_function_betsize)
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
+			 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
 				k_standard_function_names[i], Number2CString(function_result));
 		}
 		else
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
+			 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): [%s]: %s\n",
 				k_standard_function_names[i], Bool2CString(function_result));
 		}
 		if (function_result)
 		{
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
+			 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): no\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnyPrimaryFormulaTrue(): no\n");
 	return false;
 }
 
@@ -202,22 +201,22 @@ bool CAutoplayer::AnySecondaryFormulaTrue() {
   // and the functions f$prefold and f$chat.
 	for (int i=k_hopper_function_sitin; i<=k_standard_function_chat; ++i)	{
 		bool function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): [%s]: %s\n",
 			k_standard_function_names[i], Bool2CString(function_result));
 		if (function_result) {
-			write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
+			 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): yes\n");
 			return true;
 		}
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): no\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] AnySecondaryFormulaTrue(): no\n");
 	return false;
 }
 
 bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
 	if (!AnyPrimaryFormulaTrue())
 	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
 		return false;
 	}
 	// Execute beep (if necessary) independent of all other conditions (mutex, etc.)
@@ -259,11 +258,11 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 }
 
 bool CAutoplayer::ExecuteRaiseCallCheckFold() {
-	write_log(preferences.debug_autoplayer(), 
+	 write_log(preferences.debug_autoplayer(), 
     "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
     if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
-      write_log(k_always_log_errors, 
+       write_log(k_always_log_errors, 
         "[AutoPlayer] WARNING! Can't execute f$check because there is a bet to call\n");
       continue;
     }
@@ -279,7 +278,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 }
 
 bool CAutoplayer::ExecuteBeep() {
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
 	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
 	{
 		// Pitch standard: 440 Hz, 1/2 second
@@ -292,8 +291,8 @@ bool CAutoplayer::ExecuteBeep() {
 bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	int executed_secondary_function = kUndefined;
 	if (!AnySecondaryFormulaTrue())	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] All secondary formulas false.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
 
@@ -392,14 +391,14 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
 bool CAutoplayer::DoChat(void) {
 	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat) != 0);
 	if (!IsChatAllowed())	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because chat turned off.\n");
 		return false;
 	}
 	// Converting the result of the $chat-function to a string.
 	// Will be ignored, if we already have an unhandled chat message.
 	RegisterChatMessage(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_chat));
 	if (_the_chat_message == NULL) {
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because wrong chat code. Please read: ""Available chat messages"" .\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No chat, because wrong chat code. Please read: ""Available chat messages"" .\n");
 		return false ;
 	}
 
@@ -408,7 +407,7 @@ bool CAutoplayer::DoChat(void) {
 
 bool CAutoplayer::DoAllin(void) {
 	bool success = false;
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting DoAllin...\n");
 
 	int number_of_clicks = 1; // Default is: single click with the mouse
 	if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) 	{
@@ -449,17 +448,17 @@ bool CAutoplayer::DoAllin(void) {
 }
 
 void CAutoplayer::DoAutoplayer(void) {
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
   CheckBringKeyboard();
   p_scraper_access->GetNeccessaryTablemapObjects();
-  write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
+   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
 		p_scraper_access->NumberOfVisibleButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
 		
 	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
 	if (HandleInterfacebuttonsI86())	{
-    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
+     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
     action_sequence_needs_to_be_finished = true;
 	  goto AutoPlayerCleanupAndFinalization;
   }
@@ -467,34 +466,34 @@ void CAutoplayer::DoAutoplayer(void) {
   if (TimeToHandleSecondaryFormulas())	{
 	  p_autoplayer_functions->CalcSecondaryFormulas();	  
     if (ExecuteSecondaryFormulasIfNecessary())	{
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondary formulas executed\n");
+       write_log(preferences.debug_autoplayer(), "[AutoPlayer] Secondary formulas executed\n");
       goto AutoPlayerCleanupAndFinalization;
     } else {
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
+       write_log(preferences.debug_autoplayer(), "[AutoPlayer] No secondary formulas to be handled.\n");
     }
   } else {
-    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
+     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 	}
   if (!p_symbol_engine_userchair->userchair_confirmed()) {
     // Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
 		// However: for primary formulas (f$alli, f$rais, etc.)
 		// knowing the userchair (combination of cards and buttons) is a must.
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Skipping primary formulas because userchair unknown\n");
 		goto AutoPlayerCleanupAndFinalization;
   }
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
 	if(p_symbol_engine_autoplayer->isfinalanswer())	{
 		p_autoplayer_functions->CalcPrimaryFormulas();
 		ExecutePrimaryFormulasIfNecessary();
 	}	else {
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No final answer, therefore not executing autoplayer-logic.\n");
 	}
   // Gotos are usually considered bad code.
   // Here it simplifies the control-flow.
  AutoPlayerCleanupAndFinalization:  
 	FinishActionSequenceIfNecessary();
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
 
 bool CAutoplayer::DoBetsize() { 
@@ -505,7 +504,7 @@ bool CAutoplayer::DoBetsize() {
       // swag -> adjusted allin -> swag allin -> adjusted allin ...
       if (ChangeBetsizeToAllin(betsize)) {
         _already_executing_allin_adjustment = true;
-        write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting betsize to allin.\n");
+         write_log(preferences.debug_autoplayer(), "[AutoPlayer] Adjusting betsize to allin.\n");
         bool success = DoAllin();
         _already_executing_allin_adjustment = false;
         return success;
@@ -513,16 +512,16 @@ bool CAutoplayer::DoBetsize() {
     }
 		int success = p_casino_interface->EnterBetsize(betsize);
 		if (success) {
-      write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
+       write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
-    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Failed to enter betsize %.2f\n",
+     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Failed to enter betsize %.2f\n",
       betsize);
     return false;
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't f$betsize, because f$betsize evaluates to 0.\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Don't f$betsize, because f$betsize evaluates to 0.\n");
 	return false;
 }
 
@@ -530,13 +529,13 @@ bool CAutoplayer::DoPrefold(void) {
 	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
 	if (!p_table_state->User()->HasKnownCards())
 	{
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");
 	}
 	if (p_casino_interface->ClickButton(k_standard_function_prefold))
 	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
+		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}
 	return false;
@@ -548,6 +547,6 @@ bool CAutoplayer::HandleInterfacebuttonsI86(void) {
 			return true;
 		}
 	}
-	write_log(preferences.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
+	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
 	return false;
 }

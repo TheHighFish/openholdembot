@@ -106,7 +106,7 @@ void CValidator::ValidateSingleRule() {
 			// Log error message
 			the_ErrorMessage.Replace("\n\n", ". ");
 			the_ErrorMessage.Replace("\n", " ");
-			write_log(k_always_log_errors, "%s%s\n", "VALIDATOR ERROR: ", the_ErrorMessage);
+			 write_log(k_always_log_errors, "%s%s\n", "VALIDATOR ERROR: ", the_ErrorMessage);
 		} 
   } 
 }

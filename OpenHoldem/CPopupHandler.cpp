@@ -32,7 +32,7 @@ CPopupHandler::CPopupHandler()
 		// This should be done exactly once, by instance 0
 		if (p_sessioncounter->session_id() == 0)
 		{
-			write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimizing all windows on startup (session ID 0).\n");
+			 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimizing all windows on startup (session ID 0).\n");
 			MinimizeAllOnstartup();
 		}
 	}
@@ -43,13 +43,13 @@ CPopupHandler::~CPopupHandler()
 
 void CPopupHandler::MinimizeAllOnstartup()
 {
-	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] MinimizeAllOnstartup()\n");
+	 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] MinimizeAllOnstartup()\n");
 	HandleAllWindows(false);
 }
 
 void CPopupHandler::HandleAllWindows()
 {
-	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
+	 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
 	int popup_blocker_method = preferences.popup_blocker();
 	if (popup_blocker_method == k_popup_minimize)
 	{
@@ -72,7 +72,7 @@ BOOL CALLBACK EnumProcPotentialPopups(HWND hwnd, LPARAM lparam)
 void CPopupHandler::HandleAllWindows(bool hard_kill)
 {
 	// Use the auto-connectors list of window-candidates
-	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
+	 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] HandleAllWindows()\n");
 	EnumWindows(EnumProcPotentialPopups, LPARAM(hard_kill));
 }
 
@@ -80,33 +80,33 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 {
 	char title[MAX_WINDOW_TITLE];
 	GetWindowText(potential_popup, title, MAX_WINDOW_TITLE);
-	write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Going to handle [%d] [%s]\n",
+	 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Going to handle [%d] [%s]\n",
 			potential_popup, title);
 
 	// First: ignore all harmless windows
 	if (!IsWindow(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Not a window\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Not a window\n");
 		return;
 	}
 	if (!IsWindowVisible(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is invisible\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is invisible\n");
 		return;
 	}
 	if (WinIsMinimized(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is minimized\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is minimized\n");
 		return;
 	}
 	if (WinIsZeroSized(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is zero-sized\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is zero-sized\n");
 		return;
 	}
 	if (WinIsOutOfScreen(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is out of screen\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is out of screen\n");
 		return;
 	}
 	// Second: ignore the good windows
@@ -117,38 +117,38 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 	//   * task manager to be able to kill the popup-blocker if necessary ;-)
 	if (WinIsDesktop(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is desktop\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is desktop\n");
 		return;
 	}
 	if (WinIsTaskbar(potential_popup))
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-bar with Start-button\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-bar with Start-button\n");
 		return;
 	}
 	if (WinIsTaskManager(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-manager\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is task-manager\n");
 		return;
 	}
 	if (WinIsProgramManager(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is program manager\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is program manager\n");
 		return;
 	}
 	if (p_sharedmem->PokerWindowAttached(potential_popup))
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is a served poker table\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window is a served poker table\n");
 		return;
 	}
 	if (WinIsOpenHoldem(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to OpenHoldem\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to OpenHoldem\n");
 		return;
 	}
 	
 	if (WinIsBring(potential_popup))			
 	{
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to Bring\n");
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Window belongs to Bring\n");
 		return;
 	}
 
@@ -161,7 +161,7 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 		// DestroyWindow() can't be used:
 		// http://msdn.microsoft.com/en-us/library/windows/desktop/ms632682%28v=vs.85%29.aspx
 		CloseWindow(potential_popup);
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Killed [%d] [%s]\n",
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Killed [%d] [%s]\n",
 			potential_popup, title);
 	}
 	else
@@ -172,7 +172,7 @@ void CPopupHandler::HandlePotentialPopup(HWND potential_popup, bool hard_kill)
 		messagebox(0, message, "popup blocker", 0);
 #endif
 		MinimizeWindow(potential_popup);
-		write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimized [%d] [%s]\n",
+		 write_log(preferences.debug_popup_blocker(), "[CPopupHandler] Minimized [%d] [%s]\n",
 			potential_popup, title);
 	}
 }
