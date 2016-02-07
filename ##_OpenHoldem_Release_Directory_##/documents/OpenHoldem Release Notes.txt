@@ -1,10 +1,5 @@
 v9.0.5 2016-02-07
 ==================
-NEW STUFF:
-- Support for unlimited tablemaps.
-  The former limit was 25.
-  [THF]
-
 MAINTENANCE:
 - Adding lots of new debug-messages for a potential problem 
   with autoplayer or auto-connector.
