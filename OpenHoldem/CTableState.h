@@ -48,6 +48,7 @@ class CTableState {
  public:
   void set_pot(int sidepot_index, double new_value);
 public:
+  // !!! ot here, bad place
 	double calc_min_non_zero_stack() ;
 	double calc_max_stack() ;
  public:

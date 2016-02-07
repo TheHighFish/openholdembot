@@ -20,26 +20,22 @@
 
 CAutoConnectorThread *p_autoconnectorthread = NULL;
 
-CAutoConnectorThread::CAutoConnectorThread()
-{
+CAutoConnectorThread::CAutoConnectorThread() {
 }
 
-CAutoConnectorThread::~CAutoConnectorThread()
-{
+CAutoConnectorThread::~CAutoConnectorThread() {
 }
 
 // This function should be called, when everything else 
 // in the main application is initialized, but not earlier!
-void CAutoConnectorThread::StartThread()
-{
+void CAutoConnectorThread::StartThread() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnectorThread] StartThread()\n");
 	AfxBeginThread(AutoConnectorThreadFunction, this);
 }
 
-UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam)
-{
+UINT CAutoConnectorThread::AutoConnectorThreadFunction(LPVOID pParam) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnectorThread] AutoConnectorThreadFunction(..)\n");
+  // ?????
 	while (true)
-	
-	return 0;
+		return 0;
 }

@@ -32,64 +32,51 @@
 
 CRebuyManagement *p_rebuymanagement = NULL;
 
-
-CRebuyManagement::CRebuyManagement()
-{
+CRebuyManagement::CRebuyManagement() {
 	// Init time of last rebuy in a reasonable way at startup.
 	time(&RebuyLastTime);
 	PreviousRebuyHandNumber = "";
 }
 
-CRebuyManagement::~CRebuyManagement()	
-{
+CRebuyManagement::~CRebuyManagement() {
 }
 
 
-bool CRebuyManagement::MinimumDelayElapsed()
-{
+bool CRebuyManagement::MinimumDelayElapsed() {
 	unsigned int MinimumTimeDifference = preferences.rebuy_minimum_time_to_next_try();
 	// Make sure, we don't try to rebuy too often in a short time
 	time(&CurrentTime);
 	double RebuyTimeDifference = difftime(CurrentTime, RebuyLastTime);
-	if (RebuyTimeDifference < MinimumTimeDifference)
-	{
+	if (RebuyTimeDifference < MinimumTimeDifference) {
 		write_log(preferences.debug_rebuy(), "[CRebuyManagement] MinimumDelayElapsed(): false\n");
 		return false;
 	}
 	return true;
 }
 
-bool CRebuyManagement::ChangeInHandNumber()
-{
-	if (!preferences.rebuy_condition_change_in_handnumber()) 
-	{
+bool CRebuyManagement::ChangeInHandNumber() {
+	if (!preferences.rebuy_condition_change_in_handnumber()) {
 		return true;
-	}
-	else if (p_handreset_detector->GetHandNumber() > PreviousRebuyHandNumber)
-	{
+	}	else if (p_handreset_detector->GetHandNumber() > PreviousRebuyHandNumber)	{
 		return true;
 	}
 	write_log(preferences.debug_rebuy(), "[CRebuyManagement] ChangeInHandNumber(): false\n");
 	return false;
 }
 
-bool CRebuyManagement::NoCards()
-{
-	if (!preferences.rebuy_condition_no_cards()) 
-	{
+bool CRebuyManagement::NoCards(){
+	if (!preferences.rebuy_condition_no_cards()) {
 		return true;
 	}
 	int UserChair = p_symbol_engine_userchair->userchair();
-	if ((UserChair < 0) || (UserChair > 9)) 
-	{
+	if ((UserChair < 0) || (UserChair > 9)) {
 		// "No cards", but not even seated.
 		// We should never get into that situation,
 		// as the autoplayer can't get enabled without a userchair.
 		// If all goes wrong, the rebuy-script has to handle that case.
 		return true;
 	}
-	if (!p_table_state->User()->HasKnownCards())
-	{
+	if (!p_table_state->User()->HasKnownCards()) 	{
 		return true;
 	}
 	// We hold cards. No good time to rebuy,
@@ -98,51 +85,39 @@ bool CRebuyManagement::NoCards()
 	return false;
 }
 
-bool CRebuyManagement::OcclusionCheck()
-{
-	if (!preferences.rebuy_condition_heuristic_check_for_occlusion()) 
-	{
+bool CRebuyManagement::OcclusionCheck() {
+	if (!preferences.rebuy_condition_heuristic_check_for_occlusion()) {
 		return true;
-	}
-	else if (p_occlusioncheck->UserBalanceOccluded())
-	{
+	}	else if (p_occlusioncheck->UserBalanceOccluded()) {
 		write_log(preferences.debug_rebuy(), "[CRebuyManagement] OcclusionCheck: false (occluded)\n");
 		return false;
 	}
 	return true;
 }
 
-
-bool CRebuyManagement::RebuyPossible()
-{
+bool CRebuyManagement::RebuyPossible() {
 	if (MinimumDelayElapsed()
-		&& ChangeInHandNumber()
-		&& NoCards()
-		&& OcclusionCheck())
-	{
+      && ChangeInHandNumber()
+		  && NoCards()
+		  && OcclusionCheck()) {
 		write_log(preferences.debug_rebuy(), "[CRebuyManagement] RebuyPossible: true\n");
 		return true;
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_rebuy(), "[CRebuyManagement] RebuyPossible: false\n");
 		return false;
 	}
 }
 
-void CRebuyManagement::TryToRebuy()
-{
+void CRebuyManagement::TryToRebuy() {
 	write_log(preferences.debug_rebuy(), "[CRebuyManagement] TryToRebuy()\n");
-	if (RebuyPossible())
-	{
+	if (RebuyPossible()) {
 		RebuyLastTime = CurrentTime;		
 		PreviousRebuyHandNumber = p_handreset_detector->GetHandNumber();
 		ExecuteRebuyScript();
 	}
 }	
 
-void CRebuyManagement::ExecuteRebuyScript()
-{
+void CRebuyManagement::ExecuteRebuyScript() {
 	// Call the external rebuy script.
 	//
 	// CAUTION! DO NOT USE THIS FUNCTION DIRECTLY!
@@ -152,12 +127,9 @@ void CRebuyManagement::ExecuteRebuyScript()
 	// Build command-line-options for rebuy-script
 	write_log(preferences.debug_rebuy(), "[CRebuyManagement] ExecuteRebuyScript");
 	CString Casino;
-	if (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end())
-	{
+	if (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end()) 	{
 		Casino = p_tablemap->s$()->find("sitename")->second.text.GetString();
-	}
-	else
-	{
+	}	else {
 		Casino = "Undefined";
 	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
@@ -183,8 +155,7 @@ void CRebuyManagement::ExecuteRebuyScript()
 	StartupInfo.cb = sizeof(StartupInfo); 
 	write_log(preferences.debug_rebuy(), "[CRebuyManagement] command line: %s\n", CommandLine);
 	if(CreateProcess(NULL, CommandLine.GetBuffer(), NULL, 
-		false, 0, NULL, NULL, 0, &StartupInfo, &ProcessInfo))
-	{
+		  false, 0, NULL, NULL, 0, &StartupInfo, &ProcessInfo)) {
 		// Docu for WaitForSingleObject:
 		// http://msdn.microsoft.com/en-us/library/ms687032(VS.85).aspx
 		// It seems, none of the exitcodes is relevant for us.
@@ -192,13 +163,9 @@ void CRebuyManagement::ExecuteRebuyScript()
 		// Wait for termination of the rebuy-script, if necessary forever,
 		// as we can't release the (autoplayer)mutex as long as the script is running.
 		int ExitCode = WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
-	}
-	else
-	{
+	}	else {
 		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
 		write_log(preferences.debug_rebuy(), ErrorMessage.GetBuffer());
 		OH_MessageBox_Error_Warning(ErrorMessage.GetBuffer());
 	}
 }
-
-

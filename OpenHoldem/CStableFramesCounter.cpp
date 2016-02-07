@@ -11,6 +11,9 @@
 //
 //*******************************************************************************
 
+// !!! Todo: turn it into a symbol-engine,
+// !!! including reset on autoplayer-action
+
 #include "stdafx.h"
 #include "CStableFramesCounter.h"
 
@@ -51,12 +54,10 @@ void CStableFramesCounter::SaveCurrentState() {
 		Saves the current state for future reference
 	*/
   _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
-
-	for (int i=0; i<kNumberOfCommunityCards; i++) {
+  for (int i=0; i<kNumberOfCommunityCards; i++) {
     _card_common_last[i] = p_table_state->CommonCards(i)->GetValue();
   }
-
-	for (int i=0; i<kMaxNumberOfPlayers; i++) {
+  for (int i=0; i<kMaxNumberOfPlayers; i++) {
     _card_player_last[i][0]	= p_table_state->Player(i)->hole_cards(0)->GetValue();
 		_card_player_last[i][1]	= p_table_state->Player(i)->hole_cards(1)->GetValue();
 		_dealer_last[i]         = p_table_state->Player(i)->dealer();
@@ -73,17 +74,13 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
   if (_isReset) {
 		// Counter got reset, e.g. after an autoplayer-action.
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Counter got reset: no stable frames yet\n");
-
-		// Remember current values as last known ones.
+    // Remember current values as last known ones.
 		SaveCurrentState();
-		
 		// Nothing to compare - now we have 0 identical frames.
 		_isReset = false;
 		_NumberOfStableFrames = 0;
-
-		return _NumberOfStableFrames; 
+    return _NumberOfStableFrames; 
 	}
-	
 	// These items need to be the same to count as a identical frame:
 	// - up and down cards
 	// - button position
@@ -91,20 +88,17 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	// - playerbalances
 	// - button states
 	bool same_scrape = true;
-
-	if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
+  if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
 		same_scrape = false;
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
 		if(!same_scrape) break;
-
     if (p_table_state->CommonCards(i)->GetValue() != _card_common_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Community-cards don't match\n");
 		}
 	}
-
-	for (int i=0; i<kMaxNumberOfPlayers; i++) {
+  for (int i=0; i<kMaxNumberOfPlayers; i++) {
 		if(!same_scrape) break;
 
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Checking player: %d\n", i);
@@ -126,8 +120,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-bet does not match\n", i);
 		}
 	}
-
-	if (same_scrape) {
+  if (same_scrape) {
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Increasing number of stable frames\n");
 		_NumberOfStableFrames++;
 	}	else {
@@ -135,8 +128,6 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 		write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Gamestate unstable: resetting counter\n");
 		Reset();
 	}
-
-	write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Number of stable frames: %d\n", _NumberOfStableFrames);
-
-	return _NumberOfStableFrames;
+  write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Number of stable frames: %d\n", _NumberOfStableFrames);
+  return _NumberOfStableFrames;
 }

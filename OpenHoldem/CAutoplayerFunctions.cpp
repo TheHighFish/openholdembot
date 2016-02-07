@@ -273,15 +273,13 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
     + p_symbol_engine_chip_amounts->call() 
     + (-1 * decision) * (p_symbol_engine_chip_amounts->pot() + p_symbol_engine_chip_amounts->call());
     write_log(preferences.debug_formula(), 
-    "[CAutoplayerFunctions] f$betsize is %s\n",
+      "[CAutoplayerFunctions] f$betsize is %s\n",
     Number2CString(betsize, 2));
   return betsize;
 }
 
-void CAutoplayerFunctions::CalcSecondaryFormulas(void)
-{
-	for (int i=k_hopper_function_sitin; i<=k_standard_function_betsize_enable_rounding; i++)
-	{
+void CAutoplayerFunctions::CalcSecondaryFormulas(void) {
+	for (int i=k_hopper_function_sitin; i<=k_standard_function_betsize_enable_rounding; ++i) {
 		double result = p_function_collection->Evaluate(k_standard_function_names[i], true);
 		write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			k_standard_function_names[i], result);

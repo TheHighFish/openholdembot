@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "BetpotCalculations.h"
 
+#include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
@@ -47,6 +48,8 @@ double BetPotFactor(int betpot_action_code) {
     default:
       betpot_factor = 1.0;
   }
+  write_log(preferences.debug_autoplayer(), "[AutoPlayer] betpot-factor: %.3f\n",
+    betpot_factor);
   return betpot_factor;
 }
 
@@ -61,5 +64,7 @@ double BetsizeForBetpot(int betpot_action_code) {
     + p_symbol_engine_chip_amounts->call()
     + additional_money_into_pot;
   assert(final_betsize > 0);
+  write_log(preferences.debug_autoplayer(), "[AutoPlayer] Betsize= for betpot-action:  %.3f\n",
+    final_betsize);
   return final_betsize;
 }

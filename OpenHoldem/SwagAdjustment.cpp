@@ -214,20 +214,11 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   return result;
 }
 
-//double MinimumBetsizeDueToMinOppStack()
-//{
-//	double minimums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_min_non_zero_stack();
-//	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToMinOppStack: %.2f\n", minimums);
-//	assert(minimums > 0);
-//	return minimums;
-//}
-
-double MaximumBetsizeDueToMaxOppStack()
-{
-	double maximums = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_max_stack();
-	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MaximumBetsizeDueToMaxOppStack: %.2f\n", maximums);
-	assert(maximums > 0);
-	return maximums;
+double MaximumBetsizeDueToMaxOppStack() {
+	double maximum = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_max_stack();
+	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MaximumBetsizeDueToMaxOppStack: %.2f\n", maximum);
+	assert(maximum > 0);
+	return maximum;
 }
 
 double AdjustedBetsize(double amount_to_raise_to) {
@@ -241,15 +232,13 @@ double AdjustedBetsize(double amount_to_raise_to) {
   if (rounding_enabled) {
     amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
   }
-  double minimums;
-  if(p_symbol_engine_casino->ConnectedToDDPoker())
-  {
-	 minimums = min(MinimumBetsizeDueToPreviousRaise(), MaximumBetsizeDueToMaxOppStack() );
-  }else
-  {
-	 minimums = MinimumBetsizeDueToPreviousRaise();
+  double minimum;
+  if (p_symbol_engine_casino->ConnectedToDDPoker()) {
+	  minimum = min(MinimumBetsizeDueToPreviousRaise(), MaximumBetsizeDueToMaxOppStack() );
+  } else {
+	  minimum = MinimumBetsizeDueToPreviousRaise();
   }
-	AdaptValueToMinMaxRange(&amount_to_raise_to, minimums, amount_to_raise_to);
+	AdaptValueToMinMaxRange(&amount_to_raise_to, minimum, amount_to_raise_to);
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeForGameType());
 	AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumPossibleBetsizeBecauseOfBalance());
   // Rounding to beautiful numbers (here full dollars) but only if enabled
