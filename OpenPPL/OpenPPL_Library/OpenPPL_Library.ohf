@@ -2083,8 +2083,11 @@ HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3)
 [ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
 
 ##HadTwoPairOnFlop##
-    (RankOfFirstHoleCard == FirstFlopCard OR RankOfFirstHoleCard == SecondFlopCard OR RankOfFirstHoleCard == ThirdFlopCard)
-AND (RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == ThirdFlopCard)
+// First paired hole card
+    (RankOfFirstHoleCard  == FirstFlopCard OR RankOfFirstHoleCard  == SecondFlopCard OR RankOfFirstHoleCard  == ThirdFlopCard)
+// Second paired hole card
+AND (RankOfSecondHoleCard == FirstFlopCard OR RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == ThirdFlopCard)
+// Excluding sets
 AND NOT ispair
 
 ##HaveSecondBestKicker##

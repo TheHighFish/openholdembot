@@ -1,3 +1,11 @@
+v9.0.5 2016-02-xx
+==================
+BUG FIXES:
+- HadTwoPairOnFlop contained a copy-and-paste-error
+  that made it fail in certain situations.
+  Thanks to Yep for reporting and to Salem for finding the bug.
+  [THF]
+
 v9.0.5 2016-02-07
 ==================
 MAINTENANCE:
