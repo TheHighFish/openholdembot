@@ -2049,13 +2049,11 @@ AND rankhiplayer > SecondTopFlopCard
 HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
 
 ##HadPairOnFlop##
-   ispair 
-OR RankOfFirstHoleCard  == FirstFlopCard 
-OR RankOfFirstHoleCard  == SecondFlopCard 
-OR RankOfFirstHoleCard  == ThirdFlopCard  
-OR RankOfSecondHoleCard == FirstFlopCard 
-OR RankOfSecondHoleCard == SecondFlopCard  
-OR RankOfSecondHoleCard == ThirdFlopCard
+// Pair in the hand
+WHEN ispair RETURN True FORCE
+// Pairing the board
+WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
+WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
 
 ##HadPairOnTurn##
    HadPairOnFlop 
@@ -2082,13 +2080,21 @@ HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3)
 ##HadTopPairOnTurn##
 [ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
 
+##FirstHoleCardPairsTheFlop##
+WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN True FORCE
+WHEN Others RETURN False FORCE
+
+##SecondHoleCardPairsTheFlop##
+WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN True FORCE
+WHEN Others RETURN False FORCE
+
 ##HadTwoPairOnFlop##
-// First paired hole card
-    (RankOfFirstHoleCard  == FirstFlopCard OR RankOfFirstHoleCard  == SecondFlopCard OR RankOfFirstHoleCard  == ThirdFlopCard)
-// Second paired hole card
-AND (RankOfSecondHoleCard == FirstFlopCard OR RankOfSecondHoleCard == SecondFlopCard OR RankOfSecondHoleCard == ThirdFlopCard)
-// Excluding sets
-AND NOT ispair
+WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
+WHEN Others RETURN False FORCE
 
 ##HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
@@ -2982,9 +2988,7 @@ ispair
 
 ##HaveSet##
 [  ispair
-AND (  (RankOfFirstHoleCard == FirstFlopCard) 
-    OR (RankOfFirstHoleCard == SecondFlopCard) 
-    OR (RankOfFirstHoleCard == ThirdFlopCard) 
+AND (  FirstHoleCardPairsTheFlop 
     OR (RankOfFirstHoleCard == TurnCard) 
     OR (RankOfFirstHoleCard == RiverCard)) ]
 
