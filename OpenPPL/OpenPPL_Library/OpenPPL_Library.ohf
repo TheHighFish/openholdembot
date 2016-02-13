@@ -513,7 +513,8 @@ $$cs4
 HINT_Nothing_To_Do_But_All_OK
 
 ##Bets##
-me_re_MemBets
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ me_re_MemBets
 
 ##BigBlindSittingOut##
 (BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
@@ -687,7 +688,8 @@ Calls + nopponentscalling
   me_st_MemCalls_AddNopponentscalling
 
 ##Calls##
-ismyturn ? me_re_MemCalls :
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ ismyturn ? me_re_MemCalls :
 ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##LastRaiserCurrentBet##
@@ -760,7 +762,8 @@ HINT_Nothing_To_Do_But_All_OK
 HINT_Nothing_To_Do_But_All_OK
 
 ##Checks##
-ismyturn ? me_re_MemChecks :
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ ismyturn ? me_re_MemChecks :
 ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##DealPosition1Chair##
@@ -985,7 +988,8 @@ WHEN Others RETURN 0 FORCE
 me_st_MemRaises_Calculate_Raises
 
 ##Raises##
-(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ (NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 // Raises might have been -1 if there were additional blind-posters,
 // because nopponentsraising was wrong in that case for old versions
 // But this gets now handled perfectly by nopponentstruelyraising.
@@ -4045,6 +4049,34 @@ Middle
 //
 //*****************************************************************************
 
+//*****************************************************************************
+//
+// OpenPPL - Poker Tracker Symbols
+//
+// Sanity-checks for correct usage of symbols like Raises, Calls, etc.
+// These symbols
+//   * need game history
+//   * need to be updated exactly once per orbit,
+//     when it is our turn and we have isfinalanswer = true
+//   * become stale immediately thereafter
+//   * therefore are well-defined only at our turn,
+//     and even then only in the main OPPL-functions    
+//   * get misused a lot
+//
+// Therefore we keep a heartbeat-ID that updates together with these symbols
+// and then we call VerifyHeartbeatID for each critical symbol
+// and throw an error-message in case it gets used at inappropriate times.
+//
+//*****************************************************************************
+
+##VerifyHeartbeatIDForBetsCallsChecksRaises##
+(me_re_heartbeatID != randomheartbeat) ? ErrorCriticalSymbolsUsedAtWrongTime : 0
+
+##ErrorCriticalSymbolsUsedAtWrongTime##
+msgbox$ERROR_N_NSymbols_Blike_BBets_C_BCalls_C_BChecks_Band_BRaises_Nare_Bnot_Byet_Binitialized_Bat_Bthis_Bpoint_Bof_Btime_D_NInvalid_BUsage_D
+
+##RememberHeartbeatID##
+me_st_heartbeatID_randomheartbeat
 
 //*****************************************************************************
 //
@@ -4093,7 +4125,13 @@ XOR me_st_MemOldGameStateBetround_betround
 // We can't use AND and OR here because of short circuiting.
 // We must use an operator that evaluates both sites.
 // The final result is meaningless.
-    InitMissingSmallBlind 
+//
+// The heartbeat-ID has to be remembered first,
+// because it is used to check if some history-symbols (Raises, Calls)
+// are used correctly, at well-defined times only.
+// And InitRaises, etc. will use them very soon -- and correctly.
+    RememberHeartbeatID 
+XOR InitMissingSmallBlind 
 XOR InitBets
 XOR InitChecks
 XOR InitCalls
