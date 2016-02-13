@@ -503,18 +503,23 @@ $$cs4
 //
 //*****************************************************************************
 
-##InitBets##
+##CalculateBets##
 // No bet in front of us to call
-((currentbet == 0) AND (AmountToCall == 0)) ? me_st_MemBets_0 :
+WHEN ((currentbet == 0) AND (AmountToCall == 0)) RETURN 0 FORCE
 // A bet to call and we didn't act before or we checked
-((currentbet == 0) AND (AmountToCall > 0)) ? me_st_MemBets_1 :
+WHEN ((currentbet == 0) AND (AmountToCall > 0)) RETURN 1 FORCE
 // Otherwise: we did already bet ourself or call a bet.
-// So don't change anything
-HINT_Nothing_To_Do_But_All_OK
+// So return the value computed before
+// But use the momory variable directly and not "Bets"
+// otherwise we get an endless recursion.
+WHEN Others RETURN me_re_MemBets FORCE
+
+##InitBets##
+me_st_MemBets_CalculateBets
 
 ##Bets##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemBets
+WHEN CriticalSymbolsBetsCallsChecksRaisesComputedThisHeartbeat RETURN me_re_MemBets FORCE
+WHEN Others RETURN CalculateBets FORCE
 
 ##BigBlindSittingOut##
 (BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
@@ -679,18 +684,16 @@ OR didchecround3
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
 OR didchecround4
 
-##AddNopponentscalling##
-Calls + nopponentscalling
+##CalculateCalls##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN nopponentscalling FORCE
+WHEN Others RETURN (Calls + nopponentscalling) FORCE
 
 ##InitCalls##
-(BotsActionsOnThisRoundIncludingChecks == 0) ?
-  me_st_MemCalls_nopponentscalling :
-  me_st_MemCalls_AddNopponentscalling
+me_st_MemCalls_CalculateCalls
 
 ##Calls##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemCalls :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+WHEN CriticalSymbolsBetsCallsChecksRaisesComputedThisHeartbeat RETURN me_re_MemCalls FORCE
+WHEN Others RETURN CalculateCalls FORCE
 
 ##LastRaiserCurrentBet##
 raischair == 0 ? currentbet0 :
@@ -762,9 +765,8 @@ HINT_Nothing_To_Do_But_All_OK
 HINT_Nothing_To_Do_But_All_OK
 
 ##Checks##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemChecks :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+WHEN CriticalSymbolsBetsCallsChecksRaisesComputedThisHeartbeat RETURN me_re_MemChecks FORCE
+WHEN Others RETURN CalculateChecks FORCE
 
 ##DealPosition1Chair##
 ac_dealpos0 == 1 ? 0 :
@@ -987,9 +989,9 @@ WHEN Others RETURN 0 FORCE
 (BotsActionsOnThisRoundIncludingChecks == 0) ? me_st_MemRaises_RaisesSinceLastPlay :
 me_st_MemRaises_Calculate_Raises
 
-##Raises##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
+##CalculateRaises##
+//!!!!!
+(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
 // Raises might have been -1 if there were additional blind-posters,
 // because nopponentsraising was wrong in that case for old versions
 // But this gets now handled perfectly by nopponentstruelyraising.
@@ -1003,6 +1005,11 @@ VerifyHeartbeatIDForBetsCallsChecksRaises
   (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
 // Otherwise: probably everything ok
 me_re_MemRaises
+
+##Raises##
+WHEN CriticalSymbolsBetsCallsChecksRaisesComputedThisHeartbeat RETURN me_re_MemRaises FORCE
+WHEN Others RETURN CalculateRaises FORCE
+//!!!!!
 
 ##RaisesBeforeFlop##
 (NumberOfRaisesBeforeFlop > 0)
@@ -4064,16 +4071,13 @@ Middle
 //   * get misused a lot
 //
 // Therefore we keep a heartbeat-ID that updates together with these symbols
-// and then we call VerifyHeartbeatID for each critical symbol
+// and then we call VerifyHeartbeatID for each critical symbol !!!!!
 // and throw an error-message in case it gets used at inappropriate times.
 //
 //*****************************************************************************
 
-##VerifyHeartbeatIDForBetsCallsChecksRaises##
-(me_re_heartbeatID != randomheartbeat) ? ErrorCriticalSymbolsUsedAtWrongTime : 0
-
-##ErrorCriticalSymbolsUsedAtWrongTime##
-msgbox$ERROR_N_NSymbols_Blike_BBets_C_BCalls_C_BChecks_Band_BRaises_Nare_Bnot_Byet_Binitialized_Bat_Bthis_Bpoint_Bof_Btime_D_NInvalid_BUsage_D
+##CriticalSymbolsBetsCallsChecksRaisesComputedThisHeartbeat##
+WHEN (me_re_heartbeatID == randomheartbeat) RETURN True FORCE
 
 ##RememberHeartbeatID##
 me_st_heartbeatID_randomheartbeat
