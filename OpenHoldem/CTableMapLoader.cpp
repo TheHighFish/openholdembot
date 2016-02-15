@@ -41,9 +41,7 @@ typedef struct {
 
 } t_tablemap_connection_data;
 
-
-t_tablemap_connection_data			tablemap_connection_data[kMaxNmberOfTablemaps];
-
+std::map<int, t_tablemap_connection_data> tablemap_connection_data;
 
 CTableMapLoader::CTableMapLoader() {
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CTableMapLoader()\n");
@@ -56,22 +54,18 @@ CTableMapLoader::CTableMapLoader() {
 }
 
 CTableMapLoader::~CTableMapLoader() {
+  tablemap_connection_data.clear();
 }
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard) {
 	CFileFind	hFile;
 	
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
+  tablemap_connection_data.clear();
 	_number_of_tablemaps_loaded = 0;
 	CString	current_path = p_tablemap->filepath();
 	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
 	while (bFound) {
-		if (_number_of_tablemaps_loaded >= kMaxNmberOfTablemaps) {
-			 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CAutoConnector: Error: Too many tablemaps. The autoconnector can only handle 25 TMs.", "Error", 0);
-			OH_MessageBox_Error_Warning("To many tablemaps.\n"
-				"The auto-connector can handle 25 at most.");
-			return;
-		}
 		bFound = hFile.FindNextFile();
 		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path) {
 			int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
@@ -90,7 +84,6 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
 	CString TableMapWildcard;
 	
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
-	_number_of_tablemaps_loaded = 0;
 	ParseAllTableMapsToLoadConnectionData(p_filenames->TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
