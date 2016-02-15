@@ -83,7 +83,7 @@ bool CPlayer::PostingBothBlinds() {
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19043
     return false;
   }
-  If (IsAllin()) {
+  if (IsAllin()) {
     // A person who is allin for SB + BB can't be new at the table, 
     // therefore not posting both blinds.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19414
@@ -93,6 +93,6 @@ bool CPlayer::PostingBothBlinds() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18743
   double bet_in_cents = 100 * _bet;
   double both_blinds_in_cents = 100 * (p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind());
-  return (_seated && _active && HasAnyCards() && 
+  return (_seated && _active && HasAnyCards()
     && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
 }
