@@ -1160,6 +1160,28 @@ Modulo % a % b Standard algebraic modulo on a and b.
 \end_layout
 
 \begin_layout Itemize
+Percentage % a % b The result will be (a / 100) * b.
+ The percentage operator got introduced with OpenPPL.
+ OpenHoldem will assume that 
+\begin_inset Quotes eld
+\end_inset
+
+%
+\begin_inset Quotes erd
+\end_inset
+
+ inside an OH-script function means the modulo-operator and that 
+\begin_inset Quotes eld
+\end_inset
+
+%
+\begin_inset Quotes erd
+\end_inset
+
+ inside an OpenPPL-function (with WHEN-conditions) means the percentage-operator.
+\end_layout
+
+\begin_layout Itemize
 Additive Add + a + b Standard algebraic addition on a and b.
  
 \end_layout
