@@ -199,6 +199,12 @@
     <ClCompile Include="CLimitScraper.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
+    <ClCompile Include="CParseTreeOperatorNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
@@ -476,6 +482,12 @@
     <ClInclude Include="CLimitScraper.h" />
     <ClInclude Include="CMyMutex.h" />
     <ClInclude Include="COcclusionCheck.h" />
+    <ClInclude Include="CParseTreeOperatorNode.h" />
+    <ClInclude Include="CParseTreeTerminalNode.h" />
+    <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
+    <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
+    <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />

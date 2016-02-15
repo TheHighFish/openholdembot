@@ -21,7 +21,9 @@
 #include "CFormulaFileSplitter.h"
 #include "COHScriptList.h"
 #include "CParseTreeNode.h"
+#include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
+#include "CParseTreeTerminalNode.h"
 #include "CTokenizer.h"
 
 class CFormulaParser {
@@ -63,19 +65,20 @@ class CFormulaParser {
   void ParseDebugTab(CString function_text);
  private:
   // OH-script
-  TPParseTreeNode ParseExpression();
-  TPParseTreeNode ParseBracketExpression();
-  TPParseTreeNode ParseUnaryExpression();
-  TPParseTreeNode ParseSimpleExpression();
+  TPParseTreeNode ParseExpression(); //!!!!!
+  TPParseTreeOperatorNode ParseBracketExpression();
+  TPParseTreeOperatorNode ParseUnaryExpression();
+  TPParseTreeTerminalNode ParseSimpleExpression(); //!!!!!
   void ParseConditionalPartialThenElseExpressions(
 	  TPParseTreeNode *then_expression, TPParseTreeNode *else_expression);
  private:
   // OpenPPL
-  TPParseTreeNode ParseOpenEndedWhenConditionSequence();
-  TPParseTreeNode ParseOpenPPLAction();
-  TPParseTreeNode ParseOpenPPLRaiseToExpression();
-  TPParseTreeNode ParseOpenPPLRaiseByExpression();
-  TPParseTreeNode ParseOpenPPLUserVar();
+  TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
+  TPParseTreeNode ParseOpenPPLAction(); //!!!!!
+  TPParseTreeOperatorNode ParseOpenPPLRaiseToExpression();
+  TPParseTreeOperatorNode ParseOpenPPLRaiseByExpression();
+ private:
+  TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
  private:
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);

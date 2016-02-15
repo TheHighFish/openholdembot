@@ -40,6 +40,7 @@
 
 #include "CFunction.h"
 #include "CParseTreeNode.h"
+#include "CParseTreeOperatorNode.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
@@ -53,8 +54,7 @@ CParseTreeRotator::CParseTreeRotator() {
 CParseTreeRotator::~CParseTreeRotator() {
 }
 
-void CParseTreeRotator::Rotate(CFunction *function)
-{
+void CParseTreeRotator::Rotate(CFunction *function) {
    write_log(preferences.debug_ast_priority_ordering(),
     "[CParseTreeRotator] starting rotation\n");
   if (function == NULL) {
