@@ -114,6 +114,7 @@ LastRaiserPosition,LastRaiserPosition
 LowCardsOnBoard,LowCardsOnBoard
 MaxOpponentStackSize,MaxOpponentStackSize
 MaxStillToActStackSize,MaxStillToActStackSize
+Middle,Middle
 MinOpponentStackSize,MinOpponentStackSize
 MinStillToActStackSize,MinStillToActStackSize
 MoreThanOneStraightPossibleOnFlop,MoreThanOneStraightPossibleOnFlop
@@ -181,6 +182,7 @@ TripsOnBoard,TripsOnBoard
 TripsOnBoardOnTurn,TripsOnBoardOnTurn
 TurnCardisOvercardToBoard,TurnCardIsOvercardToBoard
 TurnCardPaired,TurnCardPaired
+TwoOfOneSuitPresentOnFlop,TwoOfOneSuitPresentOnFlop
 TwoPairOnBoard,TwoPairOnBoard
 UncoordinatedFlop,UncoordinatedFlop
 WheelPossible,WheelPossible
