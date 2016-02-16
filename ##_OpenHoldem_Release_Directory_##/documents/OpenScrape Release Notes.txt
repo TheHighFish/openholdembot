@@ -3,7 +3,7 @@ v9.1.0 2016-02-16
 BUG FIXES:
 - One array was two elements too large and contained uninitialized data.
   This caused annoying error-messages when new regions got added.
-  Thanks to for reporting.
+  Thanks to Micro111 for reporting.
   [THF]
 
 v7.7.5 2015-07-08

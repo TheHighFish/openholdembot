@@ -5,7 +5,7 @@ NEW STUFF:
   The former restriction to 25 TMs is gone.
   [THF]
 - Critical OpenPPL-history-symbols that depend on correct updates
-  exactly once per turn (Bets, calls, Checks, Raises, 	BotsLastPreflopAction, ...)
+  exactly once per turn (Bets, Calls, Checks, Raises, BotsLastPreflopAction, ...)
   cause now a warning if they get used at a point of time 
   where they are not yet initialized correctly
   (not my turn or outside of the main autoplayer-logic).
@@ -20,7 +20,7 @@ BUG FIXES:
   but got confused with a new player who has to post both blinds in some situations.
   This has now been fixed.
   Thanks to Micro111 for reporting.
-  8THF]
+  [THF]
 
 MAINTENANCE:
 - log$-symbols return now 1 as specified in the manual.
@@ -31,6 +31,7 @@ MAINTENANCE:
   (symbol, number, operator, ...) instead of one large class for everything.
   As a little bonus this reduced the memory-usage by about 25%.
   [THF]
+  
 
 v9.0.5 2016-02-07
 ==================
