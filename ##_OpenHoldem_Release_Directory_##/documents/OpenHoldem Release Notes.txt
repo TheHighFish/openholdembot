@@ -1,4 +1,38 @@
-v9.0.5 2016-02-xx
+v9.1.0 2016-02-16
+==================
+NEW STUFF:
+- Support for "unlimited" tablemaps.
+  The former restriction to 25 TMs is gone.
+  [THF]
+- Critical OpenPPL-history-symbols that depend on correct updates
+  exactly once per turn (Bets, calls, Checks, Raises, 	BotsLastPreflopAction, ...)
+  cause now a warning if they get used at a point of time 
+  where they are not yet initialized correctly
+  (not my turn or outside of the main autoplayer-logic).
+  [THF]
+  
+BUG FIXES:
+- HadTwoPairOnFlop contained a copy-and-paste-error
+  that made it fail in certain situations.
+  Thanks to Yep for reporting and to Salem for finding the bug.
+  [THF]
+- If a player was allin for SB + BB he did not get recognized as a raiser,
+  but got confused with a new player who has to post both blinds in some situations.
+  This has now been fixed.
+  Thanks to Micro111 for reporting.
+  8THF]
+
+MAINTENANCE:
+- log$-symbols return now 1 as specified in the manual.
+  This behaviour is more convenient in ANDed conditions.
+  Thanks to Cidertime for asking.
+  [THF]
+- The parse-tree got refactored and contains now half a dozen specialized node-types
+  (symbol, number, operator, ...) instead of one large class for everything.
+  As a little bonus this reduced the memory-usage by about 25%.
+  [THF]
+
+v9.0.5 2016-02-07
 ==================
 BUG FIXES:
 - HadTwoPairOnFlop contained a copy-and-paste-error
@@ -6,6 +40,7 @@ BUG FIXES:
   Thanks to Yep for reporting and to Salem for finding the bug.
   [THF]
 
+  
 v9.0.5 2016-02-07
 ==================
 MAINTENANCE:
