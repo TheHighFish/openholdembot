@@ -119,7 +119,9 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
       p_autoplayer_trace->Add(name, 0);
       p_white_info_box->SetCustomLogMessage(name);
     }
-    *result = 0;
+    // True (1) is convenient in sequences of ANDed conditions
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19421
+    *result = true;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
   } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
