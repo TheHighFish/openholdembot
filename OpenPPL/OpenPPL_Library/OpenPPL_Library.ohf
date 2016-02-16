@@ -645,7 +645,8 @@ ERROR_IncorrectBotsLastAction
     me_st_MemBotsLastPreflopAction_BotsLastAction : 0  
 
 ##BotsLastPreflopAction##
-me_re_MemBotsLastPreflopAction
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ me_re_MemBotsLastPreflopAction
 
 ##BotCalledBeforeFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : False)
@@ -835,7 +836,8 @@ me_st_MemMissingSmallBlind_CalculateMissingSmallBlind :
 HINT_Nothing_To_Do_But_All_OK
 
 ##MissingSmallBlind##
-me_re_MemMissingSmallBlind
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ me_re_MemMissingSmallBlind
 
 ##NoBettingOnFlop##
 (nbetsround2 == 0)
@@ -1005,13 +1007,16 @@ VerifyHeartbeatIDForBetsCallsChecksRaises
 me_re_MemRaises
 
 ##RaisesBeforeFlop##
-(NumberOfRaisesBeforeFlop > 0)
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ (NumberOfRaisesBeforeFlop > 0)
 
 ##RaisesOnFlop##
-(NumberOfRaisesOnFlop > 0)
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ (NumberOfRaisesOnFlop > 0)
 
 ##RaisesOnTurn##
-(NumberOfRaisesOnTurn > 0)
+VerifyHeartbeatIDForBetsCallsChecksRaises
++ (NumberOfRaisesOnTurn > 0)
 
 ##RaisesBeforeOurFirstActionThisRoundPostflop##
 (nopponentstruelyraising > 0) ? (nopponentstruelyraising - 1) : 0
