@@ -8049,7 +8049,12 @@ log$YourTextGoesHere
 \begin_inset Text
 
 \begin_layout Plain Layout
-log$YourTextGoesHere When executed, adds your specified text to the log.
+When executed, adds your specified text to the autoplayer-trace and to the
+ white box in the GUI.
+\end_layout
+
+\begin_layout Plain Layout
+The symbol will be evaluated to 1.
 \end_layout
 
 \end_inset
@@ -8095,7 +8100,35 @@ and you flop a backdoor flush draw, then OpenHoldem will raise and also
  
 \end_layout
 
-\begin_layout Remark
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/log$_symbol.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Remark*
 Note: You want to use the log$ symbol at the end of a logic block, to make
  sure it only gets flagged when all the previous statements are true.
  
@@ -8118,13 +8151,9 @@ Spacing as a workaround to force two individual remarks.
 
 \end_layout
 
-\begin_layout Remark
-Note: You have to turn on Log Symbols in the preferences.
- You can also dictate the maximum number of log symbols that will be logged
- per action.
- When enabled, up to 4 log symbols will be displayed in OpenHoldem's main
- window.
- 
+\begin_layout Remark*
+As the log$-symbols modify the autoplayer-trace they require the autoplayer
+ to be engaged.
 \end_layout
 
 \begin_layout Section
@@ -8263,7 +8292,7 @@ Small vertical space to force to individual remarks instead od one.
 
 \end_layout
 
-\begin_layout Remark
+\begin_layout Remark*
 The ICM symbols will always assume, that you win against the player with
  the smallest stack or lose against the player with the biggest stack of
  the remaining non-folded players (or against N players with the N smallest
