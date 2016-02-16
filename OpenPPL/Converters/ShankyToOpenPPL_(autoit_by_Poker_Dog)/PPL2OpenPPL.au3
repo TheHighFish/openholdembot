@@ -26,7 +26,7 @@
 
 HotKeySet("{ESC}", "Terminate")
 
-Dim $version = "1.11"
+Dim $version = "1.21"
 
 Dim $PPL = ""
 Dim $OpenPPL = ""
@@ -39,6 +39,8 @@ Dim $NumberOfSymbols = 0
 
 Dim $RaiseMethod = "RaiseBy " ; "RaiseTo "
 Dim $UseApproxEqualOperator = True ; False
+Dim $FixPercentages = False ; True
+Dim $FixPercentagesOnly = False ; True
 
 $PPL = FileOpenDialog("Select the source PPL file", "C:\", "(*.txt)", 1)
 
@@ -55,22 +57,28 @@ Func Main()
 	
 	ProgressOn("Performing PPL to OpenPPL Conversion", "", "", 68, 75, "")
 	
-	CreateConsistencies()
-	RemoveOptionSettings()
-	FixFunctionHeaders()
-	RemoveDelays()
-	RemoveSitout()
-	RemoveBeep()
-	FixBets()
-	FixRaises()
-	If $UseApproxEqualOperator = True Then FixIntegers()
-	FixSymbols()
-	FixHandExpressions()
-	FixBoardExpressions()
-	StandardizeKeywords()
-	FixUserVariables()
-	AddForce()
-	CleanUp()
+	If $FixPercentagesOnly = False Then
+		CreateConsistencies()
+		RemoveOptionSettings()
+		FixFunctionHeaders()
+		RemoveDelays()
+		RemoveSitout()
+		RemoveBeep()
+		FixBets()
+		FixRaises()
+		If $UseApproxEqualOperator = True Then FixIntegers()
+		FixSymbols()
+		FixHandExpressions()
+		FixBoardExpressions()
+		StandardizeKeywords()
+		FixUserVariables()
+		AddForce()
+		If $FixPercentages = True Then FixPercentages()
+		CleanUp()
+	Else
+		FixPercentages()
+	EndIf
+	
 	WriteConvertedFile()
 	
 	$elapsed = TimerDiff($start)
@@ -117,6 +125,12 @@ Func CreateConsistencies()
 		EndIf
 	Next
 	
+	; remove any space before '%'
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " %") Then
+			$source[$i] = StringReplace($source[$i], " %", "%", 0)
+		EndIf
+	Next
 	
 	; add a space after all '('
 	For $i = 0 to $NumberOfLines Step + 1
@@ -627,6 +641,51 @@ Func FixHandExpressions()
 		WEnd
 	Next
 	
+	; fix any single rank that lost its space like hand$QRaiseBy
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" Then
+			If StringInStr($source[$i], "hand$2Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$2Raise", "hand$2 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$3Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$3Raise", "hand$3 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$4Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$4Raise", "hand$4 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$5Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$5Raise", "hand$5 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$6Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$6Raise", "hand$6 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$7Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$7Raise", "hand$7 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$8Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$8Raise", "hand$8 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$9Raise") Then
+				$source[$i] = StringReplace($source[$i], "hand$9Raise", "hand$9 Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$TRaise") Then
+				$source[$i] = StringReplace($source[$i], "hand$TRaise", "hand$T Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$JRaise") Then
+				$source[$i] = StringReplace($source[$i], "hand$JRaise", "hand$J Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$QRaise") Then
+				$source[$i] = StringReplace($source[$i], "hand$QRaise", "hand$Q Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$KRaise") Then
+				$source[$i] = StringReplace($source[$i], "hand$KRaise", "hand$K Raise", 0)
+			EndIf
+			If StringInStr($source[$i], "hand$ARaise") Then
+				$source[$i] = StringReplace($source[$i], "hand$ARaise", "hand$A Raise", 0)
+			EndIf
+		EndIf
+	Next
+	
 EndFunc ; ==> ChangeHandExpressions()
 
 Func FixBoardExpressions()
@@ -877,7 +936,170 @@ Func AddForce()
 		EndIf
 	Next
 	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "FORCE FORCE") Then
+			$source[$i] = StringReplace($source[$i], "FORCE FORCE", "FORCE", 0)
+		EndIf
+	Next
+	
 EndFunc ; ==> AddForce()
+
+Func FixPercentages()
+	
+	UpdateProgress(86, "Fixing 1% - 99% PotSize...")
+	
+	If $FixPercentagesOnly = True Then
+		; remove any space before '%'
+		For $i = 0 to $NumberOfLines Step + 1
+			If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " %") Then
+				$source[$i] = StringReplace($source[$i], " %", "%", 0)
+			EndIf
+		Next
+	EndIf
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% PotSize") Then
+			For $j = 1 to 9 Step +1
+				$percentage = " " & $j & "% PotSize"
+				$fixed_percentage = " 0.0" & $j & " * PotSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% PotSize") Then
+			For $j = 10 to 99 Step +1
+				$percentage = " " & $j & "% PotSize"
+				$fixed_percentage = " 0." & $j & " * PotSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	UpdateProgress(87, "Fixing 100% - 399% PotSize...")
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 100% PotSize") Then
+			$source[$i] = StringReplace($source[$i], " 100% PotSize", " 1.00 * PotSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% PotSize") Then
+			For $j = 101 to 199 Step +1
+				$percentage = " " & $j & "% PotSize"
+				$fixed_percentage = " " & $j/100 & " * PotSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 200% PotSize") Then
+			$source[$i] = StringReplace($source[$i], " 200% PotSize", " 2.00 * PotSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% PotSize") Then
+			For $j = 201 to 299 Step +1
+				$percentage = " " & $j & "% PotSize"
+				$fixed_percentage = " " & $j/100 & " * PotSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 300% PotSize") Then
+			$source[$i] = StringReplace($source[$i], " 300% PotSize", " 3.00 * PotSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% PotSize") Then
+			For $j = 301 to 399 Step +1
+				$percentage = " " & $j & "% PotSize"
+				$fixed_percentage = " " & $j/100 & " * PotSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	UpdateProgress(88, "Fixing 1% - 99% StackSize...")
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% StackSize") Then
+			For $j = 1 to 9 Step +1
+				$percentage = " " & $j & "% StackSize"
+				$fixed_percentage = " 0.0" & $j & " * StackSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% StackSize") Then
+			For $j = 10 to 99 Step +1
+				$percentage = " " & $j & "% StackSize"
+				$fixed_percentage = " 0." & $j & " * StackSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	UpdateProgress(89, "Fixing 100% - 399% StackSize...")
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 100% StackSize") Then
+			$source[$i] = StringReplace($source[$i], " 100% StackSize", " 1.00 * StackSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% StackSize") Then
+			For $j = 101 to 199 Step +1
+				$percentage = " " & $j & "% StackSize"
+				$fixed_percentage = " " & $j/100 & " * StackSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 200% StackSize") Then
+			$source[$i] = StringReplace($source[$i], " 200% StackSize", " 2.00 * StackSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% StackSize") Then
+			For $j = 201 to 299 Step +1
+				$percentage = " " & $j & "% StackSize"
+				$fixed_percentage = " " & $j/100 & " * StackSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], " 300% StackSize") Then
+			$source[$i] = StringReplace($source[$i], " 300% StackSize", " 3.00 * StackSize", 0)
+		EndIf
+	Next
+	
+	For $i = 0 to $NumberOfLines Step + 1
+		If StringLeft($source[$i], 2) <> "//" And StringInStr($source[$i], "% StackSize") Then
+			For $j = 301 to 399 Step +1
+				$percentage = " " & $j & "% StackSize"
+				$fixed_percentage = " " & $j/100 & " * StackSize"
+				$source[$i] = StringReplace($source[$i], $percentage, $fixed_percentage, 0)
+			Next
+		EndIf
+	Next
+	
+EndFunc ; ==> FixPercentages()
 
 Func CleanUp()
 	
