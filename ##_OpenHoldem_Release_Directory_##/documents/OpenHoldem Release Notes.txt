@@ -1,3 +1,15 @@
+v9.1.X 2016-XX-XX
+==================
+NEW STUFF:
+  
+BUG FIXES:
+
+MAINTENANCE:
+- Tablemap betpot regions name change: betpot_X_Ybutton, previously: betpot_X_Y_button.
+  For consistency with betpot_X_Ystate and other button regions.
+  [fqfq]
+
+
 v9.1.0 2016-02-16
 ==================
 NEW STUFF:
