@@ -232,9 +232,7 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 	// same for the betpot buttons - hardcoded so should only be done once at startup ?
 	for (int i=k_autoplayer_function_betpot_2_1; i<=k_autoplayer_function_betpot_1_4; ++i) {
 		int button_index = i - k_autoplayer_function_betpot_2_1;
-		button_names[i].Format("%s_%s", 
-			k_betpot_button_name[button_index], 
-			"button");
+		button_names[i].Format("%sbutton", k_betpot_button_name[button_index]);
 	}
 	// hardcoded so should only be done once at startup ?
 	_i3_button_name  = "i3button";
