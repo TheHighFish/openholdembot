@@ -1526,6 +1526,11 @@ bet1
 ##MaxOpponentStackSize##
 me_re_MaxOpponentStackSize
 
+##MaxOpponentsLeftStackSize##
+// We believe MaxOpponentsLeftStackSize is better than MaxStacksizeOfActiveOpponents
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18924
+MaxStacksizeOfActiveOpponents
+
 ##MaxStacksizeOfActiveOpponents##
 (bblind > 0) ? 
 (stack0 == balance ? stack1/bblind : stack0/bblind) :
@@ -2509,18 +2514,22 @@ ranklocommon
 -1
 
 ##HaveBottomPair##
-[ isonepair AND (rankhiplayer == ranklocommon OR rankloplayer == ranklocommon) ]
+WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN True FORCE
+
+##HaveSecondBottomPair##
+WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
 
 ##HaveBottomSet##
-((nrankedcommon == 1) AND ispair AND isthreeofakind AND (rankhiplayer == ranklocommon))
+WHEN ispair AND HaveBottomPair RETURN True FORCE
 
 ##HaveBottomTrips##
 WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN True FORCE
 WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN True FORCE
 
 ##HaveBottomTwoPair##
-WHEN (RankOfFirstHoleCard == LowestBoardCard       AND RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
-WHEN (RankOfFirstHoleCard == SecondLowestBoardCard AND RankOfSecondHoleCard == LowestBoardCard)       RETURN True FORCE
+WHEN HaveBottomPair AND HaveSecondBottomPair RETURN True FORCE
 
 ##HaveDoubleGutshotDraw##
    `((rankbits >> 1) & 0b1011101) == 5  // A_345_7

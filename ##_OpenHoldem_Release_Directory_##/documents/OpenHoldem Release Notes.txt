@@ -3,11 +3,15 @@ v9.1.X 2016-XX-XX
 NEW STUFF:
   
 BUG FIXES:
-
-MAINTENANCE:
 - Tablemap betpot regions name change: betpot_X_Ybutton, previously: betpot_X_Y_button.
   For consistency with betpot_X_Ystate and other button regions.
   [fqfq]
+- The OpenPPL-function HaveBottomPair was incorrectly only true if our hand was a pair,
+  but according to the definition it should also be true for bottom-trips and bottom-quads.
+  Thanks to chuckNeverMuck for reporting.
+  [THF]
+
+MAINTENANCE:
 
 
 v9.1.0 2016-02-16
