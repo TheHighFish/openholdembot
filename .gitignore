@@ -14,10 +14,13 @@
 *.manifest
 *.lastbuildstate
 Debug
-Release
-Release - Optimized
-OpenHoldem/Release - Optimized
 Documentation/OpenHoldem_Manual.chm
 Documentation/Chapters/titlepage/images/Temp
 Documentation/Chapters/titlepage/original_images
+OpenHoldem/Release - Optimized
+Release
+Release - Optimized
+scintilla/bin
+
+
 
