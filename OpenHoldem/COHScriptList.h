@@ -36,8 +36,8 @@ class COHScriptList: public COHScriptObject {
   friend class DialogHandList;
  public:
   COHScriptList( 
-    CString *new_name, 
-    CString *new_function_text,
+    CString new_name, 
+    CString new_function_text,
     int absolute_line);
   ~COHScriptList();
  public:

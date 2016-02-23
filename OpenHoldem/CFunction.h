@@ -20,10 +20,10 @@
 class CFunction: public COHScriptObject{
   friend class CParseTreeRotator;
   friend class CFunctionCollection;
-public:
+ public:
   CFunction(
-      CString *new_name, 
-      CString *new_function_text,
+      CString new_name, 
+      CString new_function_text,
       int absolute_line);
   ~CFunction();
  public:

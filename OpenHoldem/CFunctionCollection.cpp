@@ -122,7 +122,7 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   if (Exists(name)) {
      write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
-    _function_map.erase(name);
+    Delete(name);
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
@@ -130,7 +130,6 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
       "[CFunctionCollection] Ignoring bad function %s\n", name);
     return;
   }
-
    write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
   _function_map[name] = new_function;
@@ -249,12 +248,14 @@ void CFunctionCollection::ExecuteSelftest() {
     "[CFunctionCollection] Executing self-test\n");
   CString name = kSelftestName;
   CString function_text = kSelftestFunction;
-  CFunction *p_function = new CFunction(&name, 
-    &function_text, kNoAbsoluteLineNumberExists); 
+  CFunction *p_function = new CFunction(name, 
+    function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
   p_function->Parse();
   CSelftestParserEvaluator selftest;
   selftest.Test();
+  // The function stazs in the collection until the very end
+  // and then gets released together with the OpenPPL-symbols.
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
@@ -380,8 +381,11 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   }
    write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Adding default function: %s\n", function_name);
-  CFunction *p_function = new CFunction(&function_name, 
-    &function_text, kNoAbsoluteLineNumberExists); 
+  // The added functions stazs in the collection 
+  // until a new profile gets loaded, until it gets overwritten]
+  // or until the ebtire collection gets released
+  CFunction *p_function = new CFunction(function_name, 
+    function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
   p_function->Parse();
 }
@@ -492,7 +496,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   // Delete old entry from the binary tree... 
   Delete(from_name);
   // ...then rename...
-  object_to_rename->SetName(to_name);
+  object_to_rename->SetName(to_name); //!!!!! creates a dangling pointer
   // ...and insert again.
   Add(object_to_rename);
   return true;
@@ -507,7 +511,10 @@ void CFunctionCollection::Delete(CString name) {
     if (it != _function_map.end()) {
        write_log(preferences.debug_formula(), 
         "[CFunctionCollection] Deleting %s\n", name);
+       // Remove it from the lookup/table...
       _function_map.erase(it);
+      // ... and delete the object
+      delete object_to_delete;
     }
   }
 }
@@ -518,8 +525,11 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
   if (function == NULL) {
     // Function does not yet exist; new one
     // We need to create name and text on the heap, can't point to the stack
-    CString *my_text = new CString(content);
-    CString *my_name = new CString(name);
+    CString my_text = content;
+    CString my_name = name;
+    // The added functions stazs in the collection 
+    // until a new profile gets loaded, until it gets overwritten]
+    // or until the ebtire collection gets released
     function = new CFunction(my_name, my_text, kUndefinedZero);
     Add(function);
   } else {

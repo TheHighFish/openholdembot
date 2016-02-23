@@ -316,8 +316,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     // ##listXYZ##
      write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
-    COHScriptList *new_list = new COHScriptList(&_function_name, 
-        &function_text, starting_line);
+    COHScriptList *new_list = new COHScriptList(_function_name, 
+      function_text, starting_line);
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     return;
@@ -338,8 +338,11 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
       "Did you forget \"f$\"?\n");
     return;
   }
-  CFunction *p_new_function = new CFunction(&_function_name, 
-	  &function_text, starting_line);
+  // The added functions stays in the collection 
+  // until a new profile gets loaded, until it gets overwritten]
+  // or until the ebtire collection gets released
+  CFunction *p_new_function = new CFunction(_function_name, 
+	  function_text, starting_line);
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
   // Care about operator precendence

@@ -11,16 +11,20 @@
 #include "NumericalFunctions.h"
 
 COHScriptList::COHScriptList(
-    CString *new_name, 
-    CString *new_function_text,
+    CString new_name, 
+    CString new_function_text,
     int absolute_line) {
-  _name = ((new_name != NULL) ? *new_name : "");
-  _function_text = ((new_function_text != NULL) ? *new_function_text : "");
+  _name = new CString(new_name);
+  _function_text = new CString(new_function_text);
   _starting_line_of_function = absolute_line;
   Clear();
 }
 
 COHScriptList::~COHScriptList() {
+  assert (_name != NULL);
+  delete _name;
+  assert (_function_text != NULL);
+  delete _function_text;
 }
 
 void COHScriptList::Clear() {
@@ -173,7 +177,7 @@ double COHScriptList::Evaluate(bool log /* = false */) {
 }
 
 CString COHScriptList::function_text() {
-  return _function_text;
+  return *_function_text;
 }
 
 void COHScriptList::GenerateFunctionTextFromHandlistMatrix() {
@@ -221,5 +225,5 @@ void COHScriptList::GenerateFunctionTextFromHandlistMatrix() {
   if (any_hand_added) {
     result += "\n";
   }
-  _function_text = result;
+  *_function_text = result;
 } 

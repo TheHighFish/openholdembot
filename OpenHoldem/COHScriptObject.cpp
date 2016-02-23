@@ -17,27 +17,25 @@
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 
-COHScriptObject::COHScriptObject()
-{
-	_name = "";
-	_function_text = "";
+COHScriptObject::COHScriptObject() {
+	_name = NULL;
+	_function_text = NULL;
   _starting_line_of_function = 0;
 }
 
 COHScriptObject::COHScriptObject(
-    CString *new_name, 
-    CString *new_function_text,
+    CString new_name, 
+    CString new_function_text,
     int starting_line_of_function) {
-  _name = *new_name;
-  _function_text = *new_function_text;
+  _name = new CString(new_name);
+  _function_text = new CString(new_function_text);
   _starting_line_of_function = starting_line_of_function;
 }
 
-COHScriptObject::~COHScriptObject()
-{}
+COHScriptObject::~COHScriptObject() {
+}
 
-double COHScriptObject::Evaluate(bool log /* = false */)
-{
+double COHScriptObject::Evaluate(bool log /* = false */) {
 	bool this_method_should_always_get_overwritten_and_never_called = false;
 	assert(this_method_should_always_get_overwritten_and_never_called);
 	return 0.0;
@@ -58,66 +56,66 @@ bool COHScriptObject::IsMainOpenPPLFunction(CString name) {
 }
 
 bool COHScriptObject::IsMainOpenPPLFunction() {
-  return IsMainOpenPPLFunction(_name);
+  return IsMainOpenPPLFunction(*_name);
 }
 
 bool COHScriptObject::IsStandardFunction() {
   for (int i=0; i<k_number_of_standard_functions; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsAutoplayerFunction() {
   for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsSecondaryFunction() {
   for (int i=k_standard_function_prefold; i<=k_standard_function_chat; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsIniFunction() {
   for (int i=k_init_on_startup; i<=k_init_on_heartbeat; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsHopperFunction() {
   for (int i=k_hopper_function_sitin; i<=k_hopper_function_rebuy; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsPrWinFunction() {
   for (int i=k_prwin_number_of_opponents; i<=k_prwin_wontplay; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsICMConfigurationFunction() {
   for (int i=k_icm_prize1; i<=k_icm_prize9; ++i) {
-    if (_name == k_standard_function_names[i]) return true;
+    if (*_name == k_standard_function_names[i]) return true;
   }
   return false;
 }
 
 bool COHScriptObject::IsDebugFunction() {
-  if (_name == "f$debug") return true;
-  if (_name == "f$test")  return true;
+  if (*_name == "f$debug") return true;
+  if (*_name == "f$test")  return true;
   return false;
 }
 
 bool COHScriptObject::IsNotesOrDLL() {
-  return ((_name == "DLL") || (_name == "notes"));
+  return ((*_name == "DLL") || (*_name == "notes"));
 }
 
 int COHScriptObject::EditorGroupingCategory() {
@@ -146,12 +144,12 @@ int COHScriptObject::EditorGroupingCategory() {
 }
 
 void COHScriptObject::Parse() {
-  p_formula_parser->ParseSingleFormula(_name, 
+  p_formula_parser->ParseSingleFormula(*_name, 
     function_text(), _starting_line_of_function);
 };
 
 CString COHScriptObject::Serialize() {
-  CString result = "##" + _name + "##\r\n" + _function_text;
+  CString result = "##" + *_name + "##\r\n" + *_function_text;
   // Make sure that we have at least 2 new-lines at the end
   if (result.Right(2) != "\r\n") {
     result += "\r\n\r\n";

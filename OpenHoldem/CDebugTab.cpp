@@ -32,12 +32,14 @@ TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
 
 CDebugTab::CDebugTab() {
   // Name is alwayss the same and required for function lookup
-  _name = "f$debug";
+  _name = new CString("f$debug");
   _number_of_expressions = 0;
   Clear();
 }
 
 CDebugTab::~CDebugTab() {
+  assert(_name != NULL);
+  delete _name;
   Clear();
 }
 
@@ -88,7 +90,7 @@ CString CDebugTab::function_text() {
   // It seems we need the current _function_text for parsing,
   // if changed in the editor, so we can't construct a new 
   // clean one from the old parsed data.
-  return _function_text; 
+  return *_function_text; 
   /* !!
   // Clean function text,
   // nicely formatted without results
