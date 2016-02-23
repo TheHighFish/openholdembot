@@ -1555,8 +1555,9 @@ betposition
 \begin_inset Text
 
 \begin_layout Plain Layout
-your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition
- will change as players fold in front of you.
+your bet position (1=left to the dealer=usually sblind, 2=bblind, ..., nplayersdeal
+t=dealer); contrary to dealposition betposition will change as players fold
+ in front of you.
 \end_layout
 
 \end_inset
@@ -1587,11 +1588,11 @@ dealposition
 \begin_layout Plain Layout
 your deal position 1 = left to the dealer, usually small blind2 = 2 left
  to the dealer, usually big blind ...
- nplayersdealt = dealer dealposition will not change as players foldIn headsup
- situations the player to the dealers left is usually big-blind and in other
- situations the small blind might be missing.
- But it is your duty to consider these special case, dealposition does not
- magically auto-adapt to comply with the usual values for full-ring.
+ nplayersdealt = dealer.
+ dealposition will not change as players fold.
+ Dealposition does not magically auto-adapt for special cases like a missing
+ small-blind.
+ If you want to figure out chairs better use the more modern chair symbols.
 \end_layout
 
 \end_inset
@@ -3653,7 +3654,7 @@ blind-raisers
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="31" columns="2">
+<lyxtabular version="3" rows="27" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="35text%">
 <column alignment="left" valignment="top" width="65text%">
@@ -3788,26 +3789,6 @@ number of players playing (including you) (0-10)
 \begin_inset Text
 
 \begin_layout Plain Layout
-nplayersblind
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-number of players blind (including you) (0-10)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 nfriendsseated
 \end_layout
 
@@ -3898,26 +3879,6 @@ nopponentsplaying
 
 \begin_layout Plain Layout
 number of opponents playing (not including you) (0-9)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-nopponentsblind
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-number of opponents blind (not including you) (0-9) 
 \end_layout
 
 \end_inset
@@ -4184,26 +4145,6 @@ bits 9-0: 1=playing 0=notplaying
 \begin_inset Text
 
 \begin_layout Plain Layout
-playersblindbits
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-bits 9-0: 1=blind 0=notblind 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 opponentsseatedbits
 \end_layout
 
@@ -4260,7 +4201,7 @@ bits 9-0: 1=dealt 0=notdealt
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4269,31 +4210,11 @@ opponentsplayingbits
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-bits 9-0: 1=playing 0=notplaying
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-opponentsblindbits 
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-bits 9-0: 1=blind 0=notblind 
+bits 9-0: 1=playing 0=notplaying
 \end_layout
 
 \end_inset
