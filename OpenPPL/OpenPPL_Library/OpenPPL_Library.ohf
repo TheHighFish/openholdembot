@@ -3519,6 +3519,9 @@ IntegerRandom_0_100
 //
 //*****************************************************************************
 
+##GameIsHeadsUp##
+WHEN nplayersdealt = 2 RETURN True FORCE
+
 ##PlayersAtStartOfThisRound##
 (betround == ConstBetRoundPreflop) ? nplayersround1 :
 (betround == ConstBetRoundFlop)    ? nplayersround2 :
@@ -3536,8 +3539,7 @@ nopponentsseated
 (Opponents>1 OR (Opponents==1 AND AmountToCall<StackSize))? Opponents_SumAllinBits:
 (Opponents==1 AND AmountToCall==StackSize)? 1:
 0
-  
-  
+   
 ##Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot##
 // Some casinos don't display the bets of players who are allin,
 // but move them immediately to the main-pot (and/or sitepots)
@@ -3653,17 +3655,17 @@ InSmallBlind ? 1 :
 // Small blind missing, therefore we can't be small blind
 MissingSmallBlind ? False :
 // 3 or more handed, normal blinds
-   ((nplayersdealt != 2) AND (dealposition == 1))
+   ((NOT GameIsHeadsUp) AND (dealposition == 1))
 // Headsup, reversed blinds
-OR ((nplayersdealt == 2) AND (dealposition == 2))
+OR (GameIsHeadsUp == 2) AND (dealposition == 2))
 
 ##BigBlind##
 // Missing small blind, big blind is the first dealt player
 MissingSmallBlind ? (dealposition == 1) :
 // 3 or more handed, normal blinds
-   ((nplayersdealt != 2) AND (dealposition == 2))
+   ((NOT GameIsHeadsUp) AND (dealposition == 2))
 // Headsup, reversed blinds
-OR ((nplayersdealt == 2) AND (dealposition == 1))
+OR ((GameIsHeadsUp) AND (dealposition == 1))
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.
@@ -3760,7 +3762,10 @@ EarlyPosition1
 UTG
 
 ##TrueDealPositionOfBigBlind##
-MissingSmallBlind ? 1 : 2
+// www!!!!!
+WHEN GameIsHeadsUp RETURN 1 FORCE
+WHEN MissingSmallBlind  RETURN 1 FORCE
+WHEN Others RETURN 2 FORCE
 
 ##BigBlindChair##
 ac_dealpos0 == TrueDealPositionOfBigBlind ? 0 :
