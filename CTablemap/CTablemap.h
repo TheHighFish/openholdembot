@@ -16,7 +16,7 @@
 #define INC_CTABLEMAP_H
 
 #include <map>
-#include "../CTransform/hash/stdint.h"
+#include <stdint.h>
 #include "../CTransform/pdiff/RGBAImage.h"
 #include "../CCritSec/CCritSec.h"
 #include "../OpenHoldem/MagicNumbers.h"

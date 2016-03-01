@@ -16,7 +16,7 @@
 #ifndef INC_CSCRAPER_H
 #define INC_CSCRAPER_H
 
-#include "../../CTransform/hash/stdint.h"
+#include <stdint.h>
 #include "../CTablemap/CTablemap.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
