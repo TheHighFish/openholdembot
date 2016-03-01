@@ -3657,7 +3657,7 @@ MissingSmallBlind ? False :
 // 3 or more handed, normal blinds
    ((NOT GameIsHeadsUp) AND (dealposition == 1))
 // Headsup, reversed blinds
-OR (GameIsHeadsUp == 2) AND (dealposition == 2))
+OR (GameIsHeadsUp AND (dealposition == 2))
 
 ##BigBlind##
 // Missing small blind, big blind is the first dealt player
