@@ -1,6 +1,8 @@
-v9.1.X 2016-XX-XX
+v9.1.1 2016-XX-XX
 ==================
 NEW STUFF:
+- Improved tournament detection, now also considering values like "buyin".
+  [THF]
   
 BUG FIXES:
 - Tablemap betpot regions name change: betpot_X_Ybutton, previously: betpot_X_Y_button.
