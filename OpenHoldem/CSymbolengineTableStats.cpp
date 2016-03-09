@@ -114,7 +114,7 @@ void CSymbolEngineTableStats::UpdateData() {
 
 double CSymbolEngineTableStats::SumUp(int *data_set_for_n_hands) {
   // Return-tzpe is double, not int.
-  // This waz we easily avoid the unexpected effects of integer-division.
+  // This way we easily avoid the unexpected effects of integer-division.
   int sum = 0;
   for (int i=0; i<kNumberOfHands; ++i) {
     sum += data_set_for_n_hands[i];

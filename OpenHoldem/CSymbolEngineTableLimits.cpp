@@ -220,8 +220,8 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
 	 write_log(preferences.debug_table_limits(), 
     "[CSymbolEngineTableLimits] blinds_locked_for_current_hand: %s\n", 
     Bool2CString(blinds_locked_for_current_hand));
-	// Reasonable blinds guaranteed bz the waz we guess.
-  // And IsMzTurn guarantees stable input
+	// Reasonable blinds guaranteed by the way we guess.
+  // And IsMyTurn guarantees stable input
   if (!blinds_locked_for_current_hand && p_scraper_access->IsMyTurn()) {
 		AutoLockBlindsForCurrentHand();
 		AutoLockBlindsForCashgamesAfterNHands();

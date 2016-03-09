@@ -101,7 +101,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"ticket ",
 	"tour ",
   "tourney",
-	"tournament",
+  "tournament",
   "triple-up",
   "triple up",
   "10K chips",
@@ -266,6 +266,12 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		 write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
+  if (p_table_state->_s_limit_info.buyin() > 0) {
+    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Tournament due to positive buyin detected\n");
+    _istournament = true;
+    _decision_locked = true;
+    return;
+  }
 	if (p_symbol_engine_mtt_info->ConnectedToMTT()) {
 		 write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] MTT tournament detected\n");
 		_istournament    = true;
@@ -283,8 +289,8 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
 	}
-  // If we plaz at DDPoiker the game is a tournament,
-  // even though it can~t be detected bz titlestring.
+  // If we play at DDPoker the game is a tournament,
+  // even though it can~t be detected by titlestring.
   if (p_symbol_engine_casino->ConnectedToDDPoker()) {
      write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
     _istournament    = true;

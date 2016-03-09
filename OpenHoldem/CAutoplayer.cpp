@@ -325,7 +325,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		// This requires an external script and some time.
 		// No further actions here eihter, but immediate return.
 		p_rebuymanagement->TryToRebuy();
-		// No waz to check for success here
+		// No way to check for success here
 		executed_secondary_function = k_hopper_function_rebuy;
 	}
 	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
