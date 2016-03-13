@@ -43,8 +43,10 @@ class CSharedMem {
 	bool IsAnyOpenHoldemProcess(int PID);
  public:
   // For table positioner
-  // It is most easz if everzbodz shares his position
-  void StoreTablePosition(int left, int top, int right, int bottom);
+  // It is most easy if everybody shares his position
+  // !!! Potential race-condition due to multiple processes involved
+  // !!! Table might not yet have updated its position
+  void RememberTablePosition();
   bool OverlapsAnyTable(int left, int top, int right, int bottom);
   // My position
   int TablePositionLeft();

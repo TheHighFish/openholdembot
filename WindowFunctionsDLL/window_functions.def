@@ -1,0 +1,15 @@
+LIBRARY	window_functions
+EXPORTS
+MinimizeWindow
+ResizeToClientSize
+ResizeToTotalSize
+WinIsBring
+WinIsDesktop
+WinIsMaximized
+WinIsMinimized
+WinIsOutOfScreen
+WinIsTaskbar
+WinIsProgramManager
+WinIsTaskManager
+WinBelongsToExecutable 
+WinIsZeroSized
