@@ -26,6 +26,10 @@
 #define WINDOW_FUNCTIONS_API __declspec(dllimport)
 #endif
 
+WINDOW_FUNCTIONS_API int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height);
+
+WINDOW_FUNCTIONS_API int CalculateTotalWidthForClientWith(HWND window, int desired_client_width);
+
 WINDOW_FUNCTIONS_API void MinimizeWindow(HWND window);
 
 WINDOW_FUNCTIONS_API void ResizeToClientSize(HWND window, int new_width, int new_height);

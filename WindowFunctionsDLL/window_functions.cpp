@@ -137,20 +137,37 @@ bool WinIsZeroSized(HWND window) {
     || (rect.bottom <= rect.top));
 }
 
-void ResizeToClientSize(HWND window, int new_width, int new_height) {
-  assert(new_width > 0);
-  assert(new_height > 0);
+int CalculateTotalWidthForClientWith(HWND window, int desired_client_width) {
+  assert(desired_client_width > 0);
   RECT old_client_size;
   GetClientRect(window, &old_client_size);
-  int old_width = old_client_size.right - old_client_size.left;
-  int old_height = old_client_size.bottom - old_client_size.top;
-  if (old_width == new_width && old_height == new_height) return;
+  int old_client_width = old_client_size.right - old_client_size.left;
   RECT old_position;
   GetWindowRect(window, &old_position);
   int new_total_width = old_position.right - old_position.left
-    + new_width - old_width;
+    + desired_client_width - old_client_width;
+  return new_total_width;
+}
+
+int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height) {
+  assert(desired_client_height > 0);
+  RECT old_client_size;
+  GetClientRect(window, &old_client_size);
+  int old_client_height = old_client_size.bottom - old_client_size.top;
+  RECT old_position;
+  GetWindowRect(window, &old_position);
   int new_total_height = old_position.bottom - old_position.top
-    + new_height - old_height;
+    + desired_client_height - old_client_height;
+  return new_total_height;
+}
+
+void ResizeToClientSize(HWND window, int new_width, int new_height) {
+  assert(new_width > 0);
+  assert(new_height > 0);
+  int new_total_width = CalculateTotalHeightForClientWidth(
+    window, new_width);
+  int new_total_height = CalculateTotalHeightForClientHeight(
+    window, new_height);
   ResizeToTotalSize(window, new_total_width, new_total_height);
 }
 

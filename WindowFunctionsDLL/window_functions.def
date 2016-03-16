@@ -1,5 +1,7 @@
 LIBRARY	window_functions
 EXPORTS
+CalculateTotalHeightForClientHeight
+CalculateTotalWidthForClientWith
 MinimizeWindow
 ResizeToClientSize
 ResizeToTotalSize
