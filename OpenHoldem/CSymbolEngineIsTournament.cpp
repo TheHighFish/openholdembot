@@ -196,31 +196,33 @@ void CSymbolEngineIsTournament::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
-   // "Beautiful" numbers => tournament
-   // This condition does unfortunatelly only work for the first and final table in an MTT,
-   // not necessarily for other late tables (fractional bets, uneven sums).
-   double sum_of_all_chips = 0.0;
-   for (int i=0; i<p_tablemap->nchairs(); i++) {
-	   if (p_table_state->Player(i)->active()==true) {
-		   sum_of_all_chips += p_table_state->Player(i)->balance();
-		   sum_of_all_chips += p_table_state->Player(i)->bet();}
-   }
-   if (sum_of_all_chips != int(sum_of_all_chips)) {
-      // Franctional number.
-      // Looks like a cash-game.
-      return false;
-   }
-   if ((int(sum_of_all_chips) % 100) != 0) {
-      // Not a multiplicity of 100.
-      // Probably not a tournament.
-      return false;
-   }
-   if ((int(sum_of_all_chips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0)    { 
-      // Not a multiplicity of the active players.
-      // Probably not a tournament.
-      return false;
-   }
-   return true;
+  // "Beautiful" numbers => tournament
+  // This condition does unfortunatelly only work for the first and final table in an MTT,
+  // not necessarily for other late tables (fractional bets, uneven sums).
+  double sum_of_all_chips = 0.0;
+  for (int i=0; i<p_tablemap->nchairs(); i++) {
+	  if (p_table_state->Player(i)->active()==true) {
+	    sum_of_all_chips += p_table_state->Player(i)->balance();
+		  sum_of_all_chips += p_table_state->Player(i)->bet();}
+  }
+  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Sum of chips at the table: %.2f\n",
+    sum_of_all_chips);
+  if (sum_of_all_chips != int(sum_of_all_chips)) {
+    // Franctional number.
+    // Looks like a cash-game.
+    return false;
+  }
+  if ((int(sum_of_all_chips) % 100) != 0) {
+    // Not a multiplicity of 100.
+    // Probably not a tournament.
+    return false;
+  }
+  if ((int(sum_of_all_chips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0)    { 
+    // Not a multiplicity of the active players.
+    // Probably not a tournament.
+    return false;
+  }
+  return true;
 }
 
 bool CSymbolEngineIsTournament::AntesPresent() {
@@ -423,8 +425,7 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result,
 		// Valid symbol
 		return true;
 	}
-
-	// Symbol of a different symbol-engine
+  // Symbol of a different symbol-engine
 	return false;
 }
 
