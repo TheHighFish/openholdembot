@@ -69,8 +69,8 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)mouse.dll</OutputFile>
-      <ModuleDefinitionFile>mousedll.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)window_functions.dll</OutputFile>
+      <ModuleDefinitionFile>window_functions.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>

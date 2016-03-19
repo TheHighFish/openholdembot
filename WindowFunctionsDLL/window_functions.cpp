@@ -164,8 +164,7 @@ int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height) 
 void ResizeToClientSize(HWND window, int new_width, int new_height) {
   assert(new_width > 0);
   assert(new_height > 0);
-  int new_total_width = CalculateTotalHeightForClientWidth(
-    window, new_width);
+  int new_total_width = CalculateTotalWidthForClientWidth(window, new_width);
   int new_total_height = CalculateTotalHeightForClientHeight(
     window, new_height);
   ResizeToTotalSize(window, new_total_width, new_total_height);

@@ -28,7 +28,7 @@
 
 WINDOW_FUNCTIONS_API int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height);
 
-WINDOW_FUNCTIONS_API int CalculateTotalWidthForClientWith(HWND window, int desired_client_width);
+WINDOW_FUNCTIONS_API int CalculateTotalWidthForClientWidth(HWND window, int desired_client_width);
 
 WINDOW_FUNCTIONS_API void MinimizeWindow(HWND window);
 
