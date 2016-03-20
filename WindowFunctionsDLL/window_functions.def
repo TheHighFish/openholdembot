@@ -5,6 +5,7 @@ CalculateTotalWidthForClientWidth
 MinimizeWindow
 ResizeToClientSize
 ResizeToTotalSize
+WinBelongsToExecutable 
 WinIsBring
 WinIsDesktop
 WinIsMaximized
@@ -13,5 +14,4 @@ WinIsOutOfScreen
 WinIsTaskbar
 WinIsProgramManager
 WinIsTaskManager
-WinBelongsToExecutable 
 WinIsZeroSized
