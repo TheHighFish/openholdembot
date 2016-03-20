@@ -12,6 +12,9 @@ BUG FIXES:
   but according to the definition it should also be true for bottom-trips and bottom-quads.
   Thanks to chuckNeverMuck for reporting.
   [THF]
+- TotalInvested now consideres abtes.
+  Thanks to Salem for reporting.
+  [THF]
 
 MAINTENANCE:
 
