@@ -274,7 +274,7 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
     _decision_locked = true;
     return;
   }
-	if (p_symbol_engine_mtt_info->ConnectedToMTT()) {
+	if (p_symbol_engine_mtt_info->ConnectedToAnyTournament()) {
 		 write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] MTT tournament detected\n");
 		_istournament    = true;
 		_decision_locked = true;

@@ -1,7 +1,10 @@
 v9.1.1 2016-XX-XX
 ==================
 NEW STUFF:
-- Improved tournament detection, now also considering values like "buyin".
+- Improved tournament detection, now also considering 
+    * the symbol "buyin" that can be read from the title with "^y" or scraped from the table
+	* the scraped symbols "MTT_number_entrants", "MTT_players_remaining",
+      "MTT_paid_places" and "MTT_my_rank".
   [THF]
   
 BUG FIXES:
@@ -17,6 +20,9 @@ BUG FIXES:
   [THF]
 
 MAINTENANCE:
+- Extended self-test for parser and evaluator.
+  Now also checking user-variables.
+  [THF]
 
 
 v9.1.0 2016-02-16
