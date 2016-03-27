@@ -6,6 +6,9 @@ NEW STUFF:
 	* the scraped symbols "MTT_number_entrants", "MTT_players_remaining",
       "MTT_paid_places" and "MTT_my_rank".
   [THF]
+- Full support for Windows 10 and probably all other modern Windows versions.
+  Existing tablemaps work without any changes.
+  [THF]
   
 BUG FIXES:
 - Tablemap betpot regions name change: betpot_X_Ybutton, previously: betpot_X_Y_button.
