@@ -74,9 +74,9 @@ class CFormulaParser {
  private:
   // OpenPPL
   TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
-  TPParseTreeNode ParseOpenPPLAction(); //!!!!!
   TPParseTreeOperatorNode ParseOpenPPLRaiseToExpression();
   TPParseTreeOperatorNode ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLAction();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
  private:

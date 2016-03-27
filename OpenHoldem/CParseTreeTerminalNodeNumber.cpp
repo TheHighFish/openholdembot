@@ -94,16 +94,4 @@ CString CParseTreeTerminalNodeNumber::Serialize() {
   }
 }
 
-void CParseTreeTerminalNodeNumber::SetUserVariable(CString name) {
-  if (name.Left(4).MakeLower() == "user") {   
-    p_symbol_engine_openppl_user_variables->Set(name);
-  } else if (name.Left(3) == "me_") {
-    double temp_result;
-    p_symbol_engine_memory_symbols->EvaluateSymbol(name, 
-      &temp_result, true);
-  }
-  else {
-    assert(kThisMustNotHappen);
-  }
-}
 

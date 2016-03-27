@@ -27,7 +27,7 @@ const char* const kSelftestFunction =
   "WHEN user_not_true\n"
   "   // This should not get called\n"
   "   WHEN 1 RETURN 11 FORCE\n"
-  "// Testing user-defined variables (!I)\n"
+  "// Testing user-defined variables (II)\n"
   "WHEN 1\n"
   "   // Both variables should be set\n"
   "   // Then OpenHoldem should continue\n"

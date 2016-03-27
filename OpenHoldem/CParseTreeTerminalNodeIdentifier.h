@@ -35,8 +35,6 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   static double EvaluateIdentifier(CString name, bool log);
  private:
   bool IsBinaryIdentifier();
- private:
-  void SetUserVariable(CString name);
  protected:
   CString _terminal_name;
   // Line number relative to current function

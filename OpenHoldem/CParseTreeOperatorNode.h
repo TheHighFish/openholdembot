@@ -53,7 +53,6 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   //bool IsBinaryIdentifier();
  private:
   bool SecondSibblingIsUserVariableToBeSet();
-  void SetUserVariable(CString name); //?????
 };
 
 typedef CParseTreeOperatorNode *TPParseTreeOperatorNode;

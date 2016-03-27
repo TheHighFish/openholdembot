@@ -6,7 +6,7 @@ NEW STUFF:
 	* the scraped symbols "MTT_number_entrants", "MTT_players_remaining",
       "MTT_paid_places" and "MTT_my_rank".
   [THF]
-- Full support for Windows 10 and probably all other modern Windows versions.
+- Full support for Windows 10 and probably all other modern versions of Windows.
   Existing tablemaps work without any changes.
   [THF]
   
@@ -21,10 +21,9 @@ BUG FIXES:
 - TotalInvested now consideres antes.
   Thanks to Salem for reporting.
   [THF]
-
-MAINTENANCE:
-- Extended self-test for parser and evaluator.
-  Now also checking user-variables.
+- The refactored parse-tree broken certain cases of user-variables.
+  This has now been fixed and test-cases have been added to the self-test-module.
+  Thanks to for reporting.
   [THF]
 
 

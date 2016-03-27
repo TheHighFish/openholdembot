@@ -306,7 +306,7 @@ double CParseTreeOperatorNode::EvaluateTernaryExpression(bool log) {
       // Normal behaviour: return the evaluated result
       return value_of_second_sibbling;
     }
-    // Uvervariables: will fall through to the evaluation 
+    // Uservariables: will fall through to the evaluation 
     // of the third sibbling...
 	}
 	double value_of_third_sibbling = EvaluateSibbling(_third_sibbling, log);
@@ -372,19 +372,6 @@ CString CParseTreeOperatorNode::Serialize() {
 bool CParseTreeOperatorNode::SecondSibblingIsUserVariableToBeSet() {
   if (_second_sibbling == NULL) return false;
   return (_second_sibbling->_node_type == kTokenActionUserVariableToBeSet);
-}
-
-void CParseTreeOperatorNode::SetUserVariable(CString name) {
-  if (name.Left(4).MakeLower() == "user") {   
-    p_symbol_engine_openppl_user_variables->Set(name);
-  } else if (name.Left(3) == "me_") {
-    double temp_result;
-    p_symbol_engine_memory_symbols->EvaluateSymbol(name, 
-      &temp_result, true);
-  }
-  else {
-    assert(kThisMustNotHappen);
-  }
 }
 
 bool CParseTreeOperatorNode::EvaluatesToBinaryNumber() {
