@@ -348,6 +348,9 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
+  //!!! buttons in "player"-loop?
+  //!!! direct access to button-labels?
+  //!!! bad!
 	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		// Draw "on" buttons
