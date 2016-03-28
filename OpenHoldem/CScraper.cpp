@@ -546,7 +546,7 @@ int CScraper::ScrapeCard(CString name) {
   // was the reason for wrong deal-positions for some beginners 
   // with bad tablemaps.
   // So we are back to simplicity.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19109
   return CARD_NOCARD;
 }
 

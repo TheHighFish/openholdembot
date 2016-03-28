@@ -26,8 +26,9 @@
 #include <sys/stat.h>
 
 #ifdef _DEBUG
-// visual leak detector
-//!!!!!#include <vld.h>			
+// visual leak detector in debug-mode
+// https://vld.codeplex.com/
+#include <vld.h>			
 #endif _DEBUG
 
 FILE *log_fp = NULL;

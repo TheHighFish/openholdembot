@@ -533,7 +533,7 @@ void CIteratorThread::InitHandranktTableForPrwin() {
 void CIteratorThread::CloneVanillaChairToAllOtherChairs() {
 	// finally copy the vanilla to all user chairs so that someone who just turns on prw1326
 	// experimentally does not cause a crash
-  //!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=19012&hilit=%2Avanilla%2A
 	 write_log(true, "[ZZL] CIteratorThread::CloneVanillaChairToAllOtherChairs \n");
 	for(int i=0; i<kMaxNumberOfPlayers; ++i) {
 		_prw1326.chair[i] = _prw1326.vanilla_chair;
