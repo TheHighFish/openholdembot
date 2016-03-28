@@ -536,7 +536,7 @@ void CIteratorThread::CloneVanillaChairToAllOtherChairs() {
   //!!!!!
 	 write_log(true, "[ZZL] CIteratorThread::CloneVanillaChairToAllOtherChairs \n");
 	for(int i=0; i<kMaxNumberOfPlayers; ++i) {
-		_prw1326.chair[i]=_prw1326.vanilla_chair;
+		_prw1326.chair[i] = _prw1326.vanilla_chair;
 	}
 }
 
