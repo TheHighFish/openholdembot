@@ -1,3 +1,9 @@
+v9.1.1 2016-04-01
+=================
+NEW STUFF:
+- Full support for Windows 10 and probably all other modern versions of Windows.
+  [THF]
+
 v4.4.1 2014-02-10
 =================
 BUG FIXES: 
