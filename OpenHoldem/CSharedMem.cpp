@@ -217,13 +217,13 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 	return false;
 }
 
-void CSharedMem::StoreTablePosition(int left, int top, int right, int bottom) {
+void CSharedMem::RememberTablePosition() {
   ENT;
   int session_ID = p_sessioncounter->session_id();
-  table_positions[session_ID].left   = left;
-  table_positions[session_ID].top    = top;
-  table_positions[session_ID].right  = right;
-  table_positions[session_ID].bottom = bottom;
+  RECT position;  GetWindowRect(attached_poker_windows[session_ID], &position);  table_positions[session_ID].left   = position.left;
+  table_positions[session_ID].top    = position.top;
+  table_positions[session_ID].right  = position.right;
+  table_positions[session_ID].bottom = position.bottom;
 }
 
 bool CSharedMem::OverlapsAnyTable(int left, int top, int right, int bottom) {

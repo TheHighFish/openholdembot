@@ -272,6 +272,62 @@ always use replay-frames
 \end_layout
 
 \begin_layout Section
+OpenHoldem does not play (III)
+\end_layout
+
+\begin_layout Standard
+Some people have the problem that OpenHoldem 
+\begin_inset Quotes eld
+\end_inset
+
+does niot act
+\begin_inset Quotes erd
+\end_inset
+
+ despite the log clearly shows the opposite:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2016-03-26 00:23:05 -   Best action:   f$betsize = 30.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-03-26 00:23:05 -   Action taken:  f$betsize
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The reason: OpenHoldem did act, but the casino did not react.
+ This can be caused by the security settings of some Windows versions, that
+ prevent the generation of virtual keyboard events.
+ Possible solutions:
+\end_layout
+
+\begin_layout Itemize
+change these security settings
+\end_layout
+
+\begin_layout Itemize
+run OpenHoldem and your casino as the same user
+\end_layout
+
+\begin_layout Itemize
+if all else fails run OpenHoldem with admin privileges (not recommended,
+ as then any potential crash can crash the entire system)
+\end_layout
+
+\begin_layout Section
 OpenHoldem calls any hand
 \end_layout
 

@@ -11,8 +11,12 @@
 *.log
 *.tlog
 *.pch
+*.ipch
 *.manifest
 *.lastbuildstate
+*.opendb
+*.sdf
+*.suo
 Debug
 Documentation/OpenHoldem_Manual.chm
 Documentation/Chapters/titlepage/images/Temp

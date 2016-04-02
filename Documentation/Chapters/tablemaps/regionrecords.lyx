@@ -394,7 +394,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-!!!
+http://www.w3schools.com/colors/colors_names.asp
 \end_layout
 
 \end_inset
@@ -1441,7 +1441,32 @@ p0cardface0nocard - p9cardface1nocard
 \begin_inset Text
 
 \begin_layout Plain Layout
-!!!
+The nocard-regions determine if a player holds no card at all, no card-faces
+ and no cardbacks.
+ They got introduced for two reasons:
+\end_layout
+
+\begin_layout Itemize
+performance, because often the costly scraping of cardfaces can be avoided
+\end_layout
+
+\begin_layout Itemize
+better error-detection, because now all three possibilities (no cards, card-face
+s and card-backs can be explicitly scraped instead of implicitly returning
+ 
+\begin_inset Quotes eld
+\end_inset
+
+no card
+\begin_inset Quotes erd
+\end_inset
+
+ if the other two fail).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+The best transformation is probably hash.
 \end_layout
 
 \end_inset

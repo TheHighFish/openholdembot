@@ -30,6 +30,7 @@ private:
 	void MinimizeAllOnstartup();
 private:
 	void HandleAllWindows(bool hard_kill);
+  bool WinIsOpenHoldem(HWND window);
 };
 
 extern CPopupHandler *p_popup_handler;

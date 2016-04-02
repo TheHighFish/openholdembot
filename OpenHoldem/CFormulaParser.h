@@ -65,18 +65,18 @@ class CFormulaParser {
   void ParseDebugTab(CString function_text);
  private:
   // OH-script
-  TPParseTreeNode ParseExpression(); //!!!!!
+  TPParseTreeNode ParseExpression(); 
   TPParseTreeOperatorNode ParseBracketExpression();
   TPParseTreeOperatorNode ParseUnaryExpression();
-  TPParseTreeTerminalNode ParseSimpleExpression(); //!!!!!
+  TPParseTreeTerminalNode ParseSimpleExpression();
   void ParseConditionalPartialThenElseExpressions(
 	  TPParseTreeNode *then_expression, TPParseTreeNode *else_expression);
  private:
   // OpenPPL
   TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
-  TPParseTreeNode ParseOpenPPLAction(); //!!!!!
   TPParseTreeOperatorNode ParseOpenPPLRaiseToExpression();
   TPParseTreeOperatorNode ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLAction();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
  private:

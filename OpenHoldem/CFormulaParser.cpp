@@ -635,7 +635,7 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 		return NULL;
 	}
 	TPParseTreeTerminalNodeIdentifier user_variable 
-    = new CParseTreeTerminalNodeIdentifier(
+    = new CParseTreeTerminalNodeUserVariable(
       _tokenizer.LineRelative(), identifier);
   // Not expecting any Force here
   return user_variable;

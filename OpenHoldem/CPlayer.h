@@ -31,7 +31,8 @@ class CPlayer {
  public:
   bool IsAllin();
   // Having to post both blinds at once happens at some casinos
-  // www. //!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18948
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18948
   // This does not count as raising.
   bool PostingBothBlinds();
  public:

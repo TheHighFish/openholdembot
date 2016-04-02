@@ -14,7 +14,7 @@
 #ifndef INC_CTRANSFORM_H
 #define INC_CTRANSFORM_H
 
-#include "hash/stdint.h"
+#include <stdint.h>
 #include "hash/lookup3.h"
 #include "pdiff/CompareArgs.h"
 #include "pdiff/Metric.h"

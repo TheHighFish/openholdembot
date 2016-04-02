@@ -564,9 +564,6 @@
     <ClCompile Include="StringFunctions.cpp">
       <Filter>Source Files\Various Function Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="WindowFunctions.cpp">
-      <Filter>Source Files\Various Function Libraries</Filter>
-    </ClCompile>
     <ClCompile Include="CFormulaFileSplitter.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
@@ -1400,9 +1397,6 @@
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
     <ClInclude Include="StringFunctions.h">
-      <Filter>Header Files\Various Function Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowFunctions.h">
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
     <ClInclude Include="CFormulaFileSplitter.h">

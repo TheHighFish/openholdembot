@@ -83,12 +83,20 @@ bool CSymbolEngineMTTInfo::EvaluateSymbol(const char *name, double *result, bool
   return true;
 }
 
-// if any of these are true then we are connected to a mtt
+// If any of these are true then we are connected to a MTT
 bool CSymbolEngineMTTInfo::ConnectedToMTT() {
   return (_mtt_number_entrants > p_tablemap->nchairs()
 	  || _mtt_players_remaining > p_tablemap->nchairs()
 	  || _mtt_paid_places > p_tablemap->nchairs()
 	  || _mtt_my_rank > p_tablemap->nchairs());
+}
+
+// If any of these are true then we are connected to a MTT or SNG
+bool CSymbolEngineMTTInfo::ConnectedToAnyTournament() {
+  return (_mtt_number_entrants > 0
+    || _mtt_players_remaining > 0
+    || _mtt_paid_places > 0
+    || _mtt_my_rank > 0);
 }
 
 CString CSymbolEngineMTTInfo::SymbolsProvided() {

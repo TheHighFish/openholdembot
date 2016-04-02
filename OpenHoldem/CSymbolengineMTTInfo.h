@@ -34,6 +34,7 @@ class CSymbolEngineMTTInfo: public CVirtualSymbolEngine {
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
 	bool ConnectedToMTT();
+  bool ConnectedToAnyTournament();
  public:
 	void set_mtt_number_entrants(const int i)   { _mtt_number_entrants = i;}
 	void set_mtt_players_remaining(const int i) { _mtt_players_remaining = i;}
