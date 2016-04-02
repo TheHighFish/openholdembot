@@ -1,12 +1,12 @@
-v9.1.1 2016-XX-XX
+v9.1.1 2016-04-01
 ==================
 NEW STUFF:
 - Improved tournament detection, now also considering 
     * the symbol "buyin" that can be read from the title with "^y" or scraped from the table
 	* the scraped symbols "MTT_number_entrants", "MTT_players_remaining",
       "MTT_paid_places" and "MTT_my_rank".
-  [THF]
 - Full support for Windows 10 and probably all other modern versions of Windows.
+ma  [THF]
   Existing tablemaps work without any changes.
   [THF]
   
@@ -23,7 +23,7 @@ BUG FIXES:
   [THF]
 - The refactored parse-tree broken certain cases of user-variables.
   This has now been fixed and test-cases have been added to the self-test-module.
-  Thanks to for reporting.
+  Thanks to MustBeatIt, ChuckNeverMuck, RISA and Salem for reporting.
   [THF]
 
 
