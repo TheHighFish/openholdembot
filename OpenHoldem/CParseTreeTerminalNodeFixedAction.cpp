@@ -39,19 +39,6 @@ CParseTreeTerminalNodeFixedAction::CParseTreeTerminalNodeFixedAction(
 CParseTreeTerminalNodeFixedAction::~CParseTreeTerminalNodeFixedAction() {
 }
 
-double CParseTreeTerminalNodeFixedAction::Evaluate(bool log /* = false */){
-  write_log(preferences.debug_formula(), 
-    "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
-		_node_type, TokenString(_node_type));
-  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	if (TokenIsElementaryAction(_node_type)) { //?????
-		return (0 - _node_type);
-  }
-	// This must not happen for a terminal node
-	assert(false);
-	return kUndefined;
-}
-
 CString CParseTreeTerminalNodeFixedAction::EvaluateToString(bool log /* = false */) {
   double numerical_result = Evaluate(log);
   CString result;

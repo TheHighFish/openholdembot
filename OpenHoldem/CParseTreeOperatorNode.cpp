@@ -143,9 +143,7 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
       raise_by_amount_in_bblinds,
       final_betsize_in_bblinds);
     return final_betsize_in_bblinds;
-  } else if (TokenIsElementaryAction(_node_type)) {
-		return (0 - _node_type);
-  }
+  } 
 	// Finally operators
 	else if (TokenIsUnary(_node_type)) {
 		return EvaluateUnaryExpression(log);
