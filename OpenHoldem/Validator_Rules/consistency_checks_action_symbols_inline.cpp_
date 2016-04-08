@@ -4,7 +4,7 @@ BEGIN_TESTCASE
     REASONING ("If I'm not aggressor, but an aggressor truly exists and nobody did act this round , then he must be the aggressor of the previous round and it can't be preflop.")
     PRECONDITION ((gws("raischair") != gws("userchair")) && (gws("raischair") >= 0) && (gws("ncallbets") == 0))
     POSTCONDITION ((gws("betround") > 1)) 
-    SYMBOLS_POSSIBLY_AFFECTED ("raischair , userchair, ncallbets, betround")
+    SYMBOLS_POSSIBLY_AFFECTED ("raischair, userchair, ncallbets, betround")
 END_TESTCASE
  
  

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -23,6 +23,7 @@
     <ProjectGuid>{4B4F8898-50C6-4F07-8771-B140482DBA69}</ProjectGuid>
     <RootNamespace>pokbot</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'" Label="Configuration">
@@ -30,17 +31,23 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -94,7 +101,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msvcrtd.lib;imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;..\lib\Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\window_functions.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -170,7 +177,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -366,7 +373,6 @@
     <ClCompile Include="NumericalFunctions.cpp" />
     <ClCompile Include="StringFunctions.cpp" />
     <ClCompile Include="WebSafeColours.cpp" />
-    <ClCompile Include="WindowFunctions.cpp" />
     <ClCompile Include="CFormulaFileSplitter.cpp" />
     <ClCompile Include="CFormulaParser.cpp" />
     <ClCompile Include="CParseErrors.cpp" />
@@ -670,7 +676,6 @@
     <ClInclude Include="NumericalFunctions.h" />
     <ClInclude Include="StringFunctions.h" />
     <ClInclude Include="WebSafeColours.h" />
-    <ClInclude Include="WindowFunctions.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
     <ClInclude Include="CFormulaParser.h" />
     <ClInclude Include="CParseErrors.h" />

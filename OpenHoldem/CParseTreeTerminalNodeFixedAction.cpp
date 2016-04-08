@@ -39,34 +39,6 @@ CParseTreeTerminalNodeFixedAction::CParseTreeTerminalNodeFixedAction(
 CParseTreeTerminalNodeFixedAction::~CParseTreeTerminalNodeFixedAction() {
 }
 
-//?????!!!!!
-double CParseTreeTerminalNodeFixedAction::Evaluate(bool log /* = false */){
-  write_log(preferences.debug_formula(), 
-    "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
-		_node_type, TokenString(_node_type));
-  p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Most common types first: numbers and identifiers
-  if (_node_type == kTokenIdentifier) {
-    assert(_first_sibbling  == NULL);
-    assert(_second_sibbling == NULL);
-    assert(_third_sibbling  == NULL);
-		assert(_terminal_name != "");
-		double value = EvaluateIdentifier(_terminal_name, log);
-		write_log(preferences.debug_formula(), 
-      "[CParseTreeTerminalNode] Identifier evaluates to %6.3f\n", value);
-    // In case of f$-functions the line changed inbetween,
-    // so we have to set it to the current location (again)
-    // for the next log.
-    p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-		return value;
-	} else if (TokenIsElementaryAction(_node_type)) { //?????
-		return (0 - _node_type);
-  }
-	// This must not happen for a terminal node
-	assert(false);
-	return kUndefined;
-}
-
 CString CParseTreeTerminalNodeFixedAction::EvaluateToString(bool log /* = false */) {
   double numerical_result = Evaluate(log);
   CString result;

@@ -8,7 +8,7 @@
 //******************************************************************************* 
 //
 // Purpose: first guess of blind values for CTableLimits,
-//   which might be overridden bz blind-locking.
+//   which might be overridden by blind-locking.
 //
 //******************************************************************************* 
 

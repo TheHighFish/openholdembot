@@ -7,7 +7,7 @@
 //
 //*******************************************************************************
 //
-// Purpose: Detecting if we plaz rush / zoom / ...
+// Purpose: Detecting if we play rush / zoom / ...
 //   depending on the time since our last action on handreset.
 //
 //*******************************************************************************

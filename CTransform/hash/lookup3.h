@@ -15,7 +15,7 @@
 #ifndef INC_LOOKUP3_H
 #define INC_LOOKUP3_H
 
-#include "stdint.h"     /* defines uint32_t etc */
+#include <stdint.h>     /* defines uint32_t etc */
 
 uint32_t hashword(
 const uint32_t *k,                   /* the key, an array of uint32_t values */

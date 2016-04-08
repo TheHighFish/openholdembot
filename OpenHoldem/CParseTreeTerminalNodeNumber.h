@@ -32,8 +32,6 @@ class CParseTreeTerminalNodeNumber: public CParseTreeTerminalNode {
   // For debugging output
   CString Serialize();
  private:
-  void SetUserVariable(CString name);
- private:
   // In case of terminal node (number)
   double _constant_value;
 };

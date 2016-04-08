@@ -49,21 +49,12 @@ double CParseTreeTerminalNodeNumber::Evaluate(bool log /* = false */){
     "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Most common types first: numbers and identifiers
 	if (_node_type == kTokenNumber)	{
 		write_log(preferences.debug_formula(), 
       "[CParseTreeTerminalNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;
 	}
-	// Actions second, which are also "unary".
-	// We have to encode all possible outcomes in a single floating-point,
-	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
-	// * negative values mean: elementary actions
-  else if (TokenIsElementaryAction(_node_type)) {
-		return (0 - _node_type);
-  }
 	// This must not happen for a terminal node
 	assert(false);
 	return kUndefined;
@@ -94,16 +85,4 @@ CString CParseTreeTerminalNodeNumber::Serialize() {
   }
 }
 
-void CParseTreeTerminalNodeNumber::SetUserVariable(CString name) {
-  if (name.Left(4).MakeLower() == "user") {   
-    p_symbol_engine_openppl_user_variables->Set(name);
-  } else if (name.Left(3) == "me_") {
-    double temp_result;
-    p_symbol_engine_memory_symbols->EvaluateSymbol(name, 
-      &temp_result, true);
-  }
-  else {
-    assert(kThisMustNotHappen);
-  }
-}
 

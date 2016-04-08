@@ -107,7 +107,8 @@ void CGameState::CaptureState() {
       int card = player_card->GetValue();
        write_log(preferences.debug_dll_extension(),
         "[CGameState] Player card [%i][%i] = %i\n", i, j, card);
-			//!!!!!state[state_index&0xff].m_player[i].m_cards[j] = card;
+			//!!!!!
+       state[state_index&0xff].m_player[i].m_cards[j] = card;
 		}
 
 		// player name known, balance known

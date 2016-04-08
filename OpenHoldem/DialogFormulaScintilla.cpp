@@ -1812,9 +1812,9 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	}
 	if (headingText == "Autoplayer Functions")			iWhichTypeSelected = 0;
 	else if (headingText == "Standard Functions")		iWhichTypeSelected = 0;
-	else if (headingText == "Ini Functions")			iWhichTypeSelected = 0;
+	else if (headingText == "Ini Functions")			  iWhichTypeSelected = 0;
 	else if (headingText == "Debug Functions")			iWhichTypeSelected = 0;
-	else if (headingText == "Hand Lists")				iWhichTypeSelected = 1;
+	else if (headingText == "Hand Lists")				    iWhichTypeSelected = 1;
 	else if (headingText == "User Defined Functions")	iWhichTypeSelected = 2;
 	else {
 		HTREEITEM hNextLevelUp = m_FormulaTree.GetParentItem(parentItem);

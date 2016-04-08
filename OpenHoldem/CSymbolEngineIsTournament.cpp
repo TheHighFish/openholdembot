@@ -37,7 +37,7 @@ CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;
 const double k_large_bigblind_probably_later_table_in_tournament = 500.0;
 
-const int k_number_of_tournament_identifiers = 61;
+const int k_number_of_tournament_identifiers = 62;
 // Partial tournament strings of various casinos
 // Sources: PokerStars, and lots of unnamed casinos (by PM)
 // These strings have to be lower-cases for comparison
@@ -74,6 +74,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
   "no limit hold'em - tbl#",
 	" nothing",
 	"-nothing",
+	"on demand",
 	"qualif ",			  // french abbreviation
 	"qualificatif",		// french for "qualifier"
 	"qualification",
@@ -100,7 +101,7 @@ const char* k_tournament_identifiers[k_number_of_tournament_identifiers] = {
 	"ticket ",
 	"tour ",
   "tourney",
-	"tournament",
+  "tournament",
   "triple-up",
   "triple up",
   "10K chips",
@@ -195,31 +196,33 @@ void CSymbolEngineIsTournament::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
-   // "Beautiful" numbers => tournament
-   // This condition does unfortunatelly only work for the first and final table in an MTT,
-   // not necessarily for other late tables (fractional bets, uneven sums).
-   double sum_of_all_chips = 0.0;
-   for (int i=0; i<p_tablemap->nchairs(); i++) {
-	   if (p_table_state->Player(i)->active()==true) {
-		   sum_of_all_chips += p_table_state->Player(i)->balance();
-		   sum_of_all_chips += p_table_state->Player(i)->bet();}
-   }
-   if (sum_of_all_chips != int(sum_of_all_chips)) {
-      // Franctional number.
-      // Looks like a cash-game.
-      return false;
-   }
-   if ((int(sum_of_all_chips) % 100) != 0) {
-      // Not a multiplicity of 100.
-      // Probably not a tournament.
-      return false;
-   }
-   if ((int(sum_of_all_chips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0)    { 
-      // Not a multiplicity of the active players.
-      // Probably not a tournament.
-      return false;
-   }
-   return true;
+  // "Beautiful" numbers => tournament
+  // This condition does unfortunatelly only work for the first and final table in an MTT,
+  // not necessarily for other late tables (fractional bets, uneven sums).
+  double sum_of_all_chips = 0.0;
+  for (int i=0; i<p_tablemap->nchairs(); i++) {
+	  if (p_table_state->Player(i)->active()==true) {
+	    sum_of_all_chips += p_table_state->Player(i)->balance();
+		  sum_of_all_chips += p_table_state->Player(i)->bet();}
+  }
+  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Sum of chips at the table: %.2f\n",
+    sum_of_all_chips);
+  if (sum_of_all_chips != int(sum_of_all_chips)) {
+    // Franctional number.
+    // Looks like a cash-game.
+    return false;
+  }
+  if ((int(sum_of_all_chips) % 100) != 0) {
+    // Not a multiplicity of 100.
+    // Probably not a tournament.
+    return false;
+  }
+  if ((int(sum_of_all_chips) % p_symbol_engine_active_dealt_playing->nplayersactive()) != 0)    { 
+    // Not a multiplicity of the active players.
+    // Probably not a tournament.
+    return false;
+  }
+  return true;
 }
 
 bool CSymbolEngineIsTournament::AntesPresent() {
@@ -265,7 +268,13 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		 write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] decision already locked\n");
 		return;
 	}
-	if (p_symbol_engine_mtt_info->ConnectedToMTT()) {
+  if (p_table_state->_s_limit_info.buyin() > 0) {
+    write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Tournament due to positive buyin detected\n");
+    _istournament = true;
+    _decision_locked = true;
+    return;
+  }
+	if (p_symbol_engine_mtt_info->ConnectedToAnyTournament()) {
 		 write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] MTT tournament detected\n");
 		_istournament    = true;
 		_decision_locked = true;
@@ -282,8 +291,8 @@ void CSymbolEngineIsTournament::TryToDetectTournament() {
 		_decision_locked = true;
 		return;
 	}
-  // If we plaz at DDPoiker the game is a tournament,
-  // even though it can~t be detected bz titlestring.
+  // If we play at DDPoker the game is a tournament,
+  // even though it can~t be detected by titlestring.
   if (p_symbol_engine_casino->ConnectedToDDPoker()) {
      write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] DDPoker tournament\n");
     _istournament    = true;
@@ -416,8 +425,7 @@ bool CSymbolEngineIsTournament::EvaluateSymbol(const char *name, double *result,
 		// Valid symbol
 		return true;
 	}
-
-	// Symbol of a different symbol-engine
+  // Symbol of a different symbol-engine
 	return false;
 }
 

@@ -23,7 +23,6 @@ class CParseTreeTerminalNodeFixedAction: public CParseTreeTerminalNodeIdentifier
   CParseTreeTerminalNodeFixedAction(int relative_line_number, CString name);
   ~CParseTreeTerminalNodeFixedAction();
  public:
-  virtual double Evaluate(bool log = false);
   virtual CString EvaluateToString(bool log = false);
  public:
   // For debugging output

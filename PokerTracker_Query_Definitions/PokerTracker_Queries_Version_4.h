@@ -14,7 +14,7 @@
 #ifndef INC_POKERTRACKER_QUERIES_VERSION_4_H
 #define INC_POKERTRACKER_QUERIES_VERSION_4_H
 // GENERAL STATS
-// ICON disabled, as not supported bz PT 4.
+// ICON disabled, as not supported by PT 4.
 // https://pt4.pokertracker.com/forums/viewtopic.php?f=59&t=49035
 #define PT4_QUERY_SUPPORT__ICON							(FALSE) // "icon"
 #define PT4_QUERY_SUPPORT__NB_HANDS					(TRUE)	// "hands"
