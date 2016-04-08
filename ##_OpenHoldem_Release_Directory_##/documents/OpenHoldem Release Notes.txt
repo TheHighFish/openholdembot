@@ -1,3 +1,11 @@
+v9.1.2 2016-04-10
+==================
+BUG FIXES:
+- Some people experienced "random actions" due to a non-initialized 
+  variable in the refactored parse-tree. This has now been fixed. 
+  Thanks to Ares for confirming the problem.
+  [THF]
+
 v9.1.1 2016-04-01
 ==================
 NEW STUFF:
