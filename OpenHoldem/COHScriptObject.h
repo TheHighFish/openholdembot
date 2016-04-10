@@ -21,7 +21,7 @@ class COHScriptObject {
       CString new_name, 
       CString new_function_text,
       int starting_line_of_function);
-  ~COHScriptObject();
+  virtual ~COHScriptObject();
  public:
   CString name()			      { return *_name; }
   virtual CString function_text() { return *_function_text; }
