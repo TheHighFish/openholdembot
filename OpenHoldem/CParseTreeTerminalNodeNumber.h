@@ -21,7 +21,7 @@ class CParseTreeTerminalNodeNumber: public CParseTreeTerminalNode {
   friend class CParseTreeRotator;
  public:
   CParseTreeTerminalNodeNumber(int relative_line_number);
-  ~CParseTreeTerminalNodeNumber();
+  virtual ~CParseTreeTerminalNodeNumber();
  public:
   void MakeConstant(double value);
   void MakeAction(int action_constant);

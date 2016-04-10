@@ -39,7 +39,7 @@ class COHScriptList: public COHScriptObject {
     CString new_name, 
     CString new_function_text,
     int absolute_line);
-  ~COHScriptList();
+  virtual ~COHScriptList();
  public:
   void Clear();
   virtual CString function_text();

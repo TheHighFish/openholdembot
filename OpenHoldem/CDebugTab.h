@@ -23,7 +23,7 @@ class CDebugTab: public COHScriptObject{
   friend class CFormulaParser;
  public:
   CDebugTab();
-  ~CDebugTab();
+  virtual ~CDebugTab();
  public:
   // f$debug is not a normal function
   // We always return zero when evaluated.

@@ -21,7 +21,7 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   friend class CParseTreeRotator;
  public:
   CParseTreeOperatorNode(int relative_line_number);
-  ~CParseTreeOperatorNode();
+  virtual ~CParseTreeOperatorNode();
  public:
   void MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling);
   void MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,

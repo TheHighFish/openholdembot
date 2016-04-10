@@ -21,7 +21,7 @@ class CParseTreeTerminalNodeFixedAction: public CParseTreeTerminalNodeIdentifier
   friend class CParseTreeRotator;
  public:
   CParseTreeTerminalNodeFixedAction(int relative_line_number, CString name);
-  ~CParseTreeTerminalNodeFixedAction();
+  virtual ~CParseTreeTerminalNodeFixedAction();
  public:
   virtual CString EvaluateToString(bool log = false);
  public:

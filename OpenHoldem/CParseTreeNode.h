@@ -30,7 +30,7 @@ class CParseTreeNode {
   friend class CParseTreeRotator;
  public:
   CParseTreeNode(int relative_line_number);
-  ~CParseTreeNode();
+  virtual ~CParseTreeNode();
  public:
   virtual double Evaluate(bool log = false);
   virtual CString EvaluateToString(bool log = false);

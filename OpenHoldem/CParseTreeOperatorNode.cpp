@@ -48,11 +48,9 @@ CParseTreeOperatorNode::~CParseTreeOperatorNode() {
     delete _third_sibbling;
     _third_sibbling = NULL;
   }
-
 }
 
-void CParseTreeOperatorNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling)
-{
+void CParseTreeOperatorNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling) {
 	_node_type = node_type;
 	_first_sibbling = first_sibbling;
 }

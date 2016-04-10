@@ -21,7 +21,7 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   friend class CParseTreeRotator;
  public:
   CParseTreeTerminalNodeIdentifier(int relative_line_number, CString name);
-  ~CParseTreeTerminalNodeIdentifier();
+  virtual ~CParseTreeTerminalNodeIdentifier();
  public:
   virtual double Evaluate(bool log = false);
   virtual CString EvaluateToString(bool log = false);

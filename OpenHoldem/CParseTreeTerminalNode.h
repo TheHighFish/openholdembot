@@ -21,7 +21,7 @@ class CParseTreeTerminalNode: public CParseTreeNode {
   friend class CParseTreeRotator;
  public:
   CParseTreeTerminalNode(int relative_line_number);
-  ~CParseTreeTerminalNode();
+  virtual ~CParseTreeTerminalNode();
 };
 
 typedef CParseTreeTerminalNode *TPParseTreeTerminalNode;

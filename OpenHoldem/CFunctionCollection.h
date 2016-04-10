@@ -29,7 +29,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   friend class CCasinoInterface;
  public:
   CFunctionCollection();
-  ~CFunctionCollection();
+  virtual ~CFunctionCollection();
  public:
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
   double Evaluate(CString function_name, bool log = false);
