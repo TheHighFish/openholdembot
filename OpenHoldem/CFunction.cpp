@@ -28,8 +28,8 @@ CFunction::CFunction(
     CString new_name, 
     CString new_function_text,
     int absolute_line) {
-  _name = new CString(new_name);
-  _function_text = new CString(new_function_text);
+  _name = new_name;
+  _function_text = new_function_text;
   _starting_line_of_function = absolute_line;
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
@@ -37,11 +37,7 @@ CFunction::CFunction(
 }
 
 CFunction::~CFunction() {
-  assert (_name != NULL);
-  delete _name;
-  assert (_function_text != NULL);
-  delete _function_text;
-  // Parse-tree-nodes maz be NULL in case of an empty function
+  // Parse-tree-nodes may be NULL in case of an empty function
   if (_parse_tree_node != NULL) {
     delete _parse_tree_node;
   }
@@ -75,7 +71,7 @@ double CFunction::Evaluate(bool log /* = false */) {
     if (log) {
        write_log(preferences.debug_auto_trace(),
         "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
-      p_autoplayer_trace->Add(*_name, _cached_result);  
+      p_autoplayer_trace->Add(_name, _cached_result);  
     }
     // Keep cached result: do nothing
   } else {
@@ -84,7 +80,7 @@ double CFunction::Evaluate(bool log /* = false */) {
       int log_line;
       if (log) {
         // Reserve a line in the log, without result ATM
-        log_line = p_autoplayer_trace->Add(*_name);
+        log_line = p_autoplayer_trace->Add(_name);
       }
       p_autoplayer_trace->Indent(true);
       _cached_result = _parse_tree_node->Evaluate(log);

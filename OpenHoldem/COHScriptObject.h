@@ -23,10 +23,10 @@ class COHScriptObject {
       int starting_line_of_function);
   virtual ~COHScriptObject();
  public:
-  CString name()			      { return *_name; }
-  virtual CString function_text() { return *_function_text; }
-  void SetName(CString name)      { *_name = name; }
-  void SetText(CString text)      { *_function_text = text; }
+  CString name()			      { return _name; }
+  virtual CString function_text() { return _function_text; }
+  void SetName(CString name)      { _name = name; }
+  void SetText(CString text)      { _function_text = text; }
  public:
   virtual double Evaluate(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
@@ -37,9 +37,9 @@ class COHScriptObject {
   // f$preflop, f$flop, f$turn, f$river
   static bool IsMainOpenPPLFunction(CString name);
  public:
-  bool IsList()                 { return _name->Left(4) == "list"; }
-  bool IsFunction()             { return _name->Left(2) ==  "f$"; }
-  bool IsOpenPPLSymbol()        { return isupper(*_name[0]); }
+  bool IsList()                 { return _name.Left(4) == "list"; }
+  bool IsFunction()             { return _name.Left(2) ==  "f$"; }
+  bool IsOpenPPLSymbol()        { return isupper(_name[0]); }
   // f$preflop, f$flop, f$turn, f$river
   bool IsMainOpenPPLFunction();
   // Autoplayer, Secondary, Ini, PrWin
@@ -67,8 +67,8 @@ class COHScriptObject {
  public:
   void Parse();
  protected:
-  CString* _name;
-  CString* _function_text;
+  CString _name;
+  CString _function_text;
   int _starting_line_of_function;
 };
 

@@ -37,17 +37,6 @@ CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) :
 }
 
 CParseTreeOperatorNode::~CParseTreeOperatorNode() {
-  delete _first_sibbling;
-  _first_sibbling = NULL;
-  delete _second_sibbling;
-  _second_sibbling = NULL;
-  if (!IsOpenEndedWhenCondition()) {
-    // Be carefull with open-ended when-conditions.
-    // They create graphs, no longer pure trees/
-    // The 3rd node is reachable on two paths.
-    delete _third_sibbling;
-    _third_sibbling = NULL;
-  }
 }
 
 void CParseTreeOperatorNode::MakeUnaryOperator(int node_type, TPParseTreeNode first_sibbling) {

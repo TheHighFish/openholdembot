@@ -43,8 +43,6 @@ class CFunction: public COHScriptObject{
   // Used by the parse-tree-rotator
   TPParseTreeNode _parse_tree_node;
  private:
-  //CString _name;
-  //CString _function_text;
   double _cached_result;
   bool _is_result_cached;
 };

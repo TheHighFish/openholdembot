@@ -381,7 +381,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   }
    write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Adding default function: %s\n", function_name);
-  // The added functions stazs in the collection 
+  // The added functions stays in the collection 
   // until a new profile gets loaded, until it gets overwritten]
   // or until the ebtire collection gets released
   CFunction *p_function = new CFunction(function_name, 
@@ -527,7 +527,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     // We need to create name and text on the heap, can't point to the stack
     CString my_text = content;
     CString my_name = name;
-    // The added functions stazs in the collection 
+    // The added functions stays in the collection 
     // until a new profile gets loaded, until it gets overwritten]
     // or until the ebtire collection gets released
     function = new CFunction(my_name, my_text, kUndefinedZero);
