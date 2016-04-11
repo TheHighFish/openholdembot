@@ -93,8 +93,8 @@
 #include <string.h>
 
 // Version
-#define VERSION_NUMBER			9.11
-#define VERSION_TEXT				"9.1.1"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			9.12
+#define VERSION_TEXT				"9.1.2"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
