@@ -13,6 +13,12 @@ BUG FIXES:
   Special thanks to JMonderson for reporting his problem and for providing
   his 120.000 LOC Flopzila-code for testing.
   [THF]
+  
+MAINTENANCE:
+- Project built for with Windows XP again.
+  Windows XP is no longer supported out of the box by our new development platform
+  MicroSoft Visual Studio 2015, so it required some extra compiler switches.
+  [THF]
 
 v9.1.1 2016-04-01
 ==================
@@ -68,7 +74,7 @@ BUG FIXES:
   Thanks to Micro111 for reporting.
   [THF]
 
-MAINTENANCE:
+
 - log$-symbols return now 1 as specified in the manual.
   This behaviour is more convenient in ANDed conditions.
   Thanks to Cidertime for asking.
