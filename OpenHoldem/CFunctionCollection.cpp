@@ -403,6 +403,9 @@ COHScriptObject *CFunctionCollection::GetNext() {
     return NULL;
   }
   COHScriptObject *result = enumerator_it->second;
+  write_log(preferences.debug_formula(),
+    "[CFunctionCollection] GetNext() %s -> %i\n",
+    enumerator_it->first, enumerator_it->second);
   enumerator_it++;
   return result;
 }
@@ -412,6 +415,9 @@ void CFunctionCollection::ClearCache() {
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
     if (p_oh_script_object->IsFunction() || p_oh_script_object->IsOpenPPLSymbol()) {
+      write_log(preferences.debug_formula(),
+        "[CFunctionCollection] Clearing cache of %s\n",
+        ((CFunction*)p_oh_script_object)->name());
       ((CFunction*)p_oh_script_object)->ClearCache();
     }
     p_oh_script_object = GetNext();
