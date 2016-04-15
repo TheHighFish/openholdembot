@@ -299,6 +299,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   }
   if (_function_name == "f$debug") {
     ParseDebugTab(function_text);
+    assert(p_debug_tab != NULL);
     p_function_collection->Add((COHScriptObject*)p_debug_tab);
     return;
   }

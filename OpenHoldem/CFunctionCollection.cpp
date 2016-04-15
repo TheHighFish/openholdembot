@@ -113,6 +113,7 @@ bool CFunctionCollection::CheckForMisspelledOpenPPLMainFunction(CString name) {
 
 void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
+  assert(new_function != NULL);
   CString name = new_function->name();
   if (name == "") {
      write_log(preferences.debug_formula(), 
