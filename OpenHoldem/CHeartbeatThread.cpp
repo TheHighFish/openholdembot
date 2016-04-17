@@ -96,7 +96,7 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
   }	else if (!p_symbol_engine_userchair->userchair_confirmed()) {
     // Not yet seated
     // Probably not much critical work to be done.
-    scrape_delay *= 2; 
+    scrape_delay *= 3; 
   } else if (!p_table_state->User()->HasKnownCards()) {
     // Folded
     if (p_symbol_engine_isrush->isrush()) {
@@ -123,7 +123,7 @@ void CHeartbeatThread::FlexibleHeartbeatSleeping() {
       // Short after autoplyer-action
       // Will take some time until it is our turn again.
       // Slow down a little bit.
-      scrape_delay *= 1.33;
+      scrape_delay *= 1.5;
     }
     // Else: keep default value
   }

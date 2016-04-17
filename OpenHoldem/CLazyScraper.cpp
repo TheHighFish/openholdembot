@@ -81,7 +81,7 @@ void CLazyScraper::DoScrape() {
 	}
   _is_identical_scrape = false;
 	p_scraper->ScrapeLimits();
-	if (NeedDealerChair()) {
+	if (NeedDealerChair()) { 
 		p_scraper->ScrapeDealer();
 	}
 	if (NeedUsersCards())	{
