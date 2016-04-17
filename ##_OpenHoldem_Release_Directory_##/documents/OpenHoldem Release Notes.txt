@@ -1,3 +1,24 @@
+v9.1.3 2016-04-xx
+==================
+BUG FIXES:
+- Editing the debug-tab and some cases of loading a new formula 
+  could incorrectly delete the debug-tab, leading to crashes.
+  This has now been fixed.
+  thanks to for reporting 
+  [THF]
+- The OpenPPL-symbol "Random" was implemented as a function in the OpenPPL-library
+  and therefore its value got cached instead of getting calculated
+  each time again.
+  Now we made it an OpenHoldem symbol and added some code to prevent the caching.
+  Thans to for reminding me of this issue.
+  [THF]
+  
+MAINTENANCE:
+- Removed configuration check for Windows 2000/XP claccic theme,
+  because OpenHoldem supports now more modern systems out of the box.
+  [THF]
+
+  
 v9.1.2 2016-04-11
 ==================
 BUG FIXES:
