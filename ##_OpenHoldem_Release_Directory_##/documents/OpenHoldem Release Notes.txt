@@ -4,13 +4,13 @@ BUG FIXES:
 - Editing the debug-tab and some cases of loading a new formula 
   could incorrectly delete the debug-tab, leading to crashes.
   This has now been fixed.
-  thanks to for reporting 
+  Thanks to Johnny and MustBeatIt for reporting.
   [THF]
 - The OpenPPL-symbol "Random" was implemented as a function in the OpenPPL-library
   and therefore its value got cached instead of getting calculated
   each time again.
   Now we made it an OpenHoldem symbol and added some code to prevent the caching.
-  Thans to for reminding me of this issue.
+  Thanks to MustBeatIt for reminding me of this issue.
   [THF]
   
 MAINTENANCE:
