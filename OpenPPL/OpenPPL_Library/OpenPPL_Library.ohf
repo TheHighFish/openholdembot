@@ -3496,23 +3496,6 @@ AlwaysTrue
 ##AlwaysTrue##
 1
 
-##FloatingPointRandom_0_100##
-// OpenHoldem uses floating point numbers
-// and random is in the range [0..1]
-// But for OpenPPL we need a range of [0..100]
-[ random * 100 ]
-
-##IntegerRandom_0_100##
-// Cutting of the fractional part of the random number is tricky.
-// We do a bitwise XOR with 0, which doesn't change anything,
-// but to evaluate the expression OpenHoldem internally truncates the number 
-// to integer (bit-vector).
-// Finally we add 0 to avoid displaying the result as binary in the debug-tab.
-((FloatingPointRandom_0_100 ^ 0) + 0)
-
-##Random##
-IntegerRandom_0_100
-
 //*****************************************************************************
 //
 // OpenPPL - Players and Opponents
