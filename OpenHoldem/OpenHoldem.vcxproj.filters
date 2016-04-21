@@ -207,6 +207,9 @@
     <ClCompile Include="CHeartbeatThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClInclude Include="CHeartbeatDelay.cpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="CLevDistance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -973,6 +976,9 @@
     <ClInclude Include="CHeartbeatThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+	<ClCompile Include="CHeartbeatDelay.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClInclude Include="CLazyScraper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
