@@ -49,7 +49,15 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
     if (open_ppl && p_nextObject->IsOpenPPLSymbol()) {
       needs_deletion = true;
     } else if (user_defined && !p_nextObject->IsOpenPPLSymbol()) {
-      needs_deletion = true;
+      if (p_nextObject->name() == "f$debug") {
+        // The debug-tab must not be deleted.
+        // It is a global object that is in the function-collection
+        // only for easy lookup.
+        // www!!!!!
+      }
+      else {
+        needs_deletion = true;
+      }
     }
     if (needs_deletion) {
        write_log(preferences.debug_formula(), 
@@ -146,6 +154,11 @@ bool CFunctionCollection::Exists(CString name) {
 // Generates smart error-messages on failure
 // To be used by the parser
 void CFunctionCollection::VerifyExistence(CString name) {
+  // The OpenPPL-symbol "Random" is no longer implemented in the library
+  // but as a built-in symbol to orevent symbol-caching.
+  // Therefore we don't want to check if it is "missing" in the library.
+  // www!!!!!
+  if (name == "Random") return;
   if (Exists(name)) return;
   // Error: function does not exist
   CString message;
@@ -612,6 +625,14 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
 #endif
     COHScriptObject *p_function = LookUp(name);
     if (p_function == NULL) {
+      if (memcmp(name, "Random", 6) == 0) {
+        // The OpenPPL-symbol "Random" is no longer implemented in the library
+        // but as a built-in symbol to prevent symbol-caching.
+        // This special case of a "function-look-alike symbol
+        // can#t be handled by the function collection.
+        // www!!!!!
+        return false;
+      }
       // Function does not exist
       *result = kUndefinedZero;
       if (log) {
