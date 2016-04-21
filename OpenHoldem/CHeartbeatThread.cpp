@@ -47,8 +47,9 @@
 
 CHeartbeatThread	*p_heartbeat_thread = NULL;
 CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
-long int			CHeartbeatThread::_heartbeat_counter = 0;
-CHeartbeatThread    *CHeartbeatThread::pParent = NULL;
+long int			    CHeartbeatThread::_heartbeat_counter = 0;
+CHeartbeatThread  *CHeartbeatThread::pParent = NULL;
+CHeartbeatDelay   CHeartbeatThread::_heartbeat_delay;
 
 CHeartbeatThread::CHeartbeatThread() {
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
@@ -109,8 +110,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			// Not connected
       AutoConnect();
 		}
-    CHeartbeatDelay heartbeat_delay;
-    heartbeat_delay.FlexibleSleep();
+    _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}
 }
