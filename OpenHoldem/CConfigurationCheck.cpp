@@ -47,7 +47,7 @@ void CConfigurationCheck::CheckEverything()
 
 	if (preferences.configurationcheck_theme_settings())
 	{
-		CheckForClassicalTheme();
+		//!!!!!CheckForClassicalTheme();
 	}
 
 	if (preferences.configurationcheck_font_settings())
