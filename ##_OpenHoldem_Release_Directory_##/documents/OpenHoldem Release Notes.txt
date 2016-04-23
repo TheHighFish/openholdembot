@@ -14,7 +14,7 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
-- Removed configuration check for Windows 2000/XP claccic theme,
+- Removed configuration check for Windows 2000/XP classic theme,
   because OpenHoldem supports now more modern systems out of the box.
   [THF]
 
