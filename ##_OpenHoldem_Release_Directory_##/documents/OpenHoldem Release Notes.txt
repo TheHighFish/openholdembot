@@ -1,4 +1,4 @@
-v9.1.3 2016-04-xx
+v9.1.3 2016-04-23
 ==================
 BUG FIXES:
 - Editing the debug-tab and some cases of loading a new formula 
