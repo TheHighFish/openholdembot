@@ -15,6 +15,7 @@
 #include "CFunctionCollection.h"
 
 #include "CAutoplayerTrace.h"
+#include "CDebugTab.h"
 #include "CFormulaParser.h"
 #include "CFunction.h"
 #include "CParseErrors.h"
@@ -49,15 +50,11 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
     if (open_ppl && p_nextObject->IsOpenPPLSymbol()) {
       needs_deletion = true;
     } else if (user_defined && !p_nextObject->IsOpenPPLSymbol()) {
-      if (p_nextObject->name() == "f$debug") {
-        // The debug-tab must not be deleted.
-        // It is a global object that is in the function-collection
-        // only for easy lookup.
-        // www!!!!!
-      }
-      else {
-        needs_deletion = true;
-      }
+      // The debug-tab must not be deleted.
+      // It is a global object that is NOT in the function-collection
+      // www!!!!!
+      assert(p_nextObject->name() != "f$debug");
+      needs_deletion = true;
     }
     if (needs_deletion) {
        write_log(preferences.debug_formula(), 
@@ -123,6 +120,11 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
   assert(new_function != NULL);
   CString name = new_function->name();
+  // f$debug is a global object 
+  // and must not be added to the collection
+  // (to avoid deletion)
+  // www!!!!!
+  assert(name != "f$debug");
   if (name == "") {
      write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Invalid empty name\n");
@@ -155,7 +157,7 @@ bool CFunctionCollection::Exists(CString name) {
 // To be used by the parser
 void CFunctionCollection::VerifyExistence(CString name) {
   // The OpenPPL-symbol "Random" is no longer implemented in the library
-  // but as a built-in symbol to orevent symbol-caching.
+  // but as a built-in symbol to prevent symbol-caching.
   // Therefore we don't want to check if it is "missing" in the library.
   // www!!!!!
   if (name == "Random") return;
@@ -194,6 +196,14 @@ CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_n
 
 COHScriptObject *CFunctionCollection::LookUp(CString name) {
   CSLock lock(m_critsec);
+  if (name == "f$debug") {
+    // Lookup of the special function f$debug
+    // that is a global object and not in the collection
+    // (to avoid deletion)
+    // www!!!!!
+    assert(p_debug_tab != NULL);
+    return p_debug_tab;
+  }
    write_log(preferences.debug_formula(), "[CFunctionCollection] Lookup %s\n", name); 
   std::map<CString, COHScriptObject*>::iterator it; 
   it = _function_map.find(name); 
@@ -300,7 +310,10 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   }
   // Debug functions	
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
-  CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  // No longer adding f$debug,
+  // because f$debug is a global object that always exists
+  //!!!!!CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  //
   // PrWin-functions, used by the GUI
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(
     CString(k_standard_function_names[k_prwin_number_of_iterations]));
@@ -523,6 +536,10 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
 }
 
 void CFunctionCollection::Delete(CString name) {
+  // The debug-tab must not be deleted.
+  // It is a global object that is NOT in the function-collection
+  // www!!!!!
+  assert (name != "f$debug");    
   CSLock lock(m_critsec);
   COHScriptObject *object_to_delete = LookUp(name);
   if (object_to_delete != NULL) {
@@ -576,6 +593,9 @@ bool CFunctionCollection::ParseAll() {
     }
     p_oh_script_object = GetNext();  
   }
+  // Finally parse the debug-tab,
+  // that is no longer in the collection.
+  p_debug_tab->Parse();
   p_formula_parser->FinishParse();
   return true;
 }
@@ -629,7 +649,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
         // The OpenPPL-symbol "Random" is no longer implemented in the library
         // but as a built-in symbol to prevent symbol-caching.
         // This special case of a "function-look-alike symbol
-        // can#t be handled by the function collection.
+        // can't be handled by the function collection.
         // www!!!!!
         return false;
       }

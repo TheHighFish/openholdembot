@@ -33,7 +33,7 @@ class COHScriptObject {
  public:
   static bool IsFunction(CString name)      { return name.Left(2) ==  "f$"; }
   static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
-  static bool IsOpenPPLSymbol(CString name) { return isupper(name[0]); }
+  static bool IsOpenPPLSymbol(CString name);
   // f$preflop, f$flop, f$turn, f$river
   static bool IsMainOpenPPLFunction(CString name);
  public:

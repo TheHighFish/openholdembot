@@ -300,7 +300,10 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   if (_function_name == "f$debug") {
     ParseDebugTab(function_text);
     assert(p_debug_tab != NULL);
-    p_function_collection->Add((COHScriptObject*)p_debug_tab);
+    // The debug-tab is a special global object that must nit be added 
+    // to the function collection (to avoid deletion).
+    // www!!!!!
+    //!!!!!p_function_collection->Add((COHScriptObject*)p_debug_tab);
     return;
   }
   TPParseTreeNode function_body = NULL;
@@ -806,6 +809,7 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
 }
 
 void CFormulaParser::ParseDebugTab(CString function_text) {
+  assert(p_debug_tab != NULL);
   p_debug_tab->Clear();
   CString next_line;
   int separator_index = 0;
@@ -826,6 +830,7 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     // Care about operator precendence
     _parse_tree_rotator.Rotate(expression, &expression);
     // Add line and expression to debug-tab
+    assert(p_debug_tab != NULL);
     p_debug_tab->AddExpression(expression_text, expression);
   }
 }
