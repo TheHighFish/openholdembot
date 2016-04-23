@@ -52,7 +52,7 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
     } else if (user_defined && !p_nextObject->IsOpenPPLSymbol()) {
       // The debug-tab must not be deleted.
       // It is a global object that is NOT in the function-collection
-      // www!!!!!
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
       assert(p_nextObject->name() != "f$debug");
       needs_deletion = true;
     }
@@ -123,7 +123,7 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   // f$debug is a global object 
   // and must not be added to the collection
   // (to avoid deletion)
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   assert(name != "f$debug");
   if (name == "") {
      write_log(preferences.debug_formula(), 
@@ -159,7 +159,7 @@ void CFunctionCollection::VerifyExistence(CString name) {
   // The OpenPPL-symbol "Random" is no longer implemented in the library
   // but as a built-in symbol to prevent symbol-caching.
   // Therefore we don't want to check if it is "missing" in the library.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19611
   if (name == "Random") return;
   if (Exists(name)) return;
   // Error: function does not exist
@@ -200,7 +200,7 @@ COHScriptObject *CFunctionCollection::LookUp(CString name) {
     // Lookup of the special function f$debug
     // that is a global object and not in the collection
     // (to avoid deletion)
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
     assert(p_debug_tab != NULL);
     return p_debug_tab;
   }
@@ -312,7 +312,7 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$test"));
   // No longer adding f$debug,
   // because f$debug is a global object that always exists
-  //!!!!!CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CString("f$debug"));
+  //http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   //
   // PrWin-functions, used by the GUI
   CreateEmptyDefaultFunctionIfFunctionDoesNotExist(
@@ -538,7 +538,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
 void CFunctionCollection::Delete(CString name) {
   // The debug-tab must not be deleted.
   // It is a global object that is NOT in the function-collection
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   assert (name != "f$debug");    
   CSLock lock(m_critsec);
   COHScriptObject *object_to_delete = LookUp(name);
@@ -650,7 +650,7 @@ bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool 
         // but as a built-in symbol to prevent symbol-caching.
         // This special case of a "function-look-alike symbol
         // can't be handled by the function collection.
-        // www!!!!!
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19611
         return false;
       }
       // Function does not exist

@@ -302,8 +302,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     assert(p_debug_tab != NULL);
     // The debug-tab is a special global object that must nit be added 
     // to the function collection (to avoid deletion).
-    // www!!!!!
-    //!!!!!p_function_collection->Add((COHScriptObject*)p_debug_tab);
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
     return;
   }
   TPParseTreeNode function_body = NULL;
