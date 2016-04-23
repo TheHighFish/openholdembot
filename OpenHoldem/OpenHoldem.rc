@@ -766,22 +766,20 @@ BEGIN
     EDITTEXT        IDC_REBUY_EDIT_SCRIPT,100,100,100,12,ES_AUTOHSCROLL
 END
 
-IDD_SAPREFS17 DIALOGEX 0, 0, 219, 154
+IDD_SAPREFS17 DIALOGEX 0, 0, 204, 154
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Check keyboard layout settings (english - UK, US)",IDC_CONFIGURATION_INPUT_SETTINGS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,8,176,8
-    CONTROL         "Check Windows Theme Settings",IDC_CONFIGURATION_THEME_SETTINGS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
     CONTROL         "Check Font Smoothing Settings",IDC_CONFIGURATION_FONT_SETTINGS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,38,176,10
-    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC,4,60,200,8
-    LTEXT           "  * for the scraper",IDC_STATIC,4,72,96,8
-    LTEXT           "  * for the autoplayer",IDC_STATIC,4,82,96,8
-    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC,4,92,200,8
-    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC,4,104,200,8
-    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC,4,114,200,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,23,176,10
+    LTEXT           "Correct and working system settings are extremely important",IDC_STATIC,4,45,200,8
+    LTEXT           "  * for the scraper",IDC_STATIC,4,57,96,8
+    LTEXT           "  * for the autoplayer",IDC_STATIC,4,67,96,8
+    LTEXT           "  * if you want to exchange tablemaps with other people",IDC_STATIC,4,77,200,8
+    LTEXT           "Therefore the manual recommends some defaults",IDC_STATIC,4,89,200,8
+    LTEXT           "and we strongly recommend to keep these checks enabled.",IDC_STATIC,4,99,200,8
 END
 
 IDD_SAPREFS18 DIALOGEX 0, 0, 219, 154

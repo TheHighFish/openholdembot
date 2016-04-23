@@ -110,7 +110,6 @@ enum
 	k_prefs_rebuy_condition_change_in_handnumber,
 	k_prefs_rebuy_condition_heuristic_check_for_occlusion,
 	k_prefs_configurationcheck_input_settings,
-	k_prefs_configurationcheck_theme_settings,
 	k_prefs_configurationcheck_font_settings,
 	k_prefs_handhistory_generator_enable,
 	k_prefs_simple_window_title,
@@ -301,7 +300,6 @@ public:
 	const CString rebuy_script() { return prefs_CString_values[k_prefs_rebuy_script]; }
 	// Configuration check
 	const bool configurationcheck_input_settings() { return prefs_numerical_values[k_prefs_configurationcheck_input_settings]; }
-	const bool configurationcheck_theme_settings() { return prefs_numerical_values[k_prefs_configurationcheck_theme_settings]; }
 	const bool configurationcheck_font_settings() { return prefs_numerical_values[k_prefs_configurationcheck_font_settings]; }
    	// Lazy scraping
 	const int lazy_scraping_when_to_scrape() { return prefs_numerical_values[k_prefs_lazy_scraping_when_to_scrape]; }

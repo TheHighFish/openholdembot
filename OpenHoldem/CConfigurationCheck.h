@@ -31,7 +31,6 @@ private:
 	void CheckColourDepth();
 	void CheckInputSettings();
 	void CheckForSwapMouseBtns();
-	void CheckForClassicalTheme();
 	void CheckForFontSmoothing();
 };
 

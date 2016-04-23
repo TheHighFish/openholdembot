@@ -97,7 +97,6 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"rebuy_condition_change_in_handnumber",
 	"rebuy_condition_heuristic_check_for_occlusion",
 	"configurationcheck_input_settings",
-	"configurationcheck_theme_settings",
 	"configurationcheck_font_settings",
 	"handhistory_generator_enable",
 	"simple_window_title",
@@ -213,7 +212,6 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
 	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = true;
-	prefs_numerical_values[k_prefs_configurationcheck_theme_settings] = true;
 	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
 
 	// Ints

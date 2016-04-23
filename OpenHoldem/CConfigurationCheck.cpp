@@ -45,10 +45,9 @@ void CConfigurationCheck::CheckEverything()
 		CheckInputSettings();
 	}
 
-	if (preferences.configurationcheck_theme_settings())
-	{
-		//!!!!!CheckForClassicalTheme();
-	}
+	// No longer checking CheckForClassicalTheme();
+  // as now (9.1.3) all themes (probably) are supported
+  // out of the box with the same tablemaps.
 
 	if (preferences.configurationcheck_font_settings())
 	{
@@ -190,43 +189,6 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 			"Caution: Swap Mouse Buttons Activated");
 	}
 }
-
-void CConfigurationCheck::CheckForClassicalTheme()
-{
-	CString p_szKeyThemeActive = "Software\\Microsoft\\Windows\\CurrentVersion\\ThemeManager\\";
-	CString p_szKeyWinVersion = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\";
-
-	CString p_szNameThemeActive = "ThemeActive";
-	CString p_szNameWinVersion = "CurrentVersion";
-
-	bool classic_theme = false;
-
-	CString win_Vs = GetValue("HKLM", 1, p_szKeyWinVersion, p_szNameWinVersion);
-
-	CString WIN_2000 = "5.0";
-	CString SRV_2003 = "5.2";
-
-	if(win_Vs == WIN_2000 || win_Vs == SRV_2003)
-	{
-		classic_theme = true;
-	}
-
-	else if (atoi(GetValue("HKCU", 1, p_szKeyThemeActive, p_szNameThemeActive)) == 0)
-	{
-		classic_theme = true;
-	}
-
-	if (classic_theme == false)
-	{
-		OH_MessageBox_Error_Warning("Classical Theme Not Found\n"
-			"Settings deviate from recommended defaults.\n"
-			"\n"
-			"Please enable windows classical theme.\n"
-			"for optimum compatibility \n",
-			"Caution: Classical Theme Disabled");
-	}
-}
-
 
 void CConfigurationCheck::CheckForFontSmoothing()
 {
