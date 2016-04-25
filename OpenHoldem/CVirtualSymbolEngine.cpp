@@ -14,6 +14,10 @@
 #include "stdafx.h"
 #include "CVirtualSymbolEngine.h"
 
+#include "CFormulaParser.h"
+#include "CScraperAccess.h"
+#include "OH_MessageBox.h"
+
 CVirtualSymbolEngine::CVirtualSymbolEngine()
 {}
 
@@ -44,6 +48,26 @@ bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool
 CString CVirtualSymbolEngine::SymbolsProvided() {
   // Default for symbol-engines that don't provide any symbols
   return "";
+}
+
+void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
+  if (p_formula_parser->IsParsing()) {
+    // No error-message while parsing,
+    // as we only verify existence, 
+    // but don't care about the result.
+    return;
+  }
+  if (!p_scraper_access->IsMyTurn()) {
+    CString error_message;
+    error_message.Format("%s%s%s%s%s%s%s%s",
+      "The symbol \"", name, "\"\n",
+      "requires my turn and is currently undefined.\n",
+      "\n",
+      "(This error might also be caused by derived OpenPPL-symbols\n",
+      "like Raises, Calls, CallsSinceLastRaise, ...\n",
+      "which use basic OpenHoldem-symbols.)");
+    OH_MessageBox_Error_Warning(error_message, "Warning");
+  }
 }
 
 CString CVirtualSymbolEngine::RangeOfSymbols(CString format_string, int first, int last) {
