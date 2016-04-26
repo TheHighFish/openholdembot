@@ -20,6 +20,7 @@
 #include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineCasino.h"
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineRaisers.h"
@@ -35,6 +36,12 @@ CHeartbeatDelay::~CHeartbeatDelay(){
 void CHeartbeatDelay::FlexibleSleep() {
   double default_heartbeat_delay = preferences.scrape_delay();
   double sleeping_factor = SleepingFactor();
+  if (p_symbol_engine_casino->ConnectedToManualMode()) {
+    // Don't become too laggy at ManualMode,
+    // response-time to euser is more important
+    // than "performance", usually single-tabling.
+    sleeping_factor = MIN(sleeping_factor, 2);
+  }
   double modified_heartbeat_delay = default_heartbeat_delay * sleeping_factor;
   write_log(preferences.debug_heartbeat(), "[HeartBeatThread] default delay   %.3f ms.\n", default_heartbeat_delay);
   write_log(preferences.debug_heartbeat(), "[HeartBeatThread] sleeping factor %.3f .\n", sleeping_factor);
