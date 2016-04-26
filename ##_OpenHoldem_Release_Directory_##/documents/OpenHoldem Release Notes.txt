@@ -1,3 +1,24 @@
+v9.1.4 2016-04-26
+==================
+NEW STUFF:
+- In OpenHoldem 9.0.1 we replaced clientsize in favour of clientsizemin/max
+  and targetsize. This caused the problem that some people used a very large
+  range of clientsizemin/max in combination with a very common titletext
+  like "Poker". As a consequence some tablemaps connected to nearly every
+  window (not even table).
+  To solve this problem we now detect if a table could be served 
+  by more than one tablemap. For performance reasons we do this exactly once
+  per table at connection.
+  Thanks to Johnny for reporting oversized replay-frames and to Ares
+  for finding the problem.
+  [THF]
+  
+BUG FIXES:
+- Numbers with only 1 digit after the decimal point got rejected as "non-monetary"
+  by OpenHoldem. This has now been fixed.
+  Thanks to Sagan for reporting.
+  [THF]
+
 v9.1.3 2016-04-23
 ==================
 BUG FIXES:

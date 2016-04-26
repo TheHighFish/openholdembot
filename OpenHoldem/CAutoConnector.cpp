@@ -94,7 +94,7 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
   // To solve this problem we now detect if a table could be served 
   // by more than one tablemap. For performance reasons we do this exactly once
   // per table at connection.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&start=90#p138038
   int num_loaded_tablemaps = p_tablemap_loader->NumberOfTableMapsLoaded();
   int num_matching_tablemaps = 0;
   CString matching_tablemaps = "";
