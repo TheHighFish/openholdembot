@@ -207,9 +207,6 @@
     <ClCompile Include="CHeartbeatThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClInclude Include="CHeartbeatDelay.cpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClCompile Include="CLevDistance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -762,6 +759,9 @@
     <ClCompile Include="CParseTreeOperatorNode.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="CHeartbeatDelay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -959,6 +959,9 @@
     <None Include="..\Checklist_Release_OpenPPL.txt">
       <Filter>Documents\Checklist for Releases</Filter>
     </None>
+    <None Include="OpenHoldem.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CFileSystemMonitor.h">
@@ -976,9 +979,6 @@
     <ClInclude Include="CHeartbeatThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClCompile Include="CHeartbeatDelay.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClInclude Include="CLazyScraper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1617,6 +1617,9 @@
     </ClInclude>
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h">
       <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CHeartbeatDelay.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

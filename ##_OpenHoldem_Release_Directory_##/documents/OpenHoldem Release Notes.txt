@@ -1,3 +1,17 @@
+v9.2.0 2016-04-xx
+==================
+NEW STUFF:
+- Implemented a new function for the DLL-level
+  EXE_IMPLEMENTS void __stdcall ParseHandList(const char* name_of_list, const char* list_body);
+  This function makes it possible to change hand-lists at run-time.
+  To be called with list-name and complete list-body as parameters.
+  This function replaces the old "hlset" that got broken and "temporary" removed
+  when we replaced the numbered lists by arbitrary many named lists in OpenHoldem 4.x.
+  As a consequence the function "getplh1k" (get pointer to 1000 handlists) got also removed.
+  Thanks to Gunysmo for asking about that feature.
+  [THF]
+  
+  
 v9.1.4 2016-04-26
 ==================
 NEW STUFF:
@@ -18,6 +32,7 @@ BUG FIXES:
   by OpenHoldem. This has now been fixed.
   Thanks to Sagan for reporting.
   [THF]
+  
 
 v9.1.3 2016-04-23
 ==================
@@ -117,7 +132,7 @@ BUG FIXES:
   Thanks to Micro111 for reporting.
   [THF]
 
-
+MAINTENANCE:
 - log$-symbols return now 1 as specified in the manual.
   This behaviour is more convenient in ANDed conditions.
   Thanks to Cidertime for asking.
@@ -298,6 +313,7 @@ NEW STUFF:
   to handle this "special" case in their bot-logic.
   [THF]
 
+  
 v7.8.0 2015-09-10
 ==================
 BUG FIXES:

@@ -51,6 +51,7 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	if (pquery==NULL)
 		return 0;
 	if (strncmp(pquery,"dll$test",8)==0) {
+    ParseHandList("list_dlltest", "AA AKs AKo");
 		return GetSymbol("random");
   }
 	if (strncmp(pquery,"dll$spend",9)==0) {

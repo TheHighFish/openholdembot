@@ -68,11 +68,11 @@ DLL_IMPLEMENTS void __stdcall DLLOnUnLoad();
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL
 EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression);
-EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
-EXE_IMPLEMENTS void*  __stdcall GetPhl1k();
 EXE_IMPLEMENTS void*  __stdcall GetPrw1326();
-EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
+EXE_IMPLEMENTS void   __stdcall ParseHandList(const char* name_of_list, const char* list_body);
+EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
+EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 
 // Variables exported by OpenHoldem
 // avoiding the message-mess of WinHoldem,
