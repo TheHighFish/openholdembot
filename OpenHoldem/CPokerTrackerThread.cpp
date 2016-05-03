@@ -788,29 +788,23 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 /*Sleeps but wakes up on stop thread event every 250ms.
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
-int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
-{
-	 write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
-
-	if (sleepTime > 0)
-	{
-		unsigned int sleepSlice = 250 ; // ms
-		unsigned int slicesNumber = sleepTime / sleepSlice ;
-		for (int i = 1; i <= slicesNumber; i++)
-		{
+bool CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent) {
+   write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
+	if (sleepTime > 0)	{
+		int sleepSlice = 250 ; // ms
+		int slicesNumber = sleepTime / sleepSlice ;
+		for (int i = 1; i <= slicesNumber; i++)	{
 			Sleep(sleepSlice);
-			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-			{
+			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)	{
 				 write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-				return 1;
+				return true;
 			}
 		}
 		Sleep(sleepTime%sleepSlice);
 	}
-	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-	{
+	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)	{
 		 write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-		return 1;
+		return true;
 	}
-	return 0;
+	return false;
 }

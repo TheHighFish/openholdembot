@@ -54,7 +54,7 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	static void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
 	static UINT			PokertrackerThreadFunction(LPVOID pParam);
-	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
+	static bool			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
 	void				SetStatGroups();
 	bool				AllConnectionDataSpecified();
 	void				Connect();
