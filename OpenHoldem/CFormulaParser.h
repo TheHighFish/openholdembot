@@ -14,8 +14,6 @@
 #ifndef INC_CFORMULAPARSER_H
 #define INC_CFORMULAPARSER_H
 
-#define _AFXDLL 
-
 #include "afx.h"
 #include "atlstr.h"
 #include "CFormulaFileSplitter.h"
