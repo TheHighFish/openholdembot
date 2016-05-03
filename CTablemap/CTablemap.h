@@ -76,8 +76,8 @@ typedef TMap::iterator TMapI;
 typedef TMap::const_iterator TMapCI;
 
 struct STablemapHashPoint {
-	unsigned int	x;
-	unsigned int	y;
+	int	x;
+	int	y;
 };
 
 typedef std::pair<uint32_t, STablemapHashPoint> PPair;
