@@ -14,8 +14,6 @@
 #ifndef INC_CFORMULAFILESPLITTER_H
 #define INC_CFORMULAFILESPLITTER_H
 
-#define _AFXDLL 
-
 #include "afx.h"
 #include "atlstr.h"
 
