@@ -1516,16 +1516,16 @@ SymGetHomeDirectoryW(
     __in size_t size
     );
 
-typedef enum {
-    hdBase = 0, // root directory for dbghelp
-    hdSym,      // where symbols are stored
-    hdSrc,      // where source is stored
-    hdMax       // end marker
+enum {
+  hdBase = 0, // root directory for dbghelp
+  hdSym,      // where symbols are stored
+  hdSrc,      // where source is stored
+  hdMax       // end marker
 };
 
 typedef struct _OMAP {
-    ULONG  rva;
-    ULONG  rvaTo;
+  ULONG  rva;
+  ULONG  rvaTo;
 } OMAP, *POMAP;
 
 BOOL
@@ -3031,12 +3031,12 @@ SymSrvStoreFileW(
 
 // used by SymGetSymbolFile's "Type" parameter
 
-typedef enum {
-    sfImage = 0,
-    sfDbg,
-    sfPdb,
-    sfMpd,
-    sfMax
+enum {
+  sfImage = 0,
+  sfDbg,
+  sfPdb,
+  sfMpd,
+  sfMax
 };
 
 BOOL

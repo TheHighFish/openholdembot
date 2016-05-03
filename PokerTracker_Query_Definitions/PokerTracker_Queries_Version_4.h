@@ -162,7 +162,7 @@ enum PT_StatTypes {
 	pt_statType_Tourney = 1
 };
 
-typedef struct t_QueryDefinition {
+struct t_QueryDefinition {
 	CString name;
 	CString description_for_editor;
 	CString query;
