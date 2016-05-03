@@ -428,7 +428,6 @@ int BreakFinder::Next() {
 	} else {
 		int lastGoodBreak = -1;
 		int lastOKBreak = -1;
-		int j;
 		for (int j = subBreak + 1; j <= nextBreak; j++) {
 			if (IsSpaceOrTab(ll->chars[j - 1]) && !IsSpaceOrTab(ll->chars[j])) {
 				lastGoodBreak = j;
