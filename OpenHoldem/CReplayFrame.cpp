@@ -86,12 +86,12 @@ void CReplayFrame::CreateReplayFrame(void){
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
-		fprintf(fp, "%s\n", p_table_state->TableTitle()->Title());
+		fprintf(fp, "%s\n", LPCSTR(p_table_state->TableTitle()->Title()));
     fprintf(fp, "<br>\n");
 		// HTML header
 		fprintf(fp, "<html>\n");
 		fprintf(fp, "  <head>\n");
-		fprintf(fp, "    <title>%s</title>\n", p_table_state->TableTitle()->Title());
+		fprintf(fp, "    <title>%s</title>\n", LPCSTR(p_table_state->TableTitle()->Title()));
 		fprintf(fp, "  </head>");
 		fprintf(fp, "<style>\n");
 		fprintf(fp, "td {text-align:right;}\n");
@@ -102,7 +102,7 @@ void CReplayFrame::CreateReplayFrame(void){
 		fprintf(fp, "<img src=\"frame%06d.bmp\">\n", _next_replay_frame);
 		fprintf(fp, "<br>\n");
     // Title, data, frame-number, OH-version
-    fprintf(fp, "%s", GeneralInfo());
+    fprintf(fp, "%s", LPCSTR(GeneralInfo()));
     // Links forwards and backwards to the next frames
 		fprintf(fp, "%s", LPCSTR(GetLinksToPrevAndNextFile()));
 		fprintf(fp, "<br>\n");
