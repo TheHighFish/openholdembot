@@ -57,12 +57,15 @@
 
 // Turn some warnings on, because we consider them helpful
 // http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
-// http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
-// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
-// https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 #pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
+// https://msdn.microsoft.com/en-us/library/ew69e79d.aspx
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19656
+#pragma warning(error:4129)   // unrecognized character escape sequence
+// http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
 #pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
+// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
 #pragma warning(error:4715)   // warning C4715: not all control paths return a value	
+// https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 #pragma warning(error:4555)   // warning C4555: expression has no effect; expected expression with side-effect
 
 // turns off MFC's hiding of some common and often safely ignored warning messages

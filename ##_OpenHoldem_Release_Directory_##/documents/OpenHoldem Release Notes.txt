@@ -8,7 +8,7 @@ NEW STUFF:
   This function replaces the old "hlset" that got broken and "temporary" removed
   when we replaced the numbered lists by arbitrary many named lists in OpenHoldem 4.x.
   As a consequence the function "getplh1k" (get pointer to 1000 handlists) got also removed.
-  Thanks to Gunysmo for asking about that feature.
+  Thanks to Guysmo for asking about that feature.
   [THF]
   
   
