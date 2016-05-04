@@ -57,13 +57,8 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
   _function_header = _next_line;
   _function_text = ""; 
   while (true) {
-    try {
-      if (!formula_file.ReadString(_next_line)) {
-	      break;
-      }
-    }
-    catch (CException *e) {
-	    // break;
+    if (!formula_file.ReadString(_next_line)) {
+	    break;
     }
     ++_total_line_processed;
     // Avoid problems with "empty" lines before first function header
