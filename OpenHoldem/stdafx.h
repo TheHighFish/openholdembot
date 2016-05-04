@@ -62,26 +62,44 @@
 
 
 // Turn some warnings to errors, because we consider them helpful
-// http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
-#pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
-#pragma warning(error:4005)   //!!!!!
-#pragma warning(error:4018) //!!!!!
-#pragma warning(error:4091)   //!!!!!
+//
+// https://msdn.microsoft.com/en-us/library/aa231853%28v=vs.60%29.aspx
+// macro redefinition
+#pragma warning(error:4005)   
+// https://msdn.microsoft.com/en-us/library/aa231864%28v=vs.60%29.aspx
+// signed/unsigned mismatch
+#pragma warning(error:4018) 
+// https://msdn.microsoft.com/en-us/library/aa733780%28v=vs.60%29.aspx
+// 'extended-attribute' : ignored on left of 'type' when no variable is declared
+#pragma warning(error:4091)   
 // https://msdn.microsoft.com/en-us/library/aa733790%28v=vs.60%29.aspx
-#pragma warning(error:4101)   // unreferenced local variable
-#pragma warning(error:4118)   //!!!!!
+// unreferenced local variable
+#pragma warning(error:4101)
+// https://msdn.microsoft.com/en-us/library/aa733807%28v=vs.60%29.aspx
+// pragma not supported during fast compile
+#pragma warning(error:4118)   
 // https://msdn.microsoft.com/en-us/library/ew69e79d.aspx
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19656
-#pragma warning(error:4129)   // unrecognized character escape sequence
+// unrecognized character escape sequence
+#pragma warning(error:4129)   
 // http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
-#pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
-#pragma warning(error:4477)		// !!!!!
+// local declaration of <variable> hides previous declaration at <line> of <file>
+#pragma warning(error:4229)		
+// https://blogs.msdn.microsoft.com/vcblog/2015/06/22/format-specifiers-checking/
+// Format specifiers checking (various errors)
+#pragma warning(error:4477)		
 // https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
-#pragma warning(error:4555)   // warning C4555: expression has no effect; expected expression with side-effect
-// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
-#pragma warning(error:4715)   // warning C4715: not all control paths return a value	
-#pragma warning(error:4715)   // !!!!!
-#pragma warning(error:4805)		// unsafe mix of type X and type 'bool' in operation
+// expression has no effect; expected expression with side-effect
+#pragma warning(error:4555)
+// https://msdn.microsoft.com/en-us/library/aa734012%28v=vs.60%29.aspx
+// not all control paths return a value
+#pragma warning(error:4715)   
+https://msdn.microsoft.com/en-us/library/aa266195%28v=vs.60%29.aspx
+// unsafe mix of type X and type 'bool' in operation
+#pragma warning(error:4805)		
+// http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
+// Local declaration of <variable> hides declaration of same name in outer scope.
+#pragma warning(error:6246)	
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
