@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSharedMem.h"
@@ -220,7 +220,9 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 void CSharedMem::RememberTablePosition() {
   ENT;
   int session_ID = p_sessioncounter->session_id();
-  RECT position;  GetWindowRect(attached_poker_windows[session_ID], &position);  table_positions[session_ID].left   = position.left;
+  RECT position;
+  GetWindowRect(attached_poker_windows[session_ID], &position);
+  table_positions[session_ID].left   = position.left;
   table_positions[session_ID].top    = position.top;
   table_positions[session_ID].right  = position.right;
   table_positions[session_ID].bottom = position.bottom;

@@ -1,11 +1,11 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: This module provides:
 //     * a series of 256 gamestates for the DLL
@@ -16,7 +16,7 @@
 //   But after refactoring this module creates just gamestates
 //   and nothing else.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CGAMESTATE_H
 #define INC_CGAMESTATE_H

@@ -1,16 +1,16 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Various chair symbols, ecept dealerchair, userchair and raischair,
 //   which are of special importance and get handled by other symbol-engines.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINECHAIRS_H
 #define INC_CSYMBOLENGINECHAIRS_H

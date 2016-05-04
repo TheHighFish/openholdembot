@@ -5,7 +5,7 @@
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Priority-ordering of operator-nodes in the parse-tree.
 //   OpenHoldem creates parse-trees in a very straight-forward way:
@@ -33,7 +33,7 @@
 // Evaluating this tree depth-first will result in (2 * 3) + (4 * 5),
 // first the sibblings, then the parent node (plus-operator).
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CParseTreeRotator.h"

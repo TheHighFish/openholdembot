@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_STDAFX_H
 #define INC_STDAFX_H
@@ -28,7 +28,7 @@
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
-#ifndef WINVER				// Allow use of features specific to Windows XP or later.
+#ifndef WINVER				  // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
 #endif
 
@@ -46,27 +46,40 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
-// Turn some warnings off, because we consider them harmless
-// and don't see an easy way to fix or avoid them.
+// Turn some warnings off, but only in release mode.
+// We want to see all warnings if we hunt bugs.
+// The warnings below are considered harmless
+// and we don't see an easy way to fix or avoid them.
+#ifndef _DEBUG
 #define _CRT_SECURE_NO_DEPRECATE 1  // secure functions with checks for buffer size 
-#pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
-#pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
-#pragma warning(disable:4319)   // zero extending 'unsigned long' to 'double' of greater size
-#pragma warning(disable:4800)   // forcing value to bool 'true' or 'false' (performance warning)
-#pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
+//#pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
+//#pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
+//#pragma warning(disable:4319)   // zero extending 'unsigned long' to 'double' of greater size
+//#pragma warning(disable:4800)   // forcing value to bool 'true' or 'false' (performance warning)
+#endif // #ifndef _DEBUG
 
 // Turn some warnings on, because we consider them helpful
 // http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
 #pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
+#pragma warning(error:4005)   //!!!!!
+//#pragma warning(error:4018)   //!!!!!
+#pragma warning(error:4091)   //!!!!!
+// https://msdn.microsoft.com/en-us/library/aa733790%28v=vs.60%29.aspx
+#pragma warning(error:4101)   // unreferenced local variable
+//#pragma warning(error:4118)   //!!!!!
 // https://msdn.microsoft.com/en-us/library/ew69e79d.aspx
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19656
 #pragma warning(error:4129)   // unrecognized character escape sequence
+#pragma warning(error:4190)   //!!!!!
 // http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
 #pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
-// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
-#pragma warning(error:4715)   // warning C4715: not all control paths return a value	
+#pragma warning(error:4477)		// !!!!!
 // https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 #pragma warning(error:4555)   // warning C4555: expression has no effect; expected expression with side-effect
+// https://msdn.microsoft.com/en-us/library/23k5d385.aspx
+#pragma warning(error:4715)   // warning C4715: not all control paths return a value	
+#pragma warning(error:4715)   // !!!!!
+#pragma warning(error:4805)		// unsafe mix of type X and type 'bool' in operation
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
