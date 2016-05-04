@@ -550,7 +550,7 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
   CString error_message = "Missing action after when-condition\n";
   if (token_ID == kTokenNumber) {
     error_message += "Found a number. Probably missing operator\n";
-  } else if (token_ID == TokenIsBracketOpen(token_ID)) {
+  } else if (TokenIsBracketOpen(token_ID)) {
     error_message += "Found a bracket. Probably missing operator\n";
   } else if (token_ID == kTokenIdentifier) {
     CString name = _tokenizer.GetTokenString();

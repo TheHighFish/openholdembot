@@ -13,7 +13,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If I'm last to act and not aggressor and an aggressor truly exists, he has to act before me.")
     PRECONDITION ((gws("betposition") == gws("nplayersplaying")) && (gws("raischair") != gws("userchair")) && (gws("raischair") >= 0))
-    POSTCONDITION ((gws("ac_agchair_after") == false))
+    POSTCONDITION ((gws("ac_agchair_after") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("betposition, nplayersplaying, raischair, userchair, ac_agchair_after")
 END_TESTCASE
  

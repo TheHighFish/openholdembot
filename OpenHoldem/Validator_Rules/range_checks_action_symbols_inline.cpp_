@@ -56,7 +56,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_agchair_after")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ac_agchair_after") == true ) || (gws("ac_agchair_after") == false))
+    POSTCONDITION ((gws("ac_agchair_after") == double(true)) || (gws("ac_agchair_after") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("ac_agchair_after")
 END_TESTCASE
 
@@ -96,7 +96,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ac_first_into_pot")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ac_first_into_pot") == true) || (gws("ac_first_into_pot") == false))
+    POSTCONDITION ((gws("ac_first_into_pot") == double(true)) || (gws("ac_first_into_pot") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("ac_first_into_pot")
 END_TESTCASE
 

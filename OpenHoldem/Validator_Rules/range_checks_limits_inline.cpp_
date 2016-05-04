@@ -47,7 +47,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol isnl")
     PRECONDITION (true)
-    POSTCONDITION ((gws("isnl") == true) || (gws("isnl") == false))
+    POSTCONDITION ((gws("isnl") == double(true)) || (gws("isnl") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("isnl")
 END_TESTCASE
 
@@ -57,7 +57,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol ispl")
     PRECONDITION (true)
-    POSTCONDITION ((gws("ispl") == true) || (gws("ispl") == false))
+    POSTCONDITION ((gws("ispl") == double(true)) || (gws("ispl") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("ispl")
 END_TESTCASE
 
@@ -67,7 +67,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol isfl")
     PRECONDITION (true)
-    POSTCONDITION ((gws("isfl") == true) || (gws("isfl") == false))
+    POSTCONDITION ((gws("isfl") == double(true)) || (gws("isfl") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("isfl")
 END_TESTCASE
 
@@ -77,6 +77,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol istournament")
     PRECONDITION (true)
-    POSTCONDITION ((gws("istournament") == true) || (gws("istournament") == false))
+    POSTCONDITION ((gws("istournament") == double(true)) || (gws("istournament") == double(false)))
     SYMBOLS_POSSIBLY_AFFECTED ("istournament")
 END_TESTCASE

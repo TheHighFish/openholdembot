@@ -34,7 +34,7 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
  public:
-	bool istournament()		{ return _istournament == true; }
+	bool istournament()		{ return _istournament == int(true); }
  private:
 	void TryToDetectTournament();
 	bool BetsAndBalancesAreTournamentLike();

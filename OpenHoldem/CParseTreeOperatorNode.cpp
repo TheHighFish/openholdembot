@@ -188,7 +188,7 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 	// Short circuiting
 	// Don't evaluate unnecessary parts of expressions
 	if (_node_type == kTokenOperatorLogicalAnd)	{
-		if (value_of_first_sibbling == false) {
+		if (value_of_first_sibbling == double(false)) {
 			return false;
 		}
 		value_of_second_sibbling = EvaluateSibbling(_second_sibbling, log);

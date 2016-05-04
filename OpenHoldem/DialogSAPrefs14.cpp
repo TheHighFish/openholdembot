@@ -77,18 +77,12 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 }
 
 
-void CDlgSAPrefs14::OnOK()
-{
-	if (bool(_autoconnector_connect_never.GetCheck()) == true)
-	{
+void CDlgSAPrefs14::OnOK() {
+	if (bool(_autoconnector_connect_never.GetCheck()) == true) {
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
-	}
-	else if (bool(_autoconnector_connect_once.GetCheck()) == true)
-	{
+	}	else if (bool(_autoconnector_connect_once.GetCheck()) == BST_CHECKED) {
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Once);
-	}
-	else // _autoconnector_connect_permanent.GetCheck() == true
-	{
+	}	else { // _autoconnector_connect_permanent.GetCheck() == BST_CHECKED 
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}
 

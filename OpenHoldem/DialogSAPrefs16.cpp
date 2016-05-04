@@ -80,9 +80,9 @@ void CDlgSAPrefs16::OnOK()
 {
 	CString text = "";
 	
-	preferences.SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == true);
+	preferences.SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == BST_CHECKED ? true : false);
 
 	_rebuy_minimum_time_to_next_try_Edit.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MINIMUM_DELAY_TO_NEXT_REBUY) 

@@ -63,8 +63,8 @@ BOOL CDlgSAPrefs15::OnInitDialog()
 
 void CDlgSAPrefs15::OnOK()
 {
-	preferences.SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_gui_start_minimized, _gui_start_minimized_Button.GetCheck() == BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck() == BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }
