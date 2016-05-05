@@ -762,6 +762,9 @@
     <ClCompile Include="CHeartbeatDelay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CCasinoHotkeys.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1620,6 +1623,9 @@
     </ClInclude>
     <ClInclude Include="CHeartbeatDelay.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CCasinoHotkeys.h">
+      <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
