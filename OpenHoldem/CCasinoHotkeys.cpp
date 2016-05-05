@@ -33,14 +33,11 @@ bool CCasinoHotkeys::PressHotkey(const CString name_of_hotkey_or_button) {
   // Analyze hotkey-combination
   if (hotkey_combination.GetLength() == 1) {
     key_to_be_pressed = hotkey_combination[0];
-    switch (key_to_be_pressed) {
-      case '0'..'9': break;
-      case 'a'..'z': break;
-      case 'A'..'Z': break;
-      default: return false;
+    if (!isalnum(key_to_be_pressed)) {
+      // We expect a..z, A..Z, 0..9
+      return false;
     }
-  }
-  else if (hotkey_combination.GetLength() == 1) {
+  } else if (hotkey_combination.GetLength() == 1) {
     if (hotkey_combination.MakeLower() == "space") {
       key_to_be_pressed = ' ';
     } else if (hotkey_combination.MakeLower() == "enter") {
@@ -53,7 +50,7 @@ bool CCasinoHotkeys::PressHotkey(const CString name_of_hotkey_or_button) {
   else {
     return false;
   }
-  return true;
+  return true; //!!!!! no warning for unreachable code?
   if (isalnum(key_to_be_pressed)) {
      write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press key [%c]\n",

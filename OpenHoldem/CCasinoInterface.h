@@ -15,6 +15,7 @@
 #define INC_CCASINOINTERFACE_H
 
 #include "MagicNumbers.h"
+#include "CCasinoHotkeys.h"
 
 class CCasinoInterface {
  public:
@@ -38,7 +39,7 @@ class CCasinoInterface {
 	void ClickRect(RECT rect);
 	void SelectSwagText();
 	void DeleteSwagText();
-
+ private:
 	POINT p_null;
 	RECT r_null; 
 	// ToDo: Sliderbar, Chatbox, etc.
@@ -50,6 +51,8 @@ class CCasinoInterface {
 	RECT i3_slider_region;
 	RECT i3_handle_region;
 	RECT i86X_button[k_max_number_of_i86X_buttons];
+ private:
+  CCasinoHotkeys casino_hotkeys;
 }; 
 
 extern CCasinoInterface *p_casino_interface;

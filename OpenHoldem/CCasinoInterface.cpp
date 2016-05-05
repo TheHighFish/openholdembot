@@ -82,6 +82,12 @@ bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
 bool CCasinoInterface::ClickButton(int autoplayer_function_code) {
 	// write_log(preferences.debug_autoplayer(), "[CasinoInterface]  
 	if (ButtonClickable(autoplayer_function_code)) {
+    // Try to send a hotkey first, if specified in tablemap
+    if (casino_hotkeys.PressHotkey(k_standard_function_names[autoplayer_function_code])) {
+       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", k_standard_function_names[autoplayer_function_code]);
+      return true;
+    }
+    // Otherwise: click the button the normal way
 		ClickRect(action_buttons[autoplayer_function_code]);
 		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
 		return true;

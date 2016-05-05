@@ -25,42 +25,32 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-
 CScraperAccess *p_scraper_access = NULL;
 
-
-CScraperAccess::CScraperAccess()
-{
+CScraperAccess::CScraperAccess() {
 }
 
-CScraperAccess::~CScraperAccess()
-{
+CScraperAccess::~CScraperAccess() {
 }
 
-bool CScraperAccess::IsValidCard(int Card)
-{
-	if (Card >= 0 && Card < kNumberOfCardsPerDeck)
-		return true;
-
+bool CScraperAccess::IsValidCard(int Card) {
+  if (Card >= 0 && Card < kNumberOfCardsPerDeck) {
+    return true;
+  }
 	return false;
 }
 
 // Button Functions
-int CScraperAccess::SearchForButtonNumber(int button_code)
-{
+int CScraperAccess::SearchForButtonNumber(int button_code) {
 	/*
 		Searches tablemap labels for button definitions/overrides
 		returns the button number if a label is defined
 		or the default button number otherwise.
 	*/
-
-	int button_number = k_button_undefined;
-
-	// Define a function pointer for the string matching function corresponding to each button_code
+  int button_number = k_button_undefined;
+  // Define a function pointer for the string matching function corresponding to each button_code
 	const bool (CStringMatch::*StringMatch)(CString) = NULL;
-
-	switch (button_code)
-	{
+  switch (button_code) {
 		// ALLIN
 		case k_button_allin:
 			StringMatch = &CStringMatch::IsStringAllin;
