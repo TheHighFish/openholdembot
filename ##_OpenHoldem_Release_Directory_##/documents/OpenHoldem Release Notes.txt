@@ -11,6 +11,11 @@ NEW STUFF:
   Thanks to Guysmo for asking about that feature.
   [THF]
   
+BUG FIXES:
+- NumberOfUnknownSuitedOvercards also counted the unused rankbit below ace-low
+  if there was a flush aon board and we didn't contribute anything.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
   
 v9.1.4 2016-04-26
 ==================

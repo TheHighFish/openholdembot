@@ -1893,7 +1893,7 @@ SecondTopFlopCardPairedOnTurn
  (($$ps0==tsuit ? (RankOfFirstHoleCard!=ConstCardAce ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
 | ($$ps1==tsuit ? (RankOfSecondHoleCard!=ConstCardAce ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
 
-##Srankavailable##
+##Srankbitsavailable##
 // Available suited cards for other players,
 // possibly contributing to a flush or straight flush
 // The binary negation works on full prevision.
@@ -3138,7 +3138,7 @@ AND (pcbits == 0b00011 OR pcbits == 0b00001)
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
 // e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
-`((~srankbits & 0x7fff) >> srankhiplayer)
+`(Srankbitsavailable >> srankhiplayer)
 
 ##BoardKicker_FourOfAKindOnBoard##
 (betround == ConstBetRoundRiver) ? HighestUnpairedBoardCard : 2
