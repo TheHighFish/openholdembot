@@ -94,7 +94,7 @@
 // https://msdn.microsoft.com/en-us/library/aa734012%28v=vs.60%29.aspx
 // not all control paths return a value
 #pragma warning(error:4715)   
-https://msdn.microsoft.com/en-us/library/aa266195%28v=vs.60%29.aspx
+// https://msdn.microsoft.com/en-us/library/aa266195%28v=vs.60%29.aspx
 // unsafe mix of type X and type 'bool' in operation
 #pragma warning(error:4805)		
 // http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
