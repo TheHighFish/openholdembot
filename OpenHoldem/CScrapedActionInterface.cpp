@@ -23,7 +23,7 @@ CScrapedActionInterface::~CScrapedActionInterface() {
 
 void CScrapedActionInterface::Reset() {
   for (int i=0; i<k_max_number_of_buttons; i++)  {
-    _button_state[i] = "false";
+    //!!!!!_button_state[i] = "false";
 		_button_label[i] = "";
     _i86X_button_state[i] = "false";
   }

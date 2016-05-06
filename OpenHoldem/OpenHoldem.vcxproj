@@ -191,6 +191,7 @@
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CAutoplayerButton.cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
     <ClCompile Include="CBlindLevels.cpp" />
     <ClCompile Include="CCasinoHotkeys.cpp" />
@@ -474,6 +475,7 @@
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CAutoplayerButton.h" />
     <ClInclude Include="CBlindGuesser.h" />
     <ClInclude Include="CBlindLevels.h" />
     <ClInclude Include="CCasinoHotkeys.h" />

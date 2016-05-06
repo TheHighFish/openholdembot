@@ -178,17 +178,6 @@ bool CScraperAccess::GetButtonVisible(int button_number)
 	return button_visible;
 }
 
-bool CScraperAccess::GetBetpotButtonVisible(int button_code)
-{
-	/*
-		Checks if a betpot button is visible
-		i.e. available for taking an action
-	*/
-
-  CString betpot_button_state = p_table_state->_SCI._betpot_button_state[button_code];
-	return p_scraper->GetButtonState(betpot_button_state);
-}
-
 void CScraperAccess::InitOnConnect()
 {
 	GetNeccessaryTablemapObjects();
@@ -257,12 +246,13 @@ void CScraperAccess::GetNeccessaryTablemapObjects() {
 		i86X_button_visible[i] = GetButtonVisible(k_button_i86*k_max_number_of_i86X_buttons + i);
 	}
   // DEFINED + AVAILABLE
+  /*!!!!!
 	for (int i=0; i<k_number_of_standard_functions; i++) {
 		defined_buttons[i] = p_tablemap_access->GetButtonRect(button_names[i], &p_casino_interface->action_buttons[i]);
 		available_buttons[i] = defined_buttons[i] && visible_buttons[i];
-	}
+	}*/
 	// Defined + Available special regions
-	i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &p_casino_interface->i3_button);
+	//!!!!!i3_button_defined		= p_tablemap_access->GetButtonRect("i3button", &p_casino_interface->i3_button);
 	i3_edit_defined			= p_tablemap_access->GetTableMapRect("i3edit", &p_casino_interface->i3_edit_region);
 	i3_slider_defined		= p_tablemap_access->GetTableMapRect("i3slider", &p_casino_interface->i3_slider_region);
 	i3_handle_defined		= p_tablemap_access->GetTableMapRect("i3handle", &p_casino_interface->i3_handle_region);

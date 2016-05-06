@@ -23,7 +23,6 @@
 #include "CScraper.h"  
 #include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
-#include "CStringMatch.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -79,25 +78,21 @@ void CSymbolEngineAutoplayer::ResetOnHeartbeat() {
 void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineAutoplayer] myturnbits reset: %i\n", _myturnbits);
 	for (int i=0; i<k_max_number_of_buttons; i++) {
-		if (p_scraper->GetButtonState(i)) {
-      CString button_label = p_table_state->_SCI._button_label[i];
+		if (p_casino_interface->_technical_autoplayer_buttons[i].IsClickable()) {
       // myturnbits  
       // Since OH 7.7.2 in the form FCKRA 
       // like the butons in the GUI (F =lowest bit) 
-      if (p_string_match->IsStringFold(button_label))	{
+      if (p_casino_interface->_technical_autoplayer_buttons[i].IsFold()) {
 				_myturnbits |= kMyTurnBitsFold;
-			}	else if (p_string_match->IsStringCall(button_label)) 	{
+			}	else if (p_casino_interface->_technical_autoplayer_buttons[i].IsCall()) {
 				_myturnbits |= kMyTurnBitsCall;
-			}	else if (p_string_match->IsStringCheck(button_label))	{
+			}	else if (p_casino_interface->_technical_autoplayer_buttons[i].IsCheck()) {
 				_myturnbits |= kMyTurnBitsCheck;
-      }	else if (p_string_match->IsStringRaise(button_label) 
-          || button_label.MakeLower() == "betsize"
-          // Last occurence of swag for backward compatibility
-          || button_label.MakeLower() == "swag")	{
+      }	else if (p_casino_interface->_technical_autoplayer_buttons[i].IsRaise()) {
 				_myturnbits |= kMyTurnBitsRaise;
-			}	else if (p_string_match->IsStringAllin(button_label)) {
+			}	else if (p_casino_interface->_technical_autoplayer_buttons[i].IsAllin()) {
 				_myturnbits |= kMyTurnBitsAllin;
-			}	else if (p_string_match->IsStringAutopost(button_label)) 	{
+			}	else if (p_casino_interface->_technical_autoplayer_buttons[i].IsAutopost()) {
 				_isautopost = true;
 			}
 		}
@@ -106,16 +101,16 @@ void CSymbolEngineAutoplayer::CalculateMyTurnBits() {
 }
 
 void CSymbolEngineAutoplayer::CalculateSitInState() {
-  for (int i=0; i<k_max_number_of_buttons; i++) {
-    if (p_string_match->IsStringSitin(p_table_state->_SCI._button_label[i])) {
+  for (int i=0; i<k_max_number_of_buttons; ++i) {
+    if (p_casino_interface->_technical_autoplayer_buttons[i].IsSitin()) {
 	    // Sitin-button found
       // We are sitting in if that button can NOT be clicked
-	    _issittingin = !p_scraper->GetButtonState(i);
+	    _issittingin = !p_casino_interface->_technical_autoplayer_buttons[i].IsClickable();
 	    return;
-    } else if (p_string_match->IsStringSitout(p_table_state->_SCI._button_label[i])) {
+    } else if (p_casino_interface->_technical_autoplayer_buttons[i].IsSitout()) {
 	    // Sitout-button found
       // We are sitting in if that button CAN be clicked
-	    _issittingin = (p_scraper->GetButtonState(i));
+	    _issittingin = (p_casino_interface->_technical_autoplayer_buttons[i].IsClickable());
 	    return;
     }
   }

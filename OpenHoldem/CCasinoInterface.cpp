@@ -70,40 +70,13 @@ void CCasinoInterface::ClickRect(RECT rect) {
   p_symbol_engine_time->ResetOnAutoPlayerAction();
 }
 
-bool CCasinoInterface::ButtonAvailable(int autoplayer_code) {
-	return p_scraper_access->available_buttons[autoplayer_code];
-}
-
-bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
-	return (ButtonAvailable(autoplayer_code)
-		&& p_scraper_access->visible_buttons[autoplayer_code]);
-}
-
-bool CCasinoInterface::ClickButton(int autoplayer_function_code) {
-	// write_log(preferences.debug_autoplayer(), "[CasinoInterface]  
-	if (ButtonClickable(autoplayer_function_code)) {
-    // Try to send a hotkey first, if specified in tablemap
-    if (casino_hotkeys.PressHotkey(k_standard_function_names[autoplayer_function_code])) {
-       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", k_standard_function_names[autoplayer_function_code]);
-      return true;
-    }
-    // Otherwise: click the button the normal way
-		ClickRect(action_buttons[autoplayer_function_code]);
-		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
-		return true;
-	}	else {
-		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
-		return false;
-	}
-}
-
 bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds) {
-	if (ClickButton(first_button)) {
+	if (LogicalAutoplayerButton(first_button)->Click()) {
 		Sleep(delay_in_milli_seconds); 
 		if (TableLostFocus())	{
 			return false;
 		}
-    return ClickButton(second_button);
+    return LogicalAutoplayerButton(second_button)->Click();
 	}
   return false;
 }
@@ -156,7 +129,7 @@ bool CCasinoInterface::UseSliderForAllin() {
 		if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK)		{
 			ClickButtonSequence(confirmation_button, confirmation_button, k_double_click_delay);
 		}	else {
-			ClickButton(confirmation_button);
+      BetsizeConfirmationButton()->Click();
 		}
 	}	else {
 		 write_log(preferences.debug_autoplayer(), "[CasinoInterface] ...ending DoSlider early (invalid betsizeconfirmationmethod).\n");
@@ -344,7 +317,7 @@ bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
 					k_autoplayer_function_raise, 
 					k_double_click_delay);
 			}	else {
-				ClickButton(k_autoplayer_function_raise);
+        LogicalAutoplayerButton(k_autoplayer_function_raise)->Click();
 			}
 		}	else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING)	{
 		} else {
@@ -369,10 +342,53 @@ bool CCasinoInterface::EnterBetsizeForAllin() {
 
 int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 	int number_of_available_buttons =
-		(p_scraper_access->available_buttons[k_autoplayer_function_allin] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_raise] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_call]  ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_check] ? 1 : 0)
-	  + (p_scraper_access->available_buttons[k_autoplayer_function_fold]  ? 1 : 0);
+    LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()   ? 1 : 0
+    + LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable() ? 1 : 0
+    + LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()  ? 1 : 0
+    + LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable() ? 1 : 0
+    + LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()  ? 1 : 0;
 	return number_of_available_buttons;
+}
+
+//!!!!!
+CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_function_code) {
+  switch (autoplayer_function_code) {
+    // Betpot_buttons
+    case k_autoplayer_function_betpot_2_1:
+      return &_technical_betpot_buttons[0];
+    case k_autoplayer_function_betpot_1_1:
+      return &_technical_betpot_buttons[1];
+    case k_autoplayer_function_betpot_3_4:
+      return &_technical_betpot_buttons[3];
+    case k_autoplayer_function_betpot_2_3:
+      return &_technical_betpot_buttons[4];
+    case k_autoplayer_function_betpot_1_2:
+      return &_technical_betpot_buttons[5];
+    case k_autoplayer_function_betpot_1_3:
+      return &_technical_betpot_buttons[6];
+    case k_autoplayer_function_betpot_1_4:
+      return &_technical_betpot_buttons[7];
+    // Other buttons "iX" have to be looked up by their label !!!!!
+    case k_autoplayer_function_allin:
+    case k_autoplayer_function_raise:
+    case k_autoplayer_function_call:
+    case k_autoplayer_function_check:
+    case k_autoplayer_function_fold:
+    case k_hopper_function_sitin:
+    case k_hopper_function_sitout:
+    case k_hopper_function_leave:
+    case k_hopper_function_rematch:
+    case k_hopper_function_autopost:
+    case k_standard_function_prefold:
+      return AutoplayerButtonByLabel();
+    default: 
+      // k_autoplayer_function_beep md invalid input
+	
+      return NULL;
+  }
+}
+
+CAutoplayerButton* CCasinoInterface::BetsizeConfirmationButton() {
+  // Last hard-coded default: i3-button
+  return &_technical_autoplayer_buttons[3];
 }

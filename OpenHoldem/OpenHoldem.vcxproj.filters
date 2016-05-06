@@ -765,6 +765,9 @@
     <ClCompile Include="CCasinoHotkeys.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="CAutoplayerButton.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1625,6 +1628,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CCasinoHotkeys.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CAutoplayerButton.h">
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>

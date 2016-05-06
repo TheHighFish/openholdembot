@@ -19,6 +19,7 @@
 #include "Bitmaps.h" 
 #include "CardFunctions.h"
 #include "CAutoconnector.h"
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraperAccess.h"
 #include "CScraperPreprocessor.h"
@@ -85,33 +86,6 @@ const CString CScraper::extractHandnumFromString(CString t) {
 	return resulting_handumber_digits_only;
 }
 
-bool CScraper::GetButtonState(CString button_state_as_string) {
-	CString button_state_lower_case = button_state_as_string.MakeLower();
-	return (button_state_lower_case.Left(4) == "true" 
-		|| button_state_lower_case.Left(2) == "on" 
-		|| button_state_lower_case.Left(3) == "yes" 
-		|| button_state_lower_case.Left(7) == "checked" 
-		|| button_state_lower_case.Left(3) == "lit");
-}
-
-bool CScraper::GetButtonState(int button_index) {
-	CString l_button_state = "";
-	if (button_index<=9) {
-		if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5)	{
-			// Don't MakeLower our mm_network symbol
-			l_button_state = p_table_state->_SCI._button_state[button_index];
-		}	else {
-			// Default
-			l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
-		}
-		return GetButtonState(l_button_state);
-	}	else if (button_index>=860)	{
-		l_button_state = p_table_state->_SCI._i86X_button_state[button_index-860];
-		return GetButtonState(l_button_state);
-	}
-	return false;
-}
-
 bool CScraper::ProcessRegion(RMapCI r_iter) {
 	__HDC_HEADER
 
@@ -125,8 +99,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	// If the bitmaps are different, then continue on
 	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp))
 	{
-
-		// Copy into "last" bitmap
+    // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
 									r_iter->second.bottom - r_iter->second.top + 1, 
@@ -228,19 +201,16 @@ void CScraper::ScrapeInterfaceButtons() {
 void CScraper::ScrapeActionButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_number_of_buttons; i++)
-	{
+	for (int i=0; i<k_max_number_of_buttons; ++i)	{
 		button_name.Format("i%dstate", i);
-		if (EvaluateRegion(button_name, &result))
-		{
-			SetButtonState(&p_table_state->_SCI._button_state[i], result);	
+		if (EvaluateRegion(button_name, &result)) {
+      p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
-	}
-	// Ugly WinHoldem convention
-	// When using ManualMode, grab i5state for PT network 
-	if (p_symbol_engine_casino->ConnectedToManualMode())
-	{
-		p_tablemap->set_network(p_table_state->_SCI._button_state[5]);
+    if ((i == 5) && p_symbol_engine_casino->ConnectedToManualMode()) {
+      // Ugly WinHoldem convention
+      // When using ManualMode, grab i5state for PT network
+      p_tablemap->set_network(result);
+    }
 	}
 }
 
@@ -264,7 +234,7 @@ void CScraper::ScrapeBetpotButtons() {
 	for (int i=0; i<k_max_betpot_buttons; i++) {
     button_name.Format("%sstate", k_betpot_button_name[i]);
 		if (EvaluateRegion(button_name, &result))	{
-			SetButtonState(&p_table_state->_SCI._betpot_button_state[i], result);	
+      p_casino_interface->_technical_betpot_buttons[i].SetState(result);
 		}
 	}
 }
@@ -399,7 +369,7 @@ void CScraper::ScrapeSlider() {
 	slider = p_tablemap->r$()->find("i3slider");
   if (handleCI!=p_tablemap->r$()->end() 
       && slider!=p_tablemap->r$()->end() 
-      && p_table_state->_SCI._button_state[3]!="false")	{
+      && p_casino_interface->BetsizeConfirmationButton()->IsClickable())	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
 		p_table_state->_SCI._handle_found_at_xy = false;
@@ -643,7 +613,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
-		if (p_string_match->IsStringAllin(text)) {
+		if (p_string_match->IsStringAllin(text)) { //!!!!!
       return 0.0;
 			 write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
 		}
