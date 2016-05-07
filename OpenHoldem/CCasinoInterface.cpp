@@ -382,8 +382,7 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
     case k_standard_function_prefold:
       return AutoplayerButtonByLabel();
     default: 
-      // k_autoplayer_function_beep md invalid input
-	
+      // k_autoplayer_function_beep md invalid input	
       return NULL;
   }
 }

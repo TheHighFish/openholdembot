@@ -613,7 +613,7 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
-		if (p_string_match->IsStringAllin(text)) { //!!!!!
+		if (p_string_match->IsStringAllin(text)) { 
       return 0.0;
 			 write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
 		}

@@ -287,6 +287,4 @@ void CAutoplayerFunctions::CalcSecondaryFormulas(void) {
 }
 
 
-|| button_label.MakeLower() == "betsize"
-// Last occurence of swag for backward compatibility
-|| button_label.MakeLower() == "swag")	{
+

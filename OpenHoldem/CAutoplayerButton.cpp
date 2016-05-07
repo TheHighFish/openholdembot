@@ -15,9 +15,11 @@
 #include "CAutoplayerButton.h"
 
 #include "CPreferences.h"
+#include "CStringMatch.h"
 #include "MagicNumbers.h"
 
 CAutoplayerButton::CAutoplayerButton() {
+  _label = "";
   _clickable = false;
   _region.bottom = kUndefined;
   _region.left   = kUndefined;
@@ -66,17 +68,7 @@ void CAutoplayerButton::SetState(CString state) {
 }
 
 bool CAutoplayerButton::IsAllin() {
-  s.Remove(' ');
-  s.Remove('-');
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(5);
-  return (s == "allin"
-    || s == "a11in"
-    || s == "allln"
-    || s == "a111n"
-    || s == "aiiin"
-    || s == "buyin"
-    || s.Left(3) == "max");
+  return p_string_match->IsStringAllin(_label);
 }
 
 bool CAutoplayerButton::IsRaise() {
@@ -85,7 +77,9 @@ bool CAutoplayerButton::IsRaise() {
   return (s == "raise"
     || s == "ra1se"
     || s == "ralse"
-    || s.Left(3) == "bet");
+    || s.Left(3) == "bet"
+    // Last occurence of swag for backward compatibility
+    || s.Left(4) == "swag");
 }
 
 bool CAutoplayerButton::IsCall() {

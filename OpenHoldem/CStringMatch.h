@@ -26,6 +26,7 @@ public:
 	const bool IsStringActive(const CString s);
 	const bool IsStringCardback(const CString s);
 	const bool IsStringDealer(const CString s);
+  const bool IsStringAllin(const CString s);
 };
 
 extern CStringMatch *p_string_match;

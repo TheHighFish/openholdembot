@@ -22,6 +22,7 @@
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
+#include "CCasinoInterface.h"
 #include "CScraper.h"
 #include "CScraperAccess.h"
 #include "CStringMatch.h"
@@ -342,25 +343,17 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) {
-	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
-	bool		autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn = false;
+	bool fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
+	bool autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn;
 
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-  //!!! buttons in "player"-loop?
-  //!!! direct access to button-labels?
-  //!!! bad!
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		// Draw "on" buttons
-		if (p_scraper->GetButtonState(i)) 
-		{
-			if (p_string_match->IsStringFold(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
-				fold_drawn = true;
-			}
+  // Draw "on" buttons
+	if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_fold)) {
+		DrawSpecificButtonIndicator(i, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
+		fold_drawn = true;
+	}
 			else if (p_string_match->IsStringCall(p_table_state->_SCI._button_label[i])) 
 			{
 				DrawSpecificButtonIndicator(i, 'C', _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
@@ -445,10 +438,10 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, 
 												  const int top, const int right, const int bottom) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		rect = {0};
 	CFont		*oldfont = NULL, cFont;
-	CString		t = "";
+	CString	t = "";
 	CDC			*pDC = GetDC();
 
 	// Set font basics
