@@ -14,11 +14,14 @@
 #ifndef INC_CCASINOINTERFACE_H
 #define INC_CCASINOINTERFACE_H
 
+#include "CAllinSlider.h"
 #include "CAutoplayerButton.h"
+#include "CBetsizeInputBox.h"
 #include "CCasinoHotkeys.h"
 #include "MagicNumbers.h"
 
 class CCasinoInterface {
+  friend class CAutoplayer;
   friend class CScraper;
   friend class CSymbolEngineAutoplayer;
  public:
@@ -34,10 +37,10 @@ class CCasinoInterface {
 	bool UseSliderForAllin();
 	bool CloseWindow();
 	bool EnterChatMessage(CString &message);
-	bool ClickI86ButtonIfAvailable(int button_number);
 	int  NumberOfVisibleAutoplayerButtons();
   bool IsMyTurn();
   void PressTabToSwitchOHReplayToNextFrame();
+  bool HandleInterfacebuttonsI86();
  private:
 	bool TableLostFocus();
 	void ClickRect(RECT rect);
@@ -58,14 +61,18 @@ class CCasinoInterface {
   // To be used by the scraper
   CAutoplayerButton _technical_autoplayer_buttons[k_max_number_of_buttons];
   CAutoplayerButton _technical_betpot_buttons[k_max_betpot_buttons];
+  CAutoplayerButton _technical_i86X_spam_buttons[k_max_number_of_i86X_buttons];
+  CAllinSlider _allin_slider;
+ private:
+  CBetsizeInputBox _betsize_input_box;
  public:
 	// regions 
 	//!!!!!RECT action_buttons[k_number_of_standard_functions];
 	//RECT i3_button;
-	RECT i3_edit_region;
-	RECT i3_slider_region;
-	RECT i3_handle_region;
-	RECT i86X_button[k_max_number_of_i86X_buttons];
+	//RECT i3_edit_region;
+	//RECT i3_slider_region;
+	//RECT i3_handle_region;
+	//RECT i86X_button[k_max_number_of_i86X_buttons];
  private:
   CCasinoHotkeys casino_hotkeys;
 }; 

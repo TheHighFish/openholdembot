@@ -456,7 +456,7 @@ void CAutoplayer::DoAutoplayer(void) {
 		
 	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
-	if (HandleInterfacebuttonsI86())	{
+	if (p_casino_interface->HandleInterfacebuttonsI86())	{
      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
     action_sequence_needs_to_be_finished = true;
 	  goto AutoPlayerCleanupAndFinalization;
@@ -538,12 +538,3 @@ bool CAutoplayer::DoPrefold(void) {
 	return false;
 }
 
-bool CAutoplayer::HandleInterfacebuttonsI86(void) {
-	for (int i=0; i<k_max_number_of_i86X_buttons; ++i) {
-		if (p_casino_interface->ClickI86ButtonIfAvailable(i))	{
-			return true;
-		}
-	}
-	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
-	return false;
-}

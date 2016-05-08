@@ -36,7 +36,7 @@ class CScrapedActionInterface {
   const CString		button_label(int n) { if (n>=0 && n<=9) return _button_label[n]; else return ""; }
 	const bool			handle_found_at_xy() { return _handle_found_at_xy; }
 	const POINT			handle_xy() { return _handle_xy; }
-  */
+  *//*
  protected:
 	CString	_i86X_button_state[k_max_number_of_i86X_buttons];
 public: //!!!
@@ -45,6 +45,7 @@ protected:
   bool		_handle_found_at_xy;
 	POINT		_handle_xy;
  private:
+ */
 };
 
 #endif INC_CSCRAPEDACTIONINTERFACE_H

@@ -46,7 +46,8 @@ class CAutoplayerButton {
   // To be used by the scraper
   void SetClickable(bool clickable);
   // Same as above, but to be used with input like "true", "yes", "on", ...
-  void SetState(CString state);
+  void SetState(const CString state);
+  void SetLabel(const CString label);
  private:
   bool _clickable;
   RECT _region;

@@ -20,7 +20,7 @@
 
 CAutoplayerButton::CAutoplayerButton() {
   _label = "";
-  _clickable = false;
+  SetClickable(false);
   _region.bottom = kUndefined;
   _region.left   = kUndefined;
   _region.right  = kUndefined;
@@ -44,27 +44,31 @@ bool CAutoplayerButton::Click() {
     write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
     return true;
   } else {
-      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
-      return false;
-    }
+     write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
+    return false;
   }
   return true;
 }
 
-void CAutoplayerButton::SetVisible(bool visible) {
+void CAutoplayerButton::SetClickable(bool clickable) {
+  _clickable = clickable;
 }
 
-void CAutoplayerButton::SetState(CString state) {
+void CAutoplayerButton::SetState(const CString state) {
   CString button_state_lower_case = state.MakeLower();
   if (button_state_lower_case.Left(4) == "true"
       || button_state_lower_case.Left(2) == "on"
       || button_state_lower_case.Left(3) == "yes"
       || button_state_lower_case.Left(7) == "checked"
       || button_state_lower_case.Left(3) == "lit") {
-    SetVisible(true);
+    SetClickable(true);
   } else {
-    SetVisible(false);
+    SetClickable(false);
   }
+}
+
+void CAutoplayerButton::SetLabel(const CString label) {
+  _label = label;
 }
 
 bool CAutoplayerButton::IsAllin() {
@@ -72,31 +76,31 @@ bool CAutoplayerButton::IsAllin() {
 }
 
 bool CAutoplayerButton::IsRaise() {
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(5);
-  return (s == "raise"
-    || s == "ra1se"
-    || s == "ralse"
-    || s.Left(3) == "bet"
+  CString s_lower_case = _label.MakeLower();
+  s_lower_case = s_lower_case.Left(5);
+  return (s_lower_case == "raise"
+    || s_lower_case == "ra1se"
+    || s_lower_case == "ralse"
+    || s_lower_case.Left(3) == "bet"
     // Last occurence of swag for backward compatibility
-    || s.Left(4) == "swag");
+    || s_lower_case.Left(4) == "swag");
 }
 
 bool CAutoplayerButton::IsCall() {
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(4);
-  return (s == "call" || s == "caii" || s == "ca11");
+  CString s_lower_case = _label.MakeLower();
+  s_lower_case = s_lower_case.Left(4);
+  return (s_lower_case == "call" || s_lower_case == "caii" || s_lower_case == "ca11");
 }
 
 bool CAutoplayerButton::IsCheck() {
-  CString s_lower_case = s.MakeLower();
+  CString s_lower_case = _label.MakeLower();
   s = s_lower_case.Left(5);
 
   return (s == "check" || s == "cheok");
 }
 
 bool CAutoplayerButton::IsFold() {
-  CString s_lower_case = s.MakeLower();
+  CString s_lower_case = _label.MakeLower();
   s = s_lower_case.Left(4);
   return (s == "fold" || s == "fo1d" || s == "foid");
 }
@@ -184,4 +188,15 @@ bool CScraperAccess::GetBetpotButtonVisible(int button_code)
 
   CString betpot_button_state = p_table_state->_SCI._betpot_button_state[button_code];
   return p_scraper->GetButtonState(betpot_button_state);
+}
+
+void CScraper::SetButtonState(CString *button_state, CString text) {
+  if (text != "")
+  {
+    *button_state = text;
+  }
+  else
+  {
+    *button_state = "false";
+  }
 }

@@ -19,7 +19,6 @@
 
 #include "Card.h"
 #include "CPlayer.h"
-#include "CScrapedActionInterface.h"
 #include "CTableTitle.h"
 #include "MagicNumbers.h"
 #include "SLimitInfo.h"
@@ -56,7 +55,6 @@ public:
  public:
   // !!! To do: proper encapsulation
   CLimitInfo _s_limit_info;
-  CScrapedActionInterface _SCI;
  private:
   CPlayer _players[kNumberOfPlayerEntries];
   double	_pot[kMaxNumberOfPots];

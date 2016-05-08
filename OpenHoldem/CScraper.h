@@ -81,7 +81,6 @@ class CScraper {
 	bool IsExtendedNumberic(CString text);
 	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
  private:
-	void SetButtonState(CString *button_state, CString text);
   void ResetLimitInfo();
  private:
 #define ENT CSLock lock(m_critsec);

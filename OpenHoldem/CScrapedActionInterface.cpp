@@ -20,7 +20,7 @@ CScrapedActionInterface::CScrapedActionInterface() {
 
 CScrapedActionInterface::~CScrapedActionInterface() {
 }
-
+/*
 void CScrapedActionInterface::Reset() {
   for (int i=0; i<k_max_number_of_buttons; i++)  {
     //!!!!!_button_state[i] = "false";
@@ -32,3 +32,4 @@ void CScrapedActionInterface::Reset() {
 	_button_label[2]  = "raise";
 	_button_label[3]  = "allin";
 }
+*/

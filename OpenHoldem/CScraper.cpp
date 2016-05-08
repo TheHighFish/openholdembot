@@ -174,17 +174,6 @@ bool CScraper::EvaluateNumericalRegion(double *result, const CString name) {
   return false;
 }
 
-void CScraper::SetButtonState(CString *button_state, CString text) {
-	if (text != "")
-	{
-		*button_state = text;	
-	}
-	else
-	{
-		*button_state = "false";
-	}
-}
-
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
 	// i86X-buttons
@@ -192,7 +181,7 @@ void CScraper::ScrapeInterfaceButtons() {
 	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
 		if (EvaluateRegion(button_name, &result))	{
-			SetButtonState(&p_table_state->_SCI._i86X_button_state[i], result);	
+      p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
 		}
 	}
 }
@@ -218,11 +207,11 @@ void CScraper::ScrapeActionButtonLabels() {
 	CString result;
   // Every button needs a label
   // No longer using any WinHoldem defaults
-	for (int i=0; i<k_max_number_of_buttons; i++)	{
-		p_table_state->_SCI._button_label[i] = "";
+	for (int i=0; i<k_max_number_of_buttons; ++i)	{
+    p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
 		label.Format("i%dlabel", i);
 		if (EvaluateRegion(label, &result))	{
-			p_table_state->_SCI._button_label[i] = result;
+      p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
 		}
 	}
 }
@@ -357,13 +346,11 @@ void CScraper::ScrapeColourCodes() {
 
 void CScraper::ScrapeSlider() {
 	__HDC_HEADER
-
 	RMapCI handleCI, slider;
 	RMapI handleI;
 	CString text;
 	POINT handle_xy;
-
-	// find handle
+  // find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
   if (handleCI!=p_tablemap->r$()->end() 
@@ -371,31 +358,24 @@ void CScraper::ScrapeSlider() {
       && p_casino_interface->BetsizeConfirmationButton()->IsClickable())	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
-		p_table_state->_SCI._handle_found_at_xy = false;
-		for (int k=0; k<=j; k++) 
-		{
+    p_casino_interface->_allin_slider.ResetHandlePosition();
+		for (int k=0; k<=j; ++k) {
 			handleI = p_tablemap->set_r$()->find("i3handle");
 			handleI->second.left  += k;
 			handleI->second.right += k;
-
-			EvaluateRegion("i3handle", &text);
+      EvaluateRegion("i3handle", &text);
 			handleI->second.left  -= k;
 			handleI->second.right -= k;
-			if (text == "handle" || text == "true") 
-			{
+			if (text == "handle" || text == "true") {
 				handleCI = p_tablemap->r$()->find("i3handle");
 				handle_xy.x = handleCI->second.left + k;
 				handle_xy.y = handleCI->second.top;
-				p_table_state->_SCI._handle_found_at_xy = true;
-				p_table_state->_SCI._handle_xy = handle_xy;
+        p_casino_interface->_allin_slider.SetHandlePosition(handle_xy);
 				 write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
-				break;
+				return;
 			}
 		}
-		if (!p_table_state->_SCI._handle_found_at_xy)
-		{
-			 write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
-		}
+		 write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
 	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
