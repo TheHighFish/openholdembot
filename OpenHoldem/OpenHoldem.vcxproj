@@ -366,7 +366,6 @@
     <ClCompile Include="Bitmaps.cpp" />
     <ClCompile Include="CLazyScraper.cpp" />
     <ClCompile Include="CScraper.cpp" />
-    <ClCompile Include="CScraperAccess.cpp" />
     <ClCompile Include="CScraperPreprocessor.cpp" />
     <ClCompile Include="CardFunctions.cpp" />
     <ClCompile Include="CFilenames.cpp" />
@@ -669,7 +668,6 @@
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="Bitmaps.h" />
     <ClInclude Include="CScraper.h" />
-    <ClInclude Include="CScraperAccess.h" />
     <ClInclude Include="CScraperPreprocessor.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />

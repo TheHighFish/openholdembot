@@ -29,7 +29,6 @@
 #include "CPopupHandler.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSharedMem.h"
 #include "CTableMapLoader.h"
 #include "CTableState.h"
@@ -278,7 +277,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			if (theApp._dll_scraper_process_message) {
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
       }
-      p_scraper_access->InitOnConnect();
+      //!!!!!p_scraper_access->InitOnConnect();
       // Start timer that checks for continued existence of attached HWND 		
      	PMainframe()->StartTimer();
 			// Reset display

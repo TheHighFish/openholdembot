@@ -23,7 +23,6 @@
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "OH_MessageBox.h"

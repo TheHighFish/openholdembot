@@ -30,7 +30,6 @@
 #include "CRebuyManagement.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
@@ -450,9 +449,9 @@ bool CAutoplayer::DoAllin(void) {
 void CAutoplayer::DoAutoplayer(void) {
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
   CheckBringKeyboard();
-  p_scraper_access->GetNeccessaryTablemapObjects();
+  //!!!!!p_scraper_access->GetNeccessaryTablemapObjects();
    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
-		p_scraper_access->NumberOfVisibleButtons(),
+		p_casino_interface->NumberOfVisibleAutoplayerButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
 		
 	// Care about i86X regions first, because they are usually used 

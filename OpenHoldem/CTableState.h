@@ -40,9 +40,11 @@ class CTableState {
   CPlayer *User();
   CPlayer *Player(int chair);
   double	Pot(int sidepot_index);
-  Card    *CommonCards(int common_card_index);
-  Card    *TurnCard();
-  Card    *RiverCard();
+ public:
+  Card *CommonCards(int common_card_index);
+  Card *TurnCard();
+  Card *RiverCard();
+  int  NumberOfCommunityCards();
  public:
   CTableTitle *TableTitle();
  public:

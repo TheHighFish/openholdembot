@@ -32,7 +32,6 @@
 #include "CPreferences.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
@@ -132,7 +131,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
   // Necessary to pre-compute some info 
 	// which is needed by the symbol-engines.
   // ismyturn, myturnbits (visible buttons), ...
-	p_scraper_access->GetNeccessaryTablemapObjects();
+	//!!!!!p_scraper_access->GetNeccessaryTablemapObjects();
 	p_engine_container->EvaluateAll();
 	// Reply-frames no longer here in the heartbeat.
   // we have a "ReplayFrameController for that.

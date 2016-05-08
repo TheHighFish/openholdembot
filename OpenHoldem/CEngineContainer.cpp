@@ -17,6 +17,7 @@
 #include <assert.h>
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
+#include "CCasinoInterface.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "CHandHistoryAction.h"
@@ -27,7 +28,6 @@
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -299,7 +299,7 @@ void CEngineContainer::EvaluateAll() {
 	if (p_betround_calculator->IsNewBetround())	{
 		ResetOnNewRound();
 	}
-	if (p_scraper_access->IsMyTurn())	{
+	if (p_casino_interface->IsMyTurn())	{
 		ResetOnMyTurn();
 	}
 	// And finally ResetOnHeartbeat() gets always called.

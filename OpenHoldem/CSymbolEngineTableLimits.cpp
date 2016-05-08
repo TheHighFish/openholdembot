@@ -17,9 +17,9 @@
 #include <assert.h>
 #include "CBetroundCalculator.h"
 #include "CBlindGuesser.h"
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineIsTournament.h"
@@ -222,7 +222,7 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
     Bool2CString(blinds_locked_for_current_hand));
 	// Reasonable blinds guaranteed by the way we guess.
   // And IsMyTurn guarantees stable input
-  if (!blinds_locked_for_current_hand && p_scraper_access->IsMyTurn()) {
+  if (!blinds_locked_for_current_hand && p_casino_interface->IsMyTurn()) {
 		AutoLockBlindsForCurrentHand();
 		AutoLockBlindsForCashgamesAfterNHands();
 	}

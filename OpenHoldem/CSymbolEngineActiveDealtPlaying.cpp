@@ -15,9 +15,9 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 #include <assert.h>
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
@@ -81,7 +81,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 	_playersactivebits  = 0;
 	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
-		if (p_scraper_access->IsPlayerActive(i))
+		if (p_table_state->Player(i)->active())
 		{
 			_playersactivebits |= (1<<i);			
 		}
@@ -161,7 +161,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
       if (first_non_blind_with_cards_found == false) {
         // Not yet anybody with cards outside the blinds found
         // Consider active players as dealt with fast folds.
-			  if (p_scraper_access->IsPlayerActive(chair_to_consider)) {
+			  if (p_table_state->Player(chair_to_consider)->active()) {
            write_log(preferences.debug_symbolengine(),
             "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
             chair_to_consider);

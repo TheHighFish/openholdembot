@@ -24,7 +24,6 @@
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -350,6 +349,10 @@ int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 	return number_of_available_buttons;
 }
 
+bool CCasinoInterface::IsMyTurn() {
+  return (NumberOfVisibleAutoplayerButtons >= k_min_buttons_needed_for_my_turn);
+}
+
 //!!!!!
 CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_function_code) {
   switch (autoplayer_function_code) {
@@ -390,4 +393,27 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
 CAutoplayerButton* CCasinoInterface::BetsizeConfirmationButton() {
   // Last hard-coded default: i3-button
   return &_technical_autoplayer_buttons[3];
+}
+
+bool CCasinoInterface::AllinOptionAvailable() {
+  return true; //!!!!!
+  /*
+  // ALLIN POSSIBLE
+	allin_option_available = false;
+	if (i3_button_available) {
+		allin_option_available = true;
+  } else if (i3_button_visible && available_buttons[k_autoplayer_function_allin]) {
+		allin_option_available = true;
+  } else if (available_buttons[k_autoplayer_function_allin]) {
+    // Sometimes we just see an allin-button 
+    // without swag-confirmation-button (i3 like above)
+    // if an opponent puts us allin 
+    // and we only have the options "fold" and "allin" (not call)
+    allin_option_available = true;
+  } else	if (i3_button_visible && i3_edit_defined) {
+		allin_option_available = true;
+  } else if (i3_button_visible && i3_slider_defined && i3_handle_defined) {
+		allin_option_available = true;
+  }
+  */
 }

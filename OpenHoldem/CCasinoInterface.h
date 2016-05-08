@@ -36,6 +36,7 @@ class CCasinoInterface {
 	bool EnterChatMessage(CString &message);
 	bool ClickI86ButtonIfAvailable(int button_number);
 	int  NumberOfVisibleAutoplayerButtons();
+  bool IsMyTurn();
   void PressTabToSwitchOHReplayToNextFrame();
  private:
 	bool TableLostFocus();
@@ -51,6 +52,8 @@ class CCasinoInterface {
   CAutoplayerButton* LogicalAutoplayerButton(int autoplayer_function_code);
   CAutoplayerButton* LogicalAutoplayerButton(CString ButtonLabel);
   CAutoplayerButton* BetsizeConfirmationButton();
+ public:
+  bool AllinOptionAvailable();
  protected:
   // To be used by the scraper
   CAutoplayerButton _technical_autoplayer_buttons[k_max_number_of_buttons];

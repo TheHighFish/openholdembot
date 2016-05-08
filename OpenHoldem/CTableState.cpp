@@ -85,6 +85,10 @@ Card *CTableState::RiverCard() {
   return CommonCards(kIndexOfRiverCard);
 }
 
+int CTableState::NumberOfCommunityCards() {
+  return 0; //!!!!!
+}
+
 CTableTitle *CTableState::TableTitle() {
   return &_table_title;
 }

@@ -15,9 +15,9 @@
 #include "CSymbolEngineUserchair.h"
 
 #include "CBetroundCalculator.h"
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -55,16 +55,14 @@ void CSymbolEngineUserchair::ResetOnNewRound()
 void CSymbolEngineUserchair::ResetOnMyTurn()
 {}
 
-void CSymbolEngineUserchair::ResetOnHeartbeat()
-{
-	if (!userchair_confirmed() || (p_scraper_access->NumberOfVisibleButtons() > 0))
-	{
+void CSymbolEngineUserchair::ResetOnHeartbeat() {
+	if (!userchair_confirmed() || (p_casino_interface->IsMyTurn())) {
 		CalculateUserChair();
 	}
 }
 
 bool CSymbolEngineUserchair::IsNotShowdown() {
-  int num_buttons_enabled = p_scraper_access->NumberOfVisibleButtons();
+  int num_buttons_enabled = p_casino_interface->NumberOfVisibleAutoplayerButtons();
   if (num_buttons_enabled >= k_min_buttons_needed_for_my_turn) return true;
   if (p_betround_calculator->betround() < kBetroundRiver) return true;
   return false;

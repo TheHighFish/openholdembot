@@ -14,8 +14,8 @@
 #include "stdafx.h"
 #include "CVirtualSymbolEngine.h"
 
+#include "CCasinoInterface.h"
 #include "CFormulaParser.h"
-#include "CScraperAccess.h"
 #include "OH_MessageBox.h"
 
 CVirtualSymbolEngine::CVirtualSymbolEngine()
@@ -57,7 +57,7 @@ void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
     // but don't care about the result.
     return;
   }
-  if (!p_scraper_access->IsMyTurn()) {
+  if (!p_casino_interface->IsMyTurn()) {
     CString error_message;
     error_message.Format("%s%s%s%s%s%s%s%s",
       "The symbol \"", name, "\"\n",

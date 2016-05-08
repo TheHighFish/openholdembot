@@ -537,9 +537,6 @@
     <ClCompile Include="CScraper.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
-    <ClCompile Include="CScraperAccess.cpp">
-      <Filter>Source Files\Scraper</Filter>
-    </ClCompile>
     <ClCompile Include="CScraperPreprocessor.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
@@ -1370,9 +1367,6 @@
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="CScraper.h">
-      <Filter>Header Files\Scraper</Filter>
-    </ClInclude>
-    <ClInclude Include="CScraperAccess.h">
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="CScraperPreprocessor.h">

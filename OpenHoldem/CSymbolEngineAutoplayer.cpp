@@ -21,7 +21,6 @@
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"  
-#include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"

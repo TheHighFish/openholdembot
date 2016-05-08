@@ -21,7 +21,6 @@
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
 #include "CScraperPreprocessor.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -246,7 +245,7 @@ void CScraper::ScrapeSeatedActive() {
 	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		ScrapeSeated(i);
-		if (p_scraper_access->IsPlayerSeated(i))		{
+		if (p_table_state->Player(i)->seated()) {
 			ScrapeActive(i);
 		}
 	}
@@ -283,7 +282,7 @@ void CScraper::ScrapeSeated(int chair) {
 			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
 		}
 	}
-	if (p_scraper_access->IsPlayerSeated(chair)) {
+	if (p_table_state->Player(chair)->seated()) {
 		return;
 	}
 	// try u region next uXseated,
@@ -334,7 +333,7 @@ void CScraper::ScrapeActive(int chair) {
 	if (EvaluateRegion(active, &result)) {
 		p_table_state->Player(chair)->set_active(p_string_match->IsStringActive(result));
 	}
-	if (p_scraper_access->IsPlayerActive(chair)) {
+	if (p_table_state->Player(chair)->active()) {
 		return;
 	}
 	active.Format("u%dactive", chair);
