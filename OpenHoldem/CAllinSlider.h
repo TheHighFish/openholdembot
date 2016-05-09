@@ -1,3 +1,5 @@
+//******************************************************************************
+//
 // This file is part of the OpenHoldem project
 //   Download page:         http://code.google.com/p/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
@@ -21,7 +23,7 @@ class CAllinSlider {
   void ResetHandlePosition();
   bool SlideAllin();
  private:
-
+  POINT _position;
 };
 
 #endif INC_CALLINSLIDER_H

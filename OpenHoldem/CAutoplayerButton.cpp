@@ -55,7 +55,8 @@ void CAutoplayerButton::SetClickable(bool clickable) {
 }
 
 void CAutoplayerButton::SetState(const CString state) {
-  CString button_state_lower_case = state.MakeLower();
+  CString button_state_lower_case = state;
+  button_state_lower_case.MakeLower();
   if (button_state_lower_case.Left(4) == "true"
       || button_state_lower_case.Left(2) == "on"
       || button_state_lower_case.Left(3) == "yes"
