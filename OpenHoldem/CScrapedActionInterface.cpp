@@ -15,7 +15,7 @@
 #include "CScrapedActionInterface.h"
 
 CScrapedActionInterface::CScrapedActionInterface() {
-  Reset();
+  //Reset();
 }
 
 CScrapedActionInterface::~CScrapedActionInterface() {

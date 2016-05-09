@@ -19,7 +19,7 @@ class CBetsizeInputBox {
   CBetsizeInputBox();
   ~CBetsizeInputBox();
  public:
-  void EnterBetsize();
+  bool EnterBetsize(double total_betsize_in_dollars);
   // Depends on complete tablemap
   // and maybe visible betsize-confirmation-button
   bool IsReadyToBeUsed();
@@ -30,6 +30,11 @@ class CBetsizeInputBox {
  private:
   // For future use
   bool VerifyEnteredBetsize();
+ private:
+  RECT _i3_edit_region;
+  //!!!!!
+  RECT r_null;
+  POINT p_null;
 };
 
 #endif INC_CBETSIZEINPUTBOX_H

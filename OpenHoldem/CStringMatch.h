@@ -14,13 +14,12 @@
 #ifndef INC_CSTRINGMATCH_H
 #define INC_CSTRINGMATCH_H
 
-class CStringMatch
-{
-public:
+class CStringMatch {
+ public:
 	// public functions
 	CStringMatch();
 	~CStringMatch();
-public:
+ public:
 	const bool IsNumeric(const CString t);
 	const bool IsStringSeated(const CString s);
 	const bool IsStringActive(const CString s);

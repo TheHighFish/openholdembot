@@ -24,9 +24,10 @@
 // * Evaluate()-function,
 // * SymbolsProvided() for syntax-highlighting
 class CFunctionCollection: public CVirtualSymbolEngine {
-  friend class CFormulaParser;
   friend class CAutoplayerFunctions;
+  friend class CBetsizeInputBox;
   friend class CCasinoInterface;
+  friend class CFormulaParser;
  public:
   CFunctionCollection();
   virtual ~CFunctionCollection();

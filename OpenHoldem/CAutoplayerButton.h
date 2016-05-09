@@ -23,7 +23,9 @@ class CAutoplayerButton {
   ~CAutoplayerButton();
  public:
   bool Click();
-  bool IsClickable();
+  bool IsClickable() { 
+    return _clickable; 
+  }
  public:
   // The button-type of iX-buttons depends on the scraped label.
   // BetPot-buttons don't have a label, they get identified by ID

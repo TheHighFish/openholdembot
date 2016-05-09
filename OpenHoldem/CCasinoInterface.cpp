@@ -147,6 +147,15 @@ bool CCasinoInterface::EnterBetsizeForAllin() {
   return EnterBetsize(betsize_for_allin);
 }
 
+bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
+  //!!!!!
+  return true;
+}
+
+bool CCasinoInterface::UseSliderForAllin() {
+  //!!!!!
+  return true;
+}
 int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 	int number_of_available_buttons =
     LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()   ? 1 : 0

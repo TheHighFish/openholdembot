@@ -105,7 +105,7 @@ const bool CStringMatch::IsStringDealer(const CString s) {
 	return (s_lower_case.Left(4) == "true" || s_lower_case.Left(6) == "dealer");
 }
 
-const bool IsStringAllin(const CString s) {
+const bool CStringMatch::IsStringAllin(const CString s) {
   // Check for bad parameters
   if (!s || s == "") {
     return false;

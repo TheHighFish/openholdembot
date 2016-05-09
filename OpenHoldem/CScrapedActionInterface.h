@@ -27,7 +27,7 @@ class CScrapedActionInterface {
   CScrapedActionInterface();
   ~CScrapedActionInterface();
  public:
-  void Reset();
+  //void Reset();
  public:
    /*
   CString	i86X_button_state(int n)   { RETURN_DEFAULT_IF_OUT_OF_RANGE(n, (k_max_number_of_i86X_buttons-1), "") return _i86X_button_state[n]; }
