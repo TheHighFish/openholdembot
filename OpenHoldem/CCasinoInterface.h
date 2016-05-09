@@ -28,9 +28,6 @@ class CCasinoInterface {
 	CCasinoInterface();
 	~CCasinoInterface();
  public: //!!!!!
-	//bool ClickButton(int autoplayer_function_code);
-	//bool ButtonAvailable(int autoplayer_code);
-	//bool ButtonClickable(int autoplayer_code);
 	bool ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds);
 	bool EnterBetsize(double total_betsize_in_dollars);
   bool EnterBetsizeForAllin();
@@ -67,14 +64,6 @@ class CCasinoInterface {
   CBetsizeInputBox  _betsize_input_box;
   // Avoid returning NULL if a certain button can not be looked up.
   CAutoplayerButton _non_clickable_fake_button;
- public:
-	// regions 
-	//!!!!!RECT action_buttons[k_number_of_standard_functions];
-	//RECT i3_button;
-	//RECT i3_edit_region;
-	//RECT i3_slider_region;
-	//RECT i3_handle_region;
-	//RECT i86X_button[k_max_number_of_i86X_buttons];
  private:
   CCasinoHotkeys casino_hotkeys;
 }; 

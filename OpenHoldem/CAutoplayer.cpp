@@ -449,11 +449,9 @@ bool CAutoplayer::DoAllin(void) {
 void CAutoplayer::DoAutoplayer(void) {
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
   CheckBringKeyboard();
-  //!!!!!p_scraper_access->GetNeccessaryTablemapObjects();
    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
 		p_casino_interface->NumberOfVisibleAutoplayerButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
-		
 	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
 	if (p_casino_interface->HandleInterfacebuttonsI86())	{

@@ -86,7 +86,16 @@ Card *CTableState::RiverCard() {
 }
 
 int CTableState::NumberOfCommunityCards() {
-  return 0; //!!!!!
+  int result = 0;
+  for (int i = 0; i < kNumberOfCommunityCards; ++i) {
+    if (_common_cards[i].IsKnownCard()) {
+      ++result;
+    }
+    else {
+      break;
+    }
+  }
+  return result;
 }
 
 CTableTitle *CTableState::TableTitle() {
