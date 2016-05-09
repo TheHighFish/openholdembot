@@ -350,6 +350,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 
   // Draw "on" buttons
   for (int i=0; i<k_max_number_of_buttons; ++i) {
+    assert(p_casino_interface != NULL);
 	  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()) {
 		  DrawSpecificButtonIndicator('F', true, _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
 		  fold_drawn = true;

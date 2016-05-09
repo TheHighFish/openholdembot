@@ -64,7 +64,9 @@ class CCasinoInterface {
   CAutoplayerButton _technical_i86X_spam_buttons[k_max_number_of_i86X_buttons];
   CAllinSlider _allin_slider;
  private:
-  CBetsizeInputBox _betsize_input_box;
+  CBetsizeInputBox  _betsize_input_box;
+  // Avoid returning NULL if a certain button can not be looked up.
+  CAutoplayerButton _non_clickable_fake_button;
  public:
 	// regions 
 	//!!!!!RECT action_buttons[k_number_of_standard_functions];
