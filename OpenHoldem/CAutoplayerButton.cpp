@@ -40,11 +40,11 @@ bool CAutoplayerButton::Click() {
     }
     */
     // Otherwise: click the button the normal way
-    ClickRect(_region);
-    write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
+    //!!!!!ClickRect(_region);
+    //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
     return true;
   } else {
-     write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
+     //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
     return false;
   }
   return true;
@@ -95,49 +95,49 @@ bool CAutoplayerButton::IsCall() {
 
 bool CAutoplayerButton::IsCheck() {
   CString s_lower_case = _label.MakeLower();
-  s = s_lower_case.Left(5);
-
-  return (s == "check" || s == "cheok");
+  s_lower_case = s_lower_case.Left(5);
+  return (s_lower_case == "check" || s_lower_case == "cheok");
 }
 
 bool CAutoplayerButton::IsFold() {
   CString s_lower_case = _label.MakeLower();
-  s = s_lower_case.Left(4);
-  return (s == "fold" || s == "fo1d" || s == "foid");
+  s_lower_case = s_lower_case.Left(4);
+  return (s_lower_case == "fold" || s_lower_case == "fo1d" || s_lower_case == "foid");
 }
 
 bool CAutoplayerButton::IsAutopost() {
-  s.Remove(' ');
-  s.Remove('-');
-
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(8);
-
-  return (s == "autopost" || s == "aut0p0st");
+  CString s_lower_case = _label;
+  s_lower_case.Remove(' ');
+  s_lower_case.Remove('-');
+  s_lower_case.MakeLower();
+  s_lower_case = s_lower_case.Left(8);
+  return (s_lower_case == "autopost" || s_lower_case == "aut0p0st");
 }
 
 bool CAutoplayerButton::IsSitin() {
-  s.Remove(' ');
-  s.Remove('-');
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(5);
-  return (s == "sitin" || s == "s1t1n");
+  CString s_lower_case = _label;
+  s_lower_case.MakeLower();
+  s_lower_case.Remove(' ');
+  s_lower_case.Remove('-');
+  s_lower_case = s_lower_case.Left(5);
+  return (s_lower_case == "sitin" || s_lower_case == "s1t1n");
 }
 
 bool CAutoplayerButton::IsSitout() {
-  s.Remove(' ');
-  s.Remove('-');
-  CString s_lower_case = s.MakeLower();
-  s = s_lower_case.Left(6);
-  return (s == "sitout" || s == "s1tout" || s == "sit0ut" || s == "s1t0ut");
+  CString s_lower_case = _label;
+  s_lower_case.MakeLower();
+  s_lower_case.Remove(' ');
+  s_lower_case.Remove('-');
+  s_lower_case = s_lower_case.Left(6);
+  return (s_lower_case == "sitout" || s_lower_case == "s1tout" || s_lower_case == "sit0ut" || s_lower_case == "s1t0ut");
 }
 
 bool CAutoplayerButton::IsLeave() {
-  return (s.MakeLower().Left(5) == "leave");
+  return (_label.MakeLower().Left(5) == "leave");
 }
 
 bool CAutoplayerButton::IsRematch() {
-  return (s.MakeLower().Left(5) == "rematch");
+  return (_label.MakeLower().Left(5) == "rematch");
 }
 
 bool CAutoplayerButton::IsPrefold() {
@@ -179,18 +179,18 @@ bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
   return (ButtonAvailable(autoplayer_code)
     && p_scraper_access->visible_buttons[autoplayer_code]);
 }*/
-
+/*
 bool CScraperAccess::GetBetpotButtonVisible(int button_code)
 {
-  /*
+  
   Checks if a betpot button is visible
   i.e. available for taking an action
-  */
+  
 
   CString betpot_button_state = p_table_state->_SCI._betpot_button_state[button_code];
   return p_scraper->GetButtonState(betpot_button_state);
-}
-
+}*/
+/*
 void CScraper::SetButtonState(CString *button_state, CString text) {
   if (text != "")
   {
@@ -200,4 +200,4 @@ void CScraper::SetButtonState(CString *button_state, CString text) {
   {
     *button_state = "false";
   }
-}
+}*/
