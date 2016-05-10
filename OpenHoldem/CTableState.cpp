@@ -31,7 +31,6 @@ CTableState::~CTableState() {
 }
 
 void CTableState::Reset() {
-  //!!!!!_SCI.Reset();
   _s_limit_info.Reset();
   for (int i=0; i<kNumberOfCommunityCards; ++i) {
     _common_cards[i].ClearValue();

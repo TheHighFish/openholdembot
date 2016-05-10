@@ -593,10 +593,9 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) { 
-      return 0.0;
-			 write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
-		}
-		else if (	text.MakeLower().Find("out")!=-1
+       write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
+       return 0.0;
+		}	else if (	text.MakeLower().Find("out")!=-1
 				||	text.MakeLower().Find("inactive")!=-1
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->Player(chair)->set_active(false);

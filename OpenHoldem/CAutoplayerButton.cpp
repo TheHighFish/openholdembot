@@ -47,7 +47,6 @@ bool CAutoplayerButton::Click() {
      //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
     return false;
   }
-  return true;
 }
 
 void CAutoplayerButton::SetClickable(bool clickable) {

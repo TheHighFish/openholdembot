@@ -529,7 +529,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   // Delete old entry from the binary tree... 
   Delete(from_name);
   // ...then rename...
-  object_to_rename->SetName(to_name); //!!!!! creates a dangling pointer
+  object_to_rename->SetName(to_name); //!!!! creates a dangling pointer
   // ...and insert again.
   Add(object_to_rename);
   return true;

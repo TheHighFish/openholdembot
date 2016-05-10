@@ -91,6 +91,9 @@
 // https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 // expression has no effect; expected expression with side-effect
 #pragma warning(error:4555)
+// https://msdn.microsoft.com/pl-pl/library/c26da40e%28v=vs.71%29.aspx
+// unreachable code
+#pragma warning(error:4702)
 // https://msdn.microsoft.com/en-us/library/aa734012%28v=vs.60%29.aspx
 // not all control paths return a value
 #pragma warning(error:4715)   

@@ -50,17 +50,17 @@ bool CCasinoHotkeys::PressHotkey(const CString name_of_hotkey_or_button) {
   } else {
     return false;
   }
-  return true; //!!!!! no warning for unreachable code?
   if (isalnum(key_to_be_pressed)) {
      write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press key [%c]\n",
       key_to_be_pressed);
   } else {
-    // !!!!!
     write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press non-alpha-numeric key [%x]\n",
       key_to_be_pressed);
   }
+  //!!!!!
+  return true;
 }
 
 CString CCasinoHotkeys::HotkeyLookup(const CString name_of_hotkey_or_button) {

@@ -45,9 +45,9 @@ bool CAllinSlider::SlideAllin() {
   POINT	point_null = { kUndefined, kUndefined };
 
   write_log(preferences.debug_autoplayer(), "[AllinSlider] Starting DoSlider...\n");
-  //!!!!!if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
+  //if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
     write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
-    return false;
+    //!!!!!return false;
   //}
   if ((_position.x != kUndefined) && (_position.y != kUndefined)) {
     write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
