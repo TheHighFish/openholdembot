@@ -42,10 +42,10 @@ bool CAutoplayerButton::Click() {
     */
     // Otherwise: click the button the normal way
     p_casino_interface->ClickRect(_region);
-    //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
+     write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button %s\n", _label);
     return true;
   } else {
-     //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Could not click button %s. Either undefined or not visible.\n", k_standard_function_names[autoplayer_function_code]);
+     write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Could not click button %s. Either undefined or not visible.\n", _label);
     return false;
   }
 }
@@ -146,58 +146,3 @@ bool CAutoplayerButton::IsPrefold() {
 
 
 
-
-
-
-/*
-bool CScraper::GetButtonState(int button_index) {
-  CString l_button_state = "";
-  if (button_index <= 9) {
-    if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5) {
-      // Don't MakeLower our mm_network symbol
-      l_button_state = p_table_state->_SCI._button_state[button_index];
-    }
-    else {
-      // Default
-      l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
-    }
-    return GetButtonState(l_button_state);
-  }
-  else if (button_index >= 860) {
-    l_button_state = p_table_state->_SCI._i86X_button_state[button_index - 860];
-    return GetButtonState(l_button_state);
-  }
-  return false;
-} 
-
-
-bool CCasinoInterface::ButtonAvailable(int autoplayer_code) {
-  return p_scraper_access->available_buttons[autoplayer_code];
-}
-
-bool CCasinoInterface::ButtonClickable(int autoplayer_code) {
-  return (ButtonAvailable(autoplayer_code)
-    && p_scraper_access->visible_buttons[autoplayer_code]);
-}*/
-/*
-bool CScraperAccess::GetBetpotButtonVisible(int button_code)
-{
-  
-  Checks if a betpot button is visible
-  i.e. available for taking an action
-  
-
-  CString betpot_button_state = p_table_state->_SCI._betpot_button_state[button_code];
-  return p_scraper->GetButtonState(betpot_button_state);
-}*/
-/*
-void CScraper::SetButtonState(CString *button_state, CString text) {
-  if (text != "")
-  {
-    *button_state = text;
-  }
-  else
-  {
-    *button_state = "false";
-  }
-}*/
