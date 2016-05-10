@@ -44,11 +44,6 @@ CCasinoInterface::CCasinoInterface() {
 	// dummy point for mouse and keyboard DLL
 	p_null.x = kUndefined;
 	p_null.y = kUndefined;
-	// dummy rectangle
-	r_null.bottom = kUndefined;
-	r_null.left   = kUndefined;
-	r_null.right  = kUndefined;
-	r_null.top    = kUndefined;
 }
 
 CCasinoInterface::~CCasinoInterface() {

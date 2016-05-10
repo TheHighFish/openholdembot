@@ -32,7 +32,6 @@ class CBetsizeInputBox {
   bool VerifyEnteredBetsize();
  private:
   RECT _i3_edit_region;
-  //!!!!!
   RECT r_null;
   POINT p_null;
 };

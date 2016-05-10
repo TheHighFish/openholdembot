@@ -108,3 +108,8 @@ bool CAllinSlider::SlideAllin() {
   write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
   return true;
 }
+
+bool CAllinSlider::SlideAllinPossible() {
+  //!!!!!
+  return true;
+}

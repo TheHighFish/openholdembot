@@ -45,8 +45,7 @@ class CCasinoInterface {
 	void DeleteSwagText();
  private:
 	POINT p_null;
-	RECT r_null; 
-	// ToDo: Sliderbar, Chatbox, etc.
+	// ToDo: !!!!!Sliderbar, Chatbox, etc.
  public:
   // For logical lookup of buttons
   CAutoplayerButton* LogicalAutoplayerButton(int autoplayer_function_code);
