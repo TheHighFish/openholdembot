@@ -22,6 +22,7 @@ class CAllinSlider {
   void SetHandlePosition(const POINT position);
   void ResetHandlePosition();
   bool SlideAllin();
+  bool SlideAllinPossible();
  private:
   POINT _position;
 };

@@ -27,7 +27,7 @@ class CCasinoInterface {
  public:
 	CCasinoInterface();
 	~CCasinoInterface();
- public: //!!!!!
+ public:
 	bool ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds);
 	bool EnterBetsize(double total_betsize_in_dollars);
   bool EnterBetsizeForAllin();

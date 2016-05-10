@@ -127,6 +127,16 @@ bool CCasinoInterface::EnterChatMessage(CString &message) {
 	return true;
 }
 
+int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
+  int result = LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()
+    + LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()
+    + LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()
+    + LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()
+    + LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable();
+   write_log(preferences.debug_autoplayer(), "[CasinoInterface] %i autoplayer buttons visible.\n", result);
+  return result;
+}
+
 bool CCasinoInterface::HandleInterfacebuttonsI86(void) {
   for (int i = 0; i<k_max_number_of_i86X_buttons; ++i) {
     if (p_casino_interface->_technical_i86X_spam_buttons[i].IsClickable()) {
@@ -148,22 +158,14 @@ bool CCasinoInterface::EnterBetsizeForAllin() {
 }
 
 bool CCasinoInterface::EnterBetsize(double total_betsize_in_dollars) {
-  //!!!!!
-  return true;
+  if (_betsize_input_box.IsReadyToBeUsed()) {
+    return _betsize_input_box.EnterBetsize(total_betsize_in_dollars);
+  }
+  return false;
 }
 
 bool CCasinoInterface::UseSliderForAllin() {
-  //!!!!!
-  return true;
-}
-int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
-	int number_of_available_buttons =
-    LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()   ? 1 : 0
-    + LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable() ? 1 : 0
-    + LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()  ? 1 : 0
-    + LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable() ? 1 : 0
-    + LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()  ? 1 : 0;
-	return number_of_available_buttons;
+  return _allin_slider.SlideAllin();
 }
 
 bool CCasinoInterface::IsMyTurn() {
@@ -191,7 +193,7 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
     // The i86-autoplayer-buttons are flexible
     // and have to be searched by label.
     for (int i = 0; i < k_max_number_of_buttons; ++i) {
-      // Other buttons "iX" have to be looked up by their label !!!!!
+      // Other buttons "iX" have to be looked up by their label
       switch (autoplayer_function_code) {
       case k_autoplayer_function_allin:
         if (_technical_autoplayer_buttons[i].IsAllin()) {
@@ -253,24 +255,14 @@ CAutoplayerButton* CCasinoInterface::BetsizeConfirmationButton() {
 }
 
 bool CCasinoInterface::AllinOptionAvailable() {
-  return true; //!!!!!
-  /*
-  // ALLIN POSSIBLE
-	allin_option_available = false;
-	if (i3_button_available) {
-		allin_option_available = true;
-  } else if (i3_button_visible && available_buttons[k_autoplayer_function_allin]) {
-		allin_option_available = true;
-  } else if (available_buttons[k_autoplayer_function_allin]) {
-    // Sometimes we just see an allin-button 
-    // without swag-confirmation-button (i3 like above)
-    // if an opponent puts us allin 
-    // and we only have the options "fold" and "allin" (not call)
-    allin_option_available = true;
-  } else	if (i3_button_visible && i3_edit_defined) {
-		allin_option_available = true;
-  } else if (i3_button_visible && i3_slider_defined && i3_handle_defined) {
-		allin_option_available = true;
+  if (LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
+    return true;
   }
-  */
+  if (BetsizeConfirmationButton()->IsClickable()) {
+    return true;
+  }
+  if (_allin_slider.SlideAllinPossible()) {
+    return true;
+  }
+  return false;
 }

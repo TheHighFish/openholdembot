@@ -714,9 +714,6 @@
     <ClCompile Include="SLimitInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CScrapedActionInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WebSafeColours.cpp">
       <Filter>Source Files\CTransform</Filter>
     </ClCompile>
@@ -1580,9 +1577,6 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="SLimitInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CScrapedActionInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolengineMTTInfo.h">

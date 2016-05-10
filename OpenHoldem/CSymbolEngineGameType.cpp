@@ -70,9 +70,6 @@ void CSymbolEngineGameType::ResetOnHeartbeat() {
     // Known type. Can't go back to FL/PL.
     return;
   }
-  // p_scraper_access->GetNeccessaryTablemapObjects()
-  // already executed in heartbeat-thread.
-  // Therefore we can access this info.
   if (p_casino_interface->AllinOptionAvailable()) {
     _gametype = kGametypeNL;
   } else if (isfl()) {

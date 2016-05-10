@@ -41,13 +41,13 @@ bool CCasinoHotkeys::PressHotkey(const CString name_of_hotkey_or_button) {
     if (hotkey_combination.MakeLower() == "space") {
       key_to_be_pressed = ' ';
     } else if (hotkey_combination.MakeLower() == "enter") {
-      key_to_be_pressed = ' '; //!!!!!
-    }
-    else {
+      // Enter = carriage return = 0x0D
+      // https://en.wikipedia.org/wiki/ASCII
+      key_to_be_pressed = char(0x0d); 
+    } else {
       return false;
     }
-  }
-  else {
+  } else {
     return false;
   }
   return true; //!!!!! no warning for unreachable code?
@@ -55,8 +55,7 @@ bool CCasinoHotkeys::PressHotkey(const CString name_of_hotkey_or_button) {
      write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press key [%c]\n",
       key_to_be_pressed);
-  }
-  else {
+  } else {
     // !!!!!
     write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press non-alpha-numeric key [%x]\n",
