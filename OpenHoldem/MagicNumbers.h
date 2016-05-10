@@ -450,7 +450,7 @@ const int TEXTDEL_NOTHING	 = TEXTSEL_NOTHING;
 
 // SWAG options - bet confirmation
 const int BETCONF_ENTER		 = 1;
-const int BETCONF_CLICKBET	 = 2;
+const int BETCONF_CLICKBET = 2;
 const int BETCONF_NOTHING	 = TEXTSEL_NOTHING;
 
 // Button click options

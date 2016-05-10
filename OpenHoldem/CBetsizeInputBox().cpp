@@ -57,7 +57,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
     return false;
   }
   // swag regions are hard coded as #3 for now, due to legacy WH standard
-  if (true){ //!!!!!!p_scraper_access->i3_edit_defined || !p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+  if (!IsReadyToBeUsed()) { 
     write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (no edit field or no i3button).\n");
     return false;
   }
@@ -102,27 +102,22 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
     write_log(k_always_log_errors, "[CBetsizeInputBox] WARNING! Betsizing failed because of lost focus.\n");
     write_log(k_always_log_errors, "[CBetsizeInputBox] Another window popped up and receives mouse and keyboard input.\n");
     write_log(k_always_log_errors, "[CBetsizeInputBox] This might be caused by bad casino, bad hopper or by user-interaction.\n");
-  }
-  else {
+  } else {
     if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) {
       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Confirmation; calling keyboard.dll to press 'Enter'\n");
       (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
-    }
-    else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
+    } else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
       && p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Bet Confirmation: Using raise button\n");
       if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) {
         p_casino_interface->ClickButtonSequence(k_autoplayer_function_raise,
           k_autoplayer_function_raise,
           k_double_click_delay);
-      }
-      else {
+      } else {
         p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->Click();
       }
-    }
-    else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING) {
-    }
-    else {
+    } else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING) {
+    } else {
       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
       return false;
@@ -136,9 +131,15 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
 }
 
 bool CBetsizeInputBox::IsReadyToBeUsed() {
-  // Depends on complete tablemap
-  // and maybe visible betsize-confirmation-button
-  return true; //!!!!!
+  if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
+    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+      return false;
+    }
+  }
+  if (!p_tablemap->ItemExists("i3edit")) {
+    return false;
+  }
+  return true;
 }
 
 void CBetsizeInputBox::SelectText() {
