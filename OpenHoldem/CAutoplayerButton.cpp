@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CAutoplayerButton.h"
 
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
@@ -40,7 +41,7 @@ bool CAutoplayerButton::Click() {
     }
     */
     // Otherwise: click the button the normal way
-    //!!!!!ClickRect(_region);
+    p_casino_interface->ClickRect(_region);
     //!!!!!write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicked button %s\n", k_standard_function_names[autoplayer_function_code]);
     return true;
   } else {

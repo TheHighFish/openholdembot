@@ -39,10 +39,7 @@ class CCasinoInterface {
   void PressTabToSwitchOHReplayToNextFrame();
   bool HandleInterfacebuttonsI86();
   bool TableLostFocus();
- private:
-	void ClickRect(RECT rect);
-	void SelectSwagText();
-	void DeleteSwagText();
+  void ClickRect(RECT rect); 
  private:
 	POINT p_null;
 	// ToDo: !!!!!Sliderbar, Chatbox, etc.
