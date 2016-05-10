@@ -67,16 +67,16 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_1());
   Sleep(preferences.swag_delay_1());
   // Check for stolen , and thus misswag
-  //!!!!!if (TableLostFocus()) {
+  if (p_casino_interface->TableLostFocus()) {
     lost_focus = true;
-  //}
+  }
   Clear();
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_2());
   Sleep(preferences.swag_delay_2());
   // Check for stolen focus, and thus misswag
-  //!!!!!if (TableLostFocus()) {
+  if (p_casino_interface->TableLostFocus()) {
     lost_focus = true;
-  //}
+  }
   // SWAG AMOUNT ENTRY
   double swag_adjusted = AdjustedBetsize(total_betsize_in_dollars);
   swag_amt = Number2CString(swag_adjusted);
@@ -92,9 +92,9 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
   // Check for stolen focus, and thus misswag
-  //!!!!!if (TableLostFocus()) {
+  if (p_casino_interface->TableLostFocus()) {
     lost_focus = true;
-  //}
+  }
   // BET CONFIRMATION ACTION
   if (lost_focus) {
     // Print a very verbose warning in the log

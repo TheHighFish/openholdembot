@@ -38,8 +38,8 @@ class CCasinoInterface {
   bool IsMyTurn();
   void PressTabToSwitchOHReplayToNextFrame();
   bool HandleInterfacebuttonsI86();
+  bool TableLostFocus();
  private:
-	bool TableLostFocus();
 	void ClickRect(RECT rect);
 	void SelectSwagText();
 	void DeleteSwagText();
