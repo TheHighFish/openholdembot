@@ -187,7 +187,6 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
   default:
     // The i86-autoplayer-buttons are flexible
     // and have to be searched by label.
-    /*!!!!!
     for (int i = 0; i < k_max_number_of_buttons; ++i) {
       // Other buttons "iX" have to be looked up by their label
       switch (autoplayer_function_code) {
@@ -235,15 +234,11 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
         if (_technical_autoplayer_buttons[i].IsPrefold()) {
           return &_technical_autoplayer_buttons[i];
         }
-      default:
-        // k_autoplayer_function_beep and invalid input
-        return &_non_clickable_fake_button;
       }
     }
-    // Button not found
-    */
-    return &_non_clickable_fake_button;
   }
+  // k_autoplayer_function_beep and invalid input
+  return &_non_clickable_fake_button;
 }
 
 CAutoplayerButton* CCasinoInterface::BetsizeConfirmationButton() {
