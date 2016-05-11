@@ -19,6 +19,7 @@
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
+#include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -262,6 +263,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
       // Clear scraper fields
 			p_table_state->Reset();
+      p_casino_interface->Reset();
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
       // Reset symbols
 			p_engine_container->ResetOnConnection();
@@ -368,6 +370,7 @@ void CAutoConnector::Disconnect() {
 
 	// Clear scraper fields
 	p_table_state->Reset();
+  p_casino_interface->Reset();
 
 	// Reset symbols
 	p_engine_container->ResetOnConnection();

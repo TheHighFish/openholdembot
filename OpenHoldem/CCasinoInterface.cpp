@@ -49,6 +49,18 @@ CCasinoInterface::CCasinoInterface() {
 CCasinoInterface::~CCasinoInterface() {
 }
 
+void CCasinoInterface::Reset() {
+  for (int i = 0; i < k_max_number_of_buttons; ++i) {
+    _technical_autoplayer_buttons[i].Reset();
+  }
+  for (int i = 0; i < k_max_betpot_buttons; ++i) {
+    _technical_betpot_buttons[i].Reset();
+  }
+  for (int i = 0; i < k_max_number_of_i86X_buttons; ++i) {
+    _technical_i86X_spam_buttons[i].Reset();
+  }
+}
+
 bool CCasinoInterface::TableLostFocus() {
 	bool lost_focus = (GetForegroundWindow() != p_autoconnector->attached_hwnd());
   if (lost_focus) {

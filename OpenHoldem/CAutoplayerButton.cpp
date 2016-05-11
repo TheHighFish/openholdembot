@@ -20,17 +20,21 @@
 #include "MagicNumbers.h"
 
 CAutoplayerButton::CAutoplayerButton() {
-  _label = "";
-  SetClickable(false);
-  _region.bottom = kUndefined;
-  _region.left   = kUndefined;
-  _region.right  = kUndefined;
-  _region.top    = kUndefined;
+  Reset();
 }
 
 CAutoplayerButton::~CAutoplayerButton() {
 }
 
+void CAutoplayerButton::Reset() {
+  _label = "";
+  SetClickable(false);
+  _region.bottom = kUndefined;
+  _region.left = kUndefined;
+  _region.right = kUndefined;
+  _region.top = kUndefined;
+}
+  
 bool CAutoplayerButton::Click() {
   if (_clickable) {
     /*!!!!!

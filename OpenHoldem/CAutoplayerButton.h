@@ -22,6 +22,7 @@ class CAutoplayerButton {
   CAutoplayerButton();
   ~CAutoplayerButton();
  public:
+  void Reset();
   bool Click();
   bool IsClickable() { 
     return _clickable; 
