@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CAutoplayerButton.h"
 
+#include "CCasinoHotkey.h"
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
@@ -37,13 +38,11 @@ void CAutoplayerButton::Reset() {
   
 bool CAutoplayerButton::Click() {
   if (_clickable) {
-    /*!!!!!
     // Try to send a hotkey first, if specified in tablemap
-    if (casino_hotkeys.PressHotkey(k_standard_function_names[autoplayer_function_code])) {
-      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", k_standard_function_names[autoplayer_function_code]);
+    if (_hotkey.PressHotkey()) {
+      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
       return true;
     }
-    */
     // Otherwise: click the button the normal way
     p_casino_interface->ClickRect(_region);
      write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button %s\n", _label);

@@ -196,7 +196,7 @@
     <ClCompile Include="CBetsizeInputBox().cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
     <ClCompile Include="CBlindLevels.cpp" />
-    <ClCompile Include="CCasinoHotkeys.cpp" />
+    <ClCompile Include="CCasinoHotkey.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
     <ClCompile Include="CHandHistoryAction.cpp" />
@@ -480,7 +480,7 @@
     <ClInclude Include="CBetsizeInputBox.h" />
     <ClInclude Include="CBlindGuesser.h" />
     <ClInclude Include="CBlindLevels.h" />
-    <ClInclude Include="CCasinoHotkeys.h" />
+    <ClInclude Include="CCasinoHotkey.h" />
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
     <ClInclude Include="CGrammar.h" />

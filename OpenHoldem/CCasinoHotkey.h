@@ -11,20 +11,20 @@
 //
 //******************************************************************************
 
-#ifndef INC_CCASINOHOTKEYS_H
-#define INC_CCASINOHOTKEYS_H
+#ifndef INC_CCasinoHotkey_H
+#define INC_CCasinoHotkey_H
 
 #include "MagicNumbers.h"
 
-class CCasinoHotkeys {
+class CCasinoHotkey {
  public:
-	CCasinoHotkeys();
-	~CCasinoHotkeys();
+	CCasinoHotkey();
+	~CCasinoHotkey();
  public:
-  bool PressHotkey(const CString name_of_hotkey_or_button);
+  bool PressHotkey();
+  void Set(CString key);
  private:
-  CString HotkeyName(const CString name_of_hotkey_or_button);
-  CString HotkeyLookup(const CString name_of_hotkey_or_button);
+  char _key_to_be_pressed;
 }; 
 
-#endif // INC_CCASINOHOTKEYS_H
+#endif // INC_CCasinoHotkey_H

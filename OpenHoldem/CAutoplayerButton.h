@@ -14,6 +14,7 @@
 #ifndef INC_CAUTOPLAYERBUTTON_H
 #define INC_CAUTOPLAYERBUTTON_H
 
+#include "CCasinoHotkey.h"
 #include "MagicNumbers.h"
 
 class CAutoplayerButton {
@@ -51,6 +52,8 @@ class CAutoplayerButton {
   // Same as above, but to be used with input like "true", "yes", "on", ...
   void SetState(const CString state);
   void SetLabel(const CString label);
+ protected:
+  CCasinoHotkey _hotkey;
  private:
   bool _clickable;
   RECT _region;

@@ -756,9 +756,6 @@
     <ClCompile Include="CHeartbeatDelay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CCasinoHotkeys.cpp">
-      <Filter>Source Files\AutoPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="CAutoplayerButton.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
@@ -766,6 +763,9 @@
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
     <ClCompile Include="CAllinSlider.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CCasinoHotkey.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1621,9 +1621,6 @@
     <ClInclude Include="CHeartbeatDelay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CCasinoHotkeys.h">
-      <Filter>Header Files\AutoPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="CAutoplayerButton.h">
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
@@ -1631,6 +1628,9 @@
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
     <ClInclude Include="CAllinSlider.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CCasinoHotkey.h">
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,7 @@
 #include "CAllinSlider.h"
 #include "CAutoplayerButton.h"
 #include "CBetsizeInputBox.h"
-#include "CCasinoHotkeys.h"
+#include "CCasinoHotkey.h"
 #include "MagicNumbers.h"
 
 class CCasinoInterface {
@@ -63,7 +63,7 @@ class CCasinoInterface {
   // Avoid returning NULL if a certain button can not be looked up.
   CAutoplayerButton _non_clickable_fake_button;
  private:
-  CCasinoHotkeys casino_hotkeys;
+  CCasinoHotkey casino_hotkeys;
 }; 
 
 extern CCasinoInterface *p_casino_interface;
